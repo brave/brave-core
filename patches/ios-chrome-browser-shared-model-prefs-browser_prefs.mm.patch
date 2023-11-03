@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 39a7138041acb7b31ea74a6bf34ec846c526859f..c7ad63a7ef010978498161b269af7a8fdb383d30 100644
+index 39a7138041acb7b31ea74a6bf34ec846c526859f..23e4bb6e9633a3698cf00716356dfdba058fa0f3 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -350,6 +350,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -18,19 +18,3 @@ index 39a7138041acb7b31ea74a6bf34ec846c526859f..c7ad63a7ef010978498161b269af7a8f
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -628,6 +630,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
-                      base::Time::FromNSDate(value));
-     }
-   }
-+  BRAVE_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
- }
- 
- // This method should be periodically pruned of year+ old migrations.
-@@ -710,6 +713,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
- 
-   // Added 10/2023.
-   prefs->ClearPref(kSyncRequested);
-+  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
- }
- 
- void MigrateObsoleteUserDefault(void) {

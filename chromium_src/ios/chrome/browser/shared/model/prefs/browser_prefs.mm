@@ -49,30 +49,35 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
 }
 
-void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
-  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
-}
-
-void BraveMigrateObsoleteLocalStatePrefs(PrefService* prefs) {
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(prefs);
-#endif
-}
-
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
   BraveRegisterBrowserStatePrefs(registry);
 
 #define BRAVE_REGISTER_LOCAL_STATE_PREFS BraveRegisterLocalStatePrefs(registry);
 
-#define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
-  BraveMigrateObsoleteBrowserStatePrefs(prefs);
+#define MigrateObsoleteBrowserStatePrefs \
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl
 
-#define BRAVE_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS \
-  BraveMigrateObsoleteLocalStatePrefs(prefs);
+#define MigrateObsoleteLocalStatePrefs \
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl
 
 #include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
-#undef BRAVE_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
-#undef BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+
+#undef MigrateObsoleteLocalStatePrefs
+#undef MigrateObsoleteBrowserStatePrefs
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
+
+void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(prefs);
+
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
+  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl(prefs);
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(prefs);
+#endif
+}
