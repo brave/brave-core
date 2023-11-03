@@ -357,9 +357,13 @@ bool BraveSessionCache::AllowFontFamily(
       if (AllowFontByFamilyName(family_name,
                                 blink::DefaultLanguage().GetString().Left(2)))
         return true;
-      FarblingPRNG prng = MakePseudoRandomGenerator();
-      prng.discard(family_name.Impl()->GetHash() % 16);
-      return ((prng() % 20) == 0);
+      if (IsFontAllowedForFarbling(family_name)) {
+        FarblingPRNG prng = MakePseudoRandomGenerator();
+        prng.discard(family_name.Impl()->GetHash() % 16);
+        return ((prng() % 20) == 0);
+      } else {
+        return false;
+      }
     }
     default:
       NOTREACHED();
