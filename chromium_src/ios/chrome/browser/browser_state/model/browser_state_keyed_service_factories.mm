@@ -5,6 +5,7 @@
 
 #include "ios/chrome/browser/browser_state/model/browser_state_keyed_service_factories.h"
 
+#include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
@@ -53,4 +54,6 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ReadingListModelFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();
+
+  brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
 }
