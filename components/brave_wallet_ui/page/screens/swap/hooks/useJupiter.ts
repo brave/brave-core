@@ -248,6 +248,7 @@ export function useJupiter(params: SwapParams) {
         const { success, errorMessage } = await sendSolanaSerializedTransaction(
           {
             encodedTransaction: swapTransaction,
+            chainId: selectedNetwork.chainId,
             accountId: selectedAccount.accountId,
             txType: BraveWallet.TransactionType.SolanaSwap,
             sendOptions: {

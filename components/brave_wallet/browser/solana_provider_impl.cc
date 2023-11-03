@@ -522,6 +522,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   tx_service_->AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
+                                        delegate_->GetOrigin()),
       account->account_id.Clone(), delegate_->GetOrigin(),
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
