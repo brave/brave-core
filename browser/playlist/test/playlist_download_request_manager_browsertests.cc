@@ -8,6 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/test/mock_playlist_service_observer.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -15,7 +16,6 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -134,7 +134,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     auto* playlist_service =
         playlist::PlaylistServiceFactory::GetForBrowserContext(
-            browser()->profile());
+            chrome_test_utils::GetProfile(this));
     ASSERT_TRUE(playlist_service);
 
     request_manager_ = playlist_service->download_request_manager_.get();
@@ -423,7 +423,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
   testing::NiceMock<MockPlaylistServiceObserver> observer;
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
-          browser()->profile());
+          chrome_test_utils::GetProfile(this));
   ASSERT_TRUE(playlist_service);
   playlist_service->AddObserver(observer.GetRemote());
 

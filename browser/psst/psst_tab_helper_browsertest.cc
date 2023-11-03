@@ -7,13 +7,11 @@
 
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -40,8 +38,6 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
-    content::SetBrowserClientForTesting(&test_content_browser_client_);
 
     // Also called in Disabled test.
     if (psst::PsstRuleRegistry::GetInstance()) {
@@ -80,7 +76,6 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  BraveContentBrowserClient test_content_browser_client_;
 };
 
 // TESTS

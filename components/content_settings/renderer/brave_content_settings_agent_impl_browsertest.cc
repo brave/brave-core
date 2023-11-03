@@ -8,7 +8,6 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -17,7 +16,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -111,11 +109,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
-    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
-
     host_resolver()->AddRule("*", "127.0.0.1");
 
     brave::RegisterPathProvider();
@@ -179,11 +172,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
       return "(missing)";  // Fail test if we haven't seen this URL before.
     }
     return pos->second;
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
   const net::EmbeddedTestServer& https_server() { return https_server_; }
@@ -407,8 +395,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   ContentSettingsPattern top_level_page_pattern_;
   ContentSettingsPattern first_party_pattern_;
   ContentSettingsPattern iframe_pattern_;
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
   mutable base::Lock last_referrers_lock_;
   std::map<GURL, std::string> last_referrers_;
 

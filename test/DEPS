@@ -7,4 +7,5 @@ include_rules = [
   "+chrome/test",
   "+content/public/common",
   "+content/public/test",
+  "+ui/compositor",
 ]

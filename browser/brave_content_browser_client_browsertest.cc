@@ -24,7 +24,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/buildflags.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -33,6 +32,7 @@
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -65,8 +65,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
     browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
@@ -113,10 +111,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
         "brave_webtorrent.html?chrome://settings");
   }
 
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
-  }
+  void TearDown() override { browser_content_client_.reset(); }
 
   const GURL& magnet_html_url() { return magnet_html_url_; }
   const GURL& magnet_url() { return magnet_url_; }
@@ -138,7 +133,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   GURL torrent_url_;
   GURL torrent_extension_url_;
   GURL torrent_invalid_query_extension_url_;
-  std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 

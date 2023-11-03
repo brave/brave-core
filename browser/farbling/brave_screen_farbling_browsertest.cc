@@ -9,14 +9,12 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -88,11 +86,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_.reset(new ChromeContentClient);
-    content::SetContentClient(content_client_.get());
-    browser_content_client_.reset(new BraveContentBrowserClient());
-    content::SetBrowserClientForTesting(browser_content_client_.get());
-
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
@@ -104,11 +97,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
 
     parent_url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
   std::string LoadExtension(const base::FilePath& path) {
@@ -332,8 +320,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
  private:
   GURL parent_url_;
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 class BraveScreenFarblingBrowserTest_EnableFlag
