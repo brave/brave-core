@@ -14,10 +14,10 @@
 
   <!-- Settings / Get started -->
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
-    Get started
+    Get Started
   </message>
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
-    Profile name and icon
+    Profile Name & Icon
   </message>
 
   <!-- Settings / Get started / Import bookmarks and settings dialog -->
@@ -25,12 +25,12 @@
     Extensions
   </message>
   <message name="IDS_SETTINGS_IMPORT_PAYMENTS_CHECKBOX" desc="Checkbox for importing payments info">
-    Payment methods
+    Payment Methods
   </message>
 
   <!-- Settings / Appearance -->
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
-    Brave colors
+    Brave Colors
   </message>
   <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
     Light
@@ -53,14 +53,14 @@
       Same as macOS
     </message>
     <message name="IDS_SHOW_TOOLBAR_IN_FULL_SCREEN" desc="Text for showing toolbar in fullscreen">
-      Always show toolbar in full screen
+      Always show toolbar in Full Screen
     </message>
   </if>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES" desc="The label for opening theme web store">
-    Get more themes
+    Get more Themes
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL" desc="The label for choosing default images over super referral">
-    Brave default images
+    Brave Default Images
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TOOLBAR_SECTION" desc="The label for section containing settings related to toolbar">
     Toolbar
@@ -436,9 +436,9 @@
     GitHub
   </message>
 
-  <!-- Settings / Social media blocking -->
+  <!-- Settings / gSocial Media Blocking -->
   <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
-    Social media blocking
+    Social Media Blocking
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
     Allow Facebook logins and embedded posts
@@ -883,16 +883,16 @@
   </message>
 
   <!-- Settings / Search engine -->
-  <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
-    Index other search engines
+  <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom Search engines">
+    Index other Search engines
   </message>
-  <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
+  <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom Search engines">
     Automatically indexes websites that follow the OpenSearch spec.
   </message>
-  <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
+  <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the Search engine dropdown setting.">
     Normal Window - Search engine used in the address bar
   </message>
-  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
+  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the Search engine dropdown setting.">
     Private Window - Search engine used in the address bar
   </message>
 
@@ -1053,10 +1053,10 @@
 
   <!-- Settings / Wallet -->
   <message name="IDS_SETTINGS_DEFAULT_ETHEREUM_WALLET_DESC" desc="The default cryptocurrency wallet for the Ethereum blockchain">
-    Default Ethereum wallet
+    Default Ethereum Wallet
   </message>
   <message name="IDS_SETTINGS_DEFAULT_SOLANA_WALLET_DESC" desc="The default cryptocurrency wallet for the Solana blockchain">
-    Default Solana wallet
+    Default Solana Wallet
   </message>
   <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE" desc="Select control value for which web3 provider to use">
     Brave Wallet
@@ -1074,10 +1074,10 @@
     Extensions (Brave Wallet fallback)
   </message>
   <message name="IDS_SETTINGS_DEFAULT_BASE_CURRENCY_DESC" desc="The default base currency to use for the wallet prices">
-    Default base currency
+    Default Base Currency
   </message>
   <message name="IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC" desc="The default base cryptocurrency to use for the wallet prices">
-    Default base cryptocurrency
+    Default Base Cryptocurrency
   </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
     Show Brave Wallet button
