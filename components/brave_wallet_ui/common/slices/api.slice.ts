@@ -1791,6 +1791,7 @@ export function createWalletApi() {
                       isEIP1559
                         ? toTxDataUnion({ ethTxData1559: txData1559 })
                         : toTxDataUnion({ ethTxData: txData }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 
@@ -1850,6 +1851,7 @@ export function createWalletApi() {
                   const { errorMessage, success } =
                     await txService.addUnapprovedTransaction(
                       toTxDataUnion({ filTxData: filTxData }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 
@@ -1917,6 +1919,7 @@ export function createWalletApi() {
                   const { errorMessage, success } =
                     await txService.addUnapprovedTransaction(
                       toTxDataUnion({ solanaTxData: txData ?? undefined }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 
@@ -1972,6 +1975,7 @@ export function createWalletApi() {
                   const { errorMessage, success } =
                     await txService.addUnapprovedTransaction(
                       toTxDataUnion({ btcTxData }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 
@@ -2023,6 +2027,7 @@ export function createWalletApi() {
                   const { errorMessage, success } =
                     await txService.addUnapprovedTransaction(
                       toTxDataUnion({ zecTxData }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 
@@ -2226,6 +2231,7 @@ export function createWalletApi() {
                   const { errorMessage, success } =
                     await txService.addUnapprovedTransaction(
                       toTxDataUnion({ solanaTxData: txData }),
+                      payload.network.chainId,
                       payload.fromAccount.accountId
                     )
 

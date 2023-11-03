@@ -290,14 +290,14 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
-        account_id.Clone(), origin,
+        chain->chain_id, account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
     tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
-        account_id.Clone(), origin,
+        chain->chain_id, account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
