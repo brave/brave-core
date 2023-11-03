@@ -36,6 +36,7 @@ const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
 // The number of cards to load at a time. Making this too high will result in
 // jank as all the cards are rendered at once.
 const PAGE_SIZE = 25;
+const CARD_CLASS = 'feed-card'
 
 export default function Component({ feed }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue('bn-card-count', PAGE_SIZE));
@@ -69,14 +70,14 @@ export default function Component({ feed }: Props) {
       document.removeEventListener('scroll', handler)
     }
   }, [])
+
   const loadMoreObserver = React.useRef(new IntersectionObserver(entries => {
     // While the feed is loading we get some notifications for fully
-    // visible/invisible cards.
-    if (!entries.some(i => i.intersectionRatio !== 0 && i.intersectionRatio !== 1)) return
-
+    // invisible cards.
+    if (!entries.some(i => i.target?.classList.contains(CARD_CLASS) && i.intersectionRatio !== 0)) return
     setCardCount(cardCount => cardCount + PAGE_SIZE);
   }, {
-    rootMargin: '0px 0px 900px 0px'
+    rootMargin: '0px 0px 1000px 0px',
   }))
 
   // Only observe the bottom card
@@ -109,7 +110,7 @@ export default function Component({ feed }: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }
 
-      return <div key={getKey(item, index)} ref={index === count - 1 ? setLastCardRef : undefined}>
+      return <div className={CARD_CLASS} key={getKey(item, index)} ref={index === count - 1 ? setLastCardRef : undefined}>
         {el}
       </div>
     })
