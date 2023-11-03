@@ -8,8 +8,9 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { useInspectContext } from './context';
 import Card from './feed/Card';
-import { FeedType, useBraveNews } from './shared/Context';
+import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
+import { FeedView } from './shared/useFeedV2';
 
 const DEFAULT_SHOW_COUNT = 4;
 
@@ -102,7 +103,7 @@ const Section = styled.details`
 
 const Marker = <Icon name='arrow-small-right' className='marker' />
 
-export function Item(props: { id: FeedType, name: string }) {
+export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView } = useBraveNews()
 
   return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={props.id === 'all'}>
