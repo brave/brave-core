@@ -37,7 +37,7 @@ export function getFrameSrc (pathname: string) {
 
   const [, service, videoId] = paths
 
-  return EmbedURL(service, decodeURIComponent(videoId))
+  return EmbedURL(service, videoId)
 }
 
 function PlayerEmbed () {
@@ -45,8 +45,7 @@ function PlayerEmbed () {
     <EmbedContainer>
       <StyledFrame
         src={getFrameSrc(window.location.pathname)}
-        allow='autoplay; encrypted-media; picture-in-picture;'
-        sandbox='allow-popups allow-scripts allow-same-origin allow-presentation'
+        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share;'
         allowFullScreen
       />
     </EmbedContainer>
