@@ -2211,6 +2211,7 @@ void BraveWalletService::OnNetworkChanged() {
 
 void BraveWalletService::Reset() {
   delegate_->ClearWalletUIStoragePartition();
+  delegate_->ResetAllPermissions();
 
   if (eth_allowance_manager_) {
     eth_allowance_manager_->Reset();

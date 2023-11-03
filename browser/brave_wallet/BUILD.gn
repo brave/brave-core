@@ -76,6 +76,8 @@ source_set("brave_wallet_delegate") {
   sources = [
     "brave_wallet_provider_delegate_impl.cc",
     "brave_wallet_provider_delegate_impl.h",
+    "brave_wallet_service_delegate_base.cc",
+    "brave_wallet_service_delegate_base.h",
     "brave_wallet_service_delegate_helper.cc",
   ]
   deps = [

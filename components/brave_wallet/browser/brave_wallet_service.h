@@ -314,6 +314,10 @@ class BraveWalletService : public KeyedService,
     sign_all_txs_request_added_cb_for_testing_ = std::move(callback);
   }
 
+  BraveWalletServiceDelegate* GetDelegateForTesting() {
+    return delegate_.get();
+  }
+
  protected:
   // For tests
   BraveWalletService();
