@@ -15,6 +15,61 @@ namespace {
 base::flat_set<std::string_view> kEmptyFontSet =
     base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{});
 
+base::flat_set<std::string_view> kFontFarblingSet =
+    base::MakeFlatSet<std::string_view>(
+        std::vector<std::string_view>{"sans-serif-thin",
+                                      "arno pro",
+                                      "agency fb",
+                                      "arabic typesetting",
+                                      "arial unicode ms",
+                                      "avantgarde bk bt",
+                                      "bankgothic md bt",
+                                      "batang",
+                                      "bitstream vera sans mono",
+                                      "calibri",
+                                      "century",
+                                      "century gothic",
+                                      "clarendon",
+                                      "eurostile",
+                                      "franklin gothic",
+                                      "futura bk bt",
+                                      "futura md bt",
+                                      "gotham",
+                                      "gill sans",
+                                      "helv",
+                                      "haettenschweiler",
+                                      "helvetica neue",
+                                      "humanst521 bt",
+                                      "leelawadee",
+                                      "letter gothic",
+                                      "levenim mt",
+                                      "lucida bright",
+                                      "lucida sans",
+                                      "menlo",
+                                      "ms mincho",
+                                      "ms outlook",
+                                      "ms reference specialty",
+                                      "ms ui gothic",
+                                      "mt extra",
+                                      "myriad pro",
+                                      "marlett",
+                                      "meiryo ui",
+                                      "microsoft uighur",
+                                      "minion pro",
+                                      "monotype corsiva",
+                                      "pmingliu",
+                                      "pristina",
+                                      "scriptina",
+                                      "segoe ui light",
+                                      "serifa",
+                                      "simhei",
+                                      "small fonts",
+                                      "staccato222 bt",
+                                      "trajan pro",
+                                      "univers ce 55 medium",
+                                      "vrinda",
+                                      "zwadobef"});
+
 #if BUILDFLAG(IS_MAC)
 bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Mac OS as of Mac OS 12.3.
@@ -817,6 +872,11 @@ bool AllowFontByFamilyName(const AtomicString& family_name,
     return true;
 #endif
   return false;
+}
+
+bool IsFontAllowedForFarbling(const AtomicString& family_name) {
+  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  return kFontFarblingSet.contains(lower_ascii_name);
 }
 
 const base::flat_set<std::string_view>& GetAdditionalFontWhitelistByLocale(
