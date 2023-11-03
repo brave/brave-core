@@ -15,8 +15,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
-class GURL;
-
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -29,19 +27,21 @@ namespace playlist {
 
 class PlaylistStreaming {
  public:
-  PlaylistStreaming(content::BrowserContext* context);
+  explicit PlaylistStreaming(content::BrowserContext* context);
   virtual ~PlaylistStreaming();
   PlaylistStreaming(const PlaylistStreaming&) = delete;
   PlaylistStreaming& operator=(const PlaylistStreaming&) = delete;
 
-  void QueryPrompt(const std::string& url,
-                   const std::string& method,
-                   api_request_helper::APIRequestHelper::ResponseStartedCallback
-                       response_started_callback,
-                   api_request_helper::APIRequestHelper::DataReceivedCallback
-                       data_received_callback,
-                   api_request_helper::APIRequestHelper::ResultCallback
-                       data_completed_callback);
+  void RequestStreamingQuery(
+      const std::string& url,
+      const std::string& method,
+      api_request_helper::APIRequestHelper::ResponseStartedCallback
+          response_started_callback,
+      api_request_helper::APIRequestHelper::DataReceivedCallback
+          data_received_callback,
+      api_request_helper::APIRequestHelper::ResultCallback
+          data_completed_callback);
+  void ClearAllQueries();
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.playlist.settings;
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.preference.Preference;
 
@@ -30,7 +29,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     private static final String PREF_PLAYLIST_PREFERENCE_SCREEN = "playlist_preference_screen";
     public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
     public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";
-    public static final String PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE = "auto_save_media_for_offline";
     private static final String PREF_REMEMBER_FILE_PLAYBACK_POSITION =
             "remember_file_playback_position";
     private static final String PREF_REMEMBER_LIST_PLAYBACK_POSITION =
@@ -40,7 +38,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     private ChromeSwitchPreference mEnablePlaylistSwitch;
     private ChromeSwitchPreference mAddToPlaylistButtonSwitch;
-    private Preference mAutoSaveMediaForOfflinePreference;
     private ChromeSwitchPreference mRememberFilePlaybackPositionSwitch;
     private ChromeSwitchPreference mRememberListPlaybackPositionSwitch;
     private ChromeSwitchPreference mContinuousListeningSwitch;
@@ -57,10 +54,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         mAddToPlaylistButtonSwitch =
                 (ChromeSwitchPreference) findPreference(PREF_ADD_TO_PLAYLIST_BUTTON);
         mAddToPlaylistButtonSwitch.setOnPreferenceChangeListener(this);
-
-        mAutoSaveMediaForOfflinePreference =
-                (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
-        updateAutoSaveMedia();
 
         mRememberFilePlaybackPositionSwitch =
                 (ChromeSwitchPreference) findPreference(PREF_REMEMBER_FILE_PLAYBACK_POSITION);
@@ -116,33 +109,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        new Handler().post(() -> { updateAutoSaveMedia(); });
-    }
-
-    private void updateAutoSaveMedia() {
-        if (mAutoSaveMediaForOfflinePreference == null) {
-            return;
-        }
-        switch (ChromeSharedPreferences.getInstance()
-                .readInt(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
-            case 0:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.on_text));
-                break;
-            case 1:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.off_text));
-                break;
-            case 2:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.wifi_only_text));
-                break;
-        }
-    }
-
-    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         if (PREF_ENABLE_PLAYLIST.equals(key)) {
@@ -156,9 +122,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         if (isPlaylistEnabled) {
             if (mAddToPlaylistButtonSwitch != null) {
                 getPreferenceScreen().addPreference(mAddToPlaylistButtonSwitch);
-            }
-            if (mAutoSaveMediaForOfflinePreference != null) {
-                getPreferenceScreen().addPreference(mAutoSaveMediaForOfflinePreference);
             }
             if (mRememberFilePlaybackPositionSwitch != null) {
                 getPreferenceScreen().addPreference(mRememberFilePlaybackPositionSwitch);
@@ -175,9 +138,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         } else {
             if (mAddToPlaylistButtonSwitch != null) {
                 getPreferenceScreen().removePreference(mAddToPlaylistButtonSwitch);
-            }
-            if (mAutoSaveMediaForOfflinePreference != null) {
-                getPreferenceScreen().removePreference(mAutoSaveMediaForOfflinePreference);
             }
             if (mRememberFilePlaybackPositionSwitch != null) {
                 getPreferenceScreen().removePreference(mRememberFilePlaybackPositionSwitch);

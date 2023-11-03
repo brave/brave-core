@@ -5,14 +5,15 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import org.chromium.base.Log;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistStreamingObserver;
 
 public class PlaylistStreamingObserverImpl implements PlaylistStreamingObserver {
     public interface PlaylistStreamingObserverImplDelegate {
         default void onResponseStarted(String url, long contentLength) {}
+
         default void onDataReceived(byte[] dataReceived) {}
+
         default void onDataCompleted() {}
     }
 

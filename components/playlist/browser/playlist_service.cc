@@ -1343,9 +1343,9 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
   return task_runner_.get();
 }
 
-void PlaylistService::QueryPrompt(const std::string& url,
-                                  const std::string& method) {
-  playlist_streaming_->QueryPrompt(
+void PlaylistService::RequestStreamingQuery(const std::string& url,
+                                            const std::string& method) {
+  playlist_streaming_->RequestStreamingQuery(
       url, method,
       base::BindOnce(&PlaylistService::OnResponseStarted,
                      weak_factory_.GetWeakPtr()),
@@ -1353,6 +1353,10 @@ void PlaylistService::QueryPrompt(const std::string& url,
                           weak_factory_.GetWeakPtr()),
       base::BindOnce(&PlaylistService::OnDataComplete,
                      weak_factory_.GetWeakPtr()));
+}
+
+void PlaylistService::ClearAllQueries() {
+  playlist_streaming_->ClearAllQueries();
 }
 
 void PlaylistService::OnResponseStarted(const std::string& url,

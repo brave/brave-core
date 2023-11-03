@@ -3822,35 +3822,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ADD_TO_PLAYLIST_BUTTON_SUMMARY" desc="Add to playlist button settings summary">
       Show or hide "Add to Playlist" button for quick access to add or remove media.
     </message>
-    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE" desc="Auto save media for offline settings title">
-      Auto-Save for Offline
-    </message>
-    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE_SUMMARY" desc="Auto save media for offline settings summary">
-      Automatically saves new playlist items to your device so you can play without an internet connection.
-    </message>
-    <message name="IDS_AUTO_SAVE_ON" desc="Auto save media for offline options title">
-      Auto-Save ON
-    </message>
-    <message name="IDS_AUTO_SAVE_OFF" desc="Auto save media for offline options title">
-      Auto-Save OFF
-    </message>
-    <message name="IDS_AUTO_SAVE_WIFI" desc="Auto save media for offline options title">
-      Auto-Save only when connected to Wi-Fi
-    </message>
     <message name="IDS_RESET_PLAYLIST" desc="Reset settings title">
       Reset
     </message>
     <message name="IDS_RESET_PLAYLIST_SUMMARY" desc="Reset settings summary">
       Remove all videos from Playlist, including offline mode storage.
-    </message>
-    <message name="IDS_ON_TEXT" desc="Auto save media option text">
-      On
-    </message>
-    <message name="IDS_OFF_TEXT" desc="Auto save media option text">
-      Off
-    </message>
-    <message name="IDS_WIFI_ONLY_TEXT" desc="Auto save media option text">
-      Wifi Only
     </message>
     <message name="IDS_PLAYLIST_FEATURE_TEXT" desc="Playlist feature text">
       Playlist
@@ -4025,9 +4001,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ALREADY_ADDED_IN_PLAYLIST" desc="Already added in playlist message">
       Media content is already added to the default playlist
-    </message>
-    <message name="IDS_ADD_TO_PLAYLIST" desc="Add to playlist menu text">
-      Add to playlist
     </message>
     <!-- End of Playlist strings -->
     <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">

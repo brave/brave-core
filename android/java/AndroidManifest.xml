@@ -216,16 +216,8 @@
 
 <service
     android:name="org.chromium.chrome.browser.playlist.download.DownloadService"
-    android:foregroundServiceType="dataSync"
     android:exported="false">
 </service>
-
-<receiver android:name="org.chromium.chrome.browser.playlist.download.CancelDownloadBroadcastReceiver"
-    android:exported="false">
-    <intent-filter>
-        <action android:name="cancel_download" />
-    </intent-filter>
-</receiver>
 
 <service
     android:name="com.wireguard.android.backend.GoBackend$VpnService"
@@ -251,10 +243,6 @@
         <action android:name="android.media.browse.MediaBrowserService"/>
     </intent-filter>
 </service>
-
-<!-- <service android:name="com.brave.playlist.PlaylistVideoService"
-    android:foregroundServiceType="dataSync"
-    android:exported="false"/> -->
 
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"

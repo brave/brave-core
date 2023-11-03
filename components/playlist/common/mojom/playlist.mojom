@@ -110,7 +110,8 @@ interface PlaylistService {
   // actors that update the item.
   UpdateItem(PlaylistItem item);
   UpdateItemLastPlayedPosition(string id, int32 last_played_position);
-  UpdateItemHlsMediaFilePath(string id, string media_file_path, int64 updated_file_size);
+  UpdateItemHlsMediaFilePath(string id, string media_file_path,
+    int64 updated_file_size);
 
   // Try downloading media files again. Returns PlaylistItem after trying
   // recovery. If it succeeded, |cached| state of the return item would be true.
@@ -134,7 +135,8 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
-  QueryPrompt(string url,string method);
+  RequestStreamingQuery(string url,string method);
+  ClearAllQueries();
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
   AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);

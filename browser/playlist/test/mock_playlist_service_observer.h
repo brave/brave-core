@@ -57,7 +57,10 @@ class MockPlaylistServiceObserver
               OnItemRemovedFromList,
               (const std::string& playlist_id, const std::string& item_id),
               (override));
-  MOCK_METHOD(void, OnItemDeleted, (const std::string& id), (override));
+  MOCK_METHOD(void,
+              OnItemLocalDataDeleted,
+              (const std::string& id),
+              (override));
 
   MOCK_METHOD(void,
               OnPlaylistUpdated,

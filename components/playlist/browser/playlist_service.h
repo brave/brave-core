@@ -222,7 +222,9 @@ class PlaylistService : public KeyedService,
 
   bool HasPlaylistItem(const std::string& id) const;
 
-  void QueryPrompt(const std::string& url, const std::string& method) override;
+  void RequestStreamingQuery(const std::string& url,
+                             const std::string& method) override;
+  void ClearAllQueries() override;
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);

@@ -5,7 +5,11 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import org.chromium.base.Log;
+import com.brave.playlist.model.PlaylistItemModel;
+import com.brave.playlist.playback_service.VideoPlaybackService;
+import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.MediaUtils;
+
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -15,10 +19,15 @@ import org.chromium.url.mojom.Url;
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public interface PlaylistServiceObserverImplDelegate {
         default void onItemCreated(PlaylistItem item) {}
+
         default void onItemLocalDataDeleted(String playlistItemId) {}
+
         default void onItemAddedToList(String playlistId, String playlistItemId) {}
+
         default void onItemRemovedFromList(String playlistId, String playlistItemId) {}
+
         default void onItemCached(PlaylistItem item) {}
+
         default void onItemUpdated(PlaylistItem item) {}
 
         default void onPlaylistUpdated(Playlist list) {}
@@ -37,7 +46,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemCreated(PlaylistItem item) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemCreated");
         if (mDelegate == null) return;
 
         mDelegate.onItemCreated(item);
@@ -45,7 +53,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemLocalDataDeleted(String playlistItemId) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemLocalDataDeleted");
         if (mDelegate == null) return;
 
         mDelegate.onItemLocalDataDeleted(playlistItemId);
@@ -53,7 +60,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemAddedToList(String playlistId, String playlistItemId) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemAddedToList");
         if (mDelegate == null) return;
 
         mDelegate.onItemAddedToList(playlistId, playlistItemId);
@@ -61,7 +67,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemRemovedFromList(String playlistId, String playlistItemId) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemRemovedFromList");
         if (mDelegate == null) return;
 
         mDelegate.onItemRemovedFromList(playlistId, playlistItemId);
@@ -69,15 +74,32 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemCached(PlaylistItem playlistItem) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemCached");
         if (mDelegate == null) return;
 
         mDelegate.onItemCached(playlistItem);
+        if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)) {
+            PlaylistItemModel playlistItemModel =
+                    new PlaylistItemModel(
+                            playlistItem.id,
+                            ConstantUtils.DEFAULT_PLAYLIST,
+                            playlistItem.name,
+                            playlistItem.pageSource.url,
+                            playlistItem.mediaPath.url,
+                            playlistItem.hlsMediaPath.url,
+                            playlistItem.mediaSource.url,
+                            playlistItem.thumbnailPath.url,
+                            playlistItem.author,
+                            playlistItem.duration,
+                            playlistItem.lastPlayedPosition,
+                            playlistItem.mediaFileBytes,
+                            playlistItem.cached,
+                            false);
+            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+        }
     }
 
     @Override
     public void onItemUpdated(PlaylistItem playlistItem) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onItemUpdated");
         if (mDelegate == null) return;
 
         mDelegate.onItemUpdated(playlistItem);
@@ -85,7 +107,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onPlaylistUpdated(Playlist playlist) {
-        Log.e("playlist_item_update", "PlaylistServiceObserverImpl : onPlaylistUpdated");
         if (mDelegate == null) return;
 
         mDelegate.onPlaylistUpdated(playlist);
@@ -99,8 +120,12 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
-    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
-            byte percentComplete, String timeRemaining) {
+    public void onMediaFileDownloadProgressed(
+            String id,
+            long totalBytes,
+            long receivedBytes,
+            byte percentComplete,
+            String timeRemaining) {
         if (mDelegate == null) return;
 
         mDelegate.onMediaFileDownloadProgressed(
