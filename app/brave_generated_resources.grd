@@ -216,27 +216,27 @@
       </message>
 
       <!-- Widevine -->
-      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated">
           Install and run Google Widevine
       </message>
       <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
         Don't ask again
       </message>
       <if expr="is_linux">
-        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated">
           Install Google Widevine
         </message>
-        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated">
           Restart browser to enable Google Widevine
         </message>
       </if>
       <if expr="is_android">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ANDROID" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
-          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected Google Widevine content, which requires you to allow Android system support for Widevine. By allowing, you'll agree to Google's terms of use.
+          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected Google Widevine content, which requires you to allow Android system support for Widevine. By allowing, you'll agree to Google's terms of use
         </message>
       </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
-        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use.
+        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the widevine permissions bubble.">
         <ph name="LEARN_MORE_ABOUT_WIDEVINE">$1<ex>Learn more about Widevine</ex></ph>.
@@ -265,12 +265,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
-        Brave does not review extensions for security and safety. Install this extension only if you trust the developer.
+        Brave does not review extensions for security and safety. Install this extension only if you trust the developer
       </message>
 
       <!-- Permissions -->
       <message name="IDS_PERMISSIONS_BLUETOOTH_CHOOSER_PRIVACY_WARNING_TEXT" desc="Privacy warning text displayed right before Bluetooth devices list available to Pair.">
-        Granting access to a Bluetooth device will allow the site to read identifying and potentially sensitive information about you. Only allow sites you trust to access Bluetooth devices. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+        Granting access to a Bluetooth device will allow the site to read identifying and potentially sensitive information about you. Only allow sites you trust to access Bluetooth devices <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
       </message>
 
       <!-- Tor -->
