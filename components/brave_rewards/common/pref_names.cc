@@ -38,6 +38,7 @@ const char kUpholdAnonAddress[] =
 const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
 const char kExternalWalletType[] = "brave.rewards.external_wallet_type";
+const char kP3APanelTriggerCount[] = "brave.rewards.p3a_panel_trigger_count";
 const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =

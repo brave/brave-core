@@ -541,6 +541,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void RecordPanelTrigger() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().recordPanelTrigger(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void SetAutoContributeEnabled(boolean isSetAutoContributeEnabled) {
         synchronized(lock) {
             BraveRewardsNativeWorkerJni.get().setAutoContributeEnabled(
@@ -839,6 +845,9 @@ public class BraveRewardsNativeWorker {
         void getAvailableCountries(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
+
+        void recordPanelTrigger(long nativeBraveRewardsNativeWorker);
+
         void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         double getVbatDeadline(long nativeBraveRewardsNativeWorker);

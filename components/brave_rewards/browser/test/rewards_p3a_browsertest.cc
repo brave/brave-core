@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -185,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
-  p3a::ConversionMonitor conversion_monitor;
+  p3a::ConversionMonitor conversion_monitor(g_browser_process->local_state());
 
   histogram_tester_->ExpectTotalCount(p3a::kEnabledSourceHistogramName, 0);
 

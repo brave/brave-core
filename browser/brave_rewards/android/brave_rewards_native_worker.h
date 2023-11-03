@@ -180,6 +180,8 @@ class BraveRewardsNativeWorker
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher_key);
 
+  void RecordPanelTrigger(JNIEnv* env);
+
   void OnCreateRewardsWallet(
       brave_rewards::mojom::CreateRewardsWalletResult result);
 

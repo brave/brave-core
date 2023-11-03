@@ -26,6 +26,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kDeclaredGeo, "");
   registry->RegisterStringPref(prefs::kUserVersion, "");
   registry->RegisterDictionaryPref(prefs::kExternalWallets);
+  registry->RegisterListPref(prefs::kP3APanelTriggerCount);
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");
   registry->RegisterStringPref(prefs::kBadgeText, "1");

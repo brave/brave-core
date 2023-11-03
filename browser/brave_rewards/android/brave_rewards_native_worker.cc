@@ -25,6 +25,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
@@ -1015,6 +1016,13 @@ void BraveRewardsNativeWorker::SetAutoContributeEnabled(
     bool isAutoContributeEnabled) {
   if (brave_rewards_service_) {
     brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
+  }
+}
+
+void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetP3AConversionMonitor()->RecordPanelTrigger(
+        brave_rewards::p3a::PanelTrigger::kToolbarButton);
   }
 }
 
