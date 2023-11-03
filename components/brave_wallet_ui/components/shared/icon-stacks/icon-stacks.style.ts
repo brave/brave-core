@@ -43,6 +43,7 @@ export const AdditionalCountBubble = styled.div`
   padding-left: 4px;
   height: 16px;
   background-color: ${leo.color.container.highlight};
+  color: ${leo.color.text.secondary};
   border-radius: 100px;
   font-size: 11px;
   font-family: Poppins;
