@@ -305,10 +305,11 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
 
     public void sendTipButtonClick() {
         View sendTipButton = mContentView.findViewById(R.id.send_tip_button);
-        sendTipButton.setOnClickListener((v) -> {
-            RewardsTippingPanelBottomsheet.showTippingPanelBottomSheet(
-                    (AppCompatActivity) mActivity, mCurrentTabId);
-        });
+        sendTipButton.setOnClickListener(
+                (v) -> {
+                    RewardsTippingPanelBottomsheet.showTippingPanelBottomSheet(
+                            (AppCompatActivity) mActivity, mCurrentTabId);
+                });
     }
 
     @Override

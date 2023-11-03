@@ -665,8 +665,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         boolean httpsByDefaultIsEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
         mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
-        mHttpsFirstModePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                               .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+        mHttpsFirstModePref.setChecked(
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
 
         // IPFS Gateway
         mIpfsGatewayPref.setChecked(BravePrivacySettingsIPFSUtils.getIPFSGatewayPref());

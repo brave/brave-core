@@ -386,8 +386,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             return;
         }
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
-        updateValues(blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked,
-                blockersInfo.mScriptsBlocked, blockersInfo.mFingerprintsBlocked);
+        updateValues(
+                blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked,
+                blockersInfo.mScriptsBlocked,
+                blockersInfo.mFingerprintsBlocked);
     }
 
     public int getAdsBlockedCount(int tabId) {
@@ -424,21 +426,26 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         final int fadsAndTrackers = adsAndTrackers;
         final int fscriptsBlocked = scriptsBlocked;
         final int ffingerprintsBlocked = fingerprintsBlocked;
-        ((Activity) mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!isShowing()) {
-                    return;
-                }
-                try {
-                    mSiteBlockCounterText.setText(String.valueOf(
-                            fadsAndTrackers + fscriptsBlocked + ffingerprintsBlocked));
-                } catch (NullPointerException exc) {
-                    // It means that the Bravery Panel was destroyed during the
-                    // update, we just do nothing
-                }
-            }
-        });
+        ((Activity) mContext)
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!isShowing()) {
+                                    return;
+                                }
+                                try {
+                                    mSiteBlockCounterText.setText(
+                                            String.valueOf(
+                                                    fadsAndTrackers
+                                                            + fscriptsBlocked
+                                                            + ffingerprintsBlocked));
+                                } catch (NullPointerException exc) {
+                                    // It means that the Bravery Panel was destroyed during the
+                                    // update, we just do nothing
+                                }
+                            }
+                        });
     }
 
     public boolean isShowing() {
