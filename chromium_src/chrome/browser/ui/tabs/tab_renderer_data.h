@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_RENDERER_DATA_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_RENDERER_DATA_H_
 
-#define FromTabInModel                                          \
-  FromTabInModel_ChromiumImpl(TabStripModel* model, int index); \
+#define FromTabInModel                                                \
+  FromTabInModel_ChromiumImpl(const TabStripModel* model, int index); \
   static TabRendererData FromTabInModel
 
 #include "src/chrome/browser/ui/tabs/tab_renderer_data.h"  // IWYU pragma: export
