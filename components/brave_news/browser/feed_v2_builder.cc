@@ -826,11 +826,6 @@ void FeedV2Builder::GenerateFeed(
     mojom::FeedV2TypePtr type,
     base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
     BuildFeedCallback callback) {
-  if (last_feed_ && last_feed_->type == type) {
-    std::move(callback).Run(last_feed_->Clone());
-    return;
-  }
-
   UpdateData(
       std::move(settings),
       base::BindOnce(
@@ -841,18 +836,19 @@ void FeedV2Builder::GenerateFeed(
               std::move(callback).Run(mojom::FeedV2::New());
               return;
             }
-
-            builder->last_feed_ = std::move(build_feed).Run();
-            builder->last_feed_->type = std::move(type);
-
+            
             const auto& publishers = builder->publishers_controller_->GetLastPublishers();
             auto channels = builder->channels_controller_->GetChannelsFromPublishers(publishers, &*builder->prefs_);
-            builder->last_feed_->source_hash = GetFeedHash(channels, publishers, builder->feed_etags_);
+            auto source_hash = GetFeedHash(channels, publishers, builder->feed_etags_);
 
-            std::move(callback).Run(builder->last_feed_->Clone());
+            auto feed = std::move(build_feed).Run();
+            feed->type = std::move(type);
+            feed->source_hash = source_hash;
+
+            std::move(callback).Run(feed->Clone());
 
             for (const auto& listener : builder->listeners_) {
-              listener->OnUpdateAvailable(builder->last_feed_->source_hash);
+              listener->OnUpdateAvailable(source_hash);
             }
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),

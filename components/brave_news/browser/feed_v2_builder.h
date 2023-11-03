@@ -102,7 +102,6 @@ class FeedV2Builder {
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
-  mojom::FeedV2Ptr last_feed_;
 
   bool is_updating_ = false;
   std::vector<UpdateCallback> pending_callbacks_;
