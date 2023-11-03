@@ -30,8 +30,7 @@ struct CredentialCacheEntry {
 class AIChatCredentialManager {
  public:
   AIChatCredentialManager(
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter,
+      mojo::PendingRemote<skus::mojom::SkusService> skus_service,
       PrefService* prefs_service);
 
   AIChatCredentialManager(const AIChatCredentialManager&) = delete;
@@ -48,10 +47,6 @@ class AIChatCredentialManager {
   void PutCredentialInCache(CredentialCacheEntry credential);
 
  private:
-  bool EnsureMojoConnected();
-
-  void OnMojoConnectionError();
-
   void OnCredentialSummary(
       ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback,
       const std::string& domain,
@@ -68,8 +63,6 @@ class AIChatCredentialManager {
       const std::string& domain,
       const std::string& credential_as_cookie);
 
-  base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-      skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   raw_ptr<PrefService> prefs_service_ = nullptr;
 

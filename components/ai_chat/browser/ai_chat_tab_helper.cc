@@ -50,8 +50,7 @@ namespace ai_chat {
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
     AIChatMetrics* ai_chat_metrics,
-    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-        skus_service_getter,
+    mojo::PendingRemote<skus::mojom::SkusService> skus_service,
     PrefService* local_state_prefs)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
@@ -72,7 +71,7 @@ AIChatTabHelper::AIChatTabHelper(
   // TODO(petemill): AIChatCredential manager could be singleton since it uses
   // local state prefs.
   credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
-      skus_service_getter, local_state_prefs);
+      std::move(skus_service), local_state_prefs);
 
   // Engines and model names are selectable per conversation, not static.
   // Start with default from pref value but only if user set. We can't rely on
