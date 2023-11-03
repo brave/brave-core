@@ -202,14 +202,17 @@ void TxService::BindFilTxManagerProxy(
 
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
+    const std::string& chain_id,
     mojom::AccountIdPtr from,
     AddUnapprovedTransactionCallback callback) {
-  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), std::move(from),
-                                     absl::nullopt, std::move(callback));
+  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
+                                     std::move(from), absl::nullopt,
+                                     std::move(callback));
 }
 
 void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::TxDataUnionPtr tx_data_union,
+    const std::string& chain_id,
     mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
@@ -229,8 +232,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
 
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
-      json_rpc_service_->GetChainIdSync(coin_type, origin),
-      std::move(tx_data_union), from, origin, std::move(callback));
+      chain_id, std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

@@ -1560,7 +1560,9 @@ interface TxServiceObserver {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union,
+                           string chain_id,
+                           AccountId from)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
