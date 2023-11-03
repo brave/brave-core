@@ -17,7 +17,7 @@
     Get Started
   </message>
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
-    Profile Name & Icon
+    Profile Name and Icon
   </message>
 
   <!-- Settings / Get started / Import bookmarks and settings dialog -->
