@@ -22,7 +22,10 @@ import com.android.billingclient.api.ProductDetails;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
@@ -268,4 +271,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     @Override
     public void updateProfileView() {}
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
+    }
 }
