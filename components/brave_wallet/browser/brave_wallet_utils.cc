@@ -510,8 +510,14 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
 }
 
 GURL BitcoinMainnetRpcUrl() {
-  return GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-      switches::kBitcoinMainnetRpcUrl));
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kBitcoinMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+
+  return GURL("https://bitcoin-mainnet.wallet.bravesoftware.com/");
 }
 
 GURL BitcoinTestnetRpcUrl() {
