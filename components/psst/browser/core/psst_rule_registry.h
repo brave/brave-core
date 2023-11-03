@@ -26,6 +26,8 @@ FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, NoMatch);
 FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse);
 FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue);
 
+// This class loads and stores the rules from the psst.json file.
+// It is also used for matching based on the URL.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
  public:
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;

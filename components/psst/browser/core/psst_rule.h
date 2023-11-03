@@ -22,12 +22,14 @@ class GURL;
 
 namespace psst {
 
+// Holds the loaded script text when a rule is matched.
 struct MatchedRule {
   std::string test_script;
   std::string policy_script;
   int version;
 };
 
+// Describes a single rule in the psst.json file.
 class PsstRule {
  public:
   PsstRule();
