@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   internal var window: UIWindow?
   private var windowProtection: WindowProtection?
   static var shouldHandleUrpLookup = false
+  static var shouldHandleInstallAttributionFetch = false
 
   private var cancellables: Set<AnyCancellable> = []
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "scene-delegate")
@@ -80,12 +81,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       }
       .store(in: &cancellables)
 
+    // Handle URP Lookup at first launch
     if SceneDelegate.shouldHandleUrpLookup {
-      // TODO: Find a better way to do this when multiple windows are involved.
       SceneDelegate.shouldHandleUrpLookup = false
 
       if let urp = UserReferralProgram.shared {
         browserViewController.handleReferralLookup(urp)
+      }
+    }
+    
+    // Handle Install Attribution Fetch at first launch
+    if SceneDelegate.shouldHandleInstallAttributionFetch {
+      SceneDelegate.shouldHandleInstallAttributionFetch = false
+      
+      if let urp = UserReferralProgram.shared {
+        browserViewController.handleSearchAdsInstallAttribution(urp)
       }
     }
 
@@ -196,8 +206,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // We try to send DAU ping each time the app goes to foreground to work around network edge cases
     // (offline, bad connection etc.).
-    // Also send the ping only after the URP lookup has processed.
-    if Preferences.URP.referralLookupOutstanding.value == false {
+    // Also send the ping only after the URP lookup and install attribution has processed.
+    if Preferences.URP.referralLookupOutstanding.value == false, Preferences.URP.installAttributionLookupOutstanding.value == false {
       AppState.shared.dau.sendPingToServer()
     }
     
@@ -531,27 +541,52 @@ extension SceneDelegate: UIViewControllerRestoration {
 
 extension BrowserViewController {
   func handleReferralLookup(_ urp: UserReferralProgram) {
-
     if Preferences.URP.referralLookupOutstanding.value == true {
-      urp.referralLookup() { referralCode, offerUrl in
-        // Attempting to send ping after first urp lookup.
-        // This way we can grab the referral code if it exists, see issue #2586.
-        AppState.shared.dau.sendPingToServer()
-        if let code = referralCode {
-          let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
-          let retryDeadline = Date() + retryTime
-
-          Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
-          
-          // TODO: Set the code in core somehow if we want to support Super Referrals again
-          //       then call updateSponsoredImageComponentIfNeeded
-        }
-
-        guard let url = offerUrl?.asURL else { return }
-        self.openReferralLink(url: url)
-      }
+      performProgramReferralLookup(urp, refCode: UserReferralProgram.getReferralCode())
     } else {
       urp.pingIfEnoughTimePassed()
+    }
+  }
+  
+  func handleSearchAdsInstallAttribution(_ urp: UserReferralProgram) {
+    urp.adCampaignLookup() { [weak self] response, error in
+      guard let self = self else { return }
+      
+      let refCode = self.generateReferralCode(attributionData: response, fetchError: error)
+      // Setting up referral code value
+      // This value should be set before first DAU ping
+      Preferences.URP.referralCode.value = refCode
+      Preferences.URP.installAttributionLookupOutstanding.value = false
+    }
+  }
+  
+  private func generateReferralCode(attributionData: AdAttributionData?, fetchError: Error?) -> String {
+    // Prefix code "001" with BRV for organic iOS installs
+    var referralCode = "BRV001"
+    
+    if fetchError == nil, attributionData?.attribution == true, let campaignId = attributionData?.campaignId {
+      // Adding ASA User refcode prefix to indicate
+      // Apple Ads Attribution is true
+      referralCode = "ASA\(String(campaignId))"
+    }
+    
+    return referralCode
+  }
+  
+  private func performProgramReferralLookup(_ urp: UserReferralProgram, refCode: String?) {
+    urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
+      // Attempting to send ping after first urp lookup.
+      // This way we can grab the referral code if it exists, see issue #2586.
+      if Preferences.URP.installAttributionLookupOutstanding.value == false {
+        AppState.shared.dau.sendPingToServer()
+      }
+      let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
+      let retryDeadline = Date() + retryTime
+
+        Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
+
+      guard let url = offerUrl?.asURL else { return }
+      self.openReferralLink(url: url)
     }
   }
 }

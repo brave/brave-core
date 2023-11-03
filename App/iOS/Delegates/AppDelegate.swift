@@ -219,6 +219,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       UrpLog.log("Failed to initialize user referral program")
     }
 
+    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+      // Similarly to referral lookup, this prefrence should be set if it is a new user
+      // Trigger install attribution fetch only first launch
+      Preferences.URP.installAttributionLookupOutstanding.value = isFirstLaunch
+
+      SceneDelegate.shouldHandleInstallAttributionFetch = true
+    }
+    
 #if canImport(BraveTalk)
     BraveTalkJitsiCoordinator.sendAppLifetimeEvent(
       .didFinishLaunching(options: launchOptions ?? [:])

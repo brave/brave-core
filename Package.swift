@@ -82,21 +82,6 @@ var package = Package(
     .target(
       name: "CertificateUtilities",
       dependencies: ["Shared"],
-      resources: [
-        .copy("Certificates/AmazonRootCA1.cer"),
-        .copy("Certificates/AmazonRootCA2.cer"),
-        .copy("Certificates/AmazonRootCA3.cer"),
-        .copy("Certificates/AmazonRootCA4.cer"),
-        .copy("Certificates/GlobalSignRootCA_E46.cer"),
-        .copy("Certificates/GlobalSignRootCA_R1.cer"),
-        .copy("Certificates/GlobalSignRootCA_R3.cer"),
-        .copy("Certificates/GlobalSignRootCA_R46.cer"),
-        .copy("Certificates/GlobalSignRootCA_R5.cer"),
-        .copy("Certificates/GlobalSignRootCA_R6.cer"),
-        .copy("Certificates/ISRGRootCA_X1.cer"),
-        .copy("Certificates/ISRGRootCA_X2.cer"),
-        .copy("Certificates/SFSRootCAG2.cer"),
-      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
@@ -104,17 +89,6 @@ var package = Package(
       dependencies: ["CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents"],
       exclude: [ "Certificates/self-signed.conf" ],
       resources: [
-        .copy("Certificates/root.cer"),
-        .copy("Certificates/leaf.cer"),
-        .copy("Certificates/intermediate.cer"),
-        .copy("Certificates/self-signed.cer"),
-        .copy("Certificates/expired.badssl.com/expired.badssl.com-intermediate-ca-1.cer"),
-        .copy("Certificates/expired.badssl.com/expired.badssl.com-intermediate-ca-2.cer"),
-        .copy("Certificates/expired.badssl.com/expired.badssl.com-leaf.cer"),
-        .copy("Certificates/expired.badssl.com/expired.badssl.com-root-ca.cer"),
-        .copy("Certificates/expired.badssl.com/self-signed.badssl.com.cer"),
-        .copy("Certificates/expired.badssl.com/untrusted.badssl.com-leaf.cer"),
-        .copy("Certificates/expired.badssl.com/untrusted.badssl.com-root.cer"),
         .copy("Certificates/certviewer/brave.com.cer"),
         .copy("Certificates/certviewer/github.com.cer"),
       ]

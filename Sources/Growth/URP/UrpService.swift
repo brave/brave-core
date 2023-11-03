@@ -7,6 +7,8 @@ import BraveShared
 import CertificateUtilities
 import SwiftyJSON
 import os.log
+import Combine
+import BraveCore
 
 enum UrpError {
   case networkError, downloadIdNotFound, ipNotFound, endpointError
@@ -21,20 +23,19 @@ struct UrpService {
     static let downLoadId = "download_id"
   }
 
-  let host: String
+  private let host: String
+  private let adServicesURL: String
   private let apiKey: String
-  let sessionManager: URLSession
-  private let certificateEvaluator: PinningCertificateEvaluator
+  private let sessionManager: URLSession
+  private let certificateEvaluator: URPCertificatePinningService
 
-  init?(host: String, apiKey: String) {
+  init?(host: String, apiKey: String, adServicesURL: String) {
     self.host = host
     self.apiKey = apiKey
-
-    guard let hostUrl = URL(string: host), let normalizedHost = hostUrl.normalizedHost() else { return nil }
+    self.adServicesURL = adServicesURL
 
     // Certificate pinning
-    certificateEvaluator = PinningCertificateEvaluator(hosts: [normalizedHost])
-
+    certificateEvaluator = URPCertificatePinningService()
     sessionManager = URLSession(configuration: .default, delegate: certificateEvaluator, delegateQueue: .main)
   }
 
@@ -76,6 +77,31 @@ struct UrpService {
       }
     }
   }
+  
+  @MainActor func adCampaignTokenLookupQueue(adAttributionToken: String) async throws -> (AdAttributionData?) {
+    guard let endPoint = URL(string: adServicesURL) else {
+      Logger.module.error("AdServicesURLString can not be resolved: \(adServicesURL)")
+      throw URLError(.badURL)
+    }
+    
+    let attributionDataToken = adAttributionToken.data(using: .utf8)
+    
+    do {
+      let (result, _) = try await sessionManager.adServicesAttributionApiRequest(endPoint: endPoint, rawData: attributionDataToken)
+      UrpLog.log("Ad Attribution response: \(result)")
+      
+      if let resultData = result as? Data {
+        let jsonResponse = try JSONSerialization.jsonObject(with: resultData, options: []) as? [String: Any]
+        let adAttributionData = try AdAttributionData(json: jsonResponse)
+        
+        return adAttributionData
+      }
+    } catch {
+      throw error
+    }
+
+    return (nil)
+  }
 
   func checkIfAuthorizedForGrant(with downloadId: String, completion: @escaping (Bool?, UrpError?) -> Void) {
     guard var endPoint = URL(string: host) else {
@@ -109,9 +135,40 @@ struct UrpService {
 extension URLSession {
   /// All requests to referral api use PUT method, accept and receive json.
   func urpApiRequest(endPoint: URL, params: [String: String], completion: @escaping (Result<Any, Error>) -> Void) {
-
-    self.request(endPoint, method: .put, parameters: params, encoding: .json) { response in
+    request(endPoint, method: .put, parameters: params, encoding: .json) { response in
       completion(response)
     }
+  }
+  
+  // Apple ad service attricution request requires plain text encoding with post method and passing token as rawdata
+  func adServicesAttributionApiRequest(endPoint: URL, rawData: Data?) async throws -> (Any, URLResponse) {
+    // According to attributiontoken API docs
+    // An error reponse can occur API call is done too quickly after receiving a valid token.
+    // A best practice is to initiate retries at intervals of 5 seconds, with a maximum of three attempts.
+    return try await Task.retry(retryCount: 3, retryDelay: 5) {
+      return try await self.request(endPoint, method: .post, rawData: rawData, encoding: .textPlain)
+    }.value
+  }
+}
+
+class URPCertificatePinningService: NSObject, URLSessionDelegate {
+  func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+      if let serverTrust = challenge.protectionSpace.serverTrust {
+        let result = BraveCertificateUtility.verifyTrust(serverTrust, host: challenge.protectionSpace.host, port: challenge.protectionSpace.port)
+        // Cert is valid and should be pinned
+        if result == 0 {
+          return (.useCredential, URLCredential(trust: serverTrust))
+        }
+        
+        // Cert is valid and should not be pinned
+        // Let the system handle it and we'll show an error if the system cannot validate it
+        if result == Int32.min {
+          return (.performDefaultHandling, nil)
+        }
+      }
+      return (.cancelAuthenticationChallenge, nil)
+    }
+    return (.performDefaultHandling, nil)
   }
 }

@@ -7,6 +7,7 @@ import Shared
 import Preferences
 import WebKit
 import os.log
+import AdServices
 
 public class UserReferralProgram {
 
@@ -20,6 +21,8 @@ public class UserReferralProgram {
     static let staging = "https://laptop-updates.bravesoftware.com"
     static let prod = "https://laptop-updates.brave.com"
   }
+  
+  let adServicesURLString = "https://api-adservices.apple.com/api/v1/"
 
   // In case of network problems when looking for referrral code
   // we retry the call few times while the app is still alive.
@@ -47,7 +50,7 @@ public class UserReferralProgram {
       return nil
     }
 
-    guard let urpService = UrpService(host: host, apiKey: apiKey) else { return nil }
+    guard let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString) else { return nil }
 
     UrpLog.log("URP init, host: \(host)")
 
@@ -55,7 +58,7 @@ public class UserReferralProgram {
   }
 
   /// Looks for referral and returns its landing page if possible.
-  public func referralLookup(completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
+  public func referralLookup(refCode: String? = nil, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
     UrpLog.log("first run referral lookup")
 
     let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
@@ -75,7 +78,7 @@ public class UserReferralProgram {
             withTimeInterval: self.referralLookupRetry.retryTimeInterval,
             repeats: true
           ) { [weak self] _ in
-            self?.referralLookup() { refCode, offerUrl in
+            self?.referralLookup(refCode: refCode) { refCode, offerUrl in
               completion(refCode, offerUrl)
             }
           }
@@ -114,7 +117,28 @@ public class UserReferralProgram {
 
     // Since ref-code method may not be repeatable (e.g. clipboard was cleared), this should be retrieved from prefs,
     //  and not use the passed in referral code.
-    service.referralCodeLookup(refCode: UserReferralProgram.getReferralCode(), completion: referralBlock)
+    service.referralCodeLookup(refCode: refCode, completion: referralBlock)
+  }
+  
+  public func adCampaignLookup(completion: @escaping ((AdAttributionData)?, Error?) -> Void) {
+    // Fetching ad attibution token
+    do {
+      let adAttributionToken = try AAAttribution.attributionToken()
+      
+      Task { @MainActor in
+        do {
+          let result = try await service.adCampaignTokenLookupQueue(adAttributionToken: adAttributionToken)
+          completion(result, nil)
+        } catch {
+          Logger.module.info("Could not retrieve ad campaign attibution from ad services")
+          completion(nil, error)
+        }
+      }
+    } catch {
+      Logger.module.info("Couldnt fetch attribute tokens with error: \(error)")
+      completion(nil, error)
+      return
+    }
   }
 
   private func initRetryPingConnection(numberOfTimes: Int32) {

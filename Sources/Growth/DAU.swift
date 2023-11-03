@@ -12,8 +12,16 @@ public class DAU {
   public static let defaultWoiDate = "2016-01-04"
 
   private static let apiVersion = 1
-  private static let baseUrl = "https://laptop-updates.brave.com/\(apiVersion)/usage/ios?platform=ios"
 
+  private static var baseUrl: String {
+    get {
+      let domain = AppConstants.buildChannel.isPublic
+        ? "https://laptop-updates.brave.com/"
+        : "https://laptop-updates.bravesoftware.com/"
+      
+      return "\(domain)\(apiVersion)/usage/ios?platform=ios"
+    }
+  }
   /// Number of seconds that determins when a user is "active"
   private let pingRefreshDuration = 5.minutes
 
@@ -59,11 +67,6 @@ public class DAU {
   /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
   /// A user needs to be active for a certain amount of time before we ping the server.
   @discardableResult public func sendPingToServer() -> Bool {
-    if AppConstants.buildChannel == .debug || AppConstants.buildChannel == .enterprise {
-      Logger.module.info("Development build detected, no server ping.")
-      return false
-    }
-    
     guard Preferences.DAU.sendUsagePing.value else {
       Logger.module.debug("DAU ping disabled by the user.")
       return false
@@ -239,7 +242,7 @@ public class DAU {
   }
 
   func channelParam(for channel: AppBuildChannel = AppConstants.buildChannel) -> URLQueryItem {
-    return URLQueryItem(name: "channel", value: channel.serverChannelParam)
+    return URLQueryItem(name: "channel", value: channel.dauServerChannelParam)
   }
 
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {

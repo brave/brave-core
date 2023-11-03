@@ -5,7 +5,7 @@
 
 import Foundation
 
-extension Sequence {
+public extension Sequence {
   func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
     for element in self {
       try await operation(element)
@@ -103,7 +103,7 @@ extension Sequence {
   }
 }
 
-extension Task where Failure == Error {
+public extension Task where Failure == Error {
   @discardableResult
   static func retry(
     priority: TaskPriority? = nil,
@@ -129,7 +129,7 @@ extension Task where Failure == Error {
   }
 }
 
-extension Task where Success == Never, Failure == Never {
+public extension Task where Success == Never, Failure == Never {
   /// Suspends the current task for at least the given duration
   /// in seconds.
   ///
@@ -137,12 +137,12 @@ extension Task where Success == Never, Failure == Never {
   /// this function throws `CancellationError`.
   ///
   /// This function doesn't block the underlying thread.
-  public static func sleep(seconds: TimeInterval) async throws {
+  static func sleep(seconds: TimeInterval) async throws {
     try await sleep(nanoseconds: NSEC_PER_MSEC * UInt64(seconds * 1000))
   }
 }
 
-extension Task where Failure == Error {
+public extension Task where Failure == Error {
   @discardableResult
   static func delayed(
     bySeconds seconds: TimeInterval,

@@ -5,13 +5,16 @@
 import Foundation
 import Shared
 import os.log
+import Combine
 
 extension URLSession {
   @discardableResult
   public func request(
     _ url: URL,
     method: HTTPMethod = .get,
-    parameters: [String: Any],
+    headers: [String: String] = [:],
+    parameters: [String: Any] = [:],
+    rawData: Data? = nil,
     encoding: ParameterEncoding = .query,
     _ completion: @escaping (Result<Any, Error>) -> Void
   ) -> URLSessionDataTask! {
@@ -19,7 +22,9 @@ extension URLSession {
       let request = try buildRequest(
         url,
         method: method,
+        headers: headers,
         parameters: parameters,
+        rawData: rawData,
         encoding: encoding)
 
       let task = self.dataTask(with: request) { data, response, error in
@@ -44,6 +49,60 @@ extension URLSession {
       return nil
     }
   }
+  
+  public func request(
+    _ url: URL,
+    method: HTTPMethod = .get,
+    headers: [String: String] = [:],
+    parameters: [String: Any] = [:],
+    rawData: Data? = nil,
+    encoding: ParameterEncoding = .query
+  ) -> AnyPublisher<Any, Error> {
+    do {
+      let request = try buildRequest(
+        url,
+        method: method,
+        headers: headers,
+        parameters: parameters,
+        rawData: rawData,
+        encoding: encoding)
+      
+      return dataTaskPublisher(for: request)
+        .tryMap({ data, response in
+          try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+        })
+        .mapError({ $0 as Error })
+        .receive(on: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    } catch {
+      Logger.module.error("\(error.localizedDescription)")
+      return Fail(error: error).eraseToAnyPublisher()
+    }
+  }
+  
+  public func request(
+    _ url: URL,
+    method: HTTPMethod = .get,
+    headers: [String: String] = [:],
+    parameters: [String: Any] = [:],
+    rawData: Data? = nil,
+    encoding: ParameterEncoding = .query
+  ) async throws -> (Any, URLResponse) {
+    do {
+      let request = try buildRequest(
+        url,
+        method: method,
+        headers: headers,
+        parameters: parameters,
+        rawData: rawData,
+        encoding: encoding)
+      
+      return try await data(for: request)
+    } catch {     
+      Logger.module.error("\(error.localizedDescription)")
+      throw error
+    }
+  }
 }
 
 extension URLSession {
@@ -56,6 +115,7 @@ extension URLSession {
   }
 
   public enum ParameterEncoding {
+    case textPlain
     case json
     case query
   }
@@ -63,8 +123,9 @@ extension URLSession {
   private func buildRequest(
     _ url: URL,
     method: HTTPMethod,
-    headers: [String: String] = [:],
+    headers: [String: String],
     parameters: [String: Any],
+    rawData: Data?,
     encoding: ParameterEncoding
   ) throws -> URLRequest {
 
@@ -72,6 +133,10 @@ extension URLSession {
     request.httpMethod = method.rawValue
     headers.forEach({ request.setValue($0.value, forHTTPHeaderField: $0.key) })
     switch encoding {
+    case .textPlain:
+      request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
+      request.httpBody = rawData
+      
     case .json:
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
       request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)

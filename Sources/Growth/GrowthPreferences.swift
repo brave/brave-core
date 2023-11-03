@@ -29,6 +29,7 @@ extension Preferences {
     public static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
     /// Whether the ref code lookup has still yet to occur
     public static let referralLookupOutstanding = Option<Bool?>(key: "urp.referral.lookkup-completed", default: nil)
+    public static let installAttributionLookupOutstanding = Option<Bool?>(key: "install.attribution.lookup-completed", default: nil)
   }
 
   public final class Review {

@@ -39,7 +39,7 @@ class DAUTests: XCTestCase {
     let devExpected = URLQueryItem(name: "channel", value: "developer")
     XCTAssertEqual(dau.channelParam(for: .dev), devExpected)
 
-    let debugExpected = URLQueryItem(name: "channel", value: "invalid")
+    let debugExpected = URLQueryItem(name: "channel", value: "developer")
     XCTAssertEqual(dau.channelParam(for: .debug), debugExpected)
 
     let enterpriseExpected = URLQueryItem(name: "channel", value: "invalid")
@@ -322,12 +322,6 @@ class DAUTests: XCTestCase {
     XCTAssertEqual(singleDigitTest.mondayOfCurrentWeekFormatted, "2019-02-04")
   }
 
-  func testNoPingOnDevelopmentBuild() {
-    XCTAssertTrue(AppConstants.buildChannel == .debug)
-
-    let dau = DAU()
-    XCTAssertFalse(dau.sendPingToServer())
-  }
   
   func testMigratingInvalidWeekOfInstallPref() throws {
     // (stored, fixed)

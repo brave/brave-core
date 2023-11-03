@@ -37,6 +37,19 @@ public enum AppBuildChannel: String {
       return "invalid"
     }
   }
+  
+  public var dauServerChannelParam: String {
+    switch self {
+    case .release:
+      return "release"
+    case .beta:
+      return "beta"
+    case .dev, .debug:
+      return "developer"
+    case .enterprise:
+      return "invalid"
+    }
+  }
 }
 
 public struct KVOConstants: Equatable {
