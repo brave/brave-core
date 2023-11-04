@@ -306,6 +306,7 @@ export interface PageState {
   importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
+  isCreatingWallet: boolean
 }
 
 export interface WalletPageState {

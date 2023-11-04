@@ -21,6 +21,8 @@ source_set("brave_wallet") {
     "swap_service_factory.h",
     "tx_service_factory.cc",
     "tx_service_factory.h",
+    "wallet_data_files_installer_delegate_impl.h",
+    "wallet_data_files_installer_delegate_impl.mm",
     "zcash_wallet_service_factory.h",
     "zcash_wallet_service_factory.mm",
   ]

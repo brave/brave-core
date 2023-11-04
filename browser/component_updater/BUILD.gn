@@ -28,15 +28,4 @@ source_set("component_updater") {
   if (is_win) {
     deps += [ "//chrome/installer/util:with_no_strings" ]
   }
-
-  if (is_android) {
-    sources += [
-      "brave_component_updater_android.cc",
-      "brave_component_updater_android.h",
-    ]
-    deps += [
-      "//brave/build/android:jni_headers",
-      "//chrome/browser:browser_process",
-    ]
-  }
 }

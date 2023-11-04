@@ -1037,6 +1037,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPasswordIsMediumStrength",
      IDS_BRAVE_WALLET_PASSWORD_IS_MEDIUM_STRENGTH},
     {"braveWalletPasswordIsWeak", IDS_BRAVE_WALLET_PASSWORD_IS_WEAK},
+    {"braveWalletCreatingWallet", IDS_BRAVE_WALLET_CREATING_WALLET},
     {"braveWalletOnboardingRecoveryPhraseBackupIntroTitle",
      IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE},
     {"braveWalletOnboardingRecoveryPhraseBackupIntroDescription",

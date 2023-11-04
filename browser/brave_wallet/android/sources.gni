@@ -11,7 +11,6 @@ brave_browser_brave_wallet_android_sources = [
   "//brave/browser/brave_wallet/android/keyring_service_factory_android.cc",
   "//brave/browser/brave_wallet/android/swap_service_factory_android.cc",
   "//brave/browser/brave_wallet/android/tx_service_factory_android.cc",
-  "//brave/browser/brave_wallet/android/wallet_data_files_installer_android.cc",
   "//brave/browser/brave_wallet/android/wallet_native_utils_android.cc",
   "//brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.cc",
   "//brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h",
