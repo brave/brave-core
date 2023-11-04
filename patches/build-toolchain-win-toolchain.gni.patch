@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/win/toolchain.gni b/build/toolchain/win/toolchain.gni
+index b296cfbdccf31645837bcbeeff170560266a2afe..19d1c9212b5a528120305ce3531689993c06b3ca 100644
+--- a/build/toolchain/win/toolchain.gni
++++ b/build/toolchain/win/toolchain.gni
+@@ -81,7 +81,7 @@ template("msvc_toolchain") {
+ 
+     if (toolchain_uses_remoteexec) {
+       if (toolchain_is_clang) {
+-        cl_prefix = "${rbe_bin_dir}/rewrapper -cfg=${rbe_cc_cfg_file} -exec_root=${rbe_exec_root} "
++        cl_prefix = "${rbe_bin_dir}/rewrapper -cfg=${rbe_cc_cfg_file} -exec_root=${rbe_exec_root} -labels=type=compile,compiler=clang-cl,lang=cpp "
+       } else {
+         cl_prefix = ""
+       }

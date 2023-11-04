@@ -569,6 +569,10 @@ const util = {
       use_goma: config.use_goma,
       goma_dir: config.realGomaDir,
       real_gomacc: path.join(config.realGomaDir, 'gomacc'),
+      use_remoteexec: config.useRemoteExec,
+      rbe_exec_root: config.rbeExecRoot,
+      rbe_bin_dir: config.realRewrapperDir,
+      real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
@@ -633,8 +637,8 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    const use_goma_online = config.use_goma && !config.goma_offline
-    if (use_goma_online) {
+    const useGomaOnline = config.use_goma && !config.offline
+    if (useGomaOnline) {
       if (config.isCI) {
         Log.progressStart('goma pre build')
       }
@@ -669,7 +673,7 @@ const util = {
       util.run('autoninja', ninjaOpts, options)
     })
 
-    if (config.isCI && use_goma_online) {
+    if (config.isCI && useGomaOnline) {
       Log.progressScope('goma post build', () => {
         util.run('goma_ctl', ['stat'], options)
       })

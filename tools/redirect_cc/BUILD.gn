@@ -10,6 +10,7 @@ if (current_toolchain == host_toolchain) {
 
   declare_args() {
     real_gomacc = ""
+    real_rewrapper = ""
   }
 
   executable("redirect_cc_executable") {
@@ -28,12 +29,14 @@ if (current_toolchain == host_toolchain) {
 
   buildflag_header("gomacc_buildflags") {
     header = "gomacc_buildflags.h"
-    if (is_win) {
-      _real_gomacc = string_replace(real_gomacc, "\\", "/")
-    } else {
-      _real_gomacc = real_gomacc
-    }
-    flags = [ "REAL_GOMACC=\"$_real_gomacc\"" ]
+    real_gomacc_relative_to_out = rebase_path(real_gomacc, root_out_dir)
+    flags = [ "REAL_GOMACC=\"$real_gomacc_relative_to_out\"" ]
+  }
+
+  buildflag_header("rewrapper_buildflags") {
+    header = "rewrapper_buildflags.h"
+    real_rewrapper_relative_to_out = rebase_path(real_rewrapper, root_out_dir)
+    flags = [ "REAL_REWRAPPER=\"$real_rewrapper_relative_to_out\"" ]
   }
 
   executable("gomacc_executable") {
@@ -54,6 +57,25 @@ if (current_toolchain == host_toolchain) {
     configs -= [ "//build/config/compiler:default_optimization" ]
     configs += [ "//build/config/compiler:optimize_speed" ]
   }
+
+  executable("rewrapper_executable") {
+    sources = [ "redirect_cc.cc" ]
+
+    deps = [
+      ":rewrapper_buildflags",
+      "//base",
+    ]
+
+    defines = [ "REDIRECT_CC_AS_REWRAPPER" ]
+
+    output_name = "rewrapper"
+
+    # Always optimize for speed
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
+  }
 }
 
 group("redirect_cc") {
@@ -61,6 +83,7 @@ group("redirect_cc") {
     deps = [
       ":gomacc_executable",
       ":redirect_cc_executable",
+      ":rewrapper_executable",
     ]
   }
 }
