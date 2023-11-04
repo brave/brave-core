@@ -61,10 +61,8 @@ def GetHermeticXcodeVersion(binaries_root):
 def InstallXcodeBinaries():
     """Installs the Xcode binaries and accepts the license."""
 
-    # only download for Brave goma users
-    goma_server_host = os.environ.get('npm_config_goma_server_host')
-    if goma_server_host is None or not goma_server_host.endswith('.brave.com'):
-        print("Goma server host is not configured for Brave")
+    if os.environ.get('USE_BRAVE_HERMETIC_TOOLCHAIN') != '1':
+        print("Brave hermetic toolchain is not configured")
         return 0
 
     binaries_root = os.path.join(MAC_TOOLCHAIN_ROOT, 'xcode_binaries')
