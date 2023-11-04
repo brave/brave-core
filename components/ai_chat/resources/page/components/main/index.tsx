@@ -60,18 +60,10 @@ function Main() {
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
 
-  let conversationListElement = <PrivacyMessage />
-  let siteTitleElement = null
   let currentErrorElement = null
 
-  if (hasAcceptedAgreement) {
-    conversationListElement = <ConversationList />
-
-    if (siteInfo) {
-      siteTitleElement = <SiteTitle />
-    }
-
-    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
+  if (apiHasError) {
+    if (currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -79,7 +71,7 @@ function Main() {
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
+    if (currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -87,7 +79,7 @@ function Main() {
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+    if (currentError === mojom.APIError.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
       )
@@ -122,66 +114,69 @@ function Main() {
           )}
         </div>
       </div>
-      <div className={styles.scroller}>
-        <AlertCenter position='top-left' className={styles.alertCenter} />
-        {siteTitleElement && (
-          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
-        )}
-        {context.showModelIntro && <ModelIntro />}
-        {conversationListElement}
-        {currentErrorElement && (
-          <div className={styles.promptContainer}>{currentErrorElement}</div>
-        )}
-        {
-          shouldShowPremiumSuggestionForModel && (
-            <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale('unlockPremiumTitle')}
-                verbose={true}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => context.switchToDefaultModel()}
-                  >
-                    {getLocale('switchToDefaultModelButtonLabel')}
-                  </Button>
-                }
-              />
+      {hasAcceptedAgreement ? (
+        <div className={styles.scroller}>
+          <AlertCenter position='top-left' className={styles.alertCenter} />
+          {siteInfo && (
+            <div className={styles.siteTitleBox}>
+              <SiteTitle />
             </div>
-          )
-        }
-        {
-          shouldShowPremiumSuggestionStandalone && (
+          )}
+          {context.showModelIntro && <ModelIntro />}
+          <ConversationList />
+          {currentErrorElement && <div className={styles.promptContainer}>{currentErrorElement}</div>}
+          {
+            shouldShowPremiumSuggestionForModel && (
+              <div className={styles.promptContainer}>
+                <PremiumSuggestion
+                  title={getLocale('unlockPremiumTitle')}
+                  verbose={true}
+                  secondaryActionButton={
+                    <Button
+                      kind='plain-faint'
+                      onClick={() => context.switchToDefaultModel()}
+                    >
+                      {getLocale('switchToDefaultModelButtonLabel')}
+                    </Button>
+                  }
+                />
+              </div>
+            )
+          }
+          {
+            shouldShowPremiumSuggestionStandalone && (
+              <div className={styles.promptContainer}>
+                <PremiumSuggestion
+                  title={getLocale('unlockPremiumTitle')}
+                  verbose={true}
+                  secondaryActionButton={
+                    <Button
+                      kind='plain-faint'
+                      onClick={() => context.dismissPremiumPrompt()}
+                    >
+                      {getLocale('dismissButtonLabel')}
+                    </Button>
+                  }
+                />
+              </div>
+            )
+          }
+          {context.isPremiumUserDisconnected &&
             <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale('unlockPremiumTitle')}
-                verbose={true}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => context.dismissPremiumPrompt()}
-                  >
-                    {getLocale('dismissButtonLabel')}
-                  </Button>
-                }
-              />
+              <WarningPremiumDisconnected />
             </div>
-          )
-        }
-        {context.isPremiumUserDisconnected &&
-        <div className={styles.promptContainer}>
-          <WarningPremiumDisconnected />
-        </div>
-        }
-        {context.shouldShowLongPageWarning &&
-        <div className={styles.promptContainer}>
-            <WarningLongPage />
-        </div>}
-        {context.shouldShowLongConversationInfo &&
-        <div className={styles.promptContainer}>
-            <InfoLongConversation />
-        </div>}
-      </div>
+          }
+          {context.shouldShowLongPageWarning &&
+            <div className={styles.promptContainer}>
+              <WarningLongPage />
+            </div>
+          }
+          {context.shouldShowLongConversationInfo &&
+            <div className={styles.promptContainer}>
+              <InfoLongConversation />
+            </div>
+          }
+        </div>) : <PrivacyMessage />}
       <div className={styles.inputBox}>
         {shouldPromptSuggestQuestions &&
         <PromptAutoSuggestion />

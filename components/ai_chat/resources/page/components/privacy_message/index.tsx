@@ -34,17 +34,19 @@ function PrivacyMessage () {
   })
 
   return (
-    <div className={styles.box}>
-      <figure>
-        <img src={privacyGraphicUrl}
-          alt="Illustration: window and chat bubble, representing communication" />
-      </figure>
-      <section>
-        <b>{getLocale('aboutTitle')}</b>
-        <p>{aboutDescription}</p>
-        <p>{getLocale('aboutDescription_2')}</p>
-        <p>{getLocale('aboutDescription_3')}</p>
-      </section>
+    <div className={styles.scroller}>
+      <div className={styles.box}>
+        <figure>
+          <img src={privacyGraphicUrl}
+            alt="Illustration: window and chat bubble, representing communication" />
+        </figure>
+        <section>
+          <b>{getLocale('aboutTitle')}</b>
+          <p>{aboutDescription}</p>
+          <p>{getLocale('aboutDescription_2')}</p>
+          <p>{getLocale('aboutDescription_3')}</p>
+        </section>
+      </div>
     </div>
   )
 }
