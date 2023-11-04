@@ -1,0 +1,12 @@
+diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
+index 6ae8694531550df2835f3afbe5a699403f7495fb..75dc1d59241a98fd1d2cf391269a39434c778661 100644
+--- a/chrome/elevation_service/BUILD.gn
++++ b/chrome/elevation_service/BUILD.gn
+@@ -87,6 +87,7 @@ source_set("lib") {
+   deps = [
+     "//base",
+     "//chrome/install_static:install_static_util",
++    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
+     "//components/crx_file:crx_file",
+     "//third_party/zlib/google:zip",
+   ]

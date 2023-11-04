@@ -1,0 +1,106 @@
+diff --git a/chrome/elevation_service/elevator.cc b/chrome/elevation_service/elevator.cc
+index 43526539839917601341cb33c5d7610bf4179f3b..e851901149d0f63822cbceaca5e8aee100facc1e 100644
+--- a/chrome/elevation_service/elevator.cc
++++ b/chrome/elevation_service/elevator.cc
+@@ -20,6 +20,20 @@
+ #include "chrome/elevation_service/caller_validation.h"
+ #include "chrome/elevation_service/elevated_recovery_impl.h"
+ 
++// TODO(bsclifton): clean this up
++#include "base/files/file_util.h"
++#include "base/process/launch.h"
++#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
++#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
++#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
++#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
++#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
++#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
++#include "base/win/scoped_handle.h"
++#include "base/win/windows_types.h"
++#include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
++#include "brave/components/brave_vpn/common/win/utils.h"
++
+ namespace elevation_service {
+ 
+ namespace {
+@@ -41,6 +55,55 @@ base::Process GetCallingProcess() {
+   return base::Process(calling_process_handle);
+ }
+ 
++HRESULT InstallBraveVPNHelperServiceImpersonated() {
++  HRESULT hr = ::CoImpersonateClient();
++  if (FAILED(hr)) {
++    return hr;
++  }
++
++  base::ScopedClosureRunner revert_to_self(
++      base::BindOnce([]() { ::CoRevertToSelf(); }));
++
++  auto executable_path = brave_vpn::GetBraveVpnHelperServicePath();
++  base::CommandLine command_line(executable_path);
++  command_line.AppendSwitch(brave_vpn::kBraveVpnHelperInstall);
++
++  base::LaunchOptions options = base::LaunchOptions();
++  options.feedback_cursor_off = true;
++  options.wait = true;
++  base::Process proc = base::LaunchProcess(command_line, options);
++  if (!proc.IsValid()) {
++    return brave_vpn::HRESULTFromLastError();
++  }
++
++  return S_OK;
++}
++
++HRESULT InstallBraveWireGuardServiceImpersonated() {
++  HRESULT hr = ::CoImpersonateClient();
++  if (FAILED(hr)) {
++    return hr;
++  }
++
++  base::ScopedClosureRunner revert_to_self(
++      base::BindOnce([]() { ::CoRevertToSelf(); }));
++
++  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
++  base::CommandLine command_line(executable_path);
++  command_line.AppendSwitch(
++      brave_vpn::kBraveVpnWireguardServiceInstallSwitchName);
++
++  base::LaunchOptions options = base::LaunchOptions();
++  options.feedback_cursor_off = true;
++  options.wait = true;
++  base::Process proc = base::LaunchProcess(command_line, options);
++  if (!proc.IsValid()) {
++    return brave_vpn::HRESULTFromLastError();
++  }
++
++  return S_OK;
++}
++
+ }  // namespace
+ 
+ HRESULT Elevator::RunRecoveryCRXElevated(const wchar_t* crx_path,
+@@ -195,6 +258,24 @@ HRESULT Elevator::DecryptData(const BSTR ciphertext,
+   return S_OK;
+ }
+ 
++HRESULT Elevator::InstallVPNServices() {
++  if (!brave_vpn::IsBraveVPNHelperServiceInstalled()) {
++    HRESULT hr = InstallBraveVPNHelperServiceImpersonated();
++    if FAILED(hr) {
++      return hr;
++    }
++  }
++
++  if (!brave_vpn::wireguard::IsWireguardServiceRegistered()) {
++    HRESULT hr = InstallBraveWireGuardServiceImpersonated();
++    if FAILED(hr) {
++      return hr;
++    }
++  }
++
++  return S_OK;
++}
++
+ // static
+ void Elevator::AppendStringWithLength(const std::string& to_append,
+                                       std::string& base) {

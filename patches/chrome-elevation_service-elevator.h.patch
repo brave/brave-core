@@ -1,5 +1,5 @@
 diff --git a/chrome/elevation_service/elevator.h b/chrome/elevation_service/elevator.h
-index 2fd72264861f6a61d7fd0ea5a34865d798009ff9..5670d07c077edbfd2c6ffbd6c4fe81920c0772a7 100644
+index 2fd72264861f6a61d7fd0ea5a34865d798009ff9..68b7b758d21328c9b90d50f16c1fd016739db074 100644
 --- a/chrome/elevation_service/elevator.h
 +++ b/chrome/elevation_service/elevator.h
 @@ -37,7 +37,8 @@ class Elevator
@@ -12,3 +12,11 @@ index 2fd72264861f6a61d7fd0ea5a34865d798009ff9..5670d07c077edbfd2c6ffbd6c4fe8192
   public:
    static constexpr HRESULT kErrorCouldNotObtainCallingProcess =
        MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0xA001);
+@@ -75,6 +76,7 @@ class Elevator
+   IFACEMETHODIMP DecryptData(const BSTR ciphertext,
+                              BSTR* plaintext,
+                              DWORD* last_error) override;
++  IFACEMETHODIMP InstallVPNServices() override;
+ 
+  private:
+   FRIEND_TEST_ALL_PREFIXES(ElevatorTest, StringHandlingTest);

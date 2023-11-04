@@ -1,5 +1,5 @@
 diff --git a/chrome/elevation_service/elevation_service_idl.idl b/chrome/elevation_service/elevation_service_idl.idl
-index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addcece571d2 100644
+index e28845867a46534a0f462814d70a03634db28155..4abbc0c0e9ae67d1c3468a5afba20dc54a6046f2 100644
 --- a/chrome/elevation_service/elevation_service_idl.idl
 +++ b/chrome/elevation_service/elevation_service_idl.idl
 @@ -18,7 +18,7 @@ typedef enum ProtectionLevel {
@@ -11,7 +11,30 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevator Interface"),
    pointer_default(unique)
  ]
-@@ -83,7 +83,7 @@ interface IElevator : IUnknown
+@@ -74,6 +74,22 @@ interface IElevator : IUnknown
+   HRESULT DecryptData([in] const BSTR ciphertext,
+                       [out] BSTR* plaintext,
+                       [out] DWORD* last_error);
++
++
++
++  // Install the services used for Brave VPN
++  //
++  // These will only get installed when a customer purchases the product
++  // from account.brave.com and they have credentials.
++  //
++  // There are two services provided:
++  // - DNS protection: forcing routing through VPN adapter to bypass Smart
++  //        Multi-homed Name Resolution (which can leak the DNS query).
++  // - WireGuard support: more robust VPN support than the built-in to Windows
++  //        VPN. The built in one with IKEv2 is secure but things like
++  //        reconnect after waking up don't work well with the system VPN.
++  // @return S_OK on success.
++  HRESULT InstallVPNServices();
+ };
+ 
+ // The interfaces below are all IElevator with unique IIDs. IElevator is
+@@ -83,7 +99,7 @@ interface IElevator : IUnknown
  [
    object,
    oleautomation,
@@ -20,7 +43,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevatorChromium Interface"),
    pointer_default(unique)
  ]
-@@ -94,7 +94,7 @@ interface IElevatorChromium : IElevator
+@@ -94,7 +110,7 @@ interface IElevatorChromium : IElevator
  [
    object,
    oleautomation,
@@ -29,7 +52,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevatorChrome Interface"),
    pointer_default(unique)
  ]
-@@ -105,7 +105,7 @@ interface IElevatorChrome : IElevator
+@@ -105,7 +121,7 @@ interface IElevatorChrome : IElevator
  [
    object,
    oleautomation,
@@ -38,7 +61,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevatorChromeBeta Interface"),
    pointer_default(unique)
  ]
-@@ -116,7 +116,7 @@ interface IElevatorChromeBeta : IElevator
+@@ -116,7 +132,7 @@ interface IElevatorChromeBeta : IElevator
  [
    object,
    oleautomation,
@@ -47,7 +70,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevatorChromeDev Interface"),
    pointer_default(unique)
  ]
-@@ -127,7 +127,7 @@ interface IElevatorChromeDev : IElevator
+@@ -127,7 +143,7 @@ interface IElevatorChromeDev : IElevator
  [
    object,
    oleautomation,
@@ -56,7 +79,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    helpstring("IElevatorChromeCanary Interface"),
    pointer_default(unique)
  ]
-@@ -136,7 +136,18 @@ interface IElevatorChromeCanary : IElevator
+@@ -136,7 +152,18 @@ interface IElevatorChromeCanary : IElevator
  };
  
  [
@@ -76,7 +99,7 @@ index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addc
    version(1.0),
    helpstring("Elevator 1.0 Type Library")
  ]
-@@ -149,4 +160,5 @@ library ElevatorLib {
+@@ -149,4 +176,5 @@ library ElevatorLib {
    interface IElevatorChromeBeta;
    interface IElevatorChromeDev;
    interface IElevatorChromeCanary;
