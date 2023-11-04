@@ -54,19 +54,6 @@
   }
 }
 
-.buttonAgree {
-  background-color: var(--leo-color-button-background);
-  color: white;
-  border-radius: 30px;
-  border: none;
-  width: 100%;
-  padding: 10px 0;
-  margin-bottom: 10px;
-  font-size: 13px;
-  text-align: center;
-  font-weight: 600;
-}
-
 .alert {
   width: 100%;
   padding: 16px;
@@ -92,4 +79,10 @@
 
 .counterTextError {
   color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.actionsContainer {
+  leo-button {
+    width: 100%;
+  }
 }

@@ -8,6 +8,7 @@ import * as React from 'react'
 import classnames from 'classnames'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
@@ -25,8 +26,10 @@ function InputBox () {
 
   if (!context.hasAcceptedAgreement) {
     return (
-      <div className={styles.container}>
-        <button className={styles.buttonAgree} onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
+      <div className={styles.actionsContainer}>
+        <Button onClick={context.handleAgreeClick}>
+          {getLocale('acceptButtonLabel')}
+        </Button>
       </div>
     )
   }
