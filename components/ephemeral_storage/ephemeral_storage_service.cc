@@ -31,6 +31,7 @@ namespace ephemeral_storage {
 namespace {
 
 GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
+  LOG(INFO) << "test";
   return GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
 }
 
