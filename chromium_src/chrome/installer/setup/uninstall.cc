@@ -31,7 +31,7 @@ bool UninstallBraveVPNWireguardService(const base::FilePath& exe_path) {
     return false;
   }
   base::CommandLine cmd(exe_path);
-  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName);
+  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUninstallSwitchName);
   base::LaunchOptions options = base::LaunchOptions();
   options.wait = true;
   return base::LaunchProcess(cmd, options).IsValid();

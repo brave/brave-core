@@ -143,7 +143,7 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
   // System level command line. Unregisters BraveVPNWireguardService
   // windows service and removes stored data. Used by the uninstaller.
   if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName)) {
+          brave_vpn::kBraveVpnWireguardServiceUninstallSwitchName)) {
     auto success = brave_vpn::UninstallBraveWireguardService() &&
                    brave_vpn::UninstallStatusTrayIcon();
     return success ? 0 : 1;
