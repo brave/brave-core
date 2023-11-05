@@ -93,20 +93,8 @@ export default function Advert(props: Props) {
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
     console.debug(`Brave News: Fetching an advertisement`)
 
-    const advert = await getBraveNewsController().getDisplayAd().then(r => r.ad) ?? {
-      title: '10 reasons why technica recreated the sound of old classics.',
-      description: 'Technica',
-      creativeInstanceId: '1234',
-      ctaText: 'Get Started',
-      targetUrl: { url: 'https://www.brave.com' },
-      image: { imageUrl: undefined, paddedImageUrl: { url: 'https://pcdn.bravesoftware.com/brave-today/favicons/f35d56d075b3015a7eef41273d56f4f9665b3749b2318abf531a20722b824bb3.jpg.pad' } },
-      dimensions: '1x3',
-      uuid: '0abc'
-    }
-
-    // TODO(fallaciousreasoning): Set null if no response comes back
-    // (at the moment I'm injecting fake display ads instead).
-    setAdvert(advert)
+    const advert = await getBraveNewsController().getDisplayAd().then(r => r.ad)
+    setAdvert(advert ?? null)
   }, {
     // Trigger ad fetch when the ad unit is 1000px away from the viewport
     rootMargin: '0px 0px 1000px 0px'
