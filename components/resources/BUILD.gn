@@ -39,13 +39,13 @@ brave_grit("static_resources") {
   }
 
   defines = [
-    "enable_brave_vpn=$enable_brave_vpn",
-    "enable_ipfs=$enable_ipfs",
-    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
-    "enable_playlist=$enable_playlist",
-    "enable_playlist_webui=$enable_playlist_webui",
-    "enable_speedreader=$enable_speedreader",
     "enable_brave_player=$enable_brave_player",
+    "enable_brave_vpn=$enable_brave_vpn",
+    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
+    "enable_ipfs=$enable_ipfs",
+    "enable_playlist_webui=$enable_playlist_webui",
+    "enable_playlist=$enable_playlist",
+    "enable_speedreader=$enable_speedreader",
   ]
 
   output_dir = "$root_gen_dir/components"

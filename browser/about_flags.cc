@@ -415,7 +415,7 @@
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
                EXPAND_FEATURE_ENTRIES({                                      \
                    "brave-player",                                           \
-                   "BravePlayer",                                            \
+                   "Brave Player",                                           \
                    "Enables Brave Player",                                   \
                    kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
                    FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
