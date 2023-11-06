@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
 
 #include <windows.h>
 
-#include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
@@ -17,6 +17,7 @@
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
+#include "components/version_info/version_info.h"
 
 namespace brave_vpn {
 
@@ -80,6 +81,20 @@ base::FilePath GetVpnHelperServiceProfileDir() {
   return base::FilePath(base::UTF8ToWide(program_data))
       .Append(install_static::kCompanyPathName)
       .Append(brave_vpn::GetBraveVpnHelperServiceName());
+}
+
+base::FilePath GetBraveVpnHelperServicePath(const base::FilePath& target_path,
+                                            const base::Version& version) {
+  return target_path.AppendASCII(version.GetString())
+      .Append(brave_vpn::kBraveVPNHelperExecutable);
+}
+
+base::FilePath GetBraveVpnHelperServicePath() {
+  base::FilePath exe_dir;
+  base::PathService::Get(base::DIR_EXE, &exe_dir);
+  return version_info::IsOfficialBuild()
+             ? GetBraveVpnHelperServicePath(exe_dir, version_info::GetVersion())
+             : exe_dir.Append(brave_vpn::kBraveVPNHelperExecutable);
 }
 
 }  // namespace brave_vpn

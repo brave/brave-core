@@ -20,8 +20,8 @@ config("no-missing-braces") {
 source_set("common") {
   sources = [
     "brave_vpn_helper_constants.h",
-    "brave_vpn_helper_state.cc",
-    "brave_vpn_helper_state.h",
+    "service_details.cc",
+    "service_details.h",
   ]
 
   deps = [

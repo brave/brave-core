@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"

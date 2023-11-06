@@ -15,7 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/install_static/product_install_details.h"

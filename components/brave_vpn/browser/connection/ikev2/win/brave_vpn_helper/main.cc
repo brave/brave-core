@@ -14,7 +14,7 @@
 #include "base/win/process_startup_helper.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_crash_reporter_client.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_main.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
 #include "components/crash/core/app/crash_switches.h"
