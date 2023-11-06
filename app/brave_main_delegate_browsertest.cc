@@ -116,9 +116,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-    &apps::features::kDesktopPWAsLinkCapturing,
-#endif
     &attribution_reporting::features::kAttributionReportingTriggerConfig,
     &attribution_reporting::features::kConversionMeasurement,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
@@ -186,6 +183,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kChromeLabs,
     &features::kChromeRefresh2023,
     &features::kCookieDeprecationFacilitatedTesting,
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    &features::kDesktopPWAsLinkCapturing,
+#endif
     &features::kDigitalGoodsApi,
     &features::kDIPS,
     &features::kFedCm,
