@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale'
+import VisibilityTimer from '$web-common/visibilityTimer'
 import * as React from 'react'
+import { GetDisplayAdContent, OnViewedDisplayAd, OnVisitDisplayAd } from '../..'
 import { DisplayAd } from '../../../../../../brave_news/browser/resources/shared/api'
-import VisibilityTimer from '../../../../../helpers/visibilityTimer'
-import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'
-import useScrollIntoView from '../../useScrollIntoView'
 import { useVisitDisplayAdClickHandler } from '../../useReadArticleClickHandler'
-import { OnVisitDisplayAd, OnViewedDisplayAd, GetDisplayAdContent } from '../..'
+import useScrollIntoView from '../../useScrollIntoView'
 import CardImage from '../CardImage'
-import useTriggerOnNearViewport from './useTriggerOnNearViewport'
 import * as Styles from './style'
+import useTriggerOnNearViewport from './useTriggerOnNearViewport'
 
 type Props = {
   shouldScrollIntoView?: boolean

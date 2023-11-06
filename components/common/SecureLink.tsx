@@ -27,5 +27,5 @@ export const validateScheme = (href: string | undefined, allowedSchemes: string[
  */
 export default function SecureLink({ href, allowedSchemes, ...rest }: Props) {
   validateScheme(href, allowedSchemes ?? defaultAllowedSchemes)
-  return <a {...rest} />
+  return <a href={href} {...rest} />
 }
