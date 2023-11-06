@@ -16,6 +16,8 @@ const DEFAULT_SHOW_COUNT = 4;
 const PAD_LEFT = '34px';
 
 const Container = styled(Card)`
+  width: 270px;
+
   padding: ${spacing.xl} ${spacing.m};
   align-self: flex-start;
   position: sticky;
@@ -24,7 +26,7 @@ const Container = styled(Card)`
 
 const Heading = styled.h3`
   font: ${font.primary.default.semibold};
-  color: var(--bn-card-color-0.75);
+  color: var(--bn-glass-25);
   margin: 0;
 
   padding-left: ${PAD_LEFT};
@@ -42,7 +44,7 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?
   text-align: left;
   width: 100%;
 
-  color: ${p => `rgba(var(--bn-text-base), ${p.faint ? 0.25 : 1})`};
+  color: ${p => p.faint ? `var(--bn-glass-25)` : `var(--bn-glass-70)`};
   font: ${p => font.primary.small[p.bold ? 'semibold' : 'regular']};
   cursor: pointer;
 
@@ -54,13 +56,13 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?
     box-shadow: ${effect.focusState};
   }
 
-  ${p => p.selected && css`background: rgba(255,255,255,0.3);`}
+  ${p => p.selected && css`background: var(--bn-glass-10);`}
 `
 const Section = styled.details`
   & summary {
     --leo-icon-size: 18px;
 
-    color: rgba(--bn-text-base, 1);
+    color: var(--bn-glass-100);
     padding: ${spacing.m};
     border-radius: ${radius.m};
     outline: none;

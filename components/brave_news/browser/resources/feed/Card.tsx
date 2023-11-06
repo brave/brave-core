@@ -10,7 +10,7 @@ export const Header = styled.h2`
   margin: 0;
 
   font: ${font.primary.heading.h2};
-  color: ${color.text.primary};
+  color: var(--bn-glass-100);
 
   --leo-icon-size: 18px;
 `
@@ -23,7 +23,7 @@ export const Title = styled.h3`
   margin: 0;
 
   font: ${font.primary.default.regular};
-  color: ${color.text.primary};
+  color: var(--bn-glass-100);
 
 
   &> a { all: unset; }
@@ -57,9 +57,9 @@ export const LargeImage = styled.img`
 
 export default styled.div`
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--bn-glass-container);
   border-radius: ${radius.xl};
-  color: ${color.text.primary};
+  color: var(--bn-glass-100);
   padding: ${spacing["2Xl"]};
 
   &:has(${Title} a:focus-visible) {

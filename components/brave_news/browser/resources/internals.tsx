@@ -29,7 +29,7 @@ const Grid = styled(Variables)`
 `
 
 function App() {
-  return <Grid>
+  return <Grid data-theme="dark">
     <SignalsPage />
     <FeedPage />
     <Sidebar />
