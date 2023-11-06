@@ -39,7 +39,10 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/permissions/brave_permission_manager.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -163,6 +166,8 @@ const char interface_not_supported_response[] = R"({
       "id":1,
       "result":"0x0000000000000000000000000000000000000000000000000000000000000000"
   })";
+
+constexpr char kBraveUrl[] = "https://brave.com";
 
 class MockDataRemovalObserver : public StoragePartition::DataRemovalObserver {
  public:
@@ -337,6 +342,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
+    profile_->SetPermissionControllerDelegate(
+        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(profile_.get())
+                .release())));
+
     auto* registry = BlockchainRegistry::GetInstance();
     TokenListMap token_list_map;
     ASSERT_TRUE(
@@ -415,6 +426,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
     fil_token_ = mojom::BlockchainToken::New(
         "", "Filecoin", "fil.png", false, false, false, false, false, "FIL", 18,
         true, "", "", mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+  }
+
+  void TearDown() override {
+    profile_->SetPermissionControllerDelegate(nullptr);
   }
 
   mojom::BlockchainTokenPtr GetToken1() { return token1_.Clone(); }
@@ -714,7 +729,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                        bool run_switch_network = false) {
     mojom::AddSuggestTokenRequestPtr request =
         mojom::AddSuggestTokenRequest::New(
-            MakeOriginInfo(url::Origin::Create(GURL("https://brave.com"))),
+            MakeOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
             suggested_token.Clone());
     base::RunLoop run_loop;
     service_->AddSuggestTokenRequest(
@@ -2745,7 +2760,24 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
                             base::Time(), base::Time::Max()));
 #endif
 
+  const std::string eth_addr = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
+  const std::string sol_addr = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  auto origin = url::Origin::Create(GURL(kBraveUrl));
+  auto* delegate = service_->GetDelegateForTesting();
+  ASSERT_TRUE(delegate);
+
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_SOLANA, profile_.get(), origin, sol_addr));
+
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
+
   service_->Reset();
+
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));

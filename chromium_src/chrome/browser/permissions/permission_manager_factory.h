@@ -11,6 +11,7 @@
 namespace brave_wallet {
 class EthereumProviderImplUnitTest;
 class SolanaProviderImplUnitTest;
+class BraveWalletServiceUnitTest;
 }  // namespace brave_wallet
 
 namespace permissions {
@@ -22,6 +23,7 @@ class BraveWalletPermissionContextUnitTest;
       content::BrowserContext* profile) const;              \
   friend brave_wallet::EthereumProviderImplUnitTest;        \
   friend brave_wallet::SolanaProviderImplUnitTest;          \
+  friend brave_wallet::BraveWalletServiceUnitTest;          \
   friend permissions::BraveWalletPermissionContextUnitTest; \
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
