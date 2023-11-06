@@ -55,6 +55,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void LayoutReaderModeToolbar(gfx::Rect& contents_bounds);
   gfx::Insets GetContentsMargins() const;
   bool IsReaderModeToolbarVisible() const;
+  bool IsFullscreenForTab() const;
   bool ShouldPushBookmarkBarForVerticalTabs();
   gfx::Insets GetInsetsConsideringVerticalTabHost();
 
