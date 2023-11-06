@@ -39,6 +39,10 @@ import {
   ButtonIcon
 } from './wellet-menus.style'
 
+const coinSupportsSwap = (coin: BraveWallet.CoinType) => {
+  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
+}
+
 interface Props {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
@@ -81,8 +85,10 @@ export const AssetItemMenu = (props: Props) => {
     return allBuyAssetOptions.some(
       (buyableAsset) =>
         buyableAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
-    )
+      )
   }, [asset.symbol, allBuyAssetOptions, isAssetsBalanceZero])
+
+  const isSwapSupported = coinSupportsSwap(asset.coin)
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -149,7 +155,7 @@ export const AssetItemMenu = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
         </PopupButton>
       )}
-      {!isAssetsBalanceZero && (
+      {isSwapSupported && !isAssetsBalanceZero && (
         <PopupButton onClick={onClickSwap}>
           <ButtonIcon name='currency-exchange' />
           <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>

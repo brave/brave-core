@@ -41,7 +41,7 @@ export const getNetworkInfo = (
 }
 
 export const networkSupportsAccount = (
-  network: BraveWallet.NetworkInfo,
+  network: Pick<BraveWallet.NetworkInfo, 'coin' | 'supportedKeyrings'>,
   accountId: BraveWallet.AccountId
 ) => {
   return (
