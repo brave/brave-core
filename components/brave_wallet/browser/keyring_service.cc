@@ -1065,6 +1065,11 @@ void KeyringService::CreateWallet(const std::string& password,
 void KeyringService::CreateWallet(const std::string& mnemonic,
                                   const std::string& password,
                                   CreateWalletCallback callback) {
+  if (!keyrings_.empty() || !encryptors_.empty()) {
+    std::move(callback).Run("");
+    return;
+  }
+
   profile_prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
 
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, mnemonic, password);
