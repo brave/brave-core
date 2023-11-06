@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">成为 Brave 创作者！</translation>
 <translation id="4639659520811817892">立即访问 creators.brave.com 并完成注册，从您的粉丝和关注者处获得 BAT。</translation>
 <translation id="4816455138209470435">Brave 支持 YouTube、Twitch、Vimeo 等！</translation>
-<translation id="3001581544796357879">注册 Gemini 以安全存储您的 BAT</translation>
-<translation id="4083523826017830313">将 Brave 奖励连接到 Gemini，将您的 BAT 收益直接接收到您的 Gemini 账户。Gemini 是一家储备充足、监管严格的加密货币交易所和托管人。</translation>
-<translation id="3313756098698370125">70多个国家的数百万客户选择 Gemini 轻松购买、销售、存储和持有90多个加密货币。</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6074001074364432111">*需要维护账户。</translation>
@@ -1867,12 +1864,12 @@ other {# 个来源}
 <translation id="7491773233732232424">关于 Leo</translation>
 <translation id="70442873931504163">Brave Leo 是一款人工智能智能助手，可以总结网页、转录视频和回答问题。Brave Leo Premium 采用先进的<ph name="LINK_BEFORE"/>人工智能模型<ph name="LINK_AFTER"/>，可提供更细致入微的回复，并可提前使用新功能。</translation>
 <translation id="3055739528128372229">不保证答复的准确性，可能包含不准确、误导性或虚假信息。不要提交敏感或私人信息，谨慎回答与健康、财务、个人安全或类似问题有关的答案。</translation>
-<translation id="5030677498967794115">Leo 不会收集或以其他方式处理诸如 IP 地址等与您相关联的标识符。人工智能模型或任何第 3 方模型提供商都不会保留任何个人数据。</translation>
+<translation id="7297681068636289435">Leo 不会收集诸如您的 IP 地址等与您相关的识别信息。人工智能模型或任何第三方模型提供商不会保留任何个人数据。</translation>
 <translation id="7839853125981164613">在这里输入你的问题</translation>
 <translation id="1171287413830401223">启用建议问题？</translation>
 <translation id="4567071417854988869">总结这段视频</translation>
 <translation id="7921782882718083488">总结本网页</translation>
-<translation id="8723991872343294222">Brave 人工智能可以根据网站内容自动推荐问题。您可以稍后在设置中将其禁用。</translation>
+<translation id="5431287032059464898">Leo 可以根据网站内容自动提出问题。要使用此功能，你浏览的页面内容将传送至 Leo，以在 Leo 开启时生成这些建议。你之后可以在设置中停用此功能。</translation>
 <translation id="3435896845095436175">启用</translation>
 <translation id="7473891865547856676">不，谢谢</translation>
 <translation id="7932221068776853847">断开连接以停止向 Leo 发送此页面内容，并开始新的对话</translation>
@@ -1887,6 +1884,7 @@ other {# 个来源}
 <translation id="2961040541145689181">新会话</translation>
 <translation id="97095589689466044">建议问题</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
+<translation id="1691256669639196606">管理订阅</translation>
 <translation id="3037594989275592390">语言模型</translation>
 <translation id="849535826888024304">响应率达到极限</translation>
 <translation id="3834321271158315162">通过订阅高级版解锁更高的响应率，或
@@ -1924,6 +1922,7 @@ other {# 个来源}
 <translation id="6291843235651817590">通用聊天工具</translation>
 <translation id="8193130769524604031">高级聊天任务</translation>
 <translation id="3185367320601718531">对话和文本生成</translation>
+<translation id="3965507912994218570">Leo 设置</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
 <translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@ other {# 个来源}
 <translation id="8814357473522731680">技术支持：</translation>
 <translation id="3960619311638643872">Brave 的 VPN</translation>
 <translation id="5747552184818312860">到期时间</translation>
-<translation id="1691256669639196606">管理订阅</translation>
 <translation id="434523916398030617">联系技术支持</translation>
 <translation id="1116694919640316211">关于</translation>
 <translation id="8670386189340362926">拦截所有应用的跟踪器和广告</translation>
