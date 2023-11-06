@@ -9,9 +9,9 @@ import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 
 export type FeedView = 'all' | `publishers/${string}` | `channels/${string}`
 
-const feedTypeToFeedView = (type: FeedV2Type): FeedView => {
-  if (type.channel) return `channels/${type.channel.channel}`
-  if (type.publisher) return `publishers/${type.publisher.publisherId}`
+const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
+  if (type?.channel) return `channels/${type.channel.channel}`
+  if (type?.publisher) return `publishers/${type.publisher.publisherId}`
   return 'all'
 }
 
@@ -31,10 +31,10 @@ const maybeLoadFeed = (view: FeedView) => {
   const data = sessionStorage.getItem(FEED_KEY)
   if (!data) return
 
-  const feed = JSON.parse(data)
+  const feed: FeedV2 = JSON.parse(data)
 
   // If the feed doesn't match what we stored, don't return it.
-  return feedTypeToFeedView(feed) === view
+  return feedTypeToFeedView(feed.type) === view
     ? feed
     : undefined
 }

@@ -39,6 +39,7 @@
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -549,6 +550,34 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 
 }  // namespace
 
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
+                                            UpdateCallback callback)
+    : settings(std::move(settings)) {
+  callbacks.push_back(std::move(callback));
+}
+FeedV2Builder::UpdateRequest::~UpdateRequest() = default;
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateRequest&&) = default;
+FeedV2Builder::UpdateRequest& FeedV2Builder::UpdateRequest::operator=(
+    UpdateRequest&&) = default;
+bool FeedV2Builder::UpdateRequest::IsSufficient(
+    const UpdateSettings& other_settings) {
+  return !(
+      (other_settings.feed && !settings.feed) ||
+      (other_settings.signals && !settings.signals) ||
+      (other_settings.suggested_publishers && !settings.suggested_publishers) ||
+      (other_settings.topics && !settings.topics));
+}
+
+void FeedV2Builder::UpdateRequest::AlsoUpdate(
+    const UpdateSettings& other_settings,
+    UpdateCallback callback) {
+  settings.feed |= other_settings.feed;
+  settings.signals |= other_settings.signals;
+  settings.suggested_publishers |= other_settings.suggested_publishers;
+  settings.topics |= other_settings.suggested_publishers;
+  callbacks.push_back(std::move(callback));
+}
+
 FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
@@ -686,13 +715,18 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
 
 void FeedV2Builder::UpdateData(UpdateSettings settings,
                                base::OnceCallback<void()> callback) {
-  pending_callbacks_.push_back(std::move(callback));
-
-  if (is_updating_) {
+  if (current_update_) {
+    if (current_update_->IsSufficient(settings)) {
+      current_update_->callbacks.push_back(std::move(callback));
+    } else {
+      if (!next_update_) {
+        next_update_.emplace(std::move(settings), std::move(callback));
+      } else {
+        next_update_->AlsoUpdate(std::move(settings), std::move(callback));
+      }
+    }
     return;
   }
-
-  is_updating_ = true;
 
   if (settings.signals) {
     signals_.clear();
@@ -709,6 +743,8 @@ void FeedV2Builder::UpdateData(UpdateSettings settings,
   if (settings.topics) {
     topics_.clear();
   }
+
+  current_update_.emplace(std::move(settings), std::move(callback));
 
   FetchFeed();
 }
@@ -812,13 +848,20 @@ void FeedV2Builder::OnGotTopics(TopicsResult topics) {
 }
 
 void FeedV2Builder::NotifyUpdateCompleted() {
+  CHECK(current_update_);
+
   // Fire all the pending callbacks.
-  for (auto& callback : pending_callbacks_) {
+  for (auto& callback : current_update_->callbacks) {
     std::move(callback).Run();
   }
 
-  pending_callbacks_.clear();
-  is_updating_ = false;
+  // If we have a |next_update_| then request an update with that data.
+  current_update_ = std::move(next_update_);
+  next_update_ = absl::nullopt;
+
+  if (current_update_) {
+    UpdateData(current_update_->settings);
+  }
 }
 
 void FeedV2Builder::GenerateFeed(
