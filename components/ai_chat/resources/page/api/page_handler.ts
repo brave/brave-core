@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import * as AIChatUI from 'gen/brave/components/ai_chat/common/mojom/ai_chat.mojom.m.js'
+ import * as AIChatUI from
+  'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 
  // Provide access to all the generated types
- export * from 'gen/brave/components/ai_chat/common/mojom/ai_chat.mojom.m.js'
+ export * from
+  'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 
  interface API {
    pageHandler: AIChatUI.PageHandlerRemote

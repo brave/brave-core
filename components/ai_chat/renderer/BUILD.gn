@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
@@ -17,7 +17,7 @@ static_library("renderer") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/common/mojom",
+    "//brave/components/ai_chat/core/common/mojom",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

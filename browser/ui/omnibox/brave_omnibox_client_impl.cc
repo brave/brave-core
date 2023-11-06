@@ -27,7 +27,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/components/ai_chat/core/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #endif
 
 namespace {

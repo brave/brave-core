@@ -41,7 +41,7 @@ import("//brave/browser/web_discovery/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -132,7 +132,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/tabs",
   "//brave/common",
-  "//brave/components/ai_chat/common/buildflags",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
@@ -286,10 +286,10 @@ if (enable_request_otr) {
 
 if (enable_ai_chat) {
   brave_chrome_browser_deps += [
-    "//brave/components/ai_chat/browser",
-    "//brave/components/ai_chat/common",
-    "//brave/components/ai_chat/common/mojom",
-    "//brave/components/ai_chat/core",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
   ]
 }
 
