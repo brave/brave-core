@@ -158,7 +158,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kSpeculationRulesPrefetchFuture,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
-    &blink::features::kWebEnvironmentIntegrity,
     &commerce::kCommerceAllowOnDemandBookmarkUpdates,
     &commerce::kCommerceDeveloper,
     &commerce::kCommerceMerchantViewer,
