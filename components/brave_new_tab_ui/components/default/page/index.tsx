@@ -373,9 +373,9 @@ export const App = styled('div') <AppProps & HasImageProps>`
   &::before {
       /* The FeedV2 has a semi-transparent white overlay. This is done via a
        * linear-gradient to not break any of the FeedV1 features. */
-      --background-color: rgba(255,255,255, calc(0.3 * var(--ntp-extra-content-effect-multiplier)));
+      --background-color: rgba(0,0,0, calc(0.65 * var(--ntp-extra-content-effect-multiplier)));
       background: linear-gradient(var(--background-color), var(--background-color)), ${getBackground};
-        filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 64px));
+        filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 32px));
     }
   `}
 `

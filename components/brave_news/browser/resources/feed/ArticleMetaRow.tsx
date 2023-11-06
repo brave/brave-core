@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { color, font, spacing } from "@brave/leo/tokens/css"
+import { font, spacing } from "@brave/leo/tokens/css"
 import getBraveNewsController, { FeedItemMetadata, UserEnabled } from "../shared/api"
 import { channelIcons } from "../shared/Icons"
 import styled from "styled-components";
@@ -25,9 +25,7 @@ export const MetaInfoContainer = styled.h4`
   margin: 0;
 
   font: ${font.primary.xSmall.regular};
-  color: ${color.text.secondary};
-
-  opacity: 0.5;
+  color: var(--bn-glass-50);
 
   display: flex;
   align-items: center;
