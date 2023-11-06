@@ -891,6 +891,8 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
     mouse_enter_timer_.Stop();
     SetState(State::kCollapsed);
   }
+
+  UpdateBorder();
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
