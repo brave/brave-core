@@ -140,7 +140,7 @@ function ContextMenuAssistant_(
     <>
       <ButtonMenu className={classnames(styles.moreButton, props.className)}>
         <div slot='anchor-content'>
-          <Icon name='more-vertical' />
+          <Icon name='more-horizontal' />
         </div>
         <leo-menu-item onClick={handleCopyText}>
           <Icon name='copy' />

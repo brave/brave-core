@@ -100,8 +100,7 @@ function ConversationList() {
       {suggestedQuestions.length > 0 && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            <Icon name='product-brave-leo' />
-            <div>Suggested follow-ups</div>
+            Suggested follow-ups
           </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
