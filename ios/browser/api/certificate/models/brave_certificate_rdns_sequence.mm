@@ -9,11 +9,11 @@
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
 #include "net/cert/x509_cert_types.h"
-#include "net/der/input.h"
+#include "third_party/boringssl/src/pki/input.h"
 
 @implementation BraveCertificateRDNSequence
-- (instancetype)initWithBERName:(const net::der::Input&)berName
-                       uniqueId:(const net::der::BitString&)uniqueId {
+- (instancetype)initWithBERName:(const bssl::der::Input&)berName
+                       uniqueId:(const bssl::der::BitString&)uniqueId {
   if ((self = [super init])) {
     net::CertPrincipal rdns;  // relative_distinquished_name_sequence;
     auto string_handling =

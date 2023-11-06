@@ -11,14 +11,14 @@
 #include "brave/ios/browser/api/certificate/models/brave_certificate_enums.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
-#include "net/cert/pki/parsed_certificate.h"
-#include "net/der/input.h"
-#include "net/der/parse_values.h"
+#include "third_party/boringssl/src/pki/input.h"
+#include "third_party/boringssl/src/pki/parse_values.h"
+#include "third_party/boringssl/src/pki/parsed_certificate.h"
 
 @implementation BraveCertificatePublicKeyInfo
 // Chromium's GetSubjectPublicKeyBytes is NOT enough
 // It only gives the Raw TLV BIT_STRING of the SubjectPublicKeyInfo
-- (instancetype)initWithCertificate:(net::ParsedCertificate*)certificate
+- (instancetype)initWithCertificate:(bssl::ParsedCertificate*)certificate
                             withKey:(SecKeyRef)key {
   if ((self = [super init])) {
     _type = BravePublicKeyType_UNKNOWN;
@@ -34,12 +34,12 @@
     _exponent = 0;
     _keySizeInBits = 0;
 
-    net::der::Input algorithm_tlv;
-    net::der::Input spk;
+    bssl::der::Input algorithm_tlv;
+    bssl::der::Input spk;
     if (certificate::x509_utils::ParseSubjectPublicKeyInfo(
             certificate->tbs().spki_tlv, &algorithm_tlv, &spk)) {
-      net::der::Input algorithm_oid;
-      net::der::Input parameters;
+      bssl::der::Input algorithm_oid;
+      bssl::der::Input parameters;
 
       if (certificate::x509_utils::ParseAlgorithmSequence(
               algorithm_tlv, &algorithm_oid, &parameters)) {
@@ -65,7 +65,7 @@
       /*auto spk_string = spk.AsStringPiece();
       if (base::StartsWith(spk_string, "\0")) {
         spk_string.remove_prefix(1);
-        spk = net::der::Input(spk_string);
+        spk = bssl::der::Input(spk_string);
       }*/
     }
 
@@ -127,9 +127,9 @@
         // Recreate the SPK without the unused bit count because the previous
         // remove_prefix code didn't work. Parse the RSA ASN.1 PKCS1 structure
         // from SecKeyCopyExternalRepresentation.
-        net::der::Input modulus;
-        net::der::Input public_exponent;
-        spk = net::der::Input(
+        bssl::der::Input modulus;
+        bssl::der::Input public_exponent;
+        spk = bssl::der::Input(
             static_cast<const std::uint8_t*>([external_representation bytes]),
             [external_representation length]);
         if (certificate::x509_utils::ParseRSAPublicKeyInfo(spk, &modulus,
@@ -139,7 +139,8 @@
               base::HexEncode(modulus_string.data(), modulus_string.size()));
 
           std::uint64_t parsed_public_exponent = 0;
-          if (net::der::ParseUint64(public_exponent, &parsed_public_exponent)) {
+          if (bssl::der::ParseUint64(public_exponent,
+                                     &parsed_public_exponent)) {
             _exponent =
                 static_cast<decltype(_exponent)>(parsed_public_exponent);
           }
@@ -160,7 +161,7 @@
     }
 
     //    // Parse SPKI
-    //    net::CertErrors key_errors;
+    //    bssl::CertErrors key_errors;
     //    bssl::UniquePtr<EVP_PKEY> pkey;
     //    if (!net::ParsePublicKey(certificate->tbs().spki_tlv, &pkey)) {
     //      key_errors.AddError(net::cert_errors::kFailedParsingSpki);
