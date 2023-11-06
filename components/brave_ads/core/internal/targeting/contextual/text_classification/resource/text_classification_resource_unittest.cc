@@ -46,8 +46,8 @@ TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
-                                             kTextClassificationResourceId));
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+      kInvalidResourceId, kFlatBuffersTextClassificationResourceId));
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
@@ -55,8 +55,9 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_, LoadFileResource(kTextClassificationResourceId,
-                                             ::testing::_, ::testing::_))
+  ON_CALL(ads_client_mock_,
+          LoadFileResource(kFlatBuffersTextClassificationResourceId,
+                           ::testing::_, ::testing::_))
       .WillByDefault(::testing::Invoke(
           [](const std::string& /*id=*/, const int /*version=*/,
              LoadFileCallback callback) {

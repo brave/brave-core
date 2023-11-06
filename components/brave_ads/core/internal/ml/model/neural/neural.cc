@@ -102,8 +102,11 @@ absl::optional<PredictionMap> NeuralModel::Predict(
     if (!segment) {
       return absl::nullopt;
     }
-    const std::string class_value = segment->str();
-    predictions[class_value] = output_layer[i];
+    const std::string segment_value = segment->str();
+    if (segment_value.empty()) {
+      return absl::nullopt;
+    }
+    predictions[segment_value] = output_layer[i];
   }
 
   return predictions;

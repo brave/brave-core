@@ -10,14 +10,17 @@
 #include <utility>
 #include <vector>
 
+#include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -26,23 +29,29 @@ namespace brave_ads::ml {
 
 namespace {
 
+constexpr size_t kRandBytesBufferSize = 1024;
+
 constexpr char kValidSegmentClassificationPipeline[] =
-    "ml/pipeline/text_processing/valid_segment_classification_min.json";
+    "ml/pipeline/text_processing/linear/valid_segment_classification_min.fb";
 
 constexpr char kEmptySegmentClassificationPipeline[] =
-    "ml/pipeline/text_processing/empty_segment_classification.json";
+    "ml/pipeline/text_processing/linear/empty_segment_classification.fb";
 
 constexpr char kWrongTransformationOrderPipeline[] =
-    "ml/pipeline/text_processing/wrong_transformations_order.json";
+    "ml/pipeline/text_processing/linear/wrong_transformations_order.fb";
 
 constexpr char kEmptyTransformationsPipeline[] =
-    "ml/pipeline/text_processing/empty_transformations_pipeline.json";
+    "ml/pipeline/text_processing/linear/empty_transformations_pipeline.fb";
 
 constexpr char kValidSpamClassificationPipeline[] =
-    "ml/pipeline/text_processing/valid_spam_classification.json";
+    "ml/pipeline/text_processing/linear/valid_spam_classification.fb";
+
+constexpr char kMissingRequiredFieldClassificationPipeline[] =
+    "ml/pipeline/text_processing/linear/"
+    "missing_required_field_classification.fb";
 
 constexpr char kTextCMCCrash[] =
-    "ml/pipeline/text_processing/text_cmc_crash.txt";
+    "ml/pipeline/text_processing/linear/text_cmc_crash.txt";
 
 }  // namespace
 
@@ -66,13 +75,25 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       {"class_2", VectorData(data_2)},
       {"class_3", VectorData(data_3)}};
 
-  const std::map<std::string, double> biases = {
+  const std::map<std::string, float> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
+
+  std::string buffer = pipeline::LinearPipelineBufferBuilder()
+                           .CreateClassifier(weights, biases)
+                           .AddLowercaseTransformation()
+                           .Build("en");
+
+  flatbuffers::Verifier verifier(
+      reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+  ASSERT_TRUE(linear_text_classification::flat::VerifyModelBuffer(verifier));
+
+  const auto* raw_model =
+      linear_text_classification::flat::GetModel(buffer.data());
+  ASSERT_TRUE(raw_model);
+  LinearModel linear_model(raw_model);
 
   const std::vector<float> data_4 = {1.0, 0.0, 0.0};
   const VectorData data_point_3(data_4);
-
-  LinearModel linear_model(nullptr);
   const absl::optional<PredictionMap> data_point_3_predictions =
       linear_model.Predict(data_point_3);
   ASSERT_TRUE(data_point_3_predictions);
@@ -146,14 +167,22 @@ TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   // Arrange
+  const std::string input_text = "This is a spam email.";
+
   absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
   ASSERT_TRUE(buffer);
 
   pipeline::TextProcessing text_processing_pipeline;
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 
-  // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  // Act
+  std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
+  const absl::optional<PredictionMap> prediction_map =
+      text_processing_pipeline.Apply(std::move(text_data));
+
+  // Assert
+  EXPECT_FALSE(prediction_map);
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
@@ -199,12 +228,48 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
   }
 }
 
-TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
+TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
+  // Arrange
+  absl::optional<std::string> buffer =
+      ReadFileFromTestPathToString(kMissingRequiredFieldClassificationPipeline);
+  ASSERT_TRUE(buffer);
+
+  pipeline::TextProcessing text_processing_pipeline;
+
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+}
+
+TEST_F(BraveAdsTextProcessingTest, RandomBytesBufferInputTest) {
+  // Arrange
+  std::string buffer = base::RandBytesAsString(kRandBytesBufferSize);
+
+  pipeline::TextProcessing text_processing_pipeline;
+
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(buffer)));
+}
+
+TEST_F(BraveAdsTextProcessingTest, EmptyInputTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
   EXPECT_FALSE(text_processing_pipeline.SetPipeline(""));
+}
+
+TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
+  // Arrange
+  brave_l10n::test::ScopedDefaultLocale default_locale("es");
+
+  absl::optional<std::string> buffer =
+      ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
+  ASSERT_TRUE(buffer);
+
+  pipeline::TextProcessing text_processing_pipeline;
+
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {

@@ -14,58 +14,12 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_test_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
-
-namespace {
-
-std::string BuildRawNeuralModel(
-    const int vector_dimension,
-    const std::map<std::string, std::vector<uint16_t>>&
-        token_categories_mapping) {
-  flatbuffers::FlatBufferBuilder builder;
-
-  std::vector<::flatbuffers::Offset<
-      neural_text_classification::flat::TokenToSegmentIndices>>
-      mapping_data;
-  for (const auto& [token, indices] : token_categories_mapping) {
-    auto indices_data = builder.CreateVector(indices);
-    auto map_data =
-        neural_text_classification::flat::CreateTokenToSegmentIndices(
-            builder, builder.CreateString(token), indices_data);
-    mapping_data.push_back(map_data);
-  }
-  auto mapping = builder.CreateVector(mapping_data);
-
-  auto mapped_token_transformation =
-      neural_text_classification::flat::CreateMappedTokenTransformation(
-          builder, vector_dimension, mapping);
-  auto transformation_entry =
-      neural_text_classification::flat::CreateTransformation(
-          builder,
-          neural_text_classification::flat::
-              TransformationType_MappedTokenTransformation,
-          mapped_token_transformation.Union());
-  std::vector<
-      flatbuffers::Offset<neural_text_classification::flat::Transformation>>
-      transformations_data;
-  transformations_data.push_back(transformation_entry);
-  auto transformations = builder.CreateVector(transformations_data);
-
-  neural_text_classification::flat::ModelBuilder neural_model_builder(builder);
-  neural_model_builder.add_transformations(transformations);
-  builder.Finish(neural_model_builder.Finish());
-
-  std::string buffer(reinterpret_cast<char*>(builder.GetBufferPointer()),
-                     builder.GetSize());
-
-  return buffer;
-}
-
-}  // namespace
 
 class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
  public:
@@ -73,7 +27,12 @@ class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
       const int vector_dimension,
       const std::map<std::string, std::vector<uint16_t>>&
           token_categories_mapping) {
-    buffer_ = BuildRawNeuralModel(vector_dimension, token_categories_mapping);
+    buffer_ = pipeline::NeuralPipelineBufferBuilder()
+                  .CreateClassifier({}, {}, {})
+                  .AddMappedTokensTransformation(vector_dimension,
+                                                 token_categories_mapping)
+                  .Build("en");
+
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
     if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {

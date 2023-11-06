@@ -11,70 +11,12 @@
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_test_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
-
-namespace {
-
-std::string BuildRawNeuralModel(
-    const std::vector<std::vector<VectorData>>& raw_matrices,
-    const std::vector<std::string>& raw_activation_functions,
-    const std::vector<std::string>& raw_segments) {
-  flatbuffers::FlatBufferBuilder builder;
-
-  std::vector<flatbuffers::Offset<flatbuffers::String>>
-      activation_functions_data;
-  activation_functions_data.reserve(raw_activation_functions.size());
-  for (const auto& func : raw_activation_functions) {
-    activation_functions_data.push_back(builder.CreateString(func));
-  }
-  auto activation_functions = builder.CreateVector(activation_functions_data);
-
-  std::vector<flatbuffers::Offset<flatbuffers::String>> segments_data;
-  segments_data.reserve(raw_segments.size());
-  for (const auto& cls : raw_segments) {
-    segments_data.push_back(builder.CreateString(cls));
-  }
-  auto segments = builder.CreateVector(segments_data);
-
-  std::vector<flatbuffers::Offset<neural_text_classification::flat::Matrix>>
-      matrices_data;
-  matrices_data.reserve(raw_matrices.size());
-  for (const auto& matrix : raw_matrices) {
-    std::vector<
-        ::flatbuffers::Offset<neural_text_classification::flat::WeightsRow>>
-        weights_rows_data;
-    weights_rows_data.reserve(matrix.size());
-    for (const auto& row : matrix) {
-      auto weights_row = builder.CreateVector(row.GetData());
-      weights_rows_data.push_back(
-          neural_text_classification::flat::CreateWeightsRow(builder,
-                                                             weights_row));
-    }
-    auto weights_rows = builder.CreateVector(weights_rows_data);
-    matrices_data.push_back(
-        neural_text_classification::flat::CreateMatrix(builder, weights_rows));
-  }
-  auto matrices = builder.CreateVector(matrices_data);
-
-  auto classifier = neural_text_classification::flat::CreateClassifier(
-      builder, builder.CreateString("NEURAL"), segments, matrices,
-      activation_functions);
-
-  neural_text_classification::flat::ModelBuilder neural_model_builder(builder);
-  neural_model_builder.add_classifier(classifier);
-  builder.Finish(neural_model_builder.Finish());
-
-  std::string buffer(reinterpret_cast<char*>(builder.GetBufferPointer()),
-                     builder.GetSize());
-
-  return buffer;
-}
-
-}  // namespace
 
 class BraveAdsNeuralTest : public UnitTestBase {
  public:
@@ -82,8 +24,12 @@ class BraveAdsNeuralTest : public UnitTestBase {
       const std::vector<std::vector<VectorData>>& raw_matrices,
       const std::vector<std::string>& raw_activation_functions,
       const std::vector<std::string>& raw_segments) {
-    buffer_ = BuildRawNeuralModel(raw_matrices, raw_activation_functions,
-                                  raw_segments);
+    buffer_ = pipeline::NeuralPipelineBufferBuilder()
+                  .CreateClassifier(raw_matrices, raw_activation_functions,
+                                    raw_segments)
+                  .AddMappedTokensTransformation(0, {})
+                  .Build("en");
+
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
     if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {

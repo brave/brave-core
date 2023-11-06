@@ -43,7 +43,9 @@ absl::optional<PredictionMap> LinearModel::Predict(
       return absl::nullopt;
     }
     const std::string segment = segment_weight->segment()->str();
-
+    if (segment.empty()) {
+      return absl::nullopt;
+    }
     std::vector<float> weights;
     weights.reserve(segment_weight->weights()->size());
     base::ranges::copy(*segment_weight->weights(), std::back_inserter(weights));
