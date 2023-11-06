@@ -7,7 +7,7 @@ import usePromise from "$web-common/usePromise";
 import { useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 
-export type FeedView = 'all' | `publishers/${string}` | `channels/${string}`
+export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`
 
 const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
   if (type?.channel) return `channels/${type.channel.channel}`
@@ -53,6 +53,8 @@ export const useFeedV2 = () => {
       promise = getBraveNewsController().getPublisherFeed(feedView.split('/')[1]);
     } else if (feedView.startsWith('channels/')) {
       promise = getBraveNewsController().getChannelFeed(feedView.split('/')[1])
+    } else if (feedView === 'following') {
+      promise = getBraveNewsController().getFollowingFeed()
     } else {
       promise = getBraveNewsController().getFeedV2()
     }

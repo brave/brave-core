@@ -21,6 +21,31 @@ export const validateScheme = (href: string | undefined, allowedSchemes: string[
 }
 
 /**
+ * Endeavors to do the right thing when triggering a link via a mouse click.
+ * Left click should open the link in the current tab, while
+ * Control/Command/Middle click should open the link in a new tab.
+ * @param href The href to open
+ * @param e The mouse event
+ */
+export const handleOpenURLClick = (href: string | undefined, e: React.MouseEvent) => {
+  validateScheme(href)
+
+  // Control click, command click or middle click
+  if (e.ctrlKey || e.metaKey || e.buttons & 4) {
+    window.open(href, '_blank', 'noopener noreferrer')
+  } else {
+    window.location.href = href!
+  }
+}
+
+/**
+ * A curried version of handleOpenURLClick, for use in React event handlers.
+ * @param href The href the click handler should open
+ * @returns A click event handler
+ */
+export const linkClickHandler = (href: string | undefined) => (e: React.MouseEvent) => handleOpenURLClick(href, e)
+
+/**
  * Identical to the `a` element, except that it validates the HREF points
  * to an allowed scheme. By default, allowed schemes are http: or https:,
  * but this can be overridden.
