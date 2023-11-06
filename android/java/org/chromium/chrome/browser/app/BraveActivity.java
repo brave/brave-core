@@ -115,7 +115,6 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
-import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
@@ -1036,7 +1035,6 @@ public abstract class BraveActivity extends ChromeActivity
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
         BraveSyncInformers.show();
-        BraveAndroidSyncDisabledInformer.showInformers();
         BraveSyncAccountDeletedInformer.show();
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()

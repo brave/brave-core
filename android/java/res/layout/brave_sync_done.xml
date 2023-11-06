@@ -59,51 +59,6 @@
             android:layout_width="match_parent"
             android:visibility="invisible" />
 
-        <!-- Section to infor about system sync switch is off -->
-        <TableLayout android:id="@+id/brave_sync_btn_android_sync_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/brave_sync_warning"
-            android:padding="10dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp" >
-            <TableRow>
-                <ImageView
-                    android:id="@+id/brave_sync_image_not_working"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:gravity="center"
-                    android:maxWidth="24dp"
-                    android:paddingEnd="5dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_warning_circle"
-                    app:tint="@android:color/black" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="@android:color/black"
-                    android:text="@string/sync_error_card_title"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:textColor="@android:color/black"
-                    android:text="@string/brave_sync_android_sync_disabled"
-                    android:textSize="12sp"
-                    android:layout_column="1"/>
-            </TableRow>
-        </TableLayout>
-
         <android.widget.Button android:id="@+id/brave_sync_btn_add_device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
