@@ -378,7 +378,6 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="1725591448053514783">Konvolut Dig 6</translation>
 <translation id="1727613060316725209">Certifikatet er gyldigt</translation>
 <translation id="1728677426644403582">Du ser kilden for en webside</translation>
-<translation id="5129323533070334129">Vil du gemme adgangsnøglen uden for inkognito?</translation>
 <translation id="173080396488393970">Denne korttype understøttes ikke</translation>
 <translation id="1733064249834771892">skrifttyper</translation>
 <translation id="1733631169686303142">Lydudstyr</translation>
@@ -1556,7 +1555,7 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Kortet er gemt på din Brave-konto}one{Kortet er gemt på din Brave-konto}other{Kortene er gemt på din Brave-konto}}</translation>
 <translation id="2820825061680010514">Forbedret privatliv ved annoncering i Brave</translation>
 <translation id="4290920330097335010">Tillad aldrig</translation>
-<translation id="4296207570293932800">En ny privatlivsfunktion til annoncer er nu tilgængelig</translation>
+<translation id="4296207570293932800">En ny privatlivsfunktion for annoncer er nu tilgængelig</translation>
 <translation id="4297502707443874121">Miniature for siden <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="4298000214066716287">Investering</translation>
 <translation id="42981349822642051">Udvid</translation>
@@ -2564,7 +2563,7 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="6432297414176614592">Mere om annonceemner</translation>
 <translation id="6432831586648556868">Salgs- og marketingjobs</translation>
 <translation id="6433490469411711332">Rediger kontaktoplysninger</translation>
-<translation id="6433501201775827830">Vælg en søgemaskine</translation>
+<translation id="6433501201775827830">Vælg din søgemaskine</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> nægtede at oprette forbindelse.</translation>
 <translation id="6433797564277305076">Bekræft dine kort hurtigere ved hjælp af enhedsoplåsning fra nu af</translation>
 <translation id="643917412048333145">Kjoler</translation>
@@ -4035,4 +4034,5 @@ Yderligere oplysninger:
 <translation id="8108906085747235166">Spørg i profil</translation>
 <translation id="317153861231603077">Spørg på profil i stedet</translation>
 <translation id="2977472760057091832">Åbn link i privat vindue</translation>
+<translation id="5129323533070334129">Gem adgangskoden uden for Private?</translation>
 </translationbundle>

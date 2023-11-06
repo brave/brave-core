@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Deveniți un creator Brave!</translation>
 <translation id="4639659520811817892">Vizitați creators.brave.com pentru a vă înscrie astăzi și pentru a începe să câștigați BAT de la fanii și followerșii dumneavoastră.</translation>
 <translation id="4816455138209470435">Brave este compatibil cu YouTube, Twitch, Vimeo și multe altele!</translation>
-<translation id="3001581544796357879">Înscrieți-vă în Gemini pentru a vă stoca BAT în siguranță</translation>
-<translation id="4083523826017830313">Conectați Recompensele Brave la Gemini pentru a vă primi câștigurile în BAT direct în contul Gemini. Gemini este o platformă de schimb și custode pentru monede crypto full reserve și riguros reglementată.</translation>
-<translation id="3313756098698370125">Milioane de clienți din peste 70 de țări aleg Gemini pentru a vinde, stoca și investi cu ușurință peste 90 de criptomonede.</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
 <translation id="6074001074364432111">* Necesită un cont Uphold.</translation>
@@ -1868,12 +1865,12 @@ other {# surse}
 <translation id="7491773233732232424">Despre Leo</translation>
 <translation id="70442873931504163">Brave Leo este un asistent inteligent de IA care oferă rezumate pentru paginile web, care transcrie videoclipuri și răspunde la întrebări. Brave Leo Premium folosește <ph name="LINK_BEFORE"/>modele IA<ph name="LINK_AFTER"/> pentru răspunsuri și mai nuanțate, oferindu-vă acces timpuriu la funcții noi.</translation>
 <translation id="3055739528128372229">Acuratețea răspunsurilor nu este garantată, acestea putând conține informații imprecise, înșelătoare sau false. Nu trimiteți informații sensibile sau confidențiale și manifestați prudență în cazul întrebărilor legate de sănătate, finanțe, siguranță personală etc.</translation>
-<translation id="5030677498967794115">Leo nu colectează și nu procesează identificatori precum adresa de IP asociată cu tine. Nu sunt reținute date personale de către modelul de IA sau de către modelele terților.</translation>
+<translation id="7297681068636289435">Leo nu colectează elemente de identificare, precum adresa IP, care pot fi asociate cu dumneavoastră. Modelul de IA sau furnizorii de modele terțe nu rețin niciun fel de date cu caracter personal.</translation>
 <translation id="7839853125981164613">Introduceți o întrebare aici</translation>
 <translation id="1171287413830401223">Activați întrebările sugerate?</translation>
 <translation id="4567071417854988869">Rezumați acest videoclip</translation>
 <translation id="7921782882718083488">Rezumați această pagină</translation>
-<translation id="8723991872343294222">Brave AI poate sugera automat întrebări pe baza conținutului site-ului. Puteți să-l dezactivați mai târziu, în Setări.</translation>
+<translation id="5431287032059464898">Leo poate sugera automat întrebări pe baza conținutului site-ului. Pentru a face acest lucru, conținutul paginilor din navigări va fi trimis către Leo pentru a genera aceste sugestii în timp ce Leo este deschis. Acesta poate fi dezactivat ulterior în Setări.</translation>
 <translation id="3435896845095436175">Activează</translation>
 <translation id="7473891865547856676">Nu, mulțumesc</translation>
 <translation id="7932221068776853847">Deconectați pentru a întrerupe transmiterea conținutul acestei pagini la Leo și începeți o conversație nouă</translation>
@@ -1888,6 +1885,7 @@ other {# surse}
 <translation id="2961040541145689181">Chat nou</translation>
 <translation id="97095589689466044">Întrebări sugerate</translation>
 <translation id="7557539689487606886">Alegeți Premium</translation>
+<translation id="1691256669639196606">Gestionați abonamentul</translation>
 <translation id="3037594989275592390">Modele de limbaj</translation>
 <translation id="849535826888024304">Limita ratei de răspunsuri a fost atinsă</translation>
 <translation id="3834321271158315162">Deblocați o rată de răspunsuri mai mare, făcându-vă un abonament la Premium sau încercați din nou mai târziu.</translation>
@@ -1924,6 +1922,7 @@ other {# surse}
 <translation id="6291843235651817590">Chat de interes general</translation>
 <translation id="8193130769524604031">Sarcini de chat avansate</translation>
 <translation id="3185367320601718531">Conversație și generare de text</translation>
+<translation id="3965507912994218570">Setări Leo</translation>
 <translation id="6303294677342628402">Scuturi</translation>
 <translation id="8458987127502506209">Activați scuturile Brave</translation>
 <translation id="7509914170164691086">Scuturile sunt ACTIVE <ph name="LINK_BEFORE"/>pentru<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@ other {# surse}
 <translation id="8814357473522731680">Oferit de</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="5747552184818312860">Expiră</translation>
-<translation id="1691256669639196606">Gestionați abonamentul</translation>
 <translation id="434523916398030617">Contactați asistența tehnică</translation>
 <translation id="1116694919640316211">Despre</translation>
 <translation id="8670386189340362926">Blocați urmărirea și anunțurile în toate aplicațiile</translation>
