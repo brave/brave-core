@@ -109,11 +109,13 @@ const removedNFTsRouteOptions = AccountDetailsOptions.filter(
   (option) => option.id !== 'nfts'
 )
 
-const noNFTsCoinTypes = [
-  BraveWallet.CoinType.BTC,
-  BraveWallet.CoinType.ZEC,
-  BraveWallet.CoinType.FIL
-]
+const coinSupportsNFTs = (coin: BraveWallet.CoinType) => {
+  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
+}
+
+const coinSupportsAssets = (coin: BraveWallet.CoinType) => {
+  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
+}
 
 export const Account = () => {
   // routing
@@ -261,9 +263,9 @@ export const Account = () => {
     )
 
   const filteredRouteOptions =
-    selectedAccount && noNFTsCoinTypes.includes(selectedAccount.accountId.coin)
-      ? removedNFTsRouteOptions
-      : AccountDetailsOptions
+    selectedAccount && coinSupportsNFTs(selectedAccount.accountId.coin)
+      ? AccountDetailsOptions
+      : removedNFTsRouteOptions
 
   const routeOptions = React.useMemo(() => {
     if (!selectedAccount) return []
@@ -397,6 +399,11 @@ export const Account = () => {
     []
   )
 
+  const showAssetDiscoverySkeleton =
+    selectedAccount &&
+    coinSupportsAssets(selectedAccount.accountId.coin) &&
+    !assetAutoDiscoveryCompleted
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
@@ -459,7 +466,7 @@ export const Account = () => {
               }
             />
           ))}
-          {!assetAutoDiscoveryCompleted && (
+          {showAssetDiscoverySkeleton && (
             <PortfolioAssetItemLoadingSkeleton />
           )}
         </AssetsWrapper>
