@@ -181,10 +181,14 @@ struct Cluster {
   array<ArticleElements> articles;
 };
 
+// Placeholder FeedV2 Ad - the actual ad is fetched dynamically when the item
+// comes into the viewport.
+struct FeedV2Ad {};
+
 union FeedItemV2 {
   Article article;
   HeroArticle hero;
-  PromotedArticle advert;
+  FeedV2Ad advert;
   Discover discover;
   Cluster cluster;
 };

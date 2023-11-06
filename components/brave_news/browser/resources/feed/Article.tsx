@@ -10,7 +10,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
-import Card, { Title } from './Card';
+import Card, { SmallImage, Title } from './Card';
 
 interface Props {
   info: Info
@@ -22,17 +22,6 @@ const Container = styled(Card)`
   flex-direction: column;
 `
 
-const ArticleImage = styled.img`
-  min-width: 96px;
-  width: 96px;
-
-  height: 64px;
-
-  object-fit: cover;
-  object-position: top;
-
-  border-radius: 6px;
-`
 export const openArticle = (article: FeedItemMetadata) => {
   const href = article.url.url
   validateScheme(href)
@@ -49,7 +38,7 @@ export default function Article({ info, hideChannel }: Props) {
       <Title>
         <SecureLink href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</SecureLink>
       </Title>
-      <ArticleImage src={imageUrl} />
+      <SmallImage src={imageUrl} />
     </Flex>
   </Container>
 }

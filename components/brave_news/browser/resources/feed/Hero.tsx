@@ -5,25 +5,14 @@
 import SecureLink from '$web-common/SecureLink';
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
-import styled from 'styled-components';
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { openArticle } from './Article';
 import ArticleMetaRow from './ArticleMetaRow';
-import Card, { Title } from './Card';
+import Card, { LargeImage, Title } from './Card';
 
 interface Props {
   info: Info
 }
-
-const HeroImage = styled.img`
-  width: 100%;
-  height: 269px;
-
-  object-fit: cover;
-  object-position: top;
-
-  border-radius: 6px;
-`
 
 export default function HeroArticle({ info }: Props) {
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, {
@@ -32,7 +21,7 @@ export default function HeroArticle({ info }: Props) {
     rootMargin: '0px 0px 200px 0px'
   })
   return <Card onClick={() => openArticle(info.data)} ref={setElementRef}>
-    <HeroImage src={url} />
+    <LargeImage src={url} />
     <ArticleMetaRow article={info.data} />
     <Title>
       <SecureLink href={info.data.url.url}>{info.data.title}</SecureLink>

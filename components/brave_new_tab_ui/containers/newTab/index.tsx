@@ -21,11 +21,11 @@ import SiteRemovalNotification from './notification'
 import Stats from './stats'
 
 // Helpers
+import { getLocale } from '$web-common/locale'
+import VisibilityTimer from '$web-common/visibilityTimer'
 import isReadableOnBackground from '../../helpers/colorUtil'
-import VisibilityTimer from '../../helpers/visibilityTimer'
 
 // Types
-import { getLocale } from '../../../common/locale'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveNewsState } from '../../reducers/today'
 

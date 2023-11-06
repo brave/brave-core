@@ -29,6 +29,28 @@ export const Title = styled.h3`
   &> a { all: unset; }
 `
 
+export const SmallImage = styled.img`
+  min-width: 96px;
+  width: 96px;
+
+  height: 64px;
+
+  object-fit: cover;
+  object-position: top;
+
+  border-radius: 6px;
+`
+
+export const LargeImage = styled.img`
+  width: 100%;
+  height: 269px;
+
+  object-fit: cover;
+  object-position: top;
+
+  border-radius: 6px;
+`
+
 export default styled.div`
   text-decoration: none;
   background: rgba(255, 255, 255, 0.3);
@@ -36,7 +58,7 @@ export default styled.div`
   color: ${color.text.primary};
   padding: ${spacing["2Xl"]};
 
-  &:has(a:focus-visible) {
+  &:has(${Title} a:focus-visible) {
     box-shadow: ${effect.focusState};
   }
 
