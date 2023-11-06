@@ -24,8 +24,8 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/aura/window.h"
 #include "ui/aura/window_tree_host.h"
+#include "ui/gfx/x/connection.h"
 #include "ui/gfx/x/x11_atom_cache.h"
-#include "ui/gfx/x/xproto_util.h"
 
 namespace brave_ads {
 
@@ -40,8 +40,8 @@ BackgroundHelperLinux::~BackgroundHelperLinux() {
 
 bool BackgroundHelperLinux::IsForeground() const {
   x11::Window x11_window = x11::Window::None;
-  x11::GetProperty(ui::GetX11RootWindow(), x11::GetAtom("_NET_ACTIVE_WINDOW"),
-                   &x11_window);
+  x11::Connection::Get()->GetPropertyAs(
+      ui::GetX11RootWindow(), x11::GetAtom("_NET_ACTIVE_WINDOW"), &x11_window);
 
   for (auto* browser : *BrowserList::GetInstance()) {
     auto window =
