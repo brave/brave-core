@@ -6,17 +6,12 @@ import { spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
 import styled from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'
+import Variables from '../../../../brave_news/browser/resources/Variables'
 import Sidebar from '../../../../brave_news/browser/resources/Sidebar'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
 
-const Variables = styled.div`
-  --bn-text-base: 0, 0, 0;
-
-  @media (prefers-color-scheme: dark) {
-    --bn-text-base: 255, 255, 255;
-  }
-
+const Root = styled(Variables)`
   padding-top: ${spacing.xl};
 `
 
@@ -49,10 +44,10 @@ export default function FeedV2() {
     ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
-  return <Variables ref={ref as any}>
+  return <Root ref={ref as any}>
     <Feed feed={feedV2} />
     <SidebarContainer>
       <Sidebar />
     </SidebarContainer>
-  </Variables>
+  </Root>
 }

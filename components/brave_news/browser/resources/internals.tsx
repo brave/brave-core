@@ -12,10 +12,11 @@ import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
 import InspectContext from './context'
 import Sidebar from './Sidebar'
+import Variables from './Variables'
 
 setIconBasePath('//resources/brave-icons')
 
-const Grid = styled.div`
+const Grid = styled(Variables)`
   display: grid;
   grid-template-columns: 300px auto 300px;
   padding: 16px;
@@ -31,7 +32,7 @@ function App() {
   return <Grid>
     <SignalsPage />
     <FeedPage />
-    <Sidebar/>
+    <Sidebar />
   </Grid>
 }
 
