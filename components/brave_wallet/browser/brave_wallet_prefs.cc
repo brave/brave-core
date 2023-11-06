@@ -89,13 +89,9 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   sol_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kSolanaPrefKey, std::move(sol_hidden));
 
-  // TODO(apaymyshev): fix by
-  // https://github.com/brave/brave-browser/issues/31662
-  /*
   base::Value::List btc_hidden;
   btc_hidden.Append(mojom::kBitcoinTestnet);
   hidden_networks.Set(kBitcoinPrefKey, std::move(btc_hidden));
-  */
 
   base::Value::List zec_hidden;
   zec_hidden.Append(mojom::kZCashTestnet);

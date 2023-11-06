@@ -49,7 +49,8 @@ absl::optional<brave_wallet::mojom::CoinType> ToCoinType(
   auto result = static_cast<brave_wallet::mojom::CoinType>(*val);
   if (result != brave_wallet::mojom::CoinType::ETH &&
       result != brave_wallet::mojom::CoinType::FIL &&
-      result != brave_wallet::mojom::CoinType::SOL) {
+      result != brave_wallet::mojom::CoinType::SOL &&
+      result != brave_wallet::mojom::CoinType::BTC) {
     NOTREACHED();
     return absl::nullopt;
   }
@@ -99,6 +100,10 @@ void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "isNftPinningEnabled",
       base::BindRepeating(&BraveWalletHandler::IsNftPinningEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isBitcoinEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsBitcoinEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getPinnedNftCount",
@@ -332,6 +337,13 @@ void BraveWalletHandler::IsNftPinningEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsNftPinningEnabled()));
+}
+
+void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsBitcoinEnabled()));
 }
 
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {

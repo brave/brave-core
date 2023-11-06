@@ -1205,10 +1205,8 @@ TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
               ElementsAreArray<std::string>({mojom::kSolanaDevnet,
                                              mojom::kSolanaTestnet,
                                              mojom::kLocalhostChainId}));
-  // TODO(apaymyshev): fix by
-  // https://github.com/brave/brave-browser/issues/31662
   EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::BTC),
-              ElementsAreArray<std::string>({/*mojom::kBitcoinTestnet*/}));
+              ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
   EXPECT_TRUE(AllCoinsTested());
 
   for (auto coin : kAllCoins) {
