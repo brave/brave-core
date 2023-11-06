@@ -124,17 +124,18 @@ export const AccountDetailsHeader = (props: Props) => {
     [accountsFungibleTokens]
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      tokenPriceIds.length && defaultFiatCurrency
+        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
   const accountsFiatValue = React.useMemo(() => {
     // Return an empty string to display a loading
     // skeleton while assets are populated.
-    if (userVisibleTokensInfo.length === 0) {
+    if (userVisibleTokensInfo.length === 0 || isLoadingSpotPrices) {
       return Amount.empty()
     }
     // Return a 0 balance if the account has no
@@ -165,7 +166,9 @@ export const AccountDetailsHeader = (props: Props) => {
     account,
     userVisibleTokensInfo,
     accountsFungibleTokens,
-    tokenBalancesRegistry
+    tokenBalancesRegistry,
+    spotPriceRegistry,
+    isLoadingSpotPrices
   ])
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
