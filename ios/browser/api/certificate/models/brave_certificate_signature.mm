@@ -8,11 +8,12 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
-#include "net/cert/pki/parsed_certificate.h"
-#include "net/der/input.h"
+#include "third_party/boringssl/src/pki/input.h"
+#include "third_party/boringssl/src/pki/parsed_certificate.h"
 
 @implementation BraveCertificateSignature
-- (instancetype)initWithCertificate:(const net::ParsedCertificate*)certificate {
+- (instancetype)initWithCertificate:
+    (const bssl::ParsedCertificate*)certificate {
   if ((self = [super init])) {
     _algorithm = [[NSString alloc] init];
     _digest = [[NSString alloc] init];
@@ -31,8 +32,8 @@
               *certificate->signature_algorithm()));
     }
 
-    net::der::Input signature_oid;
-    net::der::Input signature_params;
+    bssl::der::Input signature_oid;
+    bssl::der::Input signature_params;
     if (certificate::x509_utils::ParseAlgorithmIdentifier(
             certificate->signature_algorithm_tlv(), &signature_oid,
             &signature_params)) {

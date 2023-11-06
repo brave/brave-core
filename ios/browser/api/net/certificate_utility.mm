@@ -25,18 +25,18 @@
 #include "net/cert/cert_verify_proc_ios.h"
 #include "net/cert/cert_verify_result.h"
 #include "net/cert/crl_set.h"
-#include "net/cert/pem.h"
-#include "net/cert/pki/cert_errors.h"
-#include "net/cert/pki/parsed_certificate.h"
 #include "net/cert/x509_certificate.h"
 #include "net/cert/x509_util.h"
 #include "net/cert/x509_util_apple.h"
-#include "net/der/input.h"
 #include "net/http/transport_security_state.h"
 #include "net/log/net_log_with_source.h"
 #include "net/net_buildflags.h"
 #include "net/tools/transport_security_state_generator/cert_util.h"
 #include "net/tools/transport_security_state_generator/spki_hash.h"
+#include "third_party/boringssl/src/pki/cert_errors.h"
+#include "third_party/boringssl/src/pki/input.h"
+#include "third_party/boringssl/src/pki/parsed_certificate.h"
+#include "third_party/boringssl/src/pki/pem.h"
 
 #include "third_party/boringssl/src/include/openssl/mem.h"
 #include "third_party/boringssl/src/include/openssl/sha.h"
@@ -109,10 +109,10 @@ namespace {
     return nil;
   }
 
-  net::CertErrors errors;
-  std::shared_ptr<const net::ParsedCertificate> extended_cert =
-      std::shared_ptr<const net::ParsedCertificate>(
-          net::ParsedCertificate::Create(
+  bssl::CertErrors errors;
+  std::shared_ptr<const bssl::ParsedCertificate> extended_cert =
+      std::shared_ptr<const bssl::ParsedCertificate>(
+          bssl::ParsedCertificate::Create(
               std::move(cert_buffer),
               net::x509_util::DefaultParseCertificateOptions() /* {} */,
               &errors));
@@ -123,7 +123,7 @@ namespace {
   }
 
   std::uint8_t data[32] = {0};
-  net::der::Input spki = extended_cert->tbs().spki_tlv;
+  bssl::der::Input spki = extended_cert->tbs().spki_tlv;
   SHA256(spki.UnsafeData(), spki.Length(), data);
 
   return [NSData dataWithBytes:data length:sizeof(data) / sizeof(data[0])];
