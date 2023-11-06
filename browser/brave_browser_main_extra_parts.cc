@@ -64,6 +64,9 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
   extensions::Extension::
       set_silence_deprecated_manifest_version_warnings_for_testing(true);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(IS_WIN)
+  immersive_context_ = std::make_unique<ImmersiveContextWin>();
+#endif
 }
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {

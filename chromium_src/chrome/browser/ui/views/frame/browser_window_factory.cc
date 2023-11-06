@@ -9,6 +9,18 @@
 
 #define BrowserFrame BraveBrowserFrame
 #define BrowserView BraveBrowserView
+
+#if BUILDFLAG(IS_WIN)
+#define InitBrowserFrame \
+  InitBrowserFrame();    \
+  view->UsesImmersiveFullscreenMode() && view->CreateWinOverlayView
+#endif
+
 #include "src/chrome/browser/ui/views/frame/browser_window_factory.cc"
+
+#if BUILDFLAG(IS_WIN)
+#undef InitBrowserFrame
+#endif
+
 #undef BrowserView
 #undef BrowserFrame

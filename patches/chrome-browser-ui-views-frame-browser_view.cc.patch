@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
+index f764d5edc704c7eb954385381a80c4fd3c9ac6b4..73605ffdc31e4ebbe3a384d10ef9269d86791279 100644
+--- a/chrome/browser/ui/views/frame/browser_view.cc
++++ b/chrome/browser/ui/views/frame/browser_view.cc
+@@ -1316,7 +1316,7 @@ float BrowserView::GetTopControlsSlideBehaviorShownRatio() const {
+ }
+ 
+ views::Widget* BrowserView::GetWidgetForAnchoring() {
+-#if BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   if (UsesImmersiveFullscreenMode()) {
+     return IsFullscreen() ? overlay_widget_.get() : GetWidget();
+   }
+@@ -2078,7 +2078,7 @@ void BrowserView::FullscreenStateChanging() {
+ }
+ 
+ void BrowserView::FullscreenStateChanged() {
+-#if BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   if (!IsFullscreen() && restore_pre_fullscreen_bounds_callback_) {
+     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+         FROM_HERE, std::move(restore_pre_fullscreen_bounds_callback_));
+@@ -2330,7 +2330,7 @@ void BrowserView::UpdateWindowControlsOverlayToggleVisible() {
+   if (IsImmersiveModeEnabled())
+     should_show = false;
+ 
+-#if BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   // On macOS, when in fullscreen mode, window controls (the menu bar, title
+   // bar, and toolbar) are attached to a separate NSView that slides down from
+   // the top of the screen, independent of, and overlapping the WebContents.
+@@ -4287,7 +4287,7 @@ views::CloseRequestResult BrowserView::OnWindowCloseRequested() {
+ }
+ 
+ int BrowserView::NonClientHitTest(const gfx::Point& point) {
+-#if BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   // The top container while in immersive fullscreen on macOS lives in another
+   // Widget (OverlayWidget). This means that BrowserView does not need to
+   // consult BrowserViewLayout::NonClientHitTest() to calculate the hit test.

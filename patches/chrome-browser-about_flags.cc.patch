@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index c9e74052c7afbac65035e604647e4a7d545d2643..4f5573620ea6e0e2f8a61ea1009fa485453a6a57 100644
+index c9e74052c7afbac65035e604647e4a7d545d2643..f346943cb14ccf9a2434a94f4c2b259aa1ad8e80 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -3813,6 +3813,7 @@ const FeatureEntry::FeatureVariation kDefaultBrowserPromptRefreshVariations[] =
@@ -10,6 +10,19 @@ index c9e74052c7afbac65035e604647e4a7d545d2643..4f5573620ea6e0e2f8a61ea1009fa485
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
+@@ -5598,10 +5599,10 @@ const FeatureEntry kFeatureEntries[] = {
+      flag_descriptions::kRetryGetVideoCaptureDeviceInfosDescription, kOsMac,
+      FEATURE_VALUE_TYPE(features::kRetryGetVideoCaptureDeviceInfos)},
+ #endif  // BUILDFLAG(IS_MAC)
+-#if BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+     {"enable-immersive-fullscreen-toolbar",
+      flag_descriptions::kImmersiveFullscreenName,
+-     flag_descriptions::kImmersiveFullscreenDescription, kOsMac,
++     flag_descriptions::kImmersiveFullscreenDescription, kOsMac | kOsWin,
+      FEATURE_VALUE_TYPE(features::kImmersiveFullscreen)},
+ #endif  // BUILDFLAG(IS_MAC)
+     {"enable-web-payments-experimental-features",
 @@ -11318,6 +11319,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
  
  bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
