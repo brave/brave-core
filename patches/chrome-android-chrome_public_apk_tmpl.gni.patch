@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 13ab7ec536d429e3444ab640c790b51af183be33..e9dbce7b59158cfd76a62bae84f8f5c4a118fb19 100644
+index 13ab7ec536d429e3444ab640c790b51af183be33..90da902b31d995ab8626b03b99426763f2f331bd 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -309,6 +309,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -22,7 +22,7 @@ index 13ab7ec536d429e3444ab640c790b51af183be33..e9dbce7b59158cfd76a62bae84f8f5c4
                                   "version_code",
                                   "version_name",
                                 ])
-+    _wireguard_target = "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" deps += [ _wireguard_target] _libwireguard_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni" if (android_64bit_target_cpu) {loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ] secondary_abi_loadable_modules +=[ "$_libwireguard_dir/$android_app_secondary_abi/libwg-go.so" ]} else {loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]}
++    _wireguard_target = "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" deps += [ _wireguard_target] _libwireguard_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni" loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]
    }
  }
  

@@ -18,7 +18,7 @@ action("sign_app_convert_aab_to_apk") {
 
   deps = [ ":sign_app" ]
 
-  target_aab_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+  target_aab_path = "$root_out_dir/apks/MonochromePublic64.aab"
   output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
   output_path = "$root_out_dir/apks/"
   bundletool = "//third_party/android_build_tools/bundletool/bundletool.jar"
@@ -47,7 +47,7 @@ action("sign_app") {
 
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
-      target_sign_app_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+      target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.aab"
     } else {
       target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
     }
@@ -88,8 +88,8 @@ copy("brave") {
   sources = []
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:monochrome_64_32_public_bundle" ]
-      sources += [ "$root_out_dir/apks/MonochromePublic6432.aab" ]
+      deps += [ "//chrome/android:monochrome_64_public_bundle" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic64.aab" ]
     } else {
       # There is no 64-bit apk target for Mono
       deps += [ "//chrome/android:monochrome_public_apk" ]
