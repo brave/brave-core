@@ -777,7 +777,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
       GetNetworkURL(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
 
   EXPECT_EQ(
-      GURL("https://bitcoin-mainnet.wallet.bravesoftware.com/"),
+      GURL("https://bitcoin-mainnet.wallet.brave.com/"),
       GetNetworkURL(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
   auto custom_btc_network =
       GetKnownChain(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
@@ -939,7 +939,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   // Bitcoin
   mojom::NetworkInfo btc_mainnet(
       mojom::kBitcoinMainnet, "Bitcoin Mainnet", {"https://blockstream.info"},
-      {}, 0, {GURL("https://bitcoin-mainnet.wallet.bravesoftware.com/")}, "BTC",
+      {}, 0, {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC",
       "Bitcoin", 8, mojom::CoinType::BTC, {mojom::KeyringId::kBitcoin84},
       false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::BTC));

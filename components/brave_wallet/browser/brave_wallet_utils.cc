@@ -517,7 +517,7 @@ GURL BitcoinMainnetRpcUrl() {
     return switch_url;
   }
 
-  return GURL("https://bitcoin-mainnet.wallet.bravesoftware.com/");
+  return GURL("https://bitcoin-mainnet.wallet.brave.com/");
 }
 
 GURL BitcoinTestnetRpcUrl() {
