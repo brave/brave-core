@@ -20,35 +20,17 @@ public class MiscAndroidMetricsConnectionErrorHandler implements ConnectionError
         default void cleanUpMiscAndroidMetrics() {}
     }
 
-    private MiscAndroidMetricsConnectionErrorHandlerDelegate
-            mMiscAndroidMetricsConnectionErrorHandlerDelegate;
-    private static final Object sLock = new Object();
-    private static MiscAndroidMetricsConnectionErrorHandler sInstance;
+    private MiscAndroidMetricsConnectionErrorHandlerDelegate mDelegate;
 
-    public static MiscAndroidMetricsConnectionErrorHandler getInstance() {
-        synchronized (sLock) {
-            if (sInstance == null) {
-                sInstance = new MiscAndroidMetricsConnectionErrorHandler();
-            }
-        }
-        return sInstance;
-    }
-
-    public void setDelegate(MiscAndroidMetricsConnectionErrorHandlerDelegate
-                    privacyHubMetricsConnectionErrorHandlerDelegate) {
-        mMiscAndroidMetricsConnectionErrorHandlerDelegate =
-                privacyHubMetricsConnectionErrorHandlerDelegate;
-        assert mMiscAndroidMetricsConnectionErrorHandlerDelegate
-                != null : "mMiscAndroidMetricsConnectionErrorHandlerDelegate has to be initialized";
+    public MiscAndroidMetricsConnectionErrorHandler(
+            MiscAndroidMetricsConnectionErrorHandlerDelegate delegate) {
+        assert delegate != null : "delegate has to be initialized";
+        mDelegate = delegate;
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        if (mMiscAndroidMetricsConnectionErrorHandlerDelegate == null) {
-            return;
-        }
-
-        mMiscAndroidMetricsConnectionErrorHandlerDelegate.cleanUpMiscAndroidMetrics();
-        mMiscAndroidMetricsConnectionErrorHandlerDelegate.initMiscAndroidMetrics();
+        mDelegate.cleanUpMiscAndroidMetrics();
+        mDelegate.initMiscAndroidMetrics();
     }
 }

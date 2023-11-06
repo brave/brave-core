@@ -1174,8 +1174,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         if (mBraveNewsConnectionErrorHandler == null) {
-            mBraveNewsConnectionErrorHandler = BraveNewsConnectionErrorHandler.getInstance();
-            mBraveNewsConnectionErrorHandler.setDelegate(this);
+            mBraveNewsConnectionErrorHandler = new BraveNewsConnectionErrorHandler(this);
         }
 
         if (BravePrefServiceBridge.getInstance().getShowNews()
@@ -2011,8 +2010,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         if (mMiscAndroidMetricsConnectionErrorHandler == null) {
             mMiscAndroidMetricsConnectionErrorHandler =
-                    MiscAndroidMetricsConnectionErrorHandler.getInstance();
-            mMiscAndroidMetricsConnectionErrorHandler.setDelegate(this);
+                    new MiscAndroidMetricsConnectionErrorHandler(this);
         }
 
         mMiscAndroidMetrics = MiscAndroidMetricsFactory.getInstance().getMetricsService(
