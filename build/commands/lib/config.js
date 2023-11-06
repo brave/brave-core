@@ -423,6 +423,14 @@ Config.prototype.buildArgs = function () {
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
+    // Use dummy LASTCHANGE. When the real LASTCHANGE is used, ~2300 targets
+    // are rebuilt with each version bump.
+    args.use_dummy_lastchange = true
+
+    // Don't randomize mojom message ids. When randomization is enabled, all
+    // Mojo targets are rebuilt (~23000) on each version bump.
+    args.enable_mojom_message_id_scrambling = false
+
     if (process.platform === 'darwin' && args.is_official_build) {
       // Don't create dSYMs in non-true Release builds. dSYMs should be disabled
       // in order to have relocatable compilation so Goma can share the cache
