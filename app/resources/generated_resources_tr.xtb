@@ -88,7 +88,7 @@
 <translation id="5428209950370661546">Diğer Brave hizmetleri</translation>
 <translation id="106814709658156573">Parmak izini ayarlamak için çocuğunuzun, klavyenin sol alt köşesindeki parmak izi sensörüne dokunması gerekir. Çocuğunuzun parmak izi verileri güvenli bir şekilde depolanır ve her zaman <ph name="DEVICE_TYPE"/> cihazınızda tutulur.</translation>
 <translation id="106855837688344862">Dokunma Etkinlikleri</translation>
-<translation id="1069104208554708737">Bu şifre anahtarı yalnızca bu cihazda kaydedilir</translation>
+<translation id="1069104208554708737">Bu geçiş anahtarı yalnızca bu cihazda kaydedilir</translation>
 <translation id="1069355737714877171"><ph name="PROFILE_NAME"/> adlı eSIM profilini kaldır</translation>
 <translation id="1069814191880976658">Farklı bir ekran seç</translation>
 <translation id="6654312501894761082">Bilgisayarınızdaki başka bir program, Brave'un çalışma şeklini değiştirebilecek bir uzantı ekledi.
@@ -268,7 +268,7 @@
 <translation id="120069043972472860">İzlenemiyor</translation>
 <translation id="1201402288615127009">İleri</translation>
 <translation id="1201564082781748151">Şifrenizi unutursanız yerel veriler geri yüklenebilir</translation>
-<translation id="1202116106683864634">Bu şifre anahtarını silmek istediğinizden emin misiniz?</translation>
+<translation id="1202116106683864634">Bu geçiş anahtarını silmek istediğinizden emin misiniz?</translation>
 <translation id="1202596434010270079">Kiosk uygulaması güncellendi. Lütfen USB çubuğunu çıkarın.</translation>
 <translation id="1202892408424955784">Takip edilen ürünler</translation>
 <translation id="1203559206734265703">Korunan Kitleler Hata Ayıklaması etkin.</translation>
@@ -297,7 +297,7 @@
 <translation id="1223484782328004593"><ph name="APP_NAME"/> lisans gerektiriyor</translation>
 <translation id="1223853788495130632">Yöneticiniz bu ayar için belirli bir değer öneriyor.</translation>
 <translation id="1225177025209879837">İstek işleniyor...</translation>
-<translation id="1227660082540388410">Şifre anahtarını düzenleyin</translation>
+<translation id="1227660082540388410">Geçiş anahtarını düzenleyin</translation>
 <translation id="1227993798763400520">Yayınlama işlemi başarısız oldu. Lütfen tekrar deneyin.</translation>
 <translation id="1230417814058465809">Standart koruma açık. Daha fazla güvenlik için gelişmiş korumayı kullanın.</translation>
 <translation id="1231426483209637778"><ph name="DEVICE_TYPE"/> cihazını tekrar kullandığınızda ağınız hatırlanacak</translation>
@@ -413,7 +413,7 @@
 <translation id="5300943435011884963">Hedeflenmiş saldırıya uğrama riski olan herkesin kişisel Brave Hesaplarını korur</translation>
 <translation id="1327272175893960498">Kerberos biletleri</translation>
 <translation id="1327495825214193325">ADB hata ayıklama işlevini etkinleştirmek için bu <ph name="DEVICE_TYPE"/> cihazının yeniden başlatılması gerekir. Bu işlevi devre dışı bırakmak fabrika ayarlarına sıfırlama yapılmasını gerektirir.</translation>
-<translation id="1327527584824210101">Şifre anahtarınızı kullanın</translation>
+<translation id="1327527584824210101">Geçiş anahtarınızı kullanın</translation>
 <translation id="1327794256477341646">Konumunuza erişilmesini gerektiren özellikler çalışmaz</translation>
 <translation id="1329466763986822896">Bu hotspot'un gizliliğini iyileştirin</translation>
 <translation id="1331977651797684645">Bu kişi bendim.</translation>
@@ -544,7 +544,7 @@
 <translation id="1433980411933182122">Başlatma Sırasında</translation>
 <translation id="1434696352799406980">Bu işlem, başlangıç sayfanızı, yeni sekme sayfanızı, arama motorunuzu ve sabit sekmelerinizi sıfırlar. Ayrıca, tüm uzantılar devre dışı bırakılır ve çerezler gibi geçici veriler temizlenir. Yer işaretleriniz, geçmişiniz ve kayıtlı şifreleriniz temizlenmez.</translation>
 <translation id="1434886155212424586">Ana sayfa Yeni Sekme sayfasıdır</translation>
-<translation id="1435940442311036198">Farklı bir cihazdaki şifre anahtarını kullanın</translation>
+<translation id="1435940442311036198">Farklı bir cihazdaki geçiş anahtarını kullanın</translation>
 <translation id="1436390408194692385"><ph name="TICKET_TIME_LEFT"/> süreyle geçerli</translation>
 <translation id="1436671784520050284">Kuruluma devam et</translation>
 <translation id="1436784010935106834">Kaldırıldı</translation>
@@ -615,7 +615,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1485141095922496924"><ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/> Sürümü</translation>
 <translation id="1485197926103629489">Microsoft 365 için dosyaların OneDrive'da depolanması gerekir. Yerel dosyalar taşınacak ve diğer konumlardaki dosyalar kopyalanacak. Dosyalarınızı, Dosyalar uygulamasındaki Microsoft OneDrive klasöründe bulabilirsiniz.</translation>
 <translation id="1486096554574027028">Şifrelerde ara</translation>
-<translation id="1486486872607808064"><ph name="APP_NAME"/> için şifre anahtarı oluşturmak istediğiniz cihazın kamerasıyla bu QR kodunu tarayın</translation>
+<translation id="1486486872607808064"><ph name="APP_NAME"/> için geçiş anahtarı oluşturmak istediğiniz cihazın kamerasıyla bu QR kodunu tarayın</translation>
 <translation id="1487335504823219454">Açık - özel ayarlar</translation>
 <translation id="1493892686965953381"><ph name="LOAD_STATE_PARAMETER"/> bekleniyor...</translation>
 <translation id="1494349716233667318">Siteler, cihazımda yüklü yazı tiplerini kullanmak isteyebilir</translation>
@@ -908,7 +908,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (Yerel)</translation>
 <translation id="1709217939274742847">Kimlik doğrulama için kullanılacak bir bilet seçin <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="1709762881904163296">Ağ Ayarları</translation>
-<translation id="1709916727352927457">Şifre anahtarını silin</translation>
+<translation id="1709916727352927457">Geçiş anahtarını silin</translation>
 <translation id="1709972045049031556">Paylaşılamıyor</translation>
 <translation id="1714644264617423774">Cihazınızı daha kolay kullanılır duruma getirmek için erişilebilirlik özelliklerini etkinleştirin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="1716034099915639464"><ph name="SITE_NAME"/> sitesi ve yüklü uygulamasındaki site verileri ile izinler silinsin mi?</translation>
@@ -944,7 +944,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1744108098763830590">arka plan sayfası</translation>
 <translation id="1745732479023874451">Kişileri yönet</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}other{# dosyayı bu web uygulamasında açıp düzenlemek istiyor musunuz?}}</translation>
-<translation id="1748329107062243374"><ph name="WEBSITE"/> adresinde oturum açmak için <ph name="DEVICE_NAME"/> adlı cihazdaki bir şifre anahtarını kullanın</translation>
+<translation id="1748329107062243374"><ph name="WEBSITE"/> adresinde oturum açmak için <ph name="DEVICE_NAME"/> adlı cihazdaki bir geçiş anahtarını kullanın</translation>
 <translation id="1901235742643584247">Bu şifreyi Brave Hesabınızda veya yalnızca bu cihazda kaydedebilirsiniz</translation>
 <translation id="1749733017156547309">Bir şifre gerekli</translation>
 <translation id="1750172676754093297">Güvenlik anahtarınız parmak izlerinizi depolayamaz</translation>
@@ -1210,7 +1210,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1941995177877935582">Tuş eşlemeyi göster</translation>
 <translation id="1942128823046546853">Web sitelerindeki tüm verilerinizi okuma ve değiştirme</translation>
 <translation id="1944528062465413897">Bluetooth eşleme kodu:</translation>
-<translation id="1944535645109964458">Şifre anahtarı yok</translation>
+<translation id="1944535645109964458">Geçiş anahtarı yok</translation>
 <translation id="1944921356641260203">Güncelleme bulundu</translation>
 <translation id="1947136734041527201">Bir kimlik hizmetindeki hesabınızı kullanarak web sitelerinde oturum açmanızı sağlar</translation>
 <translation id="1949332606889020901">Kilitlenme olay kimlikleri</translation>
@@ -2234,7 +2234,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2739331588276254426"><ph name="HOST_DEVICE_NAME"/> üzerinden internete bağlanıldı</translation>
 <translation id="274029851662193272">Bastırılmış</translation>
 <translation id="2740531572673183784">Tamam</translation>
-<translation id="4939259950706542337">Bu şifre anahtarları yalnızca bu cihaza kaydedilir. Brave Hesabınıza kaydedilmezler.</translation>
+<translation id="4939259950706542337">Bu geçiş anahtarları yalnızca bu cihaza kaydedilir. Brave Hesabınıza kaydedilmezler.</translation>
 <translation id="2741713322780029189">Kurtarma terminalini aç</translation>
 <translation id="2741912629735277980">Giriş ekranında kullanıcı arayüzünü görüntüle</translation>
 <translation id="2742448780373473567"><ph name="DEVICE_OS"/> yüklenirken cihazınızdaki tüm verilerin üzerine yazılır.</translation>
@@ -2316,7 +2316,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2801954693771979815">Ekran boyutu</translation>
 <translation id="2802557211515765772">Yönetilen yazıcı yok.</translation>
 <translation id="2803313416453193357">Klasörü aç</translation>
-<translation id="2803719750464280163">Lütfen <ph name="PASSKEY"/> sayısının, <ph name="DEVICE"/> adlı Bluetooth cihazda görüntülenen şifre anahtarı olduğunu onaylayın.</translation>
+<translation id="2803719750464280163">Lütfen <ph name="PASSKEY"/> sayısının, <ph name="DEVICE"/> adlı Bluetooth cihazda görüntülenen geçiş anahtarı olduğunu onaylayın.</translation>
 <translation id="2804043232879091219">Alternatif tarayıcı açılamadı</translation>
 <translation id="2804667941345577550">Açık sekmeler dahil olmak üzere bu sitede oturumunuz kapatılacak</translation>
 <translation id="2804680522274557040">Kamera devre dışı bırakıldı</translation>
@@ -2372,7 +2372,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2843698124892775282"><ph name="MEMORY_SAVINGS"/> Yer Açıldı</translation>
 <translation id="2844169650293029770">USB-C cihaz (sol ön bağlantı noktası)</translation>
 <translation id="2844809857160214557">Yazdırma işlerini görüntüleyin ve yönetin</translation>
-<translation id="2845751331501453107">İnternette gezinirken gördüğünüz bir reklamın kişiselleştirilmiş olup olmaması bu ayara, <ph name="BEGIN_LINK1"/>site tarafından önerilen reklamlara<ph name="LINK_END1"/>, <ph name="BEGIN_LINK2"/>çerez ayarlarınıza<ph name="LINK_END2"/> ve görüntülediğiniz sitenin reklamları kişiselleştirip kişiselleştirmediğine bağlıdır</translation>
+<translation id="2845751331501453107">İnternette gezinirken gördüğünüz bir reklamın kişiselleştirilmiş olup olmaması bu ayara, <ph name="BEGIN_LINK1"/>site tarafından önerilen reklamlara<ph name="LINK_END1"/>, <ph name="BEGIN_LINK2"/>çerez ayarlarınıza<ph name="LINK_END2"/> ve görüntülediğiniz sitenin reklamları kişiselleştirip kişiselleştirmediğine bağlıdır.</translation>
 <translation id="284581348330507117">Benzersiz şifreler oluşturun</translation>
 <translation id="2849035674501872372">Araştır</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
@@ -3325,7 +3325,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3654045516529121250">Erişilebilirlik ayarlarınızı okuma</translation>
 <translation id="3656328935986149999">İmleç hızı</translation>
 <translation id="3658871634334445293">TrackPoint hızlandırması</translation>
-<translation id="3659550105763988702"><ph name="APP_NAME"/> için şifre anahtarınızı kulanın</translation>
+<translation id="3659550105763988702"><ph name="APP_NAME"/> için geçiş anahtarınızı kulanın</translation>
 <translation id="3659929705630080526">Çok fazla sayıda yanlış erişim kodu girdiniz. Daha sonra tekrar deneyin</translation>
 <translation id="3660234220361471169">Güvenilmeyen</translation>
 <translation id="3661297433172569100">{NUM_PASSWORDS,plural, =1{1 mevcut şifre bulundu}other{{NUM_PASSWORDS} mevcut şifre bulundu}}</translation>
@@ -3656,7 +3656,7 @@ Yüklü yazılımlar, dosyalar, tarayıcınız ve cihazın işletim sistemi hakk
 <translation id="3898768766145818464">Videoyu oynatır veya duraklatır</translation>
 <translation id="389901847090970821">Klavye seçin</translation>
 <translation id="3900966090527141178">Şifreleri dışa aktar</translation>
-<translation id="3902789559055749153"><ph name="APP_NAME"/> için şifre anahtarını nasıl oluşturmak istediğinizi seçin</translation>
+<translation id="3902789559055749153"><ph name="APP_NAME"/> için geçiş anahtarını nasıl oluşturmak istediğinizi seçin</translation>
 <translation id="3903187154317825986">Yerleşik klavye</translation>
 <translation id="3904326018476041253">Konum Hizmetleri</translation>
 <translation id="3905218345729976782">Kablosuz ağa Android telefonla bağlan</translation>
@@ -4041,7 +4041,7 @@ Yüklü yazılımlar, dosyalar, tarayıcınız ve cihazın işletim sistemi hakk
 <translation id="4220157655212610908">Harici bir güvenlik anahtarı kullan</translation>
 <translation id="4220648711404560261">Etkinleştirme sırasında bir hata oluştu.</translation>
 <translation id="4222917615373664617">Fiyat takibi etkin. Fiyat: <ph name="CURRENT_PRICE"/>.</translation>
-<translation id="4223845867739585293">Şifre anahtarı oluşturun</translation>
+<translation id="4223845867739585293">Geçiş anahtarı oluşturun</translation>
 <translation id="4225397296022057997">Tüm sitelerde</translation>
 <translation id="4228071595943929139">Kuruluşunuzun e-posta adresini kullanın</translation>
 <translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Bu uzantıya izin verilmiyor}other{Bazı uzantılara izin verilmiyor}}</translation>
@@ -4267,7 +4267,7 @@ Yüklü yazılımlar, dosyalar, tarayıcınız ve cihazın işletim sistemi hakk
 <translation id="4409779593816003679">Şifreler ve otom&amp;atik doldurma</translation>
 <translation id="4410545552906060960">Cihazınızın kilidini açmak için şifre yerine bir sayı (PIN) kullanın. PIN'inizi daha sonra ayarlamak için Ayarlar'a gidin.</translation>
 <translation id="4411578466613447185">Kod İmza Sahibi</translation>
-<translation id="4914256659228865673">Bu şifre anahtarları bu bilgisayarda Windows Hello'ya kaydedilir. Brave Hesabınıza kaydedilmezler.</translation>
+<translation id="4914256659228865673">Bu geçiş anahtarları bu bilgisayarda Windows Hello'ya kaydedilir. Brave Hesabınıza kaydedilmezler.</translation>
 <translation id="4412547955014928315"><ph name="SITE_NAME"/> sitesi ve buna bağlı tüm sitelerdeki site verileri ile izinler silinsin mi?</translation>
 <translation id="2225668468568666081">Brave uygulamaları, progresif web uygulamalarına (pwa) taşınıyor. Bu Brave uygulaması, kuruluşunuz tarafından tarayıcınıza yüklenmiş. Uygulamalar listesinden progresif web uygulamasını (pwa) açmak için öncelikle yöneticinizle iletişime geçip Brave uygulamasını kaldırmasını isteyin. Dilerseniz <ph name="EXTENSION_NAME"/> uzantısını web'de açmak için <ph name="EXTENSION_LAUNCH_URL"/> adresini ziyaret edebilirsiniz.</translation>
 <translation id="4412698727486357573">Yardım merkezi</translation>
@@ -4493,7 +4493,7 @@ Yüklü yazılımlar, dosyalar, tarayıcınız ve cihazın işletim sistemi hakk
 <translation id="4594577641390224176">Sistem bilgisi sayfasını mı arıyorsunuz? Şu adresi ziyaret edin:</translation>
 <translation id="4595560905247879544">Uygulamalar ve uzantılar sadece yönetici (<ph name="CUSTODIAN_NAME"/>) tarafından değiştirilebilir.</translation>
 <translation id="4596295440756783523">Dosyada şu sunucuları tanımlayan sertifikalarınız var</translation>
-<translation id="4598345735110653698">Şifre anahtarlarını yönet</translation>
+<translation id="4598345735110653698">Geçiş anahtarlarını yönet</translation>
 <translation id="4598556348158889687">Depolama alanı yönetimi</translation>
 <translation id="4598776695426288251">Kablosuz bağlantı çeşitli cihazlar üzerinden kullanılabilir</translation>
 <translation id="4600071396330666617">Öneri sayısı</translation>
@@ -4752,7 +4752,7 @@ Uzaklaştırmak için Ctrl + Alt + Parlaklığı Azalt tuşlarını kullanın.</
 <translation id="4816097470512964351"><ph name="DEVICE"/>, Ayrıntılar</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{1 yer işareti silindi}other{{COUNT} yer işareti silindi}}</translation>
 <translation id="481689174647911539">Bu dosya virüs veya kötü amaçlı yazılım olabilir.<ph name="LINE_BREAK"/>Güvenli olup olmadığını kontrol etmek için Brave Güvenli Tarama'ya gönderebilirsiniz. Taramalar genellikle birkaç saniye sürer.</translation>
-<translation id="4816900689218414104">Telefonda veya tablette şifre anahtarı oluşturun</translation>
+<translation id="4816900689218414104">Telefonda veya tablette geçiş anahtarı oluşturun</translation>
 <translation id="4819323978093861656">{0,plural, =0{Şimdi kapatılıyor.}=1{1 saniye sonra kapatılacak}other{# saniye sonra kapatılacak}}</translation>
 <translation id="8655084398729487585">Brave Asistan Bildirimleri</translation>
 <translation id="4819818293886748542">Destek aracı bağlantısı alın</translation>
@@ -4763,7 +4763,7 @@ Uzaklaştırmak için Ctrl + Alt + Parlaklığı Azalt tuşlarını kullanın.</
 <translation id="4823484602432206655">Kullanıcı ve cihaz ayarlarını okuma ve değiştirme</translation>
 <translation id="4824037980212326045">Linux yedekleme ve geri yükleme</translation>
 <translation id="4824958205181053313">Senkronizasyon iptal edilsin mi?</translation>
-<translation id="4825532258163983651">Şifre anahtarı silinemiyor</translation>
+<translation id="4825532258163983651">Geçiş anahtarı silinemiyor</translation>
 <translation id="4827283332383516812">Kartı sil</translation>
 <translation id="4827675678516992122">Bağlanılamadı</translation>
 <translation id="4536267179863600153">Brave tarayıcı için gelişmiş yazım denetimi (metin, yazım önerileri için Brave'a gönderilir)</translation>
@@ -5092,7 +5092,7 @@ Uzaklaştırmak için Ctrl + Alt + Parlaklığı Azalt tuşlarını kullanın.</
 <translation id="5109816792918100764">Kaldır: <ph name="LANGUAGE_NAME"/></translation>
 <translation id="5111326646107464148">Grubu yeni pencerede aç</translation>
 <translation id="5111692334209731439">&amp;Yer İşareti Yöneticisi</translation>
-<translation id="5111794652433847656">Bu cihazda <ph name="APP_NAME"/> için şifre anahtarı yok</translation>
+<translation id="5111794652433847656">Bu cihazda <ph name="APP_NAME"/> için geçiş anahtarı yok</translation>
 <translation id="5112577000029535889">&amp;Geliştirici Araçları</translation>
 <translation id="5112686815928391420">{NUM_OF_FILES,plural, =1{1 dosya taşındı}other{{NUM_OF_FILES} dosya taşındı}}</translation>
 <translation id="511313294362309725">Hızlı Eşleme özelliğini aç</translation>
@@ -5254,7 +5254,7 @@ Uzaklaştırmak için Ctrl + Alt + Parlaklığı Azalt tuşlarını kullanın.</
 <translation id="5252653240322147470">PIN en fazla <ph name="MAXIMUM"/> basamaklı olmalıdır</translation>
 <translation id="5254233580564156835">Bellek kullanımı: <ph name="MEMORY_USAGE"/></translation>
 <translation id="52550593576409946">Kiosk uygulaması başlatılamadı.</translation>
-<translation id="5255726914791076208">Şifre anahtarınızı düzenlediğinizde <ph name="RP_ID"/> hesabınız değişmez</translation>
+<translation id="5255726914791076208">Geçiş anahtarınızı düzenlediğinizde <ph name="RP_ID"/> hesabınız değişmez</translation>
 <translation id="5255859108402770436">Tekrar oturum açın</translation>
 <translation id="52566111838498928">Yazı tipleri yükleniyor...</translation>
 <translation id="5256861893479663409">Tüm Sitelerde</translation>
@@ -5300,7 +5300,7 @@ Uzaklaştırmak için Ctrl + Alt + Parlaklığı Azalt tuşlarını kullanın.</
 <translation id="5285635972691565180">Ekran <ph name="DISPLAY_ID"/></translation>
 <translation id="5286194356314741248">Taranıyor</translation>
 <translation id="5287425679749926365">Hesaplarınız</translation>
-<translation id="5288106344236929384"><ph name="DOMAIN"/> adresindeki <ph name="USERNAME"/> için diğer işlemler ve şifre anahtarı seçenekleri</translation>
+<translation id="5288106344236929384"><ph name="DOMAIN"/> adresindeki <ph name="USERNAME"/> için diğer işlemler ve geçiş anahtarı seçenekleri</translation>
 <translation id="5288678174502918605">Kapatılan Sekmeyi T&amp;ekrar Aç</translation>
 <translation id="52895863590846877">Sayfa bu dilde (<ph name="LANGUAGE"/>) değil</translation>
 <translation id="52912272896845572">Özel anahtar dosyası geçersiz.</translation>
@@ -5827,7 +5827,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5734697361979786483">Dosya paylaşımı ekle</translation>
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Bu veriler veya cihazınız, kuruluşunuzun güvenlik politikalarından bazılarına uymuyor. Neyin düzeltilmesi gerektiğini öğrenmek için yöneticinize danışın.}=1{Bu dosya veya cihazınız, kuruluşunuzun güvenlik politikalarından bazılarına uymuyor. Neyin düzeltilmesi gerektiğini öğrenmek için yöneticinize danışın.}other{Bu dosyalar, kuruluşunuzun güvenlik politikalarından bazılarına uymuyor. Neyin düzeltilmesi gerektiğini öğrenmek için yöneticinize danışın.}}</translation>
 <translation id="5736796278325406685">Lütfen geçerli bir kullanıcı adı girin</translation>
-<translation id="5738093759615225354">Bu şifre anahtarı, bilgisayarınızda oturum açabilmeniz için gereklidir</translation>
+<translation id="5738093759615225354">Bu geçiş anahtarı, bilgisayarınızda oturum açabilmeniz için gereklidir</translation>
 <translation id="5739017626473506901"><ph name="USER_NAME"/> kullanıcısının okul hesabı eklemesine yardımcı olmak için oturum açın</translation>
 <translation id="5739235828260127894">Doğrulama bekleniyor. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="5739458112391494395">Çok büyük</translation>
@@ -6381,7 +6381,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6179830757749383456">Tarayıcı, <ph name="BROWSER_DOMAIN"/> tarafından; profil, <ph name="PROFILE_DOMAIN"/> tarafından yönetiliyor</translation>
 <translation id="6180389074227570449">{NUM_EXTENSIONS,plural, =1{Uzantı kaldırılsın mı?}other{# uzantı kaldırılsın mı?}}</translation>
 <translation id="6180510783007738939">Çizgi Aracı</translation>
-<translation id="6180550893222597997"><ph name="APP_NAME"/> için hangi şifre anahtarını kullanmak istersiniz?</translation>
+<translation id="6180550893222597997"><ph name="APP_NAME"/> için hangi geçiş anahtarını kullanmak istersiniz?</translation>
 <translation id="6181431612547969857">İndirme engellendi</translation>
 <translation id="6184099524311454384">Sekme Ara</translation>
 <translation id="1713601041945301465">Brave, üçüncü taraf çerezlerini otomatik olarak sınırlandırır</translation>
@@ -6725,7 +6725,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6468485451923838994">Yazı tipleri</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> Dosya</translation>
 <translation id="6469557521904094793">Hücresel ağı aç</translation>
-<translation id="6469702164109431067">Şifreler ve şifre anahtarları</translation>
+<translation id="6469702164109431067">Şifreler ve geçiş anahtarları</translation>
 <translation id="6470823736074966819">Bildirimleri yoksay</translation>
 <translation id="6472893788822429178">Ana Sayfa düğmesini göster</translation>
 <translation id="7701779303735687764">{COUNT,plural, =1{{COUNT} şifre yalnızca bu cihaza kaydedilir. Diğer cihazlarınızda kullanmak için &lt;a target='_blank' href='chrome://password-manager/'&gt;Brave Hesabınıza kaydedin&lt;/a&gt;.}other{{COUNT} şifre yalnızca bu cihaza kaydedilir. Diğer cihazlarınızda kullanmak için &lt;a target='_blank' href='chrome://password-manager/'&gt;Brave Hesabınıza kaydedin&lt;/a&gt;.}}</translation>
@@ -6739,7 +6739,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6482559668224714696">Tam ekran büyüteci</translation>
 <translation id="6483485061007832714">İndirilen dosyayı aç</translation>
 <translation id="6483805311199035658"><ph name="FILE"/> açılıyor...</translation>
-<translation id="6486301003991593638">Şifre anahtarlarını yönetmek için Windows'un daha yeni bir sürümünü kullanın</translation>
+<translation id="6486301003991593638">Geçiş anahtarlarını yönetmek için Windows'un daha yeni bir sürümünü kullanın</translation>
 <translation id="6488266788670893993"><ph name="BRAND"/>, şifrelerinizin veri ihlaline uğrayıp uğramadığını kontrol edemiyor. İnternet bağlantınızı kontrol etmeyi deneyin.</translation>
 <translation id="6488384360522318064">Dil seçin</translation>
 <translation id="648927581764831596">Hiçbiri mevcut değil</translation>
@@ -7099,7 +7099,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> eklentisi uzaktan eklendi</translation>
 <translation id="6793879402816827484">↓ <ph name="STATUS"/></translation>
 <translation id="6794511157503068"><ph name="APP_NAME"/> için geçiş anahtarınız bir USB güvenlik anahtarındaysa şimdi takın ve dokunun</translation>
-<translation id="679486139907144816">Bu sitede şifre anahtarıyla oturum açmak için ayarlardan Windows Hello'yu etkinleştirmeniz gerekir. Ardından bu siteye geri dönüp tekrar deneyin.</translation>
+<translation id="679486139907144816">Bu sitede geçiş anahtarıyla oturum açmak için ayarlardan Windows Hello'yu etkinleştirmeniz gerekir. Ardından bu siteye geri dönüp tekrar deneyin.</translation>
 <translation id="6795371939514004514">Otomatik tarama özelliği, ekrandaki öğeler arasında otomatik olarak gezinmenizi sağlar. Vurgulanan bir öğeyi etkinleştirmek için "Seç"e basabilirsiniz.</translation>
 <translation id="6795756089603286506">Siteler, MIDI cihazlarınızı kullanmak için izin isteyebilir</translation>
 <translation id="6795884519221689054">Panda</translation>
@@ -7296,7 +7296,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="6943060957016121200">Hızlı Tethering'i etkinleştir</translation>
 <translation id="6943176775188458830">Yazdırmayı iptal et</translation>
 <translation id="6943939122536910181"><ph name="DEVICE"/> adlı cihazın bağlantısı kesildi</translation>
-<translation id="6944708469742828051">Bu şifre anahtarı yalnızca Windows Hello'da kaydedilir</translation>
+<translation id="6944708469742828051">Bu geçiş anahtarı yalnızca Windows Hello'da kaydedilir</translation>
 <translation id="6945221475159498467">Seç</translation>
 <translation id="694592694773692225">Yönlendirme bu sayfada engellendi.</translation>
 <translation id="6717696695746478977">Yemek tarifleriyle ilgili en son arama etkinliğinize göre belirlenen yemek tariflerini görüyorsunuz.
@@ -7588,7 +7588,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7193374945610105795"><ph name="ORIGIN"/> için şifre kaydedilmedi</translation>
 <translation id="7194873994243265344">Şifrelenmiş olduğundan bu dosya kuruluşunuz tarafından engellendi. Dosyanın sahibinden şifreyi çözmesini isteyin.</translation>
 <translation id="7196107899576756066">{COUNT,plural, =1{1 indirme işlemi devam ediyor}other{# indirme işlemi devam ediyor}}</translation>
-<translation id="7196272782924897510">Başka bir cihazdan şifre anahtarı kullanılsın mı?</translation>
+<translation id="7196272782924897510">Başka bir cihazdan geçiş anahtarı kullanılsın mı?</translation>
 <translation id="7196913789568937443">Google Drive'a yedekleyin. Verilerinizi istediğiniz zaman kolayca geri yükleyebilir veya cihazlar arasında geçiş yapabilirsiniz. Yedekleme işleminiz uygulama verilerini içerir. Yedek verileriniz Brave'a yüklenir ve Brave Hesabınızın şifresi kullanılarak şifrelenir. <ph name="BEGIN_LINK1"/>Daha Fazla Bilgi<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Her göz attığınızda Brave Arama ve Brave zekasından yararlanın</translation>
 <translation id="719791532916917144">Klavye kısayolu</translation>
@@ -8123,7 +8123,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7634337648687970851">Yerel verileri kurtarma işlemi şu anda desteklenmiyor.</translation>
 <translation id="7634566076839829401">Bir şeyler ters gitti. Lütfen tekrar deneyin.</translation>
 <translation id="7635048370253485243">Yöneticiniz tarafından sabitlendi</translation>
-<translation id="7635711411613274199">İnternette gezinirken gördüğünüz bir reklamın kişiselleştirilmiş olup olmaması bu ayara, <ph name="BEGIN_LINK1"/>reklam konularına<ph name="LINK_END1"/>, <ph name="BEGIN_LINK2"/>çerez ayarlarınıza<ph name="LINK_END2"/> ve görüntülediğiniz sitenin reklamları kişiselleştirip kişiselleştirmediğine bağlıdır</translation>
+<translation id="7635711411613274199">İnternette gezinirken gördüğünüz bir reklamın kişiselleştirilmiş olup olmaması bu ayara, <ph name="BEGIN_LINK1"/>reklam konularına<ph name="LINK_END1"/>, <ph name="BEGIN_LINK2"/>çerez ayarlarınıza<ph name="LINK_END2"/> ve görüntülediğiniz sitenin reklamları kişiselleştirip kişiselleştirmediğine bağlıdır.</translation>
 <translation id="7636346903338549690">Üçüncü taraf çerezlerini kullanmasına izin verilen siteler</translation>
 <translation id="7636919061354591437">Bu cihaza yükle</translation>
 <translation id="7637253234491814483">Klavyenizin sağ üst köşesindeki güç düğmesinin yanında bulunan parmak izi sensörüne dokunun. Parmak izi verileriniz güvenli şekilde depolanır ve her zaman <ph name="DEVICE_TYPE"/> cihazınızda tutulur.</translation>
@@ -8180,7 +8180,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7670483791111801022">Altyazılar</translation>
 <translation id="7671130400130574146">Sistemin başlık çubuğunu ve kenarlıklarını kullan</translation>
 <translation id="767127784612208024">Sıfırlamayı onaylamak için dokunun</translation>
-<translation id="7672504401554182757"><ph name="APP_NAME"/> için şifre anahtarının hangi cihazda olduğunu seçin</translation>
+<translation id="7672504401554182757"><ph name="APP_NAME"/> için geçiş anahtarının hangi cihazda olduğunu seçin</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/> sayfasında.</translation>
 <translation id="7673313156293624327">ChromeOS Shill (Bağlantı Yöneticisi) Günlükleri</translation>
 <translation id="7674416868315480713">Linux'ta yönlendirilen tüm bağlantı noktalarını devre dışı bırak</translation>
@@ -8303,7 +8303,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7766807826975222231">Tura katılın</translation>
 <translation id="7766838926148951335">İzinleri kabul et</translation>
 <translation id="7767554953520855281">Ekranınızı paylaşırken ayrıntılar gizlenir</translation>
-<translation id="7767972280546034736"><ph name="APP_NAME"/> için şifre anahtarı oluşturun</translation>
+<translation id="7767972280546034736"><ph name="APP_NAME"/> için geçiş anahtarı oluşturun</translation>
 <translation id="7768507955883790804">Ziyaret ettiğinizde siteler otomatik olarak bu ayarı uygular</translation>
 <translation id="7768526219335215384"><ph name="ORIGIN"/>, <ph name="FOLDERNAME"/> klasöründeki dosyaları görüntüleyebilir</translation>
 <translation id="7768770796815395237">Değiştir</translation>
@@ -8743,7 +8743,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="810185532889603849">Özel renk</translation>
 <translation id="8101987792947961127">Gelecek yeniden başlatmada Powerwash gerekli</translation>
 <translation id="8102139037507939978">Kimliği Tanımlayabilecek Bilgiler'i system_logs.txt dosyasından çıkar.</translation>
-<translation id="810362914482827094">Şifre anahtarı arama</translation>
+<translation id="810362914482827094">Geçiş anahtarı arama</translation>
 <translation id="8104088837833760645">eSIM profili indir</translation>
 <translation id="8107015733319732394">Google Play Store <ph name="DEVICE_TYPE"/> cihazınıza yükleniyor. Bu işlem birkaç dakika sürebilir.</translation>
 <translation id="810728361871746125">Ekran çözünürlüğü</translation>
@@ -8867,7 +8867,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8206267832882844324">Notu düzenle</translation>
 <translation id="8206745257863499010">Melodi</translation>
 <translation id="8206859287963243715">Cep telefonu</translation>
-<translation id="8207404892907560325">Bir şifre anahtarı seçin</translation>
+<translation id="8207404892907560325">Bir geçiş anahtarı seçin</translation>
 <translation id="8207794858944505786">"<ph name="DEFAULT_VM_NAME"/>" sanal makinesinin mevcut olduğu, ancak geçerli bir <ph name="VM_TYPE"/> sanal makinesi olmadığı anlaşılıyor. Lütfen yöneticinizle iletişime geçin.</translation>
 <translation id="8208188204689616705">Bu siteler, <ph name="FPS_OWNER"/> tarafından tanımlanmış bir grupta bulunuyor. Gruptaki siteler gruptaki etkinliğinizi görebilir.</translation>
 <translation id="8208216423136871611">Kaydetme</translation>
@@ -9293,7 +9293,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2055442944008824554">Mac'inizdeki Konum Hizmetlerinde "Brave"u açın</translation>
 <translation id="8557856025359704738">Sonraki indirme işlemi <ph name="NEXT_DATE_DOWNLOAD"/> tarihinde gerçekleşecek.</translation>
 <translation id="37858739834762720">Brave Hesabı şifresi</translation>
-<translation id="8559858985063901027">Şifre anahtarları</translation>
+<translation id="8559858985063901027">Geçiş anahtarları</translation>
 <translation id="5503308854539525011">Brave, reklam performansını ölçmek için sitelerin tarayıcı aracılığıyla paylaşabileceği toplam veri miktarını sınırlar</translation>
 <translation id="8560327176991673955">{COUNT,plural, =0{Tümünü &amp;Yeni Pencerede Aç}=1{&amp;Yeni Pencerede Aç}other{Tümünü ({COUNT}) &amp;Yeni Pencerede Aç}}</translation>
 <translation id="8561206103590473338">Fil</translation>
@@ -9500,7 +9500,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8724859055372736596">Klasörde &amp;Göster</translation>
 <translation id="8725066075913043281">Yeniden dene</translation>
 <translation id="8725178340343806893">Sık Kullanılanlar/Yer İşaretleri</translation>
-<translation id="87254326763805752">Şifre anahtarını onaylayın</translation>
+<translation id="87254326763805752">Geçiş anahtarını onaylayın</translation>
 <translation id="8726206820263995930">Sunucudan politika ayarları alınırken hata oluştu: <ph name="CLIENT_ERROR"/>.</translation>
 <translation id="6614332522102257453">Brave'dan en iyi şekilde yararlanın</translation>
 <translation id="8727751378406387165"><ph name="BEGIN_LINK1"/>Otomatik doldurma meta verilerini<ph name="END_LINK1"/> gönder
@@ -9916,7 +9916,7 @@ Web sitelerine ve uygulamalara verdiğiniz izinler, bu hesap için geçerli olab
 <translation id="90528604757378587">Arka plan etkinliği ve yumuşak kaydırma gibi bazı görsel efektler sınırlı olabilir.</translation>
 <translation id="9053563360605707198">Her iki yüze yazdır</translation>
 <translation id="9055636786322918818">RC4 şifrelemesini uygula. RC4 şifreleri güvenli olmadığından bu seçeneğin kullanılması, riskinizi artırır.</translation>
-<translation id="9056788090206401048">Şifre anahtarınızı farklı bir cihazda kullanabilmeniz için Bluetooth'un açık olması gerekir. Bunu istediğiniz zaman ayarlardan yönetebilirsiniz.</translation>
+<translation id="9056788090206401048">Geçiş anahtarınızı farklı bir cihazda kullanabilmeniz için Bluetooth'un açık olması gerekir. Bunu istediğiniz zaman ayarlardan yönetebilirsiniz.</translation>
 <translation id="9056810968620647706">Eşleştirme bulunamadı.</translation>
 <translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/> aşağıdaki içeriğe erişmek istiyor:</translation>
 <translation id="9057354806206861646">Programı güncelle</translation>
@@ -10056,7 +10056,7 @@ Web sitelerine ve uygulamalara verdiğiniz izinler, bu hesap için geçerli olab
       <ph name="LIST_ITEM"/>Brave Bağlantı Teşhisi'ni çalıştırma
     <ph name="END_LIST"/></translation>
 <translation id="916607977885256133">Pencere içinde Pencere</translation>
-<translation id="9166253503936244008">Bu QR kodunu, <ph name="APP_NAME"/> için kullanmak istediğiniz şifre anahtarına sahip cihazla tarayın</translation>
+<translation id="9166253503936244008">Bu QR kodunu, <ph name="APP_NAME"/> için kullanmak istediğiniz geçiş anahtarına sahip cihazla tarayın</translation>
 <translation id="9167063903968449027">Okuma Listesini Göster</translation>
 <translation id="9167450455589251456">Profil desteklenmiyor</translation>
 <translation id="9168436347345867845">Daha sonra yap</translation>

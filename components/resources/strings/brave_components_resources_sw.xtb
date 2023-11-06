@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Kuwa Muundaji wa Brave!</translation>
 <translation id="4639659520811817892">Tembelea creators.brave.com ili kujisajili leo na uanze kupata BAT kutoka kwa mashabiki na wafuasi wako.</translation>
 <translation id="4816455138209470435">Brave huwezesha matumizi ya YouTube, Twitch, Vimeo na zaidi!</translation>
-<translation id="3001581544796357879">Ingia kwenye akaunti ya Gemini ili kuhifadhi BAT yako salama</translation>
-<translation id="4083523826017830313">Unganisha Brave Rewards an Gemini ili kupokea mapato yako ya BAT moja kwa moja kwenye akaunti yako ya Gemini. Gemini ni programu ya ubadilishaji wa sarafu ya dijitali kamilifu na inayodhibitiwa  zaidi.</translation>
-<translation id="3313756098698370125">Mamilioni ya wateja katika nchi 70 na zaidi wanatumia Gemini kununua, kuuza, kuhifadhi na kufanya biashara kutumia zaidi ya aina 90 za sarafu za dijitali kwa urahisi.</translation>
 <translation id="7404779623219601861">Tumia BAT upate Kadi za Zawadi</translation>
 <translation id="6215565499749144110">Unaweza kurudisha BAT yako kwa kadi za zawadi za chapa ya jina maarufu ukiwa na Mtandao wa TAP.</translation>
 <translation id="6074001074364432111">* Inahitaji Shikilia akaunti.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Kuhusu Leo</translation>
 <translation id="70442873931504163">Brave Leo ni mratibu mahiri wa AI ambaye anaweza kufupisha kurasa za wavuti, kunakili maneno yanayosemwa kwenye video, na kujibu maswali. Brave Leo Inayolipiwa hutumia <ph name="LINK_BEFORE"/>miundo bora ya AI <ph name="LINK_AFTER"/> kutoa majibu yenye usahihi zaidi, na hutoa ufikiaji wa mapema wa vipengele vipya.</translation>
 <translation id="3055739528128372229">Usahihi wa majibu hauhakikishwi, na yanaweza kujumuisha taarifa zisizo sahihi, zinazopotosha au za uwongo. Usiwasilishe maelezo nyeti au ya faragha, na uwe mwangalifu kuhusiana na majibu yoyote yanayohusiana na afya, fedha, usalama wa binafsi au mada kama hizo.</translation>
-<translation id="5030677498967794115">Leo haikusanyi wala kuchakata vitambulishi kama vile Anwani ya IP inayoweza kuunganishwa nawe. Hakuna data ya binafsi inayohifadhiwa na muundo wa AI au wahusika wengine wowote wanaotoa muundo.</translation>
+<translation id="7297681068636289435">Leo haikusanyi vitambulishi kama vile Anwani yako ya IP inayoweza kuunganishwa nawe. Hakuna data ya binafsi inayohifadhiwa na muundo wa AI au wahusika wengine wowote wanaotoa muundo.</translation>
 <translation id="7839853125981164613">Weka kidokezo hapa</translation>
 <translation id="1171287413830401223">Ungependa kuwezesha maswali yaliyopendekezwa?</translation>
 <translation id="4567071417854988869">Fupisha video hii</translation>
 <translation id="7921782882718083488">Fupisha ukurasa huu</translation>
-<translation id="8723991872343294222">Brave AI inaweza kupendekeza maswali kiotomatiki kulingana na maudhui ya  tovuti. Unaweza kuilemaza baadaye katika Mipangilio.</translation>
+<translation id="5431287032059464898">Leo inaweza kupendekeza maswali kiotomatiki kulingana na maudhui ya tovuti. Ili kufanya hivi, maudhui ya ukurasa unaovinjari yatatumwa kwa Leo ili kuzalisha mapendekezo haya wakati Leo imefunguliwa. Unaweza kuilemaza baadaye katika Mipangilio.</translation>
 <translation id="3435896845095436175">Washa</translation>
 <translation id="7473891865547856676">La Asante</translation>
 <translation id="7932221068776853847">Tenganisha ili kuacha kutuma maudhui ya ukurasa huu kwenye Leo na uanzishe mazungumzo mapya</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Gumzo jipya</translation>
 <translation id="97095589689466044">Maswali yaliyopendekezwa</translation>
 <translation id="7557539689487606886">Tumia Toleo la Kulipiwa</translation>
+<translation id="1691256669639196606">Dhibiti usajili</translation>
 <translation id="3037594989275592390">Miundo ya lugha</translation>
 <translation id="849535826888024304">Kikomo cha kiwango cha majibu kimefikiwa</translation>
 <translation id="3834321271158315162">Fungua kiwango cha juu cha majibu kwa kujisajili kwenye Toleo Linalolipiwa, au ujaribu tena
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Gumzo la madhumuni ya jumla</translation>
 <translation id="8193130769524604031">Kazi za juu za gumzo</translation>
 <translation id="3185367320601718531">Uzalishaji wa mazungumzo na matini</translation>
+<translation id="3965507912994218570">Mipangilio ya Leo</translation>
 <translation id="6303294677342628402">Ulinzi</translation>
 <translation id="8458987127502506209">Wezesha Ulinzi wa Brave</translation>
 <translation id="7509914170164691086">Ngao Zinatumika <ph name="LINK_BEFORE"/>kwa<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Inaendeshwa na</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Muda wake unakwisha</translation>
-<translation id="1691256669639196606">Dhibiti usajili</translation>
 <translation id="434523916398030617">Wasiliana na usaidizi wa kiufundi</translation>
 <translation id="1116694919640316211">Kuhusu</translation>
 <translation id="8670386189340362926">Zuia matangazo na vifuatiliaji kwenye programu zote</translation>

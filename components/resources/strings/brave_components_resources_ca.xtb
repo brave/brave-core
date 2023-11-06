@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Convertiu-vos en un Creador de Brave!</translation>
 <translation id="4639659520811817892">Visiteu creators.brave.com per registrar-vos-hi avui i començar a guanyar BAT dels vostres fans i seguidors.</translation>
 <translation id="4816455138209470435">Brave accepta YouTube, Twitch, Vimeo i d'altres!</translation>
-<translation id="3001581544796357879">Registra't a Gemini per emmagatzemar el teu BAT de forma segura</translation>
-<translation id="4083523826017830313">Connecta Brave Rewards a Gemini per rebre els teus ingressos de BAT directament al teu compte de Gemini. Gemini és una reserva completa i un intercanvi altament regulat de criptocidències i custodi.</translation>
-<translation id="3313756098698370125">Milions de clients de més de 70 països trien Gemini per comprar, vendre, emmagatzemar i posar en joc més de 90 criptos amb facilitat.</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6074001074364432111">* Requereix un compte Uphold.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Sobre Leo</translation>
 <translation id="70442873931504163">Brave Leo és un assistent intel·ligent d'IA que pot resumir pàgines web, transcriure vídeos i respondre preguntes. Brave Leo Premium utilitza <ph name="LINK_BEFORE"/>models d'IA<ph name="LINK_AFTER"/> avançats per oferir-vos respostes encara més matisades i us permet accedir anticipadament a noves funcions.</translation>
 <translation id="3055739528128372229">La precisió de les respostes no està garantizada i moltes poden incloure informació inexacta, enganyosa o falsa. No hi envieu informació sensible o privada i aneu amb compte amb les respostes relacionades amb la salut, les finances, la seguretat personal o temes similars.</translation>
-<translation id="5030677498967794115">Leo no recopila ni processa d'altres maneres identificadors com ara l'adreça IP que pugueu tenir associats. Ni el model d'IA ni els proveïdors de models externs no conserven dades personals.</translation>
+<translation id="7297681068636289435">Leo no recopila identificadors que pugueu tenir associats, com ara l'adreça IP. Ni el model d'IA ni els proveïdors de models externs no conserven dades personals.</translation>
 <translation id="7839853125981164613">Introdueix un missatge aquí</translation>
 <translation id="1171287413830401223">Voleu activar les preguntes suggerides?</translation>
 <translation id="4567071417854988869">Resumeix aquest vídeo</translation>
 <translation id="7921782882718083488">Resumeix aquesta pàgina</translation>
-<translation id="8723991872343294222">Brave AI pot suggerir preguntes automàticament a partir del contingut del lloc. Podeu desactivar-ho més endavant a la configuració.</translation>
+<translation id="5431287032059464898">Leo pot suggerir automàticament preguntes en funció del contingut del lloc web. Per generar aquests suggeriments, s'enviarà a Leo el contingut de les pàgines per on navegueu mentre Leo estigui obert. Podeu desactivar-ho més endavant a Configuració.</translation>
 <translation id="3435896845095436175">Activa</translation>
 <translation id="7473891865547856676">No, gràcies</translation>
 <translation id="7932221068776853847">Desconnecteu per deixar d'enviar el contingut d'aquesta pàgina a Leo i inicieu una nova conversa</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Xat nou</translation>
 <translation id="97095589689466044">Preguntes suggerides</translation>
 <translation id="7557539689487606886">Canvia a Premium</translation>
+<translation id="1691256669639196606">Gestionar la subscripció</translation>
 <translation id="3037594989275592390">Models de llenguatge</translation>
 <translation id="849535826888024304">S'ha arribat al límit de la taxa de resposta</translation>
 <translation id="3834321271158315162">Desbloquegeu una taxa de resposta més alta subscrivint-vos a Premium, o
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Xat de tipus general</translation>
 <translation id="8193130769524604031">Tasques de xat avançades</translation>
 <translation id="3185367320601718531">Conversa i generació de text</translation>
+<translation id="3965507912994218570">Configuració de Leo</translation>
 <translation id="6303294677342628402">Proteccions</translation>
 <translation id="8458987127502506209">Activa els protectors de Brave</translation>
 <translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a <ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Impulsat per</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Data de caducitat</translation>
-<translation id="1691256669639196606">Gestionar la subscripció</translation>
 <translation id="434523916398030617">Posa't en contacte amb l'assistència tècnica</translation>
 <translation id="1116694919640316211">Informació</translation>
 <translation id="8670386189340362926">Bloqueja els rastrejadors i els anuncis a totes les aplicacions</translation>

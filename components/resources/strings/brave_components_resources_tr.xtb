@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Brave Oluşturucusu olun!</translation>
 <translation id="4639659520811817892">Bugün kaydolmak için creators.brave.com adresini ziyaret edin ve hayranlarınızla takipçilerinizden BAT kazanmaya başlayın.</translation>
 <translation id="4816455138209470435">Brave; Youtube, Twitch, Vimeo ve daha fazlasını destekler!</translation>
-<translation id="3001581544796357879">BAT'nizi güvenle depolamak için Gemini'ye kaydolun</translation>
-<translation id="4083523826017830313">BAT kazançlarınızı doğrudan Gemini hesabınıza almak için Brave Ödüllerini Gemini'ye bağlayın. Gemini, tam rezervdir ve fazlasıyla regüle edilen bir kripto para platformu ve emanetçisidir.</translation>
-<translation id="3313756098698370125">70'den fazla ülkedeki milyonlarca müşteri 90'dan fazla kriptoyu kolaylıkla satın almak, satmak, depolamak ve kilitlemek için Gemini kullanıyor.</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6074001074364432111">* Uphold hesabı gerekir.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Leo Hakkında</translation>
 <translation id="70442873931504163">Brave Leo; web sayfalarını özetleyebilen, videoları yazıya geçirebilen ve sorulara yanıt verebilen bir YZ akıllı asistandır. Brave Leo Premium gelişmiş <ph name="LINK_BEFORE"/>YZ modelleri<ph name="LINK_AFTER"/> kullanarak çok daha incelikli yanıtlar verebilir ve yeni özelliklere erken erişim sağlar.</translation>
 <translation id="3055739528128372229">Yanıtların doğruluğu garanti edilmez ve hatalı, yanlış yönlendiren veya yanlış bilgiler içerebilir. Hassas ve gizli bilgiler göndermeyin ve sağlık, finans, kişisel güvenlik veya benzeri cevapları kullanırken dikkatli olun.</translation>
-<translation id="5030677498967794115">Leo, IP Adresi gibi sizinle ilişkilendirilebilecek hiçbir tanımlayıcı bilgiyi toplamaz veya işlemez. Hiçbir kişisel bilgi YZ modeli veya hiçbir 3. taraf model sağlayıcıları tarafından tutulmaz.</translation>
+<translation id="7297681068636289435">Leo, IP Adresi gibi sizinle ilişkilendirilebilecek hiçbir tanımlayıcı bilgiyi toplamaz. Hiçbir kişisel bilgi YZ modeli veya hiçbir 3. taraf model sağlayıcıları tarafından tutulmaz.</translation>
 <translation id="7839853125981164613">Buraya bir istem girin</translation>
 <translation id="1171287413830401223">Önerilen sorular etkinleştirilsin mi?</translation>
 <translation id="4567071417854988869">Bu videoyu özetle</translation>
 <translation id="7921782882718083488">Bu sayfayı özetle</translation>
-<translation id="8723991872343294222">Brave YZ, sitenin içeriğine bağlı olarak otomatik olarak sorular önerebilir. Bunu daha sonra Ayarlar menüsünden devre dışı bırakabilirsiniz.</translation>
+<translation id="5431287032059464898">Leo, sitenin içeriğine bağlı olarak otomatik olarak soru önerilerinde bulunabilir. Bunu yapmak için, gezintinizde gördüğünüz sayfa içerikleri, Leo açıkken bu soruların oluşturulması için Leo'ya gönderilir. Bunu Ayarlar menüsünden daha sonra devre dışı bırakabilirsiniz.</translation>
 <translation id="3435896845095436175">Etkinleştir</translation>
 <translation id="7473891865547856676">Hayır, Teşekkürler</translation>
 <translation id="7932221068776853847">Bu sayfanın içeriğini Leo'ya göndermeyi durdurmak için bağlantıyı kesin ve yeni bir konuşma başlatın</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Yeni sohbet</translation>
 <translation id="97095589689466044">Önerilen sorular</translation>
 <translation id="7557539689487606886">Premium'a Geçin</translation>
+<translation id="1691256669639196606">Aboneliği yönet</translation>
 <translation id="3037594989275592390">Dil modelleri</translation>
 <translation id="849535826888024304">Yanıt hızı sınırına erişildi</translation>
 <translation id="3834321271158315162">Premium'a abone olarak daha yüksek bir yanıt hızının kilidini açın veya daha sonra
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Genel kullanım amaçlı sohbet</translation>
 <translation id="8193130769524604031">Gelişmiş sohbet görevleri</translation>
 <translation id="3185367320601718531">Konuşma ve metin oluşturma</translation>
+<translation id="3965507912994218570">Leo ayarları</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
 <translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Destekleyen:</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Süre sonu tarihi</translation>
-<translation id="1691256669639196606">Aboneliği yönet</translation>
 <translation id="434523916398030617">Teknik destekle iletişime geçin</translation>
 <translation id="1116694919640316211">Hakkında</translation>
 <translation id="8670386189340362926">Tüm uygulamalardaki izleyicileri ve reklamları engelleyin</translation>

@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Legyen Ön is Brave-alkotó!</translation>
 <translation id="4639659520811817892">Látogasson a creators.brave.com-ra, regisztráljon még ma, és kezdjen el BAT-ot gyűjteni a rajongóitól és követőitől.</translation>
 <translation id="4816455138209470435">A Brave támogatja a YouTube-ot, a Twitchet, a Vimeót, és még sok mást!</translation>
-<translation id="3001581544796357879">Regisztráljon a Geminire BAT-ok biztonságos tárolásához</translation>
-<translation id="4083523826017830313">Kapcsolja össze a Brave jutalmakat a Geminivel, hogy BAT-bevételei közvetlenül a Gemini-fiókjába érkezzenek. A Gemini teljes tartalékolású, szigorúan szabályozott kriptovaluta-tőzsde és letétkezelő.</translation>
-<translation id="3313756098698370125">Több mint 70 ország ügyfeleinek milliói választják a Geminit 90+ féle kriptó egyszerű vásárlásához, eladásához, tárolásához és befektetéséhez.</translation>
 <translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
 <translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
 <translation id="6074001074364432111">* Uphold-fiókot igényel.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Tudnivalók a Leóról</translation>
 <translation id="70442873931504163">A Brave Leo egy intelligens MI-segéd, amely képes összefoglalni a weboldalak tartalmát, átiratot készíteni a videókról, és kérdésekre válaszolni. A Brave Leo Premium fejlett <ph name="LINK_BEFORE"/>MI-modellek<ph name="LINK_AFTER"/> alkalmazásával képes még részletesebb válaszokat nyújtani, és korai hozzáférést is biztosít az új funkciókhoz.</translation>
 <translation id="3055739528128372229">A válaszok pontossága nem garantált, és tartalmazhatnak pontatlan, félrevezető vagy hamis információkat. A felületen ne küldjön el érzékeny vagy magánjellegű adatokat, és kezelje fokozott körültekintéssel az egészségüggyel, pénzügyekkel, személyi biztonsággal és hasonló témakörökkel kapcsolatos válaszokat.</translation>
-<translation id="5030677498967794115">A Leo nem gyűjt és nem kezel egyéb módon Önhöz társítható azonosítókat, mint például az IP-címet. Az MI-modell, illetve a harmadik fél modellszolgáltatók nem tárolnak személyes adatokat.</translation>
+<translation id="7297681068636289435">A Leo nem gyűjt Önhöz társítható azonosítókat, például IP-címet. Az MI-modell, illetve a harmadik fél modellszolgáltatók nem tárolnak személyes adatokat.</translation>
 <translation id="7839853125981164613">Itt tehet fel kérdéseket</translation>
 <translation id="1171287413830401223">Engedélyezi a javasolt kérdéseket?</translation>
 <translation id="4567071417854988869">Videó összefoglalása</translation>
 <translation id="7921782882718083488">Lap összefoglalása</translation>
-<translation id="8723991872343294222">A Brave MI a weboldal tartalma alapján automatikus kérdéseket javasolhat. Ezt később kikapcsolhatja a Beállításokban.</translation>
+<translation id="5431287032059464898">A Leo automatikusan tud kérdéseket javasolni az oldal tartalma alapján. Ehhez az Ön által meglátogatott oldalak tartalma lesz elküldve a Leónak annak érdekében, hogy generálni tudja ezeket a javaslatokat, amíg nyitva van. Ezt később kikapcsolhatja a Beállításokban.</translation>
 <translation id="3435896845095436175">Engedélyezés</translation>
 <translation id="7473891865547856676">Nem, köszönöm</translation>
 <translation id="7932221068776853847">Ha szeretné leállítani a tartalmak küldését a Leo számára, és új beszélgetést indítani, bontsa a kapcsolatot.</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Új csevegés</translation>
 <translation id="97095589689466044">Javasolt kérdések</translation>
 <translation id="7557539689487606886">Váltás Premiumra</translation>
+<translation id="1691256669639196606">Előfizetés kezelése</translation>
 <translation id="3037594989275592390">Nyelvmodellek</translation>
 <translation id="849535826888024304">Elérte a válaszgyakorisági korlátot</translation>
 <translation id="3834321271158315162">Magasabb válaszgyakorisági korlát beszerzéséhez fizessen elő a Premiumra,
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Általános célú csevegés</translation>
 <translation id="8193130769524604031">Speciális csevegési feladatok</translation>
 <translation id="3185367320601718531">Beszélgetés és szöveg generálása</translation>
+<translation id="3965507912994218570">Leo-beállítások</translation>
 <translation id="6303294677342628402">Védelmek</translation>
 <translation id="8458987127502506209">Brave pajzsok engedélyezése</translation>
 <translation id="7509914170164691086">Pajzsok ENGEDÉLYEZVE <ph name="LINK_BEFORE"/> a(z) <ph name="LINK_AFTER"/> webhelyen</translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Szolgáltató:</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Lejár</translation>
-<translation id="1691256669639196606">Előfizetés kezelése</translation>
 <translation id="434523916398030617">Lépjen kapcsolatba az ügyfélszolgálattal</translation>
 <translation id="1116694919640316211">Névjegy</translation>
 <translation id="8670386189340362926">Nyomkövetők és reklámok blokkolása minden alkalmazásban</translation>

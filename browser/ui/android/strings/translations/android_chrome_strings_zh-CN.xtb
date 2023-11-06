@@ -408,7 +408,7 @@
 <translation id="7249949543831830993">Brave 已在此处运行。</translation>
 <translation id="3167258285411721858">您可以请求访问 <ph name="HOST_NAME"/> 的移动网站</translation>
 <translation id="3169472444629675720">探索</translation>
-<translation id="3187472288455401631">广告衡量</translation>
+<translation id="3187472288455401631">广告效果衡量</translation>
 <translation id="3207960819495026254">已加书签</translation>
 <translation id="3208584281581115441">立即检查</translation>
 <translation id="3211426585530211793">已删除“<ph name="ITEM_TITLE"/>”</translation>
@@ -1021,7 +1021,7 @@
 <translation id="7810992039564280750">将网址与存储在 Brave 中的不安全网站列表进行比对。如果某个网站企图窃取您的密码，或者您下载了有害的文件，Brave 可能还会将相应网址连同少量网页内容发送给“安全浏览”功能。</translation>
 <translation id="641643625718530986">打印…</translation>
 <translation id="6422857128426228781">您跟踪的商品会显示在此处</translation>
-<translation id="6433501201775827830">选择您的搜索引擎</translation>
+<translation id="6433501201775827830">选择搜索引擎</translation>
 <translation id="6434309073475700221">舍弃</translation>
 <translation id="6437478888915024427">网页信息</translation>
 <translation id="6440291723980579689">仅当您打开网页后，它们才会加载</translation>
