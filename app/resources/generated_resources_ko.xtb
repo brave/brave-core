@@ -1242,7 +1242,7 @@
 </translation>
 <translation id="1967970931040389207">핫스팟 사용 설정</translation>
 <translation id="1969011864782743497"><ph name="DEVICE_NAME"/>(USB)</translation>
-<translation id="1969550816138571473">준비하기</translation>
+<translation id="1969550816138571473">준비 중</translation>
 <translation id="1969654639948595766">WebRTC 텍스트 로그(<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1970895205072379091"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS 기기에서 자동 보고서를 전송하도록 허용하면 Brave이 ChromeOS에서 해결할 문제와 개선할 기능의 우선순위를 정하는 데 도움이 됩니다. 보고서에는 ChromeOS가 언제 비정상 종료되는지, 어떤 기능을 사용하는지, 일반적으로 메모리를 얼마나 많이 사용하는지 등의 정보가 포함됩니다. 일부 합산 데이터는 Brave 앱과 파트너(Android 개발자 등)에게도 도움이 됩니다. 앱 동기화도 사용 설정되어 있으면 Android 및 웹 앱을 포함한 다른 앱 진단 및 사용 데이터가 수집됩니다.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>언제든지 ChromeOS 기기 설정에서 보고서 전송을 허용하거나 중지할 수 있습니다. 도메인 관리자는 관리 콘솔에서 이 설정을 변경할 수 있습니다.<ph name="END_PARAGRAPH2"/>
@@ -1357,7 +1357,7 @@
 <translation id="2048554637254265991">컨테이너 관리자 시작 중에 오류가 발생했습니다. 다시 시도해 주세요.</translation>
 <translation id="2048653237708779538">실행할 수 없는 작업</translation>
 <translation id="204914487372604757">바로가기 만들기</translation>
-<translation id="2050339315714019657">인물 사진</translation>
+<translation id="2050339315714019657">세로 방향</translation>
 <translation id="2051555741181591333">핫스팟 자동 사용 중지</translation>
 <translation id="2052572566310583903">다른 기기에서 설치됨</translation>
 <translation id="2053105195397337973">Brave은 추적을 제한하고 사이트에서 광고 스팸과 사기를 방지하도록 돕는 방안을 모색하고 있습니다.</translation>
@@ -4229,7 +4229,7 @@
 <translation id="4367971618859387374">표시 이름</translation>
 <translation id="4369215744064167350">웹사이트 요청 승인됨</translation>
 <translation id="436926121798828366">언제든지 <ph name="SETTINGS_LINK"/>에서 변경할 수 있습니다.</translation>
-<translation id="4369735607080757018">광고 실적을 측정할 수 있도록 광고 표시 시간 등 제한된 유형의 데이터가 사이트 간에 공유됩니다.</translation>
+<translation id="4369735607080757018">광고 실적을 측정하기 위해 광고가 표시된 시간과 같이 제한된 유형의 데이터가 사이트 간에 공유됩니다.</translation>
 <translation id="4370975561335139969">입력한 이메일과 비밀번호가 일치하지 않습니다.</translation>
 <translation id="4373418556073552953">Android 휴대전화로 로그인</translation>
 <translation id="4374805630006466253">다른 휴대전화 또는 태블릿 사용</translation>
@@ -5097,7 +5097,7 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="5095507226704905004">파일이 더 이상 존재하지 않으므로 복사할 수 없습니다.</translation>
 <translation id="5097002363526479830">'<ph name="NAME"/>' 네트워크에 연결하지 못했습니다: <ph name="DETAILS"/></translation>
 <translation id="5097306410549350357">위치 사용 자세히 알아보기</translation>
-<translation id="5097349930204431044">방문한 사이트에서 내가 좋아하는 콘텐츠가 무엇인지 파악할 수 있으며, 내가 인터넷을 계속 탐색하면 사이트에서 광고를 제안할 수 있습니다.</translation>
+<translation id="5097349930204431044">방문한 사이트에서 내가 좋아하는 콘텐츠가 무엇인지 파악할 수 있으며, 내가 인터넷을 계속 탐색하면 사이트에서 광고를 추천할 수 있습니다.</translation>
 <translation id="5097874180538493929">커서가 멈추면 자동 클릭</translation>
 <translation id="5100775515702043594">관리자가 <ph name="EXTENSION_NAME"/>를 고정했습니다.</translation>
 <translation id="5101839224773798795">커서가 멈추면 자동으로 클릭</translation>
