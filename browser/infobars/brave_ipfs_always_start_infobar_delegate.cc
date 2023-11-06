@@ -6,17 +6,24 @@
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include <memory>
 #include "base/functional/callback_helpers.h"
+#include "brave/browser/infobars/brave_global_confirm_infobar_creator.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/prefs/pref_service.h"
 #include "chrome/browser/devtools/global_confirm_info_bar.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "components/infobars/core/infobar.h"
+#include "brave/browser/ui/views/infobars/brave_global_confirm_infobar.h"
+
 
 // BraveIPFSAlwaysStartInfoBarDelegate
 // static
-void BraveIPFSAlwaysStartInfoBarDelegate::Create(ipfs::IpfsService* ipfs_service, PrefService* local_state) {
+void BraveIPFSAlwaysStartInfoBarDelegate::Create(
+  infobars::ContentInfoBarManager* infobar_manager,
+  ipfs::IpfsService* ipfs_service, PrefService* local_state) {
   if (const auto is_ipfs_local =
           (local_state->GetInteger(kIPFSResolveMethod) ==
            static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
@@ -24,9 +31,9 @@ void BraveIPFSAlwaysStartInfoBarDelegate::Create(ipfs::IpfsService* ipfs_service
     return;
   }
 
-  std::unique_ptr<ConfirmInfoBarDelegate> delegate(
+  std::unique_ptr<BraveConfirmInfoBarDelegate> delegate(
       new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service, local_state));
-  GlobalConfirmInfoBar::Show(std::move(delegate));
+  BraveGlobalConfirmInfoBar::Show(std::move(delegate));
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(
@@ -49,6 +56,10 @@ std::u16string BraveIPFSAlwaysStartInfoBarDelegate::GetMessageText() const {
 
 int BraveIPFSAlwaysStartInfoBarDelegate::GetButtons() const {
   return BUTTON_OK | BUTTON_CANCEL;
+}
+
+std::vector<int> BraveIPFSAlwaysStartInfoBarDelegate::GetButtonsOrder() const {
+  return {BUTTON_OK, BUTTON_CANCEL};
 }
 
 std::u16string BraveIPFSAlwaysStartInfoBarDelegate::GetButtonLabel(

@@ -194,6 +194,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
     BraveIPFSAlwaysStartInfoBarDelegate::Create(
+    infobars::ContentInfoBarManager::FromWebContents(web_contents()),
     ipfs::IpfsServiceFactory::GetForContext(
         web_contents()->GetBrowserContext()),
     pref_service_);
@@ -425,6 +426,7 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
       BraveIPFSAlwaysStartInfoBarDelegate::Create(
+        infobars::ContentInfoBarManager::FromWebContents(web_contents()),
           ipfs::IpfsServiceFactory::GetForContext(
               web_contents()->GetBrowserContext()),
           pref_service_);      

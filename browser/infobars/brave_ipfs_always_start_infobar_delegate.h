@@ -10,7 +10,8 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+//#include "components/infobars/core/confirm_infobar_delegate.h"
 
 class PrefService;
 
@@ -18,25 +19,31 @@ namespace ipfs {
   class IpfsService;
 }  // namespace ipfs
 
-class BraveIPFSAlwaysStartInfoBarDelegate : public ConfirmInfoBarDelegate {
+namespace infobars {
+  class ContentInfoBarManager;
+}
+
+class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 public:
   BraveIPFSAlwaysStartInfoBarDelegate(const BraveIPFSAlwaysStartInfoBarDelegate&) =
       delete;
   BraveIPFSAlwaysStartInfoBarDelegate& operator=(
       const BraveIPFSAlwaysStartInfoBarDelegate&) = delete;
 
-  static void Create(ipfs::IpfsService* ipfs_service, PrefService* local_state);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+  ipfs::IpfsService* ipfs_service, PrefService* local_state);
 
 private:
   explicit BraveIPFSAlwaysStartInfoBarDelegate(ipfs::IpfsService* ipfs_service, PrefService* local_state);
 
   ~BraveIPFSAlwaysStartInfoBarDelegate() override;
 
-  // ConfirmInfoBarDelegate
+  // BraveConfirmInfoBarDelegate
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;
   std::u16string GetButtonLabel(InfoBarButton button) const override;
+  std::vector<int> GetButtonsOrder() const override;
 
   bool Accept() override;
   bool Cancel() override;

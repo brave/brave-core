@@ -12,6 +12,8 @@ source_set("infobars") {
   sources = [
     "brave_confirm_infobar.cc",
     "brave_confirm_infobar.h",
+    "brave_global_confirm_infobar.cc",
+    "brave_global_confirm_infobar.h",
     "brave_infobar_container_view.cc",
     "brave_infobar_container_view.h",
     "custom_styled_label.cc",

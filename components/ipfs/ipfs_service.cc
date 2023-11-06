@@ -680,7 +680,7 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
   importers_.erase(key);
 
   if (is_import_success) {
-    BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
+//    BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
   }
 }
 #endif
@@ -1092,7 +1092,7 @@ void IpfsService::OnPinAddResult(
 
   parse_result->recursive = recursive;
 
-  BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
+//  BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
 
   std::move(callback).Run(std::move(parse_result));
 }
