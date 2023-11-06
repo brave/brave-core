@@ -26,7 +26,12 @@ import {
 } from '../../../common/slices/api.slice'
 
 // styles
-import { NftImageIframe, NftImageResponsiveIframe } from './nft-icon-styles'
+import {
+  NftImageIframe,
+  NftImageResponsiveIframe,
+  NftPlaceholderWrapper,
+  NFTPlacholderIcon
+} from './nft-icon-styles'
 
 export interface NftIconProps {
   icon?: string | null
@@ -94,6 +99,14 @@ export const NftIcon = (props: NftIconProps) => {
   // render
   if (isStorybook) {
     return <StorybookNftIcon {...props} />
+  }
+
+  if (tokenImageURL === '') {
+    return (
+      <NftPlaceholderWrapper>
+        <NFTPlacholderIcon />
+      </NftPlaceholderWrapper>
+    )
   }
 
   return responsive ? (
