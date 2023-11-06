@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">የ Brave ፈጣሪ ይሁኑ!</translation>
 <translation id="4639659520811817892">ዛሬ ለመመዝገብ እና ከአድናቂዎችዎ እና ተከታዮችዎ BAT ማግኘት ለመጀመር creators.brave.comን ይጎብኙ።</translation>
 <translation id="4816455138209470435">Brave YouTube ን፣ Twitch ን፣ Vimeo ን እና ሌሎችንም ይደግፋል!</translation>
-<translation id="3001581544796357879">የእርስዎን BAT ደህንነቱ በተጠበቀ ሁኔታ ለማስቀመጥ Gemini ላይ ይመዝገቡ</translation>
-<translation id="4083523826017830313">የእርስዎን BAT ገቢ በቀጥታ ወደ Gemini መለያዎ ለመቀበል Brave Rewardsን ከGemini ጋር ያገናኙ። Gemini ሙሉ መጠባበቂያ እና ከፍተኛ ቁጥጥር የሚደረግበት የኪሪፕቶከረንሲ ልውውጥ እና ጠባቂ ነው።</translation>
-<translation id="3313756098698370125">በ70+ አገሮች ውስጥ ያሉ በሚሊዮን የሚቆጠሩ ደንበኞች በቀላሉ ከ90+ ክሪፕቶዎች በላይ ለመግዛት፣ ለመሸጥ፣ ለማከማቸት እና ለማካፈል Geminiን ይመርጣሉ።</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
 <translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
 <translation id="6074001074364432111">* የመጠባበቂያ መለያ ያስፈልጋል።</translation>
@@ -1871,12 +1868,12 @@
 <translation id="7491773233732232424">ስለ Leo</translation>
 <translation id="70442873931504163">Brave Leo የAI ስማርት ረዳት ሲሆን የድር ገጾችን ማጠቃለል፣ ቪዲዮዎችን በጽሑፍ መገልበጥ እና ጥያቄዎችን መመለስ ይችላል። Brave Leo Premium የላቁ  <ph name="LINK_BEFORE"/>AI ሞዴሎች<ph name="LINK_AFTER"/> ለበለጡ የተዛቡ ምላሾች እንኳን ሳይቀር ይጠቀማል እና ለአዳዲስ ባህርያት የቅድመ መዳረሻን ይሰጣል።</translation>
 <translation id="3055739528128372229">የምላሾቹ ትክክለኛነት ዋስትና የሚሰጠው አይደለም እና ልክ ያልሆኑ፣ አሳሳች ወይም የሐሰት መረጃዎችን ሊይዙ ይችላሉ። ስሱ ወይም ግላዊ መረጃዎችን አያስገቡ እና ከጤና፣ ከፋይናንስ፣ ከግል ደህንነት ወይም ከተመሳሳይ ነገር ጋር ላሉ ማናቸውም ጥያቄዎች ጥንቃቄን ያድርጉ።</translation>
-<translation id="5030677498967794115">Leo ከእርስዎ ጋር ሊገናኙ የሚችሉ እንደ የ IP አድራሻ የመሳሰሊ የሂደት መለያዎችን አይሰበስብም ወይም አያቀናብርም። ምንም ግላዊ ውሂብ በ AI ሞዴል ወይም በሌላ በማናቸውም የ3ኛ ወገን ሞዴል አቅራቢዎች አይያዝም።</translation>
+<translation id="7297681068636289435">Leo ከእርስዎ ጋር ሊገናኙ የሚችሉ እንደ የእርስዎ አይፒ አድራሻ ያሉ ለዪዎችን አይሰበስብም። ምንም የግል መረጃ በ AI ሞዴል ወይም በማንኛውም የ3ኛ ወገን ሞዴል አቅራቢዎች አይቀመጥም።</translation>
 <translation id="7839853125981164613">ጥያቄ እዚህ ያስገቡ</translation>
 <translation id="1171287413830401223">የተጠቆሙ ጥያቄዎች ስራ ይጀምሩ?</translation>
 <translation id="4567071417854988869">ይህንን ቪዲዮ ያጠቃልሉ</translation>
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>
-<translation id="8723991872343294222">Brave AI በጣቢያው ይዘት ላይ በመመስረት ጥያቄዎችን በራስ-ሰር ሊጠቁም ይችላል። በኋላ ላይ በቅንብሮች ውስጥ ስራ ማስቆም ይችላሉ።</translation>
+<translation id="5431287032059464898">Leo በጣቢያው ይዘት ላይ በመመስረት ጥያቄዎችን በራስ-ሰር ሊጠቁም ይችላል። ይህንን ለማድረግ፣ Leo ክፍት ሆኖ ሳለ እነዚህን አስተያየቶች ለማመንጨት የአሰሳዎችዎ ገጽ ይዘቶች ወደ Leo ይላካሉ። በኋላ ላይ በቅንብሮች ውስጥ ማሰናከል ይችላሉ።</translation>
 <translation id="3435896845095436175">አንቃ</translation>
 <translation id="7473891865547856676">አይ፣ አመሰግናለሁ</translation>
 <translation id="7932221068776853847">የዚህን ገጽ ይዘት ለ Leo መላክ ለማቆም ግንኙነቱን ያቋርጡ እና አዲስ ውይይት ይጀምሩ</translation>
@@ -1891,6 +1888,7 @@
 <translation id="2961040541145689181">አዲስ ጭውውት</translation>
 <translation id="97095589689466044">የተጠቆሙ ጥያቄዎች</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
+<translation id="1691256669639196606">የደንበኝነት ምዝገባን ያስተዳድሩ</translation>
 <translation id="3037594989275592390">የቋንቋ ሞዴሎች</translation>
 <translation id="849535826888024304">የምላሽ ደረጃ ገደብ ላይ ደርሷል</translation>
 <translation id="3834321271158315162">ወደ Premium የደንበኝነት ምዝገባ በማድረግ ወይም በኋላ ዳግም በመሞከር የከፍተኛ ምላሽ ደረጃን ይክፈቱ</translation>
@@ -1927,6 +1925,7 @@
 <translation id="6291843235651817590">ጠቅላላ የአላማ ጭውውት</translation>
 <translation id="8193130769524604031">የላቁ የጭውውት ተግባራት</translation>
 <translation id="3185367320601718531">ውይይት እና የጽሁፍ ማመንጨት</translation>
+<translation id="3965507912994218570">Leo ቅንብሮች</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
 <translation id="8458987127502506209">Brave Shields ን አንቃ</translation>
 <translation id="7509914170164691086">መከለያዎች ተዘርግተዋል <ph name="LINK_BEFORE"/>ለ<ph name="LINK_AFTER"/></translation>
@@ -2012,7 +2011,6 @@
 <translation id="8814357473522731680">የተጎላበተው በ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
-<translation id="1691256669639196606">የደንበኝነት ምዝገባን ያስተዳድሩ</translation>
 <translation id="434523916398030617">የቴክኒክ ድጋፍን ያነጋግሩ</translation>
 <translation id="1116694919640316211">ስለ</translation>
 <translation id="8670386189340362926">መከታተያዎችን አግድ &amp; በሁሉም መተግበሪያዎች ላይ ያሉ ማስታወቂያዎች</translation>

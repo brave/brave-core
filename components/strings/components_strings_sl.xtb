@@ -1864,7 +1864,7 @@ V nasprotnem primeru bodo to blokirale nastavitve zasebnosti. S tem bo vsebina, 
 <translation id="2351178841237473727">Gumb za ogled zgodovine uporabe Chroma, aktivirajte za ogled in upravljanje zgodovine brskanja v Chromovih nastavitvah</translation>
 <translation id="4958444002117714549">Razširi seznam</translation>
 <translation id="5398999400894437316">Spremembe lahko izvedete v nastavitvah zasebnosti pri oglaševanju v Chromu</translation>
-<translation id="4960203958361543136">Izberite iskalnik</translation>
+<translation id="4960203958361543136">Izbira iskalnika</translation>
 <translation id="4964505745997821360">Zdravstveno zavarovanje</translation>
 <translation id="4968522289500246572">Ta aplikacija je zasnovana za mobilne naprave in sprememba velikosti morda ne bo delovala pravilno. Z aplikacijo bodo morda težave ali pa se bo znova zagnala.</translation>
 <translation id="4968665849807487749">Lahko zahteva upravljanje oken na vseh zaslonih.</translation>
@@ -2643,7 +2643,7 @@ V nasprotnem primeru bodo to blokirale nastavitve zasebnosti. S tem bo vsebina, 
 <translation id="6615297766614333076">Zlagalnik 2</translation>
 <translation id="6624427990725312378">Podatki o stiku</translation>
 <translation id="6627727261837091711">Prikaz podrobnosti osebnega prilagajanja oglasov</translation>
-<translation id="6628463337424475685"><ph name="ENGINE"/> Iskanje</translation>
+<translation id="6628463337424475685">Iskanje <ph name="ENGINE"/></translation>
 <translation id="6629652037942826935">Luksuzna potovanja</translation>
 <translation id="6630043285902923878">Iskanje naprav USB …</translation>
 <translation id="4945711024178085608">Gumb za upravljanje Chromovih nastavitev, aktivirajte, če želite odpreti Chromove nastavitve</translation>

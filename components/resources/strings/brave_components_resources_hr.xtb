@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Postanite stvaratelj Brave!</translation>
 <translation id="4639659520811817892">Posjetite mrežno mjesto creators.brave.com kako biste se registrirali danas i počeli zarađivati BAT od svojih obožavatelja i pratitelja.</translation>
 <translation id="4816455138209470435">Preglednikom Brave podržava se YouTube, Twitch, Vimeo i više!</translation>
-<translation id="3001581544796357879">Prijavite se za Gemini za sigurnu pohranu svojeg BAT-a</translation>
-<translation id="4083523826017830313">Povežite Nagrade Brave s burzom Gemini da biste svoje zarade BAT primili izravno na svoj račun na burzi Gemini. Gemini je burza s punom pričuvom i veoma je uređena za razmjenu kriptovaluta, a djeluje i kao skrbnik.</translation>
-<translation id="3313756098698370125">Milijuni klijenata iz 70 i više zemalja izabrali su burzu Gemini za jednostavnu kupnju, prodaju, čuvanje i ulaganje 90 i više kriptovaluta.</translation>
 <translation id="7404779623219601861">Zatraži BAT za darovne kartice</translation>
 <translation id="6215565499749144110">Uz mrežu TAP možete zatražiti svoje BAT-ove za darovne kartice popularnih trgovačkih marki.</translation>
 <translation id="6074001074364432111">* Potreban je račun Uphold</translation>
@@ -1869,12 +1866,12 @@
 <translation id="7491773233732232424">O pomoćniku Leo</translation>
 <translation id="70442873931504163">Leo je pametni pomoćnik preglednika Brave potpomognut umjetnom inteligencijom (AI) koji može sažeti mrežne stranice, transkribirati videozapise i odgovarati na pitanja. Pomoćnik Leo u sklopu pretplate Premium preglednika Brave upotrebljava napredne <ph name="LINK_BEFORE"/>modele umjetne inteligencije (AI)<ph name="LINK_AFTER"/> za još podrobnije odgovore i daje rani pristup novim značajkama.</translation>
 <translation id="3055739528128372229">Točnost odgovora nije zajamčena i odgovorom se mogu uključivati netočne, obmanjujuće i lažne informacije. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima povezanim sa zdravljem, s financijama, s osobnom sigurnosti ili sa sličnim pitanjima.</translation>
-<translation id="5030677498967794115">Pomoćnik Leo ne prikuplja ili na bilo koji drugi način obrađuje identifikacijske oznake kao što su adresa IP koje se mogu povezati s vama. Model umjetne inteligencije (AI) ili treće strane koje omogućavaju model ne zadržavaju nikakve osobne podatke.</translation>
+<translation id="7297681068636289435">Pomoćnik Leo ne prikuplja identifikacijske oznake kao što su adresa IP koje se mogu povezati s vama. Model umjetne inteligencije (AI) ni treće strane koje omogućavaju model ne zadržavaju nikakve osobne podatke.</translation>
 <translation id="7839853125981164613">Ovdje upišite upit</translation>
 <translation id="1171287413830401223">Omogućiti predložena pitanja?</translation>
 <translation id="4567071417854988869">Sažmi ovaj videozapis</translation>
 <translation id="7921782882718083488">Sažmi ovu stranicu</translation>
-<translation id="8723991872343294222">Značajkom Brave AI mogu se automatski predlagati pitanja na osnovi sadržaja mrežnog mjesta. Možete je poslije onemogućiti u Postavkama.</translation>
+<translation id="5431287032059464898">Pomoćnik Leo može automatski predlagati pitanja temeljena na sadržaju mrežnog mjesta. Kako bi to mogao činiti, sadržaj stranice koju pregledavate slat će se pomoćniku Leo kako bi generirao te prijedloge dok je otvoren. To možete kasnije onemogućiti u Postavkama.</translation>
 <translation id="3435896845095436175">Omogući</translation>
 <translation id="7473891865547856676">Ne, hvala</translation>
 <translation id="7932221068776853847">Prekinite vezu da biste zaustavili slanje sadržaja ove stranice pomoćniku Leo i započnite novi razgovor</translation>
@@ -1889,6 +1886,7 @@
 <translation id="2961040541145689181">Novo čavrljanje</translation>
 <translation id="97095589689466044">Predložena pitanja</translation>
 <translation id="7557539689487606886">Pretplati se na Premium</translation>
+<translation id="1691256669639196606">Upravljaj pretplatom</translation>
 <translation id="3037594989275592390">Jezični modeli</translation>
 <translation id="849535826888024304">Dosegnuto ograničenje stope odogovora</translation>
 <translation id="3834321271158315162">Otključajte veću stopu odgovora pretplatom Premium ili pokušajte ponovno
@@ -1926,6 +1924,7 @@
 <translation id="6291843235651817590">Opće čavrljanje</translation>
 <translation id="8193130769524604031">Napredni zadaci čavrljanja</translation>
 <translation id="3185367320601718531">Razgovor i generiranje teksta</translation>
+<translation id="3965507912994218570">Postavke pomoćnika Leo</translation>
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="8458987127502506209">Omogući Štitove Brave</translation>
 <translation id="7509914170164691086">Štitovi OMOGUĆENI <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>
@@ -2008,7 +2007,6 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="8814357473522731680">Omogućuje</translation>
 <translation id="3960619311638643872">VPN preglednika Brave</translation>
 <translation id="5747552184818312860">Istječe</translation>
-<translation id="1691256669639196606">Upravljaj pretplatom</translation>
 <translation id="434523916398030617">Obrati se tehničkoj podršci</translation>
 <translation id="1116694919640316211">O opcijama</translation>
 <translation id="8670386189340362926">Blokiraj elemente za praćenje &amp; oglase u svim aplikacijama</translation>

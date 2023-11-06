@@ -230,7 +230,7 @@ Aksi halde bu işlem gizlilik ayarlarınız tarafından engellenecek. Buna izin 
 <translation id="1432581352905426595">Arama motorlarını yönet</translation>
 <translation id="1433225466058025572">Dosyalarınızı tekrar taşımayı deneyin</translation>
 <translation id="783200745622992168">Brave, internette gezinirken sizi koruyacak Brave Güvenli Tarama gibi yerleşik güvenlik özelliklerine sahiptir. Güvenli Tarama kısa süre önce, ziyaret etmeye çalıştığınız siteye yerleştirilmiş <ph name="BEGIN_LINK"/><ph name="SITE"/> sitesinde kötü amaçlı yazılım tespit etti<ph name="END_LINK"/>.</translation>
-<translation id="1435940442311036198">Farklı bir cihazdaki şifre anahtarını kullanın</translation>
+<translation id="1435940442311036198">Farklı bir cihazdaki geçiş anahtarını kullanın</translation>
 <translation id="1436185428532214179">Cihazınızdaki dosyaları veya klasörleri düzenlemek isteyebilir</translation>
 <translation id="1442386063175183758">Sağa doğru iki kırımlı katlama</translation>
 <translation id="1442987760062738829">Delik</translation>
@@ -1863,8 +1863,8 @@ Aksi halde bu işlem gizlilik ayarlarınız tarafından engellenecek. Buna izin 
 <translation id="4953689047182316270">Erişilebilirlikle İlgili Etkinliklere Yanıt Verme</translation>
 <translation id="2351178841237473727">Brave geçmişinizi görüntüleyin düğmesi, Brave ayarlarında tarama geçmişinizi görüp yönetmek için etkinleştirin</translation>
 <translation id="4958444002117714549">Listeyi genişlet</translation>
-<translation id="5398999400894437316">Brave reklam gizliliği ayarlarında değişiklik yapabilirsiniz</translation>
-<translation id="4960203958361543136">Arama Motorunuzu Seçin</translation>
+<translation id="5398999400894437316">Brave reklam gizliliği ayarlarında değişiklik yapabilirsiniz.</translation>
+<translation id="4960203958361543136">Arama motorunuzu seçin</translation>
 <translation id="4964505745997821360">Sağlık sigortası</translation>
 <translation id="4968522289500246572">Bu uygulama, mobil cihazlar için tasarlandığından düzgün bir şekilde yeniden boyutlandırılamayabilir. Uygulama sorun çıkarabilir veya yeniden başlatılabilir.</translation>
 <translation id="4968665849807487749">Tüm ekranlarınızda pencereleri yönetme izni isteyebilir</translation>
@@ -2035,7 +2035,7 @@ Aksi halde bu işlem gizlilik ayarlarınız tarafından engellenecek. Buna izin 
 <translation id="5306593769196050043">Her iki sayfa</translation>
 <translation id="5307166000025436103">Tamam</translation>
 <translation id="5308380583665731573">Bağlan</translation>
-<translation id="9017231970148712387">Brave ayarlarında değişiklik yapabilirsiniz</translation>
+<translation id="9017231970148712387">Brave ayarlarında değişiklik yapabilirsiniz.</translation>
 <translation id="5308689395849655368">Kilitlenme bildirme devre dışı.</translation>
 <translation id="5310178588836736698">Off-road araçları</translation>
 <translation id="5314967030527622926">Kitapçık yapıcı</translation>
@@ -2247,7 +2247,7 @@ Aksi halde bu işlem gizlilik ayarlarınız tarafından engellenecek. Buna izin 
 <translation id="5764920692828389743"><ph name="EMAIL_ADDRESS"/> adresine gönder</translation>
 <translation id="5765072501007116331">Teslimat yöntemlerini ve gereksinimleri görmek için bir adres seçin</translation>
 <translation id="57689295674415555">Sanal kart numarası doldurulmadı mı?</translation>
-<translation id="5772086939108830423">Farklı bir cihazdaki şifre anahtarını kullanın</translation>
+<translation id="5772086939108830423">Farklı bir cihazdaki geçiş anahtarını kullanın</translation>
 <translation id="5776313857861697733">Öncelik</translation>
 <translation id="5776574724412881956">Sanal kart doldurulmadı mı? Sanal kart bilgilerini tıklayarak panoya kopyalayın. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Deneme etkin</translation>
@@ -2930,7 +2930,7 @@ Aksi halde bu işlem gizlilik ayarlarınız tarafından engellenecek. Buna izin 
 <translation id="7199278868241956094">Oficio</translation>
 <translation id="7201591969684833065">Yöneticiniz şunları görebilir:</translation>
 <translation id="2540471381262404386">Brave'u sistemin varsayılan tarayıcısı olarak ayarlayın</translation>
-<translation id="7207736436284129083">{COUNT,plural, =0{Yok}=1{1 şifre anahtarı}other{# şifre anahtarı}}</translation>
+<translation id="7207736436284129083">{COUNT,plural, =0{Yok}=1{1 geçiş anahtarı}other{# geçiş anahtarı}}</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> güvenlik standartlarına uymuyor.</translation>
 <translation id="7210993021468939304">Yönetici kapsayıcı içindeki Linux etkinliğini görebilir ve kapsayıcı içindeki Linux uygulamalarını yükleyip çalıştırabilir</translation>
 <translation id="721197778055552897">Bu sorun hakkında <ph name="BEGIN_LINK"/>daha fazla<ph name="END_LINK"/> bilgi edinin.</translation>

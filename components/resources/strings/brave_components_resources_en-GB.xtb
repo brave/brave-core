@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Become a Brave creator!</translation>
 <translation id="4639659520811817892">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</translation>
 <translation id="4816455138209470435">Brave supports YouTube, Twitch, Vimeo and more!</translation>
-<translation id="3001581544796357879">Sign up to Gemini to store your BATs securely</translation>
-<translation id="4083523826017830313">Connect Brave Rewards to Gemini to receive your BAT earnings directly to your Gemini account. Gemini is a full reserve and highly regulated cryptocurrency exchange and custodian.</translation>
-<translation id="3313756098698370125">Millions of customers in 70+ countries choose Gemini to buy, sell, store and stake over 90+ cryptos with ease.</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6074001074364432111">* Requires Uphold account.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">About Leo</translation>
 <translation id="70442873931504163">Brave Leo is an AI smart assistant that can summarise web pages, transcribe videos and answer questions. Brave Leo Premium uses advanced <ph name="LINK_BEFORE"/>AI models<ph name="LINK_AFTER"/> for even more nuanced replies and gives early access to new features.</translation>
 <translation id="3055739528128372229">The accuracy of responses is not guaranteed and may include inaccurate, misleading or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar.</translation>
-<translation id="5030677498967794115">Leo does not collect or otherwise process identifiers such as IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.</translation>
+<translation id="7297681068636289435">Leo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.</translation>
 <translation id="7839853125981164613">Enter a prompt here</translation>
 <translation id="1171287413830401223">Enable suggested questions?</translation>
 <translation id="4567071417854988869">Summarise this video</translation>
 <translation id="7921782882718083488">Summarise this page</translation>
-<translation id="8723991872343294222">Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.</translation>
+<translation id="5431287032059464898">Leo can automatically suggest questions based on the content of the site. To do this, the page contents of your navigations will be sent to Leo to generate these suggestions while Leo is open. You can disable it later in Settings.</translation>
 <translation id="3435896845095436175">Enable</translation>
 <translation id="7473891865547856676">No Thanks</translation>
 <translation id="7932221068776853847">Disconnect to stop sending this page content to Leo, and start a new conversation</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">New chat</translation>
 <translation id="97095589689466044">Suggested questions</translation>
 <translation id="7557539689487606886">Go Premium</translation>
+<translation id="1691256669639196606">Manage subscription</translation>
 <translation id="3037594989275592390">Language models</translation>
 <translation id="849535826888024304">Response rate limit reached</translation>
 <translation id="3834321271158315162">Unlock a higher response rate by subscribing to Premium, or try again
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">General purpose chat</translation>
 <translation id="8193130769524604031">Advanced chat tasks</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
+<translation id="3965507912994218570">Leo settings</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Powered by</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Expires</translation>
-<translation id="1691256669639196606">Manage subscription</translation>
 <translation id="434523916398030617">Contact technical support</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="8670386189340362926">Block trackers &amp; ads across all apps</translation>

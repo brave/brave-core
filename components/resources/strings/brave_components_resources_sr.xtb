@@ -457,9 +457,6 @@
 <translation id="4354564238172327160">Postanite Brave autor!</translation>
 <translation id="4639659520811817892">Posetite creators.brave.com da biste se već danas prijavili i počeli da zarađujete BAT tokene od vaših fanova i pratilaca.</translation>
 <translation id="4816455138209470435">Brave podržava YouTube, Twitch, Vimeo i druge platforme!</translation>
-<translation id="3001581544796357879">Prijavite se na Gemini da biste bezbedno čuvali vaše BAT</translation>
-<translation id="4083523826017830313">Povežite Brave nagrade i Gemini da biste dobili BAT zaradu direktno na vaš Gemini nalog. Gemini je puna rezerva i visoko regulisana razmena kriptovaluta i čuvar.</translation>
-<translation id="3313756098698370125">Milioni korisnika u više od 70 zemalja biraju Gemini da bi s lakoćom kupovali, prodavali, čuvali i ulagali više od 90 kriptovaluta.</translation>
 <translation id="7404779623219601861">Zamenite BAT za poklon kartice</translation>
 <translation id="6215565499749144110">Sa TAP mrežom, možete zameniti vaše BAT za popularno ime- poklon kartice brenda.</translation>
 <translation id="6074001074364432111">* Zahteva potvrdni nalog.</translation>
@@ -1874,12 +1871,12 @@ pravila o privatnosti
 <translation id="7491773233732232424">O Leo</translation>
 <translation id="70442873931504163">Brave Leo je pametni asistent veštačke inteligencije koji može da sumira veb stranice, transkribuje video zapise, i odgovora na pitanja. Brave Leo Premium koristi napredne <ph name="LINK_BEFORE"/>modele veštačke inteligencije<ph name="LINK_AFTER"/>za još jasnije odgovore i daje rani pristup novim funkcijama.</translation>
 <translation id="3055739528128372229">Tačnost odgovora nije zagarantovana i može uključivati netačne, obmanjujuće ili lažne informacije. Nemojte slati osetljive ili privatne informacije i budite oprezni sa bilo kakvim odgovorima koji se odnose na zdravlje, finansije, ličnu bezbednost ili slično.</translation>
-<translation id="5030677498967794115">Leo ne prikuplja niti na drugi način obrađuje identifikatore kao što je IP adresa koja se može povezati sa vama. Model veštačke inteligencije ili bilo koji dobavljač modela treće strane ne zadržava nikakve lične podatke.</translation>
+<translation id="7297681068636289435">Лео не прикупља идентификаторе као што је ваша ИП адреса која се може повезати са вама. АИ модел или било који добављач модела треће стране не 3рд-парти никакве личне податке.</translation>
 <translation id="7839853125981164613">Uneti upit ovde</translation>
 <translation id="1171287413830401223">Omogući predloženo pitanje?</translation>
 <translation id="4567071417854988869">Sumiraj ovaj video zapis</translation>
 <translation id="7921782882718083488">Sumiraj ovu stranicu</translation>
-<translation id="8723991872343294222">Brave AI može automatski da predloži pitanja na osnovu sadržaja na lokaciji. Ovo možete da onemogućite kasnije u Podešavanjima.</translation>
+<translation id="5431287032059464898">Лео може аутоматски да предлаже питања на основу садржаја сајта. Да бисте то урадили, садржај странице ваше навигације ће бити послат Леу да генерише ове предлоге док је Лео отворен. Можете га онемогућити касније у подешавањима.</translation>
 <translation id="3435896845095436175">Омогући</translation>
 <translation id="7473891865547856676">Не, хвала</translation>
 <translation id="7932221068776853847">Prekinite vezu da biste zaustavili slanje sadržaja ovog sajta asistentu Leo i pokrenite novi razgovor</translation>
@@ -1894,6 +1891,7 @@ pravila o privatnosti
 <translation id="2961040541145689181">Novo ćaskanje</translation>
 <translation id="97095589689466044">Predložena pitanja</translation>
 <translation id="7557539689487606886">Idite na Premium</translation>
+<translation id="1691256669639196606">Upravljanje pretplatama</translation>
 <translation id="3037594989275592390">Jezički modeli</translation>
 <translation id="849535826888024304">Dostignuto je ograničenje stope odgovora</translation>
 <translation id="3834321271158315162">Otključajte veću stopu odgovora pretplatom na Premium ili pokušajte ponovo
@@ -1931,6 +1929,7 @@ pravila o privatnosti
 <translation id="6291843235651817590">Ćaskanje opšte svrhe</translation>
 <translation id="8193130769524604031">Napredni zadaci ćaskanja</translation>
 <translation id="3185367320601718531">Razgovor i generisanje teksta</translation>
+<translation id="3965507912994218570">Лео подешавања</translation>
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="8458987127502506209">Omogućite Brave štitove</translation>
 <translation id="7509914170164691086">Štitovi su PODIGNUTI <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>
@@ -2013,7 +2012,6 @@ pravila o privatnosti
 <translation id="8814357473522731680">Omogućava</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Истиче</translation>
-<translation id="1691256669639196606">Upravljanje pretplatama</translation>
 <translation id="434523916398030617">Kontaktirajte s tehničkom podrškom</translation>
 <translation id="1116694919640316211">Основни подаци</translation>
 <translation id="8670386189340362926">Blokiranje tragača &amp; oglasa na svim aplikacijama</translation>

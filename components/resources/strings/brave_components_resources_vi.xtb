@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Trở thành Người tạo nội dung Brave!</translation>
 <translation id="4639659520811817892">Truy cập creators.brave.com để đăng ký ngay hôm nay và bắt đầu kiếm BAT từ người hâm mộ và người theo dõi của bạn.</translation>
 <translation id="4816455138209470435">Brave hỗ trợ YouTube, Twitch, Vimeo và hơn thế nữa!</translation>
-<translation id="3001581544796357879">Đăng ký Gemini để lưu trữ BAT của bạn một cách an toàn</translation>
-<translation id="4083523826017830313">Kết nối Brave Phần thưởng với Gemini để nhận thu nhập BAT trực tiếp vào tài khoản Gemini của bạn. Gemini là một sàn giao dịch và giám sát tiền điện tử dự trữ đầy đủ và được quản lý chặt chẽ.</translation>
-<translation id="3313756098698370125">Hàng triệu khách hàng ở hơn 70 quốc gia chọn Gemini để mua, bán, lưu trữ và đặt cược hơn 90 loại tiền điện tử một cách dễ dàng.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6074001074364432111">* Yêu cầu tài khoản Uphold.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Về Leo</translation>
 <translation id="70442873931504163">Brave Leo là trợ lý thông minh AI có thể tóm tắt các trang web, chép lại video và trả lời các câu hỏi. Brave Leo Premium sử dụng <ph name="LINK_BEFORE"/>mô hình AI<ph name="LINK_AFTER"/> nâng cao để có được những câu trả lời có nhiều sắc thái hơn nữa và cung cấp quyền truy cập sớm vào các tính năng mới.</translation>
 <translation id="3055739528128372229">Độ chính xác của các câu trả lời không được đảm bảo và có thể bao gồm thông tin không chính xác, gây hiểu lầm hoặc sai lệch. Không gửi thông tin nhạy cảm hoặc riêng tư và hãy thận trọng với bất kỳ câu trả lời nào liên quan đến sức khỏe, tài chính, an toàn cá nhân hoặc các nội dung tương tự.</translation>
-<translation id="5030677498967794115">Leo không thu thập hoặc xử lý các thông tin nhận dạng như Địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu cá nhân nào được mô hình AI hoặc bất kỳ nhà cung cấp mô hình bên thứ 3 nào lưu giữ.</translation>
+<translation id="7297681068636289435">Leo không thu thập các thông tin nhận dạng như Địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu cá nhân nào được mô hình AI hoặc bất kỳ nhà cung cấp mô hình bên thứ 3 nào lưu giữ.</translation>
 <translation id="7839853125981164613">Nhập lời nhắc ở đây</translation>
 <translation id="1171287413830401223">Bật đề xuất câu hỏi?</translation>
 <translation id="4567071417854988869">Tóm tắt video này</translation>
 <translation id="7921782882718083488">Tóm tắt trang này</translation>
-<translation id="8723991872343294222">AI dũng cảm có thể tự động đề xuất các câu hỏi dựa trên nội dung của trang web. Bạn có thể vô hiệu hóa chức năng này sau trong cài đặt.</translation>
+<translation id="5431287032059464898">Leo có thể tự động đề xuất câu hỏi dựa trên nội dung của trang web. Để thực hiện việc này, nội dung trang điều hướng của bạn sẽ được gửi tới Leo để tạo ra những đề xuất này khi Leo mở. Bạn có thể tắt sau trong Cài đặt.</translation>
 <translation id="3435896845095436175">Bật</translation>
 <translation id="7473891865547856676">Không, cảm ơn</translation>
 <translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Trò chuyện mới</translation>
 <translation id="97095589689466044">Câu hỏi gợi ý</translation>
 <translation id="7557539689487606886">Lên Premium</translation>
+<translation id="1691256669639196606">Quản lý đăng ký</translation>
 <translation id="3037594989275592390">Mô hình ngôn ngữ</translation>
 <translation id="849535826888024304">Đã đạt đến giới hạn tốc độ phản hồi</translation>
 <translation id="3834321271158315162">Đạt được tỷ lệ phản hồi cao hơn bằng cách đăng ký Premium hoặc thử lại
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Trò chuyện cho mục đích chung</translation>
 <translation id="8193130769524604031">Tác vụ trò chuyện nâng cao</translation>
 <translation id="3185367320601718531">Cuộc trò chuyện và tạo văn bản</translation>
+<translation id="3965507912994218570">Cài đặt Leo</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
 <translation id="7509914170164691086">Khiên đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Được hỗ trợ bởi</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Hết hạn</translation>
-<translation id="1691256669639196606">Quản lý đăng ký</translation>
 <translation id="434523916398030617">Liên hệ hỗ trợ kỹ thuật</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="8670386189340362926">Chặn trình theo dõi &amp; quảng cáo trên khắp tất cả các ứng dụng</translation>

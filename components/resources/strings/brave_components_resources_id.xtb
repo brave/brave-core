@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Jadilah Kreator Brave!</translation>
 <translation id="4639659520811817892">Kunjungi creators.brave.com untuk mendaftar hari ini dan mulai dapatkan BAT dari penggemar dan pengikut Anda.</translation>
 <translation id="4816455138209470435">Brave mendukung YouTube, Twitch, Vimeo, dan banyak lagi!</translation>
-<translation id="3001581544796357879">Mendaftarlah ke Gemini guna menyimpan BAT Anda dengan aman</translation>
-<translation id="4083523826017830313">Hubungkan Imbalan Brave ke Gemini guna menerima pendapatan BAT Anda secara langsung ke akun Gemini Anda. Gemini adalah pertukaran dan kustodian mata uang kripto dengan tempat penyimpanan penuh yang diatur dengan ketat.</translation>
-<translation id="3313756098698370125">Jutaan pelanggan di 70+ negara memilih Gemini untuk membeli, menyimpan, dan mempertaruhkan 90+ kripto dengan mudah.</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6074001074364432111">* Memerlukan akun Uphold.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Tentang Leo</translation>
 <translation id="70442873931504163">Brave Leo adalah asisten pintar AI yang dapat meringkas halaman web, membuat transkrip video, dan menjawab pertanyaan. Brave Leo Premium menggunakan<ph name="LINK_BEFORE"/>model AI<ph name="LINK_AFTER"/> unggulan untuk dapat memberikan balasan yang lebih beragam, dan memberikan akses awal ke fitur-fitur baru.</translation>
 <translation id="3055739528128372229">Akurasi jawaban tidak dijamin, dan mungkin mengandung informasi yang tidak akurat, menyesatkan, atau keliru. Jangan mengirimkan informasi sensitif atau privat, serta berhati-hatilah terhadap jawaban teks yang berkaitan dengan kesehatan, keuangan, keselamatan pribadi, atau hal yang serupa.</translation>
-<translation id="5030677498967794115">Leo tidak mengumpulkan atau memproses pengidentifikasi seperti Alamat IP yang dapat dikaitkan kepada Anda. Data pribadi Anda tidak akan disimpan oleh model AI atau penyedia model pihak ketiga.</translation>
+<translation id="7297681068636289435">Leo tidak mengumpulkan atau memproses pengidentifikasi seperti Alamat IP Anda yang dapat dikaitkan kepada Anda. Data pribadi Anda tidak akan disimpan oleh model AI atau penyedia model pihak ketiga mana pun.</translation>
 <translation id="7839853125981164613">Masukkan petunjuk di sini</translation>
 <translation id="1171287413830401223">Aktifkan pertanyaan yang disarankan?</translation>
 <translation id="4567071417854988869">Ringkas video ini</translation>
 <translation id="7921782882718083488">Ringkas halaman ini</translation>
-<translation id="8723991872343294222">AI Brave secara otomatis mengusulkan pertanyaan berdasarkan konten situs. Anda dapat menonaktifkannya nanti di Pengaturan.</translation>
+<translation id="5431287032059464898">Leo dapat secara otomatis mengusulkan pertanyaan berdasarkan konten situs. Untuk melakukan hal ini, konten halaman navigasi Anda akan dikirimkan ke Leo untuk menghasilkan usulan ini sementara Leo dibuka. Anda dapat menonaktifkannya nanti di Pengaturan.</translation>
 <translation id="3435896845095436175">Aktifkan</translation>
 <translation id="7473891865547856676">Lain Kali</translation>
 <translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Obrolan baru</translation>
 <translation id="97095589689466044">Pertanyaan yang disarankan</translation>
 <translation id="7557539689487606886">Jadilah Premium</translation>
+<translation id="1691256669639196606">Kelola paket langganan</translation>
 <translation id="3037594989275592390">Model bahasa</translation>
 <translation id="849535826888024304">Batas tingkat respons telah tercapai</translation>
 <translation id="3834321271158315162">Dapatkan tingkat respons lebih tinggi dengan berlangganan paket Premium, atau coba lagi nanti</translation>
@@ -1923,6 +1921,7 @@
 <translation id="6291843235651817590">Obrolan umum</translation>
 <translation id="8193130769524604031">Tugas obrolan lanjutan</translation>
 <translation id="3185367320601718531">Penghasil percakapan dan teks</translation>
+<translation id="3965507912994218570">Pengaturan Leo</translation>
 <translation id="6303294677342628402">Pelindung</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
 <translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
@@ -2005,7 +2004,6 @@
 <translation id="8814357473522731680">Didukung oleh</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="5747552184818312860">Kedaluwarsa</translation>
-<translation id="1691256669639196606">Kelola paket langganan</translation>
 <translation id="434523916398030617">Hubungi dukungan teknis</translation>
 <translation id="1116694919640316211">Tentang</translation>
 <translation id="8670386189340362926">Memblokir pelacak &amp; iklan di seluruh aplikasi</translation>

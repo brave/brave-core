@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Hakake Brave'i loojaks!</translation>
 <translation id="4639659520811817892">Külastage veebisaiti creators.brave.com, et registreeruda juba täna ning alustada BAT-i teenimist oma fännidelt ja jälgijatelt.</translation>
 <translation id="4816455138209470435">Brave toetab YouTube'i, Twitchi, Vimeot ja paljut muud.</translation>
-<translation id="3001581544796357879">BAT-i turvaliseks salvestamiseks registreerige Gemini konto</translation>
-<translation id="4083523826017830313">Ühendage Brave’i auhinnad Geminiga, et saada oma teenitud BAT otse oma Gemini kontole. Gemini on täisreserviga ja rangelt reguleeritud krüptovaluuta vahetaja ja andmevaldaja.</translation>
-<translation id="3313756098698370125">Miljonid kliendid rohkem kui 70 riigis valivad Gemini, et osta, müüa, talletada ja panustada hõlpsalt rohkem kui 90 krüptovaluutat.</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6074001074364432111">* Vajalik on Upholdi konto.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Leo tutvustus</translation>
 <translation id="70442873931504163">Brave’i Leo on tehisintellektist assistent, kes oskab teha veebilehtedest kokkuvõtteid, transkribeerida videoid ja vastata küsimustele. Brave’i Leo Premium-versioonis kasutatakse täiustatud <ph name="LINK_BEFORE"/>tehisintellektimudeleid<ph name="LINK_AFTER"/>, et vastused oleksid veelgi nüansirikkamad, ja pakutakse uutele funktsioonidele varajast juurdepääsu.</translation>
 <translation id="3055739528128372229">Vastuste täpsust ei tagata ja need võivad sisaldada ebatäpset, eksitavat või valet teavet. Ärge sisestage tundlikke ega isiklikke andmeid ning olge tervise, finantsteemade, isikliku turvalisuse või sarnasega seotud vastuste puhul ettevaatlik.</translation>
-<translation id="5030677498967794115">Leo ei kogu ega töötle identifikaatoreid, nagu IP-aadressi, mida võidakse teiega siduda. See tehisintellektimudel ega ükski kolmandast isikust mudelipakkuja ei säilita isikuandmeid.</translation>
+<translation id="7297681068636289435">Leo ei kogu andmeid, mida saaks teiega seostada, nt teie IP-aadressi. Tehisintellektimudeli ega mis tahes 3. osapoole mudeli pakkujad ei säilita isikuandmeid.</translation>
 <translation id="7839853125981164613">Sisestage siia viip</translation>
 <translation id="1171287413830401223">Luba soovitatud küsimused?</translation>
 <translation id="4567071417854988869">Tee videost kokkuvõte</translation>
 <translation id="7921782882718083488">Tee lehest kokkuvõte</translation>
-<translation id="8723991872343294222">Brave'i tehisintellekt võib automaatselt lehe sisu põhjal küsimusi soovitada. Saate selle hiljem seadete alt keelata.</translation>
+<translation id="5431287032059464898">Leo soovitab automaatselt küsimusi lehe sisu põhjal. Selleks saadetakse teie navigatsioonide lehe sisu Leole, mis võimaldab neid soovitusi luua, kui Leo avatud on. Saate selle hiljem seadete alt keelata.</translation>
 <translation id="3435896845095436175">Luba</translation>
 <translation id="7473891865547856676">Tänan, ei</translation>
 <translation id="7932221068776853847">Katkestage ühendus, et lõpetada selle lehe sisu Leole saatmine ja alustada uut vestlust</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Uus vestlus</translation>
 <translation id="97095589689466044">Soovitatud küsimused</translation>
 <translation id="7557539689487606886">Telli Premium</translation>
+<translation id="1691256669639196606">Tellimuse haldamine</translation>
 <translation id="3037594989275592390">Keelemudelid</translation>
 <translation id="849535826888024304">Vastuselimiit on täis</translation>
 <translation id="3834321271158315162">Limiidi suurendamiseks tellige Premium-versioon või proovige hiljem
@@ -1924,6 +1922,7 @@ uuesti</translation>
 <translation id="6291843235651817590">Üldine vestlus</translation>
 <translation id="8193130769524604031">Täpsemad vestlusefunktsioonid</translation>
 <translation id="3185367320601718531">Vestluse- ja tekstilooja</translation>
+<translation id="3965507912994218570">Leo seaded</translation>
 <translation id="6303294677342628402">Kaitse</translation>
 <translation id="8458987127502506209">Luba Brave'i kaitsed</translation>
 <translation id="7509914170164691086">Kaitsed on PEAL, <ph name="LINK_BEFORE"/>kestus<ph name="LINK_AFTER"/></translation>
@@ -2005,7 +2004,6 @@ uuesti</translation>
 <translation id="8814357473522731680">Platvorm:</translation>
 <translation id="3960619311638643872">Brave'i VPN</translation>
 <translation id="5747552184818312860">Aegub</translation>
-<translation id="1691256669639196606">Tellimuse haldamine</translation>
 <translation id="434523916398030617">Võtke ühendust tehnilise toega</translation>
 <translation id="1116694919640316211">Teave</translation>
 <translation id="8670386189340362926">Blokeerib jälgijad ja reklaamid kõigis rakendustes</translation>

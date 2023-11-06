@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Brave 콘텐츠 제작자가 되세요!</translation>
 <translation id="4639659520811817892">지금 creators.brave.com을 방문하여 등록하고 팬과 팔로워로부터 BAT를 받아 수익을 창출하세요.</translation>
 <translation id="4816455138209470435">Brave는 YouTube, Twitch, Vimeo 등 많은 서비스를 지원합니다!</translation>
-<translation id="3001581544796357879">Gemini에 가입하여 BAT를 안전하게 보관하세요.</translation>
-<translation id="4083523826017830313">Brave Rewards를 Gemini에 연결하면 적립된 BAT를 Gemini 계정에 바로 넣을 수 있습니다. Gemini는 까다로운 규제에 맞춰 전액준비제를 채택한 암호화폐 거래소이자 보호관리 서비스입니다.</translation>
-<translation id="3313756098698370125">70여 개국의 수많은 고객이 Gemini를 이용하여 90여 종의 암호화폐를 쉽게 매수, 매도, 보관, 스테이킹하고 있습니다.</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6074001074364432111">* Uphold 계정이 필요합니다.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">레오 소개</translation>
 <translation id="70442873931504163">Brave 레오는 웹페이지 요약, 동영상 스크립트 전사, 질문 답변 등을 도와드릴 수 있는 AI 스마트 어시스턴트입니다. Brave 레오 프리미엄은 진보된<ph name="LINK_BEFORE"/>AI 모델<ph name="LINK_AFTER"/>을 사용하여 맥락에 맞게 더욱 사람 같은 답변을 하고 새로운 기능도 우선적으로 제공됩니다.</translation>
 <translation id="3055739528128372229">답변의 정확성은 보장되지 않으며 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다.</translation>
-<translation id="5030677498967794115">레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하거나 처리하지 않습니다. AI 모델 또는 어떤 제3자 모델도 개인 데이터를 보관하지 않습니다.</translation>
+<translation id="7297681068636289435">레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하지 않습니다. AI 모델 또는 어떤 제3자 모델도 개인 데이터를 보관하지 않습니다.</translation>
 <translation id="7839853125981164613">여기 프롬프트 입력</translation>
 <translation id="1171287413830401223">추천 질문을 활성화하시겠습니까?</translation>
 <translation id="4567071417854988869">이 동영상 요약하기</translation>
 <translation id="7921782882718083488">이 페이지 요약하기</translation>
-<translation id="8723991872343294222">사이트 내용을 기반으로 Brave AI가 자동으로 질문을 추천합니다. 나중에 언제든 설정에서 비활성화할 수 있습니다.</translation>
+<translation id="5431287032059464898">레오는 사이트 콘텐츠에 기반하여 질문을 자동으로 제안해드릴 수 있습니다. 이를 위해 레오가 열린 상태에서는 탐색 중인 페이지 콘텐츠가 레오에게 전송되어 제안을 생성합니다. 언제든 나중에 설정에서 비활성화할 수 있습니다.</translation>
 <translation id="3435896845095436175">사용</translation>
 <translation id="7473891865547856676">건너뛰기</translation>
 <translation id="7932221068776853847">연결을 끊어 이 페이지 콘텐츠를 레오에게 보내기를 중지하고 새 대화를 시작합니다.</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">새 채팅</translation>
 <translation id="97095589689466044">추천 질문</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
+<translation id="1691256669639196606">구독 관리</translation>
 <translation id="3037594989275592390">언어 모델</translation>
 <translation id="849535826888024304">시간당 답변 한도 도달</translation>
 <translation id="3834321271158315162">프리미엄에 가입하여 시간당 답변 한도를 높이거나 나중에
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">일반 목적의 채팅</translation>
 <translation id="8193130769524604031">진보된 채팅 작업</translation>
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
+<translation id="3965507912994218570">레오 설정</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">제공 -</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">만료</translation>
-<translation id="1691256669639196606">구독 관리</translation>
 <translation id="434523916398030617">기술 지원팀에 문의</translation>
 <translation id="1116694919640316211">정보</translation>
 <translation id="8670386189340362926">모든 앱에서 트래커 및 광고 차단</translation>

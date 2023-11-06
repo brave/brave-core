@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Staňte se tvůrcem – Brave Creator!</translation>
 <translation id="4639659520811817892">Navštivte creators.brave.com, zaregistrujte se a můžete začít přijímat příspěvky BAT od svých fanoušků a sledujících.</translation>
 <translation id="4816455138209470435">Brave podporuje YouTube, Twitch, Vimeo a další!</translation>
-<translation id="3001581544796357879">Abyste bezpečně uložili své BAT, přihlaste se do Gemini.</translation>
-<translation id="4083523826017830313">Propojte si odměny Brave s Gemini a obdržíte své výdělky BAT přímo na účet Gemini. Gemini je plně rezervní a vysoce regulovaná burza s kryptoměnami a depozitář.</translation>
-<translation id="3313756098698370125">Gemini používají miliony zákazníků z více než 70 zemí světa ke snadnému nákupu, prodeji, držení a stakování více než 90 kryptoměn.</translation>
 <translation id="7404779623219601861">Směňujte BAT za dárkové karty</translation>
 <translation id="6215565499749144110">Díky síti TAP Network můžete směňovat vaše BAT za dárkové karty populárních značek.</translation>
 <translation id="6074001074364432111">* Vyžaduje účet Uphold.</translation>
@@ -1869,12 +1866,12 @@ other {# zdrojů}
 <translation id="7491773233732232424">O Leo</translation>
 <translation id="70442873931504163">Brave Leo je inteligentní asistent s umělou inteligencí, který umí shrnovat webové stránky, přepisovat videa a odpovídat na otázky. Brave Leo Premium využívá pokročilé <ph name="LINK_BEFORE"/>modely AI<ph name="LINK_AFTER"/> pro ještě přesnější odpovědi a poskytuje předběžný přístup k novým funkcím.</translation>
 <translation id="3055739528128372229">Přesnost odpovědí není zaručena a odpovědi mohou obsahovat nepřesné, zavádějící nebo nepravdivé informace. Neposílejte citlivé ani osobní údaje a buďte opatrní s odpověďmi týkajícími se zdraví, financí, osobní bezpečnosti apod.</translation>
-<translation id="5030677498967794115">Leo neshromažďuje ani jinak nezpracovává identifikační údaje, jako je IP adresa, které by s vámi mohly být spojeny. Model umělé inteligence ani poskytovatelé modelů třetích stran neuchovávají žádné osobní údaje.</translation>
+<translation id="7297681068636289435">Leo neshromažďuje identifikační údaje, jako je vaše IP adresa, které by s vámi mohly být spojeny. Model umělé inteligence ani poskytovatelé modelů třetích stran neuchovávají žádné osobní údaje.</translation>
 <translation id="7839853125981164613">Zde zadejte výzvu</translation>
 <translation id="1171287413830401223">Povolit navrhované otázky?</translation>
 <translation id="4567071417854988869">Shrnout toto video</translation>
 <translation id="7921782882718083488">Shrnout tuto stránku</translation>
-<translation id="8723991872343294222">Brave AI může automaticky navrhovat otázky podle obsahu stránky. Můžete to později zakázat v Nastavení.</translation>
+<translation id="5431287032059464898">Leo může automaticky navrhovat otázky na základě obsahu dané stránky. Za tímto účelem bude obsah vámi procházených stránek odeslán asistentovi Leo, aby generoval tyto návrhy, když je Leo otevřen. Zakázat to můžete později v nabídce Nastavení.</translation>
 <translation id="3435896845095436175">Aktivovat</translation>
 <translation id="7473891865547856676">Ne, děkuji</translation>
 <translation id="7932221068776853847">Odpojením ukončíte odesílání obsahu této stránky asistentovi Leo a zahájíte novou konverzaci</translation>
@@ -1889,6 +1886,7 @@ other {# zdrojů}
 <translation id="2961040541145689181">Nový chat</translation>
 <translation id="97095589689466044">Navrhované otázky</translation>
 <translation id="7557539689487606886">Přejít na verzi Premium</translation>
+<translation id="1691256669639196606">Správa předplatného</translation>
 <translation id="3037594989275592390">Jazykové modely</translation>
 <translation id="849535826888024304">Dosaženo limitu počtu odpovědí</translation>
 <translation id="3834321271158315162">Získejte vyšší počet odpovědí předplacením verze Premium nebo to zkuste znovu
@@ -1926,6 +1924,7 @@ později</translation>
 <translation id="6291843235651817590">Obecný chat</translation>
 <translation id="8193130769524604031">Pokročilé úkoly chatu</translation>
 <translation id="3185367320601718531">Konverzace a generování textu</translation>
+<translation id="3965507912994218570">Nastavení asistenta Leo</translation>
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="8458987127502506209">Aktivovat štíty Brave</translation>
 <translation id="7509914170164691086">Štíty <ph name="LINK_BEFORE"/>pro<ph name="LINK_AFTER"/> jsou ZAPNUTY</translation>
@@ -2008,7 +2007,6 @@ později</translation>
 <translation id="8814357473522731680">Provoz zajišťuje</translation>
 <translation id="3960619311638643872">Síť VPN Brave</translation>
 <translation id="5747552184818312860">Konec platnosti</translation>
-<translation id="1691256669639196606">Správa předplatného</translation>
 <translation id="434523916398030617">Kontaktovat technickou podporu</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="8670386189340362926">Blokování sledovacích &amp; reklam ve všech aplikacích</translation>

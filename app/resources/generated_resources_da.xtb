@@ -1498,7 +1498,7 @@ Du kan administrere indstillingerne for denne konto ved at installere Family Lin
 <translation id="2155473371917268529">Den aktuelle indstilling for synlighed er Dine enheder</translation>
 <translation id="2155772377859296191">Ligner <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="2156294658807918600">Scripttjeneste: <ph name="SCRIPT_URL"/></translation>
-<translation id="2156877321344104010">Kør tryghedstjek igen</translation>
+<translation id="2156877321344104010">Kør sikkerhedstjek igen</translation>
 <translation id="2157474325782140681">Hvis du vil have yderligere funktioner, skal du bruge en Dell-dockingstation, som er udviklet til at fungere sammen med denne Chromebook.</translation>
 <translation id="215753907730220065">Afslut fuld skærm</translation>
 <translation id="2157875535253991059">Denne side er nu i fuld skærm.</translation>
@@ -6985,7 +6985,6 @@ Du har # andre kompromitterede adgangskoder. Brave Adgangskodeadministrator anbe
 <translation id="6671320560732140690">{COUNT,plural, =1{en adresse}one{# adresse}other{# adresser}}</translation>
 <translation id="6671497123040790595">Konfigurerer administration af <ph name="MANAGER"/></translation>
 <translation id="6672917148207387131">Tilføj <ph name="DOMAIN"/></translation>
-<translation id="5079334477644844710">Inkognitotilstand sørger for, at <ph name="BEGIN_LINK"/>din internetaktivitet er privat,<ph name="END_LINK"/> så andre, der bruger din enhed, ikke kan se den</translation>
 <translation id="6673391612973410118"><ph name="PRINTER_MAKE_OR_MODEL"/> (USB)</translation>
 <translation id="4273218974225755737">Forlænger batteritiden ved at reducere lysstyrken, begrænse baggrundsaktivitet og visuelle effekter, forsinke notifikationer og aktivere Brave Energisparefunktion.</translation>
 <translation id="6674571176963658787">Angiv din adgangssætning for at starte synkroniseringen</translation>
@@ -7569,7 +7568,6 @@ Du har # andre kompromitterede adgangskoder. Brave Adgangskodeadministrator anbe
 <translation id="7145413760160421938">Den forrige session kan ikke genoptages</translation>
 <translation id="7146882055510146554">Microsoft 365 bruger OneDrive til at åbne og redigere Word-, Excel- og PowerPoint-filer. Du kan finde disse filer i appen Filer i sidemenuen "Microsoft OneDrive". Du skal logge ind med din Microsoft-konto. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="7148426638542880639">Websites fungerer muligvis ikke som forventet. Vælg denne mulighed, hvis du ikke vil gemme oplysninger om de websites, du besøger, på din enhed.</translation>
-<translation id="5881346672820785507">De fleste websites kan ikke bruge tredjepartscookies til at spore din aktivitet, mens du browser, og websites kan ikke bruge tredjepartscookies i inkognitotilstand.</translation>
 <translation id="7149839598364933473">Konverter denne enhed til en <ph name="DEVICE_OS"/>-enhed.</translation>
 <translation id="7149893636342594995">De seneste 24 timer</translation>
 <translation id="7152478047064750137">Denne udvidelse kræver ikke nogen særlige tilladelser</translation>
@@ -10339,8 +10337,10 @@ other {Gennemgå {NUM_EXTENSIONS} udvidelser, der blev fjernet fra Webshoppen}}<
 <translation id="255999604394332437">I Private-tilstand kan websider ikke bruge dine cookies til at se din browseraktivitet på andre websider, for eksempel for at finde personligt tilpassede annoncer. Funktioner på nogle websider virker muligvis ikke.</translation>
 <translation id="8877838532507724268">Når du er i privat tilstand, kan websteder ikke bruge dine cookies til at se din browsingaktivitet på tværs af websteder, selv ikke relaterede websteder. Din browsingaktivitet bruges ikke til f.eks. at tilpasse annoncer. Funktioner på nogle websteder fungerer muligvis ikke.</translation>
 <translation id="1593610935874634135">En virksomhed kan definere en gruppe af websider, der kan bruge cookies, så jeres aktiviteter deles med gruppen. Funktionen er slået fra i privat tilstand.</translation>
+<translation id="5881346672820785507">De fleste websteder kan ikke bruge tredjepartscookies til at spore dig, mens du surfer, og websteder kan ikke bruge tredjepartscookies i tilstanden Privat.</translation>
 <translation id="6710473112951410470">Kun igangværende Privat session</translation>
 <translation id="8148807910118761153">Denne tilpassede indstilling vil blive fjernet, hvis du lukker alle dine private vinduer</translation>
+<translation id="5079334477644844710">Tilstanden Privat gør <ph name="BEGIN_LINK"/>din surfing privat for andre,<ph name="END_LINK"/> der bruger din enhed</translation>
 <translation id="2099871685186351093">Del filer med profiler omkring dig. <ph name="LINK_BEGIN"/>Lær mere<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Privat)</translation>
 <translation id="4949006391524401372">Denne udvidelse er blevet deaktiveret af virksomhedspolitikken, da den ikke længere er tilgængelig i webshoppen.</translation>

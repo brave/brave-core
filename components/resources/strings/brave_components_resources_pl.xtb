@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Zostań Twórcą Brave!</translation>
 <translation id="4639659520811817892">Odwiedź stronę creators.brave.com, aby już dziś się zarejestrować i móc zdobywać tokeny BAT przekazane przez Twoich fanów i obserwujących.</translation>
 <translation id="4816455138209470435">Przeglądarka Brave obsługuje YouTube, Twitch, Vimeo i inne strony!</translation>
-<translation id="3001581544796357879">Zarejestruj się w portfelu Gemini, żeby bezpiecznie przechowywać tokeny BAT</translation>
-<translation id="4083523826017830313">Połącz Nagrody Brave z portfelem Gemini, żeby otrzymywać tokeny BAT bezpośrednio na koncie Gemini. Gemini podlega pełnemu nadzorowi, jest wysoce regulowaną giełdą kryptowalut oraz powiernikiem.</translation>
-<translation id="3313756098698370125">Miliony klientów w ponad 70 krajach wybrało Gemini, żeby z łatwością kupować, sprzedawać, przechowywać i stakować ponad 90 kryptowalut.</translation>
 <translation id="7404779623219601861">Wymieniaj tokeny BAT na karty upominkowe</translation>
 <translation id="6215565499749144110">Dzięki sieci TAP możesz wymienić swoje tokeny BAT na popularne karty upominkowe znanych marek.</translation>
 <translation id="6074001074364432111">* Wymaga konta Uphold.</translation>
@@ -1871,12 +1868,12 @@
 <translation id="7491773233732232424">Informacje o Leo</translation>
 <translation id="70442873931504163">Brave Leo to asystent oparty na sztucznej inteligencji, który może streszczać zawartość stron internetowych, wykonywać transkrypcję filmów i odpowiadać na pytania. Brave Leo Premium korzysta z zaawansowanych <ph name="LINK_BEFORE"/>modeli sztucznej inteligencji<ph name="LINK_AFTER"/>, aby udzielać jeszcze bardziej szczegółowych odpowiedzi, i zapewnia wczesny dostęp do nowych funkcji.</translation>
 <translation id="3055739528128372229">Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp.</translation>
-<translation id="5030677498967794115">Leo nie zbiera ani w żaden inny sposób nie przetwarza identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez model sztucznej inteligencji ani jakichkolwiek zewnętrznych dostawców modeli.</translation>
+<translation id="7297681068636289435">Leo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez model sztucznej inteligencji ani jakichkolwiek zewnętrznych dostawców modeli.</translation>
 <translation id="7839853125981164613">Wprowadź komunikat tutaj</translation>
 <translation id="1171287413830401223">Włączyć sugerowane pytania?</translation>
 <translation id="4567071417854988869">Streść ten film</translation>
 <translation id="7921782882718083488">Streść tę stronę</translation>
-<translation id="8723991872343294222">Sztuczna inteligencja Brave może automatycznie sugerować pytania w oparciu o treść strony. Możesz ją później wyłączyć w ustawieniach.</translation>
+<translation id="5431287032059464898">Leo może automatycznie zasugerować pytania na podstawie zawartości witryny. Aby to zrobić, zawartość strony zależna od Twojego poruszania się po niej zostanie przesłana do Leo, aby mógł wygenerować sugestie. Można to później wyłączyć w Ustawieniach.</translation>
 <translation id="3435896845095436175">Włącz</translation>
 <translation id="7473891865547856676">Nie, dziękuję</translation>
 <translation id="7932221068776853847">Rozłącz się, aby przestać przesyłać treści tej strony do Leo i rozpocząć nową konwersację</translation>
@@ -1891,6 +1888,7 @@
 <translation id="2961040541145689181">Nowy czat</translation>
 <translation id="97095589689466044">Sugerowane pytania</translation>
 <translation id="7557539689487606886">Przejdź do Premium</translation>
+<translation id="1691256669639196606">Zarządzaj subskrypcją</translation>
 <translation id="3037594989275592390">Model językowy</translation>
 <translation id="849535826888024304">Osiągnięto limit częstości odpowiedzi</translation>
 <translation id="3834321271158315162">Odblokuj wyższą częstość odpowiedzi, subskrybując wersję Premium, lub spróbuj ponownie
@@ -1928,6 +1926,7 @@
 <translation id="6291843235651817590">Czat ogólny</translation>
 <translation id="8193130769524604031">Zaawansowane zadania czatu</translation>
 <translation id="3185367320601718531">Rozmowa i generowanie tekstu</translation>
+<translation id="3965507912994218570">Ustawienia Leo</translation>
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
 <translation id="7509914170164691086">Tarcze są WŁĄCZONE <ph name="LINK_BEFORE"/> dla <ph name="LINK_AFTER"/></translation>
@@ -2010,7 +2009,6 @@
 <translation id="8814357473522731680">Technologia</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Wygasa</translation>
-<translation id="1691256669639196606">Zarządzaj subskrypcją</translation>
 <translation id="434523916398030617">Skontaktuj się z pomocą techniczną</translation>
 <translation id="1116694919640316211">Informacje</translation>
 <translation id="8670386189340362926">Zablokuj skrypty śledzące i reklamy we wszystkich aplikacjach</translation>

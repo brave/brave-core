@@ -457,9 +457,6 @@
 <translation id="4354564238172327160">Tapkite „Brave“ turinio kūrėju!</translation>
 <translation id="4639659520811817892">Apsilankykite creators.brave.com, užsiregistruokite ir uždirbkite BAT žetonų kurdami turinį savo gerbėjams.</translation>
 <translation id="4816455138209470435">„Brave“ palaiko „YouTube“, „Twitch“, „Vimeo“ ir kitas platformas!</translation>
-<translation id="3001581544796357879">Užsiregistruokite į „Gemini“ ir saugiai laikykite savo BAT</translation>
-<translation id="4083523826017830313">Prijunkite „Brave Rewards“ prie „Gemini“ ir gaukite uždarbį tiesiai į savo „Gemini“ paskyrą. „Gemini“ yra visiškai rezervinė ir griežtai reguliuojama kriptovaliutų keitykla ir saugykla.</translation>
-<translation id="3313756098698370125">Milijonai klientų daugiau nei 70 šalių renkasi „Gemini“, kad lengvai pirktų, parduotų, laikytų ir statytų daugiau kaip 90 kriptovaliutų.</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6074001074364432111">* Reikalinga „Uphold“ paskyra.</translation>
@@ -1871,12 +1868,12 @@
 <translation id="7491773233732232424">Apie „Leo“</translation>
 <translation id="70442873931504163">„Brave Leo“ yra DI išmanusis asistentas, kuris gali apibendrinti tinklalapius, transkribuoti vaizdo įrašus ir atsakyti į klausimus. „Brave Leo Premium“ naudoja pažangius<ph name="LINK_BEFORE"/>DI modelius<ph name="LINK_AFTER"/>, todėl pateikia dar subtilesnius atsakymus ir suteikia išankstinę prieigą prie naujų funkcijų.</translation>
 <translation id="3055739528128372229">Atsakymų tikslumas negarantuojamas, juose gali būti pateikta netiksli, klaidinanti ar melaginga informacija. Neteikite slaptos ar privačios informacijos ir atsargiai rinkitės atsakymus, susijusius su sveikata, finansais, asmeniniu saugumu ir pan.</translation>
-<translation id="5030677498967794115">„Leo“ nerenka ir kitaip neapdoroja identifikatorių, pvz., IP adreso, kuriuos galima susieti su jumis. Jokių asmeninių duomenų nekaupia nei DI modelis, nei trečiosios šalies šio modelio tiekėjai.</translation>
+<translation id="7297681068636289435">"Leo" nerenka identifikatorių, pavyzdžiui, jūsų IP adreso, kuriuos būtų galima susieti su jumis. Jokių asmens duomenų nesaugo nei dirbtinio intelekto modelis, nei jokie 3-ioji šalis modelio teikėjai.</translation>
 <translation id="7839853125981164613">Čia įveskite raginimą</translation>
 <translation id="1171287413830401223">Įgalinti siūlomus pasiūlymus?</translation>
 <translation id="4567071417854988869">Apibendrinti šį vaizdo įrašą</translation>
 <translation id="7921782882718083488">Apibendrinti šį puslapį</translation>
-<translation id="8723991872343294222">„Brave“ DI gali automatiškai siūlyti pasiūlymus pagal svetainės turinį. Vėliau tai galite išjungti nustatymuose.</translation>
+<translation id="5431287032059464898">"Leo" gali automatiškai siūlyti klausimus pagal svetainės turinį. Tam į "Leo" bus siunčiamas jūsų naršymo puslapių turinys, kad šie pasiūlymai būtų generuojami, kol "Leo" yra atidarytas. Vėliau tai galite išjungti nustatymuose.</translation>
 <translation id="3435896845095436175">Įgalinti</translation>
 <translation id="7473891865547856676">Ne, ačiū</translation>
 <translation id="7932221068776853847">Atsijunkite, kad šio puslapio turinys nebebūtų siunčiamas „Leo“, ir pradėkite naują pokalbį</translation>
@@ -1891,6 +1888,7 @@
 <translation id="2961040541145689181">Naujas pokalbis</translation>
 <translation id="97095589689466044">Siūlomi klausimai</translation>
 <translation id="7557539689487606886">Užsisakyti „Premium“</translation>
+<translation id="1691256669639196606">Tvarkyti prenumeratą</translation>
 <translation id="3037594989275592390">Kalbų modeliai</translation>
 <translation id="849535826888024304">Pasiektas atsakymų dažnio limitas</translation>
 <translation id="3834321271158315162">Užsisakykite „Premium“ prenumeratą ir gaukite didesnį atsakymų dažnį arba bandykite dar kartą
@@ -1928,6 +1926,7 @@ vėliau</translation>
 <translation id="6291843235651817590">Bendrosios paskirties pokalbiai</translation>
 <translation id="8193130769524604031">Išplėstinės pokalbių užduotys</translation>
 <translation id="3185367320601718531">Pokalbis ir teksto generavimas</translation>
+<translation id="3965507912994218570">"Leo" nustatymai</translation>
 <translation id="6303294677342628402">Skydai</translation>
 <translation id="8458987127502506209">Įgalinti „Brave“ skydus</translation>
 <translation id="7509914170164691086">Skydai įjungti <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
@@ -2010,7 +2009,6 @@ vėliau</translation>
 <translation id="8814357473522731680">Teikia</translation>
 <translation id="3960619311638643872">„Brave“ VPN</translation>
 <translation id="5747552184818312860">Galioja iki</translation>
-<translation id="1691256669639196606">Tvarkyti prenumeratą</translation>
 <translation id="434523916398030617">Susisiekti su techninės pagalbos tarnyba</translation>
 <translation id="1116694919640316211">Apie</translation>
 <translation id="8670386189340362926">Blokuoti reklamas ir sekiklius visose programose</translation>

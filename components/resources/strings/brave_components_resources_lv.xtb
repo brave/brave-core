@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Kļūsti par Brave satura veidotāju!</translation>
 <translation id="4639659520811817892">Apmeklē creators.brave.com un reģistrējies šodien, lai sāktu pelnīt BAT no saviem faniem un sekotājiem.</translation>
 <translation id="4816455138209470435">Brave atbalsta YouTube, Vimeo un citus!</translation>
-<translation id="3001581544796357879">Pierakstīties Gemini, lai glabātu BAT droši</translation>
-<translation id="4083523826017830313">Pieslēgt Brave balvas Gemini, lai saņemtu BAT ieņēmumus tieši savā Gemini kontā. Gemini ir stingri kontrolēta pilnīgas rezerves kriptovalūtu birža un pārvaldītājs.</translation>
-<translation id="3313756098698370125">Miljoniem klientu vairāk nekā 70 valstīs izvēlas Gemini, lai vienkārši pirktu, pārdotu, glabātu un iesaldētu vairāk nekā 90 kriptovalūtu.</translation>
 <translation id="7404779623219601861">Izpirkt BAT, iegādājoties dāvanu kartes</translation>
 <translation id="6215565499749144110">Izmantojot TAP Network, jūs varat izpirkt savus BAT, iegādājoties populāru zīmolu dāvanu kartes.</translation>
 <translation id="6074001074364432111">* Nepieciešams Uphold konts.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Par Leo</translation>
 <translation id="70442873931504163">Brave Leo ir mākslīgā intelekta viedais asistents, kas var apkopot tīmekļa lapas, transkribēt video un atbildēt uz jautājumiem. Brave Leo Premium izmanto modernus <ph name="LINK_BEFORE"/>mākslīgā intelekta modeļus<ph name="LINK_AFTER"/> niansētākām atbildēm un nodrošina agrīnu piekļuvi jaunām funkcijām.</translation>
 <translation id="3055739528128372229">Atbilžu precizitāte nav garantēta, un tajās var būt iekļauta neprecīza, maldinoša vai nepatiesa informācija. Neiesniedziet sensitīvu vai privātu informāciju, kā arī piesardzīgi atbildiet uz jautājumiem, kas saistīti ar veselību, finansēm, personīgo drošību vai tamlīdzīgiem jautājumiem.</translation>
-<translation id="5030677498967794115">Leo nevāc un citādi neapstrādā tādus identifikatorus kā IP adrese, ko var saistīt ar jums. Mākslīgā intelekta modelis vai trešās personas modeļu nodrošinātāji nesaglabā nekādus personas datus.</translation>
+<translation id="7297681068636289435">Leo neuzkrāj identifikatorus, piemēram, jūsu IP adresi, ko var saistīt ar jums. Mākslīgā intelekta modelis vai 3rd puses modeļu nodrošinātāji nesaglabā nekādus personas datus.</translation>
 <translation id="7839853125981164613">Ievadiet uzvedni šeit</translation>
 <translation id="1171287413830401223">Vai iespējot ieteiktos jautājumus?</translation>
 <translation id="4567071417854988869">Apkopot informāciju šajā video</translation>
 <translation id="7921782882718083488">Apkopot informāciju šajā lapā</translation>
-<translation id="8723991872343294222">Brave AI var automātiski ieteikt jautājumus, pamatojoties uz vietnes saturu. Vēlāk to varat atspējot sadaļā Iestatījumi.</translation>
+<translation id="5431287032059464898">Leo var automātiski ieteikt jautājumus, pamatojoties uz vietnes saturu. Lai to izdarītu, jūsu navigācijas lapu saturs tiks nosūtīts uz Leo, lai ģenerētu šos ieteikumus, kamēr Leo ir atvērts. Vēlāk to varat atspējot sadaļā Iestatījumi.</translation>
 <translation id="3435896845095436175">Iespējot</translation>
 <translation id="7473891865547856676">Nē, paldies!</translation>
 <translation id="7932221068776853847">Atvienoties, lai pārtrauktu sūtīt šīs lapas saturu Leo, un sākt jaunu sarunu</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Jauna tērzēšana</translation>
 <translation id="97095589689466044">Ieteiktie jautājumi</translation>
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
+<translation id="1691256669639196606">Pārvaldīt abonementu</translation>
 <translation id="3037594989275592390">Valodu modeļi</translation>
 <translation id="849535826888024304">Ir sasniegts atbilžu biežuma limits</translation>
 <translation id="3834321271158315162">Palieliniet atbilžu biežuma limitu, abonējot Premium, vai mēģiniet vēlreiz
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Vispārīga tērzēšana</translation>
 <translation id="8193130769524604031">Papildu tērzēšanas uzdevumi</translation>
 <translation id="3185367320601718531">Sarunas un teksta ģenerēšana</translation>
+<translation id="3965507912994218570">Leo iestatījumi</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="8458987127502506209">Iespējot Brave aizsargus</translation>
 <translation id="7509914170164691086">Šo funkciju aizsargi ir <ph name="LINK_BEFORE"/>AKTIVIZĒTI<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Termiņš</translation>
-<translation id="1691256669639196606">Pārvaldīt abonementu</translation>
 <translation id="434523916398030617">Sazināties ar tehnisko atbalstu</translation>
 <translation id="1116694919640316211">Par</translation>
 <translation id="8670386189340362926">Bloķēt izsekotājus un reklāmas visās lietotnēs</translation>

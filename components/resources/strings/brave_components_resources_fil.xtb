@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Maging Creator ng Brave!</translation>
 <translation id="4639659520811817892">Bisitahin ang creators.brave.com para mag-sign up ngayon at magsimulang kumita ng BAT mula sa mga fan at follower mo.</translation>
 <translation id="4816455138209470435">Sinusuportahan ng Brave ang YouTube, Twitch, Vimeo, at higit pa!</translation>
-<translation id="3001581544796357879">Mag-sign up sa Gemini para ma-store ang iyong BAT nang secure</translation>
-<translation id="4083523826017830313">Ikonekta ang Mga Reward ng Brave sa Gemini para matanggap ang iyong mga naipong BAT direkta sa iyong Gemini account. Ang Gemini ay isang full reserve at napakakontroladong cryptocurrency exchange at custodian.</translation>
-<translation id="3313756098698370125">Milyon-milyong customer sa 70+ bansa ang pumipili sa Gemini para bumili, magbenta, mag-store, at mag-stake ng mahigit 90+ crypto nang madali.</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6074001074364432111">* Nangangailangan ng Uphold account.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Tungkol sa Leo</translation>
 <translation id="70442873931504163">Ang Brave Leo ay isang AI smart assistant na kayang magbuod ng mga web page, mag-transcribe ng mga video, at sumagot ng mga katanungan. Gumagamit ang Brave Leo Premium ng mga <ph name="LINK_BEFORE"/>na AI model<ph name="LINK_AFTER"/> para sa mas may nuance na mga sagot, at nagbibigay ng maagang access sa mga bagong feature.</translation>
 <translation id="3055739528128372229">Hindi garantisado ang katumpakan ng mga sagot, at maaaring magsama ng mga hindi tumpak, mapanlinlang, o maling impormasyon. Huwag magsumite ng sensitibo o pribadong impormasyon, at mag-ingat sa kahit na anong kasagutang kaugnay ng kalusugan, pinansya, personal na kaligtasan, o katulad na mga paksa.</translation>
-<translation id="5030677498967794115">Hindi nangongolekta o nagpoproseso ng mga identifier ang Leo katulad ng mga IP Address na maaaring maiugnay sa iyo. Walang pinapanatiling personal na data ang AI model o ang anumang 3rd-party model provider.</translation>
+<translation id="7297681068636289435">Hindi nangongolekta ng mga identifier si Leo katulad ng IP Address mo na maaaring maiugnay sa iyo. Walang pinapanatiling personal na data ang AI model o ang anumang mga provider ng 3rd-party na model.</translation>
 <translation id="7839853125981164613">Maglagay ng prompt dito</translation>
 <translation id="1171287413830401223">I-enable ang mga iminumungkahing tanong?</translation>
 <translation id="4567071417854988869">Ibuod ang video na ito</translation>
 <translation id="7921782882718083488">Ibuod ang page na ito</translation>
-<translation id="8723991872343294222">Awtomatikong makakapagmungkahi ang Brave AI ng mga tanong batay sa content ng site. Puwede mo itong i-disable sa ibang pagkakataon sa Mga Setting.</translation>
+<translation id="5431287032059464898">Awtomatikong nagmumungkahi ng mga tanong si Leo batay sa content ng site. Para gawin ito, ipapadala ang mga content ng page ng pag-navigate mo para buuin ang mga mungkahing ito habang bukas si Leo. Maaari mong i-disable sa ibang pagkakataon sa Mga setting.</translation>
 <translation id="3435896845095436175">I-enable</translation>
 <translation id="7473891865547856676">Hindi, Salamat</translation>
 <translation id="7932221068776853847">Magdiskonekta para ihinto ang pagpapadala ng content ng page na ito sa Leo, at magsimula ng bagong pag-uusap</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Bagong chat</translation>
 <translation id="97095589689466044">Mga iminungkahing tanong</translation>
 <translation id="7557539689487606886">Mag-Premium</translation>
+<translation id="1691256669639196606">Pamahalaan subscription</translation>
 <translation id="3037594989275592390">Mga model ng wika</translation>
 <translation id="849535826888024304">Naabot na ang limitasyon ng rate ng pagtugon</translation>
 <translation id="3834321271158315162">Mag-unlock ng mas mataas na rate ng pagtugon sa pamamagitan ng pag-subscribe sa Premium, o subukang muli sa ibang
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Chat para sa pangkalahatang paggamit</translation>
 <translation id="8193130769524604031">Advanced na mga gawain sa chat</translation>
 <translation id="3185367320601718531">Pakikipag-usap at paggawa ng text</translation>
+<translation id="3965507912994218570">Mga Setting ni Leo</translation>
 <translation id="6303294677342628402">Mga Shield</translation>
 <translation id="8458987127502506209">I-enable ang Shields ng Brave</translation>
 <translation id="7509914170164691086">NAKA-ON ang Shields <ph name="LINK_BEFORE"/>para sa<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Pinapagana ng</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Mag-e-expire sa</translation>
-<translation id="1691256669639196606">Pamahalaan subscription</translation>
 <translation id="434523916398030617">Makipag-ugnayan sa teknikal na suporta</translation>
 <translation id="1116694919640316211">Tungkol sa</translation>
 <translation id="8670386189340362926">I-block ang mga tracker at ad sa lahat ng app</translation>

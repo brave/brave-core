@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Word ontwikkelaar bij Brave!</translation>
 <translation id="4639659520811817892">Bezoek creators.brave.com om u vandaag aan te melden en Bat te verdienen van fans en volgers.</translation>
 <translation id="4816455138209470435">Brave ondersteunt YouTube, Twitch, Vimeo en meer!</translation>
-<translation id="3001581544796357879">Registreer u bij Gemini om uw BAT veilig op te slaan</translation>
-<translation id="4083523826017830313">Verbind Brave Beloningen met Gemini om uw BAT-inkomsten rechtstreeks op uw Gemini-account te ontvangen. Gemini is een full reserve en streng gereguleerde cryptocurrency-exchange en beheerder.</translation>
-<translation id="3313756098698370125">Miljoenen klanten in meer dan 70 landen kiezen Gemini om meer dan 90 verschillende soorten crypto's eenvoudig te kopen, verkopen en opslaan.</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6074001074364432111">* Vereist een Uphold-account.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Over Leo</translation>
 <translation id="70442873931504163">Brave Leo is een slimme AI-assistent die webpagina's kan samenvatten, video's kan transcriberen en vragen kan beantwoorden. Brave Leo Premium gebruikt geavanceerde <ph name="LINK_BEFORE"/>AI-modellen<ph name="LINK_AFTER"/> voor nog genuanceerdere antwoorden en biedt vroegtijdige toegang tot nieuwe functies.</translation>
 <translation id="3055739528128372229">De nauwkeurigheid van antwoorden kan niet worden gegarandeerd. Antwoorden kunnen onnauwkeurige, misleidende of verkeerde informatie bevatten. Verstuur geen gevoelige of privégegevens en ga voorzichtig om met antwoorden over gezondheid, financiën, persoonlijke veiligheid en vergelijkbare categorieën.</translation>
-<translation id="5030677498967794115">Leo verzamelt en verwerkt geen identifiers die aan u kunnen worden gekoppeld, zoals het IP-adres. Het AI-model en modellen van derden bewaren geen persoonsgegevens.</translation>
+<translation id="7297681068636289435">Leo verzamelt geen identifiers die aan u kunnen worden gekoppeld, zoals uw IP-adres. Het AI-model en modellen van derden bewaren geen persoonsgegevens.</translation>
 <translation id="7839853125981164613">Voer hier een opdracht in</translation>
 <translation id="1171287413830401223">Voorgestelde vragen inschakelen?</translation>
 <translation id="4567071417854988869">Deze video samenvatten</translation>
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
-<translation id="8723991872343294222">Brave-AI kan automatisch vragen voorstellen op basis van de content van een site. U kunt dit later uitschakelen in Instellingen.</translation>
+<translation id="5431287032059464898">Leo kan automatisch vragen voorstellen op basis van de content van een site. Om Leo deze voorstellen te laten genereren, wordt de paginacontent van uw navigatieposities naar Leo gestuurd zolang Leo geopend is. U kunt dit later uitschakelen in Instellingen.</translation>
 <translation id="3435896845095436175">Inschakelen</translation>
 <translation id="7473891865547856676">Nee, bedankt</translation>
 <translation id="7932221068776853847">Verbreek de verbinding om ervoor te zorgen dat deze pagina geen content meer naar Leo stuurt en start een nieuw gesprek</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Nieuwe chat</translation>
 <translation id="97095589689466044">Voorgestelde vragen</translation>
 <translation id="7557539689487606886">Neem Premium</translation>
+<translation id="1691256669639196606">Abonnement beheren</translation>
 <translation id="3037594989275592390">Taalmodellen</translation>
 <translation id="849535826888024304">Limiet voor aantal antwoorden is bereikt</translation>
 <translation id="3834321271158315162">Ontgrendel een hogere antwoordsnelheid door u te abonneren op Premium of probeer het later
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Chat voor algemene taken</translation>
 <translation id="8193130769524604031">Chat voor geavanceerde taken</translation>
 <translation id="3185367320601718531">Gespreks- en tekstproductie</translation>
+<translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="8458987127502506209">Brave Schilden inschakelen</translation>
 <translation id="7509914170164691086">Shields zijn geactiveerd <ph name="LINK_BEFORE"/>voor<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="5747552184818312860">Verloopt</translation>
-<translation id="1691256669639196606">Abonnement beheren</translation>
 <translation id="434523916398030617">Neem contact op met de technische ondersteuning</translation>
 <translation id="1116694919640316211">Over</translation>
 <translation id="8670386189340362926">Blokkeer trackers en advertenties in alle apps</translation>

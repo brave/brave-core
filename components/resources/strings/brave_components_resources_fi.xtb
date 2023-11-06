@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Ryhdy Brave-luojaksi!</translation>
 <translation id="4639659520811817892">Käy osoitteessa creators.brave.com rekisteröityäksesi jo tänään ja aloita BATien ansaitseminen faneiltasi ja seuraajiltasi.</translation>
 <translation id="4816455138209470435">Brave tukee YouTubea, Twitchiä, Vimeota ja monia muita!</translation>
-<translation id="3001581544796357879">Rekisteröidy Geminiin, jotta voit tallentaa BATisi turvallisesti</translation>
-<translation id="4083523826017830313">Yhdistä Brave-palkinnot Geminiin saadaksesi BAT-ansiot suoraan Gemini-tilillesi. Gemini on täyden reservin ja erittäin säännelty kryptovaluuttojen pörssi ja valvoja.</translation>
-<translation id="3313756098698370125">Miljoonat asiakkaat 70+ maassa valitsevat Geminin, jotta he voivat ostaa, myydä, tallentaa ja panostaa yli 90+ kryptoa helposti.</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
 <translation id="6074001074364432111">* Vaatii Uphold-tilin.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Tietoja Leosta</translation>
 <translation id="70442873931504163">Braven Leo on tekoälyassistentti, joka voi tehdä yhteenvedon verkkosivuista, litteroida videoita ja vastata kysymyksiin. Braven Leo Premium käyttää kehittyneitä <ph name="LINK_BEFORE"/>tekoälymalleja<ph name="LINK_AFTER"/>, jotta saat entistä tarkempia vastauksia, ja antaa varhaisen pääsyn uusiin ominaisuuksiin.</translation>
 <translation id="3055739528128372229">Vastausten tarkkuutta ei taata, ja ne voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisia tai yksityisiä tietoja ja ole varovainen antaessasi terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin liittyviä vastauksia.</translation>
-<translation id="5030677498967794115">Leo ei kerää tai muuten käsittele tunnisteita, kuten IP-osoitetta, jotka voidaan linkittää sinuun. Tekoälymalli tai kolmannen osapuolen mallien toimittajat eivät säilytä henkilötietoja.</translation>
+<translation id="7297681068636289435">Leo ei kerää tunnisteita, kuten IP-osoitettasi, jotka voidaan linkittää sinuun. Tekoälymalli tai kolmannen osapuolen mallien toimittajat eivät säilytä henkilötietoja.</translation>
 <translation id="7839853125981164613">Kirjoita kehote tähän</translation>
 <translation id="1171287413830401223">Ota ehdotetut kysymykset käyttöön?</translation>
 <translation id="4567071417854988869">Tee yhteenveto tästä videosta</translation>
 <translation id="7921782882718083488">Tee yhteenveto tästä sivusta</translation>
-<translation id="8723991872343294222">Brave AI voi automaattisesti ehdottaa kysymyksiä sivuston sisällön perusteella. Voit poistaa sen käytöstä myöhemmin asetuksista.</translation>
+<translation id="5431287032059464898">Leo voi automaattisesti ehdottaa kysymyksiä sivuston sisällön perusteella. Tätä varten navigointisivujesi sisältö lähetetään Leolle näiden ehdotusten luomiseksi Leon ollessa auki. Voit poistaa sen käytöstä myöhemmin asetuksista.</translation>
 <translation id="3435896845095436175">Ota käyttöön</translation>
 <translation id="7473891865547856676">Ei kiitos</translation>
 <translation id="7932221068776853847">Katkaise yhteys lopettaaksesi tämän sivun sisällön lähettämisen Leolle ja aloita uusi keskustelu</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Uusi chat</translation>
 <translation id="97095589689466044">Ehdotetut kysymykset</translation>
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
+<translation id="1691256669639196606">Hallitse tilausta</translation>
 <translation id="3037594989275592390">Kielimallit</translation>
 <translation id="849535826888024304">Vastausasteen raja saavutettu</translation>
 <translation id="3834321271158315162">Avaa korkeampi vastausaste liittymällä Premiumiin, tai yritä uudelleen
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Yleiskäyttöinen chat</translation>
 <translation id="8193130769524604031">Kehittyneet chat-tehtävät</translation>
 <translation id="3185367320601718531">Keskustelun ja tekstin tuottaminen</translation>
+<translation id="3965507912994218570">Leo-asetukset</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
 <translation id="8458987127502506209">Ota Brave-suojaus käyttöön</translation>
 <translation id="7509914170164691086">Suojaukset ovat käytössä <ph name="LINK_BEFORE"/>kohteelle<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Vanhenee</translation>
-<translation id="1691256669639196606">Hallitse tilausta</translation>
 <translation id="434523916398030617">Ota yhteyttä tekniseen tukipalveluun</translation>
 <translation id="1116694919640316211">Tietoja asetuksista</translation>
 <translation id="8670386189340362926">Estä seuranta ja mainokset kaikissa sovelluksissa</translation>
