@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="@color/brave_theme_color"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/brave_sync_device_image"
         android:layout_toStartOf="@+id/brave_sync_remove_device"
