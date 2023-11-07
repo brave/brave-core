@@ -38,8 +38,8 @@ logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
     case skus::TracingLevel::Error:
       return logging::LOGGING_ERROR;
   }
-  // this should never happen, set to WARN level in this case so we notice since it is otherwise unused
-  return logging::LOGGING_WARN;
+  // this should never happen, set to WARNING level in this case so we notice since it is otherwise unused
+  return logging::LOGGING_WARNING;
 }
 
 }  // namespace
