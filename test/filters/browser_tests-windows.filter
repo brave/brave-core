@@ -24,6 +24,7 @@
 # available. The difference between CI and local execution has not been
 # investigated.
 -FetchManifestAndInstallCommandTest.MultipleInstalls
+-WebAppStatusBarTest.DisplayBrowserHasStatusBar
 -WebAppTabStripBrowserTest.OnlyNavigateHomeTabIfDifferentUrl
 
 # These tests fail because our default search provider is not Google, which
