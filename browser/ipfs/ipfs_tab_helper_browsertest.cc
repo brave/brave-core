@@ -871,6 +871,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   const GURL test_url = embedded_test_server()->GetURL(
       "drweb.link",
       "/ipns/k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL test_non_ipfs_url =
+      embedded_test_server()->GetURL("navigate_to.com", "/");
 
   auto find_infobar =
       [](infobars::ContentInfoBarManager* content_infobar_manager)
@@ -926,6 +928,17 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
     WaitForLoadStopWithoutSuccessCheck(active_contents());
     //  Stayed on the same address
     EXPECT_EQ(active_contents()->GetVisibleURL(), ipfs_address);
+  }
+
+  {
+    ui_test_utils::NavigateToURL(browser(), test_non_ipfs_url);
+    WaitForLoadStopWithoutSuccessCheck(active_contents());
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    //  IPFS Fallback Infobar should not be shown
+    ASSERT_FALSE(infobar);
+    EXPECT_EQ(active_contents()->GetVisibleURL(), test_non_ipfs_url);
   }
 
   //  Enable the IPFS companion

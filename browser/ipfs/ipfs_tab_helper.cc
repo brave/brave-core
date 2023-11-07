@@ -94,7 +94,6 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
 
-
 }  // namespace
 
 namespace ipfs {
@@ -181,24 +180,21 @@ void IPFSTabHelper::IPFSResourceLinkResolved(const GURL& ipfs) {
 }
 
 void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
-                                    bool is_gateway_url
-#if !BUILDFLAG(IS_ANDROID)
-                                    ,const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                                    ) {
+                                    bool is_gateway_url,
+                                    const bool& auto_redirect_blocked) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   bool should_redirect =
       pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
 
-  if (ipfs.is_valid() && should_redirect 
-  #if !BUILDFLAG(IS_ANDROID)
-    && !auto_redirect_blocked) {
+  if (ipfs.is_valid() && should_redirect
+#if !BUILDFLAG(IS_ANDROID)
+      && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
-  #else
-    ) {
+#else
+  ) {
     LoadUrl(GetIPFSResolvedURL());
-  #endif // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
     return;
   }
   UpdateLocationBar();
@@ -209,9 +205,7 @@ void IPFSTabHelper::HostResolvedCallback(
     const GURL& target_url,
     bool is_gateway_url,
     absl::optional<std::string> x_ipfs_path_header,
-#if !BUILDFLAG(IS_ANDROID)
     const bool auto_redirect_blocked,
-#endif // !BUILDFLAG(IS_ANDROID)    
     const std::string& host,
     const absl::optional<std::string>& dnslink) {
   // Check if user hasn't redirected to another host while dnslink was resolving
@@ -225,11 +219,8 @@ void IPFSTabHelper::HostResolvedCallback(
     return;
   }
 
-  DNSLinkResolved(ResolveDNSLinkUrl(target_url), is_gateway_url
-#if !BUILDFLAG(IS_ANDROID)  
-                  , auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                  );
+  DNSLinkResolved(ResolveDNSLinkUrl(target_url), is_gateway_url,
+                  auto_redirect_blocked);
 }
 
 void IPFSTabHelper::LoadUrl(const GURL& gurl) {
@@ -285,7 +276,7 @@ void IPFSTabHelper::LoadUrlForFallback(const GURL& gurl) {
         std::make_unique<IpfsFallbackBlockRedirectData>(true));
   }
 }
-#endif // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void IPFSTabHelper::UpdateLocationBar() {
 #if !BUILDFLAG(IS_ANDROID)
@@ -328,11 +319,8 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
 void IPFSTabHelper::CheckDNSLinkRecord(
     const GURL& target,
     bool is_gateway_url,
-    absl::optional<std::string> x_ipfs_path_header
-#if !BUILDFLAG(IS_ANDROID)
-    , const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-    ) {
+    absl::optional<std::string> x_ipfs_path_header,
+    const bool& auto_redirect_blocked) {
   if (!target.SchemeIsHTTPOrHTTPS())
     return;
 
@@ -341,11 +329,7 @@ void IPFSTabHelper::CheckDNSLinkRecord(
   auto resolved_callback = base::BindOnce(
       &IPFSTabHelper::HostResolvedCallback, weak_ptr_factory_.GetWeakPtr(),
       GetCurrentPageURL(), target, is_gateway_url,
-      std::move(x_ipfs_path_header)
-#if !BUILDFLAG(IS_ANDROID)
-      , auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-      );
+      std::move(x_ipfs_path_header), auto_redirect_blocked);
 
   const auto& network_anonymization_key =
       web_contents()->GetPrimaryMainFrame()
@@ -432,24 +416,19 @@ GURL IPFSTabHelper::ResolveDNSLinkUrl(const GURL& url) {
 }
 
 void IPFSTabHelper::MaybeCheckDNSLinkRecord(
-    const net::HttpResponseHeaders* headers
-#if !BUILDFLAG(IS_ANDROID)
-    , const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-    ) {
+    const net::HttpResponseHeaders* headers,
+    const bool& auto_redirect_blocked) {
   UpdateDnsLinkButtonState();
   auto current_url = GetCurrentPageURL();
   auto dnslink_target = current_url;
   auto possible_redirect = ResolveIPFSUrlFromGatewayLikeUrl(current_url);
   if (possible_redirect && IsIPFSScheme(possible_redirect.value())) {
-    if (IsAutoRedirectIPFSResourcesEnabled()
-    #if !BUILDFLAG(IS_ANDROID)
-       && !auto_redirect_blocked) {
+    if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
+#if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
-    #else
-       ) {
+#else
       LoadUrl(possible_redirect.value());
-    #endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
     } else {
       IPFSResourceLinkResolved(possible_redirect.value());
     }
@@ -467,26 +446,14 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
   if ((response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
        response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt
-#if !BUILDFLAG(IS_ANDROID)
-                       , auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                       );
+                       absl::nullopt, auto_redirect_blocked);
   } else if (headers->GetNormalizedHeader(kIfpsPathHeader,
                                           &normalized_header)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       normalized_header
-#if !BUILDFLAG(IS_ANDROID)
-                       , auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                       );
+                       normalized_header, auto_redirect_blocked);
   } else if (possible_redirect) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt
-#if !BUILDFLAG(IS_ANDROID)
-                       , auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                       );
+                       absl::nullopt, auto_redirect_blocked);
   }
 }
 
@@ -538,7 +505,7 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
 
   MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), auto_redirect_blocked);
 #else
-  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders());
+  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), false);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

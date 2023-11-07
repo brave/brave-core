@@ -108,14 +108,14 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
-#if !BUILDFLAG(IS_ANDROID)  
+#if !BUILDFLAG(IS_ANDROID)
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
 
   void SetSetShowFallbackInfobarCallbackForTesting(
       base::RepeatingCallback<void(const GURL&)> callback) {
     show_fallback_infobar_callback_for_testing_ = callback;
   }
-#endif // !BUILDFLAG(IS_ANDROID)  
+#endif  // !BUILDFLAG(IS_ANDROID)
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
   GURL GetCurrentPageURL() const;
@@ -124,16 +124,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
   bool IsAutoRedirectIPFSResourcesEnabled() const;
   void IPFSResourceLinkResolved(const GURL& ipfs);
   void DNSLinkResolved(const GURL& ipfs,
-                       bool is_gateway_url
-#if !BUILDFLAG(IS_ANDROID)
-                       ,const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                       );
-  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers
-#if !BUILDFLAG(IS_ANDROID)
-                               ,const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)
-                               );
+                       bool is_gateway_url,
+                       const bool& auto_redirect_blocked);
+  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
+                               const bool& auto_redirect_blocked);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
@@ -149,18 +143,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header
-#if !BUILDFLAG(IS_ANDROID)
-                          ,const bool& auto_redirect_blocked
-#endif // !BUILDFLAG(IS_ANDROID)  
-                          );
+                          absl::optional<std::string> x_ipfs_path_header,
+                          const bool& auto_redirect_blocked);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
                             absl::optional<std::string> x_ipfs_path_header,
-#if !BUILDFLAG(IS_ANDROID)
                             const bool auto_redirect_blocked,
-#endif // !BUILDFLAG(IS_ANDROID) 
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
