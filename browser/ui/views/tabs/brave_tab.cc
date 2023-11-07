@@ -38,13 +38,7 @@ constexpr ViewShadow::ShadowParameters kShadow{
 
 }  // namespace
 
-BraveTab::BraveTab(TabSlotController* controller)
-    : Tab(controller),
-      normal_font_(views::Label::GetDefaultFontList()),
-      active_tab_font_(
-          normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {
-  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
-}
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
 
 BraveTab::~BraveTab() = default;
 
@@ -76,8 +70,6 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
-
-  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
 
   // This should be called whenever the active state changes
   // see comment on UpdateEnabledForMuteToggle();
