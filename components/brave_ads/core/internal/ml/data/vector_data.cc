@@ -258,15 +258,13 @@ const std::vector<float>& VectorData::GetData() const {
   return storage_->values();
 }
 
-const std::vector<float>& VectorData::GetData(
-    std::vector<float>& dense_vector) const {
-  size_t dimension_count = GetDimensionCount();
+std::vector<float> VectorData::GetDenseData() const {
+  const size_t dimension_count = GetDimensionCount();
   if (storage_->values().size() == dimension_count) {
     return storage_->values();
   }
-  if (dense_vector.size() != dimension_count) {
-    return storage_->values();
-  }
+
+  std::vector<float> dense_vector(dimension_count);
   for (size_t i = 0; i < storage_->points().size(); i++) {
     dense_vector[storage_->points()[i]] = storage_->values()[i];
   }

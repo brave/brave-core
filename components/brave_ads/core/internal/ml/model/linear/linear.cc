@@ -39,7 +39,8 @@ absl::optional<PredictionMap> LinearModel::Predict(
   }
 
   for (const auto* segment_weight : *classifier->segment_weight_vectors()) {
-    if (!segment_weight->segment() || !segment_weight->weights()) {
+    if (!segment_weight || !segment_weight->segment() ||
+        !segment_weight->weights()) {
       return absl::nullopt;
     }
     const std::string segment = segment_weight->segment()->str();

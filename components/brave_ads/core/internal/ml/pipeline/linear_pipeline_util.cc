@@ -120,7 +120,6 @@ absl::optional<PipelineInfo> LoadLinearPipeline(const std::string& buffer) {
   }
 
   LinearModel linear_model(model);
-
   return PipelineInfo(locale->str(), std::move(*transformations),
                       std::move(linear_model), absl::nullopt);
 }

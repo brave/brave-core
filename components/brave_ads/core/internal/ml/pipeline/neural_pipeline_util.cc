@@ -112,7 +112,6 @@ absl::optional<PipelineInfo> LoadNeuralPipeline(const std::string& buffer) {
   }
 
   NeuralModel neural_model(model);
-
   return PipelineInfo(locale->str(), std::move(*transformations), absl::nullopt,
                       std::move(neural_model));
 }

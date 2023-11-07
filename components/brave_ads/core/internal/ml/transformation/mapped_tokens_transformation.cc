@@ -17,6 +17,17 @@
 
 namespace brave_ads::ml {
 
+namespace {
+
+std::vector<std::string> GetWordsFromText(const TextData& text_data) {
+  const std::string& text = text_data.GetText();
+  std::vector<std::string> words = base::SplitString(
+      text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  return words;
+}
+
+}  // namespace
+
 MappedTokensTransformation::MappedTokensTransformation(
     const neural_text_classification::flat::MappedTokenTransformation*
         mapped_token_transformation)
@@ -25,20 +36,7 @@ MappedTokensTransformation::MappedTokensTransformation(
   CHECK(mapped_token_transformation_);
 }
 
-MappedTokensTransformation::MappedTokensTransformation(
-    MappedTokensTransformation&& mapped_tokens) noexcept = default;
-
 MappedTokensTransformation::~MappedTokensTransformation() = default;
-
-// static
-std::vector<std::string> MappedTokensTransformation::GetWordsFromText(
-    const std::unique_ptr<Data>& input_data) {
-  auto* text_data = static_cast<TextData*>(input_data.get());
-  std::string text = text_data->GetText();
-  std::vector<std::string> words = base::SplitString(
-      text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  return words;
-}
 
 absl::optional<std::map<uint32_t, double>>
 MappedTokensTransformation::GetCategoryFrequencies(
@@ -85,7 +83,10 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
     return {};
   }
 
-  std::vector<std::string> words = GetWordsFromText(input_data);
+  auto* text_data = static_cast<TextData*>(input_data.get());
+  CHECK(text_data);
+
+  std::vector<std::string> words = GetWordsFromText(*text_data);
   absl::optional<std::map<uint32_t, double>> frequencies =
       GetCategoryFrequencies(words);
   if (!frequencies) {

@@ -27,17 +27,9 @@ class MappedTokensTransformation final : public Transformation {
       const neural_text_classification::flat::MappedTokenTransformation*
           mapped_token_transformation);
 
-  MappedTokensTransformation(
-      MappedTokensTransformation&& mapped_tokens) noexcept;
-  MappedTokensTransformation& operator=(
-      MappedTokensTransformation&& mapped_tokens) = delete;
-
   ~MappedTokensTransformation() override;
 
   explicit MappedTokensTransformation(const std::string& parameters);
-
-  static std::vector<std::string> GetWordsFromText(
-      const std::unique_ptr<Data>& input_data);
 
   absl::optional<std::map<uint32_t, double>> GetCategoryFrequencies(
       const std::vector<std::string>& words) const;

@@ -18,7 +18,7 @@ namespace brave_ads::ml {
 
 namespace {
 constexpr char kValidSpamClassificationPipeline[] =
-    "ml/pipeline/text_processing/valid_spam_classification.fb";
+    "ml/pipeline/text_processing/linear/valid_spam_classification.fb";
 }  // namespace
 
 class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};

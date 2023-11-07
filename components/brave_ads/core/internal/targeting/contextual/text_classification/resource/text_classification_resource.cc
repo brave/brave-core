@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flatbuffers_resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource_constants.h"
@@ -30,6 +29,10 @@ bool DoesRequireResource() {
 
 const char* GetResourceId() {
   return kFlatBuffersTextClassificationResourceId;
+}
+
+int GetResourceVersion() {
+  return kFlatBuffersTextClassificationResourceVersion.Get();
 }
 
 }  // namespace
@@ -58,8 +61,7 @@ void TextClassificationResource::Load() {
   did_load_ = true;
 
   LoadFlatBuffersResource(
-      kFlatBuffersTextClassificationResourceId,
-      kFlatBuffersTextClassificationResourceVersion.Get(),
+      GetResourceId(), GetResourceVersion(),
       base::BindOnce(&TextClassificationResource::LoadCallback,
                      weak_factory_.GetWeakPtr()));
 }
@@ -77,13 +79,16 @@ void TextClassificationResource::LoadCallback(
                        << " text classification resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << GetResourceId()
+  text_processing_pipeline_ = std::move(result).value();
+  const std::string pipeline_type =
+      text_processing_pipeline_->IsNeuralPipline() ? "neural" : "linear";
+
+  BLOG(1, "Successfully loaded " << GetResourceId() << " " << pipeline_type
                                  << " text classification resource");
 
-  text_processing_pipeline_ = std::move(result).value();
-
   BLOG(1, "Successfully initialized "
-              << GetResourceId() << " text classification resource version "
+              << GetResourceId() << " " << pipeline_type
+              << " text classification resource version "
               << kTextClassificationResourceVersion.Get());
 }
 

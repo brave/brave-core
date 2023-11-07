@@ -38,6 +38,7 @@ class TextProcessing final {
   ~TextProcessing();
 
   bool IsInitialized() const { return is_initialized_; }
+  bool IsNeuralPipline() const { return neural_model_.has_value(); }
 
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(std::string buffer);

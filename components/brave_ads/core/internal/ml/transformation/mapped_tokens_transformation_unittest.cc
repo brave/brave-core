@@ -85,10 +85,8 @@ TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
-  std::vector<float> transformed_vector_values(
-      transformed_vector_data->GetDimensionCount());
-  transformed_vector_values =
-      transformed_vector_data->GetData(transformed_vector_values);
+  const std::vector<float> transformed_vector_values =
+      transformed_vector_data->GetDenseData();
   ASSERT_TRUE(transformed_vector_values.size() ==
               static_cast<size_t>(vector_dimension));
 
@@ -123,10 +121,8 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
-  std::vector<float> transformed_vector_values(
-      transformed_vector_data->GetDimensionCount());
-  transformed_vector_values =
-      transformed_vector_data->GetData(transformed_vector_values);
+  const std::vector<float> transformed_vector_values =
+      transformed_vector_data->GetDenseData();
   ASSERT_TRUE(transformed_vector_values.size() ==
               static_cast<size_t>(vector_dimension));
 
@@ -160,10 +156,8 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
-  std::vector<float> transformed_vector_values(
-      transformed_vector_data->GetDimensionCount());
-  transformed_vector_values =
-      transformed_vector_data->GetData(transformed_vector_values);
+  const std::vector<float> transformed_vector_values =
+      transformed_vector_data->GetDenseData();
   ASSERT_TRUE(transformed_vector_values.size() ==
               static_cast<size_t>(vector_dimension));
 

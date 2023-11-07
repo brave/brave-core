@@ -89,9 +89,7 @@ absl::optional<PredictionMap> NeuralModel::Predict(
     }
   }
 
-  std::vector<float> output_layer;
-  output_layer = layer_input.GetData(output_layer);
-
+  const std::vector<float> output_layer = layer_input.GetDenseData();
   const auto* segments = classifier->segments();
   if (!segments || segments->size() != output_layer.size()) {
     return absl::nullopt;
