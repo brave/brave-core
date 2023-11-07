@@ -6,10 +6,16 @@
 import * as React from 'react'
 
 // types
-import { TokenPriceHistory } from '../../../../../../constants/types'
+import {
+  LineChartIframeData,
+  TokenPriceHistory
+} from '../../../../../../constants/types'
 
-// components
-import LineChart from '../../../../line-chart'
+// utils
+import {
+  useSafeWalletSelector //
+} from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
 
 // style
 import { Column } from '../../../../../shared/style'
@@ -25,13 +31,29 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
   portfolioPriceHistory,
   isLoading
 }) => {
+  // redux
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+
   // memos
-  const priceHistory = React.useMemo((): TokenPriceHistory[] => {
-    if (hasZeroBalance || !portfolioPriceHistory) {
-      return []
+  const encodedPriceData = React.useMemo(() => {
+    const iframeData: LineChartIframeData = {
+      defaultFiatCurrency,
+      hidePortfolioBalances,
+      priceData:
+        hasZeroBalance || !portfolioPriceHistory ? [] : portfolioPriceHistory
     }
-    return portfolioPriceHistory
-  }, [portfolioPriceHistory, hasZeroBalance])
+    return encodeURIComponent(JSON.stringify(iframeData))
+  }, [
+    portfolioPriceHistory,
+    hasZeroBalance,
+    defaultFiatCurrency,
+    hidePortfolioBalances
+  ])
 
   // render
   return (
@@ -39,10 +61,14 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
       alignItems='center'
       fullWidth
     >
-      <LineChart
-        priceData={priceHistory}
-        isLoading={hasZeroBalance ? false : isLoading}
-        isDisabled={hasZeroBalance}
+      <iframe
+        width={'100%'}
+        height={'130px'}
+        frameBorder={0}
+        src={`chrome-untrusted://line-chart-display${
+          isLoading ? '' : `?${encodedPriceData}`
+        }`}
+        sandbox='allow-scripts'
       />
     </Column>
   )

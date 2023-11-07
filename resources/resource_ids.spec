@@ -212,5 +212,10 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [58050],
-  }
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-line_chart_display/line_chart_display.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [58060]
+  },
 }

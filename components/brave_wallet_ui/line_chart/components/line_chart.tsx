@@ -1,11 +1,11 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { CSSProperties } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-
 import {
   AreaChart,
   Area,
@@ -15,17 +15,27 @@ import {
   Tooltip
 } from 'recharts'
 
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+// Types
+import { TokenPriceHistory } from '../../constants/types'
+
+// Utils
+import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import {
-  makeSerializableTimeDelta,
-  deserializeTimeDelta
-} from '../../../utils/model-serialization-utils'
-import { TokenPriceHistory } from '../../../constants/types'
-import CustomTooltip from './custom-tooltip'
+  deserializeTimeDelta,
+  makeSerializableTimeDelta
+} from '../../utils/model-serialization-utils'
+
+// Components
+import { CustomTooltip } from './custom_tooltip'
+import { CustomReferenceDot } from './custom_reference_dot'
 
 // Styled Components
-import { StyledWrapper, LoadingOverlay, LoadIcon, AreaWrapper } from './style'
-import { CustomReferenceDot } from './custom-reference-dot'
+import {
+  StyledWrapper,
+  LoadingOverlay,
+  LoadIcon,
+  AreaWrapper
+} from './line_chart.styles'
 
 interface Props {
   priceData: TokenPriceHistory[] | undefined
@@ -33,6 +43,8 @@ interface Props {
   isDisabled: boolean
   customStyle?: CSSProperties
   showTooltip?: boolean
+  defaultFiatCurrency: string
+  hidePortfolioBalances: boolean
 }
 
 const EmptyChartData = [
@@ -61,7 +73,9 @@ export function LineChart({
   isLoading,
   isDisabled,
   customStyle,
-  showTooltip
+  showTooltip,
+  defaultFiatCurrency,
+  hidePortfolioBalances
 }: Props) {
   // state
   const [activeXPosition, setActiveXPosition] = React.useState<number>(0)
@@ -89,10 +103,7 @@ export function LineChart({
   return (
     <StyledWrapper style={customStyle}>
       <AreaWrapper>
-        <ResponsiveContainer
-          width='100%'
-          height='99%'
-        >
+        <ResponsiveContainer width='100%' height='99%'>
           <AreaChart
             data={chartData}
             margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
@@ -117,14 +128,8 @@ export function LineChart({
                 />
               </linearGradient>
             </defs>
-            <YAxis
-              hide={true}
-              domain={['auto', 'auto']}
-            />
-            <XAxis
-              hide={true}
-              dataKey='date'
-            />
+            <YAxis hide={true} domain={['auto', 'auto']} />
+            <XAxis hide={true} dataKey='date' />
             {priceData &&
               priceData.length > 0 &&
               !isDisabled &&
@@ -140,7 +145,11 @@ export function LineChart({
                     strokeWidth: 2
                   }}
                   content={
-                    <CustomTooltip onUpdateViewBoxHeight={setViewBoxHeight} />
+                    <CustomTooltip
+                      onUpdateViewBoxHeight={setViewBoxHeight}
+                      defaultFiatCurrency={defaultFiatCurrency}
+                      hidePortfolioBalances={hidePortfolioBalances}
+                    />
                   }
                 />
               )}
@@ -176,5 +185,3 @@ LineChart.defaultProps = {
   showPulsatingDot: true,
   showTooltip: true
 }
-
-export default LineChart

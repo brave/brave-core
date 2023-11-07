@@ -73,10 +73,10 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString(
-          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-           kUntrustedNftURL, base::StrCat({kUntrustedMarketURL, ";"})},
-          " "));
+      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+                        kUntrustedLineChartURL, kUntrustedNftURL,
+                        base::StrCat({kUntrustedMarketURL, ";"})},
+                       " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
@@ -86,6 +86,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
           " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
