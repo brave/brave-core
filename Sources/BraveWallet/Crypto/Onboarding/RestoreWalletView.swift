@@ -46,7 +46,7 @@ private struct RestoreWalletView: View {
   }
   
   private var isContinueDisabled: Bool {
-    !recoveryWords.allSatisfy({ !$0.isEmpty })
+    !recoveryWords.allSatisfy({ !$0.isEmpty }) || keyringStore.isRestoringWallet
   }
   
   private var errorLabel: some View {

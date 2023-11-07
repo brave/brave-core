@@ -164,11 +164,14 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   public var origin: URLOrigin?
   
   /// If this KeyringStore instance is creating a wallet.
-  /// This flag is used to know when to dismiss onboarding when multiple windows are visible.
-  private var isCreatingWallet = false
+  /// Note: Flag is reset prior to onboarding completion step.
+  @Published var isCreatingWallet = false
   /// If this KeyringStore instance is restoring a wallet.
+  /// Note: Flag is reset prior to onboarding completion step.
+  @Published var isRestoringWallet = false
+  /// If this KeyringStore instance is creating a wallet or restoring a wallet.
   /// This flag is used to know when to dismiss onboarding when multiple windows are visible.
-  private var isRestoringWallet = false
+  private var isOnboarding: Bool = false
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -224,7 +227,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       }, 
       _keyringCreated: { [weak self] keyringId in
         guard let self else { return }
-        if self.isOnboardingVisible, !self.isCreatingWallet, keyringId == BraveWallet.KeyringId.default {
+        if self.isOnboardingVisible, !self.isOnboarding, keyringId == BraveWallet.KeyringId.default {
           // Another window has created a wallet. We should dismiss onboarding on this
           // window and allow the other window to continue with it's onboarding flow.
           self.isOnboardingVisible = false
@@ -242,7 +245,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       },
       _walletRestored: { [weak self] in
         guard let self else { return }
-        if self.isOnboardingVisible && !self.isRestoringWallet {
+        if self.isOnboardingVisible && !self.isOnboarding {
           // Another window has restored a wallet. We should dismiss onboarding on this
           // window and allow the other window to continue with it's onboarding flow.
           self.isOnboardingVisible = false
@@ -328,8 +331,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func markOnboardingCompleted() {
-    self.isCreatingWallet = false
-    self.isRestoringWallet = false
+    self.isOnboarding = false
     self.isOnboardingVisible = false
   }
 
@@ -387,9 +389,15 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func createWallet(password: String, completion: ((String) -> Void)? = nil) {
+  func createWallet(password: String, completion: ((String?) -> Void)? = nil) {
+    guard !isCreatingWallet else {
+      completion?(nil)
+      return
+    }
+    isOnboarding = true
     isCreatingWallet = true
     keyringService.createWallet(password) { [weak self] mnemonic in
+      self?.isCreatingWallet = false
       self?.updateKeyringInfo()
       if !mnemonic.isEmpty {
         self?.passwordToSaveInBiometric = password
@@ -413,6 +421,11 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func restoreWallet(phrase: String, password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
+    guard !isRestoringWallet else { // wallet is already being restored.
+      completion?(false)
+      return
+    }
+    isOnboarding = true
     isRestoringWallet = true
     keyringService.restoreWallet(
       phrase,
@@ -420,6 +433,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       isLegacyBraveWallet: isLegacyBraveWallet
     ) { [weak self] isMnemonicValid in
       guard let self = self else { return }
+      self.isRestoringWallet = false
       if isMnemonicValid {
         // Restoring from wallet means you already have your phrase backed up
         self.passwordToSaveInBiometric = password

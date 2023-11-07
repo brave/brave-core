@@ -78,7 +78,7 @@ private struct CreateWalletView: View {
       }
     } else {
       keyringStore.createWallet(password: password) { mnemonic in
-        if !mnemonic.isEmpty {
+        if let mnemonic, !mnemonic.isEmpty {
           isNewWalletCreated = true
         }
       }
@@ -144,6 +144,11 @@ private struct CreateWalletView: View {
     )
     .hidden(isHidden: error == nil)
   }
+  
+  private var isContinueDisabled: Bool {
+    validationError != nil || password.isEmpty || repeatedPassword.isEmpty ||
+    keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
+  }
 
   var body: some View {
     VStack(spacing: 16) {
@@ -200,7 +205,7 @@ private struct CreateWalletView: View {
           .frame(maxWidth: .infinity)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
-      .disabled(validationError != nil || password.isEmpty || repeatedPassword.isEmpty)
+      .disabled(isContinueDisabled)
       .padding(.top, 60)
     }
     .padding(.horizontal, 20)
