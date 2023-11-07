@@ -38,11 +38,6 @@ bool IsFilecoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletFilecoinFeature);
 }
 
-bool IsDappsSupportEnabled() {
-  return base::FeatureList::IsEnabled(
-      features::kBraveWalletDappsSupportFeature);
-}
-
 bool IsSolanaEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletSolanaFeature);
 }

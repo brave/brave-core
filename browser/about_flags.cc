@@ -243,14 +243,6 @@
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-dapps-support",                                       \
-          "Enable Brave Wallet Dapps support",                                \
-          "Brave Wallet Dapps support",                                       \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletDappsSupportFeature),       \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-enable-ankr-balances",                                \
           "Enable Ankr balances",                                             \
           "Enable usage of Ankr Advanced API for fetching balances in Brave " \

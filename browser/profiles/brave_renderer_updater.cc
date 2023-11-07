@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -164,7 +163,7 @@ void BraveRendererUpdater::UpdateRenderer(
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool install_window_brave_ethereum_provider =
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled() &&
+      is_wallet_allowed_for_context_ &&
       default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
   bool install_window_ethereum_provider =
       ((default_ethereum_wallet ==
@@ -172,7 +171,7 @@ void BraveRendererUpdater::UpdateRenderer(
         !should_ignore_brave_wallet_for_eth) ||
        default_ethereum_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_ethereum_provider =
       default_ethereum_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
@@ -185,7 +184,7 @@ void BraveRendererUpdater::UpdateRenderer(
         !should_ignore_brave_wallet_for_sol) ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_solana_provider =
       default_solana_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;

@@ -26,7 +26,6 @@ bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
 bool IsNftPinningEnabled();
 bool ShouldCreateDefaultSolanaAccount();
-bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
 bool IsAnkrBalancesEnabled();
