@@ -44,7 +44,7 @@ export const NFTWrapper = styled.div`
   &:last-child {
     margin-right: 0px;
   }
-  z-index: 1;
+  z-index: 0;
 `
 
 export const IconWrapper = styled.div`
