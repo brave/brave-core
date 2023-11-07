@@ -317,7 +317,7 @@
     "eslint-plugin-licenses": "1.0.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.1.1",
-    "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",
+    "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "1.1.11",
     "follow-redirects": "1.14.8",
