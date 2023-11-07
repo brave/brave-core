@@ -60,7 +60,6 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     public static final String TAG_FRAGMENT = "tipping_panel_tag";
     private static final String TAG = "TippingPanelFragment";
 
-    private static final String WEB3_URL = "web3_url";
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 

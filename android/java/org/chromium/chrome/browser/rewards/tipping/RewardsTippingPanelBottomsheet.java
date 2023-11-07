@@ -29,15 +29,12 @@ public class RewardsTippingPanelBottomsheet extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = "tipping_bottomsheet_tag";
 
     private int mCurrentTabId = -1;
-    private String mWeb3Url;
-    private static final String WEB3_URL = "web3_url";
     private static final String TAG = "TippingBottomsheet";
 
-    public static RewardsTippingPanelBottomsheet newInstance(int tabId, String web3Url) {
+    public static RewardsTippingPanelBottomsheet newInstance(int tabId) {
         RewardsTippingPanelBottomsheet fragment = new RewardsTippingPanelBottomsheet();
         Bundle args = new Bundle();
         args.putInt(RewardsTippingBannerActivity.TAB_ID_EXTRA, tabId);
-        args.putString(WEB3_URL, web3Url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,11 +93,10 @@ public class RewardsTippingPanelBottomsheet extends BottomSheetDialogFragment {
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    public static void showTippingPanelBottomSheet(
-            AppCompatActivity activity, int tabId, String web3Url) {
+    public static void showTippingPanelBottomSheet(AppCompatActivity activity, int tabId) {
         if (activity != null) {
             RewardsTippingPanelBottomsheet dialog =
-                    RewardsTippingPanelBottomsheet.newInstance(tabId, web3Url);
+                    RewardsTippingPanelBottomsheet.newInstance(tabId);
             dialog.show(activity.getSupportFragmentManager(), TAG_FRAGMENT);
         }
     }
