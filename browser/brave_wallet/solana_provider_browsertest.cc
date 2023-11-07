@@ -4,13 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -29,7 +27,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/constants/brave_paths.h"
@@ -334,13 +331,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
   SolanaProviderTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
         https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    base::FieldTrialParams parameters;
-    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
-
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-    feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
 
   ~SolanaProviderTest() override = default;
@@ -719,7 +709,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
  private:
   TestTxServiceObserver observer_;
-  base::test::ScopedFeatureList feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
   raw_ptr<TxService> tx_service_ = nullptr;

@@ -60,19 +60,15 @@ export function handleEndpointError(
 
 export async function getEnabledCoinTypes(api: WalletApiProxy) {
   const {
-    isFilecoinEnabled,
-    isSolanaEnabled,
     isBitcoinEnabled,
     isZCashEnabled
   } = (await api.walletHandler.getWalletInfo()).walletInfo
 
   // Get All Networks
   return SupportedCoinTypes.filter((coin) => {
-    // MULTICHAIN: While we are still in development for FIL and SOL,
-    // we will not use their networks unless enabled by brave://flags
     return (
-      (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-      (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+      coin === BraveWallet.CoinType.FIL ||
+      coin === BraveWallet.CoinType.SOL ||
       (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
       (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
       coin === BraveWallet.CoinType.ETH

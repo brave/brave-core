@@ -8,11 +8,9 @@
 #include "base/containers/cxx20_erase_vector.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 
-#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
@@ -30,7 +28,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -97,8 +94,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletSolanaFeature);
   }
   ~SolanaProviderImplUnitTest() override = default;
 
@@ -488,7 +483,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
   TestingProfile profile_;
-  base::test::ScopedFeatureList feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

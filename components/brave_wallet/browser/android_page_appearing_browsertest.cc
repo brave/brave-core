@@ -23,7 +23,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -200,9 +199,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   AndroidPageAppearingBrowserTest() {
     factory_ = std::make_unique<TestWebUIControllerFactory>(kWalletPageHost);
     content::WebUIControllerFactory::RegisterFactory(factory_.get());
-    scoped_feature_list_.InitWithFeatures(
-        {}, {features::kBraveWalletFilecoinFeature,
-             features::kBraveWalletSolanaFeature});
   }
 
   void SetUpOnMainThread() override {
@@ -390,7 +386,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   absl::optional<std::string> file_digest_;
 
   std::unique_ptr<TestWebUIControllerFactory> factory_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   raw_ptr<brave_wallet::AssetRatioService> asset_ratio_service_;
   raw_ptr<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;

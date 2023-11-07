@@ -34,20 +34,8 @@ bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(features::kNativeBraveWalletFeature);
 }
 
-bool IsFilecoinEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveWalletFilecoinFeature);
-}
-
-bool IsSolanaEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveWalletSolanaFeature);
-}
-
 bool IsNftPinningEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletNftPinningFeature);
-}
-
-bool ShouldCreateDefaultSolanaAccount() {
-  return IsSolanaEnabled() && features::kCreateDefaultSolanaAccount.Get();
 }
 
 bool IsBitcoinEnabled() {
@@ -159,13 +147,9 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
 
 std::vector<mojom::KeyringId> GetSupportedKeyrings() {
   std::vector<mojom::KeyringId> ids = {mojom::KeyringId::kDefault};
-  if (IsFilecoinEnabled()) {
-    ids.push_back(mojom::KeyringId::kFilecoin);
-    ids.push_back(mojom::KeyringId::kFilecoinTestnet);
-  }
-  if (IsSolanaEnabled()) {
-    ids.push_back(mojom::KeyringId::kSolana);
-  }
+  ids.push_back(mojom::KeyringId::kFilecoin);
+  ids.push_back(mojom::KeyringId::kFilecoinTestnet);
+  ids.push_back(mojom::KeyringId::kSolana);
   if (IsBitcoinEnabled()) {
     ids.push_back(mojom::KeyringId::kBitcoin84);
     ids.push_back(mojom::KeyringId::kBitcoin84Testnet);

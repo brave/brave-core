@@ -219,22 +219,6 @@
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-filecoin",                                            \
-          "Enable Brave Wallet Filecoin support",                             \
-          "Filecoin support for native Brave Wallet",                         \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletFilecoinFeature),           \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-solana",                                              \
-          "Enable Brave Wallet Solana support",                               \
-          "Solana support for native Brave Wallet",                           \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaFeature),             \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \

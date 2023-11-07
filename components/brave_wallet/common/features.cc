@@ -14,16 +14,6 @@ namespace features {
 BASE_FEATURE(kNativeBraveWalletFeature,
              "NativeBraveWallet",
              base::FEATURE_ENABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveWalletFilecoinFeature,
-             "BraveWalletFilecoin",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletSolanaFeature,
-             "BraveWalletSolana",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-const base::FeatureParam<bool> kCreateDefaultSolanaAccount{
-    &kBraveWalletSolanaFeature, "create_default_solana_account", true};
-
 
 BASE_FEATURE(kBraveWalletNftPinningFeature,
              "BraveWalletNftPinning",

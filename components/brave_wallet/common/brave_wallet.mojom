@@ -712,8 +712,6 @@ struct WalletInfo {
   bool is_wallet_created;
   bool is_wallet_locked;
   bool is_wallet_backed_up;
-  bool is_filecoin_enabled;
-  bool is_solana_enabled;
   bool is_bitcoin_enabled;
   bool is_z_cash_enabled;
   bool is_nft_pinning_feature_enabled;

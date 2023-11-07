@@ -49,8 +49,6 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
-  isFilecoinEnabled: false,
-  isSolanaEnabled: false,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
@@ -267,8 +265,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
-        state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled
-        state.isSolanaEnabled = payload.walletInfo.isSolanaEnabled
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked

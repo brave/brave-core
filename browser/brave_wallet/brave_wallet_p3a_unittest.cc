@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -53,16 +52,6 @@ class BraveWalletP3AUnitTest : public testing::Test {
 };
 
 TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
-  base::test::ScopedFeatureList feature_list;
-  base::FieldTrialParams parameters;
-  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(
-      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-
-  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
-
   histogram_tester_->ExpectBucketCount(kKeyringCreatedHistogramName, 0, 1);
   keyring_service_->CreateWallet("testing123", base::DoNothing());
   WaitForResponse();

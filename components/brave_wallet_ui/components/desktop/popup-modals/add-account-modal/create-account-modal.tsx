@@ -66,10 +66,6 @@ export const CreateAccountModal = () => {
 
   // redux
   const dispatch = useDispatch()
-  const isFilecoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isFilecoinEnabled
-  )
-  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
   const isBitcoinEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinEnabled
   )
@@ -96,12 +92,10 @@ export const CreateAccountModal = () => {
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
-      isFilecoinEnabled,
-      isSolanaEnabled,
       isBitcoinEnabled,
       isZCashEnabled
     })
-  }, [isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled])
+  }, [isBitcoinEnabled, isZCashEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {

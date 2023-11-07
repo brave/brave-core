@@ -14,7 +14,6 @@
 #include "base/json/json_writer.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -26,7 +25,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -74,9 +72,6 @@ class FilTxManagerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletFilecoinFeature);
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
@@ -235,7 +230,6 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
