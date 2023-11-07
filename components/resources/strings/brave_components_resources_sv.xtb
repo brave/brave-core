@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Bli Brave-kreatör!</translation>
 <translation id="4639659520811817892">Besök creators.brave.com för att registrera dig idag och börja tjäna BAT från dina fans och följare.</translation>
 <translation id="4816455138209470435">Brave stöder YouTube, Twitch, Vimeo med flera!</translation>
-<translation id="3001581544796357879">Registrera dig på Gemini för att förvara din BAT säkert</translation>
-<translation id="4083523826017830313">Anslut Brave Rewards till Gemini för att få dina BAT-intäkter direkt till ditt Gemini-konto. Gemini är en fullständig reserv och starkt reglerad kryptovalutabörs och förvaltare.</translation>
-<translation id="3313756098698370125">Miljontals kunder i 70+ länder väljer Gemini för att enkelt köpa, sälja, lagra och stake över 90+ kryptovalutor.</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6074001074364432111">* Kräver ett Uphold-konto.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Om Leo</translation>
 <translation id="70442873931504163">Brave Leo är en smart AI-assistent som kan sammanfatta webbsidor, transkribera videor och svara på frågor. Brave Leo Premium använder avancerade <ph name="LINK_BEFORE"/>AI-modeller<ph name="LINK_AFTER"/> för att ge ännu mer nyanserade svar och ger tidigare tillgång till nya funktioner.</translation>
 <translation id="3055739528128372229">Riktigheten i svaren kan inte garanteras och de kan innehålla felaktig, vilseledande eller falsk information. Skicka inte in känslig eller privat information och var försiktig med svar som rör hälsa, ekonomi, personlig säkerhet eller liknande.</translation>
-<translation id="5030677498967794115">Leo samlar inte in eller på annat sätt behandlar identifierare som IP-adress som kan kopplas till dig. Inga personuppgifter lagras av AI-modellen eller någon leverantör av tredjepartsmodell.</translation>
+<translation id="7297681068636289435">Leo samlar inte in identifierare som din IP-adress som kan kopplas till dig. Inga personuppgifter lagras av AI-modellen eller någon tredje parts modellleverantör.</translation>
 <translation id="7839853125981164613">Ange en uppmaning här</translation>
 <translation id="1171287413830401223">Aktivera förslag på frågor?</translation>
 <translation id="4567071417854988869">Sammanfatta den här videon</translation>
 <translation id="7921782882718083488">Sammanfatta den här sidan</translation>
-<translation id="8723991872343294222">Brave AI kan automatiskt föreslå frågor baserat på innehållet på webbplatsen. Du kan inaktivera det senare i Inställningar.</translation>
+<translation id="5431287032059464898">Leo kan automatiskt föreslå frågor baserat på innehållet på webbplatsen. För att göra detta kommer sidinnehållet i dina navigeringar att skickas till Leo för att generera dessa förslag medan Leo är öppet. Du kan inaktivera det senare i Inställningar.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
 <translation id="7473891865547856676">Nej tack</translation>
 <translation id="7932221068776853847">Koppla från för att sluta skicka sidinnehåll till Leo och starta en ny konversation</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Ny chatt</translation>
 <translation id="97095589689466044">Föreslagna frågor</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
+<translation id="1691256669639196606">Hantera prenumeration</translation>
 <translation id="3037594989275592390">Språkmodeller</translation>
 <translation id="849535826888024304">Gränsen för svarsfrekvens har nåtts</translation>
 <translation id="3834321271158315162">Få en högre svarsfrekvens genom att prenumerera på Premium eller försök igen senare</translation>
@@ -1923,6 +1921,7 @@
 <translation id="6291843235651817590">Allmän chatt</translation>
 <translation id="8193130769524604031">Avancerade chattuppgifter</translation>
 <translation id="3185367320601718531">Konversation och textgenerering</translation>
+<translation id="3965507912994218570">Leo-inställningar</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
 <translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
@@ -2005,7 +2004,6 @@
 <translation id="8814357473522731680">Drivs av</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
-<translation id="1691256669639196606">Hantera prenumeration</translation>
 <translation id="434523916398030617">Kontakta teknisk support</translation>
 <translation id="1116694919640316211">Om</translation>
 <translation id="8670386189340362926">Blockera spårare &amp; annonser i alla appar</translation>

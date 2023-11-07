@@ -456,9 +456,6 @@
 <translation id="4354564238172327160">Faite creador de Brave!</translation>
 <translation id="4639659520811817892">Visita creators.brave.com para rexistrarte hoxe e comezar a recibir BAT dos teus fans e seguidores.</translation>
 <translation id="4816455138209470435">Brave é compatible con YouTube, Twitch, Vimeo e moitas máis plataformas!</translation>
-<translation id="3001581544796357879">Rexístrate en Gemini para almacenar os teus BAT de xeito seguro</translation>
-<translation id="4083523826017830313">Conecta Recompensas de Brave con Gemini para recibir os BAT que gañes directamente na túa conta de Gemini. Gemini é un servizo de custodia e intercambio de criptomoedas altamente regulado e de reserva completa.</translation>
-<translation id="3313756098698370125">Millóns de clientes de máis de 70 países xa usan Gemini para comprar, vender, almacenar e investir máis de 90 criptomoedas con facilidade.</translation>
 <translation id="7404779623219601861">Cambiar BAT para tarxetas regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, podes canxear a túa BAT para tarxetas regalo de marca popular.</translation>
 <translation id="6074001074364432111">* Requírese unha conta de Uphold.</translation>
@@ -1867,12 +1864,12 @@
 <translation id="7491773233732232424">Acerca de Leo</translation>
 <translation id="70442873931504163">Brave Leo  é un asistente intelixente de IA que pode resumir páxinas web, transcribir vídeos e responder preguntas. Brave Leo Premium utiliza <ph name="LINK_BEFORE"/>modelos de IA<ph name="LINK_AFTER"/> avanzados para obter respostas máis matizadas e ofrece acceso anticipado a novas funcionalidades.</translation>
 <translation id="3055739528128372229">Non se garante a precisión das respostas e estas poden incluír información incorrecta, enganosa ou falsa. Non envíe información confidencial ou privada e teña coidado coas respostas relacionadas coa saúde, as finanzas, a seguridade persoal ou similares.</translation>
-<translation id="5030677498967794115">Leo non recompila nin procesa identificadores, como o enderezo IP, que poidan estar ligados a vostede. O modelo de IA e os fornecedores de modelos de terceiros non reteñen datos persoais.</translation>
+<translation id="7297681068636289435">Leo non recompila identificadores, como o enderezo IP, que poidan estar ligados a vostede. O modelo de IA e os fornecedores de modelos de terceiros non reteñen datos persoais.</translation>
 <translation id="7839853125981164613">Introduce un aviso aquí</translation>
 <translation id="1171287413830401223">Quere activar as preguntas suxeridas?</translation>
 <translation id="4567071417854988869">Resumir este vídeo</translation>
 <translation id="7921782882718083488">Resumir esta páxina</translation>
-<translation id="8723991872343294222">A IA de Brave puede suxerir preguntas automaticamente en función do contido do sitio. Pode desactivala máis tarde en Configuración.</translation>
+<translation id="5431287032059464898">Leo pode suxerir automaticamente preguntas en función do contido do sitio. Para iso, o contido das páxina polas que navegue enviarase a Leo para xerar estas suxestións mentres Leo estea aberto. Pode desactivalo máis tarde en Configuración.</translation>
 <translation id="3435896845095436175">Activar</translation>
 <translation id="7473891865547856676">Non, grazas</translation>
 <translation id="7932221068776853847">Desconéctate para deixar de enviar o contido desta páxina a Leo e inicia unha nova conversa</translation>
@@ -1887,6 +1884,7 @@
 <translation id="2961040541145689181">Novo chat</translation>
 <translation id="97095589689466044">Preguntas suxeridas</translation>
 <translation id="7557539689487606886">Subscribirse á versión Premium</translation>
+<translation id="1691256669639196606">Xestionar subscrición</translation>
 <translation id="3037594989275592390">Modelos de idioma</translation>
 <translation id="849535826888024304">Alcanzouse o límite de taxa de respostas</translation>
 <translation id="3834321271158315162">Desbloquee unha taxa de resposta máis alta suscribíndose á versión Premium ou inténteo de novo
@@ -1924,6 +1922,7 @@
 <translation id="6291843235651817590">Chat xeral</translation>
 <translation id="8193130769524604031">Tarefas de chat avanzadas</translation>
 <translation id="3185367320601718531">Xeración de conversas e texto</translation>
+<translation id="3965507912994218570">Configuración de Leo</translation>
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="7509914170164691086">Os escudos están activos <ph name="LINK_BEFORE"/>para<ph name="LINK_AFTER"/></translation>
@@ -2006,7 +2005,6 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="8814357473522731680">Con tecnoloxía de</translation>
 <translation id="3960619311638643872">VPN de Brave</translation>
 <translation id="5747552184818312860">Caduca</translation>
-<translation id="1691256669639196606">Xestionar subscrición</translation>
 <translation id="434523916398030617">Contactar con soporte técnico</translation>
 <translation id="1116694919640316211">Acerca de</translation>
 <translation id="8670386189340362926">Bloquea rastreadores e anuncios en todas as aplicacións</translation>
