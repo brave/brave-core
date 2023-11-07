@@ -11,6 +11,8 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 
 namespace brave_ads {
@@ -18,21 +20,24 @@ namespace brave_ads {
 struct UserModelInfo;
 
 template <typename T>
-CreativeAdPredictorList<T> ComputeCreativeAdPredictors(
+CreativeAdModelBasedPredictorList<T> ComputeCreativeAdModelBasedPredictors(
     const std::vector<T>& creative_ads,
     const UserModelInfo& user_model,
     const AdEventList& ad_events) {
-  CreativeAdPredictorList<T> creative_ad_predictors;
+  CreativeAdModelBasedPredictorList<T> creative_ad_predictors;
+
+  const CreativeAdModelBasedPredictorWeightsInfo weights =
+      BuildCreativeAdModelBasedPredictorWeights(creative_ads);
 
   for (const auto& creative_ad : creative_ads) {
-    CreativeAdPredictorInfo<T> creative_ad_predictor;
+    CreativeAdModelBasedPredictorInfo<T> creative_ad_predictor;
 
     creative_ad_predictor.creative_ad = creative_ad;
     creative_ad_predictor.input_variable =
-        ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
-                                                ad_events);
-    creative_ad_predictor.score = ComputeCreativeAdPredictorScore(
-        creative_ad, creative_ad_predictor.input_variable);
+        ComputeCreativeAdModelBasedPredictorInputVariable(
+            creative_ad, user_model, ad_events, weights);
+    creative_ad_predictor.score = ComputeCreativeAdModelBasedPredictorScore(
+        creative_ad_predictor.input_variable);
 
     creative_ad_predictors.push_back(creative_ad_predictor);
   }

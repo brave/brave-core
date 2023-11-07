@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
@@ -50,16 +50,16 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kCreativeAdModelBasedPredictorFeature,
-      {{"child_intent_segment_ad_predictor_weight", "0.0"},
-       {"parent_intent_segment_ad_predictor_weight", "0.0"},
-       {"child_latent_interest_segment_ad_predictor_weight", "0.0"},
-       {"parent_latent_interest_segment_ad_predictor_weight", "0.0"},
-       {"child_interest_segment_ad_predictor_weight", "0.0"},
-       {"parent_interest_segment_ad_predictor_weight", "0.0"},
+      kCreativeNotificationAdModelBasedPredictorFeature,
+      {{"child_intent_segment_predictor_weight", "0.0"},
+       {"parent_intent_segment_predictor_weight", "0.0"},
+       {"child_latent_interest_segment_predictor_weight", "0.0"},
+       {"parent_latent_interest_segment_predictor_weight", "0.0"},
+       {"child_interest_segment_predictor_weight", "0.0"},
+       {"parent_interest_segment_predictor_weight", "0.0"},
        {"last_seen_ad_predictor_weight", "0.0"},
-       {"last_seen_advertiser_ad_predictor_weight", "0.0"},
-       {"priority_ad_predictor_weight", "0.0"}});
+       {"last_seen_advertiser_predictor_weight", "0.0"},
+       {"priority_predictor_weight", "0.0"}});
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =

@@ -6,24 +6,28 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_INPUT_VARIABLE_CREATIVE_AD_MODEL_BASED_PREDICTOR_INPUT_VARIABLE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_INPUT_VARIABLE_CREATIVE_AD_MODEL_BASED_PREDICTOR_INPUT_VARIABLE_INFO_H_
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_segment_input_variable_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/last_seen/creative_ad_model_based_predictor_last_seen_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/priority/creative_ad_model_based_predictor_priority_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
 
 namespace brave_ads {
 
-struct CreativeAdPredictorInputVariableInfo final {
-  CreativeAdPredictorSegmentInputVariableInfo intent_segment;
-  CreativeAdPredictorSegmentInputVariableInfo latent_interest_segment;
-  CreativeAdPredictorSegmentInputVariableInfo interest_segment;
-  absl::optional<base::TimeDelta> last_seen_ad;
-  absl::optional<base::TimeDelta> last_seen_advertiser;
+struct CreativeAdModelBasedPredictorInputVariableInfo final {
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo intent_segment;
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      latent_interest_segment;
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo interest_segment;
+
+  CreativeAdModelBasedPredictorLastSeenInputVariableInfo last_seen_ad;
+  CreativeAdModelBasedPredictorLastSeenInputVariableInfo last_seen_advertiser;
+
+  CreativeAdModelBasedPredictorPriorityInputVariableInfo priority;
 };
 
-bool operator==(const CreativeAdPredictorInputVariableInfo&,
-                const CreativeAdPredictorInputVariableInfo&);
-bool operator!=(const CreativeAdPredictorInputVariableInfo&,
-                const CreativeAdPredictorInputVariableInfo&);
+bool operator==(const CreativeAdModelBasedPredictorInputVariableInfo&,
+                const CreativeAdModelBasedPredictorInputVariableInfo&);
+bool operator!=(const CreativeAdModelBasedPredictorInputVariableInfo&,
+                const CreativeAdModelBasedPredictorInputVariableInfo&);
 
 }  // namespace brave_ads
 
