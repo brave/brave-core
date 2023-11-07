@@ -4089,16 +4089,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       ...
     </message>
     <message name="IDS_ANTI_ADBLOCK_DIALOG_TITLE" desc="anti adblock dialog title">
-      Adjust ad block settings for this site
+      Seeing an ad-block warning on this site?
     </message>
     <message name="IDS_ANTI_ADBLOCK_DIALOG_TEXT" desc="anti adblock dialog text">
-      This site has begun blocking some ad blockers, which means their site may not work as expected.\n\nTo address this issue, Brave can adjust your shields settings for you. Once adjusted, you can try watching this content in Brave Player instead.
+      Some sites have begun blocking the use of ad blockers, which means those sites might not work as expected.\n\nTo address this issue, Brave can adjust your ad block settings for you. Once adjusted, you can try watching this content in Brave Player instead.
+    </message>
+    <message name="IDS_ANTI_ADBLOCK_DIALOG_SUBTEXT" desc="anti adblock dialog sub text">
+      Brave Player allows you to watch this site's videos without interruptions.
     </message>
     <message name="IDS_ANTI_ADBLOCK_DIALOG_POSITIVE_BUTTON_TEXT" desc="anti adblock dialog positive button text">
-      Adjust Shields for me
+      Yes, Adjust Ad Block For Me
     </message>
     <message name="IDS_ANTI_ADBLOCK_DIALOG_NEGATIVE_BUTTON_TEXT" desc="anti adblock dialog negative button text">
-      Keep current settings
+      No Thanks
     </message>
   </messages>
   </release>

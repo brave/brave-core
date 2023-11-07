@@ -9,15 +9,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_fragment_rounded_bg"
     android:padding="24dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:text="@string/anti_adblock_dialog_title"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginBottom="24dp"
         android:textColor="@color/shield_text_color"
         android:textStyle="bold" />
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text="@string/anti_adblock_dialog_text"
         android:layout_marginBottom="32dp"
         android:textColor="@color/shield_text_color"/>
@@ -33,9 +33,18 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         app:srcCompat="@drawable/anti_adblock_dialog_banner"
         android:contentDescription="@null"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center_horizontal"
+        android:text="@string/anti_adblock_dialog_subtext"
+        android:layout_marginBottom="40dp"
+        android:textColor="@color/shield_text_color"/>
 
     <android.widget.Button
         android:id="@+id/btn_positive"

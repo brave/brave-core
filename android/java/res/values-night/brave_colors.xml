@@ -244,6 +244,9 @@
 
     <color name="leo_reset_text_color">#FF4B6A</color>
 
+    <!-- Anti adblock dialog colors -->
+    <color name="anti_adblock_dialog_bg_color">#0D0F14</color>
+
     <color name="vpn_timer_bg_color">#0D0F14</color>
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>

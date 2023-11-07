@@ -7,6 +7,8 @@
 
 package org.chromium.chrome.browser;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,11 @@ public class AntiAdblockDialogFragment extends BraveDialogFragment implements Vi
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_anti_adblock_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_anti_adblock_dialog, container, false);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        return view;
     }
 
     @Override
