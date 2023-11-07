@@ -1280,3 +1280,9 @@ export enum SignDataSteps {
   SignRisk = 0,
   SignData = 1
 }
+
+export interface LineChartIframeData {
+  priceData: TokenPriceHistory[] | undefined
+  defaultFiatCurrency: string
+  hidePortfolioBalances: boolean
+}

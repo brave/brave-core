@@ -42,5 +42,3 @@ export const LineChartControlsMenu = (props: Props) => {
     </LineChartWrapper>
   )
 }
-
-export default LineChartControlsMenu

@@ -1,41 +1,38 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { TooltipProps } from 'recharts'
 
-// Utils
-import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
-import Amount from '../../../../utils/amount'
-import { formatTimelineDate } from '../../../../utils/datetime-utils'
+// utils
+import Amount from '../../utils/amount'
+import { formatTimelineDate } from '../../utils/datetime-utils'
 
-// Styled Components
-import { TooltipWrapper, ChartBalance, ChartDate } from '../style'
+// styles
+import {
+  TooltipWrapper,
+  ChartBalance,
+  ChartDate
+} from './custom_tooltip.styles'
 
 type Props = TooltipProps<number, number> & {
   onUpdateViewBoxHeight: (value: number) => void
+  defaultFiatCurrency: string
+  hidePortfolioBalances: boolean
 }
 
-function CustomTooltip({
+export function CustomTooltip({
   active,
   coordinate,
   label,
   onUpdateViewBoxHeight,
   payload,
-  viewBox
+  viewBox,
+  defaultFiatCurrency,
+  hidePortfolioBalances
 }: Props) {
-  // Selectors
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
-
   // Effects
   React.useLayoutEffect(() => {
     if (viewBox?.height !== undefined) {
@@ -73,5 +70,3 @@ function CustomTooltip({
 
   return null
 }
-
-export default CustomTooltip
