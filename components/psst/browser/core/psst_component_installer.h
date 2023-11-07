@@ -17,6 +17,7 @@ class ComponentUpdateService;
 
 namespace psst {
 
+// Registers the PSST component with the component updater.
 COMPONENT_EXPORT(PSST_BROWSER_CORE)
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus,
                            base::OnceCallback<void(const std::string&)> cb);

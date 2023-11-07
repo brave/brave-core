@@ -24,6 +24,7 @@ namespace psst {
 
 class PsstRuleRegistry;
 
+// Used to inject PSST scripts into the page, based on PSST rules.
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<PsstTabHelper> {
@@ -36,10 +37,14 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
 
  private:
   PsstTabHelper(content::WebContents*, const int32_t world_id);
+  // Called to insert both test script and policy script.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::string& script,
       content::RenderFrameHost::JavaScriptResultCallback cb);
+  // Used to insert a PSST test script into the page, which is contained in the
+  // Matched Rule. The result is used to determine whether to insert the policy
+  // script in |OnTestScriptResult|.
   void InsertTestScript(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       MatchedRule rule);
@@ -59,6 +64,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
   const int32_t world_id_;
   const raw_ptr<PsstRuleRegistry> psst_rule_registry_;  // NOT OWNED
   bool should_process_ = false;
+  // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
   base::WeakPtrFactory<PsstTabHelper> weak_factory_{this};

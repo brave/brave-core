@@ -21,22 +21,6 @@
 
 namespace {
 
-// Format:
-// [
-//   {
-//     "include": [
-//       "https://twitter.com/*"
-//     ],
-//     "exclude": [
-//     ],
-//     "version": 1,
-//     "test_script": "twitter/test.js",
-//     "policy_script": "twitter/policy.js"
-//   }, ...
-// ]
-// Note that "test_script" and "policy_script" give paths
-// relative to the component under scripts/
-
 // psst.json keys
 const char kInclude[] = "include";
 const char kExclude[] = "exclude";
