@@ -20,11 +20,18 @@ DOMStringList* Location::ancestorOrigins() const {
     return origin->Host().EndsWith(".onion", kTextCaseASCIIInsensitive);
   };
 
+  auto is_chrome_untrusted = [](const SecurityOrigin* origin) {
+    return origin->Protocol() == "chrome-untrusted";
+  };
+
   auto* raw_origins = ancestorOrigins_ChromiumImpl();
   for (uint32_t i = 0; i < raw_origins->length(); ++i) {
     const String raw_origin = raw_origins->item(i);
     const scoped_refptr<SecurityOrigin> origin =
         SecurityOrigin::CreateFromString(raw_origin);
+    if (is_chrome_untrusted(origin.get())) {
+      break;
+    }
     if (is_onion_service(origin.get()) &&
         !origin->IsSameOriginWith(innermost_origin)) {
       filtered_origins->Append("\"null\"");
