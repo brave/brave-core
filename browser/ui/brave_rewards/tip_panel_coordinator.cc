@@ -17,13 +17,9 @@ namespace brave_rewards {
 
 namespace {
 
-void OpenRewardsPanel(Browser* browser, bool inline_tip) {
+void OpenRewardsPanel(Browser* browser) {
   if (auto* coordinator = RewardsPanelCoordinator::FromBrowser(browser)) {
-    if (inline_tip) {
-      coordinator->ShowInlineTipView();
-    } else {
-      coordinator->OpenRewardsPanel();
-    }
+    coordinator->OpenRewardsPanel();
   }
 }
 
@@ -42,14 +38,7 @@ void TipPanelCoordinator::ShowPanelForPublisher(
     const std::string& publisher_id) {
   rewards_service_->GetUserType(
       base::BindOnce(&TipPanelCoordinator::GetUserTypeCallback,
-                     weak_factory_.GetWeakPtr(), publisher_id, false));
-}
-
-void TipPanelCoordinator::ShowPanelForInlineTip(
-    const std::string& publisher_id) {
-  rewards_service_->GetUserType(
-      base::BindOnce(&TipPanelCoordinator::GetUserTypeCallback,
-                     weak_factory_.GetWeakPtr(), publisher_id, true));
+                     weak_factory_.GetWeakPtr(), publisher_id));
 }
 
 void TipPanelCoordinator::AddObserver(Observer* observer) {
@@ -61,30 +50,28 @@ void TipPanelCoordinator::RemoveObserver(Observer* observer) {
 }
 
 void TipPanelCoordinator::GetUserTypeCallback(const std::string& publisher_id,
-                                              bool inline_tip,
                                               mojom::UserType user_type) {
   // If the user is not "connected" (i.e. if they have not linked an external
   // wallet and they are not a "legacy" anonymous user), then open the Rewards
   // panel instead.
   if (user_type == mojom::UserType::kUnconnected) {
-    OpenRewardsPanel(&GetBrowser(), inline_tip);
+    OpenRewardsPanel(&GetBrowser());
     return;
   }
 
   rewards_service_->IsPublisherRegistered(
       publisher_id,
       base::BindOnce(&TipPanelCoordinator::IsPublisherRegisteredCallback,
-                     weak_factory_.GetWeakPtr(), publisher_id, inline_tip));
+                     weak_factory_.GetWeakPtr(), publisher_id));
 }
 
 void TipPanelCoordinator::IsPublisherRegisteredCallback(
     const std::string& publisher_id,
-    bool inline_tip,
     bool is_publisher_registered) {
   // If the creator is not "registered" (and therefore has no banner information
   // to display), then open the Rewards panel instead.
   if (!is_publisher_registered) {
-    OpenRewardsPanel(&GetBrowser(), inline_tip);
+    OpenRewardsPanel(&GetBrowser());
     return;
   }
 

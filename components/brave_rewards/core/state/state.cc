@@ -130,25 +130,6 @@ base::flat_map<std::string, mojom::RegionsPtr> ValueToWalletProviderRegions(
   return std::move(*wallet_provider_regions);
 }
 
-std::string ConvertInlineTipPlatformToKey(
-    const mojom::InlineTipsPlatforms platform) {
-  switch (platform) {
-    case mojom::InlineTipsPlatforms::REDDIT: {
-      return state::kInlineTipRedditEnabled;
-    }
-    case mojom::InlineTipsPlatforms::TWITTER: {
-      return state::kInlineTipTwitterEnabled;
-    }
-    case mojom::InlineTipsPlatforms::GITHUB: {
-      return state::kInlineTipGithubEnabled;
-    }
-    case mojom::InlineTipsPlatforms::NONE: {
-      NOTREACHED();
-      return "";
-    }
-  }
-}
-
 }  // namespace
 
 namespace state {
@@ -277,19 +258,6 @@ uint64_t State::GetCreationStamp() {
 void State::SetCreationStamp(const uint64_t stamp) {
   engine_->database()->SaveEventLog(kCreationStamp, std::to_string(stamp));
   engine_->SetState(kCreationStamp, stamp);
-}
-
-bool State::GetInlineTippingPlatformEnabled(
-    const mojom::InlineTipsPlatforms platform) {
-  return engine_->GetState<bool>(ConvertInlineTipPlatformToKey(platform));
-}
-
-void State::SetInlineTippingPlatformEnabled(
-    const mojom::InlineTipsPlatforms platform,
-    const bool enabled) {
-  const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
-  engine_->database()->SaveEventLog(platform_string, std::to_string(enabled));
-  engine_->SetState(platform_string, enabled);
 }
 
 void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {

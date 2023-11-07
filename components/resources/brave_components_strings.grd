@@ -513,8 +513,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Show Tip buttons on sites</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG" desc="">TipWithBrave</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS" desc="">Dismissed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED" desc="">Clicked</message>

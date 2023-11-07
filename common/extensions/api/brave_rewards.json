@@ -631,53 +631,6 @@
         ]
       },
       {
-        "name": "tipUser",
-        "type": "function",
-        "description": "Allow the user to tip a user on a particular site",
-        "parameters": [
-          {
-            "name": "tabId",
-            "type": "number"
-          },
-          {
-            "name": "mediaType",
-            "type": "string"
-          },
-          {
-            "name": "url",
-            "type": "string"
-          },
-          {
-            "name": "publisherKey",
-            "type": "string"
-          },
-          {
-            "name": "publisherName",
-            "type": "string"
-          },
-          {
-            "name": "publisherScreenName",
-            "type": "string"
-          },
-          {
-            "name": "favIconUrl",
-            "type": "string"
-          },
-          {
-            "name": "postId",
-            "type": "string"
-          },
-          {
-            "name": "postTimestamp",
-            "type": "string"
-          },
-          {
-            "name": "postText",
-            "type": "string"
-          }
-        ]
-      },
-      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",
@@ -1177,27 +1130,6 @@
                     }
                   }
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getInlineTippingPlatformEnabled",
-        "type": "function",
-        "description": "Gets setting for inline tip for provided key",
-        "parameters": [
-          {
-            "name": "key",
-            "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
               }
             ]
           }

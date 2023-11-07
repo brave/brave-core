@@ -230,22 +230,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
-mojom::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
-    const std::string& key) {
-  if (key == "reddit") {
-    return mojom::InlineTipsPlatforms::REDDIT;
-  }
-  if (key == "twitter") {
-    return mojom::InlineTipsPlatforms::TWITTER;
-  }
-  if (key == "github") {
-    return mojom::InlineTipsPlatforms::GITHUB;
-  }
-
-  NOTREACHED();
-  return mojom::InlineTipsPlatforms::TWITTER;
-}
-
 std::string GetPrefPath(const std::string& name) {
   return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
 }
@@ -1342,21 +1326,6 @@ void RewardsServiceImpl::EnableGreaselion() {
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(
                            brave_ads::prefs::kOptedInToNotificationAds));
 
-  const bool show_buttons =
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::TWITTER_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_buttons);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::REDDIT_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_buttons);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::GITHUB_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_buttons);
-
   greaselion_enabled_ = true;
 }
 
@@ -2226,28 +2195,6 @@ void RewardsServiceImpl::OnRefreshPublisher(RefreshPublisherCallback callback,
 const RewardsNotificationService::RewardsNotificationsMap&
 RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
-}
-
-void RewardsServiceImpl::SetInlineTippingPlatformEnabled(
-    const std::string& key,
-    bool enabled) {
-  if (!Connected()) {
-    return;
-  }
-
-  const auto platform = ConvertInlineTipStringToPlatform(key);
-  engine_->SetInlineTippingPlatformEnabled(platform, enabled);
-}
-
-void RewardsServiceImpl::GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  const auto platform = ConvertInlineTipStringToPlatform(key);
-  engine_->GetInlineTippingPlatformEnabled(platform, std::move(callback));
 }
 
 void RewardsServiceImpl::GetShareURL(

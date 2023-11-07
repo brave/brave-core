@@ -29,7 +29,6 @@ constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
-const char kInlineTipTriggerHistogramName[] = "Brave.Rewards.InlineTipTrigger";
 const char kToolbarButtonTriggerHistogramName[] =
     "Brave.Rewards.ToolbarButtonTrigger";
 const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
@@ -82,9 +81,7 @@ ConversionMonitor::~ConversionMonitor() = default;
 
 void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
 #if !BUILDFLAG(IS_ANDROID)
-  if (trigger == PanelTrigger::kInlineTip) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, 1, 2);
-  } else if (trigger == PanelTrigger::kToolbarButton) {
+  if (trigger == PanelTrigger::kToolbarButton) {
     UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, 1, 2);
   }
   last_trigger_ = trigger;
@@ -98,7 +95,6 @@ void ConversionMonitor::RecordRewardsEnable() {
   // data from being sent once the "rewards enabled source" metric is recorded.
   UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, INT_MAX - 1,
                              2);
-  UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, INT_MAX - 1, 2);
 
   if (!last_trigger_.has_value() ||
       base::Time::Now() - last_trigger_time_ > kMaxEnabledCauseTriggerTime) {

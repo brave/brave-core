@@ -121,14 +121,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kShowLocationBarButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipButtonsEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipRedditEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipTwitterEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipGithubEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Search engine prefs
   (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =

@@ -245,10 +245,6 @@ function onboardingStatus (result: { showOnboarding: boolean }) {
   actions.onOnboardingStatus(result.showOnboarding)
 }
 
-function enabledInlineTippingPlatforms (list: string[]) {
-  actions.onEnabledInlineTippingPlatforms(list)
-}
-
 function externalWalletLogin (url: string) {
   if (url) {
     window.open(url, '_self', 'noreferrer')
@@ -309,7 +305,6 @@ Object.defineProperty(window, 'brave_rewards', {
     initialized,
     completeReset,
     onboardingStatus,
-    enabledInlineTippingPlatforms,
     externalWalletLogin,
     onPrefChanged,
     onIsUnsupportedRegion

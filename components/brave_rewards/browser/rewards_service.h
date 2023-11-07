@@ -57,7 +57,6 @@ using RefreshPublisherCallback =
 using GetPublisherInfoCallback =
     base::OnceCallback<void(const mojom::Result, mojom::PublisherInfoPtr)>;
 using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
-using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using ConnectExternalWalletCallback =
     base::OnceCallback<void(mojom::ConnectExternalWalletResult)>;
@@ -272,14 +271,6 @@ class RewardsService : public KeyedService {
   virtual void SavePublisherInfo(const uint64_t window_id,
                                  mojom::PublisherInfoPtr publisher_info,
                                  SavePublisherInfoCallback callback) = 0;
-
-  virtual void SetInlineTippingPlatformEnabled(
-      const std::string& key,
-      bool enabled) = 0;
-
-  virtual void GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
