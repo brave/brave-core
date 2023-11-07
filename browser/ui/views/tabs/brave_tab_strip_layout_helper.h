@@ -40,6 +40,10 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     absl::optional<int> width,
     bool is_floating_mode);
 
+std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip);
+
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip);

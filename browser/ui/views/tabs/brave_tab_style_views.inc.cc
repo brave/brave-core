@@ -96,6 +96,15 @@ SkPath BraveVerticalTabStyle::GetPath(
     return {};
   }
 
+  // Horizontal tabs should have a visual gap between them, even if their view
+  // bounds are touching or slightly overlapping. Create a visual gap by
+  // insetting the bounds of the tab by the required gap plus overlap before
+  // drawing the rectangle.
+  if (!ShouldShowVerticalTabs()) {
+    aligned_bounds.Inset(
+        gfx::InsetsF::VH(0, brave_tabs::kHorizontalTabInset * scale));
+  }
+
 #if DCHECK_IS_ON()
   if (tab()->bounds().height() != std::round(aligned_bounds.height() / scale)) {
     DLOG(ERROR) << "We don't want it to be off by 1 dip\n|height|: "
@@ -103,24 +112,6 @@ SkPath BraveVerticalTabStyle::GetPath(
                 << std::round(aligned_bounds.height() / scale);
   }
 #endif
-
-  if (!ShouldShowVerticalTabs()) {
-    // Horizontal tabs should have a visual gap between them, even if their view
-    // bounds are touching or slightly overlapping. Create a visual gap by
-    // insetting the bounds of the tab by the required gap plus overlap before
-    // drawing the rectangle.
-    aligned_bounds.Inset(
-        gfx::InsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
-                         brave_tabs::kHorizontalTabInset * scale));
-
-    // For maximized and fullscreen windows, extend the tab hit test to the top
-    // of the tab, encompassing the top spacing. This makes it easy to click on
-    // tabs by moving the mouse to the top of the screen.
-    if (path_type == TabStyle::PathType::kHitTest && ShouldExtendHitTest()) {
-      aligned_bounds.Outset(gfx::OutsetsF::TLBR(
-          brave_tabs::kHorizontalTabVerticalSpacing * scale, 0, 0, 0));
-    }
-  }
 
   const bool is_pinned = tab()->data().pinned;
 

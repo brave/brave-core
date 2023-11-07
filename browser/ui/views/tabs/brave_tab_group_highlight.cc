@@ -10,7 +10,6 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
-#include "ui/gfx/geometry/skia_conversions.h"
 
 BraveTabGroupHighlight::~BraveTabGroupHighlight() = default;
 
@@ -26,12 +25,13 @@ SkPath BraveTabGroupHighlight::GetPath() const {
 
   // Draw a rounded rect that encloses the header and all tabs within the
   // group.
-  gfx::Rect shape_rect(0, 0, width(), height());
-  shape_rect.Inset(gfx::Insets::VH(brave_tabs::kHorizontalTabVerticalSpacing,
-                                   brave_tabs::kHorizontalTabInset));
+  float tab_top = 0;
+  float tab_left = brave_tabs::kHorizontalTabInset;
+  float tab_right = bounds().width() - brave_tabs::kHorizontalTabInset;
+  float tab_bottom = bounds().height();
   float radius = brave_tabs::kTabBorderRadius;
 
   SkPath path;
-  path.addRoundRect(gfx::RectToSkRect(shape_rect), radius, radius);
+  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom}, radius, radius);
   return path;
 }

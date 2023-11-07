@@ -137,6 +137,22 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
   return bounds;
 }
 
+std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip) {
+  // Chromium aligns the dragged tabs to the bottom of the tab strip, whereas we
+  // need to keep the tabs aligned to the top.
+  std::vector<gfx::Rect> bounds;
+  const int overlap = TabStyle::Get()->GetTabOverlap();
+  int x = 0;
+  for (const TabSlotView* view : views) {
+    const int width = view->width();
+    bounds.emplace_back(x, 0, width, view->height());
+    x += width - overlap;
+  }
+  return bounds;
+}
+
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip) {
