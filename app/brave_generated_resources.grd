@@ -464,7 +464,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
       <!-- Dev channel deprecation infobar -->
       <message name="IDS_DEV_CHANNEL_DEPRECATION_INFOBAR_MESSAGE" desc="The text label of dev channel deprecation announcement.">
-        Beginning on December 1, 2023, Brave Dev channel will no longer receive browser updates. We recommend users migrate to Nightly, Beta, or Stable versions of Brave.
+        Beginning on December 1, 2023, Brave Dev channel will no longer receive browser updates. We recommend users migrate to the Nightly, Beta, or Release versions of Brave.
       </message>
       <!-- Mac Menubar Menus -->
       <if expr="is_macosx">
