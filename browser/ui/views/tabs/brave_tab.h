@@ -10,7 +10,6 @@
 #include <string>
 
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/point.h"
 
 class ViewShadow;
@@ -50,8 +49,6 @@ class BraveTab : public Tab {
 
   std::unique_ptr<ui::Layer> shadow_layer_;
   std::unique_ptr<ViewShadow> view_shadow_;
-  gfx::FontList normal_font_;
-  gfx::FontList active_tab_font_;
 
   static constexpr int kExtraLeftPadding = 4;
 };
