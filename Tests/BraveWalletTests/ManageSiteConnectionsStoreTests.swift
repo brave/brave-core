@@ -6,7 +6,7 @@
 import Combine
 import XCTest
 import BraveCore
-import Data
+@testable import Data
 import TestHelpers
 @testable import BraveWallet
 
@@ -79,6 +79,8 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     backgroundSaveAndWaitForExpectation {
       store.removeAllPermissions(from: [siteConnectionToRemove])
     }
+    DataController.viewContext.refreshAllObjects()
+    
     // verify `siteConnections` is updated
     XCTAssertEqual(store.siteConnections.count, 2)
     XCTAssertNotEqual(store.siteConnections[0].url, siteConnectionToRemove.url)
@@ -101,6 +103,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     backgroundSaveAndWaitForExpectation {
       store.removePermissions(for: .eth, from: [walletAccount], url: URL(string: siteConnectionToRemoveAccount.url)!)
     }
+    DataController.viewContext.refreshAllObjects()
     
     // verify `siteConnections` is updated to remove specific accounts from the `SiteConnection`
     XCTAssertEqual(store.siteConnections.count, 3)
@@ -125,11 +128,14 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     backgroundSaveAndWaitForExpectation {
       store.removePermissions(for: .eth, from: [walletAccount], url: URL(string: siteConnectionToRemove.url)!)
     }
+    DataController.viewContext.refreshAllObjects()
+    
     // remove `walletAccount2` permissions for this `SiteConnection`
     XCTAssertEqual(store.siteConnections[0].connectedAddresses.count, 1)
     backgroundSaveAndWaitForExpectation {
       store.removePermissions(for: .eth, from: [walletAccount2], url: URL(string: siteConnectionToRemove.url)!)
     }
+    DataController.viewContext.refreshAllObjects()
     
     // verify `siteConnections` is updated to remove the `SiteConnection` as all `connectedAddresses` are removed
     XCTAssertEqual(store.siteConnections.count, 2)
