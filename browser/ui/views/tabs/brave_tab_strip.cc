@@ -390,6 +390,10 @@ void BraveTabStrip::UpdateTabStripMargins() {
     margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin -
                      brave_tabs::kHorizontalTabInset);
     DCHECK_GE(margins.left(), 0);
+
+    // Set a top margin to match the space under tabs (where the group underline
+    // is rendered), so that everything remains centered.
+    margins.set_top(brave_tabs::kHorizontalTabStripVerticalSpacing);
   }
 
   SetProperty(views::kMarginsKey, margins);
