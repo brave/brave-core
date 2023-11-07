@@ -93,14 +93,4 @@ uint64_t LegacyBatState::GetCreationStamp() const {
   return state_.boot_timestamp;
 }
 
-bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
-  auto tip = state_.inline_tips.find(key);
-  if (tip == state_.inline_tips.end()) {
-    // not found, all tips are on by default
-    return true;
-  }
-
-  return tip->second;
-}
-
 }  // namespace brave_rewards::internal

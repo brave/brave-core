@@ -62,15 +62,6 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
 
   engine_->SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  engine_->SetState(kInlineTipRedditEnabled,
-                    legacy_state_->GetInlineTipSetting("reddit"));
-
-  engine_->SetState(kInlineTipTwitterEnabled,
-                    legacy_state_->GetInlineTipSetting("twitter"));
-
-  engine_->SetState(kInlineTipGithubEnabled,
-                    legacy_state_->GetInlineTipSetting("github"));
-
   callback(mojom::Result::OK);
 }
 

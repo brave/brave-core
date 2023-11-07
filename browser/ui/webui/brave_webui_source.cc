@@ -425,7 +425,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "donationDescLearnMore",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE },             // NOLINT
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },            // NOLINT
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
-        { "donationAbility",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY },
         { "monthlyTipsTitle",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE },
         { "monthlyTipsDesc",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC },
         { "monthlyTipsEmpty", IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY },

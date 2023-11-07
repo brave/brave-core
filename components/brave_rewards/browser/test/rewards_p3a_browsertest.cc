@@ -186,15 +186,8 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
   p3a::ConversionMonitor conversion_monitor;
-  conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kInlineTip);
 
   histogram_tester_->ExpectTotalCount(p3a::kEnabledSourceHistogramName, 0);
-  histogram_tester_->ExpectUniqueSample(p3a::kInlineTipTriggerHistogramName, 1,
-                                        1);
-
-  conversion_monitor.RecordRewardsEnable();
-
-  histogram_tester_->ExpectUniqueSample(p3a::kEnabledSourceHistogramName, 0, 1);
 
   conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kToolbarButton);
 
@@ -209,8 +202,6 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
 
   histogram_tester_->ExpectBucketCount(p3a::kToolbarButtonTriggerHistogramName,
                                        1, 1);
-  histogram_tester_->ExpectBucketCount(p3a::kInlineTipTriggerHistogramName, 1,
-                                       1);
 
   conversion_monitor.RecordRewardsEnable();
 

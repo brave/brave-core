@@ -199,13 +199,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
                          mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(mojom::InlineTipsPlatforms platform,
-                                       bool enabled) override;
-
-  void GetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms platform,
-      GetInlineTippingPlatformEnabledCallback callback) override;
-
   void GetShareURL(const base::flat_map<std::string, std::string>& args,
                    GetShareURLCallback callback) override;
 

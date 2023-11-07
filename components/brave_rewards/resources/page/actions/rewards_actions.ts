@@ -82,10 +82,6 @@ export const onAutoContributeSettingsClose = () => action(types.ON_AUTO_CONTRIBU
 
 export const onAutoContributeSettingsOpen = () => action(types.ON_AUTO_CONTRIBUTE_SETTINGS_OPEN)
 
-export const onContributionsSettingsClose = () => action(types.ON_CONTRIBUTIONS_SETTINGS_CLOSE)
-
-export const onContributionsSettingsOpen = () => action(types.ON_CONTRIBUTIONS_SETTINGS_OPEN)
-
 export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
   property
 })
@@ -230,14 +226,6 @@ export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECUR
   success
 })
 
-export const onInlineTipSettingChange = (key: string, value: boolean) => action(types.ON_INLINE_TIP_SETTINGS_CHANGE, {
-  key,
-  value
-})
-
-export const onInlineTipsEnabledChange = (enabled: boolean) =>
-  action(types.ON_INLINE_TIPS_ENABLED_CHANGE, { enabled })
-
 export const restorePublisher = (publisherKey: string) => action(types.ON_RESTORE_PUBLISHER, {
   publisherKey
 })
@@ -310,12 +298,6 @@ export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_O
 })
 
 export const enableRewards = () => action(types.ENABLE_REWARDS)
-
-export const getEnabledInlineTippingPlatforms = () => action(types.GET_ENABLED_INLINE_TIPPING_PLATFORMS)
-
-export const onEnabledInlineTippingPlatforms = (platforms: string[]) => action(types.ON_ENABLED_INLINE_TIPPING_PLATFORMS, {
-  platforms
-})
 
 export const restartBrowser = () => action(types.RESTART_BROWSER)
 
