@@ -13,6 +13,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -501,6 +502,21 @@ class KeyringServiceUnitTest : public testing::Test {
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };  // namespace brave_wallet
+
+TEST_F(KeyringServiceUnitTest, CreateWallet_DoubleCall) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  base::MockCallback<KeyringService::CreateWalletCallback> callback1;
+  EXPECT_CALL(callback1, Run(kMnemonicDivideCruise));
+  service.CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                       callback1.Get());
+
+  base::MockCallback<KeyringService::CreateWalletCallback> callback2;
+  // Does not DCHECK and fails with empty string.
+  EXPECT_CALL(callback2, Run(""));
+  service.CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                       callback2.Get());
+}
 
 TEST_F(KeyringServiceUnitTest, HasAndGetPrefForKeyring) {
   base::Value::Dict dict;
