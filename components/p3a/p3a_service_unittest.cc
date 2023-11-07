@@ -247,6 +247,16 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  // Creative metrics are automatically ephemeral, should not auto resend.
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  for (size_t i = 1; i < test_histograms.size(); i++) {
+    base::UmaHistogramExactLinear(test_histograms[i], i + 1, 8);
+    p3a_service_->OnHistogramChanged(test_histograms[i].c_str(), 0, i + 1);
+    task_environment_.RunUntilIdle();
+  }
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 10));
+
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 2U);
 
   ResetInterceptorStores();
@@ -298,9 +308,16 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   task_environment_.FastForwardBy(base::Days(15) +
                                   base::Seconds(kUploadIntervalSeconds * 400));
 
-  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  base::UmaHistogramExactLinear(kTestExampleMetric, 1, 8);
+  p3a_service_->OnHistogramChanged(kTestExampleMetric, 0, 1);
+  task_environment_.RunUntilIdle();
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
 
   ResetInterceptorStores();
 

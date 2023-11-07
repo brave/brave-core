@@ -227,7 +227,8 @@ constexpr inline auto kCollectedExpressHistograms =
     "Brave.Today.IsEnabled",
     "Brave.Today.UsageDaily",
     "Brave.Uptime.BrowserOpenTime",
-    "Brave.Wallet.UsageDaily"
+    "Brave.Wallet.UsageDaily",
+    "creativeInstanceId.total.count"
 });
 
 // List of metrics that should only be sent once per latest histogram update.

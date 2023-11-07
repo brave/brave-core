@@ -162,6 +162,14 @@ base::CallbackListSubscription P3AService::RegisterMetricCycledCallback(
   return metric_cycled_callbacks_.Add(std::move(callback));
 }
 
+void P3AService::UpdateMetricValueForSingleFormat(
+    const std::string& histogram_name,
+    size_t bucket,
+    bool is_constellation) {
+  DCheckCurrentlyOnUIThread();
+  HandleHistogramChange(histogram_name, bucket, is_constellation);
+}
+
 bool P3AService::IsP3AEnabled() const {
   return local_state_->GetBoolean(kP3AEnabled);
 }
@@ -277,13 +285,17 @@ void P3AService::OnHistogramChangedOnUI(const char* histogram_name,
   }
 }
 
-void P3AService::HandleHistogramChange(std::string_view histogram_name,
-                                       size_t bucket) {
+void P3AService::HandleHistogramChange(
+    std::string_view histogram_name,
+    size_t bucket,
+    absl::optional<bool> only_update_for_constellation) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
-    message_manager_->RemoveMetricValue(std::string(histogram_name));
+    message_manager_->RemoveMetricValue(std::string(histogram_name),
+                                        only_update_for_constellation);
     return;
   }
-  message_manager_->UpdateMetricValue(std::string(histogram_name), bucket);
+  message_manager_->UpdateMetricValue(std::string(histogram_name), bucket,
+                                      only_update_for_constellation);
 }
 
 void P3AService::DisableStarAttestationForTesting() {

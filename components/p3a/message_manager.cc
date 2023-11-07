@@ -117,22 +117,34 @@ void MessageManager::Init(
   }
 }
 
-void MessageManager::UpdateMetricValue(std::string_view histogram_name,
-                                       size_t bucket) {
+void MessageManager::UpdateMetricValue(
+    std::string_view histogram_name,
+    size_t bucket,
+    absl::optional<bool> only_update_for_constellation) {
+  bool update_for_all = !only_update_for_constellation.has_value();
   MetricLogType log_type = GetLogTypeForHistogram(histogram_name);
-  if (features::IsConstellationEnabled()) {
+  if (features::IsConstellationEnabled() &&
+      (update_for_all || *only_update_for_constellation)) {
     constellation_prep_log_stores_[log_type]->UpdateValue(
         std::string(histogram_name), bucket);
   }
-  json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name),
-                                                bucket);
+  if (update_for_all || !*only_update_for_constellation) {
+    json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name),
+                                                  bucket);
+  }
 }
 
-void MessageManager::RemoveMetricValue(std::string_view histogram_name) {
+void MessageManager::RemoveMetricValue(
+    std::string_view histogram_name,
+    absl::optional<bool> only_update_for_constellation) {
+  bool update_for_all = !only_update_for_constellation.has_value();
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    json_log_stores_[log_type]->RemoveValueIfExists(
-        std::string(histogram_name));
-    if (features::IsConstellationEnabled()) {
+    if (update_for_all || !*only_update_for_constellation) {
+      json_log_stores_[log_type]->RemoveValueIfExists(
+          std::string(histogram_name));
+    }
+    if (features::IsConstellationEnabled() &&
+        (update_for_all || *only_update_for_constellation)) {
       constellation_prep_log_stores_[log_type]->RemoveValueIfExists(
           std::string(histogram_name));
     }
@@ -366,7 +378,8 @@ bool MessageManager::IsActualMetric(const std::string& histogram_name) const {
 
 bool MessageManager::IsEphemeralMetric(
     const std::string& histogram_name) const {
-  return p3a::kEphemeralHistograms.contains(histogram_name);
+  return p3a::kEphemeralHistograms.contains(histogram_name) ||
+         delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 
 }  // namespace p3a

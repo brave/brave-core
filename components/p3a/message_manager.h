@@ -76,9 +76,16 @@ class MessageManager : public MetricLogStore::Delegate {
 
   void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  void UpdateMetricValue(std::string_view histogram_name, size_t bucket);
-
-  void RemoveMetricValue(std::string_view histogram_name);
+  // If only_update_for_constellation is null, the value will be updated for
+  // both STAR and Constellation. If true, only the Constellation log store will
+  // be updated. If false, only the JSON log store will be updated.
+  void UpdateMetricValue(
+      std::string_view histogram_name,
+      size_t bucket,
+      absl::optional<bool> only_update_for_constellation = absl::nullopt);
+  void RemoveMetricValue(
+      std::string_view histogram_name,
+      absl::optional<bool> only_update_for_constellation = absl::nullopt);
 
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
