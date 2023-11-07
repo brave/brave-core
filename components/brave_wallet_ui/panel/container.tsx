@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom'
 import {
   ConnectWithSite //
 } from '../components/extension/connect-with-site-panel/connect-with-site-panel'
-import { ConnectedPanel } from '../components/extension/connected-panel/index'
 import { Panel } from '../components/extension/panel/index'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import { SignPanel } from '../components/extension/sign-panel/index'
@@ -64,7 +63,6 @@ import {
   WalletRoutes
 } from '../constants/types'
 
-import LockPanel from '../components/extension/lock-panel'
 import { useHasAccount } from '../common/hooks/has-account'
 import {
   isBitcoinTransaction,
@@ -127,9 +125,6 @@ function Container() {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isPanelV2FeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isPanelV2FeatureEnabled
-  )
 
   // wallet selectors (unsafe)
   const userVisibleTokensInfo = useUnsafeWalletSelector(
@@ -197,14 +192,6 @@ function Container() {
   const [networkForCreateAccount, setNetworkForCreateAccount] = React.useState<
     BraveWallet.NetworkInfo | undefined
   >(undefined)
-
-  const unlockWallet = (password: string) => {
-    dispatch(WalletActions.unlockWallet({ password }))
-  }
-
-  const onRestore = () => {
-    dispatch(WalletPanelActions.expandRestoreWallet())
-  }
 
   const onSetup = () => {
     dispatch(WalletPanelActions.setupWallet())
@@ -373,7 +360,6 @@ function Container() {
   const canInitializePageRouter =
     !isWalletLocked &&
     !hasInitializedRouter &&
-    isPanelV2FeatureEnabled &&
     hasInitialized &&
     isWalletCreated
 
@@ -400,21 +386,12 @@ function Container() {
   }
 
   if (isWalletLocked) {
-    return isPanelV2FeatureEnabled ? (
+    return (
       <PanelWrapper
         width={390}
         height={650}
       >
         <PageContainer />
-      </PanelWrapper>
-    ) : (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <LockPanel
-            onSubmit={unlockWallet}
-            onClickRestore={onRestore}
-          />
-        </StyledExtensionWrapper>
       </PanelWrapper>
     )
   }
@@ -735,20 +712,12 @@ function Container() {
     )
   }
 
-  if (isPanelV2FeatureEnabled) {
-    return (
-      <PanelWrapper
-        width={390}
-        height={650}
-      >
-        <PageContainer />
-      </PanelWrapper>
-    )
-  }
-
   return (
-    <PanelWrapper isLonger={false}>
-      <ConnectedPanel navAction={navigateTo} />
+    <PanelWrapper
+      width={390}
+      height={650}
+    >
+    <PageContainer />
     </PanelWrapper>
   )
 }

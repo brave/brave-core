@@ -717,7 +717,6 @@ struct WalletInfo {
   bool is_bitcoin_enabled;
   bool is_z_cash_enabled;
   bool is_nft_pinning_feature_enabled;
-  bool is_panel_v2_feature_enabled;
   bool is_ankr_balances_feature_enabled;
 };
 

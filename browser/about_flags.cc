@@ -210,14 +210,6 @@
               brave_wallet::features::kBraveWalletNftPinningFeature),         \
       },                                                                      \
       {                                                                       \
-          "enable-panel-v2",                                                  \
-          "Enable Panel v2",                                                  \
-          "Enable Panel v2 for Brave Wallet",                                 \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletPanelV2Feature),            \
-      },                                                                      \
-      {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
           "Native cryptocurrency wallet support without the use of "          \

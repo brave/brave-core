@@ -102,7 +102,6 @@ const defaultState: WalletState = {
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
-  isPanelV2FeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
   hidePortfolioGraph:
     window.localStorage.getItem(
@@ -276,8 +275,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
         state.isNftPinningFeatureEnabled =
           payload.walletInfo.isNftPinningFeatureEnabled
-        state.isPanelV2FeatureEnabled =
-          payload.walletInfo.isPanelV2FeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
       },

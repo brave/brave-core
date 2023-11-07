@@ -42,10 +42,6 @@ BASE_FEATURE(kBraveWalletNftPinningFeature,
 #endif
 );
 
-BASE_FEATURE(kBraveWalletPanelV2Feature,
-             "BraveWalletPanelV2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_DISABLED_BY_DEFAULT);

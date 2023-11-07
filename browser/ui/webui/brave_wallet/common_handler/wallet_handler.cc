@@ -37,7 +37,7 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
       keyring_service_->IsWalletCreatedSync(), keyring_service_->IsLockedSync(),
       keyring_service_->IsWalletBackedUpSync(), IsFilecoinEnabled(),
       IsSolanaEnabled(), IsBitcoinEnabled(), IsZCashEnabled(),
-      IsNftPinningEnabled(), IsPanelV2Enabled(), IsAnkrBalancesEnabled()));
+      IsNftPinningEnabled(), IsAnkrBalancesEnabled()));
 }
 
 }  // namespace brave_wallet

@@ -25,7 +25,6 @@ bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
 bool IsNftPinningEnabled();
-bool IsPanelV2Enabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();

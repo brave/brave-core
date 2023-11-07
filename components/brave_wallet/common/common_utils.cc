@@ -51,10 +51,6 @@ bool IsNftPinningEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletNftPinningFeature);
 }
 
-bool IsPanelV2Enabled() {
-  return base::FeatureList::IsEnabled(features::kBraveWalletPanelV2Feature);
-}
-
 bool ShouldCreateDefaultSolanaAccount() {
   return IsSolanaEnabled() && features::kCreateDefaultSolanaAccount.Get();
 }
