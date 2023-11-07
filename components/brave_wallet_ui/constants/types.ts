@@ -223,8 +223,6 @@ export interface WalletState {
   connectedAccounts: BraveWallet.AccountId[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
-  isLoadingCoinMarketData: boolean
-  coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
