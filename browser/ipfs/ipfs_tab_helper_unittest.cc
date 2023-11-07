@@ -5,29 +5,21 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
-#include "base/test/bind.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/media/webrtc/tab_capture_access_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/version_info/channel.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
-#include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
-#include "gtest/gtest.h"
-#include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/test/test_network_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -39,14 +31,6 @@ constexpr char kCid1[] =
     "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
 constexpr char kIPNSCid1[] =
     "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8";
-
-void HeadersToRaw(std::string* headers) {
-  std::replace(headers->begin(), headers->end(), '\n', '\0');
-  if (!headers->empty()) {
-    *headers += '\0';
-  }
-}
-
 }  // namespace
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
@@ -71,42 +55,6 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
   std::string dnslink_;
 };
 
-class FakeTestWebContents : public content::TestWebContents {
- public:
-  explicit FakeTestWebContents(content::BrowserContext* browser_context)
-      : TestWebContents(browser_context) {}
-
-  static std::unique_ptr<FakeTestWebContents> Create(
-      content::BrowserContext* browser_context,
-      scoped_refptr<content::SiteInstance> instance) {
-    std::unique_ptr<FakeTestWebContents> test_web_contents(
-        new FakeTestWebContents(browser_context));
-    test_web_contents->Init(CreateParams(browser_context, std::move(instance)),
-                            blink::FramePolicy());
-    return test_web_contents;
-  }
-
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override {
-    WebContentsImpl::DidFinishNavigation(navigation_handle);
-    if (!on_did_finish_navigation_completed_.empty()) {
-      auto curr_callback = on_did_finish_navigation_completed_.back();
-      on_did_finish_navigation_completed_.pop_back();
-      curr_callback.Run(navigation_handle);
-    }
-  }
-
-  void SetOnDidFinishNavigationCompleted(
-      base::RepeatingCallback<void(content::NavigationHandle*)> callback) {
-    on_did_finish_navigation_completed_.insert(
-        on_did_finish_navigation_completed_.begin(), callback);
-  }
-
- private:
-  std::vector<base::RepeatingCallback<void(content::NavigationHandle*)>>
-      on_did_finish_navigation_completed_;
-};
-
 class IpfsTabHelperUnitTest : public testing::Test {
  public:
   IpfsTabHelperUnitTest()
@@ -117,7 +65,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
     ASSERT_TRUE(profile_manager_.SetUp());
     test_network_context_ = std::make_unique<network::TestNetworkContext>();
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
-    web_contents_ = FakeTestWebContents::Create(profile(), nullptr);
+    web_contents_ = content::TestWebContents::Create(profile(), nullptr);
     auto ipfs_host_resolver = std::make_unique<FakeIPFSHostResolver>();
     ipfs_host_resolver_ = ipfs_host_resolver.get();
     ipfs_host_resolver_->SetNetworkContextForTesting(
@@ -127,7 +75,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
 
     ipfs_tab_helper()->SetResolverForTesting(std::move(ipfs_host_resolver));
-    ipfs_tab_helper()->SetAutoRediretCallbackForTesting(base::BindRepeating(
+    ipfs_tab_helper()->SetRediretCallbackForTesting(base::BindRepeating(
         &IpfsTabHelperUnitTest::OnRedirect, base::Unretained(this)));
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   }
@@ -141,9 +89,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
     profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway,
                                      value);
   }
-  void SetIpfsCompanionEnabledFlag(bool value) {
-    profile_->GetPrefs()->SetBoolean(kIPFSCompanionEnabled, value);
-  }
+
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
     return ipfs::IPFSTabHelper::FromWebContents(web_contents_.get());
   }
@@ -152,38 +98,21 @@ class IpfsTabHelperUnitTest : public testing::Test {
     return ipfs_host_resolver_;
   }
 
-  FakeTestWebContents* web_contents() { return web_contents_.get(); }
+  content::TestWebContents* web_contents() { return web_contents_.get(); }
 
   GURL redirect_url() { return redirect_url_; }
 
   void ResetRedirectUrl() { redirect_url_ = GURL(); }
 
-  void NavigateAndCommit(const GURL& url) {
-    static_cast<content::TestWebContents*>(web_contents())
-        ->NavigateAndCommit(url);
-  }
-  void NavigateAndComitFailedFailedPage(const GURL& url,
-                                        const int& error_code) {
-    std::unique_ptr<content::NavigationSimulator> navigation =
-        content::NavigationSimulator::CreateBrowserInitiated(
-            url, web_contents_.get());
-    navigation->Fail(error_code);
-    navigation->CommitErrorPage();
-    navigation->Wait();
-  }
-
  private:
-  content::NavigationHandle* OnRedirect(const GURL& gurl) {
-    redirect_url_ = gurl;
-    return nullptr;
-  }
+  void OnRedirect(const GURL& gurl) { redirect_url_ = gurl; }
 
   GURL redirect_url_;
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfileManager profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  std::unique_ptr<FakeTestWebContents> web_contents_;
+  std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<network::TestNetworkContext> test_network_context_;
   raw_ptr<FakeIPFSHostResolver> ipfs_host_resolver_;
 };
@@ -791,62 +720,6 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
-}
-
-TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
-  const GURL url(
-      "https://ipfs.io/ipns/"
-      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
-  const GURL redirected_to_url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
-
-  SetIpfsCompanionEnabledFlag(false);
-
-  bool is_fallback_showed = false;
-  ipfs_tab_helper()->SetSetShowFallbackInfobarCallbackForTesting(
-      base::BindLambdaForTesting([&](const GURL& current_url) {
-        is_fallback_showed = true;
-        EXPECT_EQ(current_url, url);
-      }));
-
-  web_contents()->SetOnDidFinishNavigationCompleted(
-      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-        ipfs_tab_helper()->SetAutoRediretCallbackForTesting(
-            base::BindLambdaForTesting([&](const GURL& url_to_check) {
-              EXPECT_EQ(redirected_to_url, url_to_check);
-              return handler;
-            }));
-        ipfs_tab_helper()->LoadUrlForAutoRedirect(redirected_to_url);
-        ipfs_tab_helper()->DidFinishNavigation(handler);
-      }));
-  NavigateAndComitFailedFailedPage(url, 500);
-
-  EXPECT_TRUE(is_fallback_showed);
-}
-
-TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoInfobar_Redirect) {
-  const GURL url(
-      "https://ipfs.io/ipns/"
-      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
-  const GURL redirected_to_url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
-
-  SetIpfsCompanionEnabledFlag(false);
-  SetAutoRedirectToConfiguredGateway(true);
-
-  bool is_redirected = false;
-  web_contents()->SetOnDidFinishNavigationCompleted(
-      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-        ipfs_tab_helper()->SetAutoRediretCallbackForTesting(
-            base::BindLambdaForTesting([&](const GURL& url_to_check) {
-              EXPECT_EQ(redirected_to_url, url_to_check);
-              is_redirected = true;
-              return handler;
-            }));
-        ipfs_tab_helper()->DidFinishNavigation(handler);
-      }));
-  NavigateAndComitFailedFailedPage(url, 500);
-  EXPECT_TRUE(is_redirected);
 }
 
 }  // namespace ipfs
