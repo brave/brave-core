@@ -370,6 +370,10 @@ actor ContentBlockerManager {
       return .generic(genericType)
     }
     
+    guard domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) else {
+      return Set(genericRuleLists)
+    }
+    
     // Get rule lists for filter lists
     let filterLists = FilterListStorage.shared.filterLists
     let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
