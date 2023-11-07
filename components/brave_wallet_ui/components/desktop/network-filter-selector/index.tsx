@@ -49,6 +49,7 @@ interface Props {
     'accountId' | 'address' | 'name'
   >
   isV2?: boolean
+  disableAllAccountsOption?: boolean
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
@@ -57,7 +58,8 @@ export const NetworkFilterSelector = ({
   onSelectNetwork,
   selectedNetwork = AllNetworksOption,
   isV2,
-  selectedAccount
+  selectedAccount,
+  disableAllAccountsOption
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] =
@@ -88,7 +90,8 @@ export const NetworkFilterSelector = ({
 
   const { primaryNetworks, secondaryNetworks, testNetworks } =
     React.useMemo(() => {
-      const primaryNetworks: BraveWallet.NetworkInfo[] = [AllNetworksOption]
+      const primaryNetworks: BraveWallet.NetworkInfo[] =
+        disableAllAccountsOption ? [] : [AllNetworksOption]
       const secondaryNetworks: BraveWallet.NetworkInfo[] = []
       const testNetworks: BraveWallet.NetworkInfo[] = []
 
@@ -119,7 +122,7 @@ export const NetworkFilterSelector = ({
         secondaryNetworks,
         testNetworks
       }
-    }, [filteredNetworks])
+    }, [filteredNetworks, disableAllAccountsOption])
 
   const toggleShowNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter((prev) => !prev)

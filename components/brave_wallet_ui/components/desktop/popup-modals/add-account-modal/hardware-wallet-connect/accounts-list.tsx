@@ -207,6 +207,7 @@ export const HardwareWalletAccountsList = ({
             networkListSubset={networksSubset}
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
+            disableAllAccountsOption
           />
           {coin === BraveWallet.CoinType.ETH ? (
             <Select
