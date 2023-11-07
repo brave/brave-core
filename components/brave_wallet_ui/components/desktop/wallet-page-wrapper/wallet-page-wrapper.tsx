@@ -41,6 +41,8 @@ import {
   CardHeaderContentWrapper
 } from './wallet-page-wrapper.style'
 
+import { PlatformContext } from '../../../common/context/platform.context'
+
 export interface Props {
   wrapContentInBox?: boolean
   cardWidth?: number
@@ -75,6 +77,8 @@ export const WalletPageWrapper = (props: Props) => {
     noBorderRadius,
     useDarkBackground
   } = props
+
+  const { isAndroid } = React.useContext(PlatformContext)
 
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -152,7 +156,7 @@ export const WalletPageWrapper = (props: Props) => {
         noPadding={noPadding}
         isPanel={isPanel}
       >
-        {isWalletCreated && !hideHeader && !isPanel && (
+        {isWalletCreated && !hideHeader && !isPanel && !isAndroid && (
           <TabHeader hideHeaderMenu={hideHeaderMenu} />
         )}
         {isWalletCreated && !isWalletLocked && !hideNav && <WalletNav />}
