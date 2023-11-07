@@ -17,7 +17,6 @@ BASE_DECLARE_FEATURE(kBraveWalletFilecoinFeature);
 BASE_DECLARE_FEATURE(kBraveWalletSolanaFeature);
 BASE_DECLARE_FEATURE(kBraveWalletNftPinningFeature);
 extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;
-BASE_DECLARE_FEATURE(kBraveWalletSolanaProviderFeature);
 BASE_DECLARE_FEATURE(kBraveWalletDappsSupportFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;

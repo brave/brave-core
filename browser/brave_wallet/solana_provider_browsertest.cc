@@ -340,9 +340,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
     std::vector<base::test::FeatureRefAndParams> enabled_features;
     enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaProviderFeature,
-        base::FieldTrialParams());
     feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
 

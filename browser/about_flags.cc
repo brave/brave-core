@@ -243,14 +243,6 @@
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-solana-provider",                                     \
-          "Enable Brave Wallet Solana provider support",                      \
-          "Solana provider support for native Brave Wallet",                  \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaProviderFeature),     \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-dapps-support",                                       \
           "Enable Brave Wallet Dapps support",                                \
           "Brave Wallet Dapps support",                                       \

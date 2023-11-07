@@ -533,9 +533,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   SolanaProviderRendererTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeatures(
-        {brave_wallet::features::kBraveWalletSolanaFeature,
-         brave_wallet::features::kBraveWalletSolanaProviderFeature},
-        {});
+        {brave_wallet::features::kBraveWalletSolanaFeature}, {});
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

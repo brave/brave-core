@@ -108,8 +108,6 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
 
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaFeature) &&
-      base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
       dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
