@@ -18,10 +18,8 @@
 
 namespace script_injector {
 
-/**
- * This class is responsible for injecting async scripts into the renderer from
- * the browser process, and sending the result back to the browser process.
- */
+// This class is responsible for injecting async scripts into the renderer from
+// the browser process, and sending the result back to the browser process.
 class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
     ScriptInjectorRenderFrameObserver : public content::RenderFrameObserver,
                                         public mojom::ScriptInjector {
@@ -46,10 +44,12 @@ class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
   // RenderFrameObserver implementation:
   void OnDestruct() override;
 
+  // Used to bind the mojo receiver to the render frame observer.
   void BindToReceiver(
       mojo::PendingAssociatedReceiver<script_injector::mojom::ScriptInjector>
           pending_receiver);
 
+  // We maintain a list of receivers, since there might be multiple ones.
   mojo::AssociatedReceiverSet<script_injector::mojom::ScriptInjector>
       receivers_;
 
