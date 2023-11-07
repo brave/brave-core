@@ -57,7 +57,7 @@ function App () {
   }, [])
 
   const platformInfo = {
-    isAndroid: false
+    isAndroid: loadTimeData.getBoolean('isAndroid') || false
   }
 
   return (

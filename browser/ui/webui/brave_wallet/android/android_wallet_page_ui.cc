@@ -70,6 +70,7 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
     NOTREACHED() << "Failed to find page resources for:" << url.path();
   }
 
+  source->AddBoolean("isAndroid", true);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
