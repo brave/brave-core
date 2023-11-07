@@ -20,6 +20,8 @@ const applyDefaults = (
   return { size: options?.size || 8, scale: options?.scale || 16 }
 }
 
+const serializer = new XMLSerializer()
+
 export const useAccountOrb = (
   accountInfo:
     | Pick<BraveWallet.AccountInfo, 'accountId' | 'address'>
@@ -40,12 +42,14 @@ export const useAccountOrb = (
         .update(accountInfo.accountId.uniqueKey)
         .digest('hex')
 
-    return (
+    const svgString = serializer.serializeToString(
       EthereumBlockies.create({
-        seed,
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
+        ...applyDefaults(options),
+        seed
+      })
+    )
+    const encodedSvg = btoa(svgString)
+    return 'data:image/svg+xml;base64,' + encodedSvg
   }, [
     accountInfo?.address,
     accountInfo?.accountId.uniqueKey,
@@ -63,12 +67,14 @@ export const useAddressOrb = (
       return ''
     }
 
-    return (
+    const svgString = serializer.serializeToString(
       EthereumBlockies.create({
-        seed: address.toLowerCase(),
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
+        ...applyDefaults(options),
+        seed: address.toLowerCase()
+      })
+    )
+    const encodedSvg = btoa(svgString)
+    return 'data:image/svg+xml;base64,' + encodedSvg
   }, [address, options?.size, options?.scale])
 }
 
@@ -81,11 +87,9 @@ export const useNetworkOrb = (
       return ''
     }
 
-    return (
-      EthereumBlockies.create({
-        seed: networkInfo.chainName,
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
+    return EthereumBlockies.background({
+      ...applyDefaults(options),
+      seed: networkInfo.chainName
+    })
   }, [networkInfo, options?.size, options?.scale])
 }
