@@ -72,6 +72,13 @@ def generate_reproxy_cfg():
     source_cfg_path = f'{SCRIPT_DIR}/reproxy.cfg'
     reproxy_cfg = merge_reclient_cfg(source_cfg_path, reproxy_cfg)
 
+    # Use scandeps_server.
+    depsscanner_address = (f'exec://{SRC_DIR}/'
+                           'buildtools/reclient/scandeps_server')
+    if sys.platform.startswith('win'):
+        depsscanner_address += '.exe'
+    reproxy_cfg['depsscanner_address'] = depsscanner_address
+
     # Set values from supoprted RBE_ environment variables.
     SUPPORTED_REPROXY_ENV_VARS = (
         'RBE_service',
