@@ -201,8 +201,6 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorTabForegroundActiveFrameActive] = {
@@ -214,8 +212,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbar] = {kLightToolbar};
-  mixer[kColorToolbarButtonIcon] = {
-      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray50};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {ui::kColorFrameActive};
@@ -255,8 +252,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorTabForegroundActiveFrameActive] = {
@@ -268,8 +263,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
   mixer[kColorToolbar] = {kDarkToolbar};
-  mixer[kColorToolbarButtonIcon] = {
-      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
@@ -632,8 +626,10 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateFrame};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
+  mixer[kColorTabBackgroundActiveFrameActive] = {
+      leo::kColorPrimitivePrivateWindow80};
+  mixer[kColorTabBackgroundActiveFrameInactive] = {
+      kColorTabBackgroundActiveFrameActive};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
 
@@ -645,7 +641,7 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
   mixer[kColorToolbar] = {kPrivateToolbar};
-  mixer[kColorToolbarButtonIcon] = {SkColorSetRGB(0xA3, 0x80, 0xFF)};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitivePrivateWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
@@ -663,8 +659,10 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateTorFrame};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
+  mixer[kColorTabBackgroundActiveFrameActive] = {
+      leo::kColorPrimitiveTorWindow80};
+  mixer[kColorTabBackgroundActiveFrameInactive] = {
+      kColorTabBackgroundActiveFrameActive};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
   mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
 
@@ -676,7 +674,7 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
   mixer[kColorToolbar] = {kPrivateTorToolbar};
-  mixer[kColorToolbarButtonIcon] = {SkColorSetRGB(0xC7, 0x6C, 0xF6)};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveTorWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
@@ -789,6 +787,11 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   }
 
   ui::ColorMixer& mixer = provider->AddMixer();
+  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
   mixer[kColorNewTabButtonFocusRing] = {ui::kColorFocusableBorderFocused};
+  mixer[kColorTabBackgroundActiveFrameActive] = {
+      is_dark ? leo::kColorPrimitiveGray80 : SK_ColorWHITE};
+  mixer[kColorTabBackgroundActiveFrameInactive] = {
+      kColorTabBackgroundActiveFrameActive};
 }
