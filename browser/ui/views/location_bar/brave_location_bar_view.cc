@@ -295,26 +295,12 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
 void BraveLocationBarView::RefreshBackground() {
   LocationBarView::RefreshBackground();
 
-  const auto* const color_provider = GetColorProvider();
-  if (!color_provider) {
+  if (shadow_) {
+    const bool show_shadow =
+        IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
+    shadow_->SetVisible(show_shadow);
     return;
   }
-
-  if (!shadow_) {
-    const int radius = GetBorderRadius();
-    ViewShadow::ShadowParameters shadow{
-        .offset_x = 0,
-        .offset_y = 1,
-        .blur_radius = radius,
-        .shadow_color =
-            color_provider->GetColor(kColorLocationBarHoveredShadow)};
-
-    shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
-  }
-
-  const bool show_shadow =
-      IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
-  shadow_->SetVisible(show_shadow);
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
@@ -356,7 +342,11 @@ void BraveLocationBarView::OnThemeChanged() {
   }
 
   Update(nullptr);
-  shadow_.reset();
+  SetupShadow();
+}
+
+void BraveLocationBarView::AddedToWidget() {
+  SetupShadow();
 }
 
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
@@ -369,6 +359,22 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
     Layout();
     SchedulePaint();
   }
+}
+
+void BraveLocationBarView::SetupShadow() {
+  const auto* const color_provider = GetColorProvider();
+  if (color_provider) {
+    return;
+  }
+
+  const int radius = GetBorderRadius();
+  ViewShadow::ShadowParameters shadow{
+      .offset_x = 0,
+      .offset_y = 1,
+      .blur_radius = radius,
+      .shadow_color = color_provider->GetColor(kColorLocationBarHoveredShadow)};
+
+  shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
 }
 
 int BraveLocationBarView::GetBorderRadius() const {

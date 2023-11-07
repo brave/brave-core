@@ -72,6 +72,7 @@ class BraveLocationBarView : public LocationBarView {
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void ChildVisibilityChanged(views::View* child) override;
+  void AddedToWidget() override;
 
   int GetBorderRadius() const override;
 
@@ -91,6 +92,7 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::RewardsBrowserTest;
 
   PlaylistActionIconView* GetPlaylistActionIconView();
+  void SetupShadow();
 
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
