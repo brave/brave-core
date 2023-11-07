@@ -326,18 +326,6 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
   return true;
 }
 
-bool ParseEnsResolverContentHash(const base::Value& json_value,
-                                 std::vector<uint8_t>* content_hash) {
-  content_hash->clear();
-
-  std::string string_content_hash;
-  if (!ParseStringResult(json_value, &string_content_hash)) {
-    return false;
-  }
-  content_hash->assign(string_content_hash.begin(), string_content_hash.end());
-  return true;
-}
-
 absl::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value) {
   auto bytes_result = ParseDecodedBytesResult(json_value);

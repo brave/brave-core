@@ -818,10 +818,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                                           .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
         }
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
-            removePreferenceIfPresent(PREF_SNS);
-        }
-
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
             removePreferenceIfPresent(PREF_REQUEST_OTR);
         } else {

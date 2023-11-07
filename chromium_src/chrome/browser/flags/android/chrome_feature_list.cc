@@ -37,7 +37,6 @@
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &brave_wallet::features::kBraveWalletSolanaFeature,                 \
     &brave_wallet::features::kBraveWalletFilecoinFeature,               \
-    &brave_wallet::features::kBraveWalletSnsFeature,                    \
     &playlist::features::kPlaylist,                                     \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &request_otr::features::kBraveRequestOTRTab,                        \

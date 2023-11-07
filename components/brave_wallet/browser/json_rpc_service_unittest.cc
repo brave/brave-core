@@ -1900,88 +1900,6 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
-
-  {
-    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(MatchesCIDv1URL(
-                "ipfs://"
-                "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4"),
-            false, mojom::ProviderError::kSuccess, ""));
-
-    SetUDENSInterceptor(mojom::kMainnetChainId);
-    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
-    base::RunLoop().RunUntilIdle();
-  }
-
-  {
-    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
-            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-    SetHTTPRequestTimeoutInterceptor();
-    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
-    base::RunLoop().RunUntilIdle();
-  }
-
-  {
-    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kParsingError,
-            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
-    SetInvalidJsonInterceptor();
-    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
-    base::RunLoop().RunUntilIdle();
-  }
-
-  {
-    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(callback, Run(std::vector<uint8_t>(), false,
-                              mojom::ProviderError::kLimitExceeded,
-                              "Request exceeds defined limit"));
-    SetLimitExceededJsonErrorResponse();
-    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
-    base::RunLoop().RunUntilIdle();
-  }
-}
-
-TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
-
-  SetUDENSInterceptor(mojom::kMainnetChainId);
-  EXPECT_TRUE(
-      SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH, absl::nullopt));
-
-  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744", false,
-                            mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr_ZeroAddress) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
-
-  SetENSZeroAddressInterceptor(mojom::kMainnetChainId);
-  EXPECT_TRUE(
-      SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH, absl::nullopt));
-
-  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback,
-              Run("", false, mojom::ProviderError::kInvalidParams,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
-  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
-  base::RunLoop().RunUntilIdle();
-}
-
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
   bool callback_is_called = false;
@@ -5641,12 +5559,6 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<OffchainCallbackHandler> ensip10_resolve_callback_handler_;
   std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
   std::unique_ptr<OffchainGatewayHandler> offchain_gateway_handler_;
-
- private:
-#if BUILDFLAG(IS_ANDROID)
-  base::test::ScopedFeatureList feature_list_{
-      features::kBraveWalletENSL2Feature};
-#endif
 };
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
@@ -6113,9 +6025,6 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<GetAccountInfoHandler> default_handler_;
 
   std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
-
- private:
-  base::test::ScopedFeatureList feature_list_{features::kBraveWalletSnsFeature};
 };
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {

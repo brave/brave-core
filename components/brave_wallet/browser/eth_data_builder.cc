@@ -426,20 +426,6 @@ std::string Resolver(const std::string& domain) {
   return data;
 }
 
-bool ContentHash(const std::string& domain, std::string* data) {
-  const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
-  std::vector<std::string> hex_strings = {function_hash, tokenID};
-  return ConcatHexStrings(hex_strings, data);
-}
-
-bool Addr(const std::string& domain, std::string* data) {
-  const std::string function_hash = GetFunctionHash("addr(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
-  std::vector<std::string> hex_strings = {function_hash, tokenID};
-  return ConcatHexStrings(hex_strings, data);
-}
-
 // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
 // Similar to chromium's `DNSDomainFromDot` but without length limitation and
 // support of terminal dot.

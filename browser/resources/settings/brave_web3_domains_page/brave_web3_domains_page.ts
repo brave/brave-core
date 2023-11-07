@@ -26,7 +26,6 @@ export class SettingBraveWeb3DomainsPageElement
 
   static get properties() {
     return {
-      showSnsRow_: Boolean,
       resolveMethod_: Array,
       ensOffchainResolveMethod_: Array,
       showEnsOffchainLookupRow_: {
@@ -37,14 +36,12 @@ export class SettingBraveWeb3DomainsPageElement
   }
 
   private browserProxy_ = BraveWeb3DomainsBrowserProxyImpl.getInstance()
-  showSnsRow_: boolean
   resolveMethod_: DropdownMenuOptionList
   ensOffchainResolveMethod_: DropdownMenuOptionList
 
   override ready() {
     super.ready()
 
-    this.showSnsRow_ = this.browserProxy_.isSnsEnabled()
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
       this.resolveMethod_ = list
     })
@@ -54,8 +51,6 @@ export class SettingBraveWeb3DomainsPageElement
   }
 
   computeShowEnsOffchainLookupRow_() {
-    if (!this.browserProxy_.isENSL2Enabled())
-      return false
     return !!this.prefs && this.getPref('brave.ens.resolve_method').value === 3
   }
 }

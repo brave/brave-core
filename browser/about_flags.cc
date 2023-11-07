@@ -259,14 +259,6 @@
               brave_wallet::features::kBraveWalletSolanaProviderFeature),     \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-sns",                                                 \
-          "Enable Solana Name Service support",                               \
-          "Enable Solana Name Service(.sol) support for Wallet and omnibox "  \
-          "address resolution",                                               \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature), \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-dapps-support",                                       \
           "Enable Brave Wallet Dapps support",                                \
           "Brave Wallet Dapps support",                                       \

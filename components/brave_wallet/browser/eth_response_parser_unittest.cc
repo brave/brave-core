@@ -262,30 +262,6 @@ TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
   EXPECT_FALSE(ParseEthGetLogs(ParseJson(json), &logs));
 }
 
-TEST(EthResponseParserUnitTest, ParseEnsResolverContentHash) {
-  std::string json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
-      "00"
-      "0000000000000000000000000000000000000000000000000000000026e3010170122023"
-      "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
-      "000000000000000000000000000000000000000000\"}";
-  std::vector<uint8_t> content_hash;
-  EXPECT_TRUE(ParseEnsResolverContentHash(ParseJson(json), &content_hash));
-  EXPECT_EQ(
-      ipfs::ContentHashToCIDv1URL(content_hash).spec(),
-      "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
-
-  content_hash = {};
-  json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x000000000000000000000000000000000000000000000000000000000000002000\""
-      "}";
-
-  EXPECT_FALSE(ParseEnsResolverContentHash(ParseJson(json), &content_hash));
-  EXPECT_TRUE(content_hash.empty());
-}
-
 TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGetMany) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"

@@ -32,13 +32,6 @@ BASE_FEATURE(kBraveWalletDappsSupportFeature,
              "BraveWalletDappsSupport",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveWalletENSL2Feature,
-             "BraveWalletENSL2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletSnsFeature,
-             "BraveWalletSns",
-             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWalletNftPinningFeature,
              "BraveWalletNftPinning",

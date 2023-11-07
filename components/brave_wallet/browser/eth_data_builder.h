@@ -113,10 +113,6 @@ std::vector<uint8_t> GetWalletAddr(const std::string& domain,
 namespace ens {
 
 std::string Resolver(const std::string& domain);
-bool ContentHash(const std::string& domain, std::string* data);
-
-// Get Ethereum address from an ENS name.
-bool Addr(const std::string& domain, std::string* data);
 
 absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
 

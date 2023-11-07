@@ -569,22 +569,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const unstoppable_domains::WalletAddressKey& key,
       const std::string& chain_id,
       APIRequestResult api_request_result);
-  void EnsRegistryGetResolver(const std::string& domain,
-                              StringResultCallback callback);
-  void OnEnsRegistryGetResolver(StringResultCallback callback,
-                                APIRequestResult api_request_result);
-  void ContinueEnsGetContentHash(const std::string& domain,
-                                 EnsGetContentHashCallback callback,
-                                 const std::string& resolver_address,
-                                 mojom::ProviderError error,
-                                 const std::string& error_message);
-  void OnEnsGetContentHash(EnsGetContentHashCallback callback,
-                           APIRequestResult api_request_result);
-  void ContinueEnsGetEthAddr(const std::string& domain,
-                             EnsGetEthAddrCallback callback,
-                             const std::string& resolver_address,
-                             mojom::ProviderError error,
-                             const std::string& error_message);
   void OnEnsGetEthAddrTaskDone(
       EnsResolverTask* task,
       absl::optional<EnsResolverTaskResult> task_result,
@@ -601,8 +585,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       SnsResolverTask* task,
       absl::optional<SnsResolverTaskResult> task_result,
       absl::optional<SnsResolverTaskError> error);
-  void OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
-                       APIRequestResult api_request_result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
                            APIRequestResult api_request_result);
   void OnGetEstimateGas(GetEstimateGasCallback callback,
