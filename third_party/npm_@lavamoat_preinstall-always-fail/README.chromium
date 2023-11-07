@@ -1,0 +1,4 @@
+Name: Pre-Install Always Fail
+URL: https://github.com/LavaMoat/LavaMoat/tree/main/packages/preinstall-always-fail
+License: MIT
+License File: /brave/node_modules/@lavamoat/preinstall-always-fail/LICENSE.md
