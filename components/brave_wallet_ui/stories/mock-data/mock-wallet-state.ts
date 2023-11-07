@@ -85,7 +85,6 @@ export const mockWalletState: WalletState = {
   },
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
-  favoriteApps: [],
   fullTokenList: mockErc20TokensList,
   gasEstimates: undefined,
   hasIncorrectPassword: false,

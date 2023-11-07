@@ -46,8 +46,6 @@ import {
 import { CreateAccountTab } from '../components/buy-send-swap/create-account'
 import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
 import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
-import { AppList } from '../components/shared/app-list/index'
-import { filterAppList } from '../utils/filter-app-list'
 import { getInitialSessionRoute } from '../utils/routes-utils'
 import {
   ScrollContainer,
@@ -61,13 +59,11 @@ import { PanelWrapper, WelcomePanelWrapper } from './style'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import {
-  AppsListType,
   BraveWallet,
   PanelTypes,
   WalletRoutes
 } from '../constants/types'
 
-import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { useHasAccount } from '../common/hooks/has-account'
 import {
@@ -136,7 +132,6 @@ function Container() {
   )
 
   // wallet selectors (unsafe)
-  const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
@@ -195,9 +190,6 @@ function Container() {
   // arrive consider rendering a "loading" indicator when `hasInitialized ===
   // false`, and also using `React.lazy` to put all the main UI in a separate JS
   // bundle and display that loading indicator ASAP.
-  const [filteredAppsList, setFilteredAppsList] =
-    React.useState<AppsListType[]>(AppsList)
-
   const { selectedPendingTransaction } = usePendingTransactions()
 
   const { needsAccount } = useHasAccount()
@@ -218,28 +210,12 @@ function Container() {
     dispatch(WalletPanelActions.setupWallet())
   }
 
-  const addToFavorites = (app: BraveWallet.AppItem) => {
-    dispatch(WalletActions.addFavoriteApp(app))
-  }
-
   const navigateTo = (path: PanelTypes) => {
     if (path === 'expanded') {
       dispatch(WalletPanelActions.expandWallet())
     } else {
       dispatch(WalletPanelActions.navigateTo(path))
     }
-  }
-
-  const browseMore = () => {
-    dispatch(WalletPanelActions.openWalletApps())
-  }
-
-  const removeFromFavorites = (app: BraveWallet.AppItem) => {
-    dispatch(WalletActions.removeFavoriteApp(app))
-  }
-
-  const filterList = (event: any) => {
-    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const onSelectAccount = async (account: BraveWallet.AccountInfo) => {
@@ -658,31 +634,6 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'apps') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-            useSearch={selectedPanel === 'apps'}
-            searchAction={selectedPanel === 'apps' ? filterList : undefined}
-          >
-            <ScrollContainer>
-              <AppList
-                list={filteredAppsList}
-                favApps={favoriteApps}
-                addToFav={addToFavorites}
-                removeFromFav={removeFromFavorites}
-                action={browseMore}
-              />
-            </ScrollContainer>
-          </Panel>
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    )
-  }
-
   if (selectedPanel === 'connectWithSite') {
     const accountsToConnect = accounts.filter((account) =>
       connectingAccounts.includes(account.address.toLowerCase())
@@ -724,7 +675,6 @@ function Container() {
           <Panel
             navAction={navigateTo}
             title={panelTitle}
-            useSearch={false}
           >
             <TransactionsPanel
               selectedNetwork={selectedNetwork}
@@ -743,7 +693,6 @@ function Container() {
           <Panel
             navAction={navigateTo}
             title={panelTitle}
-            useSearch={false}
           >
             <ScrollContainer>
               <AssetsPanel
@@ -764,7 +713,6 @@ function Container() {
           <Panel
             navAction={navigateTo}
             title={panelTitle}
-            useSearch={false}
           >
             <SitePermissions />
           </Panel>

@@ -5,7 +5,6 @@
 
 // types
 import {
-  AppsListType,
   BraveWallet,
   SafeBlowfishEvmResponse,
   SafeBlowfishSolanaResponse,
@@ -315,29 +314,6 @@ export const mockFilInvalilAddresses: string[] = [
   'b1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
   'c3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
   'd3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a'
-]
-
-export const mockAppsList: AppsListType[] = [
-  {
-    category: 'category1',
-    categoryButtonText: 'categoryButtonText1',
-    appList: [
-      {
-        name: 'foo',
-        description: 'description1'
-      }
-    ] as BraveWallet.AppItem[]
-  },
-  {
-    category: 'category2',
-    categoryButtonText: 'categoryButtonText2',
-    appList: [
-      {
-        name: 'bar',
-        description: 'description2'
-      }
-    ] as BraveWallet.AppItem[]
-  }
 ]
 
 export const mockSolDappSignTransactionRequest: //

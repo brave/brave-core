@@ -8,15 +8,12 @@ import { Provider } from 'react-redux'
 
 import './locale'
 import {
-  AppsListType,
   BraveWallet,
   PanelTypes,
   SerializableTransactionInfo,
   UIState,
   WalletState
 } from '../constants/types'
-import { AppsList } from '../options/apps-list-options'
-import { filterAppList } from '../utils/filter-app-list'
 
 // Components
 import {
@@ -53,7 +50,6 @@ import {
   ProvidePubKeyPanel //
 } from '../components/extension/encryption-key-panel/index'
 
-import { AppList } from '../components/shared/app-list/index'
 import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { CreateAccountTab } from '../components/buy-send-swap/create-account'
 import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
@@ -636,12 +632,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
   const [selectedAccount, setSelectedAccount] =
     React.useState<BraveWallet.AccountInfo>(mockAccounts[0])
-  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>(
-    [AppsList()[0].appList[0]]
-  )
-  const [filteredAppsList, setFilteredAppsList] = React.useState<
-    AppsListType[]
-  >(AppsList())
 
   const selectedTransaction = transactionList[1][0]
 
@@ -670,23 +660,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       setSelectedPanel(path)
     }
     getTitle(path)
-  }
-
-  const browseMore = () => {
-    alert('Will expand to view more!')
-  }
-
-  const addToFavorites = (app: BraveWallet.AppItem) => {
-    const newList = [...favoriteApps, app]
-    setFavoriteApps(newList)
-  }
-  const removeFromFavorites = (app: BraveWallet.AppItem) => {
-    const newList = favoriteApps.filter((fav) => fav.name !== app.name)
-    setFavoriteApps(newList)
-  }
-
-  const filterList = (event: any) => {
-    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const unlockWallet = (_password: string) => {
@@ -765,22 +738,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     <Panel
                       navAction={navigateTo}
                       title={panelTitle}
-                      useSearch={selectedPanel === 'apps'}
-                      searchAction={
-                        selectedPanel === 'apps' ? filterList : undefined
-                      }
                     >
                       <ScrollContainer>
-                        {selectedPanel === 'apps' && (
-                          <AppList
-                            list={filteredAppsList}
-                            favApps={favoriteApps}
-                            addToFav={addToFavorites}
-                            removeFromFav={removeFromFavorites}
-                            action={browseMore}
-                          />
-                        )}
-
                         {selectedPanel === 'sitePermissions' && (
                           <SitePermissions />
                         )}
@@ -894,8 +853,6 @@ export const _TransactionDetail = () => {
         <Panel
           navAction={mockedFunction}
           title={'Recent Transactions'}
-          useSearch={false}
-          searchAction={undefined}
         >
           <ScrollContainer>
             <TransactionDetailPanel
@@ -927,8 +884,6 @@ export const _RecentTransaction = () => {
         <Panel
           navAction={navigateTo}
           title={'Recent Transactions'}
-          useSearch={false}
-          searchAction={undefined}
         >
           <ScrollContainer>
             <TransactionsPanel

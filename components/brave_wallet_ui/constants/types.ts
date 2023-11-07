@@ -89,7 +89,6 @@ export type PanelTypes =
   | 'addEthereumChain'
   | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
   | 'approveTransaction'
-  | 'apps'
   | 'assets'
   | 'buy'
   | 'connectHardwareWallet'
@@ -116,7 +115,6 @@ export type NavTypes = 'crypto' | 'rewards' | 'cards'
 
 export type TopTabNavTypes =
   | 'portfolio'
-  | 'apps'
   | 'nfts'
   | 'accounts'
   | 'market'
@@ -170,12 +168,6 @@ export interface NavObjectType {
   id: NavTypes
 }
 
-export interface AppsListType {
-  category: string
-  categoryButtonText?: string
-  appList: BraveWallet.AppItem[]
-}
-
 export interface ChartTimelineObjectType {
   abr: string
   name: string
@@ -216,7 +208,6 @@ export interface WalletState {
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
