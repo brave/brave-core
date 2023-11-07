@@ -59,10 +59,6 @@ bool ShouldCreateDefaultSolanaAccount() {
   return IsSolanaEnabled() && features::kCreateDefaultSolanaAccount.Get();
 }
 
-bool ShouldShowTxStatusInToolbar() {
-  return features::kShowToolbarTxStatus.Get();
-}
-
 bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
 }
