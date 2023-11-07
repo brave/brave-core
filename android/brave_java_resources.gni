@@ -407,7 +407,6 @@ brave_java_resources = [
   "java/res/drawable/brave_sync_toggle_on_btn_left.xml",
   "java/res/drawable/brave_sync_toggle_on_btn_right.xml",
   "java/res/drawable/brave_sync_top_rounded.xml",
-  "java/res/drawable/brave_sync_warning.xml",
   "java/res/drawable/carat_right.xml",
   "java/res/drawable/card_bg.xml",
   "java/res/drawable/checked_circle_filled.xml",
