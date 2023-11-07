@@ -8,40 +8,6 @@
   label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
   pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
 </settings-toggle-button>
-<settings-toggle-button
-  class="cr-row"
-  label="$i18n{braveRewardsShowTipButtonsLabel}"
-  pref="{{prefs.brave.rewards.inline_tip_buttons_enabled}}">
-    <template
-      is="dom-if"
-      if="[[shouldShowRestartButtonForTipButtons_(
-              prefs.brave.rewards.inline_tip_buttons_enabled.value,
-              prefs.brave.rewards.inline_tip.reddit.value,
-              prefs.brave.rewards.inline_tip.twitter.value,
-              prefs.brave.rewards.inline_tip.github.value)]]"
-      restamp>
-      <cr-button on-click="restartBrowser_" slot="more-actions">
-        $i18n{restart}
-      </cr-button>
-    </template>
-</settings-toggle-button>
-<template is="dom-if"
-  if="[[prefs.brave.rewards.inline_tip_buttons_enabled.value]]">
-  <div class="list-frame vertical-list">
-    <settings-checkbox class="cr-row list-item"
-      pref="{{prefs.brave.rewards.inline_tip.github}}"
-      label="$i18n{braveRewardsInlineTipGithubLabel}">
-    </settings-checkbox>
-    <settings-checkbox class="cr-row list-item"
-      pref="{{prefs.brave.rewards.inline_tip.reddit}}"
-      label="$i18n{braveRewardsInlineTipRedditLabel}">
-    </settings-checkbox>
-    <settings-checkbox class="cr-row list-item"
-      pref="{{prefs.brave.rewards.inline_tip.twitter}}"
-      label="$i18n{braveRewardsInlineTipTwitterLabel}">
-    </settings-checkbox>
-  </div>
-</template>
 <div class="settings-row">
   <template is="dom-if" if="[[prefs.brave.rewards.enabled.value]]" restamp>
     <cr-link-row label="$i18n{braveRewardsPageLabel}"

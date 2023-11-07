@@ -242,15 +242,6 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       true);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.reddit"),
-      true);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.twitter"),
-      false);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.github"),
-      false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {

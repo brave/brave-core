@@ -164,10 +164,6 @@ class RewardsDOMHandler
   void OnGetOneTimeTips(
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 
-  void GetEnabledInlineTippingPlatforms(const base::Value::List& args);
-  void SetInlineTippingPlatformEnabled(const base::Value::List& args);
-  void SetInlineTipsEnabled(const base::Value::List& args);
-
   void FetchBalance(const base::Value::List& args);
   void OnFetchBalance(brave_rewards::mojom::BalancePtr balance);
 
@@ -444,18 +440,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetStatement,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getEnabledInlineTippingPlatforms",
-      base::BindRepeating(&RewardsDOMHandler::GetEnabledInlineTippingPlatforms,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.setInlineTippingPlatformEnabled",
-      base::BindRepeating(&RewardsDOMHandler::SetInlineTippingPlatformEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.setInlineTipsEnabled",
-      base::BindRepeating(&RewardsDOMHandler::SetInlineTipsEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getExcludedSites",
       base::BindRepeating(&RewardsDOMHandler::GetExcludedSites,
                           base::Unretained(this)));
@@ -565,22 +549,6 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kMinVisits,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipButtonsEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipTwitterEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipRedditEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipGithubEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -1592,54 +1560,6 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
 
   CallJavascriptFunction("brave_rewards.recurringTipRemoved",
                          base::Value(success));
-}
-
-void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
-    const base::Value::List& args) {
-  AllowJavascript();
-
-  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  base::Value::List list;
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled)) {
-    list.Append("enabled");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled)) {
-    list.Append("github");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled)) {
-    list.Append("reddit");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled)) {
-    list.Append("twitter");
-  }
-
-  CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms", list);
-}
-
-void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(2U, args.size());
-  AllowJavascript();
-
-  std::string key = args[0].GetString();
-  std::string value = args[1].GetString();
-
-  if (rewards_service_) {
-    rewards_service_->SetInlineTippingPlatformEnabled(key, value == "true");
-  }
-}
-
-void RewardsDOMHandler::SetInlineTipsEnabled(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  AllowJavascript();
-
-  bool enabled = args[0].GetBool();
-  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled, enabled);
 }
 
 void RewardsDOMHandler::OnFetchBalance(

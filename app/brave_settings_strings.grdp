@@ -423,18 +423,6 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
     Show Brave Rewards icon in address bar
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons">
-    Show Tip buttons on sites
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Reddit">
-    Reddit
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_TWITTER_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Twitter">
-    Twitter
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on GitHub">
-    GitHub
-  </message>
 
   <!-- Settings / Social media blocking -->
   <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">

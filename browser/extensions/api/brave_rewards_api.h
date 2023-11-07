@@ -162,22 +162,6 @@ class BraveRewardsTipSiteFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsTipUserFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipUser", UNKNOWN)
-
- protected:
-  ~BraveRewardsTipUserFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnTipUserGetPublisherInfo(const brave_rewards::mojom::Result result,
-                                 brave_rewards::mojom::PublisherInfoPtr info);
-  void OnTipUserSavePublisherInfo(const brave_rewards::mojom::Result result);
-  void ShowTipDialog();
-};
-
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)
@@ -425,22 +409,6 @@ class BraveRewardsGetAllNotificationsFunction : public ExtensionFunction {
   ~BraveRewardsGetAllNotificationsFunction() override;
 
   ResponseAction Run() override;
-};
-
-class BraveRewardsGetInlineTippingPlatformEnabledFunction :
-    public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getInlineTippingPlatformEnabled",
-      UNKNOWN)
-
- protected:
-  ~BraveRewardsGetInlineTippingPlatformEnabledFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnInlineTipSetting(bool value);
 };
 
 class BraveRewardsFetchBalanceFunction : public ExtensionFunction {

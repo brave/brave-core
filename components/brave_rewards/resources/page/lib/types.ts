@@ -44,12 +44,6 @@ export interface State {
   enabledContribute: boolean
   externalWallet?: ExternalWallet
   initializing: boolean
-  inlineTipsEnabled: boolean
-  inlineTip: {
-    twitter: boolean
-    reddit: boolean
-    github: boolean
-  }
   isUnsupportedRegion: boolean
   excludedList: ExcludedPublisher[]
   externalWalletProviderList: string[]
@@ -71,7 +65,6 @@ export interface State {
     modalAdsHistory: boolean
     adsSettings: boolean
     autoContributeSettings: boolean
-    contributionsSettings: boolean
     promosDismissed: {
       [key: string]: boolean
     }

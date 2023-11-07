@@ -544,24 +544,6 @@ void RewardsEngineImpl::SavePublisherInfo(
   });
 }
 
-void RewardsEngineImpl::SetInlineTippingPlatformEnabled(
-    mojom::InlineTipsPlatforms platform,
-    bool enabled) {
-  WhenReady([this, platform, enabled]() {
-    state()->SetInlineTippingPlatformEnabled(platform, enabled);
-  });
-}
-
-void RewardsEngineImpl::GetInlineTippingPlatformEnabled(
-    mojom::InlineTipsPlatforms platform,
-    GetInlineTippingPlatformEnabledCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
-  std::move(callback).Run(state()->GetInlineTippingPlatformEnabled(platform));
-}
-
 void RewardsEngineImpl::GetShareURL(
     const base::flat_map<std::string, std::string>& args,
     GetShareURLCallback callback) {

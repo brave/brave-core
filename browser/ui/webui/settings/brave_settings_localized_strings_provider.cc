@@ -423,14 +423,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
     {"braveRewardsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
-    {"braveRewardsShowTipButtonsLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL},
-    {"braveRewardsInlineTipRedditLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL},
-    {"braveRewardsInlineTipTwitterLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_TWITTER_LABEL},
-    {"braveRewardsInlineTipGithubLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL},
     // Misc (TODO: Organize this)
     {"showSearchTabsBtn", IDS_SETTINGS_TABS_SEARCH_SHOW},
     {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
@@ -785,20 +777,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
-
-  // Load time data for brave://settings/rewards
-  html_source->AddBoolean("inlineTipButtonsEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipButtonsEnabled));
-  html_source->AddBoolean("inlineTipTwitterEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipTwitterEnabled));
-  html_source->AddBoolean("inlineTipRedditEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipRedditEnabled));
-  html_source->AddBoolean("inlineTipGithubEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipGithubEnabled));
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(

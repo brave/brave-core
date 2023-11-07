@@ -15,7 +15,6 @@ namespace brave_rewards {
 namespace p3a {
 
 extern const char kEnabledSourceHistogramName[];
-extern const char kInlineTipTriggerHistogramName[];
 extern const char kToolbarButtonTriggerHistogramName[];
 extern const char kTipsSentHistogramName[];
 extern const char kAutoContributionsStateHistogramName[];
@@ -29,7 +28,7 @@ enum class AutoContributionsState {
 };
 
 enum class PanelTrigger {
-  kInlineTip = 0,
+  kInlineTip = 0,  // DEPRECATED
   kToolbarButton = 1,
   kNTP = 2,
   kMaxValue = kNTP

@@ -154,24 +154,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.ON_CONTRIBUTIONS_SETTINGS_CLOSE: {
-      let ui = state.ui
-      ui.contributionsSettings = false
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
-    case types.ON_CONTRIBUTIONS_SETTINGS_OPEN: {
-      let ui = state.ui
-      ui.contributionsSettings = true
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
     case types.ON_MODAL_CONNECT_CLOSE: {
       let ui = state.ui
       ui.modalConnect = false
@@ -335,81 +317,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsMaxEarningsLastMonth = data.adsMaxEarningsLastMonth
       break
     }
-    case types.GET_ENABLED_INLINE_TIPPING_PLATFORMS: {
-      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
-      break
-    }
-    case types.ON_ENABLED_INLINE_TIPPING_PLATFORMS: {
-      let inlineTipsEnabled = false
-      const inlineTip = {
-        twitter: false,
-        reddit: false,
-        github: false
-      }
-
-      for (const platform of action.payload.platforms) {
-        switch (platform) {
-          case 'enabled':
-            inlineTipsEnabled = true
-            break
-          case 'github':
-            inlineTip.github = true
-            break
-          case 'reddit':
-            inlineTip.reddit = true
-            break
-          case 'twitter':
-            inlineTip.twitter = true
-            break
-        }
-      }
-
-      state = {
-        ...state,
-        inlineTipsEnabled,
-        inlineTip
-      }
-
-      break
-    }
-    case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
-      if (!state.inlineTip) {
-        state.inlineTip = {
-          twitter: true,
-          reddit: true,
-          github: true
-        }
-      }
-
-      const key = action.payload.key
-      const value = action.payload.value
-
-      if (key == null || key.length === 0 || value == null) {
-        break
-      }
-
-      let inlineTip = state.inlineTip
-
-      inlineTip[key] = value
-      chrome.send('brave_rewards.setInlineTippingPlatformEnabled', [key, value.toString()])
-
-      state = {
-        ...state,
-        inlineTip
-      }
-
-      break
-    }
-    case types.ON_INLINE_TIPS_ENABLED_CHANGE: {
-      const inlineTipsEnabled = action.payload.enabled
-      chrome.send('brave_rewards.setInlineTipsEnabled', [inlineTipsEnabled])
-      state = {
-        ...state,
-        inlineTipsEnabled
-      }
-
-      break
-    }
     case types.CONNECT_EXTERNAL_WALLET: {
       const path = action.payload.path
       const query = action.payload.query
@@ -515,7 +422,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_PREF_CHANGED: {
-      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
       chrome.send('brave_rewards.getContributionAmount')
       chrome.send('brave_rewards.getAutoContributeProperties')
       chrome.send('brave_rewards.getAdsData')

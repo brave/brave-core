@@ -33,9 +33,6 @@ class TipPanelCoordinator : public BrowserUserData<TipPanelCoordinator> {
   // Displays the tip panel for the specified publisher.
   void ShowPanelForPublisher(const std::string& publisher_id);
 
-  // Displays the tip panel after an inline tip button has been displayed.
-  void ShowPanelForInlineTip(const std::string& publisher_id);
-
   class Observer : public base::CheckedObserver {
    public:
     // Called when an application component requests the tip panel.
@@ -60,11 +57,9 @@ class TipPanelCoordinator : public BrowserUserData<TipPanelCoordinator> {
   friend class BrowserUserData<TipPanelCoordinator>;
 
   void GetUserTypeCallback(const std::string& publisher_id,
-                           bool inline_tip,
                            mojom::UserType user_type);
 
   void IsPublisherRegisteredCallback(const std::string& publisher_id,
-                                     bool inline_tip,
                                      bool is_publisher_registered);
 
   void OpenPanel(const std::string& publisher_id);

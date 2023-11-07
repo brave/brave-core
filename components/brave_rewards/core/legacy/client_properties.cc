@@ -21,7 +21,6 @@ namespace {
 const char kAutoContributeKey[] = "auto_contribute";
 const char kBootTimestampKey[] = "bootStamp";
 const char kFeeAmountKey[] = "fee_amount";
-const char kInlineTipsKey[] = "inlineTip";
 const char kReconcileTimestampKey[] = "reconcileStamp";
 const char kRewardsEnabledKey[] = "rewards_enabled";
 const char kUserChangedFeeKey[] = "user_changed_fee";
@@ -50,8 +49,7 @@ bool ClientProperties::operator==(const ClientProperties& rhs) const {
          fee_amount == rhs.fee_amount &&
          user_changed_fee == rhs.user_changed_fee &&
          auto_contribute == rhs.auto_contribute &&
-         rewards_enabled == rhs.rewards_enabled &&
-         inline_tips == rhs.inline_tips;
+         rewards_enabled == rhs.rewards_enabled;
 }
 
 bool ClientProperties::operator!=(const ClientProperties& rhs) const {
@@ -67,12 +65,6 @@ base::Value::Dict ClientProperties::ToValue() const {
   dict.Set(kUserChangedFeeKey, user_changed_fee);
   dict.Set(kRewardsEnabledKey, rewards_enabled);
   dict.Set(kAutoContributeKey, auto_contribute);
-
-  base::Value::Dict inline_tips_dict;
-  for (const auto& [key, value] : inline_tips) {
-    inline_tips_dict.Set(key, value);
-  }
-  dict.Set(kInlineTipsKey, std::move(inline_tips_dict));
 
   return dict;
 }
@@ -149,16 +141,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   // Rewards Enabled
   if (auto value = dict.FindBool(kRewardsEnabledKey)) {
     rewards_enabled = *value;
-  } else {
-    NOTREACHED();
-    return false;
-  }
-
-  // Inline Tips
-  if (const auto* value = dict.FindDict(kInlineTipsKey)) {
-    for (const auto [inline_tips_key, inline_tips_value] : *value) {
-      inline_tips.emplace(inline_tips_key, inline_tips_value.GetBool());
-    }
   } else {
     NOTREACHED();
     return false;

@@ -54,11 +54,11 @@ extern const char kAutoContributeAmount[];
 extern const char kNextReconcileStamp[];
 extern const char kCreationStamp[];
 extern const char kRecoverySeed[];  // DEPRECATED
-extern const char kPaymentId[];   // DEPRECATED
-extern const char kInlineTipButtonsEnabled[];
-extern const char kInlineTipRedditEnabled[];
-extern const char kInlineTipTwitterEnabled[];
-extern const char kInlineTipGithubEnabled[];
+extern const char kPaymentId[];     // DEPRECATED
+extern const char kInlineTipButtonsEnabled[];  // DEPRECATED
+extern const char kInlineTipRedditEnabled[];   // DEPRECATED
+extern const char kInlineTipTwitterEnabled[];  // DEPRECATED
+extern const char kInlineTipGithubEnabled[];   // DEPRECATED
 extern const char kParametersRate[];
 extern const char kParametersAutoContributeChoice[];
 extern const char kParametersAutoContributeChoices[];

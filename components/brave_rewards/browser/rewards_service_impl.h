@@ -244,14 +244,6 @@ class RewardsServiceImpl : public RewardsService,
                          mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(
-      const std::string& key,
-      bool enabled) override;
-
-  void GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) override;
-
   void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;

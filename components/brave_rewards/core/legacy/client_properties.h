@@ -39,7 +39,6 @@ struct ClientProperties {
   bool user_changed_fee;
   bool auto_contribute;
   bool rewards_enabled;
-  std::map<std::string, bool> inline_tips;
 };
 
 }  // namespace brave_rewards::internal

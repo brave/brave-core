@@ -126,11 +126,6 @@ interface RewardsEngine {
   SavePublisherInfo(uint64 window_id, PublisherInfo publisher_info)
       => (Result result);
 
-  SetInlineTippingPlatformEnabled(InlineTipsPlatforms platform, bool enabled);
-
-  GetInlineTippingPlatformEnabled(InlineTipsPlatforms platform)
-      => (bool enabled);
-
   GetShareURL(map<string, string> args) => (string url);
 
   FetchBalance() => (Balance? balance);

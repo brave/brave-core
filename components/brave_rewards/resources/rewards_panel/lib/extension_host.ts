@@ -193,9 +193,6 @@ export function createHost (): Host {
       case mojom.RewardsPanelView.kAdaptiveCaptcha:
         loadAdaptiveCaptcha()
         break
-      case mojom.RewardsPanelView.kInlineTip:
-        stateManager.update({ requestedView: 'inline-tip' })
-        break
     }
   }
 
