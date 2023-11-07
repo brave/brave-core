@@ -38,7 +38,7 @@ export const Placeholder = styled.div<{ orb: string }>`
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  background-image: url(${(p) => p.orb});
+  background: ${(p) => p.orb};
   background-size: cover;
 `
 
