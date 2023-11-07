@@ -86,7 +86,7 @@ bool SpeedreaderIconView::OnMousePressed(const ui::MouseEvent& event) {
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
-  return kLeoProductReadermodeIcon;
+  return kLeoProductSpeedreaderIcon;
 }
 
 std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {

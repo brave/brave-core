@@ -42,7 +42,7 @@ export default function FeatureMenu() {
         {getLocale('menuTitleModels')}
       </div>
       <div className={styles.menuSubtitle}>
-        <Icon name='speech-bubble-comments' />
+        <Icon name='message-bubble-comments' />
         <span>{getLocale('modelCategory-chat')}</span>
       </div>
 
@@ -85,7 +85,7 @@ export default function FeatureMenu() {
         data-is-interactive={true}
       >
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
-          <Icon name='message-comments' />
+          <Icon name='message-bubble-text' />
           <span className={styles.menuText}>{getLocale('menuSuggestedQuestions')}</span>
           <Checkbox
             size='normal'

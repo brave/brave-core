@@ -95,7 +95,7 @@ export default function SignalsPage(props: Props) {
         <leo-option>visitWeight</leo-option>
         <leo-option>shownCount</leo-option>
       </Dropdown>
-      <Input type="text" hasErrors={false} showErrors={false} mode='outline' size='normal' value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
+      <Input type="text" value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
         Consider first {"{n}"} cards
       </Input>
     </Flex>
