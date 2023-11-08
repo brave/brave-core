@@ -420,7 +420,8 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
 }
 
 void SpeedreaderTabHelper::OnReadingStart(content::WebContents* web_contents) {
-  constexpr const char16_t kReading[] = uR"js( setTtsReadingState($1) )js";
+  constexpr const char16_t kReading[] =
+      uR"js( speedreaderUtils.setTtsReadingState($1) )js";
 
   const auto script = base::ReplaceStringPlaceholders(
       kReading, (web_contents == this->web_contents()) ? u"true" : u"false",
@@ -441,7 +442,8 @@ void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
   if (web_contents != this->web_contents()) {
     return;
   }
-  constexpr const char16_t kHighlight[] = uR"js( highlightText($1, $2, $3) )js";
+  constexpr const char16_t kHighlight[] =
+      uR"js( speedreaderUtils.highlightText($1, $2, $3) )js";
 
   const auto script = base::ReplaceStringPlaceholders(
       kHighlight,

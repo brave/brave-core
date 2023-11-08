@@ -51,7 +51,8 @@ void PageDistiller::GetTextToSpeak(TextToSpeechContentCallback callback) {
     return std::move(callback).Run(base::Value());
   }
 
-  constexpr const char16_t kGetTextToSpeak[] = uR"js( extractTextToSpeak() )js";
+  constexpr const char16_t kGetTextToSpeak[] =
+      uR"js( speedreaderUtils.extractTextToSpeak() )js";
 
   web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kGetTextToSpeak,
