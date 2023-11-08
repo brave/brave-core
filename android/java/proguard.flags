@@ -4,8 +4,6 @@
 
 -keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
 
--keep class org.chromium.chrome.browser.BraveSyncInformers { *; }
-
 # Add methods for invocation below
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
     *** hideOverview(...);

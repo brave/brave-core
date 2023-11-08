@@ -34,8 +34,6 @@
 
 #include "content/public/browser/browser_thread.h"
 
-#include "third_party/leveldatabase/src/include/leveldb/db.h"
-
 // TODO(alexeybarabash): consider use of java SyncServiceImpl methods:
 //    addSyncStateChangedListener
 //    removeSyncStateChangedListener
@@ -54,9 +52,6 @@ static const size_t SEED_BYTES_COUNT = 32u;
 namespace chrome {
 namespace android {
 
-// Keep this to clear V1 stuff on migrating
-#define DB_FILE_NAME      "brave_sync_db"
-
 BraveSyncWorker::BraveSyncWorker(JNIEnv* env,
                                  const base::android::JavaRef<jobject>& obj)
     : weak_java_brave_sync_worker_(env, obj) {
@@ -70,27 +65,6 @@ BraveSyncWorker::~BraveSyncWorker() {}
 
 void BraveSyncWorker::Destroy(JNIEnv* env) {
   delete this;
-}
-
-static void JNI_BraveSyncWorker_DestroyV1LevelDb(JNIEnv* env) {
-  base::FilePath app_data_path;
-  base::PathService::Get(base::DIR_ANDROID_APP_DATA, &app_data_path);
-  base::FilePath dbFilePath = app_data_path.Append(DB_FILE_NAME);
-
-  leveldb::Status status =
-      leveldb::DestroyDB(dbFilePath.value().c_str(), leveldb::Options());
-  VLOG(3) << "[BraveSync] " << __func__ << " destroy DB status is "
-          << status.ToString();
-}
-
-static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(JNIEnv* env) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  Profile* profile =
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
-  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
-  brave_sync_prefs.SetSyncV1WasEnabled();
-  brave_sync_prefs.SetSyncV1Migrated(true);
-  VLOG(3) << "[BraveSync] " << __func__ << " done";
 }
 
 base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
@@ -194,27 +168,6 @@ void BraveSyncWorker::ResetSync(JNIEnv* env) {
   brave_sync::ResetSync(sync_service, device_info_sync_service,
                         base::BindOnce(&BraveSyncWorker::OnResetDone,
                                        weak_ptr_factory_.GetWeakPtr()));
-}
-
-bool BraveSyncWorker::GetSyncV1WasEnabled(JNIEnv* env) {
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  bool sync_v1_was_enabled = brave_sync_prefs.IsSyncV1Enabled();
-  return sync_v1_was_enabled;
-}
-
-bool BraveSyncWorker::GetSyncV2MigrateNoticeDismissed(JNIEnv* env) {
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  bool sync_v2_migration_notice_dismissed =
-      brave_sync_prefs.IsSyncMigrateNoticeDismissed();
-  return sync_v2_migration_notice_dismissed;
-}
-
-void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
-    JNIEnv* env,
-    bool sync_v2_migration_notice_dismissed) {
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  brave_sync_prefs.SetDismissSyncMigrateNotice(
-      sync_v2_migration_notice_dismissed);
 }
 
 void BraveSyncWorker::OnResetDone() {

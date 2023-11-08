@@ -19,14 +19,6 @@ namespace {
 
 // Stored as bip39 keywords (encrypted)
 const char kSyncV2Seed[] = "brave_sync_v2.seed";
-// Indicate whether migration has been done from v1 to v2
-const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
-// Indicate all meta info set in V1 has been stripped in
-// BraveBookmarkModelLoadedObserver
-const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
-// Has dismissed message about migration to sync v2
-const char kSyncV2MigrateNoticeDismissed[] =
-    "brave_sync_v2.migrate_notice_dismissed";
 const char kSyncFailedDecryptSeedNoticeDismissed[] =
     "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
 const char kSyncAccountDeletedNoticePending[] =
@@ -61,6 +53,10 @@ const char kDuplicatedBookmarksRecovered[] =
     "brave_sync_duplicated_bookmarks_recovered";
 const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
+const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
+const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
+const char kSyncV2MigrateNoticeDismissed[] =
+    "brave_sync_v2.migrate_notice_dismissed";
 // ============================================================================
 }  // namespace
 
@@ -71,9 +67,6 @@ Prefs::~Prefs() = default;
 // static
 void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
-  registry->RegisterBooleanPref(kSyncV1Migrated, false);
-  registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
-  registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
 
@@ -102,6 +95,9 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kSyncRecordsToResendMeta);
   registry->RegisterBooleanPref(kDuplicatedBookmarksRecovered, false);
   registry->RegisterIntegerPref(kDuplicatedBookmarksMigrateVersion, 0);
+  registry->RegisterBooleanPref(kSyncV1Migrated, false);
+  registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
+  registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
 }
 
 // static
@@ -150,40 +146,6 @@ bool Prefs::SetSeed(const std::string& seed) {
   return true;
 }
 
-bool Prefs::IsSyncV1Migrated() const {
-  return pref_service_->GetBoolean(kSyncV1Migrated);
-}
-
-void Prefs::SetSyncV1Migrated(bool is_migrated) {
-  pref_service_->SetBoolean(kSyncV1Migrated, is_migrated);
-}
-
-bool Prefs::IsSyncV1MetaInfoCleared() const {
-  return pref_service_->GetBoolean(kSyncV1MetaInfoCleared);
-}
-
-void Prefs::SetSyncV1MetaInfoCleared(bool is_cleared) {
-  pref_service_->SetBoolean(kSyncV1MetaInfoCleared, is_cleared);
-}
-
-bool Prefs::IsSyncV1Enabled() const {
-  return pref_service_->GetBoolean(kSyncEnabled);
-}
-
-#if BUILDFLAG(IS_ANDROID)
-void Prefs::SetSyncV1WasEnabled() const {
-  pref_service_->SetBoolean(kSyncEnabled, true);
-}
-#endif
-
-bool Prefs::IsSyncMigrateNoticeDismissed() const {
-  return pref_service_->GetBoolean(kSyncV2MigrateNoticeDismissed);
-}
-
-void Prefs::SetDismissSyncMigrateNotice(bool is_dismissed) {
-  pref_service_->SetBoolean(kSyncV2MigrateNoticeDismissed, is_dismissed);
-}
-
 bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {
   return pref_service_->GetBoolean(kSyncFailedDecryptSeedNoticeDismissed);
 }
@@ -211,8 +173,8 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
 
   // Added 05/2020
   prefs->ClearPref(kSyncSeed);
-  // Clear this prefs after almost every users have migrated to sync v2
-  // prefs->ClearPref(kSyncEnabled);
+
+  prefs->ClearPref(kSyncEnabled);
   prefs->ClearPref(kDuplicatedBookmarksRecovered);
   prefs->ClearPref(kSyncDeviceId);
   prefs->ClearPref(kSyncDeviceIdV2);
@@ -231,6 +193,9 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(kSyncRecordsToResend);
   prefs->ClearPref(kSyncRecordsToResendMeta);
   prefs->ClearPref(kDuplicatedBookmarksMigrateVersion);
+  prefs->ClearPref(kSyncV1Migrated);
+  prefs->ClearPref(kSyncV1MetaInfoCleared);
+  prefs->ClearPref(kSyncV2MigrateNoticeDismissed);
 }
 
 }  // namespace brave_sync

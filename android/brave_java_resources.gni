@@ -713,7 +713,6 @@ brave_java_resources = [
   "java/res/drawable/social_youtube_color.xml",
   "java/res/drawable/stats_bottomsheet_background.xml",
   "java/res/drawable/stats_notification_on_button_bg.xml",
-  "java/res/drawable/sync_icon.xml",
   "java/res/drawable/tab_gradient_separator.xml",
   "java/res/drawable/tab_selector.xml",
   "java/res/drawable/tipping_background_success.xml",

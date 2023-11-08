@@ -23,8 +23,6 @@ if (!is_android) {
     "//brave/browser/infobars/request_otr_infobar_delegate.h",
     "//brave/browser/infobars/sync_cannot_run_infobar_delegate.cc",
     "//brave/browser/infobars/sync_cannot_run_infobar_delegate.h",
-    "//brave/browser/infobars/sync_v2_migrate_infobar_delegate.cc",
-    "//brave/browser/infobars/sync_v2_migrate_infobar_delegate.h",
   ]
 
   brave_browser_infobar_deps += [
