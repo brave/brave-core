@@ -17,7 +17,8 @@ import {
   SupportedCoinTypes,
   SupportedTestNetworks,
   SupportedOnRampNetworks,
-  SupportedOffRampNetworks
+  SupportedOffRampNetworks,
+  ERC721Metadata
 } from '../../constants/types'
 
 // entities
@@ -39,7 +40,11 @@ import {
 
 // utils
 import getAPIProxy from './bridge'
-import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
+import {
+  addChainIdToToken,
+  getAssetIdKey,
+  GetBlockchainTokenIdArg
+} from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
@@ -76,6 +81,7 @@ export class BaseQueryCache {
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
+  private _erc721MetadataRegistry: Record<string, ERC721Metadata>
 
   getWalletInfo = async () => {
     if (!this._walletInfo) {
@@ -370,6 +376,34 @@ export class BaseQueryCache {
     }
 
     return this._enabledCoinTypes
+  }
+
+  getErc721Metadata = async (tokenArg: GetBlockchainTokenIdArg) => {
+    if (!tokenArg.isErc721) {
+      throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
+    }
+
+    const tokenId = blockchainTokenEntityAdaptor.selectId(tokenArg)
+
+    if (!this._erc721MetadataRegistry[tokenId]) {
+      const { jsonRpcService } = apiProxyFetcher()
+
+      const result = await jsonRpcService.getERC721Metadata(
+        tokenArg.contractAddress,
+        tokenArg.tokenId,
+        tokenArg.chainId
+      )
+
+      if (result.error || result.errorMessage) {
+        throw new Error(result.errorMessage)
+      }
+
+      const metadata: ERC721Metadata = JSON.parse(result.response)
+
+      this._erc721MetadataRegistry[tokenId] = metadata
+    }
+
+    return this._erc721MetadataRegistry[tokenId]
   }
 }
 
