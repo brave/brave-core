@@ -17,6 +17,8 @@ import {BaseMixin} from '../base_mixin.js';
 
 import {getTemplate} from './wallet_networks_subpage.html.js'
 
+import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
+
 const SettingsWalletNetworksSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
@@ -30,6 +32,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   static get properties() {
     return {
+      isBitcoinEnabled: {
+        type: Boolean,
+        value: false
+      },
       ethCoin: {
         type: Number,
         value: 60
@@ -42,7 +48,21 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Number,
         value: 501
       },
+      btcCoin: {
+        type: Number,
+        value: 0
+      },
     }
+  }
+
+  browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
+
+  ready() {
+    super.ready()
+
+    this.browserProxy_.isBitcoinEnabled().then(val => {
+      this.isBitcoinEnabled = val
+    });
   }
 }
 
