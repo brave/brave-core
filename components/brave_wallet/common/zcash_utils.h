@@ -9,10 +9,32 @@
 #include <string>
 #include <vector>
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace brave_wallet {
+
+struct DecodedZCashAddress {
+  DecodedZCashAddress();
+  ~DecodedZCashAddress();
+  DecodedZCashAddress(const DecodedZCashAddress& other);
+  DecodedZCashAddress& operator=(const DecodedZCashAddress& other);
+  DecodedZCashAddress(DecodedZCashAddress&& other);
+  DecodedZCashAddress& operator=(DecodedZCashAddress&& other);
+
+  std::vector<uint8_t> pubkey_hash;
+  bool testnet = false;
+};
+
+bool IsValidZCashAddress(const std::string& address);
 
 std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
                                        bool testnet);
+
+absl::optional<DecodedZCashAddress> DecodeZCashAddress(
+    const std::string& address);
+
+std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
+                                                bool testnet);
 
 }  // namespace brave_wallet
 

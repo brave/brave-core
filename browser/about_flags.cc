@@ -224,6 +224,14 @@
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
       {                                                                       \
+          "brave-wallet-zcash",                                               \
+          "Enable BraveWallet ZCash support",                                 \
+          "ZCash support for native Brave Wallet",                            \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletZCashFeature),              \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \

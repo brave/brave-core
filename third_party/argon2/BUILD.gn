@@ -19,6 +19,7 @@ static_library("argon2") {
 
   visibility = [
     "//brave/browser/brave_wallet:external_wallets_importer",
+    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
   ]
 

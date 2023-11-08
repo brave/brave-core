@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "zcash_serializer.cc": [
+    "+brave/third_party/argon2",
+  ],
+}
+
