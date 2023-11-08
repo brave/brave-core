@@ -64,7 +64,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& conversion_queue_item : conversion_queue_items) {
     BindString(command, index++,
-               conversion_queue_item.conversion.ad_type.ToString());
+               ToString(conversion_queue_item.conversion.ad_type));
     BindString(command, index++, conversion_queue_item.conversion.campaign_id);
     BindString(command, index++,
                conversion_queue_item.conversion.creative_set_id);
@@ -100,7 +100,8 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   CHECK(record);
 
   ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.conversion.ad_type = AdType(ColumnString(record, 0));
+  conversion_queue_item.conversion.ad_type =
+      ParseAdType(ColumnString(record, 0));
   conversion_queue_item.conversion.campaign_id = ColumnString(record, 1);
   conversion_queue_item.conversion.creative_set_id = ColumnString(record, 2);
   conversion_queue_item.conversion.creative_instance_id =

@@ -19,7 +19,7 @@ namespace brave_ads {
 struct CreativeAdInfo;
 
 template <typename T>
-T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
+T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, AdType type) {
   const std::map<std::string, bool>& seen_ads =
       ClientStateManager::GetInstance().GetSeenAdsForType(type);
 

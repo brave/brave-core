@@ -34,7 +34,7 @@ class AccountObserverMock : public AccountObserver {
   MOCK_METHOD(void,
               OnFailedToProcessDeposit,
               (const std::string& creative_instance_id,
-               const AdType& ad_type,
+               AdType ad_type,
                const ConfirmationType& confirmation_type));
 };
 

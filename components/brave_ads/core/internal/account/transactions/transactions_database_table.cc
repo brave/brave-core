@@ -62,7 +62,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.segment);
-    BindString(command, index++, transaction.ad_type.ToString());
+    BindString(command, index++, ToString(transaction.ad_type));
     BindString(command, index++, transaction.confirmation_type.ToString());
     BindInt64(
         command, index++,
@@ -85,7 +85,7 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
-  transaction.ad_type = AdType(ColumnString(record, 5));
+  transaction.ad_type = ParseAdType(ColumnString(record, 5));
   transaction.confirmation_type = ConfirmationType(ColumnString(record, 6));
   transaction.reconciled_at = base::Time::FromDeltaSinceWindowsEpoch(
       base::Microseconds(ColumnInt64(record, 7)));

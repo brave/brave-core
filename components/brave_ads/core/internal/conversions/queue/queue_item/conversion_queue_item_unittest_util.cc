@@ -45,7 +45,7 @@ void SaveConversionQueue(
       base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void BuildAndSaveConversionQueue(const AdType& ad_type,
+void BuildAndSaveConversionQueue(AdType ad_type,
                                  const ConfirmationType& confirmation_type,
                                  const bool is_verifiable,
                                  const bool should_use_random_uuids,

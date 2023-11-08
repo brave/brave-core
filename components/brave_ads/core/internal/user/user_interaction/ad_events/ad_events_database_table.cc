@@ -52,7 +52,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& ad_event : ad_events) {
     BindString(command, index++, ad_event.placement_id);
-    BindString(command, index++, ad_event.type.ToString());
+    BindString(command, index++, ToString(ad_event.type));
     BindString(command, index++, ad_event.confirmation_type.ToString());
     BindString(command, index++, ad_event.campaign_id);
     BindString(command, index++, ad_event.creative_set_id);
@@ -74,7 +74,7 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   AdEventInfo ad_event;
 
   ad_event.placement_id = ColumnString(record, 0);
-  ad_event.type = AdType(ColumnString(record, 1));
+  ad_event.type = ParseAdType(ColumnString(record, 1));
   ad_event.confirmation_type = ConfirmationType(ColumnString(record, 2));
   ad_event.campaign_id = ColumnString(record, 3);
   ad_event.creative_set_id = ColumnString(record, 4);
@@ -259,7 +259,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
       "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
       "created_at DESC;",
-      {GetTableName(), AdType(ad_type).ToString()}, nullptr);
+      {GetTableName(), ToString(FromMojomTypeToAdType(ad_type))}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
@@ -299,7 +299,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served') "
       "AND type = '$4';",
       {GetTableName(), GetTableName(), GetTableName(),
-       AdType(ad_type).ToString()},
+       ToString(FromMojomTypeToAdType(ad_type))},
       nullptr);
   transaction->commands.push_back(std::move(command));
 

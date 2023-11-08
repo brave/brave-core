@@ -47,7 +47,7 @@ constexpr char kLegacyIsFlagged[] = "flagged_ad";
 
 base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
   return base::Value::Dict()
-      .Set(kType, ad_content.type.ToString())
+      .Set(kType, ToString(ad_content.type))
       .Set(kPlacementId, ad_content.placement_id)
       .Set(kCreativeInstanceId, ad_content.creative_instance_id)
       .Set(kCreativeSetId, ad_content.creative_set_id)
@@ -70,9 +70,9 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
   AdContentInfo ad_content;
 
   if (const auto* const type = dict.FindString(kType)) {
-    ad_content.type = AdType(*type);
+    ad_content.type = ParseAdType(*type);
   } else if (const auto* const legacy_ad_type = dict.FindString(kLegacyType)) {
-    ad_content.type = AdType(*legacy_ad_type);
+    ad_content.type = ParseAdType(*legacy_ad_type);
   } else {
     ad_content.type = AdType::kNotificationAd;
   }

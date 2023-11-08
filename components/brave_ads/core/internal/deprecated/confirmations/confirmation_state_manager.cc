@@ -49,7 +49,7 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
     dict.Set("type", confirmation.type.ToString());
 
-    dict.Set("ad_type", confirmation.ad_type.ToString());
+    dict.Set("ad_type", ToString(confirmation.ad_type));
 
     dict.Set("created_at", base::TimeToValue(confirmation.created_at));
 
@@ -312,7 +312,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Ad type
     if (const auto* const value = item_dict->FindString("ad_type")) {
-      confirmation.ad_type = AdType(*value);
+      confirmation.ad_type = ParseAdType(*value);
     } else {
       BLOG(0, "Missing confirmation ad type");
       continue;

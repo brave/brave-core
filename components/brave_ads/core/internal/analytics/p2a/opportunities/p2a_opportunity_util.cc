@@ -28,7 +28,7 @@ std::string NormalizeSegment(const std::string& segment) {
 }
 
 absl::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
-    const AdType& ad_type,
+    AdType ad_type,
     const std::string& segment) {
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK(!segment.empty());
@@ -40,21 +40,21 @@ absl::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
   }
 
   return base::ReplaceStringPlaceholders(
-      kAdOpportunitiesPerSegmentEvent, {ad_type.ToString(), normalized_segment},
+      kAdOpportunitiesPerSegmentEvent, {ToString(ad_type), normalized_segment},
       nullptr);
 }
 
-std::string BuildAdOpportunitiesEvent(const AdType& ad_type) {
+std::string BuildAdOpportunitiesEvent(AdType ad_type) {
   CHECK_NE(AdType::kUndefined, ad_type);
 
   return base::ReplaceStringPlaceholders(kAdOpportunitiesEvent,
-                                         {ad_type.ToString()}, nullptr);
+                                         {ToString(ad_type)}, nullptr);
 }
 
 }  // namespace
 
 std::vector<std::string> BuildP2AAdOpportunityEvents(
-    const AdType& ad_type,
+    AdType ad_type,
     const SegmentList& segments) {
   CHECK_NE(AdType::kUndefined, ad_type);
 

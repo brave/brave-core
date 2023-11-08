@@ -40,15 +40,15 @@ void RebuildAdEventCache() {
 }
 
 void CacheAdEvent(const AdEventInfo& ad_event) {
-  CacheAdEventForInstanceId(GetInstanceId(), ad_event.type.ToString(),
+  CacheAdEventForInstanceId(GetInstanceId(), ToString(ad_event.type),
                             ad_event.confirmation_type.ToString(),
                             ad_event.created_at);
 }
 
 std::vector<base::Time> GetCachedAdEvents(
-    const AdType& ad_type,
+    AdType ad_type,
     const ConfirmationType& confirmation_type) {
-  return GetCachedAdEvents(ad_type.ToString(), confirmation_type.ToString());
+  return GetCachedAdEvents(ToString(ad_type), confirmation_type.ToString());
 }
 
 void ResetAdEventCache() {

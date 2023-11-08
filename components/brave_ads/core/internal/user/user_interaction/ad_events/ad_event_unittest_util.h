@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
+
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
 
-class AdType;
 class ConfirmationType;
 struct AdEventInfo;
 struct CreativeAdInfo;
@@ -20,14 +21,13 @@ struct CreativeAdInfo;
 namespace test {
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType& ad_type,
+                         AdType ad_type,
                          const ConfirmationType& confirmation_type,
                          base::Time created_at,
                          bool should_use_random_uuids);
 
-void RecordAdEvent(const AdType& type,
-                   const ConfirmationType& confirmation_type);
-void RecordAdEvents(const AdType& type,
+void RecordAdEvent(AdType type, const ConfirmationType& confirmation_type);
+void RecordAdEvents(AdType type,
                     const ConfirmationType& confirmation_type,
                     int count);
 

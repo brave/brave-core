@@ -7,12 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ANALYTICS_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_H_
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
-class AdType;
-
-void RecordP2AAdOpportunity(const AdType& ad_type, const SegmentList& segments);
+void RecordP2AAdOpportunity(AdType ad_type, const SegmentList& segments);
 
 }  // namespace brave_ads
 
