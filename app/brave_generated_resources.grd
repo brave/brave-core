@@ -896,7 +896,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Learn how this affects my privacy
       </message>
       <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_TEXT" desc="Prompt, asking the user whether they'd like to load the original URL rather than the resolved one when the page load fails">
-        There was an error loading the IPFS URL. Would you like to redirect to original URL?
+        There was an error loading the IPFS URL. Would you like to redirect to the original URL?
       </message>
       <message name="IDS_BRAVE_IPFS_FALLBACK_REDIRECT" desc="Redirect to the original url">
         Redirect
