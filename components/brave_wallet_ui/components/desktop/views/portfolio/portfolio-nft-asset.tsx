@@ -26,18 +26,22 @@ import {
 } from '../../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
-  useGetSimpleHashSpamNftsQuery
+  useGetSimpleHashSpamNftsQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import NftAssetHeader from '../../card-headers/nft-asset-header'
 import { StyledWrapper } from './style'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 export const PortfolioNftAsset = () => {
   // routing
@@ -48,9 +52,6 @@ export const PortfolioNftAsset = () => {
   }>()
 
   // redux
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const hiddenNfts = useUnsafeWalletSelector(
     WalletSelectors.removedNonFungibleTokens
   )
@@ -58,6 +59,15 @@ export const PortfolioNftAsset = () => {
   // queries
   const { data: simpleHashNfts = [], isLoading: isLoadingSpamNfts } =
     useGetSimpleHashSpamNftsQuery()
+
+  const { userVisibleTokensInfo, isLoadingVisibleTokens } =
+    useGetUserTokensRegistryQuery(undefined, {
+      selectFromResult: (result) => ({
+        userVisibleTokensInfo:
+          selectAllVisibleUserAssetsFromQueryResult(result),
+        isLoadingVisibleTokens: result.isLoading
+      })
+    })
 
   const selectedAssetFromParams = React.useMemo(() => {
     const userToken = userVisibleTokensInfo
@@ -155,14 +165,13 @@ export const PortfolioNftAsset = () => {
     )
   }, [selectedAssetFromParams, ownerAccount, selectedAssetNetwork])
 
-  // token list and spam NFTs needs to load before we can find an asset to
-  // select from the url params
-  if (userVisibleTokensInfo.length === 0 || isLoadingSpamNfts) {
-    return <Skeleton />
-  }
-
   // asset not found
-  if (!selectedAssetFromParams) {
+  if (
+    !selectedAssetFromParams &&
+    !isLoadingSpamNfts &&
+    !isLoadingVisibleTokens &&
+    userVisibleTokensInfo.length === 0
+  ) {
     return <Redirect to={WalletRoutes.PortfolioNFTs} />
   }
 
@@ -183,11 +192,13 @@ export const PortfolioNftAsset = () => {
       }
     >
       <StyledWrapper>
-        {selectedAssetFromParams && (
+        {selectedAssetFromParams ? (
           <NftScreen
             selectedAsset={selectedAssetFromParams}
             tokenNetwork={selectedAssetNetwork}
           />
+        ) : (
+          <Skeleton />
         )}
       </StyledWrapper>
     </WalletPageWrapper>
