@@ -40,15 +40,13 @@
 
 namespace {
 
-constexpr int kHighlightRadius = 36;
-constexpr int kBraveAvatarButtonHorizontalSpacing = 10;
-
 class BraveAvatarButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
-  explicit BraveAvatarButtonHighlightPathGenerator(
-      const base::WeakPtr<BraveAvatarToolbarButton>& avatar_button)
-      : avatar_button_(avatar_button) {}
+  BraveAvatarButtonHighlightPathGenerator(
+      const base::WeakPtr<BraveAvatarToolbarButton>& avatar_button,
+      int radius)
+      : avatar_button_(avatar_button), radius_(radius) {}
   BraveAvatarButtonHighlightPathGenerator(
       const BraveAvatarButtonHighlightPathGenerator&) = delete;
   BraveAvatarButtonHighlightPathGenerator& operator=(
@@ -59,21 +57,12 @@ class BraveAvatarButtonHighlightPathGenerator
     gfx::Rect rect(avatar_button_->size());
     rect.Inset(GetToolbarInkDropInsets(avatar_button_.get()));
     DCHECK(avatar_button_);
-    if (avatar_button_->GetAvatarButtonState() ==
-        AvatarToolbarButton::State::kAnimatedUserIdentity) {
-      // In this case, our radius wouldn't be used. We should keep using
-      // upstream's radius for the highlight too.
-      return gfx::RRectF(gfx::RectF(rect),
-                         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-                             views::Emphasis::kMaximum, {}));
-    }
-
-    // This make the highlight drawn as circle.
-    return gfx::RRectF(gfx::RectF(rect), kHighlightRadius);
+    return gfx::RRectF(gfx::RectF(rect), radius_);
   }
 
  private:
   base::WeakPtr<BraveAvatarToolbarButton> avatar_button_;
+  int radius_ = 0;
 };
 
 }  // namespace
@@ -102,13 +91,10 @@ void BraveAvatarToolbarButton::SetHighlight(
                                      base::NumberToString16(GetWindowCount()));
     }
   } else if (browser_->profile()->IsIncognitoProfile()) {
-    revised_highlight_text = brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_PRIVATE_AVATAR_BUTTON_LABEL);
-
+    // We only want the icon and count for Incognito profiles.
+    revised_highlight_text = std::u16string();
     if (GetWindowCount() > 1) {
-      revised_highlight_text =
-          l10n_util::GetStringFUTF16(IDS_PRIVATE_AVATAR_BUTTON_LABEL_COUNT,
-                                     base::NumberToString16(GetWindowCount()));
+      revised_highlight_text = base::NumberToString16(GetWindowCount());
     }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
@@ -123,10 +109,18 @@ void BraveAvatarToolbarButton::SetHighlight(
 void BraveAvatarToolbarButton::OnThemeChanged() {
   AvatarToolbarButton::OnThemeChanged();
 
+  constexpr int kNormalProfileHighlightRadius = 36;
+  int radius = kNormalProfileHighlightRadius;
+  if (delegate_->GetState() == State::kIncognitoProfile ||
+      delegate_->GetState() == State::kGuestSession) {
+    radius = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+        views::Emphasis::kMaximum, {});
+  }
+
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveAvatarButtonHighlightPathGenerator>(
-                weak_ptr_factory_.GetWeakPtr()));
+                weak_ptr_factory_.GetWeakPtr(), radius));
 }
 
 int BraveAvatarToolbarButton::GetWindowCount() const {
@@ -143,22 +137,37 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     SetTextColor(views::Button::STATE_DISABLED, text_color);
 
     // We give more margins to horizontally.
-    gfx::Insets target_insets =
-        ::GetLayoutInsets(TOOLBAR_BUTTON) +
-        *GetProperty(views::kInternalPaddingKey) +
-        gfx::Insets::VH(0, kBraveAvatarButtonHorizontalSpacing);
+    constexpr int kBraveAvatarButtonHorizontalSpacing = 8;
+    gfx::Insets target_insets = ::GetLayoutInsets(TOOLBAR_BUTTON);
+    target_insets.set_left_right(kBraveAvatarButtonHorizontalSpacing,
+                                 kBraveAvatarButtonHorizontalSpacing);
+    if (!is_tor) {
+      // Use smaller vertical margins as we user more larger icon.
+      constexpr int kBraveAvatarButtonVerticalSpacing = 3;
+      target_insets.set_top_bottom(kBraveAvatarButtonVerticalSpacing,
+                                   kBraveAvatarButtonVerticalSpacing);
+    }
 
     const auto border_color = is_tor ? SkColorSetARGB(0x66, 0x91, 0x5E, 0xAE)
                                      : SkColorSetARGB(0x66, 0x7B, 0x63, 0xBF);
     const auto final_border_color = color_utils::GetResultingPaintColor(
         border_color, (is_tor ? kPrivateTorToolbar : kPrivateToolbar));
     std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
-        1, kHighlightRadius, gfx::Insets(), final_border_color);
+        1 /*thickness*/,
+        ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+            views::Emphasis::kMaximum, {}),
+        gfx::Insets(), final_border_color);
     const gfx::Insets extra_insets = target_insets - border->GetInsets();
     SetBorder(views::CreatePaddedBorder(std::move(border), extra_insets));
 
     constexpr int kBraveAvatarImageLabelSpacing = 8;
     SetImageLabelSpacing(kBraveAvatarImageLabelSpacing);
+    return;
+  }
+
+  if (delegate_->GetState() == State::kGuestSession) {
+    gfx::Insets target_insets = ::GetLayoutInsets(TOOLBAR_BUTTON);
+    SetBorder(views::CreateEmptyBorder(target_insets));
     return;
   }
 
@@ -176,7 +185,7 @@ ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
 
   if (browser_->profile()->IsIncognitoProfile()) {
     return ui::ImageModel::FromVectorIcon(
-        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size);
+        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), GetIconSize());
   }
 
   if (browser_->profile()->IsGuestSession()) {
