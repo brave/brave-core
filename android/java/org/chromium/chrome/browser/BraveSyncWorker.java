@@ -39,7 +39,7 @@ public class BraveSyncWorker {
         mNativeBraveSyncWorker = nativePtr;
     }
 
-    private void Init() {
+    private void init() {
         if (mNativeBraveSyncWorker == 0) {
             BraveSyncWorkerJni.get().init(BraveSyncWorker.this);
         }
@@ -47,10 +47,10 @@ public class BraveSyncWorker {
 
     @Override
     protected void finalize() {
-        Destroy();
+        destroy();
     }
 
-    private void Destroy() {
+    private void destroy() {
         if (mNativeBraveSyncWorker != 0) {
             BraveSyncWorkerJni.get().destroy(mNativeBraveSyncWorker);
             mNativeBraveSyncWorker = 0;
@@ -59,62 +59,62 @@ public class BraveSyncWorker {
 
     public BraveSyncWorker() {
         mContext = ContextUtils.getApplicationContext();
-        Init();
+        init();
     }
 
-    public String GetPureWords() {
+    public String getPureWords() {
         return BraveSyncWorkerJni.get().getSyncCodeWords(mNativeBraveSyncWorker);
     }
 
-    public String GetTimeLimitedWordsFromPure(String pureWords) {
+    public String getTimeLimitedWordsFromPure(String pureWords) {
         return BraveSyncWorkerJni.get().getTimeLimitedWordsFromPure(pureWords);
     }
 
-    public void SaveCodephrase(String codephrase) {
+    public void saveCodephrase(String codephrase) {
         BraveSyncWorkerJni.get().saveCodeWords(mNativeBraveSyncWorker, codephrase);
     }
 
-    public String GetSeedHexFromWords(String codephrase) {
+    public String getSeedHexFromWords(String codephrase) {
         return BraveSyncWorkerJni.get().getSeedHexFromWords(codephrase);
     }
 
-    public String GetWordsFromSeedHex(String seedHex) {
+    public String getWordsFromSeedHex(String seedHex) {
         return BraveSyncWorkerJni.get().getWordsFromSeedHex(seedHex);
     }
 
-    public String GetQrDataJson(String seedHex) {
+    public String getQrDataJson(String seedHex) {
         return BraveSyncWorkerJni.get().getQrDataJson(seedHex);
     }
 
-    public int GetQrCodeValidationResult(String jsonQr) {
+    public int getQrCodeValidationResult(String jsonQr) {
         return BraveSyncWorkerJni.get().getQrCodeValidationResult(jsonQr);
     }
 
-    public String GetSeedHexFromQrJson(String jsonQr) {
+    public String getSeedHexFromQrJson(String jsonQr) {
         return BraveSyncWorkerJni.get().getSeedHexFromQrJson(jsonQr);
     }
 
-    public int GetWordsValidationResult(String timeLimitedWords) {
+    public int getWordsValidationResult(String timeLimitedWords) {
         return BraveSyncWorkerJni.get().getWordsValidationResult(timeLimitedWords);
     }
 
-    public String GetPureWordsFromTimeLimited(String timeLimitedWords) {
+    public String getPureWordsFromTimeLimited(String timeLimitedWords) {
         return BraveSyncWorkerJni.get().getPureWordsFromTimeLimited(timeLimitedWords);
     }
 
-    public void RequestSync() {
+    public void requestSync() {
         BraveSyncWorkerJni.get().requestSync(mNativeBraveSyncWorker);
     }
 
-    public boolean IsInitialSyncFeatureSetupComplete() {
+    public boolean isInitialSyncFeatureSetupComplete() {
         return BraveSyncWorkerJni.get().isInitialSyncFeatureSetupComplete(mNativeBraveSyncWorker);
     }
 
-    public void FinalizeSyncSetup() {
+    public void finalizeSyncSetup() {
         BraveSyncWorkerJni.get().finalizeSyncSetup(mNativeBraveSyncWorker);
     }
 
-    public void ResetSync() {
+    public void resetSync() {
         BraveSyncWorkerJni.get().resetSync(mNativeBraveSyncWorker);
     }
 
