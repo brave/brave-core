@@ -53,12 +53,15 @@ if (!is_android) {
     ]
     if (!is_android) {
       brave_browser_infobar_sources += [
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
       ]
       brave_browser_infobar_deps += [
         "//brave/browser/ui/views/infobars:infobars",
         "//brave/components/infobars/core:core",
+        "//brave/components/vector_icons",
       ]
     }
   }
