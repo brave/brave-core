@@ -26,7 +26,7 @@ import {
 } from '../../../utils/rewards_utils'
 
 // Styled components
-import { IconWrapper, Placeholder, NetworkIcon } from './style'
+import { IconWrapper, Placeholder, NetworkIcon, IconSize } from './style'
 
 // Options
 import { getNetworkLogo } from '../../../options/asset-options'
@@ -42,7 +42,7 @@ type SimpleNetwork = Pick<
 interface Props {
   network?: SimpleNetwork | null
   marginRight?: number
-  size?: 'huge' | 'big' | 'small' | 'tiny' | 'extra-small'
+  size?: IconSize
 }
 
 const isStorybook = isComponentInStorybook()
@@ -54,6 +54,7 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
       <NetworkPlaceholderIcon
         marginRight={marginRight}
         network={network}
+        size={size}
       />
     )
   }
@@ -110,6 +111,7 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
       <NetworkPlaceholderIcon
         marginRight={marginRight}
         network={network}
+        size={size}
       />
     )
   }
@@ -132,10 +134,12 @@ export default CreateNetworkIcon
 
 function NetworkPlaceholderIcon({
   marginRight,
-  network
+  network,
+  size
 }: {
   marginRight: number | undefined
   network?: SimpleNetwork | null
+  size?: IconSize
 }) {
   // custom hooks
   const orb = useNetworkOrb(network)
@@ -145,8 +149,12 @@ function NetworkPlaceholderIcon({
     <IconWrapper
       marginRight={marginRight ?? 0}
       isTestnet={false}
+      size={size}
     >
-      <Placeholder orb={orb} />
+      <Placeholder
+        size={size}
+        orb={orb}
+      />
     </IconWrapper>
   )
 }
