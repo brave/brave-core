@@ -7,7 +7,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
-import Peek from '../../../../brave_news/browser/resources/Peek'
 
 const Hint = styled('div') <{}>`
   display: flex;
@@ -34,7 +33,6 @@ export default function BraveNewsHint() {
       <Graphic>
         <CaratStrongDownIcon />
       </Graphic>
-      <Peek />
     </Hint>
   )
 }

@@ -32,6 +32,8 @@ const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
   throw new Error("Unsupported FeedItem!")
 }
 
+export const NEWS_FEED_CLASS = "news-feed"
+
 // The number of cards to load at a time. Making this too high will result in
 // jank as all the cards are rendered at once.
 const PAGE_SIZE = 25;
@@ -84,7 +86,7 @@ export default function Component({ feed }: Props) {
     })
   }, [cardCount, feed?.items])
 
-  return <FeedContainer ref={setLastCardRef}>
+  return <FeedContainer className={NEWS_FEED_CLASS} ref={setLastCardRef}>
     {cards}
   </FeedContainer>
 }

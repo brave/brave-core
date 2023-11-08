@@ -19,6 +19,7 @@ import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
 import Stats from './stats'
+import BraveNewsPeek from '../../../brave_news/browser/resources/Peek'
 
 // Helpers
 import { getLocale } from '$web-common/locale'
@@ -690,7 +691,9 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.Footer>
             {newTabData.showToday &&
               <Page.GridItemNavigationBraveNews>
-                <BraveNewsHint />
+                {defaultState.featureFlagBraveNewsFeedV2Enabled
+                  ? <BraveNewsPeek/>
+                  : <BraveNewsHint />}
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>
