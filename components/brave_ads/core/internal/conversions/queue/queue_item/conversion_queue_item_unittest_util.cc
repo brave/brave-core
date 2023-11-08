@@ -46,7 +46,7 @@ void SaveConversionQueue(
 }
 
 void BuildAndSaveConversionQueue(AdType ad_type,
-                                 const ConfirmationType& confirmation_type,
+                                 ConfirmationType confirmation_type,
                                  const bool is_verifiable,
                                  const bool should_use_random_uuids,
                                  const int count) {

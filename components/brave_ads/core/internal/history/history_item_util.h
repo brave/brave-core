@@ -8,14 +8,15 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+
 namespace brave_ads {
 
-class ConfirmationType;
 struct AdInfo;
 struct HistoryItemInfo;
 
 HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
-                                 const ConfirmationType& confirmation_type,
+                                 ConfirmationType confirmation_type,
                                  const std::string& title,
                                  const std::string& description);
 

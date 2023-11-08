@@ -9,15 +9,15 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
-class ConfirmationType;
 struct AdInfo;
 
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
-                     const ConfirmationType& confirmation_type);
+                     ConfirmationType confirmation_type);
 
 template <typename T>
 bool WasAdServed(const AdInfo& ad,

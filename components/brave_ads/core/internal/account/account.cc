@@ -98,7 +98,7 @@ void Account::SetWallet(const std::string& payment_id,
 void Account::Deposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       AdType ad_type,
-                      const ConfirmationType& confirmation_type) const {
+                      ConfirmationType confirmation_type) const {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
@@ -130,7 +130,7 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 void Account::DepositCallback(const std::string& creative_instance_id,
                               const std::string& segment,
                               AdType ad_type,
-                              const ConfirmationType& confirmation_type,
+                              ConfirmationType confirmation_type,
                               const bool success,
                               const double value) const {
   if (!success) {
@@ -146,7 +146,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const double value,
                              AdType ad_type,
-                             const ConfirmationType& confirmation_type) const {
+                             ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return SuccessfullyProcessedDeposit(BuildTransaction(
         creative_instance_id, segment, value, ad_type, confirmation_type));
@@ -161,7 +161,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
 
 void Account::ProcessDepositCallback(const std::string& creative_instance_id,
                                      AdType ad_type,
-                                     const ConfirmationType& confirmation_type,
+                                     ConfirmationType confirmation_type,
                                      const bool success,
                                      const TransactionInfo& transaction) const {
   if (!success) {
@@ -187,10 +187,9 @@ void Account::SuccessfullyProcessedDeposit(
   confirmations_->Confirm(transaction);
 }
 
-void Account::FailedToProcessDeposit(
-    const std::string& creative_instance_id,
-    AdType ad_type,
-    const ConfirmationType& confirmation_type) const {
+void Account::FailedToProcessDeposit(const std::string& creative_instance_id,
+                                     AdType ad_type,
+                                     ConfirmationType confirmation_type) const {
   BLOG(0, "Failed to process deposit for "
               << ad_type << " with creative instance id "
               << creative_instance_id << " and " << confirmation_type);
@@ -364,7 +363,7 @@ void Account::NotifyDidProcessDeposit(
 void Account::NotifyFailedToProcessDeposit(
     const std::string& creative_instance_id,
     AdType ad_type,
-    const ConfirmationType& confirmation_type) const {
+    ConfirmationType confirmation_type) const {
   for (AccountObserver& observer : observers_) {
     observer.OnFailedToProcessDeposit(creative_instance_id, ad_type,
                                       confirmation_type);

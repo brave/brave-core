@@ -24,15 +24,15 @@ class BraveAdsAdEventCacheTest : public UnitTestBase {
  protected:
   void CacheAdEvent(const std::string& id,
                     AdType ad_type,
-                    const ConfirmationType& confirmation_type) {
+                    ConfirmationType confirmation_type) {
     ad_event_cache_.AddEntryForInstanceId(id, ToString(ad_type),
-                                          confirmation_type.ToString(), Now());
+                                          ToString(confirmation_type), Now());
   }
 
   std::vector<base::Time> GetCachedAdEvents(
       AdType ad_type,
-      const ConfirmationType& confirmation_type) {
-    return ad_event_cache_.Get(ToString(ad_type), confirmation_type.ToString());
+      ConfirmationType confirmation_type) {
+    return ad_event_cache_.Get(ToString(ad_type), ToString(confirmation_type));
   }
 
   AdEventCache ad_event_cache_;

@@ -13,7 +13,7 @@ namespace brave_ads {
 
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
-                     const ConfirmationType& confirmation_type) {
+                     ConfirmationType confirmation_type) {
   const auto iter = base::ranges::find_if(
       ad_events, [&ad, &confirmation_type](const AdEventInfo& ad_event) {
         return ad_event.placement_id == ad.placement_id &&

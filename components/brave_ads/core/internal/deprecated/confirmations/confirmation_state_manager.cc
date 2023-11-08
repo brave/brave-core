@@ -47,7 +47,7 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
     dict.Set("creative_instance_id", confirmation.creative_instance_id);
 
-    dict.Set("type", confirmation.type.ToString());
+    dict.Set("type", ToString(confirmation.type));
 
     dict.Set("ad_type", ToString(confirmation.ad_type));
 
@@ -304,7 +304,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Type
     if (const auto* const value = item_dict->FindString("type")) {
-      confirmation.type = ConfirmationType(*value);
+      confirmation.type = ParseConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
       continue;

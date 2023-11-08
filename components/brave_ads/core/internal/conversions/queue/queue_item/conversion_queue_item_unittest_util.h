@@ -12,7 +12,6 @@
 
 namespace brave_ads {
 
-class ConfirmationType;
 struct ConversionInfo;
 
 namespace test {
@@ -24,7 +23,7 @@ ConversionQueueItemList BuildConversionQueueItems(
 void SaveConversionQueue(const ConversionQueueItemList& conversion_queue_items);
 
 void BuildAndSaveConversionQueue(AdType ad_type,
-                                 const ConfirmationType& confirmation_type,
+                                 ConfirmationType confirmation_type,
                                  bool is_verifiable,
                                  bool should_use_random_uuids,
                                  int count);

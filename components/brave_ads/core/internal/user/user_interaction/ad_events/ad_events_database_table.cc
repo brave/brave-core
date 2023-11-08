@@ -53,7 +53,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   for (const auto& ad_event : ad_events) {
     BindString(command, index++, ad_event.placement_id);
     BindString(command, index++, ToString(ad_event.type));
-    BindString(command, index++, ad_event.confirmation_type.ToString());
+    BindString(command, index++, ToString(ad_event.confirmation_type));
     BindString(command, index++, ad_event.campaign_id);
     BindString(command, index++, ad_event.creative_set_id);
     BindString(command, index++, ad_event.creative_instance_id);
@@ -75,7 +75,7 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   ad_event.placement_id = ColumnString(record, 0);
   ad_event.type = ParseAdType(ColumnString(record, 1));
-  ad_event.confirmation_type = ConfirmationType(ColumnString(record, 2));
+  ad_event.confirmation_type = ParseConfirmationType(ColumnString(record, 2));
   ad_event.campaign_id = ColumnString(record, 3);
   ad_event.creative_set_id = ColumnString(record, 4);
   ad_event.creative_instance_id = ColumnString(record, 5);

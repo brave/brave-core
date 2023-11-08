@@ -107,7 +107,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
 
     list.Append(
         base::Value::Dict()
-            .Set("confirmationType", payment_token.confirmation_type.ToString())
+            .Set("confirmationType", ToString(payment_token.confirmation_type))
             .Set("credential", credential->Clone())
             .Set("publicKey", *public_key_base64));
   }

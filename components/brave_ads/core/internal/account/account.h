@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
@@ -26,7 +27,6 @@
 
 namespace brave_ads {
 
-class ConfirmationType;
 class Confirmations;
 class IssuersUrlRequest;
 class RedeemPaymentTokens;
@@ -61,7 +61,7 @@ class Account final : public AdsClientNotifierObserver,
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,
                AdType ad_type,
-               const ConfirmationType& confirmation_type) const;
+               ConfirmationType confirmation_type) const;
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
 
@@ -69,7 +69,7 @@ class Account final : public AdsClientNotifierObserver,
   void DepositCallback(const std::string& creative_instance_id,
                        const std::string& segment,
                        AdType ad_type,
-                       const ConfirmationType& confirmation_type,
+                       ConfirmationType confirmation_type,
                        bool success,
                        double value) const;
 
@@ -77,17 +77,17 @@ class Account final : public AdsClientNotifierObserver,
                       const std::string& segment,
                       double value,
                       AdType ad_type,
-                      const ConfirmationType& confirmation_type) const;
+                      ConfirmationType confirmation_type) const;
   void ProcessDepositCallback(const std::string& creative_instance_id,
                               AdType ad_type,
-                              const ConfirmationType& confirmation_type,
+                              ConfirmationType confirmation_type,
                               bool success,
                               const TransactionInfo& transaction) const;
 
   void SuccessfullyProcessedDeposit(const TransactionInfo& transaction) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               AdType ad_type,
-                              const ConfirmationType& confirmation_type) const;
+                              ConfirmationType confirmation_type) const;
 
   void Initialize();
 
@@ -120,10 +120,9 @@ class Account final : public AdsClientNotifierObserver,
   void NotifyFailedToInitializeWallet() const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
-  void NotifyFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      AdType ad_type,
-      const ConfirmationType& confirmation_type) const;
+  void NotifyFailedToProcessDeposit(const std::string& creative_instance_id,
+                                    AdType ad_type,
+                                    ConfirmationType confirmation_type) const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;

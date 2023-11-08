@@ -6,22 +6,23 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_BUILDER_H_
 
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
 
-class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const ConfirmationType& confirmation_type,
+                         ConfirmationType confirmation_type,
                          base::Time created_at);
 
 AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
-                           const ConfirmationType& confirmation_type,
+                           ConfirmationType confirmation_type,
                            base::Time created_at);
 
 }  // namespace brave_ads

@@ -13,7 +13,7 @@ AdTypeBucketMap BuildBuckets(const PaymentTokenList& payment_tokens) {
   for (const auto& payment_token : payment_tokens) {
     const std::string ad_type = ToString(payment_token.ad_type);
     const std::string confirmation_type =
-        payment_token.confirmation_type.ToString();
+        ToString(payment_token.confirmation_type);
 
     buckets[ad_type][confirmation_type]++;
   }
