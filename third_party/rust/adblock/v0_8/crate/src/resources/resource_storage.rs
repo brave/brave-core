@@ -17,6 +17,87 @@ pub struct ResourceStorage {
     aliases: HashMap<String, String>,
 }
 
+/// Formats `arg` such that it either is a JSON string, or is safe to insert within a JSON string,
+/// depending on `QUOTED`.
+///
+/// Implementation modified from `json-rust` (MIT license).
+/// https://github.com/maciejhirsz/json-rust
+#[inline(always)]
+fn stringify_arg<const QUOTED: bool>(arg: &str) -> String {
+    const QU: u8 = b'"';
+    const BS: u8 = b'\\';
+    const BB: u8 = b'b';
+    const TT: u8 = b't';
+    const NN: u8 = b'n';
+    const FF: u8 = b'f';
+    const RR: u8 = b'r';
+    const UU: u8 = b'u';
+    const __: u8 = 0;
+
+    // Look up table for characters that need escaping in a product string
+    static ESCAPED: [u8; 256] = [
+    // 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+      UU, UU, UU, UU, UU, UU, UU, UU, BB, TT, NN, UU, FF, RR, UU, UU, // 0
+      UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, UU, // 1
+      __, __, QU, __, __, __, __, __, __, __, __, __, __, __, __, __, // 2
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 3
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 4
+      __, __, __, __, __, __, __, __, __, __, __, __, BS, __, __, __, // 5
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 6
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 7
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 8
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // 9
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // A
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // B
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // C
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // D
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // E
+      __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, __, // F
+    ];
+
+    #[inline(never)]
+    fn write_string_complex(output: &mut Vec<u8>, string: &str, mut start: usize) {
+        output.extend_from_slice(&string.as_bytes()[ .. start]);
+
+        for (index, ch) in string.bytes().enumerate().skip(start) {
+            let escape = ESCAPED[ch as usize];
+            if escape > 0 {
+                output.extend_from_slice(&string.as_bytes()[start .. index]);
+                output.extend_from_slice(&[b'\\', escape]);
+                start = index + 1;
+            }
+            if escape == b'u' {
+                output.extend_from_slice(format!("{:04x}", ch).as_bytes());
+            }
+        }
+        output.extend_from_slice(&string.as_bytes()[start ..]);
+    }
+
+    let mut output = Vec::with_capacity(arg.as_bytes().len() + 2);
+    if QUOTED {
+        output.push(b'"');
+    }
+
+    'process: {
+        for (index, ch) in arg.bytes().enumerate() {
+            if ESCAPED[ch as usize] > 0 {
+                write_string_complex(&mut output, arg, index);
+                break 'process;
+            }
+        }
+
+        output.extend_from_slice(arg.as_bytes());
+    }
+
+    if QUOTED {
+        output.push(b'"');
+    }
+
+    // unwrap safety: input is always valid UTF8; output processing only replaces some ASCII
+    // characters with other valid ones
+    return String::from_utf8(output).unwrap();
+}
+
 impl ResourceStorage {
     /// Convenience constructor that allows building storage for many resources at once. Errors are
     /// silently consumed.
@@ -70,7 +151,9 @@ impl ResourceStorage {
     /// Given the contents of a `+js(...)` filter part, return a scriptlet string appropriate for
     /// injection in a page.
     pub fn get_scriptlet_resource(&self, scriptlet_args: &str, filter_permission: PermissionMask) -> Result<String, ScriptletResourceError> {
-        let scriptlet_args = parse_scriptlet_args(scriptlet_args);
+        // `unwrap` is safe because these are guaranteed valid at filter parsing.
+        let scriptlet_args = parse_scriptlet_args(scriptlet_args).unwrap();
+
         if scriptlet_args.is_empty() {
             return Err(ScriptletResourceError::MissingScriptletName);
         }
@@ -99,10 +182,10 @@ impl ResourceStorage {
         if template.starts_with("function") {
             // newer function-style resource: pass args using function call syntax
             use itertools::Itertools as _;
-            Ok(format!("({})({})", template, args.iter().map(|a| format!("'{}'", a)).join(", ")))
+            Ok(format!("({})({})", template, args.iter().map(|arg| stringify_arg::<true>(arg)).join(", ")))
         } else {
             // older template-style resource: replace first instances with args
-            Ok(patch_template_scriptlet(template, args))
+            Ok(patch_template_scriptlet(template, args.iter().map(|arg| stringify_arg::<false>(arg))))
         }
     }
 
@@ -212,10 +295,10 @@ fn template_argument_regex(i: usize) -> Regex {
 }
 
 /// Omit the 0th element of `args` (the scriptlet name) when calling this method.
-fn patch_template_scriptlet(mut template: String, args: &[impl AsRef<str>]) -> String {
+fn patch_template_scriptlet(mut template: String, args: impl IntoIterator<Item = impl AsRef<str>>) -> String {
     // `regex` treats `$` as a special character. Instead, `$$` is interpreted as a literal `$`
     // character.
-    args.iter().take(TEMPLATE_ARGUMENT_RE.len()).enumerate().for_each(|(i, arg)| {
+    args.into_iter().take(TEMPLATE_ARGUMENT_RE.len()).enumerate().for_each(|(i, arg)| {
         template = TEMPLATE_ARGUMENT_RE[i]
             .replace(&template, arg.as_ref().replace('$', "$$"))
             .to_string();
@@ -233,52 +316,167 @@ fn with_js_extension(scriptlet_name: &str) -> String {
     }
 }
 
-/// Parses the inner contents of a `+js(...)` block into a Vec of its comma-delimited elements.
+/// Returns the index of the next unescaped separator, as well as a boolean indicating whether or
+/// not the string must be postprocessed to normalize any separators along the way.
+fn index_next_unescaped_separator(s: &str, separator: char) -> (Option<usize>, bool) {
+    assert!(separator != '\\');
+    let mut new_arg_end = 0;
+    let mut needs_transform = false;
+    // guaranteed to terminate:
+    // - loop only proceeds if there is an odd number of escape characters
+    // - new_arg_end increases by at least 1 in that case
+    // - s has finite length
+    while new_arg_end < s.len() {
+        let rest = &s[new_arg_end..];
+
+        if let Some(i) = rest.find(separator) {
+            // check how many escape characters there are before the matched separator
+            let mut trailing_escapes = 0;
+            while trailing_escapes < i && rest[..i - trailing_escapes].ends_with('\\') {
+                trailing_escapes += 1;
+            }
+            if trailing_escapes % 2 == 0 {
+                // even number; all escape characters are literal backslashes
+                new_arg_end += i;
+                break;
+            } else {
+                // odd number; the last escape character is escaping this separator
+                new_arg_end += i + 1;
+                needs_transform = true;
+                continue;
+            }
+        } else {
+            // no match
+            return (None, needs_transform)
+        }
+    }
+    (Some(new_arg_end), needs_transform)
+}
+
+/// Replaces escaped instances of `separator` in `arg` with unescaped characters.
+fn normalize_arg(arg: &str, separator: char) -> String {
+    assert!(separator != '\\');
+
+    let mut output = String::with_capacity(arg.len());
+    let mut escaped = false;
+    for i in arg.chars() {
+        if i == '\\' {
+            if escaped {
+                escaped = false;
+                output += "\\\\";
+            } else {
+                escaped = true;
+            }
+            continue;
+        }
+
+        if escaped {
+            if i != separator {
+                output.push('\\');
+            }
+            escaped = false;
+        }
+
+        output.push(i);
+    }
+
+    output
+}
+
+/// Parses the inner contents of a `+js(...)` operator of a cosmetic filter.
 ///
-/// A literal comma is produced by the '\,' pattern. Otherwise, all '\', '"', and ''' characters
-/// are erased in the resulting arguments.
-fn parse_scriptlet_args(args: &str) -> Vec<String> {
-    static ESCAPE_SCRIPTLET_ARG_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r#"[\\'"]"#).unwrap());
-
-    // Guarantee that the last character is not a backslash
-    let args = args.trim_end_matches('\\');
-
+/// Returns `None` if the contents are malformed.
+pub(crate) fn parse_scriptlet_args(mut args: &str) -> Option<Vec<String>> {
     let mut args_vec = vec![];
     if args.trim().is_empty() {
-        return args_vec;
+        return Some(args_vec);
     }
 
-    let mut after_last_delim = 0;
-
-    let comma_positions = memchr::memchr_iter(b',', args.as_bytes());
-    let mut continuation = None;
-    for comma_pos in comma_positions.chain(std::iter::once(args.len())) {
-        let mut part = &args[after_last_delim..comma_pos];
-        let mut is_continuation = false;
-
-        if !part.is_empty() && part.as_bytes()[part.len() - 1] == b'\\' {
-            part = &part[0..part.len() - 1];
-            is_continuation = true;
+    // guaranteed to terminate:
+    // - each branch of the `match` consumes at least 1 character from the beginning of `args`
+    // - loop exits if `args` is empty
+    loop {
+        // n.b. `args.trim_start()` leaves an empty string if it's only whitespace
+        if let Some(i) = args.find(|c: char| !c.is_whitespace()) {
+            args = &args[i..];
         }
 
-        let mut target = if let Some(s) = continuation.take() {
-            s
+        let (arg, needs_transform);
+
+        match args.chars().next() {
+            Some(qc) if qc == '"' || qc == '\'' || qc == '`' => {
+                args = &args[1..];
+                let i;
+                (i, needs_transform) = index_next_unescaped_separator(args, qc);
+                if let Some(i) = i {
+                    arg = &args[..i];
+                    args = &args[i+1..];
+                    // consume whitespace following the quote
+                    if let Some(i) = args.find(|c: char| !c.is_whitespace()) {
+                        args = &args[i..];
+                    }
+                    // consume comma separator
+                    if args.starts_with(',') {
+                        args = &args[1..];
+                    } else if !args.is_empty() {
+                        // uBO pushes everything up to the next comma without escapes, but it's
+                        // very weird and probably not what the filter list author intended.
+                        // Treating it as an error for now.
+                        return None;
+                    }
+                } else {
+                    // uBO pushes the entire argument, including the unmatched quote. Again, weird
+                    // and probably not intended.
+                    return None;
+                }
+            }
+            Some(_) => {
+                let i;
+                (i, needs_transform) = index_next_unescaped_separator(args, ',');
+                arg = args[..i.unwrap_or(args.len())].trim_end();
+                args = &args[i.map(|i| i + 1).unwrap_or(args.len())..];
+            }
+            None => {
+                // `args` is empty
+                break;
+            }
+        }
+
+        let arg = if needs_transform {
+            normalize_arg(arg, ',')
         } else {
-            String::new()
+            arg.to_string()
         };
-
-        target += part;
-        if is_continuation {
-            target += ",";
-            continuation = Some(target);
-        } else {
-            args_vec.push(ESCAPE_SCRIPTLET_ARG_RE.replace_all(&target, "\\$0").trim().to_string());
-        }
-
-        after_last_delim = comma_pos + 1;
+        args_vec.push(arg);
     }
 
-    args_vec
+    Some(args_vec)
+}
+
+#[cfg(test)]
+mod arg_parsing_util_tests {
+    use super::*;
+
+    #[test]
+    fn test_index_next_unescaped_separator() {
+        assert_eq!(index_next_unescaped_separator(r#"``"#, '`'), (Some(0), false));
+        assert_eq!(index_next_unescaped_separator(r#"\``"#, '`'), (Some(2), true));
+        assert_eq!(index_next_unescaped_separator(r#"\\``"#, '`'), (Some(2), false));
+        assert_eq!(index_next_unescaped_separator(r#"\\\``"#, '`'), (Some(4), true));
+        assert_eq!(index_next_unescaped_separator(r#"\\\\``"#, '`'), (Some(4), false));
+        assert_eq!(index_next_unescaped_separator(r#"\`\\\``"#, '`'), (Some(6), true));
+        assert_eq!(index_next_unescaped_separator(r#"\\\`\``"#, '`'), (Some(6), true));
+        assert_eq!(index_next_unescaped_separator(r#"\\\`\\``"#, '`'), (Some(6), true));
+    }
+
+    #[test]
+    fn test_normalize_arg() {
+        assert_eq!(normalize_arg(r#"\`"#, '`'), r#"`"#);
+        assert_eq!(normalize_arg(r#"\\\`"#, '`'), r#"\\`"#);
+        assert_eq!(normalize_arg(r#"\`\\\`"#, '`'), r#"`\\`"#);
+        assert_eq!(normalize_arg(r#"\\\`\`"#, '`'), r#"\\``"#);
+        assert_eq!(normalize_arg(r#"\\\`\\`"#, '`'), r#"\\`\\`"#);
+    }
 }
 
 #[cfg(test)]
@@ -342,25 +540,25 @@ mod scriptlet_storage_tests {
 
     #[test]
     fn parse_argslist() {
-        let args = parse_scriptlet_args("scriptlet, hello world, foobar");
+        let args = parse_scriptlet_args("scriptlet, hello world, foobar").unwrap();
         assert_eq!(args, vec!["scriptlet", "hello world", "foobar"]);
     }
 
     #[test]
     fn parse_argslist_noargs() {
-        let args = parse_scriptlet_args("scriptlet");
+        let args = parse_scriptlet_args("scriptlet").unwrap();
         assert_eq!(args, vec!["scriptlet"]);
     }
 
     #[test]
     fn parse_argslist_empty() {
-        let args = parse_scriptlet_args("");
+        let args = parse_scriptlet_args("").unwrap();
         assert!(args.is_empty());
     }
 
     #[test]
     fn parse_argslist_commas() {
-        let args = parse_scriptlet_args("scriptletname, one\\, two\\, three, four");
+        let args = parse_scriptlet_args("scriptletname, one\\, two\\, three, four").unwrap();
         assert_eq!(args, vec!["scriptletname", "one, two, three", "four"]);
     }
 
@@ -369,17 +567,53 @@ mod scriptlet_storage_tests {
         let args = parse_scriptlet_args(
             r##"scriptlet, "; window.location.href = bad.com; , '; alert("you're\, hacked");    ,    \u\r\l(bad.com) "##,
         );
+        assert_eq!(args, None);
+    }
+
+    #[test]
+    fn parse_argslist_quoted() {
+        let args = parse_scriptlet_args(r#"debug-scriptlet, 'test', '"test"', "test", "'test'", `test`, '`test`'"#).unwrap();
         assert_eq!(
             args,
             vec![
-                r#"scriptlet"#,
-                r#"\"; window.location.href = bad.com;"#,
-                r#"\'; alert(\"you\'re, hacked\");"#,
-                r#"\\u\\r\\l(bad.com)"#
-            ]
+                r#"debug-scriptlet"#,
+                r#"test"#,
+                r#""test""#,
+                r#"test"#,
+                r#"'test'"#,
+                r#"test"#,
+                r#"`test`"#,
+            ],
         );
+        let args = parse_scriptlet_args(r#"debug-scriptlet, 'test,test', '', "", ' ', ' test '"#).unwrap();
+        assert_eq!(
+            args,
+            vec![
+                r#"debug-scriptlet"#,
+                r#"test,test"#,
+                r#""#,
+                r#""#,
+                r#" "#,
+                r#" test "#,
+            ],
+        );
+        let args = parse_scriptlet_args(r#"debug-scriptlet, test\,test, test\test, "test\test", 'test\test', "#).unwrap();
+        assert_eq!(
+            args,
+            vec![
+                r#"debug-scriptlet"#,
+                r#"test,test"#,
+                r#"test\test"#,
+                r#"test\test"#,
+                r#"test\test"#,
+                r#""#,
+            ],
+        );
+        let args = parse_scriptlet_args(r#"debug-scriptlet, "test"#);
+        assert_eq!(args, None);
+        let args = parse_scriptlet_args(r#"debug-scriptlet, 'test'"test""#);
+        assert_eq!(args, None);
     }
-
 
     #[test]
     fn get_patched_scriptlets() {
@@ -532,17 +766,17 @@ mod scriptlet_storage_tests {
 
         assert_eq!(
             resources.get_scriptlet_resource("googletagservices_gpt, test1", Default::default()),
-            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})('test1')".to_owned()),
+            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})(\"test1\")".to_owned()),
         );
 
         assert_eq!(
             resources.get_scriptlet_resource("googletagservices.com/gpt, test1, test2", Default::default()),
-            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})('test1', 'test2')".to_owned()),
+            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})(\"test1\", \"test2\")".to_owned()),
         );
 
         assert_eq!(
             resources.get_scriptlet_resource(r#"googletagservices.com/gpt.js, t"es't1, $te\st2$"#, Default::default()),
-            Ok(r#"(function(a1 = '', a2 = '') {console.log(a1, a2)})('t\"es\'t1', '$te\\st2$')"#.to_owned()),
+            Ok(r#"(function(a1 = '', a2 = '') {console.log(a1, a2)})("t\"es't1", "$te\\st2$")"#.to_owned()),
         );
 
         // The alias does not have a `.js` extension, so it cannot be used for a scriptlet
@@ -574,7 +808,7 @@ mod scriptlet_storage_tests {
             },
         ]);
 
-        let args = parse_scriptlet_args("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it");
+        let args = parse_scriptlet_args("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it").unwrap();
         assert_eq!(args, vec!["acs", "this", "probably", "is", "going", "to", "break", "brave", "and", "crash", "it", "instead", "of", "ignoring", "it"]);
 
         assert_eq!(

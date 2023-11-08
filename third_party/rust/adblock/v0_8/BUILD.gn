@@ -45,7 +45,7 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.8.0"
+  cargo_pkg_version = "0.8.3"
   cargo_pkg_authors =
       "Andrius Aucinas <aaucinas@brave.com>, Anton Lazarev <alazarev@brave.com>"
   cargo_pkg_name = "adblock"
