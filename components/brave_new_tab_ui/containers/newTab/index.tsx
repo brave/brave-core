@@ -19,7 +19,6 @@ import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
 import Stats from './stats'
-import BraveNewsPeek from '../../../brave_news/browser/resources/Peek'
 
 // Helpers
 import { getLocale } from '$web-common/locale'
@@ -45,6 +44,8 @@ setIconBasePath('chrome://resources/brave-icons')
 
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
+
+const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 
 interface Props {
   newTabData: NewTab.State
@@ -692,7 +693,9 @@ class NewTabPage extends React.Component<Props, State> {
             {newTabData.showToday &&
               <Page.GridItemNavigationBraveNews>
                 {defaultState.featureFlagBraveNewsFeedV2Enabled
-                  ? <BraveNewsPeek/>
+                  ? <React.Suspense fallback={null}>
+                    <BraveNewsPeek/>
+                  </React.Suspense>
                   : <BraveNewsHint />}
               </Page.GridItemNavigationBraveNews>
             }
