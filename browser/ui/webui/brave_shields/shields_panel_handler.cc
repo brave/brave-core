@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -32,6 +34,9 @@ void ShieldsPanelHandler::ShowUI() {
   if (embedder) {
     embedder->ShowUI();
   }
+  brave_shields::MaybeRecordShieldsUsageP3A(
+      brave_shields::ShieldsIconUsage::kClicked,
+      g_browser_process->local_state());
 }
 
 void ShieldsPanelHandler::CloseUI() {

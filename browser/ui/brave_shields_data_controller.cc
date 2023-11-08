@@ -164,7 +164,8 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
                                     nullptr) == is_enabled) {
     brave_shields::ResetBraveShieldsEnabled(map, GetCurrentSiteURL());
   } else {
-    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
+    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
+                                          g_browser_process->local_state());
   }
   ReloadWebContents();
 }
