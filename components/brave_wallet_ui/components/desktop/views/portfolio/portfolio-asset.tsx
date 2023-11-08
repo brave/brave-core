@@ -72,7 +72,8 @@ import {
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsEnabledQuery,
-  useGetExternalRewardsWalletQuery
+  useGetExternalRewardsWalletQuery,
+  useGetCoinMarketQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -133,10 +134,10 @@ export const PortfolioAsset = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
+
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
-  const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
   const selectedCoinMarket = useUnsafePageSelector(
     PageSelectors.selectedCoinMarket
   )
@@ -145,8 +146,13 @@ export const PortfolioAsset = (props: Props) => {
   )
 
   // Queries
+  const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
   const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const { data: coinMarketData = [] } = useGetCoinMarketQuery({
+    limit: 250,
+    vsAsset: defaultFiat
+  })
 
   // Memos
   const userTokensInfo = React.useMemo(() => {
@@ -207,8 +213,6 @@ export const PortfolioAsset = (props: Props) => {
   const { accounts } = useAccountsQuery()
 
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
-
-  const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
 
   const { data: selectedAssetsNetwork } = useGetNetworkQuery(
     selectedAssetFromParams ?? skipToken

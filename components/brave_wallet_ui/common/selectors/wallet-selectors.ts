@@ -24,8 +24,6 @@ export const isFilecoinEnabled = ({ wallet }: State) => wallet.isFilecoinEnabled
 export const isSolanaEnabled = ({ wallet }: State) => wallet.isSolanaEnabled
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
-export const isLoadingCoinMarketData = ({ wallet }: State) =>
-  wallet.isLoadingCoinMarketData
 export const isMetaMaskInstalled = ({ wallet }: State) =>
   wallet.isMetaMaskInstalled
 export const isWalletBackedUp = ({ wallet }: State) => wallet.isWalletBackedUp
@@ -68,7 +66,6 @@ export const selectedOnRampAssetId = ({ wallet }: State) =>
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const coinMarketData = ({ wallet }: State) => wallet.coinMarketData
 export const connectedAccounts = ({ wallet }: State) => wallet.connectedAccounts
 export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList

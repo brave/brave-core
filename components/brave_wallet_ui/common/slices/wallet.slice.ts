@@ -19,8 +19,6 @@ import {
   DefaultBaseCurrencyChanged,
   DefaultEthereumWalletChanged,
   DefaultSolanaWalletChanged,
-  GetCoinMarketPayload,
-  GetCoinMarketsResponse,
   RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   SitePermissionsPayloadType,
@@ -83,8 +81,6 @@ const defaultState: WalletState = {
     fiat: '',
     crypto: ''
   },
-  isLoadingCoinMarketData: true,
-  coinMarketData: [],
   selectedNetworkFilter: parseJSONFromLocalStorage(
     'PORTFOLIO_NETWORK_FILTER_OPTION',
     AllNetworksOptionDefault
@@ -197,7 +193,6 @@ export const WalletAsyncActions = {
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
   ),
-  getCoinMarkets: createAction<GetCoinMarketPayload>('getCoinMarkets'),
   setSelectedNetworkFilter: createAction<NetworkFilterType>(
     'setSelectedNetworkFilter'
   ),
@@ -301,22 +296,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.assetAutoDiscoveryCompleted = payload
-      },
-
-      setCoinMarkets: (
-        state: WalletState,
-        { payload }: PayloadAction<GetCoinMarketsResponse>
-      ) => {
-        state.coinMarketData = payload.success
-          ? payload.values.map((coin) => {
-              coin.image = coin.image.replace(
-                'https://assets.coingecko.com',
-                ' https://assets.cgproxy.brave.com'
-              )
-              return coin
-            })
-          : []
-        state.isLoadingCoinMarketData = false
       },
 
       selectOnRampAssetId(
