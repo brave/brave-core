@@ -1,3 +1,8 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const config = require('../lib/config')
 const updatePatches = require('../lib/updatePatches')
@@ -6,12 +11,13 @@ const chromiumPathFilter = (s) => s.length > 0 &&
   !s.startsWith('chrome/app/theme/default') &&
   !s.startsWith('chrome/app/theme/brave') &&
   !s.startsWith('chrome/app/theme/chromium') &&
+  !s.startsWith('third_party/win_build_output/midl/chrome/elevation_service') &&
+  !s.startsWith('third_party/win_build_output/midl/google_update') &&
   !s.endsWith('.png') && !s.endsWith('.xtb') &&
   !s.endsWith('.grd') && !s.endsWith('.grdp') &&
   !s.endsWith('.svg') &&
   !s.endsWith('new_tab_page_view.xml') &&
   !s.endsWith('channel_constants.xml') &&
-  !s.includes('google_update_idl') &&
   s !== 'chrome/VERSION' &&
   s !== 'ui/webui/resources/css/text_defaults_md.css'
 

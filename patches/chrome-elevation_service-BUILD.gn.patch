@@ -1,12 +1,20 @@
 diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
-index 6ae8694531550df2835f3afbe5a699403f7495fb..75dc1d59241a98fd1d2cf391269a39434c778661 100644
+index 6ae8694531550df2835f3afbe5a699403f7495fb..fc1e83132d6a1bc880bdc8ca55c0f73da1574e30 100644
 --- a/chrome/elevation_service/BUILD.gn
 +++ b/chrome/elevation_service/BUILD.gn
-@@ -87,6 +87,7 @@ source_set("lib") {
-   deps = [
-     "//base",
-     "//chrome/install_static:install_static_util",
-+    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
-     "//components/crx_file:crx_file",
-     "//third_party/zlib/google:zip",
+@@ -10,6 +10,7 @@ import("//testing/test.gni")
+ 
+ midl("elevation_service_idl") {
+   sources = [ "elevation_service_idl.idl" ]
++  sources -= [ "elevation_service_idl.idl" ] sources += ["//brave/chromium_src/chrome/elevation_service/elevation_service_idl.idl" ]
+ 
+   writes_tlb = true
+ }
+@@ -97,6 +98,7 @@ source_set("lib") {
+     "crypt32.lib",
+     "rpcrt4.lib",
    ]
++  deps += brave_elevation_service_lib_deps
+ }
+ 
+ process_version_rc_template("version_resources") {

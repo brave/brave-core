@@ -549,7 +549,7 @@ const util = {
   // So, this copying in every build doesn't affect compile performance.
   updateMidlFiles: () => {
     Log.progressScope('update midl files', () => {
-      for (const source of ["google_update", "brave"]) {
+      for (const source of ["google_update", "brave", "chrome"]) {
         fs.copySync(
           path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
           path.join(config.srcDir,
