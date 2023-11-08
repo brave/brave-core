@@ -178,40 +178,30 @@ export const PortfolioAssetItem = ({
           >
             <NameAndIcon>
               <IconsWrapper>
-                {!token.logo ? (
-                  <LoadingSkeleton
-                    circle={true}
-                    width={40}
-                    height={40}
+                {isNonFungibleToken ? (
+                  <NftIconWithPlaceholder
+                    asset={token}
+                    network={network}
                   />
                 ) : (
-                  <>
-                    {isNonFungibleToken ? (
-                      <NftIconWithPlaceholder
-                        asset={token}
-                        network={network}
-                      />
-                    ) : (
-                      <AssetIconWithPlaceholder
-                        asset={token}
-                        network={network}
-                      />
-                    )}
-                    {!isPanel &&
-                      network &&
-                      checkIfTokenNeedsNetworkIcon(
-                        network,
-                        token.contractAddress
-                      ) && (
-                        <NetworkIconWrapper>
-                          <CreateNetworkIcon
-                            network={network}
-                            marginRight={0}
-                          />
-                        </NetworkIconWrapper>
-                      )}
-                  </>
+                  <AssetIconWithPlaceholder
+                    asset={token}
+                    network={network}
+                  />
                 )}
+                {!isPanel &&
+                  network &&
+                  checkIfTokenNeedsNetworkIcon(
+                    network,
+                    token.contractAddress
+                  ) && (
+                    <NetworkIconWrapper>
+                      <CreateNetworkIcon
+                        network={network}
+                        marginRight={0}
+                      />
+                    </NetworkIconWrapper>
+                  )}
               </IconsWrapper>
               <NameColumn>
                 {!token.name && !token.symbol ? (
