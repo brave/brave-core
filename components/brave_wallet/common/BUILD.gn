@@ -58,6 +58,8 @@ static_library("common") {
     "hex_utils.h",
     "mem_utils.cc",
     "mem_utils.h",
+    "serializer_stream.cc",
+    "serializer_stream.h",
     "solana_address.cc",
     "solana_address.h",
     "solana_utils.cc",

@@ -16,15 +16,16 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_wallet::zcash_rpc {
+namespace brave_wallet {
 
 // lightwalletd interface
-class ZCashRpc {
+class ZCashRpc : public KeyedService {
  public:
   using GetUtxoListCallback = base::OnceCallback<void(
       base::expected<std::vector<zcash::ZCashUtxo>, std::string>)>;
@@ -32,24 +33,31 @@ class ZCashRpc {
       base::OnceCallback<void(base::expected<zcash::BlockID, std::string>)>;
   using GetTransactionCallback = base::OnceCallback<void(
       base::expected<zcash::RawTransaction, std::string>)>;
+  using SendTransactionCallback = base::OnceCallback<void(
+      base::expected<zcash::SendResponse, std::string>)>;
 
-  explicit ZCashRpc(
-      PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~ZCashRpc();
+  ZCashRpc(PrefService* prefs,
+           scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~ZCashRpc() override;
 
-  void GetUtxoList(const std::string& chain_id,
-                   const std::string& address,
-                   GetUtxoListCallback callback);
+  virtual void GetUtxoList(const std::string& chain_id,
+                           const std::string& address,
+                           GetUtxoListCallback callback);
 
-  void GetLatestBlock(const std::string& chain_id,
-                      GetLatestBlockCallback callback);
+  virtual void GetLatestBlock(const std::string& chain_id,
+                              GetLatestBlockCallback callback);
 
-  void GetTransaction(const std::string& chain_id,
-                      const std::string& tx_hash,
-                      GetTransactionCallback callback);
+  virtual void GetTransaction(const std::string& chain_id,
+                              const std::string& tx_hash,
+                              GetTransactionCallback callback);
+
+  virtual void SendTransaction(const std::string& chain_id,
+                               const std::string& data,
+                               SendTransactionCallback callback);
 
  private:
+  friend class base::RefCountedThreadSafe<ZCashRpc>;
+
   using UrlLoadersList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
@@ -66,12 +74,17 @@ class ZCashRpc {
       UrlLoadersList::iterator it,
       const std::unique_ptr<std::string> response_body);
 
+  void OnSendTransactionResponse(
+      ZCashRpc::SendTransactionCallback callback,
+      UrlLoadersList::iterator it,
+      const std::unique_ptr<std::string> response_body);
+
   UrlLoadersList url_loaders_list_;
-  raw_ptr<PrefService> prefs_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
   base::WeakPtrFactory<ZCashRpc> weak_ptr_factory_{this};
 };
 
-}  // namespace brave_wallet::zcash_rpc
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RPC_H_

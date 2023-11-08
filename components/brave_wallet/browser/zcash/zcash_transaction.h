@@ -32,7 +32,7 @@ class ZCashTransaction {
     base::Value::Dict ToValue() const;
     static absl::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
-    SHA256HashArray txid;
+    std::array<uint8_t, 32> txid;
     uint32_t index = 0;
   };
 
@@ -56,10 +56,10 @@ class ZCashTransaction {
     std::string utxo_address;
     Outpoint utxo_outpoint;
     uint64_t utxo_value = 0;
+    uint32_t n_sequence = 0xffffffff;
 
+    std::vector<uint8_t> script_pub_key;
     std::vector<uint8_t> script_sig;  // scriptSig aka unlock script.
-    std::vector<uint8_t> witness;     // serialized witness stack.
-    uint32_t n_sequence() const;
 
     bool IsSigned() const;
   };
@@ -79,6 +79,7 @@ class ZCashTransaction {
     static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
     std::string address;
+    std::vector<uint8_t> script_pubkey;
     uint64_t amount = 0;
   };
 
@@ -118,10 +119,16 @@ class ZCashTransaction {
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
 
+  uint32_t expiry_height() const { return expiry_height_; }
+  void set_expiry_height(uint32_t expiry_height) {
+    expiry_height_ = expiry_height;
+  }
+
  private:
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;
   uint32_t locktime_ = 0;
+  uint32_t expiry_height_ = 0;
   std::string to_;
   uint64_t amount_ = 0;
   uint64_t fee_ = 0;

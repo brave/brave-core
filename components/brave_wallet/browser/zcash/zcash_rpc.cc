@@ -15,7 +15,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 
-namespace brave_wallet::zcash_rpc {
+namespace brave_wallet {
 
 namespace {
 
@@ -59,6 +59,23 @@ const GURL MakeGetAddressUtxosURL(const GURL& base_url) {
   std::string path =
       base::StrCat({base_url.path(),
                     "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetAddressUtxos"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+const GURL MakeSendTransactionURL(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path =
+      base::StrCat({base_url.path(),
+                    "cash.z.wallet.sdk.rpc.CompactTxStreamer/SendTransaction"});
   replacements.SetPathStr(path);
 
   return base_url.ReplaceComponents(replacements);
@@ -127,7 +144,16 @@ std::string MakeGetLatestBlockHeightParams() {
 
 std::string MakeGetTransactionParams(const std::string& tx_hash) {
   zcash::TxFilter request;
-  request.set_hash(tx_hash);
+  std::string as_bytes;
+  base::HexStringToString(tx_hash, &as_bytes);
+  std::reverse(as_bytes.begin(), as_bytes.end());
+  request.set_hash(as_bytes);
+  return GetPrefixedProtobuf(request.SerializeAsString());
+}
+
+std::string MakeSendTransactionParams(const std::string& data) {
+  zcash::RawTransaction request;
+  request.set_data(data);
   return GetPrefixedProtobuf(request.SerializeAsString());
 }
 
@@ -350,4 +376,58 @@ void ZCashRpc::OnGetTransactionResponse(
   std::move(callback).Run(response);
 }
 
-}  // namespace brave_wallet::zcash_rpc
+void ZCashRpc::SendTransaction(const std::string& chain_id,
+                               const std::string& data,
+                               SendTransactionCallback callback) {
+  GURL request_url = MakeSendTransactionURL(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    return;
+  }
+
+  auto url_loader =
+      MakeGRPCLoader(request_url, MakeSendTransactionParams(data));
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  (*it)->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&ZCashRpc::OnSendTransactionResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+      5000);
+}
+
+void ZCashRpc::OnSendTransactionResponse(
+    ZCashRpc::SendTransactionCallback callback,
+    UrlLoadersList::iterator it,
+    const std::unique_ptr<std::string> response_body) {
+  auto current_loader = std::move(*it);
+  url_loaders_list_.erase(it);
+  zcash::SendResponse response;
+  if (current_loader->NetError()) {
+    std::move(callback).Run(base::unexpected("Network error"));
+    return;
+  }
+
+  if (!response_body) {
+    std::move(callback).Run(base::unexpected("Response body is empty"));
+    return;
+  }
+
+  auto message = ResolveSerializedMessage(*response_body);
+  if (!message) {
+    std::move(callback).Run(base::unexpected("Wrong response format"));
+    return;
+  }
+
+  if (!response.ParseFromString(message.value())) {
+    std::move(callback).Run(base::unexpected("Can't parse response"));
+    return;
+  }
+
+  std::move(callback).Run(response);
+}
+}  // namespace brave_wallet

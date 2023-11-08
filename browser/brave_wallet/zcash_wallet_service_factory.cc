@@ -10,11 +10,11 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -71,18 +71,16 @@ ZCashWalletServiceFactory::ZCashWalletServiceFactory()
           "ZCashWalletService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(KeyringServiceFactory::GetInstance());
+  DependsOn(ZCashRpcServiceFactory::GetInstance());
 }
 
 ZCashWalletServiceFactory::~ZCashWalletServiceFactory() = default;
 
 KeyedService* ZCashWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new ZCashWalletService(
       KeyringServiceFactory::GetServiceForContext(context),
-      user_prefs::UserPrefs::Get(context), shared_url_loader_factory);
+      ZCashRpcServiceFactory::GetServiceForContext(context));
 }
 
 content::BrowserContext* ZCashWalletServiceFactory::GetBrowserContextToUse(

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <algorithm>
 #include <limits>
 
 #include "base/strings/string_number_conversions.h"
@@ -12,6 +13,24 @@
 #include "base/strings/stringprintf.h"
 
 namespace brave_wallet {
+
+namespace {
+
+std::string HexEncodeReversed(const void* bytes, size_t size) {
+  static const char kHexChars[] = "0123456789ABCDEF";
+
+  // Each input byte creates two output hex characters.
+  std::string ret(size * 2, '\0');
+
+  for (size_t i = 0; i < size; ++i) {
+    char b = reinterpret_cast<const char*>(bytes)[size - 1 - i];
+    ret[(i * 2)] = kHexChars[(b >> 4) & 0xf];
+    ret[(i * 2) + 1] = kHexChars[b & 0xf];
+  }
+  return ret;
+}
+
+}  // namespace
 
 std::string ToHex(const std::string& data) {
   if (data.empty()) {
@@ -25,6 +44,13 @@ std::string ToHex(base::span<const uint8_t> data) {
     return "0x0";
   }
   return "0x" + base::ToLowerASCII(base::HexEncode(data));
+}
+
+std::string ToHexReversed(base::span<const uint8_t> data) {
+  if (data.empty()) {
+    return "0x0";
+  }
+  return "0x" + base::ToLowerASCII(HexEncodeReversed(data.data(), data.size()));
 }
 
 // Returns a hex string representation of a binary buffer. The returned hex

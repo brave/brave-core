@@ -36,19 +36,6 @@ absl::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
   return hd_key_base->GetPublicKeyBytes();
 }
 
-absl::optional<std::vector<uint8_t>> ZCashKeyring::SignMessage(
-    const mojom::ZCashKeyId& key_id,
-    base::span<const uint8_t, 32> message) {
-  auto hd_key_base = DeriveKey(key_id);
-  if (!hd_key_base) {
-    return absl::nullopt;
-  }
-
-  auto* hd_key = static_cast<HDKey*>(hd_key_base.get());
-
-  return hd_key->SignDer(message);
-}
-
 std::string ZCashKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base) {
     return std::string();
@@ -80,6 +67,19 @@ std::unique_ptr<HDKeyBase> ZCashKeyring::DeriveKey(
   // Mainnet - m/44'/133'/{address.account}'/{address.change}/{address.index}
   // Testnet - m/44'/1'/{address.account}'/{address.change}/{address.index}
   return key->DeriveNormalChild(key_id.index);
+}
+
+absl::optional<std::vector<uint8_t>> ZCashKeyring::SignMessage(
+    const mojom::ZCashKeyId& key_id,
+    base::span<const uint8_t, 32> message) {
+  auto hd_key_base = DeriveKey(key_id);
+  if (!hd_key_base) {
+    return absl::nullopt;
+  }
+
+  auto* hd_key = static_cast<HDKey*>(hd_key_base.get());
+
+  return hd_key->SignDer(message);
 }
 
 }  // namespace brave_wallet

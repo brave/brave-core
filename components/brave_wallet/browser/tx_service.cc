@@ -78,6 +78,10 @@ std::string GetToAddressFromTxDataUnion(
     return tx_data_union.get_btc_tx_data()->to;
   }
 
+  if (tx_data_union.is_zec_tx_data()) {
+    return tx_data_union.get_zec_tx_data()->to;
+  }
+
   NOTREACHED_NORETURN();
 }
 

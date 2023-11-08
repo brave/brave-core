@@ -44,11 +44,18 @@ export const buildExplorerUrl = (
     network.chainId === BraveWallet.SOLANA_TESTNET ||
     network.chainId === BraveWallet.SOLANA_DEVNET
 
+  const isZecNet = network.chainId === BraveWallet.Z_CASH_MAINNET ||
+                   network.chainId === BraveWallet.Z_CASH_TESTNET
+
   if (isFileCoinNet) {
     return `${explorerURL}?cid=${value}`
   }
 
   if (isFileCoinEvmNet) {
+    return `${explorerURL}/${value}`
+  }
+
+  if (isZecNet) {
     return `${explorerURL}/${value}`
   }
 

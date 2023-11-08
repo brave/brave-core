@@ -2600,6 +2600,21 @@ absl::optional<std::string> KeyringService::GetZCashAddress(
   return zcash_keyring->GetAddress(key_id);
 }
 
+absl::optional<std::vector<uint8_t>> KeyringService::GetZCashPubKey(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashKeyIdPtr& key_id) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsZCashAccount(*account_id));
+
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
+  if (!zcash_keyring) {
+    return absl::nullopt;
+  }
+
+  return zcash_keyring->GetPubkey(*key_id);
+}
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     absl::optional<uint32_t> next_receive_index,
@@ -2790,6 +2805,22 @@ KeyringService::SignMessageByBitcoinKeyring(
 
   return bitcoin_keyring->SignMessage(account_id->bitcoin_account_index,
                                       *key_id, message);
+}
+
+absl::optional<std::vector<uint8_t>> KeyringService::SignMessageByZCashKeyring(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashKeyIdPtr& key_id,
+    const base::span<const uint8_t, 32> message) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsZCashAccount(*account_id));
+
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
+  if (!zcash_keyring) {
+    return absl::nullopt;
+  }
+
+  return zcash_keyring->SignMessage(*key_id, message);
 }
 
 void KeyringService::ResetAllAccountInfosCache() {

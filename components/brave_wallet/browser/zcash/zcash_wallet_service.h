@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -40,10 +41,7 @@ class ZCashWalletService : public KeyedService,
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, ZCashTransaction, std::string)>;
 
-  ZCashWalletService(
-      KeyringService* keyring_service,
-      PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ZCashWalletService(KeyringService* keyring_service, ZCashRpc* zcash_rpc);
   ~ZCashWalletService() override;
 
   mojo::PendingRemote<mojom::ZCashWalletService> MakeRemote();
@@ -85,6 +83,9 @@ class ZCashWalletService : public KeyedService,
   absl::optional<std::string> GetUnusedChangeAddress(
       const mojom::AccountId& account_id);
 
+  bool SignTransactionInternal(ZCashTransaction& tx,
+                               const mojom::AccountIdPtr& account_id);
+
   void OnGetUtxos(
       scoped_refptr<GetTransparentUtxosContext> context,
       const std::string& current_address,
@@ -97,16 +98,28 @@ class ZCashWalletService : public KeyedService,
       GetTransactionStatusCallback callback,
       base::expected<zcash::RawTransaction, std::string> result);
 
+  void OnResolveLastBlockHeightForSendTransaction(
+      const std::string& chain_id,
+      const mojom::AccountIdPtr& account_id,
+      ZCashTransaction zcash_transaction,
+      SignAndPostTransactionCallback callback,
+      base::expected<zcash::BlockID, std::string> result);
+
+  void OnSendTransactionResult(
+      SignAndPostTransactionCallback callback,
+      ZCashTransaction zcash_transaction,
+      base::expected<zcash::SendResponse, std::string> result);
+
   void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
 
-  zcash_rpc::ZCashRpc* zcash_rpc();
+  ZCashRpc* zcash_rpc();
 
   raw_ptr<KeyringService> keyring_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  raw_ptr<ZCashRpc> zcash_rpc_;
+
   std::list<std::unique_ptr<CreateTransparentTransactionTask>>
       create_transaction_tasks_;
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
-  std::unique_ptr<zcash_rpc::ZCashRpc> zcash_rpc_;
   base::WeakPtrFactory<ZCashWalletService> weak_ptr_factory_{this};
 };
 

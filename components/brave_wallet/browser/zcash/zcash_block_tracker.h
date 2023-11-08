@@ -19,13 +19,11 @@
 
 namespace brave_wallet {
 
-namespace zcash_rpc {
 class ZCashRpc;
-}
 
 class ZCashBlockTracker : public BlockTracker {
  public:
-  explicit ZCashBlockTracker(zcash_rpc::ZCashRpc* zcash_rpc);
+  explicit ZCashBlockTracker(ZCashRpc* zcash_rpc);
   ~ZCashBlockTracker() override;
   ZCashBlockTracker(const ZCashBlockTracker&) = delete;
   ZCashBlockTracker operator=(const ZCashBlockTracker&) = delete;
@@ -52,7 +50,7 @@ class ZCashBlockTracker : public BlockTracker {
   std::map<std::string, uint32_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
-  raw_ptr<zcash_rpc::ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
 
   base::WeakPtrFactory<ZCashBlockTracker> weak_ptr_factory_{this};
 };

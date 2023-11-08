@@ -238,12 +238,19 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id,
       const mojom::BitcoinKeyIdPtr& key_id,
       base::span<const uint8_t, 32> message);
+  absl::optional<std::vector<uint8_t>> SignMessageByZCashKeyring(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashKeyIdPtr& key_id,
+      const base::span<const uint8_t, 32> message);
 
   absl::optional<std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>>>
   GetZCashAddresses(const mojom::AccountId& account_id);
   absl::optional<std::string> GetZCashAddress(
       const mojom::AccountId& account_id,
       const mojom::ZCashKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> GetZCashPubKey(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashKeyIdPtr& key_id);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr GetSelectedWalletAccount();

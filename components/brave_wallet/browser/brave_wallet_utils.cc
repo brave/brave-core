@@ -598,7 +598,8 @@ const mojom::NetworkInfo* GetZCashMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "ZCash Mainnet",
-       {""},  // TODO(cypt4): explorer url
+       {"https://zcashblockexplorer.com/transactions"},  // TODO(cypt4):
+                                                         // explorer url
        {},
        0,
        {ZCashMainnetRpcUrl()},

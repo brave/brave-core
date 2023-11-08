@@ -7,8 +7,29 @@
 
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/serializer_stream.h"
 
 namespace brave_wallet {
+
+namespace {
+constexpr size_t kPubKeyHashSize = 20;
+constexpr size_t kCheckSumSize = 4;
+constexpr size_t kPrefixSize = 2;
+}  // namespace
+
+DecodedZCashAddress::DecodedZCashAddress() = default;
+DecodedZCashAddress::~DecodedZCashAddress() = default;
+DecodedZCashAddress::DecodedZCashAddress(const DecodedZCashAddress& other) =
+    default;
+DecodedZCashAddress& DecodedZCashAddress::operator=(
+    const DecodedZCashAddress& other) = default;
+DecodedZCashAddress::DecodedZCashAddress(DecodedZCashAddress&& other) = default;
+DecodedZCashAddress& DecodedZCashAddress::operator=(
+    DecodedZCashAddress&& other) = default;
+
+bool IsValidZCashAddress(const std::string& address) {
+  return true;
+}
 
 std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
                                        bool testnet) {
@@ -18,6 +39,66 @@ std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
   std::vector<uint8_t> data_part = Hash160(pubkey);
   result.insert(result.end(), data_part.begin(), data_part.end());
   return Base58EncodeWithCheck(result);
+}
+
+absl::optional<DecodedZCashAddress> DecodeZCashAddress(
+    const std::string& address) {
+  std::vector<uint8_t> decode_result;
+  if (!Base58Decode(address, &decode_result,
+                    kPubKeyHashSize + kCheckSumSize + kPrefixSize, false)) {
+    return absl::nullopt;
+  }
+
+  bool is_testnet = decode_result[0] == 0x1d && decode_result[1] == 0x25;
+  bool is_mainnet = decode_result[0] == 0x1c && decode_result[1] == 0xb8;
+
+  if (!is_testnet && !is_mainnet) {
+    return absl::nullopt;
+  }
+
+  std::vector<uint8_t> checksum(decode_result.end() - kCheckSumSize,
+                                decode_result.end());
+  std::vector<uint8_t> body(decode_result.begin() + kPrefixSize,
+                            decode_result.end() - kCheckSumSize);
+  std::vector<uint8_t> checksum_payload(decode_result.begin(),
+                                        decode_result.end() - kCheckSumSize);
+
+  auto hash = DoubleSHA256Hash(checksum_payload);
+  if (!std::equal(hash.begin(), hash.begin() + kCheckSumSize,
+                  checksum.begin())) {
+    return absl::nullopt;
+  }
+
+  DecodedZCashAddress result;
+  result.pubkey_hash = body;
+  result.testnet = is_testnet;
+
+  return result;
+}
+
+std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
+                                                bool testnet) {
+  auto decoded_address = DecodeZCashAddress(address);
+  if (!decoded_address) {
+    return {};
+  }
+
+  if (testnet != decoded_address->testnet) {
+    return {};
+  }
+
+  std::vector<uint8_t> data;
+  SerializerStream stream(&data);
+  CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
+
+  stream.Push8AsLE(0x76);                          // OP_DUP
+  stream.Push8AsLE(0xa9);                          // OP_HASH
+  stream.Push8AsLE(0x14);                          // hash size
+  stream.PushBytes(decoded_address->pubkey_hash);  // hash
+  stream.Push8AsLE(0x88);                          // OP_EQUALVERIFY
+  stream.Push8AsLE(0xac);                          // OP_CHECKSIG
+
+  return data;
 }
 
 }  // namespace brave_wallet

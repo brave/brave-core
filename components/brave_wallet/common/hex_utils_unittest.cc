@@ -14,6 +14,16 @@
 
 namespace brave_wallet {
 
+TEST(HexUtilsUnitTest, ToHexReversed) {
+  const std::string_view str = "hello world";
+  ASSERT_EQ(ToHexReversed(base::as_bytes(base::make_span(str))),
+            "0x646c726f77206f6c6c6568");
+
+  ASSERT_EQ(ToHexReversed(std::vector<uint8_t>()), "0x0");
+  ASSERT_EQ(ToHexReversed(std::vector<uint8_t>(str.begin(), str.end())),
+            "0x646c726f77206f6c6c6568");
+}
+
 TEST(HexUtilsUnitTest, ToHex) {
   const std::string_view str = "hello world";
   ASSERT_EQ(ToHex(""), "0x0");
