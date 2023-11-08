@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/allow_notifications_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -13,13 +13,11 @@
 namespace brave_ads {
 
 class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
- protected:
-  const AllowNotificationsPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldAllow) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowAllowNotifications());
 }
 
 TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldNotAllow) {
@@ -27,7 +25,7 @@ TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldNotAllow) {
   MockCanShowNotificationAds(ads_client_mock_, false);
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(ShouldAllowAllowNotifications());
 }
 
 }  // namespace brave_ads
