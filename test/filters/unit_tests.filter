@@ -57,6 +57,7 @@
 -DownloadBubbleRowViewTest.*
 -DownloadToolbarButtonViewTest.*
 -EditAddressProfileDialogControllerImplTest.*
+-EnterpriseProfileWelcomeHandleTest.*
 -ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
