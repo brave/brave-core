@@ -10,23 +10,9 @@
 
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
-#include "base/containers/flat_set.h"
+#include "base/containers/fixed_flat_set.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
-
-namespace {
-
-base::flat_set<std::string_view> kTestFontWhitelist =
-    base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{
-        "roboto",
-        "caro",
-        "tenso",
-        "elfo",
-    });
-base::flat_set<std::string_view> kEmptyFontSet =
-    base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{});
-
-}  // namespace
 
 class BraveFontWhitelistTest : public testing::Test {
  public:
@@ -39,21 +25,18 @@ class BraveFontWhitelistTest : public testing::Test {
 };
 
 TEST(BraveFontWhitelistTest, Platforms) {
-  base::flat_set<std::string_view> allowed(
-      brave::get_font_whitelist_for_testing());
-
 #if BUILDFLAG(IS_MAC)
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  EXPECT_EQ(allowed.size(), 286UL);
+  EXPECT_EQ(brave::CanRestrictFontsForTesting(), true);
+  EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 286UL);
 #elif BUILDFLAG(IS_WIN)
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  EXPECT_EQ(allowed.size(), 313UL);
+  EXPECT_EQ(brave::CanRestrictFontsForTesting(), true);
+  EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 313UL);
 #elif BUILDFLAG(IS_ANDROID)
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  EXPECT_EQ(allowed.size(), 40UL);
+  EXPECT_EQ(brave::CanRestrictFontsForTesting(), true);
+  EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 40UL);
 #else
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), false);
-  EXPECT_EQ(allowed.size(), 0UL);
+  EXPECT_EQ(brave::CanRestrictFontsForTesting(), false);
+  EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 0UL);
 #endif
 }
 
@@ -102,8 +85,7 @@ TEST(BraveFontWhitelistTest, Locales) {
     std::make_tuple<>("la", 0UL),
   };
   for (const auto& c : test_cases) {
-    base::flat_set<std::string_view> allowed(
-        brave::GetAdditionalFontWhitelistByLocale(std::get<0>(c)));
+    auto allowed = brave::GetAdditionalFontWhitelistByLocale(std::get<0>(c));
     EXPECT_EQ(allowed.size(), std::get<1>(c));
   }
 }
@@ -204,20 +186,4 @@ TEST(BraveFontWhitelistTest, CaseInsensitivity) {
   for (const auto& c : test_cases) {
     EXPECT_EQ(brave::AllowFontByFamilyName(std::get<0>(c), ""), std::get<1>(c));
   }
-}
-
-TEST(BraveFontWhitelistTest, API) {
-  brave::set_font_whitelist_for_testing(true /* can_restrict_fonts */,
-                                        kTestFontWhitelist);
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  base::flat_set<std::string_view> allowed(
-      brave::get_font_whitelist_for_testing());
-  EXPECT_EQ(allowed.size(), 4UL);
-  EXPECT_EQ(allowed.contains("elfo"), true);
-  brave::set_font_whitelist_for_testing(false /* can_restrict_fonts */,
-                                        kEmptyFontSet);
-  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), false);
-  base::flat_set<std::string_view> allowed2(
-      brave::get_font_whitelist_for_testing());
-  EXPECT_EQ(allowed2.size(), 0UL);
 }

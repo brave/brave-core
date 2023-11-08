@@ -9,7 +9,6 @@
 #include <string>
 #include <string_view>
 
-#include "base/containers/flat_set.h"
 #include "third_party/blink/public/platform/web_common.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -23,18 +22,16 @@ BLINK_EXPORT bool IsFontAllowedForFarbling(const AtomicString& family_name);
 
 // Public for testing but other callers should call
 // AllowFontByFamilyName instead.
-BLINK_EXPORT const base::flat_set<std::string_view>&
-GetAdditionalFontWhitelistByLocale(WTF::String default_language);
+BLINK_EXPORT base::span<const std::string_view>
+GetAdditionalFontWhitelistByLocale(WTF::String locale_language);
 
 // Testing-only functions
-BLINK_EXPORT void set_font_whitelist_for_testing(
-    bool can_restrict_fonts,
-    const base::flat_set<std::string_view>& font_whitelist);
 
-BLINK_EXPORT bool get_can_restrict_fonts_for_testing();
+BLINK_EXPORT size_t GetFontWhitelistSizeForTesting();
 
-BLINK_EXPORT const base::flat_set<std::string_view>&
-get_font_whitelist_for_testing();
+BLINK_EXPORT bool CanRestrictFontsForTesting();
+
+BLINK_EXPORT void SetSimulateEmptyFontWhitelistForTesting(bool enable);
 
 }  // namespace brave
 
