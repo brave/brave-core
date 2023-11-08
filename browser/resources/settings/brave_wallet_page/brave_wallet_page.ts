@@ -15,7 +15,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 
 import {RouteObserverMixin, Router} from '../router.js';
 
-import {BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
+import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
 import {getTemplate} from './brave_wallet_page.html.js'
 
 const SettingsBraveWalletPageBase =
