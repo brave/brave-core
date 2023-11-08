@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "base/test/bind.h"
+#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -34,7 +36,7 @@ const char kScript[] = R"(
         });
       })();
       )";
-      
+
 }  // namespace
 
 mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> GetRemote(
@@ -69,6 +71,7 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.RegisterRequestHandler(base::BindRepeating(HandleRequest));
+    content::SetBrowserClientForTesting(&client_);
 
     ASSERT_TRUE(https_server_.Start());
   }
@@ -96,42 +99,48 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
 
  private:
+  BraveContentBrowserClient client_;
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 // TESTS
 
 IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjected) {
-  const GURL url = https_server_.GetURL("a.com", "/");
-  auto cb = base::BindOnce([](base::Value value) {
-    EXPECT_TRUE(value.GetIfBool().value_or(false));
+  base::RunLoop run_loop;
+  auto callback = base::BindLambdaForTesting([&](base::Value value) {
+    EXPECT_TRUE(value.GetBool());
+    run_loop.Quit();
   });
   auto script = base::StringPrintf(kScript, "true");
+  const GURL url = https_server_.GetURL("a.com", "/");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          ISOLATED_WORLD_ID_BRAVE_INTERNAL,
-          base::UTF8ToUTF16(std::string(script)),
-          blink::mojom::UserActivationOption::kDoNotActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+  auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
+  remote->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::PromiseResultOption::kAwait, std::move(callback));
+  // Wait until the callback is called.
+  run_loop.Run();
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
 IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedReturnsFalse) {
+  base::RunLoop run_loop;
   const GURL url = https_server_.GetURL("a.com", "/");
-  auto cb = base::BindOnce([](base::Value value) {
-    EXPECT_FALSE(value.GetIfBool().value_or(false));
+  auto cb = base::BindLambdaForTesting([&](base::Value value) {
+    EXPECT_FALSE(value.GetBool());
+    run_loop.Quit();
   });
   auto script = base::StringPrintf(kScript, "false");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          ISOLATED_WORLD_ID_BRAVE_INTERNAL,
-          base::UTF8ToUTF16(std::string(script)),
-          blink::mojom::UserActivationOption::kDoNotActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+  auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
+  remote->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+  run_loop.Run();
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
@@ -139,9 +148,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedReturnsFalse) {
 
 IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedDoNotAwait) {
   const GURL url = https_server_.GetURL("a.com", "/");
-  auto cb = base::BindOnce([](base::Value value) {
-    EXPECT_TRUE(value.GetIfBool().value_or(false));
-  });
+  auto cb = base::BindOnce([](base::Value value) { FAIL(); });
   auto script = base::StringPrintf(kScript, "true");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   GetRemote(web_contents()->GetPrimaryMainFrame())
