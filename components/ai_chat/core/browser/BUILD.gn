@@ -1,0 +1,82 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+
+static_library("browser") {
+  sources = [
+    "ai_chat_credential_manager.cc",
+    "ai_chat_credential_manager.h",
+    "conversation_driver.cc",
+    "conversation_driver.h",
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
+    "ai_chat_metrics.cc",
+    "ai_chat_metrics.h",
+    "constants.cc",
+    "constants.h",
+    "engine/engine_consumer.h",
+    "engine/engine_consumer_claude.cc",
+    "engine/engine_consumer_claude.h",
+    "engine/engine_consumer_llama.cc",
+    "engine/engine_consumer_llama.h",
+    "engine/remote_completion_client.cc",
+    "engine/remote_completion_client.h",
+    "models.cc",
+    "models.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/p3a_utils",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/skus/common:mojom",
+    "//brave/components/time_period_storage",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [
+      "ai_chat_credential_manager_unittest.cc",
+      "ai_chat_metrics_unittest.cc",
+    ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
+      "//brave/components/skus/browser",
+      "//brave/components/skus/common",
+      "//brave/components/skus/common:mojom",
+      "//components/prefs:test_support",
+      "//content/test:test_support",
+      "//services/network:test_support",
+      "//services/network/public/cpp:cpp",
+      "//testing/gtest:gtest",
+    ]
+  }
+}

@@ -7,7 +7,7 @@ import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -357,7 +357,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core:unit_tests" ]
+    deps += [ "//brave/components/ai_chat/core/browser:unit_tests" ]
   }
 
   data = [ "data/" ]
@@ -1039,12 +1039,12 @@ test("brave_browser_tests") {
   if (enable_speedreader) {
     sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
-      "//brave/components/ai_chat/common/buildflags",
+      "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
     ]
     if (enable_ai_chat) {
-      deps += [ "//brave/components/ai_chat/common" ]
+      deps += [ "//brave/components/ai_chat/core/common" ]
     }
   }
 
