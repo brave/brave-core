@@ -12,7 +12,7 @@ namespace views {
 using MenuConfigTest = ViewsTestBase;
 
 TEST_F(MenuConfigTest, ChangedValueTest) {
-  EXPECT_EQ(9, views::MenuConfig::instance().item_vertical_margin);
+  EXPECT_EQ(4, views::MenuConfig::instance().item_vertical_margin);
   EXPECT_EQ(16, views::MenuConfig::instance().item_horizontal_padding);
 }
 
