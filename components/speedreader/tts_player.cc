@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/tts_controller.h"
 #include "content/public/browser/tts_utterance.h"
@@ -182,7 +183,8 @@ void TtsPlayer::Controller::Resume(bool recreate_utterance) {
     reading_start_position_ += reading_position_;
     reading_position_ = 0;
 
-    utterance->SetText(GetParagraphToRead().substr(reading_start_position_));
+    utterance->SetText(base::UTF16ToUTF8(
+        GetParagraphToRead().substr(reading_start_position_)));
     utterance->SetShouldClearQueue(true);
     utterance->SetEventDelegate(this);
     utterance->SetVoiceName(current_voice_);
@@ -204,19 +206,19 @@ bool TtsPlayer::Controller::HasNextParagraph() {
   return paragraph_index_ + 1 < static_cast<int>(content->size());
 }
 
-const std::string& TtsPlayer::Controller::GetParagraphToRead() {
+std::u16string TtsPlayer::Controller::GetParagraphToRead() {
   if (!reading_content_.is_dict()) {
-    return base::EmptyString();
+    return base::EmptyString16();
   }
   const auto* content = reading_content_.GetDict().FindList(kParagraphsKey);
   if (!content) {
-    return base::EmptyString();
+    return base::EmptyString16();
   }
   if (0 <= paragraph_index_ &&
       paragraph_index_ < static_cast<int>(content->size())) {
-    return (*content)[paragraph_index_].GetString();
+    return base::UTF8ToUTF16((*content)[paragraph_index_].GetString());
   }
-  return base::EmptyString();
+  return base::EmptyString16();
 }
 
 void TtsPlayer::Controller::DidStartNavigation(
@@ -240,16 +242,18 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_WORD:
       reading_position_ = char_index;
       for (auto& o : owner_->observers_) {
-        o.OnReadingProgress(playing_web_contents_, paragraph_index_, char_index,
-                            length);
+        o.OnReadingProgress(playing_web_contents_, paragraph_index_,
+                            reading_start_position_ + char_index, length);
       }
       break;
     case content::TtsEventType::TTS_EVENT_ERROR:
     case content::TtsEventType::TTS_EVENT_INTERRUPTED:
     case content::TtsEventType::TTS_EVENT_CANCELLED:
     case content::TtsEventType::TTS_EVENT_PAUSE:
-      for (auto& o : owner_->observers_) {
-        o.OnReadingStop(playing_web_contents_);
+      if (!continue_next_paragraph_) {
+        for (auto& o : owner_->observers_) {
+          o.OnReadingStop(playing_web_contents_);
+        }
       }
       break;
     case content::TtsEventType::TTS_EVENT_END:
@@ -258,9 +262,11 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
 
       if (HasNextParagraph()) {
         ++paragraph_index_;
+        continue_next_paragraph_ = true;
         Resume(true);
       } else {
         paragraph_index_ = -1;
+        continue_next_paragraph_ = false;
         for (auto& o : owner_->observers_) {
           o.OnReadingProgress(playing_web_contents_, paragraph_index_,
                               char_index, length);
@@ -270,9 +276,12 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
       break;
     case content::TtsEventType::TTS_EVENT_RESUME:
     case content::TtsEventType::TTS_EVENT_START:
-      for (auto& o : owner_->observers_) {
-        o.OnReadingStart(playing_web_contents_);
+      if (!continue_next_paragraph_) {
+        for (auto& o : owner_->observers_) {
+          o.OnReadingStart(playing_web_contents_);
+        }
       }
+      continue_next_paragraph_ = false;
       break;
     case content::TTS_EVENT_SENTENCE:
     case content::TTS_EVENT_MARKER:

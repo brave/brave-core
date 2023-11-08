@@ -34,6 +34,8 @@ interface ToolbarDataHandler {
   Pause();
   Stop();
   Forward();
+
+  OnToolbarStateChanged(MainButtonType button);
 };
 
 interface ToolbarEventsHandler {
@@ -64,6 +66,14 @@ struct ToolbarColors {
   uint32 button_hover;
   uint32 button_active;
   uint32 button_border;
+};
+
+enum MainButtonType {
+  None,
+  Tune,
+  Appearance,
+  TextToSpeech,
+  AI,
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

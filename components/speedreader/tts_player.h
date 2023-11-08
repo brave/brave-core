@@ -80,7 +80,7 @@ class TtsPlayer {
     void Resume(bool recreate_utterance);
 
     bool HasNextParagraph();
-    const std::string& GetParagraphToRead();
+    std::u16string GetParagraphToRead();
 
     // content::WebContentsObserver:
     void DidStartNavigation(content::NavigationHandle* handle) override;
@@ -109,6 +109,8 @@ class TtsPlayer {
 
     double current_speed_ = 1.0;
     std::string current_voice_;
+
+    bool continue_next_paragraph_ = false;
   };
 
   ~TtsPlayer();

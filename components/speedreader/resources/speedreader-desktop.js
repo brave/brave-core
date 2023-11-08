@@ -15,6 +15,7 @@ const defaultSpeedreaderData = {
     averageWordsPerMinute: 265,
     minutesText: 'min. read',
     ttsEnabled: false,
+    ttsReading: false,
 }
 
 const $ = (id) => {
@@ -49,8 +50,8 @@ const getTextContent = (element) => {
     if (!element) {
         return null
     }
-    const text = (element.innerText || element.wholeText).replace(/\n|\r +/g, ' ').trim()
-    if (text.length > 0) {
+    const text = (element.innerText || element.wholeText)?.replace(/\n|\r +/g, ' ')?.trim()
+    if (text?.length > 0) {
         return text
     }
     return null
@@ -78,17 +79,21 @@ const initTextToSpeak = () => {
     const createPlayer = (p) => {
         const player = document.createElement('span')
         player.classList.add('tts-paragraph-player')
+        const button = document.createElement('span')
+        button.classList.add('tts-circle')
         const playButton = document.createElement('span')
         playButton.classList.add('tts-paragraph-player-button', 'tts-play-icon')
         playButton.title = speedreaderData.playButtonTitle
-        playButton.onclick = (ev) => {
+        playButton.onclick = button.onclick = (ev) => {
             window.speedreader.ttsPlayPause(parseInt(p.getAttribute('tts-paragraph-index')))
         }
         player.insertAdjacentElement('afterbegin', playButton)
+        player.insertAdjacentElement('afterbegin', button)
         p.insertAdjacentElement('afterbegin', player)
     }
 
     makeParagraph($(metaDataDivId)?.querySelector('.title'))
+    makeParagraph($(metaDataDivId)?.querySelector('.subhead'))
 
     // Returns true if node is a leaf of the parentNode.
     const isChildOf = (node, parentNode) => {
@@ -147,10 +152,50 @@ const extractTextToSpeak = () => {
     }
 }
 
+const highlightWord = (paragraph, start, end) => {
+    nodes = document.createNodeIterator(
+        paragraph,
+        NodeFilter.SHOW_TEXT,
+        { acceptNode(n) { return NodeFilter.FILTER_ACCEPT } })
+
+    const range = new Range()
+
+    let startNode = null
+    let endNode = null
+
+    while (node = nodes.nextNode()) {
+        if (!startNode) {
+            if (start < node.textContent.length) {
+                startNode = node
+                range.setStart(node, start)
+            }
+            start -= node.textContent.length
+        }
+        if (!endNode) {
+            if (end <= node.textContent.length) {
+                endNode = node
+                range.setEnd(endNode, end)
+            }
+            end -= node.textContent.length
+        }
+    }
+
+    CSS.highlights.set('tts-highlighted-word', new Highlight(range))
+}
+
+const setTtsButtonIcon = (e, i) => {
+    const button = e?.querySelector('.tts-paragraph-player-button')
+    if (button) {
+        button.classList.remove('tts-play-icon', 'tts-pause-icon')
+        button.classList.add(i)
+    }
+}
+
 const highlightText = (ttsParagraphIndex, charIndex, length) => {
     document.querySelectorAll('.tts-highlighted').forEach((e) => {
         if (e.getAttribute('tts-paragraph-index') != ttsParagraphIndex) {
             e.classList.remove('tts-highlighted')
+            setTtsButtonIcon(e, 'tts-play-icon')
         }
     })
 
@@ -158,6 +203,21 @@ const highlightText = (ttsParagraphIndex, charIndex, length) => {
         '[tts-paragraph-index="' + ttsParagraphIndex + '"]')
     if (paragraph) {
         paragraph.classList.add('tts-highlighted')
+        if (window.speedreaderData.ttsReading) {
+            setTtsButtonIcon(paragraph, 'tts-pause-icon')
+        } else {
+            setTtsButtonIcon(paragraph, 'tts-play-icon')
+        }
+        highlightWord(paragraph, charIndex, charIndex + length)
+    } else {
+        CSS.highlights.clear()
+    }
+}
+
+const setTtsReadingState = (reading) => {
+    window.speedreaderData.ttsReading = reading;
+    if (!window.speedreaderData.ttsReading) {
+        setTtsButtonIcon(document.querySelector('.tts-highlighted'), 'tts-play-icon')
     }
 }
 

@@ -6,8 +6,8 @@
 import * as React from 'react'
 
 import * as S from './style'
-import getToolbarAPI, { AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, ColumnWidth } from '../../api/browser'
-import { MainButtonType, MainButtonsList } from '../lists'
+import getToolbarAPI, { MainButtonType, AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, PlaybackState, ColumnWidth } from '../../api/browser'
+import { MainButtonsList } from '../lists'
 import ReaderModeControl from "../reader-mode-control"
 import AppearanceControl from "../appearance-control"
 import TtsControl from '../tts-control'
@@ -30,6 +30,12 @@ function Toolbar() {
     getToolbarAPI().eventsRouter.onAppearanceSettingsChanged.addListener((settings: AppearanceSettings) => {
       setAppearanceSettings(settings)
     })
+    getToolbarAPI().eventsRouter.setPlaybackState.addListener((state: PlaybackState) => {
+      if (state !== PlaybackState.kStopped) {
+        setActiveButton(MainButtonType.TextToSpeech)
+      }
+    })
+
     getToolbarAPI().eventsRouter.onBrowserThemeChanged.addListener((colors: ToolbarColors) => {
       const style = document.documentElement.style
       style.setProperty('--color-background', toColor(colors.background))
@@ -40,6 +46,10 @@ function Toolbar() {
       style.setProperty('--color-button-active', toColor(colors.buttonActive))
     })
   }, [])
+
+  React.useEffect(() => {
+    getToolbarAPI().dataHandler.onToolbarStateChanged(activeButton)
+  }, [activeButton])
 
   getToolbarAPI().eventsRouter.onTuneBubbleClosed.addListener(() => {
     if (activeButton === MainButtonType.Tune) {
