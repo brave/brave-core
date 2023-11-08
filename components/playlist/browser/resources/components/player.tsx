@@ -33,9 +33,20 @@ import {
   PlaylistTypes
 } from '../api/playerEventsNotifier'
 import { ProgressBar } from './progressBar'
+import { formatTimeInSeconds } from '../utils/timeFormatter'
+
+const TimeContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+
+  color: ${color.text.secondary};
+  font: ${font.primary.xSmall.regular};
+`
 
 const VideoContainer = styled.div`
   position: relative;
+  display: flex;
 `
 
 const StyledVideo = styled.video`
@@ -52,8 +63,54 @@ const StyledVideo = styled.video`
   }
 `
 
+const VideoOverlayControlsContainer = styled.div<{
+  mouseHovered: boolean
+}>`
+  ${hiddenOnMiniPlayer}
+
+  width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.l};
+  position: absolute;
+  bottom: 0;
+  padding: ${spacing.xl};
+  background: ${color.dialogs.scrimBackground};
+
+  transition: opacity 0.1s ease-out;
+  ${(p) =>
+    !p.mouseHovered &&
+    css`
+      opacity: 0;
+    `}
+`
+
 const StyledSeeker = styled(PlayerSeeker)`
   ${hiddenOnMiniPlayer}
+
+  --seeker-height: 12px;
+  --seeker-progress-stroke-thickness: 2px;
+  --seeker-progress-background: color-mix(
+    in srgb,
+    ${color.white} 20%,
+    transparent
+  );
+
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  bottom: calc(
+    (var(--seeker-height) - var(--seeker-progress-stroke-thickness)) / -2
+  );
+`
+
+const FaviconAndTitle = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+  overflow: hidden;
 `
 
 const ControlsContainer = styled.div`
@@ -63,7 +120,6 @@ const ControlsContainer = styled.div`
   @media ${playerTypes.normalPlayer} {
     position: absolute;
     bottom: 0;
-    z-index: 1;
     width: 100%;
 
     flex-direction: column;
@@ -74,13 +130,17 @@ const ControlsContainer = styled.div`
     box-sizing: border-box;
     height: var(--player-controls-area-height);
 
+    & ${FaviconAndTitle} {
+      display: none;
+    }
+
     &::before {
       content: '';
       background-color: ${color.dialogs.frostedGlassBackground};
       background-position: center;
       position: absolute;
       width: 100%;
-      height: calc(100% + ${spacing.m});
+      height: 100%;
       z-index: -1;
       left: 0;
       bottom: 0;
@@ -109,7 +169,7 @@ const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
   // Put blurred thumbnail underneath other UI controls
   &::before {
     content: '';
-    background: url(${p => p.backgroundUrl});
+    background: url(${(p) => p.backgroundUrl});
     filter: blur(8px);
     background-position: center;
     position: absolute;
@@ -131,14 +191,6 @@ const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
   }
 `
 
-const FaviconAndTitle = styled.div`
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  gap: ${spacing.m};
-  overflow: hidden;
-`
-
 const StyledFavicon = styled.img<{ clickable: boolean }>`
   ${hiddenOnMiniPlayer}
   padding: 3px;
@@ -147,7 +199,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
   border-radius: ${radius.s};
   border: 1px solid rgba(0, 0, 0, 0.05);
   background: ${color.white};
-  ${p =>
+  ${(p) =>
     p.clickable &&
     css`
       cursor: pointer;
@@ -160,21 +212,20 @@ const StyledTitle = styled.div<{ clickable: boolean }>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  ${p =>
+  ${(p) =>
     p.clickable &&
     css`
       cursor: pointer;
     `}
 `
-
 const StyledProgressBar = styled(ProgressBar)`
   ${hiddenOnNormalPlayer}
 `
 
 // Route changes of PlayerState to parent frame.
-function useStateRouter () {
+function useStateRouter() {
   const playerState = useSelector<ApplicationState, PlayerState | undefined>(
-    applicationState => applicationState.playerState
+    (applicationState) => applicationState.playerState
   )
   React.useEffect(() => {
     if (playerState) {
@@ -186,14 +237,14 @@ function useStateRouter () {
   }, [playerState])
 }
 
-export default function Player () {
+export default function Player() {
   useStateRouter()
 
   const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
-    applicationState => applicationState.playerState?.currentItem
+    (applicationState) => applicationState.playerState?.currentItem
   )
   const currentList = useSelector<ApplicationState, Playlist | undefined>(
-    applicationState => applicationState.playerState?.currentList
+    (applicationState) => applicationState.playerState?.currentList
   )
 
   const autoPlayEnabled = useAutoPlayEnabled()
@@ -201,7 +252,13 @@ export default function Player () {
   const [videoElement, setVideoElement] =
     React.useState<HTMLVideoElement | null>(null)
 
-  const [currentPosition, setCurrentPosition] = React.useState(0)
+  const [currentTime, setCurrentTime] = React.useState(0)
+  const [duration, setDuration] = React.useState(0)
+
+  const [mouseHoveredOnVideo, setMouseHoveredOnVideo] = React.useState(false)
+  // As seeker is a little bit bigger than the video area, we should observe
+  // mouse events on the seeker as well.
+  const [mouseHoveredOnSeeker, setMouseHoveredOnSeeker] = React.useState(false)
 
   React.useEffect(() => {
     if (videoElement && !videoElement.paused && !currentItem) {
@@ -243,10 +300,13 @@ export default function Player () {
 
   return (
     <PlayerContainer backgroundUrl={currentItem?.thumbnailPath.url}>
-      <VideoContainer>
+      <VideoContainer
+        onMouseEnter={() => setMouseHoveredOnVideo(true)}
+        onMouseLeave={() => setMouseHoveredOnVideo(false)}
+      >
         <StyledVideo
           tabIndex={0}
-          onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
+          onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()}
           ref={setVideoElement}
           autoPlay
           onPlay={() =>
@@ -257,7 +317,7 @@ export default function Player () {
           }
           onEnded={() => {
             if (currentItem) {
-              setCurrentPosition(videoElement!.duration)
+              setCurrentTime(videoElement!.duration)
 
               notifyEventsToTopFrame({
                 type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
@@ -274,7 +334,8 @@ export default function Player () {
           onTimeUpdate={() => {
             if (!currentItem) return
 
-            setCurrentPosition(videoElement!.currentTime)
+            setCurrentTime(videoElement!.currentTime)
+            setDuration(videoElement!.duration)
             notifyEventsToTopFrame({
               type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
               data: {
@@ -286,33 +347,67 @@ export default function Player () {
           onError={() => {
             // TODO(sko) Show alert when z-index patch is ready.
             if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
+
+            setCurrentTime(0)
+            setDuration(0)
           }}
         />
         {!!currentItem?.duration && (
           <StyledProgressBar
-            progress={currentPosition / (+currentItem.duration / 1e6)}
+            progress={currentTime / (+currentItem.duration / 1e6)}
           />
         )}
+        <VideoOverlayControlsContainer
+          mouseHovered={mouseHoveredOnVideo || mouseHoveredOnSeeker}
+        >
+          <FaviconAndTitle>
+            <StyledFavicon
+              src={
+                currentItem?.id &&
+                `chrome-untrusted://playlist-data/${currentItem.id}/favicon`
+              }
+              clickable={!!currentItem}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()}
+              onClick={() => {
+                if (currentItem) {
+                  notifyEventsToTopFrame({
+                    type: PlaylistTypes.PLAYLIST_OPEN_SOURCE_PAGE,
+                    data: currentItem
+                  })
+                }
+              }}
+            />
+            <StyledTitle
+              clickable={!!(currentList && currentItem)}
+              onClick={() => {
+                if (currentList && currentItem) {
+                  notifyEventsToTopFrame({
+                    type: PlaylistTypes.PLAYLIST_GO_BACK_TO_CURRENTLY_PLAYING_FOLDER,
+                    data: { currentList, currentItem }
+                  })
+                }
+              }}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()}
+            >
+              {currentItem?.name}
+            </StyledTitle>
+          </FaviconAndTitle>
+          <TimeContainer>
+            <span>{formatTimeInSeconds(currentTime, 'colon')}</span>
+            <span>{formatTimeInSeconds(duration, 'colon')}</span>
+          </TimeContainer>
+        </VideoOverlayControlsContainer>
+        <StyledSeeker
+          videoElement={videoElement}
+          thumbVisible={mouseHoveredOnVideo || mouseHoveredOnSeeker}
+          onMouseEnter={() => setMouseHoveredOnSeeker(true)}
+          onMouseLeave={() => setMouseHoveredOnSeeker(false)}
+        />
       </VideoContainer>
       <ControlsContainer>
         <FaviconAndTitle>
-          <StyledFavicon
-            src={
-              currentItem?.id &&
-              `chrome-untrusted://playlist-data/${currentItem.id}/favicon`
-            }
-            clickable={!!currentItem}
-            tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
-            onClick={() => {
-              if (currentItem) {
-                notifyEventsToTopFrame({
-                  type: PlaylistTypes.PLAYLIST_OPEN_SOURCE_PAGE,
-                  data: currentItem
-                })
-              }
-            }}
-          />
           <StyledTitle
             clickable={!!(currentList && currentItem)}
             onClick={() => {
@@ -324,12 +419,11 @@ export default function Player () {
               }
             }}
             tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
+            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()}
           >
             {currentItem?.name}
           </StyledTitle>
         </FaviconAndTitle>
-        <StyledSeeker videoElement={videoElement} />
         <PlayerControls videoElement={videoElement} />
       </ControlsContainer>
     </PlayerContainer>
