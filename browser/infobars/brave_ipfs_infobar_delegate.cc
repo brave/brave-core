@@ -22,19 +22,22 @@ BraveIPFSInfoBarDelegateObserver::BraveIPFSInfoBarDelegateObserver() = default;
 
 BraveIPFSInfoBarDelegateObserver::~BraveIPFSInfoBarDelegateObserver() = default;
 
-// BraveIPFSInfoBarDelegate
-// static
-void BraveIPFSInfoBarDelegate::Create(
+BraveIPFSInfoBarDelegateFactory::BraveIPFSInfoBarDelegateFactory(
     infobars::ContentInfoBarManager* infobar_manager,
     std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
-    PrefService* local_state) {
-  if (!local_state->GetBoolean(kShowIPFSPromoInfobar)) {
+    PrefService* local_state)
+    : BraveConfirmInfoBarDelegateFactory(
+          infobar_manager,
+          std::unique_ptr<BraveConfirmInfoBarDelegate>(
+              new BraveIPFSInfoBarDelegate(std::move(observer), local_state))),
+      local_state_(local_state) {}
+
+void BraveIPFSInfoBarDelegateFactory::Create() {
+  if (!local_state_->GetBoolean(kShowIPFSPromoInfobar)) {
     return;
   }
-  infobar_manager->AddInfoBar(std::make_unique<BraveConfirmInfoBar>(
-                                  std::make_unique<BraveIPFSInfoBarDelegate>(
-                                      std::move(observer), local_state)),
-                              true);
+
+  BraveConfirmInfoBarDelegateFactory::Create();
 }
 
 BraveIPFSInfoBarDelegate::BraveIPFSInfoBarDelegate(

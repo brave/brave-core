@@ -19,21 +19,21 @@
 #include "brave/browser/ui/views/infobars/brave_global_confirm_infobar.h"
 
 
-// BraveIPFSAlwaysStartInfoBarDelegate
-// static
-void BraveIPFSAlwaysStartInfoBarDelegate::Create(
-  infobars::ContentInfoBarManager* infobar_manager,
-  ipfs::IpfsService* ipfs_service, PrefService* local_state) {
-  if (const auto is_ipfs_local =
-          (local_state->GetInteger(kIPFSResolveMethod) ==
-           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-      is_ipfs_local && local_state->GetBoolean(kIPFSAlwaysStartMode)) {
+BraveIPFSAlwaysStartInfoBarDelegateFactory::
+    BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service,
+                                               PrefService* local_state)
+    : BraveConfirmInfoBarDelegateFactory(
+          std::unique_ptr<BraveConfirmInfoBarDelegate>(
+              new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service,
+                                                      local_state))),
+      local_state_(local_state) {}
+
+void BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
+  if (local_state_->GetBoolean(kIPFSAlwaysStartMode)) {
     return;
   }
 
-  std::unique_ptr<BraveConfirmInfoBarDelegate> delegate(
-      new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service, local_state));
-  BraveGlobalConfirmInfoBar::Show(std::move(delegate));
+  BraveConfirmInfoBarDelegateFactory::Create();
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(

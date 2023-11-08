@@ -34,4 +34,30 @@ class BraveConfirmInfoBarDelegate : public ConfirmInfoBarDelegate {
   BraveConfirmInfoBarDelegate();
 };
 
+namespace infobars {
+  class ContentInfoBarManager;
+}  // namespace
+
+class BraveConfirmInfoBarDelegateFactory {
+ public:
+  BraveConfirmInfoBarDelegateFactory(
+      const BraveConfirmInfoBarDelegateFactory&) = delete;
+  BraveConfirmInfoBarDelegateFactory& operator=(
+      const BraveConfirmInfoBarDelegateFactory&) = delete;
+  virtual ~BraveConfirmInfoBarDelegateFactory();
+
+  virtual void Create();
+
+ protected:
+  explicit BraveConfirmInfoBarDelegateFactory(
+      infobars::ContentInfoBarManager* infobar_manager,
+      std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
+  explicit BraveConfirmInfoBarDelegateFactory(
+      std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
+
+ private:
+  raw_ptr<infobars::ContentInfoBarManager> infobar_manager_ = nullptr;
+  std::unique_ptr<BraveConfirmInfoBarDelegate> delegate_;
+};
+
 #endif  // BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_

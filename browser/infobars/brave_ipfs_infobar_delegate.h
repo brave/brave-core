@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
@@ -33,16 +34,14 @@ class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   BraveIPFSInfoBarDelegate(const BraveIPFSInfoBarDelegate&) = delete;
   BraveIPFSInfoBarDelegate& operator=(const BraveIPFSInfoBarDelegate&) = delete;
 
-  BraveIPFSInfoBarDelegate(
-      std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
-      PrefService* local_state);
   ~BraveIPFSInfoBarDelegate() override;
 
-  static void Create(infobars::ContentInfoBarManager* infobar_manager,
-                     std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
-                     PrefService* local_state);
-
  private:
+  friend class BraveIPFSInfoBarDelegateFactory;
+  explicit BraveIPFSInfoBarDelegate(
+      std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
+      PrefService* local_state);
+
   // BraveConfirmInfoBarDelegate
   bool HasCheckbox() const override;
   std::u16string GetCheckboxText() const override;
@@ -67,6 +66,18 @@ class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   bool ExtraButtonPressed() override;
 
   std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer_;
+  raw_ptr<PrefService> local_state_ = nullptr;
+};
+
+class BraveIPFSInfoBarDelegateFactory : public BraveConfirmInfoBarDelegateFactory {
+public:
+  BraveIPFSInfoBarDelegateFactory(infobars::ContentInfoBarManager* infobar_manager,
+    std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
+    PrefService* local_state);
+  ~BraveIPFSInfoBarDelegateFactory() override = default;
+
+  void Create() override;
+private:
   raw_ptr<PrefService> local_state_ = nullptr;
 };
 

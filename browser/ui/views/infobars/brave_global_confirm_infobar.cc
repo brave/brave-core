@@ -233,7 +233,6 @@ void BraveGlobalConfirmInfoBar::MaybeAddInfoBar(
 
   infobar_manager->AddObserver(this);
   proxies_[infobar_manager] = proxy_ptr;
-  LOG(INFO) << "[IPFS] MaybeAddInfoBar #40 proxies_.size:" << proxies_.size();
 }
 
 void BraveGlobalConfirmInfoBar::OnInfoBarRemoved(infobars::InfoBar* info_bar,

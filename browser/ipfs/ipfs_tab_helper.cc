@@ -193,11 +193,11 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
 #if !BUILDFLAG(IS_ANDROID)
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
-    BraveIPFSAlwaysStartInfoBarDelegate::Create(
-    infobars::ContentInfoBarManager::FromWebContents(web_contents()),
-    ipfs::IpfsServiceFactory::GetForContext(
-        web_contents()->GetBrowserContext()),
-    pref_service_);
+    BraveIPFSAlwaysStartInfoBarDelegateFactory factory(
+        ipfs::IpfsServiceFactory::GetForContext(
+            web_contents()->GetBrowserContext()),
+        pref_service_);
+    factory.Create();
 #else
   ) {
     LoadUrl(GetIPFSResolvedURL());
@@ -284,11 +284,12 @@ void IPFSTabHelper::UpdateLocationBar() {
   // Check whether content_infobar_manager is present for unit tests
   if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
       !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
-    BraveIPFSInfoBarDelegate::Create(
+    BraveIPFSInfoBarDelegateFactory factory(
         content_infobar_manager,
         std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
             weak_ptr_factory_.GetWeakPtr()),
         pref_service_);
+    factory.Create();
   }
 #endif
 
@@ -425,11 +426,11 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
-      BraveIPFSAlwaysStartInfoBarDelegate::Create(
-        infobars::ContentInfoBarManager::FromWebContents(web_contents()),
-          ipfs::IpfsServiceFactory::GetForContext(
-              web_contents()->GetBrowserContext()),
-          pref_service_);      
+      BraveIPFSAlwaysStartInfoBarDelegateFactory factory(
+        ipfs::IpfsServiceFactory::GetForContext(
+            web_contents()->GetBrowserContext()),
+        pref_service_);
+     factory.Create();      
 #else
       LoadUrl(possible_redirect.value());
 #endif  // !BUILDFLAG(IS_ANDROID)
