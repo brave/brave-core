@@ -745,14 +745,6 @@ handler.on(PanelActions.expandWallet.type, async (store) => {
   })
 })
 
-handler.on(PanelActions.openWalletApps.type, async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet/crypto/apps' }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-    }
-  })
-})
-
 handler.on(PanelActions.expandRestoreWallet.type, async (store) => {
   chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.Restore}` }, () => {
     if (chrome.runtime.lastError) {

@@ -71,7 +71,6 @@ export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
 export const coinMarketData = ({ wallet }: State) => wallet.coinMarketData
 export const connectedAccounts = ({ wallet }: State) => wallet.connectedAccounts
 export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
-export const favoriteApps = ({ wallet }: State) => wallet.favoriteApps
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const selectedAssetFilter = ({ wallet }: State) =>

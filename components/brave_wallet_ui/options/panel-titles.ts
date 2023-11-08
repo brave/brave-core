@@ -18,10 +18,6 @@ export const PANEL_TITLES: PanelTitleObjectType[] = [
     title: 'braveWalletSwap'
   },
   {
-    id: 'apps',
-    title: 'braveWalletTopTabApps'
-  },
-  {
     id: 'sitePermissions',
     title: 'braveWalletSitePermissionsTitle'
   },

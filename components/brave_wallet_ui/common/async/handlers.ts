@@ -173,21 +173,6 @@ handler.on(
   }
 )
 
-// TODO(apaymyshev): remove apps ui
-handler.on(
-  WalletActions.addFavoriteApp.type,
-  async (store: Store, appItem: BraveWallet.AppItem) => {
-    await refreshWalletInfo(store)
-  }
-)
-
-handler.on(
-  WalletActions.removeFavoriteApp.type,
-  async (store: Store, appItem: BraveWallet.AppItem) => {
-    await refreshWalletInfo(store)
-  }
-)
-
 handler.on(
   WalletActions.refreshAll.type,
   async (store: Store, payload: RefreshOpts) => {

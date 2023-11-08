@@ -16,7 +16,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'addEthereumChain',
   'allowReadingEncryptedMessage', // For grep: 'decryptRequest'
   'approveTransaction',
-  'apps',
   'assets',
   'buy',
   'connectHardwareWallet',
