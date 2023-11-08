@@ -57,9 +57,8 @@ gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
 
   // For horizontal tabs, the underline should be inset slightly within the
   // visual edges of the tab.
-  int horizontal_inset = TabGroupUnderline::kStrokeThickness +
-                         brave_tabs::kHorizontalTabInset +
-                         brave_tabs::kHorizontalGroupUnderlineInset;
+  int horizontal_inset =
+      TabGroupUnderline::kStrokeThickness + brave_tabs::kHorizontalTabInset;
 
   return gfx::Insets::VH(0, horizontal_inset);
 }
@@ -113,4 +112,12 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
 
 bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+}
+
+// static
+int BraveTabGroupUnderline::GetStrokeInset() {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupUnderline::GetStrokeInset();
+  }
+  return brave_tabs::kHorizontalTabInset;
 }
