@@ -55,7 +55,7 @@ Please ensure that your responses are socially unbiased and positive in nature. 
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_GENERAL_SEED" translateable="false">
-Hi! I'm here to help.</message>
+Hi there!</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT" translateable="false">
 This is an article within &lt;article&gt; tags:
