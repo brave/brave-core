@@ -895,6 +895,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
         Learn how this affects my privacy
       </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_TEXT" desc="Prompt, asking the user whether they'd like to load the original URL rather than the resolved one when the page load fails">
+        There was an error loading the IPFS URL. Would you like to redirect to the original URL?
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_REDIRECT" desc="Redirect to the original url">
+        Redirect
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
+        No thanks
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">

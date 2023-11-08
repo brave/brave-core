@@ -20,7 +20,8 @@
   WEB_DISCOVERY_INFOBAR_DELEGATE = 506,                                        \
   BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,                                    \
   BRAVE_REQUEST_OTR_INFOBAR_DELEGATE = 508, BRAVE_IPFS_INFOBAR_DELEGATE = 509, \
-  DEV_CHANNEL_DEPRECATION_INFOBAR_DELEGATE = 510,
+  DEV_CHANNEL_DEPRECATION_INFOBAR_DELEGATE = 510,                              \
+  BRAVE_IPFS_FALLBACK_INFOBAR_DELEGATE = 511,
 
 #include "src/components/infobars/core/infobar_delegate.h"  // IWYU pragma: export
 
