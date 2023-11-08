@@ -425,14 +425,6 @@ interface PageHandler {
   ShowApprovePanelUI();
 };
 
-// TODO(apaymyshev): remove favorite apps ui
-struct AppItem {
-  string description;
-  string icon;
-  string name;
-  string url;
-};
-
 enum AssetPriceTimeframe {
   Live,
   OneDay,

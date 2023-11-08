@@ -5,37 +5,6 @@
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
-  // App Categories
-  braveWalletDefiCategory: 'Defi apps',
-  braveWalletNftCategory: 'NFT marketplaces',
-  braveWalletSearchCategory: 'Search results',
-
-  // App Category Button Text
-  braveWalletDefiButtonText: 'Browse more Defi',
-  braveWalletNftButtonText: 'Browse more NFT',
-
-  // Compound App
-  braveWalletCompoundName: 'Compound',
-  braveWalletCompoundDescription:
-    'Unlock a universe of open financial applications.',
-
-  // Maker App
-  braveWalletMakerName: 'MakerDAO',
-  braveWalletMakerDescription: 'Maker - stablecoin, loans and governance...',
-
-  // Aave App
-  braveWalletAaveName: 'Aave',
-  braveWalletAaveDescription: 'Protocol to earn on deposits & borrow assets.',
-
-  // OpenSea App
-  braveWalletOpenSeaName: 'OpenSea',
-  braveWalletOpenSeaDescription:
-    'The largest NFT marketplace. Buy, sell, and discover rare digital items',
-
-  // Rarible App
-  braveWalletRaribleName: 'Rarible',
-  braveWalletRaribleDescription: 'Create and sell digital artworks',
-
   // Search Text
   braveWalletSearchText: 'Search',
 

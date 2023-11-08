@@ -44,28 +44,12 @@
   <message name="IDS_WALLET_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
   <message name="IDS_WALLET_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_WALLET_NOT_AUTHED" desc="Method or account not authorized">The requested method and/or account has not been authorized by the user.</message>
-  <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
-  <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
-  <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>
-  <message name="IDS_BRAVE_WALLET_DEFI_BUTTON_TEXT" desc="Browse more defi button">Browse more Defi</message>
-  <message name="IDS_BRAVE_WALLET_NFT_BUTTON_TEXT" desc="Browse more NFT button">Browse more NFT</message>
-  <message name="IDS_BRAVE_WALLET_COMPOUND_NAME" desc="Compound name">Compound</message>
-  <message name="IDS_BRAVE_WALLET_COMPOUND_DESCRIPTION" desc="Compound description">Unlock a universe of open financial applications.</message>
-  <message name="IDS_BRAVE_WALLET_MAKER_NAME" desc="Maker name">MakerDAO</message>
-  <message name="IDS_BRAVE_WALLET_MAKER_DESCRIPTION" desc="Maker description">Maker - stablecoin, loans and governance...</message>
-  <message name="IDS_BRAVE_WALLET_AAVE_NAME" desc="Aave name">Aave</message>
-  <message name="IDS_BRAVE_WALLET_AAVE_DESCRIPTION" desc="Aave description">Protocol to earn on deposits &amp; borrow assets.</message>
-  <message name="IDS_BRAVE_WALLET_OPEN_SEA_NAME" desc="OpenSea name">OpenSea</message>
-  <message name="IDS_BRAVE_WALLET_OPEN_SEA_DESCRIPTION" desc="OpenSea description">The largest NFT marketplace. Buy, sell, and discover rare digital items</message>
-  <message name="IDS_BRAVE_WALLET_RARIBLE_NAME" desc="Rarible name">Rarible</message>
-  <message name="IDS_BRAVE_WALLET_RARIBLE_DESCRIPTION" desc="Rarible description">Create and sell digital artworks</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_TEXT" desc="Search bar placeholder">Search</message>
   <message name="IDS_BRAVE_WALLET_SIDE_NAV_CRYPTO" desc="Crypto side nav button">Crypto</message>
   <message name="IDS_BRAVE_WALLET_SIDE_NAV_REWARDS" desc="Rewards side nav button">Rewards</message>
   <message name="IDS_BRAVE_WALLET_SIDE_NAV_CARDS" desc="Cards side nave button">Cards</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_PORTFOLIO" desc="Portfolio top nav button">Portfolio</message>
   <message name="IDS_BRAVE_WALLET_TOP_TAB_PRICES" desc="Prices top nav button">Prices</message>
-  <message name="IDS_BRAVE_WALLET_TOP_TAB_APPS" desc="Apps top nave button">Apps</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>

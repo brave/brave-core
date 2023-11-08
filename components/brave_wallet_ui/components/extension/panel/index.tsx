@@ -18,13 +18,11 @@ export interface Props {
   title: string
   headerStyle?: PanelHeaderSizes
   navAction: (path: PanelTypes) => void
-  useSearch?: boolean | undefined
-  searchAction?: (event: any) => void | undefined
 }
 
 export class Panel extends React.PureComponent<Props> {
   render() {
-    const { title, headerStyle, navAction, children, searchAction, useSearch } =
+    const { title, headerStyle, navAction, children } =
       this.props
 
     return (
@@ -38,8 +36,6 @@ export class Panel extends React.PureComponent<Props> {
           <PanelHeader
             action={navAction}
             title={title}
-            searchAction={searchAction}
-            useSearch={useSearch}
           />
         )}
         {children}

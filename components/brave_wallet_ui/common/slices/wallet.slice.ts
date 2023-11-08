@@ -55,7 +55,6 @@ const defaultState: WalletState = {
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
   userVisibleTokensInfo: [],
@@ -157,8 +156,6 @@ export const WalletAsyncActions = {
   refreshAll: createAction<RefreshOpts>('refreshAll'),
   lockWallet: createAction('lockWallet'), // keyringService.lock()
   unlockWallet: createAction<UnlockWalletPayloadType>('unlockWallet'),
-  addFavoriteApp: createAction<BraveWallet.AppItem>('addFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
-  removeFavoriteApp: createAction<BraveWallet.AppItem>('removeFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
   updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
