@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
-const Hint = styled('div') <{}>`
+const Hint = styled('div')<{}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +26,7 @@ const Graphic = styled('div')`
   height: 16px;
 `
 
-export default function BraveNewsHint() {
+export default function BraveNewsHint () {
   return (
     <Hint>
       <p>{getLocale('braveNewsScrollHint')}</p>

@@ -1,13 +1,18 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import Icon from '@brave/leo/react/icon';
 import { color, effect, gradient, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { NEWS_FEED_CLASS } from './Feed';
 import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
-import Icon from '@brave/leo/react/icon';
-import { NEWS_FEED_CLASS } from './Feed';
-import Flex from '../../../common/Flex';
+import Variables from './Variables';
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -61,6 +66,25 @@ const PeekingCard = styled(Card)`
   flex-direction: row;
   gap: ${spacing.m};
   justify-content: space-between;
+`
+
+const animateIn = keyframes`
+  from {
+    transform: translateY(150%);
+  }
+
+  to {
+    transform: translate(0%);
+  }
+`;
+
+const Container = styled(Variables)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${spacing.m};
+
+  animation: ${animateIn} 0.1s ease-in-out 1;
 
   // As we scroll down the PeekingCard should fade out. At 20% scroll it should
   // be completely invisible.
@@ -80,7 +104,7 @@ export default function Peek() {
 
   if (!data) return null
 
-  return <Flex direction='column' align='center' gap={spacing.m}>
+  return <Container>
     <NewsButton onClick={scrollToNews}>
       <Icon name='news-default' />
       News
@@ -93,6 +117,6 @@ export default function Peek() {
       </div>
       <SmallImage src={imageUrl} />
     </PeekingCard>
-  </Flex>
+  </Container>
 }
 
