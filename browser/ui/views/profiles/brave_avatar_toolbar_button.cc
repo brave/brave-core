@@ -141,6 +141,12 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     gfx::Insets target_insets = ::GetLayoutInsets(TOOLBAR_BUTTON);
     target_insets.set_left_right(kBraveAvatarButtonHorizontalSpacing,
                                  kBraveAvatarButtonHorizontalSpacing);
+    if (!is_tor) {
+      // Use smaller vertical margins as we user more larger icon.
+      constexpr int kBraveAvatarButtonVerticalSpacing = 3;
+      target_insets.set_top_bottom(kBraveAvatarButtonVerticalSpacing,
+                                   kBraveAvatarButtonVerticalSpacing);
+    }
 
     const auto border_color = is_tor ? SkColorSetARGB(0x66, 0x91, 0x5E, 0xAE)
                                      : SkColorSetARGB(0x66, 0x7B, 0x63, 0xBF);
@@ -179,7 +185,7 @@ ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
 
   if (browser_->profile()->IsIncognitoProfile()) {
     return ui::ImageModel::FromVectorIcon(
-        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size);
+        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), GetIconSize());
   }
 
   if (browser_->profile()->IsGuestSession()) {
