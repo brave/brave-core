@@ -7,8 +7,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
+import Peek from '../../../../brave_news/browser/resources/Peek'
 
-const Hint = styled('div')<{}>`
+const Hint = styled('div') <{}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,13 +27,14 @@ const Graphic = styled('div')`
   height: 16px;
 `
 
-export default function BraveNewsHint () {
+export default function BraveNewsHint() {
   return (
     <Hint>
       <p>{getLocale('braveNewsScrollHint')}</p>
       <Graphic>
         <CaratStrongDownIcon />
       </Graphic>
+      <Peek />
     </Hint>
   )
 }
