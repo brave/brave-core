@@ -38,6 +38,8 @@ pub enum CosmeticFilterError {
     EmptyRule,
     #[error("html filtering is unsupported")]
     HtmlFilteringUnsupported,
+    #[error("scriptlet args could not be parsed")]
+    InvalidScriptletArgs,
 }
 
 /// Refer to <https://github.com/uBlockOrigin/uBlock-issues/wiki/Static-filter-syntax#action-operators>
@@ -348,6 +350,10 @@ impl CosmeticFilter {
             {
                 if sharp_index == 0 {
                     return Err(CosmeticFilterError::GenericScriptInject);
+                }
+                let args = &line[suffix_start_index + 4..line.len() - 1];
+                if crate::resources::parse_scriptlet_args(args).is_none() {
+                    return Err(CosmeticFilterError::InvalidScriptletArgs);
                 }
                 mask |= CosmeticFilterMask::SCRIPT_INJECT;
                 (

@@ -15,6 +15,7 @@ pub mod resource_assembler;
 mod resource_storage;
 #[doc(inline)]
 pub use resource_storage::{AddResourceError, ResourceStorage, ScriptletResourceError};
+pub(crate) use resource_storage::parse_scriptlet_args;
 
 use memchr::memrchr as find_char_reverse;
 use serde::{Deserialize, Serialize};
