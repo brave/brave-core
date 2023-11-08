@@ -13,12 +13,11 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/common/pref_names.h"
-#include "brave/components/ai_chat/core/constants.h"
-#include "brave/components/ai_chat/core/models.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
@@ -106,7 +105,7 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
 }
 
 void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
-  active_chat_tab_helper_->ChangelModel(model_key);
+  active_chat_tab_helper_->ChangeModel(model_key);
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(

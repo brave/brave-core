@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
@@ -33,6 +33,6 @@ group("storybook") {
   # This only works correctly because enable_ai_chat happens to be enabled
   # for all desktop platfroms.
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/common/mojom:mojom_js" ]
+    deps += [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
   }
 }

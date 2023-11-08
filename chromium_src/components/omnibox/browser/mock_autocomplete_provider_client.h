@@ -8,7 +8,7 @@
 
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)

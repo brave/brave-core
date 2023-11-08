@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 include_rules = [
-  "+brave/components/ai_chat/common",
+  "+brave/components/ai_chat/core/common",
   "+third_party/metrics_proto",
   "+third_party/omnibox_proto",
   "+ui/gfx",

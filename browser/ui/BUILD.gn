@@ -6,7 +6,7 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -495,7 +495,7 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/components/ai_chat/common/buildflags",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
@@ -801,10 +801,10 @@ source_set("ui") {
 
   if (enable_ai_chat) {
     deps += [
-      "//brave/components/ai_chat/browser",
-      "//brave/components/ai_chat/common",
-      "//brave/components/ai_chat/common/mojom",
-      "//brave/components/ai_chat/core",
+      "//brave/components/ai_chat/content/browser",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/ai_chat/resources/page:generated_resources",
     ]
   }

@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;

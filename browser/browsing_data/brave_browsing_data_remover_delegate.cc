@@ -33,7 +33,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(

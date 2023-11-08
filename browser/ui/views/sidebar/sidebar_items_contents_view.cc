@@ -25,7 +25,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -57,8 +57,8 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/components/ai_chat/common/features.h"
-#include "brave/components/ai_chat/core/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace {

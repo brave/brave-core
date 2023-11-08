@@ -6,7 +6,7 @@
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -16,7 +16,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if defined(TOOLKIT_VIEWS)
