@@ -9,10 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 
 // Components
-import {
-  CenteredPageLayout
-} from
-'../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 
 // Styled Components
 import { CreatingWalletText, LoadingIcon } from './creating_wallet.style'

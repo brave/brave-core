@@ -7,10 +7,6 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 
-import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
-
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
@@ -27,12 +23,14 @@ interface VirtualizedTokensListProps {
   disabledToken:
     | Pick<BraveWallet.BlockchainToken, 'contractAddress'>
     | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   index: number
   data: BraveWallet.BlockchainToken[]
   style: React.CSSProperties
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 const itemSize = 72
@@ -52,12 +50,10 @@ const ListItem = (props: ListItemProps) => {
     getCachedAssetBalance,
     disabledToken,
     onSelectToken,
-    style
+    style,
+    selectedNetwork
   } = props
   const token = data[index]
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   return (
     <div style={style}>
@@ -77,8 +73,13 @@ const ListItem = (props: ListItemProps) => {
 }
 
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const { tokenList, disabledToken, getCachedAssetBalance, onSelectToken } =
-    props
+  const {
+    tokenList,
+    disabledToken,
+    getCachedAssetBalance,
+    onSelectToken,
+    selectedNetwork
+  } = props
 
   return (
     <AutoSizer
@@ -104,6 +105,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
                 getCachedAssetBalance={getCachedAssetBalance}
                 disabledToken={disabledToken}
                 onSelectToken={onSelectToken}
+                selectedNetwork={selectedNetwork}
               />
             )}
           />

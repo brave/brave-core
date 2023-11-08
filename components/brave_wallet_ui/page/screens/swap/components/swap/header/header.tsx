@@ -11,13 +11,6 @@ import {
 } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
-// Queries
-import {
-  useGetSelectedChainQuery,
-  useGetSwapSupportedNetworksQuery,
-  useSetNetworkMutation
-} from '../../../../../../common/slices/api.slice'
-
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
@@ -50,14 +43,23 @@ import {
   HiddenResponsiveRow
 } from '../../shared-swap.styles'
 
-export const Header = () => {
+interface Props {
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAccount: BraveWallet.AccountInfo | undefined
+  setSelectedNetwork: (network: BraveWallet.NetworkInfo) => void
+  setSelectedAccount: (account: BraveWallet.AccountInfo) => void
+}
+
+export const Header = (props: Props) => {
+  const {
+    selectedNetwork,
+    selectedAccount,
+    setSelectedNetwork,
+    setSelectedAccount
+  } = props
+
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
-  const [setNetwork] = useSetNetworkMutation()
 
   // State
   const [showNetworkSelector, setShowNetworkSelector] =
@@ -71,13 +73,10 @@ export const Header = () => {
   // Methods
   const onSelectNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      await setNetwork({
-        chainId: network.chainId,
-        coin: network.coin
-      }).unwrap()
+      setSelectedNetwork(network)
       setShowNetworkSelector(false)
     },
-    [setNetwork]
+    [setSelectedNetwork]
   )
 
   // Hooks
@@ -94,13 +93,6 @@ export const Header = () => {
     () => setShowAccountModal(false),
     showAccountModal
   )
-
-  const isNetworkSupported = React.useMemo(() => {
-    return supportedNetworks.some(
-      (supportedNetwork) =>
-        supportedNetwork.chainId === selectedNetwork?.chainId
-    )
-  }, [selectedNetwork, supportedNetworks])
 
   const onClickConnectWalletButton = React.useCallback(async () => {
     setShowAccountModal((prev) => !prev)
@@ -142,7 +134,7 @@ export const Header = () => {
             hasBackground={true}
             hasShadow={true}
             isHeader={true}
-            networkNotSupported={!isNetworkSupported}
+            networkNotSupported={false}
             iconType='network'
           />
           {showNetworkSelector && (
@@ -155,9 +147,16 @@ export const Header = () => {
         </SelectorWrapper>
         <HorizontalSpacer size={15} />
         <SelectorWrapper ref={accountModalRef}>
-          <ConnectWalletButton onClick={onClickConnectWalletButton} />
+          <ConnectWalletButton
+            onClick={onClickConnectWalletButton}
+            selectedAccount={selectedAccount}
+          />
           {showAccountModal && (
-            <AccountModal onHideModal={() => setShowAccountModal(false)} />
+            <AccountModal
+              onHideModal={() => setShowAccountModal(false)}
+              selectedNetwork={selectedNetwork}
+              setSelectedAccount={setSelectedAccount}
+            />
           )}
         </SelectorWrapper>
       </Row>

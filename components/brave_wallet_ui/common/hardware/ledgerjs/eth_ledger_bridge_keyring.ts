@@ -9,7 +9,7 @@ import { LedgerEthereumKeyring } from '../interfaces'
 import {
   GetAccountsHardwareOperationResult,
   LedgerDerivationPaths,
-  SignHardwareOperationResult,
+  SignHardwareOperationResult
 } from '../types'
 import {
   LedgerCommand,

@@ -5,11 +5,6 @@
 
 import * as React from 'react'
 
-// Queries
-import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
-
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 
@@ -40,6 +35,7 @@ interface Props {
   hasInputError: boolean
   token: BraveWallet.BlockchainToken | undefined
   disabled: boolean
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 export const ToSection = (props: Props) => {
@@ -50,11 +46,9 @@ export const ToSection = (props: Props) => {
     inputValue,
     hasInputError,
     isLoading,
-    disabled
+    disabled,
+    selectedNetwork
   } = props
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   return (
     <Column columnWidth='full'>

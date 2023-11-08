@@ -305,7 +305,7 @@ function AssetSelection() {
       ...bat,
       ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
       ...testnetAssetsList,
-      ...nftCollectionAssets,
+      ...nftCollectionAssets
     ]
   }, [
     mainnetNetworkAssetsList,

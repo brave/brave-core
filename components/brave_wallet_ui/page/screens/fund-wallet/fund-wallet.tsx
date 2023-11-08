@@ -689,7 +689,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
             onCancel={() => history.back()}
             onCreated={setSelectedAccount}
           />
-        ) : (showAccountSearch || !selectedAccount) ? (
+        ) : showAccountSearch || !selectedAccount ? (
           <SearchWrapper>
             <SelectHeader
               title={getLocale('braveWalletSelectAccount')}

@@ -85,7 +85,7 @@ export const AssetItemMenu = (props: Props) => {
     return allBuyAssetOptions.some(
       (buyableAsset) =>
         buyableAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
-      )
+    )
   }, [asset.symbol, allBuyAssetOptions, isAssetsBalanceZero])
 
   const isSwapSupported = coinSupportsSwap(asset.coin)

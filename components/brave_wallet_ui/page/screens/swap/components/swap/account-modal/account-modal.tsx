@@ -5,13 +5,14 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet } from '../../../../../../constants/types'
+
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 
 import {
-  useGetAccountInfosRegistryQuery,
-  useGetSelectedChainQuery,
-  useSetSelectedAccountMutation
+  useGetAccountInfosRegistryQuery //
 } from '../../../../../../common/slices/api.slice'
 import {
   AccountInfoEntity,
@@ -36,15 +37,15 @@ import {
 } from '../../shared-swap.styles'
 
 interface Props {
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  setSelectedAccount: (account: BraveWallet.AccountInfo) => void
   onHideModal: () => void
 }
 
 export const AccountModal = (props: Props) => {
-  const { onHideModal } = props
+  const { onHideModal, selectedNetwork, setSelectedAccount } = props
 
   // Queries / mutations
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
   const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
     useGetAccountInfosRegistryQuery(undefined)
   const accounts = getEntitiesListFromEntityState(accountInfosRegistry)
@@ -59,10 +60,10 @@ export const AccountModal = (props: Props) => {
   // Methods
   const onSelectAccount = React.useCallback(
     async (account: AccountInfoEntity) => {
-      await setSelectedAccount(account.accountId)
+      setSelectedAccount(account)
       onHideModal()
     },
-    [onHideModal]
+    [onHideModal, setSelectedAccount]
   )
 
   return (

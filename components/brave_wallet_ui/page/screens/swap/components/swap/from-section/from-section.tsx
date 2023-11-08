@@ -5,10 +5,6 @@
 
 import * as React from 'react'
 
-// Queries
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../../../../common/slices/api.slice.extra'
-
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
@@ -41,6 +37,8 @@ interface Props {
   token: BraveWallet.BlockchainToken | undefined
   tokenBalance: Amount
   fiatValue: string | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAccount: BraveWallet.AccountInfo | undefined
 }
 
 export const FromSection = (props: Props) => {
@@ -51,12 +49,10 @@ export const FromSection = (props: Props) => {
     hasInputError,
     inputValue,
     tokenBalance,
-    fiatValue
+    fiatValue,
+    selectedNetwork,
+    selectedAccount
   } = props
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAccount } = useSelectedAccountQuery()
 
   // methods
   const onClickHalfPreset = () => {

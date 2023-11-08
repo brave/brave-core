@@ -13,9 +13,6 @@ import {
   useOnClickOutside //
 } from '../../../../../../common/hooks/useOnClickOutside'
 import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
-import {
   useAccountsQuery //
 } from '../../../../../../common/slices/api.slice.extra'
 
@@ -39,6 +36,7 @@ import { Text, HorizontalSpacer } from '../../shared-swap.styles'
 interface Props {
   disabled?: boolean
   selectedAccount: BraveWallet.AccountInfo | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
   showAccountSelector: boolean
   setShowAccountSelector: (value: boolean) => void
   onSelectAccount: (account: BraveWallet.AccountInfo) => void
@@ -49,12 +47,12 @@ export const AccountSelector = (props: Props) => {
     disabled,
     onSelectAccount,
     selectedAccount,
+    selectedNetwork,
     showAccountSelector,
     setShowAccountSelector
   } = props
 
   // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { accounts } = useAccountsQuery()
 
   // Refs

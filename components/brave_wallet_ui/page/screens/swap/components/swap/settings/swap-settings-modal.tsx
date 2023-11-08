@@ -15,11 +15,6 @@ import {
   GasFeeOption
 } from '../../../../../../constants/types'
 
-// Hooks
-import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
-
 // Options
 import { gasFeeOptions } from '../../../../../../options/gas-fee-options'
 
@@ -54,6 +49,7 @@ interface Props {
   setSlippageTolerance: (value: string) => void
   setSelectedGasFeeOption: (value: GasFeeOption) => void
   onClose: () => void
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 export const SwapSettingsModal = (props: Props) => {
@@ -65,11 +61,9 @@ export const SwapSettingsModal = (props: Props) => {
     slippageTolerance,
     // useDirectRoute,
     gasEstimates,
-    onClose
+    onClose,
+    selectedNetwork
   } = props
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // State
   const [showExchanges, setShowExchanges] = React.useState<boolean>(false)
@@ -224,6 +218,7 @@ export const SwapSettingsModal = (props: Props) => {
                       onClick={() => setSelectedGasFeeOption(option)}
                       gasEstimates={gasEstimates}
                       key={option.id}
+                      selectedNetwork={selectedNetwork}
                     />
                   ))}
                 </Column>

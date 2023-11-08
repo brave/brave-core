@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-// Queries
-import { useSelectedAccountQuery } from '../../../../../../common/slices/api.slice.extra'
+// Types
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
 import { reduceAddress } from '../../../../../../utils/reduce-address'
@@ -29,13 +29,11 @@ import { useAccountOrb } from '../../../../../../common/hooks/use-orb'
 
 interface Props {
   onClick: () => void
+  selectedAccount: BraveWallet.AccountInfo | undefined
 }
 
 export const ConnectWalletButton = (props: Props) => {
-  const { onClick } = props
-
-  // Selectors
-  const { data: selectedAccount } = useSelectedAccountQuery()
+  const { onClick, selectedAccount } = props
 
   // hooks
   const accountOrb = useAccountOrb(selectedAccount)
