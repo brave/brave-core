@@ -96,15 +96,6 @@ SkPath BraveVerticalTabStyle::GetPath(
     return {};
   }
 
-  // Horizontal tabs should have a visual gap between them, even if their view
-  // bounds are touching or slightly overlapping. Create a visual gap by
-  // insetting the bounds of the tab by the required gap plus overlap before
-  // drawing the rectangle.
-  if (!ShouldShowVerticalTabs()) {
-    aligned_bounds.Inset(
-        gfx::InsetsF::VH(0, brave_tabs::kHorizontalTabInset * scale));
-  }
-
 #if DCHECK_IS_ON()
   if (tab()->bounds().height() != std::round(aligned_bounds.height() / scale)) {
     DLOG(ERROR) << "We don't want it to be off by 1 dip\n|height|: "
@@ -112,6 +103,35 @@ SkPath BraveVerticalTabStyle::GetPath(
                 << std::round(aligned_bounds.height() / scale);
   }
 #endif
+
+  if (!ShouldShowVerticalTabs()) {
+    // Horizontal tabs should have a visual gap between them, even if their view
+    // bounds are touching or slightly overlapping. Create a visual gap by
+    // insetting the bounds of the tab by the required gap plus overlap before
+    // drawing the rectangle.
+    aligned_bounds.Inset(
+        gfx::InsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
+                         brave_tabs::kHorizontalTabInset * scale));
+
+    // For hit testing, expand the rectangle so that the visual margins around
+    // tabs can be used to select the tab. This will ensure that there is no
+    // "dead space" between tabs, or between the tab shape and the tab hover
+    // card.
+    if (path_type == TabStyle::PathType::kHitTest) {
+      auto hit_test_outsets =
+          gfx::OutsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
+                            brave_tabs::kHorizontalTabGap / 2 * scale);
+
+      // We should only extend the hit test bounds into the top margin if the
+      // window is maximized or in fullscreen mode. Otherwise, we want the space
+      // above the visual tab shape to be available for window-dragging.
+      if (!ShouldExtendHitTest()) {
+        hit_test_outsets.set_top(0);
+      }
+
+      aligned_bounds.Outset(hit_test_outsets);
+    }
+  }
 
   const bool is_pinned = tab()->data().pinned;
 

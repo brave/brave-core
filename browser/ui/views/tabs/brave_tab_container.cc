@@ -11,9 +11,7 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/flat_map.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
@@ -32,20 +30,6 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skbitmap_operations.h"
 #include "ui/views/view_utils.h"
-
-namespace {
-
-gfx::Size AddHorizontalTabStripSpacing(gfx::Size size) {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
-    return size;
-  }
-  // Allow for a small space at the top and bottom of the tab strip. Tab group
-  // underlines will partially occupy the space below tabs.
-  size.Enlarge(0, brave_tabs::kHorizontalTabStripVerticalSpacing * 2);
-  return size;
-}
-
-}  // namespace
 
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
@@ -106,14 +90,6 @@ base::OnceClosure BraveTabContainer::LockLayout() {
                         base::Unretained(this));
 }
 
-gfx::Size BraveTabContainer::GetMinimumSize() const {
-  gfx::Size size = TabContainerImpl::GetMinimumSize();
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
-    return size;
-  }
-  return AddHorizontalTabStripSpacing(size);
-}
-
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
@@ -123,8 +99,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
 
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return AddHorizontalTabStripSpacing(
-        TabContainerImpl::CalculatePreferredSize());
+    return TabContainerImpl::CalculatePreferredSize();
   }
 
   const int tab_count = tabs_view_model_.view_size();

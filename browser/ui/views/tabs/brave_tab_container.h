@@ -32,7 +32,6 @@ class BraveTabContainer : public TabContainerImpl {
   base::OnceClosure LockLayout();
 
   // TabContainerImpl:
-  gfx::Size GetMinimumSize() const override;
   gfx::Size CalculatePreferredSize() const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
