@@ -13,13 +13,17 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/path_service.h"
+#include "base/process/launch.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_details.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "chrome/installer/util/install_service_work_item.h"
 
 namespace brave_vpn {
 
@@ -305,6 +309,27 @@ bool SubscribeRasConnectionNotification(HANDLE event_handle) {
         << std::hex << result;
   }
   return success;
+}
+
+bool InstallBraveVPNHelperService() {
+  base::FilePath exe_dir;
+  base::PathService::Get(base::DIR_EXE, &exe_dir);
+  base::CommandLine service_cmd(
+      exe_dir.Append(brave_vpn::kBraveVPNHelperExecutable));
+  installer::InstallServiceWorkItem install_service_work_item(
+      brave_vpn::GetBraveVpnHelperServiceName(),
+      brave_vpn::GetBraveVpnHelperServiceDisplayName(), SERVICE_DEMAND_START,
+      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
+      brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {});
+  install_service_work_item.set_best_effort(true);
+  install_service_work_item.set_rollback_enabled(false);
+  if (install_service_work_item.Do()) {
+    auto success = ConfigureServiceAutoRestart(
+        brave_vpn::GetBraveVpnHelperServiceName(),
+        brave_vpn::GetBraveVPNConnectionName());
+    return success;
+  }
+  return false;
 }
 
 bool ConfigureServiceAutoRestart(const std::wstring& service_name,

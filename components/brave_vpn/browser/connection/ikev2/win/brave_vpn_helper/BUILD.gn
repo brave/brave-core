@@ -53,6 +53,7 @@ source_set("lib") {
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/installer/util:with_no_strings",
     "//third_party/abseil-cpp:absl",
   ]
 

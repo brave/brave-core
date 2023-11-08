@@ -23,6 +23,8 @@ HANDLE OpenWpmSession();
 bool CloseWpmSession(HANDLE engine);
 // Subscribes for RAS connection notification of any os vpn entry.
 bool SubscribeRasConnectionNotification(HANDLE event_handle);
+// Install VPN Service
+bool InstallBraveVPNHelperService();
 // Configure VPN Service autorestart.
 bool ConfigureServiceAutoRestart(const std::wstring& service_name,
                                  const std::wstring& brave_vpn_entry);
