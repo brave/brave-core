@@ -54,6 +54,7 @@ const char kIfpsPathHeader[] = "x-ipfs-path";
 const char kIpfsFallbackOriginalUrlKey[] = "ipfs-fallback-original-url";
 const char kIpfsFallbackBlockRedirectForNavEntryIdKey[] =
     "ipfs-fallback-block-redirect-for-nav-entry-id";
+
 struct IpfsFallbackOriginalUrlData : public base::SupportsUserData::Data {
   explicit IpfsFallbackOriginalUrlData(const GURL& url) : original_url(url) {}
   ~IpfsFallbackOriginalUrlData() override = default;
@@ -238,16 +239,6 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl) {
 
 #if !BUILDFLAG(IS_ANDROID)
 void IPFSTabHelper::LoadUrlForAutoRedirect(const GURL& gurl) {
-  auto set_user_data = [&](content::NavigationHandle* handle) {
-    if (!handle) {
-      return;
-    }
-
-    handle->SetUserData(
-        kIpfsFallbackOriginalUrlKey,
-        std::make_unique<IpfsFallbackOriginalUrlData>(GetCurrentPageURL()));
-  };
-
   if (redirect_callback_for_testing_) {
     redirect_callback_for_testing_.Run(gurl);
     return;
@@ -259,7 +250,9 @@ void IPFSTabHelper::LoadUrlForAutoRedirect(const GURL& gurl) {
   params.should_replace_current_entry = true;
   if (auto new_handle =
           web_contents()->GetController().LoadURLWithParams(params)) {
-    set_user_data(new_handle.get());
+    new_handle->SetUserData(
+        kIpfsFallbackOriginalUrlKey,
+        std::make_unique<IpfsFallbackOriginalUrlData>(GetCurrentPageURL()));
   }
 }
 
