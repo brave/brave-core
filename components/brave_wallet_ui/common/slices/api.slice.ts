@@ -29,7 +29,6 @@ import {
 } from '../../constants/types'
 import {
   CancelTransactionPayload,
-  IsEip1559Changed,
   RetryTransactionPayload,
   SetUserAssetVisiblePayloadType,
   SpeedupTransactionPayload,
@@ -42,7 +41,6 @@ import { PanelActions } from '../../panel/actions'
 // entities
 import {
   networkEntityAdapter,
-  NetworksRegistry,
   selectSwapSupportedNetworksFromQueryResult,
   selectMainnetNetworksFromQueryResult,
   selectAllNetworksFromQueryResult,
@@ -50,7 +48,6 @@ import {
   selectOnRampNetworksFromQueryResult,
   selectVisibleNetworksFromQueryResult
 } from './entities/network.entity'
-import { AccountInfoEntityState } from './entities/account-info.entity'
 import {
   blockchainTokenEntityAdaptor,
   blockchainTokenEntityAdaptorInitialState,
@@ -78,7 +75,6 @@ import {
   getAccountType
 } from '../../utils/account-utils'
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
-import type WalletApiProxy from '../wallet_api_proxy'
 import {
   addChainIdToToken,
   getAssetIdKey,
@@ -118,6 +114,7 @@ import { accountEndpoints } from './endpoints/account.endpoints'
 import {
   coinTypesMapping //
 } from './constants'
+import { networkEndpoints } from './endpoints/network.endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -191,23 +188,6 @@ interface GetTransactionsQueryArg {
   chainId: string | null
 }
 
-const NETWORK_TAG_IDS = {
-  HIDDEN: 'HIDDEN',
-  LIST: 'LIST',
-  MAINNETS: 'MAINNETS',
-  OFF_RAMPS: 'OFF_RAMP',
-  ON_RAMPS: 'ON_RAMP',
-  REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
-  VISIBLE: 'VISIBLE'
-} as const
-
-const ACCOUNT_TAG_IDS = {
-  REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED'
-}
-
 const TOKEN_TAG_IDS = {
   REGISTRY: 'REGISTRY'
 } as const
@@ -219,96 +199,6 @@ export function createWalletApi() {
       .injectEndpoints({
         endpoints: ({ mutation, query }) => {
           return {
-            //
-            // Account Info
-            //
-            getAccountInfosRegistry: query<AccountInfoEntityState, void>({
-              queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
-                try {
-                  const { cache } = baseQuery(undefined)
-                  return {
-                    data: await cache.getAccountsRegistry()
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Unable to fetch accounts',
-                    error
-                  )
-                }
-              },
-              providesTags: (res, err) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
-            }),
-            invalidateAccountInfos: mutation<boolean, void>({
-              queryFn: (arg, api, extraOptions, baseQuery) => {
-                baseQuery(undefined).cache.clearAccountsRegistry()
-                return { data: true }
-              },
-              invalidatesTags: [
-                { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-                { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }
-              ]
-            }),
-            invalidateSelectedAccount: mutation<boolean, void>({
-              queryFn: (arg, api, extraOptions, baseQuery) => {
-                baseQuery(undefined).cache.clearSelectedAccount()
-                return { data: true }
-              },
-              invalidatesTags: [
-                { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-                { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-              ]
-            }),
-            setSelectedAccount: mutation<
-              BraveWallet.AccountId,
-              BraveWallet.AccountId
-            >({
-              queryFn: async (
-                accountId,
-                { endpoint },
-                extraOptions,
-                baseQuery
-              ) => {
-                try {
-                  const {
-                    cache,
-                    data: { keyringService }
-                  } = baseQuery(undefined)
-
-                  await keyringService.setSelectedAccount(accountId)
-                  cache.clearSelectedAccount()
-
-                  return {
-                    data: accountId
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Failed to select account (${accountId})`,
-                    error
-                  )
-                }
-              },
-              invalidatesTags: [
-                { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-                { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-              ]
-            }),
-            getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
-              queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-                return {
-                  data:
-                    (await baseQuery(undefined).cache.getAllAccounts())
-                      .selectedAccount?.accountId || null
-                }
-              },
-              providesTags: [
-                { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-              ]
-            }),
             //
             // Default Currencies
             //
@@ -354,188 +244,6 @@ export function createWalletApi() {
                 }
               },
               invalidatesTags: ['DefaultFiatCurrency']
-            }),
-            //
-            // Networks
-            //
-            getNetworksRegistry: query<NetworksRegistry, void>({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const { cache } = baseQuery(undefined)
-                  return {
-                    data: await cache.getNetworksRegistry()
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to fetch Networks Registry ${error}`,
-                    error
-                  )
-                }
-              },
-              providesTags: (res, err, arg) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
-            }),
-            getSwapSupportedNetworkIds: query<string[], void>({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const {
-                    data: { swapService },
-                    cache
-                  } = baseQuery(undefined)
-
-                  const networksRegistry = await cache.getNetworksRegistry()
-
-                  const chainIdsWithSupportFlags = await mapLimit(
-                    networksRegistry.ids,
-                    10,
-                    async (chainId: string) => {
-                      const { result } = await swapService.isSwapSupported(
-                        chainId.toString()
-                      )
-                      return {
-                        chainId,
-                        supported: result
-                      }
-                    }
-                  )
-
-                  const swapChainIds = chainIdsWithSupportFlags
-                    .filter(({ supported }) => !!supported)
-                    .map((net) => net.chainId.toString())
-
-                  return {
-                    data: swapChainIds
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Unable to get Swap-Supported Networks',
-                    error
-                  )
-                }
-              },
-              providesTags: [
-                { type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }
-              ]
-            }),
-            invalidateSelectedChain: mutation<boolean, void>({
-              queryFn: () => {
-                return { data: true }
-              },
-              invalidatesTags: [
-                { type: 'Network', id: NETWORK_TAG_IDS.SELECTED }
-              ]
-            }),
-            getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
-              queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
-                try {
-                  return {
-                    data: await getSelectedNetwork(baseQuery(undefined).data)
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to fetch the currently selected chain`,
-                    error
-                  )
-                }
-              },
-              providesTags: (res, err) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
-            }),
-            setNetwork: mutation<
-              {
-                needsAccountForNetwork?: boolean
-                selectedAccountId?: BraveWallet.AccountId
-              },
-              Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-            >({
-              queryFn: async (
-                { chainId, coin },
-                { endpoint },
-                extraOptions,
-                baseQuery
-              ) => {
-                try {
-                  const {
-                    data: { braveWalletService },
-                    cache
-                  } = baseQuery(undefined)
-
-                  cache.clearSelectedAccount()
-                  const { accountId: selectedAccountId } =
-                    await braveWalletService.ensureSelectedAccountForChain(
-                      coin,
-                      chainId
-                    )
-                  if (!selectedAccountId) {
-                    return {
-                      data: { needsAccountForNetwork: true }
-                    }
-                  }
-
-                  const {
-                    success //
-                  } = await braveWalletService //
-                    .setNetworkForSelectedAccountOnActiveOrigin(chainId)
-                  if (!success) {
-                    throw new Error(
-                      'braveWalletService.' +
-                        'SetNetworkForSelectedAccountOnActiveOrigin failed'
-                    )
-                  }
-
-                  return {
-                    data: { selectedAccountId }
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to change selected network to: (chainId: ${
-                      chainId //
-                    }, coin: ${
-                      coin //
-                    })`,
-                    error
-                  )
-                }
-              },
-              invalidatesTags: (result, error, { coin }) => [
-                { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-                { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-              ]
-            }),
-            isEip1559Changed: mutation<
-              IsEip1559ChangedMutationArg,
-              IsEip1559Changed
-            >({
-              queryFn: async (arg, _, __, baseQuery) => {
-                // invalidate base cache of networks
-                baseQuery(undefined).cache.clearNetworksRegistry()
-
-                const { chainId, isEip1559 } = arg
-                return {
-                  data: { id: chainId, isEip1559 }
-                }
-              },
-              invalidatesTags: ['Network']
-            }),
-            refreshNetworkInfo: mutation<boolean, void>({
-              queryFn: async (arg, api, extraOptions, baseQuery) => {
-                // invalidate base cache of networks
-                baseQuery(undefined).cache.clearNetworksRegistry()
-                // invalidates tags
-                return {
-                  data: true
-                }
-              },
-              // refresh networks & selected network
-              invalidatesTags: ['Network']
             }),
             //
             // Tokens
@@ -3461,6 +3169,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: addressEndpoints })
       // Account management endpoints
       .injectEndpoints({ endpoints: accountEndpoints })
+      // Blockchain Network management endpoints
+      .injectEndpoints({ endpoints: networkEndpoints })
   )
 }
 
@@ -3714,14 +3424,6 @@ export const useGetNetworkQuery = (
 
 export type WalletApiSliceState = ReturnType<(typeof walletApi)['reducer']>
 export type WalletApiSliceStateFromRoot = { walletApi: WalletApiSliceState }
-
-async function getSelectedNetwork(
-  api: Pick<WalletApiProxy, 'braveWalletService'>
-): Promise<BraveWallet.NetworkInfo | null> {
-  return (
-    await api.braveWalletService.getNetworkForSelectedAccountOnActiveOrigin()
-  ).network
-}
 
 // panel internals
 function navigateToConnectHardwareWallet(
