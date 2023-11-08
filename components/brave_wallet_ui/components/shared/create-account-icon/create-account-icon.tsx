@@ -16,7 +16,6 @@ import {
 // styles
 import {
   AccountBox,
-  AccountIcon,
   ExternalAccountBox,
   ExternalAccountIcon
 } from './create-account-icon.style'
@@ -58,13 +57,6 @@ export const CreateAccountIcon = (props: Props) => {
       size={size}
       marginRight={marginRight}
       round={round}
-    >
-      {account?.accountId.kind === BraveWallet.AccountKind.kHardware && (
-        <AccountIcon
-          name='flashdrive'
-          size={size}
-        />
-      )}
-    </AccountBox>
+    />
   )
 }
