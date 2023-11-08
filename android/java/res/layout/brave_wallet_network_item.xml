@@ -35,7 +35,7 @@
             style="@style/PreferenceSummary" />
     </LinearLayout>
 
-    <org.chromium.components.browser_ui.widget.listmenu.ListMenuButton
+    <org.chromium.ui.listmenu.ListMenuButton
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
