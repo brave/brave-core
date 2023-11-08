@@ -11,7 +11,6 @@ import {
   RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
-  GetCoinMarketPayload,
   UpdateUsetAssetType
 } from '../constants/action_types'
 import {
@@ -340,18 +339,6 @@ handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
     }
   })
 })
-
-handler.on(
-  WalletActions.getCoinMarkets.type,
-  async (store: Store, payload: GetCoinMarketPayload) => {
-    const assetRatioService = getAPIProxy().assetRatioService
-    const result = await assetRatioService.getCoinMarkets(
-      payload.vsAsset,
-      payload.limit
-    )
-    store.dispatch(WalletActions.setCoinMarkets(result))
-  }
-)
 
 handler.on(
   WalletActions.updateAccountName.type,

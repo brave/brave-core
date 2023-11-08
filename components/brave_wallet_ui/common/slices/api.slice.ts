@@ -115,6 +115,7 @@ import {
   coinTypesMapping //
 } from './constants'
 import { networkEndpoints } from './endpoints/network.endpoints'
+import { coinMarketEndpoints } from './endpoints/market.endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -3171,6 +3172,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: accountEndpoints })
       // Blockchain Network management endpoints
       .injectEndpoints({ endpoints: networkEndpoints })
+      // Coin market endpoints
+      .injectEndpoints({ endpoints: coinMarketEndpoints })
   )
 }
 
@@ -3199,6 +3202,7 @@ export const {
   useGetAutopinEnabledQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
+  useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,

@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // Hooks
-import { useGetOnRampAssetsQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetCoinMarketQuery,
+  useGetDefaultFiatCurrencyQuery,
+  useGetOnRampAssetsQuery
+} from '../../../../common/slices/api.slice'
 
 // Constants
 import {
@@ -16,9 +20,6 @@ import {
   WalletRoutes,
   WalletState
 } from '../../../../constants/types'
-
-// Actions
-import { WalletActions } from '../../../../common/actions'
 
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
@@ -52,12 +53,6 @@ export const MarketView = () => {
 
   // Redux
   const dispatch = useDispatch()
-  const isLoadingCoinMarketData = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isLoadingCoinMarketData
-  )
-  const allCoins = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.coinMarketData
-  )
   const tradableAssets = useSelector(
     ({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo
   )
@@ -72,12 +67,21 @@ export const MarketView = () => {
   const history = useHistory()
 
   // Queries
+  const { data: defaultFiatCurrency = defaultCurrency } =
+    useGetDefaultFiatCurrencyQuery()
+
   const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       buyAssets: res.data?.allAssetOptions || []
     })
   })
+
+  const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
+    useGetCoinMarketQuery({
+      vsAsset: defaultFiatCurrency,
+      limit: assetsRequestLimit
+    })
 
   // Methods
   const onSelectCoinMarket = React.useCallback(
@@ -143,17 +147,6 @@ export const MarketView = () => {
   )
 
   // Effects
-  React.useEffect(() => {
-    if (allCoins.length === 0) {
-      dispatch(
-        WalletActions.getCoinMarkets({
-          vsAsset: defaultCurrencies.fiat || defaultCurrency,
-          limit: assetsRequestLimit
-        })
-      )
-    }
-  }, [allCoins, defaultCurrencies])
-
   React.useEffect(() => {
     if (!iframeLoaded || !marketDataIframeRef?.current) return
 

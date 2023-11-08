@@ -59,6 +59,9 @@ import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-t
 import { findAccountByUniqueKey } from '../../../utils/account-utils'
 import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
 import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
+import {
+  coinMarketMockData //
+} from '../../../stories/mock-data/mock-coin-market-data'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -533,6 +536,12 @@ export class MockedWalletApiProxy {
             price: '1234.56'
           }
         ]
+      }
+    },
+    getCoinMarkets: async (vsAsset: string, limit: number) => {
+      return {
+        success: true,
+        values: coinMarketMockData
       }
     }
   }
