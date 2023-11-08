@@ -69,9 +69,10 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
+}
 
-  // Deprecated
-  // ============================================================================
+// static
+void Prefs::RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncSeed, std::string());
   registry->RegisterBooleanPref(kSyncEnabled, false);
   registry->RegisterStringPref(kSyncDeviceId, std::string());
@@ -174,6 +175,7 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   // Added 05/2020
   prefs->ClearPref(kSyncSeed);
 
+  // Added 11/2023
   prefs->ClearPref(kSyncEnabled);
   prefs->ClearPref(kDuplicatedBookmarksRecovered);
   prefs->ClearPref(kSyncDeviceId);

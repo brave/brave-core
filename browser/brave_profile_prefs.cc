@@ -276,6 +276,9 @@ void RegisterProfilePrefsForMigration(
   // Added 2023-09
   ntp_background_images::ViewCounterService::RegisterProfilePrefsForMigration(
       registry);
+
+  // Added 2023-11
+  brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

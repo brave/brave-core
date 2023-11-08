@@ -32,6 +32,8 @@ class Prefs {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+
   static std::string GetSeedPath();
 
   std::string GetSeed(bool* failed_to_decrypt) const;
