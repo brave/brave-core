@@ -12,7 +12,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@mozilla/readability": "^0.4.2",
-    "brave-core-ios": "https://github.com/brave/brave-browser/releases/download/v1.60.113/brave-core-ios-1.60.113.tgz",
+    "brave-core-ios": "https://github.com/brave/brave-browser/releases/download/v1.60.114/brave-core-ios-1.60.114.tgz",
     "leo": "github:brave/leo#7f2dfddb70aff1501ef5a2f3c640a8c74a7343ee",
     "leo-sf-symbols": "github:brave/leo-sf-symbols#d6056328b8d6ef06e68996ff02a22e06f52590c3",
     "page-metadata-parser": "^1.1.3",
