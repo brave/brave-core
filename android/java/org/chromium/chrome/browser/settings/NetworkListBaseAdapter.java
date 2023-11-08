@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
-import static org.chromium.components.browser_ui.widget.listmenu.BasicListMenu.buildMenuListItem;
+import static org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils.buildMenuListItem;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,11 +23,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
-import org.chromium.components.browser_ui.widget.listmenu.BasicListMenu;
-import org.chromium.components.browser_ui.widget.listmenu.ListMenu;
-import org.chromium.components.browser_ui.widget.listmenu.ListMenuButton;
-import org.chromium.components.browser_ui.widget.listmenu.ListMenuButtonDelegate;
-import org.chromium.components.browser_ui.widget.listmenu.ListMenuItemProperties;
+import org.chromium.ui.listmenu.BasicListMenu;
+import org.chromium.ui.listmenu.ListMenu;
+import org.chromium.ui.listmenu.ListMenuButton;
+import org.chromium.ui.listmenu.ListMenuButtonDelegate;
+import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.util.ArrayList;
@@ -124,19 +125,27 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
         menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
         menuItems.add(buildMenuListItem(R.string.brave_wallet_add_network_set_as_active, 0, 0));
 
-        ListMenu.Delegate delegate = (model) -> {
-            int textId = model.get(ListMenuItemProperties.TITLE_ID);
-            if (textId == R.string.edit) {
-                mListener.onItemClicked(info, activeNetwork);
-            } else if (textId == R.string.remove) {
-                mListener.onItemRemove(info);
-            } else if (textId == R.string.brave_wallet_add_network_set_as_active) {
-                mListener.onItemSetAsActive(info);
-            }
-        };
-        ((RowViewHolder) viewHolder).setMenuButtonDelegate(() -> {
-            return new BasicListMenu(mContext, menuItems, delegate);
-        });
+        ListMenu.Delegate delegate =
+                (model) -> {
+                    int textId = model.get(ListMenuItemProperties.TITLE_ID);
+                    if (textId == R.string.edit) {
+                        mListener.onItemClicked(info, activeNetwork);
+                    } else if (textId == R.string.remove) {
+                        mListener.onItemRemove(info);
+                    } else if (textId == R.string.brave_wallet_add_network_set_as_active) {
+                        mListener.onItemSetAsActive(info);
+                    }
+                };
+        ((RowViewHolder) viewHolder)
+                .setMenuButtonDelegate(
+                        () -> {
+                            View contentView =
+                                    LayoutInflater.from(mContext)
+                                            .inflate(R.layout.app_menu_layout, null);
+                            ListView listView = contentView.findViewById(R.id.app_menu_list);
+                            return new BasicListMenu(
+                                    mContext, menuItems, contentView, listView, delegate, 0);
+                        });
     }
 
     @Override
