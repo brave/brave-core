@@ -4,8 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
-import Icon from '@brave/leo/react/icon'
 
 // Utils
 import { getRewardsProviderBackground } from '../../../utils/rewards_utils'
@@ -33,18 +31,6 @@ export const AccountBox = styled.div<{
   background-image: url(${(p) => p.orb});
   background-size: cover;
   margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
-`
-
-export const AccountIcon = styled(Icon)<{
-  size?: 'big' | 'medium' | 'small' | 'tiny'
-}>`
-  --icon-big: 24px;
-  --icon-medium: 20px;
-  --icon-small: 16px;
-  --icon-tiny: 14px;
-  --leo-icon-size: ${(p) =>
-    p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)'};
-  color: ${leo.color.white};
 `
 
 export const ExternalAccountBox = styled(AccountBox)<{
