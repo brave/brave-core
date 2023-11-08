@@ -49,7 +49,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_TOGGLE_BRAVE_VPN, kLeoProductVpnIcon},
           {IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, kLeoEyeOnIcon},
           {IDC_SHOW_BRAVE_VPN_PANEL, kLeoProductVpnIcon},
-          {IDC_SEND_BRAVE_VPN_FEEDBACK, kLeoMessageHeartIcon},
+          {IDC_SEND_BRAVE_VPN_FEEDBACK, kLeoMessageBubbleHeartIcon},
           {IDC_MANAGE_BRAVE_VPN_PLAN, kLeoLaunchIcon},
           {IDC_ABOUT_BRAVE_VPN, kLeoInfoOutlineIcon},
 
