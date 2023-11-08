@@ -847,6 +847,7 @@ test("brave_browser_tests") {
     "//brave/browser/profiles",
     "//brave/browser/psst:browser_tests",
     "//brave/browser/sandbox:browser_tests",
+    "//brave/browser/script_injector:browser_tests",
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
