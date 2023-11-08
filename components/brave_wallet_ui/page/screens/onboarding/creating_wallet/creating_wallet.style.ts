@@ -11,7 +11,6 @@ import { Text } from '../../../../components/shared/style'
 
 export const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-size: 40px;
-  --leo-progressring-background-color: rgba(217, 217, 217, 1);
   --leo-progressring-color: ${leo.color.icon.interactive};
   margin-bottom: 20px;
 `

@@ -200,7 +200,6 @@ export const StatusBubble = styled.div<{
 
 export const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-size: 10px;
-  --leo-progressring-background-color: rgba(255, 255, 255, 0.4);
   --leo-progressring-color: ${leo.color.white};
 `
 

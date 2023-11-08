@@ -197,7 +197,6 @@ export const LoadingIcon = styled(ProgressRing)<{
   status: BraveWallet.TransactionStatus
 }>`
   --leo-progressring-size: 14px;
-  --leo-progressring-background-color: rgba(255, 255, 255, 0.4);
   --leo-progressring-color: ${(p) =>
     p.status === BraveWallet.TransactionStatus.Unapproved
       ? leo.color.text.secondary
