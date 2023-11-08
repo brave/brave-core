@@ -295,17 +295,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_PRIVATE_PROFILE_NAME" desc="The name given to the private profile. Displayed in the avatar menu bubble and button UI.">
         Private Window
       </message>
-      <message name="IDS_PRIVATE_AVATAR_BUTTON_LABEL" desc="The text label of private avatar button.">
-        Private
-      </message>
-      <message name="IDS_PRIVATE_AVATAR_BUTTON_LABEL_COUNT" desc="The text label of private avatar button with count">
-        Private <ph name="COUNT">$1</ph>
-      </message>
       <message name="IDS_TOR_AVATAR_BUTTON_LABEL" desc="The text label of tor avatar button.">
-        Private with Tor
+        Tor
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_LABEL_COUNT" desc="The text label of tor avatar button. with count">
-        Private with Tor <ph name="COUNT">$1</ph>
+        Tor <ph name="COUNT">$1</ph>
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT" desc="The tooltip text of tor avatar button.">
         This is a private window with Tor
