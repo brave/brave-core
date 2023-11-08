@@ -22,6 +22,10 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(
           WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: false })
         )
+        // re-parse transactions with new coins list
+        store.dispatch(
+          walletApi.endpoints.invalidateTransactionsCache.initiate()
+        )
       },
       onTokenRemoved(token) {
         store.dispatch(
@@ -30,6 +34,10 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(WalletActions.getAllTokensList())
         store.dispatch(
           WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
+        )
+        // re-parse transactions with new coins list
+        store.dispatch(
+          walletApi.endpoints.invalidateTransactionsCache.initiate()
         )
       }
     })
