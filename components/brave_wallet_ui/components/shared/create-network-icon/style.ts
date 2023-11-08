@@ -34,15 +34,7 @@ export const IconWrapper = styled.div<{
   padding: ${(p) => (p.externalProvider ? '2px' : '0px')};
 `
 
-export const Placeholder = styled.div<{ orb: string }>`
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background: ${(p) => p.orb};
-  background-size: cover;
-`
-
-type IconSize = 'huge' | 'big' | 'small' | 'tiny' | 'extra-small'
+export type IconSize = 'huge' | 'big' | 'small' | 'tiny' | 'extra-small'
 
 interface IconProps extends AssetIconProps {
   size?: IconSize
@@ -89,3 +81,14 @@ export const NetworkIcon = AssetIconFactory<IconProps>((props) => ({
     : getNetworkIconWidthFromSize(props.size),
   height: 'auto'
 }))
+
+export const Placeholder = styled.div<{
+  orb: string
+  size?: IconSize
+}>`
+  min-width: ${(p) => (p.size ? getNetworkIconWidthFromSize(p.size) : '15px')};
+  min-height: ${(p) => (p.size ? getNetworkIconWidthFromSize(p.size) : '15px')};
+  border-radius: 100%;
+  background: ${(p) => p.orb};
+  background-size: cover;
+`
