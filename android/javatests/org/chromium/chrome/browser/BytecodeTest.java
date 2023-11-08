@@ -676,14 +676,25 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testConstructorsExistAndMatch() throws Exception {
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
-                Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
-                TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
-                OneshotSupplier.class, OneshotSupplier.class, ObservableSupplier.class,
-                WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
-                SnackbarManager.class, OneshotSupplier.class, Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
+                        "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
+                        Context.class,
+                        ActivityTabProvider.class,
+                        MultiWindowModeStateDispatcher.class,
+                        TabModelSelector.class,
+                        ToolbarManager.class,
+                        View.class,
+                        AppMenuDelegate.class,
+                        OneshotSupplier.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class,
+                        WebFeedSnackbarController.FeedLauncher.class,
+                        ModalDialogManager.class,
+                        SnackbarManager.class,
+                        OneshotSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
@@ -691,6 +702,7 @@ public class BytecodeTest {
                         Activity.class,
                         WindowAndroid.class,
                         Supplier.class,
+                        OneshotSupplier.class,
                         boolean.class,
                         OverviewNTPCreator.class,
                         AsyncTabParamsManager.class,

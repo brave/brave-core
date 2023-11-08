@@ -11,6 +11,7 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -20,6 +21,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -33,6 +35,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             Activity activity,
             WindowAndroid nativeWindow,
             Supplier<TabDelegateFactory> tabDelegateFactory,
+            OneshotSupplier<ProfileProvider> profileProviderSupplier,
             boolean incognito,
             OverviewNTPCreator overviewNTPCreator,
             AsyncTabParamsManager asyncTabParamsManager,
@@ -43,6 +46,7 @@ public class BraveTabCreator extends ChromeTabCreator {
                 activity,
                 nativeWindow,
                 tabDelegateFactory,
+                profileProviderSupplier,
                 incognito,
                 overviewNTPCreator,
                 asyncTabParamsManager,
