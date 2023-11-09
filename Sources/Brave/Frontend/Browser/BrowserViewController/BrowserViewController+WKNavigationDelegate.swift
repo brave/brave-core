@@ -794,16 +794,11 @@ extension BrowserViewController {
     navigationAction: WKNavigationAction,
     openedURLCompletionHandler: ((Bool) -> Void)? = nil
   ) {
-    
-    let isMainFrame = navigationAction.targetFrame?.isMainFrame == true
-    
     // Do not open external links for child tabs automatically
     // The user must tap on the link to open it.
     if tab?.parent != nil && navigationAction.navigationType != .linkActivated {
       return
     }
-    
-    var alertTitle = Strings.openExternalAppURLGenericTitle
     
     // Check if the current url of the caller has changed
     if let domain = tab?.url?.baseDomain,
@@ -820,10 +815,25 @@ extension BrowserViewController {
 
     // We do not schemes to be opened externally when called from subframes.
     // And external dialog should not be shown for non-active tabs #6687 - #7835
-    if !isMainFrame || tab?.url?.host != topToolbar.currentURL?.host {
+    
+    // Check navigation action is from main frame as first step
+    let isMainFrame = navigationAction.targetFrame?.isMainFrame == true
+
+    // Check user trying to open on NTP like external link browsing
+    var isAboutHome = false
+    if let url = tab?.url {
+      isAboutHome = InternalURL(url)?.isAboutHomeURL == true
+    }
+
+    // Finally check non-active tab
+    let isNonActiveTab = isAboutHome ? false : tab?.url?.host != topToolbar.currentURL?.host
+
+    if !isMainFrame || isNonActiveTab {
       return
     }
-      
+    
+    var alertTitle = Strings.openExternalAppURLGenericTitle
+
     if let displayHost = tab?.url?.withoutWWW.host {
       alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
     }
