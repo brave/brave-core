@@ -41,7 +41,7 @@ import {
   CardHeaderContentWrapper
 } from './wallet-page-wrapper.style'
 
-import { PlatformContext } from '../../../common/context/platform.context'
+import { loadTimeData } from '../../../../common/loadTimeData'
 
 export interface Props {
   wrapContentInBox?: boolean
@@ -78,7 +78,7 @@ export const WalletPageWrapper = (props: Props) => {
     useDarkBackground
   } = props
 
-  const { isAndroid } = React.useContext(PlatformContext)
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)

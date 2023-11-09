@@ -37,8 +37,6 @@ import 'emptykit.css'
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-import { PlatformContext } from '../common/context/platform.context'
-
 function App () {
 
   React.useEffect(() => {
@@ -56,10 +54,6 @@ function App () {
     removeDeprecatedLocalStorageKeys()
   }, [])
 
-  const platformInfo = {
-    isAndroid: loadTimeData.getBoolean('isAndroid') || false
-  }
-
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -69,9 +63,7 @@ function App () {
         >
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
-              <PlatformContext.Provider value={platformInfo}>
-                <Container />
-              </PlatformContext.Provider>
+              <Container />
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
