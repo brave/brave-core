@@ -83,19 +83,19 @@ std::string GetVolumeUUIDFromBSDName(const std::string& bsd_name) {
   }
 
   const base::apple::ScopedCFTypeRef<DADiskRef> disk(
-      DADiskCreateFromBSDName(allocator, session, bsd_name.c_str()));
+      DADiskCreateFromBSDName(allocator, session.get(), bsd_name.c_str()));
   if (!disk) {
     return {};
   }
 
   const base::apple::ScopedCFTypeRef<CFDictionaryRef> disk_description(
-      DADiskCopyDescription(disk));
+      DADiskCopyDescription(disk.get()));
   if (!disk_description) {
     return {};
   }
 
   const CFUUIDRef volume_uuid = base::apple::GetValueFromDictionary<CFUUIDRef>(
-      disk_description, kDADiskDescriptionVolumeUUIDKey);
+      disk_description.get(), kDADiskDescriptionVolumeUUIDKey);
   if (volume_uuid == nullptr) {
     return {};
   }
@@ -137,8 +137,8 @@ class MacAddressProcessor {
       return keep_going;
     }
 
-    const UInt8* mac_address = CFDataGetBytePtr(mac_address_data);
-    const size_t mac_address_size = CFDataGetLength(mac_address_data);
+    const UInt8* mac_address = CFDataGetBytePtr(mac_address_data.get());
+    const size_t mac_address_size = CFDataGetLength(mac_address_data.get());
     if (!is_valid_mac_address_callback_.Run(mac_address, mac_address_size)) {
       return keep_going;
     }
@@ -151,8 +151,8 @@ class MacAddressProcessor {
             network_controller, CFSTR(kIOProviderClassKey), kCFAllocatorDefault,
             0)));
     if (provider_class_string) {
-      if (CFStringCompare(provider_class_string, CFSTR("IOPCIDevice"), 0) ==
-          kCFCompareEqualTo) {
+      if (CFStringCompare(provider_class_string.get(), CFSTR("IOPCIDevice"),
+                          0) == kCFCompareEqualTo) {
         // MAC address from built-in network card is always the best choice.
         keep_going = false;
       }
@@ -195,7 +195,7 @@ std::string GetMacAddress(
   MacAddressProcessor processor(std::move(is_valid_mac_address_callback));
   while (true) {
     // NOTE: |service| should not be released.
-    const io_object_t service = IOIteratorNext(scoped_iterator);
+    const io_object_t service = IOIteratorNext(scoped_iterator.get());
     if (!service) {
       break;
     }
@@ -204,7 +204,8 @@ std::string GetMacAddress(
     result = IORegistryEntryGetParentEntry(service, kIOServicePlane, &parent);
     if (result == KERN_SUCCESS) {
       const base::mac::ScopedIOObject<io_object_t> scoped_parent(parent);
-      const bool keep_going = processor.ProcessNetworkController(scoped_parent);
+      const bool keep_going =
+          processor.ProcessNetworkController(scoped_parent.get());
       if (!keep_going) {
         break;
       }
