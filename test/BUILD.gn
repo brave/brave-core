@@ -636,17 +636,14 @@ static_library("browser_test_support") {
 
 static_library("browser_tests_runner") {
   testonly = true
-
+  deps = [
+    "//chrome/test:test_support",
+    "//ui/compositor",
+  ]
   if (is_win) {
-    deps = [ "//chrome/installer/util:strings" ]
+    deps += [ "//chrome/installer/util:strings" ]
   }
-
   public_deps = [ ":browser_test_support" ]
-
-  if (is_win) {
-    public_configs = [ "//build/config/win:delayloads" ]
-  }
-
   sources = [ "base/browser_tests_main.cc" ]
 }
 
@@ -709,6 +706,8 @@ if (is_android) {
 test("brave_browser_tests") {
   testonly = true
 
+  public_deps = [ ":browser_tests_runner" ]
+
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
@@ -754,7 +753,6 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_functional_test.h",
     "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
-    "//brave/browser/extensions/extension_urls_browsertest.cc",
     "//brave/browser/favicon/favicon_database_browsertest.cc",
     "//brave/browser/perf/brave_perf_features_processor_browsertest.cc",
     "//brave/browser/policy/brave_policy_browsertest.cc",
@@ -976,6 +974,10 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (is_win) {
+    public_configs = [ "//build/config/win:delayloads" ]
+  }
+
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
   }
@@ -1150,6 +1152,7 @@ test("brave_browser_tests") {
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/brave_shields_apitest.cc",
+      "//brave/browser/extensions/extension_urls_browsertest.cc",
       "//brave/browser/ui/webui/settings/brave_extensions_manifest_v2_browsertest.cc",
       "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc",
       "//chrome/browser/extensions/extension_apitest.cc",
@@ -1182,8 +1185,6 @@ test("brave_browser_tests") {
     deps += android_only_test_deps
     sources -= android_test_exception_sources
     sources += android_only_test_sources
-  } else {
-    public_deps = [ ":browser_tests_runner" ]
   }
 }
 

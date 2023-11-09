@@ -6,12 +6,10 @@
 #include <memory>
 
 #include "base/path_service.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -49,16 +47,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
-    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
     host_resolver()->AddRule("*", "127.0.0.1");
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
  protected:
@@ -84,10 +73,6 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
         base::NullCallback());
     observer.WaitForNavigationFinished();
   }
-
- private:
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, SameOrigin) {

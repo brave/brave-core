@@ -6,6 +6,7 @@
 #ifndef BRAVE_TEST_BASE_BRAVE_TEST_LAUNCHER_DELEGATE_H_
 #define BRAVE_TEST_BASE_BRAVE_TEST_LAUNCHER_DELEGATE_H_
 
+#include "build/build_config.h"
 #include "chrome/test/base/chrome_test_launcher.h"
 
 class BraveTestLauncherDelegate : public ChromeTestLauncherDelegate {
@@ -16,10 +17,6 @@ class BraveTestLauncherDelegate : public ChromeTestLauncherDelegate {
   BraveTestLauncherDelegate& operator=(const BraveTestLauncherDelegate&) =
       delete;
   ~BraveTestLauncherDelegate() override;
-
- private:
-  // ChromeLauncherDelegate:
-  content::ContentMainDelegate* CreateContentMainDelegate() override;
 };
 
 #endif  // BRAVE_TEST_BASE_BRAVE_TEST_LAUNCHER_DELEGATE_H_

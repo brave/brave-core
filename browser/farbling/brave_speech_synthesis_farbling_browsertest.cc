@@ -6,15 +6,12 @@
 #include <memory>
 
 #include "base/path_service.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -35,11 +32,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
-    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
-
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
@@ -50,11 +42,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
   HostContentSettingsMap* content_settings() {
@@ -82,10 +69,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
-
- private:
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 // Tests results of farbling voices list

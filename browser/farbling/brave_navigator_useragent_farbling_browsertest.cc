@@ -10,18 +10,15 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/embedder_support/user_agent_utils.h"
@@ -94,11 +91,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
-    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
-
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -115,11 +107,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     user_agents_.clear();
 
     ASSERT_TRUE(https_server_->Start());
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -179,8 +166,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
   std::vector<std::string> user_agents_;
   base::test::ScopedFeatureList feature_list_;
 };
