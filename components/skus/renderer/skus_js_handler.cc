@@ -195,17 +195,13 @@ void SkusJSHandler::OnFetchOrderCredentials(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-
-  if (!response.empty()) {
-    v8::Local<v8::String> error_message =
-        v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
-    std::ignore = resolver->Reject(context, error_message);
-    return;
+  v8::Local<v8::String> result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  
+  if (response.empty()) {
+    std::ignore = resolver->Resolve(context, result);
+  } else {
+    std::ignore = resolver->Reject(context, result);
   }
-
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
-  std::ignore = resolver->Resolve(context, result);
 }
 
 // window.chrome.braveSkus.prepare_credentials_presentation
