@@ -29,7 +29,7 @@ class BraveURLLoaderThrottleProviderImpl
 
   // blink::URLLoaderThrottleProvider implementation.
   blink::WebVector<std::unique_ptr<blink::URLLoaderThrottle>> CreateThrottles(
-      int render_frame_id,
+      base::optional_ref<const blink::LocalFrameToken> local_frame_token,
       const blink::WebURLRequest& request) override;
 
  private:
