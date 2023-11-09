@@ -74,6 +74,8 @@ export type SwapValidationErrorType =
   | 'unknownError'
 
 export type SwapParams = {
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAccount: BraveWallet.AccountInfo | undefined
   fromToken?: BraveWallet.BlockchainToken
   toToken?: BraveWallet.BlockchainToken
   fromAmount: string

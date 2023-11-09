@@ -9,11 +9,11 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Types
-import { GasFeeOption, GasEstimate } from '../../../../../../constants/types'
-
 import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
+  GasFeeOption,
+  GasEstimate,
+  BraveWallet
+} from '../../../../../../constants/types'
 
 // Styled Components
 import { Button, ButtonIcon, IconWrapper } from './settings.style'
@@ -24,13 +24,11 @@ interface Props {
   option: GasFeeOption
   gasEstimates: GasEstimate
   onClick: () => void
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 export const GasPresetButton = (props: Props) => {
-  const { onClick, isSelected, option, gasEstimates } = props
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { onClick, isSelected, option, gasEstimates, selectedNetwork } = props
 
   return (
     <Button

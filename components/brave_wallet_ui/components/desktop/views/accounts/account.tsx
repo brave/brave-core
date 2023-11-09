@@ -466,9 +466,7 @@ export const Account = () => {
               }
             />
           ))}
-          {showAssetDiscoverySkeleton && (
-            <PortfolioAssetItemLoadingSkeleton />
-          )}
+          {showAssetDiscoverySkeleton && <PortfolioAssetItemLoadingSkeleton />}
         </AssetsWrapper>
       )}
 

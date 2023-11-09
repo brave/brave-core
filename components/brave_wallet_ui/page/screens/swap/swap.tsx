@@ -6,9 +6,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-// State
-import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
-
 // Types
 import { BraveWallet } from '../../../constants/types'
 
@@ -53,8 +50,6 @@ import {
 } from './components/shared-swap.styles'
 
 export const Swap = () => {
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-
   // Hooks
   const swap = useSwap()
   const {
@@ -88,7 +83,11 @@ export const Swap = () => {
     isSubmitButtonDisabled,
     swapValidationError,
     getNetworkAssetsList,
-    spotPrices
+    spotPrices,
+    selectedNetwork,
+    setSelectedNetwork,
+    selectedAccount,
+    setSelectedAcount
   } = swap
 
   // State
@@ -132,7 +131,13 @@ export const Swap = () => {
   // render
   return (
     <>
-      <SwapContainer showPrivacyModal={() => setShowPrivacyModal(true)}>
+      <SwapContainer
+        showPrivacyModal={() => setShowPrivacyModal(true)}
+        selectedNetwork={selectedNetwork}
+        selectedAccount={selectedAccount}
+        setSelectedNetwork={setSelectedNetwork}
+        setSelectedAccount={setSelectedAcount}
+      >
         <Row
           rowWidth='full'
           horizontalPadding={16}
@@ -154,6 +159,7 @@ export const Swap = () => {
                 setUseDirectRoute={setUseDirectRoute}
                 gasEstimates={gasEstimates}
                 onClose={() => setShowSwapSettings(false)}
+                selectedNetwork={selectedNetwork}
               />
             )}
           </SettingsWrapper>
@@ -169,6 +175,8 @@ export const Swap = () => {
             swapValidationError === 'fromAmountDecimalsOverflow'
           }
           fiatValue={fiatValue}
+          selectedNetwork={selectedNetwork}
+          selectedAccount={selectedAccount}
         />
         <FlipTokensButton onClick={onClickFlipSwapTokens} />
         <SwapSectionBox boxType='secondary'>
@@ -180,6 +188,7 @@ export const Swap = () => {
             hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
             isLoading={isFetchingQuote}
             disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
+            selectedNetwork={selectedNetwork}
           />
           {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
             quoteOptions.length > 0 && (
@@ -237,6 +246,8 @@ export const Swap = () => {
           getCachedAssetBalance={getCachedAssetBalance}
           selectingFromOrTo={selectingFromOrTo}
           getNetworkAssetsList={getNetworkAssetsList}
+          selectedNetwork={selectedNetwork}
+          setSelectedNetwork={setSelectedNetwork}
         />
       )}
       {showPrivacyModal && (

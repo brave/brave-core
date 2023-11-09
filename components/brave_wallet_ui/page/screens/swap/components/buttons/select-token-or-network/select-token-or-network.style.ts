@@ -28,11 +28,7 @@ export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
 
   /* Styles */
   background-color: ${(p) =>
-    p.hasBackground
-      ? p.networkNotSupported
-        ? leo.color.red[40]
-        : p.theme.color.background01
-      : 'transparent'};
+    p.hasBackground ? p.theme.color.background01 : 'transparent'};
   border-radius: 100px;
   box-shadow: ${(p) =>
     p.hasShadow ? '0px 0px 10px rgba(0, 0, 0, 0.05)' : 'none'};
@@ -51,17 +47,14 @@ export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
   }
   &:hover:not([disabled]) {
     background-color: ${(p) =>
-      p.networkNotSupported
-        ? leo.color.red[40]
-        : p.buttonType === 'secondary' || p.buttonSize === 'small'
+      p.buttonType === 'secondary' || p.buttonSize === 'small'
         ? 'var(--background-color-hover-secondary)'
         : 'var(--background-color-hover-primary)'};
   }
 `
 
-export const ButtonIcon = styled(Icon)<{ networkNotSupported?: boolean }>`
-  color: ${(p) =>
-    p.networkNotSupported ? p.theme.palette.white : p.theme.color.text01};
+export const ButtonIcon = styled(Icon)`
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const FuelTank = styled(Icon)`
@@ -89,5 +82,4 @@ export interface SelectTokenButtonStyleProps {
   moreRightPadding?: boolean
   hasBackground?: boolean
   hasShadow?: boolean
-  networkNotSupported?: boolean
 }

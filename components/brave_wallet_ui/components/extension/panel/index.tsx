@@ -22,8 +22,7 @@ export interface Props {
 
 export class Panel extends React.PureComponent<Props> {
   render() {
-    const { title, headerStyle, navAction, children } =
-      this.props
+    const { title, headerStyle, navAction, children } = this.props
 
     return (
       <StyledWrapper>

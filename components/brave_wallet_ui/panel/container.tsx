@@ -58,11 +58,7 @@ import { PanelWrapper, WelcomePanelWrapper } from './style'
 
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
-import {
-  BraveWallet,
-  PanelTypes,
-  WalletRoutes
-} from '../constants/types'
+import { BraveWallet, PanelTypes, WalletRoutes } from '../constants/types'
 
 import LockPanel from '../components/extension/lock-panel'
 import { useHasAccount } from '../common/hooks/has-account'

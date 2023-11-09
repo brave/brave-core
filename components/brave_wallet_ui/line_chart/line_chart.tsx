@@ -37,7 +37,10 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+      <BraveCoreThemeProvider
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
         <LineChart
           priceData={decodedData?.priceData}
           isLoading={!decodedData?.priceData}

@@ -103,7 +103,10 @@ export function LineChart({
   return (
     <StyledWrapper style={customStyle}>
       <AreaWrapper>
-        <ResponsiveContainer width='100%' height='99%'>
+        <ResponsiveContainer
+          width='100%'
+          height='99%'
+        >
           <AreaChart
             data={chartData}
             margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
@@ -128,8 +131,14 @@ export function LineChart({
                 />
               </linearGradient>
             </defs>
-            <YAxis hide={true} domain={['auto', 'auto']} />
-            <XAxis hide={true} dataKey='date' />
+            <YAxis
+              hide={true}
+              domain={['auto', 'auto']}
+            />
+            <XAxis
+              hide={true}
+              dataKey='date'
+            />
             {priceData &&
               priceData.length > 0 &&
               !isDisabled &&

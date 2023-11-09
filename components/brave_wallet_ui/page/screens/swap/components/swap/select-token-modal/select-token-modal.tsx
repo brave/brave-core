@@ -9,11 +9,6 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 
-// Queries
-import {
-  useGetSelectedChainQuery //
-} from '../../../../../../common/slices/api.slice'
-
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
@@ -46,6 +41,8 @@ interface Props {
   getNetworkAssetsList: (
     network: BraveWallet.NetworkInfo
   ) => BraveWallet.BlockchainToken[]
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  setSelectedNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -56,11 +53,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       getCachedAssetBalance,
       getNetworkAssetsList,
       disabledToken,
-      selectingFromOrTo
+      selectingFromOrTo,
+      selectedNetwork,
+      setSelectedNetwork
     } = props
-
-    // Queries
-    const { data: selectedNetwork } = useGetSelectedChainQuery()
 
     // State
     const [hideTokensWithZeroBalances, setHideTokensWithZeroBalances] =
@@ -170,6 +166,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             onSearchChanged={handleOnSearchChanged}
             searchValue={searchValue}
             networkSelectorDisabled={selectingFromOrTo === 'to'}
+            selectedNetwork={selectedNetwork}
+            setSelectedNetwork={setSelectedNetwork}
           />
         </Row>
         <HiddenResponsiveRow maxWidth={570}>
@@ -186,6 +184,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               getCachedAssetBalance={getCachedAssetBalance}
               onSelectToken={onSelectToken}
               tokenList={filteredTokenList}
+              selectedNetwork={selectedNetwork}
             />
           )}
         </ScrollContainer>

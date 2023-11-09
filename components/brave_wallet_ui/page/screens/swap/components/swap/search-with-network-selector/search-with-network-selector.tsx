@@ -5,12 +5,6 @@
 
 import * as React from 'react'
 
-// Queries
-import {
-  useGetSelectedChainQuery,
-  useSetNetworkMutation
-} from '../../../../../../common/slices/api.slice'
-
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import { reduceNetworkDisplayName } from '../../../../../../utils/network-utils'
@@ -36,14 +30,18 @@ interface Props {
   onSearchChanged: (value: string) => void
   searchValue: string
   networkSelectorDisabled: boolean
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  setSelectedNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
 export const SearchWithNetworkSelector = (props: Props) => {
-  const { onSearchChanged, searchValue, networkSelectorDisabled } = props
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const [setNetwork] = useSetNetworkMutation()
+  const {
+    onSearchChanged,
+    searchValue,
+    networkSelectorDisabled,
+    selectedNetwork,
+    setSelectedNetwork
+  } = props
 
   // State
   const [showNetworkSelector, setShowNetworkSelector] =
@@ -51,13 +49,10 @@ export const SearchWithNetworkSelector = (props: Props) => {
 
   const onSelectNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      await setNetwork({
-        chainId: network.chainId,
-        coin: network.coin
-      }).unwrap()
+      setSelectedNetwork(network)
       setShowNetworkSelector(false)
     },
-    [setNetwork]
+    [setSelectedNetwork]
   )
 
   return (

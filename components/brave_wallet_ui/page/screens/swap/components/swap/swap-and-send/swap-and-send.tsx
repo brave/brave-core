@@ -40,6 +40,7 @@ import {
 } from '../../shared-swap.styles'
 
 interface Props {
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
   selectedSwapAndSendOption: string
   toAnotherAddress: string
   selectedSwapSendAccount: BraveWallet.AccountInfo | undefined
@@ -56,6 +57,7 @@ interface Props {
 
 export const SwapAndSend = (props: Props) => {
   const {
+    selectedNetwork,
     selectedSwapAndSendOption,
     toAnotherAddress,
     selectedSwapSendAccount,
@@ -145,6 +147,7 @@ export const SwapAndSend = (props: Props) => {
                     <AccountSelector
                       onSelectAccount={onSelectSwapSendAccount}
                       selectedAccount={selectedSwapSendAccount}
+                      selectedNetwork={selectedNetwork}
                       disabled={selectedSwapAndSendOption === 'to-address'}
                       showAccountSelector={showAccountSelector}
                       setShowAccountSelector={setShowAccountSelector}

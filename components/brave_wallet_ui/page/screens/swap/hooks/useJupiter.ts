@@ -22,19 +22,17 @@ import { useLib } from '../../../../common/hooks/useLib'
 
 // Query hooks
 import {
-  useGetSelectedChainQuery,
-  useGetDefaultFiatCurrencyQuery
+  useGetDefaultFiatCurrencyQuery //
 } from '../../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
 
 const networkFee = new Amount('0.000005')
 
 export function useJupiter(params: SwapParams) {
+  const { selectedNetwork, selectedAccount } = params
+
   // Queries
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAccount } = useSelectedAccountQuery()
   const nativeAsset = useMemo(
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
