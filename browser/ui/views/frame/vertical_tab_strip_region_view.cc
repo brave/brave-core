@@ -314,9 +314,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   // BraveNewTabButton:
   SkPath GetBorderPath(const gfx::Point& origin,
-                       float scale,
                        bool extend_to_top) const override {
     auto contents_bounds = GetContentsBounds();
+    float scale = GetWidget()->GetCompositor()->device_scale_factor();
     const float radius = GetCornerRadius() * scale;
     SkPath path;
     const gfx::Rect path_rect(origin.x(), origin.y(),
@@ -352,8 +352,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
       flags.setColor(cp->GetColor(kColorToolbar));
-      canvas->DrawPath(
-          GetBorderPath(gfx::Point(), canvas->image_scale(), false), flags);
+      canvas->DrawPath(GetBorderPath(gfx::Point(), false), flags);
     }
 
     // Draw split line on the top.
