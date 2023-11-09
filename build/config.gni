@@ -32,6 +32,7 @@ declare_args() {
   chrome_version_string = ""
   build_omaha = false
   tag_ap = ""
+  tag_installdataindex = ""
   target_android_base = ""
   target_android_output_format = ""
   brave_android_keystore_path = "."

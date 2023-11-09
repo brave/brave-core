@@ -214,6 +214,7 @@ program
   .option('--channel <target_channel>', 'target channel to build', /^(beta|dev|nightly|release)$/i)
   .option('--build_omaha', 'build omaha stub/standalone installer')
   .option('--tag_ap <ap>', 'ap for stub/standalone installer')
+  .option('--tag_installdataindex <index>', 'installdataindex for stub/standalone installer')
   .option('--skip_signing', 'skip signing dmg/brave_installer.exe')
   .option('--build_delta_installer', 'build delta mini installer')
   .option('--last_chrome_installer <last_chrome_installer>', 'folder contains previous version uncompressed chrome.7z pack file. This folder should be in out dir.')
