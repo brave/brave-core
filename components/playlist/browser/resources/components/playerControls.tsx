@@ -46,17 +46,19 @@ const MiniPlayerButton = styled(StyledButton)`
   ${hiddenOnNormalPlayer}
 `
 
-function Control ({
+function Control({
   iconName,
   size,
   visibility,
   title,
+  kind,
   onClick
 }: {
   iconName: string
   title: string
   size: 'jumbo' | 'large'
   visibility: 'mini' | 'normal' | 'both'
+  kind: 'plain' | 'plain-faint'
   onClick: () => void
 }) {
   const Button =
@@ -66,17 +68,22 @@ function Control ({
       ? MiniPlayerButton
       : NormalPlayerButton
   return (
-    <Button kind='plain-faint' size={size} onClick={onClick} title={title}>
+    <Button
+      kind={kind}
+      size={size}
+      onClick={onClick}
+      title={title}
+    >
       <Icon name={iconName}></Icon>
     </Button>
   )
 }
 
-export default function PlayerControls ({ videoElement, className }: Props) {
+export default function PlayerControls({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
 
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
-    applicationState => applicationState.playerState?.shuffleEnabled
+    (applicationState) => applicationState.playerState?.shuffleEnabled
   )
 
   React.useEffect(() => {
@@ -110,6 +117,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YPrevious')}
+          kind='plain-faint'
           onClick={() => {
             if (!videoElement) return
 
@@ -125,6 +133,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YRewind')}
+          kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
         />
         {isPlaying ? (
@@ -133,6 +142,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
             size='jumbo'
             visibility='both'
             title={getLocalizedString('bravePlaylistA11YPause')}
+            kind='plain-faint'
             onClick={() => videoElement?.pause()}
           />
         ) : (
@@ -141,6 +151,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
             size='jumbo'
             visibility='both'
             title={getLocalizedString('bravePlaylistA11YPlay')}
+            kind='plain-faint'
             onClick={() => videoElement?.play()}
           />
         )}
@@ -149,6 +160,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YForward')}
+          kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime += 15)}
         />
         <Control
@@ -156,6 +168,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YNext')}
+          kind='plain-faint'
           onClick={() => getPlayerActions().playNextItem()}
         />
         <Control
@@ -163,15 +176,17 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           size='jumbo'
           visibility='mini'
           title={getLocalizedString('bravePlaylistA11YClose')}
+          kind='plain-faint'
           onClick={() => getPlayerActions().unloadPlaylist()}
         />
       </div>
       <div>
         <Control
-          iconName={shuffleEnabled ? 'shuffle-on' : 'shuffle-off'}
+          iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
           size='large'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YShuffle')}
+          kind={shuffleEnabled ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().toggleShuffle()}
         />
         {/* TODO(sko) We disabled PIP and fullscreen button at the moment */}
