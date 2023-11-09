@@ -55,10 +55,11 @@
 }
 
 .questionsList {
+  --leo-button-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
 }
 
 .avatar {
