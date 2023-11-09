@@ -19,7 +19,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
@@ -77,6 +76,16 @@ base::FilePath GetTestDataPath() {
   return path;
 }
 
+TestSPLAccountBalanceResult::TestSPLAccountBalanceResult(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    mojom::SolanaAccountBalancePtr balance)
+    : solana_address(solana_address),
+      token_mint_address(token_mint_address),
+      balance(std::move(balance)) {}
+
+TestSPLAccountBalanceResult::~TestSPLAccountBalanceResult() = default;
+
 TestRewardsEngineClient::TestRewardsEngineClient()
     : engine_database_(base::FilePath()) {
   CHECK(engine_database_.GetInternalDatabaseForTesting()->OpenInMemory());
@@ -129,6 +138,27 @@ void TestRewardsEngineClient::LoadURL(mojom::UrlRequestPtr request,
   response->url = request->url;
   response->status_code = net::HTTP_BAD_REQUEST;
   std::move(callback).Run(std::move(response));
+}
+
+void TestRewardsEngineClient::GetSPLTokenAccountBalance(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    GetSPLTokenAccountBalanceCallback callback) {
+  auto iter = base::ranges::find_if(spl_balance_results_, [&](auto& result) {
+    return solana_address == result.solana_address &&
+           token_mint_address == result.token_mint_address;
+  });
+
+  if (iter != spl_balance_results_.end()) {
+    std::move(callback).Run(std::move(iter->balance));
+    spl_balance_results_.erase(iter);
+    return;
+  }
+
+  LOG(INFO) << "Test SPL token account balance result not found for "
+            << solana_address;
+
+  std::move(callback).Run(nullptr);
 }
 
 void TestRewardsEngineClient::PublisherListNormalized(
@@ -248,9 +278,9 @@ void TestRewardsEngineClient::GetTimeState(const std::string& name,
                                            GetTimeStateCallback callback) {
   const auto* value = state_store_.FindByDottedPath(name);
   if (!value) {
-    return std::move(callback).Run(base::Time());
+    std::move(callback).Run(base::Time());
+    return;
   }
-
   auto time = base::ValueToTime(*value);
   DCHECK(time);
   std::move(callback).Run(time.value_or(base::Time()));
@@ -353,6 +383,14 @@ void TestRewardsEngineClient::AddNetworkResultForTesting(
     mojom::UrlMethod method,
     mojom::UrlResponsePtr response) {
   network_results_.emplace_back(url, method, std::move(response));
+}
+
+void TestRewardsEngineClient::AddSPLAccountBalanceResultForTesting(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    mojom::SolanaAccountBalancePtr balance) {
+  spl_balance_results_.emplace_back(solana_address, token_mint_address,
+                                    std::move(balance));
 }
 
 void TestRewardsEngineClient::SetLogCallbackForTesting(LogCallback callback) {

@@ -95,7 +95,6 @@ TEST_P(ConnectExternalWalletTest, Paths) {
 
   is_testing = true;
   EXPECT_EQ(connect_wallet.GenerateLoginURL(), "https://test.com?123456789");
-  is_testing = false;
 
   connect_wallet.SetOAuthStateForTesting(one_time_string, "");
   connect_wallet.Run(query_parameters, callback.Get());

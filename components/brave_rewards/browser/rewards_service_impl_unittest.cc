@@ -74,9 +74,10 @@ class RewardsServiceTest : public testing::Test {
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get());
 #if BUILDFLAG(ENABLE_GREASELION)
-    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile(), nullptr);
+    rewards_service_ =
+        std::make_unique<RewardsServiceImpl>(profile(), nullptr, nullptr);
 #else
-    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile());
+    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile(), nullptr);
 #endif
     ASSERT_TRUE(rewards_service());
     observer_ = std::make_unique<MockRewardsServiceObserver>();

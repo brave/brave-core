@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/base64.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -54,6 +55,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -71,11 +73,14 @@
 #include "content/public/browser/url_data_source.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/url_util.h"
+#include "net/cookies/canonical_cookie.h"
+#include "net/cookies/cookie_util.h"
 #include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -269,17 +274,17 @@ const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
 const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
-#if BUILDFLAG(ENABLE_GREASELION)
 RewardsServiceImpl::RewardsServiceImpl(
     Profile* profile,
-    greaselion::GreaselionService* greaselion_service)
-#else
-RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
+#if BUILDFLAG(ENABLE_GREASELION)
+    greaselion::GreaselionService* greaselion_service,
 #endif
+    brave_wallet::JsonRpcService* wallet_rpc_service)
     : profile_(profile),
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      wallet_rpc_service_(wallet_rpc_service),
       receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -1077,6 +1082,35 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   std::move(callback).Run(std::move(response));
 }
 
+void RewardsServiceImpl::GetSPLTokenAccountBalance(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    GetSPLTokenAccountBalanceCallback callback) {
+  wallet_rpc_service_->GetSPLTokenAccountBalance(
+      solana_address, token_mint_address, brave_wallet::mojom::kSolanaMainnet,
+      base::BindOnce(&RewardsServiceImpl::OnGetSPLTokenAccountBalance,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetSPLTokenAccountBalance(
+    GetSPLTokenAccountBalanceCallback callback,
+    const std::string& amount,
+    uint8_t decimals,
+    const std::string& amount_string,
+    brave_wallet::mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != brave_wallet::mojom::SolanaProviderError::kSuccess) {
+    BLOG(0, "Unable to retrieve Solana account balance: " << error);
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  auto balance = mojom::SolanaAccountBalance::New();
+  balance->amount = amount;
+  balance->decimals = decimals;
+  std::move(callback).Run(std::move(balance));
+}
+
 void RewardsServiceImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
   if (!Connected()) {
@@ -1273,6 +1307,18 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletGemini);
   }
 #endif
+
+  if (base::FeatureList::IsEnabled(
+          features::kAllowSelfCustodyProvidersFeature)) {
+    auto& self_custody_dict =
+        profile_->GetPrefs()->GetDict(prefs::kSelfCustodyAvailable);
+
+    if (auto solana_entry =
+            self_custody_dict.FindBool(internal::constant::kWalletSolana);
+        solana_entry && *solana_entry) {
+      providers.push_back(internal::constant::kWalletSolana);
+    }
+  }
 
   return providers;
 }
@@ -2243,7 +2289,60 @@ void RewardsServiceImpl::BeginExternalWalletLogin(
   if (!Connected() || !IsValidWalletType(wallet_type)) {
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
-  engine_->BeginExternalWalletLogin(wallet_type, std::move(callback));
+
+  engine_->BeginExternalWalletLogin(
+      wallet_type,
+      base::BindOnce(&RewardsServiceImpl::OnExternalWalletLoginStarted,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnExternalWalletLoginStarted(
+    BeginExternalWalletLoginCallback callback,
+    mojom::ExternalWalletLoginParamsPtr params) {
+  if (!params || params->cookies.empty()) {
+    std::move(callback).Run(std::move(params));
+    return;
+  }
+
+  GURL url(params->url);
+  CHECK(url.is_valid());
+
+  // For each cookie, we'll need to set the cookie and provide a callback for
+  // when the cookie has been set. This barrier callback ensures that once all
+  // "set cookie" callbacks have executed, the provided callback will be run.
+  base::RepeatingClosure set_cookie_callback = base::BarrierClosure(
+      params->cookies.size(),
+      base::BindOnce(std::move(callback), params->Clone()));
+
+  auto on_cookie_set = [](base::RepeatingClosure set_cookie_callback,
+                          net::CookieAccessResult result) {
+    set_cookie_callback.Run();
+  };
+
+  auto* cookie_manager = profile_->GetDefaultStoragePartition()
+                             ->GetCookieManagerForBrowserProcess();
+
+  net::CookieOptions options;
+  options.set_include_httponly();
+  options.set_same_site_cookie_context(
+      net::CookieOptions::SameSiteCookieContext::MakeInclusive());
+
+  base::Time now = base::Time::Now();
+  base::Time expiration_time = now + base::Minutes(10);
+
+  for (auto& [key, value] : params->cookies) {
+    auto cookie = net::CanonicalCookie::CreateSanitizedCookie(
+        url, key, value, /*domain=*/"", url.path(),
+        /*creation_time=*/now, expiration_time, /*last_access_time=*/now,
+        /*secure=*/true, /*httponly=*/false, net::CookieSameSite::STRICT_MODE,
+        net::COOKIE_PRIORITY_DEFAULT, /*same_party=*/false,
+        /*partition_key=*/std::nullopt);
+
+    cookie_manager->SetCanonicalCookie(
+        *cookie,
+        net::cookie_util::SimulatedCookieSource(*cookie, url::kHttpsScheme),
+        options, base::BindOnce(on_cookie_set, set_cookie_callback));
+  }
 }
 
 void RewardsServiceImpl::ConnectExternalWallet(

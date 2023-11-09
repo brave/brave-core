@@ -32,6 +32,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBadgeText, "1");
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
   registry->RegisterStringPref(prefs::kExternalWalletType, "");
+  registry->RegisterDictionaryPref(prefs::kSelfCustodyAvailable);
   registry->RegisterBooleanPref(prefs::kSelfCustodyInviteDismissed, false);
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);

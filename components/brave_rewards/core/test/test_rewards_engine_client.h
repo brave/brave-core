@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 
@@ -41,6 +42,18 @@ struct TestNetworkResult {
   std::string url;
   mojom::UrlMethod method;
   mojom::UrlResponsePtr response;
+};
+
+struct TestSPLAccountBalanceResult {
+  TestSPLAccountBalanceResult(const std::string& solana_address,
+                              const std::string& token_mint_address,
+                              mojom::SolanaAccountBalancePtr balance);
+
+  ~TestSPLAccountBalanceResult();
+
+  std::string solana_address;
+  std::string token_mint_address;
+  mojom::SolanaAccountBalancePtr balance;
 };
 
 // Returns the file path of the directory containing test data
@@ -73,6 +86,11 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
                     FetchFavIconCallback callback) override;
 
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
+
+  void GetSPLTokenAccountBalance(
+      const std::string& solana_address,
+      const std::string& token_mint_address,
+      GetSPLTokenAccountBalanceCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;
@@ -189,6 +207,11 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
                                   mojom::UrlMethod method,
                                   mojom::UrlResponsePtr response);
 
+  void AddSPLAccountBalanceResultForTesting(
+      const std::string& solana_address,
+      const std::string& token_mint_address,
+      mojom::SolanaAccountBalancePtr balance);
+
   using LogCallback = base::RepeatingCallback<void(const std::string&)>;
   void SetLogCallbackForTesting(LogCallback callback);
 
@@ -198,6 +221,7 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
   RewardsDatabase engine_database_;
   base::Value::Dict state_store_;
   std::list<TestNetworkResult> network_results_;
+  std::list<TestSPLAccountBalanceResult> spl_balance_results_;
   LogCallback log_callback_;
 };
 

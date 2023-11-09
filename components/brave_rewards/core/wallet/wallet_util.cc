@@ -37,6 +37,8 @@ std::string WalletTypeToState(const std::string& wallet_type) {
     return state::kWalletUphold;
   } else if (wallet_type == constant::kWalletZebPay) {
     return state::kWalletZebPay;
+  } else if (wallet_type == constant::kWalletSolana) {
+    return state::kWalletSolana;
   } else if (wallet_type == "test") {
     return "wallets." + wallet_type;
   } else {

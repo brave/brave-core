@@ -54,6 +54,8 @@ inline constexpr char kUseRewardsStagingServer[] =
     "brave.rewards.use_staging_server";
 inline constexpr char kExternalWalletType[] =
     "brave.rewards.external_wallet_type";
+inline constexpr char kSelfCustodyAvailable[] =
+    "brave.rewards.self_custody_available";
 inline constexpr char kSelfCustodyInviteDismissed[] =
     "brave.rewards.self_custody_invite_dismissed";
 inline constexpr char kP3APanelTriggerCount[] =
