@@ -781,11 +781,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   tab_model()->ActivateTabAt(0);
   auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
   // Wait till sidebar show ends.
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+  // Unmanaged entry becomes managed when its panel is shown
+  // and it becomes active item.
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);
@@ -798,15 +801,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
-
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,

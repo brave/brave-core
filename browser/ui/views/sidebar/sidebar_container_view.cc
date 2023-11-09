@@ -731,6 +731,14 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
     }
   }
 
+  // Add item for this entry if it's hidden in sidebar but shown its panel.
+  if (auto item =
+          sidebar::AddItemForSidePanelIdIfNeeded(browser_, entry->key().id())) {
+    const auto sidebar_index = sidebar_model_->GetIndexOf(*item);
+    controller->ActivateItemAt(sidebar_index);
+    return;
+  }
+
   // Handling non-managed entry. It should be shown here instead of
   // asking to SidebarModel.
   // If side panel is shown by this kind of panel, showing should

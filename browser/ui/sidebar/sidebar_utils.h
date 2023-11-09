@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 
 #include "brave/components/sidebar/sidebar_item.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Browser;
 class GURL;
@@ -26,6 +27,10 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url);
 SidePanelEntryId SidePanelIdFromSideBarItemType(
     SidebarItem::BuiltInItemType type);
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item);
+
+// Return the added item if item for |id| is added.
+absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+                                                          SidePanelEntryId id);
 
 }  // namespace sidebar
 
