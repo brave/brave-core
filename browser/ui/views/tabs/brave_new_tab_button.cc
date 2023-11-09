@@ -12,6 +12,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "ui/compositor/compositor.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -58,10 +59,10 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 }
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                        float scale,
                                         bool extend_to_top) const {
-  return GetBorderPath(origin, scale, extend_to_top, GetCornerRadius(),
-                       GetContentsBounds().size());
+  return GetBorderPath(
+      origin, GetWidget()->GetCompositor()->device_scale_factor(),
+      extend_to_top, GetCornerRadius(), GetContentsBounds().size());
 }
 
 BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
