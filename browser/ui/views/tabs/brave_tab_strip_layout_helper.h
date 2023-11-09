@@ -27,7 +27,7 @@ struct TabLayoutConstants;
 
 namespace tabs {
 
-constexpr int kVerticalTabHeight = 36;
+constexpr int kVerticalTabHeight = 32;
 constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 constexpr int kVerticalTabsSpacing = 4;
 constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
