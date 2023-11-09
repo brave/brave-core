@@ -259,7 +259,6 @@ void NotificationAdPopup::OnWidgetBoundsChanged(views::Widget* widget,
   }
 
   widget_origin_ = new_bounds.origin();
-  SaveWidgetOrigin(widget_origin_, widget->GetNativeView());
 }
 
 void NotificationAdPopup::AnimationEnded(const gfx::Animation* animation) {
@@ -298,6 +297,7 @@ NotificationAd NotificationAdPopup::GetNotificationAd() const {
 void NotificationAdPopup::MovePopup(const gfx::Vector2d& distance) {
   const gfx::Rect bounds = CalculateBounds() + distance;
   AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), bounds);
+  SaveWidgetOrigin(widget_origin_, GetWidget()->GetNativeView());
 }
 
 void NotificationAdPopup::ClosePopup() {
