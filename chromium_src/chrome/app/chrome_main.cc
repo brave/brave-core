@@ -6,5 +6,6 @@
 #include "brave/app/brave_main_delegate.h"
 
 #define ChromeMainDelegate BraveMainDelegate
+// dummy comment
 #include "src/chrome/app/chrome_main.cc"
 #undef ChromeMainDelegate
