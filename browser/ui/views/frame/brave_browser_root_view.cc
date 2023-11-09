@@ -5,13 +5,18 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/browser.h"
 
 BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
                                            views::Widget* widget)
-    : BrowserRootView(browser_view, widget),
-      browser_(browser_view->browser()) {}
+    : BrowserRootView(browser_view, widget), browser_(browser_view->browser()) {
+  if (!brave::IsRegularProfile(browser_->profile())) {
+    theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
+  }
+}
 
 BraveBrowserRootView::~BraveBrowserRootView() = default;
 
@@ -31,4 +36,9 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
   }
 
   return BrowserRootView::OnMouseWheel(event);
+}
+
+void BraveBrowserRootView::OnNativeThemeUpdated(
+    ui::NativeTheme* observed_theme) {
+  ThemeChanged();
 }

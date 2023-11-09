@@ -6,11 +6,19 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_
 
+#include "base/scoped_observation.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
+#include "ui/native_theme/native_theme.h"
 
 class Browser;
 
-class BraveBrowserRootView : public BrowserRootView {
+// Observe native theme changes to propagate brave theme change notification
+// to child views for non-normal profile windows.
+// W/o this, OnThemeChanged() is not called for private/tor window
+// whenever brave theme is changed because these window uses dark theme
+// provider always.
+class BraveBrowserRootView : public BrowserRootView,
+                             public ui::NativeThemeObserver {
  public:
   BraveBrowserRootView(BrowserView* browser_view, views::Widget* widget);
   ~BraveBrowserRootView() override;
@@ -18,8 +26,13 @@ class BraveBrowserRootView : public BrowserRootView {
   // BrowserRootView:
   bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
 
+  // ui::NativeThemeObserver overrides:
+  void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+
  private:
   raw_ptr<Browser> browser_ = nullptr;
+  base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
+      theme_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_
