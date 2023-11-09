@@ -610,6 +610,30 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
+
+  // |key.color_mode| always dark as we use dark native theme for
+  // private/tor/guest profile. See BraveBrowserFrame::GetNativeTheme().
+  // Exceptionally, below side panel header colors should be brave theme
+  // specific because side panel header colors should be aligned with
+  // side panel contents.
+  const bool is_dark = dark_mode::GetActiveBraveDarkModeType() ==
+                       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+  mixer[kColorSidebarPanelHeaderSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle,
+                    is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderBackground] = {
+      is_dark ? gfx::kGoogleGrey900
+              : leo::GetColor(leo::Color::kColorContainerBackground,
+                              leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderTitle] = {
+      leo::GetColor(leo::Color::kColorTextSecondary,
+                    is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault,
+                    is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {
+      leo::GetColor(leo::Color::kColorGray60,
+                    is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,

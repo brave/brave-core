@@ -5,8 +5,10 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "ui/views/background.h"
 
 BraveSidePanelViewBase::BraveSidePanelViewBase() {
   // Originally SidePanelEntry's Content was
@@ -20,13 +22,15 @@ BraveSidePanelViewBase::BraveSidePanelViewBase() {
   // NOTE: If we use our own reading list page and it has loading spinner, maybe
   // we can set `true` here.
   SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
+  SetBackground(
+      views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
 }
 
 BraveSidePanelViewBase::~BraveSidePanelViewBase() = default;
 
 void BraveSidePanelViewBase::StartObservingWebWebViewVisibilityChange(
     views::View* web_view) {
-  observation_.Observe(web_view);
+  view_observation_.Observe(web_view);
 }
 
 void BraveSidePanelViewBase::OnViewVisibilityChanged(
@@ -36,6 +40,6 @@ void BraveSidePanelViewBase::OnViewVisibilityChanged(
   // not changed from now on.
   if (observed_view->GetVisible()) {
     SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(true);
-    observation_.Reset();
+    view_observation_.Reset();
   }
 }

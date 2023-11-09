@@ -53,13 +53,11 @@ class ReadLaterSidePanelHeaderView : public views::View {
             IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE)));
     header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
     header_label->SetEnabledColorId(kColorSidebarPanelHeaderTitle);
+    header_label->SetAutoColorReadabilityEnabled(false);
     header_label->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                  views::MaximumFlexSizeRule::kPreferred));
-
-    SetBackground(
-        views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
   }
 
   ~ReadLaterSidePanelHeaderView() override = default;
