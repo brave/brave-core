@@ -129,7 +129,11 @@ const playerReducer: Reducer<PlayerState | undefined> = (
         }
 
         if (currentItem) {
-          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
+          console.log(+currentItem.duration)
+          if (+currentItem.duration / 1e6 < 10 * 60) {
+             // Don't resume at the last position unless the track is no longer than 10 mins.
+            currentItem.lastPlayedPosition = 0
+          }
           state = { ...state, currentItem }
         }
       }
@@ -151,7 +155,10 @@ const playerReducer: Reducer<PlayerState | undefined> = (
         }
 
         if (currentItem) {
-          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
+          if (+currentItem.duration / 1e6 < 10 * 60) {
+             // Don't resume at the last position unless the track is no longer than 10 mins.
+            currentItem.lastPlayedPosition = 0
+          }
           state = { ...state, currentItem }
         }
       }
