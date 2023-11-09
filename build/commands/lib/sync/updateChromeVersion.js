@@ -46,7 +46,7 @@ function updateChromeVersion(config) {
   const newVersionFileContent = versionLines.join('\n')
   if (newVersionFileContent !== versionFileContent) {
     fs.writeFileSync(versionFilePath, newVersionFileContent)
-    Log.status(`Updated chrome/VERSION: ${versionToLog}`)
+    Log.status(`Set chrome/VERSION: ${versionToLog}`)
   } else {
     console.log(`chrome/VERSION: ${versionToLog}`)
   }
