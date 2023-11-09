@@ -1374,30 +1374,30 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if> <!-- enable_playlist_webui -->
 
-      <!-- File select -->
-      <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE" desc="">
-        <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
+      <message name="IDS_PSST_CONSENT_DIALOG_HEADER" desc="A header for a dialog to adjust PSST">
+        Psst! Want to try out the new Privacy Site Settings Tool?
       </message>
       <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE_IFRAME" desc="">
         An embedded page at <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
       </message>
-      <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL" desc="">
-        This page wants to open
-      </message>
-      <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL_IFRAME" desc="">
-        An embedded page on this page wants to open
-      </message>
-      <message name="IDS_BRAVE_FILE_SELECT_SAVE_TITLE" desc="">
-        <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to save
-      </message>
       <message name="IDS_BRAVE_FILE_SELECT_SAVE_TITLE_IFRAME" desc="">
         An embedded page at <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to save
       </message>
-      <message name="IDS_BRAVE_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL" desc="">
-        This page wants to save
+      
+      <message name="IDS_PSST_CONSENT_DIALOG_BODY" desc="A body for a dialog to adjust PSST">
+        This website offers privacy settings. Brave can automatically tune these settings for you. Would you like Brave to do so?
       </message>
-      <message name="IDS_BRAVE_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL_IFRAME" desc="">
-        An embedded page on this page wants to save
+      <message name="IDS_PSST_CONSENT_DIALOG_BODY_LIST_OF_CHANGES" desc="A body for a dialog to adjust PSST">
+        Here is what Brave will change:
+      </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_BODY_NEW_VERSION" desc="New version text for dialog to adjust PSST">
+        We have new privacy settings for this website since you last tuned this site. Would you like to try them out?
+      </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_OK" desc="Ok button's Text for a dialog to adjust PSST">
+        Yes, change privacy settings for this website
+      </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust PSST">
+        No thanks
       </message>
 
       <!-- Tab Search -->
@@ -1440,6 +1440,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL" desc="Text of enable tab focus button">
         Enable
       </message>
+
+      <if expr="enable_brave_player">
+        <message name="IDS_BRAVE_PLAYER_ACTION_VIEW" desc="A label for a button in the omnibox to open the 'Brave Player Page'">
+          Brave Player
+        </message>
+      </if> <!-- enable_brave_player -->
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

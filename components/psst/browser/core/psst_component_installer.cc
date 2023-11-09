@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -22,6 +23,9 @@
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
 
+using brave_component_updater::BraveOnDemandUpdater;
+
+
 namespace psst {
 
 namespace {
@@ -32,9 +36,11 @@ namespace {
 //  |_ psst.json
 //  |_ scripts/
 //    |_ twitter/
+//        |_ user.js
 //        |_ test.js
 //        |_ policy.js
 //    |_ linkedin/
+//        |_ user.js
 //        |_ test.js
 //        |_ policy.js
 // See psst_rule.cc for the format of psst.json.
@@ -116,6 +122,7 @@ void PsstComponentInstallerPolicy::OnCustomUninstall() {}
 void PsstComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
+  std::cerr << "PSST xyzzy component ready: " << version.GetString() << std::endl;
   PsstRuleRegistry::GetInstance()->LoadRules(path);
 }
 
@@ -146,20 +153,27 @@ bool PsstComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
+void OnRegistered(const std::string& component_id) {
+  // BraveOnDemandUpdater::GetInstance()->EnsureInstalled(kPsstComponentId);
+}
+
+
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
     // In test, |cus| could be nullptr.
     return;
   }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<PsstComponentInstallerPolicy>());
-  installer->Register(
-      // After Register, run the callback with component id.
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kPsstComponentId);
-      }));
+  // installer->Register(
+  //     // After Register, run the callback with component id.
+  //     cus, base::BindOnce([]() {
+  //       brave_component_updater::BraveOnDemandUpdater::GetInstance()
+  //           ->EnsureInstalled(kPsstComponentId);
+  //     }));
+
+  installer->Register(cus, base::BindOnce(&OnRegistered, kPsstComponentId));
 }
+
 
 }  // namespace psst

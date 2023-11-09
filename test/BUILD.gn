@@ -262,6 +262,7 @@ test("brave_unit_tests") {
     "//brave/components/p3a:unit_tests",
     "//brave/components/p3a_utils/test:p3a_utils_unit_tests",
     "//brave/components/permissions:unit_tests",
+    "//brave/components/psst/common:unit_tests",
     "//brave/components/query_filter:unit_tests",
     "//brave/components/request_otr/browser:unit_tests",
     "//brave/components/resources:strings_grit",
