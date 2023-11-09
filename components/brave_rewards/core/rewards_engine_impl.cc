@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
+#include "brave/components/brave_rewards/core/wallet_provider/solana/solana_wallet_provider.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
@@ -26,7 +27,8 @@ RewardsEngineImpl::RewardsEngineImpl(
     : client_(std::move(client_remote)),
       helpers_(std::make_unique<InitializationManager>(*this),
                std::make_unique<URLLoader>(*this),
-               std::make_unique<LinkageChecker>(*this)),
+               std::make_unique<LinkageChecker>(*this),
+               std::make_unique<SolanaWalletProvider>(*this)),
       promotion_(*this),
       publisher_(*this),
       media_(*this),
@@ -741,6 +743,9 @@ wallet_provider::WalletProvider* RewardsEngineImpl::GetExternalWalletProvider(
   }
   if (wallet_type == constant::kWalletZebPay) {
     return &zebpay_;
+  }
+  if (wallet_type == constant::kWalletSolana) {
+    return &Get<SolanaWalletProvider>();
   }
   return nullptr;
 }

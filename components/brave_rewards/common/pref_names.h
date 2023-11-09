@@ -54,6 +54,8 @@ inline constexpr char kUseRewardsStagingServer[] =
     "brave.rewards.use_staging_server";
 inline constexpr char kExternalWalletType[] =
     "brave.rewards.external_wallet_type";
+inline constexpr char kSelfCustodyAvailable[] =
+    "brave.rewards.self_custody_available";
 inline constexpr char kSelfCustodyInviteDismissed[] =
     "brave.rewards.self_custody_invite_dismissed";
 inline constexpr char kP3APanelTriggerCount[] =
@@ -116,6 +118,7 @@ inline constexpr char kWalletUphold[] = "brave.rewards.wallets.uphold";
 inline constexpr char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
 inline constexpr char kWalletGemini[] = "brave.rewards.wallets.gemini";
 inline constexpr char kWalletZebPay[] = "brave.rewards.wallets.zebpay";
+inline constexpr char kWalletSolana[] = "brave.rewards.wallets.solana";
 inline constexpr char kWalletCreationEnvironment[] =
     "brave.rewards.wallet_creation_environment";
 

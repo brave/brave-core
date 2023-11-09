@@ -32,6 +32,9 @@ const getWalletName = (walletKey: string) => {
     case 'zebpay': {
       return getLocale('processorZebPay')
     }
+    case 'solana': {
+      return getLocale('processorSolana')
+    }
   }
 
   return 'Missing wallet'

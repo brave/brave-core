@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
+
 using endpoints::PostConnect;
 using mojom::ConnectExternalWalletResult;
 using wallet::GetWalletIf;

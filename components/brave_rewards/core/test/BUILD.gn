@@ -69,6 +69,7 @@ source_set("test") {
     "//brave/components/brave_rewards/core/endpoints/brave/get_parameters_unittest.cc",
     "//brave/components/brave_rewards/core/endpoints/brave/get_wallet_unittest.cc",
     "//brave/components/brave_rewards/core/endpoints/brave/patch_wallets_unittest.cc",
+    "//brave/components/brave_rewards/core/endpoints/brave/post_challenges_unittest.cc",
     "//brave/components/brave_rewards/core/endpoints/brave/post_wallets_unittest.cc",
     "//brave/components/brave_rewards/core/endpoints/common/post_connect_unittest.cc",
     "//brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id_gemini_unittest.cc",
@@ -105,6 +106,7 @@ source_set("test") {
     "//brave/components/brave_rewards/core/wallet/wallet_utils_unittest.cc",
     "//brave/components/brave_rewards/core/wallet_provider/connect_external_wallet_unittest.cc",
     "//brave/components/brave_rewards/core/wallet_provider/linkage_checker_unittest.cc",
+    "//brave/components/brave_rewards/core/wallet_provider/solana/solana_wallet_provider_unittest.cc",
   ]
 
   deps = [

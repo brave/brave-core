@@ -176,6 +176,10 @@ interface RewardsEngineClient {
 
   LoadURL(UrlRequest request) => (UrlResponse response);
 
+  GetSPLTokenAccountBalance(
+      string solana_address,
+      string token_mint_address) => (SolanaAccountBalance? balance);
+
   PublisherListNormalized(array<PublisherInfo> list);
 
   OnPublisherRegistryUpdated();

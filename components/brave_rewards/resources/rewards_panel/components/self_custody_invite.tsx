@@ -17,7 +17,10 @@ export function SelfCustodyInvite () {
   const host = React.useContext(HostContext)
   const { getString } = React.useContext(LocaleContext)
 
-  const onConnect = () => { host.handleExternalWalletAction('verify') }
+  const onConnect = () => {
+    host.dismissSelfCustodyInvite()
+    host.handleExternalWalletAction('verify')
+  }
 
   return (
     <style.root>

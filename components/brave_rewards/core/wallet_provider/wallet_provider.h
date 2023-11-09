@@ -41,6 +41,8 @@ class WalletProvider {
 
   virtual void AssignWalletLinks(mojom::ExternalWallet& external_wallet) = 0;
 
+  virtual void OnWalletLinked(const std::string& address);
+
   void Initialize();
 
   void StartContribution(const std::string& contribution_id,
@@ -53,7 +55,7 @@ class WalletProvider {
                      const std::string& contribution_id,
                      LegacyResultCallback callback);
 
-  void BeginLogin(BeginExternalWalletLoginCallback callback);
+  virtual void BeginLogin(BeginExternalWalletLoginCallback callback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ConnectExternalWalletCallback callback);
