@@ -35,6 +35,7 @@ namespace views {
 //  - Differenet hover bg color for prominent background
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
+  METADATA_HEADER(MdTextButton, views::MdTextButtonBase)
  public:
   struct ButtonColors {
     SkColor background_color;
