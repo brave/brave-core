@@ -11,19 +11,13 @@ import("//media/cdm/library_cdm/cdm_paths.gni")
 if (should_generate_symbols) {
   action("generate_symbols") {
     symbols_dir = "$brave_dist_dir/$brave_product_name.syms"
-    pdb_only_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
-    outputs = [
-      symbols_dir,
-      pdb_only_symbols_dir,
-    ]
+    outputs = [ symbols_dir ]
 
     args = [
       "--installer-config",
       rebase_path("//chrome/installer/mini_installer/chrome.release"),
       "--symbols-dir",
       rebase_path(symbols_dir),
-      "--pdb-only-symbols-dir",
-      rebase_path(pdb_only_symbols_dir),
       "--build-dir",
       rebase_path(root_out_dir),
       "--toolchain-dir",
