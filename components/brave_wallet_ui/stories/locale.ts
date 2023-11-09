@@ -414,8 +414,8 @@ provideStrings({
   braveWalletCustomTokenExistsError:
     'This token has already been added to your portfolio.',
   braveWalletAccountSettingsDisclaimer:
-    'WARNING: Never share your recovery phrase. Anyone with this phrase can ' +
-    'take your assets forever.',
+    'WARNING: Never share your private key. ' +
+    'Anyone with this private key can take your assets forever.',
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
   braveWalletAccountSettingsUpdateError:
