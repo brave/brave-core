@@ -21,7 +21,7 @@ import { ACCOUNT_TAG_IDS } from './account.endpoints'
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED'
 } as const
 
 export const networkEndpoints = ({

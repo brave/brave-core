@@ -24,7 +24,6 @@ import {
   Button,
   ButtonIcon,
   FuelTank,
-  NotSupportedText,
   GasBubble,
   SelectTokenButtonStyleProps
 } from './select-token-or-network.style'
@@ -58,7 +57,6 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
     hasShadow,
     networkFeeFiatValue,
     isHeader,
-    networkNotSupported,
     asset,
     network,
     iconType
@@ -89,74 +87,57 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
       disabled={disabled}
       hasBackground={hasBackground}
       hasShadow={hasShadow}
-      networkNotSupported={networkNotSupported}
     >
-      {!networkNotSupported && (
-        <>
-          <Row>
-            {iconType === 'network' ? (
-              <CreateNetworkIcon
-                network={network}
-                marginRight={8}
-                size={buttonSize === 'small' ? 'small' : 'big'}
-              />
-            ) : (
-              text && (
-                <AssetIconWithPlaceholder
-                  asset={asset}
-                  network={network}
-                />
-              )
-            )}
-            <HiddenResponsiveRow dontHide={!isHeader}>
-              <Text
-                isBold={text !== undefined}
-                textColor={text ? 'text01' : 'text03'}
-                textSize={
-                  buttonSize === 'small' || buttonSize === 'medium'
-                    ? '14px'
-                    : '18px'
-                }
-              >
-                {text ?? getLocale('braveSwapSelectToken')}
-              </Text>
-            </HiddenResponsiveRow>
-          </Row>
-          <HiddenResponsiveRow dontHide={!isHeader}>
-            {networkFeeFiatValue && (
-              <>
-                <HorizontalSpacer size={8} />
-                <GasBubble>
-                  <FuelTank
-                    name='search-fuel-tank'
-                    size={16}
-                  />
-                  <Text
-                    textSize='14px'
-                    textColor='text01'
-                  >
-                    {networkFeeFiatValue}
-                  </Text>
-                </GasBubble>
-              </>
-            )}
-            {buttonSize !== 'small' && <HorizontalSpacer size={8} />}
-          </HiddenResponsiveRow>
-        </>
-      )}
-      {networkNotSupported && (
-        <>
-          <NotSupportedText
-            isBold={true}
-            textSize='14px'
+      <Row>
+        {iconType === 'network' ? (
+          <CreateNetworkIcon
+            network={network}
+            marginRight={8}
+            size={buttonSize === 'small' ? 'small' : 'big'}
+          />
+        ) : (
+          text && (
+            <AssetIconWithPlaceholder
+              asset={asset}
+              network={network}
+            />
+          )
+        )}
+        <HiddenResponsiveRow dontHide={!isHeader}>
+          <Text
+            isBold={text !== undefined}
+            textColor={text ? 'text01' : 'text03'}
+            textSize={
+              buttonSize === 'small' || buttonSize === 'medium'
+                ? '14px'
+                : '18px'
+            }
           >
-            {getLocale('braveSwapSwitchNetwork')}
-          </NotSupportedText>
-          <HorizontalSpacer size={8} />
-        </>
-      )}
+            {text ?? getLocale('braveSwapSelectToken')}
+          </Text>
+        </HiddenResponsiveRow>
+      </Row>
+      <HiddenResponsiveRow dontHide={!isHeader}>
+        {networkFeeFiatValue && (
+          <>
+            <HorizontalSpacer size={8} />
+            <GasBubble>
+              <FuelTank
+                name='search-fuel-tank'
+                size={16}
+              />
+              <Text
+                textSize='14px'
+                textColor='text01'
+              >
+                {networkFeeFiatValue}
+              </Text>
+            </GasBubble>
+          </>
+        )}
+        {buttonSize !== 'small' && <HorizontalSpacer size={8} />}
+      </HiddenResponsiveRow>
       <ButtonIcon
-        networkNotSupported={networkNotSupported}
         size={24}
         name='carat-down'
       />

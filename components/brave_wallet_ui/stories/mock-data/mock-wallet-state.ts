@@ -17,7 +17,6 @@ import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-
 export const mockWalletState: WalletState = {
   activeOrigin: {
     originSpec: 'https://app.uniswap.org',

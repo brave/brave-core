@@ -657,10 +657,6 @@ export const useSwap = () => {
   }, [selectedNetwork?.coin, zeroEx, jupiter])
 
   const submitButtonText = useMemo(() => {
-    if (!selectedAccount) {
-      return getLocale('braveSwapConnectWallet')
-    }
-
     if (!fromToken) {
       return getLocale('braveSwapReviewOrder')
     }
@@ -693,27 +689,24 @@ export const useSwap = () => {
     }
 
     return getLocale('braveSwapReviewOrder')
-  }, [
-    selectedAccount,
-    fromToken,
-    swapValidationError,
-    selectedNetwork,
-    getLocale
-  ])
+  }, [fromToken, swapValidationError, selectedNetwork, getLocale])
 
   const isSubmitButtonDisabled = useMemo(() => {
     return (
+      !selectedNetwork ||
+      !selectedAccount ||
+      selectedNetwork.coin !== selectedAccount.accountId.coin ||
       // Prevent creating a swap transaction with stale parameters if fetching
       // of a new quote is in progress.
       zeroEx.loading ||
       jupiter.loading ||
       // If 0x swap quote is empty, there's nothing to create the swap
       // transaction with, so Swap button must be disabled.
-      (selectedNetwork?.coin === BraveWallet.CoinType.ETH &&
+      (selectedNetwork.coin === BraveWallet.CoinType.ETH &&
         zeroEx.quote === undefined) ||
       // If Jupiter quote is empty, there's nothing to create the swap
       // transaction with, so Swap button must be disabled.
-      (selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+      (selectedNetwork.coin === BraveWallet.CoinType.SOL &&
         jupiter.quote === undefined) ||
       // FROM/TO assets may be undefined during initialization of the swap
       // assets list.
@@ -734,17 +727,17 @@ export const useSwap = () => {
       // Unless the validation error is insufficientAllowance, in which case
       // the transaction is an ERC20Approve, Swap button must be disabled.
       (swapValidationError &&
-        selectedNetwork?.coin === BraveWallet.CoinType.ETH &&
+        selectedNetwork.coin === BraveWallet.CoinType.ETH &&
         swapValidationError !== 'insufficientAllowance') ||
-      (swapValidationError &&
-        selectedNetwork?.coin === BraveWallet.CoinType.SOL)
+      (swapValidationError && selectedNetwork.coin === BraveWallet.CoinType.SOL)
     )
   }, [
     zeroEx.loading,
     jupiter.loading,
     zeroEx.quote,
     jupiter.quote,
-    selectedNetwork?.coin,
+    selectedNetwork,
+    selectedAccount,
     fromToken,
     toToken,
     fromAmount,

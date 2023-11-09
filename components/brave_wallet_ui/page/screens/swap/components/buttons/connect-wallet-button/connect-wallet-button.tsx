@@ -10,7 +10,6 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
 import { reduceAddress } from '../../../../../../utils/reduce-address'
-import { getLocale } from '../../../../../../../common/locale'
 
 // Styled Components
 import {
@@ -43,7 +42,7 @@ export const ConnectWalletButton = (props: Props) => {
       onClick={onClick}
       isConnected={selectedAccount !== undefined}
     >
-      {selectedAccount ? (
+      {selectedAccount && (
         <>
           {accountOrb && <AccountCircle orb={accountOrb} />}{' '}
           <HiddenResponsiveRow>
@@ -72,8 +71,6 @@ export const ConnectWalletButton = (props: Props) => {
             size={16}
           />
         </>
-      ) : (
-        getLocale('braveSwapConnectWallet')
       )}
     </Button>
   )

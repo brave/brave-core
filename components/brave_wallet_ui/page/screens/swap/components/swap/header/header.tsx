@@ -134,7 +134,6 @@ export const Header = (props: Props) => {
             hasBackground={true}
             hasShadow={true}
             isHeader={true}
-            networkNotSupported={false}
             iconType='network'
           />
           {showNetworkSelector && (

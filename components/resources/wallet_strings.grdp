@@ -912,9 +912,7 @@
   <message name="IDS_BRAVE_SWAP_COINGECKO_EXPENSIVE" desc="Quote rate is more expensive than CoinGecko"><ph name="VALUE">$1<ex>12</ex></ph>% more expensive than CoinGecko</message>
   <message name="IDS_BRAVE_SWAP_API" desc="Application Programming Interface (API)">API</message>
   <message name="IDS_BRAVE_SWAP_NAME" desc="Name">Name</message>
-  <message name="IDS_BRAVE_SWAP_CONNECT_WALLET" desc="Connect wallet button text">Connect Wallet</message>
   <message name="IDS_BRAVE_SWAP_DISCONNECT_WALLET" desc="Disconnect wallet">Disconnect</message>
-  <message name="IDS_BRAVE_SWAP_SWITCH_NETWORK" desc="Switch network button text">Switch Network</message>
   <message name="IDS_BRAVE_SWAP_ADVANCED" desc="Advanced quote details">Advanced</message>
   <message name="IDS_BRAVE_SWAP_ACCOUNTS" desc="Accounts">Accounts</message>
   <message name="IDS_BRAVE_SWAP_WALLET" desc="Wallet">Wallet</message>
