@@ -39,7 +39,8 @@ const playerReducer: Reducer<PlayerState | undefined> = (
       currentItem: undefined,
       playing: false,
       shuffleEnabled: false,
-      autoPlayEnabled: true
+      autoPlayEnabled: true,
+      loopMode: undefined,
     }
   }
 
@@ -120,8 +121,14 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           throw new Error("Couldn't find the index of the current item ")
         }
 
+        let currentItem = null
         if (currentIndex !== items.length - 1) {
-          const currentItem = items[currentIndex + 1]
+          currentItem = items[currentIndex + 1]
+        } else {
+          currentItem = items[0]
+        }
+
+        if (currentItem) {
           currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
           state = { ...state, currentItem }
         }
@@ -136,8 +143,14 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           throw new Error("Couldn't find the index of the current item ")
         }
 
+        let currentItem = null
         if (currentIndex !== 0) {
-          const currentItem = items[currentIndex - 1]
+          currentItem = items[currentIndex - 1]
+        } else {
+          currentItem = items[items.length - 1]
+        }
+
+        if (currentItem) {
           currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
           state = { ...state, currentItem }
         }
@@ -171,6 +184,14 @@ const playerReducer: Reducer<PlayerState | undefined> = (
 
       state = { ...state, shuffleEnabled }
       break
+    }
+
+    case types.PLAYER_ADVANCE_LOOP_MODE: {
+      let loopMode = state.loopMode
+      if (!loopMode) loopMode = 'all-items'
+      else if (loopMode === 'all-items') loopMode = 'single-item'
+      else loopMode = undefined
+      state = { ...state, loopMode }
     }
   }
   return state

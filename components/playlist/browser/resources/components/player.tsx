@@ -17,7 +17,8 @@ import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 import {
   ApplicationState,
   PlayerState,
-  useAutoPlayEnabled
+  useAutoPlayEnabled,
+  useLoopMode
 } from '../reducers/states'
 import { getPlayerActions } from '../api/getPlayerActions'
 import PlayerControls from './playerControls'
@@ -260,6 +261,8 @@ export default function Player() {
   // mouse events on the seeker as well.
   const [mouseHoveredOnSeeker, setMouseHoveredOnSeeker] = React.useState(false)
 
+  const loopMode = useLoopMode()
+
   React.useEffect(() => {
     if (videoElement && !videoElement.paused && !currentItem) {
       // This could happen when the current item was deleted. In this case,
@@ -316,6 +319,12 @@ export default function Player() {
             getPlayerActions().playerStoppedPlayingItem(currentItem)
           }
           onEnded={() => {
+            if (loopMode === 'single-item') {
+              videoElement!.currentTime = 0
+              videoElement!.play()
+              return
+            }
+
             if (currentItem) {
               setCurrentTime(videoElement!.duration)
 

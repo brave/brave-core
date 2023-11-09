@@ -12,7 +12,7 @@ import Button from '@brave/leo/react/button'
 import { spacing } from '@brave/leo/tokens/css'
 
 import { getPlayerActions } from '../api/getPlayerActions'
-import { ApplicationState } from '../reducers/states'
+import { ApplicationState, useLoopMode } from '../reducers/states'
 import { hiddenOnMiniPlayer, hiddenOnNormalPlayer } from '../constants/style'
 import { getLocalizedString } from '../utils/l10n'
 
@@ -85,6 +85,8 @@ export default function PlayerControls({ videoElement, className }: Props) {
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
     (applicationState) => applicationState.playerState?.shuffleEnabled
   )
+
+  const loopMode = useLoopMode()
 
   React.useEffect(() => {
     if (videoElement) {
@@ -188,6 +190,20 @@ export default function PlayerControls({ videoElement, className }: Props) {
           title={getLocalizedString('bravePlaylistA11YShuffle')}
           kind={shuffleEnabled ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().toggleShuffle()}
+        />
+        <Control
+          iconName={
+            !loopMode
+              ? 'loop-all'
+              : loopMode === 'single-item'
+              ? 'loop-1-toggle-on'
+              : 'loop-all-toggle-on'
+          }
+          size='large'
+          visibility='normal'
+          title={'loop'}
+          kind={loopMode ? 'plain' : 'plain-faint'}
+          onClick={() => getPlayerActions().advanceLoopMode()}
         />
         {/* TODO(sko) We disabled PIP and fullscreen button at the moment */}
       </div>
