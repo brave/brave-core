@@ -17,6 +17,14 @@ import {
   supportedUDExtensions
 } from '../../constants/domain-extensions'
 
+interface GetFVMAddressArg {
+  coin: BraveWallet.CoinType | undefined
+  isMainNet: boolean
+  addresses: string[]
+}
+
+type GetFVMAddressResult = Map<string, { address: string; fvmAddress: string }>
+
 export const addressEndpoints = ({
   mutation,
   query
@@ -176,6 +184,54 @@ export const addressEndpoints = ({
               id: [arg.url, arg.tokenId].filter((arg) => arg !== null).join('-')
             }
       ]
+    }),
+
+    getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        if (arg.coin !== BraveWallet.CoinType.FIL) {
+          // invalid coin type
+          return { data: {} }
+        }
+        try {
+          const { braveWalletService } = baseQuery(undefined).data
+          const convertResult = (
+            await braveWalletService.convertFEVMToFVMAddress(
+              arg.isMainNet,
+              arg.addresses
+            )
+          ).result
+          return {
+            data: convertResult
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Unable to getFVMAddress', error)
+        }
+      }
+    }),
+
+    generateReceiveAddress: mutation<string, BraveWallet.AccountId>({
+      queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { braveWalletService } = baseQuery(undefined).data
+          const { address, errorMessage } =
+            await braveWalletService.generateReceiveAddress(accountId)
+
+          if (!address || errorMessage) {
+            throw new Error(errorMessage ?? 'Unknown error')
+          }
+
+          return {
+            data: address
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable generate receive address for account: ' +
+              accountId.uniqueKey,
+            error
+          )
+        }
+      }
     })
   }
 }
