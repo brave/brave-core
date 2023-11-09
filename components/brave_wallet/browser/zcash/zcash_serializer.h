@@ -15,9 +15,9 @@ namespace brave_wallet {
 
 class ZCashSerializer {
  public:
-  static std::vector<uint8_t> CalculateTxIdDigest(
+  static std::array<uint8_t, 32> CalculateTxIdDigest(
       const ZCashTransaction& zcash_transaction);
-  static std::vector<uint8_t> CalculateSignatureDigest(
+  static std::array<uint8_t, 32> CalculateSignatureDigest(
       const ZCashTransaction& zcash_transaction,
       const ZCashTransaction::TxInput& input);
   static std::vector<uint8_t> SerializeRawTransaction(
@@ -30,11 +30,12 @@ class ZCashSerializer {
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashSequences);
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashTxIn);
 
-  static std::vector<uint8_t> HashHeader(const ZCashTransaction& tx);
-  static std::vector<uint8_t> HashPrevouts(const ZCashTransaction& tx);
-  static std::vector<uint8_t> HashSequences(const ZCashTransaction& tx);
-  static std::vector<uint8_t> HashOutputs(const ZCashTransaction& tx);
-  static std::vector<uint8_t> HashTxIn(const ZCashTransaction::TxInput& tx_in);
+  static std::array<uint8_t, 32> HashHeader(const ZCashTransaction& tx);
+  static std::array<uint8_t, 32> HashPrevouts(const ZCashTransaction& tx);
+  static std::array<uint8_t, 32> HashSequences(const ZCashTransaction& tx);
+  static std::array<uint8_t, 32> HashOutputs(const ZCashTransaction& tx);
+  static std::array<uint8_t, 32> HashTxIn(
+      const ZCashTransaction::TxInput& tx_in);
 };
 
 }  // namespace brave_wallet

@@ -6,10 +6,11 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/big_endian.h"
 #include "base/sys_byteorder.h"
-#include "brave/components/brave_wallet/common/serializer_stream.h"
+#include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 
 namespace brave_wallet {
@@ -32,9 +33,9 @@ std::string GetTxHashPersonalizer() {
   return personalizer;
 }
 
-std::vector<uint8_t> blake2b256(std::vector<uint8_t> payload,
-                                std::string personalizer) {
-  blake2b_state blakeState;
+std::array<uint8_t, 32> blake2b256(const std::vector<uint8_t>& payload,
+                                   std::string_view personalizer) {
+  blake2b_state blake_state;
   blake2b_param params;
 
   if (personalizer.length() != sizeof(params.personal)) {
@@ -42,7 +43,7 @@ std::vector<uint8_t> blake2b256(std::vector<uint8_t> payload,
     return {};
   }
 
-  params.digest_length = (uint8_t)32;
+  params.digest_length = 32;
   params.key_length = 0;
   params.fanout = 1;
   params.depth = 1;
@@ -52,24 +53,25 @@ std::vector<uint8_t> blake2b256(std::vector<uint8_t> payload,
   params.inner_length = 0;
   memset(params.reserved, 0, sizeof(params.reserved));
   memset(params.salt, 0, sizeof(params.salt));
-  memcpy(params.personal, personalizer.c_str(), sizeof(params.personal));
-  if (blake2b_init_param(&blakeState, &params) != 0) {
+  memcpy(params.personal, personalizer.data(), sizeof(params.personal));
+  if (blake2b_init_param(&blake_state, &params) != 0) {
     NOTREACHED();
     return {};
   }
-  if (blake2b_update(&blakeState, payload.data(), payload.size()) != 0) {
+  if (blake2b_update(&blake_state, payload.data(), payload.size()) != 0) {
     NOTREACHED();
     return {};
   }
-  std::vector<uint8_t> result(32, 0);
-  if (blake2b_final(&blakeState, result.data(), 32) != 0) {
+  std::array<uint8_t, 32> result;
+  if (blake2b_final(&blake_state, result.data(), 32) != 0) {
     NOTREACHED();
     return {};
   }
+
   return result;
 }
 
-void PushHeader(const ZCashTransaction& tx, SerializerStream& stream) {
+void PushHeader(const ZCashTransaction& tx, BtcLikeSerializerStream& stream) {
   stream.Push32AsLE(kV5TxVersion);
   stream.Push32AsLE(kV5VersionGroupId);
   stream.Push32AsLE(kConsensusBranchId);
@@ -78,29 +80,29 @@ void PushHeader(const ZCashTransaction& tx, SerializerStream& stream) {
 }
 
 void PushOutpoint(const ZCashTransaction::Outpoint& outpoint,
-                  SerializerStream& stream) {
+                  BtcLikeSerializerStream& stream) {
   stream.PushBytes(outpoint.txid);
   stream.Push32AsLE(outpoint.index);
 }
 
 void PushOutput(const ZCashTransaction::TxOutput& output,
-                SerializerStream& stream) {
+                BtcLikeSerializerStream& stream) {
   stream.Push64AsLE(output.amount);
   stream.PushSizeAndBytes(output.script_pubkey);
 }
 
-std::vector<uint8_t> HashAmounts(const ZCashTransaction& tx) {
+std::array<uint8_t, 32> HashAmounts(const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.inputs()) {
     stream.Push64AsLE(input.utxo_value);
   }
   return blake2b256(data, "ZTxTrAmountsHash");
 }
 
-std::vector<uint8_t> HashScriptPubKeys(const ZCashTransaction& tx) {
+std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.inputs()) {
     stream.PushSizeAndBytes(input.script_pub_key);
   }
@@ -110,10 +112,10 @@ std::vector<uint8_t> HashScriptPubKeys(const ZCashTransaction& tx) {
 }  // namespace
 
 // static
-std::vector<uint8_t> ZCashSerializer::HashTxIn(
+std::array<uint8_t, 32> ZCashSerializer::HashTxIn(
     const ZCashTransaction::TxInput& tx_in) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
 
   PushOutpoint(tx_in.utxo_outpoint, stream);
   stream.Push64AsLE(tx_in.utxo_value);
@@ -125,9 +127,10 @@ std::vector<uint8_t> ZCashSerializer::HashTxIn(
 }
 
 // static
-std::vector<uint8_t> ZCashSerializer::HashPrevouts(const ZCashTransaction& tx) {
+std::array<uint8_t, 32> ZCashSerializer::HashPrevouts(
+    const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.inputs()) {
     PushOutpoint(input.utxo_outpoint, stream);
   }
@@ -135,10 +138,10 @@ std::vector<uint8_t> ZCashSerializer::HashPrevouts(const ZCashTransaction& tx) {
 }
 
 // static
-std::vector<uint8_t> ZCashSerializer::HashSequences(
+std::array<uint8_t, 32> ZCashSerializer::HashSequences(
     const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.inputs()) {
     stream.Push32AsLE(input.n_sequence);
   }
@@ -146,9 +149,10 @@ std::vector<uint8_t> ZCashSerializer::HashSequences(
 }
 
 // static
-std::vector<uint8_t> ZCashSerializer::HashOutputs(const ZCashTransaction& tx) {
+std::array<uint8_t, 32> ZCashSerializer::HashOutputs(
+    const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   for (const auto& output : tx.outputs()) {
     PushOutput(output, stream);
   }
@@ -156,39 +160,40 @@ std::vector<uint8_t> ZCashSerializer::HashOutputs(const ZCashTransaction& tx) {
 }
 
 // static
-std::vector<uint8_t> ZCashSerializer::HashHeader(const ZCashTransaction& tx) {
+std::array<uint8_t, 32> ZCashSerializer::HashHeader(
+    const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   PushHeader(tx, stream);
   return blake2b256(data, "ZTxIdHeadersHash");
 }
 
 // static
 // https://zips.z.cash/zip-0244#txid-digest
-std::vector<uint8_t> ZCashSerializer::CalculateTxIdDigest(
+std::array<uint8_t, 32> ZCashSerializer::CalculateTxIdDigest(
     const ZCashTransaction& zcash_transaction) {
-  std::vector<uint8_t> header_hash = HashHeader(zcash_transaction);
+  std::array<uint8_t, 32> header_hash = HashHeader(zcash_transaction);
 
-  std::vector<uint8_t> transaprent_hash;
+  std::array<uint8_t, 32> transaprent_hash;
   {
     std::vector<uint8_t> data;
-    SerializerStream stream(&data);
+    BtcLikeSerializerStream stream(&data);
     stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
     stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
     stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
     transaprent_hash = blake2b256(data, kTransparentHashPersonalizer);
   }
 
-  std::vector<uint8_t> sapling_hash;
+  std::array<uint8_t, 32> sapling_hash;
   { sapling_hash = blake2b256({}, kSaplingHashPersonalizer); }
 
-  std::vector<uint8_t> orchard_hash;
+  std::array<uint8_t, 32> orchard_hash;
   { orchard_hash = blake2b256({}, kOrchardHashPersonalizer); }
 
-  std::vector<uint8_t> digest_hash;
+  std::array<uint8_t, 32> digest_hash;
   {
     std::vector<uint8_t> data;
-    SerializerStream stream(&data);
+    BtcLikeSerializerStream stream(&data);
     stream.PushBytes(header_hash);
     stream.PushBytes(transaprent_hash);
     stream.PushBytes(sapling_hash);
@@ -197,20 +202,22 @@ std::vector<uint8_t> ZCashSerializer::CalculateTxIdDigest(
     digest_hash = blake2b256(data, GetTxHashPersonalizer());
   }
 
+  std::reverse(digest_hash.begin(), digest_hash.end());
+
   return digest_hash;
 }
 
 // static
 // https://zips.z.cash/zip-0244#signature-digest
-std::vector<uint8_t> ZCashSerializer::CalculateSignatureDigest(
+std::array<uint8_t, 32> ZCashSerializer::CalculateSignatureDigest(
     const ZCashTransaction& zcash_transaction,
     const ZCashTransaction::TxInput& input) {
-  std::vector<uint8_t> header_hash = HashHeader(zcash_transaction);
+  std::array<uint8_t, 32> header_hash = HashHeader(zcash_transaction);
 
-  std::vector<uint8_t> transaprent_hash;
+  std::array<uint8_t, 32> transaprent_hash;
   {
     std::vector<uint8_t> data;
-    SerializerStream stream(&data);
+    BtcLikeSerializerStream stream(&data);
     stream.Push8AsLE(zcash_transaction.sighash_type());
     stream.PushBytes(HashPrevouts(zcash_transaction));
     stream.PushBytes(HashAmounts(zcash_transaction));
@@ -222,16 +229,16 @@ std::vector<uint8_t> ZCashSerializer::CalculateSignatureDigest(
     transaprent_hash = blake2b256(data, kTransparentHashPersonalizer);
   }
 
-  std::vector<uint8_t> sapling_hash;
+  std::array<uint8_t, 32> sapling_hash;
   { sapling_hash = blake2b256({}, kSaplingHashPersonalizer); }
 
-  std::vector<uint8_t> orchard_hash;
+  std::array<uint8_t, 32> orchard_hash;
   { orchard_hash = blake2b256({}, kOrchardHashPersonalizer); }
 
-  std::vector<uint8_t> digest_hash;
+  std::array<uint8_t, 32> digest_hash;
   {
     std::vector<uint8_t> data;
-    SerializerStream stream(&data);
+    BtcLikeSerializerStream stream(&data);
     stream.PushBytes(header_hash);
     stream.PushBytes(transaprent_hash);
     stream.PushBytes(sapling_hash);
@@ -248,7 +255,7 @@ std::vector<uint8_t> ZCashSerializer::CalculateSignatureDigest(
 std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
     const ZCashTransaction& zcash_transaction) {
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
 
   PushHeader(zcash_transaction, stream);
 

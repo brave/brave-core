@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SERIALIZER_STREAM_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SERIALIZER_STREAM_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BTC_LIKE_SERIALIZER_STREAM_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BTC_LIKE_SERIALIZER_STREAM_H_
 
 #include <vector>
 
@@ -13,9 +13,9 @@
 
 namespace brave_wallet {
 
-class SerializerStream {
+class BtcLikeSerializerStream {
  public:
-  explicit SerializerStream(std::vector<uint8_t>* to) : to_(to) {}
+  explicit BtcLikeSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
 
   void Push8AsLE(uint8_t i);
   void Push16AsLE(uint16_t i);
@@ -37,4 +37,4 @@ class SerializerStream {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SERIALIZER_STREAM_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BTC_LIKE_SERIALIZER_STREAM_H_

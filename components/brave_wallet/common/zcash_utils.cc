@@ -5,15 +5,15 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
+#include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/serializer_stream.h"
+#include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
 
 namespace {
 constexpr size_t kPubKeyHashSize = 20;
-constexpr size_t kCheckSumSize = 4;
 constexpr size_t kPrefixSize = 2;
 }  // namespace
 
@@ -44,8 +44,8 @@ std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
 absl::optional<DecodedZCashAddress> DecodeZCashAddress(
     const std::string& address) {
   std::vector<uint8_t> decode_result;
-  if (!Base58Decode(address, &decode_result,
-                    kPubKeyHashSize + kCheckSumSize + kPrefixSize, false)) {
+  if (!DecodeBase58Check(address, decode_result,
+                         kPubKeyHashSize + kPrefixSize)) {
     return absl::nullopt;
   }
 
@@ -56,18 +56,8 @@ absl::optional<DecodedZCashAddress> DecodeZCashAddress(
     return absl::nullopt;
   }
 
-  std::vector<uint8_t> checksum(decode_result.end() - kCheckSumSize,
-                                decode_result.end());
   std::vector<uint8_t> body(decode_result.begin() + kPrefixSize,
-                            decode_result.end() - kCheckSumSize);
-  std::vector<uint8_t> checksum_payload(decode_result.begin(),
-                                        decode_result.end() - kCheckSumSize);
-
-  auto hash = DoubleSHA256Hash(checksum_payload);
-  if (!std::equal(hash.begin(), hash.begin() + kCheckSumSize,
-                  checksum.begin())) {
-    return absl::nullopt;
-  }
+                            decode_result.end());
 
   DecodedZCashAddress result;
   result.pubkey_hash = body;
@@ -88,7 +78,7 @@ std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
   }
 
   std::vector<uint8_t> data;
-  SerializerStream stream(&data);
+  BtcLikeSerializerStream stream(&data);
   CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
 
   stream.Push8AsLE(0x76);                          // OP_DUP

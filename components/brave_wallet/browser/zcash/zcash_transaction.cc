@@ -155,7 +155,7 @@ bool ZCashTransaction::TxInput::operator==(
   return std::tie(this->utxo_address, this->utxo_outpoint, this->utxo_value,
                   this->script_sig, this->script_pub_key) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
-                  other.script_sig, this->script_pub_key);
+                  other.script_sig, other.script_pub_key);
 }
 bool ZCashTransaction::TxInput::operator!=(
     const ZCashTransaction::TxInput& other) const {

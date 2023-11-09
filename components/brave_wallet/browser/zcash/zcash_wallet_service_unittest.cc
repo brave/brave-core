@@ -170,8 +170,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   ZCashTransaction signed_tx;
   EXPECT_CALL(
       sign_callback,
-      Run("0x3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101",
-          _, ""))
+      Run("3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101", _,
+          ""))
       .WillOnce(WithArg<1>(
           [&](const ZCashTransaction& tx) { signed_tx = tx.Clone(); }));
 

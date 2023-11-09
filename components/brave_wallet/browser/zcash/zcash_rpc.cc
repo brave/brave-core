@@ -132,7 +132,6 @@ std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
 std::string MakeGetAddressUtxosURLParams(const std::string& address) {
   zcash::GetAddressUtxosRequest request;
   request.add_addresses(address);
-  request.set_maxentries(1);
   request.set_startheight(0);
   return GetPrefixedProtobuf(request.SerializeAsString());
 }

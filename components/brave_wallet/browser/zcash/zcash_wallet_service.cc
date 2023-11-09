@@ -10,9 +10,9 @@
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/serializer_stream.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -259,7 +259,8 @@ bool CreateTransparentTransactionTask::PrepareOutputs() {
   auto& change_output = transaction_.outputs().emplace_back();
   change_output.address = *change_address;
   change_output.amount = change_amount;
-  change_output.script_pubkey = ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
+  change_output.script_pubkey =
+      ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
   return true;
 }
 
@@ -371,10 +372,6 @@ bool ZCashWalletService::SignTransactionInternal(
     auto signature_digest =
         ZCashSerializer::CalculateSignatureDigest(tx, input);
 
-    if (signature_digest.size() != 32) {
-      return false;
-    }
-
     auto signature = keyring_service_->SignMessageByZCashKeyring(
         account_id, key_id,
         base::make_span<32>(signature_digest.begin(), signature_digest.end()));
@@ -382,7 +379,7 @@ bool ZCashWalletService::SignTransactionInternal(
       return false;
     }
 
-    SerializerStream stream(&input.script_sig);
+    BtcLikeSerializerStream stream(&input.script_sig);
     stream.PushVarInt(signature.value().size() + 1);
     stream.PushBytes(signature.value());
     stream.Push8AsLE(tx.sighash_type());
@@ -441,9 +438,9 @@ void ZCashWalletService::OnSendTransactionResult(
     base::expected<zcash::SendResponse, std::string> result) {
   if (result.has_value() && result->errorcode() == 0) {
     auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
-    auto tx_id_hex = ToHexReversed(tx_id);
+    auto tx_id_hex = ToHex(tx_id);
     CHECK(tx_id_hex.starts_with("0x"));
-    std::move(callback).Run(ToHexReversed(tx_id).substr(2), std::move(tx), "");
+    std::move(callback).Run(tx_id_hex.substr(2), std::move(tx), "");
   } else {
     std::move(callback).Run("", std::move(tx), "Failed to send transaction");
   }
@@ -533,7 +530,7 @@ void ZCashWalletService::OnTransactionResolvedForStatus(
     return;
   }
 
-  std::move(callback).Run(result.value().height() + 1 != 0);
+  std::move(callback).Run(result.value().height() > 0);
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(

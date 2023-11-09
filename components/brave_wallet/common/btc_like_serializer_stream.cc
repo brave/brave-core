@@ -3,37 +3,37 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/common/serializer_stream.h"
+#include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
 #include "base/sys_byteorder.h"
 
 namespace brave_wallet {
 
-void SerializerStream::Push8AsLE(uint8_t i) {
+void BtcLikeSerializerStream::Push8AsLE(uint8_t i) {
   base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
   PushBytes(data_to_insert);
 }
 
-void SerializerStream::Push16AsLE(uint16_t i) {
+void BtcLikeSerializerStream::Push16AsLE(uint16_t i) {
   i = base::ByteSwapToLE16(i);
   base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
   PushBytes(data_to_insert);
 }
 
-void SerializerStream::Push32AsLE(uint32_t i) {
+void BtcLikeSerializerStream::Push32AsLE(uint32_t i) {
   i = base::ByteSwapToLE32(i);
   base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
   PushBytes(data_to_insert);
 }
 
-void SerializerStream::Push64AsLE(uint64_t i) {
+void BtcLikeSerializerStream::Push64AsLE(uint64_t i) {
   i = base::ByteSwapToLE64(i);
   base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
   PushBytes(data_to_insert);
 }
 
 // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
-void SerializerStream::PushVarInt(uint64_t i) {
+void BtcLikeSerializerStream::PushVarInt(uint64_t i) {
   if (i < 0xfd) {
     Push8AsLE(i);
   } else if (i <= 0xffff) {
@@ -48,26 +48,28 @@ void SerializerStream::PushVarInt(uint64_t i) {
   }
 }
 
-void SerializerStream::PushSizeAndBytes(base::span<const uint8_t> bytes) {
+void BtcLikeSerializerStream::PushSizeAndBytes(
+    base::span<const uint8_t> bytes) {
   PushVarInt(bytes.size());
   PushBytes(bytes);
 }
 
-void SerializerStream::PushBytes(base::span<const uint8_t> bytes) {
+void BtcLikeSerializerStream::PushBytes(base::span<const uint8_t> bytes) {
   if (to()) {
     to()->insert(to()->end(), bytes.begin(), bytes.end());
   }
   serialized_bytes_ += bytes.size();
 }
 
-void SerializerStream::PushBytesReversed(base::span<const uint8_t> bytes) {
+void BtcLikeSerializerStream::PushBytesReversed(
+    base::span<const uint8_t> bytes) {
   if (to()) {
     to()->insert(to()->end(), bytes.rbegin(), bytes.rend());
   }
   serialized_bytes_ += bytes.size();
 }
 
-void SerializerStream::PushCompactSize(uint64_t i) {
+void BtcLikeSerializerStream::PushCompactSize(uint64_t i) {
   if (i < 253) {
     Push8AsLE(static_cast<uint8_t>(i));
   } else if (i < 0xFFFF) {
