@@ -47,14 +47,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void ResetSync(JNIEnv* env);
 
-  bool GetSyncV1WasEnabled(JNIEnv* env);
-
-  bool GetSyncV2MigrateNoticeDismissed(JNIEnv* env);
-
-  void SetSyncV2MigrateNoticeDismissed(
-      JNIEnv* env,
-      bool sync_v2_migration_notice_dismissed);
-
   void PermanentlyDeleteAccount(
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& callback);

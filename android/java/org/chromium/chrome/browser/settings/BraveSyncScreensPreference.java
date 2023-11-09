@@ -486,7 +486,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().setTitle(R.string.sync_category_title);
 
-        boolean firstSetupComplete = getBraveSyncWorker().IsInitialSyncFeatureSetupComplete();
+        boolean firstSetupComplete = getBraveSyncWorker().isInitialSyncFeatureSetupComplete();
 
         Log.v(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
         if (!firstSetupComplete) {
@@ -546,7 +546,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private String getWordsValidationString(String words) {
-        int validationResult = getBraveSyncWorker().GetWordsValidationResult(words);
+        int validationResult = getBraveSyncWorker().getWordsValidationResult(words);
         Log.v(TAG, "validationResult is " + validationResult);
         switch (validationResult) {
             case 0:
@@ -652,7 +652,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             }
 
             String codephraseCandidate =
-                    getBraveSyncWorker().GetPureWordsFromTimeLimited(trimmedWords);
+                    getBraveSyncWorker().getPureWordsFromTimeLimited(trimmedWords);
             assert codephraseCandidate != null && !codephraseCandidate.isEmpty();
 
             showFinalSecurityWarning(FinalWarningFor.CODE_WORDS, () -> {
@@ -732,13 +732,16 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null == getActivity()) {
             return;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String seedWords = getBraveSyncWorker().GetWordsFromSeedHex(seedHex);
-                seedWordsReceivedImpl(seedWords, SyncInputType.JOIN);
-            }
-        });
+        getActivity()
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                String seedWords =
+                                        getBraveSyncWorker().getWordsFromSeedHex(seedHex);
+                                seedWordsReceivedImpl(seedWords, SyncInputType.JOIN);
+                            }
+                        });
     }
 
     // This function used in two cases:
@@ -828,9 +831,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                             }
                         });
 
-        getBraveSyncWorker().RequestSync();
-        getBraveSyncWorker().SaveCodephrase(seedWords);
-        getBraveSyncWorker().FinalizeSyncSetup();
+        getBraveSyncWorker().requestSync();
+        getBraveSyncWorker().saveCodephrase(seedWords);
+        getBraveSyncWorker().finalizeSyncSetup();
     }
 
     private void showMainSyncScrypt() {
@@ -1001,7 +1004,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             Log.e(TAG, "Wrong barcode data length " + barcode.length() + " instead of 64");
             return false;
         }
-        String seedWords = getBraveSyncWorker().GetWordsFromSeedHex(barcode);
+        String seedWords = getBraveSyncWorker().getWordsFromSeedHex(barcode);
         if (seedWords == null || seedWords.isEmpty()) {
             Log.e(TAG, "Wrong sync words converted from barcode");
             return false;
@@ -1011,7 +1014,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private String getQrCodeValidationString(String jsonQr) {
         Log.v(TAG, "getQrCodeValidationString jsonQr length=" + jsonQr.length());
-        int validationResult = getBraveSyncWorker().GetQrCodeValidationResult(jsonQr);
+        int validationResult = getBraveSyncWorker().getQrCodeValidationResult(jsonQr);
         Log.v(TAG, "validationResult is " + validationResult);
         switch (validationResult) {
             case 0:
@@ -1068,7 +1071,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 return;
             }
 
-            String seedHex = getBraveSyncWorker().GetSeedHexFromQrJson(jsonQr);
+            String seedHex = getBraveSyncWorker().getSeedHexFromQrJson(jsonQr);
 
             // It is supposed to be
             // getActivity().runOnUiThread(() -> {
@@ -1132,20 +1135,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void deleteDeviceDialog(BraveSyncDevices.SyncDeviceInfo device) {
         AlertDialog.Builder alertBuilder =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    if (device.mIsCurrentDevice) {
-                        resumeSyncStateChangedObserver();
-                        getBraveSyncWorker().ResetSync();
-                        startLeaveSyncChainOperations();
-                    } else {
-                        BraveSyncDevices.get().DeleteDevice(device.mGuid);
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            if (device.mIsCurrentDevice) {
+                                resumeSyncStateChangedObserver();
+                                getBraveSyncWorker().resetSync();
+                                startLeaveSyncChainOperations();
+                            } else {
+                                BraveSyncDevices.get().DeleteDevice(device.mGuid);
+                            }
+                        }
                     }
-                }
-            }
-        };
+                };
         String deviceNameToDisplay = device.mName;
         if (device.mIsCurrentDevice) {
             deviceNameToDisplay = deviceNameToDisplay + " "
@@ -1331,7 +1335,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     public String getPureWords() {
       if (mCodephrase == null || mCodephrase.isEmpty()) {
-          mCodephrase = getBraveSyncWorker().GetPureWords();
+            mCodephrase = getBraveSyncWorker().getPureWords();
       }
       return mCodephrase;
   }
@@ -1380,7 +1384,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                             @Override
                             public void run() {
                                 String seedHex =
-                                        getBraveSyncWorker().GetSeedHexFromWords(getPureWords());
+                                        getBraveSyncWorker().getSeedHexFromWords(getPureWords());
                                 if (null == seedHex || seedHex.isEmpty()) {
                                     // Give up, seed must be valid
                                     Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
@@ -1399,7 +1403,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                         return;
                                     } else {
                                         String qrCodeString =
-                                                getBraveSyncWorker().GetQrDataJson(seedHex);
+                                                getBraveSyncWorker().getQrDataJson(seedHex);
                                         assert qrCodeString != null && !qrCodeString.isEmpty();
                                         ChromeBrowserInitializer.getInstance()
                                                 .runNowOrAfterFullBrowserStarted(
@@ -1475,7 +1479,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 assert codePhrase != null && !codePhrase.isEmpty();
                                 String timeLimitedWords =
                                         getBraveSyncWorker()
-                                                .GetTimeLimitedWordsFromPure(codePhrase);
+                                                .getTimeLimitedWordsFromPure(codePhrase);
                                 assert timeLimitedWords != null && !timeLimitedWords.isEmpty();
                                 mBraveSyncAddDeviceCodeWords.setText(timeLimitedWords);
                             }

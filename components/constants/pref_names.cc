@@ -65,7 +65,6 @@ const char kBraveNewsIntroDismissed[] = "brave.today.intro_dismissed";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kBraveDarkMode[] = "brave.dark_mode";
-const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
@@ -110,3 +109,4 @@ const char kBraveThemeType[] = "brave.theme.type";
 const char kUseOverriddenBraveThemeType[] =
     "brave.theme.use_overridden_brave_theme_type";
 const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
+const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";

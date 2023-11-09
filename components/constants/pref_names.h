@@ -56,7 +56,7 @@ extern const char kNewTabPageShowsOptions[];
 extern const char kBraveNewsIntroDismissed[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kBraveDarkMode[];
-extern const char kOtherBookmarksMigrated[];
+extern const char kOtherBookmarksMigrated[];  // Deprecated.
 extern const char kBraveShieldsSettingsVersion[];
 extern const char kDefaultBrowserPromptEnabled[];
 

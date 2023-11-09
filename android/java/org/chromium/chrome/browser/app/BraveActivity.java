@@ -78,7 +78,6 @@ import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
@@ -1034,7 +1033,6 @@ public abstract class BraveActivity extends ChromeActivity
             showCrossPromotionalDialog();
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
-        BraveSyncInformers.show();
         BraveSyncAccountDeletedInformer.show();
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()

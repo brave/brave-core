@@ -49,8 +49,6 @@
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -140,15 +138,6 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (profile && infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile)
-                                 ? SyncServiceFactory::GetForProfile(profile)
-                                 : nullptr;
-        const bool is_v2_user =
-            sync_service && sync_service->GetUserSettings()
-                                ->IsInitialSyncFeatureSetupComplete();
-        SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
-                                             profile, browser);
-
         SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
 
         BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
