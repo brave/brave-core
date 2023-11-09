@@ -21,6 +21,7 @@ extern const char kSpeedreaderLearnMoreUrl[];
 extern const char kWebDiscoveryLearnMoreUrl[];
 extern const char kBraveSearchHost[];
 extern const char kWidevineLearnMoreUrl[];
+extern const char kDevChannelDeprecationLearnMoreUrl[];
 
 // This is introduced to replace |kDownloadChromeUrl| in
 // outdated_upgrade_bubble_view.cc"
