@@ -663,19 +663,6 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
-void BraveBrowserView::FullscreenStateChanging() {
-  // On platforms that support transitioning into fullscreen with an animation,
-  // update rounded corners at the start of the transition to avoid any flash of
-  // the wrong border shape.
-  BrowserView::FullscreenStateChanging();
-  UpdateWebViewRoundedCorners();
-}
-
-void BraveBrowserView::FullscreenStateChanged() {
-  BrowserView::FullscreenStateChanged();
-  UpdateWebViewRoundedCorners();
-}
-
 void BraveBrowserView::UpdateDevToolsForContents(
     content::WebContents* web_contents,
     bool update_devtools_web_contents) {
@@ -795,6 +782,11 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   if (contents_web_view_->holder()) {
     contents_web_view_->holder()->SetCornerRadii(corners);
   }
+}
+
+void BraveBrowserView::Layout() {
+  BrowserView::Layout();
+  UpdateWebViewRoundedCorners();
 }
 
 void BraveBrowserView::StartTabCycling() {
