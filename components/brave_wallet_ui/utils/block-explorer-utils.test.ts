@@ -12,7 +12,8 @@ import {
   mockFilecoinMainnetNetwork,
   mockFilecoinTestnetNetwork,
   mockSolanaTestnetNetwork,
-  mockSolanaMainnetNetwork
+  mockSolanaMainnetNetwork,
+  mockBtcMainnetNetwork
 } from '../common/constants/mocks'
 
 const ethereumTransactionId =
@@ -21,6 +22,10 @@ const fileCointTransactionId =
   'bafy2bzacec7altnqomkd6mu2kqrfgfontjfsg67xjv6zs3vn3wakumhj3bttg'
 const solanaTransacitonId =
   'wi14VnU8msHsmNq4N9j7YAWu7jdDPUxMKKM2VLcstSevKv4NfKbxNEUtMquSoMjtZUMd4YSASzmwvDamkWTfh9b'
+const bitcoinTransactionId =
+    '7b4c1acbb7e6510ee9473db0ecf8bf4a99eb246dad0b9aa1be4a991e0bd36fc2'
+const bitcoinAddress =
+    'bc1qlcqtaqx8qnacsgv4z3uv0dhlvrl066lh8secet'
 
 it('ethereum explorer url', () => {
   const assertion = buildExplorerUrl(
@@ -77,5 +82,41 @@ it('solana mainnet explorer url', () => {
   )
   expect(assertion).toEqual(
     `https://explorer.solana.com/tx/${solanaTransacitonId}`
+  )
+})
+
+it('btc mainnet explorer url for tx', () => {
+  const assertion = buildExplorerUrl(
+    mockBtcMainnetNetwork,
+    'tx',
+    bitcoinTransactionId,
+    undefined
+  )
+  expect(assertion).toEqual(
+    `https://www.blockchain.com/explorer/transactions/btc/${bitcoinTransactionId}`
+  )
+})
+
+it('btc mainnet explorer url for address', () => {
+  const assertion = buildExplorerUrl(
+    mockBtcMainnetNetwork,
+    'address',
+    bitcoinAddress,
+    undefined
+  )
+  expect(assertion).toEqual(
+    `https://www.blockchain.com/explorer/addresses/btc/${bitcoinAddress}`
+  )
+})
+
+it('btc mainnet explorer url for unsupported type', () => {
+  const assertion = buildExplorerUrl(
+    mockBtcMainnetNetwork,
+    'token',
+    bitcoinAddress,
+    undefined
+  )
+  expect(assertion).toEqual(
+    `https://www.blockchain.com/explorer/search?search=${bitcoinAddress}`
   )
 })

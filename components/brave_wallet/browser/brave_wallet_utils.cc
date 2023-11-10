@@ -558,7 +558,7 @@ const mojom::NetworkInfo* GetBitcoinMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Bitcoin Mainnet",
-       {"https://blockstream.info"},
+       {"https://www.blockchain.com/explorer"},
        {},
        0,
        {BitcoinMainnetRpcUrl()},
