@@ -40,8 +40,11 @@ import java.util.Map;
 
 public class InAppPurchaseWrapper {
     private static final String TAG = "InAppPurchaseWrapper";
-    public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
-    public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
+    private static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    private static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
+
+    private static final String BETA_MONTHLY_SUBSCRIPTION = "beta.bravevpn.monthly";
+    private static final String BETA_YEARLY_SUBSCRIPTION = "beta.bravevpn.yearly";
 
     public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
@@ -53,7 +56,7 @@ public class InAppPurchaseWrapper {
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
 
-    public enum SubscriptionType { MONTHLY, YEARLY }
+    private enum SubscriptionType { MONTHLY, YEARLY }
 
     private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
     private LiveData<ProductDetails> mMonthlyProductDetails = mMutableMonthlyProductDetails;
@@ -88,6 +91,7 @@ public class InAppPurchaseWrapper {
 
     public boolean isMonthlySubscription(String productId) {
         return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productId.equals(BETA_MONTHLY_SUBSCRIPTION)
                 || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
     }
 
@@ -150,9 +154,13 @@ public class InAppPurchaseWrapper {
     public String getProductId(SubscriptionType subscriptionType) {
         boolean isReleaseBuild = ContextUtils.getApplicationContext().getPackageName().equals(
                 BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME);
-        if (isReleaseBuild) {
+        STring bravePackageName = ContextUtils.getApplicationContext().getPackageName();
+        if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
             return subscriptionType == SubscriptionType.MONTHLY ? RELEASE_MONTHLY_SUBSCRIPTION
                                                                 : RELEASE_YEARLY_SUBSCRIPTION;
+        } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
+            return subscriptionType == SubscriptionType.MONTHLY ? BETA_MONTHLY_SUBSCRIPTION
+                                                                : BETA_YEARLY_SUBSCRIPTION;
         } else {
             return subscriptionType == SubscriptionType.MONTHLY ? NIGHTLY_MONTHLY_SUBSCRIPTION
                                                                 : NIGHTLY_YEARLY_SUBSCRIPTION;
