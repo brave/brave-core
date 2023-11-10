@@ -140,4 +140,22 @@ SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
+absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+                                                          SidePanelEntryId id) {
+  const auto hidden_default_items =
+      GetSidebarService(browser)->GetHiddenDefaultSidebarItems();
+  if (hidden_default_items.empty()) {
+    return absl::nullopt;
+  }
+
+  for (const auto& item : hidden_default_items) {
+    if (id == sidebar::SidePanelIdFromSideBarItem(item)) {
+      GetSidebarService(browser)->AddItem(item);
+      return item;
+    }
+  }
+
+  return absl::nullopt;
+}
+
 }  // namespace sidebar
