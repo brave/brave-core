@@ -13,27 +13,17 @@ export const mockPageState: PageState = {
   nftMetadataError:
     'Something went wrong when fetching NFT details. Please try again later.',
   hasInitialized: false,
-  importWalletError: {
-    hasError: false
-  },
-  invalidMnemonic: false,
-  isCryptoWalletsInitialized: false,
-  isMetaMaskInitialized: false,
   selectedAsset: undefined,
   pinStatusOverview: undefined,
   selectedCoinMarket: undefined,
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   setupStillInProgress: false,
-  showIsRestoring: false,
   showRecoveryPhrase: false,
-  isImportWalletsCheckComplete: false,
-  importWalletAttempts: 0,
   walletTermsAcknowledged: false,
   mnemonic: mockedMnemonic
     .replace('tomato', 'FIRST')
     .replace('velvet', 'THIRD')
     .concat(` ${mockedMnemonic} LAST`),
   enablingAutoPin: false,
-  isAutoPinEnabled: false,
-  isCreatingWallet: false
+  isAutoPinEnabled: false
 }

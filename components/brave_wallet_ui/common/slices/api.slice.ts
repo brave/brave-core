@@ -80,6 +80,7 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
+import { walletEndpoints } from './endpoints/wallet.endpoints'
 import { tokenEndpoints } from './endpoints/token.endpoints'
 import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
 import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
@@ -1901,6 +1902,8 @@ export function createWalletApi() {
           })
         })
       })
+      // Wallet management endpoints
+      .injectEndpoints({ endpoints: walletEndpoints })
       // Token balance endpoints
       .injectEndpoints({ endpoints: tokenBalancesEndpoints })
       // brave rewards endpoints
@@ -1953,7 +1956,10 @@ export const {
   useApproveOrDeclineTokenSuggestionMutation,
   useApproveTransactionMutation,
   useCancelTransactionMutation,
+  useCheckExternalWalletPasswordMutation,
   useClosePanelUIMutation,
+  useCompleteWalletBackupMutation,
+  useCreateWalletMutation,
   useEnableEnsOffchainLookupMutation,
   useGenerateReceiveAddressMutation,
   useGetAccountInfosRegistryQuery,
@@ -2005,6 +2011,11 @@ export const {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
+  useGetWalletsToImportQuery,
+  useImportFromCryptoWalletsMutation,
+  useImportFromMetaMaskMutation,
+  useInvalidateAccountInfosMutation,
+  useInvalidateSelectedAccountMutation,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
@@ -2043,6 +2054,7 @@ export const {
   useRejectTransactionMutation,
   useRemoveUserTokenMutation,
   useReportActiveWalletsToP3AMutation,
+  useRestoreWalletMutation,
   useRetryTransactionMutation,
   useSendBtcTransactionMutation,
   useSendERC20TransferMutation,
@@ -2059,6 +2071,7 @@ export const {
   useSetNetworkMutation,
   useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
+  useShowRecoveryPhraseMutation,
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,

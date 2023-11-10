@@ -44,7 +44,6 @@ export const OnboardingRoutes = () => {
   const termsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
 
   // methods
   const goToConnectHardware = React.useCallback(() => {
@@ -77,12 +76,12 @@ export const OnboardingRoutes = () => {
   }, [location])
 
   // computed
-  const showOnboardingRestore = !isWalletCreated || isCreatingWallet
+  const showOnboardingRestore = !isWalletCreated
 
   // render
   return (
     <Switch>
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingWelcome}
           exact
@@ -91,7 +90,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.Onboarding}
           exact
@@ -100,7 +99,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!termsAcknowledged && !isWalletCreated && (
+      {!termsAcknowledged && showOnboardingRestore && (
         <Redirect to={WalletRoutes.OnboardingWelcome} />
       )}
 
@@ -121,7 +120,7 @@ export const OnboardingRoutes = () => {
         />
       </Route>
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingImportOrRestore}
           exact

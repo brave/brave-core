@@ -4,12 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
+
+// Types
+import { WalletRoutes } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { useRestoreWalletMutation } from '../../../common/slices/api.slice'
+import { WalletSelectors } from '../../../common/selectors'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { BackButton } from '../../../components/shared/back-button'
@@ -34,25 +39,13 @@ import {
 // hooks
 import { usePasswordStrength } from '../../../common/hooks/use-password-strength'
 
-import * as WalletPageActions from '../../../page/actions/wallet_page_actions'
-import { PageState, WalletRoutes, WalletState } from '../../../constants/types'
-
 export const RestoreWallet = () => {
   // routing
   let history = useHistory()
   const { pathname: walletLocation } = useLocation()
 
   // redux
-  const dispatch = useDispatch()
-  const isWalletCreated = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
-  )
-  const isWalletLocked = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked
-  )
-  const invalidMnemonic = useSelector(
-    ({ page }: { page: PageState }) => page.invalidMnemonic
-  )
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
   // custom hooks
   const {
@@ -63,6 +56,12 @@ export const RestoreWallet = () => {
     setConfirmedPassword: handleConfirmPasswordChanged,
     isValid: isPasswordValid
   } = usePasswordStrength()
+
+  // mutations
+  const [restoreWallet, { data: restoreWalletResults }] =
+    useRestoreWalletMutation()
+  const { invalidMnemonic, success: isWalletCreated } =
+    restoreWalletResults || {}
 
   // state
   const [showRecoveryPhrase, setShowRecoveryPhrase] =
@@ -107,17 +106,18 @@ export const RestoreWallet = () => {
   }, [toggleShowRestore])
 
   const onSubmitRestore = React.useCallback(async () => {
-    dispatch(
-      WalletPageActions.restoreWallet({
-        // added an additional trim here in case the phrase length is
-        // 12, 15, 18 or 21 long and has a space at the end.
-        mnemonic: recoveryPhrase.trimEnd(),
-        password,
-        isLegacy: isLegacyWallet,
-        completeWalletSetup: true
-      })
-    )
-    history.push(WalletRoutes.PortfolioAssets)
+    const { success } = await restoreWallet({
+      // added an additional trim here in case the phrase length is
+      // 12, 15, 18 or 21 long and has a space at the end.
+      mnemonic: recoveryPhrase.trimEnd(),
+      password,
+      isLegacy: isLegacyWallet,
+      completeWalletSetup: true
+    }).unwrap()
+
+    if (success) {
+      history.push(WalletRoutes.PortfolioAssets)
+    }
   }, [recoveryPhrase, password, isLegacyWallet])
 
   const handleRecoveryPhraseChanged = React.useCallback(
@@ -178,15 +178,6 @@ export const RestoreWallet = () => {
   const onClearClipboard = React.useCallback(() => {
     copyToClipboard('')
   }, [])
-
-  // effects
-  React.useEffect(() => {
-    if (invalidMnemonic) {
-      setTimeout(() => {
-        dispatch(WalletPageActions.hasMnemonicError(false))
-      }, 5000)
-    }
-  }, [invalidMnemonic])
 
   // render
   return (

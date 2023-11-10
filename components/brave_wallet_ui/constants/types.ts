@@ -266,7 +266,6 @@ export interface PanelState {
 export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
-  invalidMnemonic: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedAsset: BraveWallet.BlockchainToken | undefined
   isFetchingNFTMetadata: boolean
@@ -277,15 +276,8 @@ export interface PageState {
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   mnemonic?: string
   setupStillInProgress: boolean
-  showIsRestoring: boolean
-  importWalletError: ImportWalletError
-  isCryptoWalletsInitialized: boolean
-  isMetaMaskInitialized: boolean
-  isImportWalletsCheckComplete: boolean
-  importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
-  isCreatingWallet: boolean
 }
 
 export interface WalletPageState {
