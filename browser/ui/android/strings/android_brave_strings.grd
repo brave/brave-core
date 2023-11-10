@@ -4100,6 +4100,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
       ...
     </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TITLE_LEO" desc="Brave Leo link subscription settings title text">
+      Link purchase to your Brave account
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_SUMMARY_LEO" desc="Brave Leo link subscription settings summary">
+      Link your Play Store purchase to your Brave account to use Brave Leo on other devices.
+    </message>
+    <message name="IDS_MANAGE_SUBSCRIPTION_LEO" desc="Brave Leo settings section text">
+      Manage Subscription
+    </message>
   </messages>
   </release>
 </grit>

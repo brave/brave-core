@@ -159,3 +159,7 @@ interface ChatUIPage {
   // This reports if there are any pending entries to be sent to the remote LLM.
   OnConversationEntryPending();
 };
+
+interface CredentialManagerHelper {
+  GetPremiumStatus() => (PremiumStatus result);
+};
