@@ -186,7 +186,6 @@ export const WalletAsyncActions = {
   refreshNetworksAndTokens: createAction<RefreshOpts>(
     'refreshNetworksAndTokens'
   ),
-  expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
   ),

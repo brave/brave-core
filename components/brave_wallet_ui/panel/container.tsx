@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom'
 import {
   ConnectWithSite //
 } from '../components/extension/connect-with-site-panel/connect-with-site-panel'
-import { Panel } from '../components/extension/panel/index'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import { SignPanel } from '../components/extension/sign-panel/index'
 import {
@@ -25,41 +24,24 @@ import {
   ConnectHardwareWalletPanel //
 } from '../components/extension/connect-hardware-wallet-panel/index'
 import {
-  SitePermissions //
-} from '../components/extension/site-permissions-panel/index'
-import {
   AddSuggestedTokenPanel //
 } from '../components/extension/add-suggested-token-panel/index'
-import {
-  TransactionsPanel //
-} from '../components/extension/transactions-panel/index'
-import {
-  TransactionDetailPanel //
-} from '../components/extension/transaction-detail-panel/index'
-import { AssetsPanel } from '../components/extension/assets-panel/index'
 import {
   ProvidePubKeyPanel,
   DecryptRequestPanel
 } from '../components/extension/encryption-key-panel/index'
 
-import { CreateAccountTab } from '../components/buy-send-swap/create-account'
-import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
-import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { getInitialSessionRoute } from '../utils/routes-utils'
 import {
-  ScrollContainer,
   StyledExtensionWrapper,
-  SelectContainer,
   LongWrapper,
   ConnectWithSiteWrapper
 } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
 
 import * as WalletPanelActions from './actions/wallet_panel_actions'
-import * as WalletActions from '../common/actions/wallet_actions'
-import { BraveWallet, PanelTypes, WalletRoutes } from '../constants/types'
+import { BraveWallet, WalletRoutes } from '../constants/types'
 
-import { useHasAccount } from '../common/hooks/has-account'
 import {
   isBitcoinTransaction,
   isEthereumTransaction,
@@ -77,17 +59,13 @@ import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
   useSafeWalletSelector,
-  useUnsafePanelSelector,
-  useUnsafeWalletSelector
+  useUnsafePanelSelector
 } from '../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetNetworkQuery,
-  useGetPendingTokenSuggestionRequestsQuery,
-  useGetSelectedChainQuery,
-  useSetNetworkMutation,
-  useSetSelectedAccountMutation
+  useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -122,13 +100,7 @@ function Container() {
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
-  // wallet selectors (unsafe)
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-
   // panel selectors (safe)
-  const panelTitle = useSafePanelSelector(PanelSelectors.panelTitle)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
   const hardwareWalletCode = useSafePanelSelector(
     PanelSelectors.hardwareWalletCode
@@ -159,10 +131,7 @@ function Container() {
 
   // queries & mutations
   const { accounts } = useAccountsQuery()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
-  const [setNetwork] = useSetNetworkMutation()
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: switchChainRequestNetwork } = useGetNetworkQuery(
     switchChainRequest.chainId
       ? {
@@ -183,32 +152,8 @@ function Container() {
   // bundle and display that loading indicator ASAP.
   const { selectedPendingTransaction } = usePendingTransactions()
 
-  const { needsAccount } = useHasAccount()
-
-  const [networkForCreateAccount, setNetworkForCreateAccount] = React.useState<
-    BraveWallet.NetworkInfo | undefined
-  >(undefined)
-
   const onSetup = () => {
     dispatch(WalletPanelActions.setupWallet())
-  }
-
-  const navigateTo = (path: PanelTypes) => {
-    if (path === 'expanded') {
-      dispatch(WalletPanelActions.expandWallet())
-    } else {
-      dispatch(WalletPanelActions.navigateTo(path))
-    }
-  }
-
-  const onSelectAccount = async (account: BraveWallet.AccountInfo) => {
-    await setSelectedAccount(account.accountId)
-    dispatch(WalletPanelActions.navigateTo('main'))
-  }
-
-  const onReturnToMain = () => {
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
-    dispatch(WalletPanelActions.navigateTo('main'))
   }
 
   const onCancelSigning = () => {
@@ -260,43 +205,6 @@ function Container() {
     dispatch(WalletPanelActions.cancelConnectHardwareWallet(account))
   }
 
-  const onAddAccount = () => {
-    dispatch(WalletPanelActions.expandWalletAccounts())
-  }
-
-  const onAddAsset = () => {
-    dispatch(WalletPanelActions.expandWalletAddAsset())
-  }
-
-  const onAddNetwork = () => {
-    dispatch(WalletActions.expandWalletNetworks())
-  }
-
-  const onNoAccountForNetwork = React.useCallback(
-    (network: BraveWallet.NetworkInfo) => {
-      setNetworkForCreateAccount(network)
-      dispatch(WalletPanelActions.navigateTo('createAccount'))
-    },
-    [setNetworkForCreateAccount]
-  )
-
-  const onAccountCreatedForNetwork = React.useCallback(async () => {
-    if (networkForCreateAccount) {
-      await setNetwork({
-        chainId: networkForCreateAccount.chainId,
-        coin: networkForCreateAccount.coin
-      })
-      setNetworkForCreateAccount(undefined)
-    }
-
-    dispatch(WalletPanelActions.navigateTo('main'))
-  }, [networkForCreateAccount, setNetwork, setNetworkForCreateAccount])
-
-  const onCancelAccountCreationForNetwork = React.useCallback(() => {
-    setNetworkForCreateAccount(undefined)
-    dispatch(WalletPanelActions.navigateTo('main'))
-  }, [setNetworkForCreateAccount])
-
   const onClickInstructions = () => {
     const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'
 
@@ -305,10 +213,6 @@ function Container() {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }
-
-  const onGoBackToTransactions = () => {
-    dispatch(WalletPanelActions.navigateBack())
   }
 
   const onProvideEncryptionKey = (requestId: string) => {
@@ -346,12 +250,6 @@ function Container() {
       })
     )
   }
-
-  React.useEffect(() => {
-    if (needsAccount && selectedPanel === 'main') {
-      dispatch(WalletPanelActions.navigateTo('createAccount'))
-    }
-  }, [needsAccount, selectedPanel])
 
   const canInitializePageRouter =
     !isWalletLocked &&
@@ -575,38 +473,6 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'networks') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <SelectContainer>
-          <SelectNetworkWithHeader
-            onNoAccountForNetwork={onNoAccountForNetwork}
-            onBack={onReturnToMain}
-            onAddNetwork={onAddNetwork}
-            hasAddButton={true}
-          />
-        </SelectContainer>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'accounts') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <SelectContainer>
-          <SelectAccountWithHeader
-            accounts={accounts}
-            onBack={onReturnToMain}
-            onSelectAccount={onSelectAccount}
-            onAddAccount={onAddAccount}
-            selectedAccount={selectedAccount}
-            hasAddButton={true}
-          />
-        </SelectContainer>
-      </PanelWrapper>
-    )
-  }
-
   if (selectedPanel === 'connectWithSite') {
     const accountsToConnect = accounts.filter((account) =>
       connectingAccounts.includes(account.address.toLowerCase())
@@ -626,94 +492,12 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'transactionDetails' && selectedTransactionId) {
-    return (
-      <PanelWrapper isLonger={false}>
-        <SelectContainer>
-          <TransactionDetailPanel
-            onBack={onGoBackToTransactions}
-            transactionId={selectedTransactionId}
-            visibleTokens={userVisibleTokensInfo}
-          />
-        </SelectContainer>
-      </PanelWrapper>
-    )
-  }
-
-  // Transactions
-  if (selectedPanel === 'activity') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-          >
-            <TransactionsPanel
-              selectedNetwork={selectedNetwork}
-              selectedAccount={selectedAccount?.accountId}
-            />
-          </Panel>
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'assets') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-          >
-            <ScrollContainer>
-              <AssetsPanel
-                selectedAccount={selectedAccount}
-                onAddAsset={onAddAsset}
-              />
-            </ScrollContainer>
-          </Panel>
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'sitePermissions') {
-    return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-          >
-            <SitePermissions />
-          </Panel>
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'createAccount' && networkForCreateAccount) {
-    return (
-      <WelcomePanelWrapper>
-        <LongWrapper>
-          <CreateAccountTab
-            network={networkForCreateAccount}
-            onCreated={onAccountCreatedForNetwork}
-            onCancel={onCancelAccountCreationForNetwork}
-          />
-        </LongWrapper>
-      </WelcomePanelWrapper>
-    )
-  }
-
   return (
     <PanelWrapper
       width={390}
       height={650}
     >
-    <PageContainer />
+      <PageContainer />
     </PanelWrapper>
   )
 }

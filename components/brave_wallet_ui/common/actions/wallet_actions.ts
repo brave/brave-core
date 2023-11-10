@@ -19,7 +19,6 @@ export const {
   defaultEthereumWalletUpdated,
   defaultSolanaWalletChanged,
   defaultSolanaWalletUpdated,
-  expandWalletNetworks,
   getAllNetworks,
   getAllTokensList,
   hasIncorrectPassword,

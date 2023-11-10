@@ -20,7 +20,6 @@ export const mockPanelState: PanelState = {
   hasInitialized: false,
   connectToSiteOrigin: mockOriginInfo,
   selectedPanel: 'main',
-  panelTitle: '',
   connectingAccounts: [],
   addChainRequest: mockAddChainRequest,
   signMessageData: [mockSignMessageRequest],

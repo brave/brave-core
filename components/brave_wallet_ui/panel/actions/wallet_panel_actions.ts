@@ -42,13 +42,9 @@ export const switchEthereumChainProcessed =
   )
 export const showUnlock = createAction('showUnlock')
 export const setupWallet = createAction('setupWallet')
-export const expandWallet = createAction('expandWallet')
 export const openWalletSettings = createAction('openWalletSettings')
-export const expandWalletAccounts = createAction('expandWalletAccounts')
-export const expandWalletAddAsset = createAction('expandWalletAddAsset')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
-export const navigateBack = createAction('navigateBack')
 export const signMessage =
   createAction<BraveWallet.SignMessageRequest[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>(

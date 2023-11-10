@@ -12,7 +12,6 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 
 // options
-import { PANEL_TITLES } from '../../options/panel-titles'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // utils
@@ -29,25 +28,11 @@ const persistedSelectedPanelType = window.localStorage.getItem(
 const selectedPanel = isValidPanelNavigationOption(persistedSelectedPanelType)
   ? persistedSelectedPanelType
   : 'main'
-const persistedSelectedPanelTitle = PANEL_TITLES.find(
-  (title) => persistedSelectedPanelType === title.id
-)?.title
-
-const persistedLastSelectedPanelType =
-  (window.localStorage.getItem(
-    LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL
-  ) as PanelTypes) || undefined
-const lastSelectedPanel = isValidPanelNavigationOption(
-  persistedLastSelectedPanelType
-)
-  ? persistedLastSelectedPanelType
-  : undefined
 
 const defaultState: PanelState = {
   hasInitialized: false,
   connectToSiteOrigin: defaultOriginInfo,
   selectedPanel,
-  panelTitle: persistedSelectedPanelTitle || '',
   connectingAccounts: [],
   addChainRequest: {
     originInfo: defaultOriginInfo,
@@ -78,8 +63,7 @@ const defaultState: PanelState = {
   },
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
-  signMessageErrorData: [],
-  lastSelectedPanel
+  signMessageErrorData: []
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -87,35 +71,12 @@ export const createPanelReducer = (initialState: PanelState) => {
   reducer.on(
     PanelActions.navigateTo.type,
     (state: PanelState, selectedPanel: PanelTypes) => {
-      const foundTitle = PANEL_TITLES.find(
-        (title) => selectedPanel === title.id
-      )
-      const panelTitle = foundTitle ? foundTitle.title : ''
       return {
         ...state,
-        selectedPanel,
-        lastSelectedPanel: state.selectedPanel,
-        panelTitle
+        selectedPanel
       }
     }
   )
-
-  reducer.on(PanelActions.navigateBack.type, (state: PanelState) => {
-    const selectedPanel =
-      state.lastSelectedPanel === undefined
-        ? ('main' as PanelTypes)
-        : state.lastSelectedPanel
-
-    const foundTitle = PANEL_TITLES.find((title) => selectedPanel === title.id)
-    const panelTitle = foundTitle ? foundTitle.title : ''
-
-    return {
-      ...state,
-      selectedPanel,
-      lastSelectedPanel: state.selectedPanel,
-      panelTitle
-    }
-  })
 
   reducer.on(
     PanelActions.showConnectToSite.type,
