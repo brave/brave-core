@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { loadTimeData } from '../../../../common/loadTimeData'
 
 // Options
 import { CreateAccountOptions } from '../../../options/nav-options'
@@ -24,9 +25,13 @@ export const AccountsMenu = () => {
   // routing
   const history = useHistory()
 
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
   return (
     <StyledWrapper yPosition={42}>
-      {CreateAccountOptions.map((option) => (
+      {CreateAccountOptions.filter(option => (
+        // Filter out hardware wallet item on Android.
+        !isAndroid || option.name !== 'braveWalletConnectHardwareWallet'
+      )).map((option) => (
         <PopupButton
           key={option.name}
           onClick={() => history.push(option.route)}
