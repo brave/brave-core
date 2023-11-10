@@ -1,0 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("content") {
+  output_name = "brave_viewer_browser_content"
+
+  defines = [ "IS_BRAVE_VIEWER_BROWSER_CONTENT_IMPL" ]
+
+  sources = [
+    "brave_viewer_tab_helper.cc",
+    "brave_viewer_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_viewer/browser/core",
+    "//brave/components/brave_viewer/common",
+    "//brave/components/script_injector/common/mojom",
+    "//components/sessions",
+    "//content/public/browser",
+    "//url",
+  ]
+}

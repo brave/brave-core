@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_viewer/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -935,6 +936,13 @@
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-viewer",                                                      \
+          "Enable Brave Viewer",                                               \
+          "Allows video content from the web to be watched in Brave Viewer",   \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_viewer::features::kBraveViewer),            \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
