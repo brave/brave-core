@@ -5,11 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.controller;
 
+import static org.chromium.chrome.browser.app.BraveActivity.BRAVE_WALLET_HOST;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -32,15 +35,17 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.url.GURL;
 
 public class DAppsWalletController
         implements ConnectionErrorHandler, BraveWalletPanel.BraveWalletPanelServices {
     private static final String TAG = DAppsWalletController.class.getSimpleName();
     private FullscreenManager mFullscreenManager;
-    private Context mContext;
-    private View mAnchorViewHost;
+    private final Context mContext;
+    private final View mAnchorViewHost;
     private AssetRatioService mAssetRatioService;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
@@ -50,31 +55,44 @@ public class DAppsWalletController
     private BraveWalletPanel mBraveWalletPanel;
     private DialogInterface.OnDismissListener mOnDismissListener;
     private final AppCompatActivity mActivity;
+    @Nullable private final GURL mVisibleUrl;
 
-    private DialogInterface.OnDismissListener mDialogOrPanelDismissListener = dialog -> {
-        if (mOnDismissListener != null) {
-            mOnDismissListener.onDismiss(dialog);
-        }
-        cleanUp();
-    };
+    private final DialogInterface.OnDismissListener mDialogOrPanelDismissListener =
+            dialog -> {
+                if (mOnDismissListener != null) {
+                    mOnDismissListener.onDismiss(dialog);
+                }
+                cleanUp();
+            };
 
     public DAppsWalletController(Context mContext, View mAnchorViewHost) {
         this.mContext = mContext;
         this.mAnchorViewHost = mAnchorViewHost;
         this.mActivity = BraveActivity.getChromeTabbedActivity();
+        WebContents webContents = null;
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
+            webContents = activity.getCurrentWebContents();
+
             ObservableSupplier<BrowserControlsManager> managerSupplier =
                     activity.getBrowserControlsManagerSupplier();
             mFullscreenManager = managerSupplier.get().getFullscreenManager();
         } catch (BraveActivity.BraveActivityNotFoundException | NullPointerException e) {
             Log.e(TAG, "Constructor", e);
         }
+
+        if (webContents != null) {
+            mVisibleUrl = webContents.getVisibleUrl();
+        } else {
+            mVisibleUrl = null;
+        }
     }
 
-    public DAppsWalletController(Context mContext, View mAnchorViewHost,
+    public DAppsWalletController(
+            Context context,
+            View anchorViewHost,
             DialogInterface.OnDismissListener onDismissListener) {
-        this(mContext, mAnchorViewHost);
+        this(context, anchorViewHost);
         this.mOnDismissListener = onDismissListener;
     }
 
@@ -102,8 +120,11 @@ public class DAppsWalletController
     }
 
     private void createAndShowWalletPanel() {
+        boolean showExpandButton =
+                mVisibleUrl != null && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST);
         mBraveWalletPanel =
-                new BraveWalletPanel(mAnchorViewHost, mDialogOrPanelDismissListener, this);
+                new BraveWalletPanel(
+                        mAnchorViewHost, mDialogOrPanelDismissListener, this, showExpandButton);
         mBraveWalletPanel.showLikePopDownMenu();
         setupLifeCycleUpdater();
     }
