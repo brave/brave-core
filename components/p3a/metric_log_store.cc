@@ -57,6 +57,8 @@ bool IsMetricCreative(const std::string& histogram_name) {
                           base::CompareCase::SENSITIVE);
 }
 
+}  // namespace
+
 std::string GetUploadType(const std::string& histogram_name) {
   if (IsMetricP2A(histogram_name)) {
     return kP2AUploadType;
@@ -65,8 +67,6 @@ std::string GetUploadType(const std::string& histogram_name) {
   }
   return kP3AUploadType;
 }
-
-}  // namespace
 
 MetricLogStore::MetricLogStore(Delegate& delegate,
                                PrefService& local_state,
@@ -113,8 +113,8 @@ const char* MetricLogStore::GetPrefName() const {
 void MetricLogStore::UpdateValue(const std::string& histogram_name,
                                  uint64_t value) {
   if (is_constellation_) {
-    if (IsMetricP2A(histogram_name) || IsMetricCreative(histogram_name)) {
-      // Only non-creative P3A metrics are currently supported for
+    if (IsMetricP2A(histogram_name)) {
+      // Only creative or normal P3A metrics are currently supported for
       // Constellation.
       return;
     }

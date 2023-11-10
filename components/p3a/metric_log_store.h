@@ -22,6 +22,8 @@ class PrefRegistrySimple;
 
 namespace p3a {
 
+std::string GetUploadType(const std::string& histogram_name);
+
 // Stores all given values in memory and persists in prefs on the fly.
 // All logs (not only unsent are persistent), and all logs could be loaded
 // using |LoadPersistedUnsentLogs()|. We should fix this at some point since

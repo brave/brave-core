@@ -78,6 +78,7 @@ P3AService::P3AService(PrefService& local_state,
                        std::string week_of_install,
                        P3AConfig config)
     : local_state_(local_state), config_(std::move(config)) {
+  LoadDynamicMetrics();
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, week_of_install);
 }
@@ -114,7 +115,9 @@ void P3AService::InitCallbacks() {
   for (const std::string_view histogram_name : p3a::kCollectedSlowHistograms) {
     InitCallback(histogram_name);
   }
-  LoadDynamicMetrics();
+  for (const auto& [histogram_name, log_type] : dynamic_metric_log_types_) {
+    RegisterDynamicMetric(histogram_name, log_type, false);
+  }
 }
 
 void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
@@ -123,7 +126,7 @@ void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
   if (should_be_on_ui_thread) {
     DCheckCurrentlyOnUIThread();
   }
-  if (dynamic_metric_log_types_.contains(histogram_name)) {
+  if (dynamic_metric_sample_callbacks_.contains(histogram_name)) {
     return;
   }
   dynamic_metric_log_types_[histogram_name] = log_type;
@@ -215,7 +218,7 @@ void P3AService::LoadDynamicMetrics() {
     const MetricLogType log_type =
         static_cast<MetricLogType>(log_type_ordinal.GetInt());
 
-    RegisterDynamicMetric(histogram_name, log_type, false);
+    dynamic_metric_log_types_[histogram_name] = log_type;
   }
 }
 

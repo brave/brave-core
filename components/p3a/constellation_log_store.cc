@@ -14,6 +14,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -113,11 +114,7 @@ const std::string& ConstellationLogStore::staged_log() const {
 
 std::string ConstellationLogStore::staged_log_type() const {
   DCHECK(staged_entry_key_);
-  if (base::StartsWith(staged_entry_key_->histogram_name, "Brave.P2A",
-                       base::CompareCase::SENSITIVE)) {
-    return kP2AUploadType;
-  }
-  return kP3AUploadType;
+  return GetUploadType(staged_entry_key_->histogram_name);
 }
 
 const std::string& ConstellationLogStore::staged_log_hash() const {
