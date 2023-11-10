@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -97,6 +98,7 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -674,6 +676,23 @@ public abstract class BraveActivity extends ChromeActivity
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(int itemId, @Nullable Bundle menuItemData) {
+        if (itemId == R.id.new_tab_menu_id) {
+            LayoutManagerChrome layoutManager =
+                    (LayoutManagerChrome)
+                            BraveReflectionUtil.getField(
+                                    ChromeTabbedActivity.class, "mLayoutManager", this);
+            if (layoutManager != null
+                    && layoutManager.getOverviewLayout() != null
+                    && !layoutManager.getOverviewLayout().isActive()
+                    && mMiscAndroidMetrics != null) {
+                mMiscAndroidMetrics.recordAppMenuNewTab();
+            }
+        }
+        return super.onOptionsItemSelected(itemId, menuItemData);
     }
 
     @Override

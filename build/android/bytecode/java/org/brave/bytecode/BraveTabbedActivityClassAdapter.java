@@ -54,5 +54,6 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
         makePublicMethod(sChromeTabbedActivityClassName, "maybeHandleUrlIntent");
         changeMethodOwner(
                 sChromeTabbedActivityClassName, "maybeHandleUrlIntent", sBraveActivityClassName);
+        makeProtectedField(sChromeTabbedActivityClassName, "mLayoutManager");
     }
 }

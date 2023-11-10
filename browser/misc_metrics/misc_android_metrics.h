@@ -33,8 +33,10 @@ class MiscAndroidMetrics : public KeyedService,
   // mojom::MiscAndroidMetrics:
   void RecordPrivacyHubView() override;
   void RecordPrivacyHubEnabledStatus(bool is_enabled) override;
-  void RecordLocationBarQuery() override;
   void RecordBrowserUsageDuration(base::TimeDelta duration) override;
+  void RecordLocationBarChange(bool is_new_tab, bool is_search_query) override;
+  void RecordAppMenuNewTab() override;
+  void RecordTabSwitcherNewTab() override;
 
  private:
   raw_ptr<ProcessMiscMetrics> misc_metrics_;

@@ -71,6 +71,7 @@ import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -244,8 +245,18 @@ public class BraveToolbarManager extends ToolbarManager {
             OnClickListener tabSwitcherClickHandler, OnClickListener newTabClickHandler,
             OnClickListener bookmarkClickHandler, OnClickListener customTabsBackClickHandler,
             Supplier<Boolean> showStartSurfaceSupplier) {
-        super.initializeWithNative(layoutManager, tabSwitcherClickHandler, newTabClickHandler,
-                bookmarkClickHandler, customTabsBackClickHandler, showStartSurfaceSupplier);
+        OnClickListener wrappedNewTabClickHandler =
+                v -> {
+                    recordNewTabClick();
+                    newTabClickHandler.onClick(v);
+                };
+        super.initializeWithNative(
+                layoutManager,
+                tabSwitcherClickHandler,
+                wrappedNewTabClickHandler,
+                bookmarkClickHandler,
+                customTabsBackClickHandler,
+                showStartSurfaceSupplier);
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
@@ -256,10 +267,16 @@ public class BraveToolbarManager extends ToolbarManager {
             assert (mBottomControlsCoordinatorSupplier.get()
                             instanceof BraveBottomControlsCoordinator);
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
-                    .initializeWithNative(mActivity, mCompositorViewHolder.getResourceManager(),
-                            mCompositorViewHolder.getLayoutManager(), tabSwitcherClickHandler,
-                            newTabClickHandler, mWindowAndroid, mTabCountProvider,
-                            mIncognitoStateProvider, mActivity.findViewById(R.id.control_container),
+                    .initializeWithNative(
+                            mActivity,
+                            mCompositorViewHolder.getResourceManager(),
+                            mCompositorViewHolder.getLayoutManager(),
+                            tabSwitcherClickHandler,
+                            wrappedNewTabClickHandler,
+                            mWindowAndroid,
+                            mTabCountProvider,
+                            mIncognitoStateProvider,
+                            mActivity.findViewById(R.id.control_container),
                             closeAllTabsAction);
             mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
         }
@@ -282,6 +299,18 @@ public class BraveToolbarManager extends ToolbarManager {
         if (mLayoutStateProvider != null) {
             mLayoutStateProvider.removeObserver(mLayoutStateObserver);
             mLayoutStateProvider = null;
+        }
+    }
+
+    private void recordNewTabClick() {
+        if (!mIncognitoStateProvider.isIncognitoSelected()) {
+            if (mActivity instanceof BraveActivity) {
+                MiscAndroidMetrics miscAndroidMetrics =
+                        ((BraveActivity) mActivity).getMiscAndroidMetrics();
+                if (miscAndroidMetrics != null) {
+                    miscAndroidMetrics.recordTabSwitcherNewTab();
+                }
+            }
         }
     }
 
