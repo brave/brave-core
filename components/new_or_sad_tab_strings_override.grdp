@@ -72,6 +72,16 @@
       <if expr="not _google_chrome">
         </if>
       <if expr="not is_android">
+        <if expr="_google_chrome">
+          </if>
+        <if expr="not _google_chrome">
+          </if>
+      </if>
+      <if expr="is_android">
+        <if expr="_google_chrome">
+          </if>
+        <if expr="not _google_chrome">
+          </if>
         </if>
 
       <if expr="_google_chrome">
