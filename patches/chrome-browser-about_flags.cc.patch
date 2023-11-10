@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 32e2e14cdb2d9006ae2825a1f4b2c4ca65532c1e..35a64b73321c0a1f789224c4f3e2c658ae24c178 100644
+index 9ab4bb62b9f7e2e74e5624ba280aec08a680df2f..2ab3259d94589e7073a962b7cd5ea2d4b6c64d04 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4088,6 +4088,7 @@ const FeatureEntry::FeatureVariation kWebAuthnAndroidCredManVariations[] = {
+@@ -4057,6 +4057,7 @@ const flags_ui::FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

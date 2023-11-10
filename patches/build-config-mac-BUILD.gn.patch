@@ -1,5 +1,5 @@
 diff --git a/build/config/mac/BUILD.gn b/build/config/mac/BUILD.gn
-index fc7f57aaeb048e44afbef8ba5613e79f784e7dd5..518da6b7e5acf15bb760d1c5384cf6e093d42cc5 100644
+index 85a668d33059766ac3ebc92b93039a2a7b383084..73f50eabdbfc47d845423f696e1fcdaf2e95af76 100644
 --- a/build/config/mac/BUILD.gn
 +++ b/build/config/mac/BUILD.gn
 @@ -26,14 +26,7 @@ config("compiler") {
