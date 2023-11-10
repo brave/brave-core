@@ -196,11 +196,11 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
 
   return mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC20 /* is_erc20 */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_erc721 */,
+      result.token_type == api::asset_ratio::TokenType::kErc20 /* is_erc20 */,
+      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_erc721 */,
       result.token_type ==
-          api::asset_ratio::TOKEN_TYPE_ERC1155 /* is_erc1155 */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_nft */,
+          api::asset_ratio::TokenType::kErc1155 /* is_erc1155 */,
+      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_nft */,
       false /* is_spam */, result.symbol, decimals, true /* visible */,
       "" /* token_id */, "" /* coingecko_id */, chain_id, coin);
 }

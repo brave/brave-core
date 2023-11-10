@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Dummy comments to make the linter happy.
+[modernised_enums]
 namespace simulation_responses {
 
   enum WarningSeverity {

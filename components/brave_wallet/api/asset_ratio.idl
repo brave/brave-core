@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Schema types used by brave wallet asset ratio service.
+[modernised_enums]
 namespace asset_ratio {
 
   enum TokenType {
