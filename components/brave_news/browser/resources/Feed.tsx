@@ -49,25 +49,16 @@ export default function Component({ feed }: Props) {
 
 
   // Track the feed scroll position - if we mount this component somewhere with
-  // a bn-scroll-pos saved in the state, try and restore the scroll position.
+  // a bn-last-opened saved in the state, try and restore the scroll position.
   React.useEffect(() => {
-    const scrollPos = getHistoryValue('bn-scroll-pos', 0)
-    if (scrollPos) {
-      // TODO: Once we work out what else is scrolling us, this should be okay to remove.
+    const itemId = getHistoryValue<string>('bn-last-opened', '')
+    if (itemId) {
       setTimeout(() => {
-        document.scrollingElement!.scrollTo({
+        const target = document.querySelector(`[data-id="${itemId}"]`)
+        target?.scrollIntoView({
           behavior: 'smooth',
-          top: scrollPos
         })
       })
-    }
-
-    const handler = () => {
-      setHistoryState({ 'bn-scroll-pos': document.scrollingElement!.scrollTop })
-    }
-    document.addEventListener('scroll', handler, { passive: true })
-    return () => {
-      document.removeEventListener('scroll', handler)
     }
   }, [])
 
@@ -110,7 +101,8 @@ export default function Component({ feed }: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }
 
-      return <div className={CARD_CLASS} key={getKey(item, index)} ref={index === count - 1 ? setLastCardRef : undefined}>
+      const key = getKey(item, index)
+      return <div className={CARD_CLASS} onClickCapture={() => setHistoryState({ 'bn-last-opened': key })} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
         {el}
       </div>
     })
