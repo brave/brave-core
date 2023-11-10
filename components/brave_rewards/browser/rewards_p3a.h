@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
+#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -19,6 +23,8 @@ extern const char kToolbarButtonTriggerHistogramName[];
 extern const char kTipsSentHistogramName[];
 extern const char kAutoContributionsStateHistogramName[];
 extern const char kAdTypesEnabledHistogramName[];
+extern const char kMobileConversionHistogramName[];
+extern const char kMobilePanelCountHistogramName[];
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -52,7 +58,7 @@ void RecordAdTypesEnabled(PrefService* prefs);
 
 class ConversionMonitor {
  public:
-  ConversionMonitor();
+  explicit ConversionMonitor(PrefService* prefs);
   ~ConversionMonitor();
 
   ConversionMonitor(const ConversionMonitor&) = delete;
@@ -67,8 +73,19 @@ class ConversionMonitor {
   void RecordRewardsEnable();
 
  private:
+#if BUILDFLAG(IS_ANDROID)
+  void ReportPeriodicMetrics();
+  void OnMobileTriggerTimer();
+  void ReportMobilePanelTriggerCount();
+
+  raw_ptr<PrefService> prefs_;
+  WeeklyStorage mobile_panel_trigger_count_;
+  base::OneShotTimer mobile_trigger_timer_;
+  base::WallClockTimer daily_timer_;
+#else
   absl::optional<PanelTrigger> last_trigger_;
   base::Time last_trigger_time_;
+#endif
 };
 
 }  // namespace p3a

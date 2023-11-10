@@ -16,7 +16,6 @@
 namespace brave_rewards {
 namespace p3a {
 
-#if !BUILDFLAG(IS_ANDROID)
 namespace {
 
 // The maximum time difference allowed between the rewards panel opening action
@@ -25,8 +24,11 @@ namespace {
 // enabling.
 constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
 
+#if BUILDFLAG(IS_ANDROID)
+constexpr base::TimeDelta kReportInterval = base::Days(1);
+#endif
+
 }  // namespace
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
 const char kToolbarButtonTriggerHistogramName[] =
@@ -35,7 +37,15 @@ const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
 const char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 const char kAdTypesEnabledHistogramName[] = "Brave.Rewards.AdTypesEnabled";
+
+const char kMobileConversionHistogramName[] = "Brave.Rewards.MobileConversion";
+const char kMobilePanelCountHistogramName[] = "Brave.Rewards.MobilePanelCount";
+
 const int kTipsSentBuckets[] = {0, 1, 3};
+
+#if BUILDFLAG(IS_ANDROID)
+const int kMobilePanelCountBuckets[] = {5, 10, 50};
+#endif
 
 void RecordAutoContributionsState(bool ac_enabled) {
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, ac_enabled,
@@ -76,7 +86,16 @@ void RecordAdTypesEnabled(PrefService* prefs) {
   UMA_HISTOGRAM_ENUMERATION(kAdTypesEnabledHistogramName, answer);
 }
 
-ConversionMonitor::ConversionMonitor() = default;
+#if BUILDFLAG(IS_ANDROID)
+ConversionMonitor::ConversionMonitor(PrefService* prefs)
+    : prefs_(prefs),
+      mobile_panel_trigger_count_(prefs, prefs::kP3APanelTriggerCount) {
+  ReportPeriodicMetrics();
+}
+#else
+ConversionMonitor::ConversionMonitor(PrefService* prefs) {}
+#endif
+
 ConversionMonitor::~ConversionMonitor() = default;
 
 void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
@@ -86,7 +105,17 @@ void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
   }
   last_trigger_ = trigger;
   last_trigger_time_ = base::Time::Now();
-#endif  // !BUILDFLAG(IS_ANDROID)
+#else
+  if (prefs_->GetBoolean(prefs::kEnabled)) {
+    mobile_panel_trigger_count_.AddDelta(1u);
+    ReportMobilePanelTriggerCount();
+  } else {
+    mobile_trigger_timer_.Start(
+        FROM_HERE, kMaxEnabledCauseTriggerTime,
+        base::BindOnce(&ConversionMonitor::OnMobileTriggerTimer,
+                       base::Unretained(this)));
+  }
+#endif
 }
 
 void ConversionMonitor::RecordRewardsEnable() {
@@ -105,8 +134,35 @@ void ConversionMonitor::RecordRewardsEnable() {
 
   last_trigger_.reset();
   last_trigger_time_ = base::Time();
-#endif  // !BUILDFLAG(IS_ANDROID)
+#else
+  mobile_trigger_timer_.Stop();
+  OnMobileTriggerTimer();
+#endif
 }
+
+#if BUILDFLAG(IS_ANDROID)
+
+void ConversionMonitor::ReportPeriodicMetrics() {
+  ReportMobilePanelTriggerCount();
+  daily_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval,
+                     base::BindOnce(&ConversionMonitor::ReportPeriodicMetrics,
+                                    base::Unretained(this)));
+}
+
+void ConversionMonitor::OnMobileTriggerTimer() {
+  UMA_HISTOGRAM_BOOLEAN(kMobileConversionHistogramName,
+                        prefs_->GetBoolean(prefs::kEnabled));
+}
+
+void ConversionMonitor::ReportMobilePanelTriggerCount() {
+  uint64_t total = mobile_panel_trigger_count_.GetWeeklySum();
+  if (total == 0) {
+    return;
+  }
+  p3a_utils::RecordToHistogramBucket(kMobilePanelCountHistogramName,
+                                     kMobilePanelCountBuckets, total);
+}
+#endif
 
 }  // namespace p3a
 }  // namespace brave_rewards

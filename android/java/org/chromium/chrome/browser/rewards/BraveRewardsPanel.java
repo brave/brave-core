@@ -324,6 +324,7 @@ public class BraveRewardsPanel
         mPopupWindow.showAsDropDown(mAnchorView, 0, 0);
 
         mBraveRewardsNativeWorker.GetExternalWallet();
+        mBraveRewardsNativeWorker.RecordPanelTrigger();
     }
 
     private void setUpViews() {
