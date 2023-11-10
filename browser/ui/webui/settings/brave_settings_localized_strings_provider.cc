@@ -14,7 +14,6 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -786,14 +785,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isMediaRouterEnabled",
                           media_router::MediaRouterEnabled(profile));
-
-  html_source->AddBoolean(
-      "isENSL2Enabled", base::FeatureList::IsEnabled(
-                            brave_wallet::features::kBraveWalletENSL2Feature));
-
-  html_source->AddBoolean("isSnsEnabled",
-                          base::FeatureList::IsEnabled(
-                              brave_wallet::features::kBraveWalletSnsFeature));
 
   html_source->AddBoolean(
       "isHttpsByDefaultEnabled",

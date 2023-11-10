@@ -210,14 +210,6 @@
               brave_wallet::features::kBraveWalletNftPinningFeature),         \
       },                                                                      \
       {                                                                       \
-          "enable-panel-v2",                                                  \
-          "Enable Panel v2",                                                  \
-          "Enable Panel v2 for Brave Wallet",                                 \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletPanelV2Feature),            \
-      },                                                                      \
-      {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
           "Native cryptocurrency wallet support without the use of "          \
@@ -227,52 +219,12 @@
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-filecoin",                                            \
-          "Enable Brave Wallet Filecoin support",                             \
-          "Filecoin support for native Brave Wallet",                         \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletFilecoinFeature),           \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-solana",                                              \
-          "Enable Brave Wallet Solana support",                               \
-          "Solana support for native Brave Wallet",                           \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaFeature),             \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-solana-provider",                                     \
-          "Enable Brave Wallet Solana provider support",                      \
-          "Solana provider support for native Brave Wallet",                  \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaProviderFeature),     \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-sns",                                                 \
-          "Enable Solana Name Service support",                               \
-          "Enable Solana Name Service(.sol) support for Wallet and omnibox "  \
-          "address resolution",                                               \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature), \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-dapps-support",                                       \
-          "Enable Brave Wallet Dapps support",                                \
-          "Brave Wallet Dapps support",                                       \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletDappsSupportFeature),       \
       },                                                                      \
       {                                                                       \
           "brave-wallet-enable-ankr-balances",                                \

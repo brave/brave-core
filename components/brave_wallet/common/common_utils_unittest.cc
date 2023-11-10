@@ -105,8 +105,6 @@ TEST(CommonUtils, GetActiveEndpointUrl) {
 TEST(CommonUtils, GetSupportedKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
-      features::kBraveWalletSolanaFeature,
-      features::kBraveWalletFilecoinFeature,
       features::kBraveWalletBitcoinFeature};
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
@@ -127,14 +125,10 @@ TEST(CommonUtils, GetSupportedKeyrings) {
 
     EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kDefault);
 
-    if (IsFilecoinEnabled()) {
-      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kFilecoin);
-      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kFilecoinTestnet);
-    }
+    EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kFilecoin);
+    EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kFilecoinTestnet);
 
-    if (IsSolanaEnabled()) {
-      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kSolana);
-    }
+    EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kSolana);
 
     if (IsBitcoinEnabled()) {
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kBitcoin84);

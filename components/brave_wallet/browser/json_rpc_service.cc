@@ -11,7 +11,6 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -42,7 +41,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
@@ -122,11 +120,6 @@ net::NetworkTrafficAnnotationTag GetENSOffchainNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
-}
-
-bool EnsL2FeatureEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletENSL2Feature);
 }
 
 bool EnsOffchainPrefEnabled(PrefService* local_state_prefs) {
@@ -287,10 +280,8 @@ JsonRpcService::JsonRpcService(
       prefs_(prefs),
       local_state_prefs_(local_state_prefs),
       weak_ptr_factory_(this) {
-  if (EnsL2FeatureEnabled()) {
-    api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
-        GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
-  }
+  api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
+      GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 
   nft_metadata_fetcher_ =
       std::make_unique<NftMetadataFetcher>(url_loader_factory, this, prefs_);
@@ -308,10 +299,8 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<APIRequestHelper>(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
-  if (EnsL2FeatureEnabled()) {
-    api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
-        GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
-  }
+  api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
+      GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 }
 
 JsonRpcService::~JsonRpcService() = default;
@@ -1460,139 +1449,31 @@ void JsonRpcService::OnGetERC20TokenBalances(
                           mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
-                                            StringResultCallback callback) {
-  const std::string contract_address =
-      GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
-  if (contract_address.empty()) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  std::string data = ens::Resolver(domain);
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnEnsRegistryGetResolver,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
-                                kEthereumBlockTagLatest),
-                  true, GetEnsRpcUrl(), std::move(internal_callback));
-}
-
-void JsonRpcService::OnEnsRegistryGetResolver(
-    StringResultCallback callback,
-    APIRequestResult api_request_result) {
-  DCHECK(callback);
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  std::string resolver_address;
-  if (!eth::ParseAddressResult(api_request_result.value_body(),
-                               &resolver_address) ||
-      resolver_address.empty()) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
-                                           &error, &error_message);
-    std::move(callback).Run("", error, error_message);
-    return;
-  }
-
-  std::move(callback).Run(resolver_address, mojom::ProviderError::kSuccess, "");
-}
-
 void JsonRpcService::EnsGetContentHash(const std::string& domain,
                                        EnsGetContentHashCallback callback) {
-  if (EnsL2FeatureEnabled()) {
-    if (ens_get_content_hash_tasks_.ContainsTaskForDomain(domain)) {
-      ens_get_content_hash_tasks_.AddCallbackForDomain(domain,
-                                                       std::move(callback));
-      return;
-    }
-
-    absl::optional<bool> allow_offchain;
-    if (EnsOffchainPrefEnabled(local_state_prefs_)) {
-      allow_offchain = true;
-    } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
-      allow_offchain = false;
-    }
-
-    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
-    auto done_callback = base::BindOnce(
-        &JsonRpcService::OnEnsGetContentHashTaskDone, base::Unretained(this));
-
-    ens_get_content_hash_tasks_.AddTask(
-        std::make_unique<EnsResolverTask>(
-            std::move(done_callback), api_request_helper_.get(),
-            api_request_helper_ens_offchain_.get(), MakeContentHashCall(domain),
-            domain, GetEnsRpcUrl(), allow_offchain),
-        std::move(callback));
+  if (ens_get_content_hash_tasks_.ContainsTaskForDomain(domain)) {
+    ens_get_content_hash_tasks_.AddCallbackForDomain(domain,
+                                                     std::move(callback));
     return;
   }
 
-  auto internal_callback = base::BindOnce(
-      &JsonRpcService::ContinueEnsGetContentHash,
-      weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
-  EnsRegistryGetResolver(domain, std::move(internal_callback));
-}
-
-void JsonRpcService::ContinueEnsGetContentHash(
-    const std::string& domain,
-    EnsGetContentHashCallback callback,
-    const std::string& resolver_address,
-    mojom::ProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
-    std::move(callback).Run({}, false, error, error_message);
-    return;
+  absl::optional<bool> allow_offchain;
+  if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+    allow_offchain = true;
+  } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+    allow_offchain = false;
   }
 
-  std::string data;
-  if (!ens::ContentHash(domain, &data)) {
-    std::move(callback).Run(
-        {}, false, mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
+  // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
+  auto done_callback = base::BindOnce(
+      &JsonRpcService::OnEnsGetContentHashTaskDone, base::Unretained(this));
 
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnEnsGetContentHash,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(eth::eth_call("", resolver_address, "", "", "", data,
-                                kEthereumBlockTagLatest),
-                  true, GetEnsRpcUrl(), std::move(internal_callback));
-}
-
-void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
-                                         APIRequestResult api_request_result) {
-  DCHECK(callback);
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        {}, false, mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  std::vector<uint8_t> content_hash;
-  if (!eth::ParseEnsResolverContentHash(api_request_result.value_body(),
-                                        &content_hash) ||
-      content_hash.empty()) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
-                                           &error, &error_message);
-    std::move(callback).Run({}, false, error, error_message);
-    return;
-  }
-
-  std::move(callback).Run(content_hash, false, mojom::ProviderError::kSuccess,
-                          "");
+  ens_get_content_hash_tasks_.AddTask(
+      std::make_unique<EnsResolverTask>(
+          std::move(done_callback), api_request_helper_.get(),
+          api_request_helper_ens_offchain_.get(), MakeContentHashCall(domain),
+          domain, GetEnsRpcUrl(), allow_offchain),
+      std::move(callback));
 }
 
 void JsonRpcService::GetUnstoppableDomainsResolveMethod(
@@ -1649,36 +1530,28 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     return;
   }
 
-  if (EnsL2FeatureEnabled()) {
-    if (ens_get_eth_addr_tasks_.ContainsTaskForDomain(domain)) {
-      ens_get_eth_addr_tasks_.AddCallbackForDomain(domain, std::move(callback));
-      return;
-    }
-
-    absl::optional<bool> allow_offchain;
-    if (EnsOffchainPrefEnabled(local_state_prefs_)) {
-      allow_offchain = true;
-    } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
-      allow_offchain = false;
-    }
-
-    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
-    auto done_callback = base::BindOnce(
-        &JsonRpcService::OnEnsGetEthAddrTaskDone, base::Unretained(this));
-
-    ens_get_eth_addr_tasks_.AddTask(
-        std::make_unique<EnsResolverTask>(
-            std::move(done_callback), api_request_helper_.get(),
-            api_request_helper_ens_offchain_.get(), MakeAddrCall(domain),
-            domain, GetEnsRpcUrl(), allow_offchain),
-        std::move(callback));
+  if (ens_get_eth_addr_tasks_.ContainsTaskForDomain(domain)) {
+    ens_get_eth_addr_tasks_.AddCallbackForDomain(domain, std::move(callback));
     return;
   }
 
-  auto internal_callback = base::BindOnce(
-      &JsonRpcService::ContinueEnsGetEthAddr, weak_ptr_factory_.GetWeakPtr(),
-      domain, std::move(callback));
-  EnsRegistryGetResolver(domain, std::move(internal_callback));
+  absl::optional<bool> allow_offchain;
+  if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+    allow_offchain = true;
+  } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+    allow_offchain = false;
+  }
+
+  // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
+  auto done_callback = base::BindOnce(&JsonRpcService::OnEnsGetEthAddrTaskDone,
+                                      base::Unretained(this));
+
+  ens_get_eth_addr_tasks_.AddTask(
+      std::make_unique<EnsResolverTask>(
+          std::move(done_callback), api_request_helper_.get(),
+          api_request_helper_ens_offchain_.get(), MakeAddrCall(domain), domain,
+          GetEnsRpcUrl(), allow_offchain),
+      std::move(callback));
 }
 
 void JsonRpcService::OnEnsGetEthAddrTaskDone(
@@ -1721,13 +1594,6 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
 
 void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    SnsGetSolAddrCallback callback) {
-  if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
-    std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInvalidParams,
@@ -1781,13 +1647,6 @@ void JsonRpcService::OnSnsGetSolAddrTaskDone(
 
 void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
-  if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
-    std::move(callback).Run(
-        absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
         absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
@@ -1874,63 +1733,6 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
     std::move(cb).Run(content_hash.value_or(std::vector<uint8_t>()),
                       require_offchain_consent, error, error_message);
   }
-}
-
-void JsonRpcService::ContinueEnsGetEthAddr(const std::string& domain,
-                                           EnsGetEthAddrCallback callback,
-                                           const std::string& resolver_address,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
-    std::move(callback).Run("", false, error, error_message);
-    return;
-  }
-
-  std::string data;
-  if (!ens::Addr(domain, &data)) {
-    std::move(callback).Run(
-        "", false, mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnEnsGetEthAddr,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(eth::eth_call("", resolver_address, "", "", "", data,
-                                kEthereumBlockTagLatest),
-                  true, GetEnsRpcUrl(), std::move(internal_callback));
-}
-
-void JsonRpcService::OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
-                                     APIRequestResult api_request_result) {
-  DCHECK(callback);
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        "", false, mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  std::string address;
-  if (!eth::ParseAddressResult(api_request_result.value_body(), &address) ||
-      address.empty()) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
-                                           &error, &error_message);
-    std::move(callback).Run("", false, error, error_message);
-    return;
-  }
-
-  if (EthAddress::FromHex(address).IsZeroAddress()) {
-    std::move(callback).Run(
-        "", false, mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  std::move(callback).Run(address, false, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::UnstoppableDomainsResolveDns(

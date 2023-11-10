@@ -202,8 +202,6 @@ export interface UIState {
 
 export interface WalletState {
   hasInitialized: boolean
-  isFilecoinEnabled: boolean
-  isSolanaEnabled: boolean
   isBitcoinEnabled: boolean
   isZCashEnabled: boolean
   isWalletCreated: boolean
@@ -234,7 +232,6 @@ export interface WalletState {
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
-  isPanelV2FeatureEnabled: boolean
   isAnkrBalancesFeatureEnabled: boolean
   hidePortfolioGraph: boolean
   hidePortfolioBalances: boolean

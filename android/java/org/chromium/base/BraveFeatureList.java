@@ -13,9 +13,6 @@ public abstract class BraveFeatureList {
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
     public static final String FORCE_WEB_CONTENTS_DARK_MODE = "WebContentsForceDark";
     public static final String ENABLE_FORCE_DARK = "enable-force-dark";
-    public static final String BRAVE_WALLET_SOLANA = "BraveWalletSolana";
-    public static final String BRAVE_WALLET_FILECOIN = "BraveWalletFilecoin";
-    public static final String BRAVE_WALLET_SNS = "BraveWalletSns";
     public static final String BRAVE_SEARCH_OMNIBOX_BANNER = "BraveSearchOmniboxBanner";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK = "BraveBackgroundVideoPlayback";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL =

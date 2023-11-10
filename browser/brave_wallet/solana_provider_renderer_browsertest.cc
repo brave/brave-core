@@ -10,7 +10,6 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
@@ -532,10 +531,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
  public:
   SolanaProviderRendererTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {brave_wallet::features::kBraveWalletSolanaFeature,
-         brave_wallet::features::kBraveWalletSolanaProviderFeature},
-        {});
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -599,26 +594,11 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
  protected:
   net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
-  base::test::ScopedFeatureList feature_list_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
 };
-
-class SolanaProviderDisabledTest : public SolanaProviderRendererTest {
- public:
-  SolanaProviderDisabledTest() {
-    feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(
-        brave_wallet::features::kBraveWalletSolanaFeature);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
-  auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript);
-  EXPECT_EQ(base::Value(false), result.value);
-}
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Incognito) {
   Browser* private_browser = CreateIncognitoBrowser(nullptr);

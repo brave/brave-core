@@ -83,10 +83,6 @@ export const ImportAccountModal = () => {
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const isFilecoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isFilecoinEnabled
-  )
-  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
   const hasImportError = useSafeWalletSelector(
     WalletSelectors.importAccountError
   )
@@ -94,12 +90,10 @@ export const ImportAccountModal = () => {
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
-      isFilecoinEnabled,
-      isSolanaEnabled,
       isBitcoinEnabled: false, // No bitcoin imported accounts by now.
       isZCashEnabled: false // No zcash imported accounts by now.
     })
-  }, [isFilecoinEnabled, isSolanaEnabled])
+  }, [])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {

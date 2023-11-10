@@ -22,13 +22,7 @@ constexpr mojom::CoinType kAllCoins[] = {
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
 bool IsNativeWalletEnabled();
-bool IsFilecoinEnabled();
-bool IsSolanaEnabled();
-bool ShouldShowTxStatusInToolbar();
 bool IsNftPinningEnabled();
-bool IsPanelV2Enabled();
-bool ShouldCreateDefaultSolanaAccount();
-bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
 bool IsAnkrBalancesEnabled();

@@ -47,8 +47,6 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
-  isFilecoinEnabled: false,
-  isSolanaEnabled: false,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
@@ -98,7 +96,6 @@ const defaultState: WalletState = {
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
-  isPanelV2FeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
   hidePortfolioGraph:
     window.localStorage.getItem(
@@ -263,16 +260,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
-        state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled
-        state.isSolanaEnabled = payload.walletInfo.isSolanaEnabled
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
         state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
         state.isNftPinningFeatureEnabled =
           payload.walletInfo.isNftPinningFeatureEnabled
-        state.isPanelV2FeatureEnabled =
-          payload.walletInfo.isPanelV2FeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
       },

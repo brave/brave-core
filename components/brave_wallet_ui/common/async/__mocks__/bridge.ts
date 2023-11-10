@@ -827,15 +827,12 @@ export class MockedWalletApiProxy {
     }> => {
       return {
         walletInfo: {
-          isSolanaEnabled: true,
-          isFilecoinEnabled: true,
           isBitcoinEnabled: true,
           isZCashEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
-          isPanelV2FeatureEnabled: false,
           isAnkrBalancesFeatureEnabled: false
         }
       }

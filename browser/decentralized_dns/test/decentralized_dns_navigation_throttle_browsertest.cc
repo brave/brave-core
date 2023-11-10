@@ -4,9 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_opt_in_page.h"
 #include "brave/components/decentralized_dns/core/constants.h"
@@ -84,10 +82,6 @@ class DecentralizedDnsNavigationThrottleBrowserTest
   ~DecentralizedDnsNavigationThrottleBrowserTest() override = default;
 
   PrefService* local_state() { return g_browser_process->local_state(); }
-
- private:
-  base::test::ScopedFeatureList scoped_feature{
-      brave_wallet::features::kBraveWalletSnsFeature};
 };
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
@@ -189,10 +183,6 @@ class EnsL2OffchanLookupNavigationThrottleBrowserTest
 
   absl::optional<EnsResolverTaskResult> ens_resolved_task_result_;
   absl::optional<EnsResolverTaskError> ens_resolved_task_error_;
-
- private:
-  base::test::ScopedFeatureList scoped_feature{
-      brave_wallet::features::kBraveWalletENSL2Feature};
 };
 
 IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,

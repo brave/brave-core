@@ -60,17 +60,14 @@ void AccountDiscoveryManager::StartDiscovery() {
   AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
       mojom::CoinType::ETH, mojom::KeyringId::kDefault, mojom::kMainnetChainId,
       derived_count[mojom::KeyringId::kDefault], kDiscoveryAttempts));
-  if (IsFilecoinEnabled()) {
-    AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
-        mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
-        mojom::kFilecoinMainnet, derived_count[mojom::KeyringId::kFilecoin],
-        kDiscoveryAttempts));
-  }
-  if (IsSolanaEnabled()) {
-    AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
-        mojom::CoinType::SOL, mojom::KeyringId::kSolana, mojom::kSolanaMainnet,
-        derived_count[mojom::KeyringId::kSolana], kDiscoveryAttempts));
-  }
+  AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
+      mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+      mojom::kFilecoinMainnet, derived_count[mojom::KeyringId::kFilecoin],
+      kDiscoveryAttempts));
+  AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
+      mojom::CoinType::SOL, mojom::KeyringId::kSolana, mojom::kSolanaMainnet,
+      derived_count[mojom::KeyringId::kSolana], kDiscoveryAttempts));
+
   if (IsBitcoinEnabled()) {
     CHECK(bitcoin_wallet_service_);
 

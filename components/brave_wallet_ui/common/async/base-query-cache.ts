@@ -133,8 +133,6 @@ export class BaseQueryCache {
 
       // network type flags
       const {
-        isFilecoinEnabled,
-        isSolanaEnabled,
         isBitcoinEnabled,
         isZCashEnabled
       } = await this.getWalletInfo()
@@ -143,8 +141,8 @@ export class BaseQueryCache {
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
         // FIL and SOL networks, unless enabled by brave://flags
         return (
-          (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-          (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+          coin === BraveWallet.CoinType.FIL ||
+          coin === BraveWallet.CoinType.SOL ||
           (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
           (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
           coin === BraveWallet.CoinType.ETH

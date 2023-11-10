@@ -149,12 +149,10 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
 
   UpdateVisibility();
 
-  if (brave_wallet::ShouldShowTxStatusInToolbar()) {
-    notification_source_ =
-        std::make_unique<brave::WalletButtonNotificationSource>(
-            profile, base::BindRepeating(&WalletButton::OnNotificationUpdate,
-                                         weak_ptr_factory_.GetWeakPtr()));
-  }
+  notification_source_ =
+      std::make_unique<brave::WalletButtonNotificationSource>(
+          profile, base::BindRepeating(&WalletButton::OnNotificationUpdate,
+                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 WalletButton::~WalletButton() = default;

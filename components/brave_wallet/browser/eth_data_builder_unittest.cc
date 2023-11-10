@@ -441,22 +441,6 @@ TEST(EthCallDataBuilderTest, Resolver) {
             "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
 }
 
-TEST(EthCallDataBuilderTest, ContentHash) {
-  std::string data;
-  EXPECT_TRUE(ContentHash("brantly.eth", &data));
-  EXPECT_EQ(data,
-            "0xbc1c58d1"
-            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
-}
-
-TEST(EthCallDataBuilderTest, Addr) {
-  std::string data;
-  EXPECT_TRUE(Addr("brantly.eth", &data));
-  EXPECT_EQ(data,
-            "0x3b3b57de"
-            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
-}
-
 TEST(EthCallDataBuilderTest, DnsEncode) {
   // Based on DNSUtilTest.DNSDomainFromDot test. But without total length limit
   // and support of terminal dot.

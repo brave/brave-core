@@ -35,11 +35,9 @@
       pref="{{prefs.brave.ens.offchain_resolve_method}}" menu-options="[[ensOffchainResolveMethod_]]">
   </div>
 </template>
-<template is="dom-if" if="[[showSnsRow_]]">
-  <div class="settings-box">
-    <div class="start">$i18n{resolveSnsDesc}</div>
-    <settings-dropdown-menu id="snsResolveMethodType"
-                            pref="{{prefs.brave.sns.resolve_method}}"
-                            menu-options="[[resolveMethod_]]">
-  </div>
-</template>
+<div class="settings-box">
+  <div class="start">$i18n{resolveSnsDesc}</div>
+  <settings-dropdown-menu id="snsResolveMethodType"
+                          pref="{{prefs.brave.sns.resolve_method}}"
+                          menu-options="[[resolveMethod_]]">
+</div>

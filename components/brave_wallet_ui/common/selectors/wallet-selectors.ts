@@ -20,8 +20,6 @@ export const defaultFiatCurrency = ({ wallet }: State) =>
 export const hasIncorrectPassword = ({ wallet }: State) =>
   wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
-export const isFilecoinEnabled = ({ wallet }: State) => wallet.isFilecoinEnabled
-export const isSolanaEnabled = ({ wallet }: State) => wallet.isSolanaEnabled
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
 export const isMetaMaskInstalled = ({ wallet }: State) =>
@@ -54,8 +52,6 @@ export const hidePortfolioSmallBalances = ({ wallet }: State) =>
   wallet.hidePortfolioSmallBalances
 export const showNetworkLogoOnNfts = ({ wallet }: State) =>
   wallet.showNetworkLogoOnNfts
-export const isPanelV2FeatureEnabled = ({ wallet }: State) =>
-  wallet.isPanelV2FeatureEnabled
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const importAccountError = ({ wallet }: State) =>
