@@ -111,17 +111,16 @@ public class WalletStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI
   ) {
-    self.cancellable = self.keyringStore.$defaultKeyring
-      .map(\.isKeyringCreated)
+    self.cancellable = self.keyringStore.$isWalletCreated
       .removeDuplicates()
-      .sink { [weak self] isDefaultKeyringCreated in
+      .sink { [weak self] isWalletCreated in
         guard let self = self else { return }
-        if !isDefaultKeyringCreated, self.cryptoStore != nil {
+        if !isWalletCreated, self.cryptoStore != nil {
           // only tear down `CryptoStore` since we still need to listen
           // default keyring creation if user didn't dismiss the wallet after reset
           self.cryptoStore?.tearDown()
           self.cryptoStore = nil
-        } else if isDefaultKeyringCreated, self.cryptoStore == nil {
+        } else if isWalletCreated, self.cryptoStore == nil {
           self.cryptoStore = CryptoStore(
             keyringService: keyringService,
             rpcService: rpcService,

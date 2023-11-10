@@ -214,12 +214,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     guard !isObserving else { return }
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
-      _keyringReset: { [weak self] in
+      _walletReset: { [weak self] in
         WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol])
         WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth, .sol])
         self?.rejectAllPendingWebpageRequests()
       },
-      _keyringCreated: { _ in
+      _walletCreated: {
         // 1. We don't need to rely on this observer method to migrate user visible assets
         // when user creates a new wallet, since in this case `CryptoStore` has not yet been initialized
         // 2. We don't need to rely on this observer method to migrate user visible assets

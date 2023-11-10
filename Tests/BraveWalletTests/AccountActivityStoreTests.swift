@@ -41,20 +41,6 @@ class AccountActivityStoreTests: XCTestCase {
   ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy, IpfsAPI) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
-    keyringService._keyringInfo = { keyringInfo, completion in
-      switch keyringInfo {
-      case .default:
-        completion(.mockDefaultKeyringInfo)
-      case .solana:
-        completion(.mockSolanaKeyringInfo)
-      case .filecoin:
-        completion(.mockFilecoinKeyringInfo)
-      case .filecoinTestnet:
-        completion(.mockFilecoinTestnetKeyringInfo)
-      default:
-        completion(.mockDefaultKeyringInfo)
-      }
-    }
     keyringService._allAccounts = {
       $0(.mock)
     }

@@ -475,12 +475,11 @@ class NewTabPageViewController: UIViewController {
       if let eventType {
         p3aHelper.recordEvent(eventType, on: sponsoredBackground)
       }
-      rewards.ads.reportNewTabPageAdEvent(
+      rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         eventType: event,
-        completion: { _ in }
-      )
+        completion: { _ in })
     }
   }
 
@@ -619,12 +618,10 @@ class NewTabPageViewController: UIViewController {
       let item = context.item
       if !switchingToPrivateMode, item.content.contentType == .partner,
         let creativeInstanceID = item.content.creativeInstanceID {
-        rewards.ads.reportPromotedContentAdEvent(
+        rewards.ads.triggerPromotedContentAdEvent(
           item.content.urlHash,
           creativeInstanceId: creativeInstanceID,
-          eventType: .clicked,
-          completion: { _ in }
-        )
+          eventType: .clicked, completion: { _ in })
       }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
@@ -660,12 +657,11 @@ class NewTabPageViewController: UIViewController {
     case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
       guard let url = ad.targetURL.asURL else { return }
       if !switchingToPrivateMode {
-        rewards.ads.reportInlineContentAdEvent(
+        rewards.ads.triggerInlineContentAdEvent(
           ad.placementID,
           creativeInstanceId: ad.creativeInstanceID,
           eventType: .clicked,
-          completion: { _ in }
-        )
+          completion: { _ in })
       }
       delegate?.navigateToInput(
         url.absoluteString,

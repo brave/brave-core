@@ -331,13 +331,13 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 }
 
 extension AccountActivityStore: BraveWalletKeyringServiceObserver {
-  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+  func walletCreated() {
   }
 
   func walletRestored() {
   }
   
-  func keyringReset() {
+  func walletReset() {
   }
   
   func locked() {

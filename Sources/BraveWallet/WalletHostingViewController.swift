@@ -79,9 +79,8 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     rootView.appRatingRequestAction = { [unowned self] in
       self.delegate?.requestAppReview()
     }
-    cancellable = walletStore.keyringStore.$defaultKeyring
+    cancellable = walletStore.keyringStore.$isWalletLocked
       .dropFirst() // Drop initial value
-      .map(\.isLocked)
       .removeDuplicates()
       .dropFirst() // Drop first async fetch of keyring
       .sink { [weak self] isLocked in

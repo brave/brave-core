@@ -36,31 +36,31 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.ads.notificationsHandler = self
   }
     
-  func showNotification(_ notification: NotificationAd) {
+  func showNotificationAd(_ notification: NotificationAd) {
     guard let presentingController = presentingController else { return }
   
     let rewardsNotification = RewardsNotification(ad: notification) { [weak self] action in
       guard let self = self else { return }
       switch action {
       case .opened:
-        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .clicked, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .viewed, completion: { _ in })
       case .dismissed:
-        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
       case .timedOut:
-        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .timedOut, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .timedOut, completion: { _ in })
       }
       self.actionOccured?(notification, action)
     }
     
-    ads.reportNotificationAdEvent(notification.placementID, eventType: .viewed, completion: { _ in })
+    ads.triggerNotificationAdEvent(notification.placementID, eventType: .viewed, completion: { _ in })
     notificationsPresenter?.display(notification: rewardsNotification, from: presentingController)
   }
 
-  func clearNotification(withIdentifier identifier: String) {
+  func closeNotificationAd(_ identifier: String) {
     notificationsPresenter?.removeNotification(with: identifier)
   }
 
-  func shouldShowNotifications() -> Bool {
+  func canShowNotificationAds() -> Bool {
     guard let presentingController = presentingController,
       let rootVC = presentingController.currentScene?.browserViewController
     else { return false }

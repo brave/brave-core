@@ -61,9 +61,8 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
     }
     
     // Dismiss Buy/Send/Swap Menu when Wallet becomes locked
-    cancellable = walletStore.keyringStore.$defaultKeyring
+    cancellable = walletStore.keyringStore.$isWalletLocked
       .dropFirst() // Drop initial value
-      .map(\.isLocked)
       .removeDuplicates()
       .dropFirst() // Drop first async fetch of keyring
       .sink { [weak self] isLocked in

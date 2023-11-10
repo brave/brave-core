@@ -109,7 +109,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     guard !isObserving else { return }
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
-      _keyringCreated: { [weak self] _ in
+      _walletCreated: { [weak self] in
         self?.update()
       }
     )

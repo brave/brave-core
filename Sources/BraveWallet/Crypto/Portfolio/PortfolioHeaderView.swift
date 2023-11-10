@@ -25,7 +25,7 @@ struct PortfolioHeaderView: View {
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
   private var isShowingBackupBanner: Bool {
-    !keyringStore.defaultKeyring.isBackedUp && !dismissedBackupBannerThisSession
+    !keyringStore.isWalletBackedUp && !dismissedBackupBannerThisSession
   }
   
   private var emptyBalanceData: [BalanceTimePrice] {

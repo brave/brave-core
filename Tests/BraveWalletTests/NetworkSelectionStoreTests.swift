@@ -24,15 +24,6 @@ import Preferences
     let currentChainId = currentNetwork.chainId
     
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { keyringId, completion in
-      let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.KeyringId.default,
-        isKeyringCreated: true,
-        isLocked: false,
-        isBackedUp: true
-      )
-      completion(keyring)
-    }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._allAccounts = { completion in
@@ -214,15 +205,6 @@ import Preferences
       .eth: [.mockEthAccount]
     ]
     
-    keyringService._keyringInfo = { keyringId, completion in
-      let keyring: BraveWallet.KeyringInfo = .init(
-        id: keyringId,
-        isKeyringCreated: true,
-        isLocked: false,
-        isBackedUp: false
-      )
-      completion(keyring)
-    }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._allAccounts = { completion in

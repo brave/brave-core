@@ -51,20 +51,6 @@ class TransactionsActivityStoreTests: XCTestCase {
   func testUpdate() {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
-    keyringService._keyringInfo = { keyringId, completion in
-      switch keyringId {
-      case .default:
-        completion(.mockDefaultKeyringInfo)
-      case .solana:
-        completion(.mockSolanaKeyringInfo)
-      case .filecoin:
-        completion(.mockFilecoinKeyringInfo)
-      case .filecoinTestnet:
-        completion(.mockFilecoinTestnetKeyringInfo)
-      default:
-        completion(.mockDefaultKeyringInfo)
-      }
-    }
     keyringService._allAccounts = {
       $0(.mock)
     }

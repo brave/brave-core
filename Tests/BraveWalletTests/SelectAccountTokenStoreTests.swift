@@ -138,32 +138,6 @@ import Preferences
       price: mockFILPrice, assetTimeframeChange: "-57.23")
     
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { keyringId, completion in
-      switch keyringId {
-      case .default:
-        let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.KeyringId.default,
-          isKeyringCreated: true,
-          isLocked: false,
-          isBackedUp: true
-        )
-        completion(keyring)
-      case .solana:
-        let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.KeyringId.solana,
-          isKeyringCreated: true,
-          isLocked: false,
-          isBackedUp: true
-        )
-        completion(keyring)
-      case .filecoin:
-        completion(.mockFilecoinKeyringInfo)
-      case .filecoinTestnet:
-        completion(.mockFilecoinTestnetKeyringInfo)
-      default:
-        completion(.mockDefaultKeyringInfo)
-      }
-    }
     keyringService._allAccounts = {
       $0(.init(
         accounts: [

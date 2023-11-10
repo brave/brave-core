@@ -43,11 +43,10 @@ public struct CryptoView: View {
   }
 
   private var visibleScreen: VisibleScreen {
-    let keyring = keyringStore.defaultKeyring
-    if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
+    if !keyringStore.isWalletCreated || keyringStore.isOnboardingVisible {
       return .onboarding
     }
-    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
+    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
       return .unlock
     }
     return .crypto

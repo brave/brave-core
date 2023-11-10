@@ -7,8 +7,8 @@ import BraveCore
 
 class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   
-  var _keyringReset: (() -> Void)?
-  var _keyringCreated: ((_ keyringId: BraveWallet.KeyringId) -> Void)?
+  var _walletReset: (() -> Void)?
+  var _walletCreated: (() -> Void)?
   var _walletRestored: (() -> Void)?
   var _locked: (() -> Void)?
   var _unlocked: (() -> Void)?
@@ -21,8 +21,8 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   
   init(
     keyringService: BraveWalletKeyringService,
-    _keyringReset: (() -> Void)? = nil,
-    _keyringCreated: ((BraveWallet.KeyringId) -> Void)? = nil,
+    _walletReset: (() -> Void)? = nil,
+    _walletCreated: (() -> Void)? = nil,
     _walletRestored: (() -> Void)? = nil,
     _locked: (() -> Void)? = nil,
     _unlocked: (() -> Void)? = nil,
@@ -33,8 +33,8 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
     _selectedDappAccountChanged: ((BraveWallet.CoinType, BraveWallet.AccountInfo?) -> Void)? = nil,
     _accountsAdded: (([BraveWallet.AccountInfo]) -> Void)? = nil
   ) {
-    self._keyringReset = _keyringReset
-    self._keyringCreated = _keyringCreated
+    self._walletReset = _walletReset
+    self._walletCreated = _walletCreated
     self._walletRestored = _walletRestored
     self._locked = _locked
     self._unlocked = _unlocked
@@ -47,11 +47,11 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
     keyringService.add(self)
   }
   
-  public func keyringReset() {
-    _keyringReset?()
+  func walletReset() {
+    _walletReset?()
   }
-  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
-    _keyringCreated?(keyringId)
+  func walletCreated() {
+    _walletCreated?()
   }
   public func walletRestored() {
     _walletRestored?()

@@ -18,20 +18,6 @@ class KeyringStoreTests: XCTestCase {
     let currentSelectedAccount: BraveWallet.AccountInfo = .mockEthAccount
     
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { keyringId, completion in
-      switch keyringId {
-      case BraveWallet.KeyringId.default:
-        completion(.mockDefaultKeyringInfo)
-      case BraveWallet.KeyringId.solana:
-        completion(.mockSolanaKeyringInfo)
-      case BraveWallet.KeyringId.filecoin:
-        completion(.mockFilecoinKeyringInfo)
-      case BraveWallet.KeyringId.filecoinTestnet:
-        completion(.mockFilecoinTestnetKeyringInfo)
-      default:
-        completion(.init())
-      }
-    }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._allAccounts = { completion in
@@ -43,6 +29,8 @@ class KeyringStoreTests: XCTestCase {
       ))
     }
     keyringService._setSelectedAccount = { $1(true) }
+    keyringService._isWalletBackedUp = { $0(true) }
+    keyringService._isWalletCreated = { $0(true) }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
@@ -57,34 +45,6 @@ class KeyringStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     
     return (keyringService, rpcService, walletService)
-  }
-  
-  func testAllKeyrings() {
-    let (keyringService, rpcService, walletService) = setupServices()
-    
-    let store = KeyringStore(
-      keyringService: keyringService,
-      walletService: walletService,
-      rpcService: rpcService
-    )
-    
-    let expectedKeyrings = [BraveWallet.KeyringInfo.mockDefaultKeyringInfo, BraveWallet.KeyringInfo.mockSolanaKeyringInfo, BraveWallet.KeyringInfo.mockFilecoinKeyringInfo, BraveWallet.KeyringInfo.mockFilecoinTestnetKeyringInfo]
-    
-    let allTokensExpectation = expectation(description: "allKeyrings")
-    store.$allKeyrings
-      .dropFirst()
-      .sink { allKeyrings in
-        defer { allTokensExpectation.fulfill() }
-        XCTAssertEqual(allKeyrings.count, 4)
-        for keyring in allKeyrings {
-          XCTAssertTrue(expectedKeyrings.contains(where: { $0.id == keyring.id }))
-        }
-      }
-      .store(in: &cancellables)
-    
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
   }
   
   func testInitialSelectedAccount() {

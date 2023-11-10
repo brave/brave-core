@@ -109,15 +109,6 @@ import Preferences
       completion(setDataForUnapprovedTransactionSuccess)
     }
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { id, completion in
-      let keyring: BraveWallet.KeyringInfo = .init(
-        id: id,
-        isKeyringCreated: true,
-        isLocked: false,
-        isBackedUp: true
-      )
-      completion(keyring)
-    }
     keyringService._allAccounts = {
       $0(.init(
         accounts: accountInfos,

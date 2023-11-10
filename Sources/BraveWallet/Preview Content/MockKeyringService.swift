@@ -11,14 +11,9 @@ import BraveCore
 ///
 /// - note: Do not use this directly, use ``CryptoKeyringStore.previewStore``
 class MockKeyringService: BraveWalletKeyringService {
-  private var keyrings: [BraveWallet.KeyringInfo] = [
-    .init(
-      id: BraveWallet.KeyringId.default,
-      isKeyringCreated: false,
-      isLocked: false,
-      isBackedUp: true
-    )
-  ]
+  private var isWalletCreated = true
+  private var isLocked = false
+  private var isBackedUp = false
   private var allAccounts: [BraveWallet.AccountInfo] = []
   private var privateKeys: [String: String] = [:]
   private var password = ""
@@ -26,9 +21,6 @@ class MockKeyringService: BraveWalletKeyringService {
   private let mnemonic = "pass entire pelican lock repair desert entire cactus actress remain gossip rail"
   private var observers: NSHashTable<BraveWalletKeyringServiceObserver> = .weakObjects()
   private var selectedAccount: BraveWallet.AccountInfo?
-  private var defaultKeyring: BraveWallet.KeyringInfo {
-    return keyrings.first(where: { $0.id == BraveWallet.KeyringId.default }) ?? keyrings[0]
-  }
 
   func add(_ observer: BraveWalletKeyringServiceObserver) {
     observers.add(observer)
@@ -90,40 +82,34 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func createWallet(_ password: String, completion: @escaping (String) -> Void) {
-    defaultKeyring.isKeyringCreated = true
-    defaultKeyring.isLocked = false
+    isLocked = false
     self.password = password
-    self.addAccount(
+    addAccount(
       .eth,
       keyringId: BraveWallet.KeyringId.default,
       accountName: "Account 1"
     ) { [self] accountInfo in
       selectedAccount = accountInfo
       observers.allObjects.forEach {
-        $0.keyringCreated(BraveWallet.KeyringId.default)
+        $0.walletCreated()
       }
       completion(mnemonic)
     }
   }
 
-  func keyringInfo(_ keyringId: BraveWallet.KeyringId, completion: @escaping (BraveWallet.KeyringInfo) -> Void) {
-    let keyringInfo = keyrings.first(where: { $0.id == keyringId }) ?? keyrings[0]
-    completion(keyringInfo.copy() as! BraveWallet.KeyringInfo)  // swiftlint:disable:this force_cast
-  }
-
   func isLocked(_ completion: @escaping (Bool) -> Void) {
-    completion(defaultKeyring.isLocked)
+    completion(isLocked)
   }
 
   func lock() {
-    defaultKeyring.isLocked = true
+    isLocked = true
     observers.allObjects.forEach {
       $0.locked()
     }
   }
 
   func isWalletBackedUp(_ completion: @escaping (Bool) -> Void) {
-    completion(defaultKeyring.isBackedUp)
+    completion(isBackedUp)
   }
 
   func mnemonic(forDefaultKeyring password: String, completion: @escaping (String) -> Void) {
@@ -131,13 +117,13 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func unlock(_ password: String, completion: @escaping (Bool) -> Void) {
-    if !defaultKeyring.isKeyringCreated {
+    if !isWalletCreated {
       completion(false)
       return
     }
     let passwordsMatch = self.password == password
     if passwordsMatch {
-      defaultKeyring.isLocked = false
+      isLocked = false
       observers.allObjects.forEach {
         $0.unlocked()
       }
@@ -146,7 +132,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func notifyWalletBackupComplete() {
-    defaultKeyring.isBackedUp = true
+    isBackedUp = true
     observers.allObjects.forEach {
       $0.backedUp()
     }
@@ -359,6 +345,10 @@ class MockKeyringService: BraveWalletKeyringService {
   func allAccounts(_ completion: @escaping (BraveWallet.AllAccountsInfo) -> Void) {
     
   }
+
+  func isWalletCreated(_ completion: @escaping (Bool) -> Void) {
+    completion(isWalletCreated)
+  }
 }
 
 extension BraveWallet.AccountInfo {
@@ -416,36 +406,6 @@ extension BraveWallet.AccountInfo {
     address: "mock_fil_testnet_id",
     name: "Filecoin Testnet 1",
     hardware: nil
-  )
-}
-
-extension BraveWallet.KeyringInfo {
-  static let mockDefaultKeyringInfo: BraveWallet.KeyringInfo = .init(
-    id: BraveWallet.KeyringId.default,
-    isKeyringCreated: true,
-    isLocked: false,
-    isBackedUp: false
-  )
-  
-  static let mockSolanaKeyringInfo: BraveWallet.KeyringInfo = .init(
-    id: BraveWallet.KeyringId.solana,
-    isKeyringCreated: true,
-    isLocked: false,
-    isBackedUp: false
-  )
-  
-  static let mockFilecoinKeyringInfo: BraveWallet.KeyringInfo = .init(
-    id: BraveWallet.KeyringId.filecoin,
-    isKeyringCreated: true,
-    isLocked: false,
-    isBackedUp: false
-  )
-  
-  static let mockFilecoinTestnetKeyringInfo: BraveWallet.KeyringInfo = .init(
-    id: BraveWallet.KeyringId.filecoinTestnet,
-    isKeyringCreated: true,
-    isLocked: false,
-    isBackedUp: false
   )
 }
 

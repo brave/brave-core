@@ -218,27 +218,6 @@ extension BraveWallet.CoinType {
   }
 }
 
-extension BraveWallet.KeyringInfo {
-  var coin: BraveWallet.CoinType? {
-    switch self.id {
-    case .default:
-      return .eth
-    case .solana:
-      return .sol
-    case .filecoin, .filecoinTestnet:
-      return .fil
-    case .bitcoin84, .bitcoin84Testnet:
-      return .btc
-    case .zCashMainnet:
-      return nil
-    case .zCashTestnet:
-      return nil
-    @unknown default:
-      return nil
-    }
-  }
-}
-
 extension BraveWallet.TransactionInfo {
   var coin: BraveWallet.CoinType {
     if txDataUnion.solanaTxData != nil {

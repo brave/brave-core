@@ -171,11 +171,11 @@ private struct WalletSettingsView: View {
   }
 
   var body: some View {
-    if keyringStore.isDefaultKeyringCreated {
+    if keyringStore.isWalletCreated {
       sections
     } else {
       // `KeyringStore` is optional in `Web3SettingsView`, but observed here.
-      // When wallet is reset, we need SwiftUI to be notified `isDefaultKeyringCreated`
+      // When wallet is reset, we need SwiftUI to be notified `isWalletCreated`
       // changed so we can hide Wallet specific sections
       EmptyView()
     }
@@ -213,7 +213,7 @@ private struct WalletSettingsView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    if settingsStore.isBiometricsAvailable, keyringStore.defaultKeyring.isKeyringCreated {
+    if settingsStore.isBiometricsAvailable, keyringStore.isWalletCreated {
       Section(
         footer: Text(Strings.Wallet.settingsEnableBiometricsFooter)
           .foregroundColor(Color(.secondaryBraveLabel))

@@ -37,13 +37,12 @@ public struct WalletPanelContainerView: View {
   }
 
   private var visibleScreen: VisibleScreen {
-    let keyring = keyringStore.defaultKeyring
-    // check if we are still fetching the `defaultKeyring`
-    if !keyringStore.isDefaultKeyringLoaded {
+    // check if we are still fetching async info from core
+    if !keyringStore.isLoaded {
       return .loading
     }
-    // keyring fetched, check if user has created a wallet
-    if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
+    // keyring fetched, check if user has setup a wallet
+    if !keyringStore.isWalletCreated || keyringStore.isOnboardingVisible {
       return .onboarding
     }
     // keyring fetched & wallet setup, but selected account not fetched
@@ -51,7 +50,7 @@ public struct WalletPanelContainerView: View {
       return .loading
     }
     // keyring fetched & wallet setup, wallet is locked
-    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible { // wallet is locked
+    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible { // wallet is locked
       return .unlock
     }
     return .panel
@@ -147,7 +146,12 @@ public struct WalletPanelContainerView: View {
       }
     }
     .frame(idealWidth: 320, maxWidth: .infinity)
-    .onChange(of: keyringStore.defaultKeyring) { newValue in
+    .onChange(of: keyringStore.isWalletCreated) { newValue in
+      if visibleScreen != .panel, !keyringStore.lockedManually {
+        presentWalletWithContext?(.panelUnlockOrSetup)
+      }
+    }
+    .onChange(of: keyringStore.isWalletLocked) { newValue in
       if visibleScreen != .panel, !keyringStore.lockedManually {
         presentWalletWithContext?(.panelUnlockOrSetup)
       }

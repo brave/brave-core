@@ -19,15 +19,6 @@ class SettingsStoreTests: XCTestCase {
     let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken.copy(asVisibleAsset: true)]
     
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { _, completion in
-      let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.KeyringId.default,
-        isKeyringCreated: true,
-        isLocked: false,
-        isBackedUp: true
-      )
-      completion(keyring)
-    }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._setAutoLockMinutes = { _, _ in }

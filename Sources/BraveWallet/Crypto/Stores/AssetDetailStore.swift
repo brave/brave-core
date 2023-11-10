@@ -407,14 +407,14 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 }
 
 extension AssetDetailStore: BraveWalletKeyringServiceObserver {
-  func keyringReset() {
+  func walletReset() {
   }
 
   func accountsChanged() {
     update()
   }
 
-  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+  func walletCreated() {
   }
 
   func walletRestored() {
