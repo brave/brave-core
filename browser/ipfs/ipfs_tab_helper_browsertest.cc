@@ -21,7 +21,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/notification_service.h"
+#include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -110,6 +113,33 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
  private:
   bool resolve_called_ = false;
   std::string dnslink_;
+};
+
+class UrlPartLoadObserver : public content::WindowedNotificationObserver {
+ public:
+  UrlPartLoadObserver(const std::string& url_part,
+                      const content::NotificationSource& source)
+      : WindowedNotificationObserver(content::NOTIFICATION_LOAD_STOP, source),
+        url_part_(url_part) {}
+  UrlPartLoadObserver(const UrlPartLoadObserver&) = delete;
+  UrlPartLoadObserver& operator=(const UrlPartLoadObserver&) = delete;
+  ~UrlPartLoadObserver() override = default;
+
+  void Observe(int type,
+               const content::NotificationSource& source,
+               const content::NotificationDetails& details) override {
+    content::NavigationController* controller =
+        content::Source<content::NavigationController>(source).ptr();
+    content::NavigationEntry* entry = controller->GetLastCommittedEntry();
+    if (!entry || entry->GetURL().spec().find(url_part_) == std::string::npos) {
+      return;
+    }
+
+    WindowedNotificationObserver::Observe(type, source, details);
+  }
+
+ private:
+  std::string url_part_;
 };
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
@@ -890,8 +920,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   //  Disable IPFS Companion
   prefs->SetBoolean(kIPFSCompanionEnabled, false);
   {
-    ui_test_utils::NavigateToURL(browser(), test_url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
     WaitForLoadStopWithoutSuccessCheck(active_contents());
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
     // Get last shown infobar
     auto* infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
@@ -902,8 +933,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
 
   {
-    ui_test_utils::NavigateToURL(browser(), test_url);
-    WaitForLoadStopWithoutSuccessCheck(active_contents());
+    UrlPartLoadObserver observer(gateway_url.host(),
+                                 content::NotificationService::AllSources());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    observer.Wait();
     // Get last shown infobar
     auto* infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
@@ -916,7 +949,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   }
 
   {
-    ui_test_utils::NavigateToURL(browser(), test_url);
+    UrlPartLoadObserver observer(gateway_url.host(),
+                                 content::NotificationService::AllSources());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    observer.Wait();
     WaitForLoadStopWithoutSuccessCheck(active_contents());
     auto ipfs_address = active_contents()->GetVisibleURL();
     // Get last shown infobar
@@ -931,8 +967,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   }
 
   {
-    ui_test_utils::NavigateToURL(browser(), test_non_ipfs_url);
-    WaitForLoadStopWithoutSuccessCheck(active_contents());
+    UrlPartLoadObserver observer(test_non_ipfs_url.host(),
+                                 content::NotificationService::AllSources());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_non_ipfs_url));
+    observer.Wait();
     // Get last shown infobar
     auto* infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
@@ -944,8 +982,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   //  Enable the IPFS companion
   prefs->SetBoolean(kIPFSCompanionEnabled, true);
   {
-    ui_test_utils::NavigateToURL(browser(), test_url);
-    WaitForLoadStopWithoutSuccessCheck(active_contents());
+    UrlPartLoadObserver observer(gateway_url.host(),
+                                 content::NotificationService::AllSources());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    observer.Wait();
     // Get last shown infobar
     auto* infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
