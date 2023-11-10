@@ -125,6 +125,20 @@ bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
 }
 
 // static
+bool SidebarService::IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      return false;
+  }
+  NOTREACHED_NORETURN();
+}
+
+// static
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
                                           version_info::Channel channel) {
   registry->RegisterListPref(kSidebarItems);
@@ -138,8 +152,8 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs)
-    : prefs_(prefs), sidebar_p3a_(prefs) {
+SidebarService::SidebarService(PrefService* prefs, bool is_guest)
+    : prefs_(prefs), sidebar_p3a_(prefs), is_guest_(is_guest) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -613,6 +627,7 @@ std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
   for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
     if (auto item = GetBuiltInItemForType(item_type);
         item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
+      item.disabled = (is_guest_ && IsDisabledItemForGuest(item_type));
       items.push_back(std::move(item));
     }
   }

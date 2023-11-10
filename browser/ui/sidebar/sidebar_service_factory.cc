@@ -33,8 +33,8 @@ SidebarServiceFactory::~SidebarServiceFactory() = default;
 
 KeyedService* SidebarServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* prefs = Profile::FromBrowserContext(context)->GetPrefs();
-  return new SidebarService(prefs);
+  auto* profile = Profile::FromBrowserContext(context);
+  return new SidebarService(profile->GetPrefs(), profile->IsGuestSession());
 }
 
 content::BrowserContext* SidebarServiceFactory::GetBrowserContextToUse(
