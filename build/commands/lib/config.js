@@ -461,7 +461,9 @@ Config.prototype.buildArgs = function () {
   if (process.platform === 'win32' && this.build_omaha) {
     args.build_omaha = this.build_omaha
     args.tag_ap = this.tag_ap
-    args.tag_installdataindex = this.tag_installdataindex
+    if (this.tag_installdataindex) {
+      args.tag_installdataindex = this.tag_installdataindex
+    }
   }
 
   if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
