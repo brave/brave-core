@@ -480,7 +480,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
       if indentedFolder.folder.parent == nil {
         cell.customImage.image = UIImage(braveSystemNamed: "leo.product.bookmarks")
       } else {
-        cell.customImage.image = UIImage(braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open-o" : "leo.folder")
+        cell.customImage.image = UIImage(braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open" : "leo.folder")
       }
 
       if let folder = saveLocation.getFolder, folder.objectID == indentedFolder.folder.objectID {

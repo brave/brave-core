@@ -13,8 +13,8 @@
   "dependencies": {
     "@mozilla/readability": "^0.4.2",
     "brave-core-ios": "https://github.com/brave/brave-browser/releases/download/v1.61.69/brave-core-ios-1.61.69.tgz",
-    "leo": "github:brave/leo#7f2dfddb70aff1501ef5a2f3c640a8c74a7343ee",
-    "leo-sf-symbols": "github:brave/leo-sf-symbols#d6056328b8d6ef06e68996ff02a22e06f52590c3",
+    "leo": "github:brave/leo#792ab5c9f82784578e8f8fc14b9eaa24fa1956d2",
+    "leo-sf-symbols": "github:brave/leo-sf-symbols#775bb8fca9df76679b9b272545e162418127c5de",
     "page-metadata-parser": "^1.1.3",
     "webpack-cli": "^4.8.0"
   },

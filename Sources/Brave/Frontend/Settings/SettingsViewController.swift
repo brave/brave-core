@@ -370,7 +370,7 @@ class SettingsViewController: TableViewController {
             }
           }, image: UIImage(braveSystemNamed: "leo.sync"), accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self),
-        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(braveSystemNamed: "leo.folder.open-o")),
+        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(braveSystemNamed: "leo.folder.open")),
         Row(
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
@@ -677,7 +677,7 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(writeReviewURL)
             self.dismiss(animated: true)
           },
-          image: UIImage(braveSystemNamed: "leo.comment.smile-square"),
+          image: UIImage(braveSystemNamed: "leo.message.bubble-smile"),
           cellClass: MultilineValue1Cell.self),
       ]
     )

@@ -42,7 +42,7 @@ struct PlaylistChangeFoldersView: View {
               selectedFolderID = folder.id
             } label: {
               HStack {
-                Image(braveSystemName: "leo.folder.open-o")
+                Image(braveSystemName: "leo.folder.open")
                   .foregroundColor(Color(folder.id == selectedFolderID ? .braveBlurpleTint : .braveLabel))
                   .frame(width: iconSize)
                 VStack(alignment: .leading) {

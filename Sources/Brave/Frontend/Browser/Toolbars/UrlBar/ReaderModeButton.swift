@@ -20,7 +20,7 @@ class ReaderModeButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "leo.product.readermode"), for: .normal)
+    setImage(UIImage(braveSystemNamed: "leo.product.speedreader"), for: .normal)
     updateIconSize()
   }
 
