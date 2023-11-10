@@ -55,10 +55,11 @@ class BrowserNavigationHelper {
     FileManager.default.openBraveDownloadsFolder(completion)
   }
 
-  func openHistory() {
+  func openHistory(isModal: Bool = false) {
     guard let bvc = bvc else { return }
     let vc = HistoryViewController(
       isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing,
+      isModallyPresented: isModal,
       historyAPI: bvc.braveCore.historyAPI,
       tabManager: bvc.tabManager)
     vc.toolbarUrlActionsDelegate = bvc

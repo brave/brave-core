@@ -15,11 +15,8 @@ import UniformTypeIdentifiers
 
 class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
-  private var bookmarksFRC: BookmarksV2FetchResultsController?
-  private let bookmarkManager: BookmarkManager
-  /// Called when the bookmarks are updated via some user input (i.e. Delete, edit, etc.)
-  private var bookmarksDidChange: (() -> Void)?
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
+  private weak var addBookmarksFolderOkAction: UIAlertAction?
 
   private lazy var editBookmarksButton: UIBarButtonItem? = UIBarButtonItem().then {
     $0.image = UIImage(braveSystemNamed: "leo.edit.pencil")
@@ -59,15 +56,16 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return items
   }
 
-  private weak var addBookmarksFolderOkAction: UIAlertAction?
-
-  private var isEditingIndividualBookmark = false
-
+  private var bookmarksFRC: BookmarksV2FetchResultsController?
+  private let bookmarkManager: BookmarkManager
+  /// Called when the bookmarks are updated via some user input (i.e. Delete, edit, etc.)
+  private var bookmarksDidChange: (() -> Void)?
+  
   private var currentFolder: Bookmarkv2?
 
   /// Certain bookmark actions are different in private browsing mode.
   private let isPrivateBrowsing: Bool
-
+  private var isEditingIndividualBookmark = false
   private var isAtBookmarkRootLevel: Bool {
     return self.currentFolder == nil
   }

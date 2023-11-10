@@ -53,6 +53,30 @@ class ShortcutSettingsViewController: TableViewController {
         ],
         footer: .title(Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabDescription))
     )
+    
+    dataSource.sections.append(
+      Section(
+        rows: [
+          Row(
+            text: Strings.Shortcuts.shortcutSettingsOpenBookmarksTitle,
+            selection: { [unowned self] in
+              manageShortcutActivity(for: .openBookmarks)
+            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+        ],
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBookmarksDescription))
+    )
+    
+    dataSource.sections.append(
+      Section(
+        rows: [
+          Row(
+            text: Strings.Shortcuts.shortcutSettingsOpenHistoryListTitle,
+            selection: { [unowned self] in
+              manageShortcutActivity(for: .openHistoryList)
+            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+        ],
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenHistoryListDescription))
+    )
 
     dataSource.sections.append(
       Section(
@@ -100,6 +124,18 @@ class ShortcutSettingsViewController: TableViewController {
             }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
         ],
         footer: .title(Strings.Shortcuts.shortcutSettingsOpenPlaylistDescription))
+    )
+
+    dataSource.sections.append(
+      Section(
+        rows: [
+          Row(
+            text: Strings.Shortcuts.shortcutSettingsOpenSyncedTabsTitle,
+            selection: { [unowned self] in
+              manageShortcutActivity(for: .openSyncedTabs)
+            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+        ],
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenSyncedTabsDescription))
     )
 
     dataSource.sections.append(

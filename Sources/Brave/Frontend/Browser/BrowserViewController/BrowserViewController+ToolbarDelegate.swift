@@ -23,7 +23,7 @@ import Playlist
 
 extension BrowserViewController: TopToolbarDelegate {
 
-  func showTabTray() {
+  func showTabTray(isExternallyPresented: Bool = false) {
     if tabManager.tabsForCurrentMode.isEmpty {
       return
     }
@@ -42,6 +42,7 @@ extension BrowserViewController: TopToolbarDelegate {
     isTabTrayActive = true
 
     let tabTrayController = TabTrayController(
+      isExternallyPresented: isExternallyPresented,
       tabManager: tabManager,
       braveCore: braveCore,
       windowProtection: windowProtection).then {
@@ -51,10 +52,12 @@ extension BrowserViewController: TopToolbarDelegate {
     let container = UINavigationController(rootViewController: tabTrayController)
 
     if !UIAccessibility.isReduceMotionEnabled {
-      container.transitioningDelegate = tabTrayController
+      if !isExternallyPresented {
+        container.transitioningDelegate = tabTrayController
+      }
       container.modalPresentationStyle = .fullScreen
     }
-    present(container, animated: true)
+    present(container, animated: !isExternallyPresented)
   }
 
   func topToolbarDidPressLockImageView(_ urlBar: TopToolbarView) {

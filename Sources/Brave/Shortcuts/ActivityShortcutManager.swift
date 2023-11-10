@@ -22,10 +22,13 @@ import UniformTypeIdentifiers
 public enum ActivityType: String {
   case newTab = "NewTab"
   case newPrivateTab = "NewPrivateTab"
+  case openBookmarks = "OpenBookmarks"
+  case openHistoryList = "OpenHistoryList"
   case clearBrowsingHistory = "ClearBrowsingHistory"
   case enableBraveVPN = "EnableBraveVPN"
   case openBraveNews = "OpenBraveNews"
   case openPlayList = "OpenPlayList"
+  case openSyncedTabs = "OpenSyncedTabs"
 
   public var identifier: String {
     return "\(Bundle.main.bundleIdentifier ?? "").\(self.rawValue)"
@@ -38,6 +41,10 @@ public enum ActivityType: String {
       return Strings.Shortcuts.activityTypeNewTabTitle
     case .newPrivateTab:
       return Strings.Shortcuts.activityTypeNewPrivateTabTitle
+    case .openBookmarks:
+      return Strings.Shortcuts.activityTypeOpenBookmarksTitle
+    case .openHistoryList:
+      return Strings.Shortcuts.activityTypeOpenHistoryListTitle
     case .clearBrowsingHistory:
       return Strings.Shortcuts.activityTypeClearHistoryTitle
     case .enableBraveVPN:
@@ -46,6 +53,8 @@ public enum ActivityType: String {
       return Strings.Shortcuts.activityTypeOpenBraveNewsTitle
     case .openPlayList:
       return Strings.Shortcuts.activityTypeOpenPlaylistTitle
+    case .openSyncedTabs:
+      return Strings.Shortcuts.activityTypeOpenSyncedTabsTitle
     }
   }
 
@@ -54,6 +63,10 @@ public enum ActivityType: String {
     switch self {
     case .newTab, .newPrivateTab:
       return Strings.Shortcuts.activityTypeTabDescription
+    case .openHistoryList:
+      return Strings.Shortcuts.activityTypeOpenHistoryListDescription
+    case .openBookmarks:
+      return Strings.Shortcuts.activityTypeOpenBookmarksDescription
     case .clearBrowsingHistory:
       return Strings.Shortcuts.activityTypeClearHistoryDescription
     case .enableBraveVPN:
@@ -62,6 +75,8 @@ public enum ActivityType: String {
       return Strings.Shortcuts.activityTypeBraveNewsDescription
     case .openPlayList:
       return Strings.Shortcuts.activityTypeOpenPlaylistDescription
+    case .openSyncedTabs:
+      return Strings.Shortcuts.activityTypeOpenSyncedTabsDescription
     }
   }
 
@@ -72,6 +87,10 @@ public enum ActivityType: String {
       return Strings.Shortcuts.activityTypeNewTabSuggestedPhrase
     case .newPrivateTab:
       return Strings.Shortcuts.activityTypeNewPrivateTabSuggestedPhrase
+    case .openBookmarks:
+      return Strings.Shortcuts.activityTypeOpenBookmarksSuggestedPhrase
+    case .openHistoryList:
+      return Strings.Shortcuts.activityTypeOpenHistoryListSuggestedPhrase
     case .clearBrowsingHistory:
       return Strings.Shortcuts.activityTypeClearHistorySuggestedPhrase
     case .enableBraveVPN:
@@ -80,6 +99,8 @@ public enum ActivityType: String {
       return Strings.Shortcuts.activityTypeOpenBraveNewsSuggestedPhrase
     case .openPlayList:
       return Strings.Shortcuts.activityTypeOpenPlaylistSuggestedPhrase
+    case .openSyncedTabs:
+      return Strings.Shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase
     }
   }
 }
@@ -134,6 +155,12 @@ public class ActivityShortcutManager: NSObject {
     case .newPrivateTab:
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
       bvc.popToBVC()
+    case .openBookmarks:
+      bvc.popToBVC()
+      bvc.navigationHelper.openBookmarks()
+    case .openHistoryList:
+      bvc.popToBVC()
+      bvc.navigationHelper.openHistory(isModal: true)
     case .clearBrowsingHistory:
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
@@ -185,6 +212,9 @@ public class ActivityShortcutManager: NSObject {
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }
+    case .openSyncedTabs:
+      bvc.popToBVC()
+      bvc.showTabTray(isExternallyPresented: true)
     }
   }
 

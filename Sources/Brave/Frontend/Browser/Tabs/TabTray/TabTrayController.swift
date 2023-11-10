@@ -97,6 +97,7 @@ class TabTrayController: AuthenticationController {
   var isTabTrayBeingSearched = false
   var tabTraySearchQuery: String?
   var tabTrayMode: TabTrayMode = .local
+  private var isExternallyPresented: Bool // The tab tray is presented by an action outside the application like shortcuts
   private var privateModeCancellable: AnyCancellable?
   private var initialScrollCompleted = false
   private var localAuthObservers = Set<AnyCancellable>()
@@ -180,7 +181,8 @@ class TabTrayController: AuthenticationController {
 
   // MARK: Lifecycle
   
-  init(tabManager: TabManager, braveCore: BraveCoreMain, windowProtection: WindowProtection?) {
+  init(isExternallyPresented: Bool = false, tabManager: TabManager, braveCore: BraveCoreMain, windowProtection: WindowProtection?) {
+    self.isExternallyPresented = isExternallyPresented
     self.tabManager = tabManager
     self.braveCore = braveCore
     
@@ -317,6 +319,16 @@ class TabTrayController: AuthenticationController {
     updateColors()
     
     becomeFirstResponder()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    // Navigate tabs from other devices
+    if isExternallyPresented {
+      tabTypeSelector.selectedSegmentIndex = 1
+      tabTypeSelector.sendActions(for: UIControl.Event.valueChanged)
+    }
   }
   
   override func loadView() {

@@ -292,6 +292,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       }
 
       return
+    case ActivityType.openHistoryList.identifier:
+      if let browserViewController = scene.browserViewController {
+        ActivityShortcutManager.shared.performShortcutActivity(
+          type: .openHistoryList, using: browserViewController)
+      }
+      
+      return
+    case ActivityType.openBookmarks.identifier:
+      if let browserViewController = scene.browserViewController {
+        ActivityShortcutManager.shared.performShortcutActivity(
+          type: .openBookmarks, using: browserViewController)
+      }
+
+      return
     case ActivityType.clearBrowsingHistory.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
@@ -319,6 +333,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           type: .openPlayList, using: browserViewController)
       }
 
+    case ActivityType.openSyncedTabs.identifier:
+      if let browserViewController = scene.browserViewController {
+        ActivityShortcutManager.shared.performShortcutActivity(
+          type: .openSyncedTabs, using: browserViewController)
+      }
       return
     default:
       break
