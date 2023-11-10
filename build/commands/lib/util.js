@@ -11,6 +11,7 @@ const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
+const updateChromeVersion = require('./updateChromeVersion')
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -58,6 +59,8 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+
+  updateChromeVersion()
   Log.progressFinish('apply patches')
 }
 

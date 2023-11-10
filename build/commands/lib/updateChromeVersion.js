@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const assert = require('assert')
+const config = require('./config')
 const fs = require('fs')
 const path = require('path')
-const Log = require('../logging')
+const Log = require('./logging')
 
-function updateChromeVersion(config) {
+function updateChromeVersion() {
   const braveVersionParts = config.braveVersion.split('.')
   assert(braveVersionParts.length == 3)
 
