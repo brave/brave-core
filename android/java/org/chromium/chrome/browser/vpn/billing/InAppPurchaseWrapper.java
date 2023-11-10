@@ -56,10 +56,7 @@ public class InAppPurchaseWrapper {
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
 
-    private enum SubscriptionType {
-        MONTHLY,
-        YEARLY
-    }
+    private enum SubscriptionType { MONTHLY, YEARLY }
 
     private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
     private LiveData<ProductDetails> mMonthlyProductDetails = mMutableMonthlyProductDetails;
@@ -160,9 +157,8 @@ public class InAppPurchaseWrapper {
             return subscriptionType == SubscriptionType.MONTHLY ? RELEASE_MONTHLY_SUBSCRIPTION
                                                                 : RELEASE_YEARLY_SUBSCRIPTION;
         } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
-            return subscriptionType == SubscriptionType.MONTHLY
-                    ? BETA_MONTHLY_SUBSCRIPTION
-                    : BETA_YEARLY_SUBSCRIPTION;
+            return subscriptionType == SubscriptionType.MONTHLY ? BETA_MONTHLY_SUBSCRIPTION
+                                                                : BETA_YEARLY_SUBSCRIPTION;
         } else {
             return subscriptionType == SubscriptionType.MONTHLY ? NIGHTLY_MONTHLY_SUBSCRIPTION
                                                                 : NIGHTLY_YEARLY_SUBSCRIPTION;

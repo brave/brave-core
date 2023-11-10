@@ -72,77 +72,6 @@
                     android:layout_marginBottom="14dp"
                     android:textSize="16sp"/>
 
-                    <LinearLayout
-                        android:id="@+id/monthly_selector_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginTop="14dp"
-                        android:baselineAligned="false"
-                        android:padding="16dp"
-                        android:background="@drawable/monthly_selector"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/monthly_subscription_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/monthly_subscription"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:textAlignment="textStart"
-                                android:layout_marginBottom="2dp"
-                                android:textSize="16sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/renews_monthly"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:textAlignment="textStart"
-                                android:alpha="0.6"
-                                android:textSize="16sp"/>
-
-                        </LinearLayout>
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ProgressBar
-                                android:id="@+id/monthly_plan_progress"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:visibility="gone"
-                                android:layout_gravity="center"
-                                android:indeterminate="true"/>
-
-                            <TextView
-                                android:id="@+id/monthly_subscription_amount_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:textAlignment="textStart"
-                                android:textSize="16sp"/>
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
                 <LinearLayout
                     android:id="@+id/yearly_selector_layout"
                     android:layout_width="match_parent"
@@ -232,6 +161,77 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/monthly_selector_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:padding="16dp"
+                        android:background="@drawable/monthly_selector"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/monthly_subscription_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/monthly_subscription"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:layout_marginBottom="2dp"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/renews_monthly"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:alpha="0.6"
+                                android:textSize="16sp"/>
+
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ProgressBar
+                                android:id="@+id/monthly_plan_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"/>
+
+                            <TextView
+                                android:id="@+id/monthly_subscription_amount_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:textSize="16sp"/>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"

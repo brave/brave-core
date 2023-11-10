@@ -174,11 +174,9 @@ public class BraveVpnUtils {
             String expiryTimeInString = purchase.getString("expiryTimeMillis");
             return Long.parseLong(expiryTimeInString);
         } catch (JSONException | NumberFormatException e) {
-            Log.e(
-                    TAG,
+            Log.e(TAG,
                     "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException"
-                            + " error "
-                            + e);
+                            + " error " + e);
         }
         return 0L;
     }
