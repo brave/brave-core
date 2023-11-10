@@ -5,8 +5,7 @@
 
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
-import(
-    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
+import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
@@ -73,7 +72,7 @@ brave_chrome_java_deps = [
   "//url/mojom:url_mojom_origin_java",
 ]
 
-brave_chrome_java_deps += brave_app_vpn_billing_deps
+brave_chrome_java_deps += brave_app_billing_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
