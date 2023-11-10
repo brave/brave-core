@@ -51,7 +51,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
