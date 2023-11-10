@@ -39,7 +39,7 @@ public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
     private static final String BLOCKCHAIN_TOKEN = "blockchainToken";
     private static final String NETWORK_INFO = "networkInfo";
-    private static String TAG = "WalletUtils";
+    private static final String TAG = "WalletUtils";
 
     private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
         switch (coinType) {
