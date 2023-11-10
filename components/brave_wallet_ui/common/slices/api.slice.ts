@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { batch } from 'react-redux'
-import { EntityId, Store } from '@reduxjs/toolkit'
+import { Store } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { PatchCollection } from '@reduxjs/toolkit/dist/query/core/buildThunks'
 import { mapLimit } from 'async'
@@ -28,7 +28,6 @@ import {
 import {
   CancelTransactionPayload,
   RetryTransactionPayload,
-  SetUserAssetVisiblePayloadType,
   SpeedupTransactionPayload,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType,
@@ -46,11 +45,6 @@ import {
   selectOnRampNetworksFromQueryResult,
   selectVisibleNetworksFromQueryResult
 } from './entities/network.entity'
-import {
-  blockchainTokenEntityAdaptor,
-  blockchainTokenEntityAdaptorInitialState,
-  BlockchainTokenEntityAdaptorState
-} from './entities/blockchain-token.entity'
 
 // api
 import { apiProxyFetcher } from '../async/base-query-cache'
@@ -68,9 +62,7 @@ import {
   findAccountByAccountId,
   getAccountType
 } from '../../utils/account-utils'
-import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
-import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
-import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
+import { TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import {
   getCoinFromTxDataUnion,
   hasEIP1559Support
@@ -81,7 +73,6 @@ import {
   toTxDataUnion
 } from '../../utils/tx-utils'
 import { makeSerializableTransaction } from '../../utils/model-serialization-utils'
-import { addLogoToToken } from '../async/lib'
 import {
   dialogErrorFromLedgerErrorCode,
   signLedgerEthereumTransaction,
@@ -89,6 +80,7 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
+import { tokenEndpoints } from './endpoints/token.endpoints'
 import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
 import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
 import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
@@ -120,10 +112,6 @@ interface GetTransactionsQueryArg {
    */
   chainId: string | null
 }
-
-const TOKEN_TAG_IDS = {
-  REGISTRY: 'REGISTRY'
-} as const
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -177,377 +165,6 @@ export function createWalletApi() {
                 }
               },
               invalidatesTags: ['DefaultFiatCurrency']
-            }),
-            //
-            // Tokens
-            //
-            getTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const {
-                    cache,
-                    data: { blockchainRegistry }
-                  } = baseQuery(undefined)
-
-                  const networksRegistry = await cache.getNetworksRegistry()
-                  const networksList: BraveWallet.NetworkInfo[] =
-                    getEntitiesListFromEntityState(
-                      networksRegistry,
-                      networksRegistry.visibleIds
-                    )
-
-                  const tokenIdsByChainId: Record<string, string[]> = {}
-                  const tokenIdsByCoinType: Record<
-                    BraveWallet.CoinType,
-                    string[]
-                  > = {}
-
-                  const getTokensList = async () => {
-                    const tokenListsForNetworks = await mapLimit(
-                      networksList,
-                      10,
-                      async (network: BraveWallet.NetworkInfo) => {
-                        const networkId = networkEntityAdapter.selectId(network)
-
-                        const { tokens } =
-                          await blockchainRegistry.getAllTokens(
-                            network.chainId,
-                            network.coin
-                          )
-
-                        const fullTokensListForChain: //
-                        BraveWallet.BlockchainToken[] = await mapLimit(
-                          tokens,
-                          10,
-                          async (token: BraveWallet.BlockchainToken) => {
-                            return addChainIdToToken(
-                              await addLogoToToken(token),
-                              network.chainId
-                            )
-                          }
-                        )
-
-                        tokenIdsByChainId[networkId] =
-                          fullTokensListForChain.map(getAssetIdKey)
-
-                        tokenIdsByCoinType[network.coin] = (
-                          tokenIdsByCoinType[network.coin] || []
-                        ).concat(tokenIdsByChainId[networkId] || [])
-
-                        return fullTokensListForChain
-                      }
-                    )
-
-                    const flattenedTokensList = tokenListsForNetworks.flat(1)
-                    return flattenedTokensList
-                  }
-
-                  let flattenedTokensList = await getTokensList()
-
-                  // on startup, the tokens list returned from core may be empty
-                  const startDate = new Date()
-                  const timeoutSeconds = 5
-                  const timeoutMilliseconds = timeoutSeconds * 1000
-
-                  // retry until we have some tokens or the request takes too
-                  // long
-                  while (
-                    // empty list
-                    flattenedTokensList.length < 1 &&
-                    // try until timeout reached
-                    new Date().getTime() - startDate.getTime() <
-                      timeoutMilliseconds
-                  ) {
-                    flattenedTokensList = await getTokensList()
-                  }
-
-                  // return an error on timeout, so a retry can be attempted
-                  if (flattenedTokensList.length === 0) {
-                    throw new Error('No tokens found in tokens registry')
-                  }
-
-                  const tokensByChainIdRegistry =
-                    blockchainTokenEntityAdaptor.setAll(
-                      {
-                        ...blockchainTokenEntityAdaptorInitialState,
-                        idsByChainId: tokenIdsByChainId,
-                        idsByCoinType: tokenIdsByCoinType,
-                        visibleTokenIds: [],
-                        visibleTokenIdsByChainId: {},
-                        visibleTokenIdsByCoinType: {}
-                      },
-                      flattenedTokensList
-                    )
-
-                  return {
-                    data: tokensByChainIdRegistry
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Unable to fetch Tokens Registry',
-                    error
-                  )
-                }
-              },
-              providesTags: cacher.providesRegistry('KnownBlockchainTokens'),
-              onCacheEntryAdded: (_, { dispatch }) => {
-                // re-parse transactions with new coins list
-                dispatch(
-                  walletApi.endpoints.invalidateTransactionsCache.initiate()
-                )
-              }
-            }),
-            getUserTokensRegistry: query<
-              BlockchainTokenEntityAdaptorState,
-              void
-            >({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  return {
-                    data: await baseQuery(
-                      undefined
-                    ).cache.getUserTokensRegistry()
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Unable to fetch UserTokens Registry',
-                    error
-                  )
-                }
-              },
-              onCacheEntryAdded: (_, { dispatch }) => {
-                // re-parse transactions with new coins list
-                dispatch(
-                  walletApi.endpoints.invalidateTransactionsCache.initiate()
-                )
-              },
-              providesTags: (res, err) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [
-                      {
-                        type: 'UserBlockchainTokens',
-                        id: TOKEN_TAG_IDS.REGISTRY
-                      }
-                    ]
-            }),
-            addUserToken: mutation<
-              { id: EntityId },
-              BraveWallet.BlockchainToken
-            >({
-              queryFn: async (
-                tokenArg,
-                { dispatch },
-                extraOptions,
-                baseQuery
-              ) => {
-                const {
-                  cache,
-                  data: { braveWalletService }
-                } = baseQuery(undefined)
-
-                cache.clearUserTokensRegistry()
-
-                if (tokenArg.isErc721) {
-                  // Get NFTMetadata
-                  const { metadata } = await dispatch(
-                    walletApi.endpoints.getERC721Metadata.initiate({
-                      coin: tokenArg.coin,
-                      chainId: tokenArg.chainId,
-                      contractAddress: tokenArg.contractAddress,
-                      isErc721: tokenArg.isErc721,
-                      tokenId: tokenArg.tokenId,
-                      isNft: tokenArg.isNft
-                    })
-                  ).unwrap()
-
-                  if (metadata?.image) {
-                    tokenArg.logo =
-                      metadata?.image || metadata?.image_url || tokenArg.logo
-                  }
-                }
-
-                const result = await braveWalletService.addUserAsset(tokenArg)
-                const tokenIdentifier =
-                  blockchainTokenEntityAdaptor.selectId(tokenArg)
-
-                if (!result.success) {
-                  return {
-                    error: `Error adding user token: ${tokenIdentifier}`
-                  }
-                }
-
-                return {
-                  data: { id: tokenIdentifier }
-                }
-              },
-              invalidatesTags: (_, __, tokenArg) => [
-                { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-                { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
-              ]
-            }),
-            removeUserToken: mutation<boolean, BraveWallet.BlockchainToken>({
-              queryFn: async (
-                tokenArg,
-                { endpoint },
-                extraOptions,
-                baseQuery
-              ) => {
-                const {
-                  cache,
-                  data: { braveWalletService }
-                } = baseQuery(undefined)
-
-                cache.clearUserTokensRegistry()
-
-                try {
-                  const deleteResult = await braveWalletService.removeUserAsset(
-                    tokenArg
-                  )
-                  if (!deleteResult.success) {
-                    throw new Error()
-                  }
-                  return {
-                    data: true
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to remove user asset: ${getAssetIdKey(tokenArg)}`,
-                    error
-                  )
-                }
-              },
-              invalidatesTags: (_, __, tokenArg) => [
-                { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-                { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
-              ]
-            }),
-            updateUserToken: mutation<
-              { id: EntityId },
-              BraveWallet.BlockchainToken
-            >({
-              queryFn: async (
-                tokenArg,
-                { dispatch },
-                extraOptions,
-                baseQuery
-              ) => {
-                const { cache } = baseQuery(undefined)
-                cache.clearUserTokensRegistry()
-
-                const deleted = await dispatch(
-                  walletApi.endpoints.removeUserToken.initiate(tokenArg)
-                ).unwrap()
-                if (deleted) {
-                  const result: { id: EntityId } = await dispatch(
-                    walletApi.endpoints.addUserToken.initiate(tokenArg)
-                  ).unwrap()
-                  return { data: { id: result.id } }
-                }
-                return {
-                  error: `unable to update token ${getAssetIdKey(tokenArg)}`
-                }
-              },
-              invalidatesTags: (_, __, tokenArg) => [
-                { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-                { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
-              ],
-              onQueryStarted: async (
-                tokenArg,
-                { queryFulfilled, dispatch }
-              ) => {
-                const patchResult = dispatch(
-                  walletApi.util.updateQueryData(
-                    'getUserTokensRegistry',
-                    undefined,
-                    (draft: BlockchainTokenEntityAdaptorState) => {
-                      const tokenIdentifier =
-                        blockchainTokenEntityAdaptor.selectId(tokenArg)
-                      draft.entities[tokenIdentifier] = tokenArg
-                    }
-                  )
-                )
-                try {
-                  await queryFulfilled
-                } catch (error) {
-                  patchResult.undo()
-                }
-              }
-            }),
-            updateUserAssetVisible: mutation<
-              boolean,
-              SetUserAssetVisiblePayloadType
-            >({
-              queryFn: async (
-                { isVisible, token },
-                { endpoint },
-                extraOptions,
-                baseQuery
-              ) => {
-                try {
-                  const {
-                    cache,
-                    data: { braveWalletService }
-                  } = baseQuery(undefined)
-
-                  cache.clearUserTokensRegistry()
-
-                  const { success } =
-                    await braveWalletService.setUserAssetVisible(
-                      token,
-                      isVisible
-                    )
-                  return { data: success }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Could not user update asset visibility for token: ${
-                      getAssetIdKey(token) // token identifier
-                    }`,
-                    error
-                  )
-                }
-              },
-              invalidatesTags: (res, err, arg) =>
-                res
-                  ? [
-                      {
-                        type: 'UserBlockchainTokens',
-                        id: TOKEN_TAG_IDS.REGISTRY
-                      },
-                      {
-                        type: 'UserBlockchainTokens',
-                        id: getAssetIdKey(arg.token)
-                      }
-                    ]
-                  : ['UNKNOWN_ERROR']
-            }),
-            invalidateUserTokensRegistry: mutation<boolean, void>({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const { cache } = baseQuery(undefined)
-                  cache.clearUserTokensRegistry()
-                  return { data: true }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Could not invalidate user tokens registry',
-                    error
-                  )
-                }
-              },
-              invalidatesTags: (res, err, arg) =>
-                res
-                  ? [
-                      {
-                        type: 'UserBlockchainTokens',
-                        id: TOKEN_TAG_IDS.REGISTRY
-                      }
-                    ]
-                  : ['UNKNOWN_ERROR']
             }),
 
             //
@@ -2307,7 +1924,7 @@ export function createWalletApi() {
                         id: [arg.chainId, arg.contractAddress].join('-')
                       }
                     ]
-            }),
+            })
           }
         }
       })
@@ -2358,6 +1975,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: accountEndpoints })
       // Blockchain Network management endpoints
       .injectEndpoints({ endpoints: networkEndpoints })
+      // Blockchain Token (User assets) management endpoints
+      .injectEndpoints({ endpoints: tokenEndpoints })
       // Coin market endpoints
       .injectEndpoints({ endpoints: coinMarketEndpoints })
   )
