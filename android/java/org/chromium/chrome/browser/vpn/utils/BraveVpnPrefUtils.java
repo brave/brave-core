@@ -36,7 +36,6 @@ public class BraveVpnPrefUtils {
     private static final String PREF_EXCLUDED_PACKAGES = "excluded_packages";
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
-    public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
     public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
             "brave_vpn_link_subscription_on_staging";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
@@ -54,16 +53,6 @@ public class BraveVpnPrefUtils {
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
-
-    public static boolean isBraveVpnFeatureEnabled() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_FEATURE, false);
-    }
-
-    public static void setBraveVpnFeatureEnabled(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_FEATURE, newValue);
-        sharedPreferencesEditor.apply();
-    }
 
     public static boolean isLinkSubscriptionOnStaging() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);

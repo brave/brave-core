@@ -278,17 +278,8 @@ public class BraveVpnUtils {
         return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported());
     }
 
-    private static boolean isBraveVpnFeatureEnable() {
-        if ((ContextUtils.getApplicationContext().getPackageName().equals(
-                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())) {
-            return true;
-        }
-        return false;
-    }
-
     public static boolean isVpnFeatureSupported(Context context) {
-        return isBraveVpnFeatureEnable() && isRegionSupported()
+        return isRegionSupported()
                 && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
     }
 }
