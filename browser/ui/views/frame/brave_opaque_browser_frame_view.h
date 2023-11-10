@@ -28,8 +28,11 @@ class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
   int NonClientHitTest(const gfx::Point& point) override;
   void UpdateCaptionButtonPlaceholderContainerBackground() override;
   void PaintClientEdge(gfx::Canvas* canvas) const override;
+  int GetTopInset(bool restored) const override;
+  int GetTopAreaHeight() const override;
 
  private:
+  bool ShouldShowVerticalTabs() const;
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 };
 
