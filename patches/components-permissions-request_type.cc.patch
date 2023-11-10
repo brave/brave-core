@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index a95dbdcc477faaa0b00bb38e60b8f25c0c59322a..1154a9209ad86e30be17d4534f9c57aa9c8d910f 100644
+index 58b3074ec4a2369b76a1b6ec1cb29a20a774ef73..fc1e3d6cc5929bd7767ea876e4cca506920ad6d3 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
-@@ -405,6 +405,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -415,6 +415,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
          return "window_management";
        }
  #endif

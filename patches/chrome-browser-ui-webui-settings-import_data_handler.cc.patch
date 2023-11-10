@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.cc b/chrome/browser/ui/webui/settings/import_data_handler.cc
-index b6ca42423e77e3485ba2a665d71e642d25e5e7d7..2f76ea8c319ea186abafde8f57ce3237fee47c8f 100644
+index 93d4228dedf639b6f83d7bdf67ab067f481c12a2..e8ff486e0c5fb2f39096409bed88a2c18c2403d7 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.cc
 @@ -141,6 +141,7 @@ void ImportDataHandler::HandleImportData(const base::Value::List& args) {
@@ -10,7 +10,7 @@ index b6ca42423e77e3485ba2a665d71e642d25e5e7d7..2f76ea8c319ea186abafde8f57ce3237
  
    const importer::SourceProfile& source_profile =
        importer_list_->GetSourceProfileAt(browser_index);
-@@ -219,6 +220,7 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
+@@ -218,6 +219,7 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
      browser_profile.Set("autofillFormData",
                          (browser_services & importer::AUTOFILL_FORM_DATA) != 0);
  

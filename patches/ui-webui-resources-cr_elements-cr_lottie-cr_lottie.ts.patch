@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
-index b93a5aa91fd5eeddec32a4ee1f22d4d8869b1a96..718edf7a6bffb0618f3e1fe3e848741e07005e28 100644
+index bf9d621d74cb32d4c53e5b9c11777d5a6a4dac33..36a449e42b70a4fddb2f4091a30195a97ccf9939 100644
 --- a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
 +++ b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
 @@ -354,6 +354,7 @@ export class CrLottieElement extends PolymerElement {

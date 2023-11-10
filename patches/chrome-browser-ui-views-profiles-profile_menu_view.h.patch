@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index b595939f2348e0a02aefc482903749c2556f4d53..8842effba4445b415aa4615053b3b7887300a909 100644
+index 1c786f5c5c0b640eda0cd16c6d86a479d903e953..2963e81c131990ad90350862afaad88ddf419ea0 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
 @@ -45,6 +45,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
