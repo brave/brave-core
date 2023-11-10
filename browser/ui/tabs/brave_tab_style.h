@@ -50,7 +50,9 @@ class BraveTabStyle : public TabStyleBase {
     if (!tabs::features::HorizontalTabsUpdateEnabled()) {
       return TabStyleBase::GetPinnedWidth();
     }
-    return GetLayoutConstant(TAB_HEIGHT) + brave_tabs::kHorizontalTabInset * 2;
+    const int shape_height = GetLayoutConstant(TAB_HEIGHT) -
+                             brave_tabs::kHorizontalTabVerticalSpacing * 2;
+    return shape_height + brave_tabs::kHorizontalTabInset * 2;
   }
 
   int GetDragHandleExtension(int height) const override {
