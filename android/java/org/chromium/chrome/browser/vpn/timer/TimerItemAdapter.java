@@ -20,10 +20,17 @@ import org.chromium.chrome.R;
 import java.util.List;
 
 public class TimerItemAdapter extends RecyclerView.Adapter<TimerItemViewHolder> {
-    private final List<TimerItemModel> mTimerItemModels;
+    public interface TimerItemClickListener {
+        void onTimerItemClick(TimerItemModel timerItemModel);
+    }
 
-    TimerItemAdapter(List<TimerItemModel> timerItemModels) {
+    private final List<TimerItemModel> mTimerItemModels;
+    private final TimerItemClickListener mTimerItemClickListener;
+
+    TimerItemAdapter(
+            List<TimerItemModel> timerItemModels, TimerItemClickListener timerItemClickListener) {
         mTimerItemModels = timerItemModels;
+        mTimerItemClickListener = timerItemClickListener;
     }
 
     @NonNull
@@ -40,10 +47,8 @@ public class TimerItemAdapter extends RecyclerView.Adapter<TimerItemViewHolder> 
         TimerItemModel timerItemModel = mTimerItemModels.get(position);
         holder.timerActionText.setText(timerItemModel.getActionText());
         holder.timerActionImage.setImageResource(timerItemModel.getActionImage());
-        holder.itemView.setOnClickListener(view
-                -> Toast.makeText(view.getContext(), timerItemModel.getActionText(),
-                                Toast.LENGTH_SHORT)
-                           .show());
+        holder.itemView.setOnClickListener(
+                view -> mTimerItemClickListener.onTimerItemClick(timerItemModel));
     }
 
     @Override

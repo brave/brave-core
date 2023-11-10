@@ -713,6 +713,7 @@ brave_java_resources = [
   "java/res/drawable/stats_notification_on_button_bg.xml",
   "java/res/drawable/tab_gradient_separator.xml",
   "java/res/drawable/tab_selector.xml",
+  "java/res/drawable/timer_rounded_bottomsheet.xml",
   "java/res/drawable/tipping_background_success.xml",
   "java/res/drawable/tipping_banner_tablet_ui_background.xml",
   "java/res/drawable/tipping_banner_view_background.xml",

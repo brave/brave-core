@@ -16,6 +16,7 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
+import org.chromium.chrome.browser.vpn.timer.TimerUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 
@@ -61,6 +62,7 @@ public class BraveVpnProfileUtils {
 
     public void startVpn(Context context) {
         ContextCompat.startForegroundService(context, new Intent(context, WireguardService.class));
+        TimerUtils.cancelScheduledVpnAction(context);
     }
 
     public void stopVpn(Context context) {

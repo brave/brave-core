@@ -25,6 +25,6 @@
         android:layout_marginStart="30dp"
         android:layout_gravity="center_vertical"
         android:textSize="16sp"
-        android:textColor="#0D0F14" />
+        android:textColor="@color/vpn_timer_text_color" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

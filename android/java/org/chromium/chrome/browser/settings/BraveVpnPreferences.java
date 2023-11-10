@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
+import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -105,9 +106,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
                 }
                 if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity())) {
-                    BraveVpnUtils.showProgressDialog(
-                            getActivity(), getResources().getString(R.string.vpn_disconnect_text));
-                    BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
+                    TimerDialogFragment timerDialogFragment = new TimerDialogFragment();
+                    timerDialogFragment.show(
+                            getActivity().getSupportFragmentManager(), TimerDialogFragment.TAG);
                 } else {
                     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                         BraveVpnPrefUtils.setSubscriptionPurchase(true);

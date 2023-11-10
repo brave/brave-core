@@ -305,4 +305,14 @@
     <style name="BraveLeoDescriptionText" parent="Widget.AppCompat.TextView">
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="TimerBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/timer_rounded_bottomsheet</item>
+    </style>
+
+    <style name="TimerBaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TimerBottomSheet</item>
+    </style>
+
+    <style name="TimerBottomSheetDialogTheme" parent="TimerBaseBottomSheetDialog" />
 </resources>
