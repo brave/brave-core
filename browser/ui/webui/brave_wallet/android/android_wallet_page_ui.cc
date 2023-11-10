@@ -11,7 +11,6 @@
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/l10n/common/localization_util.h"
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"

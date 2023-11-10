@@ -181,10 +181,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [57570],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
-    "META": {"sizes": {"includes": [150]}},
-    "includes": [57580],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_send_page/brave_wallet_send_page.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [57720],

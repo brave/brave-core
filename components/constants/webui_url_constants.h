@@ -45,7 +45,6 @@ extern const char kWalletPagePath[];
 extern const char kWalletUnlockPagePath[];
 extern const char kWalletBuyPagePath[];
 extern const char kWalletSendPagePath[];
-extern const char kWalletSwapPagePath[];
 extern const char kWalletDepositPagePath[];
 #endif  // BUILDFLAG(IS_ANDROID)
 extern const char kExtensionSettingsURL[];

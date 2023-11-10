@@ -44,7 +44,6 @@ const char kWalletPagePath[] = "/crypto/portfolio/assets";
 const char kWalletUnlockPagePath[] = "/crypto/unlock";
 const char kWalletBuyPagePath[] = "/crypto/fund-wallet";
 const char kWalletSendPagePath[] = "/send";
-const char kWalletSwapPagePath[] = "/swap";
 const char kWalletDepositPagePath[] = "/crypto/deposit-funds";
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
