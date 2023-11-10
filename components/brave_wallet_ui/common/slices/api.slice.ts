@@ -92,6 +92,7 @@ import { accountEndpoints } from './endpoints/account.endpoints'
 import { networkEndpoints } from './endpoints/network.endpoints'
 import { coinMarketEndpoints } from './endpoints/market.endpoints'
 import { tokenBalancesEndpoints } from './endpoints/token_balances.endpoints'
+import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 
 export interface IsEip1559ChangedMutationArg {
   id: string
@@ -120,53 +121,6 @@ export function createWalletApi() {
       .injectEndpoints({
         endpoints: ({ mutation, query }) => {
           return {
-            //
-            // Default Currencies
-            //
-            getDefaultFiatCurrency: query<string, void>({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const { braveWalletService } = baseQuery(undefined).data
-                  const { currency } =
-                    await braveWalletService.getDefaultBaseCurrency()
-                  const defaultFiatCurrency = currency.toLowerCase()
-                  return {
-                    data: defaultFiatCurrency
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    'Unable to fetch default fiat currency',
-                    error
-                  )
-                }
-              },
-              providesTags: ['DefaultFiatCurrency']
-            }),
-            setDefaultFiatCurrency: mutation<string, string>({
-              queryFn: async (
-                currencyArg,
-                { endpoint },
-                extraOptions,
-                baseQuery
-              ) => {
-                try {
-                  const { braveWalletService } = baseQuery(undefined).data
-                  braveWalletService.setDefaultBaseCurrency(currencyArg)
-                  return {
-                    data: currencyArg
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to set default fiat currency to ${currencyArg}`,
-                    error
-                  )
-                }
-              },
-              invalidatesTags: ['DefaultFiatCurrency']
-            }),
-
             //
             // Transactions
             //
@@ -1979,6 +1933,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: tokenEndpoints })
       // Coin market endpoints
       .injectEndpoints({ endpoints: coinMarketEndpoints })
+      // Fiat currency endpoints
+      .injectEndpoints({ endpoints: fiatCurrencyEndpoints })
   )
 }
 
