@@ -534,6 +534,10 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         item_view->SetEnabled(false);
       }
     }
+
+    if (item.disabled && item_view->GetEnabled()) {
+      item_view->SetEnabled(false);
+    }
   }
 }
 

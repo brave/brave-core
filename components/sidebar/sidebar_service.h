@@ -77,7 +77,7 @@ class SidebarService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
                                    version_info::Channel channel);
 
-  explicit SidebarService(PrefService* prefs);
+  explicit SidebarService(PrefService* prefs, bool is_guest = false);
   ~SidebarService() override;
 
   const std::vector<SidebarItem>& items() const { return items_; }
@@ -110,6 +110,10 @@ class SidebarService : public KeyedService {
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
   FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest);
   FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedScrollTest);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest,
+                           DisabledItemsTestWithGuestWindow);
+
+  static bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
@@ -129,6 +133,7 @@ class SidebarService : public KeyedService {
 
   p3a::SidebarP3A sidebar_p3a_;
 
+  bool is_guest_ = false;
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
 };

@@ -664,6 +664,25 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTestWithGuestWindow) {
+  auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
+  auto* controller = guest_browser->sidebar_controller();
+  auto* model = controller->model();
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller);
+  for (const auto& item : model->GetAllSidebarItems()) {
+    auto index = model->GetIndexOf(item);
+    ASSERT_TRUE(index.has_value());
+    auto* item_view = sidebar_items_contents_view->children()[*index];
+    ASSERT_TRUE(item_view);
+    if (IsBuiltInType(item) &&
+        SidebarService::IsDisabledItemForGuest(item.built_in_item_type)) {
+      EXPECT_FALSE(item_view->GetEnabled());
+    } else {
+      EXPECT_TRUE(item_view->GetEnabled());
+    }
+  }
+}
+
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithPlaylist() {
