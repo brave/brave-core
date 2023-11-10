@@ -2659,14 +2659,14 @@ extension Strings {
       "wallet.signatureRequestDomainTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Domain",
+      value: "Domain:",
       comment: "A title displayed inside the text view in Signature Request View above the request's domain information."
     )
     public static let signatureRequestMessageTitle = NSLocalizedString(
       "wallet.signatureRequestMessageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Message",
+      value: "Message:",
       comment: "A title displayed inside the text view in Signature Request View above the request's message."
     )
     public static let sign = NSLocalizedString(
@@ -4646,6 +4646,111 @@ extension Strings {
       bundle: .module,
       value: "Security Risk Detected",
       comment: "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
+    )
+    public static let signInWithBraveWalletMessage = NSLocalizedString(
+      "wallet.signInWithBraveWalletMessage",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You are signing into %@. Brave Wallet will share your wallet address with %@.",
+      comment: "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
+    )
+    public static let seeDetailsButtonTitle = NSLocalizedString(
+      "wallet.seeDetailsButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "See details",
+      comment: "The title of the button to show details."
+    )
+    public static let siweMessageLabel = NSLocalizedString(
+      "wallet.siweMessageLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Message",
+      comment: "The label displayed above the Sign In With Ethereum message."
+    )
+    public static let siweResourcesLabel = NSLocalizedString(
+      "wallet.siweResourcesLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Resources",
+      comment: "The label displayed above the Sign In With Ethereum resources."
+    )
+    public static let siweSignInButtonTitle = NSLocalizedString(
+      "wallet.siweSignInButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign In",
+      comment: "The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests."
+    )
+    public static let siweOriginLabel = NSLocalizedString(
+      "wallet.siweOriginLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Origin",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin."
+    )
+    public static let siweAddressLabel = NSLocalizedString(
+      "wallet.siweAddressLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address."
+    )
+    public static let siweURILabel = NSLocalizedString(
+      "wallet.siweURILabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "URI",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI."
+    )
+    public static let siweVersionLabel = NSLocalizedString(
+      "wallet.siweVersionLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Version",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version."
+    )
+    public static let siweChainIDLabel = NSLocalizedString(
+      "wallet.siweChainIDLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Chain ID",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID."
+    )
+    public static let siweIssuedAtLabel = NSLocalizedString(
+      "wallet.siweIssuedAtLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Issued At",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date."
+    )
+    public static let siweExpirationTimeLabel = NSLocalizedString(
+      "wallet.siweExpirationTimeLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Expiration Time",
+      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time."
+    )
+    public static let siweNonceLabel = NSLocalizedString(
+      "wallet.siweNonceLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Nonce",
+      comment: "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce."
+    )
+    public static let siweStatementLabel = NSLocalizedString(
+      "wallet.siweStatementLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Statement",
+      comment: "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement."
+    )
+    public static let siweDetailsTitle = NSLocalizedString(
+      "wallet.siweDetailsTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Details",
+      comment: "The title of the details view for Sign In With Ethereum/Brave Wallet requests."
     )
   }
 }

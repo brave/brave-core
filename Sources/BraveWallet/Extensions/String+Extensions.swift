@@ -22,4 +22,37 @@ extension String {
     guard let number = String.numberFormatterWithCurrentLocale.number(from: self) else { return self }
     return  String.numberFormatterUsLocale.string(from: number) ?? self
   }
+
+  var hasUnknownUnicode: Bool {
+    // same requirement as desktop. Valid: [0, 127]
+    for c in unicodeScalars {
+      let ci = Int(c.value)
+      if ci > 127 {
+        return true
+      }
+    }
+    return false
+  }
+  
+  var hasConsecutiveNewLines: Bool {
+    // return true if string has two or more consecutive newline chars
+    return range(of: "\\n{3,}", options: .regularExpression) != nil
+  }
+  
+  var printableWithUnknownUnicode: String {
+    var result = ""
+    for c in unicodeScalars {
+      let ci = Int(c.value)
+      if let unicodeScalar = Unicode.Scalar(ci) {
+        if ci == 10 { // will keep newline char as it is
+          result += "\n"
+        } else {
+          // ascii char will be displayed as it is
+          // unknown (> 127) will be displayed as hex-encoded
+          result += unicodeScalar.escaped(asASCII: true)
+        }
+      }
+    }
+    return result
+  }
 }

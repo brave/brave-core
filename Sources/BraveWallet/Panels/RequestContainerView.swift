@@ -55,7 +55,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               onDismiss: onDismiss
             )
           case let .signMessage(requests):
-            SignatureRequestView(
+            SignMessageRequestContainerView(
               requests: requests,
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,

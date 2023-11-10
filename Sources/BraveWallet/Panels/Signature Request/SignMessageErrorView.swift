@@ -41,7 +41,7 @@ struct SignMessageErrorView: View {
       .padding(.top, 16)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerHighlight).ignoresSafeArea())
     .navigationTitle(Strings.Wallet.securityRiskDetectedTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
