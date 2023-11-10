@@ -1422,7 +1422,6 @@ extension Strings {
     public static let siteReportedTitle = NSLocalizedString("SiteReportedTitle", tableName: "BraveShared", bundle: .module, value: "Thank You", comment: "")
     public static let siteReportedBody = NSLocalizedString("SiteReportedBody", tableName: "BraveShared", bundle: .module, value: "Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!", comment: "")
     
-    
     // MARK: Submit report
     public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", tableName: "BraveShared", bundle: .module, value: "Report a Broken Site", comment: "")
     public static let reportBrokenSiteBody1 = NSLocalizedString("ReportBrokenSiteBody1", tableName: "BraveShared", bundle: .module, value: "Let Brave's developers know that this site doesn't work properly with Shields:", comment: "First part of the report a broken site copy. After the colon is a new line and then a website address")
@@ -1441,7 +1440,6 @@ extension Strings {
       value: "Contact me at: (optional)",
       comment: "A label for a text entry field where the user can provide contact details within a web-compatibilty report"
     )
-    
     
     public static let reportBrokenContactMeSuggestions = NSLocalizedString(
       "ReportBrokenContactMeSuggestions", tableName: "BraveShared", bundle: .module,

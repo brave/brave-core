@@ -54,3 +54,95 @@ public extension Strings.Shields {
     comment: "The option the user can select to do standard (non-aggressive) ad and tracker blocking"
   )
 }
+
+// MARK: - Anti Ad-Block Warning
+
+public extension Strings.Shields {
+  /// A title for a popup that tells the user we recommend turning shields off for this site
+  static let antiAdBlockWarningTitle = NSLocalizedString(
+    "AntiAdBlockWarningTitle", tableName: "BraveShared", bundle: .module,
+    value: "Adjust Ad Block Settings For This Site",
+    comment: "A title for a popup that tells the user we recommend turning shields off for this site."
+  )
+  
+  /// A descriptive message explaining this site's ad-blocking crackdown
+  static let antiAdBlockWarningDescription = NSLocalizedString(
+    "AntiAdBlockWarningDescription", tableName: "BraveShared", bundle: .module,
+    value: "This site has begun blocking some ad blockers, which means their site may not work as expected.",
+    comment: "A descriptive message explaining this site's ad-blocking crackdown."
+  )
+  
+  /// A descriptive message explaining to disable shields on this site
+  static let antiAdBlockWarningDescription2 = NSLocalizedString(
+    "AntiAdBlockWarningDescription2", tableName: "BraveShared", bundle: .module,
+    value: "To address this issue, Brave can adjust your shields settings for you. Once adjusted, you can try watching this content in Brave Player instead.",
+    comment: "A descriptive message explaining to disable shields on this site."
+  )
+  
+  /// A button that disables ad-blocking and uses brave player
+  static let antiAdBlockWarningConfirmationButton = NSLocalizedString(
+    "AntiAdBlockWarningConfirmationButton", tableName: "BraveShared", bundle: .module,
+    value: "Adjust Shields For Me",
+    comment: "A button that disables ad-blocking and uses brave player."
+  )
+  
+  /// A button that dismisses the warning and does nothing
+  static let antiAdBlockWarningDismissButton = NSLocalizedString(
+    "AntiAdBlockWarningDismissButton", tableName: "BraveShared", bundle: .module,
+    value: "Keep Current Settings",
+    comment: "A button that dismisses the warning and does nothing."
+  )
+  
+  /// A discription of the Brave Player
+  static let antiAdBlockWarningBravePlayerDescription = NSLocalizedString(
+    "AntiAdBlockWarningBravePlayerDescription", tableName: "BraveShared", bundle: .module,
+    value: "**Brave Player** is your ticket to an ad-free and uninterrupted video experience.",
+    comment: "A discription of the Brave Player."
+  )
+}
+
+// MARK: - Brave Player
+
+public extension Strings.Shields {
+  /// Title for the brave player feature
+  static let bravePlayer = NSLocalizedString(
+    "BravePlayer", tableName: "BraveShared", bundle: .module,
+    value: "Brave Player",
+    comment: "Title for the brave player feature"
+  )
+  
+  /// Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar
+  static let bravePlayerInfoTitle = NSLocalizedString(
+    "BravePlayerInfoTitle", tableName: "BraveShared", bundle: .module,
+    value: "Watch In Brave Player Instead",
+    comment: "Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar."
+  )
+  
+  /// A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time
+  static let bravePlayerInfoMessage = NSLocalizedString(
+    "BravePlayerInfoMessage", tableName: "BraveShared", bundle: .module,
+    value: "Brave Player lets you watch videos without interruptions.",
+    comment: "A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time."
+  )
+  
+  /// A label for a toggle that enables automatic launching of brave player for certain sites
+  static let bravePlayerAlwaysOpenVideoLinks = NSLocalizedString(
+    "BravePlayerAlwaysOpenYouTubeLinks", tableName: "BraveShared", bundle: .module,
+    value: "Always open videos from this site with Brave Player",
+    comment: "A label for a toggle that enables automatic launching of brave player for certain sites"
+  )
+  
+  /// A button that confirms to use the brave player
+  static let bravePlayerConfirmButton = NSLocalizedString(
+    "BravePlayerConfirmButton", tableName: "BraveShared", bundle: .module,
+    value: "Try It Out",
+    comment: "A button that confirms to use the brave player."
+  )
+  
+  /// A button that ignores the brave player
+  static let bravePlayerDismissButton = NSLocalizedString(
+    "BravePlayerDismissButton", tableName: "BraveShared", bundle: .module,
+    value: "Not Now",
+    comment: "A button that ignores the brave player"
+  )
+}
