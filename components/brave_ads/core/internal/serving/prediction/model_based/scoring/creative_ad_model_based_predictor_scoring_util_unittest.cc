@@ -6,139 +6,94 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_segment_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/last_seen/creative_ad_model_based_predictor_last_seen_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/priority/creative_ad_model_based_predictor_priority_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingChildIntentSegmentScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeMatchingChildSegmentScore) {
   // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_child = true;
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo segment_input_variable;
+  segment_input_variable.child_matches.value = true;
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeIntentSegmentScore(input_variable));
+  EXPECT_DOUBLE_EQ(1.0, ComputeSegmentScore(segment_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingParentIntentSegmentScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeMatchingParentSegmentScore) {
   // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_parent = true;
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo segment_input_variable;
+  segment_input_variable.parent_matches.value = true;
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeIntentSegmentScore(input_variable));
+  EXPECT_DOUBLE_EQ(1.0, ComputeSegmentScore(segment_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeNonMatchingIntentSegmentScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeNonMatchingSegmentScore) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeIntentSegmentScore(/*input_variable=*/{}));
+  EXPECT_DOUBLE_EQ(0.0, ComputeSegmentScore(/*segment_input_variable=*/{}));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingChildLatentInterestSegmentScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeLastSeenScore) {
   // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_child = true;
+  CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_input_variable;
+  last_seen_input_variable.value = base::Hours(7);
 
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLatentInterestSegmentScore(input_variable));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingParentLatentInterestSegmentScore) {
-  // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_parent = true;
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLatentInterestSegmentScore(input_variable));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeNonMatchingLatentInterestSegmentScore) {
-  // Arrange
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable;
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeLatentInterestSegmentScore(input_variable));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingChildInterestSegmentScore) {
-  // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_child = true;
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeInterestSegmentScore(input_variable));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeMatchingParentInterestSegmentScore) {
-  // Arrange
-  CreativeAdPredictorSegmentInputVariableInfo input_variable;
-  input_variable.does_match_parent = true;
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeInterestSegmentScore(input_variable));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeNonMatchingInterestSegmentScore) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeInterestSegmentScore(/*input_variable=*/{}));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeLastSeenAdScore) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(0.29166666666666669, ComputeLastSeenAdScore(base::Hours(7)));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeNeverSeenAdScore) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdScore({}));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeLastSeenAdScoreIfExceeds1Day) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(
-      1.0, ComputeLastSeenAdScore(base::Days(1) + base::Milliseconds(1)));
-}
-
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeLastSeenAdvertiserScore) {
   // Act & Assert
   EXPECT_DOUBLE_EQ(0.29166666666666669,
-                   ComputeLastSeenAdvertiserScore(base::Hours(7)));
+                   ComputeLastSeenScore(last_seen_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeNeverSeenAdvertiserScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeNeverSeenScore) {
+  // Arrange
+  CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_input_variable;
+
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdvertiserScore({}));
+  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenScore(last_seen_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
-     ComputeLastSeenAdvertiserScoreIfExceeds1Day) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeLastSeenScoreIfExceeds1Day) {
+  // Arrange
+  CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_input_variable;
+  last_seen_input_variable.value = base::Days(1) + base::Milliseconds(1);
+
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdvertiserScore(base::Days(1) +
-                                                       base::Milliseconds(1)));
+  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenScore(last_seen_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputePriorityScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputePriorityScore) {
+  // Arrange
+  CreativeAdModelBasedPredictorPriorityInputVariableInfo
+      priority_input_variable;
+  priority_input_variable.value = 5;
+
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.2, ComputePriorityScore(5));
+  EXPECT_DOUBLE_EQ(0.2, ComputePriorityScore(priority_input_variable));
 }
 
-TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeZeroPriorityScore) {
+TEST(BraveAdsCreativeAdModelBasedPredictorScoringUtilTest,
+     ComputeZeroPriorityScore) {
+  // Arrange
+  CreativeAdModelBasedPredictorPriorityInputVariableInfo
+      priority_input_variable;
+  priority_input_variable.value = 0;
+
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputePriorityScore(0));
+  EXPECT_DOUBLE_EQ(0.0, ComputePriorityScore(priority_input_variable));
 }
 
 }  // namespace brave_ads

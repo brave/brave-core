@@ -8,55 +8,63 @@
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_segment_input_variable_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_user_model_segments.h"
 
 namespace brave_ads {
 
-CreativeAdPredictorSegmentInputVariableInfo
-ComputeCreativeAdPredictorIntentSegmentInputVariable(
-    const UserModelInfo& user_model,
-    const std::string& segment) {
-  CreativeAdPredictorSegmentInputVariableInfo intent_segment;
+namespace {
 
-  intent_segment.does_match_child =
-      base::Contains(GetTopChildIntentSegments(user_model), segment);
+CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+ComputeSegmentInputVariable(
+    const SegmentList& top_child_segments,
+    const SegmentList& top_parent_segments,
+    const std::string& segment,
+    const CreativeAdModelBasedPredictorWeightsInfo& weights) {
+  CreativeAdModelBasedPredictorSegmentInputVariablesInfo segment_input_variable;
 
-  intent_segment.does_match_parent = base::Contains(
-      GetTopParentIntentSegments(user_model), GetParentSegment(segment));
+  segment_input_variable.child_matches.value =
+      base::Contains(top_child_segments, segment);
+  segment_input_variable.child_matches.weight = weights.intent_segment.child;
 
-  return intent_segment;
+  segment_input_variable.parent_matches.value =
+      base::Contains(top_parent_segments, GetParentSegment(segment));
+  segment_input_variable.parent_matches.weight = weights.intent_segment.parent;
+
+  return segment_input_variable;
 }
 
-CreativeAdPredictorSegmentInputVariableInfo
-ComputeCreativeAdPredictorLatentInterestSegmentInputVariable(
+}  // namespace
+
+CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+ComputeCreativeAdModelBasedPredictorIntentSegmentInputVariable(
     const UserModelInfo& user_model,
-    const std::string& segment) {
-  CreativeAdPredictorSegmentInputVariableInfo latent_interest_segment;
-
-  latent_interest_segment.does_match_child =
-      base::Contains(GetTopChildLatentInterestSegments(user_model), segment);
-
-  latent_interest_segment.does_match_parent =
-      base::Contains(GetTopParentLatentInterestSegments(user_model),
-                     GetParentSegment(segment));
-
-  return latent_interest_segment;
+    const std::string& segment,
+    const CreativeAdModelBasedPredictorWeightsInfo& weights) {
+  return ComputeSegmentInputVariable(GetTopChildIntentSegments(user_model),
+                                     GetTopParentIntentSegments(user_model),
+                                     segment, weights);
 }
 
-CreativeAdPredictorSegmentInputVariableInfo
-ComputeCreativeAdPredictorInterestSegmentInputVariable(
+CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+ComputeCreativeAdModelBasedPredictorLatentInterestSegmentInputVariable(
     const UserModelInfo& user_model,
-    const std::string& segment) {
-  CreativeAdPredictorSegmentInputVariableInfo interest_segment;
+    const std::string& segment,
+    const CreativeAdModelBasedPredictorWeightsInfo& weights) {
+  return ComputeSegmentInputVariable(
+      GetTopChildLatentInterestSegments(user_model),
+      GetTopParentLatentInterestSegments(user_model), segment, weights);
+}
 
-  interest_segment.does_match_child =
-      base::Contains(GetTopChildInterestSegments(user_model), segment);
-
-  interest_segment.does_match_parent = base::Contains(
-      GetTopParentInterestSegments(user_model), GetParentSegment(segment));
-
-  return interest_segment;
+CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
+    const UserModelInfo& user_model,
+    const std::string& segment,
+    const CreativeAdModelBasedPredictorWeightsInfo& weights) {
+  return ComputeSegmentInputVariable(GetTopChildInterestSegments(user_model),
+                                     GetTopParentInterestSegments(user_model),
+                                     segment, weights);
 }
 
 }  // namespace brave_ads
