@@ -9,14 +9,7 @@ import("//testing/test.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "BRAVE_P3A_ENABLED=$brave_p3a_enabled",
-    "P3A_JSON_UPLOAD_URL=\"$p3a_json_upload_url\"",
-    "P3A_CREATIVE_UPLOAD_URL=\"$p3a_creative_upload_url\"",
-    "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
-    "P3A_CONSTELLATION_UPLOAD_URL=\"$p3a_constellation_upload_url\"",
-    "STAR_RANDOMNESS_HOST=\"$star_randomness_host\"",
-  ]
+  flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
 }
 
 static_library("p3a") {
@@ -69,6 +62,7 @@ static_library("p3a") {
   deps = [
     "constellation/rs/cxx:rust_lib",
     "//base",
+    "//brave/brave_domains",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",

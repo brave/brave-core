@@ -14,6 +14,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -41,15 +42,11 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   decentralized_dns::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
+  p3a::StarRandomnessMeta::RegisterPrefsForMigration(registry);
 #endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
-}
-
-void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
-  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
@@ -57,10 +54,30 @@ void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
 
 #define BRAVE_REGISTER_LOCAL_STATE_PREFS BraveRegisterLocalStatePrefs(registry);
 
-#define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
-  BraveMigrateObsoleteBrowserStatePrefs(prefs);
+#define MigrateObsoleteBrowserStatePrefs \
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl
+
+#define MigrateObsoleteLocalStatePrefs \
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl
 
 #include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
-#undef BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+
+#undef MigrateObsoleteLocalStatePrefs
+#undef MigrateObsoleteBrowserStatePrefs
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
+
+void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(prefs);
+
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
+  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl(prefs);
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(prefs);
+#endif
+}

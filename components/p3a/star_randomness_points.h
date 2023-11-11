@@ -9,10 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 
 namespace network {
@@ -30,6 +32,7 @@ class StarRandomnessPoints {
  public:
   using RandomnessDataCallback = base::RepeatingCallback<void(
       std::string metric_name,
+      MetricLogType log_type,
       uint8_t epoch,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
@@ -46,8 +49,9 @@ class StarRandomnessPoints {
 
   void SendRandomnessRequest(
       std::string metric_name,
-      StarRandomnessMeta* randomness_meta,
+      MetricLogType log_type,
       uint8_t epoch,
+      StarRandomnessMeta* randomness_meta,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
       const rust::Vec<constellation::VecU8>& rand_req_points);
@@ -55,14 +59,16 @@ class StarRandomnessPoints {
  private:
   void HandleRandomnessResponse(
       std::string metric_name,
-      StarRandomnessMeta* randomness_meta,
+      MetricLogType log_type,
       uint8_t epoch,
+      StarRandomnessMeta* randomness_meta,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<std::string> response_body);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
+      url_loaders_;
 
   RandomnessDataCallback data_callback_;
 
