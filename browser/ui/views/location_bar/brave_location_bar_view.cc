@@ -363,7 +363,7 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
 
 void BraveLocationBarView::SetupShadow() {
   const auto* const color_provider = GetColorProvider();
-  if (color_provider) {
+  if (!color_provider) {
     return;
   }
 
