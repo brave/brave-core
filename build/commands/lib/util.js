@@ -555,9 +555,8 @@ const util = {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
-    // Only build if the source has changed unless it's CI
-    if (!config.isCI &&
-        fs.existsSync(redirectCC) &&
+    // Only build if the source has changed.
+    if (fs.existsSync(redirectCC) &&
         fs.statSync(redirectCC).mtime >=
         fs.statSync(path.join(config.braveCoreDir, 'tools', 'redirect_cc', 'redirect_cc.cc')).mtime) {
       return
