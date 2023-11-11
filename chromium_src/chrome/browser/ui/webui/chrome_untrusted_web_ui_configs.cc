@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -32,6 +33,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/browser/ui/webui/brave_player_ui.h"
+#include "brave/components/brave_player/common/features.h"
 #endif
 
 #define RegisterChromeUntrustedWebUIConfigs \
@@ -76,4 +82,11 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<UntrustedChatUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+  if (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<UntrustedBravePlayerEmbedUIConfig>());
+  }
+#endif
 }

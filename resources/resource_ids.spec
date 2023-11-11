@@ -218,4 +218,8 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [58060]
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [58070],
+  }
 }
