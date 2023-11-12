@@ -5,14 +5,15 @@
 
 import * as React from 'react'
 
-import styled from 'styled-components'
-import { color, font } from '@brave/leo/tokens/css'
-
-import { formatTimeInSeconds } from '../utils/timeFormatter'
+import styled, { css } from 'styled-components'
+import { color } from '@brave/leo/tokens/css'
 
 interface Props {
   videoElement: HTMLVideoElement | null
   className?: string
+  thumbVisible: boolean
+  onMouseEnter: () => void
+  onMouseLeave: () => void
 }
 
 const SeekerContainer = styled.div`
@@ -20,17 +21,8 @@ const SeekerContainer = styled.div`
   flex-direction: column;
 `
 
-const TimeContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-
-  color: ${color.text.secondary};
-  font: ${font.primary.xSmall.regular};
-`
-
 const StyledProgress = styled.progress.attrs(
-  (p: { value: number; max: number }) => ({
+  (p: { value: number; max: number; thumbVisible: boolean }) => ({
     'style': {
       '--progress-thumb-left': `calc(${
         (p.value && p.max ? +p.value / +p.max : 0) * 100
@@ -40,8 +32,8 @@ const StyledProgress = styled.progress.attrs(
 )`
   --progress-background: var(--seeker-progress-background, rgba(0, 0, 0, 0.1));
   --progress-stroke-background: ${color.button.background};
-  --progress-bar-height: 12px;
-  --progress-stroke-thickness: 2px;
+  --progress-bar-height: var(--seeker-height);
+  --progress-stroke-thickness: var(--seeker-progress-stroke-thickness);
 
   width: 100%;
   height: var(--progress-bar-height);
@@ -58,6 +50,7 @@ const StyledProgress = styled.progress.attrs(
     border-radius: calc(var(--progress-stroke-thickness) * 0.5);
     background: var(--progress-stroke-background);
   }
+
   &::after {
     content: '';
     position: absolute;
@@ -67,23 +60,33 @@ const StyledProgress = styled.progress.attrs(
     height: var(--progress-bar-height);
     background: var(--progress-stroke-background);
     border-radius: calc(var(--progress-bar-height) * 2);
+
+    transition: transform 0.1s ease-out;
+    ${(p) =>
+      !p.thumbVisible &&
+      css`
+        transform: scale(0);
+      `}
   }
 `
 
 class DragController {
-  constructor (
+  constructor(
     videoElement: HTMLVideoElement,
     progressElem: HTMLProgressElement,
-    updateProgressValue: (value: number) => void
+    updateProgressValue: (value: number) => void,
+    onDragStateChanged: (dragging: boolean) => void
   ) {
     this.#videoElement = videoElement
     this.#progressElem = progressElem
     this.#updateProgressValue = updateProgressValue
+    this.#onDragStateChanged = onDragStateChanged
   }
 
   #videoElement: HTMLVideoElement
   #progressElem: HTMLProgressElement
   #updateProgressValue: (value: number) => void
+  #onDragStateChanged: (dragging: boolean) => void
 
   #isMouseDown = false
   #isDragging = false
@@ -138,6 +141,7 @@ class DragController {
       Math.abs(event.clientX - this.#initialState!.clientX) > dragThreshold
     ) {
       this.#isDragging = true
+      this.#onDragStateChanged(this.#isDragging)
     }
 
     if (!this.#isDragging) {
@@ -174,6 +178,8 @@ class DragController {
       this.#videoElement.currentTime = this.interpolatePxToValue(
         event.clientX - this.#progressElem.offsetLeft
       )
+      this.#isDragging = false
+      this.#onDragStateChanged(this.#isDragging)
     } else {
       this.#videoElement.currentTime = this.interpolatePxToValue(
         this.#initialState!.clientX - this.#progressElem.offsetLeft
@@ -187,9 +193,16 @@ class DragController {
   }
 }
 
-export default function PlayerSeeker ({ videoElement, className }: Props) {
+export default function PlayerSeeker({
+  videoElement,
+  className,
+  thumbVisible,
+  onMouseEnter,
+  onMouseLeave
+}: Props) {
   const [duration, setDuration] = React.useState(0)
   const [currentTime, setCurrentTime] = React.useState(0)
+  const [dragging, setDragging] = React.useState(false)
 
   React.useEffect(() => {
     if (!videoElement) {
@@ -226,7 +239,8 @@ export default function PlayerSeeker ({ videoElement, className }: Props) {
     const dragController = new DragController(
       videoElement,
       progressElem,
-      setCurrentTime
+      setCurrentTime,
+      setDragging
     )
     progressElem.addEventListener('mousedown', dragController.onMouseDown)
     return () => {
@@ -238,16 +252,17 @@ export default function PlayerSeeker ({ videoElement, className }: Props) {
   }, [progressElementRef.current])
 
   return (
-    <SeekerContainer className={className}>
+    <SeekerContainer
+      className={className}
+      onMouseEnter={() => onMouseEnter()}
+      onMouseLeave={() => onMouseLeave()}
+    >
       <StyledProgress
         max={duration}
         value={currentTime}
         ref={progressElementRef}
+        thumbVisible={thumbVisible || dragging}
       />
-      <TimeContainer>
-        <span>{formatTimeInSeconds(currentTime, 'colon')}</span>
-        <span>{formatTimeInSeconds(duration, 'colon')}</span>
-      </TimeContainer>
     </SeekerContainer>
   )
 }
