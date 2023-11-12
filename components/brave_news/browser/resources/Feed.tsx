@@ -13,6 +13,18 @@ import Discover from "./feed/Discover";
 import HeroArticle from "./feed/Hero";
 import { getHistoryValue, setHistoryState } from "./shared/history";
 
+// Restoring scroll position is complicated - we have two available strategies:
+// 1. Scroll to the same position - as long as the window hasn't been resized,
+//    this will bring the user back to exactly where they left.
+// 2. If the screen size has changed, scroll the clicked article to the top of
+//    the screen.
+interface NewsScrollData {
+  itemId: string,
+  innerWidth: number,
+  innerHeight: number,
+  scrollPos: number,
+}
+
 const FeedContainer = styled.div`
   max-width: 540px;
   display: flex;
@@ -38,6 +50,17 @@ const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
 const PAGE_SIZE = 25;
 const CARD_CLASS = 'feed-card'
 
+const saveScrollPos = (itemId: React.Key) => () => {
+  setHistoryState({
+    'bn-scroll-data': {
+      itemId: itemId,
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      scrollPos: document.scrollingElement?.scrollTop
+    }
+  })
+}
+
 export default function Component({ feed }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue('bn-card-count', PAGE_SIZE));
 
@@ -51,14 +74,14 @@ export default function Component({ feed }: Props) {
   // Track the feed scroll position - if we mount this component somewhere with
   // a bn-last-opened saved in the state, try and restore the scroll position.
   React.useEffect(() => {
-    const itemId = getHistoryValue<string>('bn-last-opened', '')
-    if (itemId) {
-      setTimeout(() => {
-        const target = document.querySelector(`[data-id="${itemId}"]`)
-        target?.scrollIntoView({
-          behavior: 'smooth',
-        })
-      })
+    const scrollData = getHistoryValue<NewsScrollData | undefined>('bn-scroll-data', undefined)
+    if (scrollData) {
+      // If the viewport size hasn't changed, restore the scroll position.
+      // Otherwise, scroll the clicked item into view.
+      const scroll = scrollData.innerHeight === window.innerHeight && scrollData.innerWidth === window.innerWidth
+        ? () => document.scrollingElement?.scrollTo({ top: scrollData.scrollPos })
+        : () => document.querySelector(`[data-id="${scrollData.itemId}"]`)?.scrollIntoView()
+      setTimeout(scroll)
     }
   }, [])
 
@@ -102,7 +125,7 @@ export default function Component({ feed }: Props) {
       }
 
       const key = getKey(item, index)
-      return <div className={CARD_CLASS} onClickCapture={() => setHistoryState({ 'bn-last-opened': key })} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
+      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
         {el}
       </div>
     })
