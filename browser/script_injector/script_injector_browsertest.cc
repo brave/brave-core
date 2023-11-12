@@ -151,12 +151,11 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedDoNotAwait) {
   auto cb = base::BindOnce([](base::Value value) { FAIL(); });
   auto script = base::StringPrintf(kScript, "true");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          ISOLATED_WORLD_ID_BRAVE_INTERNAL,
-          base::UTF8ToUTF16(std::string(script)),
-          blink::mojom::UserActivationOption::kDoNotActivate,
-          blink::mojom::PromiseResultOption::kDoNotWait, std::move(cb));
+  auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
+  remote->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::PromiseResultOption::kDoNotWait, std::move(cb));
   // Test will not wait for the promise.
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
