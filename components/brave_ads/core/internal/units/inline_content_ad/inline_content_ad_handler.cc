@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
@@ -136,8 +138,26 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
 
   BLOG(1, "Purged orphaned inline content ad placements for tab id " << tab_id);
 
-  PurgeOrphanedAdEvents(placement_ids_[tab_id],
-                        /*intentional*/ base::DoNothing());
+  PurgeOrphanedAdEvents(
+      placement_ids_[tab_id],
+      base::BindOnce(
+          [](const std::vector<std::string>& placement_ids,
+             const bool success) {
+            if (!success) {
+              return BLOG(
+                  0, "Failed to purge orphaned inline content ad events for "
+                         << base::JoinString(placement_ids, ", ")
+                         << " placement ids");
+            }
+
+            RebuildAdEventCache();
+
+            return BLOG(
+                1, "Successfully purged orphaned inline content ad events for "
+                       << base::JoinString(placement_ids, ", ")
+                       << " placement ids");
+          },
+          placement_ids_[tab_id]));
 
   placement_ids_.erase(tab_id);
 }
