@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const assert = require('assert')
+const config = require('./config')
 const fs = require('fs')
 const path = require('path')
-const Log = require('../logging')
+const Log = require('./logging')
 
-function updateChromeVersion(config) {
+function updateChromeVersion() {
   const braveVersionParts = config.braveVersion.split('.')
   assert(braveVersionParts.length == 3)
 
@@ -46,7 +47,7 @@ function updateChromeVersion(config) {
   const newVersionFileContent = versionLines.join('\n')
   if (newVersionFileContent !== versionFileContent) {
     fs.writeFileSync(versionFilePath, newVersionFileContent)
-    Log.status(`Updated chrome/VERSION: ${versionToLog}`)
+    Log.status(`Set chrome/VERSION: ${versionToLog}`)
   } else {
     console.log(`chrome/VERSION: ${versionToLog}`)
   }
