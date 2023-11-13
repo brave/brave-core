@@ -988,7 +988,7 @@
     Automatically redirect .onion sites
   </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    Brave will switch to the .onion version of a website when available, and automatically open all .onion domains in a Tor window.
+    In Tor windows, Brave will automatically switch to the .onion version of a website when available.
   </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE" desc="">
     Only resolve .onion addresses in Tor windows

@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -71,8 +72,6 @@ class OnionLocationButtonView : public views::LabelButton {
                     brave_l10n::GetLocalizedResourceUTF16String(
                         IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
     if (profile->IsTor()) {
       SetText(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_LOCATION_BAR_ONION_AVAILABLE));
@@ -107,7 +106,12 @@ class OnionLocationButtonView : public views::LabelButton {
 
   ~OnionLocationButtonView() override = default;
 
-  void SetOnionLocation(GURL location) { onion_location_ = location; }
+  void SetOnionLocation(const GURL& location) {
+    onion_location_ = location;
+    SetTooltipText(l10n_util::GetStringFUTF16(
+        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
+        u"\r\n" + base::UTF8ToUTF16(onion_location_.spec())));
+  }
 
  private:
   // views::View
