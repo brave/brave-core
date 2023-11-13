@@ -63,7 +63,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
-  void DisconnectPageContents() override;
+  void SetShouldSendPageContents(bool should_send) override;
+  void GetShouldSendPageContents(
+      GetShouldSendPageContentsCallback callback) override;
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;

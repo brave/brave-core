@@ -37,7 +37,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     title: undefined,
     isContentAssociationPossible: false,
     isContentTruncated: false,
-    hasContentAssociated: false
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
@@ -47,6 +46,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
+  const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -155,6 +155,15 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.openURL({ url: URL_REFRESH_PREMIUM_SESSION })
   }
 
+  const updateShouldSendPageContents = (shouldSend: boolean) => {
+    setShouldSendPageContents(shouldSend)
+    getPageHandlerInstance().pageHandler.setShouldSendPageContents(shouldSend)
+  }
+
+  const getShouldSendPageContents = () => {
+    getPageHandlerInstance().pageHandler.getShouldSendPageContents().then(({ shouldSend }) => setShouldSendPageContents(shouldSend))
+  }
+
   const shouldShowLongPageWarning = React.useMemo(() => {
     if (
       !hasDismissedLongPageWarning &&
@@ -218,6 +227,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getFaviconData()
     getCurrentAPIError()
     getCanShowPremiumPrompt()
+    getShouldSendPageContents()
   }
 
   React.useEffect(() => {
@@ -232,6 +242,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     // Setup data event handlers
     getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
       getConversationHistory()
+      getShouldSendPageContents()
     })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
     getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
@@ -289,6 +300,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldShowLongPageWarning,
     shouldShowLongConversationInfo,
     showAgreementModal,
+    shouldSendPageContents,
     setCurrentModel,
     switchToDefaultModel,
     goPremium,
@@ -300,6 +312,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     userRefreshPremiumSession,
     dismissLongPageWarning,
     dismissLongConversationInfo,
+    updateShouldSendPageContents,
   }
 
   return (

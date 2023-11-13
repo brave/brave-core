@@ -52,35 +52,37 @@ function InputBox () {
   }
 
   return (
-    <form className={styles.form}>
-      <div className={styles.textareaBox}>
-        <textarea
-          className={styles.textarea}
-          placeholder={getLocale('placeholderLabel')}
-          onChange={onInputChange}
-          onKeyDown={onUserPressEnter}
-          value={inputText}
-          autoFocus
-        />
-        <div className={classnames({
-          [styles.counterText]: true,
-          [styles.counterTextVisible]: isCharLimitApproaching,
-          [styles.counterTextError]: isCharLimitExceeded
-        })}>
-          {`${inputText.length} / ${MAX_INPUT_CHAR}`}
+    <div className={styles.container}>
+      <form className={styles.form}>
+        <div className={styles.textareaBox}>
+          <textarea
+            className={styles.textarea}
+            placeholder={getLocale('placeholderLabel')}
+            onChange={onInputChange}
+            onKeyDown={onUserPressEnter}
+            value={inputText}
+            autoFocus
+          />
+          <div className={classnames({
+            [styles.counterText]: true,
+            [styles.counterTextVisible]: isCharLimitApproaching,
+            [styles.counterTextError]: isCharLimitExceeded
+          })}>
+            {`${inputText.length} / ${MAX_INPUT_CHAR}`}
+          </div>
         </div>
-      </div>
-      <div>
-        <button
-          className={styles.buttonSend}
-          onClick={handleSubmit}
-          disabled={context.shouldDisableUserInput}
-          title={getLocale('sendChatButtonLabel')}
-        >
-          <Icon name='send' />
-        </button>
-      </div>
-    </form>
+        <div>
+          <button
+            className={styles.buttonSend}
+            onClick={handleSubmit}
+            disabled={context.shouldDisableUserInput}
+            title={getLocale('sendChatButtonLabel')}
+          >
+            <Icon name='send' />
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
 

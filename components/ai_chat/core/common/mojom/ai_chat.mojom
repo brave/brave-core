@@ -55,8 +55,6 @@ struct SiteInfo {
   bool is_content_truncated;
   // Indicates if the URL scheme is of a type that allows for content association.
   bool is_content_association_possible;
-  // Indicates if there is currently content in-memory associated with this conversation.
-  bool has_content_associated;
 };
 
 // Represents a single turn in a conversation.
@@ -122,7 +120,8 @@ interface PageHandler {
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
   OpenURL(url.mojom.Url url);
-  DisconnectPageContents();
+  SetShouldSendPageContents(bool should_send);
+  GetShouldSendPageContents() => (bool should_send);
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);

@@ -13,7 +13,6 @@ import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
@@ -25,6 +24,7 @@ import WarningLongPage from '../alerts/warning_long_page'
 import InfoLongConversation from '../alerts/info_long_conversation'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
+import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 
 function Main() {
@@ -57,15 +57,11 @@ function Main() {
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
-  let siteTitleElement = null
   let currentErrorElement = null
 
   if (hasAcceptedAgreement) {
-    if (siteInfo?.hasContentAssociated) {
-      siteTitleElement = <SiteTitle />
-    }
-
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
@@ -123,9 +119,6 @@ function Main() {
         [styles.flushBottom]: !hasAcceptedAgreement
       })}>
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {siteTitleElement && (
-          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
-        )}
         {context.showModelIntro && <ModelIntro />}
         <ConversationList />
         {currentErrorElement && (
@@ -183,6 +176,11 @@ function Main() {
         {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
       <div className={styles.inputBox}>
+        {showContextToggle && (
+          <div className={styles.toggleContainer}>
+            <PageContextToggle />
+          </div>
+        )}
         <InputBox />
       </div>
     </main>

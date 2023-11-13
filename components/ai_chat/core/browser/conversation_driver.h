@@ -75,6 +75,8 @@ class ConversationDriver {
       mojom::SuggestionGenerationStatus& suggestion_status);
   bool HasContentAssociated();
   void DisconnectPageContents();
+  void SetShouldSendPageContents(bool should_send);
+  bool GetShouldSendPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
@@ -82,7 +84,6 @@ class ConversationDriver {
   bool IsPageContentsTruncated();
   bool HasPendingConversationEntry();
   bool IsContentAssociationPossible();
-  void SetPendingMessageNeedsPageContent(bool needs_content);
   void SubmitSummarizationRequest();
 
  protected:
@@ -152,7 +153,7 @@ class ConversationDriver {
   mojom::SuggestionGenerationStatus suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::None;
   bool is_video_ = false;
-  bool should_page_content_be_disconnected_ = false;
+  bool should_send_page_contents_ = true;
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;

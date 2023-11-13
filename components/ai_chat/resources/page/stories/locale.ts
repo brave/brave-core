@@ -76,5 +76,7 @@ provideStrings({
   welcomeGuideSiteHelpCardDescWithAction: 'I can help you summarizing articles, expanding on a site\'s content and much more. Not sure where to start? Try this:',
   welcomeGuideShatCardTitle: 'Just want to chat?',
   welcomeGuideShatCardDesc: 'Ask me anything! We can talk about any topic you want. I\'m always learning and improving to provide better answers.',
-  privacyTitle: 'Privacy agreement'
+  privacyTitle: 'Privacy agreement',
+  contextToggleLabel: 'Use page context for response',
+  contextToggleTooltipInfo: 'Toggle on to ask about this page. It\'s content will be sent to Brave Leo along with your messages.'
 })
