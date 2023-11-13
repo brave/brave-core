@@ -31,6 +31,8 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#include <iostream>
+
 namespace ai_chat {
 
 namespace {
@@ -105,6 +107,7 @@ std::string BuildClaudePrompt(
            nullptr),
        kAIPromptSequence, " <response>\n"});
 
+  std::cerr << "*** Prompt: " << prompt << "\n";
   return prompt;
 }
 
