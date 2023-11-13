@@ -41,7 +41,7 @@ const TimeContainer = styled.div`
   grid-template-columns: auto auto;
   justify-content: space-between;
 
-  color: ${color.text.secondary};
+  color: ${color.white};
   font: ${font.primary.xSmall.regular};
 `
 
@@ -85,6 +85,8 @@ const VideoOverlayControlsContainer = styled.div<{
     css`
       opacity: 0;
     `}
+
+  --title-color: ${color.white};
 `
 
 const StyledSeeker = styled(PlayerSeeker)`
@@ -117,6 +119,8 @@ const FaviconAndTitle = styled.div`
 const ControlsContainer = styled.div`
   display: flex;
   position: relative;
+
+  --title-color: ${color.text.primary};
 
   @media ${playerTypes.normalPlayer} {
     position: absolute;
@@ -208,7 +212,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 `
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
-  color: ${color.text.primary};
+  color: var(--title-color);
   font: ${font.primary.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
