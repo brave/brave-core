@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_CONSTANTS_H_
+#ifndef BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_CONSTANTS_H_
+#define BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_CONSTANTS_H_
 
 #include <guiddef.h>
 
@@ -17,7 +17,7 @@ inline constexpr char kBraveVpnHelperCrashMe[] = "crash-me";
 inline constexpr wchar_t kBraveVPNHelperExecutable[] = L"brave_vpn_helper.exe";
 inline constexpr wchar_t kBraveVpnHelperFiltersInstalledValue[] = L"filters";
 // Repeating interval to check the connection is live.
-constexpr int kCheckConnectionIntervalInSeconds = 3;
+inline constexpr int kCheckConnectionIntervalInSeconds = 3;
 
 /* UUID of WFP sublayer used by all instances */
 #if BUILDFLAG(CHANNEL_NIGHTLY)
@@ -80,4 +80,4 @@ inline constexpr GUID kVpnDnsSublayerGUID = {
 #endif
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_CONSTANTS_H_
+#endif  // BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_CONSTANTS_H_
