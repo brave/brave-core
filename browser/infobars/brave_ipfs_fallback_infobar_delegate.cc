@@ -32,17 +32,6 @@ void BraveIPFSFallbackInfoBarDelegate::Create(
       true);
 }
 
-BraveIPFSFallbackInfoBarDelegateFactory::
-    BraveIPFSFallbackInfoBarDelegateFactory(
-        std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserverFactory>
-            observer_factory,
-        infobars::ContentInfoBarManager* infobar_manager,
-        PrefService* local_state)
-    : local_state_(local_state),
-      observer_factory_(std::move(observer_factory)) {}
-BraveIPFSFallbackInfoBarDelegateFactory::
-    ~BraveIPFSFallbackInfoBarDelegateFactory() = default;
-
 BraveIPFSFallbackInfoBarDelegate::BraveIPFSFallbackInfoBarDelegate(
     std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> observer,
     PrefService* local_state)

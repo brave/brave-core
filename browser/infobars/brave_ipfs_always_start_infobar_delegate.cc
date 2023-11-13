@@ -6,11 +6,11 @@
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 
 #include "base/functional/callback_helpers.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/prefs/pref_service.h"
-#include "brave/components/ipfs/ipfs_service.h"
 
 BraveIPFSAlwaysStartInfoBarDelegateFactory::
     BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service,
@@ -32,7 +32,8 @@ BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(
     PrefService* local_state)
     : local_state_(local_state), ipfs_service_(ipfs_service) {}
 
-BraveIPFSAlwaysStartInfoBarDelegate::~BraveIPFSAlwaysStartInfoBarDelegate() = default;
+BraveIPFSAlwaysStartInfoBarDelegate::~BraveIPFSAlwaysStartInfoBarDelegate() =
+    default;
 
 // ConfirmInfoBarDelegate
 infobars::InfoBarDelegate::InfoBarIdentifier
@@ -67,7 +68,7 @@ bool BraveIPFSAlwaysStartInfoBarDelegate::Accept() {
   if (local_state_) {
     local_state_->SetBoolean(kIPFSAlwaysStartMode, true);
     if (!ipfs_service_->IsDaemonLaunched()) {
-       ipfs_service_->LaunchDaemon(base::NullCallback());
+      ipfs_service_->LaunchDaemon(base::NullCallback());
     }
   }
   return true;

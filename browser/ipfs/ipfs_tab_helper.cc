@@ -15,7 +15,6 @@
 #include "base/functional/bind.h"
 #include "base/supports_user_data.h"
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
-#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/pref_names.h"
@@ -38,6 +37,7 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
 #include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
 #endif
@@ -125,23 +125,6 @@ class BraveIPFSInfoBarDelegateObserverImpl
   base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
 };
 
-class BraveIPFSInfoBarDelegateObserverImplFactory
-    : public BraveIPFSInfoBarDelegateObserverFactory {
- public:
-  explicit BraveIPFSInfoBarDelegateObserverImplFactory(
-      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
-      : ipfs_tab_helper_(ipfs_tab_helper) {}
-  ~BraveIPFSInfoBarDelegateObserverImplFactory() override = default;
-
-  std::unique_ptr<BraveIPFSInfoBarDelegateObserver> Create() override {
-    return std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
-        ipfs_tab_helper_);
-  }
-
- private:
-  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
-};
-
 class BraveIPFSFallbackInfoBarDelegateObserverImpl
     : public BraveIPFSFallbackInfoBarDelegateObserver {
  public:
@@ -157,25 +140,6 @@ class BraveIPFSFallbackInfoBarDelegateObserverImpl
   }
 
   ~BraveIPFSFallbackInfoBarDelegateObserverImpl() override = default;
-
- private:
-  GURL original_url_;
-  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
-};
-
-class BraveIPFSFallbackInfoBarDelegateObserverImplFactory
-    : public BraveIPFSFallbackInfoBarDelegateObserverFactory {
- public:
-  explicit BraveIPFSFallbackInfoBarDelegateObserverImplFactory(
-      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper,
-      GURL original_url)
-      : original_url_(original_url), ipfs_tab_helper_(ipfs_tab_helper) {}
-  ~BraveIPFSFallbackInfoBarDelegateObserverImplFactory() override = default;
-
-  std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> Create() override {
-    return std::make_unique<BraveIPFSFallbackInfoBarDelegateObserverImpl>(
-        ipfs_tab_helper_, original_url_);
-  };
 
  private:
   GURL original_url_;
@@ -321,11 +285,11 @@ void IPFSTabHelper::UpdateLocationBar() {
   // Check whether content_infobar_manager is present for unit tests
   if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
       !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
-    BraveIPFSInfoBarDelegateFactory factory(
-        std::make_unique<BraveIPFSInfoBarDelegateObserverImplFactory>(
+    BraveIPFSInfoBarDelegate::Create(
+        content_infobar_manager,
+        std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
             weak_ptr_factory_.GetWeakPtr()),
-        content_infobar_manager, pref_service_);
-    factory.Create();
+        pref_service_);
   }
 #endif
 

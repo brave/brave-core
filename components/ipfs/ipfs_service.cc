@@ -10,15 +10,12 @@
 
 #include "base/files/file_util.h"
 #include "base/hash/hash.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ref.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/base/process/process_launcher.h"
-#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -49,6 +46,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
 #endif
 namespace {
@@ -153,9 +151,9 @@ IpfsService::IpfsService(
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
 
-
-  const auto isIpfsLocal = (prefs_->GetInteger(kIPFSResolveMethod) ==
-          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  const auto isIpfsLocal =
+      (prefs_->GetInteger(kIPFSResolveMethod) ==
+       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   if (isIpfsLocal && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
     StartDaemonAndLaunch(base::NullCallback());
   }

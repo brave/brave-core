@@ -4,11 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
-#include <utility>
-
-#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
-#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
-#include "components/infobars/content/content_infobar_manager.h"
 
 BraveConfirmInfoBarDelegate::BraveConfirmInfoBarDelegate() = default;
 BraveConfirmInfoBarDelegate::~BraveConfirmInfoBarDelegate() = default;
@@ -38,30 +33,3 @@ void BraveConfirmInfoBarDelegate::SetCheckboxChecked(bool checked) {}
 bool BraveConfirmInfoBarDelegate::InterceptClosing() {
   return false;
 }
-
-// BraveConfirmInfoBarDelegateFactory::BraveConfirmInfoBarDelegateFactory(
-//     infobars::ContentInfoBarManager* infobar_manager,
-//     std::unique_ptr<BraveConfirmInfoBarDelegate> delegate)
-//     : infobar_manager_(infobar_manager),
-//       delegate_(std::move(delegate)) {}
-
-// BraveConfirmInfoBarDelegateFactory::BraveConfirmInfoBarDelegateFactory(std::unique_ptr<BraveConfirmInfoBarDelegate>
-// delegate) : delegate_(std::move(delegate)) {}
-
-BraveConfirmInfoBarDelegateFactory::~BraveConfirmInfoBarDelegateFactory() = default;
-
-// void BraveConfirmInfoBarDelegateFactory::Create() {
-//   if(!delegate_) {
-//     return;
-//   }
-
-//   if (!infobar_manager_) {
-//     // show infobar as global
-//     BraveGlobalInfoBarManager::Show(std::move(delegate_));
-//     return;
-//   }
-
-//   // show infobar for one tab
-//   infobar_manager_->AddInfoBar(
-//       std::make_unique<BraveConfirmInfoBar>(std::move(delegate_)), true);
-// }

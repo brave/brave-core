@@ -157,7 +157,7 @@ void BraveConfirmInfoBar::Layout() {
   auto order = GetDelegate()->GetButtonsOrder();
   for (const auto& id : order) {
     auto* current_button = GetButtonById(id);
-    if(!current_button){
+    if (!current_button) {
       continue;
     }
     current_button->SetPosition(gfx::Point(x, OffsetY(current_button)));

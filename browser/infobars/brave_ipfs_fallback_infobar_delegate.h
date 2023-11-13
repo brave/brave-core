@@ -25,23 +25,12 @@ class BraveIPFSFallbackInfoBarDelegateObserver {
   virtual ~BraveIPFSFallbackInfoBarDelegateObserver();
 };
 
-class BraveIPFSFallbackInfoBarDelegateObserverFactory {
- public:
-  virtual std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver>
-  Create() = 0;
-  virtual ~BraveIPFSFallbackInfoBarDelegateObserverFactory() = default;
-
- protected:
-  BraveIPFSFallbackInfoBarDelegateObserverFactory() = default;
-};
-
 class BraveIPFSFallbackInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   BraveIPFSFallbackInfoBarDelegate(const BraveIPFSFallbackInfoBarDelegate&) =
       delete;
   BraveIPFSFallbackInfoBarDelegate& operator=(
       const BraveIPFSFallbackInfoBarDelegate&) = delete;
-  ~BraveIPFSFallbackInfoBarDelegate() override;
 
   static void Create(
       infobars::ContentInfoBarManager* infobar_manager,
@@ -52,6 +41,7 @@ class BraveIPFSFallbackInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   explicit BraveIPFSFallbackInfoBarDelegate(
       std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> observer,
       PrefService* local_state);
+  ~BraveIPFSFallbackInfoBarDelegate() override;
 
   // BraveConfirmInfoBarDelegate
   bool HasCheckbox() const override;
@@ -74,24 +64,6 @@ class BraveIPFSFallbackInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
   std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> observer_;
   raw_ptr<PrefService> local_state_ = nullptr;
-};
-
-class BraveIPFSFallbackInfoBarDelegateFactory
-    : public BraveConfirmInfoBarDelegateFactory {
- public:
-  BraveIPFSFallbackInfoBarDelegateFactory(
-      std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserverFactory>
-          observer_factory,
-      infobars::ContentInfoBarManager* infobar_manager,
-      PrefService* local_state);
-  ~BraveIPFSFallbackInfoBarDelegateFactory() override;
-
-  std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
-
- private:
-  raw_ptr<PrefService> local_state_ = nullptr;
-  std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserverFactory>
-      observer_factory_;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_FALLBACK_INFOBAR_DELEGATE_H_

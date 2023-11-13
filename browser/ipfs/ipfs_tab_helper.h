@@ -30,7 +30,6 @@ class PrefService;
 namespace ipfs {
 class IPFSHostResolver;
 class IpfsImportController;
-class IpfsAlwaysStartModeProposer;
 
 // Determines if IPFS should be active for a given top-level navigation.
 class IPFSTabHelper : public content::WebContentsObserver,

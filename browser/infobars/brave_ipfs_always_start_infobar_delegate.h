@@ -20,17 +20,17 @@ class IpfsService;
 }  // namespace ipfs
 
 class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
-public:
-  BraveIPFSAlwaysStartInfoBarDelegate(const BraveIPFSAlwaysStartInfoBarDelegate&) =
-      delete;
+ public:
+  BraveIPFSAlwaysStartInfoBarDelegate(
+      const BraveIPFSAlwaysStartInfoBarDelegate&) = delete;
   BraveIPFSAlwaysStartInfoBarDelegate& operator=(
       const BraveIPFSAlwaysStartInfoBarDelegate&) = delete;
   ~BraveIPFSAlwaysStartInfoBarDelegate() override;
 
  private:
   friend class BraveIPFSAlwaysStartInfoBarDelegateFactory;
-  explicit BraveIPFSAlwaysStartInfoBarDelegate(ipfs::IpfsService* ipfs_service, PrefService* local_state);
-
+  explicit BraveIPFSAlwaysStartInfoBarDelegate(ipfs::IpfsService* ipfs_service,
+                                               PrefService* local_state);
 
   // BraveConfirmInfoBarDelegate
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
@@ -46,9 +46,12 @@ public:
   raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
 };
 
-class BraveIPFSAlwaysStartInfoBarDelegateFactory : public BraveConfirmInfoBarDelegateFactory {
-public:
-  explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service, PrefService* local_state);
+class BraveIPFSAlwaysStartInfoBarDelegateFactory
+    : public BraveConfirmInfoBarDelegateFactory {
+ public:
+  explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(
+      ipfs::IpfsService* ipfs_service,
+      PrefService* local_state);
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
   std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;

@@ -9,7 +9,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
@@ -28,29 +27,22 @@ class BraveIPFSInfoBarDelegateObserver {
   virtual void OnRedirectToIPFS(bool remember) = 0;
   virtual ~BraveIPFSInfoBarDelegateObserver();
 };
-class BraveIPFSInfoBarDelegateObserverFactory {
- public:
-  virtual ~BraveIPFSInfoBarDelegateObserverFactory() = default;
-
-  virtual std::unique_ptr<BraveIPFSInfoBarDelegateObserver> Create() = 0;
-
- protected:
-  BraveIPFSInfoBarDelegateObserverFactory() = default;
-};
 
 class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   BraveIPFSInfoBarDelegate(const BraveIPFSInfoBarDelegate&) = delete;
   BraveIPFSInfoBarDelegate& operator=(const BraveIPFSInfoBarDelegate&) = delete;
 
-  ~BraveIPFSInfoBarDelegate() override;
-
- private:
-  friend class BraveIPFSInfoBarDelegateFactory;
-  explicit BraveIPFSInfoBarDelegate(
+  BraveIPFSInfoBarDelegate(
       std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
       PrefService* local_state);
+  ~BraveIPFSInfoBarDelegate() override;
 
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
+                     PrefService* local_state);
+
+ private:
   // BraveConfirmInfoBarDelegate
   bool HasCheckbox() const override;
   std::u16string GetCheckboxText() const override;
@@ -76,21 +68,6 @@ class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
   std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer_;
   raw_ptr<PrefService> local_state_ = nullptr;
-};
-
-class BraveIPFSInfoBarDelegateFactory : public BraveConfirmInfoBarDelegateFactory {
-public:
- BraveIPFSInfoBarDelegateFactory(
-     std::unique_ptr<BraveIPFSInfoBarDelegateObserverFactory> observer_factory,
-     infobars::ContentInfoBarManager* infobar_manager,
-     PrefService* local_state);
- ~BraveIPFSInfoBarDelegateFactory() override;
-
- std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
-
-private:
-  raw_ptr<PrefService> local_state_ = nullptr;
-  std::unique_ptr<BraveIPFSInfoBarDelegateObserverFactory> observer_factory_;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_INFOBAR_DELEGATE_H_

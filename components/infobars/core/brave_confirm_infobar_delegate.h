@@ -43,7 +43,7 @@ class BraveConfirmInfoBarDelegateFactory {
       const BraveConfirmInfoBarDelegateFactory&) = delete;
   BraveConfirmInfoBarDelegateFactory& operator=(
       const BraveConfirmInfoBarDelegateFactory&) = delete;
-  virtual ~BraveConfirmInfoBarDelegateFactory();
+  virtual ~BraveConfirmInfoBarDelegateFactory() = default;
 
   virtual std::unique_ptr<BraveConfirmInfoBarDelegate> Create() = 0;
 
