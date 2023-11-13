@@ -8,7 +8,8 @@
 
 namespace syncer {
 
-extern const char kNigoriFolderNotReadyError[];
+inline constexpr char kNigoriFolderNotReadyError[] =
+    "nigori root folder entity is not ready yet";
 
 }  // namespace syncer
 

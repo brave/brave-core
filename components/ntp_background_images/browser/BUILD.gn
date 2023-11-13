@@ -20,7 +20,6 @@ static_library("browser") {
     "ntp_sponsored_images_data.h",
     "sponsored_images_component_data.cc",
     "sponsored_images_component_data.h",
-    "switches.cc",
     "switches.h",
     "url_constants.h",
   ]

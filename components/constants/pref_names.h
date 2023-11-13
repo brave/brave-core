@@ -8,91 +8,135 @@
 
 #include "build/build_config.h"
 
-extern const char kBraveAutofillPrivateWindows[];
-extern const char kManagedBraveShieldsEnabledForUrls[];
-extern const char kManagedBraveShieldsDisabledForUrls[];
-extern const char kAdsBlocked[];
-extern const char kTrackersBlocked[];
-extern const char kJavascriptBlocked[];
-extern const char kHttpsUpgrades[];
-extern const char kFingerprintingBlocked[];
-extern const char kLastCheckYMD[];
-extern const char kLastCheckWOY[];
-extern const char kLastCheckMonth[];
-extern const char kFirstCheckMade[];
-extern const char kThresholdCheckMade[];
-extern const char kThresholdQuery[];
-extern const char kWeekOfInstallation[];
-extern const char kStatsReportingEnabled[];
-extern const char kWidevineEnabled[];
-extern const char kAskEnableWidvine[];
-extern const char kBraveThemeType[];
-extern const char kUseOverriddenBraveThemeType[];
-extern const char kShowBookmarksButton[];
-extern const char kShowSidePanelButton[];
-extern const char kLocationBarIsWide[];
-extern const char kReferralDownloadID[];
-extern const char kReferralTimestamp[];
-extern const char kReferralAttemptTimestamp[];
-extern const char kReferralAttemptCount[];
-extern const char kReferralHeaders[];
-extern const char kReferralAndroidFirstRunTimestamp[];
-extern const char kNoScriptControlType[];
-extern const char kShieldsAdvancedViewEnabled[];
-extern const char kShieldsStatsBadgeVisible[];
-extern const char kAdControlType[];
-extern const char kGoogleLoginControlType[];
-extern const char kWebTorrentEnabled[];
-extern const char kHangoutsEnabled[];
-extern const char kIPFSCompanionEnabled[];
-extern const char kNewTabPageShowClock[];
-extern const char kNewTabPageClockFormat[];
-extern const char kNewTabPageShowTopSites[];
-extern const char kNewTabPageShowStats[];
-extern const char kNewTabPageShowRewards[];
-extern const char kNewTabPageShowBraveTalk[];
-extern const char kNewTabPageHideAllWidgets[];
-extern const char kNewTabPageShowsOptions[];
-extern const char kBraveNewsIntroDismissed[];
-extern const char kAlwaysShowBookmarkBarOnNTP[];
-extern const char kBraveDarkMode[];
-extern const char kOtherBookmarksMigrated[];  // Deprecated.
-extern const char kBraveShieldsSettingsVersion[];
-extern const char kDefaultBrowserPromptEnabled[];
+inline constexpr char kBraveAutofillPrivateWindows[] =
+    "brave.autofill_private_windows";
+inline constexpr char kManagedBraveShieldsDisabledForUrls[] =
+    "brave.managed_shields_disabled";
+inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
+    "brave.managed_shields_enabled";
+inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
+// We no longer update this pref, but we keep it around for now because it's
+// added to kAdsBlocked when being displayed.
+inline constexpr char kTrackersBlocked[] = "brave.stats.trackers_blocked";
+inline constexpr char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
+inline constexpr char kHttpsUpgrades[] = "brave.stats.https_upgrades";
+inline constexpr char kFingerprintingBlocked[] =
+    "brave.stats.fingerprinting_blocked";
+inline constexpr char kLastCheckYMD[] = "brave.stats.last_check_ymd";
+inline constexpr char kLastCheckWOY[] = "brave.stats.last_check_woy";
+inline constexpr char kLastCheckMonth[] = "brave.stats.last_check_month";
+inline constexpr char kFirstCheckMade[] = "brave.stats.first_check_made";
+// Set to true if the user met the threshold requirements and successfully
+// sent a ping to the stats-updater server.
+inline constexpr char kThresholdCheckMade[] =
+    "brave.stats.threshold_check_made";
+// Anonymous usage pings enabled
+inline constexpr char kStatsReportingEnabled[] =
+    "brave.stats.reporting_enabled";
+// Serialized query for to send to the stats-updater server. Needs to be saved
+// in the case that the user sends the standard usage ping, stops the browser,
+// meets the threshold requirements, and then starts the browser before the
+// threshold ping was sent.
+inline constexpr char kThresholdQuery[] = "brave.stats.threshold_query";
+inline constexpr char kWeekOfInstallation[] =
+    "brave.stats.week_of_installation";
+inline constexpr char kWidevineEnabled[] = "brave.widevine_opted_in";
+inline constexpr char kAskEnableWidvine[] = "brave.ask_widevine_install";
+inline constexpr char kShowBookmarksButton[] = "brave.show_bookmarks_button";
+inline constexpr char kShowSidePanelButton[] = "brave.show_side_panel_button";
+inline constexpr char kLocationBarIsWide[] = "brave.location_bar_is_wide";
+inline constexpr char kReferralDownloadID[] = "brave.referral.download_id";
+inline constexpr char kReferralTimestamp[] = "brave.referral.timestamp";
+inline constexpr char kReferralAttemptTimestamp[] =
+    "brave.referral.referral_attempt_timestamp";
+inline constexpr char kReferralAttemptCount[] =
+    "brave.referral.referral_attempt_count";
+inline constexpr char kReferralHeaders[] = "brave.referral.headers";
+inline constexpr char kReferralAndroidFirstRunTimestamp[] =
+    "brave.referral_android_first_run_timestamp";
+inline constexpr char kNoScriptControlType[] = "brave.no_script_default";
+inline constexpr char kShieldsAdvancedViewEnabled[] =
+    "brave.shields.advanced_view_enabled";
+inline constexpr char kShieldsStatsBadgeVisible[] =
+    "brave.shields.stats_badge_visible";
+inline constexpr char kAdControlType[] = "brave.ad_default";
+inline constexpr char kGoogleLoginControlType[] = "brave.google_login_default";
+inline constexpr char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
+inline constexpr char kHangoutsEnabled[] = "brave.hangouts_enabled";
+inline constexpr char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
+inline constexpr char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
+inline constexpr char kNewTabPageClockFormat[] =
+    "brave.new_tab_page.clock_format";
+inline constexpr char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
+inline constexpr char kNewTabPageShowRewards[] =
+    "brave.new_tab_page.show_rewards";
+inline constexpr char kNewTabPageShowBraveTalk[] =
+    "brave.new_tab_page.show_together";
+inline constexpr char kNewTabPageHideAllWidgets[] =
+    "brave.new_tab_page.hide_all_widgets";
+inline constexpr char kNewTabPageShowsOptions[] =
+    "brave.new_tab_page.shows_options";
+inline constexpr char kBraveNewsIntroDismissed[] =
+    "brave.today.intro_dismissed";
+inline constexpr char kAlwaysShowBookmarkBarOnNTP[] =
+    "brave.always_show_bookmark_bar_on_ntp";
+inline constexpr char kBraveDarkMode[] = "brave.dark_mode";
+inline constexpr char kBraveShieldsSettingsVersion[] =
+    "brave.shields_settings_version";
+inline constexpr char kDefaultBrowserPromptEnabled[] =
+    "brave.default_browser_prompt_enabled";
 
-// Web discovery project
-extern const char kWebDiscoveryEnabled[];
-extern const char kWebDiscoveryCTAState[];
-extern const char kDontAskEnableWebDiscovery[];  // Deprecated.
-extern const char kBraveSearchVisitCount[];      // Deprecated.
+inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+inline constexpr char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
+inline constexpr char kDontAskEnableWebDiscovery[] =
+    "brave.dont_ask_enable_web_discovery";
+inline constexpr char kBraveSearchVisitCount[] =
+    "brave.brave_search_visit_count";
 
-extern const char kBraveGCMChannelStatus[];
-extern const char kImportDialogExtensions[];
-extern const char kImportDialogPayments[];
-extern const char kMRUCyclingEnabled[];
-
-#if BUILDFLAG(IS_ANDROID)
-extern const char kDesktopModeEnabled[];
-extern const char kPlayYTVideoInBrowserEnabled[];
-extern const char kBackgroundVideoPlaybackEnabled[];
-extern const char kSafetynetCheckFailed[];
-extern const char kSafetynetStatus[];
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-extern const char kEnableWindowClosingConfirm[];
-extern const char kEnableClosingLastTab[];
-#endif
-extern const char kDefaultBrowserLaunchingCount[];
-extern const char kTabsSearchShow[];
-extern const char kTabMuteIndicatorNotClickable[];
-extern const char kDontAskForCrashReporting[];
+inline constexpr char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
+inline constexpr char kImportDialogExtensions[] = "import_dialog_extensions";
+inline constexpr char kImportDialogPayments[] = "import_dialog_payments";
+inline constexpr char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
+inline constexpr char kTabsSearchShow[] = "brave.tabs_search_show";
+inline constexpr char kTabMuteIndicatorNotClickable[] =
+    "brave.tabs.mute_indicator_not_clickable";
+inline constexpr char kDontAskForCrashReporting[] =
+    "brave.dont_ask_for_crash_reporting";
 
 // Cast extension requires a browser restart once the setting is toggled.
 // kEnableMediaRouterOnRestart is used as a proxy to identify the current
 // state of the switch and prefs::kEnableMediaRouter is updated to
 // kEnableMediaRouterOnRestart on restart.
-extern const char kEnableMediaRouterOnRestart[];
+inline constexpr char kEnableMediaRouterOnRestart[] =
+    "brave.enable_media_router_on_restart";
+
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
+inline constexpr char kPlayYTVideoInBrowserEnabled[] =
+    "brave.play_yt_video_in_browser_enabled";
+inline constexpr char kBackgroundVideoPlaybackEnabled[] =
+    "brave.background_video_playback";
+inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
+inline constexpr char kSafetynetStatus[] = "safetynet.status";
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+inline constexpr char kEnableWindowClosingConfirm[] =
+    "brave.enable_window_closing_confirm";
+inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
+#endif
+
+inline constexpr char kDefaultBrowserLaunchingCount[] =
+    "brave.default_browser.launching_count";
+
+// deprecated
+inline constexpr char kBraveThemeType[] = "brave.theme.type";
+inline constexpr char kUseOverriddenBraveThemeType[] =
+    "brave.theme.use_overridden_brave_theme_type";
+inline constexpr char kNewTabPageShowTopSites[] =
+    "brave.new_tab_page.show_top_sites";
+inline constexpr char kOtherBookmarksMigrated[] =
+    "brave.other_bookmarks_migrated";
 
 // Obsolete widget removal prefs
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)

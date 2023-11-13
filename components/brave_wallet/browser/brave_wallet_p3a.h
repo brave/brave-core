@@ -17,26 +17,44 @@ class PrefService;
 
 namespace brave_wallet {
 
-extern const char kDefaultWalletHistogramName[];
-extern const char kDefaultSolanaWalletHistogramName[];
-extern const char kKeyringCreatedHistogramName[];
-extern const char kOnboardingConversionHistogramName[];
-extern const char kNewUserBalanceHistogramName[];
-extern const char kEthProviderHistogramName[];
-extern const char kSolProviderHistogramName[];
-extern const char kEthTransactionSentHistogramName[];
-extern const char kSolTransactionSentHistogramName[];
-extern const char kFilTransactionSentHistogramName[];
-extern const char kEthActiveAccountHistogramName[];
-extern const char kSolActiveAccountHistogramName[];
-extern const char kFilActiveAccountHistogramName[];
-extern const char kBraveWalletDailyHistogramName[];
-extern const char kBraveWalletWeeklyHistogramName[];
-extern const char kBraveWalletMonthlyHistogramName[];
-extern const char kBraveWalletNewUserReturningHistogramName[];
-extern const char kBraveWalletNFTCountHistogramName[];
-extern const char kBraveWalletNFTNewUserHistogramName[];
-extern const char kBraveWalletNFTDiscoveryEnabledHistogramName[];
+inline constexpr char kKeyringCreatedHistogramName[] =
+    "Brave.Wallet.KeyringCreated";
+inline constexpr char kOnboardingConversionHistogramName[] =
+    "Brave.Wallet.OnboardingConversion.3";
+inline constexpr char kNewUserBalanceHistogramName[] =
+    "Brave.Wallet.NewUserBalance";
+inline constexpr char kEthProviderHistogramName[] =
+    "Brave.Wallet.EthProvider.4";
+inline constexpr char kSolProviderHistogramName[] =
+    "Brave.Wallet.SolProvider.2";
+inline constexpr char kEthTransactionSentHistogramName[] =
+    "Brave.Wallet.EthTransactionSent";
+inline constexpr char kSolTransactionSentHistogramName[] =
+    "Brave.Wallet.SolTransactionSent";
+inline constexpr char kFilTransactionSentHistogramName[] =
+    "Brave.Wallet.FilTransactionSent";
+inline constexpr char kEthActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveEthAccounts";
+inline constexpr char kSolActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveSolAccounts";
+inline constexpr char kFilActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveFilAccounts";
+inline constexpr char kBraveWalletDailyHistogramName[] =
+    "Brave.Wallet.UsageDaily";
+inline constexpr char kBraveWalletWeeklyHistogramName[] =
+    "Brave.Wallet.UsageWeekly";
+inline constexpr char kBraveWalletMonthlyHistogramName[] =
+    "Brave.Wallet.UsageMonthly";
+inline constexpr char kBraveWalletNewUserReturningHistogramName[] =
+    "Brave.Wallet.NewUserReturning";
+inline constexpr char kBraveWalletLastUsageTimeHistogramName[] =
+    "Brave.Wallet.LastUsageTime";
+inline constexpr char kBraveWalletNFTCountHistogramName[] =
+    "Brave.Wallet.NFTCount";
+inline constexpr char kBraveWalletNFTNewUserHistogramName[] =
+    "Brave.Wallet.NFTNewUser";
+inline constexpr char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
+    "Brave.Wallet.NFTDiscoveryEnabled";
 
 class BraveWalletService;
 class KeyringService;

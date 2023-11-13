@@ -19,23 +19,6 @@
 namespace brave_news {
 namespace p3a {
 
-constexpr char kWeeklySessionCountHistogramName[] =
-    "Brave.Today.WeeklySessionCount";
-constexpr char kTotalCardViewsHistogramName[] =
-    "Brave.Today.WeeklyTotalCardViews";
-constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
-    "Brave.Today.WeeklyDisplayAdsViewedCount";
-constexpr char kDirectFeedsTotalHistogramName[] =
-    "Brave.Today.DirectFeedsTotal";
-constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
-    "Brave.Today.WeeklyAddedDirectFeedsCount";
-constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
-constexpr char kNewUserReturningHistogramName[] =
-    "Brave.Today.NewUserReturning";
-constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
-constexpr char kUsageMonthlyHistogramName[] = "Brave.Today.UsageMonthly";
-constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";
-
 namespace {
 
 bool IsNewsEnabled(PrefService* prefs) {

@@ -20,8 +20,6 @@
 
 namespace brave {
 
-const char kSafeBrowsingTestingEndpoint[] = "test.safebrowsing.com";
-
 namespace {
 
 bool g_safebrowsing_api_endpoint_for_testing_ = false;

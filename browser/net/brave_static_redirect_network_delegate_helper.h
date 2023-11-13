@@ -15,7 +15,7 @@ struct BraveRequestInfo;
 
 namespace brave {
 
-extern const char kSafeBrowsingTestingEndpoint[];
+inline constexpr char kSafeBrowsingTestingEndpoint[] = "test.safebrowsing.com";
 
 int OnBeforeURLRequest_StaticRedirectWork(
     const ResponseCallback& next_callback,

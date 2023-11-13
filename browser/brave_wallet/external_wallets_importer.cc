@@ -205,7 +205,7 @@ void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
 
 bool ExternalWalletsImporter::IsCryptoWalletsInstalledInternal() const {
   if (!extensions::ExtensionPrefs::Get(context_)->HasPrefForExtension(
-          ethereum_remote_client_extension_id)) {
+          kEthereumRemoteClientExtensionId)) {
     return false;
   }
   return true;
@@ -271,7 +271,7 @@ const Extension* ExternalWalletsImporter::GetCryptoWallets() const {
   if (!registry) {
     return nullptr;
   }
-  return registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  return registry->GetInstalledExtension(kEthereumRemoteClientExtensionId);
 }
 
 const Extension* ExternalWalletsImporter::GetMetaMask() const {
@@ -279,7 +279,7 @@ const Extension* ExternalWalletsImporter::GetMetaMask() const {
   if (!registry) {
     return nullptr;
   }
-  return registry->GetInstalledExtension(metamask_extension_id);
+  return registry->GetInstalledExtension(kMetamaskExtensionId);
 }
 
 void ExternalWalletsImporter::GetLocalStorage(

@@ -27,8 +27,11 @@
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
 
-#if !defined(OFFICIAL_BUILD)
+namespace greaselion {
+
 namespace {
+
+#if !defined(OFFICIAL_BUILD)
 bool StartFilePathWatcher(base::FilePathWatcher* watcher,
                           const base::FilePath& file_path,
                           base::FilePathWatcher::Type type,
@@ -39,13 +42,8 @@ bool StartFilePathWatcher(base::FilePathWatcher* watcher,
 
   return watcher->Watch(file_path, type, callback);
 }
-}  // namespace
 #endif
 
-namespace greaselion {
-
-const char kGreaselionConfigFile[] = "Greaselion.json";
-const char kGreaselionConfigFileVersion[] = "1";
 const char kRuleNameFormat[] = "greaselion-%zu";
 // Greaselion.json keys
 const char kPreconditions[] = "preconditions";
@@ -62,6 +60,8 @@ const char kAutoContribution[] = "auto-contribution-enabled";
 const char kAds[] = "ads-enabled";
 const char kSupportsMinimumBraveVersion[] =
     "supports-minimum-brave-version";
+
+}  // namespace
 
 GreaselionRule::GreaselionRule(const std::string& name) : name_(name) {}
 

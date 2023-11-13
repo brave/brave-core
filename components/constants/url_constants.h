@@ -6,22 +6,36 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_URL_CONSTANTS_H_
 
-extern const char kChromeExtensionScheme[];
-extern const char kBraveUIScheme[];
-extern const char kMagnetScheme[];
-extern const char kWidevineTOS[];
-extern const char kRewardsUpholdSupport[];
-extern const char kP3ALearnMoreURL[];
-extern const char kP3ASettingsLink[];
-extern const char kImportDataHelpURL[];
-extern const char kCryptoWalletsLearnMoreURL[];
-extern const char kPermissionPromptLearnMoreUrl[];
-extern const char kPermissionPromptHardwareAccessPrivacyRisksURL[];
-extern const char kSpeedreaderLearnMoreUrl[];
-extern const char kWebDiscoveryLearnMoreUrl[];
-extern const char kBraveSearchHost[];
-extern const char kWidevineLearnMoreUrl[];
-extern const char kDevChannelDeprecationLearnMoreUrl[];
+inline constexpr char kChromeExtensionScheme[] = "chrome-extension";
+inline constexpr char kBraveUIScheme[] = "brave";
+inline constexpr char kMagnetScheme[] = "magnet";
+inline constexpr char kWidevineTOS[] = "https://policies.google.com/terms";
+inline constexpr char kRewardsUpholdSupport[] =
+    "https://uphold.com/en/brave/support";
+inline constexpr char kP3ALearnMoreURL[] = "https://brave.com/P3A";
+inline constexpr char kP3ASettingsLink[] = "chrome://settings/privacy";
+inline constexpr char kImportDataHelpURL[] =
+    "https://support.brave.com/hc/en-us/articles/360019782291#safari";
+inline constexpr char kCryptoWalletsLearnMoreURL[] =
+    "https://support.brave.com/hc/en-us/articles/360034535452";
+inline constexpr char kPermissionPromptLearnMoreUrl[] =
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
+inline constexpr char kPermissionPromptHardwareAccessPrivacyRisksURL[] =
+    "https://github.com/brave/brave-browser/wiki/"
+    "Privacy-risks-from-allowing-sites-to-access-hardware";
+inline constexpr char kSpeedreaderLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360045031392-What-is-SpeedReader";
+inline constexpr char kWebDiscoveryLearnMoreUrl[] =
+    "https://brave.com/privacy/browser/#web-discovery-project";
+inline constexpr char kBraveSearchHost[] = "search.brave.com";
+inline constexpr char kWidevineLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360023851591-How-do-I-view-DRM-protected-content-";
+inline constexpr char kDevChannelDeprecationLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "17924707453581-How-do-I-migrate-my-Brave-Dev-data-to-another-channel-"
+    "Nightly-Beta-Release-";
 
 // This is introduced to replace |kDownloadChromeUrl| in
 // outdated_upgrade_bubble_view.cc"

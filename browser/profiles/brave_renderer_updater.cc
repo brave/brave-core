@@ -152,8 +152,7 @@ void BraveRendererUpdater::UpdateRenderer(
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =
-      registry &&
-      registry->enabled_extensions().Contains(metamask_extension_id);
+      registry && registry->enabled_extensions().Contains(kMetamaskExtensionId);
 #else
   bool has_installed_metamask = false;
 #endif

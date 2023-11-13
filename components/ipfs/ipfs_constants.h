@@ -8,46 +8,50 @@
 
 namespace ipfs {
 
-extern const char kAPIKeyListEndpoint[];
-extern const char kAPIKeyGenerateEndpoint[];
-extern const char kAPIKeyRemoveEndpoint[];
-extern const char kAPIKeyImportEndpoint[];
-extern const char kSwarmPeersPath[];
-extern const char kConfigPath[];
-extern const char kArgQueryParam[];
-extern const char kAddressesField[];
-extern const char kShutdownPath[];
-extern const char kIPFSScheme[];
-extern const char kIPNSScheme[];
-extern const char kDefaultIPFSGateway[];
-extern const char kDefaultIPFSNFTGateway[];
-extern const char kDefaultIPFSLocalGateway[];
-extern const char kIPFSLearnMorePrivacyURL[];
-extern const char kIPFSLearnMoreURL[];
-extern const char kIPFSSettingsURL[];
-extern const char kRepoStatsPath[];
-extern const char kRepoStatsHumanReadableParamName[];
-extern const char kRepoStatsHumanReadableParamValue[];
-extern const char kNodeInfoPath[];
-extern const char kLocalhostIP[];
-extern const char kLocalhostDomain[];
-extern const char kGarbageCollectionPath[];
-extern const char kImportAddPath[];
-extern const char kImportMakeDirectoryPath[];
-extern const char kImportCopyPath[];
-extern const char kImportDirectory[];
-extern const char kAPIPublishNameEndpoint[];
-extern const char kIPFSImportMultipartContentType[];
-extern const char kFileValueName[];
-extern const char kFileMimeType[];
-extern const char kDirectoryMimeType[];
-extern const char kIPFSImportTextMimeType[];
-extern const char kNodeInfoPath[];
+inline constexpr char kAPIKeyGenerateEndpoint[] = "/api/v0/key/gen";
+inline constexpr char kAPIKeyRemoveEndpoint[] = "/api/v0/key/rm";
+inline constexpr char kAPIKeyListEndpoint[] = "/api/v0/key/list";
+inline constexpr char kAPIKeyImportEndpoint[] = "/api/v0/key/import";
+inline constexpr char kSwarmPeersPath[] = "/api/v0/swarm/peers";
+inline constexpr char kAPIPublishNameEndpoint[] = "/api/v0/name/publish";
+inline constexpr char kConfigPath[] = "/api/v0/config";
+inline constexpr char kArgQueryParam[] = "arg";
+inline constexpr char kAddressesField[] = "Addresses";
+inline constexpr char kShutdownPath[] = "/api/v0/shutdown";
+inline constexpr char kIPFSScheme[] = "ipfs";
+inline constexpr char kIPNSScheme[] = "ipns";
+inline constexpr char kDefaultIPFSGateway[] = "https://dweb.link";
+inline constexpr char kDefaultIPFSNFTGateway[] = "https://nftstorage.link";
+inline constexpr char kDefaultIPFSLocalGateway[] = "http://localhost";
+inline constexpr char kIPFSSettingsURL[] = "brave://settings/ipfs";
+inline constexpr char16_t kIPFSLearnMorePrivacyURL[] =
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"360051406452-How-does-IPFS-Impact-my-Privacy-";
+inline constexpr char kIPFSLearnMoreURL[] =
+    "https://support.brave.com/hc/en-us/sections/"
+    "360010974932-InterPlanetary-File-System-IPFS-";
+inline constexpr char kRepoStatsPath[] = "/api/v0/repo/stat";
+inline constexpr char kRepoStatsHumanReadableParamName[] = "human";
+inline constexpr char kRepoStatsHumanReadableParamValue[] = "true";
+inline constexpr char kNodeInfoPath[] = "/api/v0/id";
+inline constexpr char kLocalhostIP[] = "127.0.0.1";
+inline constexpr char kLocalhostDomain[] = "localhost";
+inline constexpr char kGarbageCollectionPath[] = "/api/v0/repo/gc";
+inline constexpr char kImportAddPath[] = "/api/v0/add";
+inline constexpr char kImportMakeDirectoryPath[] = "/api/v0/files/mkdir";
+inline constexpr char kImportCopyPath[] = "/api/v0/files/cp";
+inline constexpr char kImportDirectory[] = "/brave-imports/";
+inline constexpr char kIPFSImportMultipartContentType[] =
+    "multipart/form-data;";
+inline constexpr char kFileValueName[] = "file";
+inline constexpr char kFileMimeType[] = "application/octet-stream";
+inline constexpr char kDirectoryMimeType[] = "application/x-directory";
+inline constexpr char kIPFSImportTextMimeType[] = "application/octet-stream";
 
 // Local pins
-extern const char kAddPinPath[];
-extern const char kRemovePinPath[];
-extern const char kGetPinsPath[];
+inline constexpr char kAddPinPath[] = "api/v0/pin/add";
+inline constexpr char kRemovePinPath[] = "api/v0/pin/rm";
+inline constexpr char kGetPinsPath[] = "api/v0/pin/ls";
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

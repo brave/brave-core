@@ -23,33 +23,6 @@
 
 namespace brave_wallet {
 
-const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
-const char kOnboardingConversionHistogramName[] =
-    "Brave.Wallet.OnboardingConversion.3";
-const char kNewUserBalanceHistogramName[] = "Brave.Wallet.NewUserBalance";
-const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.4";
-const char kSolProviderHistogramName[] = "Brave.Wallet.SolProvider.2";
-const char kEthTransactionSentHistogramName[] =
-    "Brave.Wallet.EthTransactionSent";
-const char kSolTransactionSentHistogramName[] =
-    "Brave.Wallet.SolTransactionSent";
-const char kFilTransactionSentHistogramName[] =
-    "Brave.Wallet.FilTransactionSent";
-const char kEthActiveAccountHistogramName[] = "Brave.Wallet.ActiveEthAccounts";
-const char kSolActiveAccountHistogramName[] = "Brave.Wallet.ActiveSolAccounts";
-const char kFilActiveAccountHistogramName[] = "Brave.Wallet.ActiveFilAccounts";
-const char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
-const char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
-const char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
-const char kBraveWalletNewUserReturningHistogramName[] =
-    "Brave.Wallet.NewUserReturning";
-const char kBraveWalletLastUsageTimeHistogramName[] =
-    "Brave.Wallet.LastUsageTime";
-const char kBraveWalletNFTCountHistogramName[] = "Brave.Wallet.NFTCount";
-const char kBraveWalletNFTNewUserHistogramName[] = "Brave.Wallet.NFTNewUser";
-const char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
-    "Brave.Wallet.NFTDiscoveryEnabled";
-
 namespace {
 
 const int kRefreshP3AFrequencyHours = 24;

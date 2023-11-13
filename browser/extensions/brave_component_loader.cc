@@ -64,8 +64,8 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
   }
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  if (extension_id == ethereum_remote_client_extension_id) {
-    ReinstallAsNonComponent(ethereum_remote_client_extension_id);
+  if (extension_id == kEthereumRemoteClientExtensionId) {
+    ReinstallAsNonComponent(kEthereumRemoteClientExtensionId);
   }
 #endif
 }
@@ -126,9 +126,9 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveComponentLoader::AddEthereumRemoteClientExtension() {
-  AddExtension(ethereum_remote_client_extension_id,
-               ethereum_remote_client_extension_name,
-               ethereum_remote_client_extension_public_key);
+  AddExtension(kEthereumRemoteClientExtensionId,
+               kEthereumRemoteClientExtensionName,
+               kEthereumRemoteClientExtensionPublicKey);
 }
 
 void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
@@ -146,7 +146,7 @@ void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   DCHECK(service);
-  service->UnloadExtension(ethereum_remote_client_extension_id,
+  service->UnloadExtension(kEthereumRemoteClientExtensionId,
                            extensions::UnloadedExtensionReason::DISABLE);
 }
 #endif

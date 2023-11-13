@@ -143,7 +143,7 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
 
 void EthereumRemoteClientService::ResetCryptoWallets() {
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
-      ethereum_remote_client_extension_id);
+      kEthereumRemoteClientExtensionId);
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
@@ -221,7 +221,7 @@ bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   return registry && registry->ready_extensions().Contains(
-                         ethereum_remote_client_extension_id);
+                         kEthereumRemoteClientExtensionId);
 }
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(

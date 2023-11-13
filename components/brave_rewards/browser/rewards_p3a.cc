@@ -28,24 +28,13 @@ constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 #endif
 
-}  // namespace
-
-const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
-const char kToolbarButtonTriggerHistogramName[] =
-    "Brave.Rewards.ToolbarButtonTrigger";
-const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
-const char kAutoContributionsStateHistogramName[] =
-    "Brave.Rewards.AutoContributionsState.3";
-const char kAdTypesEnabledHistogramName[] = "Brave.Rewards.AdTypesEnabled";
-
-const char kMobileConversionHistogramName[] = "Brave.Rewards.MobileConversion";
-const char kMobilePanelCountHistogramName[] = "Brave.Rewards.MobilePanelCount";
-
 const int kTipsSentBuckets[] = {0, 1, 3};
 
 #if BUILDFLAG(IS_ANDROID)
 const int kMobilePanelCountBuckets[] = {5, 10, 50};
 #endif
+
+}  // namespace
 
 void RecordAutoContributionsState(bool ac_enabled) {
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, ac_enabled,

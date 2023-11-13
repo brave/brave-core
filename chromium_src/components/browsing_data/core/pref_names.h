@@ -12,17 +12,25 @@ namespace browsing_data {
 
 namespace prefs {
 
-extern const char kDeleteBrowsingHistoryOnExit[];
-extern const char kDeleteDownloadHistoryOnExit[];
-extern const char kDeleteCacheOnExit[];
-extern const char kDeleteCookiesOnExit[];
-extern const char kDeletePasswordsOnExit[];
-extern const char kDeleteFormDataOnExit[];
-extern const char kDeleteHostedAppsDataOnExit[];
-extern const char kDeleteSiteSettingsOnExit[];
+inline constexpr char kDeleteBrowsingHistoryOnExit[] =
+    "browser.clear_data.browsing_history_on_exit";
+inline constexpr char kDeleteDownloadHistoryOnExit[] =
+    "browser.clear_data.download_history_on_exit";
+inline constexpr char kDeleteCacheOnExit[] = "browser.clear_data.cache_on_exit";
+inline constexpr char kDeleteCookiesOnExit[] =
+    "browser.clear_data.cookies_on_exit";
+inline constexpr char kDeletePasswordsOnExit[] =
+    "browser.clear_data.passwords_on_exit";
+inline constexpr char kDeleteFormDataOnExit[] =
+    "browser.clear_data.form_data_on_exit";
+inline constexpr char kDeleteHostedAppsDataOnExit[] =
+    "browser.clear_data.hosted_apps_data_on_exit";
+inline constexpr char kDeleteSiteSettingsOnExit[] =
+    "browser.clear_data.site_settings_on_exit";
 constexpr char kDeleteBraveLeoHistory[] = "browser.clear_data.brave_leo";
 constexpr char kDeleteBraveLeoHistoryOnExit[] =
     "browser.clear_data.brave_leo_on_exit";
+
 }  // namespace prefs
 
 }  // namespace browsing_data

@@ -25,9 +25,6 @@ using brave_component_updater::LocalDataFilesService;
 
 namespace debounce {
 
-const char kDebounceConfigFile[] = "debounce.json";
-const char kDebounceConfigFileVersion[] = "1";
-
 DebounceComponentInstaller::DebounceComponentInstaller(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service) {}

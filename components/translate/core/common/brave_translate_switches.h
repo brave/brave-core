@@ -9,7 +9,10 @@
 namespace translate {
 namespace switches {
 
-extern const char kBraveTranslateUseGoogleEndpoint[];
+// A test switch to disable the redirection for the translation requests to
+// translate.brave.com.
+inline constexpr char kBraveTranslateUseGoogleEndpoint[] =
+    "use-google-translate-endpoint";
 
 }  // namespace switches
 }  // namespace translate

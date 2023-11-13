@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/components/constants/network_constants.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

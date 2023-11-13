@@ -4,11 +4,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_components_translate_core_common_sources = [
-  "//brave/components/translate/core/common/brave_translate_constants.cc",
   "//brave/components/translate/core/common/brave_translate_constants.h",
   "//brave/components/translate/core/common/brave_translate_features.cc",
   "//brave/components/translate/core/common/brave_translate_features.h",
-  "//brave/components/translate/core/common/brave_translate_switches.cc",
   "//brave/components/translate/core/common/brave_translate_switches.h",
 ]
 

@@ -809,7 +809,6 @@ static_library("internal") {
     "ml/transformation/transformation.cc",
     "ml/transformation/transformation.h",
     "ml/transformation/transformation_types.h",
-    "prefs/pref_names.cc",
     "prefs/pref_registry.cc",
     "reminder/reminder.cc",
     "reminder/reminder.h",

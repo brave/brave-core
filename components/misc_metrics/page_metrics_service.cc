@@ -19,9 +19,6 @@
 
 namespace misc_metrics {
 
-const char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded";
-const char kDomainsLoadedHistogramName[] = "Brave.Core.DomainsLoaded";
-
 namespace {
 
 constexpr const int kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};

@@ -42,11 +42,6 @@ const char* GetMenuGroupPrefKey(MenuGroup group) {
 
 }  // namespace
 
-const char kFrequentMenuGroupHistogramName[] =
-    "Brave.Toolbar.FrequentMenuGroup";
-const char kMenuDismissRateHistogramName[] = "Brave.Toolbar.MenuDismissRate";
-const char kMenuOpensHistogramName[] = "Brave.Toolbar.MenuOpens";
-
 MenuMetrics::MenuMetrics(PrefService* local_state)
     : local_state_(local_state),
       menu_shown_storage_(local_state, kMiscMetricsMenuShownStorage),

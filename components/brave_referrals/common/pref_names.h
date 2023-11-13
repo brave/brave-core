@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_REFERRALS_COMMON_PREF_NAMES_H_
 
-extern const char kReferralPromoCode[];
-extern const char kReferralCheckedForPromoCodeFile[];
-extern const char kReferralInitialization[];
+inline constexpr char kReferralPromoCode[] = "brave.referral.promo_code";
+inline constexpr char kReferralCheckedForPromoCodeFile[] =
+    "brave.referral.checked_for_promo_code_file";
+inline constexpr char kReferralInitialization[] =
+    "brave.referral.initialization";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REFERRALS_COMMON_PREF_NAMES_H_
