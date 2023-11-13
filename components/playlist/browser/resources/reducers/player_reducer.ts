@@ -121,6 +121,10 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           throw new Error("Couldn't find the index of the current item ")
         }
 
+        // Do nothing
+        if (currentIndex === items.length - 1 && state.loopMode !== 'all-items')
+          break
+
         const currentItem = items[(currentIndex + 1) % items.length]
         if (currentItem) {
           if (+currentItem.duration / 1e6 < 10 * 60) {
@@ -139,6 +143,9 @@ const playerReducer: Reducer<PlayerState | undefined> = (
         if (currentIndex === -1) {
           throw new Error("Couldn't find the index of the current item ")
         }
+
+        // Do nothing
+        if (currentIndex === 0 && state.loopMode !== 'all-items') break
 
         const currentItem = items.at(currentIndex - 1)
         if (currentItem) {
