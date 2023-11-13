@@ -30,3 +30,7 @@ const char kBraveSearchHost[] = "search.brave.com";
 const char kWidevineLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360023851591-How-do-I-view-DRM-protected-content-";
+const char kDevChannelDeprecationLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "17924707453581-How-do-I-migrate-my-Brave-Dev-data-to-another-channel-"
+    "Nightly-Beta-Release-";
