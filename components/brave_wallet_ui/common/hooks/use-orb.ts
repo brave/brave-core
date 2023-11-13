@@ -17,7 +17,7 @@ interface OrbOptions {
 const applyDefaults = (
   options: Partial<OrbOptions> | undefined
 ): OrbOptions => {
-  return { size: options?.size || 8, scale: options?.scale || 16 }
+  return { size: options?.size || 4, scale: options?.scale || 25 }
 }
 
 const serializer = new XMLSerializer()
