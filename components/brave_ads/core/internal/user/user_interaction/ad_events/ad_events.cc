@@ -55,6 +55,10 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
   database_table.PurgeOrphaned(
       ad_type, base::BindOnce(
                    [](AdEventCallback callback, const bool success) {
+                     if (success) {
+                       RebuildAdEventCache();
+                     }
+
                      std::move(callback).Run(success);
                    },
                    std::move(callback)));
@@ -66,6 +70,10 @@ void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
   database_table.PurgeOrphaned(
       placement_ids, base::BindOnce(
                          [](AdEventCallback callback, const bool success) {
+                           if (success) {
+                             RebuildAdEventCache();
+                           }
+
                            std::move(callback).Run(success);
                          },
                          std::move(callback)));
@@ -75,6 +83,10 @@ void PurgeAllOrphanedAdEvents(AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeAllOrphaned(base::BindOnce(
       [](AdEventCallback callback, const bool success) {
+        if (success) {
+          RebuildAdEventCache();
+        }
+
         std::move(callback).Run(success);
       },
       std::move(callback)));

@@ -49,10 +49,12 @@ void InlineContentAdServing::MaybeServeAd(
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  NotifyOpportunityAroseToServeInlineContentAd();
-
   const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
-  CHECK(tab);
+  if (!tab) {
+    return FailedToServeAd(dimensions, std::move(callback));
+  }
+
+  NotifyOpportunityAroseToServeInlineContentAd();
 
   GetEligibleAds(tab->id, dimensions, std::move(callback));
 }
