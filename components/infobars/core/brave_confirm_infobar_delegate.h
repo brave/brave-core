@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 #define BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -30,13 +31,11 @@ class BraveConfirmInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   int GetButtons() const override;
 
+  infobars::InfoBar* GetInfobar() { return this->infobar(); }
+
  protected:
   BraveConfirmInfoBarDelegate();
 };
-
-namespace infobars {
-  class ContentInfoBarManager;
-}  // namespace
 
 class BraveConfirmInfoBarDelegateFactory {
  public:
@@ -46,18 +45,10 @@ class BraveConfirmInfoBarDelegateFactory {
       const BraveConfirmInfoBarDelegateFactory&) = delete;
   virtual ~BraveConfirmInfoBarDelegateFactory();
 
-  virtual void Create();
+  virtual std::unique_ptr<BraveConfirmInfoBarDelegate> Create() = 0;
 
  protected:
-  explicit BraveConfirmInfoBarDelegateFactory(
-      infobars::ContentInfoBarManager* infobar_manager,
-      std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
-  explicit BraveConfirmInfoBarDelegateFactory(
-      std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
-
- private:
-  raw_ptr<infobars::ContentInfoBarManager> infobar_manager_ = nullptr;
-  std::unique_ptr<BraveConfirmInfoBarDelegate> delegate_;
+  BraveConfirmInfoBarDelegateFactory() = default;
 };
 
 #endif  // BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_

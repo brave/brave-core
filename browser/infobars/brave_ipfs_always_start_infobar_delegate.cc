@@ -4,36 +4,27 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
-#include <memory>
+
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/infobars/brave_global_confirm_infobar_creator.h"
-#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/prefs/pref_service.h"
-#include "chrome/browser/devtools/global_confirm_info_bar.h"
 #include "brave/components/ipfs/ipfs_service.h"
-#include "components/infobars/core/infobar.h"
-#include "brave/browser/ui/views/infobars/brave_global_confirm_infobar.h"
-
 
 BraveIPFSAlwaysStartInfoBarDelegateFactory::
     BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service,
                                                PrefService* local_state)
-    : BraveConfirmInfoBarDelegateFactory(
-          std::unique_ptr<BraveConfirmInfoBarDelegate>(
-              new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service,
-                                                      local_state))),
-      local_state_(local_state) {}
+    : local_state_(local_state), ipfs_service_(ipfs_service) {}
 
-void BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
+std::unique_ptr<BraveConfirmInfoBarDelegate>
+BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
   if (local_state_->GetBoolean(kIPFSAlwaysStartMode)) {
-    return;
+    return nullptr;
   }
 
-  BraveConfirmInfoBarDelegateFactory::Create();
+  return std::unique_ptr<BraveIPFSAlwaysStartInfoBarDelegate>(
+      new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service_, local_state_));
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(

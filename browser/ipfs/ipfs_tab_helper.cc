@@ -39,6 +39,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
+#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
 #endif
 
 namespace {
@@ -124,6 +125,23 @@ class BraveIPFSInfoBarDelegateObserverImpl
   base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
 };
 
+class BraveIPFSInfoBarDelegateObserverImplFactory
+    : public BraveIPFSInfoBarDelegateObserverFactory {
+ public:
+  explicit BraveIPFSInfoBarDelegateObserverImplFactory(
+      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
+      : ipfs_tab_helper_(ipfs_tab_helper) {}
+  ~BraveIPFSInfoBarDelegateObserverImplFactory() override = default;
+
+  std::unique_ptr<BraveIPFSInfoBarDelegateObserver> Create() override {
+    return std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
+        ipfs_tab_helper_);
+  }
+
+ private:
+  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
+};
+
 class BraveIPFSFallbackInfoBarDelegateObserverImpl
     : public BraveIPFSFallbackInfoBarDelegateObserver {
  public:
@@ -139,6 +157,25 @@ class BraveIPFSFallbackInfoBarDelegateObserverImpl
   }
 
   ~BraveIPFSFallbackInfoBarDelegateObserverImpl() override = default;
+
+ private:
+  GURL original_url_;
+  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
+};
+
+class BraveIPFSFallbackInfoBarDelegateObserverImplFactory
+    : public BraveIPFSFallbackInfoBarDelegateObserverFactory {
+ public:
+  explicit BraveIPFSFallbackInfoBarDelegateObserverImplFactory(
+      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper,
+      GURL original_url)
+      : original_url_(original_url), ipfs_tab_helper_(ipfs_tab_helper) {}
+  ~BraveIPFSFallbackInfoBarDelegateObserverImplFactory() override = default;
+
+  std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> Create() override {
+    return std::make_unique<BraveIPFSFallbackInfoBarDelegateObserverImpl>(
+        ipfs_tab_helper_, original_url_);
+  };
 
  private:
   GURL original_url_;
@@ -193,11 +230,11 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
 #if !BUILDFLAG(IS_ANDROID)
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
-    BraveIPFSAlwaysStartInfoBarDelegateFactory factory(
-        ipfs::IpfsServiceFactory::GetForContext(
-            web_contents()->GetBrowserContext()),
-        pref_service_);
-    factory.Create();
+    BraveGlobalInfoBarManager::Show(
+        std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+            ipfs::IpfsServiceFactory::GetForContext(
+                web_contents()->GetBrowserContext()),
+            pref_service_));
 #else
   ) {
     LoadUrl(GetIPFSResolvedURL());
@@ -285,10 +322,9 @@ void IPFSTabHelper::UpdateLocationBar() {
   if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
       !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
     BraveIPFSInfoBarDelegateFactory factory(
-        content_infobar_manager,
-        std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
+        std::make_unique<BraveIPFSInfoBarDelegateObserverImplFactory>(
             weak_ptr_factory_.GetWeakPtr()),
-        pref_service_);
+        content_infobar_manager, pref_service_);
     factory.Create();
   }
 #endif
@@ -426,11 +462,11 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
-      BraveIPFSAlwaysStartInfoBarDelegateFactory factory(
-        ipfs::IpfsServiceFactory::GetForContext(
-            web_contents()->GetBrowserContext()),
-        pref_service_);
-     factory.Create();      
+      BraveGlobalInfoBarManager::Show(
+          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+              ipfs::IpfsServiceFactory::GetForContext(
+                  web_contents()->GetBrowserContext()),
+              pref_service_));
 #else
       LoadUrl(possible_redirect.value());
 #endif  // !BUILDFLAG(IS_ANDROID)

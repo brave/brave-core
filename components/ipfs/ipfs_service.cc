@@ -48,6 +48,9 @@
 #include "content/public/browser/service_process_host.h"
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
+#endif
 namespace {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
@@ -680,7 +683,11 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
   importers_.erase(key);
 
   if (is_import_success) {
-//    BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
+#if !BUILDFLAG(IS_ANDROID)
+    BraveGlobalInfoBarManager::Show(
+        std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(this,
+                                                                     prefs_));
+#endif
   }
 }
 #endif
@@ -1092,7 +1099,11 @@ void IpfsService::OnPinAddResult(
 
   parse_result->recursive = recursive;
 
-//  BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
+#if !BUILDFLAG(IS_ANDROID)
+  BraveGlobalInfoBarManager::Show(
+      std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(this,
+                                                                   prefs_));
+#endif
 
   std::move(callback).Run(std::move(parse_result));
 }

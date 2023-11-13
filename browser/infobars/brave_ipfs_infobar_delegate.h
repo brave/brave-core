@@ -28,6 +28,15 @@ class BraveIPFSInfoBarDelegateObserver {
   virtual void OnRedirectToIPFS(bool remember) = 0;
   virtual ~BraveIPFSInfoBarDelegateObserver();
 };
+class BraveIPFSInfoBarDelegateObserverFactory {
+ public:
+  virtual ~BraveIPFSInfoBarDelegateObserverFactory() = default;
+
+  virtual std::unique_ptr<BraveIPFSInfoBarDelegateObserver> Create() = 0;
+
+ protected:
+  BraveIPFSInfoBarDelegateObserverFactory() = default;
+};
 
 class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
@@ -71,14 +80,17 @@ class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
 class BraveIPFSInfoBarDelegateFactory : public BraveConfirmInfoBarDelegateFactory {
 public:
-  BraveIPFSInfoBarDelegateFactory(infobars::ContentInfoBarManager* infobar_manager,
-    std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
-    PrefService* local_state);
-  ~BraveIPFSInfoBarDelegateFactory() override = default;
+ BraveIPFSInfoBarDelegateFactory(
+     std::unique_ptr<BraveIPFSInfoBarDelegateObserverFactory> observer_factory,
+     infobars::ContentInfoBarManager* infobar_manager,
+     PrefService* local_state);
+ ~BraveIPFSInfoBarDelegateFactory() override;
 
-  void Create() override;
+ std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
+
 private:
   raw_ptr<PrefService> local_state_ = nullptr;
+  std::unique_ptr<BraveIPFSInfoBarDelegateObserverFactory> observer_factory_;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_INFOBAR_DELEGATE_H_

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
@@ -15,12 +16,8 @@
 class PrefService;
 
 namespace ipfs {
-  class IpfsService;
+class IpfsService;
 }  // namespace ipfs
-
-namespace infobars {
-  class ContentInfoBarManager;
-}
 
 class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 public:
@@ -28,12 +25,12 @@ public:
       delete;
   BraveIPFSAlwaysStartInfoBarDelegate& operator=(
       const BraveIPFSAlwaysStartInfoBarDelegate&) = delete;
+  ~BraveIPFSAlwaysStartInfoBarDelegate() override;
 
-private:
+ private:
   friend class BraveIPFSAlwaysStartInfoBarDelegateFactory;
   explicit BraveIPFSAlwaysStartInfoBarDelegate(ipfs::IpfsService* ipfs_service, PrefService* local_state);
 
-  ~BraveIPFSAlwaysStartInfoBarDelegate() override;
 
   // BraveConfirmInfoBarDelegate
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
@@ -54,9 +51,11 @@ public:
   explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service, PrefService* local_state);
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
-  void Create() override;
-private:
+  std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
+
+ private:
   raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
 };
 
-#endif // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE_H_
+#endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE_H_
