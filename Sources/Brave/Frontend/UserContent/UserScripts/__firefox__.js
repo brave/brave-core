@@ -75,6 +75,10 @@ if (!window.__firefox__) {
                           `function ${ typeof value.name !== 'undefined' ? value.name : "" }() {\n    [native code]\n}` :
                           '[object Object]';
       
+      const toStringString = function() {
+        return 'function toString() {\n    [native code]\n}';
+      };
+      
       const toString = function() {
         return description;
       };
@@ -103,11 +107,16 @@ if (!window.__firefox__) {
       }
       
       // Secure calls to `toString`
-      const secureToString = function(toString) {
-        for (const [name, property] of $Object.entries(overrides)) {
-          let descriptor = $Object.getOwnPropertyDescriptor(toString, name);
+      const secureToString = function(fn) {
+        var fnOverrides = {...overrides};
+        if ((fn === toString || fn === toStringString) && fnOverrides['toString']) {
+          fnOverrides['toString'] = toStringString;
+        }
+        
+        for (const [name, property] of $Object.entries(fnOverrides)) {
+          let descriptor = $Object.getOwnPropertyDescriptor(fn, name);
           if (!descriptor || descriptor.configurable) {
-            $Object.defineProperty(toString, name, {
+            $Object.defineProperty(fn, name, {
               enumerable: false,
               configurable: false,
               writable: false,
@@ -115,13 +124,13 @@ if (!window.__firefox__) {
             });
           }
           
-          descriptor = $Object.getOwnPropertyDescriptor(toString, name);
+          descriptor = $Object.getOwnPropertyDescriptor(fn, name);
           if (!descriptor || descriptor.writable) {
-            toString[name] = property;
+            fn[name] = property;
           }
           
           if (name !== 'toString') {
-            $.deepFreeze(toString[name]);
+            $.deepFreeze(fn[name]);
           }
         }
 
@@ -130,6 +139,9 @@ if (!window.__firefox__) {
       
       // Secure our custom `toString`
       // Freeze our custom `toString`
+      secureToString(toStringString);
+      $.deepFreeze(toStringString);
+      
       secureToString(toString);
       $.deepFreeze(toString);
 
