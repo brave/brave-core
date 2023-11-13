@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
@@ -203,13 +202,11 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              const bool success) {
             if (!success) {
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-              return std::move(callback).Run(/*success=*/false);
+            } else {
+              BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
             }
 
-            RebuildAdEventCache();
-
-            BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-            std::move(callback).Run(/*success=*/true);
+            std::move(callback).Run(success);
           },
           ad_type, std::move(callback)));
 }
@@ -321,8 +318,6 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
     BLOG(0, "Failed to purge orphaned ad events");
     return FailedToInitialize(std::move(callback));
   }
-
-  RebuildAdEventCache();
 
   rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
                                   weak_factory_.GetWeakPtr(), std::move(wallet),
