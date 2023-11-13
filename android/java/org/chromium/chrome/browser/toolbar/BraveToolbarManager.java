@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -241,9 +242,13 @@ public class BraveToolbarManager extends ToolbarManager {
     }
 
     @Override
-    public void initializeWithNative(LayoutManagerImpl layoutManager,
-            OnClickListener tabSwitcherClickHandler, OnClickListener newTabClickHandler,
-            OnClickListener bookmarkClickHandler, OnClickListener customTabsBackClickHandler,
+    public void initializeWithNative(
+            @NonNull LayoutManagerImpl layoutManager,
+            @Nullable StripLayoutHelperManager stripLayoutHelperManager,
+            OnClickListener tabSwitcherClickHandler,
+            OnClickListener newTabClickHandler,
+            OnClickListener bookmarkClickHandler,
+            OnClickListener customTabsBackClickHandler,
             Supplier<Boolean> showStartSurfaceSupplier) {
         OnClickListener wrappedNewTabClickHandler =
                 v -> {
@@ -252,6 +257,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 };
         super.initializeWithNative(
                 layoutManager,
+                stripLayoutHelperManager,
                 tabSwitcherClickHandler,
                 wrappedNewTabClickHandler,
                 bookmarkClickHandler,
@@ -260,12 +266,14 @@ public class BraveToolbarManager extends ToolbarManager {
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
-            Runnable closeAllTabsAction = () -> {
-                mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
-                        .closeAllTabs();
-            };
+            Runnable closeAllTabsAction =
+                    () -> {
+                        mTabModelSelector
+                                .getModel(mIncognitoStateProvider.isIncognitoSelected())
+                                .closeAllTabs();
+                    };
             assert (mBottomControlsCoordinatorSupplier.get()
-                            instanceof BraveBottomControlsCoordinator);
+                    instanceof BraveBottomControlsCoordinator);
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .initializeWithNative(
                             mActivity,
