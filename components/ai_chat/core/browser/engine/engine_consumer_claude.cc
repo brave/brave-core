@@ -85,6 +85,7 @@ std::string BuildClaudePrompt(
                          is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
                                   : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
                      {page_content}, nullptr),
+                  is_video ? "" : l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_ARTICLE_QUOTE_SEGMENT),
                  "\n\n"});
 
   auto prompt_segment_history =
