@@ -312,7 +312,7 @@ void ConversationDriver::MaybeGeneratePageText() {
     return;
   }
 
-  if (!should_page_content_be_disconnected_) {
+  if (should_send_page_contents_) {
     is_page_text_fetch_in_progress_ = true;
     // Update fetching status
     OnPageHasContentChanged(false);
@@ -371,7 +371,7 @@ void ConversationDriver::CleanUp() {
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
-  should_page_content_be_disconnected_ = false;
+  should_send_page_contents_ = true;
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
   engine_->ClearAllQueries();
@@ -411,10 +411,14 @@ bool ConversationDriver::HasContentAssociated() {
   return !article_text_.empty();
 }
 
-void ConversationDriver::DisconnectPageContents() {
-  CleanUp();
+void ConversationDriver::SetShouldSendPageContents(bool should_send) {
+  DCHECK(should_send_page_contents_ != should_send);
 
-  should_page_content_be_disconnected_ = true;
+  should_send_page_contents_ = should_send;
+}
+
+bool ConversationDriver::GetShouldSendPageContents() {
+  return should_send_page_contents_;
 }
 
 void ConversationDriver::ClearConversationHistory() {
@@ -546,6 +550,13 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
 
+  if (!should_send_page_contents_) {
+    article_text_.clear();
+    suggestions_.clear();
+    OnPageHasContentChanged(false);
+    OnSuggestedQuestionsChanged();
+  }
+
   engine_->GenerateAssistantResponse(
       is_video_, article_text_, history, question_part,
       std::move(data_received_callback), std::move(data_completed_callback));
@@ -666,16 +677,15 @@ bool ConversationDriver::IsContentAssociationPossible() {
   return true;
 }
 
-void ConversationDriver::SetPendingMessageNeedsPageContent(bool needs_content) {
-  pending_message_needs_page_content_ = needs_content;
-}
-
 void ConversationDriver::SubmitSummarizationRequest() {
+  DCHECK(IsContentAssociationPossible())
+      << "This conversation request is not associated with content\n";
+
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
   MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
-  SetPendingMessageNeedsPageContent(/*needs_content=*/true);
+  pending_message_needs_page_content_ = true;
 }
 
 void ConversationDriver::GetPremiumStatus(

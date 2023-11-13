@@ -229,9 +229,17 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 #endif
 }
 
-void AIChatUIPageHandler::DisconnectPageContents() {
+void AIChatUIPageHandler::SetShouldSendPageContents(bool should_send) {
   if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->DisconnectPageContents();
+    active_chat_tab_helper_->SetShouldSendPageContents(should_send);
+  }
+}
+
+void AIChatUIPageHandler::GetShouldSendPageContents(
+    GetShouldSendPageContentsCallback callback) {
+  if (active_chat_tab_helper_) {
+    std::move(callback).Run(
+        active_chat_tab_helper_->GetShouldSendPageContents());
   }
 }
 
@@ -458,7 +466,6 @@ mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
       active_chat_tab_helper_->IsPageContentsTruncated();
   site_info.is_content_association_possible =
       active_chat_tab_helper_->IsContentAssociationPossible();
-  site_info.has_content_associated = has_content;
 
   return site_info;
 }

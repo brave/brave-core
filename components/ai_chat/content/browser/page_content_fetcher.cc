@@ -62,7 +62,6 @@ class PageContentFetcher {
              FetchPageContentCallback callback) {
     url_loader_factory_ = url_loader_factory;
     content_extractor_ = std::move(content_extractor);
-
     if (!content_extractor_) {
       DeleteSelf();
       return;

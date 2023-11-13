@@ -230,12 +230,18 @@
     I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE" desc="Title for the chat card option.">
-   Just want to chat?
+    Just want to chat?
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC" desc="Description prompting the user to engage in a casual conversation with the chatbot.">
-   Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
+    Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
   </message>
-   <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
-   Privacy agreement
+  <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
+    Privacy agreement
+  </message>
+  <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
+    Use page context for response
+  </message>
+  <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
+    Toggle on to ask about this page. It's content will be sent to Brave Leo along with your messages.
   </message>
 </grit-part>

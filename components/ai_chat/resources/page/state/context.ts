@@ -27,6 +27,7 @@ export interface AIChatContext {
   shouldShowLongPageWarning: boolean
   shouldShowLongConversationInfo: boolean
   showAgreementModal: boolean
+  shouldSendPageContents: boolean
   setCurrentModel: (model: mojom.Model) => void,
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
@@ -38,6 +39,7 @@ export interface AIChatContext {
   userRefreshPremiumSession: () => void
   dismissLongPageWarning: () => void
   dismissLongConversationInfo: () => void
+  updateShouldSendPageContents: (shouldSend: boolean) => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -60,6 +62,7 @@ export const defaultContext: AIChatContext = {
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
   showAgreementModal: false,
+  shouldSendPageContents: true,
   setCurrentModel: () => {},
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
@@ -71,6 +74,7 @@ export const defaultContext: AIChatContext = {
   userRefreshPremiumSession: () => {},
   dismissLongPageWarning: () => {},
   dismissLongConversationInfo: () => {},
+  updateShouldSendPageContents: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

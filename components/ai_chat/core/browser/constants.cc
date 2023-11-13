@@ -97,7 +97,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION},
       {"welcomeGuideShatCardTitle", IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE},
       {"welcomeGuideShatCardDesc", IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC},
-      {"privacyTitle", IDS_CHAT_UI_PRIVACY_TITLE}};
+      {"privacyTitle", IDS_CHAT_UI_PRIVACY_TITLE},
+      {"contextToggleLabel", IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL},
+      {"contextToggleTooltipInfo", IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO}};
 
   return kLocalizedStrings;
 }
