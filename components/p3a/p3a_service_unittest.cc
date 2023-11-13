@@ -315,7 +315,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   base::UmaHistogramExactLinear(kTestExampleMetric, 1, 8);
   p3a_service_->OnHistogramChanged(kTestExampleMetric, 0, 1);
   task_environment_.RunUntilIdle();
-  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 400));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
 
