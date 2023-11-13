@@ -56,8 +56,10 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   gfx::Insets GetContentsMargins() const;
   bool IsReaderModeToolbarVisible() const;
   bool IsFullscreenForTab() const;
+  bool IsFullscreenForBrowser() const;
   bool ShouldPushBookmarkBarForVerticalTabs();
   gfx::Insets GetInsetsConsideringVerticalTabHost();
+  void UpdateContentsContainerInsets(gfx::Rect& contents_container_bounds);
 
 #if BUILDFLAG(IS_MAC)
   gfx::Insets AdjustInsetsConsideringFrameBorder(const gfx::Insets& insets);
