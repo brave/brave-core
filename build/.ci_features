@@ -3,3 +3,9 @@
 
 # Allow CI to use `--use_remoteexec` instead of `--use_goma`.
 reclient
+
+# Allow CI to set use_full_version=false in .env. This feature is added to
+# speedup PR builders. When use_full_version=false, chrome/VERSION will always
+# have PATCH=0. This will also generate dist files with .0 at the end, CI should
+# be aware of that to upload correct files to S3.
+use_full_version
