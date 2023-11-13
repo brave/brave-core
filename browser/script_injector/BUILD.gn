@@ -13,8 +13,6 @@ source_set("browser_tests") {
     "//base",
     "//brave/components/script_injector/common/mojom",
     "//chrome/test:test_support",
-    "//net:test_support",
-    "//url",
   ]
 
   if (is_android) {
