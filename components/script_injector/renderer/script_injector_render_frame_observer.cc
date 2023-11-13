@@ -5,6 +5,7 @@
 
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -60,6 +61,8 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
              blink::mojom::WantResultOption want_result,
              absl::optional<base::Value> value, base::TimeTicks start_time) {
             if (want_result == blink::mojom::WantResultOption::kWantResult) {
+              std::cerr << "xyzzy value = " << *value << std::endl;
+
               std::move(callback).Run(value ? std::move(*value)
                                             : base::Value());
             }

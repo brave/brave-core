@@ -10,6 +10,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "base/test/mock_callback.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -104,8 +105,7 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
 };
 
 // TESTS
-
-IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjected) {
+IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptAwaitPromise) {
   base::RunLoop run_loop;
   auto callback = base::BindLambdaForTesting([&](base::Value value) {
     EXPECT_TRUE(value.GetBool());
@@ -126,14 +126,35 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjected) {
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedReturnsFalse) {
+IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptEmptyCallback) {
+  base::MockCallback<content::RenderFrameHost::JavaScriptResultCallback> callback;
+  ON_CALL(callback, is_null).WillByDefault(::testing::Return(true));
+  EXPECT_CALL(callback, Run).Times(1);
+
+  auto script = base::StringPrintf(kScript, "true");
+  const GURL url = https_server_.GetURL("a.com", "/");
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
+  remote->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::PromiseResultOption::kAwait, callback.Get());
+  std::u16string expected_title(u"test");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
   base::RunLoop run_loop;
   const GURL url = https_server_.GetURL("a.com", "/");
   auto cb = base::BindLambdaForTesting([&](base::Value value) {
-    EXPECT_FALSE(value.GetBool());
+    EXPECT_TRUE(value.is_dict());
+    const base::Value::Dict& dict = value.GetDict();
+    auto val = dict.FindBool("ok");
+    EXPECT_TRUE(*val);
     run_loop.Quit();
   });
-  auto script = base::StringPrintf(kScript, "false");
+  auto script = base::StringPrintf(kScript, "{ok: true}");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(
@@ -146,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedReturnsFalse) {
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, ScriptInjectedDoNotAwait) {
+IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptDoNotAwaitPromise) {
   const GURL url = https_server_.GetURL("a.com", "/");
   auto cb = base::BindOnce([](base::Value value) { FAIL(); });
   auto script = base::StringPrintf(kScript, "true");
