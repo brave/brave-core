@@ -938,10 +938,10 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
   // Bitcoin
   mojom::NetworkInfo btc_mainnet(
-      mojom::kBitcoinMainnet, "Bitcoin Mainnet", {"https://blockstream.info"},
-      {}, 0, {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC",
-      "Bitcoin", 8, mojom::CoinType::BTC, {mojom::KeyringId::kBitcoin84},
-      false);
+      mojom::kBitcoinMainnet, "Bitcoin Mainnet",
+      {"https://www.blockchain.com/explorer"}, {}, 0,
+      {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC", "Bitcoin", 8,
+      mojom::CoinType::BTC, {mojom::KeyringId::kBitcoin84}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::BTC));
   EXPECT_EQ(GetChain(&prefs, "bitcoin_mainnet", mojom::CoinType::BTC),
             btc_mainnet.Clone());

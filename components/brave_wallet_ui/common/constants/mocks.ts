@@ -179,6 +179,21 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   isEip1559: false
 }
 
+export const mockBtcMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: 'bitcoin_mainnet',
+  chainName: 'Bitcoin Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://bitcoin-mainnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://www.blockchain.com/explorer'],
+  symbol: 'BTC',
+  symbolName: 'Bitcoin',
+  decimals: 8,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.BTC,
+  supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
+  isEip1559: false
+}
+
 export const mockNftPinningStatus = {
   [getAssetIdKey(mockErc721Token)]: {
     code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
