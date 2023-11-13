@@ -201,7 +201,13 @@ export default function PlayerControls({ videoElement, className }: Props) {
           }
           size='large'
           visibility='normal'
-          title={'loop'}
+          title={getLocalizedString(
+            !loopMode
+              ? 'bravePlaylistA11YLoopOff'
+              : loopMode === 'single-item'
+              ? 'bravePlaylistA11YLoopOne'
+              : 'bravePlaylistA11YLoopAll'
+          )}
           kind={loopMode ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().advanceLoopMode()}
         />
