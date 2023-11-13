@@ -9,7 +9,6 @@ type State = Omit<WalletPanelState, 'wallet'>
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ panel }: State) => panel.hasInitialized
-export const panelTitle = ({ panel }: State) => panel.panelTitle
 export const selectedPanel = ({ panel }: State) => panel.selectedPanel
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects

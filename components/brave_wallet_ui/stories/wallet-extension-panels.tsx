@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import './locale'
 import {
   BraveWallet,
-  PanelTypes,
   SerializableTransactionInfo,
   UIState,
   WalletState
@@ -22,8 +21,6 @@ import {
 import {
   ConfirmTransactionPanel //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
-import { ConnectedPanel } from '../components/extension/connected-panel/index'
-import { Panel } from '../components/extension/panel/index'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import { SignPanel } from '../components/extension/sign-panel/index'
 import {
@@ -33,37 +30,21 @@ import {
   ConnectHardwareWalletPanel //
 } from '../components/extension/connect-hardware-wallet-panel/index'
 import {
-  SitePermissions //
-} from '../components/extension/site-permissions-panel/index'
-import {
   AddSuggestedTokenPanel //
 } from '../components/extension/add-suggested-token-panel/index'
-import {
-  TransactionsPanel //
-} from '../components/extension/transactions-panel/index'
-import {
-  TransactionDetailPanel //
-} from '../components/extension/transaction-detail-panel/index'
-import { AssetsPanel } from '../components/extension/assets-panel/index'
 import {
   DecryptRequestPanel,
   ProvidePubKeyPanel //
 } from '../components/extension/encryption-key-panel/index'
 
-import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { CreateAccountTab } from '../components/buy-send-swap/create-account'
-import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
-import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
-  ScrollContainer,
-  SelectContainer,
   StyledWelcomPanel,
   StyledCreateAccountPanel
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
-import { PANEL_TITLES } from '../options/panel-titles'
 import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
@@ -73,10 +54,7 @@ import {
   mockTransactionInfo,
   mockedErc20ApprovalTransaction
 } from './mock-data/mock-transaction-info'
-import {
-  mockAccounts,
-  mockedTransactionAccounts
-} from './mock-data/mock-wallet-accounts'
+import { mockAccounts } from './mock-data/mock-wallet-accounts'
 import {
   mockEncryptionKeyRequest,
   mockDecryptRequest
@@ -625,160 +603,6 @@ _ConnectWithSite.story = {
   name: 'Connect With Site'
 }
 
-export const _ConnectedPanel = (args: { locked: boolean }) => {
-  const { locked } = args
-  const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
-  const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
-  const [panelTitle, setPanelTitle] = React.useState<string>('main')
-  const [selectedAccount, setSelectedAccount] =
-    React.useState<BraveWallet.AccountInfo>(mockAccounts[0])
-
-  const selectedTransaction = transactionList[1][0]
-
-  const onBack = () => {
-    setSelectedPanel('main')
-  }
-
-  const onBackToTransactions = () => {
-    navigateTo('activity')
-  }
-
-  const onSelectAccount = (account: BraveWallet.AccountInfo) => () => {
-    setSelectedAccount(account)
-    setSelectedPanel('main')
-  }
-
-  const getTitle = (path: PanelTypes) => {
-    const title = PANEL_TITLES.find((title) => path === title.id)
-    setPanelTitle(title ? title.title : '')
-  }
-
-  const navigateTo = (path: PanelTypes) => {
-    if (path === 'expanded') {
-      alert('This will expand to main wallet!')
-    } else {
-      setSelectedPanel(path)
-    }
-    getTitle(path)
-  }
-
-  const unlockWallet = (_password: string) => {
-    setWalletLocked(false)
-  }
-
-  const onRestore = () => {
-    alert('Will navigate to full wallet restore page')
-  }
-
-  const onAddAccount = () => {
-    console.log('Will Expand to the Accounts Page')
-  }
-
-  const onAddNetwork = () => {
-    console.log('Will redirect user to network settings')
-  }
-
-  const onNoAccountForNetwork = (network: BraveWallet.NetworkInfo) => {
-    console.log('Will expand to Create Account panel')
-  }
-
-  const onAddAsset = () => {
-    alert('Will redirect to brave://wallet/crypto/portfolio/add-asset')
-  }
-
-  return (
-    <WalletPanelStory>
-      <StyledExtensionWrapper>
-        {walletLocked ? (
-          <LockPanel
-            onSubmit={unlockWallet}
-            onClickRestore={onRestore}
-          />
-        ) : (
-          <>
-            {selectedPanel === 'main' ? (
-              <ConnectedPanel navAction={navigateTo} />
-            ) : (
-              <>
-                {selectedPanel === 'accounts' && (
-                  <SelectContainer>
-                    <SelectAccountWithHeader
-                      accounts={mockAccounts}
-                      onBack={onBack}
-                      onSelectAccount={onSelectAccount}
-                      onAddAccount={onAddAccount}
-                      hasAddButton={true}
-                      selectedAccount={selectedAccount}
-                    />
-                  </SelectContainer>
-                )}
-                {selectedPanel === 'networks' && (
-                  <SelectContainer>
-                    <SelectNetworkWithHeader
-                      onBack={onBack}
-                      hasAddButton={true}
-                      onAddNetwork={onAddNetwork}
-                      onNoAccountForNetwork={onNoAccountForNetwork}
-                    />
-                  </SelectContainer>
-                )}
-                {selectedPanel === 'transactionDetails' &&
-                  selectedTransaction && (
-                    <SelectContainer>
-                      <TransactionDetailPanel
-                        transactionId={selectedTransaction.id}
-                        onBack={onBackToTransactions}
-                        visibleTokens={mockNewAssetOptions}
-                      />
-                    </SelectContainer>
-                  )}
-                {selectedPanel !== 'networks' &&
-                  selectedPanel !== 'accounts' &&
-                  selectedPanel !== 'transactionDetails' && (
-                    <Panel
-                      navAction={navigateTo}
-                      title={panelTitle}
-                    >
-                      <ScrollContainer>
-                        {selectedPanel === 'sitePermissions' && (
-                          <SitePermissions />
-                        )}
-
-                        {/* Transactions */}
-                        {selectedPanel === 'activity' && (
-                          <TransactionsPanel
-                            selectedNetwork={mockNetworks[0]}
-                            selectedAccount={
-                              mockedTransactionAccounts[0].accountId
-                            }
-                          />
-                        )}
-                        {selectedPanel === 'assets' && (
-                          <AssetsPanel
-                            selectedAccount={selectedAccount}
-                            onAddAsset={onAddAsset}
-                          />
-                        )}
-                      </ScrollContainer>
-                    </Panel>
-                  )}
-              </>
-            )}
-          </>
-        )}
-      </StyledExtensionWrapper>
-    </WalletPanelStory>
-  )
-}
-
-_ConnectedPanel.args = {
-  locked: false
-}
-
-_ConnectedPanel.story = {
-  name: 'Connected With Site'
-}
-
 export const _SetupWallet = () => {
   const onSetup = () => {
     alert('Will navigate to full wallet onboarding page')
@@ -837,68 +661,6 @@ export const _AddSuggestedToken = () => {
 
 _AddSuggestedToken.story = {
   name: 'Add Suggested Token'
-}
-
-export const _TransactionDetail = () => {
-  const mockedFunction = () => {
-    // Doesn't do anything in storybook
-  }
-
-  const tx = transactionList[mockedTransactionAccounts[0].address][0]
-  return (
-    <Provider
-      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
-    >
-      <StyledExtensionWrapper>
-        <Panel
-          navAction={mockedFunction}
-          title={'Recent Transactions'}
-        >
-          <ScrollContainer>
-            <TransactionDetailPanel
-              onBack={mockedFunction}
-              visibleTokens={mockNewAssetOptions}
-              transactionId={tx.id}
-            />
-          </ScrollContainer>
-        </Panel>
-      </StyledExtensionWrapper>
-    </Provider>
-  )
-}
-
-_TransactionDetail.story = {
-  name: 'Transactions Detail'
-}
-
-export const _RecentTransaction = () => {
-  const navigateTo = () => {
-    // Doesn't do anything in storybook
-  }
-
-  return (
-    <Provider
-      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
-    >
-      <StyledExtensionWrapper>
-        <Panel
-          navAction={navigateTo}
-          title={'Recent Transactions'}
-        >
-          <ScrollContainer>
-            <TransactionsPanel
-              selectedNetwork={mockNetworks[0]}
-              selectedAccount={mockedTransactionAccounts[0].accountId}
-            />
-          </ScrollContainer>
-        </Panel>
-      </StyledExtensionWrapper>
-    </Provider>
-  )
-}
-
-_RecentTransaction.story = {
-  name: 'Recent Transactions'
 }
 
 export const _CreateAccount = () => {

@@ -460,25 +460,6 @@ export const IconsWrapper = styled.div<{
   margin-right: ${(p) => p.marginRight || '6px'};
 `
 
-export const CircleIconWrapper = styled.div<{
-  padding?: number | string
-}>`
-  position: relative;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  position: relative;
-  ${makePaddingMixin('12px')}
-  background-color: ${(p) => p.theme.color.background01};
-  @media (prefers-color-scheme: dark) {
-    background-color: ${(p) => p.theme.color.background02};
-  }
-  box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08),
-    0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
-`
-
 export const NetworkIconWrapper = styled.div`
   display: flex;
   align-items: center;

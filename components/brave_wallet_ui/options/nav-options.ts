@@ -79,12 +79,6 @@ const ActivityNavOption: NavOption = {
   route: WalletRoutes.Activity
 }
 
-// We can remove this once we go live with Panel 2.0
-export const PanelNavOptionsOld: NavOption[] = [
-  ...BuySendSwapDepositOptions,
-  ActivityNavOption
-]
-
 export const PanelNavOptions: NavOption[] = [
   {
     id: 'portfolio',

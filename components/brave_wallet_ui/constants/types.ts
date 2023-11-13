@@ -79,11 +79,6 @@ export interface RPCResponseType {
 
 export type PanelHeaderSizes = 'regular' | 'slim'
 
-export interface PanelTitleObjectType {
-  title: string
-  id: PanelTypes
-}
-
 export type PanelTypes =
   | 'accounts'
   | 'addEthereumChain'
@@ -253,8 +248,6 @@ export interface PanelState {
   hasInitialized: boolean
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
-  lastSelectedPanel?: PanelTypes
-  panelTitle: string
   connectingAccounts: string[]
   addChainRequest: BraveWallet.AddChainRequest
   signMessageData: BraveWallet.SignMessageRequest[]

@@ -67,8 +67,6 @@ provideStrings({
   braveWalletReset: 'Reset',
   braveWalletSell: 'Sell',
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
-  braveWalletBuyNotSupportedTooltip: 'Buy not supported',
-  braveWalletSwapNotSupportedTooltip: 'Swap not supported',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
   braveWalletSlippageToleranceTitle: 'Slippage tolerance',
   braveWalletExpiresInTitle: 'Expires in',
@@ -121,7 +119,6 @@ provideStrings({
   braveWalletSearchNFTs: 'Search NFT by name, id',
 
   // Create Account Tab
-  braveWalletUnlockNeededToCreateAccount: 'Unlock needed to create an account',
   braveWalletCreateAccountDescription:
     'You don’t yet have a $1 account. Create one now?',
   braveWalletCreateAccountYes: 'Yes',
@@ -659,10 +656,6 @@ provideStrings({
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
   braveWalletPanelConnected: 'Connected',
-  braveWalletPanelNotConnected: 'Connect',
-  braveWalletPanelViewAccountAssets: 'View account assets',
-  braveWalletAssetsPanelTitle: 'Account assets',
-  braveWalletPanelDisconnected: 'Disconnected',
   braveWalletPanelBlocked: 'Blocked',
   braveWalletTitle: 'Wallet',
 
@@ -671,7 +664,6 @@ provideStrings({
     'Use this panel to securely access Web3 and all your crypto assets.',
 
   // Site Permissions Panel
-  braveWalletSitePermissionsTitle: 'Site permissions',
   braveWalletSitePermissionsAccounts: '$1 accounts connected',
   braveWalletSitePermissionsDisconnect: 'Disconnect',
   braveWalletSitePermissionsSwitch: 'Switch',
@@ -863,12 +855,8 @@ provideStrings({
 
   // Transaction Detail Panel
   braveWalletRecentTransactions: 'Recent transactions',
-  braveWalletTransactionDetails: 'Transaction details',
-  braveWalletTransactionDetailDate: 'Date',
-  braveWalletTransactionDetailSpeedUp: 'Speedup',
   braveWalletTransactionDetailHash: 'Transaction hash',
   braveWalletTransactionDetailNetwork: 'Network',
-  braveWalletTransactionDetailStatus: 'Status',
 
   // Transactions Status
   braveWalletTransactionStatusUnapproved: 'Unapproved',

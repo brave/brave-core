@@ -332,14 +332,6 @@ handler.on(
   }
 )
 
-handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
-  chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-    }
-  })
-})
-
 handler.on(
   WalletActions.updateAccountName.type,
   async (_store: Store, payload: UpdateAccountNamePayloadType) => {
