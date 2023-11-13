@@ -25,6 +25,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
@@ -41,7 +42,6 @@ BraveRendererUpdater::BraveRendererUpdater(
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
-  widevine_enabled_.Init(kWidevineEnabled, local_state);
 
   CheckActiveWallet();
 
@@ -64,11 +64,14 @@ BraveRendererUpdater::BraveRendererUpdater(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled_.Init(kWidevineEnabled, local_state);
   local_state_change_registrar_.Init(local_state);
   local_state_change_registrar_.Add(
       kWidevineEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -191,7 +194,10 @@ void BraveRendererUpdater::UpdateRenderer(
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
-  bool widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  bool widevine_enabled = false;
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+#endif
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
