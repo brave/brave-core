@@ -16,8 +16,6 @@ const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
 }
 
 const FEED_KEY = 'feedV2'
-const FEED_VIEW_KEY = 'feedV2-view'
-
 const saveFeed = (feed?: FeedV2) => {
   if (!feed) return
 
@@ -39,6 +37,7 @@ const maybeLoadFeed = (view: FeedView) => {
     : undefined
 }
 
+const FEED_VIEW_KEY = 'feedV2-view'
 export const useFeedV2 = () => {
   const [feedView, setFeedView] = useState<FeedView>(sessionStorage.getItem(FEED_VIEW_KEY) as any ?? 'all')
   useEffect(() => {

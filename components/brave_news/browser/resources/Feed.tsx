@@ -49,10 +49,12 @@ const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
 // jank as all the cards are rendered at once.
 const PAGE_SIZE = 25;
 const CARD_CLASS = 'feed-card'
+const HISTORY_SCROLL_DATA = 'bn-scroll-data'
+const HISTORY_CARD_COUNT = 'bn-card-count'
 
 const saveScrollPos = (itemId: React.Key) => () => {
   setHistoryState({
-    'bn-scroll-data': {
+    [HISTORY_SCROLL_DATA]: {
       itemId: itemId,
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
@@ -62,19 +64,18 @@ const saveScrollPos = (itemId: React.Key) => () => {
 }
 
 export default function Component({ feed }: Props) {
-  const [cardCount, setCardCount] = React.useState(getHistoryValue('bn-card-count', PAGE_SIZE));
+  const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
 
   // Store the number of cards we've loaded in history - otherwise when we
   // navigate back we might not be able to scroll down far enough.
   React.useEffect(() => {
-    setHistoryState({ 'bn-card-count': cardCount })
+    setHistoryState({ HISTORY_CARD_COUNT: cardCount })
   }, [cardCount])
 
-
   // Track the feed scroll position - if we mount this component somewhere with
-  // a bn-last-opened saved in the state, try and restore the scroll position.
+  // a scroll data saved in the state, try and restore the scroll position.
   React.useEffect(() => {
-    const scrollData = getHistoryValue<NewsScrollData | undefined>('bn-scroll-data', undefined)
+    const scrollData = getHistoryValue<NewsScrollData | undefined>(HISTORY_SCROLL_DATA, undefined)
     if (scrollData) {
       // If the viewport size hasn't changed, restore the scroll position.
       // Otherwise, scroll the clicked item into view.
