@@ -42,7 +42,7 @@ ScriptInjectorRenderFrameObserver::~ScriptInjectorRenderFrameObserver() =
 // static
 blink::mojom::WantResultOption
 ScriptInjectorRenderFrameObserver::CheckIfWantResult(
-    RequestAsyncExecuteScriptCallback callback) {
+    const RequestAsyncExecuteScriptCallback& callback) {
   return callback.is_null() ? blink::mojom::WantResultOption::kNoResult
                             : blink::mojom::WantResultOption::kWantResult;
 }
@@ -55,7 +55,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
   blink::WebScriptSource web_script_source =
       blink::WebScriptSource(blink::WebString::FromUTF16(script));
 
-  auto want_result = CheckIfWantResult(std::move(callback));
+  auto want_result = CheckIfWantResult(callback);
 
   render_frame()->GetWebFrame()->RequestExecuteScript(
       world_id, base::make_span(&web_script_source, 1u), user_activation,

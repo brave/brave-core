@@ -26,7 +26,6 @@ source_set("unit_tests") {
   sources = [ "script_injector_unittest.cc" ]
   deps = [
     "//base/test:test_support",
-    "//brave/components/script_injector/common/mojom",
     "//brave/components/script_injector/renderer:renderer",
     "//components/prefs:test_support",
   ]

@@ -48,8 +48,7 @@ class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
   // Determines whether the caller should be sent a result back.
   // Tested in ScriptInjectorUnitTest.
   static blink::mojom::WantResultOption CheckIfWantResult(
-      ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScriptCallback
-          callback);
+      const RequestAsyncExecuteScriptCallback& callback);
 
   // Used to bind the mojo receiver to the render frame observer.
   void BindToReceiver(
