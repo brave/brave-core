@@ -101,7 +101,8 @@ class RunableConfiguration:
                  self.binary)
     rebase_runner_config = deepcopy(self.config)
     rebase_runner_config.extra_browser_args.extend(
-        ['--update-source-profile', '--enable-brave-features-for-perf-testing'])
+        ['--update-source-profile', '--enable-brave-features-for-perf-testing',
+         '--component-updater="fast-update,url-source=https://go-updater.brave.com/extension"'])
 
     rebase_benchmark = BenchmarkConfig()
     rebase_benchmark.name = 'loading.desktop.brave'

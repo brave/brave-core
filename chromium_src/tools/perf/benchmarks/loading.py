@@ -6,6 +6,14 @@
 
 #pylint: disable=no-self-use,undefined-variable
 
+def CreateCoreTBMOptions(metric_list):
+    tbm_options = timeline_based_measurement.Options()
+    loading_metrics_category.AugmentOptionsForLoadingMetrics(tbm_options)
+    cat_filter = tbm_options.config.chrome_trace_config.category_filter
+    cat_filter.AddDisabledByDefault(
+        'disabled-by-default-histogram_samples')
+    tbm_options.ExtendTimelineBasedMetric(metric_list)
+    return tbm_options
 
 @benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
                 component='Blink>Loader',
@@ -18,6 +26,9 @@ class LoadingDesktopBrave(_LoadingBase):
     def CreateStorySet(self, _options):
         return page_sets.BraveLoadingDesktopStorySet(
             cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM])
+
+    def CreateCoreTimelineBasedMeasurementOptions(self):
+      return CreateCoreTBMOptions(['braveGeneralUmaMetric'])
 
     @classmethod
     def Name(cls):
@@ -36,6 +47,10 @@ class LoadingDesktopBraveStartup(_LoadingBase):
         return page_sets.BraveLoadingDesktopStorySet(
             cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM],
             with_delay=False)
+
+    def CreateCoreTimelineBasedMeasurementOptions(self):
+      return CreateCoreTBMOptions(
+          ['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
 
     @classmethod
     def Name(cls):
