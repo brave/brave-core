@@ -49,6 +49,10 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
               (),
               (const, override));
   MOCK_METHOD(bool, IsCookieDeprecationLabelAllowed, (), (const, override));
+  MOCK_METHOD(bool,
+              AreThirdPartyCookiesBlockedByCookieDeprecationExperiment,
+              (),
+              (const, override));
 };
 
 class PrivacySandboxSettingsTest : public testing::Test {
