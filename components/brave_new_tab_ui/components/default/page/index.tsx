@@ -145,6 +145,7 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
           root.classList.remove(CLASSNAME_PAGE_STUCK)
         }
       }
+      root?.style.setProperty('--ntp-scroll-percent', Math.min(scrollPast / viewportHeight, 1).toString())
       root?.style.setProperty('--ntp-fixed-content-height', Math.round(element.clientHeight) + 'px')
     })
 

@@ -43,6 +43,9 @@ import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 import * as style from './style'
+import { defaultState } from '../../storage/new_tab_storage'
+
+const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 
 interface Props {
   newTabData: NewTab.State
@@ -600,7 +603,7 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
-        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews) ? true : undefined}>
+        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContextProvider>
         <Page.Page
@@ -689,7 +692,11 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.Footer>
             {newTabData.showToday &&
               <Page.GridItemNavigationBraveNews>
-                <BraveNewsHint />
+                {defaultState.featureFlagBraveNewsFeedV2Enabled
+                  ? <React.Suspense fallback={null}>
+                    <BraveNewsPeek/>
+                  </React.Suspense>
+                  : <BraveNewsHint />}
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>

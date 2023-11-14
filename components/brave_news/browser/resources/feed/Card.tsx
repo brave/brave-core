@@ -22,6 +22,7 @@ export const Title = styled.h3`
 
   margin: 0;
 
+  text-align: start;
   font: ${font.primary.default.regular};
   color: var(--bn-glass-100);
 
