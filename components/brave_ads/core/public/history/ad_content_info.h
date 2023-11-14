@@ -27,6 +27,8 @@ struct ADS_EXPORT AdContentInfo final {
 
   ~AdContentInfo();
 
+  bool operator==(const AdContentInfo&) const = default;
+
   AdType type = AdType::kUndefined;
   std::string placement_id;
   std::string creative_instance_id;
@@ -44,9 +46,6 @@ struct ADS_EXPORT AdContentInfo final {
   bool is_saved = false;
   bool is_flagged = false;
 };
-
-bool operator==(const AdContentInfo&, const AdContentInfo&);
-bool operator!=(const AdContentInfo&, const AdContentInfo&);
 
 }  // namespace brave_ads
 

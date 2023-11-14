@@ -31,18 +31,4 @@ InterestUserModelInfo& InterestUserModelInfo::operator=(
 
 InterestUserModelInfo::~InterestUserModelInfo() = default;
 
-bool operator==(const InterestUserModelInfo& lhs,
-                const InterestUserModelInfo& rhs) {
-  const auto tie = [](const InterestUserModelInfo& user_model) {
-    return std::tie(user_model.segments, user_model.text_embedding_html_events);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const InterestUserModelInfo& lhs,
-                const InterestUserModelInfo& rhs) {
-  return !(lhs == rhs);
-}
-
 }  // namespace brave_ads

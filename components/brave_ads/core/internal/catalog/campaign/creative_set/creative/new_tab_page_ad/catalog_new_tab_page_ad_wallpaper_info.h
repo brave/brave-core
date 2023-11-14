@@ -14,8 +14,7 @@
 namespace brave_ads {
 
 struct CatalogNewTabPageAdWallpaperInfo final {
-  bool operator==(const CatalogNewTabPageAdWallpaperInfo&) const;
-  bool operator!=(const CatalogNewTabPageAdWallpaperInfo&) const;
+  bool operator==(const CatalogNewTabPageAdWallpaperInfo&) const = default;
 
   GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;

@@ -11,6 +11,9 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorWeightsInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorWeightsInfo&) const =
+      default;
+
   CreativeAdModelBasedPredictorSegmentWeightInfo intent_segment;
   CreativeAdModelBasedPredictorSegmentWeightInfo latent_interest_segment;
   CreativeAdModelBasedPredictorSegmentWeightInfo interest_segment;
@@ -20,11 +23,6 @@ struct CreativeAdModelBasedPredictorWeightsInfo final {
 
   double priority = 0.0;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorWeightsInfo& lhs,
-                const CreativeAdModelBasedPredictorWeightsInfo& rhs);
-bool operator!=(const CreativeAdModelBasedPredictorWeightsInfo& lhs,
-                const CreativeAdModelBasedPredictorWeightsInfo& rhs);
 
 }  // namespace brave_ads
 

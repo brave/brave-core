@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_TOKENS_UTIL_H_
 
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "base/types/expected.h"

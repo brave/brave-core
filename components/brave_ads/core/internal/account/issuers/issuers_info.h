@@ -21,8 +21,7 @@ struct IssuersInfo final {
 
   ~IssuersInfo();
 
-  bool operator==(const IssuersInfo&) const;
-  bool operator!=(const IssuersInfo&) const;
+  bool operator==(const IssuersInfo&) const = default;
 
   int ping = 0;
   IssuerList issuers;

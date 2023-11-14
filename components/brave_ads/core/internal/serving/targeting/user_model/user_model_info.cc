@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 
-#include <tuple>
 #include <utility>
 
 namespace brave_ads {
@@ -29,18 +28,5 @@ UserModelInfo& UserModelInfo::operator=(UserModelInfo&& other) noexcept =
     default;
 
 UserModelInfo::~UserModelInfo() = default;
-
-bool operator==(const UserModelInfo& lhs, const UserModelInfo& rhs) {
-  const auto tie = [](const UserModelInfo& user_model) {
-    return std::tie(user_model.intent, user_model.latent_interest,
-                    user_model.interest);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const UserModelInfo& lhs, const UserModelInfo& rhs) {
-  return !(lhs == rhs);
-}
 
 }  // namespace brave_ads

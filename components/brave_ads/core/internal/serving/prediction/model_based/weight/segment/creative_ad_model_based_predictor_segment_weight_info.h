@@ -9,14 +9,12 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorSegmentWeightInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorSegmentWeightInfo&) const =
+      default;
+
   double child = 0.0;
   double parent = 0.0;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorSegmentWeightInfo&,
-                const CreativeAdModelBasedPredictorSegmentWeightInfo&);
-bool operator!=(const CreativeAdModelBasedPredictorSegmentWeightInfo&,
-                const CreativeAdModelBasedPredictorSegmentWeightInfo&);
 
 }  // namespace brave_ads
 

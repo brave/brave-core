@@ -11,16 +11,13 @@
 namespace brave_ads {
 
 struct VerifiableConversionInfo final {
+  bool operator==(const VerifiableConversionInfo&) const = default;
+
   [[nodiscard]] bool IsValid() const;
 
   std::string id;
   std::string advertiser_public_key_base64;
 };
-
-bool operator==(const VerifiableConversionInfo&,
-                const VerifiableConversionInfo&);
-bool operator!=(const VerifiableConversionInfo&,
-                const VerifiableConversionInfo&);
 
 }  // namespace brave_ads
 

@@ -11,10 +11,9 @@
 namespace brave_ads {
 
 struct WalletInfo final {
-  [[nodiscard]] bool IsValid() const;
+  bool operator==(const WalletInfo&) const = default;
 
-  bool operator==(const WalletInfo&) const;
-  bool operator!=(const WalletInfo&) const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string payment_id;
   std::string public_key;

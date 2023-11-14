@@ -14,13 +14,12 @@
 namespace brave_ads {
 
 struct ADS_EXPORT CategoryContentInfo final {
+  bool operator==(const CategoryContentInfo&) const = default;
+
   std::string category;
   mojom::UserReactionType user_reaction_type =
       mojom::UserReactionType::kNeutral;
 };
-
-bool operator==(const CategoryContentInfo&, const CategoryContentInfo&);
-bool operator!=(const CategoryContentInfo&, const CategoryContentInfo&);
 
 }  // namespace brave_ads
 

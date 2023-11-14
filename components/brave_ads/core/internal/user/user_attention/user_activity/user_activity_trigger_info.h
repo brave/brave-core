@@ -12,12 +12,11 @@
 namespace brave_ads {
 
 struct UserActivityTriggerInfo final {
+  bool operator==(const UserActivityTriggerInfo&) const = default;
+
   std::string event_sequence;
   double score = 0.0;
 };
-
-bool operator==(const UserActivityTriggerInfo&, const UserActivityTriggerInfo&);
-bool operator!=(const UserActivityTriggerInfo&, const UserActivityTriggerInfo&);
 
 using UserActivityTriggerList = std::vector<UserActivityTriggerInfo>;
 
