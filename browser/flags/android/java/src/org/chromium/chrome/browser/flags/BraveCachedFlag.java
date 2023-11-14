@@ -29,12 +29,6 @@ public class BraveCachedFlag extends CachedFlag {
         maybeOverrideDefaultValue(featureName, defaultValue);
     }
 
-    public BraveCachedFlag(String featureName, String sharedPreferenceKey, boolean defaultValue) {
-        super(featureName, sharedPreferenceKey, defaultValue);
-
-        maybeOverrideDefaultValue(featureName, defaultValue);
-    }
-
     private void maybeOverrideDefaultValue(String featureName, boolean defaultValue) {
         // Override value if necessary.
         if (sFlags.containsKey(featureName)) {
