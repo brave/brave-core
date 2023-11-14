@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -44,6 +45,12 @@ class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
   // RenderFrameObserver implementation:
   void OnDestruct() override;
 
+  // Determines whether the caller should be sent a result back.
+  // Tested in ScriptInjectorUnitTest.
+  static blink::mojom::WantResultOption CheckIfWantResult(
+      ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScriptCallback
+          callback);
+
   // Used to bind the mojo receiver to the render frame observer.
   void BindToReceiver(
       mojo::PendingAssociatedReceiver<script_injector::mojom::ScriptInjector>
@@ -54,6 +61,12 @@ class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
       receivers_;
 
   base::WeakPtrFactory<ScriptInjectorRenderFrameObserver> weak_ptr_factory_;
+
+  FRIEND_TEST_ALL_PREFIXES(ScriptInjectorUnitTest,
+                           CheckIfWantResultHasCallback);
+  FRIEND_TEST_ALL_PREFIXES(ScriptInjectorUnitTest,
+                           CheckIfWantResultNullCallback);
+  friend class ScriptInjectorUnitTest;
 };
 
 }  // namespace script_injector

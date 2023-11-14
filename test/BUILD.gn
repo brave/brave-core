@@ -254,6 +254,7 @@ test("brave_unit_tests") {
     "//brave/components/permissions:unit_tests",
     "//brave/components/query_filter:unit_tests",
     "//brave/components/resources:strings_grit",
+    "//brave/components/script_injector/renderer:unit_tests",
     "//brave/components/search_engines:unit_tests",
     "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sessions/content:unit_tests",
