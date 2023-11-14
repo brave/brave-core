@@ -225,6 +225,7 @@ const Config = function () {
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.useRemoteExec = getNPMConfig(['use_remoteexec']) || false
+  this.useRemoteExecWithCcache = getNPMConfig(['use_remoteexec_with_ccache'], process.platform !== 'win32')
   this.offline = getNPMConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
@@ -1238,6 +1239,14 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
         env.RBE_service_no_auth = env.RBE_service_no_auth || true
         env.RBE_use_application_default_credentials =
           env.RBE_use_application_default_credentials || true
+      }
+
+      if (this.useRemoteExecWithCcache) {
+        env.USE_REMOTEEXEC_WITH_CCACHE = true
+        if (env.RBE_cache_dir !== undefined && env.CCACHE_DIR === undefined) {
+          env.CCACHE_DIR = path.join(env.RBE_cache_dir, 'ccache')
+        }
+        env.CCACHE_BASEDIR = this.rbeExecRoot
       }
     }
 

@@ -40,7 +40,7 @@ const base::FilePath::StringPieceType kShowIncludesFlag =
 class RedirectCC {
  public:
   RedirectCC(int argc, const base::FilePath::CharType* const* argv)
-      : argc_(argc), argv_(argv) {}
+      : argc_(argc), argv_(argv), environment_(base::Environment::Create()) {}
 
   base::FilePath::StringType GetCompilerExecutable(
       int* first_compiler_arg_idx) const {
@@ -56,9 +56,8 @@ class RedirectCC {
     return UTF8ToFilePathString(BUILDFLAG(REAL_REWRAPPER));
 #else   // defined(REDIRECT_CC_AS_GOMACC) || defined(REDIRECT_CC_AS_REWRAPPER)
     std::string cc_wrapper;
-    std::unique_ptr<base::Environment> env(base::Environment::Create());
-    if (env->HasVar("CC_WRAPPER")) {
-      CHECK(env->GetVar("CC_WRAPPER", &cc_wrapper));
+    if (environment_->HasVar("CC_WRAPPER")) {
+      CHECK(environment_->GetVar("CC_WRAPPER", &cc_wrapper));
     }
 
     if (!cc_wrapper.empty()) {
@@ -85,38 +84,99 @@ class RedirectCC {
     // Prepare argv to launch.
     std::vector<base::FilePath::StringType> launch_argv;
     launch_argv.reserve(argc_);
-    launch_argv.push_back(compiler_executable);
+    base::EnvironmentMap launch_env;
 
     // Path to `src/brave/chromium_src`.
     base::FilePath::StringType brave_chromium_src_dir;
     // Path to `src/`.
     base::FilePath::StringType chromium_src_dir_with_slash;
 
+#if defined(REDIRECT_CC_AS_REWRAPPER)
+    int first_non_rewrapper_arg = -1;
+    bool is_relocatable_compilation = false;
+#endif  // defined(REDIRECT_CC_AS_REWRAPPER)
+
     // Find directories to work with first.
     for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
       base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
-      if (base::StartsWith(arg_piece, kIncludeFlag) &&
+#if defined(REDIRECT_CC_AS_REWRAPPER)
+      if (first_non_rewrapper_arg == -1 && arg_piece[0] != '-') {
+        first_non_rewrapper_arg = arg_idx;
+        continue;
+      }
+      if (!is_relocatable_compilation &&
+          (base::Contains(arg_piece,
+                          FILE_PATH_LITERAL("ffile-compilation-dir")) ||
+           base::Contains(arg_piece,
+                          FILE_PATH_LITERAL("fdebug-compilation-dir")))) {
+        is_relocatable_compilation = true;
+        continue;
+      }
+#endif  // defined(REDIRECT_CC_AS_REWRAPPER)
+      if (brave_chromium_src_dir.empty() &&
+          chromium_src_dir_with_slash.empty() &&
+          base::StartsWith(arg_piece, kIncludeFlag) &&
           base::EndsWith(arg_piece, kBraveChromiumSrc)) {
         arg_piece.remove_prefix(kIncludeFlag.size());
         brave_chromium_src_dir = base::FilePath::StringType(arg_piece);
         arg_piece.remove_suffix(kBraveChromiumSrc.size());
         chromium_src_dir_with_slash = base::FilePath::StringType(arg_piece);
-        break;
       }
     }
 
     if (chromium_src_dir_with_slash.empty()) {
 #if defined(REDIRECT_CC_AS_REWRAPPER)
       // We're called to execute a non-clang action. Just launch it as is.
+      launch_argv.push_back(compiler_executable);
       for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
         launch_argv.emplace_back(argv_[arg_idx]);
       }
-      return Launch(launch_argv);
+      return Launch(launch_argv, {});
 #else   // defined(REDIRECT_CC_AS_REWRAPPER)
       LOG(ERROR) << "Can't find chromium src dir";
       return -1;
 #endif  // defined(REDIRECT_CC_AS_REWRAPPER)
     }
+
+#if defined(REDIRECT_CC_AS_REWRAPPER)
+    constexpr std::string_view kCcacheExecutable(BUILDFLAG(CCACHE_EXECUTABLE));
+    if (std::string use_remoteexec_with_ccache;
+        !kCcacheExecutable.empty() &&
+        environment_->GetVar("USE_REMOTEEXEC_WITH_CCACHE",
+                             &use_remoteexec_with_ccache) &&
+        use_remoteexec_with_ccache == "true") {
+      launch_argv.emplace_back(UTF8ToFilePathString(kCcacheExecutable));
+      if (is_relocatable_compilation) {
+        launch_env[FILE_PATH_LITERAL("CCACHE_NOHASHDIR")] =
+            FILE_PATH_LITERAL("1");
+      }
+
+      // Set CCACHE_PREFIX to the actual rewrapper.
+      launch_env[FILE_PATH_LITERAL("CCACHE_PREFIX")] =
+          base::MakeAbsoluteFilePath(base::FilePath(compiler_executable))
+              .value();
+
+      // Pass rewrapper parameters via environment variables, because
+      // CCACHE_PREFIX can only point to an executable.
+      for (int arg_idx = first_compiler_arg_idx;
+           arg_idx < first_non_rewrapper_arg; ++arg_idx) {
+        const base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
+        CHECK_EQ(arg_piece[0], '-') << arg_piece;
+        const auto eq_sign_idx = arg_piece.find(FILE_PATH_LITERAL("="));
+        CHECK_NE(eq_sign_idx, std::string::npos) << arg_piece;
+        base::FilePath::StringType env_var_key(base::StrCat(
+            {FILE_PATH_LITERAL("RBE_"), arg_piece.substr(1, eq_sign_idx - 1)}));
+        base::FilePath::StringType env_var_value(
+            arg_piece.substr(eq_sign_idx + 1, arg_piece.length()));
+        launch_env.emplace(std::move(env_var_key), std::move(env_var_value));
+      }
+      first_compiler_arg_idx = first_non_rewrapper_arg;
+    } else {
+      launch_argv.push_back(compiler_executable);
+    }
+#else
+    launch_argv.push_back(compiler_executable);
+#endif  // defined(REDIRECT_CC_AS_REWRAPPER)
 
     bool compile_file_found = false;
     base::FilePath::StringType brave_path;
@@ -182,7 +242,7 @@ class RedirectCC {
       launch_argv.emplace_back(arg_piece);
     }
 
-    const auto exit_code = Launch(launch_argv);
+    const auto exit_code = Launch(launch_argv, std::move(launch_env));
 
     // To check the redirected file timestamp, it should be marked as dependency
     // for ninja. Linux/MacOS gcc deps format includes this file properly.
@@ -200,14 +260,17 @@ class RedirectCC {
     return exit_code;
   }
 
-  int Launch(const std::vector<base::FilePath::StringType>& launch_argv) {
+  int Launch(const std::vector<base::FilePath::StringType>& launch_argv,
+             base::EnvironmentMap environment) {
 #if BUILDFLAG(IS_WIN)
     const auto& to_launch = CreateCmdLine(launch_argv);
 #else   // BUILDFLAG(IS_WIN)
     const auto& to_launch = launch_argv;
 #endif  // BUILDFLAG(IS_WIN)
 
-    auto process = base::LaunchProcess(to_launch, base::LaunchOptions());
+    base::LaunchOptions options;
+    options.environment = std::move(environment);
+    auto process = base::LaunchProcess(to_launch, options);
     int exit_code = -1;
     if (!process.WaitForExit(&exit_code)) {
       LOG(ERROR) << "Failed to WaitForExit";
@@ -257,8 +320,9 @@ class RedirectCC {
           // To quote, we need to output 2x as many backslashes.
           backslash_count *= 2;
         }
-        for (size_t j = 0; j < backslash_count; ++j)
+        for (size_t j = 0; j < backslash_count; ++j) {
           out->push_back('\\');
+        }
 
         // Advance i to one before the end to balance i++ in loop.
         i = end - 1;
@@ -293,6 +357,7 @@ class RedirectCC {
 
   const int argc_;
   const base::FilePath::CharType* const* argv_;
+  std::unique_ptr<base::Environment> environment_;
 };
 
 #if BUILDFLAG(IS_WIN)

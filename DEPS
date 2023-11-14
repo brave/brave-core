@@ -63,6 +63,11 @@ hooks = [
     'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
   },
   {
+    'name': 'download_ccache',
+    'pattern': '.',
+    'action': ['python3', 'build/ccache/download_ccache.py', '4.8.3'],
+  },
+  {
     'name': 'configure_reclient',
     'pattern': '.',
     'action': ['python3', 'build/reclient_cfgs/configure_reclient.py'],

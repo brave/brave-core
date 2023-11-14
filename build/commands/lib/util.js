@@ -575,6 +575,7 @@ const util = {
       rbe_exec_root: config.rbeExecRoot,
       rbe_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
+      ccache_executable: path.join(config.braveCoreDir, 'build', 'ccache', 'bin', 'ccache'),
     }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
