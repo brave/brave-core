@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -28,29 +28,25 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
+    EXPECT_FALSE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
+    EXPECT_FALSE(ShouldAllowDoNotDisturb());
   }
 }
 
@@ -68,29 +64,25 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 }
 
@@ -106,15 +98,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 }
 
@@ -130,15 +120,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 }
 
@@ -154,15 +142,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 }
 
@@ -178,15 +164,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+    EXPECT_TRUE(ShouldAllowDoNotDisturb());
   }
 }
 

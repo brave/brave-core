@@ -5,10 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_base.h"
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/command_line_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/confirmation_tokens_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/issuers_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 namespace brave_ads {
 
@@ -18,18 +15,17 @@ PermissionRulesBase::~PermissionRulesBase() = default;
 
 // static
 bool PermissionRulesBase::HasPermission() {
-  const IssuersPermissionRule issuers_permission_rule;
-  if (!ShouldAllow(issuers_permission_rule)) {
+  if (!ShouldAllowIssuers()) {
+    return false;
+  }
+  if (!ShouldAllowConfirmationTokens()) {
+    return false;
+  }
+  if (!ShouldAllowCommandLine()) {
     return false;
   }
 
-  const ConfirmationTokensPermissionRule confirmation_tokens_permission_rule;
-  if (!ShouldAllow(confirmation_tokens_permission_rule)) {
-    return false;
-  }
-
-  const CommandLinePermissionRule catalog_permission_rule;
-  return ShouldAllow(catalog_permission_rule);
+  return true;
 }
 
 }  // namespace brave_ads

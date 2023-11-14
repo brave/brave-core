@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_minimum_wait_time_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
@@ -15,14 +15,12 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
- protected:
-  const NewTabPageAdMinimumWaitTimePermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowNewTabPageAdMinimumWaitTime());
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -33,7 +31,7 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowNewTabPageAdMinimumWaitTime());
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -44,7 +42,7 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get() - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(ShouldAllowNewTabPageAdMinimumWaitTime());
 }
 
 }  // namespace brave_ads

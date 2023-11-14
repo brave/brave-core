@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_per_hour_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
@@ -14,14 +14,12 @@
 namespace brave_ads {
 
 class BraveAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
- protected:
-  const NewTabPageAdsPerHourPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -31,7 +29,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
                        /*count=*/kMaximumNewTabPageAdsPerHour.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -43,7 +41,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -55,7 +53,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(ShouldAllowNewTabPageAdsPerHour());
 }
 
 }  // namespace brave_ads

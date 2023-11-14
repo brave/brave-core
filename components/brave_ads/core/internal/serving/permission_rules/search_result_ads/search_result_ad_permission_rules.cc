@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_util.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
@@ -17,18 +15,17 @@ bool SearchResultAdPermissionRules::HasPermission() {
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
-
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
-
-  const SearchResultAdsPerDayPermissionRule ads_per_day_permission_rule;
-  if (!ShouldAllow(ads_per_day_permission_rule)) {
+  if (!ShouldAllowSearchResultAdsPerDay()) {
+    return false;
+  }
+  if (!ShouldAllowSearchResultAdsPerHour()) {
     return false;
   }
 
-  const SearchResultAdsPerHourPermissionRule ads_per_hour_permission_rule;
-  return ShouldAllow(ads_per_hour_permission_rule);
+  return true;
 }
 
 }  // namespace brave_ads
