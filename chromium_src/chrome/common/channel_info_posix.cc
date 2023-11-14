@@ -54,14 +54,9 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
 
 #if BUILDFLAG(IS_LINUX)
 std::string GetDesktopName(base::Environment* env) {
-  // Allow $CHROME_DESKTOP to override the built-in value, so that development
-  // versions can set themselves as the default without interfering with
-  // non-official, packaged versions using the built-in value.
-  // This is also used in Snap packages, to enable setting the snapped browser
-  // as default.
-  std::string name;
-  if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
-    return name;
+  std::string brave_snap;
+  if (env->GetVar("BRAVE_SNAP", &brave_snap) && brave_snap == "1")
+    return "brave.desktop";
 #if defined(OFFICIAL_BUILD)
   version_info::Channel product_channel(chrome::GetChannel());
   switch (product_channel) {
@@ -75,6 +70,12 @@ std::string GetDesktopName(base::Environment* env) {
       return "brave-browser.desktop";
   }
 #else  // defined(OFFICIAL_BUILD)
+  // Allow $CHROME_DESKTOP to override the built-in value, so that development
+  // versions can set themselves as the default without interfering with
+  // non-official, packaged versions using the built-in value.
+  std::string name;
+  if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
+    return name;
   return "brave-browser.desktop";
 #endif
 }
