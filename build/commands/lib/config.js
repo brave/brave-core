@@ -122,6 +122,19 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
   return braveVersionParts.join('.')
 }
 
+const getHostOS = () => {
+  switch (process.platform) {
+    case 'darwin':
+      return 'mac'
+    case 'linux':
+      return 'linux'
+    case 'win32':
+      return 'win'
+    default:
+      assert(false, `Unknown process.platform: ${process.platform}`)
+  }
+}
+
 const Config = function () {
   this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
   this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
@@ -143,6 +156,7 @@ const Config = function () {
   this.depotToolsDir = getDepotToolsDir(this.braveCoreDir)
   this.depotToolsRepo = getEnvConfig(['projects', 'depot_tools', 'repository', 'url'])
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
+  this.hostOS = getHostOS()
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
@@ -1187,15 +1201,11 @@ Config.prototype.update = function (options) {
   }
 }
 
-Config.prototype.getTargetOS = function() {
-  if (this.targetOS)
+Config.prototype.getTargetOS = function () {
+  if (this.targetOS) {
     return this.targetOS
-  if (process.platform === 'darwin')
-    return 'mac'
-  if (process.platform === 'win32')
-    return 'win'
-  assert(process.platform === 'linux')
-  return 'linux'
+  }
+  return this.hostOS
 }
 
 Config.prototype.getCachePath = function () {
@@ -1344,8 +1354,8 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
-    if (this.targetOS && (this.targetOS === 'android' || this.targetOS === 'ios')) {
-      buildConfigDir = this.targetOS + "_" + buildConfigDir
+    if (this.targetOS && this.targetOS !== this.hostOS) {
+      buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
     if (this.targetEnvironment) {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
