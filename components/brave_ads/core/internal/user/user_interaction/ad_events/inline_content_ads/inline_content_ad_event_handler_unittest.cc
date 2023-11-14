@@ -42,7 +42,7 @@ class BraveAdsInlineContentAdEventHandlerTest : public UnitTestBase {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::InlineContentAdEventType& event_type,
+                 const mojom::InlineContentAdEventType event_type,
                  const bool should_fire_event) {
     base::MockCallback<FireInlineContentAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,

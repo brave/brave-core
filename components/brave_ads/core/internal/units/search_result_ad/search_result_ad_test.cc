@@ -30,7 +30,7 @@ class BraveAdsSearchResultAdIntegrationTest : public UnitTestBase {
 
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType& event_type,
+      const mojom::SearchResultAdEventType event_type,
       const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
