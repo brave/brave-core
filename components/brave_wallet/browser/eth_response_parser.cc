@@ -289,7 +289,7 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
 
   for (const auto& logs_list_it : *result) {
     auto log_item_value =
-        json_rpc_responses::EthGetLogsResult::FromValueDeprecated(logs_list_it);
+        json_rpc_responses::EthGetLogsResult::FromValue(logs_list_it);
     if (!log_item_value) {
       return false;
     }
