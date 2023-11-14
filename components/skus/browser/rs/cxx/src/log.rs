@@ -15,7 +15,8 @@ impl CppFormatter {
                 .without_time()
                 .with_ansi(false)
                 .with_level(false)
-                .pretty(),
+                .pretty()
+                .with_source_location(false),
         )
     }
 }

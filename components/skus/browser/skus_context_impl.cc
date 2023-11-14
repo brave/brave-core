@@ -24,10 +24,10 @@ void OnScheduleWakeup(
   done(std::move(ctx));
 }
 
-logging::LogSeverity getLogSeverity(skus::TracingLevel level) {
+logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
-      return -2;
+      return logging::LOGGING_VERBOSE - 1;
     case skus::TracingLevel::Debug:
       return logging::LOGGING_VERBOSE;
     case skus::TracingLevel::Info:
@@ -67,13 +67,20 @@ void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
                      skus::TracingLevel level,
                      rust::cxxbridge1::Str message) {
-  const logging::LogSeverity severity = getLogSeverity(level);
-  const std::string file_str = static_cast<std::string>(file);
-  const int vlog_level =
-      ::logging::GetVlogLevelHelper(file_str.c_str(), file_str.length() + 1);
-  if (severity <= vlog_level) {
-    logging::LogMessage(file_str.c_str(), line, severity).stream()
-        << static_cast<std::string>(message);
+  const logging::LogSeverity severity = GetLogSeverity(level);
+  if (severity >= 0) {
+    if (logging::ShouldCreateLogMessage(severity)) {
+      const std::string file_str(file.data(), file.length());
+      logging::LogMessage(file_str.c_str(), line, severity).stream()
+          << std::string_view(message.data(), message.size());
+    }
+  } else {
+    const std::string file_str(file.data(), file.length());
+    if (-severity <= ::logging::GetVlogLevelHelper(file_str.c_str(),
+                                                   file_str.length() + 1)) {
+      logging::LogMessage(file_str.c_str(), line, severity).stream()
+          << std::string_view(message.data(), message.size());
+    }
   }
 }
 
