@@ -115,13 +115,37 @@ void BraveOpaqueBrowserFrameView::
 }
 
 void BraveOpaqueBrowserFrameView::PaintClientEdge(gfx::Canvas* canvas) const {
-  // Don't draw client edge next to toolbar when it's in vertical tab stirp mode
-  DCHECK(browser_view());
-  auto* browser = browser_view()->browser();
-  DCHECK(browser);
-  if (tabs::utils::ShouldShowVerticalTabs(browser)) {
+  // Don't draw client edge next to toolbar when it's in vertical tab strip mode
+  if (ShouldShowVerticalTabs()) {
     return;
   }
 
   OpaqueBrowserFrameView::PaintClientEdge(canvas);
+}
+
+int BraveOpaqueBrowserFrameView::GetTopInset(bool restored) const {
+  if (ShouldShowVerticalTabs()) {
+    // In order to ignore horizontal tab strip's height, we by pass the base
+    // class's implementation.
+    return layout_->NonClientTopHeight(restored);
+  }
+
+  return OpaqueBrowserFrameView::GetTopInset(restored);
+}
+
+int BraveOpaqueBrowserFrameView::GetTopAreaHeight() const {
+  if (ShouldShowVerticalTabs()) {
+    // In order to ignore horizontal tab strip's height, we by pass the base
+    // class's implementation.
+    return layout_->NonClientTopHeight(false);
+  }
+
+  return OpaqueBrowserFrameView::GetTopAreaHeight();
+}
+
+bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
+  DCHECK(browser_view());
+  auto* browser = browser_view()->browser();
+  DCHECK(browser);
+  return tabs::utils::ShouldShowVerticalTabs(browser);
 }
