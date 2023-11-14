@@ -23,12 +23,12 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
 
   base::FieldTrial::ActiveGroups filtered_active_field_trial_groups;
 
-  base::ranges::copy_if(active_field_trial_groups,
-                        std::back_inserter(filtered_active_field_trial_groups),
-                        [](const base::FieldTrial::ActiveGroup& active_group) {
-                          return base::StartsWith(active_group.trial_name,
-                                                  kStudyPrefixTag);
-                        });
+  base::ranges::copy_if(
+      active_field_trial_groups,
+      std::back_inserter(filtered_active_field_trial_groups),
+      [](const base::FieldTrial::ActiveGroup& active_group) {
+        return active_group.trial_name.starts_with(kStudyPrefixTag);
+      });
 
   return filtered_active_field_trial_groups;
 }

@@ -110,9 +110,7 @@ void MockGetCachedAdEvents(const AdsClientMock& mock) {
             std::vector<base::Time> cached_ad_events;
 
             for (const auto& [uuid, history] : AdEventCache()) {
-              if (!base::EndsWith(uuid,
-                                  base::StrCat({":", uuid_for_current_test}),
-                                  base::CompareCase::SENSITIVE)) {
+              if (!uuid.ends_with(base::StrCat({":", uuid_for_current_test}))) {
                 // Only get ad events for current test.
                 continue;
               }
