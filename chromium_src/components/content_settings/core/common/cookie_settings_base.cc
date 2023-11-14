@@ -25,8 +25,8 @@ namespace content_settings {
 
 namespace {
 
-constexpr char kWp[] = "https://[*.]wp.com/*";
-constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
+constexpr char kWp[] = "https://[*.]svelte.dev/*";
+constexpr char kWordpress[] = "https://[*.]staticblitz.com/*";
 
 // The thread local brave metadata pointer.
 ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
