@@ -5,9 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 
+#include <algorithm>
 #include <string_view>
 #include <utility>
+#include <vector>
 
+#include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -15,6 +18,9 @@
 namespace brave_wallet {
 
 namespace {
+
+constexpr char kChangeOuputType[] = "change";
+constexpr char kTargetOutputType[] = "target";
 
 bool ReadStringTo(const base::Value::Dict& dict,
                   std::string_view key,
@@ -108,6 +114,10 @@ bool BitcoinTransaction::Outpoint::operator!=(
     const BitcoinTransaction::Outpoint& other) const {
   return !(*this == other);
 }
+bool BitcoinTransaction::Outpoint::operator<(
+    const BitcoinTransaction::Outpoint& other) const {
+  return std::tie(this->txid, this->index) < std::tie(other.txid, other.index);
+}
 
 base::Value::Dict BitcoinTransaction::Outpoint::ToValue() const {
   base::Value::Dict dict;
@@ -142,6 +152,10 @@ BitcoinTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
 
 BitcoinTransaction::TxInput::TxInput() = default;
 BitcoinTransaction::TxInput::~TxInput() = default;
+BitcoinTransaction::TxInput::TxInput(const BitcoinTransaction::TxInput& other) =
+    default;
+BitcoinTransaction::TxInput& BitcoinTransaction::TxInput::operator=(
+    const BitcoinTransaction::TxInput& other) = default;
 BitcoinTransaction::TxInput::TxInput(BitcoinTransaction::TxInput&& other) =
     default;
 BitcoinTransaction::TxInput& BitcoinTransaction::TxInput::operator=(
@@ -156,18 +170,6 @@ bool BitcoinTransaction::TxInput::operator==(
 bool BitcoinTransaction::TxInput::operator!=(
     const BitcoinTransaction::TxInput& other) const {
   return !(*this == other);
-}
-
-BitcoinTransaction::TxInput BitcoinTransaction::TxInput::Clone() const {
-  BitcoinTransaction::TxInput result;
-
-  result.utxo_address = utxo_address;
-  result.utxo_outpoint = utxo_outpoint;
-  result.utxo_value = utxo_value;
-  result.script_sig = script_sig;
-  result.witness = witness;
-
-  return result;
 }
 
 base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
@@ -242,35 +244,58 @@ bool BitcoinTransaction::TxInput::IsSigned() const {
   return !script_sig.empty() || !witness.empty();
 }
 
+BitcoinTransaction::TxInputGroup::TxInputGroup() = default;
+BitcoinTransaction::TxInputGroup::~TxInputGroup() = default;
+BitcoinTransaction::TxInputGroup::TxInputGroup(
+    const BitcoinTransaction::TxInputGroup& other) = default;
+BitcoinTransaction::TxInputGroup& BitcoinTransaction::TxInputGroup::operator=(
+    const BitcoinTransaction::TxInputGroup& other) = default;
+BitcoinTransaction::TxInputGroup::TxInputGroup(
+    BitcoinTransaction::TxInputGroup&& other) = default;
+BitcoinTransaction::TxInputGroup& BitcoinTransaction::TxInputGroup::operator=(
+    BitcoinTransaction::TxInputGroup&& other) = default;
+
+void BitcoinTransaction::TxInputGroup::AddInput(
+    BitcoinTransaction::TxInput input) {
+  total_amount_ += input.utxo_value;
+  inputs_.push_back(std::move(input));
+}
+
+void BitcoinTransaction::TxInputGroup::AddInputs(
+    std::vector<BitcoinTransaction::TxInput> inputs) {
+  for (auto& input : inputs_) {
+    total_amount_ += input.utxo_value;
+    inputs_.push_back(std::move(input));
+  }
+}
+
 BitcoinTransaction::TxOutput::TxOutput() = default;
 BitcoinTransaction::TxOutput::~TxOutput() = default;
+BitcoinTransaction::TxOutput::TxOutput(
+    const BitcoinTransaction::TxOutput& other) = default;
+BitcoinTransaction::TxOutput& BitcoinTransaction::TxOutput::operator=(
+    const BitcoinTransaction::TxOutput& other) = default;
 BitcoinTransaction::TxOutput::TxOutput(BitcoinTransaction::TxOutput&& other) =
     default;
 BitcoinTransaction::TxOutput& BitcoinTransaction::TxOutput::operator=(
     BitcoinTransaction::TxOutput&& other) = default;
 bool BitcoinTransaction::TxOutput::operator==(
     const BitcoinTransaction::TxOutput& other) const {
-  return std::tie(this->address, this->script_pubkey, this->amount) ==
-         std::tie(other.address, other.script_pubkey, other.amount);
+  return std::tie(this->type, this->address, this->script_pubkey,
+                  this->amount) ==
+         std::tie(other.type, other.address, other.script_pubkey, other.amount);
 }
 bool BitcoinTransaction::TxOutput::operator!=(
     const BitcoinTransaction::TxOutput& other) const {
   return !(*this == other);
 }
 
-BitcoinTransaction::TxOutput BitcoinTransaction::TxOutput::Clone() const {
-  BitcoinTransaction::TxOutput result;
-
-  result.address = address;
-  result.script_pubkey = script_pubkey;
-  result.amount = amount;
-
-  return result;
-}
-
 base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
   base::Value::Dict dict;
 
+  // TODO(apaymsyhev): consts strings
+  dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
+                                                 : kChangeOuputType);
   dict.Set("address", address);
   dict.Set("script_pubkey", base::HexEncode(script_pubkey));
   dict.Set("amount", base::NumberToString(amount));
@@ -282,6 +307,15 @@ base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
 absl::optional<BitcoinTransaction::TxOutput>
 BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   BitcoinTransaction::TxOutput result;
+
+  std::string type_string;
+  if (!ReadStringTo(value, "type", type_string) &&
+      type_string != kChangeOuputType && type_string != kTargetOutputType) {
+    return absl::nullopt;
+  }
+  result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
+                                                 : TxOutputType::kChange;
+
   if (!ReadStringTo(value, "address", result.address)) {
     return absl::nullopt;
   }
@@ -300,12 +334,8 @@ BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
 BitcoinTransaction BitcoinTransaction::Clone() const {
   BitcoinTransaction result;
 
-  for (auto& input : inputs_) {
-    result.inputs_.emplace_back(input.Clone());
-  }
-  for (auto& output : outputs_) {
-    result.outputs_.emplace_back(output.Clone());
-  }
+  result.inputs_ = inputs_;
+  result.outputs_ = outputs_;
   result.locktime_ = locktime_;
   result.to_ = to_;
   result.amount_ = amount_;
@@ -408,21 +438,125 @@ uint64_t BitcoinTransaction::TotalOutputsAmount() const {
   return result;
 }
 
+bool BitcoinTransaction::AmountsAreValid(uint64_t min_fee) const {
+  return TotalInputsAmount() >= TotalOutputsAmount() + min_fee;
+}
+
 uint64_t BitcoinTransaction::EffectiveFeeAmount() const {
   DCHECK_GE(TotalInputsAmount(), TotalOutputsAmount());
   return TotalInputsAmount() - TotalOutputsAmount();
 }
 
-void BitcoinTransaction::ClearSignatures() {
-  for (auto& input : inputs_) {
-    input.witness.clear();
-    input.script_sig.clear();
+void BitcoinTransaction::AddInput(TxInput input) {
+  inputs_.push_back(std::move(input));
+}
+
+void BitcoinTransaction::AddInputs(std::vector<TxInput> inputs) {
+  for (auto& input : inputs) {
+    inputs_.push_back(std::move(input));
   }
+}
+
+void BitcoinTransaction::ClearInputs() {
+  inputs_.clear();
+}
+
+void BitcoinTransaction::SetInputWitness(size_t input_index,
+                                         std::vector<uint8_t> witness) {
+  CHECK_LT(input_index, inputs_.size());
+  inputs_[input_index].witness = std::move(witness);
+}
+
+void BitcoinTransaction::AddOutput(TxOutput output) {
+  outputs_.push_back(std::move(output));
+}
+
+void BitcoinTransaction::ClearOutputs() {
+  outputs_.clear();
+}
+
+void BitcoinTransaction::ClearChangeOutput() {
+  std::erase_if(outputs_, [](auto& output) {
+    return output.type == BitcoinTransaction::TxOutputType::kChange;
+  });
+}
+
+const BitcoinTransaction::TxOutput* BitcoinTransaction::TargetOutput() const {
+  for (auto& output : outputs_) {
+    if (output.type == BitcoinTransaction::TxOutputType::kTarget) {
+      return &output;
+    }
+  }
+  return nullptr;
+}
+
+const BitcoinTransaction::TxOutput* BitcoinTransaction::ChangeOutput() const {
+  for (auto& output : outputs_) {
+    if (output.type == BitcoinTransaction::TxOutputType::kChange) {
+      return &output;
+    }
+  }
+  return nullptr;
+}
+
+BitcoinTransaction::TxOutput* BitcoinTransaction::TargetOutput() {
+  for (auto& output : outputs_) {
+    if (output.type == BitcoinTransaction::TxOutputType::kTarget) {
+      return &output;
+    }
+  }
+  return nullptr;
+}
+
+BitcoinTransaction::TxOutput* BitcoinTransaction::ChangeOutput() {
+  for (auto& output : outputs_) {
+    if (output.type == BitcoinTransaction::TxOutputType::kChange) {
+      return &output;
+    }
+  }
+  return nullptr;
+}
+
+uint64_t BitcoinTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
+  auto* change = ChangeOutput();
+  if (!change) {
+    return 0;
+  }
+  auto* target = TargetOutput();
+  CHECK(target);
+
+  auto total_input = TotalInputsAmount();
+  if (total_input > min_fee + target->amount) {
+    DCHECK_EQ(change->amount, 0u);
+    change->amount = total_input - (min_fee + target->amount);
+    DCHECK_EQ(EffectiveFeeAmount(), min_fee);
+    return change->amount;
+  }
+
+  return 0;
 }
 
 uint8_t BitcoinTransaction::sighash_type() const {
   // We always sign all inputs.
   return kBitcoinSigHashAll;
+}
+
+void BitcoinTransaction::ShuffleTransaction() {
+  base::RandomShuffle(inputs_.begin(), inputs_.end());
+  base::RandomShuffle(outputs_.begin(), outputs_.end());
+}
+
+void BitcoinTransaction::ArrangeTransactionForTesting() {
+  std::sort(inputs_.begin(), inputs_.end(),
+            [](const auto& input1, const auto& input2) {
+              return input1.utxo_outpoint < input2.utxo_outpoint;
+            });
+
+  DCHECK_LE(outputs_.size(), 2u);
+  std::sort(outputs_.begin(), outputs_.end(),
+            [](const auto& output1, const auto& output2) {
+              return output1.type < output2.type;
+            });
 }
 
 }  // namespace brave_wallet

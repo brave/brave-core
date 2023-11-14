@@ -36,6 +36,8 @@ static_library("browser") {
     "asset_ratio_service.h",
     "bitcoin/bitcoin_block_tracker.cc",
     "bitcoin/bitcoin_block_tracker.h",
+    "bitcoin/bitcoin_knapsack_solver.cc",
+    "bitcoin/bitcoin_knapsack_solver.h",
     "bitcoin/bitcoin_rpc.cc",
     "bitcoin/bitcoin_rpc.h",
     "bitcoin/bitcoin_serializer.cc",

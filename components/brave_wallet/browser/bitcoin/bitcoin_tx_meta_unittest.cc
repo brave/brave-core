@@ -23,15 +23,17 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
       std::make_unique<BitcoinTransaction>();
   tx->set_amount(200000);
   tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
-  tx->inputs().emplace_back();
-  tx->inputs().back().utxo_address =
-      "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
-  tx->inputs().back().utxo_value = 200000;
-  tx->outputs().emplace_back();
-  tx->outputs().back().address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
-  tx->outputs().back().script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
+  input.utxo_value = 200000;
+  tx->AddInput(std::move(input));
+
+  BitcoinTransaction::TxOutput output;
+  output.address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+  output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
       "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
-  tx->outputs().back().amount = 200000 - 1000;
+  output.amount = 200000 - 1000;
+  tx->AddOutput(std::move(output));
 
   BitcoinTxMeta meta(btc_account_id, std::move(tx));
   meta.set_chain_id(mojom::kBitcoinTestnet);
@@ -79,15 +81,18 @@ TEST(BitcoinTxMeta, ToValue) {
       std::make_unique<BitcoinTransaction>();
   tx->set_amount(200000);
   tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
-  tx->inputs().emplace_back();
-  tx->inputs().back().utxo_address =
-      "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
-  tx->inputs().back().utxo_value = 200000;
-  tx->outputs().emplace_back();
-  tx->outputs().back().address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
-  tx->outputs().back().script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
+  input.utxo_value = 200000;
+  tx->AddInput(std::move(input));
+
+  BitcoinTransaction::TxOutput output;
+  output.address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+  output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
       "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
-  tx->outputs().back().amount = 200000 - 1000;
+  output.amount = 200000 - 1000;
+  tx->AddOutput(std::move(output));
   auto tx_value = tx->ToValue();
 
   BitcoinTxMeta meta(btc_account_id, std::move(tx));

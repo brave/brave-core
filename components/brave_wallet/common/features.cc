@@ -28,7 +28,7 @@ BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
-                                                  "rpc_throttle", 3};
+                                                  "rpc_throttle", 2};
 const base::FeatureParam<bool> kBitcoinTestnetDiscovery{
     &kBraveWalletBitcoinFeature, "testnet_discovery", false};
 

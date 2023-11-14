@@ -29,7 +29,7 @@ constexpr uint8_t kP2PKHTestnetPrefix = 111;
 constexpr uint8_t kP2SHMainnetPrefix = 5;
 constexpr uint8_t kP2SHTestnetPrefix = 196;
 }  // namespace
-#pragma clang optimize off
+
 namespace brave_wallet {
 
 namespace {
