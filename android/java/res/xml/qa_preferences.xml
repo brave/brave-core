@@ -8,12 +8,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="true">
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_vpn_feature"
-        android:title="@string/brave_vpn"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_vpn_link_subscription_on_staging"
         android:title="Link VPN subscription on Staging"
         android:summaryOn="@string/text_on"
