@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 
+#include <memory>
 #include <set>
 #include <utility>
 
@@ -22,6 +23,7 @@
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/ipfs_service_delegate.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -45,10 +47,6 @@
 #include "content/public/browser/service_process_host.h"
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
-#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
-#endif
 namespace {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
@@ -116,7 +114,8 @@ IpfsService::IpfsService(
     ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
     const base::FilePath& user_data_dir,
     version_info::Channel channel,
-    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover)
+    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+    std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate)
     : prefs_(prefs),
       url_loader_factory_(url_loader_factory),
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
@@ -128,7 +127,8 @@ IpfsService::IpfsService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a_(this, prefs) {
+      ipfs_p3a_(this, prefs),
+      ipfs_service_delegate_(std::move(ipfs_service_delegate)) {
   DCHECK(!user_data_dir.empty());
 
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -152,9 +152,10 @@ IpfsService::IpfsService(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
 
   const auto isIpfsLocal =
-      (prefs_->GetInteger(kIPFSResolveMethod) ==
-       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-  if (isIpfsLocal && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+      (prefs_ &&
+       prefs_->GetInteger(kIPFSResolveMethod) ==
+           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  if (isIpfsLocal && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
     StartDaemonAndLaunch(base::NullCallback());
   }
 }
@@ -680,12 +681,8 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
 
   importers_.erase(key);
 
-  if (is_import_success) {
-#if !BUILDFLAG(IS_ANDROID)
-    BraveGlobalInfoBarManager::Show(
-        std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(this,
-                                                                     prefs_));
-#endif
+  if (is_import_success && ipfs_service_delegate_) {
+    ipfs_service_delegate_->ShowAlwaysStartInfoBar(this);
   }
 }
 #endif
@@ -1097,11 +1094,9 @@ void IpfsService::OnPinAddResult(
 
   parse_result->recursive = recursive;
 
-#if !BUILDFLAG(IS_ANDROID)
-  BraveGlobalInfoBarManager::Show(
-      std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(this,
-                                                                   prefs_));
-#endif
+  if (ipfs_service_delegate_) {
+    ipfs_service_delegate_->ShowAlwaysStartInfoBar(this);
+  }
 
   std::move(callback).Run(std::move(parse_result));
 }

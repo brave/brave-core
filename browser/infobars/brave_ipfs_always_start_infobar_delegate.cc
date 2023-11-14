@@ -23,7 +23,7 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
     return nullptr;
   }
 
-  return std::unique_ptr<BraveIPFSAlwaysStartInfoBarDelegate>(
+  return base::WrapUnique(
       new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service_, local_state_));
 }
 

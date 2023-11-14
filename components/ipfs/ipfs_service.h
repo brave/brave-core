@@ -71,7 +71,8 @@ class IpfsService : public KeyedService,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel,
-              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover);
+              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+              std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate);
   IpfsService(const IpfsService&) = delete;
   IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
@@ -288,6 +289,7 @@ class IpfsService : public KeyedService,
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
+  std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
   base::WeakPtrFactory<IpfsService> weak_factory_{this};
 };
 

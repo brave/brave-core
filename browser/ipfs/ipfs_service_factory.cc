@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
+#include "brave/browser/ipfs/ipfs_service_impl_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -93,7 +94,9 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
   return new IpfsService(user_prefs::UserPrefs::Get(context),
                          std::move(url_loader), std::move(context_getter),
                          ipfs_updater, user_data_dir, chrome::GetChannel(),
-                         std::make_unique<IpfsDnsResolverImpl>());
+                         std::make_unique<IpfsDnsResolverImpl>(),
+                         std::make_unique<IpfsServiceImplDelegate>(
+                             user_prefs::UserPrefs::Get(context)));
 }
 
 // static
