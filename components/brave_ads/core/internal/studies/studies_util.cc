@@ -8,7 +8,6 @@
 #include <iterator>
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {

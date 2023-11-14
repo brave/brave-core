@@ -27,7 +27,7 @@ class ADS_EXPORT AdsClient {
   virtual ~AdsClient() = default;
 
   // Called to add an ads client observer. Observers will not be scheduled until
-  // |BindObservers| is called.
+  // |NotifyPendingObservers| is called.
   virtual void AddObserver(AdsClientNotifierObserver* observer) = 0;
 
   // Called to remove an ads client observer.
