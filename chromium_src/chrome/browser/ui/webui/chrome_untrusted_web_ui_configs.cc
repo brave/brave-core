@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "base/feature_list.h"
+#include "brave/android/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
@@ -49,12 +50,16 @@
 
 void RegisterChromeUntrustedWebUIConfigs() {
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
+
+#if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<market::UntrustedMarketUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<line_chart::UntrustedLineChartUIConfig>());
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<ledger::UntrustedLedgerUIConfig>());

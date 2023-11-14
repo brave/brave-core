@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/android/buildflags/buildflags.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
@@ -50,6 +51,7 @@ brave_grit("static_resources") {
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
+    "brave_android_web_wallet_enabled=$brave_android_web_wallet_enabled",
   ]
 
   output_dir = "$root_gen_dir/components"

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/android/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 
@@ -40,12 +41,15 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
 const char kWalletPagePath[] = "/crypto/portfolio/assets";
 const char kWalletUnlockPagePath[] = "/crypto/unlock";
+#else
 const char kWalletBuyPagePath[] = "/crypto/fund-wallet";
 const char kWalletSendPagePath[] = "/send";
 const char kWalletSwapPagePath[] = "/swap";
 const char kWalletDepositPagePath[] = "/crypto/deposit-funds";
+#endif  // BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";
