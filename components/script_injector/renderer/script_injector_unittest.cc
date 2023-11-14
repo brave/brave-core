@@ -12,12 +12,14 @@ namespace script_injector {
 TEST(ScriptInjectorUnitTest, CheckIfWantResultHasCallback) {
   ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScriptCallback
       callback = base::DoNothing();
-  EXPECT_EQ(ScriptInjectorRenderFrameObserver::CheckIfWantResult(std::move(callback)),
-            blink::mojom::WantResultOption::kWantResult);
+  EXPECT_EQ(
+      ScriptInjectorRenderFrameObserver::CheckIfWantResult(std::move(callback)),
+      blink::mojom::WantResultOption::kWantResult);
 }
 
 TEST(ScriptInjectorUnitTest, CheckIfWantResultNullCallback) {
-  EXPECT_EQ(ScriptInjectorRenderFrameObserver::CheckIfWantResult(base::NullCallback()),
+  EXPECT_EQ(ScriptInjectorRenderFrameObserver::CheckIfWantResult(
+                base::NullCallback()),
             blink::mojom::WantResultOption::kNoResult);
 }
 
