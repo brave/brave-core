@@ -43,10 +43,8 @@
   --leo-icon-size: 18px;
 
   font: var(--leo-font-secondary-small-regular);
-  color: var(--leo-color-text-secondary);
+  color: var(--leo-color-text-tertiary);
   padding-bottom: 16px;
-  display: flex;
-  gap: 6px;
 }
 
 .buttonText {
@@ -57,10 +55,11 @@
 }
 
 .questionsList {
+  --leo-button-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
 }
 
 .avatar {
