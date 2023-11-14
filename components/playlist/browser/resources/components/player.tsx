@@ -17,7 +17,8 @@ import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 import {
   ApplicationState,
   PlayerState,
-  useAutoPlayEnabled
+  useAutoPlayEnabled,
+  useLoopMode
 } from '../reducers/states'
 import { getPlayerActions } from '../api/getPlayerActions'
 import PlayerControls from './playerControls'
@@ -40,7 +41,7 @@ const TimeContainer = styled.div`
   grid-template-columns: auto auto;
   justify-content: space-between;
 
-  color: ${color.text.secondary};
+  color: ${color.white};
   font: ${font.primary.xSmall.regular};
 `
 
@@ -84,6 +85,8 @@ const VideoOverlayControlsContainer = styled.div<{
     css`
       opacity: 0;
     `}
+
+  --title-color: ${color.white};
 `
 
 const StyledSeeker = styled(PlayerSeeker)`
@@ -116,6 +119,8 @@ const FaviconAndTitle = styled.div`
 const ControlsContainer = styled.div`
   display: flex;
   position: relative;
+
+  --title-color: ${color.text.primary};
 
   @media ${playerTypes.normalPlayer} {
     position: absolute;
@@ -207,7 +212,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 `
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
-  color: ${color.text.primary};
+  color: var(--title-color);
   font: ${font.primary.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -259,6 +264,8 @@ export default function Player() {
   // As seeker is a little bit bigger than the video area, we should observe
   // mouse events on the seeker as well.
   const [mouseHoveredOnSeeker, setMouseHoveredOnSeeker] = React.useState(false)
+
+  const loopMode = useLoopMode()
 
   React.useEffect(() => {
     if (videoElement && !videoElement.paused && !currentItem) {
@@ -316,6 +323,12 @@ export default function Player() {
             getPlayerActions().playerStoppedPlayingItem(currentItem)
           }
           onEnded={() => {
+            if (loopMode === 'single-item') {
+              videoElement!.currentTime = 0
+              videoElement!.play()
+              return
+            }
+
             if (currentItem) {
               setCurrentTime(videoElement!.duration)
 
