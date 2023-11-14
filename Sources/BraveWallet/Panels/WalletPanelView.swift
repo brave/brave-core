@@ -146,14 +146,20 @@ public struct WalletPanelContainerView: View {
       }
     }
     .frame(idealWidth: 320, maxWidth: .infinity)
-    .onChange(of: keyringStore.isWalletCreated) { newValue in
-      if visibleScreen != .panel, !keyringStore.lockedManually {
-        presentWalletWithContext?(.panelUnlockOrSetup)
-      }
-    }
     .onChange(of: keyringStore.isWalletLocked) { newValue in
-      if visibleScreen != .panel, !keyringStore.lockedManually {
-        presentWalletWithContext?(.panelUnlockOrSetup)
+      guard keyringStore.isLoaded, newValue, !keyringStore.lockedManually else { return }
+      // Wallet was auto-locked with panel open
+      presentWalletWithContext?(.panelUnlockOrSetup)
+    }
+    .onChange(of: keyringStore.isLoaded) { newValue in
+      guard newValue else { return } // KeyringStore loaded
+      handleKeyringStoreLoaded()
+    }
+    .onAppear {
+      if keyringStore.isLoaded {
+        // If KeyringStore is loaded prior to view appearing on
+        // screen onChange won't be executed
+        handleKeyringStoreLoaded()
       }
     }
     .environment(
@@ -162,6 +168,23 @@ public struct WalletPanelContainerView: View {
          openWalletURLAction?(url)
          return .handled
        }))
+  }
+  
+  /// Flag to help prevent race condition between panel appearing on screen and KeyringStore `isLoaded`.
+  @State private var didHandleKeyringLoaded: Bool = false
+  /// Present unlock if displayed locked state (unless manually locked), or onboarding if displaying
+  /// onboarding state
+  private func handleKeyringStoreLoaded() {
+    guard !didHandleKeyringLoaded else { return }
+    didHandleKeyringLoaded = true
+    if visibleScreen == .onboarding {
+      // automatically open full wallet when displaying onboarding
+      presentWalletWithContext?(.panelUnlockOrSetup)
+    } else if visibleScreen == .unlock, !keyringStore.lockedManually {
+      // automatically open full unlock wallet view when displaying
+      // locked panel unless user locked manually
+      presentWalletWithContext?(.panelUnlockOrSetup)
+    }
   }
 }
 
