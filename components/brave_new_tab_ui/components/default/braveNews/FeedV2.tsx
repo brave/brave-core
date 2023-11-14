@@ -6,22 +6,25 @@ import { spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
 import styled from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'
-import Sidebar from '../../../../brave_news/browser/resources/Sidebar'
+import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigation'
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
+
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
+  gap: ${spacing['3Xl']};
 `
 
 const SidebarContainer = styled.div`
   visibility: hidden;
-  position: fixed;
+  position: sticky;
   top: ${spacing.xl};
-  right: ${spacing.xl};
 
-  opacity: calc((var(--ntp-extra-content-effect-multiplier) - 0.5) * 2);
+  opacity: calc(var(--ntp-extra-content-effect-multiplier));
 
   .${CLASSNAME_PAGE_STUCK} & {
     visibility: visible;
@@ -54,9 +57,9 @@ export default function FeedV2() {
   }, [])
 
   return <Root ref={ref as any} data-theme="dark">
-    <Feed feed={feedV2} />
     <SidebarContainer>
-      <Sidebar />
+      <FeedNavigation />
     </SidebarContainer>
+    <Feed feed={feedV2} />
   </Root>
 }
