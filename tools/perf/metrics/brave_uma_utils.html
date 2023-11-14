@@ -19,6 +19,15 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
    * event arguments contain the histogram name and the value.
    */
   tr.exportTo('tr.metrics', function () {
+    const SUMMARY_OPTIONS = {
+      avg: false,
+      count: false,
+      max: false,
+      min: false,
+      std: false,
+      sum: false,
+    };
+
     function braveExtendedUmaMetrics(histograms, model, attrs) {
       const umaProcessingRules = new Map();
       const addRule = (name, rule) => {
@@ -83,11 +92,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
           const unit =
             (attrs.getHistogramUnit && attrs.getHistogramUnit(name)) ||
             tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
-          const histogram = new tr.v.Histogram(
-            name + rule.suffix, unit, boundaries);
-          const processedValues = rule.process(values);
-          processedValues.forEach(v => histogram.addSample(v));
-          histograms.addHistogram(histogram);
+          const samples = rule.process(values);
+          histograms.createHistogram(name + rule.suffix, unit, samples, {
+            binBoundaries: boundaries,
+            summaryOptions: SUMMARY_OPTIONS,
+          });
         }
       }
     }
