@@ -11,6 +11,7 @@ if (current_toolchain == host_toolchain) {
   declare_args() {
     real_gomacc = ""
     real_rewrapper = ""
+    ccache_executable = ""
   }
 
   executable("redirect_cc_executable") {
@@ -36,7 +37,16 @@ if (current_toolchain == host_toolchain) {
   buildflag_header("rewrapper_buildflags") {
     header = "rewrapper_buildflags.h"
     real_rewrapper_relative_to_out = rebase_path(real_rewrapper, root_out_dir)
-    flags = [ "REAL_REWRAPPER=\"$real_rewrapper_relative_to_out\"" ]
+    if (ccache_executable != "") {
+      ccache_executable_relative_to_out =
+          rebase_path(ccache_executable, root_out_dir)
+    } else {
+      ccache_executable_relative_to_out = ""
+    }
+    flags = [
+      "REAL_REWRAPPER=\"$real_rewrapper_relative_to_out\"",
+      "CCACHE_EXECUTABLE=\"$ccache_executable_relative_to_out\"",
+    ]
   }
 
   executable("gomacc_executable") {

@@ -82,10 +82,15 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
         if url.endswith('.zip'):
             assert path_prefix is None
             zipfile.ZipFile(f).extractall(path=output_dir)
-        else:
+            return
+
+        if url.endswith('.gz'):
             t = tarfile.open(mode='r:gz', fileobj=f)
-            members = None
-            if path_prefix is not None:
-                members = [m for m in t.getmembers(
-                ) if m.name.startswith(path_prefix)]
-            t.extractall(path=output_dir, members=members)
+        elif url.endswith('.xz'):
+            t = tarfile.open(mode='r:xz', fileobj=f)
+        members = None
+        if path_prefix is not None:
+            members = [
+                m for m in t.getmembers() if m.name.startswith(path_prefix)
+            ]
+        t.extractall(path=output_dir, members=members)
