@@ -50,7 +50,6 @@ public class DataController {
 
   private var initializationCompleted = false
 
-  /// IMPORTANT: This must be called after pre 1.12 migration logic has been called.
   /// Initialization logic will run only once, then do nothing on subsequent calls to this method.
   public func initializeOnce() {
     if initializationCompleted { return }

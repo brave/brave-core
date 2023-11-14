@@ -671,10 +671,4 @@ public class BraveVPN {
       }
     }
   }
-    
-  // MARK: - Migration
-  public static func migrateV1Credentials() {
-    // Moving Brave VPN v1 users to v2 type of credentials.
-    GRDCredentialManager.migrateKeychainItemsToGRDCredential()
-  }
 }

@@ -134,7 +134,6 @@ class SearchSettingsTableViewController: UITableViewController {
     return SearchEnginePicker(type: type, showCancel: false).then {
       // Order alphabetically, so that picker is always consistently ordered.
       // Every engine is a valid choice for the default engine, even the current default engine.
-      // In private mode only custom engines will not be shown excluding migrated Yahoo Search Engine
       $0.engines = searchPickerEngines(type: type)
       $0.delegate = self
       $0.selectedSearchEngineName = searchEngines.defaultEngine(forType: type).shortName

@@ -3310,10 +3310,6 @@ extension Strings {
 
 extension Strings {
   public struct Sync {
-    public static let syncV1DeprecationText =
-      NSLocalizedString("sync.syncV1DeprecationText", tableName: "BraveShared", bundle: .module,
-        value: "A new Brave Sync is coming and will affect your setup. Get ready for the upgrade.",
-        comment: "Text that informs a user about Brave Sync service deprecation.")
     public static let bookmarksImportExportPopupTitle =
       NSLocalizedString("sync.bookmarksImportPopupErrorTitle", tableName: "BraveShared", bundle: .module,
         value: "Bookmarks",
@@ -3334,14 +3330,6 @@ extension Strings {
       NSLocalizedString("sync.bookmarksImportPopupFailureMessage", tableName: "BraveShared", bundle: .module,
         value: "Bookmark Import Failed",
         comment: "Message of the popup if bookmark import fails.")
-    public static let v2MigrationInterstitialTitle =
-      NSLocalizedString("sync.v2MigrationInterstitialTitle", tableName: "BraveShared", bundle: .module,
-        value: "Bookmarks migration",
-        comment: "Bookmarks migration website title")
-    public static let v2MigrationInterstitialPageDescription =
-      NSLocalizedString("sync.v2MigrationInterstitialPageDescription", tableName: "BraveShared", bundle: .module,
-        value: "Some of your bookmarks failed to migrate. You can add them back manually.",
-        comment: "Bookmarks migration website page description")
     /// Important: Do NOT change the `KEY` parameter without updating it in
     /// BraveCore's brave_bookmarks_importer.mm file.
     public static let importFolderName =
@@ -3349,32 +3337,6 @@ extension Strings {
         "SyncImportFolderName", tableName: "BraveShared", bundle: .module,
         value: "Imported Bookmarks",
         comment: "Folder name for where bookmarks are imported into when the root folder is not empty.")
-    public static let v2MigrationTitle =
-      NSLocalizedString(
-        "sync.v2MigrationTitle", tableName: "BraveShared", bundle: .module,
-        value: "Migration required",
-        comment: "Title for popup to inform the user that bookmarks migration is required for sync")
-    public static let v2MigrationMessage =
-      NSLocalizedString(
-        "sync.v2MigrationMessage", tableName: "BraveShared", bundle: .module,
-        value: "In order to use Brave Sync your existing bookmarks must be migrated to use the new system. This operation will not delete your bookmarks.",
-        comment: "Message for popup to inform the user that bookmarks migration is required for sync")
-    public static let v2MigrationOKButton =
-      NSLocalizedString(
-        "sync.v2MigrationOKButton", tableName: "BraveShared", bundle: .module,
-        value: "Migrate",
-        comment: "Button to perform bookmarks migration in order to support sync")
-    public static let v2MigrationErrorTitle =
-      NSLocalizedString(
-        "sync.v2MigrationErrorTitle", tableName: "BraveShared", bundle: .module,
-        value: "Error",
-        comment: "Title for popup when the bookmark migration fails")
-    public static let v2MigrationErrorMessage =
-      NSLocalizedString(
-        "sync.v2MigrationErrorMessage", tableName: "BraveShared", bundle: .module,
-        value: "Failed to migrate bookmarks. Please try again later.",
-        comment: "Message for popup when the bookmark migration fails")
-    /// History Migration localization text
     public static let syncConfigurationInformationText =
       NSLocalizedString(
         "sync.syncConfigurationInformationText", tableName: "BraveShared", bundle: .module,

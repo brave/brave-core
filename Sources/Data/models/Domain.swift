@@ -160,35 +160,6 @@ public final class Domain: NSManagedObject, CRUD {
     return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
   }
 
-  public static func migrateShieldOverrides() {
-    // 1.6 had an unfortunate bug that caused shield overrides to create new Domain objects using `http` regardless
-    // which would lead to a duplicated Domain object using http that held custom shield overides settings for that
-    // domain
-    //
-    // Therefore we need to migrate any `http` Domains shield overrides to its sibiling `https` domain if it exists
-    let allHttpPredicate = NSPredicate(format: "url BEGINSWITH[cd] 'http://'")
-
-    DataController.perform { context in
-      guard let httpDomains = Domain.all(where: allHttpPredicate, context: context) else {
-        return
-      }
-
-      for domain in httpDomains {
-        guard var urlComponents = domain.urlComponents else { continue }
-        urlComponents.scheme = "https"
-        guard let httpsUrl = urlComponents.url?.absoluteString else { continue }
-        if let httpsDomain = Domain.first(where: NSPredicate(format: "url == %@", httpsUrl), context: context) {
-          httpsDomain.shield_allOff = domain.shield_allOff
-          httpsDomain.shield_adblockAndTp = domain.shield_adblockAndTp
-          httpsDomain.shield_noScript = domain.shield_noScript
-          httpsDomain.shield_fpProtection = domain.shield_fpProtection
-          httpsDomain.shield_safeBrowsing = domain.shield_safeBrowsing
-          // Could call `domain.delete()` here (or add to batch to delete)
-        }
-      }
-    }
-  }
-
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }

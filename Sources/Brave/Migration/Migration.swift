@@ -24,11 +24,6 @@ public class Migration {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
-
-    if !Preferences.Migration.documentsDirectoryCleanupCompleted.value {
-      documentsDirectoryCleanup()
-      Preferences.Migration.documentsDirectoryCleanupCompleted.value = true
-    }
     
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -56,18 +51,6 @@ public class Migration {
     }
 
     braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
-  }
-
-  /// Adblock files don't have to be moved, they now have a new directory and will be downloaded there.
-  /// Downloads folder was nefer used before, it's a leftover from FF.
-  private func documentsDirectoryCleanup() {
-    FileManager.default.removeFolder(withName: "abp-data", location: .documentDirectory)
-    FileManager.default.removeFolder(withName: "https-everywhere-data", location: .documentDirectory)
-
-    FileManager.default.moveFile(
-      sourceName: "CookiesData.json", sourceLocation: .documentDirectory,
-      destinationName: "CookiesData.json",
-      destinationLocation: .applicationSupportDirectory)
   }
   
   // Migrate from TabMO to SessionTab and SessionWindow
@@ -170,9 +153,7 @@ public class Migration {
     if Preferences.Migration.coreDataCompleted.value { return }
 
     TabMO.deleteAllPrivateTabs()
-  
-    Domain.migrateShieldOverrides()
-  
+    
     Preferences.Migration.coreDataCompleted.value = true
   }
   
@@ -214,11 +195,6 @@ fileprivate extension Preferences {
   /// Migration preferences
   final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
-    /// Old app versions were using documents directory to store app files, database, adblock files.
-    /// These files are now moved to 'Application Support' folder, and documents directory is left
-    /// for user downloaded files.
-    static let documentsDirectoryCleanupCompleted =
-      Option<Bool>(key: "migration.documents-dir-completed", default: false)
     // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
     // It should be called only for users who have not completed the migration beforehand.
     // The reason for second migration flag is to first do file system migrations like moving database files,
@@ -295,9 +271,6 @@ fileprivate extension Preferences {
         Logger.module.error("Failed setting the directory attributes for \($0)")
       }
     }
-
-    // Security
-    NSKeyedUnarchiver.setClass(AuthenticationKeychainInfo.self, forClassName: "AuthenticationKeychainInfo")
 
     // Shields
     migrate(key: "braveBlockAdsAndTracking", to: DeprecatedPreferences.blockAdsAndTracking)

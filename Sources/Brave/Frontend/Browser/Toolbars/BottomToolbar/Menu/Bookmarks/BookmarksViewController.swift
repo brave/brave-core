@@ -43,12 +43,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     var items: [UIBarButtonItem?] = [.fixedSpace(5)]
     if currentFolder == nil {
       items.append(importExportButton)
-
-      // Unlike Chromium, old CoreData implementation did not have permanent folders
-      if !Preferences.Chromium.syncV2BookmarksMigrationCompleted.value {
-        items.append(.fixedSpace(16))
-        items.append(addFolderButton)
-      }
     } else {
       items.append(addFolderButton)
     }

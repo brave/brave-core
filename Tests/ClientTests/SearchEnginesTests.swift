@@ -25,7 +25,6 @@ class SearchEnginesTests: XCTestCase {
 
     Preferences.Search.defaultEngineName.reset()
     Preferences.Search.defaultPrivateEngineName.reset()
-    Preferences.Search.yahooEngineMigrationCompleted.reset()
   }
 
   func testIncludesExpectedEngines() {
@@ -218,39 +217,6 @@ class SearchEnginesTests: XCTestCase {
       expectedClientName: OpenSearchEngine.defaultSearchClientName, profile: profile)
 
     XCTAssert(getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains("client=brz-brave"))
-  }
-
-  func testYahooSEMigration() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
-
-    // Testing Both standard and private mode Yahoo SE
-    Preferences.Search.defaultEngineName.value = OpenSearchEngine.EngineNames.yahoo
-    Preferences.Search.defaultPrivateEngineName.value = OpenSearchEngine.EngineNames.yahoo
-
-    engines.migrateDefaultYahooSearchEngines()
-
-    XCTAssertTrue(engines.defaultEngine(forType: .standard).shortName == "Yahoo")
-    XCTAssertTrue(engines.defaultEngine(forType: .privateMode).shortName == "Yahoo")
-
-    // Testing Both standard and private mode Yahoo JAPAN SE
-    Preferences.Search.yahooEngineMigrationCompleted.reset()
-    Preferences.Search.defaultEngineName.value = OpenSearchEngine.EngineNames.yahooJP
-    Preferences.Search.defaultPrivateEngineName.value = OpenSearchEngine.EngineNames.yahooJP
-
-    engines.migrateDefaultYahooSearchEngines()
-
-    XCTAssertTrue(engines.defaultEngine(forType: .standard).shortName == "Yahoo! JAPAN")
-    XCTAssertTrue(engines.defaultEngine(forType: .privateMode).shortName == "Yahoo! JAPAN")
-
-    engines.updateDefaultEngine("Google", forType: .standard)
-    engines.updateDefaultEngine("Google", forType: .privateMode)
-
-    let testEngineYahoo: OpenSearchEngine? = engines.orderedEngines.first(where: {
-      $0.shortName == OpenSearchEngine.EngineNames.yahoo
-    })
-
-    try! engines.deleteCustomEngine(testEngineYahoo!)
   }
 
   private func expectddgClientName(locales: [String], expectedClientName: String, profile: Profile) {
