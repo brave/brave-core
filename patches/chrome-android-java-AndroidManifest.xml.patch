@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index fba6543bde641c1e29cbac01914000c75495cf2b..c86869cb9550534ca7239d289b307bf0d419ab57 100644
+index fba6543bde641c1e29cbac01914000c75495cf2b..c9f0a13e5c952a25850c4e25be0c0cff729838b8 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -58,14 +58,14 @@ index fba6543bde641c1e29cbac01914000c75495cf2b..c86869cb9550534ca7239d289b307bf0
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -348,6 +361,7 @@ by a child template that "extends" this file.
-             <intent-filter>
-                 <action android:name="com.sec.android.airview.HOVER" />
+@@ -227,6 +240,7 @@ by a child template that "extends" this file.
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
              </intent-filter>
 +            {% include "//brave/android/java/AndroidManifest_intent_filters.xml" %}
-             <meta-data android:name="android.app.searchable"
-                 android:resource="@xml/searchable" />
-         </activity-alias>
+             <!-- Matches the common case of intents with no MIME type.
+                  Make sure to keep in sync with the next filter.  -->
+             <intent-filter>
 @@ -1220,6 +1234,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
