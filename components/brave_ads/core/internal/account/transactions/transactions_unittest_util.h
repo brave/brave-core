@@ -7,30 +7,24 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace base {
 class Time;
 }  // namespace base
 
-namespace brave_ads {
-
-class ConfirmationType;
-
-namespace test {
+namespace brave_ads::test {
 
 void SaveTransactions(const TransactionList& transactions);
 
 TransactionInfo BuildTransaction(double value,
-                                 const ConfirmationType& confirmation_type,
+                                 ConfirmationType confirmation_type,
                                  base::Time reconciled_at,
                                  bool should_use_random_uuids);
-TransactionInfo BuildUnreconciledTransaction(
-    double value,
-    const ConfirmationType& confirmation_type,
-    bool should_use_random_uuids);
+TransactionInfo BuildUnreconciledTransaction(double value,
+                                             ConfirmationType confirmation_type,
+                                             bool should_use_random_uuids);
 
-}  // namespace test
-
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_

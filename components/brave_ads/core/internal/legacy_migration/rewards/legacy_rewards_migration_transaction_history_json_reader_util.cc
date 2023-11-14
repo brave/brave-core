@@ -54,7 +54,7 @@ absl::optional<TransactionInfo> ParseTransaction(
   if (!confirmation_type) {
     return absl::nullopt;
   }
-  transaction.confirmation_type = ConfirmationType(*confirmation_type);
+  transaction.confirmation_type = ParseConfirmationType(*confirmation_type);
 
   return transaction;
 }

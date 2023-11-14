@@ -8,23 +8,23 @@
 
 #include <vector>
 
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
+
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
 
-class AdType;
-class ConfirmationType;
 struct AdEventInfo;
 
 void RebuildAdEventCache();
 
 void CacheAdEvent(const AdEventInfo& ad_event);
 
-std::vector<base::Time> GetCachedAdEvents(
-    const AdType& ad_type,
-    const ConfirmationType& confirmation_type);
+std::vector<base::Time> GetCachedAdEvents(AdType ad_type,
+                                          ConfirmationType confirmation_type);
 
 void ResetAdEventCache();
 

@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 AdContentInfo BuildAdContent(const AdInfo& ad,
-                             const ConfirmationType& confirmation_type,
+                             ConfirmationType confirmation_type,
                              const std::string& title,
                              const std::string& description) {
   AdContentInfo ad_content;

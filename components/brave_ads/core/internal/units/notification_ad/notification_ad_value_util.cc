@@ -17,7 +17,7 @@ constexpr char kTypeKey[] = "type";
 
 base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
   return base::Value::Dict()
-      .Set(kTypeKey, ad.type.ToString())
+      .Set(kTypeKey, ToString(ad.type))
       .Set(kNotificationAdPlacementIdKey, ad.placement_id)
       .Set(kNotificationAdCreativeInstanceIdKey, ad.creative_instance_id)
       .Set(kNotificationAdCreativeSetIdKey, ad.creative_set_id)
@@ -44,7 +44,7 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kTypeKey)) {
-    ad.type = AdType(*value);
+    ad.type = ParseAdType(*value);
   }
 
   if (const auto* const value =

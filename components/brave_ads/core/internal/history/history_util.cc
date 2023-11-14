@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 HistoryItemInfo AddHistory(const AdInfo& ad,
-                           const ConfirmationType& confirmation_type,
+                           ConfirmationType confirmation_type,
                            const std::string& title,
                            const std::string& description) {
   CHECK(ad.IsValid());

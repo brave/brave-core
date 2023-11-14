@@ -20,7 +20,7 @@ constexpr char kTypeKey[] = "type";
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
   auto dict =
       base::Value::Dict()
-          .Set(kTypeKey, ad.type.ToString())
+          .Set(kTypeKey, ToString(ad.type))
           .Set(kNewTabPageAdPlacementIdKey, ad.placement_id)
           .Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id)
           .Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id)
@@ -53,7 +53,7 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
   NewTabPageAdInfo ad;
 
   if (const auto* const value = dict.FindString(kTypeKey)) {
-    ad.type = AdType(*value);
+    ad.type = ParseAdType(*value);
   }
 
   if (const auto* const value = dict.FindString(kNewTabPageAdPlacementIdKey)) {

@@ -12,8 +12,8 @@
 namespace brave_ads {
 
 ConversionActionType ToConversionActionType(
-    const ConfirmationType& confirmation_type) {
-  switch (confirmation_type.value()) {
+    ConfirmationType confirmation_type) {
+  switch (confirmation_type) {
     case ConfirmationType::kViewed: {
       return ConversionActionType::kViewThrough;
     }

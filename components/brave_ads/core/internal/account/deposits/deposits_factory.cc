@@ -14,12 +14,12 @@
 namespace brave_ads {
 
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
-    const ConfirmationType& confirmation_type) {
+    ConfirmationType confirmation_type) {
   if (!UserHasJoinedBraveRewards()) {
     return std::make_unique<NonCashDeposit>();
   }
 
-  switch (confirmation_type.value()) {
+  switch (confirmation_type) {
     case ConfirmationType::kViewed: {
       return std::make_unique<CashDeposit>();
     }

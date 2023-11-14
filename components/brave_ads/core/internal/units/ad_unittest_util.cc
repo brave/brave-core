@@ -13,7 +13,7 @@
 
 namespace brave_ads::test {
 
-AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_uuids) {
+AdInfo BuildAd(AdType ad_type, const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;

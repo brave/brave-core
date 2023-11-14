@@ -9,13 +9,11 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
-class ConfirmationType;
-
-ConversionActionType ToConversionActionType(
-    const ConfirmationType& confirmation_type);
+ConversionActionType ToConversionActionType(ConfirmationType confirmation_type);
 
 ConversionActionType StringToConversionActionType(
     const std::string& action_type);

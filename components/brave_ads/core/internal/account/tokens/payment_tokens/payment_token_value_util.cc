@@ -45,8 +45,8 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
                     .Set(kConfirmationTypeKey,
-                         payment_token.confirmation_type.ToString())
-                    .Set(kAdTypeKey, payment_token.ad_type.ToString()));
+                         ToString(payment_token.confirmation_type))
+                    .Set(kAdTypeKey, ToString(payment_token.ad_type)));
   }
 
   return list;
@@ -99,12 +99,12 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
 
     // Confirmation type
     if (const auto* const value = item_dict->FindString(kConfirmationTypeKey)) {
-      payment_token.confirmation_type = ConfirmationType(*value);
+      payment_token.confirmation_type = ParseConfirmationType(*value);
     }
 
     // Ad type
     if (const auto* const value = item_dict->FindString(kAdTypeKey)) {
-      payment_token.ad_type = AdType(*value);
+      payment_token.ad_type = ParseAdType(*value);
     }
 
     payment_tokens.push_back(payment_token);

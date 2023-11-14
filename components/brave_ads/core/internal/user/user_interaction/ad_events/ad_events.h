@@ -11,17 +11,17 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
 using AdEventCallback = base::OnceCallback<void(bool success)>;
 
-class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
 
 void RecordAdEvent(const AdInfo& ad,
-                   const ConfirmationType& confirmation_type,
+                   ConfirmationType confirmation_type,
                    AdEventCallback callback);
 void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 

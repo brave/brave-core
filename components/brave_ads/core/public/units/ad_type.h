@@ -7,43 +7,32 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_UNITS_AD_TYPE_H_
 
 #include <ostream>
-#include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
-class AdType final {
- public:
-  enum Value {
-    kUndefined,
-    kNotificationAd,
-    kNewTabPageAd,
-    kPromotedContentAd,
-    kInlineContentAd,
-    kSearchResultAd
-  };
-
-  AdType();
-
-  // Allow implicit conversion of the enum value to this wrapper
-  constexpr AdType(const Value& value)  // NOLINT (runtime/explicit)
-      : value_(value) {}
-
-  explicit AdType(const std::string& value);
-  explicit AdType(mojom::AdType value);
-
-  Value value() const;
-  std::string ToString() const;
-
- private:
-  Value value_ = kUndefined;
+// An enum with the codified ad types.
+enum class AdType {
+  kUndefined,
+  kNotificationAd,
+  kNewTabPageAd,
+  kPromotedContentAd,
+  kInlineContentAd,
+  kSearchResultAd
 };
 
-bool operator==(const AdType&, const AdType&);
-bool operator!=(const AdType&, const AdType&);
+// Returns a string constant for a given AdType value
+const char* ToString(AdType type);
 
-std::ostream& operator<<(std::ostream& os, const AdType& type);
+// Creates an AdType instance with a value corresponding the string provided.
+AdType ParseAdType(std::string_view value);
+
+// Creates an AdType instance from a mojom::AdType instance.
+AdType FromMojomTypeToAdType(const mojom::AdType value);
+
+std::ostream& operator<<(std::ostream& os, AdType type);
 
 }  // namespace brave_ads
 

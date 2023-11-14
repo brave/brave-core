@@ -363,25 +363,25 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
 void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ad.type.ToString();
+  const std::string type_as_string = ToString(ad.type);
   client_.seen_ads[type_as_string][ad.creative_instance_id] = true;
   client_.seen_advertisers[type_as_string][ad.advertiser_id] = true;
   SaveState();
 }
 
 const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
-    const AdType& type) {
+    AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
+  const std::string type_as_string = ToString(type);
   return client_.seen_ads[type_as_string];
 }
 
 void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
-                                             const AdType& type) {
+                                             AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
+  const std::string type_as_string = ToString(type);
 
   BLOG(1, "Resetting seen " << type_as_string << "s");
 
@@ -396,28 +396,28 @@ void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
   SaveState();
 }
 
-void ClientStateManager::ResetAllSeenAdsForType(const AdType& type) {
+void ClientStateManager::ResetAllSeenAdsForType(AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
+  const std::string type_as_string = ToString(type);
   BLOG(1, "Resetting seen " << type_as_string << "s");
   client_.seen_ads[type_as_string] = {};
   SaveState();
 }
 
 const std::map<std::string, bool>&
-ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
+ClientStateManager::GetSeenAdvertisersForType(AdType type) {
   CHECK(is_initialized_);
 
-  return client_.seen_advertisers[type.ToString()];
+  return client_.seen_advertisers[ToString(type)];
 }
 
 void ClientStateManager::ResetSeenAdvertisersForType(
     const CreativeAdList& creative_ads,
-    const AdType& type) {
+    AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
+  const std::string type_as_string = ToString(type);
 
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
 
@@ -432,10 +432,10 @@ void ClientStateManager::ResetSeenAdvertisersForType(
   SaveState();
 }
 
-void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
+void ClientStateManager::ResetAllSeenAdvertisersForType(AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
+  const std::string type_as_string = ToString(type);
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
   client_.seen_advertisers[type_as_string] = {};
   SaveState();
