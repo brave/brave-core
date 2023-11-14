@@ -62,7 +62,6 @@ class BraveVPNOSConnectionAPI
   std::string GetLastConnectionError() const;
   void ToggleConnection();
   void SetInstallSystemServiceCallback(base::RepeatingClosure callback);
-  void InstallSystemServices();
 
   // Connection dependent APIs.
   virtual void Connect() = 0;
@@ -72,6 +71,7 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState state);
   virtual void SetSelectedRegion(const std::string& name) = 0;
   virtual void FetchProfileCredentials() = 0;
+  virtual void InstallSystemServices();
 
  protected:
   explicit BraveVPNOSConnectionAPI(
@@ -98,6 +98,8 @@ class BraveVPNOSConnectionAPI
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
+
+  base::RepeatingClosure install_system_service_callback_;
 
  private:
   friend class BraveVpnButtonUnitTest;
@@ -135,7 +137,6 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNRegionDataManager region_data_manager_;
   base::ObserverList<Observer> observers_;
-  base::RepeatingClosure install_system_service_callback_;
 };
 
 // Create platform specific api instance.

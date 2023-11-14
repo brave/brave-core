@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check_is_test.h"
@@ -270,16 +271,6 @@ void BraveVPNOSConnectionAPI::SetInstallSystemServiceCallback(
   install_system_service_callback_ = std::move(callback);
 }
 
-void BraveVPNOSConnectionAPI::InstallSystemServices() {
-  // This API could be called more than once because BraveVpnService is a
-  // per-profile service. If service install is in-progress now, just return.
-  //
-  //  if (install_in_progress_) {
-  //    return;
-  //  }
-  if (install_system_service_callback_) {
-    install_system_service_callback_.Run();
-  }
-}
+void BraveVPNOSConnectionAPI::InstallSystemServices() {}
 
 }  // namespace brave_vpn
