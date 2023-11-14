@@ -11,7 +11,6 @@
 #include <string>
 #include <utility>
 
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
@@ -26,13 +25,7 @@ base::expected<T, std::string> ReadFlatBuffersResourceOnBackgroundThread(
     return base::ok(T{});
   }
 
-  std::string buffer;
-  const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
-  if (!base::ReadStreamToString(scoped_file.get(), &buffer)) {
-    return base::unexpected("Failed to read file");
-  }
-
-  return T::CreateFromFlatBuffers(std::move(buffer));
+  return T::CreateFromFlatBuffers(std::move(file));
 }
 
 template <typename T>

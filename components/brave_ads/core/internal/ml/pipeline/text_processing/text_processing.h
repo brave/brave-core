@@ -9,11 +9,16 @@
 #include <memory>
 #include <string>
 
+#include "base/files/memory_mapped_file.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
+
+namespace base {
+class File;
+}  // namespace base
 
 namespace brave_ads::ml::pipeline {
 
@@ -22,7 +27,7 @@ struct PipelineInfo;
 class TextProcessing final {
  public:
   static base::expected<TextProcessing, std::string> CreateFromFlatBuffers(
-      std::string buffer);
+      base::File file);
   static PredictionMap FilterPredictions(const PredictionMap& predictions);
 
   TextProcessing();
@@ -41,7 +46,7 @@ class TextProcessing final {
   bool IsNeuralPipline() const { return neural_model_.has_value(); }
 
   void SetPipeline(PipelineInfo pipeline);
-  bool SetPipeline(std::string buffer);
+  bool SetPipeline(base::File file);
 
   absl::optional<PredictionMap> Predict(VectorData* vector_data) const;
 
@@ -60,7 +65,7 @@ class TextProcessing final {
 
   std::string locale_ = "en";
 
-  absl::optional<std::string> pipeline_buffer_;
+  std::unique_ptr<base::MemoryMappedFile> pipeline_mapped_file_;
   TransformationVector transformations_;
   absl::optional<LinearModel> linear_model_;
   absl::optional<NeuralModel> neural_model_;

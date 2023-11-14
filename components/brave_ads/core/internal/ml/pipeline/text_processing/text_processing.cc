@@ -6,8 +6,10 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
+#include "base/files/file.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
@@ -20,9 +22,9 @@ namespace brave_ads::ml::pipeline {
 
 // static
 base::expected<TextProcessing, std::string>
-TextProcessing::CreateFromFlatBuffers(std::string buffer) {
+TextProcessing::CreateFromFlatBuffers(base::File file) {
   TextProcessing text_processing;
-  if (!text_processing.SetPipeline(std::move(buffer))) {
+  if (!text_processing.SetPipeline(std::move(file))) {
     return base::unexpected(
         "Failed to load flatbuffers text classification pipeline");
   }
@@ -52,19 +54,26 @@ void TextProcessing::SetPipeline(PipelineInfo pipeline) {
   transformations_ = std::move(pipeline.transformations);
 }
 
-bool TextProcessing::SetPipeline(std::string buffer) {
-  pipeline_buffer_ = std::move(buffer);
+bool TextProcessing::SetPipeline(base::File file) {
+  absl::optional<PipelineInfo> pipeline;
 
-  absl::optional<PipelineInfo> pipeline = LoadNeuralPipeline(*pipeline_buffer_);
-  if (!pipeline) {
-    pipeline = LoadLinearPipeline(*pipeline_buffer_);
+  if (file.IsValid()) {
+    pipeline_mapped_file_ = std::make_unique<base::MemoryMappedFile>();
+    if (pipeline_mapped_file_->Initialize(std::move(file))) {
+      pipeline = LoadNeuralPipeline(pipeline_mapped_file_->data(),
+                                    pipeline_mapped_file_->length());
+      if (!pipeline) {
+        pipeline = LoadLinearPipeline(pipeline_mapped_file_->data(),
+                                      pipeline_mapped_file_->length());
+      }
+    }
   }
 
   if (pipeline) {
     SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;
   } else {
-    pipeline_buffer_.reset();
+    pipeline_mapped_file_.reset();
     SetPipeline(PipelineInfo{});
     is_initialized_ = false;
   }

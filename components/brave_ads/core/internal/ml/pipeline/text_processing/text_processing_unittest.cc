@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/rand_util.h"
+#include "base/files/file.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
@@ -29,7 +29,8 @@ namespace brave_ads::ml {
 
 namespace {
 
-constexpr size_t kRandBytesBufferSize = 1024;
+constexpr char kMinValidNeuralModelPipeline[] =
+    "ml/pipeline/text_processing/neural/min_valid_neural_model.fb";
 
 constexpr char kValidSegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/linear/valid_segment_classification_min.fb";
@@ -49,6 +50,11 @@ constexpr char kValidSpamClassificationPipeline[] =
 constexpr char kMissingRequiredFieldClassificationPipeline[] =
     "ml/pipeline/text_processing/linear/"
     "missing_required_field_classification.fb";
+
+constexpr char kNotValidModel[] = "ml/pipeline/text_processing/not_valid_model";
+
+constexpr char kNotExistingFile[] =
+    "ml/pipeline/text_processing/not_existing_file";
 
 constexpr char kTextCMCCrash[] =
     "ml/pipeline/text_processing/linear/text_cmc_crash.txt";
@@ -125,13 +131,14 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
                                                  "junk"};
 
-  absl::optional<std::string> json =
-      ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  ASSERT_TRUE(json);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kValidSpamClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*json)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); ++i) {
@@ -153,28 +160,43 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   }
 }
 
-TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
+TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
   // Arrange
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kValidSegmentClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
+}
+
+TEST_F(BraveAdsTextProcessingTest, InitValidNeuralModelTest) {
+  // Arrange
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kMinValidNeuralModelPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+
+  pipeline::TextProcessing text_processing_pipeline;
+
+  // Act & Assert
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   // Arrange
   const std::string input_text = "This is a spam email.";
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kEmptySegmentClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
@@ -189,12 +211,13 @@ TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
   // Arrange
   const std::string input_text = "This is a spam email.";
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kEmptyTransformationsPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kEmptyTransformationsPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
@@ -212,12 +235,13 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
       "Message from mom with no real subject",
       "Another messase from mom with no real subject", "Yadayada"};
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kWrongTransformationOrderPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kWrongTransformationOrderPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act & Assert
   for (const auto& text : input_texts) {
@@ -230,46 +254,62 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
   // Arrange
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kMissingRequiredFieldClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kMissingRequiredFieldClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(file)));
 }
 
-TEST_F(BraveAdsTextProcessingTest, RandomBytesBufferInputTest) {
+TEST_F(BraveAdsTextProcessingTest, NotValidModelTest) {
   // Arrange
-  std::string buffer = base::RandBytesAsString(kRandBytesBufferSize);
+  const base::FilePath path = GetTestPath().AppendASCII(kNotValidModel);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(buffer)));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(file)));
 }
 
-TEST_F(BraveAdsTextProcessingTest, EmptyInputTest) {
+TEST_F(BraveAdsTextProcessingTest, kNotExistingFile) {
+  // Arrange
+  const base::FilePath path = GetTestPath().AppendASCII(kNotExistingFile);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+
+  pipeline::TextProcessing text_processing_pipeline;
+
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(file)));
+}
+
+TEST_F(BraveAdsTextProcessingTest, NotInitializedFileTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(""));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(base::File()));
 }
 
 TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale("es");
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kValidSegmentClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(file)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
@@ -277,12 +317,13 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   constexpr size_t kMaxPredictionsSize = 100;
   constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kValidSegmentClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act
   const absl::optional<PredictionMap> predictions =
@@ -303,12 +344,13 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   constexpr size_t kMinPredictionsSize = 2;
   constexpr size_t kMaxPredictionsSize = 100;
 
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const base::FilePath path =
+      GetTestPath().AppendASCII(kValidSegmentClassificationPipeline);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   const absl::optional<std::string> text =
       ReadFileFromTestPathToString(kTextCMCCrash);

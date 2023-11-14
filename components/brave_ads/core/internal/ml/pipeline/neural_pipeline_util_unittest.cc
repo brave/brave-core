@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 
 #include <string>
 #include <utility>
@@ -17,20 +17,20 @@
 namespace brave_ads::ml {
 
 namespace {
-constexpr char kValidSpamClassificationPipeline[] =
-    "ml/pipeline/text_processing/linear/valid_spam_classification.fb";
+constexpr char kMinValidNeuralModelPipeline[] =
+    "ml/pipeline/text_processing/neural/min_valid_neural_model.fb";
 }  // namespace
 
-class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};
+class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
+TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
   absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
+      ReadFileFromTestPathToString(kMinValidNeuralModelPipeline);
   ASSERT_TRUE(buffer);
 
   // Act & Assert
-  EXPECT_TRUE(pipeline::LoadLinearPipeline(
+  EXPECT_TRUE(pipeline::LoadNeuralPipeline(
       reinterpret_cast<const uint8_t*>(buffer->data()), buffer->size()));
 }
 

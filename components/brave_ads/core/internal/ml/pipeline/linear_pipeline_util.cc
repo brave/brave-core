@@ -7,6 +7,7 @@
 
 #include <iterator>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -92,15 +93,15 @@ absl::optional<TransformationVector> LoadTransformations(
 
 }  // namespace
 
-absl::optional<PipelineInfo> LoadLinearPipeline(const std::string& buffer) {
-  flatbuffers::Verifier verifier(
-      reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+absl::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
+                                                const size_t length) {
+  flatbuffers::Verifier verifier(data, length);
   if (!linear_text_classification::flat::VerifyModelBuffer(verifier)) {
     return absl::nullopt;
   }
 
   const linear_text_classification::flat::Model* model =
-      linear_text_classification::flat::GetModel(buffer.data());
+      linear_text_classification::flat::GetModel(data);
   if (!model) {
     return absl::nullopt;
   }

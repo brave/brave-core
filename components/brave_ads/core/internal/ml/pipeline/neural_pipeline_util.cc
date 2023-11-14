@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -84,15 +85,15 @@ absl::optional<TransformationVector> LoadTransformations(
 
 }  // namespace
 
-absl::optional<PipelineInfo> LoadNeuralPipeline(const std::string& buffer) {
-  flatbuffers::Verifier verifier(
-      reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
+absl::optional<PipelineInfo> LoadNeuralPipeline(const uint8_t* data,
+                                                const size_t length) {
+  flatbuffers::Verifier verifier(data, length);
   if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {
     return absl::nullopt;
   }
 
   const neural_text_classification::flat::Model* model =
-      neural_text_classification::flat::GetModel(buffer.data());
+      neural_text_classification::flat::GetModel(data);
   if (!model) {
     return absl::nullopt;
   }
