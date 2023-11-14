@@ -885,12 +885,12 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
     v8::Local<v8::String> source) {
   v8::page_graph::ExecutingScript executing_script =
       v8::page_graph::GetExecutingScript(isolate);
-  ScriptData script_data{
-      .code = blink::ToBlinkString<String>(source, blink::kExternalize),
-      .source = {
-          .parent_script_id = executing_script.script_id,
-          .is_eval = true,
-      }};
+  ScriptData script_data{.code = blink::ToBlinkString<String>(
+                             isolate, source, blink::kExternalize),
+                         .source = {
+                             .parent_script_id = executing_script.script_id,
+                             .is_eval = true,
+                         }};
 
   RegisterScriptCompilation(
       blink::ToExecutionContext(isolate->GetCurrentContext()), script_id,
