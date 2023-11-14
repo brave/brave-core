@@ -35,7 +35,6 @@ class BraveVPNWireguardConnectionAPI
   // BraveVPNOSConnectionAPI
   void Disconnect() override;
   void CheckConnection() override;
-  void InstallSystemServices() override;
 
   // BraveVPNOSConnectionAPI::Observer
   void OnConnectionStateChanged(mojom::ConnectionState state) override;

@@ -30,6 +30,7 @@
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
+#include "brave/installer/win/util/brave_vpn_helper_utils.h"
 #endif
 
 namespace brave_vpn {
@@ -66,6 +67,9 @@ std::unique_ptr<KeyedService> BuildVpnService(
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
   if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    g_brave_browser_process->brave_vpn_os_connection_api()
+        ->SetInstallSystemServiceCallback(
+            base::BindRepeating(&InstallWireguardSystemServices));
     auto* observer_service =
         brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
             ->GetServiceForContext(context);

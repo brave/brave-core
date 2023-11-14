@@ -1,0 +1,6 @@
+include_rules = [
+  "+chrome/elevation_service",
+  "+chrome/install_static",
+  "+chrome/installer",
+  "+components/version_info",
+]

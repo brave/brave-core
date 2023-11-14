@@ -265,6 +265,21 @@ void BraveVPNOSConnectionAPI::ToggleConnection() {
   can_disconnect ? Disconnect() : Connect();
 }
 
-void BraveVPNOSConnectionAPI::InstallSystemServices() {}
+void BraveVPNOSConnectionAPI::SetInstallSystemServiceCallback(
+    base::RepeatingClosure callback) {
+  install_system_service_callback_ = std::move(callback);
+}
+
+void BraveVPNOSConnectionAPI::InstallSystemServices() {
+  // This API could be called more than once because BraveVpnService is a
+  // per-profile service. If service install is in-progress now, just return.
+  //
+  //  if (install_in_progress_) {
+  //    return;
+  //  }
+  if (install_system_service_callback_) {
+    install_system_service_callback_.Run();
+  }
+}
 
 }  // namespace brave_vpn

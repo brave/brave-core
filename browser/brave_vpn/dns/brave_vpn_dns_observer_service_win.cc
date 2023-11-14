@@ -12,7 +12,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
 #include "brave/installer/win/util/brave_vpn_helper_utils.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"

@@ -6,8 +6,8 @@
 #ifndef BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_UTILS_H_
 #define BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_UTILS_H_
 
-#include <string>
 #include <windows.h>
+#include <string>
 
 #include "base/files/file_path.h"
 #include "base/version.h"
@@ -28,6 +28,8 @@ HRESULT InstallBraveWireGuardServiceImpersonated();
 std::wstring GetBraveVPNConnectionName();
 std::wstring GetBraveVpnHelperServiceDisplayName();
 std::wstring GetBraveVpnHelperServiceName();
+
+void InstallWireguardSystemServices();
 
 }  // namespace brave_vpn
 
