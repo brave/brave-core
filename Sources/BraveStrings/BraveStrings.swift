@@ -2439,7 +2439,7 @@ extension Strings {
         comment: "")
     
     public static let activityTypeOpenHistoryListDescription =
-      NSLocalizedString("shortcuts.activityTypeClearHistoryDescription", tableName: "BraveShared", bundle: .module,
+      NSLocalizedString("shortcuts.activityTypeOpenHistoryListDescription", tableName: "BraveShared", bundle: .module,
         value: "Open Browser History Screen",
         comment: "")
 
