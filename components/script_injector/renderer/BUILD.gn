@@ -29,5 +29,4 @@ source_set("unit_tests") {
     "//brave/components/script_injector/renderer:renderer",
     "//components/prefs:test_support",
   ]
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
