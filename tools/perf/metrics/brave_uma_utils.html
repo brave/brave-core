@@ -26,11 +26,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         if (rules.length == 0) umaProcessingRules.set(name, rules);
         rules.push(rule)
       };
-      attrs.regularHistograms?.forEach(name => {
+      attrs.regularHistograms && attrs.regularHistograms.forEach(name => {
         addRule(name, { suffix: '', process: (e) => e });
       });
 
-      attrs.sumHistograms?.forEach(name => {
+      attrs.sumHistograms && attrs.sumHistograms.forEach(name => {
         addRule(name, {
           suffix: '_sum',
           process: (list) => [list.reduce((a, b) => a + b, 0)]
@@ -38,7 +38,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       });
 
 
-      attrs.countHistograms?.forEach(name => {
+      attrs.countHistograms && attrs.countHistograms.forEach(name => {
         addRule(name, {
           suffix: '_count',
           boundaries: tr.v.HistogramBinBoundaries.createLinear(0, 100, 101),
@@ -76,9 +76,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       for (const [name, values] of umaMap) {
         for (const rule of umaProcessingRules.get(name)) {
           const boundaries =
-            rule.boundaries || attrs?.getHistogramBoundaries?.(name) ||
+            rule.boundaries ||
+            (attrs.getHistogramBoundaries &&
+              attrs.getHistogramBoundaries(name)) ||
             tr.v.HistogramBinBoundaries.createExponential(1e-3, 1e3, 50);
-          const unit = attrs?.getHistogramUnit?.(name) ||
+          const unit =
+            (attrs.getHistogramUnit && attrs.getHistogramUnit(name)) ||
             tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
           const histogram = new tr.v.Histogram(
             name + rule.suffix, unit, boundaries);
