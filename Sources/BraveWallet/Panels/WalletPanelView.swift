@@ -67,7 +67,7 @@ public struct WalletPanelContainerView: View {
       } label: {
         HStack(spacing: 4) {
           Image(braveSystemName: "leo.lock.open")
-          Text(Strings.Wallet.walletPanelUnlockWallet)
+          Text(Strings.Wallet.unlockWallet)
         }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))

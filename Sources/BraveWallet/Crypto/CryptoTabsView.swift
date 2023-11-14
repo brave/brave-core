@@ -58,33 +58,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         )
         .navigationTitle(Strings.Wallet.wallet)
         .navigationBarTitleDisplayMode(.inline)
-        .introspectViewController(customize: { vc in
-          vc.navigationItem.do {
-            // no shadow when content is at top.
-            let noShadowAppearance: UINavigationBarAppearance = {
-              let appearance = UINavigationBarAppearance()
-              appearance.configureWithOpaqueBackground()
-              appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-              appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-              appearance.backgroundColor = UIColor(braveSystemName: .pageBackground)
-              appearance.shadowColor = .clear
-              return appearance
-            }()
-            $0.scrollEdgeAppearance = noShadowAppearance
-            $0.compactScrollEdgeAppearance = noShadowAppearance
-            // shadow when content is scrolled behind navigation bar.
-            let shadowAppearance: UINavigationBarAppearance = {
-              let appearance = UINavigationBarAppearance()
-              appearance.configureWithOpaqueBackground()
-              appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-              appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-              appearance.backgroundColor = UIColor(braveSystemName: .pageBackground)
-              return appearance
-            }()
-            $0.standardAppearance = shadowAppearance
-            $0.compactAppearance = shadowAppearance
-          }
-        })
+        .transparentUnlessScrolledNavigationAppearance()
         .toolbar { sharedToolbarItems }
         .background(settingsNavigationLink(for: .portfolio))
       }
@@ -241,25 +215,5 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       Text(Strings.Wallet.settings)
     }
     .hidden()
-  }
-}
-
-private extension View {
-  func applyRegularNavigationAppearance() -> some View {
-    introspectViewController(customize: { vc in
-      vc.navigationItem.do {
-        let appearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.backgroundColor = .braveBackground
-          return appearance
-        }()
-        $0.standardAppearance = appearance
-        $0.compactAppearance = appearance
-        $0.scrollEdgeAppearance = appearance
-      }
-    })
   }
 }

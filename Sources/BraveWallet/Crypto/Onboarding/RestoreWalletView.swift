@@ -19,7 +19,7 @@ struct RestoreWalletContainerView: View {
         .background(Color(.braveBackground))
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .transparentNavigationBar(backButtonTitle: Strings.Wallet.restoreWalletBackButtonTitle, backButtonDisplayMode: .generic)
+    .transparentUnlessScrolledNavigationAppearance()
   }
 }
 

@@ -12,6 +12,7 @@ struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   @State private var password: String = ""
+  @FocusState private var isPasswordFieldFocused: Bool
   @State private var unlockError: UnlockError?
   @State private var attemptedBiometricsUnlock: Bool = false
 
@@ -25,11 +26,18 @@ struct UnlockWalletView: View {
       }
     }
   }
-
+  
   private var isPasswordValid: Bool {
     !password.isEmpty
   }
-
+  
+  private func fillPasswordFromKeychain() {
+    if let password = keyringStore.retrievePasswordFromKeychain() {
+      self.password = password
+      unlock()
+    }
+  }
+  
   private func unlock() {
     // Conflict with the keyboard submit/dismissal that causes a bug
     // with SwiftUI animating the screen away...
@@ -42,14 +50,90 @@ struct UnlockWalletView: View {
       }
     }
   }
-
-  private func fillPasswordFromKeychain() {
-    if let password = keyringStore.retrievePasswordFromKeychain() {
-      self.password = password
-      unlock()
+  
+  var body: some View {
+    ScrollView {
+      VStack(spacing: 40) {
+        VStack(spacing: 4) {
+          Text(Strings.Wallet.unlockWallet)
+            .font(.title)
+            .fontWeight(.medium)
+            .foregroundColor(Color(braveSystemName: .textPrimary))
+          Text(Strings.Wallet.unlockWalletDescription)
+            .font(.subheadline)
+            .foregroundColor(Color(braveSystemName: .textSecondary))
+        }
+        .padding(.top, 44)
+        
+        VStack(spacing: 32) {
+          SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
+            .textContentType(.password)
+            .modifier(WalletUnlockStyleModifier(isFocused: isPasswordFieldFocused, error: unlockError))
+            .focused($isPasswordFieldFocused)
+          
+          VStack(spacing: 16) {
+            Button(action: unlock) {
+              Text(Strings.Wallet.unlockWalletButtonTitle)
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .disabled(!isPasswordValid)
+            
+            NavigationLink(
+              destination: RestoreWalletContainerView(
+                keyringStore: keyringStore
+              )
+            ) {
+              Text(Strings.Wallet.restoreWalletButtonTitle)
+                .fontWeight(.semibold)
+                .foregroundColor(Color(braveSystemName: .textInteractive))
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity)
+            }
+          }
+        }
+        
+        if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
+          Button(action: fillPasswordFromKeychain) {
+            icon
+              .imageScale(.large)
+              .font(.headline)
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
+              .padding()
+              .background(Circle()
+                .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1))
+          }
+        }
+      }
+      .padding(.horizontal, 34)
     }
-  }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(
+      Image("wallet-background", bundle: .module)
+        .resizable()
+        .aspectRatio(contentMode: .fill)
+        .edgesIgnoringSafeArea(.all)
+    )
+    .onChange(of: password) { _ in
+      unlockError = nil
+    }
+    .onAppear {
+      self.isPasswordFieldFocused = true
 
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.isWalletLocked && UIApplication.shared.isProtectedDataAvailable {
+          attemptedBiometricsUnlock = true
+          fillPasswordFromKeychain()
+        }
+      }
+    }
+    .navigationTitle(Strings.Wallet.cryptoTitle)
+    .navigationBarTitleDisplayMode(.inline)
+    .transparentUnlessScrolledNavigationAppearance()
+    .ignoresSafeArea(.keyboard, edges: .bottom)
+  }
+  
   private var biometricsIcon: Image? {
     let context = LAContext()
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
@@ -58,6 +142,10 @@ struct UnlockWalletView: View {
         return Image(systemName: "faceid")
       case .touchID:
         return Image(systemName: "touchid")
+#if swift(>=5.9)
+      case .opticID:
+        return Image(systemName: "opticid")
+#endif
       case .none:
         return nil
       @unknown default:
@@ -66,77 +154,65 @@ struct UnlockWalletView: View {
     }
     return nil
   }
-
-  var body: some View {
-    ScrollView(.vertical) {
-      VStack(spacing: 46) {
-        Image("graphic-lock", bundle: .module)
-          .padding(.bottom)
-          .accessibilityHidden(true)
-        VStack {
-          Text(Strings.Wallet.unlockWalletTitle)
-            .font(.headline)
-            .padding(.bottom)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-          HStack {
-            SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
-              .textContentType(.password)
-              .font(.subheadline)
-              .introspectTextField(customize: { tf in
-                tf.becomeFirstResponder()
-              })
-              .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
-            if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
-              Button(action: fillPasswordFromKeychain) {
-                icon
-                  .imageScale(.large)
-                  .font(.headline)
-              }
-            }
-          }
-          .padding(.horizontal, 48)
-        }
-        VStack(spacing: 30) {
-          Button(action: unlock) {
-            Text(Strings.Wallet.unlockWalletButtonTitle)
-          }
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
-          .disabled(!isPasswordValid)
-          NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
-            Text(Strings.Wallet.restoreWalletButtonTitle)
-              .font(.subheadline.weight(.medium))
-          }
-          .foregroundColor(Color(.braveLabel))
-        }
-      }
-      .frame(maxHeight: .infinity, alignment: .top)
-      .padding()
-      .padding(.vertical)
-    }
-    .navigationTitle(Strings.Wallet.cryptoTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .onChange(of: password) { _ in
-      unlockError = nil
-    }
-    .onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.isWalletLocked && UIApplication.shared.isProtectedDataAvailable {
-          attemptedBiometricsUnlock = true
-          fillPasswordFromKeychain()
-        }
-      }
-    }
-  }
 }
 
 #if DEBUG
-struct CryptoUnlockView_Previews: PreviewProvider {
+struct UnlockWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    UnlockWalletView(keyringStore: .previewStore)
-      .previewLayout(.sizeThatFits)
-      .previewColorSchemes()
+    NavigationView {
+      UnlockWalletView(
+        keyringStore: .previewStoreWithWalletCreated
+      )
+    }
+    .previewColorSchemes()
   }
 }
 #endif
+
+private struct WalletUnlockStyleModifier<Failure: LocalizedError & Equatable>: ViewModifier {
+  
+  var isFocused: Bool
+  var error: Failure?
+  
+  private var borderColor: Color {
+    if error != nil {
+      return Color.red
+    } else if isFocused {
+      return Color(braveSystemName: .iconInteractive)
+    }
+    return Color.clear
+  }
+
+  func body(content: Content) -> some View {
+    VStack(spacing: 6) {
+      content
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(
+          RoundedRectangle(cornerRadius: 10, style: .continuous)
+            .strokeBorder(borderColor, lineWidth: 1)
+            .background(
+              RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(Color(braveSystemName: .containerBackground))
+            )
+        )
+      HStack(alignment: .firstTextBaseline, spacing: 4) {
+        Image(braveSystemName: "leo.warning.triangle-outline")
+        Text(error?.localizedDescription ?? " ") // maintain space when not showing an error, `hidden()` below
+          .fixedSize(horizontal: false, vertical: true)
+          .animation(nil, value: error?.localizedDescription)  // Dont animate the text change, just alpha
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .transition(
+        .asymmetric(
+          insertion: .opacity.animation(.default),
+          removal: .identity
+        )
+      )
+      .font(.footnote)
+      .foregroundColor(Color(.braveErrorLabel))
+      .padding(.leading, 8)
+      .hidden(isHidden: error == nil)
+    }
+  }
+}

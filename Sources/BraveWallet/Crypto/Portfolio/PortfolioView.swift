@@ -46,7 +46,7 @@ struct PortfolioView: View {
       VStack(spacing: 0) {
         Color(braveSystemName: .pageBackground) // top scroll rubberband area
         Color(braveSystemName: .containerBackground) // bottom drawer scroll rubberband area
-      }.edgesIgnoringSafeArea(.bottom)
+      }.edgesIgnoringSafeArea(.all)
     )
   }
   

@@ -16,6 +16,7 @@ extension View {
       self
     }
   }
+
   /// This function will use the help from `introspectViewController` to find the
   /// containing `UIViewController` of the current SwiftUI view and configure its navigation
   /// bar appearance to be transparent.
@@ -30,6 +31,53 @@ extension View {
       vc.navigationItem.backButtonTitle = backButtonTitle
       vc.navigationItem.backButtonDisplayMode = backButtonDisplayMode
     }
+  }
+
+  func applyRegularNavigationAppearance() -> some View {
+    introspectViewController(customize: { vc in
+      vc.navigationItem.do {
+        let appearance: UINavigationBarAppearance = {
+          let appearance = UINavigationBarAppearance()
+          appearance.configureWithOpaqueBackground()
+          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.backgroundColor = .braveBackground
+          return appearance
+        }()
+        $0.standardAppearance = appearance
+        $0.compactAppearance = appearance
+        $0.scrollEdgeAppearance = appearance
+      }
+    })
+  }
+  
+  func transparentUnlessScrolledNavigationAppearance() -> some View {
+    introspectViewController(customize: { vc in
+      vc.navigationItem.do {
+        // no shadow when content is at top.
+        let noShadowAppearance: UINavigationBarAppearance = {
+          let appearance = UINavigationBarAppearance()
+          appearance.configureWithTransparentBackground()
+          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.backgroundColor = .clear
+          appearance.shadowColor = .clear
+          return appearance
+        }()
+        $0.scrollEdgeAppearance = noShadowAppearance
+        $0.compactScrollEdgeAppearance = noShadowAppearance
+        // shadow when content is scrolled behind navigation bar.
+        let shadowAppearance: UINavigationBarAppearance = {
+          let appearance = UINavigationBarAppearance()
+          appearance.configureWithOpaqueBackground()
+          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          return appearance
+        }()
+        $0.standardAppearance = shadowAppearance
+        $0.compactAppearance = shadowAppearance
+      }
+    })
   }
   
   func addAccount(

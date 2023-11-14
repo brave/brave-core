@@ -414,8 +414,8 @@ extension Strings {
       value: "Incorrect password",
       comment: "The error message displayed when the user enters the wrong password while unlocking the wallet"
     )
-    public static let unlockWalletTitle = NSLocalizedString(
-      "wallet.unlockWalletTitle",
+    public static let unlockWalletDescription = NSLocalizedString(
+      "wallet.unlockWalletDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter password to unlock wallet",
@@ -2802,11 +2802,11 @@ extension Strings {
       value: "None",
       comment: "The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets."
     )
-    public static let walletPanelUnlockWallet = NSLocalizedString(
-      "wallet.walletPanelUnlockWallet",
+    public static let unlockWallet = NSLocalizedString(
+      "wallet.unlockWallet",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Unlock wallet",
+      value: "Unlock Wallet",
       comment: "The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen."
     )
     public static let walletPanelSetupWalletDescription = NSLocalizedString(
