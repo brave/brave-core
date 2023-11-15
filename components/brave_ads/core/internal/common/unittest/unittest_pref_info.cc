@@ -30,16 +30,4 @@ PrefInfo& PrefInfo::operator=(PrefInfo&& other) noexcept = default;
 
 PrefInfo::~PrefInfo() = default;
 
-bool operator==(const PrefInfo& lhs, const PrefInfo& rhs) {
-  const auto tie = [](const PrefInfo& pref) {
-    return std::tie(pref.value, pref.default_value);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const PrefInfo& lhs, const PrefInfo& rhs) {
-  return !(lhs == rhs);
-}
-
 }  // namespace brave_ads

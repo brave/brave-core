@@ -15,13 +15,12 @@
 namespace brave_ads {
 
 struct ADS_EXPORT HistoryItemInfo final {
+  bool operator==(const HistoryItemInfo&) const = default;
+
   base::Time created_at;
   AdContentInfo ad_content;
   CategoryContentInfo category_content;
 };
-
-bool operator==(const HistoryItemInfo&, const HistoryItemInfo&);
-bool operator!=(const HistoryItemInfo&, const HistoryItemInfo&);
 
 using HistoryItemList = base::circular_deque<HistoryItemInfo>;
 

@@ -36,6 +36,7 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   expected_history_item.ad_content.creative_set_id = ad.creative_set_id;
   expected_history_item.ad_content.campaign_id = ad.campaign_id;
   expected_history_item.ad_content.advertiser_id = ad.advertiser_id;
+  expected_history_item.ad_content.segment = ad.segment;
   expected_history_item.ad_content.brand = ad.title;
   expected_history_item.ad_content.brand_info = ad.body;
   expected_history_item.ad_content.brand_display_url = ad.target_url.host();

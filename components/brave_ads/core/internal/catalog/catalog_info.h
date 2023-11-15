@@ -24,8 +24,7 @@ struct CatalogInfo final {
 
   ~CatalogInfo();
 
-  bool operator==(const CatalogInfo&) const;
-  bool operator!=(const CatalogInfo&) const;
+  bool operator==(const CatalogInfo&) const = default;
 
   std::string id;
   int version = 0;

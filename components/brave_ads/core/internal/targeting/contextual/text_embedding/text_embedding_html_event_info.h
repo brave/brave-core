@@ -24,16 +24,13 @@ struct TextEmbeddingHtmlEventInfo final {
 
   ~TextEmbeddingHtmlEventInfo();
 
+  bool operator==(const TextEmbeddingHtmlEventInfo&) const = default;
+
   base::Time created_at;
   std::string locale;
   std::string hashed_text_base64;
   std::vector<float> embedding;
 };
-
-bool operator==(const TextEmbeddingHtmlEventInfo&,
-                const TextEmbeddingHtmlEventInfo&);
-bool operator!=(const TextEmbeddingHtmlEventInfo&,
-                const TextEmbeddingHtmlEventInfo&);
 
 using TextEmbeddingHtmlEventList = std::vector<TextEmbeddingHtmlEventInfo>;
 

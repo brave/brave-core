@@ -25,8 +25,7 @@ struct TabInfo final {
 
   ~TabInfo();
 
-  bool operator==(const TabInfo&) const;
-  bool operator!=(const TabInfo&) const;
+  bool operator==(const TabInfo&) const = default;
 
   int32_t id = 0;
   std::vector<GURL> redirect_chain;

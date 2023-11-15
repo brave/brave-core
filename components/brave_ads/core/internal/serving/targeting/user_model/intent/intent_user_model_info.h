@@ -22,11 +22,10 @@ struct IntentUserModelInfo final {
 
   ~IntentUserModelInfo();
 
+  bool operator==(const IntentUserModelInfo&) const = default;
+
   SegmentList segments;
 };
-
-bool operator==(const IntentUserModelInfo&, const IntentUserModelInfo&);
-bool operator!=(const IntentUserModelInfo&, const IntentUserModelInfo&);
 
 }  // namespace brave_ads
 

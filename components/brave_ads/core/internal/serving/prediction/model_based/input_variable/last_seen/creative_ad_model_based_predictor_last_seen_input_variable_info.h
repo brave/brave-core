@@ -12,14 +12,12 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorLastSeenInputVariableInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&)
+      const = default;
+
   absl::optional<base::TimeDelta> value;
   double weight = 1.0;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&,
-                const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&);
-bool operator!=(const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&,
-                const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&);
 
 }  // namespace brave_ads
 

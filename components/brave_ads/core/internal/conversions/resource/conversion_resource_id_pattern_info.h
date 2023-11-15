@@ -14,16 +14,13 @@
 namespace brave_ads {
 
 struct ConversionResourceIdPatternInfo final {
+  bool operator==(const ConversionResourceIdPatternInfo&) const = default;
+
   std::string url_pattern;
   ConversionResourceIdPatternSearchInType search_in_type =
       ConversionResourceIdPatternSearchInType::kDefault;
   std::string id_pattern;
 };
-
-bool operator==(const ConversionResourceIdPatternInfo&,
-                const ConversionResourceIdPatternInfo&);
-bool operator!=(const ConversionResourceIdPatternInfo&,
-                const ConversionResourceIdPatternInfo&);
 
 using ConversionResourceIdPatternMap =
     std::map</*resource_url_pattern=*/std::string,

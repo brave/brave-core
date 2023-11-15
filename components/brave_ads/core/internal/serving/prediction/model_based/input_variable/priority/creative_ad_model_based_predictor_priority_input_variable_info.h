@@ -9,14 +9,12 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorPriorityInputVariableInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorPriorityInputVariableInfo&)
+      const = default;
+
   int value = 0;
   double weight = 1.0;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorPriorityInputVariableInfo&,
-                const CreativeAdModelBasedPredictorPriorityInputVariableInfo&);
-bool operator!=(const CreativeAdModelBasedPredictorPriorityInputVariableInfo&,
-                const CreativeAdModelBasedPredictorPriorityInputVariableInfo&);
 
 }  // namespace brave_ads
 

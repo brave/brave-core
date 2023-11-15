@@ -28,18 +28,4 @@ IntentUserModelInfo& IntentUserModelInfo::operator=(
 
 IntentUserModelInfo::~IntentUserModelInfo() = default;
 
-bool operator==(const IntentUserModelInfo& lhs,
-                const IntentUserModelInfo& rhs) {
-  const auto tie = [](const IntentUserModelInfo& user_model) {
-    return std::tie(user_model.segments);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const IntentUserModelInfo& lhs,
-                const IntentUserModelInfo& rhs) {
-  return !(lhs == rhs);
-}
-
 }  // namespace brave_ads

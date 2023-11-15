@@ -13,6 +13,9 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorInputVariableInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorInputVariableInfo&) const =
+      default;
+
   CreativeAdModelBasedPredictorSegmentInputVariablesInfo intent_segment;
   CreativeAdModelBasedPredictorSegmentInputVariablesInfo
       latent_interest_segment;
@@ -23,11 +26,6 @@ struct CreativeAdModelBasedPredictorInputVariableInfo final {
 
   CreativeAdModelBasedPredictorPriorityInputVariableInfo priority;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorInputVariableInfo&,
-                const CreativeAdModelBasedPredictorInputVariableInfo&);
-bool operator!=(const CreativeAdModelBasedPredictorInputVariableInfo&,
-                const CreativeAdModelBasedPredictorInputVariableInfo&);
 
 }  // namespace brave_ads
 

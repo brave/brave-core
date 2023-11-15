@@ -11,14 +11,12 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorSegmentInputVariablesInfo final {
+  bool operator==(const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&)
+      const = default;
+
   CreativeAdModelBasedPredictorSegmentInputVariableInfo child_matches;
   CreativeAdModelBasedPredictorSegmentInputVariableInfo parent_matches;
 };
-
-bool operator==(const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&,
-                const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&);
-bool operator!=(const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&,
-                const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&);
 
 }  // namespace brave_ads
 

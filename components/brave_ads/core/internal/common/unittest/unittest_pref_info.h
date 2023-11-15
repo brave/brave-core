@@ -22,12 +22,11 @@ struct PrefInfo final {
 
   ~PrefInfo();
 
+  bool operator==(const PrefInfo&) const = default;
+
   absl::optional<base::Value> value;
   base::Value default_value;
 };
-
-bool operator==(const PrefInfo&, const PrefInfo&);
-bool operator!=(const PrefInfo&, const PrefInfo&);
 
 }  // namespace brave_ads
 

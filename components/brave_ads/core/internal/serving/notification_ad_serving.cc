@@ -110,7 +110,6 @@ void NotificationAdServing::BuildUserModelCallback(
     const UserModelInfo& user_model) {
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
-  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,
       base::BindOnce(&NotificationAdServing::GetEligibleAdsForUserModelCallback,
@@ -172,7 +171,6 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     return FailedToServeAd();
   }
 
-  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   SuccessfullyServedAd(ad);

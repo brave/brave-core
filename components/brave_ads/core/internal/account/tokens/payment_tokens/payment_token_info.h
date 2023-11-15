@@ -27,8 +27,7 @@ struct PaymentTokenInfo final {
 
   ~PaymentTokenInfo();
 
-  bool operator==(const PaymentTokenInfo&) const;
-  bool operator!=(const PaymentTokenInfo&) const;
+  bool operator==(const PaymentTokenInfo&) const = default;
 
   std::string transaction_id;
   cbr::UnblindedToken unblinded_token;

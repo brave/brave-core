@@ -26,6 +26,8 @@ struct AdEventInfo final {
 
   ~AdEventInfo();
 
+  bool operator==(const AdEventInfo&) const = default;
+
   [[nodiscard]] bool IsValid() const;
 
   AdType type = AdType::kUndefined;
@@ -38,9 +40,6 @@ struct AdEventInfo final {
   std::string segment;
   base::Time created_at;
 };
-
-bool operator==(const AdEventInfo&, const AdEventInfo&);
-bool operator!=(const AdEventInfo&, const AdEventInfo&);
 
 using AdEventList = std::vector<AdEventInfo>;
 
