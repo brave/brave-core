@@ -38,7 +38,7 @@ TabRendererData TabRendererData::FromTabInModel(TabStripModel* model,
   if (data.should_themify_favicon) {
     content::WebContents* const contents = model->GetWebContentsAt(index);
     const GURL& url = contents->GetVisibleURL();
-    if (url.SchemeIs(content::kChromeUIScheme) &&
+    if (url.SchemeIs(content::kBraveUIScheme) &&
         (url.host_piece() == kWelcomeHost ||
          url.host_piece() == kRewardsPageHost)) {
       data.should_themify_favicon = false;

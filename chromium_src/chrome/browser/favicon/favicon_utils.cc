@@ -18,12 +18,26 @@ namespace favicon {
 
 bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
   const GURL& virtual_url = entry->GetVirtualURL();
+
+  if (!virtual_url.SchemeIs(content::kBraveUIScheme)) {
+    return ShouldThemifyFaviconForEntry_ChromiumImpl(entry);
+  }
+
   // Don't theme for certain brave favicons which are full color
-  if (virtual_url.SchemeIs(content::kChromeUIScheme) &&
-      (virtual_url.host_piece() == kRewardsPageHost ||
-       virtual_url.host_piece() == kWalletPageHost)) {
+  if (virtual_url.host_piece() == kRewardsPageHost ||
+      virtual_url.host_piece() == kWalletPageHost) {
     return false;
   }
+
+  // ShouldThemifyFavicon would early return false if scheme is not chrome://,
+  // so replace kBraveUIScheme with kChromeUIScheme to perform upstream checks.
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr(content::kChromeUIScheme);
+  GURL override_virtual_url = virtual_url.ReplaceComponents(replacements);
+  if (ShouldThemifyFavicon(override_virtual_url)) {
+    return true;
+  }
+
   return ShouldThemifyFaviconForEntry_ChromiumImpl(entry);
 }
 

@@ -70,9 +70,10 @@ class BraveWalleBrowserClientUnitTest
 
 TEST_F(BraveWalleBrowserClientUnitTest,
     DoesNotResolveEthereumRemoteClientIfNotInstalled) {
-  GURL url("chrome://wallet/");
-  ASSERT_FALSE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url, browser_context()));
+  GURL url("brave://wallet/");
+  ASSERT_TRUE(
+      BraveContentBrowserClient::HandleURLRewrite(&url, browser_context()));
+  EXPECT_EQ(url, GURL("chrome://wallet/"));
 }
 
 TEST_F(BraveWalleBrowserClientUnitTest,
@@ -82,8 +83,8 @@ TEST_F(BraveWalleBrowserClientUnitTest,
       kDefaultEthereumWallet,
       static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
   GURL url("chrome://wallet/");
-  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url, browser_context()));
+  ASSERT_TRUE(
+      BraveContentBrowserClient::HandleURLRewrite(&url, browser_context()));
   EXPECT_EQ(url, GURL(kEthereumRemoteClientBaseUrl));
 }
 
@@ -94,17 +95,15 @@ using BraveContentBrowserClientTest = testing::Test;
 
 TEST_F(BraveContentBrowserClientTest, ResolvesSync) {
   GURL url("chrome://sync/");
-  ASSERT_TRUE(
-    BraveContentBrowserClient::HandleURLOverrideRewrite(&url, nullptr));
+  ASSERT_TRUE(BraveContentBrowserClient::HandleURLRewrite(&url, nullptr));
   ASSERT_STREQ(url.spec().c_str(), "chrome://settings/braveSync");
 
-  GURL url2("chrome://sync/");
-  ASSERT_TRUE(
-    BraveContentBrowserClient::HandleURLOverrideRewrite(&url2, nullptr));
+  GURL url2("brave://sync/");
+  ASSERT_TRUE(BraveContentBrowserClient::HandleURLRewrite(&url2, nullptr));
+  ASSERT_STREQ(url2.spec().c_str(), "chrome://settings/braveSync");
 }
 
 TEST_F(BraveContentBrowserClientTest, ResolvesWelcomePage) {
   GURL url("chrome://welcome/");
-  ASSERT_TRUE(
-      BraveContentBrowserClient::HandleURLOverrideRewrite(&url, nullptr));
+  ASSERT_TRUE(BraveContentBrowserClient::HandleURLRewrite(&url, nullptr));
 }

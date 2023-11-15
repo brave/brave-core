@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
                        ->GetVirtualURL()
                        .spec()
                        .c_str(),
-                   ("chrome://" + page + "/").c_str());
+                   ("brave://" + page + "/").c_str());
       EXPECT_STREQ(contents->GetController()
                        .GetLastCommittedEntry()
                        ->GetURL()
@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
                        ->GetVirtualURL()
                        .spec()
                        .c_str(),
-                   ("chrome://" + page + "/").c_str());
+                   ("brave://" + page + "/").c_str());
       EXPECT_STREQ(contents->GetController()
                        .GetLastCommittedEntry()
                        ->GetURL()
@@ -209,6 +209,41 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
                        .c_str(),
                    ("chrome://" + page + "/").c_str());
     }
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadWalletPage) {
+  // Check if react-route is displayed as expected.
+  std::pair<std::string, std::string> host_pair{
+      "wallet", "wallet/crypto/onboarding/welcome"};
+
+  std::vector<std::string> schemes{
+      "brave://",
+      "chrome://",
+  };
+
+  for (const std::string& scheme : schemes) {
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
+        browser(), GURL(scheme + host_pair.first + "/"), 2));
+
+    EXPECT_STREQ(base::UTF16ToUTF8(
+                     browser()->location_bar_model()->GetFormattedFullURL())
+                     .c_str(),
+                 ("brave://" + host_pair.second).c_str());
+    EXPECT_STREQ(contents->GetController()
+                     .GetLastCommittedEntry()
+                     ->GetVirtualURL()
+                     .spec()
+                     .c_str(),
+                 ("brave://" + host_pair.second).c_str());
+    EXPECT_STREQ(contents->GetController()
+                     .GetLastCommittedEntry()
+                     ->GetURL()
+                     .spec()
+                     .c_str(),
+                 ("chrome://" + host_pair.second).c_str());
   }
 }
 
@@ -234,7 +269,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
                      ->GetVirtualURL()
                      .spec()
                      .c_str(),
-                 "chrome://about/");
+                 "brave://about/");
     EXPECT_STREQ(contents->GetController()
                      .GetLastCommittedEntry()
                      ->GetURL()
@@ -265,7 +300,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
                      ->GetVirtualURL()
                      .spec()
                      .c_str(),
-                 "chrome://sync/");
+                 "brave://sync/");
     EXPECT_STREQ(contents->GetController()
                      .GetLastCommittedEntry()
                      ->GetURL()
@@ -293,10 +328,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
                      .c_str(),
                  "brave://settings/shields/filters");
     EXPECT_EQ(browser()->location_bar_model()->GetURL(),
-              GURL("chrome://settings/shields/filters"));
+              GURL("brave://settings/shields/filters"));
     EXPECT_EQ(
         contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
-        GURL("chrome://settings/shields/filters"));
+        GURL("brave://settings/shields/filters"));
+    EXPECT_EQ(contents->GetController().GetLastCommittedEntry()->GetURL(),
+              GURL("chrome://settings/shields/filters"));
   }
 }
 

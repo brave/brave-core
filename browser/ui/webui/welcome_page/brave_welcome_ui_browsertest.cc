@@ -43,12 +43,12 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
   content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
-  EXPECT_STREQ("chrome://welcome/", tab_strip->GetWebContentsAt(0)
-                                        ->GetController()
-                                        .GetLastCommittedEntry()
-                                        ->GetVirtualURL()
-                                        .possibly_invalid_spec()
-                                        .c_str());
+  EXPECT_STREQ("brave://welcome/", tab_strip->GetWebContentsAt(0)
+                                       ->GetController()
+                                       .GetLastCommittedEntry()
+                                       ->GetVirtualURL()
+                                       .possibly_invalid_spec()
+                                       .c_str());
 }
 
 // Check wheter startup url is not welcome ui at second run.
@@ -60,6 +60,6 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, StartupURLTest) {
   content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
-  EXPECT_EQ(chrome::kChromeUINewTabURL,
+  EXPECT_EQ("brave://newtab/",
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 }

@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/device_chooser_content_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/widget/widget.h"
@@ -22,8 +23,9 @@
 namespace {
 
 bool IsBravePanel(content::WebContents* content) {
-  return content->GetVisibleURL().EqualsIgnoringRef(
-      GURL(kBraveUIWalletPanelURL));
+  const GURL& url = content->GetVisibleURL();
+  return url.SchemeIs(content::kBraveUIScheme) &&
+         url.host_piece() == kWalletPanelHost;
 }
 
 void OnWindowClosing(views::Widget* anchor_widget) {

@@ -3,9 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
-
-#include "base/containers/contains.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "content/public/common/url_constants.h"
@@ -19,27 +16,18 @@ namespace sessions {
 
 std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     const sessions::SerializedNavigationEntry* navigation) const {
-  // Extension can override below three chrome urls.
-  // https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/extensions/api/chrome_url_overrides.idl
-  constexpr std::array<const char*, 3> kAllowedChromeUrlsOverridingHostList = {
-      "newtab", "history", "bookmarks"};
-
+  // Sanitize all brave:// pages expect for original request URL info persisted.
+  // We cannot return an empty string directly because upstream will create a
+  // new page state using virtual_url if encoded_page_state is empty during
+  // session restore, in which case virtual URL (brave://*) will be the URL to
+  // load when restoring sessions rather than the original request URL
+  // (chrome://*). This is also needed for supporting chrome URL override done
+  // by extensions during session restore, because the overriden URL will be
+  // ignored if encoded_page_state is empty.
   const auto& virtual_url = navigation->virtual_url();
-  if (virtual_url.SchemeIs(content::kChromeUIScheme)) {
-    // If empty string is returned, chrome url overriding is ignored.
-    if (base::Contains(kAllowedChromeUrlsOverridingHostList,
-                       virtual_url.host())) {
-      // chrome url can be re-written when it's restored during the tab but
-      // re-written url is ignored when encoded page state is empty.
-      // In ContentSerializedNavigationBuilder::ToNavigationEntry(), re-written
-      // url created by NavigationEntry's ctor is ignored by creating new page
-      // state with navigation's virtual_url. Sanitize all but make url info
-      // persisted. Use original_request_url as it's used when NavigationEntry
-      // is created.
-      return blink::PageState::CreateFromURL(navigation->original_request_url())
-          .ToEncodedData();
-    }
-    return std::string();
+  if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
+    return blink::PageState::CreateFromURL(navigation->original_request_url())
+        .ToEncodedData();
   }
 
   return GetSanitizedPageStateForPickle_ChromiumImpl(navigation);

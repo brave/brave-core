@@ -90,7 +90,9 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url) {
   if (url.host() == kBraveTalkHost)
     return GURL(kBraveTalkURL);
 
-  if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost) {
+  if ((url.SchemeIs(content::kChromeUIScheme) ||
+       url.SchemeIs(content::kBraveUIScheme)) &&
+      url.host() == kWalletPageHost) {
     return GURL(kBraveUIWalletPageURL);
   }
   return url;

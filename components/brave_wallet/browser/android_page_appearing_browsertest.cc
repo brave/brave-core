@@ -355,7 +355,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
-  GURL url = GURL("chrome://wallet/swap");
+  GURL url = GURL("brave://wallet/swap");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')",
       "Error calling jsonRpcService.getERC20TokenBalances",
@@ -365,7 +365,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
-  GURL url = GURL("chrome://wallet/send");
+  GURL url = GURL("brave://wallet/send");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
@@ -373,14 +373,14 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  GURL url = GURL("chrome://wallet/crypto/deposit-funds");
+  GURL url = GURL("brave://wallet/crypto/deposit-funds");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
-  GURL url = GURL("chrome://wallet/crypto/fund-wallet");
+  GURL url = GURL("brave://wallet/crypto/fund-wallet");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
