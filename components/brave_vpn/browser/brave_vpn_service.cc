@@ -778,7 +778,7 @@ void BraveVpnService::SetPurchasedState(
     connection_api_->CheckConnection();
 
     // Some platform needs to install services to run vpn.
-    connection_api_->InstallSystemServices();
+    connection_api_->MaybeInstallSystemServices();
   }
 #endif
 }

@@ -61,7 +61,8 @@ class BraveVPNOSConnectionAPI
   // Otherwise returns empty.
   std::string GetLastConnectionError() const;
   void ToggleConnection();
-  void SetInstallSystemServiceCallback(base::RepeatingClosure callback);
+  void SetInstallSystemServiceCallback(
+      base::RepeatingCallback<bool()> callback);
 
   // Connection dependent APIs.
   virtual void Connect() = 0;
@@ -71,7 +72,7 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState state);
   virtual void SetSelectedRegion(const std::string& name) = 0;
   virtual void FetchProfileCredentials() = 0;
-  virtual void InstallSystemServices();
+  virtual void MaybeInstallSystemServices();
 
  protected:
   explicit BraveVPNOSConnectionAPI(
@@ -98,8 +99,9 @@ class BraveVPNOSConnectionAPI
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
+  void OnInstallSystemServicesCompleted(bool success);
 
-  base::RepeatingClosure install_system_service_callback_;
+  base::RepeatingCallback<bool()> install_system_service_callback_;
 
  private:
   friend class BraveVpnButtonUnitTest;
@@ -137,6 +139,14 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNRegionDataManager region_data_manager_;
   base::ObserverList<Observer> observers_;
+  // Used for tracking if the VPN dependencies have been installed.
+  // If the user has Brave VPN purchased and loaded with this profile
+  // AND they are a system user, we should call this once per session.
+  //
+  // We should also guard against calling the method while it's in progress.
+  bool install_in_progress_ = false;
+  bool install_performed_ = false;
+  base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
 
 // Create platform specific api instance.

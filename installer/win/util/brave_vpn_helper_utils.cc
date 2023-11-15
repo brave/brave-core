@@ -117,7 +117,7 @@ base::FilePath GetBraveVpnHelperServicePath() {
              : exe_dir.Append(brave_vpn::kBraveVPNHelperExecutable);
 }
 
-// The service starts under sytem user so we save crashes to
+// The service starts under system user so we save crashes to
 // %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
 base::FilePath GetVpnHelperServiceProfileDir() {
   std::wstring program_data =
@@ -248,17 +248,16 @@ std::wstring GetBraveVpnHelperServiceName() {
   return name;
 }
 
-void InstallWireguardSystemServices() {
+bool InstallVPNSystemServices() {
   base::win::AssertComInitialized();
 
-  // TODO(bsclifton): proper logging and error handling
   Microsoft::WRL::ComPtr<IElevator> elevator;
   HRESULT hr = CoCreateInstance(
       install_static::GetElevatorClsid(), nullptr, CLSCTX_LOCAL_SERVER,
       install_static::GetElevatorIid(), IID_PPV_ARGS_Helper(&elevator));
   if (FAILED(hr)) {
     LOG(ERROR) << "CoCreateInstance returned: 0x" << std::hex << hr;
-    return;
+    return false;
   }
 
   hr = CoSetProxyBlanket(
@@ -267,16 +266,17 @@ void InstallWireguardSystemServices() {
       RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING);
   if (FAILED(hr)) {
     LOG(ERROR) << "CoSetProxyBlanket returned: 0x" << std::hex << hr;
-    return;
+    return false;
   }
 
   hr = elevator->InstallVPNServices();
   if (FAILED(hr)) {
     LOG(ERROR) << "InstallVPNServices returned: 0x" << std::hex << hr;
-    return;
+    return false;
   }
 
-  LOG(ERROR) << "InstallVPNServices: SUCCESS";
+  VLOG(1) << "InstallVPNServices: SUCCESS";
+  return true;
 }
 
 }  // namespace brave_vpn

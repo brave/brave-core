@@ -29,7 +29,7 @@ std::wstring GetBraveVPNConnectionName();
 std::wstring GetBraveVpnHelperServiceDisplayName();
 std::wstring GetBraveVpnHelperServiceName();
 
-void InstallWireguardSystemServices();
+bool InstallVPNSystemServices();
 
 }  // namespace brave_vpn
 

@@ -8,7 +8,6 @@
 #include <memory>
 #include <tuple>
 
-#include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
@@ -57,21 +56,6 @@ void BraveVPNWireguardConnectionAPI::CheckConnection() {
                    ? ConnectionState::CONNECTED
                    : ConnectionState::DISCONNECTED;
   UpdateAndNotifyConnectionStateChange(state);
-}
-
-void BraveVPNWireguardConnectionAPI::InstallSystemServices() {
-  // This API could be called more than once because BraveVpnService is a
-  // per-profile service. If service install is in-progress now, just return.
-  //
-  //  if (install_in_progress_) {
-  //    return;
-  //  }
-  if (!install_system_service_callback_) {
-    return;
-  }
-
-  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
-      ->PostTask(FROM_HERE, install_system_service_callback_);
 }
 
 void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(

@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -59,7 +60,8 @@ BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
     PrefService* local_prefs)
     : local_prefs_(local_prefs),
       url_loader_factory_(url_loader_factory),
-      region_data_manager_(url_loader_factory, local_prefs) {
+      region_data_manager_(url_loader_factory, local_prefs),
+      weak_factory_(this) {
   DCHECK(url_loader_factory_);
   // Safe to use Unretained here because |region_data_manager_| is owned
   // instance.
@@ -267,10 +269,48 @@ void BraveVPNOSConnectionAPI::ToggleConnection() {
 }
 
 void BraveVPNOSConnectionAPI::SetInstallSystemServiceCallback(
-    base::RepeatingClosure callback) {
+    base::RepeatingCallback<bool()> callback) {
   install_system_service_callback_ = std::move(callback);
 }
 
-void BraveVPNOSConnectionAPI::InstallSystemServices() {}
+void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
+  if (!install_system_service_callback_) {
+    VLOG(2) << __func__ << " : no install system service callback set";
+    return;
+  }
+
+  // Installation should only be called once per session.
+  // It's safe to call more than once because the install itself checks if
+  // the services are already registered before doing anything.
+  if (install_performed_) {
+    VLOG(2)
+        << __func__
+        << " : installation has already been performed this session; exiting";
+    return;
+  }
+
+  // This API could be called more than once because BraveVpnService is a
+  // per-profile service. If service install is in-progress now, just return.
+  if (install_in_progress_) {
+    VLOG(2) << __func__ << " : install already in progress; exiting";
+    return;
+  }
+
+  install_in_progress_ = true;
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE, install_system_service_callback_,
+          base::BindOnce(
+              &BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted,
+              weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
+  VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
+  if (success) {
+    install_performed_ = true;
+  }
+  install_in_progress_ = false;
+}
 
 }  // namespace brave_vpn
