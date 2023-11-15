@@ -16,10 +16,8 @@ import {
   useImportFromMetaMaskMutation,
   useRestoreWalletMutation
 } from '../../../../common/slices/api.slice'
-import {
-  useSafePageSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../selectors'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -96,7 +94,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   let history = useHistory()
 
   // redux
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // queries
   const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery(

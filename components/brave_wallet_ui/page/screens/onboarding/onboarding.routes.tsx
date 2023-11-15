@@ -8,11 +8,12 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router'
 
 // selectors
 import {
-  useSafePageSelector, //
+  useSafePageSelector,
+  useSafeUISelector, //
   useSafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../selectors'
-import { WalletSelectors } from '../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 // utils
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
@@ -44,7 +45,7 @@ export const OnboardingRoutes = () => {
   const termsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // methods
   const goToConnectHardware = React.useCallback(() => {

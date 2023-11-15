@@ -20,6 +20,5 @@ export const {
   updateSelectedAsset,
   walletBackupComplete,
   walletCreated,
-  walletSetupComplete,
-  setIsCreatingWallet
+  walletSetupComplete
 } = PageActions

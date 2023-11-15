@@ -9,10 +9,10 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
 import {
-  useSafePageSelector,
+  useSafeUISelector,
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
@@ -38,7 +38,6 @@ import {
   MainWrapper,
   TitleAndDescriptionContainer
 } from '../onboarding.style'
-import { PageSelectors } from '../../../selectors'
 
 interface OnboardingCreatePasswordProps {
   isHardwareOnboarding?: boolean
@@ -52,7 +51,7 @@ export const OnboardingCreatePassword = (
 
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)

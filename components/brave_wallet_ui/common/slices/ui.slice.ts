@@ -13,6 +13,7 @@ import { SetTransactionProviderErrorType } from '../constants/action_types'
 import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
 export const defaultUIState: UIState = {
+  isCreatingWallet: false,
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
   isPanel: false,
@@ -100,6 +101,32 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           ) {
             state.selectedPendingTransactionId = payload.txId
           }
+        }
+      )
+
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchPending(action) ||
+          walletApi.endpoints.importFromMetaMask.matchPending(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchPending(action) ||
+          walletApi.endpoints.restoreWallet.matchPending(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = true
+        }
+      )
+
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchFulfilled(action) ||
+          walletApi.endpoints.createWallet.matchRejected(action) ||
+          walletApi.endpoints.importFromMetaMask.matchFulfilled(action) ||
+          walletApi.endpoints.importFromMetaMask.matchRejected(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchFulfilled(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchRejected(action) ||
+          walletApi.endpoints.restoreWallet.matchFulfilled(action) ||
+          walletApi.endpoints.restoreWallet.matchRejected(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = false
         }
       )
     }

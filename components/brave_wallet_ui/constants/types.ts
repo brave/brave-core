@@ -193,6 +193,7 @@ export interface UIState {
   isPanel: boolean
   collapsedPortfolioAccountAddresses: string[]
   collapsedPortfolioNetworkKeys: string[]
+  isCreatingWallet: boolean
 }
 
 export interface WalletState {
@@ -278,7 +279,6 @@ export interface PageState {
   setupStillInProgress: boolean
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
-  isCreatingWallet: boolean
 }
 
 export interface WalletPageState {
