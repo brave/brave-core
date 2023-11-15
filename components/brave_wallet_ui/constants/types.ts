@@ -278,6 +278,7 @@ export interface PageState {
   setupStillInProgress: boolean
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
+  isCreatingWallet: boolean
 }
 
 export interface WalletPageState {

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { walletApi } from '../../common/slices/api.slice'
 
 import {
   BraveWallet,
@@ -30,7 +31,8 @@ const defaultState: PageState = {
   pinStatusOverview: undefined,
   setupStillInProgress: false,
   walletTermsAcknowledged: false,
-  selectedCoinMarket: undefined
+  selectedCoinMarket: undefined,
+  isCreatingWallet: false
 }
 
 export const WalletPageAsyncActions = {
@@ -133,7 +135,37 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateAutoPinEnabled(state, { payload }: PayloadAction<boolean>) {
         state.isAutoPinEnabled = payload
+      },
+
+      setIsCreatingWallet(state, { payload }: PayloadAction<boolean>) {
+        state.isCreatingWallet = payload
       }
+    },
+    extraReducers(builder) {
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchPending(action) ||
+          walletApi.endpoints.importFromMetaMask.matchPending(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchPending(action) ||
+          walletApi.endpoints.restoreWallet.matchPending(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = true
+        }
+      )
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchFulfilled(action) ||
+          walletApi.endpoints.createWallet.matchRejected(action) ||
+          walletApi.endpoints.importFromMetaMask.matchFulfilled(action) ||
+          walletApi.endpoints.importFromMetaMask.matchRejected(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchFulfilled(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchRejected(action) ||
+          walletApi.endpoints.restoreWallet.matchFulfilled(action) ||
+          walletApi.endpoints.restoreWallet.matchRejected(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = false
+        }
+      )
     }
   })
 }

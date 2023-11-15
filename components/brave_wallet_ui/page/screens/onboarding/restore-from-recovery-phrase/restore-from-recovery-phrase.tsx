@@ -16,6 +16,10 @@ import {
   useImportFromMetaMaskMutation,
   useRestoreWalletMutation
 } from '../../../../common/slices/api.slice'
+import {
+  useSafePageSelector //
+} from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -91,39 +95,25 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   // routing
   let history = useHistory()
 
+  // redux
+  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
+
   // queries
   const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery(
     isImportingFromExtension ? undefined : skipToken
   )
 
   // mutations
-  const [
-    importFromCryptoWallets,
-    {
-      isLoading: isCreatingWalletFromCryptoWallets,
-      data: importFromLegacyWalletResult
-    }
-  ] = useImportFromCryptoWalletsMutation()
+  const [importFromCryptoWallets, { data: importFromLegacyWalletResult }] =
+    useImportFromCryptoWalletsMutation()
 
-  const [
-    importFromMetaMask,
-    {
-      isLoading: isCreatingWalletFromMetaMaskExtension,
-      data: importFromMetaMaskResult
-    }
-  ] = useImportFromMetaMaskMutation()
+  const [importFromMetaMask, { data: importFromMetaMaskResult }] =
+    useImportFromMetaMaskMutation()
 
-  const [restoreWalletFromSeed, { isLoading: isCreatingWalletFromSeed }] =
-    useRestoreWalletMutation()
+  const [restoreWalletFromSeed] = useRestoreWalletMutation()
 
   const [checkExtensionPassword, { isLoading: isCheckingImportPassword }] =
     useCheckExternalWalletPasswordMutation()
-
-  // computed from mutations
-  const isCreatingWallet =
-    isCreatingWalletFromCryptoWallets ||
-    isCreatingWalletFromMetaMaskExtension ||
-    isCreatingWalletFromSeed
 
   // state
   const [hasInvalidSeedError, setHasInvalidSeedError] = React.useState(false)
@@ -186,7 +176,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       await importFromMetaMask({
         password: extensionPassword,
         newPassword: password
-      })
+      }).unwrap()
       return
     }
 
@@ -194,7 +184,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       await importFromCryptoWallets({
         password: extensionPassword,
         newPassword: password
-      })
+      }).unwrap()
       return
     }
 
@@ -253,7 +243,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     checkImportPassword
   ])
 
-  // TODO: test all paths
   const onGoBack = React.useCallback(() => {
     setHasInvalidSeedError(false)
 
@@ -331,11 +320,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }
   }, [currentStep, restoreFrom])
 
+  // render
   if (isCreatingWallet) {
     return <CreatingWallet />
   }
 
-  // render
   return (
     <CenteredPageLayout>
       <MainWrapper>

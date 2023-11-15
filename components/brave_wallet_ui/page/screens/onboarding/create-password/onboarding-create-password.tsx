@@ -9,6 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
 import {
+  useSafePageSelector,
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
@@ -37,6 +38,7 @@ import {
   MainWrapper,
   TitleAndDescriptionContainer
 } from '../onboarding.style'
+import { PageSelectors } from '../../../selectors'
 
 interface OnboardingCreatePasswordProps {
   isHardwareOnboarding?: boolean
@@ -50,21 +52,21 @@ export const OnboardingCreatePassword = (
 
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
 
   // mutations
-  const [createWallet, { isLoading: isCreatingWallet }] =
-    useCreateWalletMutation()
+  const [createWallet] = useCreateWalletMutation()
 
   // methods
   const nextStep = React.useCallback(async () => {
     if (isValid) {
       // Note: intentionally not using unwrapped value
       // results are returned before other redux actions complete
-      await createWallet({ password })
+      await createWallet({ password }).unwrap()
     }
   }, [password, isValid, createWallet])
 
@@ -80,10 +82,10 @@ export const OnboardingCreatePassword = (
   React.useEffect(() => {
     // wait for redux before redirecting
     // otherwise, the restricted routes in the router will not be available
-    if (isWalletCreated) {
+    if (!isCreatingWallet && isWalletCreated) {
       onWalletCreated()
     }
-  }, [isWalletCreated, onWalletCreated])
+  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
 
   if (isCreatingWallet) {
     return <CreatingWallet />
