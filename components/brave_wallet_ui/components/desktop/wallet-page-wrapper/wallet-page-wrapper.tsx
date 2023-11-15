@@ -171,7 +171,7 @@ export const WalletPageWrapper = (props: Props) => {
             headerHeight={headerHeight}
             hideNav={hideNav}
           >
-            {cardHeader && (
+            {cardHeader && !isPanel && (
               <CardHeaderWrapper
                 maxWidth={cardWidth}
                 isPanel={isPanel}
