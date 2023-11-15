@@ -48,7 +48,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void,
               CacheAdEventForInstanceId,
               (const std::string& id,
-               const std::string& type,
+               const std::string& ad_type,
                const std::string& confirmation_type,
                const base::Time time),
               (const));

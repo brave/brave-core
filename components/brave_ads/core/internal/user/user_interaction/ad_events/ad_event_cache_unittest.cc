@@ -23,8 +23,8 @@ constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
 class BraveAdsAdEventCacheTest : public UnitTestBase {
  protected:
   void CacheAdEvent(const std::string& id,
-                    AdType ad_type,
-                    ConfirmationType confirmation_type) {
+                    const AdType ad_type,
+                    const ConfirmationType confirmation_type) {
     ad_event_cache_.AddEntryForInstanceId(id, ToString(ad_type),
                                           ToString(confirmation_type), Now());
   }
