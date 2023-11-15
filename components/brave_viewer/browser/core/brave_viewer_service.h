@@ -41,6 +41,8 @@ class COMPONENT_EXPORT(BRAVE_VIEWER_BROWSER_CORE) BraveViewerService {
 
   base::WeakPtrFactory<BraveViewerService> weak_factory_{this};
 
+  friend class BraveViewerTabHelperBrowserTest;  // Used for testing private
+                                                 // methods.
   friend struct base::DefaultSingletonTraits<BraveViewerService>;
 };
 
