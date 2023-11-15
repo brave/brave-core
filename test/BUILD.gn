@@ -830,6 +830,7 @@ test("brave_browser_tests") {
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_news:browser_tests",
     "//brave/browser/brave_rewards/test:browser_tests",
+    "//brave/browser/brave_viewer:browser_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:browser_tests",
     "//brave/browser/brave_wallet:tab_helper",
