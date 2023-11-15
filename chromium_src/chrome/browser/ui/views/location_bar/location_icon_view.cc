@@ -5,8 +5,9 @@
 
 #include "brave/components/ipfs/ipfs_constants.h"
 
-#define BRAVE_SHOULD_SHOW_URL_IPFS_CHECK \
-  url.SchemeIs(ipfs::kIPFSScheme) || url.SchemeIs(ipfs::kIPNSScheme) ||
+#define BRAVE_GET_SHOW_TEXT \
+  url.SchemeIs(ipfs::kIPFSScheme) || url.SchemeIs(ipfs::kIPNSScheme) || \
+  url.SchemeIs(content::kBraveUIScheme) ||
 
 #include "src/chrome/browser/ui/views/location_bar/location_icon_view.cc"
-#undef BRAVE_SHOULD_SHOW_URL_IPFS_CHECK
+#undef BRAVE_GET_SHOW_TEXT

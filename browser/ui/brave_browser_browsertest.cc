@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
@@ -25,6 +26,7 @@
 using BraveBrowserBrowserTest = InProcessBrowserTest;
 
 namespace {
+
 Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
@@ -38,6 +40,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
 
   auto* tab_model = browser()->tab_strip_model();
+  EXPECT_FALSE(
+      browser()->ShouldDisplayFavicon(tab_model->GetActiveWebContents()));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(chrome::kChromeUINewTabURL)));
   EXPECT_FALSE(
       browser()->ShouldDisplayFavicon(tab_model->GetActiveWebContents()));
 }
@@ -81,14 +87,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(1, tab_strip->count());
 
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
-            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  EXPECT_EQ(chrome::kChromeUINewTabHost,
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL().host_piece());
   // No reentrancy for Ctrl+W
   tab_strip->CloseSelectedTabs();
   base::RunLoop().RunUntilIdle();
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
-            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  EXPECT_EQ(chrome::kChromeUINewTabHost,
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL().host_piece());
 
   // Add a couple of more tabs.
   chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);

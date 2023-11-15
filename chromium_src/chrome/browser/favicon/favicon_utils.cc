@@ -19,7 +19,7 @@ namespace favicon {
 bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
   const GURL& virtual_url = entry->GetVirtualURL();
   // Don't theme for certain brave favicons which are full color
-  if (virtual_url.SchemeIs(content::kChromeUIScheme) &&
+  if (virtual_url.SchemeIs(content::kBraveUIScheme) &&
       (virtual_url.host_piece() == kRewardsPageHost ||
        virtual_url.host_piece() == kWalletPageHost)) {
     return false;

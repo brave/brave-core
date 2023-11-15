@@ -18,13 +18,10 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
   BraveLocationBarModelDelegate& operator=(
       const BraveLocationBarModelDelegate&) = delete;
   ~BraveLocationBarModelDelegate() override;
-  static void FormattedStringFromURL(const GURL& url,
-                                     std::u16string* new_formatted_url);
 
- private:
-  std::u16string FormattedStringWithEquivalentMeaning(
-      const GURL& url,
-      const std::u16string& formatted_url) const override;
+#if !BUILDFLAG(IS_ANDROID)
+  const gfx::VectorIcon* GetVectorIconOverride() const override;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_

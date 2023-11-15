@@ -245,25 +245,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 namespace {
 
-bool HandleURLReverseOverrideRewrite(GURL* url,
-                                     content::BrowserContext* browser_context) {
-  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url,
-                                                          browser_context)) {
-    return true;
-  }
-
-  return false;
-}
-
-bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
-  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url,
-                                                          browser_context)) {
-    return true;
-  }
-
-  return false;
-}
-
 void BindCosmeticFiltersResourcesOnTaskRunner(
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
@@ -492,7 +473,7 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
                           &ipfs::HandleIPFSURLReverseRewrite);
 #endif
-  handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
+  handler->AddHandlerPair(&BraveContentBrowserClient::HandleURLRewrite, &BraveContentBrowserClient::HandleURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 
@@ -990,8 +971,8 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 #endif
 }
 
-// [static]
-bool BraveContentBrowserClient::HandleURLOverrideRewrite(
+// static
+bool BraveContentBrowserClient::HandleURLRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
   // Some of these rewrites are for WebUI pages with URL that has moved.
@@ -1005,10 +986,23 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     return false;
   }
 
+  // The reverse rewrite of this can not be in a reverse rewrite handler but
+  // is done in NavigationControllerImpl::UpdateVirtualURLToURL chromium_src
+  // override instead. This is because upstream reverse rewrite handlers will
+  // use kChromeUIScheme in their checks so we cannot change it back to brave://
+  // before upstream reverse rewrite handlers. We can not put it in a reverse
+  // rewrite handler added after upstream handlers either because if any of
+  // the upstream handler returns true, this added reverse rewrite handler
+  // won't be run.
+  if (url->SchemeIs(content::kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+
   // brave://sync => brave://settings/braveSync
   if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
     replacements.SetPathStr(kBraveSyncPath);
     *url = url->ReplaceComponents(replacements);
@@ -1019,19 +1013,26 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   // brave://adblock => brave://settings/shields/filters
   if (url->host() == kAdblockHost) {
     GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
     replacements.SetPathStr(kContentFiltersPath);
     *url = url->ReplaceComponents(replacements);
-    return false;
+    return true;
   }
 #endif
 
-  // no special win10 welcome page
+  // No query parameters like chrome://welcome/?variant=everywhere.
   if (url->host() == chrome::kChromeUIWelcomeHost) {
     *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }
+
+  // No special win10 welcome page, return true to avoid upstream handler
+  // to do URL rewrite for kChromeUIWelcomeWin10Host.
+#if BUILDFLAG(IS_WIN)
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host) {
+     return true;
+  }
+#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
@@ -1054,6 +1055,65 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     }
   }
 #endif
+
+  // Just for enabling the reverse rewrite later.
+  if (url->host() == kWalletPageHost) {
+    return true;
+  }
+
+  return false;
+}
+
+// static
+bool BraveContentBrowserClient::HandleURLReverseRewrite(GURL* url,
+                             content::BrowserContext* browser_context) {
+  if (!url->SchemeIs(content::kBraveUIScheme) &&
+      !url->SchemeIs(content::kChromeUIScheme)) {
+    return false;
+  }
+
+  // brave://sync <= brave://settings/braveSync
+  if (url->host() == chrome::kChromeUISettingsHost &&
+      !url->path().empty() && url->path().substr(1) == kBraveSyncPath) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    replacements.ClearPath();
+    *url = url->ReplaceComponents(replacements);
+    return true;
+  }
+
+  // No need to actually reverse-rewrite the URL, but return
+  // true to update the displayed URL when rewriting brave:://adblock to
+  // brave://settings/shields/filters.
+  if (url->host() == chrome::kChromeUISettingsHost &&
+      !url->path().empty() && url->path().substr(1) == kContentFiltersPath) {
+    return true;
+  }
+
+  // No need to actually reverse-rewrite the URL, but return true to update
+  // the displayed URL to react-routed URL rather than showing brave://wallet
+  // for everything. This is needed because of a side effect from rewriting
+  // brave:// to chrome:// which makes brave://wallet the virtual URL here
+  // unless we return true to trigger an update of virtual URL here to the
+  // routed URL. For example, we will display brave://wallet/send instead of
+  // brave://wallet.
+  if (url->host() == kWalletPageHost) {
+    return true;
+  }
+
+  // This is needed for update the displayed URL to brave://settings/* for
+  // renderer-initiated same document navigation when the original URL is
+  // brave://sync, without this, displayed URL will stay as brave:://sync when
+  // user types brave://sync in URL bar and clicks on any link in settings page.
+  if (url->host() == chrome::kChromeUISettingsHost) {
+    return true;
+  }
+
+  // No query parameters like chrome://welcome/?variant=everywhere.
+  if (url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
+    return true;
+  }
 
   return false;
 }

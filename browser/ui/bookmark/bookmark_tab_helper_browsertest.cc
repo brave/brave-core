@@ -28,13 +28,16 @@ using BookmarkTabHelperBrowserTest = InProcessBrowserTest;
 
 namespace {
 
+inline constexpr char kBraveUINewTabURL[] = "brave://newtab";
+
 bool IsNTP(content::WebContents* web_contents) {
   // Use the committed entry so the bookmarks bar disappears at the same time
   // the page does.
   content::NavigationEntry* entry =
       web_contents->GetController().GetLastCommittedEntry();
-  if (!entry)
+  if (!entry) {
     entry = web_contents->GetController().GetVisibleEntry();
+  }
   return (entry && NewTabUI::IsNewTab(entry->GetURL())) ||
          search::NavEntryIsInstantNTP(web_contents, entry);
 }
@@ -70,8 +73,8 @@ IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest, BookmarkBarOnNTPTest) {
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kAlwaysShowBookmarkBarOnNTP));
 
   // Loading NTP.
-  EXPECT_TRUE(content::NavigateToURL(contents,
-                                     GURL(chrome::kChromeUINewTabURL)));
+  EXPECT_TRUE(content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL),
+                                     GURL(kBraveUINewTabURL)));
   EXPECT_TRUE(IsNTP(contents));
 
   // Check bookmark bar on NTP is shown even if bookmark bar is empty.
@@ -112,8 +115,8 @@ IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest,
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kAlwaysShowBookmarkBarOnNTP));
 
   // Loading NTP.
-  EXPECT_TRUE(
-      content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
+  EXPECT_TRUE(content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL),
+                                     GURL(kBraveUINewTabURL)));
   EXPECT_TRUE(IsNTP(contents));
 
   // Check bookmark bar on NTP is shown even if bookmark bar is empty.

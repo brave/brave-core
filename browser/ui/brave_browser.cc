@@ -101,7 +101,7 @@ bool BraveBrowser::ShouldDisplayFavicon(
   // not committed yet. Note that we're looking at the visible URL, so
   // navigations from NTP generally don't hit this case and still show an icon.
   GURL url = web_contents->GetVisibleURL();
-  if (url.SchemeIs(content::kChromeUIScheme) &&
+  if (url.SchemeIs(content::kBraveUIScheme) &&
       url.host_piece() == chrome::kChromeUINewTabHost) {
     return false;
   }

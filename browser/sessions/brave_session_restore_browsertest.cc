@@ -54,7 +54,7 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
         const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
         EXPECT_EQ(serialized_navigation.virtual_url(),
-                  GURL("chrome://newtab/"));
+                  GURL("brave://newtab/"));
 
         // Check encoded data is not empty but clean state only with url info.
         EXPECT_EQ(blink::PageState::CreateFromURL(GURL("chrome://newtab/"))
@@ -97,10 +97,13 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
         const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
         EXPECT_EQ(serialized_navigation.virtual_url(),
-                  GURL("chrome://rewards/"));
+                  GURL("brave://rewards/"));
 
-        // Check encoded data is empty.
-        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
+        // Check encoded data is not empty but clean state only with url info.
+        EXPECT_EQ(blink::PageState::CreateFromURL(GURL("chrome://rewards/"))
+                      .ToEncodedData(),
+                  serialized_navigation.encoded_page_state());
+        EXPECT_FALSE(serialized_navigation.encoded_page_state().empty());
         loop.Quit();
       }));
   loop.Run();

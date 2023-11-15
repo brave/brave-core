@@ -12,15 +12,18 @@
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 
 // Show the InternalPageInfoBubbleView when viewing a page with the webtorrent
-// scheme.
+// scheme or brave scheme.
 #define IsFileOrInternalPage(url) \
-  IsFileOrInternalPage(url) || url.SchemeIs(url::kWebTorrentScheme)
+  IsFileOrInternalPage(url) || url.SchemeIs(url::kWebTorrentScheme) || \
+  url.SchemeIs(content::kBraveUIScheme)
 
-// Set the text for the InternalPageInfoBubbleView on webtorrent: pages.
+// Set the text for the InternalPageInfoBubbleView on webtorrent: and brave
+// pages. Do nothing for kBraveUIScheme to avoid hitting
+// CHECK(url.SchemeIs(content::kChromeUIScheme)) in upstream code.
 #define kFileScheme kWebTorrentScheme)) {  \
     text = IDS_PAGE_INFO_BRAVE_WEBTORRENT; \
-  }                                        \
-  else if (url.SchemeIs(url::kFileScheme
+  } else if (url.SchemeIs(content::kBraveUIScheme)) { \
+  } else if (url.SchemeIs(url::kFileScheme
 
 #endif
 

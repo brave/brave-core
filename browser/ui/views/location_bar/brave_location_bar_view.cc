@@ -203,16 +203,18 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
 
   LocationBarView::Update(contents);
 
-  if (!ShouldShowIPFSLocationView()) {
-    return;
-  }
   // Secure display text for a page was set by chromium.
   // We do not want to override this.
   if (!GetLocationBarModel()->GetSecureDisplayText().empty()) {
     return;
   }
-  auto badge_text =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
+
+  std::u16string badge_text;
+  if (ShouldShowIPFSLocationView()) {
+    badge_text = brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
+  } else if (GetLocationBarModel()->GetURL().SchemeIs(content::kBraveUIScheme)) {
+    badge_text = l10n_util::GetStringUTF16(IDS_SHORT_PRODUCT_NAME);
+  }
   location_icon_view()->SetLabel(badge_text);
 }
 

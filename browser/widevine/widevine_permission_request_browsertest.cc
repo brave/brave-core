@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   // Check permission is requested again after new navigation.
   observer.bubble_added_ = false;
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+                                     GURL("brave://version/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
@@ -113,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       ->GetPrefs()
       ->SetBoolean(kAskEnableWidvine, false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+                                     GURL("brave://version/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
@@ -124,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       ->GetPrefs()
       ->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+                                     GURL("brave://version/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);

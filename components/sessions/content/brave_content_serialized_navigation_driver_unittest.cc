@@ -26,15 +26,16 @@ TEST(BraveContentSerializedNavigationDriverTest,
   EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
   // Check encoded data is not empty but clean state only with url info for
-  // chrome overridable url by extension.
-  navigation.set_virtual_url(GURL("chrome://newtab"));
+  // brave URLs.
+  navigation.set_virtual_url(GURL("brave://newtab"));
   EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
                 .ToEncodedData(),
             driver->GetSanitizedPageStateForPickle(&navigation));
 
-  // Check encoded data is empty.
-  navigation.set_virtual_url(GURL("chrome://wallet"));
-  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
+  navigation.set_virtual_url(GURL("brave://wallet"));
+  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
+                .ToEncodedData(),
+            driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 // Tests that PageState data is left unsanitized when post data is absent.
@@ -50,15 +51,17 @@ TEST(BraveContentSerializedNavigationDriverTest,
             driver->GetSanitizedPageStateForPickle(&navigation));
 
   // Check encoded data is not empty but clean state only with url info for
-  // chrome overridable url by extension.
-  navigation.set_virtual_url(GURL("chrome://newtab"));
+  // brave URLs.
+  navigation.set_virtual_url(GURL("brave://newtab"));
   EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
                 .ToEncodedData(),
             driver->GetSanitizedPageStateForPickle(&navigation));
 
   // Check encoded data is empty.
-  navigation.set_virtual_url(GURL("chrome://wallet"));
-  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
+  navigation.set_virtual_url(GURL("brave://wallet"));
+  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
+                .ToEncodedData(),
+            driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 }  // namespace sessions

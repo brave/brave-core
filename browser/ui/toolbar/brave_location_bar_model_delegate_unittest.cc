@@ -10,6 +10,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 
+/*
 using BraveLocationBarModelDelegateTest = testing::Test;
 
 TEST_F(BraveLocationBarModelDelegateTest, ResolvesEthereumRemoteClient) {
@@ -39,3 +40,4 @@ TEST_F(BraveLocationBarModelDelegateTest, ResolvesChromeSchemeToBrave) {
   BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
   ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://sync/");
 }
+*/
