@@ -22,7 +22,7 @@ public class BraveIdentityDiscController extends IdentityDiscController {
 
     /*
      * We want to override `IdentityDiscController#calculateButtonData` via asm
-     * to avoid enabling identity buttom on the home page
+     * to avoid enabling identity button on the home page
      * as this button only meant to be used with Google account.
      */
     public void calculateButtonData() {}
