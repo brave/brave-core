@@ -13,7 +13,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kEpsilonGreedyBanditFeature);
 
-constexpr base::FeatureParam<double> kEpsilonGreedyBanditEpsilonValue{
+inline constexpr base::FeatureParam<double> kEpsilonGreedyBanditEpsilonValue{
     &kEpsilonGreedyBanditFeature, "epsilon_value", 0.25};
 
 }  // namespace brave_ads

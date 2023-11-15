@@ -13,45 +13,47 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCreativeNotificationAdModelBasedPredictorFeature);
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdChildIntentSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "child_intent_segment_predictor_weight", 1.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdParentIntentSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "parent_intent_segment_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdChildLatentInterestSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "child_latent_interest_segment_predictor_weight", 1.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdParentLatentInterestSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "parent_latent_interest_segment_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdChildInterestSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "child_interest_segment_predictor_weight", 1.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdParentInterestSegmentPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "parent_interest_segment_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double> kNotificationAdLastSeenPredictorWeight{
-    &kCreativeNotificationAdModelBasedPredictorFeature,
-    "last_seen_ad_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
+    kNotificationAdLastSeenPredictorWeight{
+        &kCreativeNotificationAdModelBasedPredictorFeature,
+        "last_seen_ad_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNotificationAdLastSeenAdvertiserPredictorWeight{
         &kCreativeNotificationAdModelBasedPredictorFeature,
         "last_seen_advertiser_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double> kNotificationAdPriorityPredictorWeight{
-    &kCreativeNotificationAdModelBasedPredictorFeature,
-    "priority_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
+    kNotificationAdPriorityPredictorWeight{
+        &kCreativeNotificationAdModelBasedPredictorFeature,
+        "priority_predictor_weight", 1.0};
 
 }  // namespace brave_ads
 

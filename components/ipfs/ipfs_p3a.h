@@ -15,12 +15,14 @@ class PrefService;
 
 namespace ipfs {
 
-constexpr char kDetectionPromptCountHistogramName[] =
+inline constexpr char kDetectionPromptCountHistogramName[] =
     "Brave.IPFS.DetectionPromptCount";
-constexpr char kGatewaySettingHistogramName[] = "Brave.IPFS.GatewaySetting";
-constexpr char kLocalNodeRetentionHistogramName[] =
+inline constexpr char kGatewaySettingHistogramName[] =
+    "Brave.IPFS.GatewaySetting";
+inline constexpr char kLocalNodeRetentionHistogramName[] =
     "Brave.IPFS.LocalNodeRetention";
-constexpr char kDaemonRunTimeHistogramName[] = "Brave.IPFS.DaemonRunTime";
+inline constexpr char kDaemonRunTimeHistogramName[] =
+    "Brave.IPFS.DaemonRunTime";
 
 class BraveIpfsClientUpdater;
 class IpfsService;

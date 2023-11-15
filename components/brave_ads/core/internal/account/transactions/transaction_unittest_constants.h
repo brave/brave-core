@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
+inline constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
 
 }  // namespace brave_ads
 

@@ -12,7 +12,7 @@
 
 namespace p3a {
 
-constexpr char kCreativeMetricPrefix[] = "creativeInstanceId.";
+inline constexpr char kCreativeMetricPrefix[] = "creativeInstanceId.";
 
 enum class MetricLogType {
   // Slow metrics are currently sent once per month.
@@ -23,7 +23,7 @@ enum class MetricLogType {
   kExpress
 };
 
-constexpr MetricLogType kAllMetricLogTypes[] = {
+inline constexpr MetricLogType kAllMetricLogTypes[] = {
     MetricLogType::kSlow, MetricLogType::kTypical, MetricLogType::kExpress};
 
 const char* MetricLogTypeToString(MetricLogType log_type);

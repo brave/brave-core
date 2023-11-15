@@ -18,8 +18,9 @@
 
 namespace brave_news {
 
-constexpr char kTopicsEndpoint[] = "/news-topic-clustering/topics";
-constexpr char kTopicArticlesEndpoint[] = "/news-topic-clustering/topics_news";
+inline constexpr char kTopicsEndpoint[] = "/news-topic-clustering/topics";
+inline constexpr char kTopicArticlesEndpoint[] =
+    "/news-topic-clustering/topics_news";
 
 using TopicAndArticles =
     std::pair<api::topics::Topic, std::vector<api::topics::TopicArticle>>;

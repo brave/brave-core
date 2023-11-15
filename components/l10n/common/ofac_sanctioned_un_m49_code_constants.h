@@ -14,7 +14,7 @@ namespace brave_l10n {
 
 // See https://orpa.princeton.edu/export-controls/sanctioned-countries.
 
-constexpr auto kOFACSactionedUnM49Codes =
+inline constexpr auto kOFACSactionedUnM49Codes =
     base::MakeFixedFlatSet<std::string_view>({
         // See https://en.wikipedia.org/wiki/UN_M49.
 

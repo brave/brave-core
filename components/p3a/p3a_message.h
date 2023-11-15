@@ -18,8 +18,8 @@ class PrefService;
 
 namespace p3a {
 
-constexpr const char* kP3AMessageConstellationKeyValueSeparator = "|";
-constexpr const char* kP3AMessageConstellationLayerSeparator = ";";
+inline constexpr char kP3AMessageConstellationKeyValueSeparator[] = "|";
+inline constexpr char kP3AMessageConstellationLayerSeparator[] = ";";
 
 class MessageMetainfo {
  public:

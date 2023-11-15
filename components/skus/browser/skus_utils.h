@@ -13,9 +13,9 @@ class PrefService;
 
 namespace skus {
 
-constexpr char kEnvProduction[] = "production";
-constexpr char kEnvStaging[] = "staging";
-constexpr char kEnvDevelopment[] = "development";
+inline constexpr char kEnvProduction[] = "production";
+inline constexpr char kEnvStaging[] = "staging";
+inline constexpr char kEnvDevelopment[] = "development";
 
 std::string GetDefaultEnvironment();
 std::string GetDomain(const std::string& prefix, const std::string& domain);

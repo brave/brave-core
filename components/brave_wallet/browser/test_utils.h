@@ -24,22 +24,22 @@ class ScopedTempDir;
 
 namespace brave_wallet {
 
-constexpr char kMnemonicDivideCruise[] =
+inline constexpr char kMnemonicDivideCruise[] =
     "divide cruise upon flag harsh carbon filter merit once advice bright "
     "drive";
-constexpr char kMnemonicDripCaution[] =
+inline constexpr char kMnemonicDripCaution[] =
     "drip caution abandon festival order clown oven regular absorb evidence "
     "crew where";
-constexpr char kMnemonicScarePiece[] =
+inline constexpr char kMnemonicScarePiece[] =
     "scare piece awesome elite long drift control cabbage glass dash coral "
     "angry";
 // Mnemonic referenced in various bips.
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 // https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki#test-vectors
-constexpr char kMnemonicAbandonAbandon[] =
+inline constexpr char kMnemonicAbandonAbandon[] =
     "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
     "abandon abandon about";
-constexpr char kTestWalletPassword[] = "brave";
+inline constexpr char kTestWalletPassword[] = "brave";
 
 class KeyringService;
 class TxStorageDelegate;

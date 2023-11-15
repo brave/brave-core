@@ -17,20 +17,20 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kExclusionRulesFeature);
 
-constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
+inline constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
     &kExclusionRulesFeature, "should_exclude_ad_if_converted", true};
 
-constexpr base::FeatureParam<base::TimeDelta>
+inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfDismissedWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_dismissed_within_time_window", base::Hours(0)};
 
-constexpr base::FeatureParam<base::TimeDelta>
+inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfTransferredWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_transferred_within_time_window", base::Hours(0)};
 
-constexpr base::FeatureParam<int>
+inline constexpr base::FeatureParam<int>
     kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", 1};

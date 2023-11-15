@@ -8,7 +8,7 @@
 
 namespace brave_component_updater {
 
-constexpr char kUseGoUpdateDev[] = "use-dev-goupdater-url";
+inline constexpr char kUseGoUpdateDev[] = "use-dev-goupdater-url";
 
 }  // namespace brave_component_updater
 

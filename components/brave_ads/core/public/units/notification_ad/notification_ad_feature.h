@@ -16,20 +16,20 @@ BASE_DECLARE_FEATURE(kNotificationAdFeature);
 BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature);
 
 // Ad notification timeout in seconds. Set to 0 to never time out
-constexpr base::FeatureParam<int> kNotificationAdTimeout{
+inline constexpr base::FeatureParam<int> kNotificationAdTimeout{
     &kNotificationAdFeature, "notification_ad_timeout",
     kDefaultNotificationAdTimeout};
 
-constexpr base::FeatureParam<int> kDefaultNotificationAdsPerHour{
+inline constexpr base::FeatureParam<int> kDefaultNotificationAdsPerHour{
     &kNotificationAdFeature, "default_ads_per_hour",
     kDefaultBraveRewardsNotificationAdsPerHour};
 
-constexpr base::FeatureParam<int> kMaximumNotificationAdsPerDay{
+inline constexpr base::FeatureParam<int> kMaximumNotificationAdsPerDay{
     &kNotificationAdFeature, "maximum_ads_per_day", 100};
 
 // Set to true to fallback to custom notification ads if native notifications
 // are disabled or false to never fallback
-constexpr base::FeatureParam<bool> kCanFallbackToCustomNotificationAds{
+inline constexpr base::FeatureParam<bool> kCanFallbackToCustomNotificationAds{
     &kNotificationAdFeature, "can_fallback_to_custom_notifications",
     kDefaultCanFallbackToCustomNotificationAds};
 

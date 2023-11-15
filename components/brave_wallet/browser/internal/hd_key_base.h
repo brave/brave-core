@@ -12,7 +12,7 @@
 
 namespace brave_wallet {
 
-constexpr char kMasterNode[] = "m";
+inline constexpr char kMasterNode[] = "m";
 
 class HDKeyBase {
  public:

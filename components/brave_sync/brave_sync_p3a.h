@@ -13,8 +13,8 @@ namespace p3a {
 
 // TODO(alexeybarabash): move here also "Brave.Sync.Status.2" and
 // "Brave.Sync.ProgressTokenEverReset"
-constexpr char kEnabledTypesHistogramName[] = "Brave.Sync.EnabledTypes";
-constexpr char kSyncedObjectsCountHistogramName[] =
+inline constexpr char kEnabledTypesHistogramName[] = "Brave.Sync.EnabledTypes";
+inline constexpr char kSyncedObjectsCountHistogramName[] =
     "Brave.Sync.SyncedObjectsCount";
 
 enum class EnabledTypesAnswer {

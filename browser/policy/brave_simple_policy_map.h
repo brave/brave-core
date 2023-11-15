@@ -33,7 +33,7 @@
 
 namespace policy {
 
-constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},

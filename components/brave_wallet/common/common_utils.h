@@ -15,7 +15,7 @@ class PrefService;
 
 namespace brave_wallet {
 
-constexpr mojom::CoinType kAllCoins[] = {
+inline constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
     mojom::CoinType::BTC};
 

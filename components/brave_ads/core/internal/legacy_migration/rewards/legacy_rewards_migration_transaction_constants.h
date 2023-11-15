@@ -8,7 +8,7 @@
 
 namespace brave_ads::rewards {
 
-constexpr char kMigrationUnreconciledTransactionId[] =
+inline constexpr char kMigrationUnreconciledTransactionId[] =
     "0a9b2767-8dab-4339-8753-d7743238a9d3";
 
 }  // namespace brave_ads::rewards

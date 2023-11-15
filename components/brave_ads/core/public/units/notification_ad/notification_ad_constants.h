@@ -12,15 +12,16 @@
 
 namespace brave_ads {
 
-constexpr char kNotificationAdPlacementIdKey[] = "uuid";
-constexpr char kNotificationAdCreativeInstanceIdKey[] = "creative_instance_id";
-constexpr char kNotificationAdCreativeSetIdKey[] = "creative_set_id";
-constexpr char kNotificationAdCampaignIdKey[] = "campaign_id";
-constexpr char kNotificationAdAdvertiserIdKey[] = "advertiser_id";
-constexpr char kNotificationAdSegmentKey[] = "segment";
-constexpr char kNotificationAdTitleKey[] = "title";
-constexpr char kNotificationAdBodyKey[] = "body";
-constexpr char kNotificationAdTargetUrlKey[] = "target_url";
+inline constexpr char kNotificationAdPlacementIdKey[] = "uuid";
+inline constexpr char kNotificationAdCreativeInstanceIdKey[] =
+    "creative_instance_id";
+inline constexpr char kNotificationAdCreativeSetIdKey[] = "creative_set_id";
+inline constexpr char kNotificationAdCampaignIdKey[] = "campaign_id";
+inline constexpr char kNotificationAdAdvertiserIdKey[] = "advertiser_id";
+inline constexpr char kNotificationAdSegmentKey[] = "segment";
+inline constexpr char kNotificationAdTitleKey[] = "title";
+inline constexpr char kNotificationAdBodyKey[] = "body";
+inline constexpr char kNotificationAdTargetUrlKey[] = "target_url";
 
 // Brave Ads per hour are user configurable within the brave://rewards ads UI.
 #if !BUILDFLAG(IS_IOS)

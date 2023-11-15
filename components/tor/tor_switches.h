@@ -8,7 +8,7 @@
 
 namespace tor {
 
-constexpr char kDisableTorClientUpdaterExtension[] =
+inline constexpr char kDisableTorClientUpdaterExtension[] =
     "disable-tor-client-updater-extension";
 
 }  // namespace tor
