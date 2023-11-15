@@ -11,7 +11,9 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [ "ENABLE_AI_CHAT=$enable_ai_chat" ]
 
-  if (is_android &&
+  # Enable for desktop (all channels) and android (only dev and
+  # nightly channels).
+  if (!is_android ||
       (brave_channel == "nightly" || brave_channel == "development")) {
     flags += [ "ENABLE_AI_CHAT_FEATURE_FLAG=true" ]
   } else {
