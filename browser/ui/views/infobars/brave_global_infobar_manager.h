@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_GLOBAL_INFOBAR_MANAGER_H_
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_GLOBAL_INFOBAR_MANAGER_H_
 
-#include <map>
 #include <memory>
+#include <unordered_set>
 
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker.h"
@@ -20,12 +20,10 @@ class BraveGlobalInfoBarManager : public TabStripModelObserver,
       std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory);
   ~BraveGlobalInfoBarManager() override;
 
-  static BraveGlobalInfoBarManager* Show(
+  static std::unique_ptr<BraveGlobalInfoBarManager> Show(
       std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory);
 
  private:
-  void Close();
-
   // infobars::InfoBarManager::Observer:
   void OnInfoBarRemoved(infobars::InfoBar* info_bar, bool animate) override;
   void OnManagerShuttingDown(infobars::InfoBarManager* manager) override;
@@ -38,7 +36,8 @@ class BraveGlobalInfoBarManager : public TabStripModelObserver,
 
   void MaybeAddInfoBar(content::WebContents* web_contents);
 
-  std::map<infobars::InfoBarManager*, BraveConfirmInfoBarDelegate*> delegates_;
+  bool is_closed_{false};
+  std::unordered_set<infobars::InfoBarManager*> ib_managers_;
   BrowserTabStripTracker browser_tab_strip_tracker_{this, nullptr};
   std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory_;
   base::WeakPtrFactory<BraveGlobalInfoBarManager> weak_factory_{this};

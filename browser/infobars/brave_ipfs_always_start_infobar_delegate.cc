@@ -19,12 +19,26 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::
 
 std::unique_ptr<BraveConfirmInfoBarDelegate>
 BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
-  if (local_state_->GetBoolean(kIPFSAlwaysStartMode)) {
+  if (!local_state_ || local_state_->GetBoolean(kIPFSAlwaysStartMode) ||
+      local_state_->GetInteger(kIPFSResolveMethod) !=
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+    return nullptr;
+  }
+
+  const base::Time last_shown_time =
+      local_state_->GetTime(kIPFSAlwaysStartInfobarLastShowTime);
+  const base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
+  if (!last_shown_time.is_null() && last_shown_time > time_1_day_ago) {
     return nullptr;
   }
 
   return base::WrapUnique(
       new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service_, local_state_));
+}
+
+infobars::InfoBarDelegate::InfoBarIdentifier
+BraveIPFSAlwaysStartInfoBarDelegateFactory::GetInfoBarIdentifier() const {
+  return BraveConfirmInfoBarDelegate::BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE;
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(
@@ -71,9 +85,22 @@ bool BraveIPFSAlwaysStartInfoBarDelegate::Accept() {
       ipfs_service_->LaunchDaemon(base::NullCallback());
     }
   }
+  SetLastShownTime();
   return true;
 }
 
 bool BraveIPFSAlwaysStartInfoBarDelegate::Cancel() {
+  SetLastShownTime();
   return true;
+}
+
+void BraveIPFSAlwaysStartInfoBarDelegate::InfoBarDismissed() {
+  SetLastShownTime();
+}
+
+void BraveIPFSAlwaysStartInfoBarDelegate::SetLastShownTime() {
+  if (!local_state_) {
+    return;
+  }
+  local_state_->SetTime(kIPFSAlwaysStartInfobarLastShowTime, base::Time::Now());
 }

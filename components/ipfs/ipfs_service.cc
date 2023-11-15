@@ -151,11 +151,11 @@ IpfsService::IpfsService(
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
 
-  const auto isIpfsLocal =
+  const auto is_ipfs_local =
       (prefs_ &&
        prefs_->GetInteger(kIPFSResolveMethod) ==
            static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-  if (isIpfsLocal && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+  if (is_ipfs_local && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
     StartDaemonAndLaunch(base::NullCallback());
   }
 }
@@ -204,6 +204,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
   registry->RegisterDictionaryPref(kIPFSPinnedCids);
   registry->RegisterBooleanPref(kShowIPFSPromoInfobar, true);
+  registry->RegisterTimePref(kIPFSAlwaysStartInfobarLastShowTime, {});
 
   // Deprecated, kIPFSAutoRedirectToConfiguredGateway is used instead
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);

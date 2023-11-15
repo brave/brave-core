@@ -25,6 +25,7 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+class BraveGlobalInfoBarManager;
 class PrefService;
 
 namespace ipfs {
@@ -161,6 +162,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
+  std::unique_ptr<BraveGlobalInfoBarManager> infobar_manager_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   const raw_ptr<PrefService> pref_service_ = nullptr;

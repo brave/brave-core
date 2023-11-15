@@ -46,6 +46,8 @@ class BraveConfirmInfoBarDelegateFactory {
   virtual ~BraveConfirmInfoBarDelegateFactory() = default;
 
   virtual std::unique_ptr<BraveConfirmInfoBarDelegate> Create() = 0;
+  virtual infobars::InfoBarDelegate::InfoBarIdentifier GetInfoBarIdentifier()
+      const = 0;
 
  protected:
   BraveConfirmInfoBarDelegateFactory() = default;

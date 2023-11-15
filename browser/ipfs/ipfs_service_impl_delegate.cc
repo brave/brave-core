@@ -22,7 +22,7 @@ IpfsServiceImplDelegate::~IpfsServiceImplDelegate() = default;
 void IpfsServiceImplDelegate::ShowAlwaysStartInfoBar(
     IpfsService* ipfs_service) {
 #if !BUILDFLAG(IS_ANDROID)
-  BraveGlobalInfoBarManager::Show(
+  infobar_manager_ = BraveGlobalInfoBarManager::Show(
       std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
           ipfs_service, local_state_));
 #endif  // !BUILDFLAG(IS_ANDROID)

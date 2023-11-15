@@ -41,6 +41,9 @@ class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
   bool Accept() override;
   bool Cancel() override;
+  void InfoBarDismissed() override;
+
+  void SetLastShownTime();
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
@@ -55,6 +58,8 @@ class BraveIPFSAlwaysStartInfoBarDelegateFactory
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
   std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
+  infobars::InfoBarDelegate::InfoBarIdentifier GetInfoBarIdentifier()
+      const override;
 
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
