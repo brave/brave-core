@@ -94,7 +94,6 @@ void InlineContentAdServing::BuildUserModelCallback(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const UserModelInfo& user_model) const {
-  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
       base::BindOnce(
@@ -127,7 +126,6 @@ void InlineContentAdServing::ServeAd(
     return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 
-  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   SuccessfullyServedAd(tab_id, ad, std::move(callback));

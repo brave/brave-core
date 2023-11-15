@@ -78,7 +78,6 @@ void NewTabPageAdServing::GetEligibleAds(
 void NewTabPageAdServing::BuildUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model) const {
-  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,
       base::BindOnce(&NewTabPageAdServing::GetEligibleAdsForUserModelCallback,
@@ -107,7 +106,6 @@ void NewTabPageAdServing::ServeAd(
     return FailedToServeAd(std::move(callback));
   }
 
-  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   SuccessfullyServedAd(ad, std::move(callback));
