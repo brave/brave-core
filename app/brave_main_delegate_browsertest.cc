@@ -119,6 +119,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     &apps::features::kDesktopPWAsLinkCapturing,
 #endif
+    &attribution_reporting::features::kAttributionReportingTriggerConfig,
     &attribution_reporting::features::kConversionMeasurement,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
@@ -129,6 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kAdAuctionReportingWithMacroApi,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
+    &blink::features::kAttributionReportingInBrowserMigration,
     &blink::features::kBackgroundResourceFetch,
     &blink::features::kBiddingAndScoringDebugReportingAPI,
     &blink::features::kBrowsingTopics,
@@ -148,7 +150,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kPrerender2,
     &blink::features::kPrivacySandboxAdsAPIs,
     &blink::features::kPrivateAggregationApi,
+    &blink::features::kPrivateAggregationApiMultipleCloudProviders,
     &blink::features::kSharedStorageAPI,
+    &blink::features::kSharedStorageAPIM118,
     &blink::features::kSharedStorageSelectURLLimit,
     &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
     &blink::features::kSpeculationRulesPrefetchFuture,
@@ -182,6 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kBookmarkTriggerForPrerender2,
     &features::kChromeLabs,
     &features::kChromeRefresh2023,
+    &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
@@ -196,6 +201,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &features::kIdleDetection,
     &features::kKAnonymityService,
+    &features::kKAnonymityServiceOHTTPRequests,
+    &features::kLegacyTechReportEnableCookieIssueReports,
+    &features::kLegacyTechReportTopLevelUrl,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kOmniboxTriggerForPrerender2,
@@ -287,6 +295,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &permissions::features::kPermissionStorageAccessAPI,
+    &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
     &privacy_sandbox::kEnforcePrivacySandboxAttestations,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,

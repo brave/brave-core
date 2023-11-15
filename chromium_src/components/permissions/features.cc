@@ -23,6 +23,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kRecordPermissionExpirationTimestamps, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kPermissionStorageAccessAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kShowRelatedWebsiteSetsPermissionGrants,
+     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

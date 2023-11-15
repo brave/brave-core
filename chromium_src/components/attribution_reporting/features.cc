@@ -10,6 +10,7 @@
 namespace attribution_reporting::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kAttributionReportingTriggerConfig, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

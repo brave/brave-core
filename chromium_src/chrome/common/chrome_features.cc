@@ -15,6 +15,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
     {kPrivacyGuideAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
