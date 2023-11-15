@@ -639,9 +639,6 @@ Config.prototype.buildArgs = function () {
       "//brave/components/resources:strings",
     ]
 
-    delete args.brave_services_production_domain
-    delete args.brave_services_staging_domain
-    delete args.brave_services_dev_domain
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
     delete args.proprietary_codecs
