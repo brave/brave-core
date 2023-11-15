@@ -108,9 +108,7 @@ class OnionLocationButtonView : public views::LabelButton {
 
   void SetOnionLocation(const GURL& location) {
     onion_location_ = location;
-    SetTooltipText(l10n_util::GetStringFUTF16(
-        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
-        u"\r\n" + base::UTF8ToUTF16(onion_location_.spec())));
+    SetTooltipText(base::UTF8ToUTF16(onion_location_.spec()));
   }
 
  private:
