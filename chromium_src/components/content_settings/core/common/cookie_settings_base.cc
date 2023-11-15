@@ -25,8 +25,8 @@ namespace content_settings {
 
 namespace {
 
-constexpr char kWp[] = "https://[*.]svelte.dev/*";
-constexpr char kWordpress[] = "https://[*.]staticblitz.com/*";
+constexpr char kSevdev[] = "https://[*.]svelte.dev/*";
+constexpr char kSevblitz[] = "https://[*.]staticblitz.com/*";
 
 // The thread local brave metadata pointer.
 ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
@@ -38,10 +38,10 @@ bool BraveIsAllowedThirdParty(const GURL& url,
   static const base::NoDestructor<
       // url -> first_party_url allow map
       std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
-      entity_list({{ContentSettingsPattern::FromString(kWp),
-                    ContentSettingsPattern::FromString(kWordpress)},
-                   {ContentSettingsPattern::FromString(kWordpress),
-                    ContentSettingsPattern::FromString(kWp)}});
+      entity_list({{ContentSettingsPattern::FromString(kSevdev),
+                    ContentSettingsPattern::FromString(kSevblitz)},
+                   {ContentSettingsPattern::FromString(kSevblitz),
+                    ContentSettingsPattern::FromString(kSevdev)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
