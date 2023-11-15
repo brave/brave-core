@@ -16,7 +16,7 @@ namespace brave_ads::ml {
 class HashVectorizer final {
  public:
   HashVectorizer();
-  HashVectorizer(int bucket_count, const std::vector<int>& subgrams);
+  HashVectorizer(int bucket_count, std::vector<uint32_t> subgrams);
 
   HashVectorizer(const HashVectorizer&) = delete;
   HashVectorizer& operator=(const HashVectorizer&) = delete;

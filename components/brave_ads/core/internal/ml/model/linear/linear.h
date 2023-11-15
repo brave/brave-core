@@ -6,47 +6,49 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_
 
-#include <map>
-#include <string>
-
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::ml {
+namespace brave_ads {
+
+namespace linear_text_classification::flat {
+struct Model;
+}  // namespace linear_text_classification::flat
+
+namespace ml {
 
 class LinearModel final {
  public:
   LinearModel();
 
-  explicit LinearModel(const std::string& model);
-  LinearModel(std::map<std::string, VectorData> weights,
-              std::map<std::string, double> biases);
+  explicit LinearModel(const linear_text_classification::flat::Model* model);
 
-  LinearModel(const LinearModel&);
-  LinearModel& operator=(const LinearModel&);
+  LinearModel(const LinearModel&) = delete;
+  LinearModel& operator=(const LinearModel&) = delete;
 
   LinearModel(LinearModel&&) noexcept;
   LinearModel& operator=(LinearModel&&) noexcept;
 
   ~LinearModel();
 
-  PredictionMap Predict(const VectorData& data) const;
+  absl::optional<PredictionMap> Predict(const VectorData& data) const;
 
-  PredictionMap GetTopPredictions(const VectorData& data) const;
+  absl::optional<PredictionMap> GetTopPredictions(const VectorData& data) const;
 
-  PredictionMap GetTopCountPredictions(const VectorData& data,
-                                       size_t top_count) const;
+  absl::optional<PredictionMap> GetTopCountPredictions(const VectorData& data,
+                                                       size_t top_count) const;
 
  private:
-  PredictionMap GetTopCountPredictionsImpl(
+  absl::optional<PredictionMap> GetTopCountPredictionsImpl(
       const VectorData& data,
       absl::optional<size_t> top_count) const;
 
-  std::map<std::string, VectorData> weights_;
-  std::map<std::string, double> biases_;
+  raw_ptr<const linear_text_classification::flat::Model> model_;
 };
 
-}  // namespace brave_ads::ml
+}  // namespace ml
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_

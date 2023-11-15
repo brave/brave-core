@@ -45,14 +45,19 @@ class VectorData final : public Data {
 
   void AddElementWise(const VectorData& other);
   void DivideByScalar(float scalar);
+  void ToDistribution();
+  void Softmax();
   void Normalize();
+  void Tanh();
 
   bool IsEmpty() const;
   size_t GetDimensionCount() const;
   size_t GetNonZeroElementCount() const;
+  float GetSum() const;
   float GetNorm() const;
 
   const std::vector<float>& GetData() const;
+  std::vector<float> GetDenseData() const;
 
  private:
   std::unique_ptr<class VectorDataStorage> storage_;

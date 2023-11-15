@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 
 #include <map>
+#include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
@@ -22,9 +22,10 @@ HashedNGramsTransformation::HashedNGramsTransformation()
 
 HashedNGramsTransformation::HashedNGramsTransformation(
     const int bucket_count,
-    const std::vector<int>& subgrams)
+    std::vector<uint32_t> subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer_ = std::make_unique<HashVectorizer>(bucket_count, subgrams);
+  hash_vectorizer_ =
+      std::make_unique<HashVectorizer>(bucket_count, std::move(subgrams));
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
@@ -39,7 +40,6 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
   // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
   // TextProcessing to make it more reliable.
   if (input_data->GetType() != DataType::kText) {
-    BLOG(0, "HashedNGramsTransformation input not of type text");
     return {};
   }
 

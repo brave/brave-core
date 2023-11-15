@@ -47,6 +47,7 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
       {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
 
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   // Act & Assert
   const SegmentList expected_interest_segments =
@@ -75,6 +76,7 @@ TEST_F(BraveAdsInterestSegmentsTest,
       {{kTextClassificationFeature, false}, {kTextEmbeddingFeature, false}});
 
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   // Act
   const SegmentList segments = BuildInterestSegments();

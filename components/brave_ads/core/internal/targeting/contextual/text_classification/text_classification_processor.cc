@@ -6,15 +6,14 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -50,13 +49,13 @@ void TextClassificationProcessor::Process(const std::string& text) {
     return;
   }
 
-  const absl::optional<ml::pipeline::TextProcessing>& text_processing =
-      resource_->get();
-  CHECK(text_processing);
+  resource_->ClassifyPage(
+      text, base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
+                           weak_factory_.GetWeakPtr()));
+}
 
-  const absl::optional<TextClassificationProbabilityMap> probabilities =
-      text_processing->ClassifyPage(text);
-
+void TextClassificationProcessor::ClassifyPageCallback(
+    const absl::optional<TextClassificationProbabilityMap> probabilities) {
   if (!probabilities) {
     return BLOG(0, "Text classification failed due to an invalid model");
   }
@@ -65,10 +64,10 @@ void TextClassificationProcessor::Process(const std::string& text) {
     return BLOG(1, "Text not classified as not enough content");
   }
 
-  const std::string segment =
+  const std::string top_segment =
       GetTopSegmentFromPageProbabilities(*probabilities);
-  CHECK(!segment.empty());
-  BLOG(1, "Classified text with the top segment as " << segment);
+  CHECK(!top_segment.empty());
+  BLOG(1, "Classified text with the top segment as " << top_segment);
 
   ClientStateManager::GetInstance()
       .AppendTextClassificationProbabilitiesToHistory(*probabilities);
