@@ -5,7 +5,7 @@
 
 import("//ui/webui/resources/tools/bundle_js.gni")
 
-# Generate JS bundle for RequestOTR interstitial UI, regradless of the
+# Generate JS bundle for RequestOTR interstitial UI, regardless of the
 # `optimize_webui` GN arg, as this UI can't load any JS modules at runtime,
 # since it is not a proper WebUI page and therefore is not backed up by any
 # WebUIDataSource.
