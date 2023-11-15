@@ -1229,6 +1229,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GOMA_PROVIDE_INFO = true
     }
 
+
     if (this.rbeService) {
       env.RBE_service = env.RBE_service || this.rbeService
       if (this.rbeTlsClientAuthCert && this.rbeTlsClientAuthKey) {
