@@ -154,8 +154,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
         MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
         if (braveLeo != null) {
+            Tab tab = mActivityTabProvider.get();
             if (BraveConfig.AI_CHAT_ENABLED
-                    && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+                    && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
+                    && tab != null
+                    && !tab.isIncognito()) {
                 braveLeo.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     braveLeo.setIcon(
