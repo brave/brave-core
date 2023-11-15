@@ -137,6 +137,8 @@ struct NFTIconView: View {
   var url: URL?
   /// If we should show the network logo on non-native assets
   var shouldShowNetworkIcon: Bool = false
+  /// View is loading NFT metadata
+  var isLoadingMetadata: Bool = false
   
   @ScaledMetric var length: CGFloat = 40
   var maxLength: CGFloat?
@@ -160,13 +162,8 @@ struct NFTIconView: View {
   }
   
   var body: some View {
-    NFTImageView(urlString: url?.absoluteString ?? "") {
-      AssetIconView(
-        token: token,
-        network: network,
-        shouldShowNetworkIcon: shouldShowNetworkIcon,
-        length: length
-      )
+    NFTImageView(urlString: url?.absoluteString ?? "", isLoading: isLoadingMetadata) {
+      LoadingNFTView(shimmer: false)
     }
     .cornerRadius(5)
     .frame(

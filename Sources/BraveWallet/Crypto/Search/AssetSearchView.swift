@@ -22,6 +22,7 @@ struct AssetSearchView: View {
   @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
   @State private var selectedToken: BraveWallet.BlockchainToken?
+  @State private var isLoadingMetadata: Bool = false
   
   public init(
     keyringStore: KeyringStore,
@@ -108,7 +109,8 @@ struct AssetSearchView: View {
                         token: assetViewModel.token,
                         network: assetViewModel.network,
                         url: allNFTMetadata[assetViewModel.token.id]?.imageURL,
-                        shouldShowNetworkIcon: true
+                        shouldShowNetworkIcon: true,
+                        isLoadingMetadata: isLoadingMetadata
                       )
                     } else {
                       AssetIconView(
@@ -187,7 +189,9 @@ struct AssetSearchView: View {
     .onAppear {
       Task { @MainActor in
         self.allAssets = await userAssetsStore.allAssets()
+        self.isLoadingMetadata = true
         self.allNFTMetadata = await userAssetsStore.allNFTMetadata()
+        self.isLoadingMetadata = false
         self.networkFilters = networkStore.allChains.map {
           .init(isSelected: true, model: $0)
         }

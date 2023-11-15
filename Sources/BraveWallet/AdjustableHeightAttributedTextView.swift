@@ -47,6 +47,8 @@ struct AttributedTextView: UIViewRepresentable {
       $0.delegate = context.coordinator
       $0.isScrollEnabled = false
       $0.textAlignment = .center
+      $0.textContainer.lineFragmentPadding = 0
+      $0.textContainerInset = .zero
     }
     return textView
   }

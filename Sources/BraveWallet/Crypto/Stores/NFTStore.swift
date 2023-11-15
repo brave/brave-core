@@ -133,6 +133,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   @Published var displayType: NFTDisplayType = .visible
   /// View model for all NFT include visible, hidden and spams
   @Published private(set) var userNFTGroups: [NFTGroupViewModel] = []
+  /// showing shimmering loading state when the view finishes loading NFT information
+  @Published var isShowingNFTLoadingState: Bool = false
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -247,6 +249,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private var nftBalancesCache: [String: [String: Int]] = [:]
   
   func update() {
+    self.isShowingNFTLoadingState = true
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
       self.allAccounts = await keyringService.allAccounts().accounts
@@ -357,6 +360,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )
+      
+      isShowingNFTLoadingState = false
     }
   }
   
@@ -572,6 +577,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     isSpam: Bool,
     isDeletedByUser: Bool
   ) {
+    isShowingNFTLoadingState = true
     assetManager.updateUserAsset(
       for: token,
       visible: visible,
@@ -600,6 +606,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )
+      
+      isShowingNFTLoadingState = false
     }
   }
 }

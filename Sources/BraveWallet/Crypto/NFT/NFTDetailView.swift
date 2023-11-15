@@ -23,18 +23,11 @@ struct NFTDetailView: View {
   }
   
   @ViewBuilder private var nftImage: some View {
-    if let nftMetadata = nftDetailStore.nftMetadata {
-      if let urlString = nftMetadata.imageURLString {
-        NFTImageView(urlString: urlString) {
-          noImageView
-        }
-        .cornerRadius(10)
-      } else {
-        noImageView
-      }
-    } else {
+    NFTImageView(urlString: nftDetailStore.nftMetadata?.imageURLString ?? "", isLoading: nftDetailStore.isLoading) {
       noImageView
     }
+    .cornerRadius(10)
+    .frame(maxWidth: .infinity, minHeight: 300)
   }
   
   private var isSVGImage: Bool {
@@ -46,32 +39,27 @@ struct NFTDetailView: View {
     ScrollView(.vertical) {
       VStack(alignment: .leading, spacing: 24) {
         VStack(spacing: 8) {
-          if nftDetailStore.isLoading {
-            ProgressView()
-              .frame(maxWidth: .infinity, minHeight: 300)
-          } else {
-            nftImage
-              .overlay(alignment: .topLeading) {
-                if nftDetailStore.nft.isSpam {
-                  HStack(spacing: 4) {
-                    Text(Strings.Wallet.nftSpam)
-                      .padding(.vertical, 4)
-                      .padding(.leading, 6)
-                      .foregroundColor(Color(.braveErrorLabel))
-                    Image(braveSystemName: "leo.warning.triangle-outline")
-                      .padding(.vertical, 4)
-                      .padding(.trailing, 6)
-                      .foregroundColor(Color(.braveErrorBorder))
-                  }
-                  .font(.system(size: 13).weight(.semibold))
-                  .background(
-                    Color(uiColor: WalletV2Design.spamNFTLabelBackground)
-                      .cornerRadius(4)
-                  )
-                  .padding(12)
+          nftImage
+            .overlay(alignment: .topLeading) {
+              if nftDetailStore.nft.isSpam {
+                HStack(spacing: 4) {
+                  Text(Strings.Wallet.nftSpam)
+                    .padding(.vertical, 4)
+                    .padding(.leading, 6)
+                    .foregroundColor(Color(.braveErrorLabel))
+                  Image(braveSystemName: "leo.warning.triangle-outline")
+                    .padding(.vertical, 4)
+                    .padding(.trailing, 6)
+                    .foregroundColor(Color(.braveErrorBorder))
                 }
+                .font(.system(size: 13).weight(.semibold))
+                .background(
+                  Color(uiColor: WalletV2Design.spamNFTLabelBackground)
+                    .cornerRadius(4)
+                )
+                .padding(12)
               }
-          }
+            }
           VStack(alignment: .leading, spacing: 8) {
             Text(nftDetailStore.nft.nftTokenTitle)
               .font(.title3.weight(.semibold))

@@ -40,28 +40,46 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
       content()
       if let secondaryButton = self.secondaryButton {
         if buttonsAxis == .vertical {
-          VStack(spacing: 12) {
-            Button(primaryButton.title, action: { primaryButton.action(nil) })
-              .buttonStyle(BraveFilledButtonStyle(size: .large))
-            Button(secondaryButton.title, action: { secondaryButton.action(nil) })
-              .foregroundColor(Color(.braveLabel))
+          VStack(spacing: 24) {
+            Button { primaryButton.action(nil) } label: {
+              Text(primaryButton.title)
+                .font(.footnote.weight(.semibold))
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            Button { secondaryButton.action(nil) } label: {
+              Text(secondaryButton.title)
+                .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(.bravePrimary))
+                .frame(maxWidth: .infinity)
+            }
           }
         } else {
           HStack {
-            Button(secondaryButton.title, action: { secondaryButton.action(nil) })
-              .buttonStyle(BraveOutlineButtonStyle(size: .large))
-            Button(primaryButton.title, action: { primaryButton.action(nil) })
-              .buttonStyle(BraveFilledButtonStyle(size: .large))
+            Button { secondaryButton.action(nil) } label: {
+              Text(secondaryButton.title)
+                .font(.footnote.weight(.semibold))
+            }
+            .buttonStyle(BraveOutlineButtonStyle(size: .large))
+            Button { primaryButton.action(nil) } label: {
+              Text(primaryButton.title)
+                .font(.footnote.weight(.semibold))
+            }
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
         }
       } else {
-        Button(primaryButton.title, action: { primaryButton.action(nil) })
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+        Button { primaryButton.action(nil) } label: {
+          Text(primaryButton.title)
+            .font(.footnote.weight(.semibold))
+        }
+        .buttonStyle(BraveFilledButtonStyle(size: .large))
       }
       footer()
     }
     .frame(maxWidth: .infinity)
-    .padding(20)
+    .padding(.horizontal, 24)
+    .padding(.vertical, 32)
     .overlay(
       showCloseButton ?
       Button(action: { dismissAction?() }) {
