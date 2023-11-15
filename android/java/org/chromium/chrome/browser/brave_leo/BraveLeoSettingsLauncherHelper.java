@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.brave_leo;
 import android.content.Context;
 
 import org.jni_zero.CalledByNative;
-
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -28,7 +28,10 @@ public class BraveLeoSettingsLauncherHelper {
     }
 
     @CalledByNative
-    private static void goPremium() {}
+    private static void goPremium() {
+        InAppPurchaseWrapper.getInstance()
+                .queryProductDetailsAsync(InAppPurchaseWrapper.SubscriptionProduct.LEO);
+    }
 
     private static SettingsLauncher getLauncher() {
         return sLauncher != null ? sLauncher : new SettingsLauncherImpl();

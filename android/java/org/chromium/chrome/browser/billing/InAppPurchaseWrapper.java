@@ -40,14 +40,16 @@ import java.util.Map;
 
 public class InAppPurchaseWrapper {
     private static final String TAG = "InAppPurchaseWrapper";
-    private static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
-    private static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
+    private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
 
-    private static final String BETA_MONTHLY_SUBSCRIPTION = "beta.bravevpn.monthly";
-    private static final String BETA_YEARLY_SUBSCRIPTION = "beta.bravevpn.yearly";
+    private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
 
-    public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
-    public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
+    private static final String VPN_BETA_MONTHLY_SUBSCRIPTION = "beta.bravevpn.monthly";
+    private static final String VPN_BETA_YEARLY_SUBSCRIPTION = "beta.bravevpn.yearly";
+
+    public static final String VPN_RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
+    public static final String VPN_RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
 
     private static final long MICRO_UNITS =
@@ -59,6 +61,11 @@ public class InAppPurchaseWrapper {
     private enum SubscriptionType {
         MONTHLY,
         YEARLY
+    }
+
+    public enum SubscriptionProduct {
+        VPN,
+        LEO
     }
 
     private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
@@ -93,18 +100,14 @@ public class InAppPurchaseWrapper {
     }
 
     public boolean isMonthlySubscription(String productId) {
-        return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
-                || productId.equals(BETA_MONTHLY_SUBSCRIPTION)
-                || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
+        return productId.equals(VPN_NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productId.equals(VPN_BETA_MONTHLY_SUBSCRIPTION)
+                || productId.equals(VPN_RELEASE_MONTHLY_SUBSCRIPTION);
     }
 
     private void startBillingServiceConnection(
             MutableLiveData<Boolean> billingClientConnectionState) {
         Context context = ContextUtils.getApplicationContext();
-        if (!BraveVpnUtils.isVpnFeatureSupported(context)) {
-            return;
-        }
-
         // End existing connection if any before we start another connection
         endConnection();
 
@@ -154,32 +157,43 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    public String getProductId(SubscriptionType subscriptionType) {
-        String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
-        if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
-            return subscriptionType == SubscriptionType.MONTHLY ? RELEASE_MONTHLY_SUBSCRIPTION
-                                                                : RELEASE_YEARLY_SUBSCRIPTION;
-        } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
-            return subscriptionType == SubscriptionType.MONTHLY
-                    ? BETA_MONTHLY_SUBSCRIPTION
-                    : BETA_YEARLY_SUBSCRIPTION;
+    public String getProductId(SubscriptionProduct product, SubscriptionType subscriptionType) {
+        if (product.equals(SubscriptionProduct.VPN)) {
+            String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
+            if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY ?
+                        VPN_RELEASE_MONTHLY_SUBSCRIPTION
+                        : VPN_RELEASE_YEARLY_SUBSCRIPTION;
+            } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? VPN_BETA_MONTHLY_SUBSCRIPTION
+                        : VPN_BETA_YEARLY_SUBSCRIPTION;
+            } else {
+                return subscriptionType == SubscriptionType.MONTHLY ?
+                        VPN_NIGHTLY_MONTHLY_SUBSCRIPTION
+                        : VPN_NIGHTLY_YEARLY_SUBSCRIPTION;
+            }
+        } else if (product.equals(SubscriptionProduct.LEO)) {
+            return LEO_MONTHLY_SUBSCRIPTION;
         } else {
-            return subscriptionType == SubscriptionType.MONTHLY ? NIGHTLY_MONTHLY_SUBSCRIPTION
-                                                                : NIGHTLY_YEARLY_SUBSCRIPTION;
+            assert false;
+            return "";
         }
     }
 
-    public void queryProductDetailsAsync() {
+    public void queryProductDetailsAsync(SubscriptionProduct product) {
         Map<String, ProductDetails> productDetails = new HashMap<>();
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
         products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(SubscriptionType.MONTHLY))
+                             .setProductId(getProductId(product, SubscriptionType.MONTHLY))
                              .setProductType(BillingClient.ProductType.SUBS)
                              .build());
-        products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(SubscriptionType.YEARLY))
-                             .setProductType(BillingClient.ProductType.SUBS)
-                             .build());
+        if (!product.equals(SubscriptionProduct.LEO)) {
+            products.add(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(getProductId(product, SubscriptionType.YEARLY))
+                    .setProductType(BillingClient.ProductType.SUBS)
+                    .build());
+        }
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
@@ -199,9 +213,15 @@ public class InAppPurchaseWrapper {
                                     productDetails.put(productDetail.getProductId(), productDetail);
                                 }
                                 setMonthlyProductDetails(
-                                        productDetails.get(getProductId(SubscriptionType.MONTHLY)));
-                                setYearlyProductDetails(
-                                        productDetails.get(getProductId(SubscriptionType.YEARLY)));
+                                        productDetails.get(getProductId(product,
+                                                SubscriptionType.MONTHLY)));
+                                if (!product.equals(SubscriptionProduct.LEO)) {
+                                    setYearlyProductDetails(
+                                            productDetails.get(
+                                                    getProductId(
+                                                            product,
+                                                            SubscriptionType.YEARLY)));
+                                }
                             } else {
                                 Log.e(TAG,
                                         "queryProductDetailsAsync failed"
@@ -345,14 +365,14 @@ public class InAppPurchaseWrapper {
         };
     }
 
-    private int maxTries;
-    private int tries;
-    private boolean isConnectionEstablished;
+    private int mMaxTries;
+    private int mTries;
+    private boolean mIsConnectionEstablished;
     private void retryBillingServiceConnection(
             MutableLiveData<Boolean> billingClientConnectionState) {
-        maxTries = 3;
-        tries = 1;
-        isConnectionEstablished = false;
+        mMaxTries = 3;
+        mTries = 1;
+        mIsConnectionEstablished = false;
         do {
             try {
                 // End existing connection if any before we start another connection
@@ -368,7 +388,7 @@ public class InAppPurchaseWrapper {
                 mBillingClient.startConnection(new BillingClientStateListener() {
                     @Override
                     public void onBillingServiceDisconnected() {
-                        if (tries == maxTries && billingClientConnectionState != null) {
+                        if (mTries == mMaxTries && billingClientConnectionState != null) {
                             billingClientConnectionState.postValue(false);
                         }
                     }
@@ -376,7 +396,7 @@ public class InAppPurchaseWrapper {
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                         if (billingResult.getResponseCode()
                                 == BillingClient.BillingResponseCode.OK) {
-                            isConnectionEstablished = true;
+                            mIsConnectionEstablished = true;
                             if (billingClientConnectionState != null) {
                                 billingClientConnectionState.postValue(true);
                             }
@@ -388,9 +408,9 @@ public class InAppPurchaseWrapper {
             } catch (Exception ex) {
                 Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
             } finally {
-                tries++;
+                mTries++;
             }
-        } while (tries <= maxTries && !isConnectionEstablished);
+        } while (mTries <= mMaxTries && !mIsConnectionEstablished);
     }
 
     private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {

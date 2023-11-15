@@ -262,7 +262,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
         this.mShouldShowRestoreMenu = shouldShowRestore;
-        InAppPurchaseWrapper.getInstance().queryProductDetailsAsync();
+        InAppPurchaseWrapper.getInstance()
+                .queryProductDetailsAsync(InAppPurchaseWrapper.SubscriptionProduct.VPN);
         invalidateOptionsMenu();
     }
 
