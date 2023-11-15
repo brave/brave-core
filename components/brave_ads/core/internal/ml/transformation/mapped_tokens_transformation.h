@@ -15,11 +15,12 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::neural_text_classification::flat {
+namespace brave_ads {
+namespace neural_text_classification::flat {
 struct MappedTokenTransformation;
-}  // namespace brave_ads::neural_text_classification::flat
+}  // namespace neural_text_classification::flat
 
-namespace brave_ads::ml {
+namespace ml {
 
 class MappedTokensTransformation final : public Transformation {
  public:
@@ -42,6 +43,7 @@ class MappedTokensTransformation final : public Transformation {
       mapped_token_transformation_;
 };
 
-}  // namespace brave_ads::ml
+}  // namespace ml
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_MAPPED_TOKENS_TRANSFORMATION_H_

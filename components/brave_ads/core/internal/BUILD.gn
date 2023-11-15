@@ -387,8 +387,6 @@ static_library("internal") {
     "common/random/random_util.h",
     "common/resources/country_components.cc",
     "common/resources/country_components.h",
-    "common/resources/flatbuffers_resources_util.h",
-    "common/resources/flatbuffers_resources_util_impl.h",
     "common/resources/language_components.cc",
     "common/resources/language_components.h",
     "common/resources/resource_parsing_error_or.h",

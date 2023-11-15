@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
 namespace brave_ads::ml {
@@ -21,7 +20,6 @@ std::unique_ptr<Data> DistributionTransformation::Apply(
   CHECK(input_data);
 
   if (input_data->GetType() != DataType::kVector) {
-    BLOG(0, "DistributionTransformation input not of type vector");
     return {};
   }
 

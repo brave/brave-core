@@ -78,6 +78,7 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
   targeting_->Mock();
+  task_environment_.RunUntilIdle();
 
   // Act & Assert
   base::MockCallback<BuildUserModelCallback> callback;

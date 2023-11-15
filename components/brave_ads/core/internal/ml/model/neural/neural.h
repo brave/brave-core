@@ -11,11 +11,13 @@
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::neural_text_classification::flat {
-struct Model;
-}  // namespace brave_ads::neural_text_classification::flat
+namespace brave_ads {
 
-namespace brave_ads::ml {
+namespace neural_text_classification::flat {
+struct Model;
+}  // namespace neural_text_classification::flat
+
+namespace ml {
 
 class NeuralModel final {
  public:
@@ -48,6 +50,7 @@ class NeuralModel final {
   raw_ptr<const neural_text_classification::flat::Model> model_;
 };
 
-}  // namespace brave_ads::ml
+}  // namespace ml
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_

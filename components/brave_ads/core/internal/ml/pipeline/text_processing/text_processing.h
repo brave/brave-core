@@ -26,10 +26,6 @@ struct PipelineInfo;
 
 class TextProcessing final {
  public:
-  static base::expected<TextProcessing, std::string> CreateFromFlatBuffers(
-      base::File file);
-  static PredictionMap FilterPredictions(const PredictionMap& predictions);
-
   TextProcessing();
   TextProcessing(TransformationVector transformations,
                  absl::optional<LinearModel> linear_model);
@@ -45,6 +41,7 @@ class TextProcessing final {
   bool IsInitialized() const { return is_initialized_; }
   bool IsNeuralPipline() const { return neural_model_.has_value(); }
 
+  base::expected<bool, std::string> LoadPipeline(base::File file);
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::File file);
 

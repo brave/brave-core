@@ -29,8 +29,8 @@ namespace brave_ads::ml {
 
 namespace {
 
-constexpr char kMinValidNeuralModelPipeline[] =
-    "ml/pipeline/text_processing/neural/min_valid_neural_model.fb";
+constexpr char kOnlyRequiredFieldsNeuralModelPipeline[] =
+    "ml/pipeline/text_processing/neural/only_required_fields_neural_model.fb";
 
 constexpr char kValidSegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/linear/valid_segment_classification_min.fb";
@@ -51,7 +51,7 @@ constexpr char kMissingRequiredFieldClassificationPipeline[] =
     "ml/pipeline/text_processing/linear/"
     "missing_required_field_classification.fb";
 
-constexpr char kNotValidModel[] = "ml/pipeline/text_processing/not_valid_model";
+constexpr char kInvalidModel[] = "ml/pipeline/text_processing/invalid_model";
 
 constexpr char kNotExistingFile[] =
     "ml/pipeline/text_processing/not_existing_file";
@@ -176,7 +176,7 @@ TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
 TEST_F(BraveAdsTextProcessingTest, InitValidNeuralModelTest) {
   // Arrange
   const base::FilePath path =
-      GetTestPath().AppendASCII(kMinValidNeuralModelPipeline);
+      GetTestPath().AppendASCII(kOnlyRequiredFieldsNeuralModelPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -265,9 +265,9 @@ TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
   EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(file)));
 }
 
-TEST_F(BraveAdsTextProcessingTest, NotValidModelTest) {
+TEST_F(BraveAdsTextProcessingTest, InvalidModelTest) {
   // Arrange
-  const base::FilePath path = GetTestPath().AppendASCII(kNotValidModel);
+  const base::FilePath path = GetTestPath().AppendASCII(kInvalidModel);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 

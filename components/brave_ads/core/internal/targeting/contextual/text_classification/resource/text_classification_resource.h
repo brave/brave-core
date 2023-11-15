@@ -8,13 +8,19 @@
 
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
+#include "base/threading/sequence_bound.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
+
+using ClassifyPageCallback =
+    base::OnceCallback<void(absl::optional<ml::PredictionMap>)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
@@ -32,9 +38,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   bool IsInitialized() const { return !!text_processing_pipeline_; }
 
-  const absl::optional<ml::pipeline::TextProcessing>& get() const {
-    return text_processing_pipeline_;
-  }
+  void ClassifyPage(const std::string& text, ClassifyPageCallback callback);
 
  private:
   void MaybeLoad();
@@ -42,8 +46,8 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadCallback(
-      ResourceParsingErrorOr<ml::pipeline::TextProcessing> result);
+  void LoadFileResourceCallback(base::File file);
+  void LoadPipelineCallback(base::expected<bool, std::string> result);
 
   void MaybeReset();
   void Reset();
@@ -55,7 +59,8 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  absl::optional<ml::pipeline::TextProcessing> text_processing_pipeline_;
+  absl::optional<const base::SequenceBound<ml::pipeline::TextProcessing>>
+      text_processing_pipeline_;
 
   bool did_load_ = false;
   absl::optional<std::string> manifest_version_;

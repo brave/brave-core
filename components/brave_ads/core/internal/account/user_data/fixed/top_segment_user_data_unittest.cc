@@ -40,6 +40,7 @@ class BraveAdsTopSegmentUserDataTest : public UnitTestBase {
 TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
   // Arrange
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
@@ -64,6 +65,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
   test::DisableBraveRewards();
 
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
@@ -77,6 +79,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
        DoNotBuildTopSegmentUserDataForNonViewedConfirmationType) {
   // Arrange
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kClicked,

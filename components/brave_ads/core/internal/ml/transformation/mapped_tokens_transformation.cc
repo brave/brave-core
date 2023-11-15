@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_transformation_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -65,7 +64,6 @@ MappedTokensTransformation::GetCategoryFrequencies(
         continue;
       }
 
-      BLOG(9, token_candidate << " - token found in category mapping");
       for (const uint16_t index : *iter->segment_indices()) {
         ++frequencies[static_cast<uint32_t>(index)];
       }
@@ -79,7 +77,6 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
   CHECK(input_data);
 
   if (input_data->GetType() != DataType::kText) {
-    BLOG(0, "MappedTokensTransformation input not of type text");
     return {};
   }
 

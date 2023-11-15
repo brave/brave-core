@@ -11,11 +11,13 @@
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::linear_text_classification::flat {
-struct Model;
-}  // namespace brave_ads::linear_text_classification::flat
+namespace brave_ads {
 
-namespace brave_ads::ml {
+namespace linear_text_classification::flat {
+struct Model;
+}  // namespace linear_text_classification::flat
+
+namespace ml {
 
 class LinearModel final {
  public:
@@ -46,6 +48,7 @@ class LinearModel final {
   raw_ptr<const linear_text_classification::flat::Model> model_;
 };
 
-}  // namespace brave_ads::ml
+}  // namespace ml
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_

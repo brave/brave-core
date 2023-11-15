@@ -17,8 +17,8 @@
 namespace brave_ads::ml {
 
 namespace {
-constexpr char kMinValidNeuralModelPipeline[] =
-    "ml/pipeline/text_processing/neural/min_valid_neural_model.fb";
+constexpr char kOnlyRequiredFieldsNeuralModelPipeline[] =
+    "ml/pipeline/text_processing/neural/only_required_fields_neural_model.fb";
 }  // namespace
 
 class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
@@ -26,7 +26,7 @@ class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
   absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kMinValidNeuralModelPipeline);
+      ReadFileFromTestPathToString(kOnlyRequiredFieldsNeuralModelPipeline);
   ASSERT_TRUE(buffer);
 
   // Act & Assert

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/files/file.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
@@ -20,16 +19,21 @@
 
 namespace brave_ads::ml::pipeline {
 
-// static
-base::expected<TextProcessing, std::string>
-TextProcessing::CreateFromFlatBuffers(base::File file) {
-  TextProcessing text_processing;
-  if (!text_processing.SetPipeline(std::move(file))) {
-    return base::unexpected(
-        "Failed to load flatbuffers text classification pipeline");
+namespace {
+
+PredictionMap FilterPredictions(const PredictionMap& predictions) {
+  const double expected_probability =
+      1.0 / std::max(1.0, static_cast<double>(predictions.size()));
+  PredictionMap top_predictions;
+  for (const auto& [segment, probability] : predictions) {
+    if (probability > expected_probability) {
+      top_predictions[segment] = probability;
+    }
   }
-  return text_processing;
+  return top_predictions;
 }
+
+}  // namespace
 
 TextProcessing::TextProcessing() = default;
 
@@ -45,6 +49,16 @@ TextProcessing::TextProcessing(TransformationVector transformations,
     : is_initialized_(true) {
   linear_model_ = std::move(linear_model);
   transformations_ = std::move(transformations);
+}
+
+base::expected<bool, std::string> TextProcessing::LoadPipeline(
+    base::File file) {
+  if (!SetPipeline(std::move(file))) {
+    return base::unexpected(
+        "Failed to load flatbuffers text classification pipeline");
+  }
+
+  return IsNeuralPipline();
 }
 
 void TextProcessing::SetPipeline(PipelineInfo pipeline) {
@@ -101,12 +115,10 @@ absl::optional<PredictionMap> TextProcessing::Apply(
   for (size_t i = 0; i < transformation_count; ++i) {
     mutable_input_data = transformations_[i]->Apply(mutable_input_data);
     if (!mutable_input_data) {
-      BLOG(0, "TextProcessing transformation failed due to an invalid model");
       return absl::nullopt;
     }
   }
   if (mutable_input_data->GetType() != DataType::kVector) {
-    BLOG(0, "Predictions failed due to an invalid model");
     return absl::nullopt;
   }
 
@@ -119,22 +131,6 @@ absl::optional<PredictionMap> TextProcessing::GetPredictions(
   absl::optional<PredictionMap> predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_text)));
   return predictions;
-}
-
-// static
-PredictionMap TextProcessing::FilterPredictions(
-    const PredictionMap& predictions) {
-  const double expected_probability =
-      1.0 / std::max(1.0, static_cast<double>(predictions.size()));
-  PredictionMap top_predictions;
-  for (const auto& [segment, probability] : predictions) {
-    if (probability > expected_probability) {
-      top_predictions[segment] = probability;
-      BLOG(6, segment);
-      BLOG(6, probability);
-    }
-  }
-  return top_predictions;
 }
 
 absl::optional<PredictionMap> TextProcessing::GetTopPredictions(

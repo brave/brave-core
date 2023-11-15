@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/resources/flatbuffers_resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -45,6 +45,20 @@ TextClassificationResource::~TextClassificationResource() {
   RemoveAdsClientNotifierObserver(this);
 }
 
+void TextClassificationResource::ClassifyPage(const std::string& text,
+                                              ClassifyPageCallback callback) {
+  if (!IsInitialized()) {
+    BLOG(1,
+         "Failed to process text classification as resource not initialized");
+    return std::move(callback).Run(/*probabilities=*/{});
+  }
+
+  text_processing_pipeline_
+      ->AsyncCall(&ml::pipeline::TextProcessing::ClassifyPage)
+      .WithArgs(text)
+      .Then(std::move(callback));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationResource::MaybeLoad() {
@@ -60,36 +74,45 @@ void TextClassificationResource::MaybeLoadOrReset() {
 void TextClassificationResource::Load() {
   did_load_ = true;
 
-  LoadFlatBuffersResource(
+  LoadFileResource(
       GetResourceId(), GetResourceVersion(),
-      base::BindOnce(&TextClassificationResource::LoadCallback,
+      base::BindOnce(&TextClassificationResource::LoadFileResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassificationResource::LoadCallback(
-    ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
+void TextClassificationResource::LoadFileResourceCallback(base::File file) {
+  if (!file.IsValid()) {
+    BLOG(0, "Failed to load invalid resource file");
+    return;
+  }
+
+  text_processing_pipeline_.emplace(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}));
+  text_processing_pipeline_
+      ->AsyncCall(&ml::pipeline::TextProcessing::LoadPipeline)
+      .WithArgs(std::move(file))
+      .Then(base::BindOnce(&TextClassificationResource::LoadPipelineCallback,
+                           weak_factory_.GetWeakPtr()));
+}
+
+void TextClassificationResource::LoadPipelineCallback(
+    base::expected<bool, std::string> result) {
   if (!result.has_value()) {
+    text_processing_pipeline_.reset();
     return BLOG(0, "Failed to initialize " << GetResourceId()
                                            << " text classification resource ("
                                            << result.error() << ")");
   }
 
-  if (!result.value().IsInitialized()) {
-    return BLOG(1, GetResourceId()
-                       << " text classification resource is not available");
-  }
-
-  text_processing_pipeline_ = std::move(result).value();
-  const std::string pipeline_type =
-      text_processing_pipeline_->IsNeuralPipline() ? "neural" : "linear";
-
+  const bool is_neural = result.value();
+  const std::string pipeline_type = is_neural ? "neural" : "linear";
   BLOG(1, "Successfully loaded " << GetResourceId() << " " << pipeline_type
                                  << " text classification resource");
 
   BLOG(1, "Successfully initialized "
               << GetResourceId() << " " << pipeline_type
               << " text classification resource version "
-              << kTextClassificationResourceVersion.Get());
+              << GetResourceVersion());
 }
 
 void TextClassificationResource::MaybeReset() {

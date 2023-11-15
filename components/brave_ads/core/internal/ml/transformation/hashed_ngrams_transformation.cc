@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
@@ -41,7 +40,6 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
   // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
   // TextProcessing to make it more reliable.
   if (input_data->GetType() != DataType::kText) {
-    BLOG(0, "HashedNGramsTransformation input not of type text");
     return {};
   }
 
