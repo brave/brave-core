@@ -52,7 +52,7 @@ class BraveAdsPromotedContentAdEventHandlerTest : public UnitTestBase {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::PromotedContentAdEventType& event_type,
+                 const mojom::PromotedContentAdEventType event_type,
                  const bool should_fire_event) {
     base::MockCallback<FirePromotedContentAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,

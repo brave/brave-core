@@ -64,7 +64,7 @@ class BraveAdsSearchResultAdEventHandlerTest : public UnitTestBase {
   }
 
   void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                 const mojom::SearchResultAdEventType& event_type,
+                 const mojom::SearchResultAdEventType event_type,
                  const bool should_fire_event) {
     base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event,

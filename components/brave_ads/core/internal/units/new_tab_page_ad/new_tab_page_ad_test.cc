@@ -37,7 +37,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
 
   void TriggerNewTabPageAdEvent(const std::string& placement_id,
                                 const std::string& creative_instance_id,
-                                const mojom::NewTabPageAdEventType& event_type,
+                                const mojom::NewTabPageAdEventType event_type,
                                 const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));

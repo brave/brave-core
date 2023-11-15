@@ -16,7 +16,7 @@ class Data;
 
 class Transformation {
  public:
-  explicit Transformation(const TransformationType& type);
+  explicit Transformation(TransformationType type);
 
   virtual ~Transformation();
 

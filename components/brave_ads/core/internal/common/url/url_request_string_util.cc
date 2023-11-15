@@ -22,11 +22,10 @@ bool ShouldAllowHeader(const std::string& header) {
   const std::vector<std::string> allowed_headers{"digest", "signature",
                                                  "accept", "content-type"};
 
-  return base::ranges::any_of(
-      allowed_headers, [&header](const std::string& allowed_header) {
-        return base::StartsWith(header, allowed_header,
-                                base::CompareCase::INSENSITIVE_ASCII);
-      });
+  return base::ranges::any_of(allowed_headers,
+                              [&header](const std::string& allowed_header) {
+                                return header.starts_with(allowed_header);
+                              });
 }
 
 std::string HeadersToString(const std::vector<std::string>& headers,

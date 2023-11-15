@@ -45,7 +45,7 @@ class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::NewTabPageAdEventType& event_type,
+                 const mojom::NewTabPageAdEventType event_type,
                  const bool should_fire_event) {
     base::MockCallback<FireNewTabPageAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,
