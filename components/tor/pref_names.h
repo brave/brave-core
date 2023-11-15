@@ -8,11 +8,11 @@
 
 namespace tor::prefs {
 
-extern const char kTorDisabled[];
+inline constexpr char kTorDisabled[] = "tor.tor_disabled";
 
 // Automatically open onion available site or .onion domain in Tor window
-extern const char kAutoOnionRedirect[];
-extern const char kBridgesConfig[];
+inline constexpr char kAutoOnionRedirect[] = "tor.auto_onion_location";
+inline constexpr char kBridgesConfig[] = "tor.bridges";
 
 }  // namespace tor::prefs
 

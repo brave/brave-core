@@ -23,9 +23,12 @@ class TabStripModel;
 
 namespace misc_metrics {
 
-extern const char kVerticalOpenTabsHistogramName[];
-extern const char kVerticalGroupTabsHistogramName[];
-extern const char kVerticalPinnedTabsHistogramName[];
+inline constexpr char kVerticalOpenTabsHistogramName[] =
+    "Brave.VerticalTabs.OpenTabs";
+inline constexpr char kVerticalGroupTabsHistogramName[] =
+    "Brave.VerticalTabs.GroupTabs";
+inline constexpr char kVerticalPinnedTabsHistogramName[] =
+    "Brave.VerticalTabs.PinnedTabs";
 
 enum class TabCountType {
   kOpen,

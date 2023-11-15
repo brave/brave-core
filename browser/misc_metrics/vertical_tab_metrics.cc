@@ -64,10 +64,6 @@ void RecordMaxToHistogramBucket(TabCountType count_type, uint64_t max_value) {
 
 }  // namespace
 
-const char kVerticalOpenTabsHistogramName[] = "Brave.VerticalTabs.OpenTabs";
-const char kVerticalGroupTabsHistogramName[] = "Brave.VerticalTabs.GroupTabs";
-const char kVerticalPinnedTabsHistogramName[] = "Brave.VerticalTabs.PinnedTabs";
-
 VerticalTabBrowserMetrics::VerticalTabBrowserMetrics(
     PrefService* profile_prefs,
     base::RepeatingClosure change_callback)

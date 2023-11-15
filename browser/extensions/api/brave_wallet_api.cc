@@ -153,7 +153,7 @@ ExtensionFunction::ResponseAction BraveWalletGetWeb3ProviderFunction::Run() {
       default_wallet ==
           ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
       default_wallet == ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-    extension_id = ethereum_remote_client_extension_id;
+    extension_id = kEthereumRemoteClientExtensionId;
   }
   return RespondNow(WithArguments(extension_id));
 }
@@ -174,7 +174,7 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   if (base::FeatureList::IsEnabled(ethereum_remote_client::features::
                                        kCryptoWalletsForNewInstallsFeature) ||
       extensions::ExtensionPrefs::Get(browser_context())
-          ->HasPrefForExtension(ethereum_remote_client_extension_id)) {
+          ->HasPrefForExtension(kEthereumRemoteClientExtensionId)) {
     list.Append(MakeSelectValue(
         brave_l10n::GetLocalizedResourceUTF16String(
             IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED),

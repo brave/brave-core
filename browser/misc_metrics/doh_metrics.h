@@ -19,8 +19,10 @@ class PrefService;
 
 namespace misc_metrics {
 
-extern const char kAutoSecureRequestsHistogramName[];
-extern const char kSecureDnsSettingHistogramName[];
+inline constexpr char kAutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests";
+inline constexpr char kSecureDnsSettingHistogramName[] =
+    "Brave.DNS.SecureSetting";
 
 // Manages DNS-over-HTTPS metrics. Queries the DNS query counts
 // maintained by SecureDnsCounter in the network process on

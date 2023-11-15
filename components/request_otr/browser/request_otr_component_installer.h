@@ -17,8 +17,8 @@
 
 namespace request_otr {
 
-extern const char kRequestOTRConfigFile[];
-extern const char kRequestOTRConfigFileVersion[];
+inline constexpr char kRequestOTRConfigFile[] = "request-otr.json";
+inline constexpr char kRequestOTRConfigFileVersion[] = "1";
 
 // The request_otr download service is in charge
 // of loading and parsing the request_otr configuration file

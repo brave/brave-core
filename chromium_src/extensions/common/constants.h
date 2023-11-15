@@ -8,23 +8,39 @@
 
 #include "src/extensions/common/constants.h"  // IWYU pragma: export
 
-EXTENSIONS_EXPORT extern const int kBraveActionGraphicSize;
-EXTENSIONS_EXPORT extern const int kBraveActionLeftMarginExtra;
+inline constexpr int kBraveActionGraphicSize = 18;
+inline constexpr int kBraveActionLeftMarginExtra = -2;
 
-EXTENSIONS_EXPORT extern const char brave_extension_id[];
-EXTENSIONS_EXPORT extern const char hangouts_extension_id[];
-EXTENSIONS_EXPORT extern const char crl_set_extension_id[];
+inline constexpr char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
+inline constexpr char hangouts_extension_id[] =
+    "nkeimhogjdpnpccoofpliimaahmaaome";
+inline constexpr char crl_set_extension_id[] =
+    "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
-EXTENSIONS_EXPORT extern const char brave_webtorrent_extension_id[];
-EXTENSIONS_EXPORT extern const char brave_webtorrent_extension_filename[];
-EXTENSIONS_EXPORT extern const char brave_webtorrent_extension_filename2[];
+inline constexpr char brave_webtorrent_extension_id[] =
+    "lgjmpdmojkpocjcopdikifhejkkjglho";
+inline constexpr char brave_webtorrent_extension_filename[] =
+    "brave_webtorrent.html";
+inline constexpr char brave_webtorrent_extension_filename2[] =
+    "brave_webtorrent2.html";
 
-EXTENSIONS_EXPORT extern const char ipfs_companion_extension_id[];
-EXTENSIONS_EXPORT extern const char ipfs_companion_extension_name[];
-EXTENSIONS_EXPORT extern const char ipfs_companion_extension_public_key[];
-EXTENSIONS_EXPORT extern const char ipfs_companion_beta_extension_id[];
-EXTENSIONS_EXPORT extern const char ipfs_persmission_extension_id[];
+inline constexpr char ipfs_companion_extension_id[] =
+    "nibjojkomfdiaoajekhjakgkdhaomnch";
+inline constexpr char ipfs_companion_extension_name[] = "IPFS Companion";
+inline constexpr char ipfs_companion_extension_public_key[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi+PCLMME8x15VZQqUn+vBUJH8oqGq"
+    "NiUX6lYLBi5w3HwSGcknEyCF5LDJv7tR3yeSxD8PhohQVJd2+5WB4BJkvzVR3F6uHS7hrgZ0l"
+    "cq+xa+q4c1At35332C//ahX+ZvK3/n9v20jzJ8xdesQmfG8coFIyOZfOQ/owTno+QoPrUO9sy"
+    "XeG6nbYQnyfDip+UXe663zfBiNmwuVPo8R58zAOmpz7yAlCH+yEmj1YjQYpqbtYHwJwvN4elG"
+    "F9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7Voe"
+    "Fu6oQk5G0d1/38W7GotUwIDAQAB";
 
-EXTENSIONS_EXPORT extern const char google_translate_extension_id[];
+inline constexpr char ipfs_persmission_extension_id[] =
+    "afalakplffnnnlkncjhbmahjfjhmlkal";
+inline constexpr char ipfs_companion_beta_extension_id[] =
+    "hjoieblefckbooibpepigmacodalfndh";
+
+inline constexpr char google_translate_extension_id[] =
+    "aapbdbdomjkkjkaonfhkkikfgjllcleb";
 
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

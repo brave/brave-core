@@ -28,8 +28,6 @@ constexpr base::TimeDelta kReportDebounceTime = base::Seconds(10);
 
 }  // namespace
 
-constexpr char kAdblockExtensionsHistogramName[] = "Brave.Extensions.AdBlock";
-
 ExtensionMetricsService::ExtensionMetricsService(
     extensions::ExtensionRegistry* extension_registry)
     : extension_registry_(extension_registry), observation_(this) {

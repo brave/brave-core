@@ -15,13 +15,17 @@ class PrefService;
 
 namespace ai_chat {
 
-extern const char kChatCountHistogramName[];
-extern const char kAvgPromptCountHistogramName[];
-extern const char kEnabledHistogramName[];
-extern const char kUsageDailyHistogramName[];
-extern const char kOmniboxWeekCompareHistogramName[];
-extern const char kOmniboxOpensHistogramName[];
-extern const char kAcquisitionSourceHistogramName[];
+inline constexpr char kChatCountHistogramName[] = "Brave.AIChat.ChatCount";
+inline constexpr char kAvgPromptCountHistogramName[] =
+    "Brave.AIChat.AvgPromptCount";
+inline constexpr char kEnabledHistogramName[] = "Brave.AIChat.Enabled";
+inline constexpr char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily";
+inline constexpr char kOmniboxWeekCompareHistogramName[] =
+    "Brave.AIChat.OmniboxWeekCompare";
+inline constexpr char kOmniboxOpensHistogramName[] =
+    "Brave.AIChat.OmniboxOpens";
+inline constexpr char kAcquisitionSourceHistogramName[] =
+    "Brave.AIChat.AcquisitionSource";
 
 enum class AcquisitionSource {
   kOmnibox = 0,

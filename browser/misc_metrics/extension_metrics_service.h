@@ -27,7 +27,8 @@ class ExtensionRegistry;
 
 namespace misc_metrics {
 
-extern const char kAdblockExtensionsHistogramName[];
+inline constexpr char kAdblockExtensionsHistogramName[] =
+    "Brave.Extensions.AdBlock";
 
 // Monitors installation/uninstallation of third-party extensions
 // and reports relevant metrics via P3A.

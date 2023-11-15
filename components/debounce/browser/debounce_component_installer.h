@@ -26,8 +26,8 @@ namespace debounce {
 
 class DebounceBrowserTest;
 
-extern const char kDebounceConfigFile[];
-extern const char kDebounceConfigFileVersion[];
+inline constexpr char kDebounceConfigFile[] = "debounce.json";
+inline constexpr char kDebounceConfigFileVersion[] = "1";
 
 // The debounce download service is in charge
 // of loading and parsing the debounce configuration file

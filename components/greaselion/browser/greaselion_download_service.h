@@ -35,8 +35,8 @@ using brave_component_updater::LocalDataFilesService;
 
 namespace greaselion {
 
-extern const char kGreaselionConfigFile[];
-extern const char kGreaselionConfigFileVersion[];
+inline constexpr char kGreaselionConfigFile[] = "Greaselion.json";
+inline constexpr char kGreaselionConfigFileVersion[] = "1";
 
 enum GreaselionPreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
 

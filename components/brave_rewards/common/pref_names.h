@@ -9,80 +9,121 @@
 namespace brave_rewards::prefs {
 
 // Used to enable/disable Rewards via a policy.
-extern const char kDisabledByPolicy[];
+inline constexpr char kDisabledByPolicy[] = "brave.rewards.disabled_by_policy";
 
 // Stores the "Rewards version" in which the user's Rewards account was created.
 // This value is intended to be used to distinguish "legacy" users when Rewards
 // features are migrated. Note that if the user has not yet created a Rewards
 // account, this value will default to the empty string.
-extern const char kUserVersion[];
-extern const char kCurrentUserVersion[];
+inline constexpr char kUserVersion[] = "brave.rewards.user_version";
+inline constexpr char kCurrentUserVersion[] = "2.5";
 
-extern const char kHideButton[];  // DEPRECATED
-extern const char kShowButton[];  // DEPRECATED
-extern const char kShowLocationBarButton[];
-extern const char kEnabled[];  // DEPRECATED
-extern const char kDeclaredGeo[];
-extern const char kNotifications[];
-extern const char kNotificationTimerInterval[];
-extern const char kBackupNotificationInterval[];  // DEPRECATED
-extern const char kBackupSucceeded[];             // DEPRECATED
-extern const char kUserHasFunded[];               // DEPRECATED
-extern const char kUserHasClaimedGrant[];         // DEPRECATED
-extern const char kAddFundsNotification[];        // DEPRECATED
-extern const char kNotificationStartupDelay[];
-extern const char kExternalWallets[];  // DEPRECATED
-extern const char kBadgeText[];
-extern const char kUseRewardsStagingServer[];
-extern const char kExternalWalletType[];
-extern const char kP3APanelTriggerCount[];
+inline constexpr char kHideButton[] =
+    "brave.hide_brave_rewards_button";  // DEPRECATED
+inline constexpr char kShowButton[] =
+    "brave.show_brave_rewards_button";  // DEPRECATED
+inline constexpr char kShowLocationBarButton[] =
+    "brave.rewards.show_brave_rewards_button_in_location_bar";
+inline constexpr char kEnabled[] = "brave.rewards.enabled";  // DEPRECATED
+inline constexpr char kDeclaredGeo[] = "brave.rewards.declared_geo";
+inline constexpr char kNotifications[] = "brave.rewards.notifications";
+inline constexpr char kNotificationTimerInterval[] =
+    "brave.rewards.notification_timer_interval";
+inline constexpr char kBackupNotificationInterval[] =
+    "brave.rewards.backup_notification_interval";  // DEPRECATED
+inline constexpr char kBackupSucceeded[] =
+    "brave.rewards.backup_succeeded";  // DEPRECATED
+inline constexpr char kUserHasFunded[] =
+    "brave.rewards.user_has_funded";  // DEPRECATED
+inline constexpr char kUserHasClaimedGrant[] =
+    "brave.rewards.user_has_claimed_grant";  // DEPRECATED
+inline constexpr char kAddFundsNotification[] =
+    "brave.rewards.add_funds_notification";  // DEPRECATED
+inline constexpr char kNotificationStartupDelay[] =
+    "brave.rewards.notification_startup_delay";
+inline constexpr char kExternalWallets[] =
+    "brave.rewards.external_wallets";  // DEPRECATED
 
 // Defined in core
-extern const char kServerPublisherListStamp[];
-extern const char kUpholdAnonAddress[];  // DEPRECATED
-extern const char kPromotionLastFetchStamp[];
-extern const char kPromotionCorruptedMigrated[];
-extern const char kAnonTransferChecked[];
-extern const char kVersion[];
-extern const char kMinVisitTime[];
-extern const char kMinVisits[];
-extern const char kAllowNonVerified[];        // DEPRECATED
-extern const char kAllowVideoContribution[];  // DEPRECATED
-extern const char kScoreA[];
-extern const char kScoreB[];
-extern const char kAutoContributeEnabled[];
-extern const char kAutoContributeAmount[];
-extern const char kNextReconcileStamp[];
-extern const char kCreationStamp[];
-extern const char kRecoverySeed[];  // DEPRECATED
-extern const char kPaymentId[];     // DEPRECATED
-extern const char kInlineTipButtonsEnabled[];  // DEPRECATED
-extern const char kInlineTipRedditEnabled[];   // DEPRECATED
-extern const char kInlineTipTwitterEnabled[];  // DEPRECATED
-extern const char kInlineTipGithubEnabled[];   // DEPRECATED
-extern const char kParametersRate[];
-extern const char kParametersAutoContributeChoice[];
-extern const char kParametersAutoContributeChoices[];
-extern const char kParametersTipChoices[];
-extern const char kParametersMonthlyTipChoices[];
-extern const char kParametersPayoutStatus[];
-extern const char kParametersWalletProviderRegions[];
-extern const char kParametersVBatDeadline[];
-extern const char kParametersVBatExpired[];
-extern const char kFetchOldBalance[];  // DEPRECATED
-extern const char kEmptyBalanceChecked[];
-extern const char kWalletBrave[];
-extern const char kWalletUphold[];
-extern const char kWalletBitflyer[];
-extern const char kWalletGemini[];
-extern const char kWalletZebPay[];
-extern const char kWalletCreationEnvironment[];
+inline constexpr char kServerPublisherListStamp[] =
+    "brave.rewards.publisher_prefix_list_stamp";
+inline constexpr char kUpholdAnonAddress[] =
+    "brave.rewards.uphold_anon_address";  // DEPRECATED
+inline constexpr char kBadgeText[] = "brave.rewards.badge_text";
+inline constexpr char kUseRewardsStagingServer[] =
+    "brave.rewards.use_staging_server";
+inline constexpr char kExternalWalletType[] =
+    "brave.rewards.external_wallet_type";
+inline constexpr char kP3APanelTriggerCount[] =
+    "brave.rewards.p3a_panel_trigger_count";
+inline constexpr char kPromotionLastFetchStamp[] =
+    "brave.rewards.promotion_last_fetch_stamp";
+inline constexpr char kPromotionCorruptedMigrated[] =
+    "brave.rewards.promotion_corrupted_migrated2";
+inline constexpr char kAnonTransferChecked[] =
+    "brave.rewards.anon_transfer_checked";
+inline constexpr char kVersion[] = "brave.rewards.version";
+inline constexpr char kMinVisitTime[] = "brave.rewards.ac.min_visit_time";
+inline constexpr char kMinVisits[] = "brave.rewards.ac.min_visits";
+inline constexpr char kAllowNonVerified[] =
+    "brave.rewards.ac.allow_non_verified";  // DEPRECATED
+inline constexpr char kAllowVideoContribution[] =
+    "brave.rewards.ac.allow_video_contributions";  // DEPRECATED
+inline constexpr char kScoreA[] = "brave.rewards.ac.score.a";
+inline constexpr char kScoreB[] = "brave.rewards.ac.score.b";
+inline constexpr char kAutoContributeEnabled[] = "brave.rewards.ac.enabled";
+inline constexpr char kAutoContributeAmount[] = "brave.rewards.ac.amount";
+inline constexpr char kNextReconcileStamp[] =
+    "brave.rewards.ac.next_reconcile_stamp";
+inline constexpr char kCreationStamp[] = "brave.rewards.creation_stamp";
+inline constexpr char kRecoverySeed[] =
+    "brave.rewards.wallet.seed";  // DEPRECATED
+inline constexpr char kPaymentId[] =
+    "brave.rewards.wallet.payment_id";  // DEPRECATED
+inline constexpr char kInlineTipButtonsEnabled[] =
+    "brave.rewards.inline_tip_buttons_enabled";  // DEPRECATED
+inline constexpr char kInlineTipRedditEnabled[] =
+    "brave.rewards.inline_tip.reddit";  // DEPRECATED
+inline constexpr char kInlineTipTwitterEnabled[] =
+    "brave.rewards.inline_tip.twitter";  // DEPRECATED
+inline constexpr char kInlineTipGithubEnabled[] =
+    "brave.rewards.inline_tip.github";  // DEPRECATED
+inline constexpr char kParametersRate[] = "brave.rewards.parameters.rate";
+inline constexpr char kParametersAutoContributeChoice[] =
+    "brave.rewards.parameters.ac.choice";
+inline constexpr char kParametersAutoContributeChoices[] =
+    "brave.rewards.parameters.ac.choices";
+inline constexpr char kParametersTipChoices[] =
+    "brave.rewards.parameters.tip.choices";
+inline constexpr char kParametersMonthlyTipChoices[] =
+    "brave.rewards.parameters.tip.monthly_choices";
+inline constexpr char kParametersPayoutStatus[] =
+    "brave.rewards.parameters.payout_status";
+inline constexpr char kParametersWalletProviderRegions[] =
+    "brave.rewards.parameters.wallet_provider_regions";
+inline constexpr char kParametersVBatDeadline[] =
+    "brave.rewards.parameters.vbat_deadline";
+inline constexpr char kParametersVBatExpired[] =
+    "brave.rewards.parameters.vbat_expired";
+inline constexpr char kFetchOldBalance[] =
+    "brave.rewards.fetch_old_balance";  // DEPRECATED
+inline constexpr char kEmptyBalanceChecked[] =
+    "brave.rewards.empty_balance_checked";
+inline constexpr char kWalletBrave[] = "brave.rewards.wallets.brave";
+inline constexpr char kWalletUphold[] = "brave.rewards.wallets.uphold";
+inline constexpr char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
+inline constexpr char kWalletGemini[] = "brave.rewards.wallets.gemini";
+inline constexpr char kWalletZebPay[] = "brave.rewards.wallets.zebpay";
+inline constexpr char kWalletCreationEnvironment[] =
+    "brave.rewards.wallet_creation_environment";
 
 // deprecated p3a prefs
-extern const char kAdsWereDisabled[];
-extern const char kHasAdsP3AState[];
-extern const char kAdsEnabledTimeDelta[];
-extern const char kAdsEnabledTimestamp[];
+inline constexpr char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+inline constexpr char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
+inline constexpr char kAdsEnabledTimeDelta[] =
+    "brave.rewards.ads_enabled_time_delta";
+inline constexpr char kAdsEnabledTimestamp[] =
+    "brave.rewards.ads_enabled_timestamp";
 
 }  // namespace brave_rewards::prefs
 

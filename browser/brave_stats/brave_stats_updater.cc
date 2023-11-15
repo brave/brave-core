@@ -43,9 +43,6 @@
 
 namespace brave_stats {
 
-const char kP3AMonthlyPingHistogramName[] = "Brave.Core.UsageMonthly";
-const char kP3ADailyPingHistogramName[] = "Brave.Core.UsageDaily";
-
 namespace {
 
 constexpr char kInvalidUrl[] = "https://no-thanks.invalid";

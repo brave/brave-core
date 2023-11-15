@@ -11,7 +11,6 @@ static_library("common") {
     "features.cc",
     "features.h",
     "pref_names.h",
-    "switches.cc",
     "switches.h",
   ]
 

@@ -723,10 +723,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 
-  std::u16string ipfs_method_desc = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_IPFS_METHOD_DESC,
-      base::ASCIIToUTF16(ipfs::kIPFSLearnMorePrivacyURL));
-  html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
+  html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
+                                               IDS_SETTINGS_IPFS_METHOD_DESC,
+                                               ipfs::kIPFSLearnMorePrivacyURL));
 
   html_source->AddString("resolveUnstoppableDomainsSubDesc",
                          l10n_util::GetStringFUTF16(
@@ -741,7 +740,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsDefaultsSectionDescription2",
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
-                             base::ASCIIToUTF16(kBraveUIRewardsURL)));
+                             kBraveUIRewardsURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,

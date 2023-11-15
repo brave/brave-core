@@ -10,58 +10,60 @@
 
 namespace brave_wallet {
 
-extern const char kConnectEvent[];
-extern const char kDisconnectEvent[];
+inline constexpr char kConnectEvent[] = "connect";
+inline constexpr char kDisconnectEvent[] = "disconnect";
 
 namespace ethereum {
-extern const char kChainChangedEvent[];
-extern const char kAccountsChangedEvent[];
-extern const char kMessageEvent[];
+inline constexpr char kChainChangedEvent[] = "chainChanged";
+inline constexpr char kAccountsChangedEvent[] = "accountsChanged";
+inline constexpr char kMessageEvent[] = "message";
 }  // namespace ethereum
 
 namespace solana {
-extern const char kAccountChangedEvent[];
-constexpr char kConnect[] = "connect";
-constexpr char kDisconnect[] = "disconnect";
-constexpr char kSignTransaction[] = "signTransaction";
-constexpr char kSignAndSendTransaction[] = "signAndSendTransaction";
-constexpr char kSignAllTransactions[] = "signAllTransactions";
-constexpr char kSignMessage[] = "signMessage";
+inline constexpr char kAccountChangedEvent[] = "accountChanged";
+inline constexpr char kConnect[] = "connect";
+inline constexpr char kDisconnect[] = "disconnect";
+inline constexpr char kSignTransaction[] = "signTransaction";
+inline constexpr char kSignAndSendTransaction[] = "signAndSendTransaction";
+inline constexpr char kSignAllTransactions[] = "signAllTransactions";
+inline constexpr char kSignMessage[] = "signMessage";
 }  // namespace solana
 
-constexpr char kEthAccounts[] = "eth_accounts";
-constexpr char kEthCoinbase[] = "eth_coinbase";
-constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
-constexpr char kEthSendTransaction[] = "eth_sendTransaction";
-constexpr char kEthSignTransaction[] = "eth_signTransaction";
-constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
-constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
-constexpr char kEthBlockNumber[] = "eth_blockNumber";
-constexpr char kEthSign[] = "eth_sign";
-constexpr char kPersonalSign[] = "personal_sign";
-constexpr char kPersonalEcRecover[] = "personal_ecRecover";
-constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
-constexpr char kEthDecrypt[] = "eth_decrypt";
-constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
-constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
-constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
-constexpr char kEthSubscribe[] = "eth_subscribe";
-constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
-constexpr char kEthSubscribeNewHeads[] = "newHeads";
-constexpr char kEthSubscribeLogs[] = "logs";
+inline constexpr char kEthAccounts[] = "eth_accounts";
+inline constexpr char kEthCoinbase[] = "eth_coinbase";
+inline constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
+inline constexpr char kEthSendTransaction[] = "eth_sendTransaction";
+inline constexpr char kEthSignTransaction[] = "eth_signTransaction";
+inline constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
+inline constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
+inline constexpr char kEthBlockNumber[] = "eth_blockNumber";
+inline constexpr char kEthSign[] = "eth_sign";
+inline constexpr char kPersonalSign[] = "personal_sign";
+inline constexpr char kPersonalEcRecover[] = "personal_ecRecover";
+inline constexpr char kEthGetEncryptionPublicKey[] =
+    "eth_getEncryptionPublicKey";
+inline constexpr char kEthDecrypt[] = "eth_decrypt";
+inline constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
+inline constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
+inline constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
+inline constexpr char kEthSubscribe[] = "eth_subscribe";
+inline constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
+inline constexpr char kEthSubscribeNewHeads[] = "newHeads";
+inline constexpr char kEthSubscribeLogs[] = "logs";
 
 // We currently don't handle it until MetaMask point it to v3 or v4 other than
 // v1 or v2
-constexpr char kEthSignTypedData[] = "eth_signTypedData";
-constexpr char kEthSignTypedDataV3[] = "eth_signTypedData_v3";
-constexpr char kEthSignTypedDataV4[] = "eth_signTypedData_v4";
-constexpr char kId[] = "id";
-constexpr char kMethod[] = "method";
-constexpr char kParams[] = "params";
-constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
-constexpr char kSwitchEthereumChainMethod[] = "wallet_switchEthereumChain";
-constexpr char kRequestPermissionsMethod[] = "wallet_requestPermissions";
-constexpr char kGetPermissionsMethod[] = "wallet_getPermissions";
+inline constexpr char kEthSignTypedData[] = "eth_signTypedData";
+inline constexpr char kEthSignTypedDataV3[] = "eth_signTypedData_v3";
+inline constexpr char kEthSignTypedDataV4[] = "eth_signTypedData_v4";
+inline constexpr char kId[] = "id";
+inline constexpr char kMethod[] = "method";
+inline constexpr char kParams[] = "params";
+inline constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
+inline constexpr char kSwitchEthereumChainMethod[] =
+    "wallet_switchEthereumChain";
+inline constexpr char kRequestPermissionsMethod[] = "wallet_requestPermissions";
+inline constexpr char kGetPermissionsMethod[] = "wallet_getPermissions";
 
 }  // namespace brave_wallet
 

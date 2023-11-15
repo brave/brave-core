@@ -8,64 +8,104 @@
 
 namespace brave_ads::prefs {
 
-// Brave Ads version pref
-extern const char kVersion[];
+// Stores the preferences version number
+inline constexpr char kVersion[] = "brave.brave_ads.prefs.current_version";
 
-// p2a pref
-extern const char kP2APrefPathPrefix[];
+// Prefix for preference names pertaining to p2a weekly metrics
+inline constexpr char kP2APrefPathPrefix[] = "brave.weekly_storage.";
 
-// Notification prefs
-extern const char kShouldShowOnboardingNotification[];
-extern const char kNotificationAdLastNormalizedDisplayCoordinateX[];
-extern const char kNotificationAdLastNormalizedDisplayCoordinateY[];
-extern const char kNotificationAdDidFallbackToCustom[];
+// Stores whether we should show the My First notification ad
+inline constexpr char kShouldShowOnboardingNotification[] =
+    "brave.brave_ads.should_show_my_first_ad_notification";
 
-// Migration prefs
-extern const char kSupportedCountryCodesLastSchemaVersion[];
+// Stores the last normalized screen position of custom notification ads and
+// whether to fallback from native to custom notification ads if native
+// notifications are disabled
+inline constexpr char kNotificationAdLastNormalizedDisplayCoordinateX[] =
+    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_x";
+inline constexpr char kNotificationAdLastNormalizedDisplayCoordinateY[] =
+    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_y";
+inline constexpr char kNotificationAdDidFallbackToCustom[] =
+    "brave.brave_ads.ad_notification.did_fallback_to_custom";
 
-// Brave Ads enabled/disabled pref
-extern const char kOptedInToNotificationAds[];
-extern const char kEnabledForLastProfile[];
-extern const char kEverEnabledForAnyProfile[];
+// Stores the supported country codes current schema version number
+inline constexpr char kSupportedCountryCodesLastSchemaVersion[] =
+    "brave.brave_ads.supported_regions_last_schema_version_number";
 
-// Diagnostic id prefs
-extern const char kDiagnosticId[];
+// Stores whether user has opted-in to notifications ads
+inline constexpr char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
+inline constexpr char kEnabledForLastProfile[] =
+    "brave.brave_ads.enabled_last_profile";
+inline constexpr char kEverEnabledForAnyProfile[] =
+    "brave.brave_ads.ever_enabled_any_profile";
 
-// Notification prefs
-extern const char kMaximumNotificationAdsPerHour[];
-extern const char kNotificationAds[];
-extern const char kServeAdAt[];
-extern const char kBrowserVersionNumber[];
+// Stores a diagnostic id
+inline constexpr char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
 
-// Subdivision targeting prefs
-extern const char kShouldAllowSubdivisionTargeting[];
-extern const char kSubdivisionTargetingSubdivision[];
-extern const char kSubdivisionTargetingAutoDetectedSubdivision[];
+// Stores the maximum number of notification ads per hour
+inline constexpr char kMaximumNotificationAdsPerHour[] =
+    "brave.brave_ads.ads_per_hour";
 
-// Catalog prefs
-extern const char kCatalogId[];
-extern const char kCatalogVersion[];
-extern const char kCatalogPing[];
-extern const char kCatalogLastUpdated[];
+// Notification ads
+inline constexpr char kNotificationAds[] = "brave.brave_ads.notification_ads";
+inline constexpr char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
 
-// Issuer prefs
-extern const char kIssuerPing[];
-extern const char kIssuers[];
+// Browser version
+inline constexpr char kBrowserVersionNumber[] =
+    "brave.brave_ads.browser_version_number";
 
-// Epsilon greedy bandit prefs
-extern const char kEpsilonGreedyBanditArms[];
-extern const char kEpsilonGreedyBanditEligibleSegments[];
+// Stores whether Brave ads should allow subdivision ad targeting
+inline constexpr char kShouldAllowSubdivisionTargeting[] =
+    "brave.brave_ads.should_allow_ads_subdivision_targeting";
 
-// Unblinded token prefs
-extern const char kNextTokenRedemptionAt[];
+// Stores the selected subdivision targeting code
+inline constexpr char kSubdivisionTargetingSubdivision[] =
+    "brave.brave_ads.ads_subdivision_targeting_code";
 
-// Migration prefs
-extern const char kHasMigratedClientState[];
-extern const char kHasMigratedConfirmationState[];
-extern const char kHasMigratedConversionState[];
-extern const char kHasMigratedNotificationState[];
-extern const char kHasMigratedRewardsState[];
-extern const char kShouldMigrateVerifiedRewardsUser[];
+// Stores the automatically detected subdivision targeting code
+inline constexpr char kSubdivisionTargetingAutoDetectedSubdivision[] =
+    "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
+
+// Stores catalog id
+inline constexpr char kCatalogId[] = "brave.brave_ads.catalog_id";
+
+// Stores catalog version
+inline constexpr char kCatalogVersion[] = "brave.brave_ads.catalog_version";
+
+// Stores catalog ping
+inline constexpr char kCatalogPing[] = "brave.brave_ads.catalog_ping";
+
+// Stores catalog last updated
+inline constexpr char kCatalogLastUpdated[] =
+    "brave.brave_ads.catalog_last_updated";
+
+// Stores issuers
+inline constexpr char kIssuerPing[] = "brave.brave_ads.issuer_ping";
+inline constexpr char kIssuers[] = "brave.brave_ads.issuers";
+
+// Stores epsilon greedy bandit
+inline constexpr char kEpsilonGreedyBanditArms[] =
+    "brave.brave_ads.epsilon_greedy_bandit_arms.v2";
+inline constexpr char kEpsilonGreedyBanditEligibleSegments[] =
+    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
+
+// Rewards
+inline constexpr char kNextTokenRedemptionAt[] =
+    "brave.brave_ads.rewards.next_time_redemption_at";
+
+// Stores migration status
+inline constexpr char kHasMigratedClientState[] =
+    "brave.brave_ads.state.has_migrated.client.v5";
+inline constexpr char kHasMigratedConfirmationState[] =
+    "brave.brave_ads.state.has_migrated.confirmations.v5";
+inline constexpr char kHasMigratedConversionState[] =
+    "brave.brave_ads.migrated.conversion_state";
+inline constexpr char kHasMigratedNotificationState[] =
+    "brave.brave_ads.has_migrated.notification_state";
+inline constexpr char kHasMigratedRewardsState[] =
+    "brave.brave_ads.migrated.rewards_state";
+inline constexpr char kShouldMigrateVerifiedRewardsUser[] =
+    "brave.brave_ads.rewards.verified_user.should_migrate";
 
 }  // namespace brave_ads::prefs
 

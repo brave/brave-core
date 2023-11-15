@@ -6,9 +6,10 @@
 #ifndef BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
 #define BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
 
-extern const char kERCAES256GCMSivNonce[];
-extern const char kERCEncryptedSeed[];
-extern const char kERCPrefVersion[];
-extern const char kERCOptedIntoCryptoWallets[];
+inline constexpr char kERCAES256GCMSivNonce[] =
+    "brave.wallet.aes_256_gcm_siv_nonce";
+inline constexpr char kERCEncryptedSeed[] = "brave.wallet.encrypted_seed";
+inline constexpr char kERCPrefVersion[] = "brave.wallet.pref_version";
+inline constexpr char kERCOptedIntoCryptoWallets[] = "brave.wallet.opted_in";
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_

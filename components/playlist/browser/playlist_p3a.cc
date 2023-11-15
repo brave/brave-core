@@ -16,11 +16,6 @@
 
 namespace playlist {
 
-const char kLastUsageTimeHistogramName[] = "Brave.Playlist.LastUsageTime";
-const char kFirstTimeOffsetHistogramName[] = "Brave.Playlist.FirstTimeOffset";
-const char kUsageDaysInWeekHistogramName[] = "Brave.Playlist.UsageDaysInWeek";
-const char kNewUserReturningHistogramName[] = "Brave.Playlist.NewUserReturning";
-
 constexpr base::TimeDelta kUpdateInterval = base::Days(1);
 
 namespace {

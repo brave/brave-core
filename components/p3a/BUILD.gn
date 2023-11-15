@@ -43,7 +43,6 @@ static_library("p3a") {
     "p3a_message.h",
     "p3a_service.cc",
     "p3a_service.h",
-    "pref_names.cc",
     "pref_names.h",
     "rotation_scheduler.cc",
     "rotation_scheduler.h",

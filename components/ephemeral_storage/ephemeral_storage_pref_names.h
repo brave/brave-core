@@ -8,7 +8,9 @@
 
 namespace ephemeral_storage {
 
-extern const char kFirstPartyStorageOriginsToCleanup[];
+// Stores origins to perform a storage cleanup on browser restart.
+inline constexpr char kFirstPartyStorageOriginsToCleanup[] =
+    "ephemeral_storage.first_party_storage_origins_to_cleanup";
 
 }  // namespace ephemeral_storage
 

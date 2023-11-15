@@ -15,8 +15,10 @@ class PrefService;
 
 namespace misc_metrics {
 
-extern const char kLocationNewEntriesHistogramName[];
-extern const char kNewTabMethodsHistogramName[];
+inline constexpr char kLocationNewEntriesHistogramName[] =
+    "Brave.Core.LocationNewEntries";
+inline constexpr char kNewTabMethodsHistogramName[] =
+    "Brave.Core.NewTabMethods";
 
 class TabMetrics {
  public:

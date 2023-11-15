@@ -47,9 +47,12 @@ constexpr char kBraveVPNSessionExpiredDate[] =
     "brave.brave_vpn.session_expired_date";
 
 #if BUILDFLAG(IS_ANDROID)
-extern const char kBraveVPNPurchaseTokenAndroid[];
-extern const char kBraveVPNPackageAndroid[];
-extern const char kBraveVPNProductIdAndroid[];
+inline constexpr char kBraveVPNPurchaseTokenAndroid[] =
+    "brave.brave_vpn.purchase_token_android";
+inline constexpr char kBraveVPNPackageAndroid[] =
+    "brave.brave_vpn.package_android";
+inline constexpr char kBraveVPNProductIdAndroid[] =
+    "brave.brave_vpn.product_id_android";
 #endif
 
 constexpr char kBraveVPNFirstUseTime[] = "brave.brave_vpn.first_use_time";

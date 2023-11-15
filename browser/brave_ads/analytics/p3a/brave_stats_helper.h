@@ -19,7 +19,8 @@ class Profile;
 
 namespace brave_ads {
 
-extern const char kAdsEnabledInstallationTimeHistogramName[];
+inline constexpr char kAdsEnabledInstallationTimeHistogramName[] =
+    "Brave.Rewards.EnabledInstallationTime";
 
 class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
  public:

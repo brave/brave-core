@@ -6,6 +6,7 @@
 #include <string>
 
 #include "brave/browser/net/brave_system_request_handler.h"
+#include "brave/components/constants/network_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"

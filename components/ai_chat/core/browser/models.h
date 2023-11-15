@@ -13,8 +13,8 @@
 
 namespace ai_chat {
 
-extern const char kModelsDefaultKey[];
-extern const char kModelsPremiumDefaultKey[];
+inline constexpr char kModelsDefaultKey[] = "chat-default";
+inline constexpr char kModelsPremiumDefaultKey[] = "chat-claude-instant";
 
 // All models that the user can choose for chat conversations.
 extern const base::flat_map<std::string_view, mojom::Model> kAllModels;

@@ -24,15 +24,6 @@ const int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
 const int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
 }  // namespace
 
-const char kChatCountHistogramName[] = "Brave.AIChat.ChatCount";
-const char kAvgPromptCountHistogramName[] = "Brave.AIChat.AvgPromptCount";
-const char kEnabledHistogramName[] = "Brave.AIChat.Enabled";
-const char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily";
-const char kOmniboxWeekCompareHistogramName[] =
-    "Brave.AIChat.OmniboxWeekCompare";
-const char kOmniboxOpensHistogramName[] = "Brave.AIChat.OmniboxOpens";
-const char kAcquisitionSourceHistogramName[] = "Brave.AIChat.AcquisitionSource";
-
 AIChatMetrics::AIChatMetrics(PrefService* local_state)
     : chat_count_storage_(local_state,
                           prefs::kBraveChatP3AChatCountWeeklyStorage),

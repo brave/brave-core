@@ -15,7 +15,7 @@
 
 namespace brave_wallet {
 
-constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
+inline constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
 constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;

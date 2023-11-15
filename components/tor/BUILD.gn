@@ -80,10 +80,7 @@ source_set("common") {
 }
 
 source_set("pref_names") {
-  sources = [
-    "pref_names.cc",
-    "pref_names.h",
-  ]
+  sources = [ "pref_names.h" ]
 }
 
 source_set("tor_unit_tests") {

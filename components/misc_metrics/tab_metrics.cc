@@ -15,11 +15,8 @@ namespace misc_metrics {
 
 namespace {
 const int kPercentBucketValues[] = {25, 50, 75};
-}  // namespace
-
-const char kLocationNewEntriesHistogramName[] = "Brave.Core.LocationNewEntries";
-const char kNewTabMethodsHistogramName[] = "Brave.Core.NewTabMethods";
 const base::TimeDelta kReportUpdateInterval = base::Days(1);
+}  // namespace
 
 TabMetrics::TabMetrics(PrefService* local_state)
     : tab_switcher_new_tabs_storage_(local_state,

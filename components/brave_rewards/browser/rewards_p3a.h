@@ -18,13 +18,19 @@ class PrefService;
 namespace brave_rewards {
 namespace p3a {
 
-extern const char kEnabledSourceHistogramName[];
-extern const char kToolbarButtonTriggerHistogramName[];
-extern const char kTipsSentHistogramName[];
-extern const char kAutoContributionsStateHistogramName[];
-extern const char kAdTypesEnabledHistogramName[];
-extern const char kMobileConversionHistogramName[];
-extern const char kMobilePanelCountHistogramName[];
+inline constexpr char kEnabledSourceHistogramName[] =
+    "Brave.Rewards.EnabledSource";
+inline constexpr char kToolbarButtonTriggerHistogramName[] =
+    "Brave.Rewards.ToolbarButtonTrigger";
+inline constexpr char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
+inline constexpr char kAutoContributionsStateHistogramName[] =
+    "Brave.Rewards.AutoContributionsState.3";
+inline constexpr char kAdTypesEnabledHistogramName[] =
+    "Brave.Rewards.AdTypesEnabled";
+inline constexpr char kMobileConversionHistogramName[] =
+    "Brave.Rewards.MobileConversion";
+inline constexpr char kMobilePanelCountHistogramName[] =
+    "Brave.Rewards.MobilePanelCount";
 
 enum class AutoContributionsState {
   kNoWallet,

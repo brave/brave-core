@@ -23,8 +23,6 @@ const int kBrowserOpenTimeBuckets[] = {30, 60, 120, 180, 300, 420, 600};
 
 }  // namespace
 
-const char kBrowserOpenTimeHistogramName[] = "Brave.Uptime.BrowserOpenTime";
-
 UptimeMonitor::UptimeMonitor(PrefService* local_state)
     : local_state_(local_state),
       report_frame_start_time_(

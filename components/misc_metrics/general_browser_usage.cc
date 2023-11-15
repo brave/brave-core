@@ -24,9 +24,6 @@ constexpr int kProfileCountBuckets[] = {0, 1, 2, 3, 5};
 
 }  // namespace
 
-const char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
-const char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
-
 GeneralBrowserUsage::GeneralBrowserUsage(PrefService* local_state) {
   usage_storage_ = std::make_unique<ISOWeeklyStorage>(
       local_state, kMiscMetricsBrowserUsageList);

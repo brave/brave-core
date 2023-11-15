@@ -12,7 +12,6 @@ static_library("common") {
     "brave_shield_utils.h",
     "features.cc",
     "features.h",
-    "pref_names.cc",
     "pref_names.h",
   ]
 

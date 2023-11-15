@@ -18,9 +18,6 @@
 
 namespace syncer {
 
-const char kNigoriFolderNotReadyError[] =
-    "nigori root folder entity is not ready yet";
-
 void SyncSchedulerImpl::HandleBraveConfigurationFailure(
     const ModelNeutralState& model_neutral_state) {
   if (model_neutral_state.last_server_error_message ==
