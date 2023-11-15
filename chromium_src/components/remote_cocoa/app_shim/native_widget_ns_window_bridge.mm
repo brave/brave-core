@@ -3,7 +3,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/apple/scoped_objc_class_swizzler.h"
+#include "skia/ext/skia_utils_mac.h"
+
 #include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.mm"
+
+namespace {
+NSColor* __strong g_original_title_color = nil;
+NSColor* __strong g_brave_title_color = nil;
+}  // namespace
+
+@interface BrowserWindowFrame : NativeWidgetMacNSWindowTitledFrame
+@end
+
+@interface FakeBrowserWindowFrame : NSObject
+@end
+
+@implementation FakeBrowserWindowFrame
+- (id)_currentTitleColor {
+  // Swizzling affects all window frames but we only want to change
+  // browser window's title color.
+  if ([self isKindOfClass:[BrowserWindowFrame class]]) {
+    return g_brave_title_color;
+  }
+  return g_original_title_color;
+}
+@end
 
 namespace remote_cocoa {
 
@@ -50,6 +75,44 @@ void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   } else {
     LOG(ERROR) << "Failed to find selector for resetting window controls";
   }
+}
+
+void NativeWidgetNSWindowBridge::UpdateWindowTitleColor(SkColor color) {
+  static std::unique_ptr<base::apple::ScopedObjCClassSwizzler>
+      frameClassSwizzler;
+
+  NSView* frameView = window_.contentView.superview;
+  if (![frameView isKindOfClass:[BrowserWindowFrame class]]) {
+    return;
+  }
+
+  if (![frameView respondsToSelector:@selector(_currentTitleColor)]) {
+    return;
+  }
+
+  g_brave_title_color = skia::SkColorToDeviceNSColor(color);
+
+  // Revert previous swizzling and cache original title color.
+  // That title color will be used for non browser window frame.
+  // (ex, task manager dialog or popup window)
+  frameClassSwizzler.reset();
+  NSInvocation* invocation = [NSInvocation
+      invocationWithMethodSignature:
+          [[frameView class] instanceMethodSignatureForSelector:@selector
+                             (_currentTitleColor)]];
+  [invocation setSelector:@selector(_currentTitleColor)];
+  [invocation setTarget:frameView];
+  [invocation invoke];
+  [invocation getReturnValue:&g_original_title_color];
+
+  frameClassSwizzler = std::make_unique<base::apple::ScopedObjCClassSwizzler>(
+      [BrowserWindowFrame class], [FakeBrowserWindowFrame class],
+      @selector(_currentTitleColor));
+
+  // Reset title to apply new title color.
+  NSString* title = window_.title;
+  window_.title = @"";
+  window_.title = title;
 }
 
 }  // namespace remote_cocoa

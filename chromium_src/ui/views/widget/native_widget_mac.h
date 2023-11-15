@@ -15,6 +15,7 @@
   }                                                         \
   bool GetOverriddenWindowTitleVisibility() const;          \
   void ResetWindowControlsPosition();                       \
+  void UpdateWindowTitleColor(SkColor color);               \
                                                             \
  private:                                                   \
   absl::optional<bool> overridden_window_title_visibility_; \

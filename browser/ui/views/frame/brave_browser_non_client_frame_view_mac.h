@@ -28,11 +28,13 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
   bool ShouldShowWindowTitleForVerticalTabs() const;
   void UpdateWindowTitleVisibility();
   void UpdateWindowTitleAndControls();
+  void UpdateWindowTitleColor();
 
   // BrowserNonClientFrameViewMac overrides:
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
+  void OnThemeChanged() override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 

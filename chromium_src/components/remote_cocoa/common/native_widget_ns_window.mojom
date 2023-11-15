@@ -5,9 +5,13 @@
 
 module remote_cocoa.mojom;
 
+import "skia/public/mojom/skcolor.mojom";
+
 [BraveExtend]
 interface NativeWidgetNSWindow {
   SetWindowTitleVisibility(bool visible);
+
+  UpdateWindowTitleColor(skia.mojom.SkColor color);
 
   ResetWindowControlsPosition();
 };

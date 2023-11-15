@@ -99,6 +99,15 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility() {
   frame()->SetWindowTitleVisibility(ShouldShowWindowTitleForVerticalTabs());
 }
 
+void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleColor() {
+  if (!browser_view()->browser()->is_type_normal()) {
+    return;
+  }
+
+  frame()->UpdateWindowTitleColor(
+      GetCaptionColor(BrowserFrameActiveState::kUseCurrent));
+}
+
 int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
     const gfx::Point& point) {
   if (auto res = brave::NonClientHitTest(browser_view(), point);
@@ -107,6 +116,11 @@ int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
   }
 
   return BrowserNonClientFrameViewMac::NonClientHitTest(point);
+}
+
+void BraveBrowserNonClientFrameViewMac::OnThemeChanged() {
+  BrowserNonClientFrameViewMac::OnThemeChanged();
+  UpdateWindowTitleColor();
 }
 
 void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
