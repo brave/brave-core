@@ -354,6 +354,16 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
+                       TestPortfolioPageAppearing) {
+  GURL url = GURL("chrome://wallet/crypto/portfolio/assets");
+  const std::vector<std::string> ignore_patterns = {
+      "TypeError: Cannot read properties of undefined (reading "
+      "'onCompleteReset')",
+      "Error calling jsonRpcService.getERC20TokenBalances"};
+  VerifyPage(url, ignore_patterns);
+}
+
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   GURL url = GURL("chrome://wallet/swap");
   const std::vector<std::string> ignore_patterns = {
