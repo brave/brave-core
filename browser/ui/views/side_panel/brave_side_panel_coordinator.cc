@@ -69,3 +69,15 @@ std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
   header->SetVisible(false);
   return header;
 }
+
+void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
+    bool side_panel_visible) {
+  // Workaround to prevent crashing while window closing.
+  // See https://github.com/brave/brave-browser/issues/34334
+  if (!browser_view_ || !browser_view_->GetWidget() ||
+      browser_view_->GetWidget()->IsClosed()) {
+    return;
+  }
+
+  SidePanelCoordinator::UpdateToolbarButtonHighlight(side_panel_visible);
+}
