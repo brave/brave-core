@@ -8,6 +8,8 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 
@@ -15,157 +17,173 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeAdPredictorInputVariableUtilTest : public UnitTestBase {};
+class BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest
+    : public UnitTestBase {};
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorMatchingChildIntentSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingChildIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorIntentSegmentInputVariable(user_model,
-                                                           "parent-child");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      intent_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorIntentSegmentInputVariable(
+              user_model, "parent-child", /*weights=*/{});
 
   // Assert
-  EXPECT_TRUE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_TRUE(intent_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(intent_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorMatchingParentIntentSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingParentIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorIntentSegmentInputVariable(user_model,
-                                                           "parent-foo");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      intent_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorIntentSegmentInputVariable(
+              user_model, "parent-foo", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_FALSE(intent_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(intent_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorNonMatchingIntentSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorNonMatchingIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorIntentSegmentInputVariable(user_model,
-                                                           "foo-bar");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      intent_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorIntentSegmentInputVariable(
+              user_model, "foo-bar", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_FALSE(input_variable.does_match_parent);
+  EXPECT_FALSE(intent_segment_input_variable.child_matches.value);
+  EXPECT_FALSE(intent_segment_input_variable.parent_matches.value);
 }
 
 TEST_F(
-    BraveAdsCreativeAdPredictorInputVariableUtilTest,
-    ComputeCreativeAdPredictorMatchingChildLatentInterestSegmentInputVariable) {
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingChildLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorLatentInterestSegmentInputVariable(
-          user_model, "parent-child");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      latent_interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorLatentInterestSegmentInputVariable(
+              user_model, "parent-child", /*weights=*/{});
 
   // Assert
-  EXPECT_TRUE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_TRUE(latent_interest_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(latent_interest_segment_input_variable.parent_matches.value);
 }
 
 TEST_F(
-    BraveAdsCreativeAdPredictorInputVariableUtilTest,
-    ComputeCreativeAdPredictorMatchingParentLatentInterestSegmentInputVariable) {
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingParentLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorLatentInterestSegmentInputVariable(
-          user_model, "parent-foo");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      latent_interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorLatentInterestSegmentInputVariable(
+              user_model, "parent-foo", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_FALSE(latent_interest_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(latent_interest_segment_input_variable.parent_matches.value);
 }
 
 TEST_F(
-    BraveAdsCreativeAdPredictorInputVariableUtilTest,
-    ComputeCreativeAdPredictorNonMatchingLatentInterestSegmentInputVariable) {
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorNonMatchingLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorLatentInterestSegmentInputVariable(user_model,
-                                                                   "foo-bar");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      latent_interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorLatentInterestSegmentInputVariable(
+              user_model, "foo-bar", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_FALSE(input_variable.does_match_parent);
+  EXPECT_FALSE(latent_interest_segment_input_variable.child_matches.value);
+  EXPECT_FALSE(latent_interest_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorMatchingChildInterestSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingChildInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorInterestSegmentInputVariable(user_model,
-                                                             "parent-child");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
+              user_model, "parent-child", /*weights=*/{});
 
   // Assert
-  EXPECT_TRUE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_TRUE(interest_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(interest_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorMatchingParentInterestSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorMatchingParentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorInterestSegmentInputVariable(user_model,
-                                                             "parent-foo");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
+              user_model, "parent-foo", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_TRUE(input_variable.does_match_parent);
+  EXPECT_FALSE(interest_segment_input_variable.child_matches.value);
+  EXPECT_TRUE(interest_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorNonMatchingInterestSegmentInputVariable) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorNonMatchingInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorInterestSegmentInputVariable(user_model,
-                                                             "foo-bar");
+  const CreativeAdModelBasedPredictorSegmentInputVariablesInfo
+      interest_segment_input_variable =
+          ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
+              user_model, "foo-bar", /*weights=*/{});
 
   // Assert
-  EXPECT_FALSE(input_variable.does_match_child);
-  EXPECT_FALSE(input_variable.does_match_parent);
+  EXPECT_FALSE(interest_segment_input_variable.child_matches.value);
+  EXPECT_FALSE(interest_segment_input_variable.parent_matches.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorLastSeenAdInputVariable) {
+TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+       ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable) {
   // Arrange
   const CreativeAdInfo creative_ad =
       test::BuildCreativeAd(/*should_use_random_uuids=*/true);
@@ -177,26 +195,32 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
                          /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
+  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_ad_input_variable =
+          ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
+              creative_ad, ad_events, /*weights=*/{});
+
   // Act & Assert
-  EXPECT_EQ(base::Hours(7), ComputeCreativeAdPredictorLastSeenAdInputVariable(
-                                creative_ad, ad_events));
+  EXPECT_EQ(base::Hours(7), last_seen_ad_input_variable.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorLastSeenAdInputVariableIfNeverSeen) {
+TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+       ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariableIfNeverSeen) {
   // Arrange
   const CreativeAdInfo creative_ad =
       test::BuildCreativeAd(/*should_use_random_uuids=*/true);
 
-  const AdEventList ad_events;
+  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_ad_input_variable =
+          ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
+              creative_ad, /*ad_events=*/{}, /*weights=*/{});
 
   // Act & Assert
-  EXPECT_FALSE(ComputeCreativeAdPredictorLastSeenAdInputVariable(creative_ad,
-                                                                 ad_events));
+  EXPECT_FALSE(last_seen_ad_input_variable.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorLastSeenAdvertiserInputVariable) {
+TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+       ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable) {
   // Arrange
   const CreativeAdInfo creative_ad =
       test::BuildCreativeAd(/*should_use_random_uuids=*/true);
@@ -208,21 +232,44 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
                          /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
+  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_advertiser_input_variable =
+          ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
+              creative_ad, ad_events, /*weights=*/{});
+
   // Act & Assert
-  EXPECT_EQ(base::Hours(3),
-            ComputeCreativeAdPredictorLastSeenAdvertiserInputVariable(
-                creative_ad, ad_events));
+  EXPECT_EQ(base::Hours(3), last_seen_advertiser_input_variable.value);
 }
 
-TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
-       ComputeCreativeAdPredictorLastSeenAdvertiserInputVariableIfNeverSeen) {
+TEST_F(
+    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+    ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariableIfNeverSeen) {
   // Arrange
   const CreativeAdInfo creative_ad =
       test::BuildCreativeAd(/*should_use_random_uuids=*/true);
 
+  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
+      last_seen_advertiser_input_variable =
+          ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
+              creative_ad, /*ad_events=*/{}, /*weights=*/{});
+
   // Act & Assert
-  EXPECT_FALSE(ComputeCreativeAdPredictorLastSeenAdvertiserInputVariable(
-      creative_ad, /*ad_events=*/{}));
+  EXPECT_FALSE(last_seen_advertiser_input_variable.value);
+}
+
+TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
+       ComputeCreativeAdModelBasedPredictorPriorityInputVariable) {
+  // Arrange
+  const CreativeAdInfo creative_ad =
+      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
+
+  const CreativeAdModelBasedPredictorPriorityInputVariableInfo
+      priority_input_variable =
+          ComputeCreativeAdModelBasedPredictorPriorityInputVariable(
+              creative_ad, /*weights=*/{});
+
+  // Act & Assert
+  EXPECT_EQ(2, priority_input_variable.value);
 }
 
 }  // namespace brave_ads

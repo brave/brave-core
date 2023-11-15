@@ -6,28 +6,23 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_SCORING_CREATIVE_AD_MODEL_BASED_PREDICTOR_SCORING_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_SCORING_CREATIVE_AD_MODEL_BASED_PREDICTOR_SCORING_UTIL_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class TimeDelta;
-}  // namespace base
-
 namespace brave_ads {
 
-struct CreativeAdPredictorSegmentInputVariableInfo;
+struct CreativeAdModelBasedPredictorLastSeenInputVariableInfo;
+struct CreativeAdModelBasedPredictorSegmentInputVariablesInfo;
+struct CreativeAdModelBasedPredictorPriorityInputVariableInfo;
 
-double ComputeIntentSegmentScore(
-    const CreativeAdPredictorSegmentInputVariableInfo& input_variable);
-double ComputeInterestSegmentScore(
-    const CreativeAdPredictorSegmentInputVariableInfo& input_variable);
-double ComputeLatentInterestSegmentScore(
-    const CreativeAdPredictorSegmentInputVariableInfo& input_variable);
+double ComputeSegmentScore(
+    const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&
+        segment_input_variable);
 
-double ComputeLastSeenAdScore(const absl::optional<base::TimeDelta>& last_seen);
-double ComputeLastSeenAdvertiserScore(
-    const absl::optional<base::TimeDelta>& last_seen);
+double ComputeLastSeenScore(
+    const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&
+        last_seen_input_variable);
 
-double ComputePriorityScore(int priority);
+double ComputePriorityScore(
+    const CreativeAdModelBasedPredictorPriorityInputVariableInfo&
+        priority_input_variable);
 
 }  // namespace brave_ads
 

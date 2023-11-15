@@ -13,22 +13,26 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsCreativeAdPredictorSamplingUtilTest,
-     CalculateNormalizingConstantForCreativeAdPredictors) {
+TEST(BraveAdsCreativeAdModelBasedPredictorSamplingUtilTest,
+     CalculateNormalizingConstantForCreativeAdModelBasedPredictors) {
   // Arrange
-  CreativeAdPredictorList<CreativeNotificationAdInfo> creative_ad_predictors;
+  CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
+      creative_ad_predictors;
 
-  CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_1;
+  CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
+      creative_ad_predictor_1;
   creative_ad_predictor_1.score = 0.5;
   creative_ad_predictors.push_back(creative_ad_predictor_1);
 
-  CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_2;
+  CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
+      creative_ad_predictor_2;
   creative_ad_predictor_2.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.5, CalculateNormalizingConstantForCreativeAdPredictors(
-                            creative_ad_predictors));
+  EXPECT_DOUBLE_EQ(
+      1.5, CalculateNormalizingConstantForCreativeAdModelBasedPredictors(
+               creative_ad_predictors));
 }
 
 }  // namespace brave_ads

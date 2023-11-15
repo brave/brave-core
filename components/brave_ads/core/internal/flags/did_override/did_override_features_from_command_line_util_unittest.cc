@@ -32,7 +32,9 @@
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_inline_content_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
@@ -84,7 +86,14 @@ struct ParamInfo final {
     {{switches::kEnableFeatures, kCatalogFeature.name}, true},
     {{switches::kEnableFeatures, kConfirmationsFeature.name}, true},
     {{switches::kEnableFeatures, kConversionsFeature.name}, true},
-    {{switches::kEnableFeatures, kCreativeAdModelBasedPredictorFeature.name},
+    {{switches::kEnableFeatures,
+      kCreativeInlineContentAdModelBasedPredictorFeature.name},
+     true},
+    {{switches::kEnableFeatures,
+      kCreativeNewTabPageAdModelBasedPredictorFeature.name},
+     true},
+    {{switches::kEnableFeatures,
+      kCreativeNotificationAdModelBasedPredictorFeature.name},
      true},
     {{switches::kEnableFeatures, kEligibleAdFeature.name}, true},
     {{switches::kEnableFeatures, kEpsilonGreedyBanditFeature.name}, true},
@@ -130,7 +139,13 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams, kConversionsFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
-      kCreativeAdModelBasedPredictorFeature.name},
+      kCreativeInlineContentAdModelBasedPredictorFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams,
+      kCreativeNewTabPageAdModelBasedPredictorFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams,
+      kCreativeNotificationAdModelBasedPredictorFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kEligibleAdFeature.name},
      true},
