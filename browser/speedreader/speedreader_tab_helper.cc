@@ -420,6 +420,10 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
 }
 
 void SpeedreaderTabHelper::OnReadingStart(content::WebContents* web_contents) {
+  if (!speedreader::DistillStates::IsDistilled(distill_state_)) {
+    return;
+  }
+
   constexpr const char16_t kReading[] =
       uR"js( speedreaderUtils.setTtsReadingState($1) )js";
 
@@ -439,7 +443,8 @@ void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
                                              int paragraph_index,
                                              int char_index,
                                              int length) {
-  if (web_contents != this->web_contents()) {
+  if (!speedreader::DistillStates::IsDistilled(distill_state_) ||
+      web_contents != this->web_contents()) {
     return;
   }
   constexpr const char16_t kHighlight[] =
