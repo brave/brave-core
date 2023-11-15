@@ -19,7 +19,7 @@ class BraveAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerHour());
+  EXPECT_TRUE(HasInlineContentAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
                        /*count=*/kMaximumInlineContentAdsPerHour.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerHour());
+  EXPECT_TRUE(HasInlineContentAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerHour());
+  EXPECT_TRUE(HasInlineContentAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowInlineContentAdsPerHour());
+  EXPECT_FALSE(HasInlineContentAdsPerHourPermission());
 }
 
 }  // namespace brave_ads

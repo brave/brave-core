@@ -21,7 +21,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowIssuers());
+  EXPECT_TRUE(HasIssuersPermission());
 }
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
@@ -29,12 +29,12 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowIssuers());
+  EXPECT_TRUE(HasIssuersPermission());
 }
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldNotAllowIfNoIssuers) {
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowIssuers());
+  EXPECT_FALSE(HasIssuersPermission());
 }
 
 }  // namespace brave_ads

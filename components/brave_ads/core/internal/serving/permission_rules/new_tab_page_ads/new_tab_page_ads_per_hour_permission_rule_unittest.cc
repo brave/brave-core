@@ -19,7 +19,7 @@ class BraveAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
+  EXPECT_TRUE(HasNewTabPageAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
                        /*count=*/kMaximumNewTabPageAdsPerHour.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
+  EXPECT_TRUE(HasNewTabPageAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNewTabPageAdsPerHour());
+  EXPECT_TRUE(HasNewTabPageAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowNewTabPageAdsPerHour());
+  EXPECT_FALSE(HasNewTabPageAdsPerHourPermission());
 }
 
 }  // namespace brave_ads

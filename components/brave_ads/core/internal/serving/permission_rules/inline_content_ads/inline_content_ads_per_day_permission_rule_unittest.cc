@@ -19,7 +19,7 @@ class BraveAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerDay());
+  EXPECT_TRUE(HasInlineContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
                        /*count=*/kMaximumInlineContentAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerDay());
+  EXPECT_TRUE(HasInlineContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
@@ -42,7 +42,7 @@ TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowInlineContentAdsPerDay());
+  EXPECT_TRUE(HasInlineContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
@@ -54,7 +54,7 @@ TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowInlineContentAdsPerDay());
+  EXPECT_FALSE(HasInlineContentAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

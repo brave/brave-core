@@ -19,7 +19,7 @@ class BraveAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerHour());
+  EXPECT_TRUE(HasSearchResultAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
                        /*count=*/kMaximumSearchResultAdsPerHour.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerHour());
+  EXPECT_TRUE(HasSearchResultAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerHour());
+  EXPECT_TRUE(HasSearchResultAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowSearchResultAdsPerHour());
+  EXPECT_FALSE(HasSearchResultAdsPerHourPermission());
 }
 
 }  // namespace brave_ads

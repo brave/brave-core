@@ -21,7 +21,7 @@ class BraveAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_TRUE(HasNotificationAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -37,7 +37,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
                        /*count=*/ads_per_hour);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_TRUE(HasNotificationAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
                        /*count=*/ads_per_hour);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_TRUE(HasNotificationAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -67,7 +67,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
                        /*count=*/ads_per_hour - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_TRUE(HasNotificationAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -83,7 +83,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_TRUE(HasNotificationAdsPerHourPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -99,7 +99,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowNotificationAdsPerHour());
+  EXPECT_FALSE(HasNotificationAdsPerHourPermission());
 }
 
 }  // namespace brave_ads

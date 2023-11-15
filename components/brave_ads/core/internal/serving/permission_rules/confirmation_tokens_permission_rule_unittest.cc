@@ -23,7 +23,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   test::SetConfirmationTokens(/*count=*/10);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowConfirmationTokens());
+  EXPECT_TRUE(HasConfirmationTokensPermission());
 }
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
@@ -32,13 +32,13 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowConfirmationTokens());
+  EXPECT_TRUE(HasConfirmationTokensPermission());
 }
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldNotAllowIfNoConfirmationTokens) {
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowConfirmationTokens());
+  EXPECT_FALSE(HasConfirmationTokensPermission());
 }
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
@@ -47,7 +47,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   test::SetConfirmationTokens(/*count=*/9);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowConfirmationTokens());
+  EXPECT_FALSE(HasConfirmationTokensPermission());
 }
 
 }  // namespace brave_ads

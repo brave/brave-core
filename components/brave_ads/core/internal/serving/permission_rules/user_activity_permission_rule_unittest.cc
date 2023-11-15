@@ -38,7 +38,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
       UserActivityEventType::kClosedTab);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowUserActivity());
+  EXPECT_TRUE(HasUserActivityPermission());
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
@@ -47,7 +47,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowUserActivity());
+  EXPECT_TRUE(HasUserActivityPermission());
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
@@ -61,7 +61,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
       UserActivityEventType::kClosedTab);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowUserActivity());
+  EXPECT_TRUE(HasUserActivityPermission());
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
@@ -71,7 +71,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
       UserActivityEventType::kOpenedNewTab);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowUserActivity());
+  EXPECT_FALSE(HasUserActivityPermission());
 }
 
 }  // namespace brave_ads

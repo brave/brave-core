@@ -18,10 +18,10 @@ bool SearchResultAdPermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
-  if (!ShouldAllowSearchResultAdsPerDay()) {
+  if (!HasSearchResultAdsPerDayPermission()) {
     return false;
   }
-  if (!ShouldAllowSearchResultAdsPerHour()) {
+  if (!HasSearchResultAdsPerHourPermission()) {
     return false;
   }
 

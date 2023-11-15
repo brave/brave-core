@@ -26,7 +26,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowCommandLine());
+  EXPECT_TRUE(HasCommandLinePermission());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -38,7 +38,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowCommandLine());
+  EXPECT_TRUE(HasCommandLinePermission());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -50,7 +50,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowCommandLine());
+  EXPECT_FALSE(HasCommandLinePermission());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -62,7 +62,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowCommandLine());
+  EXPECT_TRUE(HasCommandLinePermission());
 }
 
 }  // namespace brave_ads

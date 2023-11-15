@@ -19,7 +19,7 @@ class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowFullScreenMode());
+  EXPECT_TRUE(HasFullScreenModePermission());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
@@ -29,7 +29,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowFullScreenMode());
+  EXPECT_TRUE(HasFullScreenModePermission());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
@@ -39,7 +39,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowFullScreenMode());
+  EXPECT_TRUE(HasFullScreenModePermission());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldNotAllow) {
@@ -47,7 +47,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldNotAllow) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowFullScreenMode());
+  EXPECT_FALSE(HasFullScreenModePermission());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest,
@@ -61,7 +61,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest,
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowFullScreenMode());
+  EXPECT_TRUE(HasFullScreenModePermission());
 }
 
 }  // namespace brave_ads

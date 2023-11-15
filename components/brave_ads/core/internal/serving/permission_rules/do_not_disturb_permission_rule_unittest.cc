@@ -28,25 +28,25 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-    EXPECT_FALSE(ShouldAllowDoNotDisturb());
+    EXPECT_FALSE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-    EXPECT_FALSE(ShouldAllowDoNotDisturb());
+    EXPECT_FALSE(HasDoNotDisturbPermission());
   }
 }
 
@@ -64,25 +64,25 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 }
 
@@ -98,13 +98,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 }
 
@@ -120,13 +120,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 }
 
@@ -142,13 +142,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 }
 
@@ -164,13 +164,13 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Act & Assert
   {
     // Verify 00:00 AM
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-    EXPECT_TRUE(ShouldAllowDoNotDisturb());
+    EXPECT_TRUE(HasDoNotDisturbPermission());
   }
 }
 

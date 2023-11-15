@@ -29,7 +29,7 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, ShouldAllow) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowCatalog());
+  EXPECT_TRUE(HasCatalogPermission());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -38,7 +38,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowCatalog());
+  EXPECT_TRUE(HasCatalogPermission());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowCatalog());
+  EXPECT_FALSE(HasCatalogPermission());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -56,7 +56,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   SetCatalogVersion(0);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowCatalog());
+  EXPECT_FALSE(HasCatalogPermission());
 }
 
 }  // namespace brave_ads

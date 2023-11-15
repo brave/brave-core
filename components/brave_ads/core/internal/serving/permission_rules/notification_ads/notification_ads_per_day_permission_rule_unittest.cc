@@ -19,7 +19,7 @@ class BraveAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerDay());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
                        /*count=*/kMaximumNotificationAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerDay());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowNotificationAdsPerDay());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowNotificationAdsPerDay());
+  EXPECT_FALSE(HasNotificationAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

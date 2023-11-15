@@ -8,29 +8,29 @@
 
 namespace brave_ads {
 
-bool ShouldAllowFullScreenMode();
-bool ShouldAllowIssuers();
-bool ShouldAllowCommandLine();
-bool ShouldAllowConfirmationTokens();
-bool ShouldAllowUserActivity();
-bool ShouldAllowSearchResultAdsPerDay();
-bool ShouldAllowSearchResultAdsPerHour();
-bool ShouldAllowNewTabPageAdsPerDay();
-bool ShouldAllowNewTabPageAdMinimumWaitTime();
-bool ShouldAllowNewTabPageAdsPerHour();
-bool ShouldAllowNotificationAdsPerHour();
-bool ShouldAllowNotificationAdsPerDay();
-bool ShouldAllowNotificationAdMinimumWaitTime();
-bool ShouldAllowNetworkConnection();
-bool ShouldAllowMedia();
-bool ShouldAllowDoNotDisturb();
-bool ShouldAllowAllowNotifications();
-bool ShouldAllowCatalog();
-bool ShouldAllowInlineContentAdsPerDay();
-bool ShouldAllowInlineContentAdsPerHour();
-bool ShouldAllowPromotedContentAdsPerDay();
-bool ShouldAllowPromotedContentAdsPerHour();
-bool ShouldAllowBrowserIsActive();
+bool HasFullScreenModePermission();
+bool HasIssuersPermission();
+bool HasCommandLinePermission();
+bool HasConfirmationTokensPermission();
+bool HasUserActivityPermission();
+bool HasSearchResultAdsPerDayPermission();
+bool HasSearchResultAdsPerHourPermission();
+bool HasNewTabPageAdsPerDayPermission();
+bool HasNewTabPageAdMinimumWaitTimePermission();
+bool HasNewTabPageAdsPerHourPermission();
+bool HasNotificationAdsPerHourPermission();
+bool HasNotificationAdsPerDayPermission();
+bool HasNotificationAdMinimumWaitTimePermission();
+bool HasNetworkConnectionPermission();
+bool HasMediaPermission();
+bool HasDoNotDisturbPermission();
+bool HasAllowNotificationsPermission();
+bool HasCatalogPermission();
+bool HasInlineContentAdsPerDayPermission();
+bool HasInlineContentAdsPerHourPermission();
+bool HasPromotedContentAdsPerDayPermission();
+bool HasPromotedContentAdsPerHourPermission();
+bool HasBrowserIsActivePermission();
 
 }  // namespace brave_ads
 

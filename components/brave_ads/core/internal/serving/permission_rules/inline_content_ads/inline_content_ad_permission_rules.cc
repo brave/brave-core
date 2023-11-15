@@ -15,19 +15,19 @@ bool InlineContentAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!ShouldAllowUserActivity()) {
+  if (!HasUserActivityPermission()) {
     return false;
   }
 
-  if (!ShouldAllowCatalog()) {
+  if (!HasCatalogPermission()) {
     return false;
   }
 
-  if (!ShouldAllowInlineContentAdsPerDay()) {
+  if (!HasInlineContentAdsPerDayPermission()) {
     return false;
   }
 
-  return ShouldAllowInlineContentAdsPerHour();
+  return HasInlineContentAdsPerHourPermission();
 }
 
 }  // namespace brave_ads

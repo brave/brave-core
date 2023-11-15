@@ -15,47 +15,47 @@ bool NotificationAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!ShouldAllowUserActivity()) {
+  if (!HasUserActivityPermission()) {
     return false;
   }
 
-  if (!ShouldAllowCatalog()) {
+  if (!HasCatalogPermission()) {
     return false;
   }
 
-  if (!ShouldAllowAllowNotifications()) {
+  if (!HasAllowNotificationsPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNetworkConnection()) {
+  if (!HasNetworkConnectionPermission()) {
     return false;
   }
 
-  if (!ShouldAllowFullScreenMode()) {
+  if (!HasFullScreenModePermission()) {
     return false;
   }
 
-  if (!ShouldAllowBrowserIsActive()) {
+  if (!HasBrowserIsActivePermission()) {
     return false;
   }
 
-  if (!ShouldAllowDoNotDisturb()) {
+  if (!HasDoNotDisturbPermission()) {
     return false;
   }
 
-  if (!ShouldAllowMedia()) {
+  if (!HasMediaPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNotificationAdsPerDay()) {
+  if (!HasNotificationAdsPerDayPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNotificationAdsPerHour()) {
+  if (!HasNotificationAdsPerHourPermission()) {
     return false;
   }
 
-  return ShouldAllowNotificationAdMinimumWaitTime();
+  return HasNotificationAdMinimumWaitTimePermission();
 }
 
 }  // namespace brave_ads

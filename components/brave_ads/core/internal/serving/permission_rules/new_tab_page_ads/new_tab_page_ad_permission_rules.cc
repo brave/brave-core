@@ -20,23 +20,23 @@ bool NewTabPageAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!ShouldAllowUserActivity()) {
+  if (!HasUserActivityPermission()) {
     return false;
   }
 
-  if (!ShouldAllowCatalog()) {
+  if (!HasCatalogPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNewTabPageAdsPerDay()) {
+  if (!HasNewTabPageAdsPerDayPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNewTabPageAdsPerHour()) {
+  if (!HasNewTabPageAdsPerHourPermission()) {
     return false;
   }
 
-  if (!ShouldAllowNewTabPageAdMinimumWaitTime()) {
+  if (!HasNewTabPageAdMinimumWaitTimePermission()) {
     return false;
   }
 

@@ -57,7 +57,7 @@ bool IsAdTypeInTimeRangeAllowed(const AdType& type,
 
 }  // namespace
 
-bool ShouldAllowFullScreenMode() {
+bool HasFullScreenModePermission() {
   if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
     return true;
   }
@@ -72,7 +72,7 @@ bool ShouldAllowFullScreenMode() {
   return false;
 }
 
-bool ShouldAllowIssuers() {
+bool HasIssuersPermission() {
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
@@ -84,7 +84,7 @@ bool ShouldAllowIssuers() {
   return false;
 }
 
-bool ShouldAllowCommandLine() {
+bool HasCommandLinePermission() {
   if (!IsProductionEnvironment()) {
     // Always respect cap for staging environment
     return true;
@@ -97,7 +97,7 @@ bool ShouldAllowCommandLine() {
   return false;
 }
 
-bool ShouldAllowConfirmationTokens() {
+bool HasConfirmationTokensPermission() {
   constexpr int kMinimumConfirmationTokenThreshold = 10;
   if (!UserHasJoinedBraveRewards()) {
     return true;
@@ -110,7 +110,7 @@ bool ShouldAllowConfirmationTokens() {
   return false;
 }
 
-bool ShouldAllowUserActivity() {
+bool HasUserActivityPermission() {
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
@@ -125,7 +125,7 @@ bool ShouldAllowUserActivity() {
   return false;
 }
 
-bool ShouldAllowSearchResultAdsPerDay() {
+bool HasSearchResultAdsPerDayPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kSearchResultAd, kOneDay,
           /*cap=*/kMaximumSearchResultAdsPerDay.Get())) {
@@ -135,7 +135,7 @@ bool ShouldAllowSearchResultAdsPerDay() {
   return true;
 }
 
-bool ShouldAllowSearchResultAdsPerHour() {
+bool HasSearchResultAdsPerHourPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kSearchResultAd, kOneHour,
           /*cap=*/kMaximumSearchResultAdsPerHour.Get())) {
@@ -145,7 +145,7 @@ bool ShouldAllowSearchResultAdsPerHour() {
   return true;
 }
 
-bool ShouldAllowNewTabPageAdsPerDay() {
+bool HasNewTabPageAdsPerDayPermission() {
   if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd, kOneDay,
                                   /*cap=*/kMaximumNewTabPageAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed new tab page ads per day");
@@ -154,7 +154,7 @@ bool ShouldAllowNewTabPageAdsPerDay() {
   return true;
 }
 
-bool ShouldAllowNewTabPageAdMinimumWaitTime() {
+bool HasNewTabPageAdMinimumWaitTimePermission() {
   if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd,
                                   kNewTabPageAdMinimumWaitTime.Get(),
                                   /*cap=*/kMinimumWaitTimeCap)) {
@@ -165,7 +165,7 @@ bool ShouldAllowNewTabPageAdMinimumWaitTime() {
   return true;
 }
 
-bool ShouldAllowNewTabPageAdsPerHour() {
+bool HasNewTabPageAdsPerHourPermission() {
   if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd, kOneHour,
                                   /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed new tab page ads per hour");
@@ -174,7 +174,7 @@ bool ShouldAllowNewTabPageAdsPerHour() {
   return true;
 }
 
-bool ShouldAllowNotificationAdsPerHour() {
+bool HasNotificationAdsPerHourPermission() {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the
     // maximum ads per hour
@@ -189,7 +189,7 @@ bool ShouldAllowNotificationAdsPerHour() {
   return true;
 }
 
-bool ShouldAllowNotificationAdsPerDay() {
+bool HasNotificationAdsPerDayPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kNotificationAd, kOneDay,
           /*cap=*/kMaximumNotificationAdsPerDay.Get())) {
@@ -199,7 +199,7 @@ bool ShouldAllowNotificationAdsPerDay() {
   return true;
 }
 
-bool ShouldAllowNotificationAdMinimumWaitTime() {
+bool HasNotificationAdMinimumWaitTimePermission() {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before
     // the minimum wait time has passed
@@ -218,7 +218,7 @@ bool ShouldAllowNotificationAdMinimumWaitTime() {
   return true;
 }
 
-bool ShouldAllowNetworkConnection() {
+bool HasNetworkConnectionPermission() {
   if (!kShouldOnlyServeAdsWithValidInternetConnection.Get()) {
     return true;
   }
@@ -230,7 +230,7 @@ bool ShouldAllowNetworkConnection() {
   return false;
 }
 
-bool ShouldAllowMedia() {
+bool HasMediaPermission() {
   if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
     return true;
   }
@@ -246,7 +246,7 @@ bool ShouldAllowMedia() {
   return false;
 }
 
-bool ShouldAllowDoNotDisturb() {
+bool HasDoNotDisturbPermission() {
   if (PlatformHelper::GetInstance().GetType() != PlatformType::kAndroid) {
     return true;
   }
@@ -268,7 +268,7 @@ bool ShouldAllowDoNotDisturb() {
   return false;
 }
 
-bool ShouldAllowAllowNotifications() {
+bool HasAllowNotificationsPermission() {
   if (!CanShowNotificationAds()) {
     BLOG(2, "System notifications not allowed");
     return false;
@@ -277,7 +277,7 @@ bool ShouldAllowAllowNotifications() {
   return true;
 }
 
-bool ShouldAllowCatalog() {
+bool HasCatalogPermission() {
   if (!DoesCatalogExist()) {
     BLOG(2, "Catalog does not exist");
     return false;
@@ -290,7 +290,7 @@ bool ShouldAllowCatalog() {
   return true;
 }
 
-bool ShouldAllowInlineContentAdsPerDay() {
+bool HasInlineContentAdsPerDayPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kInlineContentAd, kOneDay,
           /*cap=*/kMaximumInlineContentAdsPerDay.Get())) {
@@ -301,7 +301,7 @@ bool ShouldAllowInlineContentAdsPerDay() {
   return true;
 }
 
-bool ShouldAllowInlineContentAdsPerHour() {
+bool HasInlineContentAdsPerHourPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kInlineContentAd, kOneHour,
           /*cap=*/kMaximumInlineContentAdsPerHour.Get())) {
@@ -312,7 +312,7 @@ bool ShouldAllowInlineContentAdsPerHour() {
   return true;
 }
 
-bool ShouldAllowPromotedContentAdsPerDay() {
+bool HasPromotedContentAdsPerDayPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kPromotedContentAd, kOneDay,
           /*cap=*/kMaximumPromotedContentAdsPerDay.Get())) {
@@ -323,7 +323,7 @@ bool ShouldAllowPromotedContentAdsPerDay() {
   return true;
 }
 
-bool ShouldAllowPromotedContentAdsPerHour() {
+bool HasPromotedContentAdsPerHourPermission() {
   if (!IsAdTypeInTimeRangeAllowed(
           AdType::kPromotedContentAd, kOneHour,
           /*cap=*/kMaximumPromotedContentAdsPerHour.Get())) {
@@ -334,7 +334,7 @@ bool ShouldAllowPromotedContentAdsPerHour() {
   return true;
 }
 
-bool ShouldAllowBrowserIsActive() {
+bool HasBrowserIsActivePermission() {
   if (!kShouldOnlyServeAdsIfBrowserIsActive.Get()) {
     return true;
   }

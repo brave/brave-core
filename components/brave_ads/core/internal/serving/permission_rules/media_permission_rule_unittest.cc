@@ -19,7 +19,7 @@ class BraveAdsMediaPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsMediaPermissionRuleTest, ShouldAllowIfMediaIsNotPlaying) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowMedia());
+  EXPECT_TRUE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -34,7 +34,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowMedia());
+  EXPECT_TRUE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -51,7 +51,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowMedia());
+  EXPECT_TRUE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -67,7 +67,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowMedia());
+  EXPECT_TRUE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -80,7 +80,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowMedia());
+  EXPECT_FALSE(HasMediaPermission());
 }
 
 TEST_F(
@@ -99,7 +99,7 @@ TEST_F(
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowMedia());
+  EXPECT_TRUE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -113,7 +113,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowMedia());
+  EXPECT_FALSE(HasMediaPermission());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -129,7 +129,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowMedia());
+  EXPECT_FALSE(HasMediaPermission());
 }
 
 }  // namespace brave_ads
