@@ -421,6 +421,15 @@ struct NFTView: View {
         }
       })
     }
+    .onChange(of: keyringStore.isWalletLocked) { isLocked in
+      guard isLocked else { return }
+      if isShowingNFTDiscoveryAlert {
+        isShowingNFTDiscoveryAlert = false
+      }
+      if nftToBeRemoved != nil {
+        nftToBeRemoved = nil
+      }
+    }
     .onAppear {
       Task {
         isNFTDiscoveryEnabled = await nftStore.isNFTDiscoveryEnabled()
