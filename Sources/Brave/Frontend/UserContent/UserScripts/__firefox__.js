@@ -7,6 +7,72 @@
 
 if (!window.__firefox__) {
   /*
+   *  Generate toString
+   */
+  function generateToString(target, usingObjectDescriptor) {
+    const toStringString = function() {
+      return 'function toString() {\n    [native code]\n}';
+    };
+    
+    const toString = function() {
+      let functionDescription = `function ${ typeof target.name !== 'undefined' ? target.name : "" }() {\n    [native code]\n}`;
+      if (usingObjectDescriptor) {
+        return (typeof value === 'function') ? functionDescription : '[object Object]';
+      }
+      return functionDescription;
+    };
+    
+    $Object.defineProperty(toString, 'name', {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: 'toString'
+    });
+    
+    $Object.defineProperty(toStringString, 'name', {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: 'toString'
+    });
+    
+    return [toString, toStringString];
+  }
+  
+  /*
+   *  Secure calls to `toString`
+   */
+  function secureToString(target, toString, toStringString, overrides = {}) {
+    var fnOverrides = {...overrides};
+    if ((target === toString || target === toStringString) && fnOverrides['toString']) {
+      fnOverrides['toString'] = toStringString;
+    }
+    
+    for (const [name, property] of $Object.entries(fnOverrides)) {
+      let descriptor = $Object.getOwnPropertyDescriptor(target, name);
+      if (!descriptor || descriptor.configurable) {
+        $Object.defineProperty(target, name, {
+          enumerable: false,
+          configurable: false,
+          writable: false,
+          value: property
+        });
+      }
+      
+      descriptor = $Object.getOwnPropertyDescriptor(target, name);
+      if (!descriptor || descriptor.writable) {
+        fn[name] = property;
+      }
+      
+      if (name !== 'toString') {
+        $.deepFreeze(target[name]);
+      }
+    }
+
+    //$.deepFreeze(toString);
+  }
+  
+  /*
    *  Copies an object's signature to an object with no prototype to prevent prototype polution attacks
    */
   function secureCopy(value) {
@@ -28,6 +94,29 @@ if (!window.__firefox__) {
       get(target, property, receiver) {
         if (property == 'prototype') {
           return prototypeProperties;
+        }
+        
+        if (property == 'toString') {
+          let descriptor = $Object.getOwnPropertyDescriptor(target, property);
+          if (descriptor && !descriptor.configurable && !descriptor.writable) {
+            return Reflect.get(target, property);
+          }
+          
+          const [toString, toStringString] = generateToString(target, false);
+          
+          const overrides = {
+            'toString': toString,
+            'call': $Function.call,
+            'apply': $Function.apply,
+            'bind': $Function.bind
+          };
+          
+          secureToString(toStringString, toString, toStringString, overrides);
+          $.deepFreeze(toStringString);
+          
+          secureToString(toString, toString, toStringString, overrides);
+          $.deepFreeze(toString);
+          return toString;
         }
 
         return target[property];
@@ -71,24 +160,7 @@ if (!window.__firefox__) {
    */
   let $ = function(value, overrideToString = true) {
     if ($Object.isExtensible(value)) {
-      const description = (typeof value === 'function') ?
-                          `function ${ typeof value.name !== 'undefined' ? value.name : "" }() {\n    [native code]\n}` :
-                          '[object Object]';
-      
-      const toStringString = function() {
-        return 'function toString() {\n    [native code]\n}';
-      };
-      
-      const toString = function() {
-        return description;
-      };
-      
-      Object.defineProperty(toString, 'name', {
-        enumerable: false,
-        configurable: true,
-        writable: false,
-        value: 'toString'
-      });
+      const [toString, toStringString] = generateToString(value, true);
       
       const overrides = overrideToString ? {
         'toString': toString
@@ -105,44 +177,13 @@ if (!window.__firefox__) {
           overrides[key] = value;
         }
       }
-      
-      // Secure calls to `toString`
-      const secureToString = function(fn) {
-        var fnOverrides = {...overrides};
-        if ((fn === toString || fn === toStringString) && fnOverrides['toString']) {
-          fnOverrides['toString'] = toStringString;
-        }
-        
-        for (const [name, property] of $Object.entries(fnOverrides)) {
-          let descriptor = $Object.getOwnPropertyDescriptor(fn, name);
-          if (!descriptor || descriptor.configurable) {
-            $Object.defineProperty(fn, name, {
-              enumerable: false,
-              configurable: false,
-              writable: false,
-              value: property
-            });
-          }
-          
-          descriptor = $Object.getOwnPropertyDescriptor(fn, name);
-          if (!descriptor || descriptor.writable) {
-            fn[name] = property;
-          }
-          
-          if (name !== 'toString') {
-            $.deepFreeze(fn[name]);
-          }
-        }
 
-        //$.deepFreeze(toString);
-      };
-      
       // Secure our custom `toString`
       // Freeze our custom `toString`
-      secureToString(toStringString);
+      secureToString(toStringString, toString, toStringString, overrides);
       $.deepFreeze(toStringString);
       
-      secureToString(toString);
+      secureToString(toString, toString, toStringString, overrides);
       $.deepFreeze(toString);
 
       for (const [name, property] of $Object.entries(overrides)) {
