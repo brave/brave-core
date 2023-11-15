@@ -16,6 +16,8 @@ inline constexpr char kBraveVpnHelperInstall[] = "install";
 inline constexpr char kBraveVpnHelperCrashMe[] = "crash-me";
 inline constexpr wchar_t kBraveVPNHelperExecutable[] = L"brave_vpn_helper.exe";
 inline constexpr wchar_t kBraveVpnHelperFiltersInstalledValue[] = L"filters";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupValue[] = L"ran";
+
 // Repeating interval to check the connection is live.
 inline constexpr int kCheckConnectionIntervalInSeconds = 3;
 
@@ -25,6 +27,8 @@ inline constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Nightly Service DNS Filter";
 inline constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceNightly";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupStoragePath[] =
+    L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupNightly";
 
 // 23e10e29-eb83-4d2c-9d77-f6e9b547f39c
 inline constexpr GUID kVpnDnsSublayerGUID = {
@@ -37,6 +41,8 @@ inline constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Beta Service DNS Filter";
 inline constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceBeta";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupStoragePath[] =
+    L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupBeta";
 
 // fc5fb7bc-e313-4f5e-8052-fe8b150f7de0
 inline constexpr GUID kVpnDnsSublayerGUID = {
@@ -49,6 +55,8 @@ inline constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Dev Service DNS Filter";
 inline constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDev";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupStoragePath[] =
+    L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupDev";
 // c448b198-729d-4a89-879b-1cf0cd2460c0
 inline constexpr GUID kVpnDnsSublayerGUID = {
     0xc448b198,
@@ -60,6 +68,8 @@ inline constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Development Service DNS Filter";
 inline constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDevelopment";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupStoragePath[] =
+    L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupDevelopment";
 // 9c14e1f7-692f-495b-95e8-008113d3c0d6
 inline constexpr GUID kVpnDnsSublayerGUID = {
     0x9c14e1f7,
@@ -71,6 +81,8 @@ inline constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Service DNS Filter";
 inline constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperService";
+inline constexpr wchar_t kBraveVpnOneTimeServiceCleanupStoragePath[] =
+    L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanup";
 // 754b7cbd-cad3-474e-8d2c-054413fd4509
 inline constexpr GUID kVpnDnsSublayerGUID = {
     0x754b7cbd,

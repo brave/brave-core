@@ -621,6 +621,12 @@ if (!is_android) {
         "//testing/gmock",
         "//testing/gtest",
       ]
+
+      if (enable_brave_vpn) {
+        deps += [
+          "//brave/chromium_src/chrome/installer/setup/test:vpn_unit_tests",
+        ]
+      }
     }
   }
 }
