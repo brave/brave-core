@@ -131,6 +131,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [extensionPassword, setExtensionPassword] = React.useState('')
+  const [extensionPasswordError, setExtensionPasswordError] = React.useState('')
   const [phraseInput, setPhraseInput] = React.useState('')
   const [phraseWordsLength, setPhraseWordsLength] = React.useState(0)
   const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] =
@@ -143,9 +144,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     )
 
   const importWalletError = isImportingFromExtension
-    ? importFromMetaMaskResult?.errorMessage
-    : isImportingFromLegacyExtension
-    ? importFromLegacyWalletResult?.errorMessage
+    ? extensionPasswordError ||
+      (isImportingFromMetaMaskExtension &&
+        importFromMetaMaskResult?.errorMessage) ||
+      (isImportingFromLegacyExtension &&
+        importFromLegacyWalletResult?.errorMessage)
     : hasInvalidSeedError
     ? getLocale('braveWalletInvalidMnemonicError')
     : undefined
@@ -161,11 +164,12 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
           : BraveWallet.ExternalWalletType.CryptoWallets,
         password: extensionPassword
       }).unwrap()
-      if (results.success) {
-        // TODO: clear wrong password error
-        return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
+      if (results.errorMessage) {
+        setExtensionPasswordError(results.errorMessage)
+      } else {
+        setExtensionPasswordError('')
+        setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
       }
-      // TODO: show error if wrong password entered
     }
   }, [
     isImportingFromMetaMaskExtension,

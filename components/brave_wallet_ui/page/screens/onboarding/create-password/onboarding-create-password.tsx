@@ -8,7 +8,9 @@ import * as React from 'react'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 
 // routes
