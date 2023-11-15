@@ -120,7 +120,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &attribution_reporting::features::kConversionMeasurement,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
-    &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
 #if BUILDFLAG(IS_ANDROID)
     &base::features::kCollectAndroidFrameTimelineMetrics,
 #endif
