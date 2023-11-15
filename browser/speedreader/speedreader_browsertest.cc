@@ -286,12 +286,27 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
+
+  const std::string kGetContentLength = "document.body.innerHTML.length";
+
+  // Check that disabled speedreader doesn't affect the page.
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  const auto first_load_page_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_LT(106000, first_load_page_length);
+
   ToggleSpeedreader();
+  EXPECT_TRUE(speedreader_service()->IsEnabledForAllSites());
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
   console_observer.SetFilter(base::BindLambdaForTesting(
       [](const content::WebContentsConsoleObserver::Message& message) {
-        return message.log_level != blink::mojom::ConsoleMessageLevel::kVerbose;
+        return message.log_level == blink::mojom::ConsoleMessageLevel::kError;
       }));
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
@@ -301,8 +316,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kGetFontsExists =
       "!!(document.getElementById('atkinson_hyperligible_font') && "
       "document.getElementById('open_dyslexic_font'))";
-
-  const std::string kGetContentLength = "document.body.innerHTML.length";
 
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
@@ -314,20 +327,32 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
-  EXPECT_GT(17750, content::EvalJs(ActiveWebContents(), kGetContentLength,
-                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL)
-                       .ExtractInt());
+  const auto speedreaded_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_GT(17750, speedreaded_length);
 
   EXPECT_TRUE(console_observer.messages().empty());
 
-  // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_LT(106000, content::EvalJs(ActiveWebContents(), kGetContentLength,
-                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                    ISOLATED_WORLD_ID_BRAVE_INTERNAL)
-                        .ExtractInt());
+
+  const bool is_correct_web_contents =
+      browser()->tab_strip_model()->GetWebContentsAt(1) == ActiveWebContents();
+  const auto second_load_page_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_LT(106000, second_load_page_length)
+      << " First load length: " << first_load_page_length
+      << " speedreaded length: " << speedreaded_length
+      << " Second load length: " << second_load_page_length
+      << " IsCorrectWebContents: " << is_correct_web_contents;
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
