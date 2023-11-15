@@ -19,7 +19,7 @@ class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowPromotedContentAdsPerDay());
+  EXPECT_TRUE(HasPromotedContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowPromotedContentAdsPerDay());
+  EXPECT_TRUE(HasPromotedContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowPromotedContentAdsPerDay());
+  EXPECT_TRUE(HasPromotedContentAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowPromotedContentAdsPerDay());
+  EXPECT_FALSE(HasPromotedContentAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

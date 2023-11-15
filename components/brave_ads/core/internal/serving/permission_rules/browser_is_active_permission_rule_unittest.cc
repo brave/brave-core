@@ -22,7 +22,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
   NotifyBrowserDidEnterForeground();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowBrowserIsActive());
+  EXPECT_TRUE(HasBrowserIsActivePermission());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
@@ -31,7 +31,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
   NotifyBrowserDidEnterBackground();
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowBrowserIsActive());
+  EXPECT_FALSE(HasBrowserIsActivePermission());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -46,7 +46,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowBrowserIsActive());
+  EXPECT_TRUE(HasBrowserIsActivePermission());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -56,7 +56,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowBrowserIsActive());
+  EXPECT_FALSE(HasBrowserIsActivePermission());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -66,7 +66,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterForeground();
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowBrowserIsActive());
+  EXPECT_FALSE(HasBrowserIsActivePermission());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -76,7 +76,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowBrowserIsActive());
+  EXPECT_FALSE(HasBrowserIsActivePermission());
 }
 
 }  // namespace brave_ads

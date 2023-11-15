@@ -19,7 +19,7 @@ class BraveAdsSearchResultAdsPerDayPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerDay());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
@@ -29,7 +29,7 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
                        /*count=*/kMaximumSearchResultAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerDay());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
@@ -41,7 +41,7 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(ShouldAllowSearchResultAdsPerDay());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldAllowSearchResultAdsPerDay());
+  EXPECT_FALSE(HasSearchResultAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

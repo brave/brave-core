@@ -15,13 +15,13 @@ PermissionRulesBase::~PermissionRulesBase() = default;
 
 // static
 bool PermissionRulesBase::HasPermission() {
-  if (!ShouldAllowIssuers()) {
+  if (!HasIssuersPermission()) {
     return false;
   }
-  if (!ShouldAllowConfirmationTokens()) {
+  if (!HasConfirmationTokensPermission()) {
     return false;
   }
-  if (!ShouldAllowCommandLine()) {
+  if (!HasCommandLinePermission()) {
     return false;
   }
 

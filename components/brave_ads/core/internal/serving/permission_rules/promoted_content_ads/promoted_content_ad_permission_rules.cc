@@ -15,15 +15,15 @@ bool PromotedContentAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!ShouldAllowCatalog()) {
+  if (!HasCatalogPermission()) {
     return false;
   }
 
-  if (!ShouldAllowPromotedContentAdsPerDay()) {
+  if (!HasPromotedContentAdsPerDayPermission()) {
     return false;
   }
 
-  return ShouldAllowPromotedContentAdsPerHour();
+  return HasPromotedContentAdsPerHourPermission();
 }
 
 }  // namespace brave_ads
