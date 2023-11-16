@@ -53,102 +53,6 @@ public class Migration {
     braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
   }
   
-  // Migrate from TabMO to SessionTab and SessionWindow
-  public static func migrateTabStateToWebkitState(diskImageStore: DiskImageStore?) {
-    let isPrivate = false // Private tabs at the time of writing this code was never persistent, so it wouldn't "restore".
-
-    if Preferences.Migration.tabMigrationToInteractionStateCompleted.value {
-      SessionWindow.createIfNeeded(index: 0, isPrivate: isPrivate, isSelected: true)
-      return
-    }
-    
-    // Get all the old Tabs from TabMO
-    let oldTabIDs = TabMO.getAll().map({ $0.objectID })
-
-    // Nothing to migrate
-    if oldTabIDs.isEmpty {
-      // Create a SessionWindow (default window)
-      // Set the window selected by default
-      TabMO.migrate { context in
-        _ = SessionWindow(context: context, index: 0, isPrivate: isPrivate, isSelected: true)
-      }
-      
-      Preferences.Migration.tabMigrationToInteractionStateCompleted.value = true
-      return
-    }
-    
-    TabMO.migrate { context in
-      let oldTabs = oldTabIDs.compactMap({ context.object(with: $0) as? TabMO })
-      if oldTabs.isEmpty { return }  // Migration failed
-
-      // Create a SessionWindow (default window)
-      // Set the window selected by default
-      let sessionWindow = SessionWindow(context: context, index: 0, isPrivate: isPrivate, isSelected: true)
-      
-      oldTabs.forEach { oldTab in
-        guard let urlString = oldTab.url,
-              let url = NSURL(idnString: urlString) as? URL ?? URL(string: urlString) else {
-          return
-        }
-        
-        var tabId: UUID
-        if let syncUUID = oldTab.syncUUID {
-          tabId = UUID(uuidString: syncUUID) ?? UUID()
-        } else {
-          tabId = UUID()
-        }
-        
-        var historyURLs = [URL]()
-        let tabTitle = oldTab.title ?? Strings.newTab
-        let historySnapshot = oldTab.urlHistorySnapshot as? [String] ?? []
-        
-        for url in historySnapshot {
-          guard let url = NSURL(idnString: url) as? URL ?? URL(string: url) else {
-            Logger.module.error("Failed to parse URL: \(url) during Migration!")
-            continue
-          }
-          if let internalUrl = InternalURL(url), !internalUrl.isAuthorized, let authorizedURL = InternalURL.authorize(url: url) {
-            historyURLs.append(authorizedURL)
-          } else {
-            historyURLs.append(url)
-          }
-        }
-        
-        if historyURLs.count == 0 {
-          Logger.module.error("User has zero history to migrate!")
-          return
-        }
-
-        // currentPage is -webView.backForwardList.forwardList.count
-        // If for some reason current page can be negative, we clamp it to [0, inf].
-        let currentPage = max((historyURLs.count - 1) + Int(oldTab.urlHistoryCurrentIndex), 0)
-        
-        // Create WebKit interactionState
-        let interactionState = SynthesizedSessionRestore.serialize(withTitle: tabTitle,
-                                                                   historyURLs: historyURLs,
-                                                                   pageIndex: UInt(currentPage),
-                                                                   isPrivateBrowsing: isPrivate)
-        
-        // Create SessionTab and associate it with a SessionWindow
-        // Tabs currently do not have groups, so sessionTabGroup is nil by default
-        _ = SessionTab(context: context,
-                       sessionWindow: sessionWindow,
-                       sessionTabGroup: nil,
-                       index: Int32(oldTab.order),
-                       interactionState: interactionState,
-                       isPrivate: isPrivate,
-                       isSelected: oldTab.isSelected,
-                       lastUpdated: oldTab.lastUpdate ?? .now,
-                       screenshotData: Data(),  // Do not migrate screenshot data
-                       title: tabTitle,
-                       url: url,
-                       tabId: tabId)
-      }
-      
-      Preferences.Migration.tabMigrationToInteractionStateCompleted.value = true
-    }
-  }
-  
   public static func migrateLostTabsActiveWindow() {
     if UIApplication.shared.supportsMultipleScenes { return }
     if Preferences.Migration.lostTabsWindowIDMigrationOne.value { return }
@@ -194,9 +98,6 @@ public class Migration {
 
   public static func postCoreDataInitMigrations() {
     if Preferences.Migration.coreDataCompleted.value { return }
-
-    TabMO.deleteAllPrivateTabs()
-    
     Preferences.Migration.coreDataCompleted.value = true
   }
   

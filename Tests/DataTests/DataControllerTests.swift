@@ -23,9 +23,6 @@ class DataControllerTests: CoreDataTestCase {
     let favoriteFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "Bookmark"))
     XCTAssertEqual(try! viewContext.count(for: favoriteFR), 0)
 
-    let tabFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: TabMO.self))
-    XCTAssertEqual(try! viewContext.count(for: tabFR), 0)
-
     let domainFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Domain.self))
     XCTAssertEqual(try! viewContext.count(for: domainFR), 0)
   }

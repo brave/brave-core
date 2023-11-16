@@ -49,7 +49,6 @@ public class AppState {
           didBecomeActive = true
           DataController.shared.initializeOnce()
           Migration.postCoreDataInitMigrations()
-          Migration.migrateTabStateToWebkitState(diskImageStore: diskImageStore)
           Migration.migrateLostTabsActiveWindow()
         }
         break

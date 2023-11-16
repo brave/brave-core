@@ -551,7 +551,6 @@ class Tab: NSObject {
 
     guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
       // FF uses url?.displayURL?.absoluteString ??  ""
-      // but we can grab the title from `TabMO`
       if let title = url?.absoluteString {
         syncTab?.setTitle(title)
         return title
