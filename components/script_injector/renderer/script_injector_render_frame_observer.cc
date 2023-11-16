@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -38,6 +39,13 @@ void ScriptInjectorRenderFrameObserver::BindToReceiver(
 ScriptInjectorRenderFrameObserver::~ScriptInjectorRenderFrameObserver() =
     default;
 
+// static
+blink::mojom::WantResultOption
+ScriptInjectorRenderFrameObserver::CheckIfWantResult(
+    const RequestAsyncExecuteScriptCallback& callback) {
+  return callback.is_null() ? blink::mojom::WantResultOption::kNoResult
+                            : blink::mojom::WantResultOption::kWantResult;
+}
 void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
     int32_t world_id,
     const std::u16string& script,
@@ -47,9 +55,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
   blink::WebScriptSource web_script_source =
       blink::WebScriptSource(blink::WebString::FromUTF16(script));
 
-  auto want_result = callback.is_null()
-                         ? blink::mojom::WantResultOption::kNoResult
-                         : blink::mojom::WantResultOption::kWantResult;
+  auto want_result = CheckIfWantResult(callback);
 
   render_frame()->GetWebFrame()->RequestExecuteScript(
       world_id, base::make_span(&web_script_source, 1u), user_activation,

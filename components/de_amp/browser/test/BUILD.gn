@@ -13,7 +13,6 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//components/prefs:test_support",
   ]
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
 
 if (!is_android) {
