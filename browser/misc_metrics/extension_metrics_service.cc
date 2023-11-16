@@ -14,13 +14,13 @@ namespace misc_metrics {
 namespace {
 
 constexpr auto kPopularAdBlockExtensions =
-    base::MakeFixedFlatSet<std::string_view>({
+    base::MakeFixedFlatSetSorted<std::string_view>({
+        // AdGuard
+        "bgnkhhnnamicmpeenaelnjfhikgbkllg",
         // uBO
         "cjpalhdlnbpafiamejdnhcphjbkeiagm",
         // Ghostery
         "mlomiejdfkolichcflejclcbmpeaniij",
-        // AdGuard
-        "bgnkhhnnamicmpeenaelnjfhikgbkllg",
         // AdBlocker Ultimate
         "ohahllgiabjaoigichmmfljhkcfikeof",
     });

@@ -111,7 +111,8 @@ constexpr BravePrepopulatedEngineID kBraveEnginesNZ[] = {
 // A map to keep track of a full list of default engines for countries
 // that don't use the default list.
 constexpr auto kDefaultEnginesByCountryIdMap =
-    base::MakeFixedFlatMap<int, base::span<const BravePrepopulatedEngineID>>(
+    base::MakeFixedFlatMapSorted<int,
+                                 base::span<const BravePrepopulatedEngineID>>(
         {{country_codes::CountryCharsToCountryID('A', 'M'),
           kBraveEnginesWithYandex},
          {country_codes::CountryCharsToCountryID('A', 'T'),
@@ -177,26 +178,26 @@ constexpr auto kDefaultEnginesByCountryIdMap =
 BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
   const BravePrepopulatedEngineID default_v6 = PREPOPULATED_ENGINE_ID_GOOGLE;
   static constexpr auto kContentV6 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'U'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
-          {country_codes::CountryCharsToCountryID('F', 'R'),
-           PREPOPULATED_ENGINE_ID_QWANT},
           {country_codes::CountryCharsToCountryID('D', 'E'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
+          {country_codes::CountryCharsToCountryID('F', 'R'),
+           PREPOPULATED_ENGINE_ID_QWANT},
           {country_codes::CountryCharsToCountryID('I', 'E'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
           {country_codes::CountryCharsToCountryID('N', 'Z'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
       });
   static constexpr auto kContentV8 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'U'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+          {country_codes::CountryCharsToCountryID('A', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('B', 'Y'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('D', 'E'),
@@ -223,7 +224,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV16 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
@@ -248,7 +249,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV17 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
@@ -282,9 +283,11 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
       });
 
   static constexpr auto kContentV20 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('B', 'Y'),
@@ -292,6 +295,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('C', 'A'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('D', 'E'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('F', 'R'),
            PREPOPULATED_ENGINE_ID_BRAVE},
@@ -303,6 +308,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('M', 'D'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('R', 'U'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('T', 'J'),
@@ -313,26 +320,27 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
-          // Added values in this version bellow
-          {country_codes::CountryCharsToCountryID('A', 'T'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('E', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('M', 'X'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
       });
 
   static constexpr auto kContentV21 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('B', 'Y'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('C', 'A'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('D', 'E'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('F', 'R'),
            PREPOPULATED_ENGINE_ID_BRAVE},
@@ -344,6 +352,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('M', 'D'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('R', 'U'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('T', 'J'),
@@ -354,33 +364,32 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'T'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('E', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('M', 'X'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          // Added values in this version bellow
-          {country_codes::CountryCharsToCountryID('A', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('B', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
       });
   static constexpr auto kContentV22 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('B', 'Y'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('C', 'A'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('D', 'E'),
            PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('F', 'R'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('G', 'B'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('I', 'N'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('K', 'G'),
            PREPOPULATED_ENGINE_ID_YANDEX},
@@ -388,6 +397,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('M', 'D'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('R', 'U'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('T', 'J'),
@@ -398,42 +409,43 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'T'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('E', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('M', 'X'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('A', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('B', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          // Added values in this version bellow
-          {country_codes::CountryCharsToCountryID('I', 'N'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
       });
   static constexpr auto kContentV25 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('B', 'Y'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('C', 'A'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('D', 'E'),
            PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('F', 'R'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('G', 'B'),
            PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('I', 'N'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('K', 'G'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('K', 'R'),
+           PREPOPULATED_ENGINE_ID_NAVER},
           {country_codes::CountryCharsToCountryID('K', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('M', 'D'),
            PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('R', 'U'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('T', 'J'),
@@ -444,21 +456,6 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'T'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('E', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('M', 'X'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('A', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('B', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('I', 'N'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          // Added values in this version bellow
-          {country_codes::CountryCharsToCountryID('K', 'R'),
-           PREPOPULATED_ENGINE_ID_NAVER},
       });
 
   if (version > 24) {
