@@ -61,6 +61,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
     redirect_callback_for_testing_ = callback;
   }
 
+#if !BUILDFLAG(IS_ANDROID)
+  void DisableResolveMethodCheckForTesting() {
+    disable_resolve_method_check_for_testing_ = true;
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
   FRIEND_TEST_ALL_PREFIXES(
@@ -107,6 +112,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, IPFSAlwaysStartInfobar);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
 #if !BUILDFLAG(IS_ANDROID)
@@ -163,6 +169,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<BraveGlobalInfoBarManager> infobar_manager_;
+  bool disable_resolve_method_check_for_testing_{false};
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   const raw_ptr<PrefService> pref_service_ = nullptr;

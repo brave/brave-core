@@ -68,8 +68,8 @@ inline constexpr char kIPFSAutoRedirectToConfiguredGateway[] =
 // at the same moment when Brave starts.
 inline constexpr char kIPFSAlwaysStartMode[] = "brave.ipfs.always_start_mode";
 
-// Stores info when the IPFS promo infobar was shown last time
-inline constexpr char kIPFSAlwaysStartInfobarLastShowTime[] =
-    "brave.ipfs.ipfs_always_start_infobar_last_show_time";
+// Used to determine if  IPFS always start infobar was ever shown
+inline constexpr char kIPFSAlwaysStartInfobarShown[] =
+    "brave.ipfs.ipfs_always_start_infobar_shown";
 
 #endif  // BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_

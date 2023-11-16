@@ -20,15 +20,13 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::
 std::unique_ptr<BraveConfirmInfoBarDelegate>
 BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
   if (!local_state_ || local_state_->GetBoolean(kIPFSAlwaysStartMode) ||
-      local_state_->GetInteger(kIPFSResolveMethod) !=
-          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+      (!disable_resolve_method_check_for_testing_ &&
+       local_state_->GetInteger(kIPFSResolveMethod) !=
+           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL))) {
     return nullptr;
   }
 
-  const base::Time last_shown_time =
-      local_state_->GetTime(kIPFSAlwaysStartInfobarLastShowTime);
-  const base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
-  if (!last_shown_time.is_null() && last_shown_time > time_1_day_ago) {
+  if (local_state_->GetBoolean(kIPFSAlwaysStartInfobarShown)) {
     return nullptr;
   }
 
@@ -39,6 +37,11 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
 infobars::InfoBarDelegate::InfoBarIdentifier
 BraveIPFSAlwaysStartInfoBarDelegateFactory::GetInfoBarIdentifier() const {
   return BraveConfirmInfoBarDelegate::BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE;
+}
+
+void BraveIPFSAlwaysStartInfoBarDelegateFactory::
+    DisableResolveMethodCheckForTesting() {
+  disable_resolve_method_check_for_testing_ = true;
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(
@@ -102,5 +105,5 @@ void BraveIPFSAlwaysStartInfoBarDelegate::SetLastShownTime() {
   if (!local_state_) {
     return;
   }
-  local_state_->SetTime(kIPFSAlwaysStartInfobarLastShowTime, base::Time::Now());
+  local_state_->SetBoolean(kIPFSAlwaysStartInfobarShown, true);
 }

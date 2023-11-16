@@ -204,7 +204,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
   registry->RegisterDictionaryPref(kIPFSPinnedCids);
   registry->RegisterBooleanPref(kShowIPFSPromoInfobar, true);
-  registry->RegisterTimePref(kIPFSAlwaysStartInfobarLastShowTime, {});
+  registry->RegisterBooleanPref(kIPFSAlwaysStartInfobarShown, false);
 
   // Deprecated, kIPFSAutoRedirectToConfiguredGateway is used instead
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);

@@ -30,6 +30,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/controllable_http_response.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -985,6 +986,89 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
     auto* infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
     //  IPFS Fallback infobar should not be shown
+    ASSERT_FALSE(infobar);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSAlwaysStartInfobar) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  ASSERT_TRUE(helper);
+
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
+  GURL gateway_url = embedded_test_server()->GetURL("navigate.to", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  GURL gateway = ipfs::GetConfiguredBaseGateway(prefs, chrome::GetChannel());
+
+  const GURL test_url = embedded_test_server()->GetURL(
+      "drweb.link",
+      "/ipns/k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL test_non_ipfs_url =
+      embedded_test_server()->GetURL("navigate_to.com", "/");
+
+  auto find_infobar =
+      [](infobars::ContentInfoBarManager* content_infobar_manager)
+      -> infobars::InfoBar* {
+    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
+      auto* infobar = content_infobar_manager->infobar_at(i);
+      if (infobar->delegate()->GetIdentifier() ==
+          BraveConfirmInfoBarDelegate::
+              BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE) {
+        return infobar;
+      }
+    }
+    return nullptr;
+  };
+
+  //  Do not show infobar if resolve method is not IPFS_LOCAL
+  prefs->SetBoolean(kIPFSAlwaysStartInfobarShown, false);
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_FALSE(infobar);
+  }
+
+  helper->DisableResolveMethodCheckForTesting();
+
+  //  Show global infobar if resolve method is IPFS_LOCAL
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(infobar);
+
+    //  Openin new tab
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), test_non_ipfs_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BrowserTestWaitFlags::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    auto* another_tab_infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(another_tab_infobar);
+  }
+
+  //  Do not show infobar if IPFS always start mode is already enabled
+  prefs->SetBoolean(kIPFSAlwaysStartMode, true);
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
     ASSERT_FALSE(infobar);
   }
 }
