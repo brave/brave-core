@@ -61,12 +61,9 @@ class BraveIPFSAlwaysStartInfoBarDelegateFactory
   infobars::InfoBarDelegate::InfoBarIdentifier GetInfoBarIdentifier()
       const override;
 
-  void DisableResolveMethodCheckForTesting();
-
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
-  bool disable_resolve_method_check_for_testing_{false};
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE_H_

@@ -1745,7 +1745,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
   std::string filename = domain;
   filename += "_";
-  filename += std::to_string(key);
+  filename += base::NumberToString(key);
   std::string expected_response = base::StringPrintf(
       R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
       R"(,"Size":"567857"})",

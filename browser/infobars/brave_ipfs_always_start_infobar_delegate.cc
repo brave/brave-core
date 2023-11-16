@@ -19,10 +19,7 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::
 
 std::unique_ptr<BraveConfirmInfoBarDelegate>
 BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
-  if (!local_state_ || local_state_->GetBoolean(kIPFSAlwaysStartMode) ||
-      (!disable_resolve_method_check_for_testing_ &&
-       local_state_->GetInteger(kIPFSResolveMethod) !=
-           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL))) {
+  if (!local_state_ || local_state_->GetBoolean(kIPFSAlwaysStartMode)) {
     return nullptr;
   }
 
@@ -37,11 +34,6 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
 infobars::InfoBarDelegate::InfoBarIdentifier
 BraveIPFSAlwaysStartInfoBarDelegateFactory::GetInfoBarIdentifier() const {
   return BraveConfirmInfoBarDelegate::BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE;
-}
-
-void BraveIPFSAlwaysStartInfoBarDelegateFactory::
-    DisableResolveMethodCheckForTesting() {
-  disable_resolve_method_check_for_testing_ = true;
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(

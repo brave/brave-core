@@ -194,17 +194,14 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
 #if !BUILDFLAG(IS_ANDROID)
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
-    auto ipfs_always_start_infobar_delegate_factory =
-        std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-            ipfs::IpfsServiceFactory::GetForContext(
-                web_contents()->GetBrowserContext()),
-            pref_service_);
-    if (disable_resolve_method_check_for_testing_) {
-      ipfs_always_start_infobar_delegate_factory
-          ->DisableResolveMethodCheckForTesting();
+    if (pref_service_->GetInteger(kIPFSResolveMethod) !=
+        static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+      infobar_manager_ = BraveGlobalInfoBarManager::Show(
+          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+              ipfs::IpfsServiceFactory::GetForContext(
+                  web_contents()->GetBrowserContext()),
+              pref_service_));
     }
-    infobar_manager_ = BraveGlobalInfoBarManager::Show(
-        std::move(ipfs_always_start_infobar_delegate_factory));
 #else
   ) {
     LoadUrl(GetIPFSResolvedURL());
@@ -432,18 +429,14 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
-
-      auto ipfs_always_start_infobar_delegate_factory =
-          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-              ipfs::IpfsServiceFactory::GetForContext(
-                  web_contents()->GetBrowserContext()),
-              pref_service_);
-      if (disable_resolve_method_check_for_testing_) {
-        ipfs_always_start_infobar_delegate_factory
-            ->DisableResolveMethodCheckForTesting();
+      if (pref_service_->GetInteger(kIPFSResolveMethod) !=
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+        infobar_manager_ = BraveGlobalInfoBarManager::Show(
+            std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+                ipfs::IpfsServiceFactory::GetForContext(
+                    web_contents()->GetBrowserContext()),
+                pref_service_));
       }
-      infobar_manager_ = BraveGlobalInfoBarManager::Show(
-          std::move(ipfs_always_start_infobar_delegate_factory));
 #else
       LoadUrl(possible_redirect.value());
 #endif  // !BUILDFLAG(IS_ANDROID)
