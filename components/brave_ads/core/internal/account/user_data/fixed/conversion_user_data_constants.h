@@ -8,15 +8,17 @@
 
 namespace brave_ads {
 
-constexpr char kConversionKey[] = "conversion";
+inline constexpr char kConversionKey[] = "conversion";
 
-constexpr char kConversionActionTypeKey[] = "action";
+inline constexpr char kConversionActionTypeKey[] = "action";
 
-constexpr char kVerifiableConversionEnvelopeKey[] = "envelope";
-constexpr char kVerifiableConversionEnvelopeAlgorithmKey[] = "alg";
-constexpr char kVerifiableConversionEnvelopeCipherTextKey[] = "ciphertext";
-constexpr char kVerifiableConversionEnvelopeEphemeralPublicKeyKey[] = "epk";
-constexpr char kVerifiableConversionEnvelopeNonceKey[] = "nonce";
+inline constexpr char kVerifiableConversionEnvelopeKey[] = "envelope";
+inline constexpr char kVerifiableConversionEnvelopeAlgorithmKey[] = "alg";
+inline constexpr char kVerifiableConversionEnvelopeCipherTextKey[] =
+    "ciphertext";
+inline constexpr char kVerifiableConversionEnvelopeEphemeralPublicKeyKey[] =
+    "epk";
+inline constexpr char kVerifiableConversionEnvelopeNonceKey[] = "nonce";
 
 }  // namespace brave_ads
 

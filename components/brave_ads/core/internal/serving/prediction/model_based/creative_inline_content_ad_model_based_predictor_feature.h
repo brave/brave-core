@@ -13,44 +13,46 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCreativeInlineContentAdModelBasedPredictorFeature);
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdChildIntentSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "child_intent_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdParentIntentSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "parent_intent_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdChildLatentInterestSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "child_latent_interest_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdParentLatentInterestSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "parent_latent_interest_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdChildInterestSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "child_interest_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kInlineContentAdParentInterestSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "parent_interest_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double> kInlineContentAdLastSeenPredictorWeight{
-    &kCreativeInlineContentAdModelBasedPredictorFeature,
-    "last_seen_ad_predictor_weight", 1.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
+    kInlineContentAdLastSeenPredictorWeight{
+        &kCreativeInlineContentAdModelBasedPredictorFeature,
+        "last_seen_ad_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
     kInlineContentAdLastSeenAdvertiserPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "last_seen_advertiser_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double> kInlineContentAdPriorityPredictorWeight{
-    &kCreativeInlineContentAdModelBasedPredictorFeature,
-    "priority_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
+    kInlineContentAdPriorityPredictorWeight{
+        &kCreativeInlineContentAdModelBasedPredictorFeature,
+        "priority_predictor_weight", 1.0};
 
 }  // namespace brave_ads
 

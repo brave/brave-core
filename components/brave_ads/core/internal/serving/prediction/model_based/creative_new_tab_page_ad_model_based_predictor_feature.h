@@ -13,45 +13,47 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCreativeNewTabPageAdModelBasedPredictorFeature);
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdChildIntentSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "child_intent_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdParentIntentSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "parent_intent_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdChildLatentInterestSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "child_latent_interest_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdParentLatentInterestSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "parent_latent_interest_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdChildInterestSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "child_interest_segment_predictor_weight", 0.0};
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdParentInterestSegmentPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "parent_interest_segment_predictor_weight", 0.0};
 
-constexpr base::FeatureParam<double> kNewTabPageAdLastSeenPredictorWeight{
-    &kCreativeNewTabPageAdModelBasedPredictorFeature,
-    "last_seen_ad_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
+    kNewTabPageAdLastSeenPredictorWeight{
+        &kCreativeNewTabPageAdModelBasedPredictorFeature,
+        "last_seen_ad_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double>
+inline constexpr base::FeatureParam<double>
     kNewTabPageAdLastSeenAdvertiserPredictorWeight{
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "last_seen_advertiser_predictor_weight", 1.0};
 
-constexpr base::FeatureParam<double> kNewTabPageAdPriorityPredictorWeight{
-    &kCreativeNewTabPageAdModelBasedPredictorFeature,
-    "priority_predictor_weight", 1.0};
+inline constexpr base::FeatureParam<double>
+    kNewTabPageAdPriorityPredictorWeight{
+        &kCreativeNewTabPageAdModelBasedPredictorFeature,
+        "priority_predictor_weight", 1.0};
 
 }  // namespace brave_ads
 

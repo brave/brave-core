@@ -13,26 +13,27 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPermissionRulesFeature);
 
-constexpr base::FeatureParam<bool> kShouldOnlyServeAdsInWindowedMode{
+inline constexpr base::FeatureParam<bool> kShouldOnlyServeAdsInWindowedMode{
     &kPermissionRulesFeature, "should_only_serve_ads_in_windowed_mode", true};
 
-constexpr base::FeatureParam<bool>
+inline constexpr base::FeatureParam<bool>
     kShouldOnlyServeAdsWithValidInternetConnection{
         &kPermissionRulesFeature,
         "should_only_serve_ads_with_valid_internet_connection", true};
 
-constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfMediaIsNotPlaying{
-    &kPermissionRulesFeature, "should_only_serve_ads_if_media_is_not_playing",
-    true};
+inline constexpr base::FeatureParam<bool>
+    kShouldOnlyServeAdsIfMediaIsNotPlaying{
+        &kPermissionRulesFeature,
+        "should_only_serve_ads_if_media_is_not_playing", true};
 
-constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfBrowserIsActive{
+inline constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfBrowserIsActive{
     &kPermissionRulesFeature, "should_only_serve_ads_if_browser_is_active",
     true};
 
-constexpr base::FeatureParam<int> kDoNotDisturbFromHour{
+inline constexpr base::FeatureParam<int> kDoNotDisturbFromHour{
     &kPermissionRulesFeature, "do_not_disturb_from_hour", 21};
 
-constexpr base::FeatureParam<int> kDoNotDisturbToHour{
+inline constexpr base::FeatureParam<int> kDoNotDisturbToHour{
     &kPermissionRulesFeature, "do_not_disturb_to_hour", 6};
 
 }  // namespace brave_ads

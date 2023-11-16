@@ -17,14 +17,15 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
-constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerHour{
+inline constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};
 
-constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerDay{
+inline constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerDay{
     &kNewTabPageAdFeature, "maximum_ads_per_day", 20};
 
-constexpr base::FeatureParam<base::TimeDelta> kNewTabPageAdMinimumWaitTime{
-    &kNewTabPageAdFeature, "minimum_wait_time", base::Minutes(5)};
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kNewTabPageAdMinimumWaitTime{&kNewTabPageAdFeature, "minimum_wait_time",
+                                 base::Minutes(5)};
 
 }  // namespace brave_ads
 

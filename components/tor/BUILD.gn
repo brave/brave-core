@@ -65,7 +65,6 @@ static_library("tor") {
 
 source_set("common") {
   sources = [
-    "tor_constants.cc",
     "tor_constants.h",
     "tor_switches.h",
     "tor_utils.cc",

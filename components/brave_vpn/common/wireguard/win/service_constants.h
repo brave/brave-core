@@ -8,33 +8,35 @@
 
 namespace brave_vpn {
 
-constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
+inline constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
     L"brave_vpn_wireguard_service.exe";
 
 // Registry flag to count service launches for the fallback.
-constexpr wchar_t kBraveVpnWireguardCounterOfTunnelUsage[] =
+inline constexpr wchar_t kBraveVpnWireguardCounterOfTunnelUsage[] =
     L"tunnel_launches_counter";
 
 // Register and configure windows service.
-constexpr char kBraveVpnWireguardServiceInstallSwitchName[] = "install";
+inline constexpr char kBraveVpnWireguardServiceInstallSwitchName[] = "install";
 
 // Remove config and all stuff related to service.
-constexpr char kBraveVpnWireguardServiceUnnstallSwitchName[] = "uninstall";
+inline constexpr char kBraveVpnWireguardServiceUnnstallSwitchName[] =
+    "uninstall";
 
 // Load wireguard binaries and connect to vpn using passed config.
-constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
+inline constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 
 // In this mode the service started on user level and expose UI interfaces
 // to work with the service for a user.
-constexpr char kBraveVpnWireguardServiceInteractiveSwitchName[] = "interactive";
+inline constexpr char kBraveVpnWireguardServiceInteractiveSwitchName[] =
+    "interactive";
 
 // Notifies users about connected state of the vpn using system notifications.
-constexpr char kBraveVpnWireguardServiceNotifyConnectedSwitchName[] =
+inline constexpr char kBraveVpnWireguardServiceNotifyConnectedSwitchName[] =
     "notify-connected";
 
 // Notifies users about disconnected state of the vpn using system
 // notifications.
-constexpr char kBraveVpnWireguardServiceNotifyDisconnectedSwitchName[] =
+inline constexpr char kBraveVpnWireguardServiceNotifyDisconnectedSwitchName[] =
     "notify-disconnected";
 }  // namespace brave_vpn
 

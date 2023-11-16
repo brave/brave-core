@@ -10,26 +10,26 @@ class PrefRegistrySimple;
 
 namespace ai_chat::prefs {
 
-constexpr char kLastAcceptedDisclaimer[] =
+inline constexpr char kLastAcceptedDisclaimer[] =
     "brave.ai_chat.last_accepted_disclaimer";
-constexpr char kBraveChatAutoGenerateQuestions[] =
+inline constexpr char kBraveChatAutoGenerateQuestions[] =
     "brave.ai_chat.auto_generate_questions";
-constexpr char kBraveChatAutocompleteProviderEnabled[] =
+inline constexpr char kBraveChatAutocompleteProviderEnabled[] =
     "brave.ai_chat.autocomplete_provider_enabled";
-constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
+inline constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_count";
-constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
+inline constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
 // Stores Leo Premium credentials that have already been fetched from the
 // SKU SDK but were not used because the chat server was unavailable.
-constexpr char kBraveChatPremiumCredentialCache[] =
+inline constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
-constexpr char kUserDismissedPremiumPrompt[] =
+inline constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
-constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
-constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
+inline constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
+inline constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_open";
-constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
+inline constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_autocomplete";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

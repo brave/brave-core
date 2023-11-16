@@ -14,7 +14,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kHistoryFeature);
 
-constexpr base::FeatureParam<base::TimeDelta> kHistoryTimeWindow{
+inline constexpr base::FeatureParam<base::TimeDelta> kHistoryTimeWindow{
     &kHistoryFeature, "time_window", base::Days(30)};
 
 }  // namespace brave_ads

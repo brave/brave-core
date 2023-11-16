@@ -8,28 +8,33 @@
 
 namespace brave_ads {
 
-constexpr char kPlacementId[] = "9bac9ae4-693c-4569-9b3e-300e357780cf";
-constexpr char kMissingPlacementId[] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-constexpr char kInvalidPlacementId[] = "";
-
-constexpr char kCreativeInstanceId[] = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
-constexpr char kMissingCreativeInstanceId[] =
+inline constexpr char kPlacementId[] = "9bac9ae4-693c-4569-9b3e-300e357780cf";
+inline constexpr char kMissingPlacementId[] =
     "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-constexpr char kInvalidCreativeInstanceId[] = "";
+inline constexpr char kInvalidPlacementId[] = "";
 
-constexpr char kCreativeSetId[] = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-constexpr char kMissingCreativeSetId[] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-constexpr char kInvalidCreativeSetId[] = "";
+inline constexpr char kCreativeInstanceId[] =
+    "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
+inline constexpr char kMissingCreativeInstanceId[] =
+    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+inline constexpr char kInvalidCreativeInstanceId[] = "";
 
-constexpr char kCampaignId[] = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-constexpr char kMissingCampaignId[] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-constexpr char kInvalidCampaignId[] = "";
+inline constexpr char kCreativeSetId[] = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
+inline constexpr char kMissingCreativeSetId[] =
+    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+inline constexpr char kInvalidCreativeSetId[] = "";
 
-constexpr char kAdvertiserId[] = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-constexpr char kMissingAdvertiserId[] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-constexpr char kInvalidAdvertiserId[] = "";
+inline constexpr char kCampaignId[] = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
+inline constexpr char kMissingCampaignId[] =
+    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+inline constexpr char kInvalidCampaignId[] = "";
 
-constexpr char kSegment[] = "untargeted";
+inline constexpr char kAdvertiserId[] = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
+inline constexpr char kMissingAdvertiserId[] =
+    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+inline constexpr char kInvalidAdvertiserId[] = "";
+
+inline constexpr char kSegment[] = "untargeted";
 
 }  // namespace brave_ads
 

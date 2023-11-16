@@ -11,11 +11,11 @@
 namespace brave_vpn {
 
 // Status tray icon window name and class.
-constexpr base::FilePath::CharType kStatusTrayWindowName[] =
+inline constexpr base::FilePath::CharType kStatusTrayWindowName[] =
     FILE_PATH_LITERAL("BraveVpn_StatusTrayWindow");
-constexpr base::FilePath::CharType kStatusTrayWindowClass[] =
+inline constexpr base::FilePath::CharType kStatusTrayWindowClass[] =
     FILE_PATH_LITERAL("BraveVpn_StatusTraydowClass");
-const base::FilePath::CharType kBraveVpnStatusTrayMessageName[] =
+inline constexpr base::FilePath::CharType kBraveVpnStatusTrayMessageName[] =
     FILE_PATH_LITERAL("BraveVpn_CustomTrayMessage");
 }  // namespace brave_vpn
 

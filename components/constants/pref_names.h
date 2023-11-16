@@ -140,25 +140,27 @@ inline constexpr char kOtherBookmarksMigrated[] =
 
 // Obsolete widget removal prefs
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-constexpr char kFTXAccessToken[] = "brave.ftx.access_token";
-constexpr char kFTXOauthHost[] = "brave.ftx.oauth_host";
-constexpr char kFTXNewTabPageShowFTX[] = "ftx.new_tab_page.show_ftx";
-constexpr char kCryptoDotComNewTabPageShowCryptoDotCom[] =
+inline constexpr char kFTXAccessToken[] = "brave.ftx.access_token";
+inline constexpr char kFTXOauthHost[] = "brave.ftx.oauth_host";
+inline constexpr char kFTXNewTabPageShowFTX[] = "ftx.new_tab_page.show_ftx";
+inline constexpr char kCryptoDotComNewTabPageShowCryptoDotCom[] =
     "crypto_dot_com.new_tab_page.show_crypto_dot_com";
-constexpr char kCryptoDotComHasBoughtCrypto[] =
+inline constexpr char kCryptoDotComHasBoughtCrypto[] =
     "crypto_dot_com.new_tab_page.has_bought_crypto";
-constexpr char kCryptoDotComHasInteracted[] =
+inline constexpr char kCryptoDotComHasInteracted[] =
     "crypto_dot_com.new_tab_page.has_interacted";
-constexpr char kGeminiAccessToken[] = "brave.gemini.access_token";
-constexpr char kGeminiRefreshToken[] = "brave.gemini.refresh_token";
-constexpr char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
+inline constexpr char kGeminiAccessToken[] = "brave.gemini.access_token";
+inline constexpr char kGeminiRefreshToken[] = "brave.gemini.refresh_token";
+inline constexpr char kNewTabPageShowGemini[] =
+    "brave.new_tab_page.show_gemini";
 #endif
 
 #if !BUILDFLAG(IS_IOS)
-constexpr char kBinanceAccessToken[] = "brave.binance.access_token";
-constexpr char kBinanceRefreshToken[] = "brave.binance.refresh_token";
-constexpr char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
-constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
+inline constexpr char kBinanceAccessToken[] = "brave.binance.access_token";
+inline constexpr char kBinanceRefreshToken[] = "brave.binance.refresh_token";
+inline constexpr char kNewTabPageShowBinance[] =
+    "brave.new_tab_page.show_binance";
+inline constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
     "brave.brave_suggested_site_suggestions_enabled";
 #endif
 

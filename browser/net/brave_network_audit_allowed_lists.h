@@ -9,12 +9,12 @@
 namespace brave {
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlProtocols[] = {
+inline constexpr const char* kAllowedUrlProtocols[] = {
     "chrome-extension", "chrome", "brave", "file", "data", "blob",
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlPrefixes[] = {
+inline constexpr const char* kAllowedUrlPrefixes[] = {
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
     "https://crxdownload.brave.com/crx/blobs/",
@@ -80,7 +80,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlPatterns[] = {
+inline constexpr const char* kAllowedUrlPatterns[] = {
     // allowed because it's url for fetching super referral's mapping table
     "https://mobile-data.s3.brave.com/superreferrer/map-table.json",
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",

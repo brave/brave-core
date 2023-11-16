@@ -82,7 +82,7 @@ bool Uri(uint256_t token_id, std::string* data);
 namespace erc165 {
 
 // supportsInterface(bytes4)
-constexpr uint8_t kSupportsInterfaceBytes4[] = {0x01, 0xff, 0xc9, 0xa7};
+inline constexpr uint8_t kSupportsInterfaceBytes4[] = {0x01, 0xff, 0xc9, 0xa7};
 
 bool SupportsInterface(const std::string& interface_id, std::string* data);
 std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface);
@@ -92,7 +92,7 @@ std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface);
 namespace unstoppable_domains {
 
 // getMany(string[],uint256)
-constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
+inline constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
 
 // Get mutiple record values mapped with keys of the target domain.
 absl::optional<std::string> GetMany(const std::vector<std::string>& keys,

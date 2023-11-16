@@ -10,7 +10,7 @@
 
 namespace brave_news {
 
-constexpr char kRegionUrlPart[] = "global.";
+inline constexpr char kRegionUrlPart[] = "global.";
 
 std::string GetHostname();
 

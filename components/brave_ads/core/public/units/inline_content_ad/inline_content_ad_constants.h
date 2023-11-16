@@ -8,18 +8,19 @@
 
 namespace brave_ads {
 
-constexpr char kInlineContentAdPlacementIdKey[] = "uuid";
-constexpr char kInlineContentAdCreativeInstanceIdKey[] = "creativeInstanceId";
-constexpr char kInlineContentAdCreativeSetIdKey[] = "creativeSetId";
-constexpr char kInlineContentAdCampaignIdKey[] = "campaignId";
-constexpr char kInlineContentAdAdvertiserIdKey[] = "advertiserId";
-constexpr char kInlineContentAdSegmentKey[] = "segment";
-constexpr char kInlineContentAdTitleKey[] = "title";
-constexpr char kInlineContentAdDescriptionKey[] = "description";
-constexpr char kInlineContentAdImageUrlKey[] = "imageUrl";
-constexpr char kInlineContentAdDimensionsKey[] = "dimensions";
-constexpr char kInlineContentAdCtaTextKey[] = "ctaText";
-constexpr char kInlineContentAdTargetUrlKey[] = "targetUrl";
+inline constexpr char kInlineContentAdPlacementIdKey[] = "uuid";
+inline constexpr char kInlineContentAdCreativeInstanceIdKey[] =
+    "creativeInstanceId";
+inline constexpr char kInlineContentAdCreativeSetIdKey[] = "creativeSetId";
+inline constexpr char kInlineContentAdCampaignIdKey[] = "campaignId";
+inline constexpr char kInlineContentAdAdvertiserIdKey[] = "advertiserId";
+inline constexpr char kInlineContentAdSegmentKey[] = "segment";
+inline constexpr char kInlineContentAdTitleKey[] = "title";
+inline constexpr char kInlineContentAdDescriptionKey[] = "description";
+inline constexpr char kInlineContentAdImageUrlKey[] = "imageUrl";
+inline constexpr char kInlineContentAdDimensionsKey[] = "dimensions";
+inline constexpr char kInlineContentAdCtaTextKey[] = "ctaText";
+inline constexpr char kInlineContentAdTargetUrlKey[] = "targetUrl";
 
 }  // namespace brave_ads
 

@@ -24,8 +24,8 @@ namespace brave_news {
 using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
 using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
-constexpr char kTopSourcesChannel[] = "Top Sources";
-constexpr char kTopNewsChannel[] = "Top News";
+inline constexpr char kTopSourcesChannel[] = "Top Sources";
+inline constexpr char kTopNewsChannel[] = "Top News";
 
 class ChannelsController : public PublishersController::Observer {
  public:

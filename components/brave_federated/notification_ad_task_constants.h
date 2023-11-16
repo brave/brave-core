@@ -8,13 +8,13 @@
 
 namespace brave_federated {
 
-constexpr char kNotificationAdTaskName[] = "notification_ad_timing_task";
+inline constexpr char kNotificationAdTaskName[] = "notification_ad_timing_task";
 constexpr int kNotificationAdTaskId = 0;
 
 constexpr int kMaxEvents = 200;
 constexpr int kFeaturesPerEvent = 30;
 constexpr int kMaxNumberOfRecords = kMaxEvents * kFeaturesPerEvent;
-constexpr base::TimeDelta kMaxRetentionDays = base::Days(30);
+inline constexpr base::TimeDelta kMaxRetentionDays = base::Days(30);
 
 }  // namespace brave_federated
 

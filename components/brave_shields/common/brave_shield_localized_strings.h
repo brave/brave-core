@@ -11,7 +11,7 @@
 
 namespace brave_shields {
 
-constexpr webui::LocalizedString kLocalizedStrings[] = {
+inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShields", IDS_BRAVE_SHIELDS},
     {"braveShieldsStandalone", IDS_BRAVE_SHIELDS_STANDALONE},
     {"braveShieldsEnable", IDS_BRAVE_SHIELDS_ENABLE},

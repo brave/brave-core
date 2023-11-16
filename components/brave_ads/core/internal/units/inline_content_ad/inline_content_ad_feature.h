@@ -13,10 +13,10 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kInlineContentAdFeature);
 
-constexpr base::FeatureParam<int> kMaximumInlineContentAdsPerHour{
+inline constexpr base::FeatureParam<int> kMaximumInlineContentAdsPerHour{
     &kInlineContentAdFeature, "maximum_ads_per_hour", 6};
 
-constexpr base::FeatureParam<int> kMaximumInlineContentAdsPerDay{
+inline constexpr base::FeatureParam<int> kMaximumInlineContentAdsPerDay{
     &kInlineContentAdFeature, "maximum_ads_per_day", 20};
 
 }  // namespace brave_ads

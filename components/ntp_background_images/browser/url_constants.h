@@ -8,67 +8,67 @@
 
 namespace ntp_background_images {
 
-constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
-constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
-constexpr char kSuperReferralPath[] = "super-referral/";
-constexpr char kSponsoredImagesPath[] = "sponsored-images/";
+inline constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
+inline constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
+inline constexpr char kSuperReferralPath[] = "super-referral/";
+inline constexpr char kSponsoredImagesPath[] = "sponsored-images/";
 
-constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
-constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/";
+inline constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
+inline constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/";
 
-constexpr char kCampaignsKey[] = "campaigns";
+inline constexpr char kCampaignsKey[] = "campaigns";
 
-constexpr char kPublicKey[] = "publicKey";
-constexpr char kComponentIDKey[] = "componentID";
+inline constexpr char kPublicKey[] = "publicKey";
+inline constexpr char kComponentIDKey[] = "componentID";
 
-constexpr char kThemeNameKey[] = "themeName";
+inline constexpr char kThemeNameKey[] = "themeName";
 
-constexpr char kLogoKey[] = "logo";
+inline constexpr char kLogoKey[] = "logo";
 
-constexpr char kCampaignIdKey[] = "campaignId";
+inline constexpr char kCampaignIdKey[] = "campaignId";
 
-constexpr char kWallpapersKey[] = "wallpapers";
-constexpr char kWallpaperFocalPointKey[] = "focalPoint";
+inline constexpr char kWallpapersKey[] = "wallpapers";
+inline constexpr char kWallpaperFocalPointKey[] = "focalPoint";
 
-constexpr char kImagesKey[] = "images";
-constexpr char kIsBackgroundKey[] = "isBackground";
-constexpr char kImageSourceKey[] = "source";
-constexpr char kImageAuthorKey[] = "author";
-constexpr char kImageLinkKey[] = "link";
+inline constexpr char kImagesKey[] = "images";
+inline constexpr char kIsBackgroundKey[] = "isBackground";
+inline constexpr char kImageSourceKey[] = "source";
+inline constexpr char kImageAuthorKey[] = "author";
+inline constexpr char kImageLinkKey[] = "link";
 
-constexpr char kTopSitesKey[] = "topSites";
-constexpr char kTopSiteNameKey[] = "name";
-constexpr char kTopSiteIconURLKey[] = "iconUrl";
+inline constexpr char kTopSitesKey[] = "topSites";
+inline constexpr char kTopSiteNameKey[] = "name";
+inline constexpr char kTopSiteIconURLKey[] = "iconUrl";
 
-constexpr char kImageURLKey[] = "imageUrl";
-constexpr char kDestinationURLKey[] = "destinationUrl";
-constexpr char kBackgroundColorKey[] = "backgroundColor";
-constexpr char kCompanyNameKey[] = "companyName";
-constexpr char kViewboxKey[] = "viewbox";
+inline constexpr char kImageURLKey[] = "imageUrl";
+inline constexpr char kDestinationURLKey[] = "destinationUrl";
+inline constexpr char kBackgroundColorKey[] = "backgroundColor";
+inline constexpr char kCompanyNameKey[] = "companyName";
+inline constexpr char kViewboxKey[] = "viewbox";
 
-constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
-constexpr char kWallpaperIDKey[] = "wallpaperId";
+inline constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
+inline constexpr char kWallpaperIDKey[] = "wallpaperId";
 
-constexpr char kIsSponsoredKey[] = "isSponsored";
-constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
-constexpr char kWallpaperImagePathKey[] = "wallpaperImagePath";
-constexpr char kWallpaperColorKey[] = "wallpaperColor";
-constexpr char kWallpaperTypeKey[] = "type";
-constexpr char kWallpaperRandomKey[] = "random";
-constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";
-constexpr char kWallpaperFocalPointYKey[] = "wallpaperFocalPointY";
-constexpr char kImageKey[] = "image";
-constexpr char kImagePathKey[] = "imagePath";
-constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
-constexpr char kLogoImagePath[] = "logo.imagePath";
+inline constexpr char kIsSponsoredKey[] = "isSponsored";
+inline constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
+inline constexpr char kWallpaperImagePathKey[] = "wallpaperImagePath";
+inline constexpr char kWallpaperColorKey[] = "wallpaperColor";
+inline constexpr char kWallpaperTypeKey[] = "type";
+inline constexpr char kWallpaperRandomKey[] = "random";
+inline constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";
+inline constexpr char kWallpaperFocalPointYKey[] = "wallpaperFocalPointY";
+inline constexpr char kImageKey[] = "image";
+inline constexpr char kImagePathKey[] = "imagePath";
+inline constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
+inline constexpr char kLogoImagePath[] = "logo.imagePath";
 
-constexpr char kAltKey[] = "alt";
-constexpr char kXKey[] = "x";
-constexpr char kYKey[] = "y";
-constexpr char kWidthKey[] = "width";
-constexpr char kHeightKey[] = "height";
+inline constexpr char kAltKey[] = "alt";
+inline constexpr char kXKey[] = "x";
+inline constexpr char kYKey[] = "y";
+inline constexpr char kWidthKey[] = "width";
+inline constexpr char kHeightKey[] = "height";
 
-constexpr char kSchemaVersionKey[] = "schemaVersion";
+inline constexpr char kSchemaVersionKey[] = "schemaVersion";
 
 }  // namespace ntp_background_images
 

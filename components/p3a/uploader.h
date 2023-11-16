@@ -26,9 +26,9 @@ class HttpResponseHeaders;
 
 namespace p3a {
 
-constexpr char kP2AUploadType[] = "p2a";
-constexpr char kP3AUploadType[] = "p3a";
-constexpr char kP3ACreativeUploadType[] = "p3a_creative";
+inline constexpr char kP2AUploadType[] = "p2a";
+inline constexpr char kP3AUploadType[] = "p3a";
+inline constexpr char kP3ACreativeUploadType[] = "p3a_creative";
 
 struct P3AConfig;
 

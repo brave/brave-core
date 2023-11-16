@@ -10,16 +10,16 @@
 
 namespace brave_ads {
 
-constexpr size_t kP2AAnswerIndexIntervals[] = {0,     // 0
-                                               5,     // 1
-                                               10,    // 2
-                                               20,    // 3
-                                               50,    // 4
-                                               100,   // 5
-                                               250,   // 6
-                                               500};  // 7
+inline constexpr size_t kP2AAnswerIndexIntervals[] = {0,     // 0
+                                                      5,     // 1
+                                                      10,    // 2
+                                                      20,    // 3
+                                                      50,    // 4
+                                                      100,   // 5
+                                                      250,   // 6
+                                                      500};  // 7
 
-constexpr const char* kP2AAllowedNames[] = {
+inline constexpr const char* kP2AAllowedNames[] = {
     "Brave.P2A.ad_notification.opportunities",
     "Brave.P2A.ad_notification.opportunities_per_segment.architecture",
     "Brave.P2A.ad_notification.opportunities_per_segment.artsentertainment",

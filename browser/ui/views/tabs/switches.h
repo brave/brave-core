@@ -10,7 +10,7 @@ namespace tabs::switches {
 
 // This switch disables vertical tab strip regardless of the pref. This could be
 // useful when vertical tab strip causes browser to crash on start up.
-constexpr char kDisableVerticalTabsSwitch[] = "disable-vertical-tabs";
+inline constexpr char kDisableVerticalTabsSwitch[] = "disable-vertical-tabs";
 
 }  // namespace tabs::switches
 

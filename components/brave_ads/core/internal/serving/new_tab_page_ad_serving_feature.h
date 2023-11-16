@@ -13,7 +13,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdServingFeature);
 
-constexpr base::FeatureParam<int> kNewTabPageAdServingVersion{
+inline constexpr base::FeatureParam<int> kNewTabPageAdServingVersion{
     &kNewTabPageAdServingFeature, "version", 2};
 
 }  // namespace brave_ads
