@@ -9,7 +9,7 @@
 #include "base/strings/sys_string_conversions.h"
 
 #include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store_interface.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
 
 #include "net/base/mac/url_conversions.h"
 

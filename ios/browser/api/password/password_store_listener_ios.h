@@ -13,7 +13,7 @@
 #include "brave/ios/browser/api/password/brave_password_observer.h"
 
 #include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store_interface.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
 
 @interface PasswordStoreListenerImpl : NSObject <PasswordStoreListener>
 - (instancetype)init:(id<PasswordStoreObserver>)observer
