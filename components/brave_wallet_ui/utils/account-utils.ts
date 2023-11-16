@@ -99,7 +99,23 @@ export const findAccountByAccountId = (
   if (!accounts) {
     return undefined
   }
-  return accounts.entities[entityIdFromAccountId(accountId)]
+
+  for (const id of accounts.ids) {
+    const entity = accounts.entities[id]
+    if (!entity) {
+      continue
+    }
+    if (
+      entity.accountId.address.toLowerCase() ===
+        accountId.address.toLowerCase() ||
+      entity.accountId.uniqueKey.toLowerCase() ===
+        accountId.uniqueKey.toLowerCase()
+    ) {
+      return entity
+    }
+  }
+
+  return undefined
 }
 
 export const getAddressLabel = (

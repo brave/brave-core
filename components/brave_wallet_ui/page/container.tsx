@@ -350,7 +350,7 @@ export const Container = () => {
 
             {!isWalletLocked && (
               <Route
-                path={WalletRoutes.SendPage}
+                path={WalletRoutes.SendPageStart}
                 exact
               >
                 <SendScreen />

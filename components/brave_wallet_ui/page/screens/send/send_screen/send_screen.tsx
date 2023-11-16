@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/key-spacing */
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useParams, useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // Messages
 import {
@@ -60,13 +60,11 @@ import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import { useModal } from '../../../../common/hooks/useOnClickOutside'
+import { useQuery } from '../../../../common/hooks/use-query'
 import {
   useGetDefaultFiatCurrencyQuery,
-  useSetSelectedAccountMutation,
-  useSetNetworkMutation,
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery,
-  useGetSelectedChainQuery,
   useEnableEnsOffchainLookupMutation,
   useGetFVMAddressQuery,
   useGetEthAddressChecksumQuery,
@@ -76,12 +74,12 @@ import {
   useSendERC20TransferMutation,
   useSendERC721TransferFromMutation,
   useSendETHFilForwarderTransferMutation,
-  useGetAddressFromNameServiceUrlQuery
+  useGetAddressFromNameServiceUrlQuery,
+  useGetVisibleNetworksQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery,
-  useGetCombinedTokensListQuery,
-  useSelectedAccountQuery
+  useGetCombinedTokensListQuery
 } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
@@ -146,28 +144,31 @@ export const SendScreen = React.memo((props: Props) => {
   const { isAndroid = false } = props
 
   // routing
-  const { chainId, uniqueKeyOrAddress, contractAddressOrSymbol, tokenId } =
-    useParams<{
-      chainId?: string
-      uniqueKeyOrAddress?: string
-      contractAddressOrSymbol?: string
-      tokenId?: string
-    }>()
+  const query = useQuery()
   const history = useHistory()
   const { hash } = useLocation()
   const selectedSendOption = (hash as SendPageTabHashes) || '#token'
 
-  const { account: accountFromParams } =
-    useAccountFromAddressQuery(uniqueKeyOrAddress)
+  const { account: accountFromParams } = useAccountFromAddressQuery(
+    query.get('account') ?? undefined
+  )
+
+  const { data: networks = [] } = useGetVisibleNetworksQuery()
+  const networkFromParams = React.useMemo(
+    () =>
+      networks.find(
+        (network) =>
+          network.chainId === query.get('chainId') &&
+          network.coin === accountFromParams?.accountId.coin
+      ),
+    [networks, accountFromParams, query]
+  )
 
   // Refs
   const addressWidthRef = React.useRef<HTMLDivElement>(null)
 
   // State
   const [sendAmount, setSendAmount] = React.useState<string>('')
-  const [selectedSendAsset, setSelectedSendAsset] = React.useState<
-    BraveWallet.BlockchainToken | undefined
-  >(undefined)
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const trimmedToAddressOrUrl = toAddressOrUrl.trim()
 
@@ -178,8 +179,6 @@ export const SendScreen = React.memo((props: Props) => {
 
   // Mutations
   const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
-  const [setNetwork] = useSetNetworkMutation()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
   const [sendSPLTransfer] = useSendSPLTransferMutation()
   const [sendTransaction] = useSendTransactionMutation()
   const [sendERC20Transfer] = useSendERC20TransferMutation()
@@ -187,57 +186,58 @@ export const SendScreen = React.memo((props: Props) => {
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
 
   // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAccount, isLoading: isLoadingSelectedAccount } =
-    useSelectedAccountQuery()
-
   const { data: fullTokenList } = useGetCombinedTokensListQuery()
-
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: (result) => ({
       userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
 
-  const selectedAssetFromParams = React.useMemo(() => {
-    if (!contractAddressOrSymbol || !chainId) return
+  const tokenFromParams = React.useMemo(() => {
+    if (!networkFromParams) {
+      return
+    }
 
-    const contractOrSymbolLower = contractAddressOrSymbol.toLowerCase()
+    const contractOrSymbol = query.get('token')
+    if (!contractOrSymbol) {
+      return
+    }
+
+    const tokenId = query.get('tokenId')
 
     return userVisibleTokensInfo.find((token) =>
       tokenId
-        ? token.chainId === chainId &&
-          token.contractAddress.toLowerCase() === contractOrSymbolLower &&
+        ? token.chainId === networkFromParams.chainId &&
+          token.contractAddress.toLowerCase() ===
+            contractOrSymbol.toLowerCase() &&
           token.tokenId === tokenId
-        : (token.contractAddress.toLowerCase() === contractOrSymbolLower &&
-            token.chainId === chainId) ||
-          (token.symbol.toLowerCase() === contractOrSymbolLower &&
-            token.chainId === chainId &&
+        : (token.contractAddress.toLowerCase() ===
+            contractOrSymbol.toLowerCase() &&
+            token.chainId === networkFromParams.chainId) ||
+          (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
+            token.chainId === networkFromParams.chainId &&
             token.contractAddress === '')
     )
-  }, [userVisibleTokensInfo, chainId, contractAddressOrSymbol, tokenId])
+  }, [userVisibleTokensInfo, query, networkFromParams])
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: tokenBalancesRegistry, isFetching: isLoadingBalances } =
     useScopedBalanceUpdater(
-      selectedAccount && selectedSendAsset
+      accountFromParams && networkFromParams && tokenFromParams
         ? {
-            network: {
-              chainId: selectedSendAsset.chainId,
-              coin: selectedAccount.accountId.coin
-            },
-            accounts: [selectedAccount],
-            tokens: [selectedSendAsset]
+            network: networkFromParams,
+            accounts: [accountFromParams],
+            tokens: [tokenFromParams]
           }
         : skipToken
     )
 
   const { data: spotPriceRegistry, isFetching: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      !isLoadingBalances && selectedSendAsset && defaultFiatCurrency
+      !isLoadingBalances && tokenFromParams && defaultFiatCurrency
         ? {
-            ids: [getPriceIdForToken(selectedSendAsset)],
+            ids: [getPriceIdForToken(tokenFromParams)],
             toCurrency: defaultFiatCurrency
           }
         : skipToken,
@@ -245,17 +245,17 @@ export const SendScreen = React.memo((props: Props) => {
     )
 
   // Domain name lookup Queries
-  const selectedSendAssetId = selectedSendAsset
-    ? getAssetIdKey(selectedSendAsset)
+  const selectedSendAssetId = tokenFromParams
+    ? getAssetIdKey(tokenFromParams)
     : null
 
   const lowerCaseToAddress = toAddressOrUrl.toLowerCase()
 
   const toAddressHasValidExtension = toAddressOrUrl
     ? endsWithAny(supportedUDExtensions, lowerCaseToAddress) ||
-      (selectedSendAsset?.coin === BraveWallet.CoinType.SOL &&
+      (tokenFromParams?.coin === BraveWallet.CoinType.SOL &&
         endsWithAny(supportedSNSExtensions, lowerCaseToAddress)) ||
-      (selectedSendAsset?.coin === BraveWallet.CoinType.ETH &&
+      (tokenFromParams?.coin === BraveWallet.CoinType.ETH &&
         endsWithAny(supportedENSExtensions, lowerCaseToAddress))
     : false
 
@@ -277,19 +277,20 @@ export const SendScreen = React.memo((props: Props) => {
     nameServiceInfo?.requireOffchainConsent || false
 
   const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
-    selectedSendAsset?.coin === BraveWallet.CoinType.FIL &&
-      trimmedToAddressOrUrl
+    tokenFromParams?.coin === BraveWallet.CoinType.FIL &&
+      trimmedToAddressOrUrl &&
+      networkFromParams
       ? {
-          coin: selectedSendAsset.coin,
+          coin: tokenFromParams.coin,
           addresses: [trimmedToAddressOrUrl],
-          isMainNet: selectedSendAsset.chainId === BraveWallet.FILECOIN_MAINNET
+          isMainNet: networkFromParams.chainId === BraveWallet.FILECOIN_MAINNET
         }
       : skipToken
   )
 
   const { data: isBase58 = false } = useGetIsBase58EncodedSolPubkeyQuery(
     !toAddressHasValidExtension &&
-      selectedAccount?.accountId.coin === BraveWallet.CoinType.SOL &&
+      accountFromParams?.accountId.coin === BraveWallet.CoinType.SOL &&
       trimmedToAddressOrUrl
       ? trimmedToAddressOrUrl
       : skipToken
@@ -304,45 +305,45 @@ export const SendScreen = React.memo((props: Props) => {
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
     React.useMemo(() => {
-      if (!sendAmount || !selectedSendAsset) {
+      if (!sendAmount || !tokenFromParams) {
         return
       }
 
       // extract BigNumber object wrapped by Amount
-      const amountBN = ethToWeiAmount(sendAmount, selectedSendAsset).value
+      const amountBN = ethToWeiAmount(sendAmount, tokenFromParams).value
 
       const amountDP = amountBN && amountBN.decimalPlaces()
       return amountDP && amountDP > 0 ? 'fromAmountDecimalsOverflow' : undefined
-    }, [sendAmount, selectedSendAsset])
+    }, [sendAmount, tokenFromParams])
 
   const sendAssetBalance =
-    !selectedAccount || !selectedSendAsset || !tokenBalancesRegistry
+    !accountFromParams || !tokenFromParams || !tokenBalancesRegistry
       ? ''
       : getBalance(
-          selectedAccount.accountId,
-          selectedSendAsset,
+          accountFromParams.accountId,
+          tokenFromParams,
           tokenBalancesRegistry
         )
 
   const accountNameAndBalance =
-    !selectedSendAsset || sendAssetBalance === ''
+    !tokenFromParams || sendAssetBalance === ''
       ? ''
       : selectedSendOption === SendPageTabHashes.nft
-      ? selectedAccount?.name
-      : `${selectedAccount?.name}: ${formatTokenBalanceWithSymbol(
+      ? accountFromParams?.name
+      : `${accountFromParams?.name}: ${formatTokenBalanceWithSymbol(
           sendAssetBalance,
-          selectedSendAsset.decimals,
-          selectedSendAsset.symbol,
+          tokenFromParams.decimals,
+          tokenFromParams.symbol,
           4
         )}`
 
   const insufficientFundsError = React.useMemo((): boolean => {
-    if (!selectedSendAsset) {
+    if (!tokenFromParams) {
       return false
     }
 
     const amountWei = new Amount(sendAmount).multiplyByDecimals(
-      selectedSendAsset.decimals
+      tokenFromParams.decimals
     )
 
     if (amountWei.isZero()) {
@@ -350,11 +351,11 @@ export const SendScreen = React.memo((props: Props) => {
     }
 
     return amountWei.gt(sendAssetBalance)
-  }, [sendAssetBalance, sendAmount, selectedSendAsset])
+  }, [sendAssetBalance, sendAmount, tokenFromParams])
 
   const sendAmountFiatValue = React.useMemo(() => {
     if (
-      !selectedSendAsset ||
+      !tokenFromParams ||
       sendAssetBalance === '' ||
       selectedSendOption === SendPageTabHashes.nft
     ) {
@@ -365,13 +366,13 @@ export const SendScreen = React.memo((props: Props) => {
       spotPriceRegistry,
       value: ethToWeiAmount(
         sendAmount !== '' ? sendAmount : '0',
-        selectedSendAsset
+        tokenFromParams
       ).toHex(),
-      token: selectedSendAsset
+      token: tokenFromParams
     }).formatAsFiat(defaultFiatCurrency)
   }, [
     spotPriceRegistry,
-    selectedSendAsset,
+    tokenFromParams,
     sendAmount,
     defaultFiatCurrency,
     sendAssetBalance,
@@ -389,7 +390,7 @@ export const SendScreen = React.memo((props: Props) => {
           resolvedDomainAddress,
           hasNameServiceError,
           showEnsOffchainWarning,
-          selectedAccount?.address
+          accountFromParams?.address
         )
       : undefined
 
@@ -405,10 +406,10 @@ export const SendScreen = React.memo((props: Props) => {
     : undefined
 
   const toAddressIsSelectedAccount =
-    selectedAccount &&
-    selectedAccount.address &&
+    accountFromParams &&
+    accountFromParams.address &&
     resolvedDomainOrToAddressOrUrl.toLowerCase() ===
-      selectedAccount.address.toLowerCase()
+      accountFromParams.address.toLowerCase()
 
   const addressWarningLocaleKey = toAddressIsTokenContract
     ? 'braveWalletContractAddressError'
@@ -426,14 +427,15 @@ export const SendScreen = React.memo((props: Props) => {
     ? 'braveWalletSameAddressError'
     : trimmedToAddressOrUrl.includes('.')
     ? domainErrorLocaleKey
-    : selectedAccount
+    : accountFromParams
     ? addressWarningLocaleKey !== 'braveWalletAddressMissingChecksumInfoWarning'
       ? processAddressOrUrl({
           addressOrUrl: trimmedToAddressOrUrl,
           ethAddressChecksum,
           isBase58,
-          coinType: selectedAccount.accountId.coin ?? BraveWallet.CoinType.ETH,
-          selectedSendAsset
+          coinType:
+            accountFromParams.accountId.coin ?? BraveWallet.CoinType.ETH,
+          token: tokenFromParams
         })
       : undefined
     : undefined
@@ -441,7 +443,7 @@ export const SendScreen = React.memo((props: Props) => {
   const addressError = addressErrorLocaleKey
     ? getLocale(addressErrorLocaleKey).replace(
         '$1',
-        CoinTypesMap[selectedNetwork?.coin ?? 0]
+        CoinTypesMap[networkFromParams?.coin ?? 0]
       )
     : undefined
 
@@ -465,7 +467,7 @@ export const SendScreen = React.memo((props: Props) => {
         addressError !== braveWalletNotValidChecksumAddressError))
 
   const showFilecoinFEVMWarning =
-    selectedAccount?.accountId.coin === BraveWallet.CoinType.FIL
+    accountFromParams?.accountId.coin === BraveWallet.CoinType.FIL
       ? trimmedToAddressOrUrl.startsWith('0x') &&
         !validateETHAddress(trimmedToAddressOrUrl, ethAddressChecksum)
       : false
@@ -492,97 +494,114 @@ export const SendScreen = React.memo((props: Props) => {
 
   // Methods
   const selectSendAsset = React.useCallback(
-    (asset: BraveWallet.BlockchainToken | undefined) => {
-      if (asset?.isErc721 || asset?.isNft) {
+    (asset: BraveWallet.BlockchainToken, account: BraveWallet.AccountInfo) => {
+      if (asset.isErc721 || asset.isNft) {
         setSendAmount('1')
       } else {
         setSendAmount('')
       }
       setToAddressOrUrl('')
-      setSelectedSendAsset(asset)
+
+      const baseQueryParams = {
+        chainId: asset.chainId,
+        token: asset.contractAddress || asset.symbol.toUpperCase(),
+        account: account.accountId.uniqueKey
+      }
+      const params = new URLSearchParams(
+        asset.tokenId
+          ? { ...baseQueryParams, tokenId: asset.tokenId }
+          : baseQueryParams
+      )
+
+      history.push(`${WalletRoutes.SendPageStart}?${params.toString()}`)
     },
     []
   )
 
-  const resetSendFields = React.useCallback(() => {
-    selectSendAsset(undefined)
+  const resetSendFields = React.useCallback((option?: SendPageTabHashes) => {
     setToAddressOrUrl('')
     setSendAmount('')
-  }, [selectSendAsset])
+
+    if (option) {
+      history.push(`${WalletRoutes.SendPageStart}${option}`)
+    } else {
+      history.push(WalletRoutes.SendPageStart)
+    }
+  }, [])
 
   const submitSend = React.useCallback(async () => {
-    if (!selectedSendAsset) {
+    if (!tokenFromParams) {
       console.log('Failed to submit Send transaction: no send asset selected')
       return
     }
 
-    if (!selectedAccount) {
+    if (!accountFromParams) {
       console.log('Failed to submit Send transaction: no account selected')
       return
     }
 
-    if (!selectedNetwork) {
+    if (!networkFromParams) {
       console.log('Failed to submit Send transaction: no network selected')
       return
     }
 
     const fromAccount: BaseTransactionParams['fromAccount'] = {
-      accountId: selectedAccount.accountId,
-      address: selectedAccount.address,
-      hardware: selectedAccount.hardware
+      accountId: accountFromParams.accountId,
+      address: accountFromParams.address,
+      hardware: accountFromParams.hardware
     }
 
     const toAddress = showResolvedDomain
       ? resolvedDomainAddress
       : toAddressOrUrl
 
-    selectedSendAsset.isErc20 &&
+    tokenFromParams.isErc20 &&
       (await sendERC20Transfer({
-        network: selectedNetwork,
+        network: networkFromParams,
         fromAccount,
         to: toAddress,
-        value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
-        contractAddress: selectedSendAsset.contractAddress
+        value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
+        contractAddress: tokenFromParams.contractAddress
       }))
 
-    selectedSendAsset.isErc721 &&
+    tokenFromParams.isErc721 &&
       (await sendERC721TransferFrom({
-        network: selectedNetwork,
+        network: networkFromParams,
         fromAccount,
         to: toAddress,
         value: '',
-        contractAddress: selectedSendAsset.contractAddress,
-        tokenId: selectedSendAsset.tokenId ?? ''
+        contractAddress: tokenFromParams.contractAddress,
+        tokenId: tokenFromParams.tokenId ?? ''
       }))
 
     if (
-      selectedAccount.accountId.coin === BraveWallet.CoinType.SOL &&
-      selectedSendAsset.contractAddress !== '' &&
-      !selectedSendAsset.isErc20 &&
-      !selectedSendAsset.isErc721
+      accountFromParams.accountId.coin === BraveWallet.CoinType.SOL &&
+      tokenFromParams.contractAddress !== '' &&
+      !tokenFromParams.isErc20 &&
+      !tokenFromParams.isErc721
     ) {
       await sendSPLTransfer({
-        network: selectedNetwork,
+        network: networkFromParams,
         fromAccount,
         to: toAddress,
-        value: !selectedSendAsset.isNft
+        value: !tokenFromParams.isNft
           ? new Amount(sendAmount)
-              .multiplyByDecimals(selectedSendAsset.decimals)
+              .multiplyByDecimals(tokenFromParams.decimals)
               .toHex()
           : new Amount(sendAmount).toHex(),
-        splTokenMintAddress: selectedSendAsset.contractAddress
+        splTokenMintAddress: tokenFromParams.contractAddress
       })
       resetSendFields()
       return
     }
 
-    if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
+    if (accountFromParams.accountId.coin === BraveWallet.CoinType.FIL) {
       await sendTransaction({
-        network: selectedNetwork,
+        network: networkFromParams,
         fromAccount,
         to: toAddress,
         value: new Amount(sendAmount)
-          .multiplyByDecimals(selectedSendAsset.decimals)
+          .multiplyByDecimals(tokenFromParams.decimals)
           .toNumber()
           .toString()
       })
@@ -590,24 +609,24 @@ export const SendScreen = React.memo((props: Props) => {
       return
     }
 
-    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) {
+    if (tokenFromParams.isErc721 || tokenFromParams.isErc20) {
       resetSendFields()
       return
     }
 
     if (
-      selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
-      (selectedSendAsset.chainId ===
+      accountFromParams.accountId.coin === BraveWallet.CoinType.ETH &&
+      (tokenFromParams.chainId ===
         BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
-        selectedSendAsset.chainId ===
+        tokenFromParams.chainId ===
           BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
       isValidFilAddress(toAddress)
     ) {
       await sendETHFilForwarderTransfer({
-        network: selectedNetwork,
+        network: networkFromParams,
         fromAccount,
         to: toAddress,
-        value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
+        value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
         contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
       })
       resetSendFields()
@@ -615,46 +634,30 @@ export const SendScreen = React.memo((props: Props) => {
     }
 
     await sendTransaction({
-      network: selectedNetwork,
+      network: networkFromParams,
       fromAccount,
       to: toAddress,
       value:
-        selectedAccount.accountId.coin === BraveWallet.CoinType.FIL
+        accountFromParams.accountId.coin === BraveWallet.CoinType.FIL
           ? new Amount(sendAmount)
-              .multiplyByDecimals(selectedSendAsset.decimals)
+              .multiplyByDecimals(tokenFromParams.decimals)
               .toString()
           : new Amount(sendAmount)
-              .multiplyByDecimals(selectedSendAsset.decimals)
+              .multiplyByDecimals(tokenFromParams.decimals)
               .toHex()
     })
 
     resetSendFields()
   }, [
-    selectedSendAsset,
-    selectedAccount,
-    selectedNetwork,
+    tokenFromParams,
+    accountFromParams,
+    networkFromParams,
     sendAmount,
     toAddressOrUrl,
     showResolvedDomain,
     resolvedDomainAddress,
     resetSendFields
   ])
-
-  const setSelectedAccountAndNetwork = React.useCallback(async () => {
-    if (!chainId || !selectedAssetFromParams || !accountFromParams) {
-      return
-    }
-
-    try {
-      await setSelectedAccount(accountFromParams.accountId)
-      await setNetwork({
-        chainId: chainId,
-        coin: selectedAssetFromParams.coin
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }, [accountFromParams, chainId, selectedAssetFromParams])
 
   const handleInputAmountChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -672,10 +675,9 @@ export const SendScreen = React.memo((props: Props) => {
 
   const onSelectSendOption = React.useCallback(
     (option: SendPageTabHashes) => {
-      selectSendAsset(undefined)
-      history.push(`${WalletRoutes.SendPageStart}${option}`)
+      resetSendFields(option)
     },
-    [selectSendAsset]
+    [resetSendFields]
   )
 
   const onENSConsent = React.useCallback(() => {
@@ -685,20 +687,20 @@ export const SendScreen = React.memo((props: Props) => {
 
   const setPresetAmountValue = React.useCallback(
     (percent: number) => {
-      if (!selectedSendAsset || !selectedAccount) {
+      if (!tokenFromParams || !accountFromParams) {
         return
       }
 
       setSendAmount(
         getPercentAmount(
-          selectedSendAsset,
-          selectedAccount.accountId,
+          tokenFromParams,
+          accountFromParams.accountId,
           percent,
           tokenBalancesRegistry
         )
       )
     },
-    [selectedSendAsset, selectedAccount, tokenBalancesRegistry]
+    [tokenFromParams, accountFromParams, tokenBalancesRegistry]
   )
 
   // Modals
@@ -723,20 +725,6 @@ export const SendScreen = React.memo((props: Props) => {
     const position = addressWidthRef.current?.clientWidth
     setDomainPosition(position ? position + 28 : 0)
   }, [toAddressOrUrl])
-
-  React.useEffect(() => {
-    // check if the user has selected an asset
-    if (!selectedAssetFromParams || selectedSendAsset) {
-      return
-    }
-    setSelectedAccountAndNetwork()
-    selectSendAsset(selectedAssetFromParams)
-  }, [
-    selectSendAsset,
-    selectedSendAsset,
-    selectedAssetFromParams,
-    setSelectedAccountAndNetwork
-  ])
 
   // render
   return (
@@ -774,7 +762,7 @@ export const SendScreen = React.memo((props: Props) => {
                   rowWidth='full'
                   horizontalAlign='flex-end'
                 >
-                  {isLoadingSelectedAccount || isLoadingBalances ? (
+                  {isLoadingBalances ? (
                     <SmallLoadingRing />
                   ) : (
                     <Text
@@ -791,11 +779,11 @@ export const SendScreen = React.memo((props: Props) => {
                   <Row>
                     <SelectTokenButton
                       onClick={openSelectTokenModal}
-                      token={selectedSendAsset}
+                      token={tokenFromParams}
                       selectedSendOption={selectedSendOption}
                     />
                     {selectedSendOption === SendPageTabHashes.token &&
-                      selectedSendAsset && (
+                      tokenFromParams && (
                         <>
                           <HorizontalDivider
                             height={28}
@@ -873,7 +861,7 @@ export const SendScreen = React.memo((props: Props) => {
                 >
                   <SelectTokenButton
                     onClick={openSelectTokenModal}
-                    token={selectedSendAsset}
+                    token={tokenFromParams}
                     selectedSendOption={selectedSendOption}
                   />
                 </Row>
@@ -902,12 +890,14 @@ export const SendScreen = React.memo((props: Props) => {
                 value={toAddressOrUrl}
                 onChange={handleInputAddressChange}
                 spellCheck={false}
-                disabled={!selectedSendAsset}
+                disabled={!tokenFromParams}
               />
               <AccountSelector
-                asset={selectedSendAsset}
-                disabled={!selectedSendAsset}
+                asset={tokenFromParams}
+                disabled={!tokenFromParams}
                 onSelectAddress={setToAddressOrUrl}
+                selectedNetwork={networkFromParams}
+                selectedAccountId={accountFromParams?.accountId}
               />
             </InputRow>
             {showResolvedDomain && (
@@ -947,7 +937,7 @@ export const SendScreen = React.memo((props: Props) => {
                   addressErrorLocaleKey,
                   addressWarningLocaleKey
                 )
-              ).replace('$1', CoinTypesMap[selectedNetwork?.coin ?? 0])}
+              ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
               onClick={submitSend}
               buttonType='primary'
               buttonWidth='full'
@@ -1125,17 +1115,15 @@ const validateETHAddress = (address: string, checksumAddress: string) => {
 
 const processEthereumAddress = (
   addressOrUrl: string,
-  selectedSendAsset: BraveWallet.BlockchainToken | undefined,
+  token: BraveWallet.BlockchainToken | undefined,
   checksumAddress: string
 ) => {
   const valueToLowerCase = addressOrUrl.toLowerCase()
 
   if (
-    selectedSendAsset &&
-    (selectedSendAsset.chainId ===
-      BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
-      selectedSendAsset.chainId ===
-        BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+    token &&
+    (token.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+      token.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
     isValidFilAddress(addressOrUrl)
   ) {
     return undefined
@@ -1200,11 +1188,11 @@ function processAddressOrUrl({
   ethAddressChecksum,
   isBase58,
   coinType,
-  selectedSendAsset
+  token
 }: {
   addressOrUrl: string
   coinType: BraveWallet.CoinType | undefined
-  selectedSendAsset: BraveWallet.BlockchainToken | undefined
+  token: BraveWallet.BlockchainToken | undefined
   ethAddressChecksum: string
   isBase58: boolean
 }) {
@@ -1217,11 +1205,7 @@ function processAddressOrUrl({
     case undefined:
       return undefined
     case BraveWallet.CoinType.ETH: {
-      return processEthereumAddress(
-        addressOrUrl,
-        selectedSendAsset,
-        ethAddressChecksum
-      )
+      return processEthereumAddress(addressOrUrl, token, ethAddressChecksum)
     }
     case BraveWallet.CoinType.FIL: {
       return processFilecoinAddress(addressOrUrl, ethAddressChecksum)
