@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/signin/about_signin_internals_factory.h"
+#include "ios/chrome/browser/signin/model/about_signin_internals_factory.h"
 
 #include "base/no_destructor.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
