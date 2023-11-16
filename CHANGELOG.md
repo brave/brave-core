@@ -1,5 +1,56 @@
 # Changelog
 
+## [1.56](https://github.com/brave/brave-ios/releases/tag/v1.56)
+
+### Web3
+
+- Implemented “Select a token to send” view which allows selecting an account and an asset at the same time. ([#7523](https://github.com/brave/brave-ios/issues/7523))
+- Added the ability to remove auto-discovered tokens. ([#7804](https://github.com/brave/brave-ios/issues/7804))
+- Updated NFT tab view with new "Add Custom Asset" button and ability to hide NFTs via long press. ([#7556](https://github.com/brave/brave-ios/issues/7556))
+- Updated “Select a Token to Send” screen to always list test network token at the end. ([#7640](https://github.com/brave/brave-ios/issues/7640))
+- Updated Network Filters to allow multiple networks to be selected. ([#7607](https://github.com/brave/brave-ios/issues/7607))
+- Updated the “Secondary Networks” list in the “Select Network Filter” screen by moving “Filecoin EVM Testnet” to be included with the other testnets. ([#7583](https://github.com/brave/brave-ios/issues/7583))
+- Removed network name from "Public Encryption Key Request" confirmation screen. ([#7495](https://github.com/brave/brave-ios/issues/7495))
+- Fixed migrating user assets when restoring from the wallet lock screen. ([#7785](https://github.com/brave/brave-ios/issues/7785))
+- Fixed asset preferences from being overwritten when auto-discovery returns results. ([#7443](https://github.com/brave/brave-ios/issues/7443))
+- Fixed “Send” screen in Wallet from retaining the last selected token when opened. ([#7759](https://github.com/brave/brave-ios/issues/7759))
+- Fixed native assets to be listed when manually adding custom network. ([#7623](https://github.com/brave/brave-ios/issues/7623))
+- Fixed Wallet panel from being removed also when user dismisses the pending request panel. ([#7505](https://github.com/brave/brave-ios/issues/7505))
+
+### General
+
+- Implemented bookmark count feature for bookmark folders. ([#7674](https://github.com/brave/brave-ios/issues/7674))
+- Added support for using custom search engine in Private Mode. ([#7733](https://github.com/brave/brave-ios/issues/7733))
+- Added “Media” settings menu in main settings. [#7677](https://github.com/brave/brave-ios/issues/7677)
+- Added “Highest Quality Playback” preference in “Media” setting for YouTube video resolution. ([#7055](https://github.com/brave/brave-ios/issues/7055))
+- Added voice search feature in the URL bar. ([#7032](https://github.com/brave/brave-ios/issues/7032))
+- Added new search engines for South Korea region. ([#6912](https://github.com/brave/brave-ios/issues/6912))
+- Added support for using component updater to fetch background and sponsored images. ([#7467](https://github.com/brave/brave-ios/issues/7467))
+- Added Jitsi SDK integration for Brave Talk. ([#7560](https://github.com/brave/brave-ios/issues/7560))
+- Replaced Playlist onboarding tutorial with the new revamped version. ([#7526](https://github.com/brave/brave-ios/issues/7526))
+- Updated the certificate viewer sizing to properly display some fields which were being cropped out. ([#7603](https://github.com/brave/brave-ios/issues/7603))
+- Updated Youtube setting strings in “Media” settings menu. ([#7776](https://github.com/brave/brave-ios/issues/7776))
+- Updated status bar overlay color to match the Brave UI in reader mode. ([#7673](https://github.com/brave/brave-ios/issues/7673))
+- Updated URL bar context menus to display operations in reverse order for “Bottom Bar” mode. ([#6260](https://github.com/brave/brave-ios/issues/6260))
+- Updated the order of buttons in the “Start a sync chain” flow. ([#4821](https://github.com/brave/brave-ios/issues/4821))
+- Fixed audio files not being added to Playlist using long press gesture. ([#7667](https://github.com/brave/brave-ios/issues/7667))
+- Fixed ad notifications not working as expected. ([#7586](https://github.com/brave/brave-ios/issues/7586))
+- Fixed displaying correct settings screen after unlocking browser. ([#7657](https://github.com/brave/brave-ios/issues/7657))
+- Fixed OpenSearch allowing to add rogue suggestion providers as reported on HackerOne by nishimunea. ([#7702](https://github.com/brave/brave-ios/issues/7702))
+- Fixed script blocking embedded video player on https://puredarwin.org. ([#7822](https://github.com/brave/brave-ios/issues/7822))
+- Fixed crash when launching browser with hundreds of tabs open. ([#7804](https://github.com/brave/brave-ios/issues/7804))
+- Fixed voice search onboarding on iPad when “Split View” is enabled. ([#7693](https://github.com/brave/brave-ios/issues/7693))
+- Fixed compatibility issues when scrolling or loading content on https://youtube.com for iPad. ([#7692](https://github.com/brave/brave-ios/issues/7692))
+- Fixed crash relating to Brave Rewards when swiping to close app using the task switcher. ([#7690](https://github.com/brave/brave-ios/issues/7690))
+- Fixed issue with user not being able to navigate out of the “Unlock” window. ([#7656](https://github.com/brave/brave-ios/issues/7656))
+- Fixed status bar color to match UI when in overlay mode. ([#7615](https://github.com/brave/brave-ios/issues/7615))
+- Fixed Brave VPN toggle switch from blinking when enabled. ([#7606](https://github.com/brave/brave-ios/issues/7606))
+- Fixed the camera view from rotating 90 degrees in QR code scan window when device is in landscape orientation. ([#7605](https://github.com/brave/brave-ios/issues/7605))
+- Fixed Reader Mode to display right-to-left content on websites correctly when enabled. ([#7532](https://github.com/brave/brave-ios/issues/7532))
+- Fixed search engine quick action buttons from being hidden behind safe area when searching with a hardware keyboard. [#7514](https://github.com/brave/brave-ios/issues/7514)
+- Fixed “VPN Region” section in menu to display country flag after relaunching browser. ([#7449](https://github.com/brave/brave-ios/issues/7449))
+- Fixed downvotes from failing to redeem for ad confirmations. ([#7365](https://github.com/brave/brave-ios/issues/7365))
+
 ## [1.52.1](https://github.com/brave/brave-ios/releases/tag/v1.52.1)
 
 - Resolved web compatibility issue on YouTube (desktop version of website). ([#8401](https://github.com/brave/brave-ios/issues/8401))
