@@ -13,7 +13,7 @@ class IpfsService;
 class IpfsServiceDelegate {
  public:
   virtual ~IpfsServiceDelegate() = default;
-  virtual void ShowAlwaysStartInfoBar(IpfsService* ipfs_service) = 0;
+  virtual void OnImportToIpfsFinished(IpfsService* ipfs_service) = 0;
 };
 
 }  // namespace ipfs

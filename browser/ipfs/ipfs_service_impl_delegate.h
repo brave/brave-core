@@ -21,7 +21,7 @@ class IpfsServiceImplDelegate : public IpfsServiceDelegate {
  public:
   explicit IpfsServiceImplDelegate(PrefService* local_state);
   ~IpfsServiceImplDelegate() override;
-  void ShowAlwaysStartInfoBar(IpfsService* ipfs_service) override;
+  void OnImportToIpfsFinished(IpfsService* ipfs_service) override;
 
  private:
   raw_ptr<PrefService> local_state_ = nullptr;

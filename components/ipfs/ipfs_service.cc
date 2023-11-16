@@ -696,7 +696,7 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
   importers_.erase(key);
 
   if (is_import_success && ipfs_service_delegate_) {
-    ipfs_service_delegate_->ShowAlwaysStartInfoBar(this);
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
   }
 }
 #endif
@@ -1109,7 +1109,7 @@ void IpfsService::OnPinAddResult(
   parse_result->recursive = recursive;
 
   if (ipfs_service_delegate_) {
-    ipfs_service_delegate_->ShowAlwaysStartInfoBar(this);
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
   }
 
   std::move(callback).Run(std::move(parse_result));
