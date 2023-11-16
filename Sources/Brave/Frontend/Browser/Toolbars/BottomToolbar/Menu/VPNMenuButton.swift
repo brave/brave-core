@@ -136,7 +136,6 @@ struct VPNMenuButton: View {
         .padding(.vertical, 2)
       VStack(alignment: .leading, spacing: 3) {
         Text(verbatim: description == nil ? "Brave VPN" : Strings.OptionsMenu.braveVPNItemTitle)
-          .foregroundColor(Color(.bravePrimary))
         if let subTitle = description {
           Text(retryStateActive ? Strings.VPN.vpnUpdatePaymentMethodDescriptionText : subTitle)
             .font(.subheadline)
