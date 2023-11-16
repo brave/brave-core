@@ -60,7 +60,9 @@ module.exports = async function (env, argv) {
       fs: false,
       http: require.resolve("stream-http"),
       https: require.resolve("https-browserify"),
-      timers: require.resolve('timers-browserify')
+      timers: require.resolve('timers-browserify'),
+      buffer: require.resolve('buffer'),
+      process: require.resolve('process/browser'),
     }
   }
 
@@ -101,6 +103,11 @@ module.exports = async function (env, argv) {
       process.env.DEPFILE_SOURCE_NAME && new GenerateDepfilePlugin({
         depfilePath: process.env.DEPFILE_PATH,
         depfileSourceName: process.env.DEPFILE_SOURCE_NAME
+      }),
+      // Provide globals from NodeJs polyfills
+      new webpack.ProvidePlugin({
+        'Buffer': ['buffer', 'Buffer'],
+        'process': 'process/browser.js'
       }),
       prefixReplacer('chrome://resources/brave/fonts', path.join(process.env.ROOT_GEN_DIR, 'brave/ui/webui/resources/fonts')),
       prefixReplacer('chrome://resources/brave', path.join(process.env.ROOT_GEN_DIR, 'brave/ui/webui/resources/tsc')),
