@@ -7,11 +7,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // Types
-import {
-  BraveWallet,
-  SendPageTabHashes,
-  WalletRoutes
-} from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Queries
 import { useGetOnRampAssetsQuery } from '../../../common/slices/api.slice'
@@ -24,7 +20,10 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
-import { makeDepositFundsRoute } from '../../../utils/routes-utils'
+import {
+  makeDepositFundsRoute,
+  makeSendRoute
+} from '../../../utils/routes-utils'
 
 // Components
 import {
@@ -101,21 +100,9 @@ export const AssetItemMenu = (props: Props) => {
 
   const onClickSend = React.useCallback(() => {
     if (account) {
-      const uniqueKeyOrAddress = account.address || account.accountId.uniqueKey
-
-      const contractAddressOrSymbol =
-        asset.contractAddress === '' ? asset.symbol : asset.contractAddress
-      history.push(
-        `${WalletRoutes.SendPage.replace(':chainId?', asset.chainId)
-          .replace(':uniqueKeyOrAddress?', uniqueKeyOrAddress)
-          .replace(':contractAddressOrSymbol?', contractAddressOrSymbol)
-          .replace('/:tokenId?', '')}${
-          //
-          SendPageTabHashes.token
-        }`
-      )
+      history.push(makeSendRoute(asset, account))
     } else {
-      history.push(WalletRoutes.SendPageStart)
+      history.push(WalletRoutes.Send)
     }
   }, [asset.chainId, asset.contractAddress, account?.address])
 

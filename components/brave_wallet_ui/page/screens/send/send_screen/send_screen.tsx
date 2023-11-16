@@ -51,6 +51,7 @@ import {
   isValidFilAddress,
   isValidZecAddress
 } from '../../../../utils/address-utils'
+import { makeSendRoute } from '../../../../utils/routes-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
@@ -495,25 +496,14 @@ export const SendScreen = React.memo((props: Props) => {
   // Methods
   const selectSendAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken, account: BraveWallet.AccountInfo) => {
-      if (asset.isErc721 || asset.isNft) {
+      const isNftTab = asset.isErc721 || asset.isNft
+      if (isNftTab) {
         setSendAmount('1')
       } else {
         setSendAmount('')
       }
       setToAddressOrUrl('')
-
-      const baseQueryParams = {
-        chainId: asset.chainId,
-        token: asset.contractAddress || asset.symbol.toUpperCase(),
-        account: account.accountId.uniqueKey
-      }
-      const params = new URLSearchParams(
-        asset.tokenId
-          ? { ...baseQueryParams, tokenId: asset.tokenId }
-          : baseQueryParams
-      )
-
-      history.push(`${WalletRoutes.SendPageStart}?${params.toString()}`)
+      history.push(makeSendRoute(asset, account))
     },
     []
   )
@@ -523,9 +513,9 @@ export const SendScreen = React.memo((props: Props) => {
     setSendAmount('')
 
     if (option) {
-      history.push(`${WalletRoutes.SendPageStart}${option}`)
+      history.push(`${WalletRoutes.Send}${option}`)
     } else {
-      history.push(WalletRoutes.SendPageStart)
+      history.push(WalletRoutes.Send)
     }
   }, [])
 

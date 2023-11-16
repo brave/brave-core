@@ -114,7 +114,7 @@ export const getWalletLocationTitle = (location: string) => {
   if (location === WalletRoutes.Swap) {
     return getLocale('braveWalletSwap')
   }
-  if (location === WalletRoutes.SendPageStart) {
+  if (location === WalletRoutes.Send) {
     return getLocale('braveWalletSend')
   }
   /** Wallet */
