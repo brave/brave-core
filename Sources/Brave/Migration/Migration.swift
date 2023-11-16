@@ -148,6 +148,49 @@ public class Migration {
       Preferences.Migration.tabMigrationToInteractionStateCompleted.value = true
     }
   }
+  
+  public static func migrateLostTabsActiveWindow() {
+    if UIApplication.shared.supportsMultipleScenes { return }
+    if Preferences.Migration.lostTabsWindowIDMigrationOne.value { return }
+    
+    let sessionWindows = SessionWindow.all()
+    guard let activeWindow = sessionWindows.first(where: { $0.isSelected }) else {
+      return
+    }
+    
+    let windowIds = UIApplication.shared.openSessions
+      .compactMap({ BrowserState.getWindowInfo(from: $0).windowId })
+      .filter({ $0 != activeWindow.windowId.uuidString })
+    
+    let zombieTabs = sessionWindows
+      .filter({ windowIds.contains($0.windowId.uuidString) })
+      .compactMap({
+        $0.sessionTabs
+      })
+      .flatMap({ $0 })
+    
+    if !zombieTabs.isEmpty {
+      let activeURLs = activeWindow.sessionTabs?.compactMap({ $0.url }) ?? []
+      
+      // Restore private tabs if persistency is enabled
+      if Preferences.Privacy.persistentPrivateBrowsing.value {
+        zombieTabs.filter({ $0.isPrivate }).forEach {
+          if !activeURLs.contains($0.url) {
+            SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
+          }
+        }
+      }
+      
+      // Restore regular tabs
+      zombieTabs.filter({ !$0.isPrivate }).forEach {
+        if !activeURLs.contains($0.url) {
+          SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
+        }
+      }
+    }
+    
+    Preferences.Migration.lostTabsWindowIDMigrationOne.value = true
+  }
 
   public static func postCoreDataInitMigrations() {
     if Preferences.Migration.coreDataCompleted.value { return }
@@ -212,6 +255,11 @@ fileprivate extension Preferences {
     /// allows a user to select between `standard`, `aggressive` and `disabled` instead of a simple on/off `Bool`
     static let adBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.ad-block-and-tracking-protection-shield-level-completed", default: false
+    )
+    
+    static let lostTabsWindowIDMigrationOne = Option<Bool>(
+      key: "migration.lost-tabs-window-id-one",
+      default: !UIApplication.shared.supportsMultipleScenes
     )
   }
 

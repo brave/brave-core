@@ -1168,17 +1168,17 @@ public class BrowserViewController: UIViewController {
     
     let isPrivateBrowsing = SessionWindow.from(windowId: windowId)?.isPrivate == true
     var userActivity = view.window?.windowScene?.userActivity
-    if userActivity == nil {
-      userActivity = BrowserState.userActivity(for: windowId, isPrivate: isPrivateBrowsing)
+    
+    if let userActivity = userActivity {
+      BrowserState.setWindowInfo(for: userActivity, windowId: windowId.uuidString, isPrivate: isPrivateBrowsing)
     } else {
-      userActivity?.targetContentIdentifier = windowId.uuidString
-      userActivity?.addUserInfoEntries(from: ["WindowID": windowId.uuidString,
-                                              "isPrivate": isPrivateBrowsing])
+      userActivity = BrowserState.userActivity(for: windowId.uuidString, isPrivate: isPrivateBrowsing)
     }
     
-    view.window?.windowScene?.userActivity = userActivity
-    view.window?.windowScene?.session.userInfo = ["WindowID": windowId.uuidString,
-                                                  "isPrivate": isPrivateBrowsing]
+    if let scene = view.window?.windowScene {
+      scene.userActivity = userActivity
+      BrowserState.setWindowInfo(for: scene.session, windowId: windowId.uuidString, isPrivate: isPrivateBrowsing)
+    }
     
     for session in UIApplication.shared.openSessions {
       UIApplication.shared.requestSceneSessionRefresh(session)
@@ -1996,12 +1996,8 @@ public class BrowserViewController: UIViewController {
   }
   
   func openInNewWindow(url: URL?, isPrivate: Bool) {
-    let activity = BrowserState.userActivity(for: UUID(), isPrivate: isPrivate)
-    
-    if let url = url {
-      activity.addUserInfoEntries(from: ["OpenURL": url])
-    }
-    
+    let activity = BrowserState.userActivity(for: UUID().uuidString, isPrivate: isPrivate, openURL: url)
+
     let options = UIScene.ActivationRequestOptions().then {
       $0.requestingScene = view.window?.windowScene
     }

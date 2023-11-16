@@ -50,6 +50,7 @@ public class AppState {
           DataController.shared.initializeOnce()
           Migration.postCoreDataInitMigrations()
           Migration.migrateTabStateToWebkitState(diskImageStore: diskImageStore)
+          Migration.migrateLostTabsActiveWindow()
         }
         break
       case .active:
