@@ -14,9 +14,7 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
   useGenerateReceiveAddressMutation,
-  useGetFVMAddressQuery,
-  useGetSelectedAccountIdQuery,
-  useGetSelectedChainQuery //
+  useGetFVMAddressQuery
 } from '../../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
@@ -34,6 +32,8 @@ import { BraveWallet } from '../../../../../constants/types'
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAccountId: BraveWallet.AccountId | undefined
   onSelectAddress: (value: string) => void
   disabled: boolean
 }
@@ -41,12 +41,16 @@ interface Props {
 const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 
 export const AccountSelector = (props: Props) => {
-  const { asset, onSelectAddress, disabled } = props
+  const {
+    asset,
+    selectedNetwork,
+    selectedAccountId,
+    onSelectAddress,
+    disabled
+  } = props
 
   // Queries
   const { accounts } = useAccountsQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
 
   // State
   const [showAccountSelector, setShowAccountSelector] =

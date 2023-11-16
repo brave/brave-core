@@ -199,7 +199,7 @@ export const Container = () => {
     if (toobarElement && rootElement) {
       if (
         walletLocation === WalletRoutes.Swap ||
-        walletLocation === WalletRoutes.SendPageStart ||
+        walletLocation === WalletRoutes.Send ||
         walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
         walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
@@ -350,7 +350,7 @@ export const Container = () => {
 
             {!isWalletLocked && (
               <Route
-                path={WalletRoutes.SendPage}
+                path={WalletRoutes.Send}
                 exact
               >
                 <SendScreen />

@@ -8,10 +8,11 @@ import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
-import { SendPageTabHashes, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // Utils
 import { getBalance } from '../../../../utils/balance-utils'
+import { makeSendRoute } from '../../../../utils/routes-utils'
 import Amount from '../../../../utils/amount'
 
 // selectors
@@ -141,29 +142,12 @@ export const PortfolioNftAsset = () => {
   }, [selectedAssetFromParams, ownerAccount, tokenBalancesRegistry])
 
   const onSend = React.useCallback(() => {
-    if (!selectedAssetFromParams || !selectedAssetNetwork || !ownerAccount) {
+    if (!selectedAssetFromParams || !ownerAccount) {
       return
     }
 
-    const uniqueKeyOrAddress =
-      ownerAccount.address || ownerAccount.accountId.uniqueKey
-
-    history.push(
-      `${WalletRoutes.SendPage.replace(
-        ':chainId?',
-        selectedAssetNetwork.chainId
-      )
-        .replace(':uniqueKeyOrAddress?', uniqueKeyOrAddress)
-        .replace(
-          ':contractAddressOrSymbol?',
-          selectedAssetFromParams.contractAddress
-        )
-        .replace(':tokenId?', selectedAssetFromParams.tokenId)}${
-        //
-        SendPageTabHashes.nft
-      }`
-    )
-  }, [selectedAssetFromParams, ownerAccount, selectedAssetNetwork])
+    history.push(makeSendRoute(selectedAssetFromParams, ownerAccount))
+  }, [selectedAssetFromParams, ownerAccount])
 
   // asset not found
   if (

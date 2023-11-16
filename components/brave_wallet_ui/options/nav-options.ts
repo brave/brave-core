@@ -56,7 +56,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
-    route: WalletRoutes.SendPageStart
+    route: WalletRoutes.Send
   },
   {
     id: 'swap',

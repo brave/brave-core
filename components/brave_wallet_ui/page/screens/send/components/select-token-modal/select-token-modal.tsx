@@ -37,9 +37,7 @@ import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
-  useSetNetworkMutation,
   useGetTokenSpotPricesQuery,
-  useSetSelectedAccountMutation,
   useGetUserTokensRegistryQuery,
   useGetAccountInfosRegistryQuery
 } from '../../../../../common/slices/api.slice'
@@ -91,7 +89,10 @@ import {
 interface Props {
   onClose: () => void
   selectedSendOption: SendPageTabHashes
-  selectSendAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  selectSendAsset: (
+    asset: BraveWallet.BlockchainToken,
+    account: BraveWallet.AccountInfo
+  ) => void
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -107,8 +108,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-    const [setNetwork] = useSetNetworkMutation()
-    const [setSelectedAccount] = useSetSelectedAccountMutation()
     const { data: networks } = useGetVisibleNetworksQuery()
     const { accounts } = useGetAccountInfosRegistryQuery(undefined, {
       selectFromResult: (res) => ({
@@ -277,19 +276,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const onSelectSendAsset = React.useCallback(
-      async (
+      (
         token: BraveWallet.BlockchainToken,
         account: BraveWallet.AccountInfo
       ) => {
-        selectSendAsset(token)
-        await setSelectedAccount(account.accountId)
-        await setNetwork({
-          chainId: token.chainId,
-          coin: token.coin
-        })
+        selectSendAsset(token, account)
         onClose()
       },
-      [selectSendAsset, onClose, setNetwork]
+      [selectSendAsset, onClose]
     )
 
     const onSearch = React.useCallback(
