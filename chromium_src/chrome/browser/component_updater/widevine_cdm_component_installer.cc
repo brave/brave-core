@@ -35,6 +35,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/sequence_checker.h"
+#include "base/strings/stringprintf.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
@@ -45,6 +46,7 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/zlib/google/zip.h"
 #include "url/gurl.h"
 
@@ -104,12 +106,14 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
             "the feature is enabled."
         })");
 
-// Upstream may release a new version of the Arm64 DLL at any time. In this
-// case, we want to update its download URL without having to ship a new browser
-// build. Storing the URL in a feature parameter makes this possible:
+// Store external URLs in feature parameters so we can quickly update them with
+// Griffin without having to release a new version of the browser.
 BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
 constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
+    "https://dl.google.com/widevine-cdm/%s-win-arm64.zip"};
+constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllFallbackUrl{
+    &kBraveWidevineArm64DllFix, "widevine_arm64_dll_fallback_url",
     "https://dl.google.com/widevine-cdm/4.10.2710.0-win-arm64.zip"};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
@@ -130,6 +134,10 @@ class WidevineCdmComponentInstallerPolicy
   CrxInstaller::Result OnCustomInstall(
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
+  const std::string GetArm64DllZipUrl(const std::string version);
+  CrxInstaller::Result InstallArm64Dll(const GURL zip_url,
+                                       const base::FilePath& install_dir);
+  bool IsHttp404(CrxInstaller::Result);
   std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
@@ -138,7 +146,8 @@ class WidevineCdmComponentInstallerPolicy
 class WidevineArm64DllInstaller
     : public base::RefCountedThreadSafe<WidevineArm64DllInstaller> {
  public:
-  explicit WidevineArm64DllInstaller(const base::FilePath& install_dir);
+  explicit WidevineArm64DllInstaller(const GURL zip_url,
+                                     const base::FilePath& install_dir);
   void Start(std::unique_ptr<network::PendingSharedURLLoaderFactory>
                  pending_url_loader_factory);
   CrxInstaller::Result WaitForCompletion();
@@ -153,6 +162,7 @@ class WidevineArm64DllInstaller
   bool ExtractArm64Dll(base::FilePath zip_path);
   bool AddArm64ArchToManifest();
 
+  const GURL zip_url_;
   const raw_ref<const base::FilePath> install_dir_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   base::WaitableEvent installed_;
@@ -179,8 +189,42 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
                     "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
     return CrxInstaller::Result(0);
   }
+  const std::string* version = manifest.FindString("version");
+  if (!version) {
+    return CrxInstaller::Result(update_client::InstallError::INVALID_VERSION);
+  }
+  // First try to guess a download URL that matches the component version. This
+  // usually works and ensures that the component and DLL versions match, even
+  // when upstream updates the component.
+  const GURL guessed_url = GURL(GetArm64DllZipUrl(*version));
+  CrxInstaller::Result result = InstallArm64Dll(guessed_url, install_dir);
+  if (IsHttp404(result)) {
+    // Our guess failed. Fall back to a DLL version that is known to exist.
+    const GURL fallback_url = GURL(kBraveWidevineArm64DllFallbackUrl.Get());
+    LOG(WARNING) << "Guessed Widevine Arm64 ALL URL " << guessed_url
+                 << " does not exist. Falling back to " << fallback_url
+                 << ", which should exist but may not be compatible.";
+    return InstallArm64Dll(fallback_url, install_dir);
+  }
+  return result;
+}
+
+const std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
+    const std::string version) {
+  const std::string format = kBraveWidevineArm64DllUrl.Get();
+  size_t pos = format.find("%s");
+  if (pos == std::string::npos) {
+    // This can happen when `format` was set to a static URL via Griffin.
+    return format;
+  }
+  return base::StringPrintf(format.c_str(), version.c_str());
+}
+
+CrxInstaller::Result WidevineCdmComponentInstallerPolicy::InstallArm64Dll(
+    const GURL zip_url,
+    const base::FilePath& install_dir) {
   scoped_refptr<WidevineArm64DllInstaller> installer =
-      base::MakeRefCounted<WidevineArm64DllInstaller>(install_dir);
+      base::MakeRefCounted<WidevineArm64DllInstaller>(zip_url, install_dir);
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
       network::SharedURLLoaderFactory::Create(
           std::move(pending_url_loader_factory_));
@@ -192,9 +236,18 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
   return installer->WaitForCompletion();
 }
 
+bool WidevineCdmComponentInstallerPolicy::IsHttp404(
+    CrxInstaller::Result result) {
+  return result.error ==
+             static_cast<int>(update_client::InstallError::CUSTOM_ERROR_BASE) +
+                 static_cast<int>(net::ERR_HTTP_RESPONSE_CODE_FAILURE) &&
+         result.extended_error == 404;
+}
+
 WidevineArm64DllInstaller::WidevineArm64DllInstaller(
+    const GURL zip_url,
     const base::FilePath& install_dir)
-    : install_dir_(install_dir) {
+    : zip_url_(zip_url), install_dir_(install_dir) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -203,13 +256,14 @@ void WidevineArm64DllInstaller::Start(
         pending_url_loader_factory) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(kBraveWidevineArm64DllUrl.Get());
+  resource_request->url = zip_url_;
   loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
                                              kTrafficAnnotation);
   loader_->SetTimeoutDuration(base::Seconds(kDownloadRequestTimeoutSecs));
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
       network::SharedURLLoaderFactory::Create(
           std::move(pending_url_loader_factory));
+  VLOG(2) << "Downloading " << zip_url_ << ".";
   loader_->DownloadToTempFile(
       url_loader_factory.get(),
       base::BindOnce(&WidevineArm64DllInstaller::OnArm64DllDownloadComplete,
@@ -235,9 +289,16 @@ void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
   VLOG(2) << "Arm64 DLL download complete.";
   if (zip_path.empty()) {
     net::Error error = net::Error(loader_->NetError());
-    LOG(ERROR) << "Arm64 DLL download failed. Error: "
-               << net::ErrorToShortString(error);
-    result_ = update_client::ToInstallerResult(error);
+    VLOG(1) << "Arm64 DLL download failed. Error: "
+            << net::ErrorToShortString(error);
+    int extended_error = 0;
+    if (loader_->ResponseInfo()) {
+      auto headers_list = loader_->ResponseInfo()->headers;
+      if (headers_list) {
+        extended_error = headers_list->response_code();
+      }
+    }
+    result_ = update_client::ToInstallerResult(error, extended_error);
   } else {
     bool success = ExtractArm64Dll(zip_path) && AddArm64ArchToManifest();
     if (!success) {
