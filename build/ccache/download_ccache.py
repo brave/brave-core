@@ -10,6 +10,7 @@ import os
 import sys
 import shutil
 
+from deps_config import DEPS_PACKAGES_URL
 import deps
 
 UNPACK_DIR = os.path.join(os.path.dirname(__file__), '_unpack')
@@ -24,8 +25,7 @@ def main():
     if os.path.exists(CCACHE_DIR):
         shutil.rmtree(CCACHE_DIR)
 
-    url = ('https://github.com/ccache/ccache/releases/download/'
-           f'v{args.version}/ccache-{args.version}-')
+    url = f'{DEPS_PACKAGES_URL}/ccache/ccache-{args.version}-'
     if sys.platform == 'linux':
         url += 'linux-x86_64.tar.xz'
     elif sys.platform == 'darwin':
