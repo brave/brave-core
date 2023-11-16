@@ -461,7 +461,8 @@ public class BrowserViewController: UIViewController {
       self?.tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }
         let zoomLevel = self?.privateBrowsingManager.isPrivateBrowsing == true ? 1.0 : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
-        $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
+        
+        $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
       })
     }
     
@@ -2281,9 +2282,10 @@ public class BrowserViewController: UIViewController {
       return
     }
     
-    guard let webView = tabManager.selectedTab?.webView else { return }
-    let pageZoomBar = UIHostingController(rootView: PageZoomView(webView: webView, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing))
-    
+    guard let selectTab = tabManager.selectedTab else { return }
+    let zoomHandler = PageZoomHandler(tab: selectTab, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
+    let pageZoomBar = UIHostingController(rootView: PageZoomView(zoomHandler: zoomHandler))
+
     pageZoomBar.rootView.dismiss = { [weak self] in
       guard let self = self else { return }
       pageZoomBar.view.removeFromSuperview()
@@ -2320,7 +2322,7 @@ public class BrowserViewController: UIViewController {
       let domain = Domain.getPersistedDomain(for: currentURL)
       
       let zoomLevel = privateBrowsingManager.isPrivateBrowsing ? 1.0 : domain?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
-      tab.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
+      tab.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
     }
   }
   
@@ -3123,7 +3125,7 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }
         let zoomLevel = $0.isPrivate ? 1.0 : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
-        $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
+        $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
       })
     case Preferences.Shields.httpsEverywhere.key:
       tabManager.reset()

@@ -64,7 +64,7 @@ struct PageZoomSettingsView: View {
           .font(.subheadline)
           .foregroundColor(Color(.secondaryBraveLabel))
       ) {
-        ForEach(PageZoomView.steps, id: \.self) { step in
+        ForEach(PageZoomHandler.steps, id: \.self) { step in
           Button(action: {
             resetDefaultZoomLevel(zoomLevel: step)
           }, label: {

@@ -75,11 +75,10 @@ private struct ZoomView: View {
 struct PageZoomView: View {
   @Environment(\.managedObjectContext) private var context
   
-  private var webView: WKWebView?
+  @ObservedObject private var zoomHandler: PageZoomHandler
   private let isPrivateBrowsing: Bool
   @State private var minValue = 0.5
   @State private var maxValue = 3.0
-  @State private var currentValue: Double
   
   public static let percentFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
@@ -89,35 +88,14 @@ struct PageZoomView: View {
     $0.minimumFractionDigits = 0
   }
   
-  public static let propertyName = "viewScale"
   public static let notificationName = Notification.Name(rawValue: "com.brave.pagezoom-change")
-  
-  public static let steps = [0.5, 0.75, 0.85,
-                             1.0, 1.15, 1.25,
-                             1.50, 1.75, 2.00,
-                             2.50, 3.0]
   
   var dismiss: (() -> Void)?
   
-  init(webView: WKWebView?, isPrivateBrowsing: Bool) {
-    self.webView = webView
-    self.isPrivateBrowsing = isPrivateBrowsing
+  init(zoomHandler: PageZoomHandler) {
+    self.zoomHandler = zoomHandler
+    self.isPrivateBrowsing = zoomHandler.isPrivateBrowsing
     
-    // Private Browsing on Safari iOS always defaults to 100%, and isn't persistently saved.
-    if isPrivateBrowsing {
-      _currentValue = State(initialValue: 1.0)
-      return
-    }
-    
-    // We never re-init, so
-    // it is okay to initialize state here.
-    if let url = webView?.url,
-       let domain = Domain.getPersistedDomain(for: url) {
-      
-      _currentValue = State(initialValue: domain.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value)
-    } else {
-      _currentValue = State(initialValue: webView?.value(forKey: PageZoomView.propertyName) as? Double ?? Preferences.General.defaultPageZoomLevel.value)
-    }
   }
   
   var body: some View {
@@ -127,17 +105,15 @@ struct PageZoomView: View {
         Text(Strings.PageZoom.zoomViewText)
           .font(.system(.subheadline))
           .frame(maxWidth: .infinity, alignment: .leading)
-        
         ZoomView(
           isPrivateBrowsing: isPrivateBrowsing,
           minValue: minValue,
           maxValue: maxValue,
-          value: $currentValue,
+          value: $zoomHandler.currentValue,
           onDecrement: decrement,
           onReset: reset,
           onIncrement: increment)
-          .frame(maxWidth: .infinity)
-        
+        .frame(maxWidth: .infinity)
         Button {
           dismiss?()
         } label: {
@@ -153,46 +129,23 @@ struct PageZoomView: View {
     .background(Color(UIColor.braveBackground))
   }
   
-  private func storeChanges() {
-    guard let webView = webView,
-          let url = webView.url else { return }
-    
-    webView.setValue(currentValue, forKey: PageZoomView.propertyName)
-    
-    // Do NOT store the changes in the Domain
-    if !isPrivateBrowsing {
-      let domain = Domain.getPersistedDomain(for: url)?.then {
-        $0.zoom_level = currentValue == $0.zoom_level?.doubleValue ? nil : NSNumber(value: currentValue)
-      }
-      
-      try? domain?.managedObjectContext?.save()
-    }
-  }
-  
   private func increment() {
-    guard let index = PageZoomView.steps.firstIndex(of: currentValue),
-          index + 1 < PageZoomView.steps.count else { return }
-    currentValue = PageZoomView.steps[index + 1]
-    storeChanges()
+    zoomHandler.changeZoomLevel(.increment)
   }
-  
+
   private func reset() {
-    currentValue = Preferences.General.defaultPageZoomLevel.value
-    storeChanges()
+    zoomHandler.reset()
   }
-  
+
   private func decrement() {
-    guard let index = PageZoomView.steps.firstIndex(of: currentValue),
-          index - 1 >= 0 else { return }
-    currentValue = PageZoomView.steps[index - 1]
-    storeChanges()
+    zoomHandler.changeZoomLevel(.decrement)
   }
 }
 
 #if DEBUG
 struct PageZoomView_Previews: PreviewProvider {
   static var previews: some View {
-    PageZoomView(webView: nil, isPrivateBrowsing: false)
+    PageZoomView(zoomHandler: PageZoomHandler(tab: nil, isPrivateBrowsing: false))
       .previewLayout(PreviewLayout.sizeThatFits)
   }
 }

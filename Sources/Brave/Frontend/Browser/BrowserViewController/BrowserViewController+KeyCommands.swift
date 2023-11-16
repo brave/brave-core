@@ -192,6 +192,22 @@ extension BrowserViewController {
     RecentlyClosed.remove(with: recentlyClosed.url)
   }
   
+  @objc private func zoomInPageKeyCommand() {
+    changeZoomLevel(.increment)
+  }
+  
+  @objc private func zoomOutPageKeyCommand() {
+    changeZoomLevel(.decrement)
+  }
+  
+  private func changeZoomLevel(_ status: PageZoomHandler.ChangeStatus) {
+    guard let selectTab = tabManager.selectedTab else { return }
+    let zoomHandler = PageZoomHandler(
+      tab: selectTab, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
+    
+    zoomHandler.changeZoomLevel(status)
+  }
+  
   // MARK: KeyCommands
   
   override public var keyCommands: [UIKeyCommand]? {
@@ -216,6 +232,11 @@ extension BrowserViewController {
       UIKeyCommand(input: "]", modifierFlags: .command, action: #selector(goForwardKeyCommand)),
     ]
     
+    navigationCommands += [
+      UIKeyCommand(title: Strings.Hotkey.zoomInTitle, action: #selector(zoomInPageKeyCommand), input: "+", modifierFlags: .command),
+      UIKeyCommand(title: Strings.Hotkey.zoomOutTitle, action: #selector(zoomOutPageKeyCommand), input: "-", modifierFlags: .command)
+    ]
+    
     // URL Bar - Tab Key Commands
     navigationCommands += [
       UIKeyCommand(title: Strings.Hotkey.selectLocationBarTitle, action: #selector(selectLocationBarKeyCommand), input: "l", modifierFlags: .command),
@@ -225,7 +246,8 @@ extension BrowserViewController {
     
     if !privateBrowsingManager.isPrivateBrowsing {
       navigationCommands += [
-        UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift])
+        UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift]),
+        UIKeyCommand(action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.control, .shift])
       ]
     }
     
@@ -299,7 +321,8 @@ extension BrowserViewController {
 
     // Additional Commands which will have priority over system
     let additionalPriorityCommandKeys = [
-      UIKeyCommand(input: "\t", modifierFlags: .control, action: #selector(nextTabKeyCommand))
+      UIKeyCommand(input: "\t", modifierFlags: .control, action: #selector(nextTabKeyCommand)),
+      UIKeyCommand(input: "\t", modifierFlags: [.control, .shift], action: #selector(previousTabKeyCommand))
     ]
     
     var keyCommandList = navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands + findTextCommands + additionalPriorityCommandKeys

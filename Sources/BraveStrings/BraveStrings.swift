@@ -4905,6 +4905,8 @@ extension Strings {
     public static let reloadPageTitle = NSLocalizedString("ReloadPageTitle", bundle: .module, value: "Reload Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let backTitle = NSLocalizedString("BackTitle", bundle: .module, value: "Back", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let forwardTitle = NSLocalizedString("ForwardTitle", bundle: .module, value: "Forward", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let zoomInTitle = NSLocalizedString("ZoomInTitle", bundle: .module, value: "Zoom In", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let zoomOutTitle = NSLocalizedString("ZoomOutTitle", bundle: .module, value: "Zoom Out", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let selectLocationBarTitle = NSLocalizedString("SelectLocationBarTitle", bundle: .module, value: "Select Location Bar", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let newTabTitle = NSLocalizedString("NewTabTitle", bundle: .module, value: "New Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let newPrivateTabTitle = NSLocalizedString("NewPrivateTabTitle", bundle: .module, value: "New Private Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
