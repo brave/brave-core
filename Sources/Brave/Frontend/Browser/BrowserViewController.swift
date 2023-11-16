@@ -1109,6 +1109,12 @@ public class BrowserViewController: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    if #available(iOS 17, *) {
+      // On iOS 17 rotating the device with a full screen modal presented (e.g. Playlist, Tab Tray)
+      // to landscape then back to portrait does not trigger `traitCollectionDidChange`/`willTransition`/etc
+      // calls and so the toolbar remains in the wrong state.
+      updateToolbarStateForTraitCollection(traitCollection)
+    }
     updateToolbarUsingTabManager(tabManager)
 
     if let tabId = tabManager.selectedTab?.rewardsId, rewards.rewardsAPI?.selectedTabId == 0 {
