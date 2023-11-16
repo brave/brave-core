@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/certificate/models/brave_certificate_signature.h"
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"

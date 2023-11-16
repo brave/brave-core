@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/certificate/models/brave_certificate_rdns_sequence.h"
+
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"

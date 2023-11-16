@@ -18,7 +18,6 @@
 #include "base/memory/scoped_refptr.h"
 #import "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
-
 #include "net/base/host_port_pair.h"
 #include "net/base/net_errors.h"
 #include "net/base/network_anonymization_key.h"
@@ -33,14 +32,13 @@
 #include "net/net_buildflags.h"
 #include "net/tools/transport_security_state_generator/cert_util.h"
 #include "net/tools/transport_security_state_generator/spki_hash.h"
+#include "third_party/boringssl/src/include/openssl/mem.h"
+#include "third_party/boringssl/src/include/openssl/sha.h"
+#include "third_party/boringssl/src/include/openssl/x509.h"
 #include "third_party/boringssl/src/pki/cert_errors.h"
 #include "third_party/boringssl/src/pki/input.h"
 #include "third_party/boringssl/src/pki/parsed_certificate.h"
 #include "third_party/boringssl/src/pki/pem.h"
-
-#include "third_party/boringssl/src/include/openssl/mem.h"
-#include "third_party/boringssl/src/include/openssl/sha.h"
-#include "third_party/boringssl/src/include/openssl/x509.h"
 
 namespace net {
 namespace {
