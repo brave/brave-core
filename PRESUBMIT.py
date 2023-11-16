@@ -295,7 +295,7 @@ _BANNED_CPP_FUNCTIONS += (
         'base::PathService::Get',
         ('Prefer using base::PathService::CheckedGet() instead', ),
         treat_as_error=False,
-        excluded_paths=(),
+        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
 )
 
