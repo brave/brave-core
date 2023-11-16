@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
 #include "base/ranges/algorithm.h"
@@ -31,6 +32,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "gtest/gtest.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/controllable_http_response.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -44,6 +46,20 @@ namespace {
 constexpr char kCid1[] =
     "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
 }  // namespace
+
+namespace ipfs {
+class IPFSTabHelperTest : public IPFSTabHelper {
+ public:
+  explicit IPFSTabHelperTest(content::WebContents* web_contents)
+      : IPFSTabHelper(web_contents) {}
+
+  bool IsResolveMethod(
+      const ipfs::IPFSResolveMethodTypes& resolution_method) override {
+    LOG(ERROR) << "[IPFS] IPFSTabHelperTest::IsResolveMethod";
+    return resolution_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
+  }
+};
+}  // namespace ipfs
 
 class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
  public:
@@ -88,6 +104,16 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
   void SetXIpfsPathHeader(const std::string& value) { x_ipfs_path_ = value; }
 
   void SetHttpStatusCode(net::HttpStatusCode code) { code_ = code; }
+
+  ipfs::IPFSTabHelper* SetIPFSTabHelperTest() {
+    active_contents()->SetUserData(
+        content::WebContentsUserData<ipfs::IPFSTabHelper>::UserDataKey(),
+        std::make_unique<ipfs::IPFSTabHelperTest>(active_contents()));
+    auto* helper = ipfs::IPFSTabHelper::FromWebContents(active_contents());
+    EXPECT_TRUE(
+        helper->IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+    return helper;
+  }
 
   net::HttpStatusCode code_ = net::HTTP_OK;
   std::string x_ipfs_path_;
@@ -1039,7 +1065,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSAlwaysStartInfobar) {
     ASSERT_FALSE(infobar);
   }
 
-  helper->DisableResolveMethodCheckForTesting();
+  SetIPFSTabHelperTest();
 
   //  Show global infobar if resolve method is IPFS_LOCAL
   {

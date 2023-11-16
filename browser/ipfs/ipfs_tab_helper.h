@@ -62,9 +62,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  void DisableResolveMethodCheckForTesting() {
-    disable_resolve_method_check_for_testing_ = true;
-  }
+  virtual bool IsResolveMethod(
+      const ipfs::IPFSResolveMethodTypes& resolution_method);
 #endif  // !BUILDFLAG(IS_ANDROID)
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
@@ -116,6 +115,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
 #if !BUILDFLAG(IS_ANDROID)
+  friend class IPFSTabHelperTest;
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
 
   void SetSetShowFallbackInfobarCallbackForTesting(
@@ -169,7 +169,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<BraveGlobalInfoBarManager> infobar_manager_;
-  bool disable_resolve_method_check_for_testing_{false};
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
