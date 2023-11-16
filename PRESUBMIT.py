@@ -290,7 +290,14 @@ _BANNED_CPP_FUNCTIONS += (
         ('Use std::string_view instead', ),
         True,
         [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
-    ), )
+    ),
+    BanRule(
+        'base::PathService::Get',
+        ('Use base::PathService::CheckedGet instead', ),
+        True,
+        (),
+    ),
+)
 
 
 # Extend BanRule exclude lists with Brave-specific paths.
