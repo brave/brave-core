@@ -178,7 +178,6 @@ namespace {
                    /*ocsp_response=*/std::string(),
                    /*sct_list=*/std::string(),
                    /*flags=*/0,
-                   /*additional_trust_anchors=*/net::CertificateList(),
                    &verify_result, net::NetLogWithSource());
 
   // Create a transport security state to pin certificates
