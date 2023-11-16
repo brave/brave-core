@@ -10,7 +10,7 @@ import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet'
 
 export const _OnboardingImportOrRestoreWallet = () => {
   return (
-    <WalletPageStory pageStateOverride={{ isCryptoWalletsInitialized: true }}>
+    <WalletPageStory>
       <OnboardingImportOrRestoreWallet />
     </WalletPageStory>
   )
