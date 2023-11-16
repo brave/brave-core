@@ -44,15 +44,15 @@ class BuyVPNViewController: VPNSetupLoadingController {
       title: Strings.VPN.restorePurchases, style: .done,
       target: self, action: #selector(restorePurchasesAction))
     
-    let actionTitle = Preferences.VPN.freeTrialUsed.value
+    let buyTitle = Preferences.VPN.freeTrialUsed.value
       ? Strings.VPN.activateSubscriptionAction.capitalized
       : Strings.VPN.freeTrialPeriodAction.capitalized
     
-    let actionButton = BraveGradientButton(gradient: .backgroundGradient1).then {
+    let buyButton = BraveGradientButton(gradient: .backgroundGradient1).then {
       $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
       $0.titleLabel?.textAlignment = .center
        
-      $0.setTitle(actionTitle, for: .normal)
+      $0.setTitle(buyTitle, for: .normal)
       
       $0.snp.makeConstraints {
         $0.height.equalTo(50)
@@ -66,7 +66,15 @@ class BuyVPNViewController: VPNSetupLoadingController {
       
       $0.addTarget(self, action: #selector(startSubscriptionAction), for: .touchUpInside)
     }
-  
+    
+    let redeemButton = UIButton().then {
+      $0.setTitle(Strings.VPN.vpnRedeemCodeButtonActionTitle, for: .normal)
+      $0.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
+      $0.titleLabel?.textAlignment = .center
+      
+      $0.addTarget(self, action: #selector(redeemOfferSubscriptionCode), for: .touchUpInside)
+    }
+    
     let seperator = UIView().then {
       $0.backgroundColor = UIColor.white.withAlphaComponent(0.1)
       $0.snp.makeConstraints { make in
@@ -76,7 +84,8 @@ class BuyVPNViewController: VPNSetupLoadingController {
         
     view.addSubview(buyVPNView)
     view.addSubview(seperator)
-    view.addSubview(actionButton)
+    view.addSubview(buyButton)
+    view.addSubview(redeemButton)
     
     buyVPNView.snp.makeConstraints {
       $0.leading.trailing.top.equalToSuperview()
@@ -87,9 +96,15 @@ class BuyVPNViewController: VPNSetupLoadingController {
       $0.leading.trailing.equalToSuperview()
     }
     
-    actionButton.snp.makeConstraints() {
+    buyButton.snp.makeConstraints() {
       $0.top.equalTo(seperator.snp.bottom).inset(-12)
-      $0.leading.trailing.bottom.equalToSuperview().inset(24)
+      $0.leading.trailing.equalToSuperview().inset(24)
+    }
+    
+    redeemButton.snp.makeConstraints() {
+      $0.top.equalTo(buyButton.snp.bottom).inset(-12)
+      $0.bottom.equalToSuperview().inset(24)
+      $0.centerX.equalToSuperview()
     }
 
     buyVPNView.monthlySubButton
@@ -152,6 +167,11 @@ class BuyVPNViewController: VPNSetupLoadingController {
   
   @objc func startSubscriptionAction() {
     addPaymentForSubcription(type: activeSubcriptionChoice)
+  }
+  
+  @objc func redeemOfferSubscriptionCode() {
+    // Open the redeem code sheet
+    SKPaymentQueue.default().presentCodeRedemptionSheet()
   }
   
   private func addPaymentForSubcription(type: SubscriptionType) {

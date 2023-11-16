@@ -15,8 +15,11 @@ import GuardianConnect
 public class BraveVPNSettingsViewController: TableViewController {
 
   public var openURL: ((URL) -> Void)?
+  let iapObserver: IAPObserver
 
-  public init() {
+  public init(iapObserver: IAPObserver) {
+    self.iapObserver = iapObserver
+
     super.init(style: .grouped)
   }
 
@@ -145,6 +148,13 @@ public class BraveVPNSettingsViewController: TableViewController {
                              // Opens Apple's 'manage subscription' screen.
                              UIApplication.shared.open(url, options: [:])
                            }
+                       },
+                       cellClass: ButtonCell.self),
+                   Row(text: Strings.VPN.settingsRedeemOfferCode,
+                       selection: {
+                        self.isLoading = false
+                        // Open the redeem code sheet
+                        SKPaymentQueue.default().presentCodeRedemptionSheet()
                        },
                        cellClass: ButtonCell.self)
             ] + linkReceiptRows,
@@ -337,5 +347,44 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
     
     isLoading = false
+  }
+}
+
+// MARK: - IAPObserverDelegate
+
+extension BraveVPNSettingsViewController: IAPObserverDelegate {
+  public func purchasedOrRestoredProduct(validateReceipt: Bool) {
+    DispatchQueue.main.async {
+      self.isLoading = false
+    }
+    
+    if validateReceipt {
+      BraveVPN.validateReceiptData()
+    }
+  }
+
+  public func purchaseFailed(error: IAPObserver.PurchaseError) {
+    // Handle Offer Code error
+    guard isLoading else {
+      return
+    }
+    
+    handleOfferCodeError(error: error)
+  }
+  
+  private func handleOfferCodeError(error: IAPObserver.PurchaseError) {
+    DispatchQueue.main.async {
+      self.isLoading = false
+
+      let message = Strings.VPN.vpnErrorOfferCodeFailedBody
+
+      let alert = UIAlertController(
+        title: Strings.VPN.vpnErrorPurchaseFailedTitle,
+        message: message,
+        preferredStyle: .alert)
+      let ok = UIAlertAction(title: Strings.OKString, style: .default, handler: nil)
+      alert.addAction(ok)
+      self.present(alert, animated: true)
+    }
   }
 }
