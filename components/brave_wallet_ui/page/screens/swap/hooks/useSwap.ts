@@ -36,6 +36,7 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
 
 // Queries
 import {
@@ -695,7 +696,7 @@ export const useSwap = () => {
     return (
       !selectedNetwork ||
       !selectedAccount ||
-      selectedNetwork.coin !== selectedAccount.accountId.coin ||
+      !networkSupportsAccount(selectedNetwork, selectedAccount.accountId) ||
       // Prevent creating a swap transaction with stale parameters if fetching
       // of a new quote is in progress.
       zeroEx.loading ||

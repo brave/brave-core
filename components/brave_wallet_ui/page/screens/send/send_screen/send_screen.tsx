@@ -212,12 +212,12 @@ export const SendScreen = React.memo((props: Props) => {
           token.contractAddress.toLowerCase() ===
             contractOrSymbol.toLowerCase() &&
           token.tokenId === tokenId
-        : (token.contractAddress.toLowerCase() ===
-            contractOrSymbol.toLowerCase() &&
-            token.chainId === networkFromParams.chainId) ||
-          (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
-            token.chainId === networkFromParams.chainId &&
-            token.contractAddress === '')
+        : (token.chainId === networkFromParams.chainId &&
+            token.contractAddress.toLowerCase() ===
+              contractOrSymbol.toLowerCase()) ||
+          (token.chainId === networkFromParams.chainId &&
+            token.contractAddress === '' &&
+            token.symbol.toLowerCase() === contractOrSymbol.toLowerCase())
     )
   }, [userVisibleTokensInfo, query, networkFromParams])
 
