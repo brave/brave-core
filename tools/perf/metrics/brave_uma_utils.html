@@ -63,8 +63,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       let totalUmaCount = 0;
       for (const helper of chromeHelper.browserHelpers) {
         helper.iterAllThreads(function (thread) {
-          for (const slice of thread.sliceGroup.slices.concat(
-            thread.asyncSliceGroup.slices)) {
+          for (const slice of thread.sliceGroup.slices) {
             if (slice.title !== 'HistogramSample') continue;
             ++totalUmaCount;
             const chrome_histogram_sample = slice.args.chrome_histogram_sample;

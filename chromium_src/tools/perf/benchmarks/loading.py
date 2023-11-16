@@ -29,7 +29,8 @@ class LoadingDesktopBrave(_LoadingBase):
             cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM])
 
     def CreateCoreTimelineBasedMeasurementOptions(self):
-        return CreateCoreTBMOptions(['braveGeneralUmaMetric'])
+        return CreateCoreTBMOptions(
+            ['braveGeneralUmaMetric', 'braveNavigationMetric'])
 
     @classmethod
     def Name(cls):
