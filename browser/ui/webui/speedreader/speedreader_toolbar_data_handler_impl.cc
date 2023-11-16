@@ -327,5 +327,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnTuneBubbleClosed() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
-  active_tab_helper_->OnToolbarStateChanged(current_button_);
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
+  }
 }

@@ -208,17 +208,17 @@ bool TtsPlayer::Controller::HasNextParagraph() {
 
 std::u16string TtsPlayer::Controller::GetParagraphToRead() {
   if (!reading_content_.is_dict()) {
-    return base::EmptyString16();
+    return {};
   }
   const auto* content = reading_content_.GetDict().FindList(kParagraphsKey);
   if (!content) {
-    return base::EmptyString16();
+    return {};
   }
   if (0 <= paragraph_index_ &&
       paragraph_index_ < static_cast<int>(content->size())) {
     return base::UTF8ToUTF16((*content)[paragraph_index_].GetString());
   }
-  return base::EmptyString16();
+  return {};
 }
 
 void TtsPlayer::Controller::DidStartNavigation(
