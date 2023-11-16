@@ -14,197 +14,198 @@
 namespace {
 
 constexpr auto kCountryCodeAnonymitySet =
-    base::MakeFixedFlatSet<std::string_view>({
-        "US",  // United States of America
-        "CA",  // Canada
-        "GB",  // United Kingdom (Great Britain and Northern Ireland)
-        "DE",  // Germany
-        "FR",  // France
-        "AU",  // Australia
-        "NZ",  // New Zealand
-        "IE",  // Ireland
+    base::MakeFixedFlatSetSorted<std::string_view>({
+        "AE",  // United Arab Emirates
+        "AF",  // Afghanistan
+        "AL",  // Albania
+        "AM",  // Armenia
         "AR",  // Argentina
         "AT",  // Austria
-        "BR",  // Brazil
-        "CH",  // Switzerland
-        "CL",  // Chile
-        "CO",  // Colombia
-        "DK",  // Denmark
-        "EC",  // Ecuador
-        "IL",  // Israel
-        "IN",  // India
-        "IT",  // Italy
-        "JP",  // Japan
-        "KR",  // Korea
-        "MX",  // Mexico
-        "NL",  // Netherlands
-        "PE",  // Peru
-        "PH",  // Philippines
-        "PL",  // Poland
-        "SE",  // Sweden
-        "SG",  // Singapore
-        "VE",  // Venezuela
-        "ZA",  // South Africa
-        "AE",  // United Arab Emirates
-        "AL",  // Albania
+        "AU",  // Australia
         "AZ",  // Azerbaijan
+        "BA",  // Bosnia and Herzegovina
+        "BB",  // Barbados
         "BD",  // Bangladesh
         "BE",  // Belgium
         "BG",  // Bulgaria
+        "BH",  // Bahrain
+        "BJ",  // Benin
+        "BN",  // Brunei Darussalam
+        "BO",  // Bolivia
+        "BR",  // Brazil
+        "BS",  // Bahamas
+        "BW",  // Botswana
+        "BY",  // Belarus
+        "CA",  // Canada
+        "CD",  // Democratic Republic of the Congo
+        "CH",  // Switzerland
+        "CI",  // Cote d'Ivoire
+        "CL",  // Chile
+        "CM",  // Cameroon
         "CN",  // China
+        "CO",  // Colombia
+        "CR",  // Costa Rica
+        "CY",  // Cyprus
         "CZ",  // Czechia
+        "DE",  // Germany
+        "DK",  // Denmark
+        "DO",  // Dominican Republic
         "DZ",  // Algeria
+        "EC",  // Ecuador
+        "EE",  // Estonia
         "EG",  // Egypt
         "ES",  // Spain
+        "ET",  // Ethiopia
         "FI",  // Finland
+        "FR",  // France
+        "GB",  // United Kingdom (Great Britain and Northern Ireland)
+        "GE",  // Georgia
+        "GH",  // Ghana
         "GR",  // Greece
+        "GT",  // Guatemala
         "HK",  // Hong Kong
+        "HN",  // Honduras
         "HR",  // Croatia
         "HU",  // Hungary
         "ID",  // Indonesia
+        "IE",  // Ireland
+        "IL",  // Israel
+        "IN",  // India
         "IQ",  // Iraq
+        "IS",  // Iceland
+        "IT",  // Italy
+        "JM",  // Jamaica
+        "JO",  // Jordan
+        "JP",  // Japan
+        "KE",  // Kenya
+        "KG",  // Kyrgyzstan
         "KH",  // Cambodia
+        "KR",  // Korea
+        "KW",  // Kuwait
+        "KZ",  // Kazakhstan
+        "LB",  // Lebanon
+        "LK",  // Sri Lanka
         "LT",  // Lithuania
+        "LU",  // Luxembourg
+        "LV",  // Latvia
         "MA",  // Morocco
+        "MD",  // Moldova
+        "ME",  // Montenegro
+        "MG",  // Madagascar
+        "MK",  // Macedonia
+        "MM",  // Myanmar
+        "MN",  // Mongolia
+        "MT",  // Malta
+        "MU",  // Mauritius
+        "MX",  // Mexico
         "MY",  // Malaysia
+        "NA",  // Namibia
         "NG",  // Nigeria
+        "NI",  // Nicaragua
+        "NL",  // Netherlands
         "NO",  // Norway
+        "NP",  // Nepal
+        "NZ",  // New Zealand
+        "OM",  // Oman
+        "PA",  // Panama
+        "PE",  // Peru
+        "PH",  // Philippines
         "PK",  // Pakistan
+        "PL",  // Poland
+        "PR",  // Puerto Rico
+        "PS",  // Palestine
         "PT",  // Portugal
+        "PY",  // Paraguay
+        "QA",  // Qatar
+        "RE",  // Reunion
         "RO",  // Romania
         "RS",  // Serbia
         "RU",  // Russian Federation
+        "RW",  // Rwanda
         "SA",  // Saudi Arabia
+        "SE",  // Sweden
+        "SG",  // Singapore
         "SI",  // Slovenia
         "SK",  // Slovakia
-        "TH",  // Thailand
-        "TR",  // Turkey
-        "TW",  // Taiwan
-        "UA",  // Ukraine
-        "VN",  // Vietnam
-        "AF",  // Afghanistan
-        "AM",  // Armenia
-        "BS",  // Bahamas
-        "BH",  // Bahrain
-        "BB",  // Barbados
-        "BY",  // Belarus
-        "BJ",  // Benin
-        "BO",  // Bolivia
-        "BA",  // Bosnia and Herzegovina
-        "BW",  // Botswana
-        "BN",  // Brunei Darussalam
-        "CM",  // Cameroon
-        "CD",  // Democratic Republic of the Congo
-        "CR",  // Costa Rica
-        "CY",  // Cyprus
-        "CI",  // Cote d'Ivoire
-        "DO",  // Dominican Republic
-        "SV",  // El Salvador
-        "EE",  // Estonia
-        "ET",  // Ethiopia
-        "GE",  // Georgia
-        "GH",  // Ghana
-        "GT",  // Guatemala
-        "HN",  // Honduras
-        "IS",  // Iceland
-        "JM",  // Jamaica
-        "JO",  // Jordan
-        "KZ",  // Kazakhstan
-        "KE",  // Kenya
-        "KW",  // Kuwait
-        "KG",  // Kyrgyzstan
-        "LV",  // Latvia
-        "LB",  // Lebanon
-        "LU",  // Luxembourg
-        "MK",  // Macedonia
-        "MG",  // Madagascar
-        "MT",  // Malta
-        "MU",  // Mauritius
-        "MD",  // Moldova
-        "MN",  // Mongolia
-        "ME",  // Montenegro
-        "MM",  // Myanmar
-        "NA",  // Namibia
-        "NP",  // Nepal
-        "NI",  // Nicaragua
-        "OM",  // Oman
-        "PS",  // Palestine
-        "PA",  // Panama
-        "PY",  // Paraguay
-        "PR",  // Puerto Rico
-        "QA",  // Qatar
-        "RW",  // Rwanda
-        "RE",  // Reunion
         "SN",  // Senegal
-        "LK",  // Sri Lanka
-        "TZ",  // United Republic of Tanzania
-        "TT",  // Trinidad and Tobago
+        "SV",  // El Salvador
+        "TH",  // Thailand
         "TN",  // Tunisia
+        "TR",  // Turkey
+        "TT",  // Trinidad and Tobago
+        "TW",  // Taiwan
+        "TZ",  // United Republic of Tanzania
+        "UA",  // Ukraine
         "UG",  // Uganda
+        "US",  // United States of America
         "UY",  // Uruguay
         "UZ",  // Uzbekistan
+        "VE",  // Venezuela
+        "VN",  // Vietnam
+        "ZA",  // South Africa
         "ZM",  // Zambia
-        "ZW"   // Zimbabwe
+        "ZW",  // Zimbabw
     });
 
-constexpr auto kOtherCountryCodes = base::MakeFixedFlatSet<std::string_view>({
-    "AS",  // American Samoa
-    "AI",  // Anguilla
-    "AQ",  // Antarctica
-    "AG",  // Antigua and Barbuda
-    "BQ",  // Bonaire
-    "BV",  // Bouvet Island
-    "IO",  // British Indian Ocean Territory
-    "TD",  // Chad
-    "CX",  // Christmas Island
-    "CC",  // Cocos (Keeling) Islands
-    "KM",  // Comoros
-    "CK",  // Cook Islands
-    "GQ",  // Equatorial Guinea
-    "ER",  // Eritrea
-    "FK",  // Falkland Islands
-    "TF",  // French and Antarctic Lands
-    "GL",  // Greenland
-    "GW",  // Guinea-Bissau
-    "HM",  // Heard Island and McDonald Islands
-    "VA",  // Vatican City
-    "KI",  // Kiribati
-    "LR",  // Liberia
-    "MH",  // Marshall Islands
-    "YT",  // Mayotte
-    "FM",  // Micronesia, Federated States of
-    "MS",  // Montserrat
-    "NR",  // Nauru
-    "NU",  // Niue
-    "NF",  // Norfolk Island
-    "MP",  // Northern Mariana Islands
-    "PW",  // Palau
-    "PN",  // Pitcairn
-    "BL",  // Saint Barthelemy
-    "SH",  // Saint Helena
-    "KN",  // Saint Kitts and Nevis
-    "MF",  // Saint Martin
-    "PM",  // Saint Pierre and Miquelon
-    "WS",  // Samoa
-    "SM",  // San Marino
-    "ST",  // São Tomé and Príncipe
-    "SX",  // Saint Maarten
-    "SB",  // Solomon Islands
-    "GS",  // South Georgia and the South Sandwich Islands
-    "SS",  // South Sudan
-    "SJ",  // Svalbard and Jan Mayen
-    "TJ",  // Tajikistan
-    "TL",  // Timor-Leste
-    "TK",  // Tokelau
-    "TM",  // Turkmenistan
-    "TC",  // Turks and Caicos Islands
-    "TV",  // Tuvalu
-    "UM",  // United States Minor Outlying Islands
-    "VU",  // Vanuatu
-    "VG",  // British Virgin Islands
-    "WF",  // Wallis and Futuna
-    "EH"   // Western Sahara
-});
+constexpr auto kOtherCountryCodes =
+    base::MakeFixedFlatSetSorted<std::string_view>({
+        "AG",  // "Antigua and Barbuda
+        "AI",  // "Anguilla
+        "AQ",  // "Antarctica
+        "AS",  // "American Samoa
+        "BL",  // "Saint Barthelemy
+        "BQ",  // "Bonaire
+        "BV",  // "Bouvet Island
+        "CC",  // "Cocos (Keeling) Islands
+        "CK",  // "Cook Islands
+        "CX",  // "Christmas Island
+        "EH",  // "Western Sahara
+        "ER",  // "Eritrea
+        "FK",  // "Falkland Islands
+        "FM",  // "Micronesia, Federated States of
+        "GL",  // "Greenland
+        "GQ",  // "Equatorial Guinea
+        "GS",  // "South Georgia and the South Sandwich Islands
+        "GW",  // "Guinea-Bissau
+        "HM",  // "Heard Island and McDonald Islands
+        "IO",  // "British Indian Ocean Territory
+        "KI",  // "Kiribati
+        "KM",  // "Comoros
+        "KN",  // "Saint Kitts and Nevis
+        "LR",  // "Liberia
+        "MF",  // "Saint Martin
+        "MH",  // "Marshall Islands
+        "MP",  // "Northern Mariana Islands
+        "MS",  // "Montserrat
+        "NF",  // "Norfolk Island
+        "NR",  // "Nauru
+        "NU",  // "Niue
+        "PM",  // "Saint Pierre and Miquelon
+        "PN",  // "Pitcairn
+        "PW",  // "Palau
+        "SB",  // "Solomon Islands
+        "SH",  // "Saint Helena
+        "SJ",  // "Svalbard and Jan Mayen
+        "SM",  // "San Marino
+        "SS",  // "South Sudan
+        "ST",  // "São Tomé and Príncipe
+        "SX",  // "Saint Maarten
+        "TC",  // "Turks and Caicos Islands
+        "TD",  // "Chad
+        "TF",  // "French and Antarctic Lands
+        "TJ",  // "Tajikistan
+        "TK",  // "Tokelau
+        "TL",  // "Timor-Leste
+        "TM",  // "Turkmenistan
+        "TV",  // "Tuvalu
+        "UM",  // "United States Minor Outlying Islands
+        "VA",  // "Vatican City
+        "VG",  // "British Virgin Islands
+        "VU",  // "Vanuatu
+        "WF",  // "Wallis and Futuna
+        "WS",  // "Samoa
+        "YT",  // "Mayotte
+    });
 
 }  // namespace
 
