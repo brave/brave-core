@@ -21,6 +21,7 @@ private class LoaderLayer: CALayer {
 public class LoaderView: UIView {
   /// The size of the indicator
   public enum Size {
+    case mini
     case small
     case normal
     case large
@@ -30,6 +31,8 @@ public class LoaderView: UIView {
 
     fileprivate var size: CGSize {
       switch self {
+      case .mini:
+        return CGSize(width: 8, height: 8)
       case .small:
         return CGSize(width: 16, height: 16)
       case .normal:
@@ -41,6 +44,8 @@ public class LoaderView: UIView {
 
     fileprivate var lineWidth: CGFloat {
       switch self {
+      case .mini:
+        return 1.0
       case .small:
         return 2.0
       case .normal:

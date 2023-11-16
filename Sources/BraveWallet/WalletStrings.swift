@@ -1563,8 +1563,8 @@ extension Strings {
       value: "Approved %@ %@",
       comment: "The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\""
     )
-    public static let transactionUnknownApprovalTitle = NSLocalizedString(
-      "wallet.transactionUnknownApprovalTitle",
+    public static let transactionApprovalTitle = NSLocalizedString(
+      "wallet.transactionApprovalTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approved",
@@ -4751,6 +4751,34 @@ extension Strings {
       bundle: .module,
       value: "Details",
       comment: "The title of the details view for Sign In With Ethereum/Brave Wallet requests."
+    )
+    public static let transactionSummaryIntentLabel = NSLocalizedString(
+      "wallet.transactionSummaryIntentLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%@ from",
+      comment: "The label used to describe a transaction type. Used like 'Send from' or 'Approved from'."
+    )
+    public static let transactionSummarySwapOn = NSLocalizedString(
+      "wallet.transactionSummarySwapOn",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Swap on",
+      comment: "The label to describe an Swap transaction."
+    )
+    public static let transactionSummarySolanaSwap = NSLocalizedString(
+      "wallet.transactionSummarySolanaSwap",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Solana Swap",
+      comment: "The label to describe an Solana Swap transaction."
+    )
+    public static let search = NSLocalizedString(
+      "wallet.search",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Search",
+      comment: "The label as a placeholder in search fields."
     )
   }
 }

@@ -7,18 +7,22 @@ import BraveCore
 import SwiftUI
 
 class TransactionsActivityStore: ObservableObject, WalletObserverStore {
-  @Published var transactionSummaries: [TransactionSummary] = []
+  /// Sections of transactions for display. Each section represents one date.
+  @Published var transactionSections: [TransactionSection] = []
+  /// Filter query to filter the transactions by.
+  @Published var query: String = ""
+  /// Selected networks to show transactions for.
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
+    didSet {
+      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
+      update()
+    }
+  }
   
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
       guard oldValue != currencyCode else { return }
-      update()
-    }
-  }
-  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
-    didSet {
-      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
       update()
     }
   }
@@ -143,7 +147,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       guard !Task.isCancelled else { return }
       // display transactions prior to network request to fetch
       // estimated solana tx fees & asset prices
-      self.transactionSummaries = self.transactionSummaries(
+      self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
         accountInfos: allAccountInfos,
@@ -152,7 +156,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         assetRatios: assetPricesCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
-      guard !self.transactionSummaries.isEmpty else { return }
+      guard !self.transactionSections.isEmpty else { return }
 
       if allTransactions.contains(where: { $0.coin == .sol }) {
         let solTransactions = allTransactions.filter { $0.coin == .sol }
@@ -163,7 +167,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       await updateAssetPricesCache(assetRatioIds: allUserAssetsAssetRatioIds)
 
       guard !Task.isCancelled else { return }
-      self.transactionSummaries = self.transactionSummaries(
+      self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
         accountInfos: allAccountInfos,
@@ -175,7 +179,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     }
   }
   
-  private func transactionSummaries(
+  private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
     accountInfos: [BraveWallet.AccountInfo],
@@ -183,22 +187,40 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
     solEstimatedTxFees: [String: UInt64]
-  ) -> [TransactionSummary] {
-    transactions.compactMap { transaction in
-      guard let networks = networksForCoin[transaction.coin], let network = networks.first(where: { $0.chainId == transaction.chainId }) else {
-        return nil
-      }
-      return TransactionParser.transactionSummary(
-        from: transaction,
-        network: network,
-        accountInfos: accountInfos,
-        userAssets: userAssets,
-        allTokens: allTokens,
-        assetRatios: assetRatios,
-        solEstimatedTxFee: solEstimatedTxFees[transaction.id],
-        currencyFormatter: currencyFormatter
+  ) -> [TransactionSection] {
+    // Group transactions by day (only compare day/month/year)
+    let transactionsGroupedByDate = Dictionary(grouping: transactions) { transaction in
+      let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: transaction.createdTime)
+      return Calendar.current.date(from: dateComponents) ?? transaction.createdTime
+    }
+    // Map to 1 `TransactionSection` per date
+    return transactionsGroupedByDate.keys.sorted(by: { $0 > $1 }).compactMap { date in
+      let transactions = transactionsGroupedByDate[date] ?? []
+      guard !transactions.isEmpty else { return nil }
+      let parsedTransactions: [ParsedTransaction] = transactions
+        .sorted(by: { $0.createdTime > $1.createdTime })
+        .compactMap { transaction in
+          guard let networks = networksForCoin[transaction.coin],
+                let network = networks.first(where: { $0.chainId == transaction.chainId }) else {
+            return nil
+          }
+          return TransactionParser.parseTransaction(
+            transaction: transaction,
+            network: network,
+            accountInfos: accountInfos,
+            userAssets: userAssets,
+            allTokens: allTokens,
+            assetRatios: assetRatios,
+            solEstimatedTxFee: solEstimatedTxFees[transaction.id],
+            currencyFormatter: currencyFormatter,
+            decimalFormatStyle: .decimals(precision: 4)
+          )
+        }
+      return TransactionSection(
+        date: date,
+        transactions: parsedTransactions
       )
-    }.sorted(by: { $0.createdTime > $1.createdTime })
+    }
   }
   
   @MainActor private func updateSolEstimatedTxFeesCache(_ solTransactions: [BraveWallet.TransactionInfo]) async {

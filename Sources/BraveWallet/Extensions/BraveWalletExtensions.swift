@@ -293,6 +293,23 @@ extension BraveWallet.BlockchainToken {
       return name
     }
   }
+  
+  /// Returns the local image asset for the `BlockchainToken`.
+  func localImage(network: BraveWallet.NetworkInfo) -> UIImage? {
+    if network.isNativeAsset(self), let uiImage = network.nativeTokenLogoImage {
+      return uiImage
+    }
+    
+    for logo in [logo, symbol.lowercased()] {
+      if let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
+         case let imageURL = baseURL.appendingPathComponent(logo),
+         let image = UIImage(contentsOfFile: imageURL.path) {
+        return image
+      }
+    }
+    
+    return nil
+  }
 }
 
 extension BraveWallet.OnRampProvider {

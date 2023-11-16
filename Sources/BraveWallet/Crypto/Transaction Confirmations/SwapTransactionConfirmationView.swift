@@ -266,7 +266,7 @@ struct SwapTransactionConfirmationView_Previews: PreviewProvider {
       fromAddress: BraveWallet.AccountInfo.previewAccount.address,
       namedToAddress: "0x Exchange",
       toAddress: "0x1111111111222222222233333333334444444444",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethSwap(.init(
         fromToken: .mockUSDCToken,
         fromValue: "1.000004",

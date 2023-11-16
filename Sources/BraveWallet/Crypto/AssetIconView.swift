@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import BraveUI
+import DesignSystem
 
 /// Displays an asset's icon from the token registry
 ///
@@ -36,26 +37,10 @@ struct AssetIconView: View {
       )
   }
 
-  private var localImage: Image? {
-    if network.isNativeAsset(token), let uiImage = network.nativeTokenLogoImage {
-      return Image(uiImage: uiImage)
-    }
-    
-    for logo in [token.logo, token.symbol.lowercased()] {
-      if let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
-        case let imageURL = baseURL.appendingPathComponent(logo),
-        let image = UIImage(contentsOfFile: imageURL.path) {
-        return Image(uiImage: image)
-      }
-    }
-    
-    return nil
-  }
-
   var body: some View {
     Group {
-      if let image = localImage {
-        image
+      if let uiImage = token.localImage(network: network) {
+        Image(uiImage: uiImage)
           .resizable()
           .aspectRatio(contentMode: .fit)
       } else if let url = URL(string: token.logo) {
@@ -173,5 +158,154 @@ struct NFTIconView: View {
     .overlay(tokenLogo, alignment: .bottomTrailing)
     .allowsHitTesting(false)
     .accessibilityHidden(true)
+  }
+}
+
+/// Displays 2 asset icons stacked on top of one another, with the token's network logo on top.
+/// `bottomToken` is displayed in the top-right, `topToken` is displayed in the bottom-left,
+/// and the network logo is displayed in the bottom-right.
+struct StackedAssetIconsView: View {
+  
+  var bottomToken: BraveWallet.BlockchainToken?
+  var topToken: BraveWallet.BlockchainToken?
+  var network: BraveWallet.NetworkInfo
+
+  /// Length of entire view
+  @ScaledMetric var length: CGFloat = 40
+  /// Max length of entire view
+  var maxLength: CGFloat?
+  @ScaledMetric var networkSymbolLength: CGFloat = 15
+  var maxNetworkSymbolLength: CGFloat?
+  
+  /// Size of padding applied to bottom/top icon so they can overlap
+  private var iconPadding: CGFloat {
+    length / 5
+  }
+  
+  /// Size of asset icon
+  private var assetIconLength: CGFloat {
+    length - iconPadding
+  }
+  
+  /// Max size of asset icon
+  private var maxAssetIconLength: CGFloat? {
+    guard let maxLength else { return nil }
+    return maxLength - iconPadding
+  }
+  
+  var body: some View {
+    ZStack {
+      Group {
+        if let bottomToken {
+          AssetIconView(
+            token: bottomToken,
+            network: network,
+            shouldShowNetworkIcon: false,
+            length: assetIconLength,
+            maxLength: maxAssetIconLength
+          )
+        } else { // nil token possible for Solana Swaps
+          GenericAssetIconView(
+            backgroundColor: Color(braveSystemName: .gray40),
+            iconColor: Color.white,
+            length: assetIconLength,
+            maxLength: maxAssetIconLength
+          )
+        }
+      }
+      .padding(.leading, iconPadding)
+      .padding(.bottom, iconPadding)
+      .zIndex(0)
+      
+      Group {
+        if let topToken {
+          AssetIconView(
+            token: topToken,
+            network: network,
+            shouldShowNetworkIcon: false,
+            length: assetIconLength,
+            maxLength: maxAssetIconLength
+          )
+        } else { // nil token possible for Solana Swaps
+          GenericAssetIconView(
+            backgroundColor: Color(braveSystemName: .gray20),
+            iconColor: Color.black,
+            length: assetIconLength,
+            maxLength: maxAssetIconLength
+          )
+        }
+      }
+      .padding(.top, iconPadding)
+      .padding(.trailing, iconPadding)
+      .zIndex(1)
+      
+      if let networkLogoImage = network.networkLogoImage {
+        Group {
+          Image(uiImage: networkLogoImage)
+            .resizable()
+            .overlay(
+              Circle()
+                .stroke(lineWidth: 2)
+                .foregroundColor(Color(braveSystemName: .containerBackground))
+            )
+            .frame(
+              width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
+              height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        .zIndex(2)
+      }
+    }
+    .frame(
+      width: min(length, maxLength ?? length),
+      height: min(length, maxLength ?? length)
+    )
+  }
+}
+
+#if DEBUG
+struct StackedAssetIconsView_Previews: PreviewProvider {
+  static var previews: some View {
+    StackedAssetIconsView(
+      bottomToken: nil,
+      topToken: nil,
+      network: .mockSolana
+    )
+    .previewLayout(.sizeThatFits)
+  }
+}
+#endif
+
+struct GenericAssetIconView: View {
+  
+  let backgroundColor: Color
+  let iconColor: Color
+  @ScaledMetric var length: CGFloat
+  let maxLength: CGFloat?
+  
+  init(
+    backgroundColor: Color = Color(braveSystemName: .gray20),
+    iconColor: Color = Color.black,
+    length: CGFloat = 40,
+    maxLength: CGFloat? = nil
+  ) {
+    self.backgroundColor = backgroundColor
+    self.iconColor = iconColor
+    self._length = .init(wrappedValue: length)
+    self.maxLength = maxLength
+  }
+  
+  var body: some View {
+    Circle()
+      .fill(backgroundColor)
+      .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
+      .overlay {
+        Image(braveSystemName: "leo.crypto.wallets")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding(6)
+          .foregroundColor(iconColor)
+      }
   }
 }

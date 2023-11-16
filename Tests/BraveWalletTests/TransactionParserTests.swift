@@ -124,7 +124,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethSend(
         .init(
           fromToken: network.nativeToken,
@@ -219,7 +219,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .erc20Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -305,7 +305,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethSwap(
         .init(
           fromToken: .previewToken,
@@ -395,7 +395,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethSwap(
         .init(
           fromToken: .mockUSDCToken,
@@ -481,13 +481,14 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
           tokenContractAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
           approvalValue: "0x2386f26fc10000",
           approvalAmount: "0.01",
+          approvalFiat: "$0.02",
           isUnlimited: false,
           spenderAddress: "",
           gasFee: .init(
@@ -565,13 +566,14 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
           tokenContractAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
           approvalValue: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
           approvalAmount: "Unlimited",
+          approvalFiat: "Unlimited",
           isUnlimited: true,
           spenderAddress: "",
           gasFee: .init(
@@ -653,7 +655,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      networkSymbol: "ETH",
+      network: .mockMainnet,
       details: .erc721Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -737,7 +739,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[2].accountId.address,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
-      networkSymbol: "SOL",
+      network: .mockSolana,
       details: .solSystemTransfer(
         .init(
           fromToken: .mockSolToken,
@@ -834,7 +836,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[2].accountId.address,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
-      networkSymbol: "SOL",
+      network: .mockSolana,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSpdToken,
@@ -918,7 +920,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[2].accountId.address,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
-      networkSymbol: "SOL",
+      network: .mockSolana,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSolanaNFTToken,
@@ -1129,7 +1131,7 @@ class TransactionParserTests: XCTestCase {
       fromAddress: accountInfos[4].address,
       namedToAddress: accountInfos[5].name,
       toAddress: accountInfos[5].address,
-      networkSymbol: "FIL",
+      network: .mockFilecoinTestnet,
       details: .filSend(
         .init(
           sendToken: .mockFilToken,

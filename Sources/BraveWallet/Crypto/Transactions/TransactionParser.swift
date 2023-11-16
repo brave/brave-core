@@ -140,7 +140,7 @@ enum TransactionParser {
           fromAddress: transaction.fromAccountId.address,
           namedToAddress: NamedAddresses.name(for: filTxData.to, accounts: accountInfos),
           toAddress: filTxData.to,
-          networkSymbol: network.symbol,
+          network: network,
           details: .filSend(
             .init(
               sendToken: network.nativeToken,
@@ -178,7 +178,7 @@ enum TransactionParser {
           fromAddress: transaction.fromAccountId.address,
           namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
           toAddress: transaction.ethTxToAddress,
-          networkSymbol: network.symbol,
+          network: network,
           details: .ethSend(
             .init(
               fromToken: network.nativeToken,
@@ -223,7 +223,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .erc20Transfer(
           .init(
             fromToken: fromToken,
@@ -278,7 +278,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         toAddress: transaction.ethTxToAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .ethSwap(
           .init(
             fromToken: fromToken,
@@ -307,10 +307,13 @@ enum TransactionParser {
       let token = token(for: contractAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       let isUnlimited = value.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame
       let approvalAmount: String
+      let approvalFiat: String
       if isUnlimited {
         approvalAmount = Strings.Wallet.editPermissionsApproveUnlimited
+        approvalFiat = Strings.Wallet.editPermissionsApproveUnlimited
       } else {
         approvalAmount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token?.decimals ?? network.decimals))?.trimmingTrailingZeros ?? ""
+        approvalFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[token?.assetRatioId.lowercased() ?? "", default: 0] * (Double(approvalAmount) ?? 0))) ?? "$0.00"
       }
       /* Example:
        Approve DAI
@@ -329,13 +332,14 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         toAddress: transaction.ethTxToAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .ethErc20Approve(
           .init(
             token: token,
             tokenContractAddress: contractAddress,
             approvalValue: value,
             approvalAmount: approvalAmount,
+            approvalFiat: approvalFiat,
             isUnlimited: isUnlimited,
             spenderAddress: spenderAddress,
             gasFee: gasFee(
@@ -362,7 +366,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address, // The caller, which may not be the owner
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .erc721Transfer(
           .init(
             fromToken: token,
@@ -402,7 +406,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .solSystemTransfer(
           .init(
             fromToken: network.nativeToken,
@@ -453,7 +457,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        networkSymbol: network.symbol,
+        network: network,
         details: .solSplTokenTransfer(
           .init(
             fromToken: fromToken,
@@ -564,7 +568,7 @@ enum TransactionParser {
         fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
-        networkSymbol: network.symbol,
+        network: network,
         details: details
       )
     case .erc1155SafeTransferFrom:
@@ -669,8 +673,10 @@ struct ParsedTransaction: Equatable {
   /// Address sending to
   let toAddress: String
   
+  /// Network of the transaction
+  let network: BraveWallet.NetworkInfo
   /// Network symbol of the transaction
-  let networkSymbol: String
+  var networkSymbol: String { network.symbol }
   
   /// Details of the transaction
   let details: Details
@@ -703,7 +709,7 @@ struct ParsedTransaction: Equatable {
     self.fromAddress = ""
     self.namedToAddress = ""
     self.toAddress = ""
-    self.networkSymbol = ""
+    self.network = .init()
     self.details = .other
   }
   
@@ -713,7 +719,7 @@ struct ParsedTransaction: Equatable {
     fromAddress: String,
     namedToAddress: String,
     toAddress: String,
-    networkSymbol: String,
+    network: BraveWallet.NetworkInfo,
     details: Details
   ) {
     self.transaction = transaction
@@ -721,8 +727,49 @@ struct ParsedTransaction: Equatable {
     self.fromAddress = fromAddress
     self.namedToAddress = namedToAddress
     self.toAddress = toAddress
-    self.networkSymbol = networkSymbol
+    self.network = network
     self.details = details
+  }
+  
+  /// Determines if the given query matches the `ParsedTransaction`.
+  func matches(_ query: String) -> Bool {
+    if namedFromAddress.localizedCaseInsensitiveContains(query) ||
+        fromAddress.localizedCaseInsensitiveContains(query) ||
+        namedToAddress.localizedCaseInsensitiveContains(query) ||
+        toAddress.localizedCaseInsensitiveContains(query) ||
+        transaction.txHash.localizedCaseInsensitiveContains(query) {
+      return true
+    }
+    switch details {
+    case .ethSend(let sendDetails),
+        .erc20Transfer(let sendDetails),
+        .solSystemTransfer(let sendDetails),
+        .solSplTokenTransfer(let sendDetails):
+      return sendDetails.fromToken?.matches(query) == true
+     case .ethSwap(let ethSwapDetails):
+      return ethSwapDetails.fromToken?.matches(query) == true ||
+      ethSwapDetails.toToken?.matches(query) == true
+    case .ethErc20Approve(let ethErc20ApproveDetails):
+      return ethErc20ApproveDetails.token?.matches(query) == true
+    case .erc721Transfer(let eth721TransferDetails):
+      return eth721TransferDetails.fromToken?.matches(query) == true
+    case .solDappTransaction(let solanaTxDetails),
+        .solSwapTransaction(let solanaTxDetails):
+      return solanaTxDetails.symbol?.localizedCaseInsensitiveContains(query) == true
+    case .filSend(let filSendDetails):
+      return filSendDetails.sendToken?.matches(query) == true
+    case .other:
+      return false
+    }
+  }
+}
+
+private extension BraveWallet.BlockchainToken {
+  /// Determines if the given query matches the `BlockchainToken`.
+  func matches(_ query: String) -> Bool {
+    name.localizedCaseInsensitiveContains(query) == true ||
+    symbol.localizedCaseInsensitiveContains(query) == true ||
+    contractAddress.localizedCaseInsensitiveContains(query) == true
   }
 }
 
@@ -735,6 +782,8 @@ struct EthErc20ApproveDetails: Equatable {
   let approvalValue: String
   /// Value being approved formatted
   let approvalAmount: String
+  /// The amount approved formatted as currency
+  let approvalFiat: String
   /// If the value being approved is unlimited
   let isUnlimited: Bool
   /// The spender address to get the current allowance

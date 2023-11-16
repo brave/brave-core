@@ -14,14 +14,19 @@ struct TransactionsActivityView: View {
   @State private var isPresentingNetworkFilter = false
   @State private var transactionDetails: TransactionDetailsStore?
   
-  private var networkFilterButton: some View {
-    Button(action: {
-      self.isPresentingNetworkFilter = true
-    }) {
-      Image(braveSystemName: "leo.tune")
-        .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
-        .clipShape(Rectangle())
+  var body: some View {
+    TransactionsListView(
+      transactionSections: store.transactionSections,
+      query: $store.query,
+      filtersButtonTapped: {
+        isPresentingNetworkFilter = true
+      },
+      transactionTapped: {
+        transactionDetails = store.transactionDetailsStore(for: $0)
+      }
+    )
+    .onAppear {
+      store.update()
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
       NavigationView {
@@ -38,41 +43,6 @@ struct TransactionsActivityView: View {
         networkStore.closeNetworkSelectionStore()
       }
     }
-  }
-  
-  var body: some View {
-    List {
-      Section {
-        if store.transactionSummaries.isEmpty {
-          emptyState
-            .listRowBackground(Color.clear)
-        } else {
-          Group {
-            ForEach(store.transactionSummaries) { txSummary in
-              Button(action: {
-                self.transactionDetails = store.transactionDetailsStore(for: txSummary.txInfo)
-              }) {
-                TransactionSummaryView(summary: txSummary)
-              }
-            }
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-      } header: {
-        HStack {
-          Text(Strings.Wallet.assetsTitle)
-          Spacer()
-          networkFilterButton
-        }
-        .textCase(nil)
-        .padding(.horizontal, -8)
-        .frame(maxWidth: .infinity, alignment: .leading)
-      }
-    }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .onAppear {
-      store.update()
-    }
     .sheet(
       isPresented: Binding(
         get: { self.transactionDetails != nil },
@@ -87,25 +57,10 @@ struct TransactionsActivityView: View {
       }
     }
   }
-  
-  private var emptyState: some View {
-    VStack(alignment: .center, spacing: 10) {
-      Text(Strings.Wallet.activityPageEmptyTitle)
-        .font(.headline.weight(.semibold))
-        .foregroundColor(Color(.braveLabel))
-      Text(Strings.Wallet.activityPageEmptyDescription)
-        .font(.subheadline.weight(.semibold))
-        .foregroundColor(Color(.secondaryLabel))
-    }
-    .multilineTextAlignment(.center)
-    .frame(maxWidth: .infinity)
-    .padding(.vertical, 60)
-    .padding(.horizontal, 32)
-  }
 }
 
 #if DEBUG
-struct TransactionsActivityViewView_Previews: PreviewProvider {
+struct TransactionsActivityView_Previews: PreviewProvider {
   static var previews: some View {
     TransactionsActivityView(
       store: .preview,
