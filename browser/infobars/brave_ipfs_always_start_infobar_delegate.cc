@@ -13,9 +13,8 @@
 #include "components/prefs/pref_service.h"
 
 BraveIPFSAlwaysStartInfoBarDelegateFactory::
-    BraveIPFSAlwaysStartInfoBarDelegateFactory(ipfs::IpfsService* ipfs_service,
-                                               PrefService* local_state)
-    : local_state_(local_state), ipfs_service_(ipfs_service) {}
+    BraveIPFSAlwaysStartInfoBarDelegateFactory(PrefService* local_state)
+    : local_state_(local_state) {}
 
 std::unique_ptr<BraveConfirmInfoBarDelegate>
 BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
@@ -28,7 +27,7 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
   }
 
   return base::WrapUnique(
-      new BraveIPFSAlwaysStartInfoBarDelegate(ipfs_service_, local_state_));
+      new BraveIPFSAlwaysStartInfoBarDelegate(local_state_));
 }
 
 infobars::InfoBarDelegate::InfoBarIdentifier
@@ -37,9 +36,8 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::GetInfoBarIdentifier() const {
 }
 
 BraveIPFSAlwaysStartInfoBarDelegate::BraveIPFSAlwaysStartInfoBarDelegate(
-    ipfs::IpfsService* ipfs_service,
     PrefService* local_state)
-    : local_state_(local_state), ipfs_service_(ipfs_service) {}
+    : local_state_(local_state) {}
 
 BraveIPFSAlwaysStartInfoBarDelegate::~BraveIPFSAlwaysStartInfoBarDelegate() =
     default;
@@ -76,9 +74,6 @@ std::u16string BraveIPFSAlwaysStartInfoBarDelegate::GetButtonLabel(
 bool BraveIPFSAlwaysStartInfoBarDelegate::Accept() {
   if (local_state_) {
     local_state_->SetBoolean(kIPFSAlwaysStartMode, true);
-    if (!ipfs_service_->IsDaemonLaunched()) {
-      ipfs_service_->LaunchDaemon(base::NullCallback());
-    }
   }
   SetLastShownTime();
   return true;

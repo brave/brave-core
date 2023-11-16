@@ -44,6 +44,7 @@
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"

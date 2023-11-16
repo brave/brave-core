@@ -117,6 +117,7 @@ IpfsService::IpfsService(
     std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
     std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate)
     : prefs_(prefs),
+      pref_change_registrar_(std::make_unique<PrefChangeRegistrar>()),
       url_loader_factory_(url_loader_factory),
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
       server_endpoint_(GetAPIServer(channel)),
@@ -151,13 +152,15 @@ IpfsService::IpfsService(
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
 
-  const auto is_ipfs_local =
-      (prefs_ &&
-       prefs_->GetInteger(kIPFSResolveMethod) ==
-           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-  if (is_ipfs_local && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
-    StartDaemonAndLaunch(base::NullCallback());
+  if (prefs_) {
+    pref_change_registrar_->Init(prefs_);
+    pref_change_registrar_->Add(
+        kIPFSAlwaysStartMode,
+        base::BindRepeating(&IpfsService::OnIPFSAlwaysStartModeChanged,
+                            weak_factory_.GetWeakPtr()));
   }
+
+  OnIPFSAlwaysStartModeChanged();
 }
 
 IpfsService::~IpfsService() {
@@ -278,6 +281,16 @@ void IpfsService::RestartDaemon() {
         }
       },
       std::move(launch_callback)));
+}
+
+void IpfsService::OnIPFSAlwaysStartModeChanged() {
+  const auto is_ipfs_local =
+      (prefs_ &&
+       prefs_->GetInteger(kIPFSResolveMethod) ==
+           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  if (is_ipfs_local && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+    StartDaemonAndLaunch(base::NullCallback());
+  }
 }
 
 void IpfsService::OnIpfsCrashed() {

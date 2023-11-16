@@ -251,6 +251,7 @@ class IpfsService : public KeyedService,
 
   std::string GetStorageSize();
   void OnDnsConfigChanged(absl::optional<std::string> dns_server);
+  void OnIPFSAlwaysStartModeChanged();
 
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
@@ -261,6 +262,8 @@ class IpfsService : public KeyedService,
   base::ObserverList<IpfsServiceObserver> observers_;
 
   const raw_ptr<PrefService> prefs_ = nullptr;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;

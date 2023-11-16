@@ -29,8 +29,7 @@ class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
  private:
   friend class BraveIPFSAlwaysStartInfoBarDelegateFactory;
-  explicit BraveIPFSAlwaysStartInfoBarDelegate(ipfs::IpfsService* ipfs_service,
-                                               PrefService* local_state);
+  explicit BraveIPFSAlwaysStartInfoBarDelegate(PrefService* local_state);
 
   // BraveConfirmInfoBarDelegate
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
@@ -46,14 +45,12 @@ class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   void SetLastShownTime();
 
   raw_ptr<PrefService> local_state_ = nullptr;
-  raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
 };
 
 class BraveIPFSAlwaysStartInfoBarDelegateFactory
     : public BraveConfirmInfoBarDelegateFactory {
  public:
   explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(
-      ipfs::IpfsService* ipfs_service,
       PrefService* local_state);
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
@@ -63,7 +60,6 @@ class BraveIPFSAlwaysStartInfoBarDelegateFactory
 
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
-  raw_ptr<ipfs::IpfsService> ipfs_service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE_H_
