@@ -137,7 +137,7 @@ struct AssetSearchView: View {
           ),
           destination: {
             if let selectedToken {
-              if selectedToken.isErc721 {
+              if selectedToken.isErc721 || selectedToken.isNft {
                 NFTDetailView(
                   nftDetailStore: cryptoStore.nftDetailStore(for: selectedToken, nftMetadata: allNFTMetadata[selectedToken.id]),
                   buySendSwapDestination: .constant(nil)
