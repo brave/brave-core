@@ -293,9 +293,9 @@ _BANNED_CPP_FUNCTIONS += (
     ),
     BanRule(
         'base::PathService::Get',
-        ('Use base::PathService::CheckedGet instead', ),
-        True,
-        (),
+        ('Prefer using base::PathService::CheckedGet() instead', ),
+        treat_as_error=False,
+        excluded_paths=(),
     ),
 )
 
