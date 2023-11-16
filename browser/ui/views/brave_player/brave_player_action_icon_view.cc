@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_player/brave_player_action_icon_view.h"
 
+#include <memory>
 #include <string>
 
 #include "base/strings/strcat.h"
@@ -74,7 +75,7 @@ BravePlayerActionIconView::~BravePlayerActionIconView() = default;
 
 void BravePlayerActionIconView::OnExecuting(ExecuteSource execute_source) {
   CHECK(player_url_.is_valid());
-  chrome::AddTabAt(base::to_address(browser_), player_url_, /*index*/ -1,
+  chrome::AddTabAt(std::to_address(browser_), player_url_, /*index*/ -1,
                    /*foreground=*/true);
 }
 

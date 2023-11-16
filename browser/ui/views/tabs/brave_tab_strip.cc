@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/browser/profiles/profile_util.h"
@@ -240,7 +241,7 @@ void BraveTabStrip::UpdateTabContainer() {
 
     // Resets TabContainer to use.
     auto original_container = RemoveChildViewT(
-        static_cast<TabContainer*>(base::to_address(tab_container_)));
+        static_cast<TabContainer*>(std::to_address(tab_container_)));
 
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged

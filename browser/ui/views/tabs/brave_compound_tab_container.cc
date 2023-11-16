@@ -119,7 +119,7 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
   for (const auto& tab_container :
        {unpinned_tab_container_, pinned_tab_container_}) {
     closures.push_back(
-        static_cast<BraveTabContainer*>(base::to_address(tab_container))
+        static_cast<BraveTabContainer*>(std::to_address(tab_container))
             ->LockLayout());
   }
 
@@ -141,12 +141,12 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     scroll_view_->SetBackgroundThemeColorId(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
-    contents_view->AddChildView(base::to_address(unpinned_tab_container_));
+    contents_view->AddChildView(std::to_address(unpinned_tab_container_));
     Layout();
   } else {
     unpinned_tab_container_->parent()->RemoveChildView(
-        base::to_address(unpinned_tab_container_));
-    AddChildView(base::to_address(unpinned_tab_container_));
+        std::to_address(unpinned_tab_container_));
+    AddChildView(std::to_address(unpinned_tab_container_));
 
     RemoveChildViewT(scroll_view_.get());
     scroll_view_ = nullptr;
@@ -319,7 +319,7 @@ BrowserRootView::DropIndex BraveCompoundTabContainer::GetDropIndex(
       event.data(), gfx::PointF(loc_in_sub_target),
       gfx::PointF(loc_in_sub_target), event.source_operations());
 
-  if (sub_drop_target == base::to_address(pinned_tab_container_)) {
+  if (sub_drop_target == std::to_address(pinned_tab_container_)) {
     // Pinned tab container shares an index and coordinate space, so no
     // adjustments needed.
     return sub_drop_target->GetDropIndex(adjusted_event);
@@ -378,7 +378,7 @@ void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
 
 void BraveCompoundTabContainer::ChildPreferredSizeChanged(views::View* child) {
   if (ShouldShowVerticalTabs() && scroll_view_ &&
-      child->Contains(base::to_address(unpinned_tab_container_))) {
+      child->Contains(std::to_address(unpinned_tab_container_))) {
     UpdateUnpinnedContainerSize();
   }
 
@@ -402,8 +402,8 @@ TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
 
   auto* container =
       point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
-          ? base::to_address(pinned_tab_container_)
-          : base::to_address(unpinned_tab_container_);
+          ? std::to_address(pinned_tab_container_)
+          : std::to_address(unpinned_tab_container_);
 
   if (!container->GetWidget()) {
     // Note that this could be happen when we're detaching tabs and we're still
@@ -423,7 +423,7 @@ gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
 
   if (scroll_view_) {
     return views::View::ConvertRectToTarget(
-        /*source=*/base::to_address(unpinned_tab_container_), /*target=*/this,
+        /*source=*/std::to_address(unpinned_tab_container_), /*target=*/this,
         ideal_bounds);
   }
 

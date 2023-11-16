@@ -173,7 +173,7 @@ bool BraveConfigurator::EnabledCupSigning() const {
 }
 
 PrefService* BraveConfigurator::GetPrefService() const {
-  return base::to_address(pref_service_);
+  return std::to_address(pref_service_);
 }
 
 update_client::ActivityDataService* BraveConfigurator::GetActivityDataService()
