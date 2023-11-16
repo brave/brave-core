@@ -48,10 +48,7 @@ export const _WalletOnboardingConcept = () => {
         isWalletCreated: false
       }}
       pageStateOverride={{
-        isCryptoWalletsInitialized: true,
-        isMetaMaskInitialized: true,
-        setupStillInProgress: true,
-        isImportWalletsCheckComplete: true
+        setupStillInProgress: true
       }}
     >
       <Container />

@@ -4,24 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
-
-// selectors
-import {
-  useSafePageSelector,
-  useSafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../selectors'
-import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
-
-// actions
-import { WalletPageActions } from '../../../actions'
 
 // components
 import {
@@ -56,20 +50,24 @@ export const OnboardingCreatePassword = (
   const { isHardwareOnboarding, onWalletCreated } = props
 
   // redux
-  const dispatch = useDispatch()
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
 
+  // mutations
+  const [createWallet] = useCreateWalletMutation()
+
   // methods
-  const nextStep = React.useCallback(() => {
+  const nextStep = React.useCallback(async () => {
     if (isValid) {
-      dispatch(WalletPageActions.createWallet({ password }))
+      // Note: intentionally not using unwrapped value
+      // results are returned before other redux actions complete
+      await createWallet({ password }).unwrap()
     }
-  }, [password, isValid])
+  }, [password, isValid, createWallet])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {
@@ -81,6 +79,8 @@ export const OnboardingCreatePassword = (
 
   // effects
   React.useEffect(() => {
+    // wait for redux before redirecting
+    // otherwise, the restricted routes in the router will not be available
     if (!isCreatingWallet && isWalletCreated) {
       onWalletCreated()
     }

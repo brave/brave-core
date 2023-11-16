@@ -4,24 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
-// selectors
-import {
-  useSafePageSelector,
-  useUnsafePageSelector
-} from '../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../selectors'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-
-// actions
-import { WalletPageActions } from '../../../actions'
+import {
+  useCheckExternalWalletPasswordMutation,
+  useGetWalletsToImportQuery,
+  useImportFromCryptoWalletsMutation,
+  useImportFromMetaMaskMutation,
+  useRestoreWalletMutation
+} from '../../../../common/slices/api.slice'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
 
 // types
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
@@ -76,6 +75,8 @@ const RESTORE_FROM_EXTENSION_STEPS: RestoreFromOtherWalletSteps[] = [
   RestoreFromOtherWalletSteps.complete
 ]
 
+const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
+
 interface Props {
   restoreFrom: 'metamask' | 'metamask-seed' | 'legacy' | 'legacy-seed' | 'seed'
 }
@@ -83,40 +84,42 @@ interface Props {
 export const OnboardingRestoreFromRecoveryPhrase = ({
   restoreFrom = 'seed'
 }: Props) => {
-  // routing
-  let history = useHistory()
-
-  // redux
-  const dispatch = useDispatch()
-  const invalidMnemonic = useSafePageSelector(PageSelectors.invalidMnemonic)
-  const isImportWalletsCheckComplete = useSafePageSelector(
-    PageSelectors.isImportWalletsCheckComplete
-  )
-  const importWalletError = useUnsafePageSelector(
-    PageSelectors.importWalletError
-  )
-  const importWalletAttempts = useSafePageSelector(
-    PageSelectors.importWalletAttempts
-  )
-  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
-
-  // computed
+  // computed from props
   const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
   const isImportingFromLegacyExtension = restoreFrom === 'legacy'
   const isImportingFromExtension =
     isImportingFromMetaMaskExtension || isImportingFromLegacyExtension
-  const isCheckingExtensions =
-    !restoreFrom.includes('seed') && !isImportWalletsCheckComplete
+
+  // routing
+  let history = useHistory()
+
+  // redux
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
+
+  // queries
+  const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery(
+    isImportingFromExtension ? undefined : skipToken
+  )
+
+  // mutations
+  const [importFromCryptoWallets, { data: importFromLegacyWalletResult }] =
+    useImportFromCryptoWalletsMutation()
+
+  const [importFromMetaMask, { data: importFromMetaMaskResult }] =
+    useImportFromMetaMaskMutation()
+
+  const [restoreWalletFromSeed] = useRestoreWalletMutation()
+
+  const [checkExtensionPassword, { isLoading: isCheckingImportPassword }] =
+    useCheckExternalWalletPasswordMutation()
 
   // state
+  const [hasInvalidSeedError, setHasInvalidSeedError] = React.useState(false)
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
-  const [isCheckingImportPassword, setIsCheckingImportPassword] =
-    React.useState(false)
-  const [currentImportAttempt, setCurrentImportAttempt] =
-    React.useState(importWalletAttempts)
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [extensionPassword, setExtensionPassword] = React.useState('')
+  const [extensionPasswordError, setExtensionPasswordError] = React.useState('')
   const [phraseInput, setPhraseInput] = React.useState('')
   const [phraseWordsLength, setPhraseWordsLength] = React.useState(0)
   const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] =
@@ -128,42 +131,38 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         : RestoreFromOtherWalletSteps.phrase
     )
 
-  // 12, 15, 18, 21, or 24
-  const isCorrectPhraseLength =
-    phraseWordsLength === 12 ||
-    phraseWordsLength === 15 ||
-    phraseWordsLength === 18 ||
-    phraseWordsLength === 21 ||
-    phraseWordsLength === 24
+  const importWalletError = isImportingFromExtension
+    ? extensionPasswordError ||
+      (isImportingFromMetaMaskExtension &&
+        importFromMetaMaskResult?.errorMessage) ||
+      (isImportingFromLegacyExtension &&
+        importFromLegacyWalletResult?.errorMessage)
+    : hasInvalidSeedError
+    ? getLocale('braveWalletInvalidMnemonicError')
+    : undefined
+
+  const isCorrectPhraseLength = VALID_PHRASE_LENGTHS.includes(phraseWordsLength)
 
   // methods
-  const checkImportPassword = React.useCallback(() => {
-    setIsCheckingImportPassword(true)
-    setCurrentImportAttempt(importWalletAttempts)
-
-    if (isImportingFromMetaMaskExtension) {
-      dispatch(
-        WalletPageActions.importFromMetaMask({
-          password: extensionPassword,
-          newPassword: '' // required arg, just checking import Password
-        })
-      )
-      return
-    }
-
-    if (isImportingFromLegacyExtension) {
-      dispatch(
-        WalletPageActions.importFromCryptoWallets({
-          password: extensionPassword,
-          newPassword: '' // required arg, just checking import Password
-        })
-      )
+  const checkImportPassword = React.useCallback(async () => {
+    if (isImportingFromMetaMaskExtension || isImportingFromLegacyExtension) {
+      const results = await checkExtensionPassword({
+        walletType: isImportingFromMetaMaskExtension
+          ? BraveWallet.ExternalWalletType.MetaMask
+          : BraveWallet.ExternalWalletType.CryptoWallets,
+        password: extensionPassword
+      }).unwrap()
+      if (results.errorMessage) {
+        setExtensionPasswordError(results.errorMessage)
+      } else {
+        setExtensionPasswordError('')
+        setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
+      }
     }
   }, [
     isImportingFromMetaMaskExtension,
     isImportingFromLegacyExtension,
-    extensionPassword,
-    importWalletAttempts
+    extensionPassword
   ])
 
   const restoreWallet = React.useCallback(async () => {
@@ -172,40 +171,32 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }
 
     if (isImportingFromMetaMaskExtension) {
-      dispatch(
-        WalletPageActions.importFromMetaMask({
-          password: extensionPassword,
-          newPassword: password
-        })
-      )
+      await importFromMetaMask({
+        password: extensionPassword,
+        newPassword: password
+      }).unwrap()
       return
     }
 
     if (isImportingFromLegacyExtension) {
-      dispatch(
-        WalletPageActions.importFromCryptoWallets({
-          password: extensionPassword,
-          newPassword: password
-        })
-      )
+      await importFromCryptoWallets({
+        password: extensionPassword,
+        newPassword: password
+      }).unwrap()
       return
     }
 
-    if (invalidMnemonic) {
-      return
-    }
+    const { invalidMnemonic } = await restoreWalletFromSeed({
+      // added an additional trim here in case the phrase length is
+      // 12, 15, 18 or 21 long and has a space at the end.
+      mnemonic: phraseInput.trimEnd(),
+      password,
+      isLegacy: isImportingFromLegacySeed,
+      // postpone until wallet onboarding success screen
+      completeWalletSetup: false
+    }).unwrap()
 
-    dispatch(
-      WalletPageActions.restoreWallet({
-        // added an additional trim here in case the phrase length is
-        // 12, 15, 18 or 21 long and has a space at the end.
-        mnemonic: phraseInput.trimEnd(),
-        password,
-        isLegacy: isImportingFromLegacySeed,
-        // postpone until wallet onboarding success screen
-        completeWalletSetup: false
-      })
-    )
+    setHasInvalidSeedError(invalidMnemonic)
   }, [
     isPasswordValid,
     isImportingFromMetaMaskExtension,
@@ -213,7 +204,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     password,
     isImportingFromLegacyExtension,
     phraseInput,
-    invalidMnemonic,
     isImportingFromLegacySeed
   ])
 
@@ -225,35 +215,12 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     []
   )
 
-  const onExtensionPasswordChange = React.useCallback(
-    (value: string): void => {
-      if (importWalletError?.hasError) {
-        dispatch(
-          WalletPageActions.setImportWalletError({
-            hasError: false
-          })
-        )
-      }
-      setExtensionPassword(value)
-    },
-    [importWalletError?.hasError]
-  )
-
-  const onContinueClicked = React.useCallback(() => {
-    // reset previous errors
-    if (importWalletError?.hasError) {
-      dispatch(
-        WalletPageActions.setImportWalletError({
-          hasError: false
-        })
-      )
-    }
-
+  const onContinueClicked = React.useCallback(async () => {
     if (
       currentStep === RestoreFromOtherWalletSteps.currentPassword &&
       extensionPassword
     ) {
-      return checkImportPassword()
+      return await checkImportPassword()
     }
 
     if (currentStep === RestoreFromOtherWalletSteps.phrase) {
@@ -264,23 +231,18 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       currentStep === RestoreFromOtherWalletSteps.newPassword &&
       isPasswordValid
     ) {
-      return restoreWallet()
+      return await restoreWallet()
     }
   }, [
-    importWalletError?.hasError,
     currentStep,
     extensionPassword,
-    invalidMnemonic,
     isPasswordValid,
     restoreWallet,
     checkImportPassword
   ])
 
   const onGoBack = React.useCallback(() => {
-    // clear errors
-    if (invalidMnemonic) {
-      dispatch(WalletPageActions.hasMnemonicError(false))
-    }
+    setHasInvalidSeedError(false)
 
     if (
       currentStep === RestoreFromOtherWalletSteps.currentPassword ||
@@ -293,7 +255,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       setPhraseInput('') // reset input state
       return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
     }
-  }, [invalidMnemonic, currentStep])
+  }, [currentStep])
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
@@ -356,54 +318,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }
   }, [currentStep, restoreFrom])
 
-  // effects
-  React.useEffect(() => {
-    if (isCheckingExtensions) {
-      // check if MM or legacy wallet is installed
-      dispatch(WalletPageActions.checkWalletsToImport())
-    }
-  }, [isCheckingExtensions])
-
-  React.useEffect(() => {
-    // clear other errors on step change
-    if (
-      currentStep === RestoreFromOtherWalletSteps.newPassword &&
-      importWalletError?.hasError &&
-      importWalletError.errorMessage
-    ) {
-      dispatch(
-        WalletPageActions.setImportWalletError({
-          hasError: false
-        })
-      )
-    }
-  }, [currentStep, importWalletError])
-
-  React.useEffect(() => {
-    // runs after a wallet import password check has completed
-    if (
-      currentStep === RestoreFromOtherWalletSteps.currentPassword &&
-      importWalletAttempts > currentImportAttempt
-    ) {
-      setCurrentImportAttempt(importWalletAttempts)
-      setIsCheckingImportPassword(false)
-      // redirect after a successful password check
-      if (!importWalletError?.hasError) {
-        return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
-      }
-    }
-  }, [
-    currentStep,
-    importWalletAttempts,
-    currentImportAttempt,
-    importWalletError?.hasError
-  ])
-
+  // render
   if (isCreatingWallet) {
     return <CreatingWallet />
   }
 
-  // render
   return (
     <CenteredPageLayout>
       <MainWrapper>
@@ -420,6 +339,8 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
             onSkip={
               !restoreFrom.includes('seed')
                 ? () => {
+                    // TODO: why was this needed?
+                    // Can we use regular "restore" page
                     return restoreFrom.includes('metamask')
                       ? history.push(WalletRoutes.OnboardingImportMetaMaskSeed)
                       : history.push(
@@ -501,10 +422,10 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
               <>
                 <PasswordInput
                   autoFocus={true}
-                  onChange={onExtensionPasswordChange}
+                  onChange={setExtensionPassword}
                   value={extensionPassword}
-                  error={importWalletError?.errorMessage || ''}
-                  hasError={importWalletError?.hasError}
+                  error={importWalletError || ''}
+                  hasError={!!importWalletError}
                   onKeyDown={handleKeyDown}
                   placeholder={
                     restoreFrom === 'metamask'
@@ -526,14 +447,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
                 onSubmit={restoreWallet}
                 onChange={handlePasswordChange}
               />
-              {importWalletError?.hasError && (
-                <ErrorText>{importWalletError.errorMessage}</ErrorText>
-              )}
-              {!!invalidMnemonic && (
-                <ErrorText>
-                  {getLocale('braveWalletInvalidMnemonicError')}
-                </ErrorText>
-              )}
+              {importWalletError && <ErrorText>{importWalletError}</ErrorText>}
             </>
           )}
 
@@ -565,7 +479,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
                       phraseWordsLength < 12 ||
                       (phraseWordsLength > 12 && !isCorrectPhraseLength))) ||
                   (currentStep === RestoreFromOtherWalletSteps.newPassword &&
-                    (!isPasswordValid || invalidMnemonic))
+                    (!isPasswordValid || hasInvalidSeedError))
                 }
               />
             </NextButtonRow>

@@ -5,10 +5,6 @@
 
 import { BraveWallet, FilecoinNetwork } from '../../constants/types'
 
-export type CreateWalletPayloadType = {
-  password: string
-}
-
 export type ImportAccountPayloadType = {
   accountName: string
   privateKey: string
@@ -25,13 +21,6 @@ export type ImportAccountFromJsonPayloadType = {
 export type RemoveAccountPayloadType = {
   accountId: BraveWallet.AccountId
   password: string
-}
-
-export type RestoreWalletPayloadType = {
-  mnemonic: string
-  password: string
-  isLegacy: boolean
-  completeWalletSetup?: boolean
 }
 
 export type WalletCreatedPayloadType = {
@@ -60,10 +49,4 @@ export type UpdateSelectedAssetType = {
 export type ImportFromExternalWalletPayloadType = {
   password: string
   newPassword: string
-}
-
-export type ImportWalletErrorPayloadType = {
-  hasError: boolean
-  errorMessage?: string
-  incrementAttempts?: boolean
 }
