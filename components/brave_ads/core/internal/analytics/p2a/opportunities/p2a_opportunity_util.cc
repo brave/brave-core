@@ -9,7 +9,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

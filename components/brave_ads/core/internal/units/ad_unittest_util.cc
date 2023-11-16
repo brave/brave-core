@@ -8,7 +8,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads::test {

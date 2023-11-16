@@ -25,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_scoring_util.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
@@ -46,12 +45,12 @@ constexpr base::TimeDelta kOneDay = base::Days(1);
 constexpr int kMinimumWaitTimeCap = 1;
 
 bool IsAdTypeInTimeRangeAllowed(const AdType& type,
-                                base::TimeDelta constraint,
+                                base::TimeDelta time_constraint,
                                 size_t cap) {
   const std::vector<base::Time> history =
       GetCachedAdEvents(type, ConfirmationType::kServed);
 
-  return DoesHistoryRespectRollingTimeConstraint(history, constraint,
+  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
                                                  /*cap=*/cap);
 }
 

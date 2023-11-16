@@ -6,19 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_SUMMARY_USER_DATA_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_SUMMARY_USER_DATA_UTIL_H_
 
-#include <string>
-
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
 using ConfirmationTypeBucketMap =
-    base::flat_map</*confirmation_type=*/std::string, /*count=*/int>;
-using AdTypeBucketMap =
-    base::flat_map</*ad_type=*/std::string, ConfirmationTypeBucketMap>;
+    base::flat_map<ConfirmationType, /*count=*/int>;
+using AdTypeBucketMap = base::flat_map<AdType, ConfirmationTypeBucketMap>;
 
-AdTypeBucketMap BuildBuckets(const PaymentTokenList& payment_tokens);
+AdTypeBucketMap BuildAdTypeBuckets(const PaymentTokenList& payment_tokens);
 
 }  // namespace brave_ads
 

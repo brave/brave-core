@@ -75,17 +75,18 @@ void CloseNotificationAd(const std::string& placement_id) {
 }
 
 void CacheAdEventForInstanceId(const std::string& id,
-                               const std::string& ad_type,
-                               const std::string& confirmation_type,
+                               const AdType ad_type,
+                               const ConfirmationType confirmation_type,
                                base::Time time) {
-  GetInstance()->CacheAdEventForInstanceId(id, ad_type, confirmation_type,
-                                           time);
+  GetInstance()->CacheAdEventForInstanceId(id, ToString(ad_type),
+                                           ToString(confirmation_type), time);
 }
 
 std::vector<base::Time> GetCachedAdEvents(
-    const std::string& ad_type,
-    const std::string& confirmation_type) {
-  return GetInstance()->GetCachedAdEvents(ad_type, confirmation_type);
+    const AdType ad_type,
+    const ConfirmationType confirmation_type) {
+  return GetInstance()->GetCachedAdEvents(ToString(ad_type),
+                                          ToString(confirmation_type));
 }
 
 void ResetAdEventCacheForInstanceId(const std::string& id) {

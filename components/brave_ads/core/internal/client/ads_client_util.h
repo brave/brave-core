@@ -13,8 +13,10 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -38,11 +40,11 @@ void ShowNotificationAd(const NotificationAdInfo& ad);
 void CloseNotificationAd(const std::string& placement_id);
 
 void CacheAdEventForInstanceId(const std::string& id,
-                               const std::string& ad_type,
-                               const std::string& confirmation_type,
+                               AdType ad_type,
+                               ConfirmationType confirmation_type,
                                base::Time time);
-std::vector<base::Time> GetCachedAdEvents(const std::string& ad_type,
-                                          const std::string& confirmation_type);
+std::vector<base::Time> GetCachedAdEvents(AdType ad_type,
+                                          ConfirmationType confirmation_type);
 void ResetAdEventCacheForInstanceId(const std::string& id);
 
 void GetBrowsingHistory(int max_count,

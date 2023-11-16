@@ -26,15 +26,15 @@ base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
     return user_data;
   }
 
-  const AdTypeBucketMap buckets = BuildBuckets(payment_tokens);
+  const AdTypeBucketMap ad_type_buckets = BuildAdTypeBuckets(payment_tokens);
 
   base::Value::List list;
 
-  for (const auto& [ad_format, confirmations] : buckets) {
-    auto dict = base::Value::Dict().Set(kAdFormatKey, ad_format);
+  for (const auto& [ad_type, confirmations] : ad_type_buckets) {
+    auto dict = base::Value::Dict().Set(kAdFormatKey, ToString(ad_type));
 
     for (const auto& [confirmation_type, count] : confirmations) {
-      dict.Set(confirmation_type, count);
+      dict.Set(ToString(confirmation_type), count);
     }
 
     list.Append(std::move(dict));

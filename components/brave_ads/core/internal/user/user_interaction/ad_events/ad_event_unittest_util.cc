@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads::test {
 
@@ -47,22 +46,20 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   return ad_event;
 }
 
-void RecordAdEvent(AdType type, ConfirmationType confirmation_type) {
-  RecordAdEvents(type, confirmation_type, /*count=*/1);
+void RecordAdEvent(const AdType ad_type,
+                   const ConfirmationType confirmation_type) {
+  RecordAdEvents(ad_type, confirmation_type, /*count=*/1);
 }
 
-void RecordAdEvents(AdType type,
-                    ConfirmationType confirmation_type,
+void RecordAdEvents(const AdType ad_type,
+                    const ConfirmationType confirmation_type,
                     const int count) {
   CHECK_GT(count, 0);
 
   const std::string& id = GetInstanceId();
-  const std::string ad_type_as_string = ToString(type);
-  const std::string confirmation_type_as_string = ToString(confirmation_type);
 
   for (int i = 0; i < count; ++i) {
-    CacheAdEventForInstanceId(id, ad_type_as_string,
-                              confirmation_type_as_string, Now());
+    CacheAdEventForInstanceId(id, ad_type, confirmation_type, Now());
   }
 }
 

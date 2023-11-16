@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "build/build_config.h"
 
 namespace brave_ads {
@@ -363,9 +362,8 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
 void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(ad.type);
-  client_.seen_ads[type_as_string][ad.creative_instance_id] = true;
-  client_.seen_advertisers[type_as_string][ad.advertiser_id] = true;
+  client_.seen_ads[ad.type][ad.creative_instance_id] = true;
+  client_.seen_advertisers[ad.type][ad.advertiser_id] = true;
   SaveState();
 }
 
@@ -373,23 +371,20 @@ const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
     AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(type);
-  return client_.seen_ads[type_as_string];
+  return client_.seen_ads[type];
 }
 
 void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
                                              AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(type);
-
-  BLOG(1, "Resetting seen " << type_as_string << "s");
+  BLOG(1, "Resetting seen " << type << "s");
 
   for (const auto& creative_ad : creative_ads) {
     const auto iter =
-        client_.seen_ads[type_as_string].find(creative_ad.creative_instance_id);
-    if (iter != client_.seen_ads[type_as_string].cend()) {
-      client_.seen_ads[type_as_string].erase(iter);
+        client_.seen_ads[type].find(creative_ad.creative_instance_id);
+    if (iter != client_.seen_ads[type].cend()) {
+      client_.seen_ads[type].erase(iter);
     }
   }
 
@@ -399,9 +394,8 @@ void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
 void ClientStateManager::ResetAllSeenAdsForType(AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(type);
-  BLOG(1, "Resetting seen " << type_as_string << "s");
-  client_.seen_ads[type_as_string] = {};
+  BLOG(1, "Resetting seen " << type << "s");
+  client_.seen_ads[type] = {};
   SaveState();
 }
 
@@ -409,7 +403,7 @@ const std::map<std::string, bool>&
 ClientStateManager::GetSeenAdvertisersForType(AdType type) {
   CHECK(is_initialized_);
 
-  return client_.seen_advertisers[ToString(type)];
+  return client_.seen_advertisers[type];
 }
 
 void ClientStateManager::ResetSeenAdvertisersForType(
@@ -417,15 +411,13 @@ void ClientStateManager::ResetSeenAdvertisersForType(
     AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(type);
-
-  BLOG(1, "Resetting seen " << type_as_string << " advertisers");
+  BLOG(1, "Resetting seen " << type << " advertisers");
 
   for (const auto& creative_ad : creative_ads) {
-    const auto iter = client_.seen_advertisers[type_as_string].find(
-        creative_ad.advertiser_id);
-    if (iter != client_.seen_advertisers[type_as_string].cend()) {
-      client_.seen_advertisers[type_as_string].erase(iter);
+    const auto iter =
+        client_.seen_advertisers[type].find(creative_ad.advertiser_id);
+    if (iter != client_.seen_advertisers[type].cend()) {
+      client_.seen_advertisers[type].erase(iter);
     }
   }
 
@@ -435,9 +427,8 @@ void ClientStateManager::ResetSeenAdvertisersForType(
 void ClientStateManager::ResetAllSeenAdvertisersForType(AdType type) {
   CHECK(is_initialized_);
 
-  const std::string type_as_string = ToString(type);
-  BLOG(1, "Resetting seen " << type_as_string << " advertisers");
-  client_.seen_advertisers[type_as_string] = {};
+  BLOG(1, "Resetting seen " << type << " advertisers");
+  client_.seen_advertisers[type] = {};
   SaveState();
 }
 

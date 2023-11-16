@@ -7,15 +7,11 @@
 
 namespace brave_ads {
 
-AdTypeBucketMap BuildBuckets(const PaymentTokenList& payment_tokens) {
+AdTypeBucketMap BuildAdTypeBuckets(const PaymentTokenList& payment_tokens) {
   AdTypeBucketMap buckets;
 
   for (const auto& payment_token : payment_tokens) {
-    const std::string ad_type = ToString(payment_token.ad_type);
-    const std::string confirmation_type =
-        ToString(payment_token.confirmation_type);
-
-    buckets[ad_type][confirmation_type]++;
+    buckets[payment_token.ad_type][payment_token.confirmation_type]++;
   }
 
   return buckets;

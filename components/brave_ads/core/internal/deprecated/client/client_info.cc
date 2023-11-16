@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -57,7 +58,7 @@ base::Value::Dict ClientInfo::ToValue() const {
       seen_ad_dict.Set(creative_instance_id, seen_ad);
     }
 
-    seen_ads_dict.Set(ad_type, std::move(seen_ad_dict));
+    seen_ads_dict.Set(ToString(ad_type), std::move(seen_ad_dict));
   }
   dict.Set("seenAds", std::move(seen_ads_dict));
 
@@ -68,7 +69,8 @@ base::Value::Dict ClientInfo::ToValue() const {
       seen_advertiser_dict.Set(advertiser_id, seen_advertiser);
     }
 
-    seen_advertisers_dict.Set(ad_type, std::move(seen_advertiser_dict));
+    seen_advertisers_dict.Set(ToString(ad_type),
+                              std::move(seen_advertiser_dict));
   }
   dict.Set("seenAdvertisers", std::move(seen_advertisers_dict));
 
@@ -138,7 +140,8 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
       for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
         CHECK(seen_ad.is_bool());
-        seen_ads[ad_type][creative_instance_id] = seen_ad.GetBool();
+        seen_ads[ParseAdType(ad_type)][creative_instance_id] =
+            seen_ad.GetBool();
       }
     }
   }
@@ -152,7 +155,8 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
       for (const auto [advertiser_id, seen_advertiser] :
            advertisers.GetDict()) {
         CHECK(seen_advertiser.is_bool());
-        seen_advertisers[ad_type][advertiser_id] = seen_advertiser.GetBool();
+        seen_advertisers[ParseAdType(ad_type)][advertiser_id] =
+            seen_advertiser.GetBool();
       }
     }
   }
