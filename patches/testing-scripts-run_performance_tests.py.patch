@@ -1,0 +1,31 @@
+diff --git a/testing/scripts/run_performance_tests.py b/testing/scripts/run_performance_tests.py
+index 82af9d415702fff1b37c792d0ff75257b233b085..ee2fd933e51536cb11fa970d3702822d477ca1dc 100755
+--- a/testing/scripts/run_performance_tests.py
++++ b/testing/scripts/run_performance_tests.py
+@@ -512,6 +512,7 @@ def execute_telemetry_benchmark(
+ 
+   return_code = 1
+   temp_dir = tempfile.mkdtemp('telemetry')
++  temp_dir = os.path.join(output_paths.benchmark_path, 'telemetry')
+   infra_failure = False
+   try:
+     command = command_generator.generate(temp_dir)
+@@ -541,15 +542,15 @@ def execute_telemetry_benchmark(
+           'outputing structured test results and perf results output:')
+     print(traceback.format_exc())
+     infra_failure = True
+-  finally:
++  #finally:
+     # On swarming bots, don't remove output directory, since Result Sink might
+     # still be uploading files to Result DB. Also, swarming bots automatically
+     # clean up at the end of each task.
+-    if 'SWARMING_TASK_ID' not in os.environ:
++    # if 'SWARMING_TASK_ID' not in os.environ:
+       # Add ignore_errors=True because otherwise rmtree may fail due to leaky
+       # processes of tests are still holding opened handles to files under
+       # |tempfile_dir|. For example, see crbug.com/865896
+-      shutil.rmtree(temp_dir, ignore_errors=True)
++      # shutil.rmtree(temp_dir, ignore_errors=True)
+ 
+   print_duration('executing benchmark %s' % command_generator.benchmark, start)
+ 
