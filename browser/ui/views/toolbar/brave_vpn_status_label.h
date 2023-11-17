@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/label.h"
 
 namespace brave_vpn {
@@ -18,6 +19,7 @@ class Browser;
 
 class BraveVPNStatusLabel : public views::Label,
                             public brave_vpn::BraveVPNServiceObserver {
+  METADATA_HEADER(BraveVPNStatusLabel, views::Label)
  public:
   explicit BraveVPNStatusLabel(Browser* browser);
   ~BraveVPNStatusLabel() override;

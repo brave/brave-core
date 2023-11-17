@@ -332,5 +332,5 @@ void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
   chrome::ExecuteCommand(browser_, IDC_SHOW_BRAVE_VPN_PANEL);
 }
 
-BEGIN_METADATA(BraveVPNButton, LabelButton)
+BEGIN_METADATA(BraveVPNButton, views::LabelButton)
 END_METADATA

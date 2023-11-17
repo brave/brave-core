@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/geometry/rrect_f.h"
@@ -203,3 +204,6 @@ std::u16string BraveAvatarToolbarButton::GetAvatarTooltipText() const {
 
   return AvatarToolbarButton::GetAvatarTooltipText();
 }
+
+BEGIN_METADATA(BraveAvatarToolbarButton)
+END_METADATA

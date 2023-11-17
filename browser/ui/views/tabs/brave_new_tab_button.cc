@@ -12,6 +12,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/compositor.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -123,3 +124,6 @@ gfx::Insets BraveNewTabButton::GetInsets() const {
   // So, adding more insets here is easy solution.
   return NewTabButton::GetInsets() + gfx::Insets::TLBR(0, 6, 0, 0);
 }
+
+BEGIN_METADATA(BraveNewTabButton)
+END_METADATA

@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
@@ -133,3 +134,6 @@ void BookmarkBarInstructionsView::UpdateColors() {
     import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
   }
 }
+
+BEGIN_METADATA(BookmarkBarInstructionsView)
+END_METADATA

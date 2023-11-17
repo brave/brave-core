@@ -8,10 +8,12 @@
 
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
 // White throbber. Most of codes are copied from views::Throbber.
 class BraveWaybackMachineInfoBarThrobber : public views::View {
+  METADATA_HEADER(BraveWaybackMachineInfoBarThrobber, views::View)
  public:
   BraveWaybackMachineInfoBarThrobber();
   ~BraveWaybackMachineInfoBarThrobber() override;

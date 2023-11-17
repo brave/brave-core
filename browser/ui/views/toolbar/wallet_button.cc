@@ -284,5 +284,5 @@ views::View* WalletButton::GetAsAnchorView() {
   return anchor_view;
 }
 
-BEGIN_METADATA(WalletButton, ToolbarButton)
+BEGIN_METADATA(WalletButton)
 END_METADATA

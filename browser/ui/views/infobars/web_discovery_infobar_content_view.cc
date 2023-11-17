@@ -56,8 +56,9 @@ void OpenMoreInfoPage() {
 // Re-calculated preferred size as it doesn't give proper
 // size when enlarged.
 class InfoBarStyledLabel : public CustomStyledLabel {
+  METADATA_HEADER(InfoBarStyledLabel, CustomStyledLabel)
+
  public:
-  METADATA_HEADER(InfoBarStyledLabel);
   using CustomStyledLabel::CustomStyledLabel;
   InfoBarStyledLabel(const InfoBarStyledLabel&) = delete;
   InfoBarStyledLabel& operator=(const InfoBarStyledLabel&) = delete;
@@ -86,7 +87,7 @@ class InfoBarStyledLabel : public CustomStyledLabel {
   }
 };
 
-BEGIN_METADATA(InfoBarStyledLabel, CustomStyledLabel)
+BEGIN_METADATA(InfoBarStyledLabel)
 END_METADATA
 
 // TODO(simonhong): Use leo MdTextButton when it's stabilized.

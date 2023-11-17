@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_member.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 
@@ -33,6 +34,8 @@ class Button;
 // TODO(petemill): consider splitting to separate model, like
 // ToolbarActionsModel and ToolbarActionsBar
 class BraveActionsContainer : public views::View {
+  METADATA_HEADER(BraveActionsContainer, views::View)
+
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
   BraveActionsContainer(const BraveActionsContainer&) = delete;

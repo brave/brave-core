@@ -9,10 +9,13 @@
 #include <optional>
 
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class GURL;
 
 class BraveOmniboxViewViews : public OmniboxViewViews {
+  METADATA_HEADER(BraveOmniboxViewViews, OmniboxViewViews)
+
  public:
   using OmniboxViewViews::OmniboxViewViews;
 

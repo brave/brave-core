@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 namespace {
 void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
@@ -128,3 +129,6 @@ void BraveOmniboxViewViews::UpdateContextMenu(
     BraveUpdateContextMenu(menu_contents, url_to_copy.value());
   }
 }
+
+BEGIN_METADATA(BraveOmniboxViewViews)
+END_METADATA

@@ -10,6 +10,7 @@
 
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -19,6 +20,8 @@ class ButtonListener;
 }
 
 class BraveNewTabButton : public NewTabButton {
+  METADATA_HEADER(BraveNewTabButton, NewTabButton)
+
  public:
   // These static members are shared with BraveTabSearchButton
   // TODO(sko) If we could make TabSearchButton inherit BraveNewTabButton,

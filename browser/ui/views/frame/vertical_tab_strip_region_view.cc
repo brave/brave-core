@@ -436,7 +436,7 @@ class ResettableResizeArea : public views::ResizeArea {
   raw_ptr<VerticalTabStripRegionView> region_view_;
 };
 
-BEGIN_METADATA(ResettableResizeArea, ResizeArea)
+BEGIN_METADATA(ResettableResizeArea, views::ResizeArea)
 END_METADATA
 
 }  // namespace

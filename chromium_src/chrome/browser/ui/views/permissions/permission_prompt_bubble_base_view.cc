@@ -27,6 +27,8 @@
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -47,6 +49,7 @@ namespace {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 class DontAskAgainCheckbox : public views::Checkbox {
+  METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
   explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
   DontAskAgainCheckbox(const DontAskAgainCheckbox&) = delete;
@@ -57,6 +60,9 @@ class DontAskAgainCheckbox : public views::Checkbox {
 
   raw_ptr<WidevinePermissionRequest> request_ = nullptr;
 };
+
+BEGIN_METADATA(DontAskAgainCheckbox)
+END_METADATA
 
 DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
     : views::Checkbox(brave_l10n::GetLocalizedResourceUTF16String(
@@ -121,6 +127,7 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 // to all permissions currently visible in the bubble.
 class PermissionLifetimeCombobox : public views::Combobox,
                                    public ui::ComboboxModel {
+  METADATA_HEADER(PermissionLifetimeCombobox, views::Combobox)
  public:
   explicit PermissionLifetimeCombobox(
       views::BubbleDialogDelegateView& dialog_delegate_view,
@@ -162,6 +169,9 @@ class PermissionLifetimeCombobox : public views::Combobox,
   const raw_ref<permissions::PermissionPrompt::Delegate> delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
+
+BEGIN_METADATA(PermissionLifetimeCombobox)
+END_METADATA
 
 views::View* AddPermissionLifetimeComboboxIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
