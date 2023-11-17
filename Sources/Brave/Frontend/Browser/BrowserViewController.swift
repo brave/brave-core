@@ -1699,6 +1699,10 @@ public class BrowserViewController: UIViewController {
     case .loading:
       if tab === tabManager.selectedTab {
         topToolbar.locationView.loading = tab.loading
+        // There is a bug in WebKit where if you cancel a load on a request the progress can stick to 0.1
+        if !tab.loading, webView.estimatedProgress != 1 {
+          topToolbar.updateProgressBar(1)
+        }
       }
     case .URL:
       guard let tab = tabManager[webView] else { break }
@@ -1720,6 +1724,8 @@ public class BrowserViewController: UIViewController {
         // Catch history pushState navigation, but ONLY for same origin navigation,
         // for reasons above about URL spoofing risk.
         navigateInTab(tab: tab)
+      } else {
+        updateURLBar()
       }
 
       // Rewards reporting
