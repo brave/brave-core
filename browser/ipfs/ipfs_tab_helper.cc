@@ -155,10 +155,14 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       IpfsImportController(*web_contents),
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))
+#if !BUILDFLAG(IS_ANDROID)
+      ,
       allways_start_global_infobar_(std::make_unique<BraveGlobalInfoBarManager>(
           std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-              pref_service_))) {
+              pref_service_)))
+#endif  // !BUILDFLAG(IS_ANDROID)
+{
   resolver_ = std::make_unique<IPFSHostResolver>(
       web_contents->GetBrowserContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);

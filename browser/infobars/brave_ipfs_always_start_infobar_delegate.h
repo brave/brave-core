@@ -15,10 +15,6 @@
 
 class PrefService;
 
-namespace ipfs {
-class IpfsService;
-}  // namespace ipfs
-
 class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   BraveIPFSAlwaysStartInfoBarDelegate(
@@ -50,8 +46,7 @@ class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 class BraveIPFSAlwaysStartInfoBarDelegateFactory
     : public BraveConfirmInfoBarDelegateFactory {
  public:
-  explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(
-      PrefService* local_state);
+  explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(PrefService* local_state);
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
   std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
