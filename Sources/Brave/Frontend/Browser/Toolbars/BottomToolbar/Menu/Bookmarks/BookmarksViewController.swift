@@ -545,22 +545,15 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
     if bookmarkItem.isFolder {
       var actionChildren: [UIAction] = []
-
-      let children = bookmarkManager.getChildren(forFolder: bookmarkItem, includeFolders: false) ?? []
-
-      let urls: [URL] = children.compactMap { bookmark in
-        guard let url = bookmark.url else { return nil }
-        return URL(string: url)
-      }
-
-      let openBatchURLAction = UIAction(
-        title: String(format: Strings.openAllBookmarks, children.count),
-        image: UIImage(systemName: "arrow.up.forward.app"),
-        handler: UIAction.deferredActionHandler { _ in
-          self.toolbarUrlActionsDelegate?.batchOpen(urls)
-        })
-
-      if children.count > 0 {
+      let urls: [URL] = self.getAllURLS(forFolder: bookmarkItem)
+      
+      if urls.count > 0 {
+        let openBatchURLAction = UIAction(
+          title: String(format: Strings.openAllBookmarks, urls.count),
+          image: UIImage(systemName: "arrow.up.forward.app"),
+          handler: UIAction.deferredActionHandler { _ in
+            self.toolbarUrlActionsDelegate?.batchOpen(urls)
+          })
         actionChildren.append(openBatchURLAction)
       }
 
@@ -622,6 +615,23 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
       return actionItemsMenu
     }
+  }
+  
+  private func getAllURLS(forFolder rootFolder: Bookmarkv2) -> [URL] {
+    var urls: [URL] = []
+    guard rootFolder.isFolder else { return urls }
+    var children = bookmarkManager.getChildren(forFolder: rootFolder, includeFolders: true) ?? []
+    
+    while !children.isEmpty {
+      let bookmarkItem = children.removeFirst()
+      if bookmarkItem.isFolder {
+        // Follow the order of bookmark manager
+        children.insert(contentsOf: bookmarkManager.getChildren(forFolder: bookmarkItem, includeFolders: true) ?? [], at: 0)
+      } else if let bookmarkItemURL = URL(string: bookmarkItem.url ?? "") {
+        urls.append(bookmarkItemURL)
+      }
+    }
+    return urls
   }
 }
 
