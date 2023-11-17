@@ -290,24 +290,35 @@ void BatAdsClientMojoBridge::Log(const char* file,
 }
 
 absl::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
-    const std::string& path) const {
+    const std::string& path) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
-    return absl::nullopt;
+    return CachedProfilePrefValue(path);
   }
 
   absl::optional<base::Value> value;
-  bat_ads_client_associated_receiver_->GetProfilePref(path, &value);
+  if (!bat_ads_client_associated_receiver_->GetProfilePref(path, &value)) {
+    return CachedProfilePrefValue(path);
+  }
+
+  if (value) {
+    cached_profile_prefs_[path] = value->Clone();
+  } else {
+    cached_profile_prefs_.erase(path);
+  }
+
   return value;
 }
 
 void BatAdsClientMojoBridge::SetProfilePref(const std::string& path,
                                             base::Value value) {
+  cached_profile_prefs_[path] = value.Clone();
   if (bat_ads_client_associated_receiver_.is_bound()) {
     bat_ads_client_associated_receiver_->SetProfilePref(path, std::move(value));
   }
 }
 
 void BatAdsClientMojoBridge::ClearProfilePref(const std::string& path) {
+  cached_profile_prefs_.erase(path);
   if (bat_ads_client_associated_receiver_.is_bound()) {
     bat_ads_client_associated_receiver_->ClearProfilePref(path);
   }
@@ -315,27 +326,40 @@ void BatAdsClientMojoBridge::ClearProfilePref(const std::string& path) {
 
 bool BatAdsClientMojoBridge::HasProfilePrefPath(const std::string& path) const {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
-    return false;
+    return cached_profile_prefs_.contains(path);
   }
 
   bool value = false;
-  bat_ads_client_associated_receiver_->HasProfilePrefPath(path, &value);
+  if (!bat_ads_client_associated_receiver_->HasProfilePrefPath(path, &value)) {
+    return cached_profile_prefs_.contains(path);
+  }
+
   return value;
 }
 
 absl::optional<base::Value> BatAdsClientMojoBridge::GetLocalStatePref(
-    const std::string& path) const {
+    const std::string& path) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
-    return absl::nullopt;
+    return CachedLocalStatePrefValue(path);
   }
 
   absl::optional<base::Value> value;
-  bat_ads_client_associated_receiver_->GetLocalStatePref(path, &value);
+  if (!bat_ads_client_associated_receiver_->GetLocalStatePref(path, &value)) {
+    return CachedLocalStatePrefValue(path);
+  }
+
+  if (value) {
+    cached_local_state_prefs_[path] = value->Clone();
+  } else {
+    cached_local_state_prefs_.erase(path);
+  }
+
   return value;
 }
 
 void BatAdsClientMojoBridge::SetLocalStatePref(const std::string& path,
                                                base::Value value) {
+  cached_local_state_prefs_[path] = value.Clone();
   if (bat_ads_client_associated_receiver_.is_bound()) {
     bat_ads_client_associated_receiver_->SetLocalStatePref(path,
                                                            std::move(value));
@@ -343,6 +367,7 @@ void BatAdsClientMojoBridge::SetLocalStatePref(const std::string& path,
 }
 
 void BatAdsClientMojoBridge::ClearLocalStatePref(const std::string& path) {
+  cached_local_state_prefs_.erase(path);
   if (bat_ads_client_associated_receiver_.is_bound()) {
     bat_ads_client_associated_receiver_->ClearLocalStatePref(path);
   }
@@ -351,12 +376,34 @@ void BatAdsClientMojoBridge::ClearLocalStatePref(const std::string& path) {
 bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
     const std::string& path) const {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
-    return false;
+    return cached_local_state_prefs_.contains(path);
   }
 
   bool value = false;
-  bat_ads_client_associated_receiver_->HasLocalStatePrefPath(path, &value);
+  if (!bat_ads_client_associated_receiver_->HasLocalStatePrefPath(path,
+                                                                  &value)) {
+    return cached_local_state_prefs_.contains(path);
+  }
+
   return value;
+}
+
+absl::optional<base::Value> BatAdsClientMojoBridge::CachedProfilePrefValue(
+    const std::string& path) const {
+  if (!cached_profile_prefs_.contains(path)) {
+    return absl::nullopt;
+  }
+
+  return cached_profile_prefs_.at(path).Clone();
+}
+
+absl::optional<base::Value> BatAdsClientMojoBridge::CachedLocalStatePrefValue(
+    const std::string& path) const {
+  if (!cached_local_state_prefs_.contains(path)) {
+    return absl::nullopt;
+  }
+
+  return cached_local_state_prefs_.at(path).Clone();
 }
 
 }  // namespace bat_ads
