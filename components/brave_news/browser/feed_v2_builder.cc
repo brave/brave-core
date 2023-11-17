@@ -44,6 +44,8 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#include <iostream>
+
 namespace brave_news {
 
 namespace {
@@ -141,9 +143,7 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 
   auto& publish_time = article->publish_time;
 
-  double popularity = article->pop_score == 0
-                          ? features::kBraveNewsPopScoreFallback.Get()
-                          : article->pop_score;
+  double popularity = std::min(article->pop_score, 100.0)/100.0 + features::kBraveNewsPopScoreFallback.Get();
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -171,7 +171,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
   const auto pop_recency = GetPopRecency(article);
   return {
       .pop_recency = pop_recency,
-      .weighting = source_visits_projected * subscribed_weight * pop_recency,
+      .weighting = source_visits_projected + subscribed_weight + pop_recency,
       // Note: GetArticleWeight returns the Signal for the Publisher first, and
       // we use that to determine whether this Publisher has ever been visited.
       .visited = signals.at(0)->visit_weight != 0,
@@ -265,29 +265,55 @@ int GetNormal(int min, int max) {
 using GetWeighting = double(const mojom::FeedItemMetadataPtr& article,
                             const ArticleWeight& weight);
 
+// Returns a probability distribution (sum to 1) of the weights. Temperature
+// controls how "smooth" the distribution is. High temperature brings the
+// distribution closer to a uniform distribution (more randomness).
+// Low temperature brings the distribution closer to a delta function (less
+// randomness).
+void SoftmaxWithTemperature(std::vector<double>& weights, double temperature) {
+  if (temperature == 0)
+    return;
+
+  double max = *base::ranges::max_element(weights.begin(), weights.end());
+  base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
+                 [temperature, max](double weight) {
+                    return std::exp((weight - max) / temperature);
+                 });
+  double sum = std::accumulate(weights.begin(), weights.end(), 0.0);
+  base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
+                 [sum](double weight) { return weight / sum; });
+}
+
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
     GetWeighting get_weighting = [](const auto& article, const auto& weight) {
       return weight.weighting;
     }) {
-  double total_weight = 0;
+  bool softmax = true;
+  std::vector<double> weights;
   for (const auto& [article, weight] : articles) {
-    total_weight += get_weighting(article, weight);
+    // copy the weight not weights vector
+    weights.push_back(get_weighting(weight));
   }
 
   // None of the items are eligible to be picked.
-  if (total_weight == 0) {
+  if (std::accumulate(weights.begin(), weights.end(), 0.0) == 0) {
     return nullptr;
   }
 
-  double picked_value = base::RandDouble() * total_weight;
+  if (softmax) {
+    SoftmaxWithTemperature(weights, features::kBraveNewsTemperature.Get());
+  }
+
+  double weights_cum = std::accumulate(weights.begin(), weights.end(), 0.0);
+  double picked_value = base::RandDouble() * weights_cum;
   double current_weight = 0;
 
+  // TODO(): if all elements are 0 this will exit on an index out of bounds
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
-    auto& [article, weight] = articles[i];
-    current_weight += get_weighting(article, weight);
+    current_weight += weights[i];
     if (current_weight > picked_value) {
       break;
     }
@@ -305,13 +331,12 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles,
-                               [](const auto& article, const auto& weight) {
-                                 if (weight.subscribed || weight.visited) {
-                                   return 0.;
-                                 }
-                                 return weight.pop_recency;
-                               });
+  return PickRouletteAndRemove(articles, [](const auto& weight) {
+    if (weight.subscribed || weight.visited) {
+      return 0.1;
+    }
+    return weight.pop_recency;
+  });
 }
 
 // Generates a standard block:

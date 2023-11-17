@@ -61,6 +61,8 @@ extern const base::FeatureParam<double> kBraveNewsSourceVisitsMin;
 // 80% of the clusters should be categories and 20% topics.
 extern const base::FeatureParam<double> kBraveNewsCategoryTopicRatio;
 
+extern const base::FeatureParam<double> kBraveNewsTemperature;
+
 }  // namespace brave_news::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_
