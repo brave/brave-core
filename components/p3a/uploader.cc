@@ -68,7 +68,7 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
 
-#if defined(IS_OFFICIAL_BUILD)
+#if defined(OFFICIAL_BUILD)
   CHECK(!resource_request->url.is_empty() &&
         resource_request->url.SchemeIsHTTPOrHTTPS());
 #else
