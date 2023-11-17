@@ -317,9 +317,14 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
-  return keyring_service && !keyring_service->IsWalletCreatedSync();
+  // Support to unlock Wallet has been extended also through WebUI,
+  // so we block only when Wallet hasn't been created yet, as onboarding
+  // is offered only via native Andrioid UI.
+  return !keyring_service ||
+         (keyring_service && !keyring_service->IsWalletCreatedSync());
 #else
-  return keyring_service && keyring_service->IsLockedSync();
+  return !keyring_service ||
+         (keyring_service && keyring_service->IsLockedSync());
 #endif
 }
 #endif  // BUILDFLAG(IS_ANDROID)
