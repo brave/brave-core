@@ -303,42 +303,44 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       for networkAssets in [userVisibleNFTs, userHiddenNFTs, unionedSpamNFTs] {
         allNFTs.append(contentsOf: networkAssets.flatMap(\.tokens))
       }
-      // fetch balance for all NFTs
-      let allAccounts = filters.accounts.map(\.model)
-      nftBalancesCache = await withTaskGroup(
-        of: [String: [String: Int]].self,
-        body: { @MainActor [nftBalancesCache, rpcService] group in
-          for nft in allNFTs { // for each NFT
-            guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
-              continue
-            }
-            group.addTask { @MainActor in
-              let updatedBalances = await withTaskGroup(
-                of: [String: Int].self,
-                body: { @MainActor group in
-                  for account in allAccounts where account.coin == nft.coin {
-                    group.addTask { @MainActor in
-                      let balanceForToken = await rpcService.balance(
-                        for: nft,
-                        in: account,
-                        network: networkForNFT
-                      )
-                      return [account.address: Int(balanceForToken ?? 0)]
+      // if we're not hiding unowned or grouping by account, balance isn't needed
+      if filters.isHidingUnownedNFTs || filters.groupBy == .accounts {
+        let allAccounts = filters.accounts.map(\.model)
+        nftBalancesCache = await withTaskGroup(
+          of: [String: [String: Int]].self,
+          body: { @MainActor [nftBalancesCache, rpcService] group in
+            for nft in allNFTs { // for each NFT
+              guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
+                continue
+              }
+              group.addTask { @MainActor in
+                let updatedBalances = await withTaskGroup(
+                  of: [String: Int].self,
+                  body: { @MainActor group in
+                    for account in allAccounts where account.coin == nft.coin {
+                      group.addTask { @MainActor in
+                        let balanceForToken = await rpcService.balance(
+                          for: nft,
+                          in: account,
+                          network: networkForNFT
+                        )
+                        return [account.address: Int(balanceForToken ?? 0)]
+                      }
                     }
-                  }
-                  return await group.reduce(into: [String: Int](), { partialResult, new in
-                    partialResult.merge(with: new)
+                    return await group.reduce(into: [String: Int](), { partialResult, new in
+                      partialResult.merge(with: new)
+                    })
                   })
-                })
-              var tokenBalances = nftBalancesCache[nft.id] ?? [:]
-              tokenBalances.merge(with: updatedBalances)
-              return [nft.id: tokenBalances]
+                var tokenBalances = nftBalancesCache[nft.id] ?? [:]
+                tokenBalances.merge(with: updatedBalances)
+                return [nft.id: tokenBalances]
+              }
             }
-          }
-          return await group.reduce(into: [String: [String: Int]](), { partialResult, new in
-            partialResult.merge(with: new)
+            return await group.reduce(into: [String: [String: Int]](), { partialResult, new in
+              partialResult.merge(with: new)
+            })
           })
-        })
+      }
       
       guard !Task.isCancelled else { return }
       userNFTGroups = buildNFTGroupModels(
@@ -609,6 +611,15 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       
       isShowingNFTLoadingState = false
     }
+  }
+  
+  func owner(for nft: BraveWallet.BlockchainToken) -> BraveWallet.AccountInfo? {
+    guard let allBalances = nftBalancesCache[nft.id],
+          let address = allBalances.first(where: { address, balance in
+            balance > 0
+          })?.key
+    else { return nil }
+    return allAccounts.first { $0.address.caseInsensitiveCompare(address) == .orderedSame }
   }
 }
 

@@ -84,7 +84,7 @@ struct LoadingNFTView: View {
             .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
         }
       )
-      .frame(minHeight: viewSize.width)
+      .frame(minHeight: viewSize.width, maxHeight: 172)
       .onPreferenceChange(SizePreferenceKey.self) { newSize in
         viewSize = newSize
       }

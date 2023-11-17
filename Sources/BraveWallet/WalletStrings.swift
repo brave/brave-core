@@ -3684,13 +3684,6 @@ extension Strings {
       value: "%@ on %@",
       comment: "The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name."
     )
-    public static let nftDetailTitle = NSLocalizedString(
-      "wallet.nftDetailTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "NFT Detail",
-      comment: "The navigation title for NFT detail screen."
-    )
     public static let nftDetailTokenID = NSLocalizedString(
       "wallet.nftDetailTokenID",
       tableName: "BraveWallet",
@@ -3716,7 +3709,7 @@ extension Strings {
       "wallet.nftDetailTokenStandard",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Token standard",
+      value: "Token Standard",
       comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard"
     )
     public static let nftDetailBlockchain = NSLocalizedString(
@@ -3753,6 +3746,27 @@ extension Strings {
       bundle: .module,
       value: "The image rendered above may not exactly match the NFT",
       comment: "A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information."
+    )
+    public static let nftDetailOverview = NSLocalizedString(
+      "wallet.nftDetailOverview",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Overview",
+      comment: "The section header that displays the overview information of this NFT."
+    )
+    public static let nftDetailProperties = NSLocalizedString(
+      "wallet.nftDetailProperties",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Properties",
+      comment: "The section header that displays the all the properties/attributes information of this NFT."
+    )
+    public static let nftDetailOwnedBy = NSLocalizedString(
+      "wallet.nftDetailOwnedBy",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Owned By",
+      comment: "The title of the row under `Overview` section in NFT details screen. When this NFT has an owner."
     )
     public static let signTransactionSignRisk = NSLocalizedString(
       "wallet.signTransactionSignRisk",

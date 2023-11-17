@@ -32,8 +32,8 @@ class NFTStoreTests: XCTestCase {
   let solNetwork: BraveWallet.NetworkInfo = .mockSolana
   let solAccount: BraveWallet.AccountInfo = .mockSolAccount
   
-  let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
-  let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
+  let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description", attributes: nil)
+  let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description", attributes: nil)
   
   let spamEthNFT = (BraveWallet.BlockchainToken.mockERC721NFTToken.copy() as! BraveWallet.BlockchainToken).then {
     $0.contractAddress = "0xbbbbbbbbbb222222222233333333336666666666"

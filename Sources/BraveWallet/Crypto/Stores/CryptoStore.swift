@@ -510,15 +510,18 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   }
   
   private var nftDetailStore: NFTDetailStore?
-  func nftDetailStore(for nft: BraveWallet.BlockchainToken, nftMetadata: NFTMetadata?) -> NFTDetailStore {
+  func nftDetailStore(for nft: BraveWallet.BlockchainToken, nftMetadata: NFTMetadata?, owner: BraveWallet.AccountInfo?) -> NFTDetailStore {
     if let store = nftDetailStore, store.nft.id == nft.id {
       return store
     }
     let store = NFTDetailStore(
+      assetManager: userAssetManager,
+      keyringService: keyringService,
       rpcService: rpcService,
       ipfsApi: ipfsApi,
       nft: nft,
-      nftMetadata: nftMetadata
+      nftMetadata: nftMetadata,
+      owner: owner
     )
     nftDetailStore = store
     return store

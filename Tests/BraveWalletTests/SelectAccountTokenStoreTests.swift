@@ -104,7 +104,8 @@ import Preferences
     let mockNFTMetadata: NFTMetadata = .init(
       imageURLString: "sol.mock.image.url",
       name: "sol mock nft name",
-      description: "sol mock nft description"
+      description: "sol mock nft description",
+      attributes: nil
     )
     let mockFILBalance: Double = 1
     let mockFILPrice: String = "4.06" // FIL value = $4.06

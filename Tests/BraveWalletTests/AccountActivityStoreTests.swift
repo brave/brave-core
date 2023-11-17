@@ -131,7 +131,7 @@ class AccountActivityStoreTests: XCTestCase {
     let mockNFTBalance: Double = 1
     let mockERC721BalanceWei = formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
     
-    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description", attributes: nil)
     
     let ethSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo // default in mainnet
     let goerliSwapTxCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
@@ -259,7 +259,7 @@ class AccountActivityStoreTests: XCTestCase {
       BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress: "\(mockSolanaNFTTokenBalance)"
     ]
     
-    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
+    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description", attributes: nil)
     
     let solSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo // default in mainnet
     let solTestnetSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo

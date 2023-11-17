@@ -289,6 +289,9 @@ struct NFTView: View {
         }
       }
     }
+    .introspectViewController { vc in
+      vc.navigationItem.backButtonDisplayMode = .minimal
+    }
     .background(
       NavigationLink(
         isActive: Binding(
@@ -298,11 +301,16 @@ struct NFTView: View {
         destination: {
           if let nftViewModel = selectedNFTViewModel {
             NFTDetailView(
-              nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, nftMetadata: nftViewModel.nftMetadata),
-              buySendSwapDestination: buySendSwapDestination
-            ) { nftMetadata in
-              nftStore.updateNFTMetadataCache(for: nftViewModel.token, metadata: nftMetadata)
-            }
+              keyringStore: keyringStore,
+              nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, nftMetadata: nftViewModel.nftMetadata, owner: nftStore.owner(for: nftViewModel.token)),
+              buySendSwapDestination: buySendSwapDestination,
+              onNFTMetadataRefreshed: {  nftMetadata in
+                nftStore.updateNFTMetadataCache(for: nftViewModel.token, metadata: nftMetadata)
+              },
+              onNFTStatusUpdated: {
+                nftStore.update()
+              }
+            )
             .onDisappear {
               cryptoStore.closeNFTDetailStore(for: nftViewModel.token)
             }

@@ -660,7 +660,7 @@ class SendTokenStoreTests: XCTestCase {
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
-    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description", attributes: nil)
     
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -704,7 +704,7 @@ class SendTokenStoreTests: XCTestCase {
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
-    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
+    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description", attributes: nil)
     
     let store = SendTokenStore(
       keyringService: keyringService,
