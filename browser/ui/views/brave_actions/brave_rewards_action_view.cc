@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
@@ -503,3 +504,6 @@ void BraveRewardsActionView::UpdateTabHelper(
   OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
                                        : "");
 }
+
+BEGIN_METADATA(BraveRewardsActionView)
+END_METADATA

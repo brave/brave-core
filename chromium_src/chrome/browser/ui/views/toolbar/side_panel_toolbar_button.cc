@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
 
@@ -76,3 +77,6 @@ void SidePanelToolbarButton::UpdateButtonImage() {
   SetVectorIcon(sidebar_alignment_.GetValue() ? kSidebarToolbarButtonRightIcon
                                               : kSidebarToolbarButtonIcon);
 }
+
+BEGIN_METADATA(SidePanelToolbarButton)
+END_METADATA

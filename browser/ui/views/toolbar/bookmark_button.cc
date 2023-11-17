@@ -16,6 +16,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/vector_icons.h"
 #include "components/strings/grit/components_strings.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
 
 BookmarkButton::BookmarkButton(PressedCallback callback)
@@ -46,3 +47,6 @@ void BookmarkButton::UpdateImageAndText() {
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
   SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
 }
+
+BEGIN_METADATA(BookmarkButton)
+END_METADATA

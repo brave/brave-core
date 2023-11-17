@@ -8,6 +8,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
@@ -25,6 +26,7 @@ class Browser;
 // NOTE: Most of code is copied from chromium's deleted file.
 class BookmarkBarInstructionsView : public views::View,
                                     public views::ContextMenuController {
+  METADATA_HEADER(BookmarkBarInstructionsView, views::View)
  public:
   explicit BookmarkBarInstructionsView(Browser* browser);
   BookmarkBarInstructionsView(const BookmarkBarInstructionsView&) = delete;

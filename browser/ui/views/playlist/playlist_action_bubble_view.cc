@@ -21,6 +21,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/skia_paint_util.h"
@@ -73,17 +74,6 @@ class ConfirmBubble : public PlaylistActionBubbleView,
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
 
  private:
-  class Row : public views::LabelButton {
-   public:
-    Row(const std::u16string& text,
-        const ui::ImageModel& icon,
-        views::Button::PressedCallback callback = {});
-    ~Row() override = default;
-
-    // views::LabelButton:
-    void Layout() override;
-  };
-
   void ResetChildViews();
 
   void OpenInPlaylist();
@@ -95,6 +85,21 @@ class ConfirmBubble : public PlaylistActionBubbleView,
                           playlist::PlaylistTabHelperObserver>
       playlist_tab_helper_observation_{this};
 };
+
+class Row : public views::LabelButton {
+  METADATA_HEADER(Row, views::LabelButton)
+ public:
+  Row(const std::u16string& text,
+      const ui::ImageModel& icon,
+      views::Button::PressedCallback callback = {});
+  ~Row() override = default;
+
+  // views::LabelButton:
+  void Layout() override;
+};
+
+BEGIN_METADATA(Row)
+END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
 // AddBubble
@@ -123,16 +128,16 @@ class AddBubble : public PlaylistActionBubbleView {
 ////////////////////////////////////////////////////////////////////////////////
 // ConfirmBubble Impl
 
-ConfirmBubble::Row::Row(const std::u16string& text,
-                        const ui::ImageModel& icon,
-                        views::Button::PressedCallback callback)
+Row::Row(const std::u16string& text,
+         const ui::ImageModel& icon,
+         views::Button::PressedCallback callback)
     : LabelButton(callback, text) {
   SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_RIGHT);
   SetImageModel(views::Button::STATE_NORMAL, icon);
   label()->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
 
-void ConfirmBubble::Row::Layout() {
+void Row::Layout() {
   LabelButton::Layout();
   // Extend |label|'s width so the this button's sub controls are justified.
   const auto contents_x = GetContentsBounds().x();

@@ -75,5 +75,5 @@ void ToolbarButton::OnInkDropStateChanged(views::InkDropState state) {
   }
 }
 
-BEGIN_METADATA(ToolbarButton, ToolbarButton_ChromiumImpl)
+BEGIN_METADATA(ToolbarButton)
 END_METADATA
