@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/log/v0_4/BUILD.gn b/third_party/rust/log/v0_4/BUILD.gn
+index 8df54b1576980ae0612518362e426db3f94e0290..4f80ac351ea3e546b8032f1490703f83a75189c1 100644
+--- a/third_party/rust/log/v0_4/BUILD.gn
++++ b/third_party/rust/log/v0_4/BUILD.gn
+@@ -45,7 +45,6 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ }
+ group("test_support") {
+   public_deps = [ ":lib" ]
