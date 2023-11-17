@@ -103,18 +103,9 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
   return true;
 }
 
-base::FilePath GetBraveVpnHelperServicePath(const base::FilePath& target_path,
-                                            const base::Version& version) {
-  return target_path.AppendASCII(version.GetString())
-      .Append(brave_vpn::kBraveVPNHelperExecutable);
-}
-
 base::FilePath GetBraveVpnHelperServicePath() {
-  base::FilePath exe_dir;
-  base::PathService::Get(base::DIR_EXE, &exe_dir);
-  return version_info::IsOfficialBuild()
-             ? GetBraveVpnHelperServicePath(exe_dir, version_info::GetVersion())
-             : exe_dir.Append(brave_vpn::kBraveVPNHelperExecutable);
+  base::FilePath asset_dir = base::PathService::CheckedGet(base::DIR_ASSETS);
+  return asset_dir.Append(brave_vpn::kBraveVPNHelperExecutable);
 }
 
 // The service starts under system user so we save crashes to
@@ -131,10 +122,7 @@ base::FilePath GetVpnHelperServiceProfileDir() {
 }
 
 bool InstallBraveVPNHelperService() {
-  base::FilePath exe_dir;
-  base::PathService::Get(base::DIR_EXE, &exe_dir);
-  base::CommandLine service_cmd(
-      exe_dir.Append(brave_vpn::kBraveVPNHelperExecutable));
+  base::CommandLine service_cmd(GetBraveVpnHelperServicePath());
   installer::InstallServiceWorkItem install_service_work_item(
       brave_vpn::GetBraveVpnHelperServiceName(),
       brave_vpn::GetBraveVpnHelperServiceDisplayName(), SERVICE_DEMAND_START,

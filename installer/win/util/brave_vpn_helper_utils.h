@@ -17,8 +17,6 @@ namespace brave_vpn {
 bool ConfigureServiceAutoRestart(const std::wstring& service_name,
                                  const std::wstring& brave_vpn_entry);
 base::FilePath GetBraveVpnHelperServicePath();
-base::FilePath GetBraveVpnHelperServicePath(const base::FilePath& target_path,
-                                            const base::Version& version);
 base::FilePath GetVpnHelperServiceProfileDir();
 bool InstallBraveVPNHelperService();
 bool IsBraveVPNHelperServiceInstalled();

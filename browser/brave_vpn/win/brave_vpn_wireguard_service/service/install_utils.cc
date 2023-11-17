@@ -92,10 +92,7 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
 // Installs Brave VPN Wireguard Windows service and configures the service
 // config.
 bool InstallBraveWireguardService() {
-  base::FilePath exe_dir;
-  base::PathService::Get(base::DIR_EXE, &exe_dir);
-  base::CommandLine service_cmd(
-      exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable));
+  base::CommandLine service_cmd(GetBraveVPNWireguardServiceExecutablePath());
   installer::InstallServiceWorkItem install_service_work_item(
       brave_vpn::GetBraveVpnWireguardServiceName(),
       brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_DEMAND_START,
