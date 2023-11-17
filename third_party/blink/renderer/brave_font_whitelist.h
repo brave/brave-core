@@ -29,8 +29,6 @@ GetAdditionalFontWhitelistByLocale(WTF::String locale_language);
 
 BLINK_EXPORT size_t GetFontWhitelistSizeForTesting();
 
-BLINK_EXPORT bool CanRestrictFontsForTesting();
-
 BLINK_EXPORT void SetSimulateEmptyFontWhitelistForTesting(bool enable);
 
 }  // namespace brave
