@@ -7,15 +7,26 @@
 
 #include <string>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
+class BraveAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    scoped_feature_list_.InitAndEnableFeature(kEpsilonGreedyBanditFeature);
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
 TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   // Arrange
