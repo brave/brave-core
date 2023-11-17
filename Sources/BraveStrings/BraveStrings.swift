@@ -3082,7 +3082,7 @@ extension Strings {
 
     public static let resetVPNSuccessBody =
       NSLocalizedString("vpn.resetVPNSuccessBody", tableName: "BraveShared", bundle: .module,
-        value: "VPN Configuration is resetted successfully.",
+        value: "VPN Configuration is reset successfully.",
         comment: "Message to show when vpn configuration reset succeeds.")
 
     public static let contactFormDoNotEditText =
