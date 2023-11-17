@@ -193,7 +193,22 @@ union FeedItemV2 {
   Cluster cluster;
 };
 
+struct FeedV2AllType {};
+struct FeedV2PublisherType {
+  string publisher_id;
+};
+struct FeedV2ChannelType {
+  string channel;
+};
+union FeedV2Type {
+  FeedV2AllType all;
+  FeedV2PublisherType publisher;
+  FeedV2ChannelType channel;
+};
+
 struct FeedV2 {
+  string source_hash;
+  FeedV2Type? type;
   array<FeedItemV2> items;
 };
 

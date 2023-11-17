@@ -11,6 +11,19 @@ import Article from "./feed/Article";
 import Cluster from "./feed/Cluster";
 import Discover from "./feed/Discover";
 import HeroArticle from "./feed/Hero";
+import { getHistoryValue, setHistoryState } from "./shared/history";
+
+// Restoring scroll position is complicated - we have two available strategies:
+// 1. Scroll to the same position - as long as the window hasn't been resized,
+//    this will bring the user back to exactly where they left.
+// 2. If the screen size has changed, scroll the clicked article to the top of
+//    the screen.
+interface NewsScrollData {
+  itemId: string,
+  innerWidth: number,
+  innerHeight: number,
+  scrollPos: number,
+}
 
 const FeedContainer = styled.div`
   max-width: 540px;
@@ -37,17 +50,51 @@ export const NEWS_FEED_CLASS = "news-feed"
 // The number of cards to load at a time. Making this too high will result in
 // jank as all the cards are rendered at once.
 const PAGE_SIZE = 25;
+const CARD_CLASS = 'feed-card'
+const HISTORY_SCROLL_DATA = 'bn-scroll-data'
+const HISTORY_CARD_COUNT = 'bn-card-count'
+
+const saveScrollPos = (itemId: React.Key) => () => {
+  setHistoryState({
+    [HISTORY_SCROLL_DATA]: {
+      itemId: itemId,
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      scrollPos: document.scrollingElement?.scrollTop
+    }
+  })
+}
 
 export default function Component({ feed }: Props) {
-  const [cardCount, setCardCount] = React.useState(PAGE_SIZE);
+  const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
+
+  // Store the number of cards we've loaded in history - otherwise when we
+  // navigate back we might not be able to scroll down far enough.
+  React.useEffect(() => {
+    setHistoryState({ HISTORY_CARD_COUNT: cardCount })
+  }, [cardCount])
+
+  // Track the feed scroll position - if we mount this component somewhere with
+  // a scroll data saved in the state, try and restore the scroll position.
+  React.useEffect(() => {
+    const scrollData = getHistoryValue<NewsScrollData | undefined>(HISTORY_SCROLL_DATA, undefined)
+    if (scrollData) {
+      // If the viewport size hasn't changed, restore the scroll position.
+      // Otherwise, scroll the clicked item into view.
+      const scroll = scrollData.innerHeight === window.innerHeight && scrollData.innerWidth === window.innerWidth
+        ? () => document.scrollingElement?.scrollTo({ top: scrollData.scrollPos })
+        : () => document.querySelector(`[data-id="${scrollData.itemId}"]`)?.scrollIntoView()
+      setTimeout(scroll)
+    }
+  }, [])
+
   const loadMoreObserver = React.useRef(new IntersectionObserver(entries => {
     // While the feed is loading we get some notifications for fully
-    // visible/invisible cards.
-    if (!entries.some(i => i.intersectionRatio !== 0 && i.intersectionRatio !== 1)) return
-
+    // invisible cards.
+    if (!entries.some(i => i.target?.classList.contains(CARD_CLASS) && i.intersectionRatio !== 0)) return
     setCardCount(cardCount => cardCount + PAGE_SIZE);
   }, {
-    rootMargin: '0px 0px 900px 0px'
+    rootMargin: '0px 0px 1000px 0px',
   }))
 
   // Only observe the bottom card
@@ -80,7 +127,8 @@ export default function Component({ feed }: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }
 
-      return <div key={getKey(item, index)} ref={index === count - 1 ? setLastCardRef : undefined}>
+      const key = getKey(item, index)
+      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
         {el}
       </div>
     })

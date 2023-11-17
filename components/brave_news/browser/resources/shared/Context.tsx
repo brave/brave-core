@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import usePromise from '../../../../common/usePromise'
 import getBraveNewsController, { Channels, Configuration, FeedV2, Publisher, PublisherType, Publishers, isPublisherEnabled } from './api'
 import { ChannelsCachingWrapper } from './channelsCache'
 import { ConfigurationCachingWrapper } from './configurationCache'
 import { PublishersCachingWrapper } from './publishersCache'
+import { FeedView, useFeedV2 } from './useFeedV2'
 
 // Leave possibility for more pages open.
 type NewsPage = null
@@ -17,13 +17,11 @@ type NewsPage = null
   | 'suggestions'
   | 'popular'
 
-export type FeedType = 'all' | `publishers/${string}` | `channels/${string}`
-
 interface BraveNewsContext {
   locale: string
-  feedView: FeedType,
+  feedView: FeedView,
   feedV2?: FeedV2,
-  setFeedView: (feedType: FeedType) => void,
+  setFeedView: (feedType: FeedView) => void,
   customizePage: NewsPage
   setCustomizePage: (page: NewsPage) => void
   channels: Channels
@@ -67,21 +65,10 @@ const configurationCache = new ConfigurationCachingWrapper()
 
 export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
-  const [feedView, setFeedView] = useState<FeedType>('all')
 
   // Note: It's okay to fetch the FeedV2 even when the feature isn't enabled
   // because the controller will just return an empty feed.
-  const { result: feedV2 } = usePromise<FeedV2 | undefined>(() => {
-    let promise: Promise<{ feed: FeedV2 }> | undefined
-    if (feedView.startsWith('publishers/')) {
-      promise = getBraveNewsController().getPublisherFeed(feedView.split('/')[1]);
-    } else if (feedView.startsWith('channels/')) {
-      promise = getBraveNewsController().getChannelFeed(feedView.split('/')[1])
-    } else {
-      promise = getBraveNewsController().getFeedV2()
-    }
-    return promise?.then(f => f.feed)
-  }, [feedView])
+  const { feedV2, feedView, setFeedView } = useFeedV2()
 
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})

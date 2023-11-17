@@ -20,6 +20,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -33,6 +34,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -64,8 +66,7 @@ constexpr base::TimeDelta kP3AEnabledReportTimeDelay = base::Seconds(3);
 bool GetIsEnabled(PrefService* prefs) {
   bool should_show = prefs->GetBoolean(prefs::kNewTabPageShowToday);
   bool opted_in = prefs->GetBoolean(prefs::kBraveNewsOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  return is_enabled;
+  return should_show && opted_in;
 }
 
 // static
@@ -217,7 +218,7 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
     return;
   }
 
-  feed_v2_builder_->Build(/*recalculate_signals=*/true, std::move(callback));
+  feed_v2_builder_->BuildAllFeed(std::move(callback));
 }
 
 void BraveNewsController::GetSignals(GetSignalsCallback callback) {
@@ -521,9 +522,12 @@ void BraveNewsController::IsFeedUpdateAvailable(
 
 void BraveNewsController::AddFeedListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
-  feed_controller_.AddListener(std::move(listener));
+  if (MaybeInitFeedV2()) {
+    feed_controller_.AddListener(std::move(listener));
+  } else {
+    feed_controller_.AddListener(std::move(listener));
+  }
 }
-
 void BraveNewsController::SetConfiguration(
     mojom::ConfigurationPtr configuration,
     SetConfigurationCallback callback) {
@@ -688,7 +692,12 @@ void BraveNewsController::CheckForFeedsUpdate() {
 
 void BraveNewsController::Prefetch() {
   VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
-  feed_controller_.EnsureFeedIsCached();
+
+  if (MaybeInitFeedV2()) {
+    feed_v2_builder_->BuildAllFeed(base::DoNothing());
+  } else {
+    feed_controller_.EnsureFeedIsCached();
+  }
 }
 
 void BraveNewsController::OnOptInChange() {
@@ -743,6 +752,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
+    feed_v2_builder_ = nullptr;
   }
 }
 
