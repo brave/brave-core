@@ -37,8 +37,10 @@ auto IsTruthy(bool truthy) {
       [=](const auto& candidate) { return !!candidate == truthy; });
 }
 
-brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams() {
+brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams(
+    const std::string& chain_id) {
   auto params = brave_wallet::mojom::SwapParams::New();
+  params->chain_id = chain_id;
   params->buy_token = "ETH";
   params->sell_token = "DAI";
   params->buy_amount = "1000000000000000000000";
@@ -47,8 +49,10 @@ brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams() {
   return params;
 }
 
-brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams() {
+brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams(
+    const std::string& chain_id) {
   auto params = brave_wallet::mojom::JupiterQuoteParams::New();
+  params->chain_id = chain_id;
   params->output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->input_mint = "So11111111111111111111111111111111111111112";
   params->amount = "10000";
@@ -96,6 +100,7 @@ brave_wallet::mojom::JupiterSwapParamsPtr GetCannedJupiterSwapParams(
   params->user_public_key = "foo";
   params->output_mint = output_mint;
   params->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->chain_id = brave_wallet::mojom::kSolanaMainnet;
 
   return params;
 }
@@ -163,8 +168,8 @@ class SwapServiceUnitTest : public testing::Test {
                               EqualsMojo(mojom::JupiterErrorResponsePtr()),
                               expected_error_string));
 
-    swap_service_->GetJupiterQuote(GetCannedJupiterQuoteParams(),
-                                   callback.Get());
+    swap_service_->GetJupiterQuote(
+        GetCannedJupiterQuoteParams(mojom::kSolanaMainnet), callback.Get());
     base::RunLoop().RunUntilIdle();
   }
 
@@ -295,7 +300,8 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
-  swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetPriceQuote(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -332,7 +338,8 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
-  swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetPriceQuote(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -367,8 +374,8 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
               Run(EqualsMojo(mojom::SwapResponsePtr()),
                   EqualsMojo(ParseSwapErrorResponse(ParseJson(error))), ""));
 
-  swap_service_->GetPriceQuote(brave_wallet::mojom::SwapParams::New(),
-                               callback.Get());
+  swap_service_->GetPriceQuote(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -382,7 +389,8 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
                   EqualsMojo(mojom::SwapErrorResponsePtr()),
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
 
-  swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetPriceQuote(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -465,7 +473,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
-  swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetTransactionPayload(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -505,7 +514,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
-  swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetTransactionPayload(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -521,8 +531,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
               Run(EqualsMojo(mojom::SwapResponsePtr()),
                   EqualsMojo(ParseSwapErrorResponse(ParseJson(error))), ""));
 
-  swap_service_->GetTransactionPayload(mojom::SwapParams::New(),
-                                       callback.Get());
+  swap_service_->GetTransactionPayload(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -536,7 +546,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
                   EqualsMojo(mojom::SwapErrorResponsePtr()),
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
 
-  swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
+  swap_service_->GetTransactionPayload(
+      GetCannedSwapParams(mojom::kPolygonMainnetChainId), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -555,11 +566,9 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
       {mojom::kMainnetChainId, "api.0x.org"},
       {mojom::kPolygonMainnetChainId, "polygon.api.0x.org"}};
 
-  auto params = GetCannedSwapParams();
-
   for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
-    auto url = swap_service_->GetPriceQuoteURL(params.Clone(), chain_id);
+    auto url = swap_service_->GetPriceQuoteURL(GetCannedSwapParams(chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -580,7 +589,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
   // while fetching firm quotes.
   for (const auto& [chain_id, domain] : rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
-    auto url = swap_service_->GetPriceQuoteURL(params.Clone(), chain_id);
+    auto url = swap_service_->GetPriceQuoteURL(GetCannedSwapParams(chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -599,7 +608,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
   }
 
   // KO: unsupported network
-  EXPECT_EQ(swap_service_->GetPriceQuoteURL(params.Clone(), "0x3"), "");
+  EXPECT_EQ(swap_service_->GetPriceQuoteURL(GetCannedSwapParams("0x3")), "");
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
@@ -617,12 +626,10 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
       {mojom::kMainnetChainId, "api.0x.org"},
       {mojom::kPolygonMainnetChainId, "polygon.api.0x.org"}};
 
-  auto params = GetCannedSwapParams();
-
   for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url =
-        swap_service_->GetTransactionPayloadURL(params.Clone(), chain_id);
+        swap_service_->GetTransactionPayloadURL(GetCannedSwapParams(chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -643,7 +650,7 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
   for (const auto& [chain_id, domain] : rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url =
-        swap_service_->GetTransactionPayloadURL(params.Clone(), chain_id);
+        swap_service_->GetTransactionPayloadURL(GetCannedSwapParams(chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -661,7 +668,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
   }
 
   // KO: unsupported network
-  EXPECT_EQ(swap_service_->GetTransactionPayloadURL(params.Clone(), "0x3"), "");
+  EXPECT_EQ(swap_service_->GetTransactionPayloadURL(GetCannedSwapParams("0x3")),
+            "");
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {
@@ -689,9 +697,8 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
   EXPECT_FALSE(IsSwapSupported("invalid chain_id"));
 }
 TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
-  auto params = GetCannedJupiterQuoteParams();
-  auto url =
-      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+  auto params = GetCannedJupiterQuoteParams(mojom::kSolanaMainnet);
+  auto url = swap_service_->GetJupiterQuoteURL(params.Clone());
 
   // OK: output mint has Jupiter fees
   EXPECT_EQ(url,
@@ -704,8 +711,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
             "feeBps=85");
 
   params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
-  url =
-      swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
+  url = swap_service_->GetJupiterQuoteURL(params.Clone());
 
   // OK: output mint does not have Jupiter fees
   EXPECT_EQ(url,
@@ -799,7 +805,8 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   base::MockCallback<mojom::SwapService::GetJupiterQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response),
                             EqualsMojo(mojom::JupiterErrorResponsePtr()), ""));
-  swap_service_->GetJupiterQuote(GetCannedJupiterQuoteParams(), callback.Get());
+  swap_service_->GetJupiterQuote(
+      GetCannedJupiterQuoteParams(mojom::kSolanaMainnet), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 

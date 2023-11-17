@@ -478,6 +478,7 @@ struct Dapp {
 // Structs to model 0x (swap) HTTP API interactions
 // Docs: https://docs.0x.org/0x-api-swap
 struct SwapParams {
+  string chain_id;
   string taker_address;
   string sell_amount;
   string buy_amount;
@@ -579,6 +580,7 @@ struct JupiterQuote {
 };
 
 struct JupiterQuoteParams {
+  string chain_id;
   string input_mint;
   string output_mint;
   string amount;
@@ -587,6 +589,7 @@ struct JupiterQuoteParams {
 };
 
 struct JupiterSwapParams {
+  string chain_id;
   JupiterRoute route;
   string user_public_key;
   string input_mint;

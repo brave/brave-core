@@ -165,8 +165,7 @@ brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
 }
 
 GURL Append0xSwapParams(const GURL& swap_url,
-                        const brave_wallet::mojom::SwapParams& params,
-                        const std::string& chain_id) {
+                        const brave_wallet::mojom::SwapParams& params) {
   GURL url = swap_url;
   if (!params.taker_address.empty()) {
     url = net::AppendQueryParameter(url, "takerAddress", params.taker_address);
@@ -185,7 +184,7 @@ GURL Append0xSwapParams(const GURL& swap_url,
   }
 
   auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
-  brave_swap_fee_params->chain_id = chain_id;
+  brave_swap_fee_params->chain_id = params.chain_id;
   brave_swap_fee_params->taker = params.taker_address;
   brave_swap_fee_params->input_token = params.sell_token;
   brave_swap_fee_params->output_token = params.buy_token;
@@ -202,7 +201,7 @@ GURL Append0xSwapParams(const GURL& swap_url,
   url = net::AppendQueryParameter(url, "feeRecipient",
                                   brave_wallet::kEVMFeeRecipient);
 
-  std::string affiliate_address = GetAffiliateAddress(chain_id);
+  std::string affiliate_address = GetAffiliateAddress(params.chain_id);
   if (!affiliate_address.empty()) {
     url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
   }
@@ -214,8 +213,7 @@ GURL Append0xSwapParams(const GURL& swap_url,
 
 GURL AppendJupiterQuoteParams(
     const GURL& swap_url,
-    const brave_wallet::mojom::JupiterQuoteParams& params,
-    const std::string& chain_id) {
+    const brave_wallet::mojom::JupiterQuoteParams& params) {
   GURL url = swap_url;
   if (!params.input_mint.empty()) {
     url = net::AppendQueryParameter(url, "inputMint", params.input_mint);
@@ -235,7 +233,7 @@ GURL AppendJupiterQuoteParams(
       url, "slippageBps", base::StringPrintf("%d", params.slippage_bps));
 
   auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
-  brave_swap_fee_params->chain_id = chain_id;
+  brave_swap_fee_params->chain_id = params.chain_id;
   brave_swap_fee_params->taker = params.user_public_key;
   brave_swap_fee_params->input_token = params.input_mint;
   brave_swap_fee_params->output_token = params.output_mint;
@@ -324,9 +322,8 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
 }
 
 // static
-GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
-                                   const std::string& chain_id) {
-  const bool use_rfqt = HasRFQTLiquidity(chain_id);
+GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params) {
+  const bool use_rfqt = HasRFQTLiquidity(swap_params->chain_id);
 
   // If chain has RFQ-T liquidity available, use the /quote endpoint for
   // fetching the indicative price, since /price is often inaccurate. This is
@@ -337,9 +334,9 @@ GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
   // solution.
   std::string spec =
       base::StringPrintf(use_rfqt ? "%sswap/v1/quote" : "%sswap/v1/price",
-                         GetBaseSwapURL(chain_id).c_str());
+                         GetBaseSwapURL(swap_params->chain_id).c_str());
   GURL url(spec);
-  url = Append0xSwapParams(url, *swap_params, chain_id);
+  url = Append0xSwapParams(url, *swap_params);
   // That flag prevents an allowance validation by the 0x router. Disable it
   // here and perform the validation on the client side.
   url = net::AppendQueryParameter(url, "skipValidation", "true");
@@ -352,14 +349,13 @@ GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
 }
 
 // static
-GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
-                                           const std::string& chain_id) {
-  std::string spec =
-      base::StringPrintf("%sswap/v1/quote", GetBaseSwapURL(chain_id).c_str());
+GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params) {
+  std::string spec = base::StringPrintf(
+      "%sswap/v1/quote", GetBaseSwapURL(swap_params->chain_id).c_str());
   GURL url(spec);
-  url = Append0xSwapParams(url, *swap_params, chain_id);
+  url = Append0xSwapParams(url, *swap_params);
 
-  if (HasRFQTLiquidity(chain_id)) {
+  if (HasRFQTLiquidity(swap_params->chain_id)) {
     url = net::AppendQueryParameter(url, "intentOnFilling", "true");
   }
 
@@ -367,14 +363,13 @@ GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
 }
 
 // static
-GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
-                                     const std::string& chain_id) {
+GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params) {
   DCHECK(params);
 
-  std::string spec =
-      base::StringPrintf("%sv4/quote", GetBaseSwapURL(chain_id).c_str());
+  std::string spec = base::StringPrintf(
+      "%sv4/quote", GetBaseSwapURL(params->chain_id).c_str());
   GURL url(spec);
-  url = AppendJupiterQuoteParams(url, *params, chain_id);
+  url = AppendJupiterQuoteParams(url, *params);
 
   return url;
 }
@@ -395,8 +390,7 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 
 void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                 GetPriceQuoteCallback callback) {
-  if (!IsEVMNetworkSupported(json_rpc_service_->GetChainIdSync(
-          mojom::CoinType::ETH, absl::nullopt))) {
+  if (!IsEVMNetworkSupported(swap_params->chain_id)) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -406,13 +400,10 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       base::BindOnce(&SwapService::OnGetPriceQuote,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kGetMethod,
-      GetPriceQuoteURL(std::move(swap_params),
-                       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
-                                                         absl::nullopt)),
-      "", "", std::move(internal_callback), Get0xAPIHeaders(),
-      {.auto_retry_on_network_change = true});
+  api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
+                              GetPriceQuoteURL(std::move(swap_params)), "", "",
+                              std::move(internal_callback), Get0xAPIHeaders(),
+                              {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -440,8 +431,7 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
 void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
-  if (!IsEVMNetworkSupported(json_rpc_service_->GetChainIdSync(
-          mojom::CoinType::ETH, absl::nullopt))) {
+  if (!IsEVMNetworkSupported(swap_params->chain_id)) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -451,13 +441,11 @@ void SwapService::GetTransactionPayload(
       base::BindOnce(&SwapService::OnGetTransactionPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kGetMethod,
-      GetTransactionPayloadURL(std::move(swap_params),
-                               json_rpc_service_->GetChainIdSync(
-                                   mojom::CoinType::ETH, absl::nullopt)),
-      "", "", std::move(internal_callback), Get0xAPIHeaders(),
-      {.auto_retry_on_network_change = true});
+  api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
+                              GetTransactionPayloadURL(std::move(swap_params)),
+                              "", "", std::move(internal_callback),
+                              Get0xAPIHeaders(),
+                              {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetTransactionPayload(
@@ -486,8 +474,7 @@ void SwapService::OnGetTransactionPayload(
 
 void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
                                   GetJupiterQuoteCallback callback) {
-  if (!IsSolanaNetworkSupported(json_rpc_service_->GetChainIdSync(
-          mojom::CoinType::SOL, absl::nullopt))) {
+  if (!IsSolanaNetworkSupported(params->chain_id)) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -501,13 +488,11 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   base::flat_map<std::string, std::string> request_headers;
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kGetMethod,
-      GetJupiterQuoteURL(std::move(params),
-                         json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
-                                                           absl::nullopt)),
-      "", "", std::move(internal_callback), request_headers,
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+  api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
+                              GetJupiterQuoteURL(std::move(params)), "", "",
+                              std::move(internal_callback), request_headers,
+                              {.auto_retry_on_network_change = true},
+                              std::move(conversion_callback));
 }
 
 void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
@@ -534,8 +519,7 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
 void SwapService::GetJupiterSwapTransactions(
     mojom::JupiterSwapParamsPtr params,
     GetJupiterSwapTransactionsCallback callback) {
-  const auto& chain_id =
-      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, absl::nullopt);
+  const auto chain_id = params->chain_id;
   if (!IsSolanaNetworkSupported(chain_id)) {
     std::move(callback).Run(
         nullptr, nullptr,
@@ -563,12 +547,10 @@ void SwapService::GetJupiterSwapTransactions(
       base::BindOnce(&SwapService::OnGetJupiterSwapTransactions,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_request_helper_.Request(
-      "POST",
-      GetJupiterSwapTransactionsURL(json_rpc_service_->GetChainIdSync(
-          mojom::CoinType::SOL, absl::nullopt)),
-      *encoded_params, "application/json", std::move(internal_callback), {},
-      {.auto_retry_on_network_change = true});
+  api_request_helper_.Request("POST", GetJupiterSwapTransactionsURL(chain_id),
+                              *encoded_params, "application/json",
+                              std::move(internal_callback), {},
+                              {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetJupiterSwapTransactions(
