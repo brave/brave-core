@@ -173,12 +173,20 @@ struct AssetDetailHeaderView: View {
               }
               HStack {
                 tokenImageNameAndNetwork
+                  .transaction { transaction in
+                    transaction.animation = nil
+                    transaction.disablesAnimations = true
+                  }
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           } else {
             HStack {
               tokenImageNameAndNetwork
+                .transaction { transaction in
+                  transaction.animation = nil
+                  transaction.disablesAnimations = true
+                }
               if horizontalSizeClass == .regular {
                 Spacer()
                 DateRangeView(selectedRange: $assetDetailStore.timeframe)
@@ -255,6 +263,10 @@ struct AssetDetailHeaderView: View {
       }
       actionButtonsContainer
         .padding(.horizontal, assetDetailStore.assetDetailToken.isFungibleToken ? 0 : 16)
+        .transaction { transaction in
+          transaction.animation = nil
+          transaction.disablesAnimations = true
+        }
     }
   }
 }
