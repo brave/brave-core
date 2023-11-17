@@ -97,8 +97,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kRestartBatAdsServiceDelay = base::Seconds(10);
-
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
@@ -363,8 +361,6 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
-  CancelRestartBatAdsService();
-
   if (IsBatAdsServiceBound() || !CanStartBatAdsService()) {
     return;
   }
@@ -376,9 +372,8 @@ void AdsServiceImpl::StartBatAdsService() {
   CHECK(!IsBatAdsServiceBound());
 
   bat_ads_service_remote_ = bat_ads_service_factory_->Launch();
-
   bat_ads_service_remote_.set_disconnect_handler(base::BindOnce(
-      &AdsServiceImpl::RestartBatAdsServiceAfterDelay, AsWeakPtr()));
+      &AdsServiceImpl::Shutdown, AsWeakPtr()));
 
   CHECK(IsBatAdsServiceBound());
 
@@ -399,24 +394,6 @@ void AdsServiceImpl::StartBatAdsService() {
 
   bat_ads_observer_receiver_.reset();
   AddBatAdsObserver(bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
-}
-
-void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
-  VLOG(6) << "Restart bat-ads service";
-
-  Shutdown();
-
-  VLOG(6) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
-  restart_bat_ads_service_timer_.Start(
-      FROM_HERE, kRestartBatAdsServiceDelay,
-      base::BindOnce(&AdsServiceImpl::MaybeStartBatAdsService, AsWeakPtr()));
-}
-
-void AdsServiceImpl::CancelRestartBatAdsService() {
-  if (restart_bat_ads_service_timer_.IsRunning()) {
-    VLOG(6) << "Canceled bat-ads service restart";
-    restart_bat_ads_service_timer_.Stop();
-  }
 }
 
 bool AdsServiceImpl::ShouldProceedInitialization(
@@ -1058,8 +1035,6 @@ void AdsServiceImpl::URLRequestCallback(
 }
 
 void AdsServiceImpl::Shutdown() {
-  CancelRestartBatAdsService();
-
   if (is_bat_ads_initialized_) {
     SuspendP2AHistograms();
 

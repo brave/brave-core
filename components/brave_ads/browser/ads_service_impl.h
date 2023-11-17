@@ -119,8 +119,6 @@ class AdsServiceImpl : public AdsService,
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
   void StartBatAdsService();
-  void RestartBatAdsServiceAfterDelay();
-  void CancelRestartBatAdsService();
   bool ShouldProceedInitialization(size_t current_start_number) const;
   void BatAdsServiceCreatedCallback(size_t current_start_number);
   void InitializeBasePathDirectoryCallback(size_t current_start_number,
@@ -403,8 +401,6 @@ class AdsServiceImpl : public AdsService,
   PrefChangeRegistrar pref_change_registrar_;
 
   PrefChangeRegistrar local_state_pref_change_registrar_;
-
-  base::OneShotTimer restart_bat_ads_service_timer_;
 
   mojom::SysInfo sys_info_;
 
