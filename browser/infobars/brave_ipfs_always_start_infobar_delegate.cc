@@ -5,8 +5,7 @@
 
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 
-#include "base/functional/callback_helpers.h"
-#include "brave/components/ipfs/ipfs_service.h"
+#include "base/memory/ptr_util.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"

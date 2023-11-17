@@ -168,11 +168,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
-  std::unique_ptr<BraveGlobalInfoBarManager> infobar_manager_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+#if !BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<BraveGlobalInfoBarManager> allways_start_global_infobar_;
+#endif  // !BUILDFLAG(IS_ANDROID)
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
   base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;

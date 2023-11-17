@@ -26,7 +26,7 @@ class IpfsServiceImplDelegate : public IpfsServiceDelegate {
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<BraveGlobalInfoBarManager> infobar_manager_;
+  std::unique_ptr<BraveGlobalInfoBarManager> allways_start_global_infobar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 };
 

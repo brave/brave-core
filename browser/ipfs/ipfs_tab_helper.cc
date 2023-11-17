@@ -155,7 +155,10 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       IpfsImportController(*web_contents),
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
+      allways_start_global_infobar_(std::make_unique<BraveGlobalInfoBarManager>(
+          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+              pref_service_))) {
   resolver_ = std::make_unique<IPFSHostResolver>(
       web_contents->GetBrowserContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
@@ -201,9 +204,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
     if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-      infobar_manager_ = BraveGlobalInfoBarManager::Show(
-          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-              pref_service_));
+      allways_start_global_infobar_->Show();
     }
 #else
   ) {
@@ -433,9 +434,7 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
       if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-        infobar_manager_ = BraveGlobalInfoBarManager::Show(
-            std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-                pref_service_));
+        allways_start_global_infobar_->Show();
       }
 #else
       LoadUrl(possible_redirect.value());

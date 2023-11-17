@@ -19,8 +19,7 @@ class BraveGlobalInfoBarManager : public TabStripModelObserver,
       std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory);
   ~BraveGlobalInfoBarManager() override;
 
-  static std::unique_ptr<BraveGlobalInfoBarManager> Show(
-      std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory);
+  void Show();
 
  private:
   // infobars::InfoBarManager::Observer:
@@ -36,7 +35,7 @@ class BraveGlobalInfoBarManager : public TabStripModelObserver,
   void MaybeAddInfoBar(content::WebContents* web_contents);
 
   bool is_closed_{false};
-  BrowserTabStripTracker browser_tab_strip_tracker_{this, nullptr};
+  std::unique_ptr<BrowserTabStripTracker> browser_tab_strip_tracker_;
   std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory_;
   base::WeakPtrFactory<BraveGlobalInfoBarManager> weak_factory_{this};
 };

@@ -8,8 +8,6 @@
 #include <memory>
 #include <utility>
 #include <vector>
-#include "base/containers/contains.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "chrome/browser/ui/browser.h"
@@ -25,7 +23,7 @@ std::unique_ptr<infobars::InfoBar> CreateBraveGlobalInfoBar(
   return std::make_unique<BraveConfirmInfoBar>(std::move(delegate));
 }
 
-infobars::InfoBarManager* GetCurrentInfoBarManager() {
+content::WebContents* GetCurrentWebContents() {
   Browser* browser = chrome::FindLastActive();
   if (!browser) {
     return nullptr;
@@ -36,7 +34,11 @@ infobars::InfoBarManager* GetCurrentInfoBarManager() {
     return nullptr;
   }
 
-  auto* web_contents = model->GetActiveWebContents();
+  return model->GetActiveWebContents();
+}
+
+infobars::InfoBarManager* GetCurrentInfoBarManager() {
+  auto* web_contents = GetCurrentWebContents();
   if (!web_contents) {
     return nullptr;
   }
@@ -62,18 +64,9 @@ void RemoveInfobarsByIdentifier(
 }
 }  // namespace
 
-// static
-std::unique_ptr<BraveGlobalInfoBarManager> BraveGlobalInfoBarManager::Show(
-    std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory) {
-  return std::make_unique<BraveGlobalInfoBarManager>(
-      std::move(delegate_factory));
-}
-
 BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
     std::unique_ptr<BraveConfirmInfoBarDelegateFactory> delegate_factory)
-    : delegate_factory_(std::move(delegate_factory)) {
-  browser_tab_strip_tracker_.Init();
-}
+    : delegate_factory_(std::move(delegate_factory)) {}
 
 BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
   infobars::InfoBarManager* infobar_manager = GetCurrentInfoBarManager();
@@ -85,27 +78,33 @@ BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
                              delegate_factory_->GetInfoBarIdentifier());
 }
 
+void BraveGlobalInfoBarManager::Show() {
+  is_closed_ = false;
+  browser_tab_strip_tracker_ =
+      std::make_unique<BrowserTabStripTracker>(this, nullptr);
+  browser_tab_strip_tracker_->Init();
+}
+
 void BraveGlobalInfoBarManager::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (!selection.new_contents) {
+  if (!selection.new_contents || is_closed_) {
     return;
   }
 
   MaybeAddInfoBar(selection.new_contents);
 
-  if (!selection.old_contents) {
+  if (!selection.old_contents || !selection.active_tab_changed()) {
     return;
   }
 
   infobars::ContentInfoBarManager* old_infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(selection.old_contents);
 
-  if (!selection.selection_changed() || !old_infobar_manager) {
+  if (!old_infobar_manager) {
     return;
   }
-
   old_infobar_manager->RemoveObserver(this);
   RemoveInfobarsByIdentifier(old_infobar_manager,
                              delegate_factory_->GetInfoBarIdentifier());
@@ -116,7 +115,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents);
   DCHECK(infobar_manager);
-  if (is_closed_) {
+  if (!infobar_manager) {
     return;
   }
 
@@ -130,7 +129,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
       !added_bar) {
     return;
   }
-
+  infobar_manager->RemoveObserver(this);
   infobar_manager->AddObserver(this);
 }
 

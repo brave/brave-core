@@ -15,16 +15,22 @@
 namespace ipfs {
 
 IpfsServiceImplDelegate::IpfsServiceImplDelegate(PrefService* local_state)
-    : local_state_(local_state) {}
+    : local_state_(local_state)
+#if !BUILDFLAG(IS_ANDROID)
+      ,
+      allways_start_global_infobar_(std::make_unique<BraveGlobalInfoBarManager>(
+          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
+              local_state)))
+#endif  // !BUILDFLAG(IS_ANDROID)
+{
+}
 
 IpfsServiceImplDelegate::~IpfsServiceImplDelegate() = default;
 
 void IpfsServiceImplDelegate::OnImportToIpfsFinished(
     IpfsService* ipfs_service) {
 #if !BUILDFLAG(IS_ANDROID)
-  infobar_manager_ = BraveGlobalInfoBarManager::Show(
-      std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-          local_state_));
+  allways_start_global_infobar_->Show();
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
