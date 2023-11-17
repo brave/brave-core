@@ -12,6 +12,8 @@
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
@@ -21,6 +23,31 @@ namespace {
 std::unique_ptr<infobars::InfoBar> CreateBraveGlobalInfoBar(
     std::unique_ptr<BraveConfirmInfoBarDelegate> delegate) {
   return std::make_unique<BraveConfirmInfoBar>(std::move(delegate));
+}
+
+infobars::InfoBarManager* GetCurrentInfoBarManager() {
+  Browser* browser = chrome::FindLastActive();
+  if (!browser) {
+    return nullptr;
+  }
+
+  TabStripModel* model = browser->tab_strip_model();
+  if (!model) {
+    return nullptr;
+  }
+
+  auto* web_contents = model->GetActiveWebContents();
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents);
+  if (!infobar_manager) {
+    return nullptr;
+  }
+
+  return infobar_manager;
 }
 
 void RemoveInfobarsByIdentifier(
@@ -49,12 +76,13 @@ BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
 }
 
 BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
-  while (!ib_managers_.empty()) {
-    auto it = ib_managers_.begin();
-    (*it)->RemoveObserver(this);
-    RemoveInfobarsByIdentifier(*it, delegate_factory_->GetInfoBarIdentifier());
-    ib_managers_.erase(it);
+  infobars::InfoBarManager* infobar_manager = GetCurrentInfoBarManager();
+  if (!infobar_manager) {
+    return;
   }
+  infobar_manager->RemoveObserver(this);
+  RemoveInfobarsByIdentifier(infobar_manager,
+                             delegate_factory_->GetInfoBarIdentifier());
 }
 
 void BraveGlobalInfoBarManager::OnTabStripModelChanged(
@@ -71,23 +99,16 @@ void BraveGlobalInfoBarManager::OnTabStripModelChanged(
     return;
   }
 
-  infobars::ContentInfoBarManager* infobar_manager =
+  infobars::ContentInfoBarManager* old_infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(selection.old_contents);
 
-  if (!selection.selection_changed() || !infobar_manager ||
-      !base::Contains(ib_managers_, infobar_manager)) {
+  if (!selection.selection_changed() || !old_infobar_manager) {
     return;
   }
 
-  auto im_iterator = base::ranges::find(ib_managers_, infobar_manager);
-  if (im_iterator == ib_managers_.end()) {
-    return;
-  }
-
-  infobar_manager->RemoveObserver(this);
-  RemoveInfobarsByIdentifier(infobar_manager,
+  old_infobar_manager->RemoveObserver(this);
+  RemoveInfobarsByIdentifier(old_infobar_manager,
                              delegate_factory_->GetInfoBarIdentifier());
-  ib_managers_.erase(im_iterator);
 }
 
 void BraveGlobalInfoBarManager::MaybeAddInfoBar(
@@ -95,7 +116,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents);
   DCHECK(infobar_manager);
-  if (is_closed_ || base::Contains(ib_managers_, infobar_manager)) {
+  if (is_closed_) {
     return;
   }
 
@@ -111,23 +132,25 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
   }
 
   infobar_manager->AddObserver(this);
-  ib_managers_.insert(infobar_manager);
 }
 
 void BraveGlobalInfoBarManager::OnInfoBarRemoved(infobars::InfoBar* info_bar,
                                                  bool animate) {
-  if (delegate_factory_->GetInfoBarIdentifier() !=
-          info_bar->delegate()->GetIdentifier() ||
-      !base::Contains(ib_managers_, info_bar->owner())) {
+  infobars::InfoBarManager* current_infobar_manager =
+      GetCurrentInfoBarManager();
+  if (!current_infobar_manager) {
     return;
   }
-
+  if (delegate_factory_->GetInfoBarIdentifier() !=
+          info_bar->delegate()->GetIdentifier() ||
+      current_infobar_manager != info_bar->owner()) {
+    return;
+  }
   OnManagerShuttingDown(info_bar->owner());
 }
 
 void BraveGlobalInfoBarManager::OnManagerShuttingDown(
     infobars::InfoBarManager* manager) {
   manager->RemoveObserver(this);
-  ib_managers_.erase(manager);
-  is_closed_ = ib_managers_.empty();
+  is_closed_ = true;
 }
