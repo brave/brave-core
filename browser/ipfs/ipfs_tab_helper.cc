@@ -189,11 +189,13 @@ void IPFSTabHelper::IPFSResourceLinkResolved(const GURL& ipfs) {
   UpdateLocationBar();
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 bool IPFSTabHelper::IsResolveMethod(
     const ipfs::IPFSResolveMethodTypes& resolution_method) {
   return pref_service_->GetInteger(kIPFSResolveMethod) ==
          static_cast<int>(resolution_method);
 }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
                                     bool is_gateway_url,
