@@ -30,6 +30,10 @@ inline constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_open";
 inline constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_autocomplete";
+inline constexpr char kBraveChatP3ALastPremiumCheck[] =
+    "brave.ai_chat.p3a_last_premium_check";
+inline constexpr char kBraveChatP3ALastPremiumStatus[] =
+    "brave.ai_chat.p3a_last_premium_status";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

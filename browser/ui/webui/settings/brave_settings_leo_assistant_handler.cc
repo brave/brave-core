@@ -10,7 +10,10 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -142,6 +145,9 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 
   ShowLeoAssistantIconVisibleIfNot(service);
   profile_->GetPrefs()->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
+  g_brave_browser_process->process_misc_metrics()
+      ->ai_chat_metrics()
+      ->RecordReset();
 
   AllowJavascript();
 }

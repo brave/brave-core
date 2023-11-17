@@ -6,10 +6,13 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -37,7 +40,17 @@ class AIChatMetricsUnitTest : public testing::Test {
     task_environment_.FastForwardBy(base::Seconds(5));
   }
 
+  AIChatMetrics::RetrievePremiumStatusCallback GetPremiumCallback() {
+    bool is_premium = is_premium_;
+    return base::BindLambdaForTesting(
+        [&is_premium](mojom::PageHandler::GetPremiumStatusCallback callback) {
+          std::move(callback).Run(is_premium ? mojom::PremiumStatus::Active
+                                             : mojom::PremiumStatus::Inactive);
+        });
+  }
+
  protected:
+  bool is_premium_ = false;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
@@ -46,16 +59,29 @@ class AIChatMetricsUnitTest : public testing::Test {
 
 TEST_F(AIChatMetricsUnitTest, Enabled) {
   histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 0);
-  ai_chat_metrics_->RecordEnabled(false);
-  histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 0);
-  ai_chat_metrics_->RecordEnabled(true);
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 1);
-  ai_chat_metrics_->RecordEnabled(false);
-  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 1);
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
+  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 2);
+
+  is_premium_ = true;
+  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active);
+  histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 2, 1);
+
+  is_premium_ = false;
+  // should check premium status only after 24 hours have elapsed
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
+  histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 2, 2);
+
+  task_environment_.FastForwardBy(base::Days(1));
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
+  histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 1, 3);
+
+  histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 5);
 }
 
 TEST_F(AIChatMetricsUnitTest, ChatCount) {
-  ai_chat_metrics_->RecordEnabled(false);
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kChatCountHistogramName, 0);
 
   RecordPrompts(true, 1);
@@ -84,7 +110,7 @@ TEST_F(AIChatMetricsUnitTest, ChatCount) {
 }
 
 TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
-  ai_chat_metrics_->RecordEnabled(false);
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 0);
 
   RecordPrompts(true, 1);
@@ -115,11 +141,21 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
 }
 
 TEST_F(AIChatMetricsUnitTest, UsageDaily) {
-  ai_chat_metrics_->RecordEnabled(false);
+  is_premium_ = true;
+
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
 
   RecordPrompts(true, 1);
-  histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 2, 1);
+
+  is_premium_ = false;
+  ai_chat_metrics_->OnPremiumStatusUpdated(false,
+                                           mojom::PremiumStatus::Inactive);
+  RecordPrompts(true, 1);
+  histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 1, 1);
+
+  histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 2);
 }
 
 TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
@@ -128,13 +164,13 @@ TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
   ai_chat_metrics_->HandleOpenViaSidebar();
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true);
+  ai_chat_metrics_->RecordEnabled(true, GetPremiumCallback());
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
 
   ai_chat_metrics_->RecordOmniboxOpen();
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
 
-  ai_chat_metrics_->RecordEnabled(true);
+  ai_chat_metrics_->RecordEnabled(true, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kAcquisitionSourceHistogramName, 0, 1);
 }
@@ -147,7 +183,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
   }
   histogram_tester_.ExpectTotalCount(kOmniboxOpensHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true);
+  ai_chat_metrics_->RecordEnabled(true, GetPremiumCallback());
   histogram_tester_.ExpectUniqueSample(kOmniboxOpensHistogramName, 0, 1);
 
   ai_chat_metrics_->RecordOmniboxOpen();
@@ -175,7 +211,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
 }
 
 TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
-  ai_chat_metrics_->RecordEnabled(false);
+  ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
 
   for (size_t i = 0; i < 10; i++) {
@@ -183,7 +219,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
   }
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true);
+  ai_chat_metrics_->RecordEnabled(true, GetPremiumCallback());
   for (size_t i = 0; i < 2; i++) {
     ai_chat_metrics_->RecordOmniboxOpen();
   }
@@ -202,6 +238,13 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
   histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 0, 13);
   histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 1, 1);
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 14);
+}
+
+TEST_F(AIChatMetricsUnitTest, Reset) {
+  ai_chat_metrics_->RecordReset();
+  histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName,
+                                       INT_MAX - 1, 1);
+  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, INT_MAX - 1, 1);
 }
 
 }  // namespace ai_chat

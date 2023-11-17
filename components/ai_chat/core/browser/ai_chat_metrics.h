@@ -8,7 +8,9 @@
 
 #include <optional>
 
+#include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 
 class PrefRegistrySimple;
@@ -19,8 +21,8 @@ namespace ai_chat {
 inline constexpr char kChatCountHistogramName[] = "Brave.AIChat.ChatCount";
 inline constexpr char kAvgPromptCountHistogramName[] =
     "Brave.AIChat.AvgPromptCount";
-inline constexpr char kEnabledHistogramName[] = "Brave.AIChat.Enabled";
-inline constexpr char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily";
+inline constexpr char kEnabledHistogramName[] = "Brave.AIChat.Enabled.2";
+inline constexpr char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily.2";
 inline constexpr char kOmniboxWeekCompareHistogramName[] =
     "Brave.AIChat.OmniboxWeekCompare";
 inline constexpr char kOmniboxOpensHistogramName[] =
@@ -36,6 +38,9 @@ enum class AcquisitionSource {
 
 class AIChatMetrics {
  public:
+  using RetrievePremiumStatusCallback =
+      base::OnceCallback<void(mojom::PageHandler::GetPremiumStatusCallback)>;
+
   explicit AIChatMetrics(PrefService* local_state);
   ~AIChatMetrics();
 
@@ -44,7 +49,11 @@ class AIChatMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void RecordEnabled(bool is_new_user);
+  void RecordEnabled(bool is_new_user,
+                     absl::optional<RetrievePremiumStatusCallback>
+                         retrieve_premium_status_callback);
+  void RecordReset();
+
   void RecordNewChat();
   void RecordNewPrompt();
 
@@ -53,12 +62,17 @@ class AIChatMetrics {
 
   void HandleOpenViaSidebar();
 
+  void OnPremiumStatusUpdated(bool is_new_user,
+                              mojom::PremiumStatus premium_status);
+
  private:
   void ReportAllMetrics();
   void ReportChatCounts();
   void ReportOmniboxCounts();
 
   bool is_enabled_ = false;
+  bool is_premium_ = false;
+  bool premium_check_in_progress_ = false;
   std::optional<AcquisitionSource> acquisition_source_ = std::nullopt;
 
   WeeklyStorage chat_count_storage_;
@@ -70,6 +84,10 @@ class AIChatMetrics {
   base::OneShotTimer report_debounce_timer_;
 
   base::WallClockTimer periodic_report_timer_;
+
+  raw_ptr<PrefService> local_state_;
+
+  base::WeakPtrFactory<AIChatMetrics> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

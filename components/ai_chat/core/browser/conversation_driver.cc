@@ -109,7 +109,9 @@ ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
   DCHECK(engine_);
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
-    ai_chat_metrics_->RecordEnabled(false);
+    ai_chat_metrics_->RecordEnabled(
+        false, base::BindOnce(&ConversationDriver::GetPremiumStatus,
+                              weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -200,7 +202,7 @@ void ConversationDriver::OnUserOptedIn() {
   }
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
-    ai_chat_metrics_->RecordEnabled(true);
+    ai_chat_metrics_->RecordEnabled(true, absl::nullopt);
   }
 }
 
@@ -722,6 +724,9 @@ void ConversationDriver::OnPremiumStatusReceived(
     ChangeModel(kModelsPremiumDefaultKey);
   }
   last_premium_status_ = premium_status;
+  if (HasUserOptedIn()) {
+    ai_chat_metrics_->OnPremiumStatusUpdated(false, premium_status);
+  }
   std::move(parent_callback).Run(premium_status);
 }
 
