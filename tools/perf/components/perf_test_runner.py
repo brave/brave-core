@@ -9,30 +9,21 @@ import shutil
 import time
 from copy import deepcopy
 from typing import List, Optional, Tuple
+from lib.util import scoped_cwd
 
 import components.path_util as path_util
 import components.perf_test_utils as perf_test_utils
 from components.common_options import CommonOptions
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
-from components.browser_type import BraveVersion, BrowserType
+from components.browser_type import BraveVersion
 from components.perf_config import BenchmarkConfig, ParseTarget, RunnerConfig
 
 
 def ReportToDashboardImpl(
-    browser_type: BrowserType, dashboard_bot_name: str, tag: BraveVersion,
-    output_dir: str, ci_mode: bool) -> Tuple[bool, List[str], Optional[str]]:
+    dashboard_bot_name: str, tag: BraveVersion, output_dir: str,
+    ci_mode: bool) -> Tuple[bool, List[str], Optional[str]]:
   revision = f'refs/tags/{tag}'
   chromium_version = tag.to_chromium_version(ci_mode).__str__()
-
-  if browser_type.report_as_reference:
-    # .reference suffix for benchmark folder is used in process_perf_results.py
-    # to guess should the data be reported as reference or not.
-    # Find and rename all benchmark folders to .reference format.
-    for f in os.scandir(output_dir):
-      if f.is_dir():
-        for benchmark in os.scandir(f.path):
-          if benchmark.is_dir() and not benchmark.name.endswith('.reference'):
-            shutil.move(benchmark.path, benchmark.path + '.reference')
 
   args = [
       path_util.GetVpython3Path(),
@@ -53,8 +44,13 @@ def ReportToDashboardImpl(
   build_properties['recipe'] = 'chromium'
   build_properties['slavename'] = 'test_bot'
 
-  build_properties['buildername'] = os.environ.get('JOB_NAME')
-  build_properties['buildnumber'] = os.environ.get('BUILD_NUMBER')
+  # Jenkins CI specific variable. Must be set when reporting is on.
+  job_name = os.environ.get('JOB_NAME')
+  build_number = os.environ.get('BUILD_NUMBER')
+  assert (job_name is not None)
+  assert (build_number is not None)
+  build_properties['buildername'] = job_name
+  build_properties['buildnumber'] = build_number
 
   build_properties[
       'got_revision_cp'] = 'refs/heads/main@{#%s}' % revision_number
@@ -130,9 +126,10 @@ class RunableConfiguration:
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
     benchmark_name = benchmark_config.name
+    bench_out_dir = None
+    args.append(benchmark_name)
 
     if local_run:
-      args.append(benchmark_name)
       if out_dir:
         assert config.label is not None
         args.append('--results-label=' + config.label)
@@ -141,15 +138,17 @@ class RunableConfiguration:
         args.append('--output-format=none')
 
     else:
-      args.insert(
-          1,
-          os.path.join(path_util.GetSrcDir(), 'testing', 'scripts',
-                       'run_performance_tests.py'))
-
-      args.append(f'--benchmarks={benchmark_name}')
       assert out_dir
-      args.append('--isolated-script-test-output=' +
-                  os.path.join(out_dir, benchmark_name, 'output.json'))
+      # .reference suffix for benchmark folder is used in
+      # process_perf_results.py to report the data as reference.
+      suffix = '.reference' if config.browser_type.report_as_reference else ''
+      bench_out_dir = os.path.join(out_dir, benchmark_name,
+                                   benchmark_name + suffix)
+
+      args.extend([
+          f'--output-dir={bench_out_dir}', '--output-format=json-test-results',
+          '--output-format=histograms'
+      ])
 
     if self.binary.profile_dir:
       args.append(f'--profile-dir={self.binary.profile_dir}')
@@ -185,6 +184,17 @@ class RunableConfiguration:
 
     success, _ = perf_test_utils.GetProcessOutput(
         args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
+    if not local_run:
+      assert (out_dir is not None)
+      assert (bench_out_dir is not None)
+
+      # Make the same directory/file structure as used by Chromium
+      # run_performance_tests.py.
+      # This allows to call process_perf_results.py to report to the dashboard.
+      with scoped_cwd(bench_out_dir):
+        shutil.move('test-results.json', 'test_results.json')
+        shutil.move('histograms.json', 'perf_results.json')
+
     return success
 
   def TakeStatusLine(self):
@@ -228,7 +238,6 @@ class RunableConfiguration:
     assert self.config.dashboard_bot_name is not None
     assert self.config.tag is not None
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
-        self.config.browser_type,
         self.config.dashboard_bot_name, self.config.tag,
         os.path.join(self.out_dir, 'results'), self.common_options.ci_mode)
     spent_time = time.time() - start_time
