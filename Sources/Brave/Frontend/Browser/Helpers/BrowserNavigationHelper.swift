@@ -6,6 +6,7 @@
 import Foundation
 import Shared
 import UIKit
+import BraveVPN
 
 /// Handles displaying controllers such as settings, bookmarks, etc. on top of
 /// the browser.
@@ -65,6 +66,12 @@ class BrowserNavigationHelper {
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
+  }
+  
+  func openVPNBuyScreen(iapObserver: IAPObserver) {
+    guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+    
+    open(vc, doneButton: DoneButton(style: .done, position: .left))
   }
 
   func openShareSheet() {

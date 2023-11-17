@@ -7,10 +7,12 @@ import Foundation
 import StoreKit
 import Shared
 import os.log
+import Preferences
 
 public protocol IAPObserverDelegate: AnyObject {
   func purchasedOrRestoredProduct(validateReceipt: Bool)
   func purchaseFailed(error: IAPObserver.PurchaseError)
+  func handlePromotedInAppPurchase()
 }
 
 public class IAPObserver: NSObject, SKPaymentTransactionObserver {
@@ -21,7 +23,10 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
   }
 
   public weak var delegate: IAPObserverDelegate?
-
+  public var savedPayment: SKPayment?
+  
+  // MARK: - Handling transactions
+  
   public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
     // This helper variable helps to call the IAPObserverDelegate delegate purchased method only once.
     // Reason is when restoring or sometimes when purchasing or restoring a product there's multiple transactions
@@ -81,6 +86,8 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
     }
   }
 
+  // MARK: - Restoring Transactions
+  
   public func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
     Logger.module.debug("Restoring transaction failed")
     self.delegate?.purchaseFailed(error: .transactionError(error: error as? SKError))
@@ -94,5 +101,21 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
       let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
       delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
     }
+  }
+  
+  // MARK: - Handling promoted in-app purchases
+  
+  public func paymentQueue(_ queue: SKPaymentQueue, shouldAddStorePayment payment: SKPayment, for product: SKProduct) -> Bool {
+    // Check if ther eis an active onboarding happening
+    let shouldDeferPayment = Preferences.AppState.isOnboardingActive.value
+    
+    // If you need to defer until onboarding is complete, save the payment and return false.
+    if shouldDeferPayment {
+      savedPayment = payment
+      return false
+    }
+    
+    delegate?.handlePromotedInAppPurchase()
+    return true
   }
 }

@@ -116,7 +116,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
     SKPaymentQueue.default().add(BraveVPN.iapObserver)
-
+    // Editing Product Promotion List
+    Task { @MainActor in
+      await BraveVPN.updateStorePromotionOrder()
+      await BraveVPN.hideActiveStorePromotion()
+    }
+    
     // Override point for customization after application launch.
     var shouldPerformAdditionalDelegateHandling = true
     AdblockEngine.setDomainResolver()
@@ -143,6 +148,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Preferences.Review.launchCount.value += 1
 
     let isFirstLaunch = Preferences.General.isFirstLaunch.value
+    
+    Preferences.AppState.isOnboardingActive.value = isFirstLaunch
+    
     if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.undetermined.rawValue {
       Preferences.Onboarding.basicOnboardingCompleted.value =
         isFirstLaunch ? OnboardingState.unseen.rawValue : OnboardingState.completed.rawValue

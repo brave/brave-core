@@ -233,6 +233,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func sceneDidEnterBackground(_ scene: UIScene) {
     AppState.shared.profile.shutdown()
     BraveVPN.sendVPNWorksInBackgroundNotification()
+    Preferences.AppState.isOnboardingActive.value = false
   }
 
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

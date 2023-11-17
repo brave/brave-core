@@ -372,6 +372,10 @@ extension BraveVPNSettingsViewController: IAPObserverDelegate {
     handleOfferCodeError(error: error)
   }
   
+  public func handlePromotedInAppPurchase() {
+    // No-op
+  }
+  
   private func handleOfferCodeError(error: IAPObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false

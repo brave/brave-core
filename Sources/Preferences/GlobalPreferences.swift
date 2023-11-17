@@ -135,6 +135,11 @@ extension Preferences {
     /// and therefore we can try to load them right away and have them ready on the first tab load
     @MainActor public static let lastFilterListCatalogueComponentFolderPath =
       Option<String?>(key: "caching.last-filter-list-catalogue-component-folder-path", default: nil)
+    
+    /// A cached value for indicating if onboarding is actively going on
+    ///
+    /// This is used to determine if a  promoted purchase from store can be triggered and shown user
+    public static let isOnboardingActive = Option<Bool>(key: "appstate.onboarding-active", default: false)
   }
   
   public final class Chromium {

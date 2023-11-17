@@ -264,6 +264,9 @@ public class BrowserViewController: UIViewController {
   
   var processAddressBarTask: Task<(), Never>?
   var topToolbarDidPressReloadTask: Task<(), Never>?
+  
+  /// In app purchase obsever for VPN Subscription action
+  let iapObserver: IAPObserver
 
   public init(
     windowId: UUID,
@@ -324,9 +327,13 @@ public class BrowserViewController: UIViewController {
     if Locale.current.regionCode == "JP" {
       benchmarkBlockingDataSource = BlockingSummaryDataSource()
     }
+    
+    iapObserver = BraveVPN.iapObserver
 
     super.init(nibName: nil, bundle: nil)
     didInit()
+    
+    iapObserver.delegate = self
 
     rewards.rewardsServiceDidStart = { [weak self] _ in
       self?.setupLedger()
@@ -3352,5 +3359,24 @@ extension BrowserViewController {
     }
     
     self.present(host, animated: true)
+  }
+}
+
+extension BrowserViewController: IAPObserverDelegate {
+  public func purchasedOrRestoredProduct(validateReceipt: Bool) {
+    // No-op
+  }
+  
+  public func purchaseFailed(error: IAPObserver.PurchaseError) {
+    // No-op
+  }
+  
+  public func handlePromotedInAppPurchase() {
+    // Open VPN Buy Screen before system triggers buy action
+    // Delaying the VPN Screen launch delibrately to syncronize promoted purchase launch
+    Task.delayed(bySeconds: 2.0) { @MainActor in
+      self.popToBVC()
+      self.navigationHelper.openVPNBuyScreen(iapObserver: self.iapObserver)
+    }
   }
 }

@@ -10,6 +10,8 @@ import BraveCore
 import UIKit
 import Onboarding
 import BraveShields
+import BraveVPN
+import StoreKit
 
 // MARK: - Onboarding
 
@@ -18,6 +20,7 @@ extension BrowserViewController {
   func presentOnboardingIntro() {
     if Preferences.DebugFlag.skipOnboardingIntro == true { return }
 
+    Preferences.AppState.isOnboardingActive.value = true
     presentOnboardingWelcomeScreen(on: self)
   }
 
@@ -27,6 +30,7 @@ extension BrowserViewController {
     // 1. Existing user.
     // 2. User already completed onboarding.
     if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
+      Preferences.AppState.isOnboardingActive.value = false
       return
     }
 
@@ -54,6 +58,9 @@ extension BrowserViewController {
   }
 
   func showNTPOnboarding() {
+    Preferences.AppState.isOnboardingActive.value = false
+    iapObserver.savedPayment = nil
+    
     if !topToolbar.inOverlayMode,
        topToolbar.currentURL == nil,
        Preferences.DebugFlag.skipNTPCallouts != true {
@@ -89,19 +96,34 @@ extension BrowserViewController {
     presentPopoverContent(
       using: controller,
       with: frame, cornerRadius: 6.0,
-      didDismiss: {
+      didDismiss: { [weak self] in
+        guard let self = self else { return }
+
         Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+        Preferences.AppState.isOnboardingActive.value = false
+        
+        self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
       },
       didClickBorderedArea: { [weak self] in
         guard let self = self else { return }
         
         Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+        Preferences.AppState.isOnboardingActive.value = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
           self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
         }
       }
     )
+  }
+  
+  private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
+    guard let productPayment = savedPayment else {
+      return
+    }
+     
+    navigationHelper.openVPNBuyScreen(iapObserver: iapObserver)
+    BraveVPN.activatePaymentTypeForStoredPromotion(savedPayment: productPayment)
   }
 
   private func showPrivacyReportsOnboardingIfNeeded() {
@@ -279,6 +301,7 @@ extension BrowserViewController {
 
   func completeOnboarding(_ controller: UIViewController) {
     Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.AppState.isOnboardingActive.value = false
     controller.dismiss(animated: true)
   }
 }
