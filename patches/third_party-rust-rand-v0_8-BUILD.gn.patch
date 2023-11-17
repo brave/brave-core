@@ -10,3 +10,8 @@ index 065851643f57930d45ce9e69983994e5eb84f0fd..6f8b5ab77d5cd3feeb8a940a876394bf
  
    # Only for usage from third-party crates. Add the crate to
    # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ }
+ group("test_support") {
+   public_deps = [ ":lib" ]
