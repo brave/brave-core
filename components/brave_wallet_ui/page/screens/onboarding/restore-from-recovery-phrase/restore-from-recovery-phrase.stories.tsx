@@ -22,12 +22,7 @@ _OnboardingRestoreFromRecoveryPhrase.story = {
 
 export const _OnboardingRestoreFromMetaMaskExtension = () => {
   return (
-    <WalletPageStory
-      pageStateOverride={{
-        isMetaMaskInitialized: true,
-        isImportWalletsCheckComplete: true
-      }}
-    >
+    <WalletPageStory>
       <OnboardingRestoreFromRecoveryPhrase restoreFrom='metamask' />
     </WalletPageStory>
   )
@@ -39,12 +34,7 @@ _OnboardingRestoreFromMetaMaskExtension.story = {
 
 export const _OnboardingRestoreFromMetaMaskSeed = () => {
   return (
-    <WalletPageStory
-      pageStateOverride={{
-        isMetaMaskInitialized: false,
-        isImportWalletsCheckComplete: true
-      }}
-    >
+    <WalletPageStory>
       <OnboardingRestoreFromRecoveryPhrase restoreFrom='metamask-seed' />
     </WalletPageStory>
   )
@@ -56,13 +46,7 @@ _OnboardingRestoreFromMetaMaskSeed.story = {
 
 export const _OnboardingRestoreFromLegacyWallet = () => {
   return (
-    <WalletPageStory
-      pageStateOverride={{
-        isMetaMaskInitialized: false,
-        isImportWalletsCheckComplete: true,
-        isCryptoWalletsInitialized: true
-      }}
-    >
+    <WalletPageStory>
       <OnboardingRestoreFromRecoveryPhrase restoreFrom='legacy' />
     </WalletPageStory>
   )
