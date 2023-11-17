@@ -250,64 +250,50 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   // MARK: - Custom Networks
 
   @Published var isAddingNewNetwork: Bool = false
-
-  public func addCustomNetwork(
-    _ network: BraveWallet.NetworkInfo,
-    completion: @escaping (_ accepted: Bool, _ errMsg: String) -> Void
-  ) {
-    func add(network: BraveWallet.NetworkInfo, completion: @escaping (_ accepted: Bool, _ errMsg: String) -> Void) {
-      rpcService.addChain(network) { [self] chainId, status, message in
-        if status == .success {
-          // Update `ethereumChains` by api calling
-          Task {
-            await updateChainList()
+  
+  @MainActor func addCustomNetwork(_ network: BraveWallet.NetworkInfo) async -> (accepted: Bool, errMsg: String) {
+    isAddingNewNetwork = true
+    if allChains.filter({ $0.coin == .eth }).contains(where: { $0.id.lowercased() == network.id.lowercased() }) {
+      let removeStatus = await rpcService.removeChain(network.chainId, coin: network.coin)
+      guard removeStatus else {
+        return (false, "Not able to remove network chainId (\(network.chainId)")
+      }
+      // delete local stored user assets that in this custom network
+      assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
+      
+      let (_, addStatus, errMsg) = await rpcService.addChain(network)
+      guard addStatus == .success else {
+        // if adding is not succeeded, we have to add back the old network info
+        if let oldNetwork = allChains.filter({ $0.coin == .eth }).first(where: { $0.id.lowercased() == network.id.lowercased() }) {
+          let (_, addOldStatus, _) = await rpcService.addChain(oldNetwork)
+          guard addOldStatus == .success else {
+            isAddingNewNetwork = false
+            return (false, errMsg)
           }
           customNetworkNativeAssetMigration(network)
           isAddingNewNetwork = false
-          completion(true, "")
+          await updateChainList()
+          return (false, errMsg)
         } else {
-          // meaning add custom network failed for some reason.
-          // Also add the the old network back on rpc service
-          if let oldNetwork = allChains.filter({ $0.coin == .eth }).first(where: { $0.id.lowercased() == network.id.lowercased() }) {
-            rpcService.addChain(oldNetwork) { _, _, _ in
-              Task {
-                await self.updateChainList()
-              }
-              self.customNetworkNativeAssetMigration(network)
-              self.isAddingNewNetwork = false
-              completion(false, message)
-            }
-          } else {
-            isAddingNewNetwork = false
-            completion(false, message)
-          }
-        }
-      }
-    }
-
-    isAddingNewNetwork = true
-    if allChains.filter({ $0.coin == .eth }).contains(where: { $0.id.lowercased() == network.id.lowercased() }) {
-      removeNetworkForNewAddition(network) { [self] success in
-        guard success else {
           isAddingNewNetwork = false
-          completion(false, Strings.Wallet.failedToRemoveCustomNetworkErrorMessage)
-          return
+          return (false, errMsg)
         }
-        add(network: network, completion: completion)
       }
+      customNetworkNativeAssetMigration(network)
+      isAddingNewNetwork = false
+      await updateChainList()
+      return (true, "")
     } else {
-      add(network: network, completion: completion)
+      let (_, addStatus, errMsg) = await rpcService.addChain(network)
+      guard addStatus == .success else {
+        isAddingNewNetwork = false
+        return (false, errMsg)
+      }
+      customNetworkNativeAssetMigration(network)
+      isAddingNewNetwork = false
+      await updateChainList()
+      return (true, "")
     }
-  }
-
-  /// This method will not update `ethereumChains`
-  private func removeNetworkForNewAddition(
-    _ network: BraveWallet.NetworkInfo,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
-    rpcService.removeChain(network.id, coin: network.coin, completion: completion)
-    // delete local stored user assets that in this custom network
-    assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
   }
 
   public func removeCustomNetwork(

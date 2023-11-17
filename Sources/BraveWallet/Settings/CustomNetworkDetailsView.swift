@@ -529,7 +529,8 @@ struct CustomNetworkDetailsView: View {
       supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
       isEip1559: false
     )
-    networkStore.addCustomNetwork(network) { accepted, errMsg in
+    Task { @MainActor in
+      let (accepted, errMsg) = await networkStore.addCustomNetwork(network)
       guard accepted else {
         customNetworkError = .failed(errorMessage: errMsg)
         return
