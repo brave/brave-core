@@ -7,14 +7,12 @@
 
 #include "brave/browser/brave_browser_features.h"
 
-#define ChromeBrowsingDataRemoverDelegate BraveBrowsingDataRemoverDelegate
 #define ShouldRestoreOldSessionCookies \
   ShouldRestoreOldSessionCookies_ChromiumImpl
 
 #include "src/chrome/browser/profiles/profile_impl.cc"
 
 #undef ShouldRestoreOldSessionCookies
-#undef ChromeBrowsingDataRemoverDelegate
 
 bool ProfileImpl::ShouldRestoreOldSessionCookies() {
   bool should_restore = ShouldRestoreOldSessionCookies_ChromiumImpl();
