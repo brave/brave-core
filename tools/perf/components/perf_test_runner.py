@@ -223,8 +223,6 @@ class RunableConfiguration:
       if not test_success:
         has_failure = True
         error = f'Test {benchmark.name} failed on binary {self.binary}'
-        error += '\nLogs: ' + os.path.join(test_out_dir, benchmark.name,
-                                           benchmark.name, 'benchmark_log.txt')
         self.logs.append(error)
 
     spent_time = time.time() - start_time
