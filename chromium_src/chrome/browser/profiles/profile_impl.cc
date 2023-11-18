@@ -9,7 +9,6 @@
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 
 #define BookmarkModelLoadedObserver BraveBookmarkModelLoadedObserver
-#define ChromeBrowsingDataRemoverDelegate BraveBrowsingDataRemoverDelegate
 #define ShouldRestoreOldSessionCookies \
   ShouldRestoreOldSessionCookies_ChromiumImpl
 
@@ -17,7 +16,6 @@
 
 #undef ShouldRestoreOldSessionCookies
 #undef BookmarkModelLoadedObserver
-#undef ChromeBrowsingDataRemoverDelegate
 
 bool ProfileImpl::ShouldRestoreOldSessionCookies() {
   bool should_restore = ShouldRestoreOldSessionCookies_ChromiumImpl();
