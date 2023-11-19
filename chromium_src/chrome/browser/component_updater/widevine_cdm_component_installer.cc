@@ -111,10 +111,10 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
 BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
 constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
-    "https://dl.google.com/widevine-cdm/%s-win-arm64.zip"};
-constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllFallbackUrl{
-    &kBraveWidevineArm64DllFix, "widevine_arm64_dll_fallback_url",
     "https://dl.google.com/widevine-cdm/4.10.2710.0-win-arm64.zip"};
+constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllTemplateUrl{
+    &kBraveWidevineArm64DllFix, "widevine_arm64_dll_template_url",
+    "https://dl.google.com/widevine-cdm/%s-win-arm64.zip"};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
@@ -200,7 +200,7 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
   CrxInstaller::Result result = InstallArm64Dll(guessed_url, install_dir);
   if (IsHttp404(result)) {
     // Our guess failed. Fall back to a DLL version that is known to exist.
-    const GURL fallback_url = GURL(kBraveWidevineArm64DllFallbackUrl.Get());
+    const GURL fallback_url = GURL(kBraveWidevineArm64DllUrl.Get());
     LOG(WARNING) << "Guessed Widevine Arm64 ALL URL " << guessed_url
                  << " does not exist. Falling back to " << fallback_url
                  << ", which should exist but may not be compatible.";
@@ -211,7 +211,7 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
 
 const std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
     const std::string version) {
-  const std::string format = kBraveWidevineArm64DllUrl.Get();
+  const std::string format = kBraveWidevineArm64DllTemplateUrl.Get();
   size_t pos = format.find("%s");
   if (pos == std::string::npos) {
     // This can happen when `format` was set to a static URL via Griffin.
