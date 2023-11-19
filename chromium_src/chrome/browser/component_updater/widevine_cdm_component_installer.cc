@@ -134,7 +134,7 @@ class WidevineCdmComponentInstallerPolicy
   CrxInstaller::Result OnCustomInstall(
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
-  const std::string GetArm64DllZipUrl(const std::string& version);
+  std::string GetArm64DllZipUrl(const std::string& version);
   CrxInstaller::Result InstallArm64Dll(const GURL zip_url,
                                        const base::FilePath& install_dir);
   bool IsHttp404(CrxInstaller::Result);
@@ -209,7 +209,7 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
   return result;
 }
 
-const std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
+std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
     const std::string& version) {
   const std::string format = kBraveWidevineArm64DllTemplateUrl.Get();
   size_t pos = format.find("%s");
