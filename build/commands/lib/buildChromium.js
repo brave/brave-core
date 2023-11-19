@@ -10,9 +10,42 @@ const fs = require('fs-extra')
 const syncUtil = require('./syncUtils')
 const Log = require('./logging')
 
+const outputArchive = `chromium_${config.braveVersion}_${config.targetArch}`
+
+const chromiumConfigs = {
+  'win': {
+    buildTarget: 'mini_installer',
+    processArtifacts: () => {
+      fs.moveSync(
+        path.join(config.outputDir, 'chrome.7z'),
+        path.join(config.outputDir, `${outputArchive}.7z`))
+    }
+  },
+  'linux': {
+    buildTarget: 'installer',
+    processArtifacts: () => {
+      /* TODO */
+    }
+  },
+  'mac': {
+    buildTarget: 'installer',
+    processArtifacts: () => {
+      /* TODO */
+    }
+  },
+  'android': {
+    buildTarget: 'chrome_public_apk',
+    processArtifacts: () => {
+      fs.moveSync(
+        path.join(config.outputDir, 'ChromePublic.apk'),
+        path.join(config.outputDir, `${outputArchive}.apk`))
+    }
+  },
+}
+
 const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) => {
   syncUtil.maybeInstallDepotTools()
-  syncUtil.buildDefaultGClientConfig(config.targetOS ? [config.targetOS]: null, [config.targetArch])
+  syncUtil.buildDefaultGClientConfig([config.getTargetOS()], [config.targetArch])
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 
@@ -30,7 +63,9 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
 
   config.buildConfig = buildConfig
   config.update(options)
-  config.buildTarget = 'chrome'
+
+  const chromiumConfig = chromiumConfigs[config.getTargetOS()]
+  config.buildTarget = chromiumConfig.buildTarget
   let args = {
     enable_keystone_registration_framework: false,
     ignore_missing_widevine_signing_cert: true,
@@ -42,6 +77,7 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
 
   util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], config.defaultOptions)
   util.buildTarget()
+  chromiumConfig.processArtifacts();
 }
 
 module.exports = buildChromium
