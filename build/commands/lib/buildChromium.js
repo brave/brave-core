@@ -37,7 +37,7 @@ const chromiumConfigs = {
     buildTarget: 'chrome_public_apk',
     processArtifacts: () => {
       fs.moveSync(
-        path.join(config.outputDir, 'ChromePublic.apk'),
+        path.join(config.outputDir, 'apks', 'ChromePublic.apk'),
         path.join(config.outputDir, `${outputArchive}.apk`))
     }
   },
