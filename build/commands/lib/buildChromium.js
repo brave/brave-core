@@ -10,7 +10,7 @@ const fs = require('fs-extra')
 const syncUtil = require('./syncUtils')
 const Log = require('./logging')
 
-const outputArchive = `chromium_${config.braveVersion}_${config.targetArch}`
+const outputArchive = `chromium_${config.chromeVersion}_${config.targetArch}`
 
 const chromiumConfigs = {
   'win': {
