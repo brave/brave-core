@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
 import InspectContext from './context'
-import Sidebar from './Sidebar'
+import FeedNavigation from './FeedNavigation'
 import Variables from './Variables'
 
 setIconBasePath('//resources/brave-icons')
@@ -32,7 +32,7 @@ function App() {
   return <Grid data-theme="dark">
     <SignalsPage />
     <FeedPage />
-    <Sidebar />
+    <FeedNavigation />
   </Grid>
 }
 
