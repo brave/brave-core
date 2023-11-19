@@ -16,9 +16,17 @@ const chromiumConfigs = {
   'win': {
     buildTarget: 'mini_installer',
     processArtifacts: () => {
-      fs.moveSync(
-        path.join(config.outputDir, 'chrome.7z'),
-        path.join(config.outputDir, `${outputArchive}.7z`))
+      // Repack it to reduce the size and use .zip instead of .7z.
+      input = path.join(config.outputDir, 'chrome.7z')
+      output = path.join(config.outputDir, `${outputArchive}.zip`)
+      util.run('python3',
+        [
+          path.join(config.braveCoreDir, 'script', 'repack-archive.py'),
+          `--input=${input}`,
+          `--output=${output}`,
+          '--target_dir=Chrome-bin',
+        ],
+        config.defaultOptions)
     }
   },
   'linux': {
@@ -79,7 +87,10 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
 
   util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], config.defaultOptions)
   util.buildTarget()
-  chromiumConfig.processArtifacts();
+
+  Log.progressScope('make archive', () => {
+    chromiumConfig.processArtifacts()
+  })
 }
 
 module.exports = buildChromium
