@@ -44,6 +44,9 @@ const chromiumConfigs = {
 }
 
 const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) => {
+  config.buildConfig = buildConfig
+  config.update(options)
+
   syncUtil.maybeInstallDepotTools()
   syncUtil.buildDefaultGClientConfig([config.getTargetOS()], [config.targetArch])
 
@@ -61,12 +64,11 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
     util.runGClient(['runhooks'])
   })
 
-  config.buildConfig = buildConfig
-  config.update(options)
-
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   config.buildTarget = chromiumConfig.buildTarget
   let args = {
+    target_cpu: config.targetArch,
+    target_os: config.getTargetOS(),
     enable_keystone_registration_framework: false,
     ignore_missing_widevine_signing_cert: true,
     is_chrome_branded: false,
