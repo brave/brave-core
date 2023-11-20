@@ -50,7 +50,7 @@ function InputBox () {
   }
 
   const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
         submitInputTextToAPI()
       }
