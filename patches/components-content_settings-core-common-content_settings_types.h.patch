@@ -1,0 +1,29 @@
+diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
+index 0a38dcddaf2b0bf50c3c2926b2e5dc29d5bae451..7ae50947074379fc80a45ea9ce349d250c50ec12 100644
+--- a/components/content_settings/core/common/content_settings_types.h
++++ b/components/content_settings/core/common/content_settings_types.h
+@@ -369,6 +369,24 @@ enum class ContentSettingsType : int32_t {
+   // heuristics.
+   TPCD_HEURISTICS_GRANTS,
+ 
++  // Note: This enum is annotated with GENERATED_JAVA_ENUM_PACKAGE, and cannot
++  // be extended with an override.
++  BRAVE_START,
++  BRAVE_ADS = BRAVE_START,
++  BRAVE_COSMETIC_FILTERING,
++  BRAVE_TRACKERS,
++  BRAVE_HTTP_UPGRADABLE_RESOURCES,
++  BRAVE_FINGERPRINTING_V2,
++  BRAVE_SHIELDS,
++  BRAVE_REFERRERS,
++  BRAVE_COOKIES,
++  BRAVE_SPEEDREADER,
++  BRAVE_ETHEREUM,
++  BRAVE_SOLANA,
++  BRAVE_GOOGLE_SIGN_IN,
++  BRAVE_HTTPS_UPGRADE,
++  BRAVE_REMEMBER_1P_STORAGE,
++  BRAVE_LOCALHOST_ACCESS,
+   NUM_TYPES,
+ };
+ 
