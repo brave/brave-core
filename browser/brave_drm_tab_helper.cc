@@ -76,6 +76,13 @@ void BraveDrmTabHelper::BindBraveDRM(
 }
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
+#if BUILDFLAG(IS_LINUX) && !defined(ARCH_CPU_X86_64)
+  // On non-x64 Linux, Widevine is not publicly available. This point is a
+  // convenient single place for turning this class into a no-op:
+  return false;
+  // Users on non-x64 Linux may still install Widevine manually and enable it in
+  // brave://settings.
+#else
   // If the user already opted in, don't offer it.
   PrefService* prefs =
       static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
@@ -84,6 +91,7 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   }
 
   return is_widevine_requested_;
+#endif  // BUILDFLAG(IS_LINUX) && !defined(ARCH_CPU_X86_64)
 }
 
 void BraveDrmTabHelper::DidStartNavigation(

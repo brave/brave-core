@@ -80,6 +80,9 @@ void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry) {
 }
 
 bool IsWidevineEnabled() {
+  // N.B.: As of this writing, kWidevineEnabled is also queried in other places.
+  // If you want to change the logic for enabling Widevine, then you need to
+  // change those other places as well.
   return g_browser_process->local_state()->GetBoolean(kWidevineEnabled);
 }
 
