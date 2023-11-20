@@ -40,7 +40,6 @@ export const WalletPageAsyncActions = {
   importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
     'importAccountFromJson'
   ),
-  openWalletSettings: createAction('openWalletSettings'),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
 }
 

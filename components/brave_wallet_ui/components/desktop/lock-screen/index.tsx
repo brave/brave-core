@@ -2,11 +2,28 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+
 import Button from '@brave/leo/react/button'
+
+// Constants
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../common/constants/local-storage-keys'
+import { WalletRoutes } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { openWalletRouteTab } from '../../../utils/routes-utils'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
+import { WalletActions } from '../../../common/actions'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { PasswordInput } from '../../shared/password-input/password-input-v2'
@@ -21,34 +38,65 @@ import {
   UnlockButton,
   InputLabel
 } from './style'
-
 import { VerticalSpace, Row } from '../../shared/style'
 
-interface Props {
-  value?: string
-  onSubmit: () => void
-  onPasswordChanged: (value: string) => void
-  onShowRestore: () => void
-  hasPasswordError: boolean
-  disabled: boolean
-}
+export const LockScreen = () => {
+  // redux
+  const dispatch = useDispatch()
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const hasIncorrectPassword = useSafeWalletSelector(
+    WalletSelectors.hasIncorrectPassword
+  )
 
-export const LockScreen = (props: Props) => {
-  const {
-    value,
-    onSubmit,
-    onPasswordChanged,
-    onShowRestore,
-    disabled,
-    hasPasswordError
-  } = props
+  // routing
+  const history = useHistory()
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !disabled) {
-      onSubmit()
+  // state
+  const [password, setPassword] = React.useState('')
+
+  // computed
+  const disabled = password === ''
+
+  // methods
+  const unlockWallet = React.useCallback(() => {
+    dispatch(WalletActions.unlockWallet({ password: password }))
+    setPassword('')
+    const sessionRoute = window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.SESSION_ROUTE
+    )
+    history.push(sessionRoute || WalletRoutes.PortfolioAssets)
+  }, [password])
+
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter' && !disabled) {
+        unlockWallet()
+      }
+    },
+    [unlockWallet, disabled]
+  )
+
+  const handlePasswordChanged = React.useCallback(
+    (value: string) => {
+      setPassword(value)
+
+      // clear error
+      if (hasIncorrectPassword) {
+        dispatch(WalletActions.hasIncorrectPassword(false))
+      }
+    },
+    [hasIncorrectPassword]
+  )
+
+  const onShowRestore = React.useCallback(() => {
+    if (isPanel) {
+      openWalletRouteTab(WalletRoutes.Restore)
+    } else {
+      history.push(WalletRoutes.Restore)
     }
-  }
+  }, [isPanel])
 
+  // render
   return (
     <StyledWrapper>
       <PageIcon />
@@ -71,16 +119,16 @@ export const LockScreen = (props: Props) => {
         </Row>
         <PasswordInput
           placeholder={getLocale('braveWalletEnterYourPassword')}
-          onChange={onPasswordChanged}
+          onChange={handlePasswordChanged}
           onKeyDown={handleKeyDown}
           error={getLocale('braveWalletLockScreenError')}
-          hasError={hasPasswordError}
+          hasError={hasIncorrectPassword}
           autoFocus={true}
-          value={value}
+          value={password}
         />
         <VerticalSpace space='24px' />
         <UnlockButton
-          onClick={onSubmit}
+          onClick={unlockWallet}
           isDisabled={disabled}
           kind='filled'
           size='large'
@@ -97,5 +145,3 @@ export const LockScreen = (props: Props) => {
     </StyledWrapper>
   )
 }
-
-export default LockScreen
