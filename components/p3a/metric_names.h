@@ -24,7 +24,7 @@ namespace p3a {
 //
 // clang-format off
 inline constexpr auto kCollectedTypicalHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
@@ -205,7 +205,7 @@ inline constexpr auto kCollectedTypicalHistograms =
 });
 
 inline constexpr auto kCollectedSlowHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.Accessibility.DisplayZoomEnabled",
     "Brave.Core.DocumentsDirectorySizeMB",
     "Brave.Core.ProfileCount",
@@ -228,7 +228,7 @@ inline constexpr auto kCollectedSlowHistograms =
 });
 
 inline constexpr auto kCollectedExpressHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.UsageDaily.2",
     "Brave.Core.UsageDaily",
     "Brave.Rewards.EnabledInstallationTime",
@@ -243,7 +243,7 @@ inline constexpr auto kCollectedExpressHistograms =
 // List of metrics that should only be sent once per latest histogram update.
 // Once the metric value has been sent, the value will be removed from the log store.
 inline constexpr auto kEphemeralHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",

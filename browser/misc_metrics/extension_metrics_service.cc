@@ -14,16 +14,18 @@ namespace misc_metrics {
 namespace {
 
 constexpr auto kPopularAdBlockExtensions =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        // AdGuard
-        "bgnkhhnnamicmpeenaelnjfhikgbkllg",
-        // uBO
-        "cjpalhdlnbpafiamejdnhcphjbkeiagm",
-        // Ghostery
-        "mlomiejdfkolichcflejclcbmpeaniij",
-        // AdBlocker Ultimate
-        "ohahllgiabjaoigichmmfljhkcfikeof",
-    });
+    base::MakeFixedFlatSet<std::string_view>(
+        base::sorted_unique,
+        {
+            // AdGuard
+            "bgnkhhnnamicmpeenaelnjfhikgbkllg",
+            // uBO
+            "cjpalhdlnbpafiamejdnhcphjbkeiagm",
+            // Ghostery
+            "mlomiejdfkolichcflejclcbmpeaniij",
+            // AdBlocker Ultimate
+            "ohahllgiabjaoigichmmfljhkcfikeof",
+        });
 constexpr base::TimeDelta kReportDebounceTime = base::Seconds(10);
 
 }  // namespace
