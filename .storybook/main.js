@@ -19,11 +19,19 @@ module.exports = {
     }
   },
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
+  framework: "@storybook/react-webpack5",
   staticDirs: [
     { from: '../node_modules/@brave/leo/icons', to: 'icons/' },
     {
       from: '../components/playlist/browser/resources/stories/assets',
       to: 'playlist/'
     }
-  ]
+  ],
+  features: {
+    storyStoreV7: false
+  },
+  typescript: {
+    check: false,
+    reactDocgen: false
+  }
 }
