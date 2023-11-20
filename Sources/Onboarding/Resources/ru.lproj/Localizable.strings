@@ -17,7 +17,7 @@
 "confirmationTitle" = "Отлично!";
 
 /* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
-"dismissOnboardingButtonTitle" = "Dismiss";
+"dismissOnboardingButtonTitle" = "Отклонить";
 
 /* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
 "dismissStep2OnboardingButtonTitle" = "Может быть, позже";

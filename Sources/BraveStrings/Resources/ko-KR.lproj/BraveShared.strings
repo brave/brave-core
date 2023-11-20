@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "쿠키 동의 문구 차단";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "확인";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave는 유해한 코키를 사전 차단합니다. 이제 쿠키 동의 등 짜증 나는 쿠키도 자동 차단합니다.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave, 쿠키 동의 문구 차단";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단합니다.";
 
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "차단";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "데이터를 보려면 '%@' 활성화 필요";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "이메일 트래커";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "즐겨찾기 제거";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "깨진 사이트 신고";
+"ReportABrokenSite" = "작동이 멈춘 사이트 보고";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "버그 신고";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "추가 세부정보(선택사항)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "연락 방법:(선택사항)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "이메일, Twitter 등";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "다음 사이트가 Shields에서 제대로 작동하는지 Brava 개발자가 파악할 수 있게 합니다.";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "보안";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "보내기";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Brave에서 문제를 해결할 수 있도록 오류 보고서를 전송하시겠습니까?";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "미디어";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Brave에서 YouTube 링크 열기";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "화면 시간 활성화";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "새 브라우저 탭 열기";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "브라우저 북마크 화면 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "북마크 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Brave 브라우저 북마크 열기";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Brave News 열기";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave News 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "브라우저 기록 화면 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "브라우저 기록 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Brave 브라우저 기록 열기";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "재생목록 내 동영상 재생 시작";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "재생목록 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "다른 기기에서 열린 Brave 탭 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "다른 기기에서 탭 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "다른 기기에서 탭 열기";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Brave로 안전하게 웹 검색 시작";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "VPN 활성화";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Siri - Voice Assistant를 통해 바로가기를 사용하여 북마크 화면 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "북마크 열기";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri - Voice Assistant를 통해 바로가기를 사용하여 새 탭 열기 및 Brave News 피드 표시";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Siri - Voice Assistant를 통해 바로가기를 사용하여 브라우저 기록 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "브라우저 기록 열기";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri - Voice Assistant를 통해 바로가기를 사용하여 새 비공개 탭 열기";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "재생목록 열기";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Siri - Voice Assistant를 통해 바로가기를 사용하여 다른 기기에서 탭 열기";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "다른 기기에서 탭 열기";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 바로가기";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "동기화";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "북마크 내보내기 성공";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "북마크 내보내기 실패";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "북마크";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "동기화 설정";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "새로운 Brave Sync가 출시되어 설정에 적용될 예정입니다. 곧 업그레이드됩니다.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "북마크를 마이그레이션하지 못했습니다. 나중에 다시 시도하세요.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "오류";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "일부 북마크를 가져오지 못했습니다. 수동으로 추가할 수 있습니다.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "북마크 마이그레이션";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "Brave Sync를 사용하려면 기존 북마크를 마이그레이션해야 새 시스템을 사용할 수 있습니다. 이 작업은 북마크를 삭제하지 않습니다.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "마이그레이션";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "마이그레이션 필요";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "새 기기 추가";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Brave Firewall + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "원치 않는 네트워크 연결 차단";
+"vpn.checkboxDevicesProtect" = "구독 1개로 기기 5대 보호";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "모든 앱에서 광고 및 트래커 차단 ";
+"vpn.checkboxGeoLocation" = "지역/국가 위치 선택";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "보안 암호화 VPN 터널 사용";
+"vpn.checkboxNoIPLog" = "Brave가 활동을 절대 기록하지 않음";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "최대 100Mbps의 속도 지원";
+"vpn.checkboxProtectYourDevices" = "모든 앱 및 모든 기기 보호";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "최대 100Mbps의 빠른 속도 무제한";
+"vpn.checkboxSaferWifi" = "집 또는 공용 Wi-Fi에서 더욱 안전하게";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "지역/국가 위치 선택";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "익명 온라인 상태 유지";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "사용자 정보 공유 또는 판매 절대 없음";
+"vpn.checkboxSpeedFast" = "빛처럼 빠른 속도, 최대 100Mbps";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "App Store 영수증";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "만료됨";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "원치 않는 네트워크 연결 차단";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "모든 앱에서 광고 및 트래커 차단 ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "최대 100Mbps의 속도 지원";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "최대 100Mbps의 빠른 속도 무제한";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "연중무휴 지원";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "오류";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN 구성이 성공적으로 재설정되었습니다.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "성공";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "다른 기기에서도 Brave VPN을 사용하려면 App Store 구매 항목을 Brave 계정에 연결하세요.";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "구독 관리";
 
 /* Button to reset VPN configuration */

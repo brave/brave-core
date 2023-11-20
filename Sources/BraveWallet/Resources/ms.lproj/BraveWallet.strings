@@ -190,6 +190,9 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Sandarkan dompet anda sekarang untuk melindungi aset kripto anda dan memastikan anda tidak sekali-kali akan kehilangan capaian.";
 
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "Baki";
+
 /* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupEnableButtonTitle" = "Gunakan %@";
 
@@ -211,8 +214,14 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "ID Sentuhan";
 
+/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Yuran Brave: %@";
+
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "Sebut harga termasuk %@ yuran Brave.";
+
+/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+"wallet.braveSwapFree" = "Percuma";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "Beli";
@@ -739,6 +748,9 @@
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "Permintaan Kunci Penyulitan Awam";
 
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "Graf";
+
 /* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
 "wallet.groupByAccountsOptionTitle" = "Akaun";
 
@@ -856,6 +868,9 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Kunci";
 
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "Kuncikan Dompet";
+
 /* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
 "wallet.lowToHighSortOption" = "Rendah hingga Tinggi";
 
@@ -952,6 +967,9 @@
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Seterusnya";
 
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "Dikumpulkan";
+
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
 "wallet.nftDetailBlockchain" = "Blok rantai";
 
@@ -1003,6 +1021,12 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Get laluan IPFS sah patut disediakan. Get laluan yang disediakan akan diperiksa dari segi keupayaan untuk memuatkan sumber IPFS.";
 
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "Tersembunyi";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "Belum ada NFT tersembunyi di sini.";
+
 /* The description of the empty state inside NFT tab. */
 "wallet.nftPageEmptyDescription" = "Bersedia untuk menambah sesuatu? Hanya ketik butang di bawah untuk mengimport.";
 
@@ -1012,8 +1036,29 @@
 /* The title of the tab that will display user's visible NFT assets. */
 "wallet.nftPageTitle" = "NFT";
 
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "Jangan Tunjukkan dalam Dompet";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT akan dialih keluar daripada Dompet Brave tetapi akan kekal pada blok rantai. Jika anda mengalihkannya keluar, kemudian berubah fikiran, anda perlu mengimportnya semula secara manual.";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "Alih keluar daripada Dompet Brave?";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "Sarap";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "Tab NFT";
+
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "Nyahsembunyikan";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "Tandakan sebagai Bukan Sarap";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Tiada Akaun";
@@ -1086,6 +1131,9 @@
 
 /* The message displayed when the user takes a screenshot of their private key */
 "wallet.privateKeyScreenshotDetectedMessage" = "Amaran: Tangkapan skrin kunci peribadi anda mungkin disimpan kepada perkhidmatan fail awan dan boleh dibaca oleh mana-mana aplikasi dengan capaian foto. Brave menyarankan supaya anda tidak menyimpan dan memadam tangkapan skrin ini secepat mungkin.";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "Yuran Protokol: %@";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "Beli dengan %@";
@@ -1200,6 +1248,12 @@
 
 /* A title above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsTitle" = "Akaun Sekunder";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "Risiko Keselamatan Dikesan";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "Lihat butiran";
 
 /* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectAccountsDescription" = "Pilih akaun untuk tapis mengikut";
@@ -1376,10 +1430,10 @@
 "wallet.signAllTransactionsTitle" = "Tandatangan Semua Transaksi";
 
 /* A title displayed inside the text view in Signature Request View above the request's domain information. */
-"wallet.signatureRequestDomainTitle" = "Domain";
+"wallet.signatureRequestDomainTitle" = "Domain:";
 
 /* A title displayed inside the text view in Signature Request View above the request's message. */
-"wallet.signatureRequestMessageTitle" = "Mesej";
+"wallet.signatureRequestMessageTitle" = "Mesej:";
 
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "Tandatangan anda sedang diminta";
@@ -1392,6 +1446,12 @@
 
 /* A title of transaction signed status view indicating this transaction has been signed. */
 "wallet.signedTransactionTitle" = "Transaksi Ditandatangani";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Log masuk dengan Brave Wallet";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "Anda sedang mendaftar masuk ke %1$@. Dompet Brave akan berkongsi alamat dompet anda dengan %2$@.";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "Aksara baris baru yang berturutan dikesan!";
@@ -1410,6 +1470,45 @@
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Tandatangan Transaksi";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "Alamat";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "ID Rantaian";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "Butiran";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "Masa Tamat Tempoh";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "Dikeluarkan Pada";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "Mesej";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "Nonce";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "Asal";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "Sumber";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "Log Masuk";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "Penyata";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "Versi";
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Langkau";
@@ -1762,9 +1861,6 @@
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
 "wallet.transactionTypeApprove" = "Lulus";
 
-/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
-"wallet.transactionUnknownApprovalTitle" = "Diluluskan";
-
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "Dihantar %@";
 
@@ -1794,9 +1890,6 @@
 
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Buka kunci";
-
-/* The title displayed on the unlock wallet screen */
-"wallet.unlockWalletTitle" = "Masukkan kata laluan untuk membuka kunci dompet";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ pada %2$@";
@@ -1843,8 +1936,8 @@
 /* The description for wallet panel when users haven't set up a wallet yet. */
 "wallet.walletPanelSetupWalletDescription" = "Gunakan panel ini untuk mengakses web3 dan semua aset kripto anda dengan selamat.";
 
-/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
-"wallet.walletPanelUnlockWallet" = "Buka kunci dompet";
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "Tetapan Dompet";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Tiada";

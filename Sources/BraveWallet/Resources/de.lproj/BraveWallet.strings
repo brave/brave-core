@@ -190,6 +190,9 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Sichern Sie Ihre Wallet jetzt, um Ihre Kryptowährungs-Assets zu schützen und sicherzustellen, dass Sie niemals den Zugriff verlieren.";
 
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "Guthaben";
+
 /* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupEnableButtonTitle" = "%@ verwenden";
 
@@ -211,8 +214,14 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch-ID";
 
+/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Brave-Gebühr: %@";
+
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "Angebot enthält eine Brave-Gebühr von %@.";
+
+/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+"wallet.braveSwapFree" = "Kostenlos";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "Kaufen";
@@ -739,6 +748,9 @@
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "Anforderung Ihres öffentlichen Verschlüsselungsschlüssels";
 
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "Diagramm";
+
 /* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
 "wallet.groupByAccountsOptionTitle" = "Konten";
 
@@ -856,6 +868,9 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Sperren";
 
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "Wallet schließen";
+
 /* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
 "wallet.lowToHighSortOption" = "Aufsteigend";
 
@@ -952,6 +967,9 @@
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Weiter";
 
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "Gesammelt";
+
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
 "wallet.nftDetailBlockchain" = "Blockchain";
 
@@ -1003,6 +1021,12 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Ein gültiges IPFS-Gateway sollte bereitgestellt werden. Das bereitgestellte Gateway wird auf die Fähigkeit zum Laden von IPFS-Ressourcen überprüft.";
 
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "Ausgeblendet";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "Es gibt hier noch keine NFTs.";
+
 /* The description of the empty state inside NFT tab. */
 "wallet.nftPageEmptyDescription" = "Bereit, einige hinzuzufügen? Tippen Sie zum Importieren einfach auf die untenstehende Schaltfläche.";
 
@@ -1012,8 +1036,29 @@
 /* The title of the tab that will display user's visible NFT assets. */
 "wallet.nftPageTitle" = "NFT";
 
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "Nicht in Wallet anzeigen";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "Das NFT wird aus der Brave-Wallet entfernt, verbleibt aber in der Blockchain. Wenn Sie es entfernen und anschließend Ihre Meinung ändern, müssen Sie es manuell reimportieren.";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "Aus Brave-Wallet entfernen?";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "Spam";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "NFTs-Tab";
+
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFTs";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "Einblenden";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "Nicht als Spam markieren";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Keine Konten";
@@ -1086,6 +1131,9 @@
 
 /* The message displayed when the user takes a screenshot of their private key */
 "wallet.privateKeyScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihres privaten Schlüssels wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Brave empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "Protokollgebühr: %@";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "Kaufen mit %@";
@@ -1200,6 +1248,12 @@
 
 /* A title above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsTitle" = "Sekundäre Konten";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "Sicherheitsrisiko erkannt";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "Detaillierte Informationen anzeigen";
 
 /* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectAccountsDescription" = "Wählen Sie Konten aus, nach denen gefiltert werden soll";
@@ -1376,10 +1430,10 @@
 "wallet.signAllTransactionsTitle" = "Alle Transaktionen signieren";
 
 /* A title displayed inside the text view in Signature Request View above the request's domain information. */
-"wallet.signatureRequestDomainTitle" = "Domain";
+"wallet.signatureRequestDomainTitle" = "Domain:";
 
 /* A title displayed inside the text view in Signature Request View above the request's message. */
-"wallet.signatureRequestMessageTitle" = "Nachricht";
+"wallet.signatureRequestMessageTitle" = "Nachricht:";
 
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "Ihre Signatur ist erforderlich";
@@ -1392,6 +1446,12 @@
 
 /* A title of transaction signed status view indicating this transaction has been signed. */
 "wallet.signedTransactionTitle" = "Transaktion signiert";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Mit Brave Wallet anmelden";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "Sie melden sich bei %1$@ an. Die Brave-Wallet wird Ihre Wallet-Adresse mit %2$@ teilen.";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "Mehrere Zeilenumbrüche hintereinander erkannt!";
@@ -1410,6 +1470,45 @@
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Transaktion signieren";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "Adresse";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "Chain ID";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "Details";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "Ablaufzeit";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "Ausgestellt am";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "Nachricht";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "Nonce";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "Ursprung";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "Ressourcen";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "Anmelden";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "Erklärung";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "Version";
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Überspringen";
@@ -1762,9 +1861,6 @@
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
 "wallet.transactionTypeApprove" = "Genehmigen";
 
-/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
-"wallet.transactionUnknownApprovalTitle" = "Genehmigt";
-
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "%@ gesendet";
 
@@ -1794,9 +1890,6 @@
 
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Entsperren";
-
-/* The title displayed on the unlock wallet screen */
-"wallet.unlockWalletTitle" = "Geben Sie Ihr Passwort ein, um die Wallet zu entsperren";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ auf %2$@";
@@ -1843,8 +1936,8 @@
 /* The description for wallet panel when users haven't set up a wallet yet. */
 "wallet.walletPanelSetupWalletDescription" = "Verwenden Sie dieses Menü, um sicher auf web3 und all Ihre Krypto-Assets zuzugreifen.";
 
-/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
-"wallet.walletPanelUnlockWallet" = "Wallet entsperren";
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "Wallet-Einstellungen";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Keine";

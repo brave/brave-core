@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "封鎖 Cookie 同意通知";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "我瞭解了";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave 已經封鎖了有害 Cookie。我們現在也會自動封鎖惱人的 Cookie 同意通知。";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave 正在封鎖 Cookie 同意通知";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊。";
 
@@ -269,13 +260,13 @@
 "callout.defaultBrowserCalloutDescription" = "將 Brave 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Brave 的隱私保護下開啟。";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設值";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設瀏覽器";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "已經是預設瀏覽器了嗎？";
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "已為預設瀏覽器？";
 
 /* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "略過";
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "略過此步驟";
 
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "隱私不再遙不可及。";
@@ -608,7 +599,7 @@
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "已新增搜尋引擎！";
 
 /* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "稍後再說";
+"defaultBrowserCallout.introCancelButtonText" = "現在不要";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "開啟設定";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "防護";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "啟用「%@」以在此查看資料";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "電子郵件追蹤器";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "移除我的最愛";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "回報故障網站";
+"ReportABrokenSite" = "回報壞掉的網站";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "回報 Bug";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "其他詳細資訊 (選填)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "聯絡方式：(選填)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "電子郵件、Twitter 等";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "讓 Brave 的開發人員知悉此網站無法在 Shields 中正常運作：";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "安全";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "傳送";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "傳送當機報告協助 Brave 修正問題？";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "媒體";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "在 Brave 中開啟 YouTube 連結";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "啟用螢幕使用時間";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "開啟新瀏覽器標籤";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "開啟瀏覽器書籤畫面";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "開啟書籤";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "開啟 Brave 瀏覽器書籤";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "開啟 Brave News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "開啟 Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "開啟瀏覽器歷史記錄畫面";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "開啟瀏覽器歷史記錄";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "開啟 Brave 瀏覽器歷史記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "開始播放您在播放清單中的影片";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "開啟播放清單";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "開啟在其他裝置中開啟的 Brave 分頁";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "開啟其他裝置上的分頁";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "開啟其他裝置上的分頁";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "開始使用 Brave 安全地搜尋 Web";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "啟用 VPN";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "透過 Siri 語音助理，使用捷徑開啟書籤畫面";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "開啟書籤";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及顯示 Brave News 摘要";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "開啟 Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "透過 Siri 語音助理，使用捷徑開啟瀏覽器歷史記錄畫面";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "開啟瀏覽器歷史記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "使用快速鍵透過 Siri - Voice Assistant 開啟新私人標籤";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "開啟播放清單";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "透過 Siri 語音助理，使用捷徑開啟其他裝置上的分頁";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "開啟其他裝置上的分頁";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 快速鍵";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "同步";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "書籤匯出成功";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "書籤匯出失敗";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "書籤";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "同步設定";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "最新 Brave Sync 即將推出，屆時您的設定將會受到影響。敬請準備升級。";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "無法移轉書籤，請稍後再試。";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "錯誤";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "部分書籤無法移轉，您可以重新手動新增。";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "書籤移轉";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "若要使用 Brave Sync，您必須先移轉現有書籤，改用新系統。此作業不會刪除書籤。";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "移轉";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "請先移轉";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "新增裝置";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Brave Firewall + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "封鎖不需要的網路連線";
+"vpn.checkboxDevicesProtect" = "1 筆訂閱即可保護 5 個裝置";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "攔截所有應用程式中的廣告和追蹤器";
+"vpn.checkboxGeoLocation" = "選擇您的地理/國家/地區位置";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "使用安全加密 VPN 通道";
+"vpn.checkboxNoIPLog" = "Brave 絕不會記錄您的活動";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "最高可支援 100 Mbps 的速度";
+"vpn.checkboxProtectYourDevices" = "保護所有應用程式和整個裝置";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
+"vpn.checkboxSaferWifi" = "家用和公共 Wi-Fi 更安全";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "選擇您的地理/國家/地區位置";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "讓您在線上保持匿名狀態";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "我們絕不會洩漏或販賣您的資訊";
+"vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "App Store 收據";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "過期";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "封鎖不需要的網路連線";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "攔截所有應用程式中的廣告和追蹤器";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "最高可支援 100 Mbps 的速度";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "全天候支援";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "錯誤";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "已成功重設 VPN 設定。";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "成功";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave VPN。";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "管理訂閱";
 
 /* Button to reset VPN configuration */

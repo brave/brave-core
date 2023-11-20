@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Bloquear avisos de consentimiento de cookies";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "Listo";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave ya bloquea las cookies maliciosas. Además, ahora podemos bloquear automáticamente los molestos avisos de consentimiento de cookies.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave bloquea los avisos de consentimiento de cookies";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Impide que los sitios web almacenen información sobre lo que has visitado con anterioridad.";
 
@@ -269,7 +260,7 @@
 "callout.defaultBrowserCalloutDescription" = "Si usas Brave como navegador predeterminado, todos los enlaces que pulses se abrirán con la protección de privacidad de Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer por defecto ";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer como predeterminado";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "¿Ya está como predeterminado?";
@@ -608,7 +599,7 @@
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "¡Buscador añadido!";
 
 /* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Ahora no";
+"defaultBrowserCallout.introCancelButtonText" = "Ahora No";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Abrir ajustes";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "Escudos";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Habilita \"%@\" para ver los datos aquí";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "Rastreadores de correo electrónico";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "Eliminar favorito";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Informar de un sitio web dañado";
+"ReportABrokenSite" = "Notificar un error...";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Informar de un error";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Detalles adicionales (opcional)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Contacto: (opcional)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Correo electrónico, Twitter, etc.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Informa a los desarrolladores de Brave para que sepan que el sitio no funciona como debería con Brave Shields:";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "Seguridad";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Enviar";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "¿Enviar un informe de incidencias para que Brave pueda arreglar el problema?";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Multimedia";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Abrir enlaces de YouTube en Brave";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Habilitar el tiempo en pantalla";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "Abrir una nueva pestaña del navegador";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Abrir la pantalla de marcadores del navegador";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Abrir marcadores";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Abrir los marcadores del navegador de Brave";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Abrir Brave News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Abrir Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Abrir la pantalla de historial del navegador";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Abrir el historial del navegador";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Abrir el historial del navegador de Brave";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Empieza a reproducir los vídeos de la lista de reproducción";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "Abrir lista de reproducción";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Abrir las pestañas de Brave abiertas en otros dispositivos";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Abrir las pestañas de otros dispositivos";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Abrir las pestañas de otros dispositivos";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Empieza a hacer búsquedas en Internet de forma segura con Brave";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Habilitar VPN";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Utiliza los accesos directos para abrir la pantalla de marcadores con el asistente de voz Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Abrir marcadores";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Utiliza los accesos directos para abrir una nueva pestaña y mostrar el canal de Noticias de Brave con el asistente de voz Siri";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Abrir Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Utiliza los accesos directos para abrir la pantalla de historial del navegador con el asistente de voz Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Abrir el historial del navegador";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Utiliza los accesos directos para abrir una nueva pestaña privada con el asistente de voz Siri";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir lista de reproducción";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Utiliza los accesos directos para abrir las pestañas de otros dispositivos con el asistente de voz Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Abrir las pestañas de otros dispositivos";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Accesos directos de Siri";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "Sincronización";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Marcadores exportados correctamente";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Error al exportar los marcadores";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Marcadores";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Ajustes de sincronización";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Pronto se habrá una nueva Brave Sync que alterará tu configuración. Prepárate para la actualización.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "Error al migrar los marcadores. Vuelve a intentarlo más tarde.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "Error";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Error al importar algunos de tus marcadores. Puedes volver a añadirlos manualmente.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Migración de marcadores";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "Para usar Brave Sync, tienes que migrar los marcadores actuales para poder acceder al nuevo sistema. Esta operación no eliminará los marcadores.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "Migrar";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "Se requiere migración";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "Añadir un nuevo dispositivo";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Firewall + VPN de Brave";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "Bloquea las conexiones de red no deseadas";
+"vpn.checkboxDevicesProtect" = "Protege cinco dispositivos con una suscripción";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "Bloquear anuncios y rastreadores en todas las aplicaciones";
+"vpn.checkboxGeoLocation" = "Selecciona tu región/país";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Utiliza túneles de VPN cifrados seguros";
+"vpn.checkboxNoIPLog" = "Brave no registra nunca tu actividad";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "Admite velocidades de hasta 100 Mbps";
+"vpn.checkboxProtectYourDevices" = "Proteger todas las aplicaciones y el dispositivo al completo";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "Fast and unlimited up to 100 Mbps";
+"vpn.checkboxSaferWifi" = "Mayor seguridad para wifi público y doméstico";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "Selecciona tu región/país";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Te mantiene en el anonimato cuando estás en línea";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "Nunca compartimos ni vendemos tu información";
+"vpn.checkboxSpeedFast" = "Velocidad de hasta 100 Mbps";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Recibo de la App Store";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "Expirada";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Bloquea las conexiones de red no deseadas";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Bloquear anuncios y rastreadores en todas las aplicaciones";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Admite velocidades de hasta 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Fast and unlimited up to 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "Asistencia 24 horas, 7 días a la semana";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Error";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Se ha restablecido la configuración de la VPN.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "Hecho";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Vincula la compra que has hecho en el App Store con tu cuenta de Brave para usar la VPN de Brave en otros dispositivos.";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "Gestionar la suscripción";
 
 /* Button to reset VPN configuration */
@@ -3827,7 +3867,7 @@
 "vpn.updatePaymentActionButtonTitle" = "Actualizar pago";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualizar el método de pago";
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualiza el método de pago";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave continuará protegiéndote incluso en segundo plano.";

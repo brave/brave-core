@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Sekat Notis Persetujuan Kuki";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "Faham";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave sudah menyekat kuki berbahaya. Kini, kami juga menyekat notis persetujuan kuki yang menjengkelkan itu secara automatik.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave menyekat notis persetujuan kuki";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Menghalang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini.";
 
@@ -263,19 +254,19 @@
 "callout.bottomBarCalloutTitle" = "Sesuaikan Bar Tab Brave";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Brave sebagai penyemak imbas lalai?";
+"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Brave sebagai Pelayar Lalai?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai lalai, setiap pautan yang anda ketik dibuka dengan perlindungan privasi Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan lalai";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai Lalai";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah ditetapkan sebagai lalai?";
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah Ditetapkan sebagai Lalai?";
 
 /* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Langkau langkah ini";
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Langkau Langkah Ini";
 
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Privasi. Dihasilkan Secara Mudah.";
@@ -296,7 +287,7 @@
 "callout.privacyEverywhereCalloutDescription" = "Dapatkan ciri privasi Brave pada komputer atau tablet anda, dan segerakkan penanda halaman & sambungan antara peranti.";
 
 /* Title for button in Default Browser Full Screen Callout */
-"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Segerakkan sekarang";
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Segerakkan Sekarang";
 
 /* Title for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutTitle" = "Privasi. Di mana jua.";
@@ -608,7 +599,7 @@
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Menambah enjin Carian!";
 
 /* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Bukan sekarang";
+"defaultBrowserCallout.introCancelButtonText" = "Bukan Sekarang";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Buka Tetapan";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "Perisai";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Dayakan '%@' untuk melihat data di sini";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "Penjejak E-mel";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "Alih Keluar Kegemaran";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Laporkan laman web yang rosak";
+"ReportABrokenSite" = "Laporkan Laman yang Terputus-putus";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Laporkan Pepijat";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Butiran tambahan (pilihan)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Hubungi saya melalui: (pilihan)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-mel, Twitter, dll.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Beritahu pembangun Brave bahawa tapak ini tidak berfungsi dengan betul dengan Shields:";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "Sekuriti";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Hantar";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Hantar laporan rosak supaya Brave boleh menyelesaikan masalah?";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Media";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Buka pautan Youtube dalam Brave";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Dayakan Masa Skrin";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "Buka Tab Pelayar Baharu";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Buka Skrin Penanda Halaman Pelayar";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Buka Penanda Halaman";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Buka Penanda Halaman Pelayar Brave";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Buka Brave News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Buka Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Buka Skrin Sejarah Pelayar";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Buka Sejarah Penyemak Imbas";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Buka Sejarah Pelayar Brave";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Mula Bermain Video anda dalam Senarai Main";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "Buka Senarai Main";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Buka Tab Brave yang Dibuka dalam Peranti Lain";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Buka Tab daripada Peranti Lain";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Buka Tab daripada Peranti Lain";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Mula Mencari di Web dengan Selamat dengan Brave";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Dayakan VPN";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Gunakan Pintasan untuk membuka skrin penanda halaman melalui Siri - Pembantu Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Buka Penanda Halaman";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Pintasan untuk membuka tab baharu & memaparkan Suapan Berita Brave melalui Siri - Pembantu Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Buka Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Gunakan Pintasan untuk membuka skrin sejarah pelayar melalui Siri - Pembantu Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Buka Sejarah Pelayar";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Gunakan Pintasan untuk membuka tab peribadi baharu melalui Siri - Pembantu Suara";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Buka Senarai Main";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Gunakan Pintasan untuk membuka Tab daripada Peranti Lain melalui Siri - Pembantu Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Buka Tab daripada Peranti Lain";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Pintasan Siri";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "Segerak";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Penanda Halaman Berjaya Dieksport";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Eksport Penanda Halaman Gagal";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Penanda Halaman";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Tetapan Penyegerakan";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Brave Sync baharu akan tiba dan akan mempengaruhi persediaan anda. Bersedia untuk naik taraf.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "Gagal memindahkan penanda buku. Sila cuba lagi kemudian.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "Ralat";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Sesetengah penanda buku anda gagal dipindahkan. Anda boleh menambahnya kembali secara manual.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Pemindahan penanda buku";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "Untuk menggunakan Brave Sync, penanda buku yang ada mesti dipindahkan untuk menggunakan sistem baharu. Operasi ini tidak akan memadam penanda buku anda.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "Pindah";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "Pemindahan diperlukan";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "Tambah Peranti Baharu";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Tembok Api Berani + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "Blok sambungan rangkaian yang tidak diingini";
+"vpn.checkboxDevicesProtect" = "Lindungi 5 peranti pada 1 langganan";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "Sekat iklan & penjejak pada semua apl";
+"vpn.checkboxGeoLocation" = "Pilih lokasi geo/negara anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Menggunakan terowong VPN disulitkan yang selamat";
+"vpn.checkboxNoIPLog" = "Brave tidak pernah mengelogkan aktiviti anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "Menyokong kelajuan hingga 100 Mbps";
+"vpn.checkboxProtectYourDevices" = "Lindungi setiap aplikasi & seluruh peranti anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "Cepat dan tanpa had sehingga 100 Mbps";
+"vpn.checkboxSaferWifi" = "Lebih selamat untuk WI-Fi rumah atau awam";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "Pilih lokasi geo/negara anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Menyimpan anda tanpa nama dalam talian";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "Kami tidak pernah berkongsi atau menjual maklumat anda";
+"vpn.checkboxSpeedFast" = "Sepantas kilat, sehingga 100 Mbps";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Resit App Store";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "Tamat Tempoh";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Blok sambungan rangkaian yang tidak diingini";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Sekat iklan & penjejak pada semua apl";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Menyokong kelajuan hingga 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Cepat dan tanpa had sehingga 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "sokongan 24/7";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Ralat";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfigurasi VPN berjaya ditetapkan semula.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "Berjaya";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Pautkan pembelian App Store anda ke akaun Brave anda untuk menggunakan VPN Brave pada peranti lain.";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "Urus Langganan";
 
 /* Button to reset VPN configuration */

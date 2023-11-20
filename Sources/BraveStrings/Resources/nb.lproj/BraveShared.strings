@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blokker samtykkemeldinger om informasjonskapsler";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "OK";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave blokkerer allerede skadelige informasjonskapsler. Nå kan vi også blokkere de irriterende samtykkemeldingene om informasjonskapsler.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave blokkerer samtykkemeldinger om informasjonskapsler";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Forhindrer at nettsteder lagrer informasjon om dine tidligere besøk.";
 
@@ -272,7 +263,7 @@
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Angi som standard";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Allerede angitt som standard?";
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Allerede standard?";
 
 /* Title for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "Hopp over dette";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "Skjold";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Aktiver «%@» for å se data her";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "E-postsporere";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "Fjern favoritt";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Rapporter et ødelagt nettsted";
+"ReportABrokenSite" = "Rapporter et nettsted som ikke fungerer";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Meld ifra om en feil";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Ytterligere informasjon (valgfritt)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Kontakt meg på: (valgfritt)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-post, Twitter osv.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Fortell Braves utviklere at dette nettstedet ikke funker ordentlig med Shields:";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "Sikkerhet";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Send";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Sende en krasjrapport, slik at Brave kan fikse problemet?";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Media";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Åpne YouTube-lenker i Brave";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Aktiver skjermtid";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "Åpne en ny nettleserfane";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Åpne skjermbildet for bokmerker i nettleseren";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Åpne bokmerker";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Åpne bokmerker i Brave-nettleseren";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Åpne Brave News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Åpne Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Åpne skjermbildet for nettleserhistorikk";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Åpne nettleserhistorikk";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Åpne historikk for Brave-nettleseren";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Begynn å spille av videoene i spillelisten";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "Åpne spilleliste";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Åpne Brave-faner på andre enheter";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Åpne faner fra andre enheter";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Åpne faner fra andre enheter";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Begynn å søke på nettet på trygt vis med Brave";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Aktiver VPN";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Bruk snarveier for å åpne skjermbildet for bokmerker via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Åpne bokmerker";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Bruk snarveier for å åpne en ny fane og vise Brave-nyhetsfeeden via Siri – Stemmeassistent";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Åpne Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Bruk snarveier for å åpne skjermbildet for nettleserhistorikk via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Åpne nettleserhistorikk";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Bruk snarveier for å åpne en ny privat fane via Siri – Stemmeassistent";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Åpne spilleliste";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Bruk snarveier for å åpne faner fra andre enheter via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Åpne faner fra andre enheter";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-snarveier";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "Synkroniser";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Bokmerkene er eksportert";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Eksport av bokmerker mislyktes";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Bokmerker";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Synkroniser innstillinger";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "En ny versjon av Brave Sync er på vei, og dette vil påvirke oppsettet ditt. Gjør deg klar for oppgraderingen.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "Kunne ikke flytte bokmerkene. Prøv igjen senere.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "Feil";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Noen av bokmerkene dine kunne ikke flyttes. Du kan legge dem til igjen manuelt.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Flytting av bokmerker";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "For å kunne bruke Brave Sync, må dine eksisterende bokmerker overføres for å kunne benytte det nye systemet. Denne handlingen vil ikke slette bokmerkene dine.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "Flytt";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "Flytting påkrevd";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "Legg til ny enhet";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Brave-brannmur + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "Blokkerer uønskede nettverkstilkoblinger";
+"vpn.checkboxDevicesProtect" = "Beskytt 5 enheter med 1 abonnement";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "Blokker annonser og sporere i alle apper";
+"vpn.checkboxGeoLocation" = "Velg geografisk beliggenhet/land";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Bruker sikre, krypterte VPN-tunneler";
+"vpn.checkboxNoIPLog" = "Brave loggfører aldri aktiviteten din";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "Støtter hastigheter på opptil 100 Mbit/s";
+"vpn.checkboxProtectYourDevices" = "Beskytt hver eneste app og hele enheten din";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "Raskt og ubegrenset bruk opptil 100 Mbps";
+"vpn.checkboxSaferWifi" = "Tryggere for hjemmet eller offentlig wifi";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "Velg geografisk beliggenhet/land";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Holder deg anonym på nettet";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "Vi vil aldri dele eller selge informasjonen din";
+"vpn.checkboxSpeedFast" = "Lynrask, opptil 100 Mbps";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore-kvittering";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "Utløpt";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Blokkerer uønskede nettverkstilkoblinger";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Blokker annonser og sporere i alle apper";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Støtter hastigheter på opptil 100 Mbit/s";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Raskt og ubegrenset bruk opptil 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "Kundestøtte døgnet rundt";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Feil";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN-konfigurasjonen er tilbakestilt.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "Utført";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Koble App Store-kjøpet til Brave-kontoen din for å bruke Brave VPN på andre enheter.";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "Administrer abonnement";
 
 /* Button to reset VPN configuration */

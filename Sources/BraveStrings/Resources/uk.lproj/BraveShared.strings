@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Блокувати повідомлення про згоду на використання файлів cookie";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "Зрозуміло";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "У Brave уже заблоковано шкідливі файли cookie. Тепер ми автоматично блокуємо нав’язливі повідомлення про згоду на використання файлів cookie.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave блокує повідомлення про згоду на використання файлів cookie";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Вебсайти не зберігатимуть інформацію про ваші попередні відвідування.";
 
@@ -269,10 +260,10 @@
 "callout.defaultBrowserCalloutDescription" = "Якщо Brave буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Встановити типовим";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити за замовчуванням";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Уже є браузером за замовчуванням?";
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Уже встановлено за замовчуванням?";
 
 /* Title for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "Пропустити";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "Shields";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Увімкніть параметр «%@», щоб переглянути дані тут";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "Трекери ел. адреси";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "Вилучити зі списку обраного";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Повідомити про помилки в роботі вебсайту";
+"ReportABrokenSite" = "Повідомити про зламаний сайт";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Повідомити про помилку";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Додаткова інформація (необов’язково)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Мої контактні дані: (необов’язково)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Ел. адреса, Twitter тощо.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "Безпека";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Надіслати";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Brave, щоб вирішити проблему?";
 
@@ -2635,6 +2641,9 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Медіа-дані";
 
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Відкривати посилання на YouTube у браузері Brave";
+
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Відстежувати час активної роботи";
 
@@ -2645,7 +2654,7 @@
 "settings.qualitySettings" = "Налаштування якості";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Цей анонімний, приватний пінг дає можливість Brave оцінити активних користувачів.";
+"settings.sendUsagePingDescription" = "Цей анонімне, приватне повідомлення дає можливість Brave оцінити активних користувачів.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Brave";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "Відкрити нову вкладку браузера";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Відкрити вікно закладок браузеру";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Відкрити закладки";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Відкрити закладки браузеру Brave";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Відкрити Brave News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Відкрити Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Відкрити вікно історії браузеру";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Відкрити історію браузеру";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Відкрити історію браузеру Brave";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Почати відтворення відео зі списку відтворення";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "Відкрити список відтворення";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Відкрити вкладки Brave, відкриті на інших пристроях";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Відкрити вкладки з інших пристроїв";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Відкрити вкладки з інших пристроїв";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Почніть безпечний пошук в Інтернеті за допомогою Brave";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Увімкнути VPN";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Використовувати ярлики для відкриття вікна закладок через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Відкрити закладки";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Використовувати ярлики для відкриття нової вкладки й показування стрічки Brave News через голосовий асистент Siri";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Відкрити Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Використовувати ярлики для відкриття вікна історії браузеру через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Відкрити історію браузеру";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Використовувати ярлики для відкриття нової приватної вкладки через голосовий асистент Siri";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Відкрити список відтворення";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Використовувати ярлики для відкриття вкладок з інших пристроїв через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Відкрити вкладки з інших пристроїв";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Ярлики Siri";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "Синхронізація";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Закладки експортовано";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Не вдалось експортувати закладки";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Закладки";
 
@@ -2948,7 +3008,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
 
 /* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Під час отримання пристроїв у ланцюжку синхронізації сталася помилка.";
+"sync.syncDeviceFetchErrorAlertDescription" = "Під час визначення пристроїв у ланцюжку синхронізації сталася помилка.";
 
 /* The message displayed in alert when a list of devices will be shown */
 "sync.syncDevicesInSyncChainTitle" = "Пристрої в ланцюжку синхронізації";
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Налаштування синхронізації";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Скоро виходить нова версія Brave Sync, що вплине на ваші налаштування. Підготуйтеся до оновлення.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "Помилка перенесення закладок. Спробуйте ще раз пізніше.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "Помилка";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Деякі закладки не вдалося перенести. Ви можете додати їх уручну.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Перенесення закладок";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "Щоб користуватися Brave Sync, перенесіть поточні закладки на нову систему. Ця дія не призведе до видалення ваших закладок.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "Перенести";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "Потрібно перенести";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "Додати пристрій";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Brave";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "Блокує небежані з’єднання з Інтернетом";
+"vpn.checkboxDevicesProtect" = "З 1 передплатою можна захистити 5 пристроїв";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "Блокування трекерів і реклами в усіх програмах";
+"vpn.checkboxGeoLocation" = "Виберіть своє географічне положення / країну перебування";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Використовує захищене й зашифроване тунелювання VPN";
+"vpn.checkboxNoIPLog" = "Brave ніколи не записує ваші дії";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "Підтримує швидкість з’єднання до 100 Мб/с";
+"vpn.checkboxProtectYourDevices" = "Захищає кожну програму та пристрій загалом";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "Швидко й без обмежень зі швидкістю до 100 МБ/с";
+"vpn.checkboxSaferWifi" = "Більш надійний захист як для домашніх, так і для загальнодоступних мереж Wi-Fi";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "Виберіть своє географічне положення / країну перебування";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Зберігає вашу анонімність в Інтернеті";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "Ми нікому не розкриваємо та не продаємо ваші дані";
+"vpn.checkboxSpeedFast" = "Блискавична швидкість до 100 Мбіт/с";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Квитанція від AppStore";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "Термін дії завершився";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Блокує небежані з’єднання з Інтернетом";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Блокування трекерів і реклами в усіх програмах";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Підтримує швидкість з’єднання до 100 Мб/с";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Швидко й без обмежень зі швидкістю до 100 МБ/с";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "Цілодобова підтримка без вихідних";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Помилка";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Параметри VPN скинуто.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "Успішно";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Зв’яжіть покупку в App Store з вашим обліковим записом Brave, щоб користуватися Brave VPN і на інших пристроях.";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "Керування підпискою";
 
 /* Button to reset VPN configuration */
@@ -3827,7 +3867,7 @@
 "vpn.updatePaymentActionButtonTitle" = "Оновити платіжну інформацію";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Оновлення способу оплати";
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Оновіть спосіб оплати";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave захищатиме вас навіть у фоновому режимі.";

@@ -109,15 +109,6 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Çerez Onay Bildirimlerini Engelle";
 
-/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesDismissButtonTitle" = "Anlaşıldı";
-
-/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
-"BlockCookieConsentNoticesPopupDescription" = "Brave, zararlı çerezleri zaten engelliyor. Artık, şu sinir bozucu çerez rızası uyarılarını da otomatik olarak engelleyeceğiz.";
-
-/* A title for a popup that informs the user that brave is blocking cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Brave, çerez rızası uyarılarını engelliyor";
-
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller.";
 
@@ -263,19 +254,19 @@
 "callout.bottomBarCalloutTitle" = "Brave Sekmeleri Çubuğunu Özelleştir";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave'i varsayılan tarayıcı olarak ayarlamak istiyor musunuz?";
+"callout.defaultBrowserCalloutButtonDescription" = "Brave'i Varsayılan Tarayıcınız Olarak Ayarlamak İster misiniz?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Brave varsayılan olarak ayarlandığında, tıkladığınız her bağlantı Brave'in gizlilik korumasıyla açılır.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan seç";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan Olarak Ayarla";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Zaten varsayılan mı?";
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Zaten Varsayılan Tarayıcı mı?";
 
 /* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Bunu atla";
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Bunu Atla";
 
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Güvenlik. Artık Çok Kolay.";
@@ -296,7 +287,7 @@
 "callout.privacyEverywhereCalloutDescription" = "Bilgisayarınızda veya tabletinizde Brave'in gizliliğinin keyfini çıkarın, cihazlarınız arasında yer işaretlerinizi ve eklentilerinizi senkronize edin.";
 
 /* Title for button in Default Browser Full Screen Callout */
-"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Şimdi senkronize et";
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Şimdi Senkronize Et";
 
 /* Title for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutTitle" = "Gizlilik. Her yerde.";
@@ -608,7 +599,7 @@
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Arama motoru eklendi!";
 
 /* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Şimdi değil";
+"defaultBrowserCallout.introCancelButtonText" = "Şimdi Değil";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Ayarları Aç";
@@ -2005,6 +1996,9 @@
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
 "privacyHub.shieldsLabel" = "Kalkanlar";
 
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Burada veri görmek için '%@' öğesini etkinleştirin";
+
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "E-Posta İzleyicileri";
 
@@ -2204,10 +2198,19 @@
 "RemoveFavorite" = "Sık Kullanılanı Kaldır";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Bozuk bir siteyi bildirin";
+"ReportABrokenSite" = "Arızalı Bir Siteyi Bildir";
 
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Hata Bildirme";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Ek ayrıntılar (isteğe bağlı)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Benimle şuradan iletişime geçin (isteğe bağlı):";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-posta, Twitter, vb.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin Kalkanlar ile düzgün çalışmadığını bildirin:";
@@ -2587,6 +2590,9 @@
 /* Settings security section title */
 "Security" = "Güvenlik";
 
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Gönder";
+
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Brave'in sorunu çözebilmesi için bir çökme raporu göndermek ister misiniz?";
 
@@ -2634,6 +2640,9 @@
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Medya";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "YouTube bağlantılarını Brave'de aç";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Ekran Süresini Etkinleştir";
@@ -2783,10 +2792,28 @@
 "shortcuts.activityTypeNewTabTitle" = "Yeni Tarayıcı Sekmesi Aç";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Tarayıcı Yer İşaretleri Ekranını Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Yer İşaretlerini Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Brave Tarayıcı Yer İşaretlerini Aç";
+
+/* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveNewsTitle" = "Brave News'i Aç";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave News'i Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Tarayıcı Geçmişi Ekranını Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Tarayıcı Geçmişini Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Brave Tarayıcı Geçmişini Aç";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Videolarınızı Oynatma Listesinde Oynatmaya Başlayın";
@@ -2796,6 +2823,15 @@
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistTitle" = "Oynatma Listesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Brave Sekmelerini Diğer Cihazlarda Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Sekmeleri Diğer Cihazlardan Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Sekmeleri Diğer Cihazlardan Aç";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Brave ile Web'de Güvenle Arama Yapmaya Başlayın";
@@ -2827,11 +2863,23 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "VPN'i Etkinleştir";
 
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Sesli Yardımcı Siri aracılığıyla yer işaretleri ekranını açmak için Kısayolları kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Yer İşaretlerini Aç";
+
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Yeni bir sekme açmak ve Siri - Voice Assistant aracılığıyla Brave News Kaynağını göstermek için Kısayolları kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News'i Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Sesli Yardımcı Siri aracılığıyla tarayıcı geçmişini açmak için Kısayolları kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Tarayıcı Geçmişini Aç";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri - Sesli Yardımcı ile yeni bir gizli sekme açmak için Kestirmeler'i kullanın";
@@ -2850,6 +2898,12 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Oynatma Listesi Aç";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Sesli Yardımcı Siri aracılığıyla Diğer Cihazlardaki Sekmeleri açmak için Kısayolları kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Diğer Cihazlardaki Sekmeleri Aç";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri Kestirmeleri";
@@ -2914,6 +2968,12 @@
 /* Sync settings section title */
 "Sync" = "Eşitle";
 
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Yer İşaretleri Başarıyla Dışa Aktarıldı";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Yer İşareti Dışa Aktarılamadı";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Yer İşaretleri";
 
@@ -2973,30 +3033,6 @@
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Senkronizasyon Ayarları";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Yeni bir Brave Eşitlemesi geliyor ve kurulumunuzu etkileyecek. Yükseltme için hazır olun.";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "Yer işaretleri aktarılamadı. Lütfen daha sonra yeniden deneyin.";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "Hata";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Bazı yer işaretleriniz geçirilemedi. Bunları manuel olarak geri ekleyebilirsiniz.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Yer işaretleri aktarımı";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "Brave Sync'i kullanmak istiyorsanız mevcut yer işaretlerinizin yeni sistemi kullanmak için aktarılması gerekir. Bu işlem yer işaretlerinizi silmez.";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "Aktar";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "Aktarma gerekli";
 
 /* Add New Device cell button. */
 "SyncAddAnotherDevice" = "Yeni Aygıt Ekle";
@@ -3524,28 +3560,22 @@
 "vpn.buyVPNTitle" = "Brave Güvenlik Duvarı + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAds" = "İstenmeyen ağ bağlantılarını engeller";
+"vpn.checkboxDevicesProtect" = "1 abonelikle 5 cihazı koruyun";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxBlockAdsAlternate" = "Tüm uygulamalardaki reklamları ve izleyicileri engeller";
+"vpn.checkboxGeoLocation" = "Coğrafi/ülke konumunuzu seçin";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Güvenli, şifreli VPN tünelleri kullanır";
+"vpn.checkboxNoIPLog" = "Brave, sizin aktivitenizi asla kaydetmez";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFast" = "100 Mbps'ye kadar hızları destekler";
+"vpn.checkboxProtectYourDevices" = "Her uygulamayı ve tüm cihazınızı koruyun";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxFastAlternate" = "100 Mbps'ye kadar hızlı ve sınırsız";
+"vpn.checkboxSaferWifi" = "Ev veya ortak Wi-Fi için daha güvenlidir";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoSelector" = "Coğrafi/ülke konumunuzu seçin";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Çevrimiçi anonim kalmanızı sağlar";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoSellout" = "Bilgilerinizi asla paylaşmayız veya satmayız";
+"vpn.checkboxSpeedFast" = "Çok hızlıdır, 100 Mbps'ye kadar";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore Alış Makbuzu";
@@ -3665,6 +3695,18 @@
 "vpn.planExpired" = "Süresi Dolmuş";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "İstenmeyen ağ bağlantılarını engeller";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Tüm uygulamalardaki reklamları ve izleyicileri engeller";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "100 Mbps'ye kadar hızları destekler";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "100 Mbps'ye kadar hızlı ve sınırsız";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "7/24 destek";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
@@ -3712,9 +3754,6 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Hata";
 
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN Yapılandırması başarıyla sıfırlandı.";
-
 /* Title for success message when vpn configuration reset succeeds. */
 "vpn.resetVPNSuccessTitle" = "Başarılı";
 
@@ -3751,7 +3790,8 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Brave VPN'i ve diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
 
-/* Button to manage your VPN subscription */
+/* Button to manage your VPN subscription
+   Button to redeem offer code subscription */
 "vpn.settingsManageSubscription" = "Aboneliği Yönet";
 
 /* Button to reset VPN configuration */
