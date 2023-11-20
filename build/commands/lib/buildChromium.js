@@ -17,14 +17,14 @@ const Log = require('./logging')
 
 // Use the same filename as for Brave archive.
 const getOutputFilename = () => {
-  const getPlatfrom = () => {
+  const platform = (() => {
     if (config.getTargetOS() === 'win')
       return 'win32';
     if (config.getTargetOS() === 'mac')
       return 'darwin';
     return config.getTargetOS()
-  }
-  return `chromium-${config.chromeVersion}-${getPlatfrom()}-${config.targetArch}`
+  })()
+  return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
 }
 
 const chromiumConfigs = {
@@ -47,13 +47,13 @@ const chromiumConfigs = {
   'linux': {
     buildTarget: 'chrome/installer/linux:stable_deb',
     processArtifacts: () => {
-      const deb_arch = (() => {
+      const debArch = (() => {
         if (config.targetArch === 'x64') return 'amd64'
         return config.targetArch
       })()
       fs.moveSync(
         path.join(config.outputDir,
-          `chromium-browser-stable_${config.chromeVersion}-1_${deb_arch}.deb`),
+          `chromium-browser-stable_${config.chromeVersion}-1_${debArch}.deb`),
         path.join(config.outputDir, `${getOutputFilename()}.deb`))
     }
   },
@@ -80,7 +80,7 @@ const chromiumConfigs = {
 // There is two primarily sources:
 // 1. Chromium perf builds: tools/mb/mb_config_expectations/chromium.perf.json
 // 2. Brave Release build configuration
-const getChromiumGnArgs = () => {
+function getChromiumGnArgs() {
   const braveGnArgs = config.buildArgs()
   const chromiumGnArgs = {
     target_cpu: config.targetArch,
@@ -114,7 +114,7 @@ const getChromiumGnArgs = () => {
   return chromiumGnArgs
 }
 
-const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) => {
+function buildChromium(buildConfig = config.defaultBuildConfig, options = {}) {
   config.buildConfig = buildConfig
   config.update(options)
   config.outputDir = config.outputDir + '_chromium'
@@ -124,7 +124,8 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
     throw Error(`${config.getTargetOS()} is unsupported`)
 
   syncUtil.maybeInstallDepotTools()
-  syncUtil.buildDefaultGClientConfig([config.getTargetOS()], [config.targetArch])
+  syncUtil.buildDefaultGClientConfig(
+    [config.getTargetOS()], [config.targetArch])
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 

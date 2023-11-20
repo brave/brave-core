@@ -167,15 +167,18 @@ program
   .arguments('[build_config]')
   .action(build)
 
-  program
-    .command('build_chromium')
-    .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-    .option('--target_os <target_os>', 'target OS')
-    .option('--target_arch <target_arch>', 'target architecture')
-    .option('--gn <arg>', 'Additional gn args, in the form <key>:<value>', collect, [])
-    .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
-    .arguments('[build_config]')
-    .action(buildChromium)
+program
+  .command('build_chromium')
+  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
+  .option('--target_os <target_os>', 'target OS')
+  .option('--target_arch <target_arch>', 'target architecture')
+  .option('--gn <arg>', 'Additional gn args, in the form <key>:<value>',
+    collect, [])
+  .option('--ninja <opt>',
+    'Additional Ninja command-line options, in the form <key>:<value>',
+    collect, [])
+  .arguments('[build_config]')
+  .action(buildChromium)
 
 program
   .command('create_dist')
