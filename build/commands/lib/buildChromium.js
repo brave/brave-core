@@ -118,7 +118,6 @@ function buildChromium(options = {}) {
   config.buildConfig = 'Release'
   config.isChromium = true
   config.update(options)
-  config.outputDir = config.outputDir + '_chromium'
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   if (chromiumConfig == undefined)
