@@ -5,15 +5,13 @@
 
 .moreButton {
   --leo-icon-size: 18px;
-
   background-color: var(--leo-color-container-background);
   border-radius: var(--leo-radius-full);
   border: 1px solid var(--leo-color-divider-interactive);
-
   width: 36px;
   height: 36px;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: center;
 
   leo-menu-item {
