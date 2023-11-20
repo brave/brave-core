@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
@@ -101,14 +102,13 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
       override;
 
-  absl::optional<base::Value> GetProfilePref(
-      const std::string& path) const override;
+  absl::optional<base::Value> GetProfilePref(const std::string& path) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
   void ClearProfilePref(const std::string& path) override;
   bool HasProfilePrefPath(const std::string& path) const override;
 
   absl::optional<base::Value> GetLocalStatePref(
-      const std::string& path) const override;
+      const std::string& path) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
   void ClearLocalStatePref(const std::string& path) override;
   bool HasLocalStatePrefPath(const std::string& path) const override;
@@ -119,6 +119,15 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
            const std::string& message) override;
 
  private:
+  absl::optional<base::Value> CachedProfilePrefValue(
+      const std::string& path) const;
+  absl::optional<base::Value> CachedLocalStatePrefValue(
+      const std::string& path) const;
+
+  base::flat_map</*path=*/std::string, /*value=*/base::Value>
+      cached_profile_prefs_;
+  base::flat_map</*path=*/std::string, /*value=*/base::Value>
+      cached_local_state_prefs_;
   mojo::AssociatedRemote<mojom::BatAdsClient>
       bat_ads_client_associated_receiver_;
   BatAdsClientNotifierImpl notifier_impl_;

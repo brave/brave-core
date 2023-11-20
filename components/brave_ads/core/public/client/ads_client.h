@@ -138,7 +138,7 @@ class ADS_EXPORT AdsClient {
   // Get the value from the specified profile preference |path|. Returns the
   // default value if the path does not exist.
   virtual absl::optional<base::Value> GetProfilePref(
-      const std::string& path) const = 0;
+      const std::string& path) = 0;
 
   // Update the value for the specified profile preference |path|.
   virtual void SetProfilePref(const std::string& path, base::Value value) = 0;
@@ -153,7 +153,7 @@ class ADS_EXPORT AdsClient {
   // Get the value from the specified local state preference |path|. Returns the
   // default value if the path does not exist.
   virtual absl::optional<base::Value> GetLocalStatePref(
-      const std::string& path) const = 0;
+      const std::string& path) = 0;
 
   // Update the value for the specified local state preference |path|.
   virtual void SetLocalStatePref(const std::string& path,
