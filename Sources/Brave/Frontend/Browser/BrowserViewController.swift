@@ -2979,6 +2979,15 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
   }
 
+#if DEBUG
+  public override func select(_ sender: Any?) {
+    if sender is URL {
+      assertionFailure("Wrong method called, use `select(url:)` or `select(_:action:)`")
+    }
+    super.select(sender)
+  }
+#endif
+  
   func select(url: URL) {
     select(url, action: .openInCurrentTab)
   }

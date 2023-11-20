@@ -26,7 +26,7 @@ extension BrowserViewController {
           var components = URLComponents()
           components.host = currentHost
           components.scheme = url.scheme
-          self.select(components.url!)
+          self.select(url: components.url!)
         }
       }
     )
