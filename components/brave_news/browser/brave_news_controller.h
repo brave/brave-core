@@ -93,6 +93,7 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
+  void GetFollowingFeed(GetFollowingFeedCallback callback) override;
   void GetChannelFeed(const std::string& channel,
                       GetChannelFeedCallback callback) override;
   void GetPublisherFeed(const std::string& publisher_id,

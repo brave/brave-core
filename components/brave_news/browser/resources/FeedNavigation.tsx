@@ -130,6 +130,7 @@ export default function Sidebar() {
   return <Container>
     <Heading>My Feed</Heading>
     <Item id='all' name="All" />
+    <Item id='following' name="Following" />
     <Section open>
       <summary>
         {Marker}

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
+#include <stddef.h>
 
 #include <algorithm>
 #include <iterator>
@@ -312,7 +313,14 @@ mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
+    ArticleInfos& articles,
+    // Ratio of inline articles to discovery articles.
+    // discover ratio % of the time, we should do a discover card here instead
+    // of a roulette card.
+    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get()) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -331,12 +339,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    const double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get();
     bool is_discover = base::RandDouble() < inline_discovery_ratio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);
@@ -393,7 +395,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     --i;
   }
 
-  auto block = GenerateBlock(allowed_articles);
+  auto block = GenerateBlock(allowed_articles, /*inline_discovery_ratio=*/0);
 
   // Put the unused articles back in the original list.
   base::ranges::move(allowed_articles, std::back_inserter(articles));
@@ -603,6 +605,18 @@ void FeedV2Builder::AddListener(
   listeners_.Add(std::move(listener));
 }
 
+void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
+  GenerateFeed(
+      {.signals = true},
+      mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
+      base::BindOnce(
+          [](FeedV2Builder* builder) {
+            return builder->GenerateBasicFeed(builder->raw_feed_items_);
+          },
+          base::Unretained(this)),
+      std::move(callback));
+}
+
 void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                                      BuildFeedCallback callback) {
   GenerateFeed(
@@ -610,11 +624,11 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
       mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
       base::BindOnce(
           [](FeedV2Builder* builder, const std::string& channel) {
-            auto result = mojom::FeedV2::New();
             auto& publishers =
                 builder->publishers_controller_->GetLastPublishers();
             auto& locale = builder->publishers_controller_->GetLastLocale();
 
+            FeedItems feed_items;
             for (const auto& item : builder->raw_feed_items_) {
               if (!item->is_article()) {
                 continue;
@@ -639,16 +653,10 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                 continue;
               }
 
-              result->items.push_back(
-                  mojom::FeedItemV2::NewArticle(item->get_article()->Clone()));
+              feed_items.push_back(item->Clone());
             }
 
-            base::ranges::sort(result->items, [](const auto& a, const auto& b) {
-              return GetPopRecency(b->get_article()->data) <
-                     GetPopRecency(a->get_article()->data);
-            });
-
-            return result;
+            return builder->GenerateBasicFeed(feed_items);
           },
           base::Unretained(this), channel),
       std::move(callback));
@@ -662,7 +670,7 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
           mojom::FeedV2PublisherType::New(publisher_id)),
       base::BindOnce(
           [](FeedV2Builder* builder, const std::string& publisher_id) {
-            auto result = mojom::FeedV2::New();
+            FeedItems items;
 
             for (const auto& item : builder->raw_feed_items_) {
               if (!item->is_article()) {
@@ -672,16 +680,10 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                 continue;
               }
 
-              result->items.push_back(
-                  mojom::FeedItemV2::NewArticle(item->get_article()->Clone()));
+              items.push_back(item->Clone());
             }
 
-            base::ranges::sort(result->items, [](const auto& a, const auto& b) {
-              return b->get_article()->data->publish_time <
-                     a->get_article()->data->publish_time;
-            });
-
-            return result;
+            return builder->GenerateBasicFeed(items);
           },
           base::Unretained(this), publisher_id),
       std::move(callback));
@@ -900,6 +902,45 @@ void FeedV2Builder::GenerateFeed(
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
           std::move(build_feed), std::move(callback)));
+}
+
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
+  DVLOG(1) << __FUNCTION__;
+
+  auto suggested_publisher_ids = suggested_publisher_ids_;
+  auto articles =
+      GetArticleInfos(publishers_controller_->GetLastLocale(), feed_items,
+                      publishers_controller_->GetLastPublishers(), signals_);
+
+  auto feed = mojom::FeedV2::New();
+
+  constexpr size_t kIterationsPerAd = 2;
+  size_t blocks = 0;
+  while (!articles.empty()) {
+    auto items = GenerateBlock(articles, /*inline_discovery_ratio=*/0);
+    if (items.empty()) {
+      break;
+    }
+
+    // After the first block, every second block should be an ad.
+    if (blocks % kIterationsPerAd == 0 && blocks != 0) {
+      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids),
+                        std::back_inserter(items));
+    }
+
+    std::ranges::move(items, std::back_inserter(feed->items));
+    blocks++;
+  }
+
+  // Insert an ad as the second item.
+  if (feed->items.size() > 1) {
+    auto ad = GenerateAd();
+    feed->items.insert(feed->items.begin() + 1,
+                       std::make_move_iterator(ad.begin()),
+                       std::make_move_iterator(ad.end()));
+  }
+
+  return feed;
 }
 
 mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {

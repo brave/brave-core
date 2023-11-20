@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import SecureLink, { validateScheme } from '$web-common/SecureLink';
+import SecureLink, { handleOpenURLClick } from '$web-common/SecureLink';
 import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
@@ -41,11 +41,6 @@ const CtaButton = styled(Button)`
   align-self: flex-start;
 `
 
-const openLink = (link: string) => {
-  validateScheme(link)
-  window.location.href = link
-}
-
 export const useVisibleFor = (callback: () => void, timeout: number) => {
   const [el, setEl] = React.useState<HTMLElement | null>(null)
   const callbackRef = React.useRef<() => void>()
@@ -82,12 +77,12 @@ export default function Advert(props: Props) {
 
   const { setEl: setAdEl } = useVisibleFor(onDisplayAdViewed, 1000)
 
-  const onDisplayAdVisited = React.useCallback(async () => {
+  const onDisplayAdVisited = React.useCallback(async (e: React.MouseEvent) => {
     if (!advert) return
 
     console.debug(`Brave News: Visited display ad: ${advert.uuid}`)
     await getBraveNewsController().onDisplayAdVisit(advert.uuid, advert.creativeInstanceId)
-    openLink(advert.targetUrl.url)
+    handleOpenURLClick(advert.targetUrl.url, e);
   }, [advert])
 
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
@@ -101,7 +96,7 @@ export default function Advert(props: Props) {
   })
 
   // Advert is null if we didn't manage to load an advertisement
-  if (advert === null) return null
+  if (advert === null) return <div style={{color: 'white'}}>Advert</div>
 
   // Otherwise, render a placeholder div - when close to the viewport we'll
   // request an ad.

@@ -49,6 +49,7 @@ class FeedV2Builder {
 
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
 
+  void BuildFollowingFeed(BuildFeedCallback callback);
   void BuildChannelFeed(const std::string& channel, BuildFeedCallback callback);
   void BuildPublisherFeed(const std::string& publisher_id,
                           BuildFeedCallback callback);
@@ -125,6 +126,7 @@ class FeedV2Builder {
                     base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
                     BuildFeedCallback callback);
 
+  mojom::FeedV2Ptr GenerateBasicFeed(const FeedItems& items);
   mojom::FeedV2Ptr GenerateAllFeed();
 
   raw_ref<PublishersController> publishers_controller_;
