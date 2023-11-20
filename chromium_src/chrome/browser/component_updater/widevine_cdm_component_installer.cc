@@ -285,7 +285,6 @@ CrxInstaller::Result WidevineArm64DllInstaller::WaitForCompletion() {
 void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
     base::FilePath zip_path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  VLOG(2) << "Arm64 DLL download complete.";
   if (zip_path.empty()) {
     net::Error error = net::Error(loader_->NetError());
     VLOG(1) << "Arm64 DLL download failed. Error: "
@@ -299,6 +298,7 @@ void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
     }
     result_ = update_client::ToInstallerResult(error, extended_error);
   } else {
+    VLOG(2) << "Arm64 DLL download succeeded.";
     bool success = ExtractArm64Dll(zip_path) && AddArm64ArchToManifest();
     if (!success) {
       result_ =
