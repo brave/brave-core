@@ -3,6 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// A script to build and pack a Chromium release build from scratch
+// Reuses the same /src folder
+// Designed to be used on CI, but should work locally too.
+// The script includes syncing; there is no need to run npm run sync before.
+
 const config = require('./config')
 const util = require('./util')
 const path = require('path')
@@ -68,6 +73,10 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
   config.buildConfig = buildConfig
   config.update(options)
 
+  const chromiumConfig = chromiumConfigs[config.getTargetOS()]
+  if (chromiumConfig == undefined)
+    throw Error(`${config.getTargetOS()} is unsupported`)
+
   syncUtil.maybeInstallDepotTools()
   syncUtil.buildDefaultGClientConfig([config.getTargetOS()], [config.targetArch])
 
@@ -85,9 +94,8 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
     util.runGClient(['runhooks'])
   })
 
-  const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   config.buildTarget = chromiumConfig.buildTarget
-  let args = {
+  const args = {
     target_cpu: config.targetArch,
     target_os: config.getTargetOS(),
     enable_keystone_registration_framework: false,
@@ -97,8 +105,8 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
     symbol_level: 1,
   }
   const buildArgsStr = util.buildArgsToString(args)
-
   util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], config.defaultOptions)
+
   util.buildTarget()
 
   Log.progressScope('make archive', () => {
