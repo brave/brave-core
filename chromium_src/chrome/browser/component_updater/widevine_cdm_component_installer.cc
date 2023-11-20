@@ -118,6 +118,12 @@ BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+std::string GetArm64DllZipUrl(const std::string& version) {
+  std::string result = kBraveWidevineArm64DllTemplateUrl.Get();
+  base::ReplaceFirstSubstringAfterOffset(&result, 0, "{version}", version);
+  return result;
+}
+
 }  // namespace
 
 namespace component_updater {
@@ -133,7 +139,6 @@ class WidevineCdmComponentInstallerPolicy
   CrxInstaller::Result OnCustomInstall(
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
-  std::string GetArm64DllZipUrl(const std::string& version);
   CrxInstaller::Result InstallArm64Dll(const GURL& zip_url,
                                        const base::FilePath& install_dir);
   bool IsHttp404(CrxInstaller::Result);
@@ -205,13 +210,6 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
                  << ", which should exist but may not be compatible.";
     return InstallArm64Dll(fallback_url, install_dir);
   }
-  return result;
-}
-
-std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
-    const std::string& version) {
-  std::string result = kBraveWidevineArm64DllTemplateUrl.Get();
-  base::ReplaceFirstSubstringAfterOffset(&result, 0, "{version}", version);
   return result;
 }
 
