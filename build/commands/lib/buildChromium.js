@@ -45,9 +45,16 @@ const chromiumConfigs = {
     }
   },
   'linux': {
-    buildTarget: 'installer',
+    buildTarget: 'chrome/installer/linux:stable_deb',
     processArtifacts: () => {
-      /* TODO */
+      const deb_arch = (() => {
+        if (config.targetArch === 'x64') return 'amd64'
+        return config.targetArch
+      })()
+      fs.moveSync(
+        path.join(config.outputDir,
+          `chromium-browser-stable_${config.chromeVersion}-1_${deb_arch}.deb`),
+        path.join(config.outputDir, `${getOutputFilename()}.deb`))
     }
   },
   'mac': {
