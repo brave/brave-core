@@ -114,8 +114,9 @@ function getChromiumGnArgs() {
   return chromiumGnArgs
 }
 
-function buildChromium(buildConfig = config.defaultBuildConfig, options = {}) {
-  config.buildConfig = buildConfig
+function buildChromium(options = {}) {
+  config.buildConfig = 'Release'
+  config.isChromium = true
   config.update(options)
   config.outputDir = config.outputDir + '_chromium'
 
