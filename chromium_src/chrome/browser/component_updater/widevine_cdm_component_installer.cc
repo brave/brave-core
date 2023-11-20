@@ -111,12 +111,9 @@ BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
 constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
     "https://dl.google.com/widevine-cdm/4.10.2710.0-win-arm64.zip"};
-constexpr char kVersionPlaceholder[] = "{version}";
 const base::FeatureParam<std::string> kBraveWidevineArm64DllTemplateUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_template_url",
-    ("https://dl.google.com/widevine-cdm/" + std::string(kVersionPlaceholder) +
-     "-win-arm64.zip")
-        .c_str()};
+    "https://dl.google.com/widevine-cdm/{version}-win-arm64.zip"};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
@@ -214,8 +211,7 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
 std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
     const std::string& version) {
   std::string result = kBraveWidevineArm64DllTemplateUrl.Get();
-  base::ReplaceFirstSubstringAfterOffset(&result, 0, kVersionPlaceholder,
-                                         version);
+  base::ReplaceFirstSubstringAfterOffset(&result, 0, "{version}", version);
   return result;
 }
 
