@@ -2821,7 +2821,7 @@ extension Strings {
         comment: "Button to manage your VPN subscription")
     
     public static let settingsRedeemOfferCode =
-      NSLocalizedString("vpn.settingsManageSubscription", tableName: "BraveShared", bundle: .module,
+      NSLocalizedString("vpn.settingsRedeemOfferCode", tableName: "BraveShared", bundle: .module,
         value: "Redeem Offer Code",
         comment: "Button to redeem offer code subscription")
     
@@ -3067,22 +3067,27 @@ extension Strings {
 
     public static let resetVPNErrorTitle =
       NSLocalizedString("vpn.resetVPNErrorTitle", tableName: "BraveShared", bundle: .module,
-        value: "Error",
+        value: "Reset Failed",
         comment: "Title for error message when vpn configuration reset fails.")
 
     public static let resetVPNErrorBody =
       NSLocalizedString("vpn.resetVPNErrorBody", tableName: "BraveShared", bundle: .module,
-        value: "Failed to reset vpn configuration, please try again later.",
+        value: "Unable to reset VPN configuration. Please try again. If the issue persists, contact support for assistance.",
         comment: "Message to show when vpn configuration reset fails.")
+    
+    public static let resetVPNErrorButtonActionTitle =
+      NSLocalizedString("vpn.resetVPNErrorButtonActionTitle", tableName: "BraveShared", bundle: .module,
+        value: "Try Again",
+        comment: "Title of button to try again when vpn configuration reset fails.")
     
     public static let resetVPNSuccessTitle =
       NSLocalizedString("vpn.resetVPNSuccessTitle", tableName: "BraveShared", bundle: .module,
-        value: "Success",
+        value: "Reset Successful",
         comment: "Title for success message when vpn configuration reset succeeds.")
 
     public static let resetVPNSuccessBody =
       NSLocalizedString("vpn.resetVPNSuccessBody", tableName: "BraveShared", bundle: .module,
-        value: "VPN Configuration is reset successfully.",
+        value: "VPN configuration has been reset successfully.",
         comment: "Message to show when vpn configuration reset succeeds.")
 
     public static let contactFormDoNotEditText =

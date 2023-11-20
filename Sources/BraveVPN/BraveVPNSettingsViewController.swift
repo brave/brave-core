@@ -323,8 +323,17 @@ public class BraveVPNSettingsViewController: TableViewController {
       message: success ? Strings.VPN.resetVPNSuccessBody : Strings.VPN.resetVPNErrorBody,
       preferredStyle: .alert)
 
-    let okAction = UIAlertAction(title: Strings.OKString, style: .default)
-    alert.addAction(okAction)
+    if success {
+      let okAction = UIAlertAction(title: Strings.OKString, style: .default)
+      alert.addAction(okAction)
+    } else {
+      alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
+      alert.addAction(UIAlertAction(
+        title: Strings.VPN.resetVPNErrorButtonActionTitle, style: .default,
+        handler: { [weak self] _ in
+          self?.resetConfigurationTapped()
+      }))
+    }
 
     present(alert, animated: true)
   }
