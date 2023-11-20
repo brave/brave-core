@@ -10,7 +10,17 @@ const fs = require('fs-extra')
 const syncUtil = require('./syncUtils')
 const Log = require('./logging')
 
-const outputArchive = `chromium_${config.chromeVersion}_${config.targetArch}`
+// Use the same filename as for Brave archive.
+const getOutputFilename = () => {
+  const getPlatfrom = () => {
+    if (config.getTargetOS() === 'win')
+      return 'win32';
+    if (config.getTargetOS() === 'mac')
+      return 'darwin';
+    return config.getTargetOS()
+  }
+  return `chromium-${config.chromeVersion}-${getPlatfrom()}-${config.targetArch}`
+}
 
 const chromiumConfigs = {
   'win': {
@@ -18,7 +28,7 @@ const chromiumConfigs = {
     processArtifacts: () => {
       // Repack it to reduce the size and use .zip instead of .7z.
       input = path.join(config.outputDir, 'chrome.7z')
-      output = path.join(config.outputDir, `${outputArchive}.zip`)
+      output = path.join(config.outputDir, `${getOutputFilename()}.zip`)
       util.run('python3',
         [
           path.join(config.braveCoreDir, 'script', 'repack-archive.py'),
@@ -36,9 +46,12 @@ const chromiumConfigs = {
     }
   },
   'mac': {
-    buildTarget: 'installer',
+    buildTarget: 'chrome',
     processArtifacts: () => {
-      /* TODO */
+      util.run('zip',
+        ['-r', '-y', `${getOutputFilename()}.zip`, 'Chromium.app'],
+        { cwd: config.outputDir }
+      )
     }
   },
   'android': {
@@ -46,7 +59,7 @@ const chromiumConfigs = {
     processArtifacts: () => {
       fs.moveSync(
         path.join(config.outputDir, 'apks', 'ChromePublic.apk'),
-        path.join(config.outputDir, `${outputArchive}.apk`))
+        path.join(config.outputDir, `${getOutputFilename()}.apk`))
     }
   },
 }
