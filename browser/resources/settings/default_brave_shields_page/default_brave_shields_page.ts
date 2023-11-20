@@ -179,6 +179,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
+      this.isFingerprintingEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value != 'allow',
+      }
     })
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
