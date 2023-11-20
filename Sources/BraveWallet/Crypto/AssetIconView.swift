@@ -147,7 +147,10 @@ struct NFTIconView: View {
   }
   
   var body: some View {
-    NFTImageView(urlString: url?.absoluteString ?? "", isLoading: isLoadingMetadata) {
+    NFTImageView( // logo populated for auto-discovered NFTs
+      urlString: url?.absoluteString ?? token.logo,
+      isLoading: isLoadingMetadata
+    ) {
       LoadingNFTView(shimmer: false)
     }
     .cornerRadius(5)

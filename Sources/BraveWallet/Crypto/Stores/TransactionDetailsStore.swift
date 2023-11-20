@@ -112,6 +112,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         userAssets: userAssets,
         allTokens: allTokens,
         assetRatios: assetRatios,
+        nftMetadata: [:],
         solEstimatedTxFee: solEstimatedTxFee,
         currencyFormatter: currencyFormatter
       ) else {

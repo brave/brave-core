@@ -44,6 +44,7 @@ extension TransactionParser {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
+    nftMetadata: [String: NFTMetadata],
     solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter
   ) -> TransactionSummary {
@@ -54,6 +55,7 @@ extension TransactionParser {
       userAssets: userAssets,
       allTokens: allTokens,
       assetRatios: assetRatios,
+      nftMetadata: nftMetadata,
       solEstimatedTxFee: solEstimatedTxFee,
       currencyFormatter: currencyFormatter,
       decimalFormatStyle: .balance // use 4 digit precision for summary

@@ -19,6 +19,7 @@ struct TransactionSummaryViewContainer: View {
       SendTransactionSummaryView(
         sentFromAccountName: parsedTransaction.namedFromAddress,
         token: details.fromToken,
+        nftMetadata: details.fromTokenMetadata,
         network: parsedTransaction.network,
         valueSent: details.fromAmount,
         fiatValueSent: details.fromFiat ?? "",
@@ -67,6 +68,7 @@ struct TransactionSummaryViewContainer: View {
       SendTransactionSummaryView(
         sentFromAccountName: parsedTransaction.namedFromAddress,
         token: details.fromToken,
+        nftMetadata: details.nftMetadata,
         network: parsedTransaction.network,
         valueSent: nil,
         fiatValueSent: nil,
@@ -101,6 +103,7 @@ struct SendTransactionSummaryView: View {
   
   let sentFromAccountName: String
   let token: BraveWallet.BlockchainToken?
+  let nftMetadata: NFTMetadata?
   let network: BraveWallet.NetworkInfo
   let valueSent: String?
   let fiatValueSent: String?
@@ -110,6 +113,7 @@ struct SendTransactionSummaryView: View {
   init(
     sentFromAccountName: String,
     token: BraveWallet.BlockchainToken?,
+    nftMetadata: NFTMetadata? = nil,
     network: BraveWallet.NetworkInfo,
     valueSent: String?,
     fiatValueSent: String?,
@@ -117,6 +121,7 @@ struct SendTransactionSummaryView: View {
     time: Date
   ) {
     self.sentFromAccountName = sentFromAccountName
+    self.nftMetadata = nftMetadata
     self.token = token
     self.network = network
     self.valueSent = valueSent
@@ -162,7 +167,7 @@ struct SendTransactionSummaryView: View {
               NFTIconView(
                 token: token,
                 network: network,
-                url: nil,
+                url: nftMetadata?.imageURL,
                 shouldShowNetworkIcon: true,
                 length: length,
                 maxLength: maxLength,

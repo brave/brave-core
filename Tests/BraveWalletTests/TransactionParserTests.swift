@@ -131,6 +131,7 @@ class TransactionParserTests: XCTestCase {
           fromValue: "0x1b667a56d488000",
           fromAmount: "0.1234",
           fromFiat: "$0.12",
+          fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000031",
             fiat: "$0.000031"
@@ -146,6 +147,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -226,6 +228,7 @@ class TransactionParserTests: XCTestCase {
           fromValue: "0x5ff20a91f724000",
           fromAmount: "0.4321",
           fromFiat: "$0.86",
+          fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000078",
             fiat: "$0.000078"
@@ -241,6 +244,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -331,6 +335,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -421,6 +426,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -506,6 +512,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -591,6 +598,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -661,6 +669,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: .previewDaiToken,
           fromValue: "1",
           fromAmount: "1",
+          nftMetadata: nil,
           owner: "0x1111111111aaaaaaaaaa2222222222bbbbbbbbbb",
           tokenId: "token.id",
           gasFee: .init(
@@ -678,6 +687,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {
@@ -746,6 +756,7 @@ class TransactionParserTests: XCTestCase {
           fromValue: "100000000",
           fromAmount: "0.1",
           fromFiat: "$2.00",
+          fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.00123",
             fiat: "$0.0246"
@@ -761,6 +772,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: 1230000,
       currencyFormatter: currencyFormatter
     ) else {
@@ -843,6 +855,7 @@ class TransactionParserTests: XCTestCase {
           fromValue: "43210000",
           fromAmount: "43.21",
           fromFiat: "$648.15",
+          fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.0123",
             fiat: "$0.246"
@@ -858,6 +871,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: 12300000,
       currencyFormatter: currencyFormatter
     ) else {
@@ -927,6 +941,7 @@ class TransactionParserTests: XCTestCase {
           fromValue: "1",
           fromAmount: "1",
           fromFiat: "",
+          fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.0123",
             fiat: "$0.246"
@@ -942,6 +957,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: 12300000,
       currencyFormatter: currencyFormatter
     ) else {
@@ -1156,6 +1172,7 @@ class TransactionParserTests: XCTestCase {
       userAssets: tokens,
       allTokens: tokens,
       assetRatios: assetRatios,
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: currencyFormatter
     ) else {

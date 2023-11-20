@@ -285,6 +285,47 @@ extension BraveWallet.TransactionInfo {
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress
     )
   }
+  /// Sent `mockERC721NFTToken` NFT
+  static var previewERC721Send: BraveWallet.TransactionInfo {
+    BraveWallet.TransactionInfo(
+      id: "81111c05-612a-47c5-84b0-e95045d15b37",
+      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
+      from: BraveWallet.AccountInfo.previewAccount.accountId,
+      txHash: "0x46d0ecf2ec9829d451154767c98ae372413bac809c25b16d1946aba100663e4b",
+      txDataUnion: .init(
+        ethTxData1559: .init(
+          baseData: .init(
+            nonce: "0x5",
+            gasPrice: "0xa06907542",
+            gasLimit: "0x12e61",
+            to: BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress,
+            value: "0x0",
+            data: _transactionBase64ToData("CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="),
+            signOnly: false,
+            signedTransaction: nil
+          ),
+          chainId: BraveWallet.MainnetChainId,
+          maxPriorityFeePerGas: "",
+          maxFeePerGas: "",
+          gasEstimation: nil
+        )
+      ),
+      txStatus: .confirmed,
+      txType: .erc721SafeTransferFrom,
+      txParams: ["address", "address", "uint256"],
+      txArgs: [
+        "0x35dcec532e809a3daa04ed3fd958586f7bac9191", // owner
+        "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca", // to address
+        BraveWallet.BlockchainToken.mockERC721NFTToken.tokenId // token id
+      ],
+      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      originInfo: .init(),
+      chainId: BraveWallet.MainnetChainId,
+      effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca"
+    )
+  }
   /// Solana System Transfer
   static var previewConfirmedSolSystemTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
@@ -431,6 +472,7 @@ extension TransactionSummary {
       userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
       assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: .usdCurrencyFormatter
     )
@@ -451,6 +493,7 @@ extension ParsedTransaction {
       userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
       assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
+      nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: .usdCurrencyFormatter
     )

@@ -304,6 +304,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetRatios,
+          nftMetadata: [:],
           solEstimatedTxFee: solEstimatedTxFees[transaction.id],
           currencyFormatter: currencyFormatter
         )

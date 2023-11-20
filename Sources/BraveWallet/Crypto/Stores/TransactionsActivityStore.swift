@@ -31,6 +31,8 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var assetPricesCache: [String: Double] = [:]
+  /// Cache of metadata for NFTs. The key is the token's `id`.
+  private var metadataCache: [String: NFTMetadata] = [:]
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -39,6 +41,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
@@ -56,6 +59,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -65,6 +69,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.solTxManagerProxy = solTxManagerProxy
+    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     
     self.setupObservers()
@@ -154,6 +159,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         userAssets: userAssets,
         allTokens: allTokens,
         assetRatios: assetPricesCache,
+        nftMetadata: metadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
       guard !self.transactionSections.isEmpty else { return }
@@ -174,6 +180,42 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         userAssets: userAssets,
         allTokens: allTokens,
         assetRatios: assetPricesCache,
+        nftMetadata: metadataCache,
+        solEstimatedTxFees: solEstimatedTxFeesCache
+      )
+      
+      let nftsWithoutMetadata = transactionSections.flatMap(\.transactions)
+        .compactMap { parsedTx in
+          switch parsedTx.details {
+          case .erc721Transfer(let details):
+            return details.fromToken
+          case .solSplTokenTransfer(let details):
+            if let fromToken = details.fromToken, fromToken.isNft {
+              return fromToken
+            }
+            return nil
+          default:
+            return nil
+          }
+        }
+        .filter { token in // filter out already fetched metadata
+          !metadataCache.keys.contains(where: { $0.caseInsensitiveCompare(token.contractAddress) == .orderedSame })
+        }
+      guard !Task.isCancelled, !nftsWithoutMetadata.isEmpty else { return }
+      // fetch nft metadata for all NFTs
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: nftsWithoutMetadata, ipfsApi: ipfsApi)
+      for (key, value) in allMetadata { // update cached values
+        metadataCache[key] = value
+      }
+      guard !Task.isCancelled else { return }
+      self.transactionSections = buildTransactionSections(
+        transactions: allTransactions,
+        networksForCoin: networksForCoin,
+        accountInfos: allAccountInfos,
+        userAssets: userAssets,
+        allTokens: allTokens,
+        assetRatios: assetPricesCache,
+        nftMetadata: metadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
     }
@@ -186,6 +228,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
+    nftMetadata: [String: NFTMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
     // Group transactions by day (only compare day/month/year)
@@ -211,6 +254,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
             userAssets: userAssets,
             allTokens: allTokens,
             assetRatios: assetRatios,
+            nftMetadata: nftMetadata,
             solEstimatedTxFee: solEstimatedTxFees[transaction.id],
             currencyFormatter: currencyFormatter,
             decimalFormatStyle: .decimals(precision: 4)

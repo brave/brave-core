@@ -190,6 +190,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       txService: txService,
       solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
     self.marketStore = .init(
