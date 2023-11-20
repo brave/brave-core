@@ -159,10 +159,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
             _mChainNetworkAllNetwork.postValue(Triple.create(chainId, networkInfo, networkInfos));
         });
-        _mCustomNetworkIds.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getCustomNetworks(
-                    coinType, _mCustomNetworkIds::postValue);
-        });
+        _mCustomNetworkIds.addSource(
+                mSharedData.getCoinTypeLd(),
+                coinType -> {
+                    mJsonRpcService.getCustomNetworks(coinType, _mCustomNetworkIds::postValue);
+                });
         _mPrimaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
             List<NetworkInfo> primaryNws = new ArrayList<>();
             for (NetworkInfo networkInfo : networkInfos) {
@@ -196,8 +197,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
             if (coinBoxed == null) {
                 return;
             }
-            @CoinType.EnumType
-            int coin = coinBoxed;
+            @CoinType.EnumType int coin = coinBoxed;
             mJsonRpcService.getNetwork(coin, null, networkInfo -> {
                 if (networkInfo != null) {
                     _mChainId.postValue(networkInfo.chainId);
