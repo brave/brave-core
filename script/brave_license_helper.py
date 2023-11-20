@@ -103,6 +103,12 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License": "MIT",
             "License File": ["/brave/third_party/rapidjson/src/license.txt"],
         },
+        os.path.join('brave', 'third_party', 'reclient_configs'): {
+            "Name": "reclient-configs",
+            "URL": "https://github.com/EngFlow/reclient-configs",
+            "License": "Apache-2.0",
+            "License File": ["/brave/third_party/reclient_configs/src/LICENSE"],
+        },
         os.path.join('brave', 'third_party', 'rust'): {
             "Name": "rust-cxx",
             "URL": "https://crates.io/crates/cxx",

@@ -24,6 +24,7 @@ deps = {
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
   "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
+  "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@61ddd9705962a6c6c921b42c933451d4810aa28e",
   'third_party/android_deps/libs/com_google_android_play_core': {
       'packages': [
           {
@@ -65,7 +66,10 @@ hooks = [
   {
     'name': 'configure_reclient',
     'pattern': '.',
-    'action': ['python3', 'build/reclient_cfgs/configure_reclient.py'],
+    'action': ['python3', 'third_party/reclient_configs/src/configure_reclient.py',
+               '--src_dir=..',
+               '--exec_root=../..',
+               '--custom_py=third_party/reclient_configs/brave_custom/brave_custom.py'],
   },
   {
     'name': 'download_sparkle',
