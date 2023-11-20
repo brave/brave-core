@@ -64,7 +64,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<String[]> _mCustomNetworkIds;
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
-    private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
+    private final Map<String, NetworkSelectorModel> mNetworkSelectorMap;
 
     public final LiveData<String> mChainId;
     private final MutableLiveData<NetworkLists> _mNetworkLists;
@@ -132,7 +132,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
         });
-        _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> { updateChainId(); });
+        _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> updateChainId());
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
             getAllNetworks(mJsonRpcService, Collections.singletonList(coinType), networkInfoSet -> {
                 _mDefaultCoinCryptoNetworks.postValue(new ArrayList<>(networkInfoSet));
@@ -161,7 +161,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
         _mCustomNetworkIds.addSource(mSharedData.getCoinTypeLd(), coinType -> {
             mJsonRpcService.getCustomNetworks(
-                    coinType, customNetworks -> { _mCustomNetworkIds.postValue(customNetworks); });
+                    coinType, _mCustomNetworkIds::postValue);
         });
         _mPrimaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
             List<NetworkInfo> primaryNws = new ArrayList<>();
@@ -185,16 +185,28 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     private void updateChainId() {
-        @CoinType.EnumType
-        int coin = mSharedData.getCoinTypeLd().getValue();
-
         if (mMode == Mode.WALLET_MODE) {
+            if (mJsonRpcService == null) {
+                return;
+            }
+            Integer coinBoxed = mSharedData.getCoinTypeLd().getValue();
+            // Unboxing a live data value directly may
+            // produce a null pointer exception, so it's required
+            // checking against null.
+            if (coinBoxed == null) {
+                return;
+            }
+            @CoinType.EnumType
+            int coin = coinBoxed;
             mJsonRpcService.getNetwork(coin, null, networkInfo -> {
                 if (networkInfo != null) {
                     _mChainId.postValue(networkInfo.chainId);
                 }
             });
         } else if (mMode == Mode.PANEL_MODE) {
+            if (mBraveWalletService == null) {
+                return;
+            }
             mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(networkInfo -> {
                 if (networkInfo != null) {
                     _mChainId.postValue(networkInfo.chainId);
