@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <vector>
 
 #include "base/containers/cxx20_erase_vector.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
@@ -230,7 +231,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
       mojom::KeyringId keyring_id = mojom::kSolanaKeyringId) {
     CHECK(!keyring_service_->IsLockedSync());
     auto all_accounts = keyring_service_->GetAllAccountsSync();
-    base::EraseIf(all_accounts->accounts, [&](auto& acc) {
+    std::erase_if(all_accounts->accounts, [&](auto& acc) {
       return acc->account_id->keyring_id != keyring_id;
     });
     return all_accounts->accounts[index].Clone();
