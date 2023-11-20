@@ -14,8 +14,12 @@ from lib.util import extract_zip
 
 import components.path_util as path_util
 
+# pylint: disable=import-error
+# pytype: disable=import-error
 with path_util.SysPath(path_util.GetPyJson5Dir()):
-  import json5  # pylint: disable=import-error
+  import json5
+# pylint: enable=import-error
+# pytype: enable=import-error
 
 
 def TerminateProcess(p):
