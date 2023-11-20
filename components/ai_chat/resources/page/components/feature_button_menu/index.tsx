@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
 import { getLocale } from '$web-common/locale'
@@ -34,10 +35,15 @@ export default function FeatureMenu() {
   }
 
   return (
-    <ButtonMenu className={styles.featureMenu}>
-      <div slot='anchor-content' title={getLocale('leoSettingsTooltipLabel')}>
+    <ButtonMenu>
+      <Button
+        slot='anchor-content'
+        title={getLocale('leoSettingsTooltipLabel')}
+        size="small"
+        kind="plain-faint"
+      >
         <Icon name='more-horizontal' />
-      </div>
+      </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
       </div>

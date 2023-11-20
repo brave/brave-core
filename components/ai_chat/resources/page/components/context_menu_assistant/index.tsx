@@ -6,6 +6,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
@@ -139,9 +140,13 @@ function ContextMenuAssistant_(
   return (
     <>
       <ButtonMenu className={classnames(styles.moreButton, props.className)}>
-        <div slot='anchor-content'>
+        <Button
+          slot='anchor-content'
+          size="small"
+          kind="plain-faint"
+        >
           <Icon name='more-horizontal' />
-        </div>
+        </Button>
         <leo-menu-item onClick={handleCopyText}>
           <Icon name='copy' />
           <span>{getLocale('copyButtonLabel')}</span>
