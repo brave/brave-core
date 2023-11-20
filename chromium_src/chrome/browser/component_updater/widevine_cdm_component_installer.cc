@@ -134,7 +134,7 @@ class WidevineCdmComponentInstallerPolicy
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
   std::string GetArm64DllZipUrl(const std::string& version);
-  CrxInstaller::Result InstallArm64Dll(const GURL zip_url,
+  CrxInstaller::Result InstallArm64Dll(const GURL& zip_url,
                                        const base::FilePath& install_dir);
   bool IsHttp404(CrxInstaller::Result);
   std::unique_ptr<network::PendingSharedURLLoaderFactory>
@@ -145,7 +145,7 @@ class WidevineCdmComponentInstallerPolicy
 class WidevineArm64DllInstaller
     : public base::RefCountedThreadSafe<WidevineArm64DllInstaller> {
  public:
-  explicit WidevineArm64DllInstaller(const GURL zip_url,
+  explicit WidevineArm64DllInstaller(const GURL& zip_url,
                                      const base::FilePath& install_dir);
   void Start(std::unique_ptr<network::PendingSharedURLLoaderFactory>
                  pending_url_loader_factory);
@@ -216,7 +216,7 @@ std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
 }
 
 CrxInstaller::Result WidevineCdmComponentInstallerPolicy::InstallArm64Dll(
-    const GURL zip_url,
+    const GURL& zip_url,
     const base::FilePath& install_dir) {
   scoped_refptr<WidevineArm64DllInstaller> installer =
       base::MakeRefCounted<WidevineArm64DllInstaller>(zip_url, install_dir);
@@ -240,7 +240,7 @@ bool WidevineCdmComponentInstallerPolicy::IsHttp404(
 }
 
 WidevineArm64DllInstaller::WidevineArm64DllInstaller(
-    const GURL zip_url,
+    const GURL& zip_url,
     const base::FilePath& install_dir)
     : zip_url_(zip_url), install_dir_(install_dir) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
