@@ -76,9 +76,48 @@ const chromiumConfigs = {
   },
 }
 
+// A function to make gn args to build a release Chromium build.
+// There is two primarily sources:
+// 1. Chromium perf builds: tools/mb/mb_config_expectations/chromium.perf.json
+// 2. Brave Release build configuration
+const getChromiumGnArgs = () => {
+  const braveGnArgs = config.buildArgs()
+  const chromiumGnArgs = {
+    target_cpu: config.targetArch,
+    target_os: config.getTargetOS(),
+    is_official_build: true,
+    symbol_level: 1,
+    enable_keystone_registration_framework: false,
+  }
+
+  if (config.isAndroid)
+    chromiumGnArgs.debuggable_apks = false
+
+  const gnArgsToMirror = [
+    'enable_hangout_services_extension',
+    'enable_widevine',
+    'ignore_missing_widevine_signing_cert',
+    'enable_nacl',
+    'ffmpeg_branding',
+  ]
+
+  if (braveGnArgs.use_system_xcode !== undefined) {
+    chromiumGnArgs.use_system_xcode = braveGnArgs.use_system_xcode
+  }
+
+  for (const arg of gnArgsToMirror) {
+    const braveArg = braveGnArgs[arg]
+    if (braveArg == undefined)
+      throw Error(`Gn arg ${arg} doesn't exist in config.buildArgs()`)
+    chromiumGnArgs[arg] = braveArg
+  }
+  return chromiumGnArgs
+}
+
 const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
+  config.outputDir = config.outputDir + '_chromium'
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   if (chromiumConfig == undefined)
@@ -102,17 +141,10 @@ const buildChromium = (buildConfig = config.defaultBuildConfig, options = {}) =>
   })
 
   config.buildTarget = chromiumConfig.buildTarget
-  const args = {
-    target_cpu: config.targetArch,
-    target_os: config.getTargetOS(),
-    enable_keystone_registration_framework: false,
-    ignore_missing_widevine_signing_cert: true,
-    is_chrome_branded: false,
-    is_official_build: true,
-    symbol_level: 1,
-  }
-  const buildArgsStr = util.buildArgsToString(args)
-  util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], config.defaultOptions)
+  const buildArgsStr = util.buildArgsToString(getChromiumGnArgs())
+  util.run('gn', ['gen', config.outputDir,
+    '--args="' + buildArgsStr + '"', config.extraGnGenOpts],
+    config.defaultOptions)
 
   util.buildTarget()
 
