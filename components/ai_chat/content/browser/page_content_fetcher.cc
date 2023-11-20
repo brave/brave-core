@@ -46,10 +46,11 @@ namespace {
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Hosts to use for screenshot based text retrieval
 constexpr auto kScreenshotRetrievalHosts =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        "docs.google.com",
-        "twitter.com",
-    });
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "docs.google.com",
+                                                 "twitter.com",
+                                             });
 #endif
 
 constexpr auto kVideoPageContentTypes =
