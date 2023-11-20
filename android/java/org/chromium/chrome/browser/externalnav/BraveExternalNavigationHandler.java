@@ -8,8 +8,9 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveWalletProvider;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
@@ -20,7 +21,6 @@ import org.chromium.url.GURL;
  * Extends Chromium's ExternalNavigationHandler
  */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
-    private BraveWalletProvider mBraveWalletProvider;
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);
@@ -45,8 +45,12 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
             QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
             GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS, true)) {
+        boolean isYoutubeDomain = intentDataUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
+        if ((isYoutubeDomain
+                        && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
+                || (!isYoutubeDomain
+                        && ContextUtils.getAppSharedPreferences()
+                                .getBoolean(BravePrivacySettings.PREF_APP_LINKS, true))) {
             return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
                     resolveActivity, browserFallbackUrl, intentDataUrl, params);
         } else {

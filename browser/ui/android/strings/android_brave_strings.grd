@@ -749,12 +749,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
       </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
-        Video playback in Brave
-      </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
-        If enabled, videos will be played in Brave instead of corresponding app
-      </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
         Autoplay
@@ -810,11 +804,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
         Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
-      <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
-        Enabled
-      </message>
-      <message name="IDS_TEXT_DISABLED" desc="Text indicating that an option is disabled">
-        Disabled
+      <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in brave">
+        Open YouTube links in Brave
       </message>
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
         Display
