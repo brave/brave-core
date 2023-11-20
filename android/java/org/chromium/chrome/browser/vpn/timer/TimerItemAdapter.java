@@ -1,16 +1,13 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.timer;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,8 +42,8 @@ public class TimerItemAdapter extends RecyclerView.Adapter<TimerItemViewHolder> 
     @Override
     public void onBindViewHolder(TimerItemViewHolder holder, int position) {
         TimerItemModel timerItemModel = mTimerItemModels.get(position);
-        holder.timerActionText.setText(timerItemModel.getActionText());
-        holder.timerActionImage.setImageResource(timerItemModel.getActionImage());
+        holder.mTimerActionText.setText(timerItemModel.getActionText());
+        holder.mTimerActionImage.setImageResource(timerItemModel.getActionImage());
         holder.itemView.setOnClickListener(
                 view -> mTimerItemClickListener.onTimerItemClick(timerItemModel));
     }

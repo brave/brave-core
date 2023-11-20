@@ -170,10 +170,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
 
                         // Even though we have an error, we still let to proceed
                         if (!TextUtils.isEmpty(errString)) {
-                            android.widget.Toast
-                                    .makeText(getActivity(), errString,
-                                            android.widget.Toast.LENGTH_SHORT)
-                                    .show();
+                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
                         }
                         onNextPage();
                     }

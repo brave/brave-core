@@ -22,14 +22,14 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
-    private static Object mutex = new Object();
+    private static Object sMutex = new Object();
 
     private BraveVpnProfileUtils() {}
 
     public static BraveVpnProfileUtils getInstance() {
         BraveVpnProfileUtils result = sBraveVpnProfileUtils;
         if (result == null) {
-            synchronized (mutex) {
+            synchronized (sMutex) {
                 result = sBraveVpnProfileUtils;
                 if (result == null) sBraveVpnProfileUtils = result = new BraveVpnProfileUtils();
             }

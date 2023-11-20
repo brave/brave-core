@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.timer;
 
@@ -11,9 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.timer.TimerItemAdapter;
-import org.chromium.chrome.browser.vpn.timer.TimerUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 
 import java.util.ArrayList;
@@ -72,10 +65,6 @@ public class TimerDialogFragment
 
         switch (timerItemModel.getTimerDuration()) {
             case MINUTES_15:
-                BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
-                TimerUtils.scheduleVpnAction(
-                        getActivity(), timerItemModel.getTimerDuration().getMinutes());
-                break;
             case MINUTES_60:
                 BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
                 TimerUtils.scheduleVpnAction(
@@ -83,6 +72,8 @@ public class TimerDialogFragment
                 break;
             case NONE:
                 BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
+                break;
+            default:
                 break;
         }
         dismiss();
