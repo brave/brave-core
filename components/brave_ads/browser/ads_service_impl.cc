@@ -96,8 +96,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kRestartBatAdsServiceDelay = base::Seconds(10);
-
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
@@ -361,8 +359,6 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
-  CancelRestartBatAdsService();
-
   if (IsBatAdsServiceBound() || !CanStartBatAdsService()) {
     return;
   }
@@ -374,9 +370,8 @@ void AdsServiceImpl::StartBatAdsService() {
   CHECK(!IsBatAdsServiceBound());
 
   bat_ads_service_ = bat_ads_service_factory_->Launch();
-
-  bat_ads_service_.set_disconnect_handler(base::BindOnce(
-      &AdsServiceImpl::RestartBatAdsServiceAfterDelay, AsWeakPtr()));
+  bat_ads_service_.set_disconnect_handler(
+      base::BindOnce(&AdsServiceImpl::DisconnectHandler, AsWeakPtr()));
 
   CHECK(IsBatAdsServiceBound());
 
@@ -396,22 +391,9 @@ void AdsServiceImpl::StartBatAdsService() {
   bat_ads_client_notifier_.reset_on_disconnect();
 }
 
-void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
-  VLOG(6) << "Restart bat-ads service";
-
+void AdsServiceImpl::DisconnectHandler() {
+  VLOG(1) << "Bat Ads Service was disconnected";
   Shutdown();
-
-  VLOG(6) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
-  restart_bat_ads_service_timer_.Start(
-      FROM_HERE, kRestartBatAdsServiceDelay,
-      base::BindOnce(&AdsServiceImpl::MaybeStartBatAdsService, AsWeakPtr()));
-}
-
-void AdsServiceImpl::CancelRestartBatAdsService() {
-  if (restart_bat_ads_service_timer_.IsRunning()) {
-    VLOG(6) << "Canceled bat-ads service restart";
-    restart_bat_ads_service_timer_.Stop();
-  }
 }
 
 bool AdsServiceImpl::ShouldProceedInitialization(
@@ -514,7 +496,7 @@ void AdsServiceImpl::InitializeBatAds(
 
 void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to initialize bat-ads";
+    VLOG(1) << "Failed to initialize Bat Ads";
     return Shutdown();
   }
 
@@ -1051,12 +1033,10 @@ void AdsServiceImpl::URLRequestCallback(
 }
 
 void AdsServiceImpl::Shutdown() {
-  CancelRestartBatAdsService();
-
   if (is_bat_ads_initialized_) {
     SuspendP2AHistograms();
 
-    VLOG(2) << "Shutting down bat-ads service";
+    VLOG(2) << "Shutting down Bat Ads Service";
   }
 
   bat_ads_client_notifier_.reset();
@@ -1089,7 +1069,7 @@ void AdsServiceImpl::Shutdown() {
   }
 
   if (is_bat_ads_initialized_) {
-    VLOG(2) << "Shutdown bat-ads service";
+    VLOG(2) << "Shutdown Bat Ads Service";
   }
 
   is_bat_ads_initialized_ = false;

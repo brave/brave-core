@@ -111,8 +111,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(absl::optional<base::Value>,
               GetProfilePref,
-              (const std::string& path),
-              (const));
+              (const std::string& path));
   MOCK_METHOD(void,
               SetProfilePref,
               (const std::string& path, base::Value value));
@@ -121,8 +120,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(absl::optional<base::Value>,
               GetLocalStatePref,
-              (const std::string& path),
-              (const));
+              (const std::string& path));
   MOCK_METHOD(void,
               SetLocalStatePref,
               (const std::string& path, base::Value value));
