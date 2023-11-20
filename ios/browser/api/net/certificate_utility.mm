@@ -74,9 +74,10 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
-      base::make_span(CFDataGetBytePtr(cert_data),
-                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
+      net::x509_util::CreateCryptoBuffer(base::make_span(
+          CFDataGetBytePtr(cert_data.get()),
+          base::checked_cast<size_t>(CFDataGetLength(cert_data.get())))));
 
   if (!cert_buffer) {
     return nil;
@@ -99,9 +100,10 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
-      base::make_span(CFDataGetBytePtr(cert_data),
-                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
+      net::x509_util::CreateCryptoBuffer(base::make_span(
+          CFDataGetBytePtr(cert_data.get()),
+          base::checked_cast<size_t>(CFDataGetLength(cert_data.get())))));
 
   if (!cert_buffer) {
     return nil;
@@ -150,12 +152,12 @@ namespace {
     for (CFIndex i = 1; i < cert_count; i++) {
       SecCertificateRef secCertificate =
           base::apple::CFCastStrict<SecCertificateRef>(
-              CFArrayGetValueAtIndex(certificateChain, i));
+              CFArrayGetValueAtIndex(certificateChain.get(), i));
       intermediates.emplace_back(secCertificate, base::scoped_policy::RETAIN);
     }
     SecCertificateRef secCertificate =
         base::apple::CFCastStrict<SecCertificateRef>(
-            CFArrayGetValueAtIndex(certificateChain, 0));
+            CFArrayGetValueAtIndex(certificateChain.get(), 0));
     return net::x509_util::CreateX509CertificateFromSecCertificate(
         base::apple::ScopedCFTypeRef<SecCertificateRef>(
             secCertificate, base::scoped_policy::RETAIN),
