@@ -112,9 +112,12 @@ BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
 constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
     "https://dl.google.com/widevine-cdm/4.10.2710.0-win-arm64.zip"};
-constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllTemplateUrl{
+constexpr char kVersionPlaceholder[] = "{version}";
+const base::FeatureParam<std::string> kBraveWidevineArm64DllTemplateUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_template_url",
-    "https://dl.google.com/widevine-cdm/%s-win-arm64.zip"};
+    ("https://dl.google.com/widevine-cdm/" + std::string(kVersionPlaceholder) +
+     "-win-arm64.zip")
+        .c_str()};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
@@ -211,13 +214,10 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
 
 std::string WidevineCdmComponentInstallerPolicy::GetArm64DllZipUrl(
     const std::string& version) {
-  const std::string format = kBraveWidevineArm64DllTemplateUrl.Get();
-  size_t pos = format.find("%s");
-  if (pos == std::string::npos) {
-    // This can happen when `format` was set to a static URL via Griffin.
-    return format;
-  }
-  return base::StringPrintf(format.c_str(), version.c_str());
+  std::string result = kBraveWidevineArm64DllTemplateUrl.Get();
+  base::ReplaceFirstSubstringAfterOffset(&result, 0, kVersionPlaceholder,
+                                         version);
+  return result;
 }
 
 CrxInstaller::Result WidevineCdmComponentInstallerPolicy::InstallArm64Dll(
