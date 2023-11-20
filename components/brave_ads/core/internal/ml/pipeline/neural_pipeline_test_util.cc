@@ -96,9 +96,10 @@ NeuralPipelineBufferBuilder::AddMappedTokensTransformation(
 
 std::string NeuralPipelineBufferBuilder::Build(const std::string& language) {
   auto transformations = builder_.CreateVector(transformations_);
+  const auto language_offset = builder_.CreateString(language);
 
   neural_text_classification::flat::ModelBuilder neural_model_builder(builder_);
-  neural_model_builder.add_locale(builder_.CreateString(language));
+  neural_model_builder.add_locale(language_offset);
   neural_model_builder.add_classifier(classifier_);
   neural_model_builder.add_transformations(transformations);
   builder_.Finish(neural_model_builder.Finish());
