@@ -129,9 +129,6 @@ function buildChromium(buildConfig = config.defaultBuildConfig, options = {}) {
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 
-  if (config.isCI) {
-    program.delete_unused_deps = true
-  }
 
   Log.progressScope('gclient sync', () => {
     syncUtil.syncChromium(true, true, false)
