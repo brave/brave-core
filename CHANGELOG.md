@@ -1,5 +1,52 @@
 # Changelog
 
+## [1.57](https://github.com/brave/brave-ios/releases/tag/v1.57)
+
+### Web3
+
+- Added search bar to “Select a Token to Send” view. ([#7768](https://github.com/brave/brave-ios/issues/7768))
+- Added “Group by” filter to Portfolio tab in Brave Wallet. ([#7765](https://github.com/brave/brave-ios/issues/7765))
+- Added NFT filters and display settings in the NFT tab for Brave Wallet. ([#7699](https://github.com/brave/brave-ios/issues/7699))
+- Added new UI for the Brave Wallet onboarding flow. ([#7619](https://github.com/brave/brave-ios/issues/7619))
+- Added handling of empty state for Brave Wallet Portfolio filters. ([#7618](https://github.com/brave/brave-ios/issues/7618))
+- Added filters and display settings for Portfolio tab in Brave Wallet. ([#7585](https://github.com/brave/brave-ios/issues/7585))
+- Enabled Sardine On-ramp purchase option for all wallet users. ([#7608](https://github.com/brave/brave-ios/issues/7608))
+- Fixed crash when switching to Polygon network in Brave Wallet “Swap” view. ([#7907](https://github.com/brave/brave-ios/issues/7907))
+- Fixed “Select Account” panel to always show checkmark for the selected account. ([#7823](https://github.com/brave/brave-ios/issues/7823))
+
+### General
+
+- Implemented query parameter filtering when navigating between websites. ([#7861](https://github.com/brave/brave-ios/issues/7861))
+- Added biometric authentication for Private Mode. ([#7810](https://github.com/brave/brave-ios/issues/7810))
+- Added “Private Tabs” settings section in main settings menu. ([#7855](https://github.com/brave/brave-ios/issues/7855))
+- Added option to keep private tabs when the user exits the browser. ([#3183](https://github.com/brave/brave-ios/issues/3183))
+- Added support for Multi-Window on iPad. ([#7574](https://github.com/brave/brave-ios/issues/7574))
+- Added haptic feedback for voice search when entry is successful. ([#7798](https://github.com/brave/brave-ios/issues/7798))
+- Added Privacy-Preserving Product Analytics (P3A) reporting for New Tab Page Sponsored Images. ([#6806](https://github.com/brave/brave-ios/issues/6806))
+- Added support for compiling blocklists from raw text filter lists. ([#5975](https://github.com/brave/brave-ios/issues/5975))
+- Added cookie consent notice popup as opt-out. ([#7792](https://github.com/brave/brave-ios/issues/7792))
+- Added “View Recently Closed Tabs” to the tab tray context menu. ([#7752](https://github.com/brave/brave-ios/issues/7752))
+- Added network level standard blocking for cosmetic filtering. ([#7539](https://github.com/brave/brave-ios/issues/7539))
+- Updated the strings in the “restore your tabs” message (after experiencing a crash). ([#7695](https://github.com/brave/brave-ios/issues/7695))
+- Updated the URL bar context menu to show by long pressing on the search field as well the refresh icon in the URL bar. ([#7642](https://github.com/brave/brave-ios/issues/7642))
+- Updated New Tab Page favicon to display Brave icon instead of generic planet icon. ([#5357](https://github.com/brave/brave-ios/issues/5357))
+- Updated “Block Cookie Consent Notices” to be enabled by default. ([#7882](https://github.com/brave/brave-ios/issues/7882))
+- Updated logic for the default browser prompt on New Tab Page. ([#7860](https://github.com/brave/brave-ios/issues/7860))
+- Updated Sync Chain authentication logic to support biometrics when enabling password sync or adding a new device. ([#7849](https://github.com/brave/brave-ios/issues/7849))
+- Updated VPN Support Contact Form to append the issue category to the email subject field as well as body. ([#7828](https://github.com/brave/brave-ios/issues/7828))
+- Fixed issue with “Block Cookie Consent Notices” toggle switch being enabled when upgrading browser. ([#7920](https://github.com/brave/brave-ios/issues/7920))
+- Fixed issue with Google OAuth window not auto-closing after successfully authenticating. ([#6966](https://github.com/brave/brave-ios/issues/6966))
+- Fixed URLs for "i.redd.it" posts on subreddits from forming incorrectly when using [old.reddit.com](http://old.reddit.com/) website redirect. ([#7873](https://github.com/brave/brave-ios/issues/7873))
+- Fixed issue allowing users to bypass the "Browser Lock" window using the “Cancel” button. ([#7893](https://github.com/brave/brave-ios/issues/7893))
+- Fixed “Brave can now be set as your default browser…” prompt to not be shown 14 days after installation. ([#7977](https://github.com/brave/brave-ios/issues/7977))
+- Fixed crash when migrating after update when browser has many tabs opened. ([#7857](https://github.com/brave/brave-ios/issues/7857))
+- Fixed crash when viewing an advertisement in the Brave News feed after joining Brave Rewards. ([#7837](https://github.com/brave/brave-ios/issues/7837))
+- Fixed Tabs Bar to update properly when opening bulk bookmarks. ([#7836](https://github.com/brave/brave-ios/issues/7836))
+- Fixed restored but unopened tabs from being added to “Recently Closed Tabs” page. ([#7832](https://github.com/brave/brave-ios/issues/7832))
+- Fixed tabs not being closed correctly in certain cases. ([#7796](https://github.com/brave/brave-ios/issues/7796))
+- Fixed crash in tab view when tapping “Private” button while actively dragging a tab. ([#7737](https://github.com/brave/brave-ios/issues/7737))
+- Fixed "Recent Searches" to update UI when using “clear” button. ([#4923](https://github.com/brave/brave-ios/issues/4923))
+
 ## [1.56](https://github.com/brave/brave-ios/releases/tag/v1.56)
 
 ### Web3
