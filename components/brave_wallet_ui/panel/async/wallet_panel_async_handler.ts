@@ -158,7 +158,11 @@ async function navigateToConnectHardwareWallet (store: Store) {
 }
 
 function isPersistanceOfPanelProhibited (panelType: PanelTypes) {
-  return panelType === 'connectWithSite' || panelType === 'signData'
+  return (
+    panelType === 'connectWithSite' ||
+    panelType === 'signData' ||
+    panelType === 'addEthereumChain'
+  )
 }
 
 function storeCurrentAndPreviousPanel(
