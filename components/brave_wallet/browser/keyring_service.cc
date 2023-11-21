@@ -2447,30 +2447,7 @@ void KeyringService::SetAutoLockMinutes(int32_t minutes,
 
 void KeyringService::IsStrongPassword(const std::string& password,
                                       IsStrongPasswordCallback callback) {
-  if (password.length() < 7) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  // Has at least one letter
-  if (!RE2::PartialMatch(password, "[a-zA-Z]")) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  // Has at least one number
-  if (!RE2::PartialMatch(password, "[0-9]")) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  // Has at least one non-alphanumeric character
-  if (!RE2::PartialMatch(password, "[^0-9a-zA-Z]")) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::move(callback).Run(true);
+  std::move(callback).Run(password.length() > 7);
 }
 
 bool KeyringService::ValidatePasswordInternal(const std::string& password) {

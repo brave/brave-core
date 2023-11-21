@@ -75,29 +75,33 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         mUnlockWalletTitle = view.findViewById(R.id.unlock_wallet_title);
         mBiometricUnlockWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
 
-        mUnlockButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(mUnlockWalletPassword.getText())) {
-                mUnlockWalletPassword.setError(getString(R.string.password_error));
-                return;
-            }
+        mUnlockButton.setOnClickListener(
+                v -> {
+                    if (TextUtils.isEmpty(mUnlockWalletPassword.getText())) {
+                        mUnlockWalletPassword.setError(getString(R.string.password_error));
+                        return;
+                    }
 
-            KeyringService keyringService = getKeyringService();
-            if (keyringService != null) {
-                keyringService.unlock(mUnlockWalletPassword.getText().toString(), result -> {
-                    if (result) {
-                        Utils.clearClipboard(mUnlockWalletPassword.getText().toString(), 0);
-                        mUnlockWalletPassword.setText(null);
-                        if (onNextPage != null) {
-                            Utils.hideKeyboard(getActivity());
-                            onNextPage.gotoNextPage(true);
-                        }
-                    } else {
-                        mUnlockWalletPassword.setError(
-                                getString(R.string.incorrect_password_error));
+                    KeyringService keyringService = getKeyringService();
+                    if (keyringService != null) {
+                        keyringService.unlock(
+                                mUnlockWalletPassword.getText().toString(),
+                                result -> {
+                                    if (result) {
+                                        Utils.clearClipboard(
+                                                mUnlockWalletPassword.getText().toString(), 0);
+                                        mUnlockWalletPassword.setText(null);
+                                        if (onNextPage != null) {
+                                            Utils.hideKeyboard(requireActivity());
+                                            onNextPage.gotoNextPage(true);
+                                        }
+                                    } else {
+                                        mUnlockWalletPassword.setError(
+                                                getString(R.string.incorrect_password_error));
+                                    }
+                                });
                     }
                 });
-            }
-        });
 
         mUnlockWalletRestoreButton.setOnClickListener(v -> {
             if (onNextPage != null) {

@@ -2055,7 +2055,7 @@ Are you sure you want to do this?
       Verify password
     </message>
     <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
+      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Verified password did not match
@@ -2166,7 +2166,7 @@ Are you sure you want to do this?
       Enter password to unlock wallet
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
+      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
