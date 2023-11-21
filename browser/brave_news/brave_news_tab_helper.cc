@@ -20,8 +20,6 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/feed/rss_links_fetcher.h"
 #include "chrome/browser/profiles/profile.h"

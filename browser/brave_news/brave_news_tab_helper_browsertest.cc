@@ -18,7 +18,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -37,8 +36,9 @@
 namespace {
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper)
-      : tab_helper_(tab_helper) {
+  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper,
+                               bool notify_on_empty = false)
+      : notify_on_empty_(notify_on_empty), tab_helper_(tab_helper) {
     news_observer_.Observe(tab_helper_);
   }
 
@@ -56,7 +56,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
     // There can be multiple OnAvailableFeedsChanged events, as we navigate
     // (first to clear, then again to populate). This class is waiting for
     // feeds, so expect to receive some.
-    if (feeds.size() == 0) {
+    if (feeds.size() == 0 && !notify_on_empty_) {
       return;
     }
 
@@ -64,6 +64,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
     loop_.Quit();
   }
 
+  bool notify_on_empty_;
   base::RunLoop loop_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
   std::optional<std::vector<GURL>> last_feeds_ = std::nullopt;
@@ -154,6 +155,41 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreDeduplicated) {
   auto result = waiter.WaitForChange();
   EXPECT_EQ(1u, result.size());
   EXPECT_EQ(url, result[0]);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
+  OptIn();
+
+  ASSERT_TRUE(https_server()->Start());
+  GURL rss_page_url = https_server()->GetURL("/page_with_bad_rss.html");
+
+  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+
+  GURL feed_url;
+  {
+    WaitForFeedsChanged waiter(tab_helper);
+
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+    auto result = waiter.WaitForChange();
+
+    ASSERT_EQ(1u, result.size());
+    feed_url = result[0];
+    EXPECT_EQ(https_server()->GetURL("/rss_feed_which_does_not_exist.xml"),
+              feed_url);
+  }
+
+  // At first, as we haven't tried to fetch the RSS feed, we don't know it's
+  // invalid. When we receive the change notification, we should have removed
+  // the invalid feed.
+  {
+    WaitForFeedsChanged waiter(tab_helper, /*notify_on_empty=*/true);
+    EXPECT_EQ(feed_url.spec(), tab_helper->GetTitleForFeedUrl(feed_url));
+
+    auto result = waiter.WaitForChange();
+    EXPECT_EQ(0u, result.size());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {

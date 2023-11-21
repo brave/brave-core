@@ -186,6 +186,9 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     }
     return;
   }
+
+  // If we didn't get a valid response, call back with no results.
+  OnFindFeedsImplResponse(feed_url, {});
 }
 
 void DirectFeedController::OnFindFeedsImplResponse(
