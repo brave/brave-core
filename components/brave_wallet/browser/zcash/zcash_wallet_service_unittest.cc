@@ -12,6 +12,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -68,6 +70,13 @@ class MockZCashRPC : public ZCashRpc {
                void(const std::string& chain_id,
                     const std::string& data,
                     SendTransactionCallback callback));
+
+  MOCK_METHOD5(IsKnownAddress,
+               void(const std::string& chain_id,
+                    const std::string& addr,
+                    uint64_t block_start,
+                    uint64_t block_end,
+                    IsKnownAddressCallback callback));
 };
 
 }  // namespace
@@ -124,6 +133,13 @@ class ZCashWalletServiceUnitTest : public testing::Test {
 
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
 TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
+  {
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+    keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2, 2);
+  }
+
   ZCashTransaction zcash_transaction;
   zcash_transaction.set_locktime(2286687);
   {
@@ -208,6 +224,235 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
             "1bd354c73a4a87854c67ffffffff0220a10700000000001976a91415af26f9"
             "b71022a01eade958cd05145f7ba5afe688acb8880000000000001976a914c7"
             "cb443e547988b992adc1b47427ce6c40f3ca9e88ac000000");
+}
+
+TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            zcash::BlockID response;
+            response.set_height(2286687);
+            std::move(callback).Run(std::move(response));
+          }));
+
+  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& addr,
+             uint64_t block_start, uint64_t block_end,
+             ZCashRpc::IsKnownAddressCallback callback) {
+            EXPECT_EQ(2286687u, block_end);
+            if (addr == "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1V7JBWXRYPA19nBLBFTm8669DhQgErMAnK") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+              std::move(callback).Run(false);
+              return;
+            }
+          }));
+
+  {
+    bool callback_called = false;
+    auto discovery_callback = base::BindLambdaForTesting(
+        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+          EXPECT_EQ(addr->address_string,
+                    "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL");
+          callback_called = true;
+        });
+
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+
+    zcash_wallet_service_->RunDiscovery(std::move(account_id), false,
+                                        std::move(discovery_callback));
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_TRUE(callback_called);
+  }
+
+  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& addr,
+             uint64_t block_start, uint64_t block_end,
+             ZCashRpc::IsKnownAddressCallback callback) {
+            EXPECT_EQ(2286687u, block_end);
+            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
+              std::move(callback).Run(false);
+              return;
+            }
+          }));
+
+  {
+    bool callback_called = false;
+    auto discovery_callback = base::BindLambdaForTesting(
+        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+          EXPECT_EQ(addr->address_string,
+                    "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m");
+          callback_called = true;
+        });
+
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+
+    zcash_wallet_service_->RunDiscovery(std::move(account_id), false,
+                                        std::move(discovery_callback));
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_TRUE(callback_called);
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_Change) {
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            zcash::BlockID response;
+            response.set_height(2286687);
+            std::move(callback).Run(std::move(response));
+          }));
+
+  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& addr,
+             uint64_t block_start, uint64_t block_end,
+             ZCashRpc::IsKnownAddressCallback callback) {
+            EXPECT_EQ(2286687u, block_end);
+            if (addr == "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1VUdyCuqWgeBPJvfhWvHLD5iDUfkdLrwWz") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
+              std::move(callback).Run(false);
+              return;
+            }
+          }));
+
+  {
+    bool callback_called = false;
+    auto discovery_callback = base::BindLambdaForTesting(
+        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+          EXPECT_EQ(addr->address_string,
+                    "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj");
+          callback_called = true;
+        });
+
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+
+    zcash_wallet_service_->RunDiscovery(std::move(account_id), true,
+                                        std::move(discovery_callback));
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_TRUE(callback_called);
+  }
+
+  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& addr,
+             uint64_t block_start, uint64_t block_end,
+             ZCashRpc::IsKnownAddressCallback callback) {
+            EXPECT_EQ(2286687u, block_end);
+            if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1gKxueg76TtvVmMQ6swDmvHxtmLTSQv6KP") {
+              std::move(callback).Run(false);
+              return;
+            }
+          }));
+
+  {
+    bool callback_called = false;
+    auto discovery_callback = base::BindLambdaForTesting(
+        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+          EXPECT_EQ(addr->address_string,
+                    "t1gKxueg76TtvVmMQ6swDmvHxtmLTSQv6KP");
+          callback_called = true;
+        });
+
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+
+    zcash_wallet_service_->RunDiscovery(std::move(account_id), true,
+                                        std::move(discovery_callback));
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_TRUE(callback_called);
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            zcash::BlockID response;
+            response.set_height(2286687);
+            std::move(callback).Run(std::move(response));
+          }));
+
+  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& addr,
+             uint64_t block_start, uint64_t block_end,
+             ZCashRpc::IsKnownAddressCallback callback) {
+            EXPECT_EQ(2286687u, block_end);
+            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+              std::move(callback).Run(true);
+              return;
+            }
+            if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
+              std::move(callback).Run(false);
+              return;
+            }
+          }));
+
+  {
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+    keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2,
+                                                             absl::nullopt);
+  }
+
+  {
+    bool callback_called = false;
+    auto discovery_callback = base::BindLambdaForTesting(
+        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+          EXPECT_EQ(addr->address_string,
+                    "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m");
+          callback_called = true;
+        });
+
+    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
+                                         mojom::KeyringId::kZCashMainnet,
+                                         mojom::AccountKind::kDerived, 0);
+
+    zcash_wallet_service_->RunDiscovery(std::move(account_id), false,
+                                        std::move(discovery_callback));
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_TRUE(callback_called);
+  }
 }
 
 }  // namespace brave_wallet

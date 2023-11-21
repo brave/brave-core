@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 
-#include <optional>
-
-#include "base/big_endian.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -16,10 +13,45 @@
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace brave_wallet {
 
 namespace {
+
+// Checks if provided stream contains any messages.
+class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
+ public:
+  using ResultCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
+
+  IsKnownAddressTxStreamHandler() {}
+  ~IsKnownAddressTxStreamHandler() override {}
+
+  void set_callback(ResultCallback callback) {
+    callback_ = std::move(callback);
+  }
+
+  bool is_message_found() { return tx_found_; }
+
+ private:
+  bool ProcessMessage(const std::string& message) override {
+    tx_found_ = true;
+    return false;
+  }
+
+  void OnComplete(bool success) override {
+    if (!success) {
+      std::move(callback_).Run(base::unexpected("stream error"));
+      return;
+    }
+    std::move(callback_).Run(tx_found_);
+  }
+
+ private:
+  bool tx_found_ = false;
+  ResultCallback callback_;
+};
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("zcash_rpc", R"(
@@ -83,6 +115,23 @@ const GURL MakeSendTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+const GURL MakeGetTaddressTxURL(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path = base::StrCat(
+      {base_url.path(),
+       "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetTaddressTxids"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 const GURL MakeGetLatestBlockHeightURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
@@ -117,20 +166,6 @@ const GURL MakeGetTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-// Prefixes provided serialized protobuf with compression byte and 4 bytes of
-// message size. See
-// https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
-std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
-  char compression = 0;  // 0 means no compression
-  char buff[4];          // big-endian 4 bytes of message size
-  base::WriteBigEndian<uint32_t>(buff, serialized_proto.size());
-  std::string result;
-  result.append(&compression, 1);
-  result.append(buff, 4);
-  result.append(serialized_proto);
-  return result;
-}
-
 std::string MakeGetAddressUtxosURLParams(const std::string& address) {
   zcash::GetAddressUtxosRequest request;
   request.add_addresses(address);
@@ -158,6 +193,26 @@ std::string MakeSendTransactionParams(const std::string& data) {
   return GetPrefixedProtobuf(request.SerializeAsString());
 }
 
+std::string MakeGetAddressTxParams(const std::string& address,
+                                   uint64_t block_start,
+                                   uint64_t block_end) {
+  zcash::TransparentAddressBlockFilter request;
+  request.New();
+
+  zcash::BlockRange range;
+  zcash::BlockID bottom;
+  zcash::BlockID top;
+
+  bottom.set_height(block_start);
+  top.set_height(block_end);
+
+  request.set_address(address);
+  range.mutable_start()->CopyFrom(bottom);
+  range.mutable_end()->CopyFrom(top);
+  request.mutable_range()->CopyFrom(range);
+  return GetPrefixedProtobuf(request.SerializeAsString());
+}
+
 std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
     const GURL& url,
     const std::string& body) {
@@ -176,27 +231,6 @@ std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
       5, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   url_loader->SetAllowHttpErrorResults(true);
   return url_loader;
-}
-
-// Resolves serialized protobuf from length-prefixed string
-std::optional<std::string> ResolveSerializedMessage(
-    const std::string& grpc_response_body) {
-  if (grpc_response_body.size() < 5) {
-    return std::nullopt;
-  }
-  if (grpc_response_body[0] != 0) {
-    // Compression is not supported yet
-    return std::nullopt;
-  }
-  uint32_t size = 0;
-  base::ReadBigEndian(
-      reinterpret_cast<const uint8_t*>(&(grpc_response_body[1])), &size);
-
-  if (grpc_response_body.size() != size + 5) {
-    return std::nullopt;
-  }
-
-  return grpc_response_body.substr(5);
 }
 
 }  // namespace
@@ -401,6 +435,36 @@ void ZCashRpc::SendTransaction(const std::string& chain_id,
       5000);
 }
 
+void ZCashRpc::IsKnownAddress(const std::string& chain_id,
+                              const std::string& addr,
+                              uint64_t block_start,
+                              uint64_t block_end,
+                              IsKnownAddressCallback callback) {
+  GURL request_url = MakeGetTaddressTxURL(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    return;
+  }
+
+  auto url_loader = MakeGRPCLoader(
+      request_url, MakeGetAddressTxParams(addr, block_start, block_end));
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
+      stream_handlers_list_.begin(),
+      std::make_unique<IsKnownAddressTxStreamHandler>());
+  static_cast<IsKnownAddressTxStreamHandler*>(handler_it->get())
+      ->set_callback(base::BindOnce(&ZCashRpc::OnGetAddressTxResponse,
+                                    weak_ptr_factory_.GetWeakPtr(),
+                                    std::move(callback), it, handler_it));
+
+  (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
+}
+
 void ZCashRpc::OnSendTransactionResponse(
     ZCashRpc::SendTransactionCallback callback,
     UrlLoadersList::iterator it,
@@ -431,4 +495,25 @@ void ZCashRpc::OnSendTransactionResponse(
 
   std::move(callback).Run(response);
 }
+
+void ZCashRpc::OnGetAddressTxResponse(
+    ZCashRpc::IsKnownAddressCallback callback,
+    UrlLoadersList::iterator it,
+    StreamHandlersList::iterator handler_it,
+    base::expected<bool, std::string> result) {
+  auto current_loader = std::move(*it);
+  auto current_handler = std::move(*handler_it);
+
+  url_loaders_list_.erase(it);
+  stream_handlers_list_.erase(handler_it);
+
+  if (!result.has_value() ||
+      (current_loader->CompletionStatus() && current_loader->NetError())) {
+    std::move(callback).Run(base::unexpected("Network error"));
+    return;
+  }
+
+  std::move(callback).Run(result.value());
+}
+
 }  // namespace brave_wallet

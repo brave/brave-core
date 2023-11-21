@@ -44,48 +44,48 @@ TEST(ZCashKeyringUnitTest, GetAddress) {
     keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
                                "m/44'/133'");
 
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "t1fhcesXQLT3U1t7caBYTpd59LiRV8tVfqj");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 1)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 1))->address_string,
               "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 2)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 2))->address_string,
               "t1NPwPhNPHc4S8Xktzq4ygnLLLeuVKgCBZz");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 3)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 3))->address_string,
               "t1fe6a9otS98EdnucHLx6cT4am6Ae6THUgj");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 4)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 4))->address_string,
               "t1dA52xDndfEo9jJU7DBFSKuxKMqZMMLEGL");
 
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 0))->address_string,
               "t1RnTVUMzs1Hi2smgk6EJpVMA2upwTpESYP");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 1)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 1))->address_string,
               "t1YRbQiMhwS7mui9r7E2aWGmkLC1xHQnFoc");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 2)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 2))->address_string,
               "t1ZnyiWoaS9sceAQKjiK4ughBRQu9z2MXcB");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 3)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 3))->address_string,
               "t1WwSQBqGUYf4AXKE6nNR3fp61awb6qsM8z");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 4)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 1, 4))->address_string,
               "t1WLKBRDxENW35SLrsW125Yt5tYJDYpBs1i");
 
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 0))->address_string,
               "t1LquzEnJVAqdRGeZJZbomrsKwPHuGhNJtm");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 1)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 1))->address_string,
               "t1JgGisPzWWN1KMbN82bfKvk9Faa5eKqHUg");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 2)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 2))->address_string,
               "t1fmqM2ud5FEgRTLo17QS4c2i575GD8QQCq");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 3)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 3))->address_string,
               "t1SoBVfwQvRi7X8RuSxNvkm8NBrbbaUJo5c");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 4)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 0, 4))->address_string,
               "t1YuvWycJoxFVvuGHSJEkP5jtfe5VjXyGyj");
 
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 0))->address_string,
               "t1NFJ9Jn6su9bGH7mxjowBT6UsPTQdSpVF7");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 1)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 1))->address_string,
               "t1SfWeR1cGcxv9G7sBMFP1JubyKBujSFu1C");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 2)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 2))->address_string,
               "t1efWNVCp5sDvkRtrJxq6jrdJDbxwsYBxfb");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 3)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 3))->address_string,
               "t1g4WDhMPb8e8GUWuV1JEAPa32bgVkeoSuJ");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 4)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(1, 1, 4))->address_string,
               "t1ZTmbmys2n8UjVRb2tfE17A9V6ehZNqZ4W");
   }
 
@@ -99,7 +99,7 @@ TEST(ZCashKeyringUnitTest, GetAddress) {
                         "deal person",
                         ""),
         "m/44'/133'");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "t1PKtYdJJHhc3Pxowmznkg7vdTwnhEsCvR4");
   }
 
@@ -112,7 +112,7 @@ TEST(ZCashKeyringUnitTest, GetAddress) {
                         "deal person",
                         ""),
         "m/44'/1'");
-    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0)),
+    EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "tm9v3KTsjXK8XWSqiwFjic6Vda6eHY9Mjjq");
   }
 }

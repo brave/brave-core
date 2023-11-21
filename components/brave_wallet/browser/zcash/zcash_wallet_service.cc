@@ -11,259 +11,15 @@
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service_tasks.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
-
 namespace {
 const uint32_t kDefaultBlockHeightDelta = 20;
-
-bool OutputAddressSupported(const std::string& address, bool is_testnet) {
-  auto decoded_address = DecodeZCashAddress(address);
-  if (!decoded_address) {
-    return false;
-  }
-  if (decoded_address->testnet != is_testnet) {
-    return false;
-  }
-
-  return true;
-}
-
 }  // namespace
-
-class GetTransparentUtxosContext
-    : public base::RefCountedThreadSafe<GetTransparentUtxosContext> {
- public:
-  using GetUtxosCallback = ZCashWalletService::GetUtxosCallback;
-
-  std::set<std::string> addresses;
-  ZCashWalletService::UtxoMap utxos;
-  std::optional<std::string> error;
-  GetUtxosCallback callback;
-
-  bool ShouldRespond() { return callback && (error || addresses.empty()); }
-
-  void SetError(const std::string& error_string) { error = error_string; }
-
- protected:
-  friend class base::RefCountedThreadSafe<GetTransparentUtxosContext>;
-  virtual ~GetTransparentUtxosContext() = default;
-};
-
-class CreateTransparentTransactionTask {
- public:
-  using UtxoMap = ZCashWalletService::UtxoMap;
-  using CreateTransactionCallback =
-      ZCashWalletService::CreateTransactionCallback;
-
-  CreateTransparentTransactionTask(ZCashWalletService* zcash_wallet_service,
-                                   const std::string& chain_id,
-                                   const mojom::AccountIdPtr& account_id,
-                                   const std::string& address_to,
-                                   uint64_t amount,
-                                   CreateTransactionCallback callback);
-
-  void ScheduleWorkOnTask();
-
- private:
-  bool IsTestnet() { return chain_id_ == mojom::kZCashTestnet; }
-  void WorkOnTask();
-
-  void SetError(const std::string& error_string) { error_ = error_string; }
-
-  bool PickInputs();
-  bool PrepareOutputs();
-
-  void OnGetChainHeight(base::expected<zcash::BlockID, std::string> result);
-  void OnGetUtxos(
-      base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map);
-
-  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
-  std::string chain_id_;
-  mojom::AccountIdPtr account_id_;
-  CreateTransactionCallback callback_;
-
-  std::optional<uint32_t> chain_height_;
-  ZCashWalletService::UtxoMap utxo_map_;
-
-  std::optional<std::string> error_;
-  ZCashTransaction transaction_;
-
-  base::WeakPtrFactory<CreateTransparentTransactionTask> weak_ptr_factory_{
-      this};
-};
-
-CreateTransparentTransactionTask::CreateTransparentTransactionTask(
-    ZCashWalletService* zcash_wallet_service,
-    const std::string& chain_id,
-    const mojom::AccountIdPtr& account_id,
-    const std::string& address_to,
-    uint64_t amount,
-    CreateTransactionCallback callback)
-    : zcash_wallet_service_(zcash_wallet_service),
-      chain_id_(chain_id),
-      account_id_(account_id.Clone()),
-      callback_(std::move(callback)) {
-  transaction_.set_to(address_to);
-  transaction_.set_amount(amount);
-}
-
-void CreateTransparentTransactionTask::ScheduleWorkOnTask() {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&CreateTransparentTransactionTask::WorkOnTask,
-                                weak_ptr_factory_.GetWeakPtr()));
-}
-
-void CreateTransparentTransactionTask::WorkOnTask() {
-  if (!callback_) {
-    return;
-  }
-
-  if (error_) {
-    std::move(callback_).Run(base::unexpected(*error_));
-    zcash_wallet_service_->CreateTransactionTaskDone(this);
-    return;
-  }
-
-  if (!chain_height_) {
-    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
-        chain_id_,
-        base::BindOnce(&CreateTransparentTransactionTask::OnGetChainHeight,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  if (utxo_map_.empty()) {
-    zcash_wallet_service_->GetUtxos(
-        chain_id_, account_id_.Clone(),
-        base::BindOnce(&CreateTransparentTransactionTask::OnGetUtxos,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  // TODO(cypt4): fetch fee estimations, calculate transaction size and set
-  // transaction fee
-  transaction_.set_fee(2000);
-
-  // TODO(cypt4): random shift locktime
-  // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
-  transaction_.set_locktime(chain_height_.value());
-
-  if (!PickInputs()) {
-    SetError("Couldn't pick transaction inputs");
-    ScheduleWorkOnTask();
-    return;
-  }
-
-  if (!PrepareOutputs()) {
-    SetError("Couldn't prepare outputs");
-    ScheduleWorkOnTask();
-    return;
-  }
-
-  std::move(callback_).Run(base::ok(std::move(transaction_)));
-  zcash_wallet_service_->CreateTransactionTaskDone(this);
-}
-
-void CreateTransparentTransactionTask::OnGetChainHeight(
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
-    SetError(std::move(result).error());
-    WorkOnTask();
-    return;
-  }
-
-  chain_height_ = result.value().height();
-  WorkOnTask();
-}
-
-void CreateTransparentTransactionTask::OnGetUtxos(
-    base::expected<UtxoMap, std::string> utxo_map) {
-  if (!utxo_map.has_value()) {
-    SetError(std::move(utxo_map).error());
-    WorkOnTask();
-    return;
-  }
-
-  utxo_map_ = std::move(utxo_map.value());
-  WorkOnTask();
-}
-
-bool CreateTransparentTransactionTask::PickInputs() {
-  bool done = false;
-
-  // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
-  // amount is GE to send amount plus fee. Needs something better than such
-  // greedy strategy.
-  std::vector<ZCashTransaction::TxInput> all_inputs;
-  for (const auto& item : utxo_map_) {
-    for (const auto& utxo : item.second) {
-      if (auto input =
-              ZCashTransaction::TxInput::FromRpcUtxo(item.first, utxo)) {
-        all_inputs.emplace_back(std::move(*input));
-      }
-    }
-  }
-
-  base::ranges::sort(all_inputs, [](auto& input1, auto& input2) {
-    return input1.utxo_value < input2.utxo_value;
-  });
-
-  for (auto& input : all_inputs) {
-    transaction_.inputs().push_back(std::move(input));
-
-    if (transaction_.TotalInputsAmount() >=
-        transaction_.amount() + transaction_.fee()) {
-      done = true;
-    }
-
-    if (done) {
-      break;
-    }
-  }
-
-  DCHECK(!transaction_.inputs().empty());
-  return done;
-}
-
-bool CreateTransparentTransactionTask::PrepareOutputs() {
-  auto& target_output = transaction_.outputs().emplace_back();
-  target_output.address = transaction_.to();
-  if (!OutputAddressSupported(target_output.address, IsTestnet())) {
-    return false;
-  }
-
-  target_output.amount = transaction_.amount();
-  target_output.script_pubkey =
-      ZCashAddressToScriptPubkey(target_output.address, IsTestnet());
-
-  CHECK_GE(transaction_.TotalInputsAmount(),
-           transaction_.amount() + transaction_.fee());
-  uint64_t change_amount = transaction_.TotalInputsAmount() -
-                           transaction_.amount() - transaction_.fee();
-  if (change_amount == 0) {
-    return true;
-  }
-
-  // TODO(cypt4): should always pick new change address.
-  const auto& change_address =
-      zcash_wallet_service_->GetUnusedChangeAddress(*account_id_);
-  if (!change_address) {
-    return false;
-  }
-
-  CHECK(OutputAddressSupported(*change_address, IsTestnet()));
-  auto& change_output = transaction_.outputs().emplace_back();
-  change_output.address = *change_address;
-  change_output.amount = change_amount;
-  change_output.script_pubkey =
-      ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
-  return true;
-}
 
 mojo::PendingRemote<mojom::ZCashWalletService>
 ZCashWalletService::MakeRemote() {
@@ -289,18 +45,11 @@ ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
                                        std::unique_ptr<ZCashRpc> zcash_rpc)
     : keyring_service_(keyring_service) {
   zcash_rpc_ = std::move(zcash_rpc);
+  keyring_service_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 ZCashWalletService::~ZCashWalletService() = default;
-
-std::optional<std::string> ZCashWalletService::GetUnusedChangeAddress(
-    const mojom::AccountId& account_id) {
-  CHECK(IsZCashAccount(account_id));
-  // TODO(cypt4): this always returns first change address. Should return
-  // first unused change address.
-  return keyring_service_->GetZCashAddress(
-      account_id, mojom::ZCashKeyId(account_id.bitcoin_account_index, 0, 0));
-}
 
 void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     mojom::AccountIdPtr account_id,
@@ -314,13 +63,75 @@ void ZCashWalletService::GetReceiverAddress(
     mojom::AccountIdPtr account_id,
     GetReceiverAddressCallback callback) {
   auto id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index, 0, 0);
-  auto str_addr = keyring_service_->GetZCashAddress(*account_id, *id);
-  if (!str_addr) {
+  auto addr = keyring_service_->GetZCashAddress(*account_id, *id);
+  if (!addr) {
     std::move(callback).Run(nullptr, "Failed to retreive new receiver address");
   }
+  auto str_addr = addr->address_string;
   // TODO(cypt4): Return unused receiver address
-  std::move(callback).Run(mojom::ZCashAddress::New(*str_addr, std::move(id)),
-                          std::nullopt);
+  std::move(callback).Run(mojom::ZCashAddress::New(str_addr, std::move(id)),
+                          absl::nullopt);
+}
+
+void ZCashWalletService::GetZCashAccountInfo(
+    mojom::AccountIdPtr account_id,
+    GetZCashAccountInfoCallback callback) {
+  std::move(callback).Run(keyring_service_->GetZCashAccountInfo(account_id));
+}
+
+void ZCashWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
+                                      bool change,
+                                      RunDiscoveryCallback callback) {
+  DiscoverNextUnusedAddress(
+      account_id, change,
+      base::BindOnce(&ZCashWalletService::OnRunDiscoveryDone,
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                     std::move(callback)));
+}
+
+void ZCashWalletService::OnRunDiscoveryDone(
+    mojom::AccountIdPtr account_id,
+    RunDiscoveryCallback callback,
+    base::expected<mojom::ZCashAddressPtr, std::string> discovered_address) {
+  if (!discovered_address.has_value()) {
+    std::move(callback).Run(nullptr, discovered_address.error());
+    return;
+  }
+
+  UpdateNextUnusedAddressForAccount(account_id, discovered_address.value());
+  std::move(callback).Run(discovered_address.value().Clone(), absl::nullopt);
+}
+
+void ZCashWalletService::UpdateNextUnusedAddressForAccount(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashAddressPtr& address) {
+  absl::optional<uint32_t> next_receive_index = address->key_id->change
+                                                    ? absl::optional<uint32_t>()
+                                                    : address->key_id->index;
+  absl::optional<uint32_t> next_change_index = !address->key_id->change
+                                                   ? absl::optional<uint32_t>()
+                                                   : address->key_id->index;
+  keyring_service_->UpdateNextUnusedAddressForZCashAccount(
+      account_id, next_receive_index, next_change_index);
+}
+
+void ZCashWalletService::DiscoverNextUnusedAddress(
+    const mojom::AccountIdPtr& account_id,
+    bool change,
+    DiscoverNextUnusedAddressCallback callback) {
+  CHECK(IsZCashAccount(*account_id));
+
+  auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
+  if (!account_info) {
+    return std::move(callback).Run(base::unexpected("Invalid account id"));
+  }
+  auto start_address =
+      change ? account_info->next_transparent_change_address.Clone()
+             : account_info->next_transparent_receive_address.Clone();
+  auto task = base::MakeRefCounted<DiscoverNextUnusedZCashAddressTask>(
+      weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+      std::move(start_address), std::move(callback));
+  task->ScheduleWorkOnTask();
 }
 
 void ZCashWalletService::GetUtxos(const std::string& chain_id,
@@ -333,7 +144,7 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
     return;
   }
 
-  const auto& addresses = keyring_service_->GetZCashAddresses(*account_id);
+  const auto& addresses = keyring_service_->GetZCashAddresses(account_id);
   if (!addresses) {
     std::move(callback).Run(base::unexpected("Couldn't get balance"));
     return;
@@ -342,7 +153,7 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
   auto context = base::MakeRefCounted<GetTransparentUtxosContext>();
   context->callback = std::move(callback);
   for (const auto& address : addresses.value()) {
-    context->addresses.insert(address.first);
+    context->addresses.insert(address->address_string);
   }
 
   for (const auto& address : context->addresses) {
@@ -356,14 +167,15 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
 bool ZCashWalletService::SignTransactionInternal(
     ZCashTransaction& tx,
     const mojom::AccountIdPtr& account_id) {
-  auto addresses = keyring_service_->GetZCashAddresses(*account_id);
+  auto addresses = keyring_service_->GetZCashAddresses(account_id);
   if (!addresses || addresses->empty()) {
     return false;
   }
 
   std::map<std::string, mojom::ZCashKeyIdPtr> address_map;
   for (auto& addr : *addresses) {
-    address_map.emplace(std::move(addr.first), std::move(addr.second));
+    address_map.emplace(std::move(addr->address_string),
+                        std::move(addr->key_id));
   }
 
   for (size_t input_index = 0; input_index < tx.inputs().size();
@@ -552,6 +364,16 @@ void ZCashWalletService::CreateTransactionTaskDone(
 
 ZCashRpc* ZCashWalletService::zcash_rpc() {
   return zcash_rpc_.get();
+}
+
+void ZCashWalletService::Unlocked() {
+  auto accounts = keyring_service_->GetAllAccountsSync();
+  for (const auto& account : accounts->accounts) {
+    if (IsZCashKeyring(account->account_id->keyring_id)) {
+      RunDiscovery(account->account_id.Clone(), false, base::NullCallback());
+      RunDiscovery(account->account_id.Clone(), true, base::NullCallback());
+    }
+  }
 }
 
 }  // namespace brave_wallet
