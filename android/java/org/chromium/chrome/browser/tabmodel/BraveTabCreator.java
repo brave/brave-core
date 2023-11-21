@@ -37,7 +37,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             Supplier<TabDelegateFactory> tabDelegateFactory,
             OneshotSupplier<ProfileProvider> profileProviderSupplier,
             boolean incognito,
-            OverviewNTPCreator overviewNTPCreator,
+            OverviewNtpCreator overviewNTPCreator,
             AsyncTabParamsManager asyncTabParamsManager,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<CompositorViewHolder> compositorViewHolderSupplier,

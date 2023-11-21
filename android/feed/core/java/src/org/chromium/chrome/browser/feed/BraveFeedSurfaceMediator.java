@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -27,7 +28,8 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             @FeedSurfaceCoordinator.StreamTabId int openingTabId,
             FeedActionDelegate actionDelegate,
             FeedOptionsCoordinator optionsCoordinator,
-            @Nullable UiConfig uiConfig) {
+            @Nullable UiConfig uiConfig,
+            Profile profile) {
         super(
                 coordinator,
                 context,
@@ -36,7 +38,8 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
                 openingTabId,
                 actionDelegate,
                 optionsCoordinator,
-                uiConfig);
+                uiConfig,
+                profile);
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
@@ -154,7 +154,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             AppMenuDelegate appMenuDelegate,
             LayoutManager layoutManager,
             ObservableSupplier<Tab> tabSupplier,
-            BrowserControlsStateProvider browserControlsStateProvider,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
             TopUiThemeColorProvider topUiThemeColorProvider) {
         super.initializeWithNative(
                 layoutUpdater,
@@ -165,7 +165,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 appMenuDelegate,
                 layoutManager,
                 tabSupplier,
-                browserControlsStateProvider,
+                browserControlsVisibilityManager,
                 topUiThemeColorProvider);
 
         assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
