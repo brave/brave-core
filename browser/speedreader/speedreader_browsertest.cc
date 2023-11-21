@@ -792,7 +792,6 @@ class SpeedReaderWithDistillationServiceBrowserTest
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     SpeedReaderBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kEnableDistillabilityService);
   }
 };
 
