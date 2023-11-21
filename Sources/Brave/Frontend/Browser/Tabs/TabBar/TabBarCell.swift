@@ -30,10 +30,17 @@ class TabBarCell: UICollectionViewCell {
     $0.layer.shadowOffset = CGSize(width: 0, height: 1)
     $0.layer.shadowRadius = 2
   }
+  
+  private let separatorLine = UIView().then {
+    $0.isHidden = true
+  }
 
   var currentIndex: Int = -1 {
     didSet {
       isSelected = currentIndex == tabManager?.currentDisplayedIndex
+      separatorLine.isHidden = isSelected || 
+        currentIndex == 0 ||
+        currentIndex == (tabManager?.currentDisplayedIndex ?? 0) + 1
     }
   }
   weak var tab: Tab?
@@ -56,7 +63,7 @@ class TabBarCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    [highlightView, closeButton, titleLabel].forEach { contentView.addSubview($0) }
+    [highlightView, closeButton, titleLabel, separatorLine].forEach { contentView.addSubview($0) }
     initConstraints()
     updateFont()
     
@@ -67,6 +74,7 @@ class TabBarCell: UICollectionViewCell {
   private func updateColors() {
     let browserColors: any BrowserColors = tabManager?.privateBrowsingManager.browserColors ?? .standard
     backgroundColor = browserColors.tabBarTabBackground
+    separatorLine.backgroundColor = browserColors.dividerSubtle
     highlightView.backgroundColor = isSelected ? browserColors.tabBarTabActiveBackground : .clear
     highlightView.layer.shadowOpacity = isSelected ? 0.05 : 0.0
     highlightView.layer.shadowColor = UIColor.black.cgColor
@@ -93,6 +101,12 @@ class TabBarCell: UICollectionViewCell {
       make.top.bottom.equalTo(self)
       make.right.equalTo(self).inset(2)
       make.width.equalTo(30)
+    }
+    
+    separatorLine.snp.makeConstraints { make in
+      make.left.equalToSuperview()
+      make.width.equalTo(1)
+      make.top.bottom.equalToSuperview().inset(5)
     }
   }
 
