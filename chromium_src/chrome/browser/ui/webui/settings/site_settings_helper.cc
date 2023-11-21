@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 
 #include <string_view>
+#include <vector>
 
 #include "base/containers/cxx20_erase_vector.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -106,7 +107,7 @@ const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
     types->insert(types->end(), base_types.begin(), base_types.end());
 
     if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
-      base::Erase(*types, ContentSettingsType::SERIAL_GUARD);
+      std::erase(*types, ContentSettingsType::SERIAL_GUARD);
     }
 
     initialized = true;

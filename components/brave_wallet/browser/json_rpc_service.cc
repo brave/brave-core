@@ -8,6 +8,7 @@
 #include <memory>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
@@ -777,8 +778,8 @@ void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
   auto hidden_networks = brave_wallet::GetHiddenNetworks(prefs_, coin);
 
   // Currently selected chain is never hidden for coin.
-  base::Erase(hidden_networks,
-              base::ToLowerASCII(GetChainIdSync(coin, absl::nullopt)));
+  std::erase(hidden_networks,
+             base::ToLowerASCII(GetChainIdSync(coin, absl::nullopt)));
 
   std::move(callback).Run(hidden_networks);
 }

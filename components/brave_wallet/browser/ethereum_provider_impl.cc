@@ -8,6 +8,7 @@
 #include <string>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
@@ -560,7 +561,7 @@ bool EthereumProviderImpl::UnsubscribeBlockObserver(
 
 bool EthereumProviderImpl::UnsubscribeLogObserver(
     const std::string& subscription_id) {
-  if (base::Erase(eth_log_subscriptions_, subscription_id)) {
+  if (std::erase(eth_log_subscriptions_, subscription_id)) {
     eth_logs_tracker_.RemoveSubscriber(subscription_id);
     if (eth_log_subscriptions_.empty()) {
       eth_logs_tracker_.Stop();

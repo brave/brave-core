@@ -140,7 +140,7 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
     const auto allowed_accounts =
         delegate_->GetAllowedAccounts(mojom::CoinType::SOL, addresses);
     if (allowed_accounts) {
-      base::EraseIf(addresses, [&allowed_accounts](const auto& address) {
+      std::erase_if(addresses, [&allowed_accounts](const auto& address) {
         return base::Contains(*allowed_accounts, address);
       });
     }

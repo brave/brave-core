@@ -9,6 +9,7 @@
 #include <deque>
 #include <map>
 #include <set>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -202,7 +203,7 @@ void GetBalanceTask::OnGetAddressStats(
   auto mempool_balance = GetChainBalance(stats->mempool_stats);
   balances_[address->address_string] = chain_balance + mempool_balance;
 
-  CHECK(base::Erase(addresses_, address));
+  CHECK(std::erase(addresses_, address));
   if (addresses_.empty()) {
     result_ = mojom::BitcoinBalance::New();
     for (auto& balance : balances_) {
@@ -292,7 +293,7 @@ void GetUtxosTask::OnGetUtxoList(
 
   utxos_[address->address_string] = std::move(utxos.value());
 
-  CHECK(base::Erase(addresses_, address));
+  CHECK(std::erase(addresses_, address));
   if (addresses_.empty()) {
     result_ = std::move(utxos_);
   }

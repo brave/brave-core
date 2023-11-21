@@ -5,6 +5,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/cxx20_erase.h"
 #include "base/functional/bind.h"
@@ -37,7 +38,7 @@ void ContributionMonthly::AdvanceContributionDates(
     LegacyResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> publishers) {
   // Remove any contributions whose next contribution date is in the future.
-  base::EraseIf(publishers,
+  std::erase_if(publishers,
                 [cutoff_time](const mojom::PublisherInfoPtr& publisher) {
                   if (!publisher || publisher->id.empty()) {
                     return true;
@@ -72,7 +73,7 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
   // Remove entries for zero contribution amounts or unverified creators. Note
   // that in previous versions, pending contributions would be created if the
   // creator was unverified.
-  base::EraseIf(publishers, [](const mojom::PublisherInfoPtr& publisher) {
+  std::erase_if(publishers, [](const mojom::PublisherInfoPtr& publisher) {
     DCHECK(publisher);
     return publisher->weight <= 0 ||
            publisher->status == mojom::PublisherStatus::NOT_VERIFIED;

@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/feature_list.h"
@@ -261,7 +262,7 @@ void BraveShieldsWebContentsObserver::BlockAllowedScripts(
   for (const auto& script : scripts) {
     auto origin = url::Origin::Create(GURL(script));
     bool is_origin = origin.Serialize() == script;
-    base::EraseIf(allowed_scripts_, [is_origin, script,
+    std::erase_if(allowed_scripts_, [is_origin, script,
                                      origin](const std::string& value) {
       // scripts array may have both origins or full scripts paths.
       return is_origin ? url::Origin::Create(GURL(value)) == origin

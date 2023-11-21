@@ -5,6 +5,7 @@
 
 #include "brave_base/random.h"
 
+#include <bit>
 #include <cmath>
 
 #include "base/bits.h"
@@ -51,10 +52,10 @@ double Uniform_01() {
   //
   // If we stopped at e >= 1088, this means our RNG is broken.  In
   // that case, we could just as well abort the process.  But it is
-  // also safe to call CountLeadingZeroBits at this point; it will
+  // also safe to call std::countl_zero at this point; it will
   // just return 64, and the exponent will be even more improbably
   // larger.
-  e += base::bits::CountLeadingZeroBits(x);
+  e += std::countl_zero(x);
 
   u = Uniform64();
 
