@@ -3014,23 +3014,19 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
 
 TEST_F(KeyringServiceUnitTest, IsStrongPassword) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  // Strong password that meets all requirements passes
+  // Strong password that meets the length requirement passes
   EXPECT_TRUE(IsStrongPassword(&service, "LDKH66BJbLsHQPEAK@4_zak*"));
-  // Must have at least one number
-  EXPECT_FALSE(IsStrongPassword(&service, "LDKHBJbLsHQPEAK@_zak*"));
-  // Number requirement is satisfied
-  EXPECT_TRUE(IsStrongPassword(&service, "LDKHBJbLsH0QPEAK@_zak*"));
-  // Must have at least one alpha character
-  EXPECT_FALSE(IsStrongPassword(&service, "663@4_*"));
   // Character requirement can be lowercase
   EXPECT_TRUE(IsStrongPassword(&service, "663@4_*a"));
   // Character requirement can be uppercase
   EXPECT_TRUE(IsStrongPassword(&service, "663@4_*A"));
-  // Must have at least one non-alphanumeric character
-  EXPECT_FALSE(IsStrongPassword(&service, "LDKH66BJbLsHQPEAK4zak"));
-  // space is ok for non alphanumeric requirement
+  // Character requirement can be all numbers
+  EXPECT_TRUE(IsStrongPassword(&service, "663456456546546"));
+  // Character requirement can be all letters
+  EXPECT_TRUE(IsStrongPassword(&service, "qwertyuiop"));
+  // Space is ok for non alphanumeric requirement
   EXPECT_TRUE(IsStrongPassword(&service, "LDKH66BJbLsH QPEAK4zak"));
-  // All requirements met except for length should still fail
+  // Password length less than 8 characters should fail
   EXPECT_FALSE(IsStrongPassword(&service, "a7_&YF"));
   // Empty password is not accepted
   EXPECT_FALSE(IsStrongPassword(&service, ""));
