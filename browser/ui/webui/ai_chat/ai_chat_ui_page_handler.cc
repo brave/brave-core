@@ -20,6 +20,8 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -178,10 +180,15 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
 #if !BUILDFLAG(IS_ANDROID)
-  contents_to_navigate->OpenURL({GURL("brave://settings/leo-assistant"),
-                                 content::Referrer(),
-                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                 ui::PAGE_TRANSITION_LINK, false});
+  const GURL url("brave://settings/leo-assistant");
+  if (auto* browser =
+          chrome::FindBrowserWithWebContents(contents_to_navigate)) {
+    ShowSingletonTab(browser, url);
+  } else {
+    contents_to_navigate->OpenURL({url, content::Referrer(),
+                                   WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                   ui::PAGE_TRANSITION_LINK, false});
+  }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
 #endif
