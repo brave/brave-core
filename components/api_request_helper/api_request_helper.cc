@@ -453,7 +453,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
         };
 
     DVLOG(2) << "Going to call ParseJson";
-    GetDataDecoder()->ParseJson(std::move(json.data()),
+    GetDataDecoder()->ParseJson(std::move(std::string(json)),
                                 base::BindOnce(std::move(on_json_parsed),
                                                weak_ptr_factory_.GetWeakPtr()));
   }
