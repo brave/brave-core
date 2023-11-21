@@ -9,7 +9,6 @@ import { PageActions } from '../reducers/page_reducer'
 export const {
   addHardwareAccounts,
   agreeToWalletTerms,
-  openWalletSettings,
   recoveryWordsAvailable,
   selectAsset,
   selectCoinMarket,

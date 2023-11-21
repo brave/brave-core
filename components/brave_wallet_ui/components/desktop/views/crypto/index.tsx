@@ -13,17 +13,23 @@ import {
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-// actions
-import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
+import {
+  useSafeWalletSelector,
+  useSafeUISelector
+} from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors, UISelectors } from '../../../../common/selectors'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import {
+  AccountsTabState //
+} from '../../../../page/reducers/accounts-tab-reducer'
 
 // style
 import { StyledWrapper } from './style'
+import { Column } from '../../../shared/style'
 
 // components
 import { WalletBanner } from '../../wallet-banner/index'
@@ -42,12 +48,7 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
-import { Column } from '../../../shared/style'
-import {
-  useSafeWalletSelector,
-  useSafeUISelector
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors, UISelectors } from '../../../../common/selectors'
+
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -57,56 +58,53 @@ import {
 import { PageTitleHeader } from '../../card-headers/page-title-header'
 
 export interface Props {
-  onOpenWalletSettings: () => void
-  needsBackup: boolean
-  defaultEthereumWallet: BraveWallet.DefaultWallet
-  defaultSolanaWallet: BraveWallet.DefaultWallet
-  isMetaMaskInstalled: boolean
   sessionRoute: string | undefined
 }
 
-export const CryptoView = (props: Props) => {
-  const {
-    onOpenWalletSettings,
-    defaultEthereumWallet,
-    defaultSolanaWallet,
-    needsBackup,
-    isMetaMaskInstalled,
-    sessionRoute
-  } = props
+const openWalletSettings = () => {
+  chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+}
 
-  // accounts tab state
-  const accountToRemove = useSelector(
-    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
-      accountsTab.accountToRemove
+export const CryptoView = ({ sessionRoute }: Props) => {
+  // redux
+  const isWalletBackedUp = useSafeWalletSelector(
+    WalletSelectors.isWalletBackedUp
   )
-  const showAccountModal = useSelector(
-    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
-      accountsTab.showAccountModal
+  const defaultEthereumWallet = useSafeWalletSelector(
+    WalletSelectors.defaultEthereumWallet
   )
-  const selectedAccount = useSelector(
-    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
-      accountsTab.selectedAccount
+  const defaultSolanaWallet = useSafeWalletSelector(
+    WalletSelectors.defaultSolanaWallet
   )
-
+  const isMetaMaskInstalled = useSafeWalletSelector(
+    WalletSelectors.isMetaMaskInstalled
+  )
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
+  const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
+    ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab
+  )
+
   // state
-  // const [hideNav, setHideNav] = React.useState<boolean>(false)
-  const [showBackupWarning, setShowBackupWarning] =
-    React.useState<boolean>(needsBackup)
+  const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(
+    !isWalletBackedUp
+  )
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] =
-    React.useState<boolean>(needsBackup)
+    React.useState<boolean>(!isWalletBackedUp)
 
   // routing
   const history = useHistory()
   const location = useLocation()
 
   // methods
-  const onShowBackup = () => {
+  const onShowBackup = React.useCallback(() => {
     if (isPanel) {
       chrome.tabs.create(
         {
@@ -123,7 +121,7 @@ export const CryptoView = (props: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }
+  }, [isPanel])
 
   const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
     if (showModal) {
@@ -185,13 +183,13 @@ export const CryptoView = (props: Props) => {
         {showBanner && (
           <WalletBanner
             onDismiss={onDismissDefaultWalletBanner}
-            onClick={onOpenWalletSettings}
+            onClick={openWalletSettings}
             bannerType='warning'
             buttonText={getLocale('braveWalletWalletPopupSettings')}
             description={getLocale('braveWalletDefaultWalletBanner')}
           />
         )}
-        {needsBackup && showBackupWarning && (
+        {!isWalletBackedUp && showBackupWarning && (
           <WalletBanner
             onDismiss={onDismissBackupWarning}
             onClick={onShowBackup}
@@ -204,10 +202,9 @@ export const CryptoView = (props: Props) => {
     ),
     [
       showBanner,
-      needsBackup,
+      isWalletBackedUp,
       onDismissBackupWarning,
       onDismissDefaultWalletBanner,
-      onOpenWalletSettings,
       onShowBackup,
       showBackupWarning
     ]

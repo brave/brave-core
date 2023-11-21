@@ -7,7 +7,8 @@ import {
   AccountPageTabs,
   BraveWallet,
   WalletRoutes,
-  SendPageTabHashes
+  SendPageTabHashes,
+  WalletOrigin
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -150,4 +151,15 @@ export const makeSendRoute = (
   }
 
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
+}
+
+export const openWalletRouteTab = (route: WalletRoutes) => {
+  chrome.tabs.create({ url: `${WalletOrigin}${route}` }, () => {
+    if (chrome.runtime.lastError) {
+      console.error(
+        'tabs.create failed: ' + //
+          chrome.runtime.lastError.message
+      )
+    }
+  })
 }
