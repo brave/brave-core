@@ -942,6 +942,7 @@ public abstract class BraveActivity extends ChromeActivity
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(
                 (TabModelSelector) getTabModelSelectorSupplier().get());
 
+
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();

@@ -188,16 +188,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
         if (addToPlaylist != null) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                    && SharedPreferencesManager.getInstance()
-                            .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)
-                    && !SharedPreferencesManager.getInstance()
-                            .readBoolean(BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)
+                    && SharedPreferencesManager.getInstance().readBoolean(
+                            BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)
+                    && !SharedPreferencesManager.getInstance().readBoolean(
+                            BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)
                     && BraveToolbarLayoutImpl.mShouldShowPlaylistMenu) {
                 addToPlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
-                    addToPlaylist.setIcon(
-                            AppCompatResources.getDrawable(
-                                    mContext, R.drawable.ic_baseline_add_24));
+                    addToPlaylist.setIcon(AppCompatResources.getDrawable(
+                            mContext, R.drawable.ic_baseline_add_24));
                 }
             } else {
                 addToPlaylist.setVisible(false);

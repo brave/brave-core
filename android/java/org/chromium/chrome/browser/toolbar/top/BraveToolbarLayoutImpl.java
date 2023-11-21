@@ -629,75 +629,60 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
 
-            PlaylistOptionsListener playlistOptionsListener =
-                    new PlaylistOptionsListener() {
-                        @Override
-                        public void onPlaylistOptionClicked(
-                                PlaylistOptionsModel playlistOptionsModel) {
-                            try {
-                                if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.ADD_MEDIA) {
-                                    int mediaCount =
-                                            SharedPreferencesManager.getInstance()
-                                                    .readInt(
-                                                            PlaylistPreferenceUtils
-                                                                    .ADD_MEDIA_COUNT);
-                                    if (mediaCount == 2) {
-                                        PlaylistWarningDialogListener
-                                                playlistWarningDialogListener =
-                                                        new PlaylistWarningDialogListener() {
-                                                            @Override
-                                                            public void onActionClicked() {
-                                                                addMediaToPlaylist(items);
-                                                            }
+            PlaylistOptionsListener playlistOptionsListener = new PlaylistOptionsListener() {
+                @Override
+                public void onPlaylistOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
+                    try {
+                        if (playlistOptionsModel.getOptionType() == PlaylistOptionsEnum.ADD_MEDIA) {
+                            int mediaCount = SharedPreferencesManager.getInstance().readInt(
+                                    PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
+                            if (mediaCount == 2) {
+                                PlaylistWarningDialogListener playlistWarningDialogListener =
+                                        new PlaylistWarningDialogListener() {
+                                            @Override
+                                            public void onActionClicked() {
+                                                addMediaToPlaylist(items);
+                                            }
 
-                                                            @Override
-                                                            public void onSettingsClicked() {
-                                                                try {
-                                                                    BraveActivity.getBraveActivity()
-                                                                            .openBravePlaylistSettings();
-                                                                } catch (
-                                                                        BraveActivity
-                                                                                        .BraveActivityNotFoundException
-                                                                                e) {
-                                                                    Log.e(
-                                                                            TAG,
-                                                                            "showPlaylistButton"
-                                                                                + " onOptionClicked"
-                                                                                + " onSettingsClicked"
-                                                                                    + e);
-                                                                }
-                                                            }
-                                                        };
-                                        BraveActivity.getBraveActivity()
-                                                .showPlaylistWarningDialog(
-                                                        playlistWarningDialogListener);
+                                            @Override
+                                            public void onSettingsClicked() {
+                                                try {
+                                                    BraveActivity.getBraveActivity()
+                                                            .openBravePlaylistSettings();
+                                                } catch (
+                                                        BraveActivity
+                                                                .BraveActivityNotFoundException e) {
+                                                    Log.e(TAG,
+                                                            "showPlaylistButton"
+                                                                    + " onOptionClicked"
+                                                                    + " onSettingsClicked" + e);
+                                                }
+                                            }
+                                        };
+                                BraveActivity.getBraveActivity().showPlaylistWarningDialog(
+                                        playlistWarningDialogListener);
 
-                                    } else {
-                                        addMediaToPlaylist(items);
-                                    }
-                                } else if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.OPEN_PLAYLIST) {
-                                    BraveActivity.getBraveActivity()
-                                            .openPlaylistActivity(
-                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
-                                } else if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
-                                    BraveActivity.getBraveActivity().openBravePlaylistSettings();
-                                } else if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.PLAYLIST_HIDE) {
-                                    hidePlaylistButton();
-                                    SharedPreferencesManager.getInstance()
-                                            .writeBoolean(
-                                                    BravePlaylistPreferences
-                                                            .PREF_ADD_TO_PLAYLIST_BUTTON,
-                                                    false);
-                                }
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
+                            } else {
+                                addMediaToPlaylist(items);
                             }
+                        } else if (playlistOptionsModel.getOptionType()
+                                == PlaylistOptionsEnum.OPEN_PLAYLIST) {
+                            BraveActivity.getBraveActivity().openPlaylistActivity(
+                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                        } else if (playlistOptionsModel.getOptionType()
+                                == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
+                            BraveActivity.getBraveActivity().openBravePlaylistSettings();
+                        } else if (playlistOptionsModel.getOptionType()
+                                == PlaylistOptionsEnum.PLAYLIST_HIDE) {
+                            hidePlaylistButton();
+                            SharedPreferencesManager.getInstance().writeBoolean(
+                                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, false);
                         }
-                    };
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
+                    }
+                }
+            };
             if (!isPlaylistButtonVisible()) {
                 PlaylistOnboardingActionClickListener playlistOnboardingActionClickListener =
                         new PlaylistOnboardingActionClickListener() {
@@ -707,11 +692,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             }
                         };
 
-                PlaylistViewUtils.showPlaylistButton(
-                        BraveActivity.getBraveActivity(),
-                        viewGroup,
-                        playlistOptionsListener,
-                        playlistOnboardingActionClickListener);
+                PlaylistViewUtils.showPlaylistButton(BraveActivity.getBraveActivity(), viewGroup,
+                        playlistOptionsListener, playlistOnboardingActionClickListener);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showPlaylistButton " + e);
@@ -722,39 +704,31 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPlaylistService == null) {
             return;
         }
-        mPlaylistService.getPlaylist(
-                ConstantUtils.DEFAULT_PLAYLIST,
-                defaultPlaylist -> {
-                    Set<String> pageSources = new HashSet<String>();
-                    for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
-                        pageSources.add(defaultPlaylistItem.pageSource.url);
-                    }
-                    List<PlaylistItem> playlistItems = new ArrayList();
-                    for (PlaylistItem playlistItem : items) {
-                        // Check for duplicates in default playlist
-                        if (!pageSources.contains(playlistItem.pageSource.url)) {
-                            playlistItems.add(playlistItem);
-                        }
-                    }
-                    if (playlistItems.size() > 0) {
-                        mPlaylistService.addMediaFiles(
-                                playlistItems.toArray(new PlaylistItem[0]),
-                                ConstantUtils.DEFAULT_PLAYLIST,
-                                true,
-                                addedItems -> {});
-                        int mediaCount =
-                                SharedPreferencesManager.getInstance()
-                                        .readInt(PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-                        if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
-                            SharedPreferencesManager.getInstance()
-                                    .writeInt(
-                                            PlaylistPreferenceUtils.ADD_MEDIA_COUNT,
-                                            mediaCount + 1);
-                        }
-                    } else {
-                        showAlreadyAddedToPlaylistSnackBar();
-                    }
-                });
+        mPlaylistService.getPlaylist(ConstantUtils.DEFAULT_PLAYLIST, defaultPlaylist -> {
+            Set<String> pageSources = new HashSet<String>();
+            for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
+                pageSources.add(defaultPlaylistItem.pageSource.url);
+            }
+            List<PlaylistItem> playlistItems = new ArrayList();
+            for (PlaylistItem playlistItem : items) {
+                // Check for duplicates in default playlist
+                if (!pageSources.contains(playlistItem.pageSource.url)) {
+                    playlistItems.add(playlistItem);
+                }
+            }
+            if (playlistItems.size() > 0) {
+                mPlaylistService.addMediaFiles(playlistItems.toArray(new PlaylistItem[0]),
+                        ConstantUtils.DEFAULT_PLAYLIST, true, addedItems -> {});
+                int mediaCount = SharedPreferencesManager.getInstance().readInt(
+                        PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
+                if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
+                    SharedPreferencesManager.getInstance().writeInt(
+                            PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+                }
+            } else {
+                showAlreadyAddedToPlaylistSnackBar();
+            }
+        });
     }
 
     public void addMediaToPlaylist() {
@@ -797,8 +771,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private void showAlreadyAddedToPlaylistSnackBar() {
         SnackBarActionModel snackBarActionModel =
-                new SnackBarActionModel(
-                        getContext().getResources().getString(R.string.close_text),
+                new SnackBarActionModel(getContext().getResources().getString(R.string.close_text),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -807,12 +780,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         });
         try {
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity()
-                            .getWindow()
-                            .getDecorView()
-                            .findViewById(android.R.id.content);
-            PlaylistViewUtils.showSnackBarWithActions(
-                    viewGroup,
+                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+                            android.R.id.content);
+            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
                     getContext().getResources().getString(R.string.already_added_in_playlist),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -1687,8 +1657,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
         mShouldShowPlaylistMenu = true;
-        if (SharedPreferencesManager.getInstance()
-                .readBoolean(BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+        if (SharedPreferencesManager.getInstance().readBoolean(
+                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
             showPlaylistButton(items);
         }
     }

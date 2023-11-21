@@ -215,7 +215,7 @@
 </service>
 
 <service
-    android:name="org.chromium.chrome.browser.playlist.download.DownloadService"
+    android:name="org.chromium.chrome.browser.playlist.hls_content.HlsService"
     android:exported="false">
 </service>
 

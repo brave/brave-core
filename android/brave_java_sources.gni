@@ -310,8 +310,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistStreamingObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistWarningDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/download/DownloadServiceImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/download/DownloadUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsServiceImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
@@ -533,7 +533,7 @@ brave_java_base_sources = [
 
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
-  "//brave/android/java/org/chromium/chrome/browser/playlist/download/DownloadService.java",
+  "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
   "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]

@@ -47,53 +47,39 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     @Override
     public void onItemCreated(PlaylistItem item) {
         if (mDelegate == null) return;
-
         mDelegate.onItemCreated(item);
     }
 
     @Override
     public void onItemLocalDataDeleted(String playlistItemId) {
         if (mDelegate == null) return;
-
         mDelegate.onItemLocalDataDeleted(playlistItemId);
     }
 
     @Override
     public void onItemAddedToList(String playlistId, String playlistItemId) {
         if (mDelegate == null) return;
-
         mDelegate.onItemAddedToList(playlistId, playlistItemId);
     }
 
     @Override
     public void onItemRemovedFromList(String playlistId, String playlistItemId) {
         if (mDelegate == null) return;
-
         mDelegate.onItemRemovedFromList(playlistId, playlistItemId);
     }
 
     @Override
     public void onItemCached(PlaylistItem playlistItem) {
         if (mDelegate == null) return;
-
         mDelegate.onItemCached(playlistItem);
+
         if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)) {
-            PlaylistItemModel playlistItemModel =
-                    new PlaylistItemModel(
-                            playlistItem.id,
-                            ConstantUtils.DEFAULT_PLAYLIST,
-                            playlistItem.name,
-                            playlistItem.pageSource.url,
-                            playlistItem.mediaPath.url,
-                            playlistItem.hlsMediaPath.url,
-                            playlistItem.mediaSource.url,
-                            playlistItem.thumbnailPath.url,
-                            playlistItem.author,
-                            playlistItem.duration,
-                            playlistItem.lastPlayedPosition,
-                            playlistItem.mediaFileBytes,
-                            playlistItem.cached,
-                            false);
+            PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                    ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name, playlistItem.pageSource.url,
+                    playlistItem.mediaPath.url, playlistItem.hlsMediaPath.url,
+                    playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                    playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
+                    playlistItem.mediaFileBytes, playlistItem.cached, false);
             VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
         }
     }
@@ -101,33 +87,25 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     @Override
     public void onItemUpdated(PlaylistItem playlistItem) {
         if (mDelegate == null) return;
-
         mDelegate.onItemUpdated(playlistItem);
     }
 
     @Override
     public void onPlaylistUpdated(Playlist playlist) {
         if (mDelegate == null) return;
-
         mDelegate.onPlaylistUpdated(playlist);
     }
 
     @Override
     public void onEvent(int event, String playlistId) {
         if (mDelegate == null) return;
-
         mDelegate.onEvent(event, playlistId);
     }
 
     @Override
-    public void onMediaFileDownloadProgressed(
-            String id,
-            long totalBytes,
-            long receivedBytes,
-            byte percentComplete,
-            String timeRemaining) {
+    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
+            byte percentComplete, String timeRemaining) {
         if (mDelegate == null) return;
-
         mDelegate.onMediaFileDownloadProgressed(
                 id, totalBytes, receivedBytes, percentComplete, timeRemaining);
     }
@@ -135,7 +113,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
         if (mDelegate == null) return;
-
         mDelegate.onMediaFilesUpdated(pageUrl, items);
     }
 
