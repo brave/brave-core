@@ -13,6 +13,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/web/public/browser_state.h"
@@ -54,8 +55,11 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   if (browser_state->IsOffTheRecord()) {
     return nullptr;
   }
-  std::unique_ptr<skus::SkusServiceImpl> sku_service(new skus::SkusServiceImpl(
-      browser_state->GetPrefs(), browser_state->GetSharedURLLoaderFactory()));
+  skus::MigrateSkusSettings(browser_state->GetPrefs(),
+                            GetApplicationContext()->GetLocalState());
+  std::unique_ptr<skus::SkusServiceImpl> sku_service(
+      new skus::SkusServiceImpl(GetApplicationContext()->GetLocalState(),
+                                browser_state->GetSharedURLLoaderFactory()));
   return sku_service;
 }
 
