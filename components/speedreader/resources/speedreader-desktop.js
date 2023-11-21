@@ -58,8 +58,12 @@ class speedreaderUtils {
         return null
     }
 
+    static isTtsEnabled() {
+        return !navigator.userAgentData.mobile || this.speedreaderData.ttsEnabled
+    }
+
     static initTextToSpeak = () => {
-        if (navigator.userAgentData.mobile || !this.speedreaderData.ttsEnabled) {
+        if (!this.isTtsEnabled()) {
             return
         }
 
@@ -138,12 +142,16 @@ class speedreaderUtils {
                 createPlayer(p)
             }
         })
+
+        const underline = document.createElement('div')
+        underline.classList.add('tts-underline')
+        document.body.insertAdjacentElement('beforeend', underline)
     }
 
     static extractTextToSpeak = () => {
         const paragraphs = Array.from(document.querySelectorAll('[tts-paragraph-index]'))
             .map((p) => {
-                return this.getTextContent(p)
+                return p.textContent
             })
 
         return {
@@ -155,6 +163,14 @@ class speedreaderUtils {
     }
 
     static highlightWord = (paragraph, start, end) => {
+        if (!paragraph || start >= end) {
+            CSS.highlights.clear()
+            const underline = document.querySelector('.tts-underline')
+            underline.classList.remove('tts-underline-visible')
+            underline.setAttribute('data-top', 0)
+            return
+        }
+
         const nodes = document.createNodeIterator(
             paragraph,
             NodeFilter.SHOW_TEXT,
@@ -182,6 +198,26 @@ class speedreaderUtils {
             }
         }
 
+        const underline = document.querySelector('.tts-underline')
+        const bodyRect = document.body.getBoundingClientRect()
+        const highlightedRect = range.getBoundingClientRect()
+
+        const top = highlightedRect.bottom - bodyRect.top
+        const left = highlightedRect.left - bodyRect.left
+        const width = highlightedRect.width + 2;
+
+        underline.classList.toggle('tts-underline-newline',
+            underline.getAttribute('data-top') != top)
+        underline.classList.toggle('tts-underline-decrease',
+            underline.getAttribute('data-width') < width)
+        underline.classList.add('tts-underline-visible')
+        underline.setAttribute('data-top', top)
+        underline.setAttribute('data-width', width)
+
+        underline.style.setProperty('--tts-underline-top', top + 'px');
+        underline.style.setProperty('--tts-underline-left', left + 'px');
+        underline.style.setProperty('--tts-underline-width', width + 'px');
+
         CSS.highlights.set('tts-highlighted-word', new Highlight(range))
     }
 
@@ -194,6 +230,10 @@ class speedreaderUtils {
     }
 
     static highlightText = (ttsParagraphIndex, charIndex, length) => {
+        if (!this.isTtsEnabled()) {
+            return
+        }
+
         document.querySelectorAll('.tts-highlighted').forEach((e) => {
             if (e.getAttribute('tts-paragraph-index') != ttsParagraphIndex) {
                 e.classList.remove('tts-highlighted')
@@ -210,10 +250,8 @@ class speedreaderUtils {
             } else {
                 this.setTtsButtonIcon(paragraph, 'tts-play-icon')
             }
-            this.highlightWord(paragraph, charIndex, charIndex + length)
-        } else {
-            CSS.highlights.clear()
         }
+        this.highlightWord(paragraph, charIndex, charIndex + length)
     }
 
     static setTtsReadingState = (reading) => {

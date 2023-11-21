@@ -173,8 +173,8 @@ void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
   mixer[kColorSpeedreaderToolbarBorder] = {kColorToolbarContentAreaSeparator};
   mixer[kColorSpeedreaderToolbarForeground] = {PickColorContrastingToToolbar(
       key, mixer,
-      leo::GetColor(leo::Color::kColorLegacyText2, leo::Theme::kLight),
-      leo::GetColor(leo::Color::kColorLegacyText2, leo::Theme::kDark))};
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
 
   mixer[kColorSpeedreaderToolbarButtonHover] = {PickSimilarColorToToolbar(
       key, mixer, SkColorSetARGB(0x0D, 0x13, 0x16, 0x20),
@@ -182,9 +182,14 @@ void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
   mixer[kColorSpeedreaderToolbarButtonActive] = {PickSimilarColorToToolbar(
       key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
       SkColorSetARGB(0x80, 0x0A, 0x0B, 0x10))};
+  mixer[kColorSpeedreaderToolbarButtonActiveText] = {PickSimilarColorToToolbar(
+      key, mixer,
+      leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kLight),
+      leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark))};
   mixer[kColorSpeedreaderToolbarButtonBorder] = {PickSimilarColorToToolbar(
-      key, mixer, leo::GetColor(leo::Color::kColorGray20, leo::Theme::kLight),
-      leo::GetColor(leo::Color::kColorGray10, leo::Theme::kDark))};
+      key, mixer,
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
 }
 #endif
 

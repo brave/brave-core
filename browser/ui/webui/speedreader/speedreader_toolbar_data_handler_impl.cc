@@ -304,6 +304,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
       color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
   colors->button_active =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_active_text =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
   colors->button_border =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
   events_->OnBrowserThemeChanged(std::move(colors));

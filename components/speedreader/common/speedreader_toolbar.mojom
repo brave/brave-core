@@ -66,6 +66,7 @@ struct ToolbarColors {
   uint32 button_hover;
   uint32 button_active;
   uint32 button_border;
+  uint32 button_active_text;
 };
 
 enum MainButtonType {

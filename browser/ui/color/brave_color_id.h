@@ -73,6 +73,7 @@
   E_CPONLY(kColorSpeedreaderToolbarForeground) \
   E_CPONLY(kColorSpeedreaderToolbarButtonHover) \
   E_CPONLY(kColorSpeedreaderToolbarButtonActive) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonActiveText)\
   E_CPONLY(kColorSpeedreaderToolbarButtonBorder)
 #else
 #define BRAVE_SPEEDREADER_COLOR_IDS
