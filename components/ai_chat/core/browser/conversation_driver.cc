@@ -515,9 +515,13 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   std::string question_part;
-  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
     question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+  } else if (turn.text ==
+             l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
   } else {
     question_part = turn.text;
   }
