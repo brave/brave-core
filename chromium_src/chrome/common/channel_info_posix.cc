@@ -53,6 +53,10 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
 
 #if BUILDFLAG(IS_LINUX)
 std::string GetDesktopName(base::Environment* env) {
+  std::string brave_snap;
+  if (env->GetVar("BRAVE_SNAP", &brave_snap) && brave_snap == "1") {
+    return "brave.desktop";
+  }
 #if defined(OFFICIAL_BUILD)
   version_info::Channel product_channel(chrome::GetChannel());
   switch (product_channel) {
