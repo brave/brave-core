@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.57.1](https://github.com/brave/brave-ios/releases/tag/v1.57.1)
+
+- Resolved issue where Brave Ads are disabled if Brave News was already enabled. ([#8098](https://github.com/brave/brave-ios/issues/8098))
+- Resolved issue with “Join” button in Brave Talk lobby not working. ([#7909](https://github.com/brave/brave-ios/issues/7909))
+- Fixed Guardian-Connect crash for Brave VPN. ([#8059](https://github.com/brave/brave-ios/issues/8059))
+- Fixed farbling plugin issue on iOS 17. ([#8019](https://github.com/brave/brave-ios/issues/8019))
+
 ## [1.57](https://github.com/brave/brave-ios/releases/tag/v1.57)
 
 ### Web3
