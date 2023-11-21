@@ -50,7 +50,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                         case RetentionNotificationUtil.DAY_6:
                             if (braveActivity.getActivityTab() != null
                                     && braveActivity.getActivityTab().getUrl().getSpec() != null
-                                    && !UrlUtilities.isNTPUrl(
+                                    && !UrlUtilities.isNtpUrl(
                                             braveActivity.getActivityTab().getUrl().getSpec())) {
                                 braveActivity.getTabCreator(false).launchUrl(
                                         UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);

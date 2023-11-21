@@ -195,7 +195,7 @@ public class TabUtils {
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
         if (braveActivity == null) return;
         braveActivity.getTabModelSelector().getModel(isIncognito).commitAllTabClosures();
-        braveActivity.getTabCreator(isIncognito).launchNTP();
+        braveActivity.getTabCreator(isIncognito).launchNtp();
     }
 
     public static void openUrlInNewTab(boolean isIncognito, String url) {
