@@ -100,11 +100,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.selectedAsset = payload
       },
 
-      walletBackupComplete(state: PageState) {
-        state.showRecoveryPhrase = false
-        state.mnemonic = undefined
-      },
-
       walletCreated(
         state,
         { payload }: PayloadAction<WalletCreatedPayloadType>

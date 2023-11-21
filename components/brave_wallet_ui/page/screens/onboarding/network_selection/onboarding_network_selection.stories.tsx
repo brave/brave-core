@@ -13,11 +13,7 @@ import { OnboardingNetworkSelection } from './onboarding_network_selection'
 export const _OnboardingNetworkSelection = () => {
   return (
     <WalletPageStory>
-      <OnboardingNetworkSelection
-        isHardwareOnboarding={false}
-        onBack={() => {}}
-        onContinue={() => {}}
-      />
+      <OnboardingNetworkSelection />
     </WalletPageStory>
   )
 }

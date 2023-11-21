@@ -27,6 +27,25 @@ export const walletEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
+    getIsWalletBackedUp: query<boolean, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { walletInfo } = await api.walletHandler.getWalletInfo()
+          return {
+            data: walletInfo.isWalletBackedUp
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to check if wallet is backed up',
+            error
+          )
+        }
+      },
+      providesTags: ['IsWalletBackedUp']
+    }),
+
     createWallet: mutation<true, { password: string }>({
       queryFn: async (arg, { endpoint, dispatch }, extraOptions, baseQuery) => {
         try {
@@ -59,7 +78,7 @@ export const walletEndpoints = ({
     >({
       queryFn: async (arg, { endpoint, dispatch }, extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService } = api
 
           const result = await keyringService.restoreWallet(
@@ -77,6 +96,7 @@ export const walletEndpoints = ({
             }
           }
 
+          cache.clearWalletInfo()
           keyringService.notifyWalletBackupComplete()
 
           if (arg?.completeWalletSetup) {
@@ -99,7 +119,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'WalletInfo']
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     showRecoveryPhrase: mutation<boolean, ShowRecoveryPhrasePayload>({
@@ -203,7 +223,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     importFromCryptoWallets: mutation<
@@ -216,7 +237,7 @@ export const walletEndpoints = ({
             throw new Error('A new password is required')
           }
 
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService, braveWalletService } = api
 
           const results: ImportWalletResults = await importFromExternalWallet(
@@ -234,6 +255,8 @@ export const walletEndpoints = ({
             }
           }
 
+          cache.clearWalletInfo()
+
           return {
             data: {
               success: true
@@ -246,7 +269,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     importFromMetaMask: mutation<
@@ -259,7 +283,7 @@ export const walletEndpoints = ({
             throw new Error('A new password is required')
           }
 
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService, braveWalletService } = api
 
           const { errorMessage }: ImportWalletResults =
@@ -278,6 +302,8 @@ export const walletEndpoints = ({
             }
           }
 
+          cache.clearWalletInfo()
+
           return {
             data: { success: true }
           }
@@ -288,7 +314,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     completeWalletBackup: mutation<boolean, void>({
@@ -309,7 +336,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['IsWalletBackedUp']
     })
   }
 }

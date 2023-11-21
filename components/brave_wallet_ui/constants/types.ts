@@ -204,7 +204,6 @@ export interface WalletState {
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
@@ -586,25 +585,37 @@ export enum WalletRoutes {
   OnboardingWelcome = '/crypto/onboarding/welcome',
 
   // onboarding (new wallet)
-  OnboardingCreatePassword = '/crypto/onboarding/create-password',
-  OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
-  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
-  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
-  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/verify-recovery-phrase',
+  OnboardingNewWalletStart = '/crypto/onboarding/new',
+  OnboardingNewWalletTerms = '/crypto/onboarding/new/terms',
+  OnboardingNewWalletNetworkSelection = '/crypto/onboarding/new/networks',
+  OnboardingNewWalletCreatePassword = '/crypto/onboarding/new/create-password',
+  OnboardingBackupWallet = '/crypto/onboarding/new/backup-wallet',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/new/backup-recovery-phrase',
+  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/new/verify-recovery-phrase',
 
-  // onboarding (import / restore)
-  OnboardingImportOrRestore = '/crypto/onboarding/import-or-restore',
-  OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
-  OnboardingImportMetaMaskSeed = '/crypto/onboarding/import-metamask-seed',
-  OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
-  OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
-  OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
+  // onboarding (import & restore)
+  OnboardingImportStart = '/crypto/onboarding/import',
+  OnboardingImportTerms = '/crypto/onboarding/import/terms',
+  OnboardingImportOrRestore = '/crypto/onboarding/import/choose',
+  OnboardingImportNetworkSelection = '/crypto/onboarding/import/networks',
+
+  // onboarding (import from seed)
+  OnboardingRestoreWallet = '/crypto/onboarding/import/restore',
+
+  // onboarding (import from legacy extension)
+  OnboardingImportLegacy = '/crypto/onboarding/import/legacy',
+
+  // onboarding (import from metamask)
+  OnboardingImportMetaMask = '/crypto/onboarding/import/metamask',
 
   // onboarding (connect hardware wallet)
-  OnboardingConnectHardwareWalletCreatePassword = '/crypto/onboarding/' +
-    'connect-hardware-wallet/create-password',
-  OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
-  OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
+  OnboardingHardwareWalletStart = '/crypto/onboarding/hardware',
+  OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
+  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect/:accountTypeName?',
+  OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware/networks',
+  OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +
+    'hardware/create-password',
 
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
@@ -1272,3 +1283,6 @@ export interface LineChartIframeData {
   defaultFiatCurrency: string
   hidePortfolioBalances: boolean
 }
+
+export type WalletCreationMode = 'new' | 'import' | 'hardware'
+export type WalletImportMode = 'seed' | 'metamask' | 'legacy'

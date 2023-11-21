@@ -6,14 +6,15 @@
 import * as React from 'react'
 
 // constants
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
   useCreateWalletMutation,
   useAddAccountMutation,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
+  useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
@@ -32,7 +33,7 @@ import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
@@ -47,15 +48,12 @@ import {
 } from '../onboarding.style'
 
 interface OnboardingCreatePasswordProps {
-  isHardwareOnboarding?: boolean
   onWalletCreated: () => void
 }
 
-export const OnboardingCreatePassword = (
-  props: OnboardingCreatePasswordProps
-) => {
-  const { isHardwareOnboarding, onWalletCreated } = props
-
+export const OnboardingCreatePassword = ({
+  onWalletCreated
+}: OnboardingCreatePasswordProps) => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
@@ -67,6 +65,7 @@ export const OnboardingCreatePassword = (
   // mutations
   const [createWallet] = useCreateWalletMutation()
   const [addAccount] = useAddAccountMutation()
+  const [report] = useReportOnboardingActionMutation()
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -124,6 +123,10 @@ export const OnboardingCreatePassword = (
 
   // effects
   React.useEffect(() => {
+    report(BraveWallet.OnboardingAction.LegalAndPassword)
+  }, [report])
+
+  React.useEffect(() => {
     // wait for redux before redirecting
     // otherwise, the restricted routes in the router will not be available
     if (!isCreatingWallet && isWalletCreated) {
@@ -140,12 +143,7 @@ export const OnboardingCreatePassword = (
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingWelcome}
-            currentStep={WalletRoutes.OnboardingCreatePassword}
-            isHardwareOnboarding={isHardwareOnboarding}
-            preventSkipAhead
-          />
+          <OnboardingStepsNavigation preventSkipAhead />
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletCreatePasswordTitle')}</Title>

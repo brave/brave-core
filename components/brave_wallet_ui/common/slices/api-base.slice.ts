@@ -37,7 +37,6 @@ export function createWalletApiBase() {
       'Transactions',
       'TransactionSimulationsEnabled',
       'UserBlockchainTokens',
-      'WalletInfo',
       'NftDiscoveryEnabledStatus',
       'BraveRewards-Enabled',
       'BraveRewards-RewardsBalance',
@@ -56,7 +55,8 @@ export function createWalletApiBase() {
       'EthTokenDecimals',
       'EthTokenSymbol',
       'EnsOffchainLookupEnabled',
-      'NameServiceAddress'
+      'NameServiceAddress',
+      'IsWalletBackedUp'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
@@ -64,7 +64,7 @@ export function createWalletApiBase() {
 
 export const ACCOUNT_TAG_IDS = {
   REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED',
+  SELECTED: 'SELECTED'
 }
 
 export const NETWORK_TAG_IDS = {
@@ -76,7 +76,7 @@ export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
   SWAP_SUPPORTED: 'SWAP_SUPPORTED',
-  VISIBLE: 'VISIBLE',
+  VISIBLE: 'VISIBLE'
 } as const
 
 export type WalletApiBase = ReturnType<typeof createWalletApiBase>

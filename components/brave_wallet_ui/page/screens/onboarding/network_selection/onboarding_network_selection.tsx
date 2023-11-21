@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
+import { useHistory } from 'react-router'
 import Checkbox from '@brave/leo/react/checkbox'
 import ProgressRing from '@brave/leo/react/progressRing'
 
@@ -19,7 +20,11 @@ import { getLocale } from '../../../../../common/locale'
 import {
   getNetworkId //
 } from '../../../../common/slices/entities/network.entity'
-import { openNetworkSettings } from '../../../../utils/routes-utils'
+import {
+  getOnboardingTypeFromPath,
+  openNetworkSettings
+} from '../../../../utils/routes-utils'
+import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 
 // queries
 import {
@@ -48,7 +53,7 @@ import {
   CenteredPageLayout //
 } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import {
-  OnboardingNewWalletStepsNavigation //
+  OnboardingStepsNavigation //
 } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
@@ -142,17 +147,12 @@ function NetworkCheckbox({
   )
 }
 
-export const OnboardingNetworkSelection = ({
-  onBack,
-  onContinue,
-  isHardwareOnboarding
-}: {
-  onBack: () => void
-  onContinue:
-    | ((selectedChains: EntityId[]) => void)
-    | ((selectedChains: EntityId[]) => Promise<void>)
-  isHardwareOnboarding: boolean
-}) => {
+export const OnboardingNetworkSelection = () => {
+  // routing
+  const history = useHistory()
+  const path = useLocationPathName()
+  const onboardingType = getOnboardingTypeFromPath(path)
+
   // state
   const [searchText, setSearchText] = React.useState('')
   const [showTestNets, setShowTestNets] = React.useState(false)
@@ -258,8 +258,19 @@ export const OnboardingNetworkSelection = ({
     // force show selected networks
     await restoreNetworks(selectedNetworks).unwrap()
 
-    onContinue(selectedChains)
-  }, [onContinue, selectedChains])
+    // TODO: mark coin-types for wallet creation
+    history.push(
+      onboardingType === 'hardware'
+        ? WalletRoutes.OnboardingHardwareWalletCreatePassword
+        : onboardingType === 'import'
+        ? WalletRoutes.OnboardingImportOrRestore
+        : WalletRoutes.OnboardingNewWalletCreatePassword
+    )
+  }, [
+    // onContinue,
+    onboardingType,
+    selectedChains
+  ])
 
   // effects
   React.useEffect(() => {
@@ -281,12 +292,7 @@ export const OnboardingNetworkSelection = ({
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          <OnboardingNewWalletStepsNavigation
-            goBack={onBack}
-            currentStep={WalletRoutes.OnboardingWelcome}
-            isHardwareOnboarding={isHardwareOnboarding}
-            preventSkipAhead
-          />
+          <OnboardingStepsNavigation preventSkipAhead />
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletSupportedNetworks')}</Title>
@@ -423,5 +429,3 @@ export const OnboardingNetworkSelection = ({
     </CenteredPageLayout>
   )
 }
-
-export default OnboardingNetworkSelection

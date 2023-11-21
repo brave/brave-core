@@ -4,20 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 import { PageSelectors } from '../../../selectors'
-
-// routes
+import { useLocationPathName } from '../../../../common/hooks/use-pathname'
+import { getOnboardingTypeFromPath } from '../../../../utils/routes-utils'
 import { WalletRoutes } from '../../../../constants/types'
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletPageActions } from '../../../actions'
 
 // components
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
 import { LinkText, VerticalSpace } from '../../../../components/shared/style'
@@ -30,12 +33,6 @@ import {
   TitleAndDescriptionContainer
 } from '../onboarding.style'
 import { CheckboxText } from './disclosures.style'
-
-interface Props {
-  onBack: () => void
-  onContinue: () => void
-  isHardwareOnboarding: boolean
-}
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
@@ -58,13 +55,15 @@ const TermsOfUseText: React.FC<{}> = () => {
   )
 }
 
-export const OnboardingDisclosures = ({
-  onBack,
-  onContinue,
-  isHardwareOnboarding
-}: Props) => {
+export const OnboardingDisclosures = () => {
+  // routing
+  const history = useHistory()
+  const path = useLocationPathName()
+  const onboardingType = getOnboardingTypeFromPath(path)
+
   // redux
-  const walletTermsAcknowledged = useSelector(
+  const dispatch = useDispatch()
+  const walletTermsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )
 
@@ -80,12 +79,7 @@ export const OnboardingDisclosures = ({
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          <OnboardingNewWalletStepsNavigation
-            goBack={onBack}
-            currentStep={WalletRoutes.OnboardingWelcome}
-            isHardwareOnboarding={isHardwareOnboarding}
-            preventSkipAhead
-          />
+          <OnboardingStepsNavigation preventSkipAhead />
 
           <TitleAndDescriptionContainer style={{ marginLeft: 18 }}>
             <Title>{getLocale('braveWalletDisclosuresTitle')}</Title>
@@ -124,7 +118,16 @@ export const OnboardingDisclosures = ({
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonContinue')}
-              onSubmit={onContinue}
+              onSubmit={() => {
+                dispatch(WalletPageActions.agreeToWalletTerms())
+                history.push(
+                  onboardingType === 'hardware'
+                    ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
+                    : onboardingType === 'import'
+                    ? WalletRoutes.OnboardingImportNetworkSelection
+                    : WalletRoutes.OnboardingNewWalletNetworkSelection
+                )
+              }}
               disabled={
                 !(isResponsibilityCheckboxChecked && isTermsCheckboxChecked)
               }

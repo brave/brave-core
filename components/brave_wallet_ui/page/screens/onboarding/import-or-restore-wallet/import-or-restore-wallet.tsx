@@ -16,7 +16,9 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
 import { WalletLink } from '../../../../components/shared/style'
@@ -46,11 +48,7 @@ export const OnboardingImportOrRestoreWallet = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          <StepsNavigation
-            goBackUrl={WalletRoutes.Onboarding}
-            currentStep={''}
-            steps={[]}
-          />
+          <OnboardingStepsNavigation preventSkipAhead />
 
           <div>
             <Title>{getLocale('braveWalletImportOrRestoreWalletTitle')}</Title>
@@ -78,7 +76,7 @@ export const OnboardingImportOrRestoreWallet = () => {
           )}
 
           {importableWallets?.isLegacyCryptoWalletsInitialized && (
-            <CardButton to={WalletRoutes.OnboardingImportCryptoWallets}>
+            <CardButton to={WalletRoutes.OnboardingImportLegacy}>
               <CardButtonTextContainer>
                 <p>{getLocale('braveWalletImportFromLegacy')}</p>
               </CardButtonTextContainer>
@@ -87,7 +85,7 @@ export const OnboardingImportOrRestoreWallet = () => {
           )}
 
           <LinkRow>
-            <WalletLink to={WalletRoutes.OnboardingCreatePassword}>
+            <WalletLink to={WalletRoutes.OnboardingNewWalletCreatePassword}>
               {getLocale('braveWalletCreateWalletInsteadLink')}
             </WalletLink>
           </LinkRow>
@@ -96,5 +94,3 @@ export const OnboardingImportOrRestoreWallet = () => {
     </CenteredPageLayout>
   )
 }
-
-export default OnboardingImportOrRestoreWallet
