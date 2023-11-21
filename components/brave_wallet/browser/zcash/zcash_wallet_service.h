@@ -51,11 +51,18 @@ class ZCashWalletService : public KeyedService,
                   mojom::AccountIdPtr account_id,
                   GetBalanceCallback) override;
 
+  void GetZCashAccountInfo(mojom::AccountIdPtr account_id,
+                           GetZCashAccountInfoCallback callback) override;
+
   /**
    * Used for internal transfers between own accounts
    */
   void GetReceiverAddress(mojom::AccountIdPtr account_id,
                           GetReceiverAddressCallback callback) override;
+
+  void RunDiscovery(mojom::AccountIdPtr account_id,
+                    bool change,
+                    RunDiscoveryCallback callback) override;
 
   void GetUtxos(const std::string& chain_id,
                 mojom::AccountIdPtr account_id,
@@ -78,14 +85,23 @@ class ZCashWalletService : public KeyedService,
 
  private:
   friend class CreateTransparentTransactionTask;
+  friend class DiscoverNextUnusedZCashAddressTask;
   friend class ZCashTxManager;
 
-  absl::optional<std::string> GetUnusedChangeAddress(
-      const mojom::AccountId& account_id);
+  /*KeyringServiceObserverBase*/
+  void Unlocked() override;
 
   bool SignTransactionInternal(ZCashTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
 
+  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
+      base::expected<mojom::ZCashAddressPtr, std::string>)>;
+  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
+                                 bool change,
+                                 DiscoverNextUnusedAddressCallback callback);
+  void OnRunDiscoveryDone(mojom::AccountIdPtr account_id,
+                          RunDiscoveryCallback callback,
+                          base::expected<mojom::ZCashAddressPtr, std::string>);
   void OnGetUtxos(
       scoped_refptr<GetTransparentUtxosContext> context,
       const std::string& current_address,
@@ -112,6 +128,9 @@ class ZCashWalletService : public KeyedService,
 
   void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
 
+  void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
+                                         const mojom::ZCashAddressPtr& address);
+
   ZCashRpc* zcash_rpc();
 
   raw_ptr<KeyringService> keyring_service_;
@@ -120,6 +139,8 @@ class ZCashWalletService : public KeyedService,
   std::list<std::unique_ptr<CreateTransparentTransactionTask>>
       create_transaction_tasks_;
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
   base::WeakPtrFactory<ZCashWalletService> weak_ptr_factory_{this};
 };
 

@@ -14,16 +14,17 @@ namespace brave_wallet {
 
 ZCashKeyring::ZCashKeyring(bool testnet) : testnet_(testnet) {}
 
-absl::optional<std::string> ZCashKeyring::GetAddress(
+mojom::ZCashAddressPtr ZCashKeyring::GetAddress(
     const mojom::ZCashKeyId& key_id) {
   auto key = DeriveKey(key_id);
   if (!key) {
-    return absl::nullopt;
+    return nullptr;
   }
 
   HDKey* hd_key = static_cast<HDKey*>(key.get());
 
-  return hd_key->GetZCashTransparentAddress(testnet_);
+  return mojom::ZCashAddress::New(hd_key->GetZCashTransparentAddress(testnet_),
+                                  key_id.Clone());
 }
 
 absl::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(

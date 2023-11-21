@@ -22,7 +22,7 @@ class ZCashKeyring : public HDKeyring {
   ZCashKeyring(const ZCashKeyring&) = delete;
   ZCashKeyring& operator=(const ZCashKeyring&) = delete;
 
-  absl::optional<std::string> GetAddress(const mojom::ZCashKeyId& key_id);
+  mojom::ZCashAddressPtr GetAddress(const mojom::ZCashKeyId& key_id);
 
   absl::optional<std::vector<uint8_t>> GetPubkey(
       const mojom::ZCashKeyId& key_id);
