@@ -47,7 +47,7 @@ class AdsClientNotifier {
   // Invoked when ads did initialize.
   void NotifyDidInitializeAds() const;
 
-  // Called when the user changes the locale of their operating system. This
+  // Invoked when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
   // changing the locale. |locale| should be specified in either
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
@@ -90,7 +90,7 @@ class AdsClientNotifier {
   // |tab_id|.
   void NotifyTabDidStartPlayingMedia(int32_t tab_id) const;
 
-  // Called when media stops playing on a browser tab for the specified
+  // Invoked when media stops playing on a browser tab for the specified
   // |tab_id|.
   void NotifyTabDidStopPlayingMedia(int32_t tab_id) const;
 
@@ -107,7 +107,7 @@ class AdsClientNotifier {
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id) const;
 
-  // Called when a page navigation was initiated by a user gesture.
+  // Invoked when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) const;
@@ -116,7 +116,7 @@ class AdsClientNotifier {
   // should not be called on mobile devices.
   void NotifyUserDidBecomeIdle() const;
 
-  // Called when a user is no longer idle. |idle_time| is the duration of time
+  // Invoked when a user is no longer idle. |idle_time| is the duration of time
   // that the user was idle. |screen_was_locked| should be |true| if the screen
   // was locked, otherwise |false|. NOTE: This should not be called on mobile
   // devices.
