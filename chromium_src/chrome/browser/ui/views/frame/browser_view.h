@@ -24,8 +24,6 @@
   virtual MaybeShowReadingListInSidePanelIPH
 
 #define UpdateDevToolsForContents virtual UpdateDevToolsForContents
-#define FullscreenStateChanging virtual FullscreenStateChanging
-#define FullscreenStateChanged virtual FullscreenStateChanged
 #define GetTabStripVisible virtual GetTabStripVisible
 
 #define GetTabSearchBubbleHost     \
@@ -51,8 +49,6 @@
 
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
-#undef FullscreenStateChanged
-#undef FullscreenStateChanging
 #undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
 #undef SidePanel
