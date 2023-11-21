@@ -57,11 +57,6 @@ ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
       prefs::kLastAcceptedDisclaimer,
       base::BindRepeating(&ConversationDriver::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(
-      prefs::kBraveChatAutoGenerateQuestions,
-      base::BindRepeating(
-          &ConversationDriver::OnPermissionChangedAutoGenerateQuestions,
-          weak_ptr_factory_.GetWeakPtr()));
 
   // Engines and model names are selectable per conversation, not static.
   // Start with default from pref value but only if user set. We can't rely on
@@ -145,7 +140,6 @@ void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active
     return;
   }
   MaybeGeneratePageText();
-  MaybeGenerateQuestions();
 }
 
 void ConversationDriver::InitEngine() {
@@ -207,10 +201,6 @@ void ConversationDriver::OnUserOptedIn() {
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
     ai_chat_metrics_->RecordEnabled(true);
   }
-}
-
-void ConversationDriver::OnPermissionChangedAutoGenerateQuestions() {
-  MaybeGenerateQuestions();
 }
 
 void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) {
@@ -322,18 +312,6 @@ void ConversationDriver::MaybeGeneratePageText() {
   }
 }
 
-void ConversationDriver::MaybeGenerateQuestions() {
-  // Automatically fetch questions related to page content, if allowed
-  bool can_auto_fetch_questions =
-      HasUserOptedIn() && is_conversation_active_ &&
-      pref_service_->GetBoolean(
-          ai_chat::prefs::kBraveChatAutoGenerateQuestions) &&
-      !article_text_.empty() && (suggested_questions_.size() <= 1);
-  if (can_auto_fetch_questions) {
-    GenerateQuestions();
-  }
-}
-
 void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
                                           std::string contents_text,
                                           bool is_video) {
@@ -356,30 +334,30 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   OnPageHasContentChanged(IsPageContentsTruncated());
 
   // Now that we have article text, we can suggest to summarize it
-  DCHECK(suggested_questions_.empty())
+  DCHECK(suggestions_.empty())
       << "Expected suggested questions to be clear when there has been no"
-      << " previous text content but there were " << suggested_questions_.size()
-      << " suggested questions: "
-      << base::JoinString(suggested_questions_, ", ");
+      << " previous text content but there were " << suggestions_.size()
+      << " suggested questions: " << base::JoinString(suggestions_, ", ");
 
   // Now that we have content, we can provide a summary on-demand. Add that to
   // suggested questions.
-  suggested_questions_.emplace_back(
+  suggestions_.emplace_back(
       is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
                 : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+  suggestion_generation_status_ =
+      mojom::SuggestionGenerationStatus::CanGenerate;
   OnSuggestedQuestionsChanged();
-  MaybeGenerateQuestions();
 }
 
 void ConversationDriver::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
-  suggested_questions_.clear();
+  suggestions_.clear();
   pending_request_.reset();
   is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
-  has_generated_questions_ = false;
+  suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_page_content_be_disconnected_ = false;
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
@@ -410,13 +388,10 @@ void ConversationDriver::SetSameDocumentNavigation(bool same_document_navigation
 }
 
 std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
-    bool& can_generate,
-    mojom::AutoGenerateQuestionsPref& auto_generate) {
+    mojom::SuggestionGenerationStatus& suggestion_status) {
   // Can we get suggested questions
-  can_generate = !has_generated_questions_ && !article_text_.empty();
-  // Are we allowed to auto-generate
-  auto_generate = GetAutoGeneratePref();
-  return suggested_questions_;
+  suggestion_status = suggestion_generation_status_;
+  return suggestions_;
 }
 
 PageContentAssociation ConversationDriver::HasPageContent() {
@@ -455,23 +430,33 @@ void ConversationDriver::GenerateQuestions() {
   DVLOG(1) << __func__;
   // This function should not be presented in the UI if the user has not
   // opted-in yet.
-  DCHECK(HasUserOptedIn());
+  if (!HasUserOptedIn()) {
+    NOTREACHED() << "GenerateQuestions should not be called before user is "
+                 << "opted in to AI Chat";
+    return;
+  }
+  // We're not expecting to call this if the UI is not active for this
+  // conversation.
   DCHECK(is_conversation_active_);
+  // We're not expecting to already have generated suggestions
+  DCHECK_LE(suggestions_.size(), 1u);
+
   // Can't operate if we don't have an article text
   if (article_text_.empty()) {
     return;
   }
-  // Don't perform the operation more than once
-  if (suggested_questions_.size() > 1u) {
+
+  if (suggestion_generation_status_ ==
+          mojom::SuggestionGenerationStatus::IsGenerating ||
+      suggestion_generation_status_ ==
+          mojom::SuggestionGenerationStatus::HasGenerated) {
+    NOTREACHED() << "UI should not allow GenerateQuestions to be called more "
+                 << "than once";
     return;
   }
 
-  // Don't generate suggested questions if there's already on-going conversions
-  if (!chat_history_.empty()) {
-    return;
-  }
-
-  has_generated_questions_ = true;
+  suggestion_generation_status_ =
+      mojom::SuggestionGenerationStatus::IsGenerating;
   OnSuggestedQuestionsChanged();
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
@@ -494,11 +479,12 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     return;
   }
 
-  suggested_questions_.insert(suggested_questions_.end(), result.begin(),
-                              result.end());
+  suggestions_.insert(suggestions_.end(), result.begin(), result.end());
+  suggestion_generation_status_ =
+      mojom::SuggestionGenerationStatus::HasGenerated;
   // Notify observers
   OnSuggestedQuestionsChanged();
-  DVLOG(2) << "Got questions:" << base::JoinString(suggested_questions_, "\n");
+  DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
 }
 
 void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
@@ -516,11 +502,10 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   bool is_suggested_question = false;
 
   // If it's a suggested question, remove it
-  auto found_question_iter =
-      base::ranges::find(suggested_questions_, turn.text);
-  if (found_question_iter != suggested_questions_.end()) {
+  auto found_question_iter = base::ranges::find(suggestions_, turn.text);
+  if (found_question_iter != suggestions_.end()) {
     is_suggested_question = true;
-    suggested_questions_.erase(found_question_iter);
+    suggestions_.erase(found_question_iter);
     OnSuggestedQuestionsChanged();
   }
 
@@ -630,8 +615,8 @@ void ConversationDriver::OnEngineCompletionComplete(
 
 void ConversationDriver::OnSuggestedQuestionsChanged() {
   for (auto& obs : observers_) {
-    obs.OnSuggestedQuestionsChanged(
-        suggested_questions_, has_generated_questions_, GetAutoGeneratePref());
+    obs.OnSuggestedQuestionsChanged(suggestions_,
+                                    suggestion_generation_status_);
   }
 }
 
@@ -639,22 +624,6 @@ void ConversationDriver::OnPageHasContentChanged(bool page_contents_is_truncated
   for (auto& obs : observers_) {
     obs.OnPageHasContent(page_contents_is_truncated);
   }
-}
-
-mojom::AutoGenerateQuestionsPref ConversationDriver::GetAutoGeneratePref() {
-  mojom::AutoGenerateQuestionsPref pref =
-      mojom::AutoGenerateQuestionsPref::Unset;
-
-  const base::Value* auto_generate_value = pref_service_->GetUserPrefValue(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
-
-  if (auto_generate_value) {
-    pref = (auto_generate_value->GetBool()
-                ? mojom::AutoGenerateQuestionsPref::Enabled
-                : mojom::AutoGenerateQuestionsPref::Disabled);
-  }
-
-  return pref;
 }
 
 void ConversationDriver::SetAPIError(const mojom::APIError& error) {

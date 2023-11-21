@@ -43,8 +43,7 @@ class ConversationDriver {
     virtual void OnModelChanged(const std::string& model_key) {}
     virtual void OnSuggestedQuestionsChanged(
         std::vector<std::string> questions,
-        bool has_generated,
-        mojom::AutoGenerateQuestionsPref auto_generate) {}
+        mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(bool page_contents_is_truncated) {}
   };
@@ -78,8 +77,7 @@ class ConversationDriver {
   // are already generated, nothing will happen.
   void GenerateQuestions();
   std::vector<std::string> GetSuggestedQuestions(
-      bool& can_generate,
-      mojom::AutoGenerateQuestionsPref& auto_generate);
+      mojom::SuggestionGenerationStatus& suggestion_status);
   PageContentAssociation HasPageContent();
   void DisconnectPageContents();
   void ClearConversationHistory();
@@ -110,7 +108,6 @@ class ConversationDriver {
   void InitEngine();
   bool HasUserOptedIn();
   void OnUserOptedIn();
-  void OnPermissionChangedAutoGenerateQuestions();
   bool MaybePopPendingRequests();
   void MaybeGenerateQuestions();
 
@@ -129,7 +126,6 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);
 
-  mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
   void SetAPIError(const mojom::APIError& error);
 
   raw_ptr<PrefService> pref_service_;
@@ -148,8 +144,13 @@ class ConversationDriver {
   bool is_conversation_active_ = false;
   bool is_page_text_fetch_in_progress_ = false;
   bool is_request_in_progress_ = false;
-  std::vector<std::string> suggested_questions_;
-  bool has_generated_questions_ = false;
+  std::vector<std::string> suggestions_;
+  // Keep track of whether we've generated suggested questions for the current
+  // context. We cannot rely on counting the questions in |suggested_questions_|
+  // since they get removed when used, or we might not have received any
+  // successfully.
+  mojom::SuggestionGenerationStatus suggestion_generation_status_ =
+      mojom::SuggestionGenerationStatus::None;
   bool is_video_ = false;
   bool should_page_content_be_disconnected_ = false;
   // Store the unique ID for each navigation so that

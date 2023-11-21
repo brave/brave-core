@@ -142,26 +142,19 @@ void AIChatUIPageHandler::GetConversationHistory(
 void AIChatUIPageHandler::GetSuggestedQuestions(
     GetSuggestedQuestionsCallback callback) {
   if (!active_chat_tab_helper_) {
-    std::move(callback).Run({}, false,
-                            mojom::AutoGenerateQuestionsPref::Disabled);
+    std::move(callback).Run({}, mojom::SuggestionGenerationStatus::None);
     return;
   }
-  bool can_generate;
-  mojom::AutoGenerateQuestionsPref auto_generate;
-  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
-                              can_generate, auto_generate),
-                          can_generate, auto_generate);
+  mojom::SuggestionGenerationStatus suggestion_status;
+  std::move(callback).Run(
+      active_chat_tab_helper_->GetSuggestedQuestions(suggestion_status),
+      suggestion_status);
 }
 
 void AIChatUIPageHandler::GenerateQuestions() {
   if (active_chat_tab_helper_) {
     active_chat_tab_helper_->GenerateQuestions();
   }
-}
-
-void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
-  profile_->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions, value);
 }
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
@@ -357,11 +350,10 @@ void AIChatUIPageHandler::OnModelChanged(const std::string& model_key) {
 
 void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
     std::vector<std::string> questions,
-    bool has_generated,
-    mojom::AutoGenerateQuestionsPref auto_generate) {
+    mojom::SuggestionGenerationStatus suggestion_generation_status) {
   if (page_.is_bound()) {
-    page_->OnSuggestedQuestionsChanged(std::move(questions), has_generated,
-                                       auto_generate);
+    page_->OnSuggestedQuestionsChanged(std::move(questions),
+                                       suggestion_generation_status);
   }
 }
 
