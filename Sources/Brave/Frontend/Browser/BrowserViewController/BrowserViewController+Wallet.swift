@@ -135,7 +135,7 @@ extension BrowserViewController: BraveWalletDelegate {
       self.dismiss(animated: true)
     }
     if let url = tabManager.selectedTab?.url, InternalURL.isValid(url: url) {
-      select(url: destinationURL)
+      select(url: destinationURL, isUserDefinedURLNavigation: false)
     } else {
       _ = tabManager.addTabAndSelect(
         URLRequest(url: destinationURL),

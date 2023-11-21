@@ -192,7 +192,7 @@ public class ActivityShortcutManager: NSObject {
       } else {
         let controller = NewsSettingsViewController(dataSource: bvc.feedDataSource, openURL: { url in
           bvc.dismiss(animated: true)
-          bvc.select(url: url)
+          bvc.select(url: url, isUserDefinedURLNavigation: false)
         })
         controller.viewDidDisappear = {
           if Preferences.Review.braveNewsCriteriaPassed.value {

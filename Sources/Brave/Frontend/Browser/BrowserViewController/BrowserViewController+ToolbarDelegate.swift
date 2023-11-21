@@ -285,10 +285,10 @@ extension BrowserViewController: TopToolbarDelegate {
     processAddressBar(text: text)
   }
 
-  func processAddressBar(text: String, isBraveSearchPromotion: Bool = false) {
+  func processAddressBar(text: String, isBraveSearchPromotion: Bool = false, isUserDefinedURLNavigation: Bool = false) {
     processAddressBarTask?.cancel()
     processAddressBarTask = Task { @MainActor in
-      if !isBraveSearchPromotion, await submitValidURL(text) {
+      if !isBraveSearchPromotion, await submitValidURL(text, isUserDefinedURLNavigation: isUserDefinedURLNavigation) {
         return
       } else {
         // We couldn't build a URL, so pass it on to the search engine.
@@ -301,6 +301,48 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
   
+  @MainActor private func submitValidURL(_ text: String, isUserDefinedURLNavigation: Bool) async -> Bool {
+    if let url = URL(string: text), url.isIPFSScheme {
+      return handleIPFSSchemeURL(url)
+    } else if let fixupURL = URIFixup.getURL(text) {
+      // Do not allow users to enter URLs with the following schemes.
+      // Instead, submit them to the search engine like Chrome-iOS does.
+      if !["file"].contains(fixupURL.scheme) {
+        // check text is decentralized DNS supported domain
+        if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
+          topToolbar.leaveOverlayMode()
+          updateToolbarCurrentURL(fixupURL)
+          topToolbar.locationView.loading = true
+          let result = await decentralizedDNSHelper.lookup(domain: fixupURL.schemelessAbsoluteDisplayString)
+          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+          guard !Task.isCancelled else { return true } // user pressed stop, or typed new url
+          switch result {
+          case let .loadInterstitial(service):
+            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
+            return true
+          case let .load(resolvedURL):
+            if resolvedURL.isIPFSScheme {
+              return handleIPFSSchemeURL(resolvedURL)
+            } else {
+              finishEditingAndSubmit(resolvedURL)
+              return true
+            }
+          case .none:
+            break
+          }
+        }
+        
+        // The user entered a URL, so use it.
+        // Determine if url navigation is done from favourites or bookmarks
+        // To handle bookmarklets properly
+        finishEditingAndSubmit(fixupURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+        return true
+      }
+    }
+    
+    return false
+  }
+
   @discardableResult
   func handleIPFSSchemeURL(_ url: URL) -> Bool {
     guard !privateBrowsingManager.isPrivateBrowsing else {
@@ -335,46 +377,6 @@ extension BrowserViewController: TopToolbarDelegate {
     return false
   }
   
-  @MainActor func submitValidURL(_ text: String) async -> Bool {
-    if let url = URL(string: text), url.isIPFSScheme {
-      return handleIPFSSchemeURL(url)
-    } else if let fixupURL = URIFixup.getURL(text) {
-      // Do not allow users to enter URLs with the following schemes.
-      // Instead, submit them to the search engine like Chrome-iOS does.
-      if !["file"].contains(fixupURL.scheme) {
-        // check text is decentralized DNS supported domain
-        if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
-          topToolbar.leaveOverlayMode()
-          updateToolbarCurrentURL(fixupURL)
-          topToolbar.locationView.loading = true
-          let result = await decentralizedDNSHelper.lookup(domain: fixupURL.schemelessAbsoluteDisplayString)
-          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
-          guard !Task.isCancelled else { return true } // user pressed stop, or typed new url
-          switch result {
-          case let .loadInterstitial(service):
-            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
-            return true
-          case let .load(resolvedURL):
-            if resolvedURL.isIPFSScheme {
-              return handleIPFSSchemeURL(resolvedURL)
-            } else {
-              finishEditingAndSubmit(resolvedURL)
-              return true
-            }
-          case .none:
-            break
-          }
-        }
-        
-        // The user entered a URL, so use it.
-        finishEditingAndSubmit(fixupURL)
-        return true
-      }
-    }
-    
-    return false
-  }
-
   func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
     var engine = profile.searchEngines.defaultEngine(forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard)
     

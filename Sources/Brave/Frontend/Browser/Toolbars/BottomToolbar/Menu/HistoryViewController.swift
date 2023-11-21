@@ -285,7 +285,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       }
       
       dismiss(animated: true) {
-        self.toolbarUrlActionsDelegate?.select(url: url)
+        self.toolbarUrlActionsDelegate?.select(url: url, isUserDefinedURLNavigation: false)
       }
     }
 
