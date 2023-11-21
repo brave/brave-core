@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
@@ -18,16 +19,12 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
-}  // namespace
-
 class BraveAdsSegmentUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
   const absl::optional<std::string> json =
-      ReadFileFromTestPathToString(kCatalog);
+      ReadFileFromTestPathToString(kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(json);
 
   const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
