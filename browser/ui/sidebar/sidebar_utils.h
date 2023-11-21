@@ -11,6 +11,7 @@
 
 class Browser;
 class GURL;
+class PrefService;
 enum class SidePanelEntryId;
 
 namespace sidebar {
@@ -27,6 +28,9 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url);
 SidePanelEntryId SidePanelIdFromSideBarItemType(
     SidebarItem::BuiltInItemType type);
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item);
+void SetLastUsedSidePanel(PrefService* prefs,
+                          absl::optional<SidePanelEntryId> id);
+absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser);
 
 // Return the added item if item for |id| is added.
 absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,

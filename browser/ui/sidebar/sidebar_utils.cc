@@ -5,10 +5,15 @@
 
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -16,6 +21,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -156,6 +162,45 @@ absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
   }
 
   return absl::nullopt;
+}
+
+void SetLastUsedSidePanel(PrefService* prefs,
+                          absl::optional<SidePanelEntryId> id) {
+  BuiltInItemType type = BuiltInItemType::kNone;
+  if (id) {
+    switch (*id) {
+      case SidePanelEntryId::kReadingList:
+        type = BuiltInItemType::kReadingList;
+        break;
+      case SidePanelEntryId::kBookmarks:
+        type = BuiltInItemType::kBookmarks;
+        break;
+      case SidePanelEntryId::kPlaylist:
+        type = BuiltInItemType::kPlaylist;
+        break;
+      case SidePanelEntryId::kChatUI:
+        type = BuiltInItemType::kChatUI;
+        break;
+      default:
+        break;
+    }
+  }
+
+  prefs->SetInteger(kLastUsedBuiltInItemType, static_cast<int>(type));
+}
+
+absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
+  PrefService* prefs = browser->profile()->GetPrefs();
+  BuiltInItemType type =
+      static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
+  // If cached type item is not included in current model, return null.
+  if (!static_cast<BraveBrowser*>(browser)
+           ->sidebar_controller()
+           ->model()
+           ->GetIndexOf(type)) {
+    return absl::nullopt;
+  }
+  return SidePanelIdFromSideBarItemType(type);
 }
 
 }  // namespace sidebar

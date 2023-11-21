@@ -150,6 +150,9 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
+  registry->RegisterIntegerPref(
+      kLastUsedBuiltInItemType,
+      static_cast<int>(SidebarItem::BuiltInItemType::kNone));
 }
 
 SidebarService::SidebarService(PrefService* prefs, bool is_guest)

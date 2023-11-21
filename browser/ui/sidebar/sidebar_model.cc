@@ -212,8 +212,9 @@ absl::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
 absl::optional<size_t> SidebarModel::GetIndexOf(
     SidebarItem::BuiltInItemType type) const {
   const auto items = GetAllSidebarItems();
-  const auto iter = base::ranges::find_if(
-      items, [&type](const auto& i) { return (type == i.built_in_item_type); });
+  const auto iter = base::ranges::find_if(items, [&type](const auto& i) {
+    return IsBuiltInType(i) && (type == i.built_in_item_type);
+  });
   if (iter == items.end()) {
     return absl::nullopt;
   }

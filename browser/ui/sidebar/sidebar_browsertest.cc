@@ -415,6 +415,36 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 #endif
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  // Wait till panel UI opens.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // Check bookmarks panel is shown.
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Toggle();
+
+  // Wait till panel UI opens.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // Check bookmarks item is opened after toggle.
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
 // Test sidebar's initial horizontal option is set properly.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
