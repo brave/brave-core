@@ -144,7 +144,7 @@ export default function Sidebar() {
 
   return <Container>
     <Heading>My Feed</Heading>
-    <Item id='all' name="All" />
+    <Item id='all' name="For You" />
     <Item id='following' name="Following" />
     <Section open>
       <summary>
