@@ -26,7 +26,9 @@ import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingNewWalletRoutes } from './onboarding_new_wallet.routes'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportWalletRoutes } from './onboarding_import_wallet.routes'
-import { OnboardingHardwareWalletRoutes } from './onboarding_hardware_wallet.routes'
+import {
+  OnboardingHardwareWalletRoutes //
+} from './onboarding_hardware_wallet.routes'
 
 export const OnboardingRoutes = () => {
   // redux

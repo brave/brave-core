@@ -54,7 +54,9 @@ import {
   ProtectedRoute //
 } from '../components/shared/protected-routing/protected-route'
 import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
-import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
+import {
+  PageTitleHeader //
+} from '../components/desktop/card-headers/page-title-header'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 

@@ -27,7 +27,9 @@ import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 

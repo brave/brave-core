@@ -590,9 +590,12 @@ export enum WalletRoutes {
   OnboardingNewWalletNetworkSelection = '/crypto/onboarding/new/networks',
   OnboardingNewWalletCreatePassword = '/crypto/onboarding/new/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/new/backup-wallet',
-  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new/explain-recovery-phrase',
-  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/new/backup-recovery-phrase',
-  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/new/verify-recovery-phrase',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new' +
+    '/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/new' +
+    '/backup-recovery-phrase',
+  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/new' +
+    '/verify-recovery-phrase',
 
   // onboarding (import & restore)
   OnboardingImportStart = '/crypto/onboarding/import',
@@ -612,8 +615,10 @@ export enum WalletRoutes {
   // onboarding (connect hardware wallet)
   OnboardingHardwareWalletStart = '/crypto/onboarding/hardware',
   OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
-  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect/:accountTypeName?',
-  OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware/networks',
+  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect' +
+    '/:accountTypeName?',
+  OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware' +
+    '/networks',
   OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +
     'hardware/create-password',
 

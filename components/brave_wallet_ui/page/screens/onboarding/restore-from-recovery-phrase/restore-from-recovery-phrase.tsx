@@ -44,7 +44,9 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { RecoveryInput } from './recovery-input'
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 type RestoreWalletSteps = 'phrase' | 'password'
 

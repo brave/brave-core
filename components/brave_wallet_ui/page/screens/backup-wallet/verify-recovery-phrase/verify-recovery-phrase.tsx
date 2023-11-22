@@ -45,7 +45,9 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
-import { OnboardingStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 

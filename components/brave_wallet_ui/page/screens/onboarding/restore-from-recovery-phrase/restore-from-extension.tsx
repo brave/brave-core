@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -35,8 +35,12 @@ import {
 } from '../onboarding.style'
 
 // components
-import LoadingSkeleton from '../../../../components/shared/loading-skeleton/index'
-import { PasswordInput } from '../../../../components/shared/password-input/index'
+import {
+  LoadingSkeleton //
+} from '../../../../components/shared/loading-skeleton/index'
+import {
+  PasswordInput //
+} from '../../../../components/shared/password-input/index'
 import {
   NewPasswordInput,
   NewPasswordValues
@@ -44,7 +48,9 @@ import {
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import {
+  CenteredPageLayout //
+} from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 import {
   OnboardingStepsNavigation //

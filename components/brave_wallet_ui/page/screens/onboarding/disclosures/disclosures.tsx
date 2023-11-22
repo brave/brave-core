@@ -20,7 +20,9 @@ import { WalletPageActions } from '../../../actions'
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
 import { LinkText, VerticalSpace } from '../../../../components/shared/style'

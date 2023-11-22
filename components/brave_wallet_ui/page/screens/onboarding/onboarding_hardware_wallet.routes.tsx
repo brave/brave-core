@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { Redirect, Route, Switch, useHistory } from 'react-router'
@@ -25,8 +25,12 @@ import {
 import {
   OnboardingNetworkSelection //
 } from './network_selection/onboarding_network_selection'
-import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
-import OnboardingCreatePassword from './create-password/onboarding-create-password'
+import {
+  OnboardingConnectHardwareWallet //
+} from './connect-hardware/onboarding-connect-hardware-wallet'
+import {
+  OnboardingCreatePassword //
+} from './create-password/onboarding-create-password'
 
 export const OnboardingHardwareWalletRoutes = () => {
   // routing

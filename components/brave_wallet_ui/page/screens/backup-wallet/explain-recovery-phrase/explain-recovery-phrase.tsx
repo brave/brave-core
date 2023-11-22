@@ -26,7 +26,9 @@ import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 

@@ -47,7 +47,9 @@ import {
 import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import { OnboardingStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
