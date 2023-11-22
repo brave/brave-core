@@ -61,7 +61,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
     list.push_back(std::move(report));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

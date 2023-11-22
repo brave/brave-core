@@ -97,7 +97,7 @@ using GetRecurringTipsCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetTransactionReportCallback =
-    std::function<void(std::vector<mojom::TransactionReportInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
 using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
 

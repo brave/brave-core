@@ -297,7 +297,7 @@ void Database::GetMediaPublisherInfo(const std::string& media_key,
 void Database::GetTransactionReport(const mojom::ActivityMonth month,
                                     const int year,
                                     GetTransactionReportCallback callback) {
-  multi_tables_.GetTransactionReport(month, year, callback);
+  multi_tables_.GetTransactionReport(month, year, std::move(callback));
 }
 
 /**
