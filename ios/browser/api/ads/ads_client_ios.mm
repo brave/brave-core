@@ -155,7 +155,7 @@ void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
 }
 
 absl::optional<base::Value> AdsClientIOS::GetProfilePref(
-    const std::string& path) const {
+    const std::string& path) {
   return [bridge_ getProfilePref:path];
 }
 
@@ -173,7 +173,7 @@ void AdsClientIOS::SetLocalStatePref(const std::string& path,
 }
 
 absl::optional<base::Value> AdsClientIOS::GetLocalStatePref(
-    const std::string& path) const {
+    const std::string& path) {
   return [bridge_ getLocalStatePref:path];
 }
 
