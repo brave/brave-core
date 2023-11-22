@@ -44,9 +44,9 @@ class Report {
       GetMonthlyReportCallback callback);
 
   void OnContributions(
-      std::vector<mojom::ContributionReportInfoPtr> contribution_report,
       std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-      GetMonthlyReportCallback callback);
+      GetMonthlyReportCallback callback,
+      std::vector<mojom::ContributionReportInfoPtr> contribution_report);
 
   void OnGetAllBalanceReports(GetAllMonthlyReportIdsCallback callback,
                               std::vector<mojom::BalanceReportInfoPtr> reports);

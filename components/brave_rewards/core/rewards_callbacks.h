@@ -69,10 +69,8 @@ using GetAllMonthlyReportIdsCallback =
 using GetAllPromotionsCallback =
     base::OnceCallback<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
-// Legacy callbacks:
-
 using GetContributionReportCallback =
-    std::function<void(std::vector<mojom::ContributionReportInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
     std::function<void(std::vector<mojom::EventLogPtr>)>;

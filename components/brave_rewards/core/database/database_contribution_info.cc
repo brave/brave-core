@@ -301,7 +301,7 @@ void DatabaseContributionInfo::GetContributionReport(
     GetContributionReportCallback callback) {
   if (year == 0) {
     BLOG(1, "Year is 0");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -346,7 +346,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -401,7 +401,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
     }
   }
 
-  callback(std::move(report_list));
+  std::move(callback).Run(std::move(report_list));
 }
 
 void DatabaseContributionInfo::GetNotCompletedRecords(

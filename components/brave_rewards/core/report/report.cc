@@ -69,17 +69,16 @@ void Report::OnTransactions(
 
   (*shared_report)->transactions = std::move(transaction_report);
 
-  auto contribution_callback =
-      std::bind(&Report::OnContributions, this, _1, shared_report, callback);
-
-  engine_->database()->GetContributionReport(month, year,
-                                             contribution_callback);
+  engine_->database()->GetContributionReport(
+      month, year,
+      base::BindOnce(&Report::OnContributions, base::Unretained(this),
+                     shared_report, std::move(callback)));
 }
 
 void Report::OnContributions(
-    std::vector<mojom::ContributionReportInfoPtr> contribution_report,
     std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    GetMonthlyReportCallback callback) {
+    GetMonthlyReportCallback callback,
+    std::vector<mojom::ContributionReportInfoPtr> contribution_report) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
     callback(mojom::Result::FAILED, nullptr);
