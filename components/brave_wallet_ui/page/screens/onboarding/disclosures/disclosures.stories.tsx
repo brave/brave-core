@@ -11,11 +11,7 @@ import OnboardingDisclosures from './disclosures'
 export const _OnboardingDisclosures = () => {
   return (
     <WalletPageStory>
-      <OnboardingDisclosures
-        isHardwareOnboarding={false}
-        onBack={() => {}}
-        onContinue={() => {}}
-      />
+      <OnboardingDisclosures />
     </WalletPageStory>
   )
 }

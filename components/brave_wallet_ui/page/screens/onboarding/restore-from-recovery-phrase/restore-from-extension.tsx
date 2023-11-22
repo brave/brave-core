@@ -124,7 +124,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
       setExtensionPasswordError('')
       setCurrentStep('newPassword')
     }
-  }, [extensionPassword])
+  }, [extensionPassword, restoreFrom])
 
   const restoreWallet = React.useCallback(async () => {
     if (!isPasswordValid) {
@@ -147,7 +147,14 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
       }).unwrap()
       history.push(WalletRoutes.OnboardingComplete)
     }
-  }, [isPasswordValid, restoreFrom, extensionPassword, password])
+  }, [
+    isPasswordValid,
+    restoreFrom,
+    extensionPassword,
+    password,
+    importFromMetaMask,
+    importFromCryptoWallets
+  ])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {

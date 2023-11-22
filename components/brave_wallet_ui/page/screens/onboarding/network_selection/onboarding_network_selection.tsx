@@ -281,11 +281,7 @@ export const OnboardingNetworkSelection = () => {
         ? WalletRoutes.OnboardingImportOrRestore
         : WalletRoutes.OnboardingNewWalletCreatePassword
     )
-  }, [
-    // onContinue,
-    onboardingType,
-    selectedChains
-  ])
+  }, [onboardingType, selectedChains, networks])
 
   // effects
   React.useEffect(() => {

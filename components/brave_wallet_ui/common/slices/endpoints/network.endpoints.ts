@@ -41,10 +41,6 @@ export const networkEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
 
-          // TODO: investigate why this freezes the page when called
-          // const { networks } =
-          //   await api.blockchainRegistry.getPrepopulatedNetworks()
-
           const { networks: ethNetworks } =
             await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
           const { networks: solNetworks } =
