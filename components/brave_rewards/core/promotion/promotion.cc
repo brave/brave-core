@@ -86,14 +86,13 @@ Promotion::~Promotion() = default;
 void Promotion::Initialize() {
   if (!engine_->state()->GetPromotionCorruptedMigrated()) {
     BLOG(1, "Migrating corrupted promotions");
-    auto check_callback = std::bind(&Promotion::CheckForCorrupted, this, _1);
 
-    engine_->database()->GetAllPromotions(check_callback);
+    engine_->database()->GetAllPromotions(
+        base::BindOnce(&Promotion::CheckForCorrupted, base::Unretained(this)));
   }
 
-  auto retry_callback = std::bind(&Promotion::Retry, this, _1);
-
-  engine_->database()->GetAllPromotions(retry_callback);
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&Promotion::Retry, base::Unretained(this)));
 }
 
 void Promotion::Fetch(FetchPromotionsCallback callback) {
@@ -108,12 +107,13 @@ void Promotion::Fetch(FetchPromotionsCallback callback) {
           base::BindOnce(&Promotion::OnGetAllPromotionsFromDatabase,
                          base::Unretained(this), std::move(callback));
 
-      engine_->database()->GetAllPromotions(
-          [callback = std::make_shared<decltype(all_callback)>(
-               std::move(all_callback))](
-              base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-            std::move(*callback).Run(std::move(promotions));
-          });
+      engine_->database()->GetAllPromotions(base::BindOnce(
+          [](decltype(all_callback) callback,
+             base::flat_map<std::string, mojom::PromotionPtr> promotions) {
+            std::move(callback).Run(std::move(promotions));
+          },
+          std::move(all_callback)));
+
       return;
     }
   }
@@ -152,12 +152,12 @@ void Promotion::OnFetch(FetchPromotionsCallback callback,
       base::BindOnce(&Promotion::OnGetAllPromotions, base::Unretained(this),
                      std::move(callback), std::move(list));
 
-  engine_->database()->GetAllPromotions(
-      [callback =
-           std::make_shared<decltype(all_callback)>(std::move(all_callback))](
-          base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-        std::move(*callback).Run(std::move(promotions));
-      });
+  engine_->database()->GetAllPromotions(base::BindOnce(
+      [](decltype(all_callback) callback,
+         base::flat_map<std::string, mojom::PromotionPtr> promotions) {
+        std::move(callback).Run(std::move(promotions));
+      },
+      std::move(all_callback)));
 }
 
 void Promotion::OnGetAllPromotions(
@@ -541,7 +541,7 @@ void Promotion::Refresh(const bool retry_after_error) {
 }
 
 void Promotion::CheckForCorrupted(
-    const base::flat_map<std::string, mojom::PromotionPtr>& promotions) {
+    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   if (promotions.empty()) {
     BLOG(1, "Promotion is empty");
     return;
@@ -680,9 +680,8 @@ void Promotion::ErrorCredsStatusSaved(const mojom::Result result) {
   }
 
   // let's retry promotions that are valid now
-  auto retry_callback = std::bind(&Promotion::Retry, this, _1);
-
-  engine_->database()->GetAllPromotions(retry_callback);
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&Promotion::Retry, base::Unretained(this)));
 }
 
 void Promotion::TransferTokens(PostSuggestionsClaimCallback callback) {
@@ -690,7 +689,8 @@ void Promotion::TransferTokens(PostSuggestionsClaimCallback callback) {
 }
 
 void Promotion::OnRetryTimerElapsed() {
-  engine_->database()->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&Promotion::Retry, base::Unretained(this)));
 }
 
 void Promotion::OnLastCheckTimerElapsed() {

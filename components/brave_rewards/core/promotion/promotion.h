@@ -105,7 +105,7 @@ class Promotion {
   void Retry(base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void CheckForCorrupted(
-      const base::flat_map<std::string, mojom::PromotionPtr>& promotions);
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void CorruptedPromotionFixed(const mojom::Result result);
 

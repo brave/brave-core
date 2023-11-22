@@ -30,8 +30,9 @@ class EmptyBalance {
 
   void GetPromotions(database::GetPromotionListCallback callback);
 
-  void OnPromotions(base::flat_map<std::string, mojom::PromotionPtr> promotions,
-                    database::GetPromotionListCallback callback);
+  void OnPromotions(
+      database::GetPromotionListCallback callback,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void GetCredsByPromotions(std::vector<mojom::PromotionPtr> list);
 

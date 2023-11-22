@@ -687,7 +687,7 @@ void RewardsEngineImpl::GetAllMonthlyReportIds(
 }
 
 void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllPromotions(std::move(callback));
   });
 }

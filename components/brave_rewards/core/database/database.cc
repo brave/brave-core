@@ -314,7 +314,7 @@ void Database::GetPromotion(const std::string& id,
 }
 
 void Database::GetAllPromotions(GetAllPromotionsCallback callback) {
-  promotion_.GetAllRecords(callback);
+  promotion_.GetAllRecords(std::move(callback));
 }
 
 void Database::SavePromotionClaimId(const std::string& promotion_id,

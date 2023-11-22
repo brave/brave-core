@@ -26,17 +26,16 @@ void DatabaseMultiTables::GetTransactionReport(
     const mojom::ActivityMonth month,
     const int year,
     GetTransactionReportCallback callback) {
-  auto promotion_callback =
-      std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
-                month, year, callback);
-  engine_->database()->GetAllPromotions(promotion_callback);
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&DatabaseMultiTables::OnGetTransactionReportPromotion,
+                     base::Unretained(this), month, year, std::move(callback)));
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
-    base::flat_map<std::string, mojom::PromotionPtr> promotions,
     const mojom::ActivityMonth month,
     const int year,
-    GetTransactionReportCallback callback) {
+    GetTransactionReportCallback callback,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   const auto converted_month = static_cast<int>(month);
   std::vector<mojom::TransactionReportInfoPtr> list;
 

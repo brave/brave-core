@@ -63,15 +63,14 @@ void EmptyBalance::OnAllContributions(
 }
 
 void EmptyBalance::GetPromotions(database::GetPromotionListCallback callback) {
-  auto get_callback =
-      std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
-
-  engine_->database()->GetAllPromotions(get_callback);
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&EmptyBalance::OnPromotions, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void EmptyBalance::OnPromotions(
-    base::flat_map<std::string, mojom::PromotionPtr> promotions,
-    database::GetPromotionListCallback callback) {
+    database::GetPromotionListCallback callback,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {
