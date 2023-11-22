@@ -13,8 +13,8 @@ struct AccountsHeaderView: View {
   var settingsStore: SettingsStore
   var networkStore: NetworkStore
 
-  @State private var isPresentingBackup: Bool = false
-  @State private var isPresentingAddAccount: Bool = false
+  @Binding var isPresentingBackup: Bool
+  @Binding var isPresentingAddAccount: Bool
 
   var body: some View {
     HStack {
@@ -27,20 +27,6 @@ struct AccountsHeaderView: View {
             .foregroundColor(Color(.braveBlurpleTint))
         }
       }
-      .background(
-        Color.clear
-          .sheet(isPresented: $isPresentingBackup) {
-            NavigationView {
-              BackupWalletView(
-                password: nil,
-                keyringStore: keyringStore
-              )
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .environment(\.modalPresentationMode, $isPresentingBackup)
-            .accentColor(Color(.braveBlurpleTint))
-          }
-      )
       Spacer()
       HStack(spacing: 16) {
         Button(action: {
@@ -49,18 +35,6 @@ struct AccountsHeaderView: View {
           Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
             .labelStyle(.iconOnly)
         }
-        .background(
-          Color.clear
-            .sheet(isPresented: $isPresentingAddAccount) {
-              NavigationView {
-                AddAccountView(
-                  keyringStore: keyringStore,
-                  networkStore: networkStore
-                )
-              }
-              .navigationViewStyle(StackNavigationViewStyle())
-            }
-        )
         NavigationLink(
           destination: Web3SettingsView(
             settingsStore: settingsStore,
@@ -83,7 +57,9 @@ struct AccountsHeaderView_Previews: PreviewProvider {
     AccountsHeaderView(
       keyringStore: .previewStore,
       settingsStore: .previewStore,
-      networkStore: .previewStore
+      networkStore: .previewStore,
+      isPresentingBackup: .constant(false),
+      isPresentingAddAccount: .constant(false)
     )
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()
