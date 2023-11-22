@@ -1,12 +1,10 @@
 diff --git a/third_party/rust/serde_json/v1/BUILD.gn b/third_party/rust/serde_json/v1/BUILD.gn
-index 04d37131825d31876c5868ddaed4b133c32f2e8f..a6e41bed47deb755ff811280e65875aa77d5a46d 100644
+index 461ce418c46322d9418fe4251355048ef1a4b9cb..c6e4e317056a815a31bfd39c477adbddbed79323 100644
 --- a/third_party/rust/serde_json/v1/BUILD.gn
 +++ b/third_party/rust/serde_json/v1/BUILD.gn
-@@ -81,7 +81,6 @@ cargo_crate("lib") {
-   # Only for usage from third-party crates. Add the crate to
-   # third_party.toml to use it from first-party code.
-   visibility = [ "//third_party/rust/*" ]
+@@ -77,5 +77,4 @@ cargo_crate("lib") {
+   build_sources = [
+     "//third_party/rust/chromium_crates_io/vendor/serde_json-1.0.108/build.rs",
+   ]
 -  testonly = true
  }
- group("test_support") {
-   public_deps = [ ":lib" ]
