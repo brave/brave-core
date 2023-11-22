@@ -32,11 +32,6 @@ export const MetaInfoContainer = styled.h4`
   gap: ${spacing.s};
 `
 
-export const getOrigin = (article: FeedItemMetadata) => {
-  const host = new URL(article.url.url).host
-  return host.startsWith('www.') ? host.substring(4) : host
-}
-
 export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
   const maybeChannel = !props.hideChannel && <>
     • {channelIcons[props.article.categoryName] ?? channelIcons.default} {props.article.categoryName}
@@ -46,7 +41,7 @@ export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boole
     • {props.article.relativeTimeDescription}
   </>
   return <MetaInfoContainer>
-    {getOrigin(props.article)} {maybeChannel} {maybeTime}
+    {props.article.publisherName} {maybeChannel} {maybeTime}
   </MetaInfoContainer>
 }
 
@@ -61,7 +56,7 @@ export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideC
       <leo-menu-item onClick={e => {
         getBraveNewsController().setPublisherPref(props.article.publisherId, UserEnabled.DISABLED)
         e.stopPropagation()
-      }}>Hide content from {getOrigin(props.article)}</leo-menu-item>
+      }}>Hide content from {props.article.publisherName}</leo-menu-item>
     </ButtonMenu>
   </Flex>
 }
