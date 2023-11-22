@@ -765,7 +765,6 @@ html[data-column-width='wide'] {
   position: absolute;
   background-color: var(--tts-underline-color);
   border-radius: 4px;
-  visibility: hidden;
   left: var(--tts-underline-left);
   top: var(--tts-underline-top);
   width: var(--tts-underline-width);
