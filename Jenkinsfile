@@ -82,7 +82,7 @@ pipeline {
                                                 github('brave/devops', 'https')
                                             }
                                             // branch('${params.DEVOPS_BRANCH}')
-                                            branch('mplesa-jenkins-sync-vs-init')
+                                            branch('oajara-devops-10813-patch-version-in-pr')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
