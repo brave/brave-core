@@ -11,7 +11,7 @@ import { isPublisherEnabled } from '../shared/api';
 import Button from '@brave/leo/react/button';
 import Icon from '@brave/leo/react/icon';
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
-import { font } from '@brave/leo/tokens/css';
+import { font, icon, spacing } from '@brave/leo/tokens/css';
 
 const Row = styled.div`
   display: grid;
@@ -50,6 +50,11 @@ const PublisherTitle = styled.span`
   font: ${font.primary.default.regular};
 `
 
+const TitleIcon = styled(Icon)`
+  --leo-icon-size: ${icon.s};
+  margin-right: ${spacing.s};
+`
+
 interface Props {
   info: Info
 }
@@ -69,7 +74,10 @@ function Suggestion({ publisher }: { publisher: Publisher }) {
 export default function Component({ info }: Props) {
   const { publishers } = useBraveNews();
   return <Card>
-    <Title><Icon name="star-outline" /> Sources you'll enjoy</Title>
+    <Title>
+      <TitleIcon name="star-outline" />
+      Sources you'll enjoy
+    </Title>
     <Row>
       {info.publisherIds.map(p => <Suggestion key={p} publisher={publishers[p]} />)}
     </Row>
