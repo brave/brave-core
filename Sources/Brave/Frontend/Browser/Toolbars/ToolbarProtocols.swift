@@ -18,6 +18,7 @@ protocol ToolbarProtocol: AnyObject {
   var actionButtons: [UIButton] { get }
 
   func updateBackStatus(_ canGoBack: Bool)
+  func updateForwardStatus(_ canGoForward: Bool)
   func updatePageStatus(_ isWebPage: Bool)
   func updateTabCount(_ count: Int)
 }

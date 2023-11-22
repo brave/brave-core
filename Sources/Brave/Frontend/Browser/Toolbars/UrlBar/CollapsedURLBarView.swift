@@ -14,17 +14,14 @@ class CollapsedURLBarView: UIView {
   private let stackView = UIStackView().then {
     $0.spacing = 4
     $0.isUserInteractionEnabled = false
+    $0.alignment = .firstBaseline
   }
   
-  private let lockImageView = ToolbarButton().then {
-    $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
-    $0.isHidden = true
-    $0.tintColor = .bravePrimary
-    $0.isAccessibilityElement = true
-    $0.imageView?.contentMode = .center
-    $0.contentHorizontalAlignment = .center
-    $0.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
-    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+  private let secureContentStateView = UIButton()
+  private let separatorLine = UILabel().then {
+    $0.isUserInteractionEnabled = false
+    $0.isAccessibilityElement = false
+    $0.text = "–" // en dash
   }
   
   private let urlLabel = UILabel().then {
@@ -49,20 +46,44 @@ class CollapsedURLBarView: UIView {
   }
   
   private func updateLockImageView() {
-    lockImageView.isHidden = false
+    secureContentStateView.isHidden = !secureContentState.shouldDisplayWarning
+    separatorLine.isHidden = secureContentStateView.isHidden
+    secureContentStateView.configuration = secureContentStateButtonConfiguration
+  }
+  
+  private var secureContentStateButtonConfiguration: UIButton.Configuration {
+    let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
+    var configuration = UIButton.Configuration.plain()
+    configuration.preferredSymbolConfigurationForImage = .init(font: .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection), scale: .small)
+    configuration.buttonSize = .small
+    configuration.imagePadding = 4
+    configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+    
+    var title = AttributedString(Strings.tabToolbarNotSecureTitle)
+    title.font = .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
+    
+    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     
     switch secureContentState {
-    case .localHost:
-      lockImageView.isHidden = true
-    case .insecure:
-      lockImageView.setImage(UIImage(braveSystemNamed: "leo.info.filled")?
-        .withRenderingMode(.alwaysOriginal)
-        .withTintColor(.braveErrorLabel), for: .normal)
-      lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel
-    case .secure, .unknown:
-      lockImageView.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
-      lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
+    case .localhost, .secure:
+      break
+    case .invalidCert:
+      configuration.baseForegroundColor = UIColor(braveSystemName: .systemfeedbackErrorIcon)
+      if isTitleVisible {
+        configuration.attributedTitle = title
+      }
+      configuration.image = UIImage(braveSystemNamed: "leo.warning.triangle-filled")
+    case .missingSSL, .mixedContent:
+      configuration.baseForegroundColor = UIColor(braveSystemName: .textTertiary)
+      if isTitleVisible {
+        configuration.attributedTitle = title
+      }
+      configuration.image = UIImage(braveSystemNamed: "leo.warning.triangle-filled")
+    case .unknown:
+      configuration.baseForegroundColor = UIColor(braveSystemName: .iconDefault)
+      configuration.image = UIImage(braveSystemNamed: "leo.warning.circle-filled")
     }
+    return configuration
   }
   
   var secureContentState: TabSecureContentState = .unknown {
@@ -96,7 +117,8 @@ class CollapsedURLBarView: UIView {
     clipsToBounds = false
     
     addSubview(stackView)
-    stackView.addArrangedSubview(lockImageView)
+    stackView.addArrangedSubview(secureContentStateView)
+    stackView.addArrangedSubview(separatorLine)
     stackView.addArrangedSubview(urlLabel)
     
     stackView.snp.makeConstraints {
@@ -105,6 +127,10 @@ class CollapsedURLBarView: UIView {
       $0.leading.greaterThanOrEqualToSuperview().inset(12)
       $0.trailing.lessThanOrEqualToSuperview().inset(12)
       $0.centerX.equalToSuperview()
+    }
+    
+    secureContentStateView.configurationUpdateHandler = { [unowned self] button in
+      button.configuration = secureContentStateButtonConfiguration
     }
     
     updateForTraitCollectionAndBrowserColors()
@@ -117,19 +143,15 @@ class CollapsedURLBarView: UIView {
   
   private func updateForTraitCollectionAndBrowserColors() {
     let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
-    lockImageView.setPreferredSymbolConfiguration(
-      .init(
-        pointSize: UIFont.preferredFont(
-          forTextStyle: .footnote,
-          compatibleWith: clampedTraitCollection
-        ).pointSize,
-        weight: .semibold
-      ),
-      forImageIn: .normal
-    )
     urlLabel.font = .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
-    lockImageView.tintColor = browserColors.iconDefault
     urlLabel.textColor = browserColors.textPrimary
+    separatorLine.font = urlLabel.font
+    separatorLine.textColor = browserColors.dividerSubtle
+  }
+  
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+    setNeedsUpdateConstraints()
   }
   
   override func updateConstraints() {

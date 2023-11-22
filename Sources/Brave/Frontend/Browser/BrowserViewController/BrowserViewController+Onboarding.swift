@@ -82,10 +82,10 @@ extension BrowserViewController {
     guard presentedViewController == nil else {
       return
     }
-            
+    
     let frame = view.convert(
-      topToolbar.locationView.urlTextField.frame,
-      from: topToolbar.locationView).insetBy(dx: -7.0, dy: -1.0)
+      topToolbar.locationView.frame,
+      from: topToolbar.locationView).insetBy(dx: -1.0, dy: -1.0)
     
     // Present the popover
     let controller = WelcomeOmniBoxOnboardingController()
@@ -95,7 +95,7 @@ extension BrowserViewController {
 
     presentPopoverContent(
       using: controller,
-      with: frame, cornerRadius: 6.0,
+      with: frame, cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
       didDismiss: { [weak self] in
         guard let self = self else { return }
 
@@ -275,12 +275,12 @@ extension BrowserViewController {
     }
 
     let popover = PopoverController(contentController: controller)
-    popover.previewForOrigin = .init(view: topToolbar.locationView.shieldsButton, action: { [weak self] popover in
+    popover.previewForOrigin = .init(view: topToolbar.shieldsButton, action: { [weak self] popover in
       popover.dismissPopover() {
         self?.presentBraveShieldsViewController()
       }
     })
-    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+    popover.present(from: topToolbar.shieldsButton, on: self)
 
     popover.popoverDidDismiss = { [weak self] _ in
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

@@ -143,7 +143,7 @@ extension BrowserViewController {
 
     let popover = PopoverController(contentController: controller)
     popover.addsConvenientDismissalMargins = false
-    popover.previewForOrigin = .init(view: topToolbar.locationView.shieldsButton)
-    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+    popover.previewForOrigin = .init(view: topToolbar.shieldsButton)
+    popover.present(from: topToolbar.shieldsButton, on: self)
   }
 }

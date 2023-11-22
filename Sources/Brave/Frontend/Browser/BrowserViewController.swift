@@ -656,7 +656,7 @@ public class BrowserViewController: UIViewController {
     updateTabsBarVisibility()
   }
   
-  private func updateToolbarSecureContentState(_ secureContentState: TabSecureContentState) {
+  func updateToolbarSecureContentState(_ secureContentState: TabSecureContentState) {
     topToolbar.secureContentState = secureContentState
     collapsedURLBarView.secureContentState = secureContentState
   }
@@ -1789,8 +1789,12 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-      if tab.secureContentState == .secure && !webView.hasOnlySecureContent {
-        tab.secureContentState = .insecure
+      if tab.secureContentState == .secure, !webView.hasOnlySecureContent,
+         tab.url?.origin == tab.webView?.url?.origin {
+        if let url = tab.webView?.url, url.isReaderModeURL {
+          break
+        }
+        tab.secureContentState = .mixedContent
       }
 
       if tabManager.selectedTab === tab {
@@ -1809,9 +1813,9 @@ public class BrowserViewController: UIViewController {
             let internalUrl = InternalURL(url),
             (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
 
-            tab.secureContentState = .localHost
+            tab.secureContentState = .localhost
             if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.localHost)
+              updateToolbarSecureContentState(.localhost)
             }
             break
           }
@@ -1821,27 +1825,29 @@ public class BrowserViewController: UIViewController {
             internalUrl.isErrorPage {
 
             if ErrorPageHelper.certificateError(for: url) != 0 {
-              tab.secureContentState = .insecure
-              if tabManager.selectedTab === tab {
-                updateToolbarSecureContentState(.insecure)
-              }
-              break
+              tab.secureContentState = .invalidCert
+            } else {
+              tab.secureContentState = .missingSSL
             }
+            if tabManager.selectedTab === tab {
+              updateToolbarSecureContentState(tab.secureContentState)
+            }
+            break
           }
 
           if url.isReaderModeURL || InternalURL.isValid(url: url) {
-            tab.secureContentState = .unknown
+            tab.secureContentState = .localhost
             if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.unknown)
+              updateToolbarSecureContentState(.localhost)
             }
             break
           }
 
           // All our checks failed, we show the page as insecure
-          tab.secureContentState = .insecure
+          tab.secureContentState = .missingSSL
         } else {
           // When there is no URL, it's likely a new tab.
-          tab.secureContentState = .localHost
+          tab.secureContentState = .localhost
         }
 
         if tabManager.selectedTab === tab {
@@ -1852,7 +1858,7 @@ public class BrowserViewController: UIViewController {
       
       guard let scheme = tab.webView?.url?.scheme,
             let host = tab.webView?.url?.host else {
-        tab.secureContentState = .insecure
+        tab.secureContentState = .unknown
         self.updateURLBar()
         return
       }
@@ -1880,10 +1886,10 @@ public class BrowserViewController: UIViewController {
             try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
             tab.secureContentState = .secure
           } else {
-            tab.secureContentState = .insecure
+            tab.secureContentState = .invalidCert
           }
         } catch {
-          tab.secureContentState = .insecure
+          tab.secureContentState = .invalidCert
         }
         
         Task { @MainActor in
@@ -1938,7 +1944,7 @@ public class BrowserViewController: UIViewController {
       updateToolbarSecureContentState(tab.secureContentState)
     }
 
-    let isPage = tab.url?.displayURL?.isWebPage() ?? false
+    let isPage = tab.url?.isWebPage() ?? false
     navigationToolbar.updatePageStatus(isPage)
     updateWebViewPageZoom(tab: tab)
   }
@@ -2119,6 +2125,22 @@ public class BrowserViewController: UIViewController {
       activities.append(sendTabToSelfActivity)
     }
     
+    if let tab = self.tabManager.selectedTab, tab.secureContentState.shouldDisplayWarning {
+      if tab.readerModeAvailableOrActive {
+        // If the reader mode button is occluded due to a secure content state warning add it as an activity
+        activities.append(
+          BasicMenuActivity(
+            title: Strings.toggleReaderMode,
+            braveSystemImage: "leo.product.speedreader",
+            callback: { [weak self] in
+              self?.toggleReaderMode()
+            }
+          )
+        )
+      }
+      // Any other buttons on the leading side of the location view should be added here as well
+    }
+    
     let findInPageActivity = FindInPageActivity() { [unowned self] in
       if #available(iOS 16.0, *), let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
         findInteraction.searchText = ""
@@ -2250,6 +2272,13 @@ public class BrowserViewController: UIViewController {
       }
 
       activities.append(addSearchEngineActivity)
+    }
+    
+    if let secureState = tabManager.selectedTab?.secureContentState, secureState != .missingSSL && secureState != .unknown {
+      let displayCertificateActivity = BasicMenuActivity(title: Strings.displayCertificate, braveSystemImage: "leo.lock.plain") { [weak self] in
+        self?.displayPageCertificateInfo()
+      }
+      activities.append(displayCertificateActivity)
     }
     
     activities.append(ReportWebCompatibilityIssueActivity() { [weak self] in
@@ -2460,6 +2489,20 @@ public class BrowserViewController: UIViewController {
       let alert = UIAlertController(title: Strings.scanQRCodeViewTitle, message: Strings.scanQRCodePermissionErrorMessage, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: Strings.scanQRCodeErrorOKButton, style: .default, handler: nil))
       self.present(alert, animated: true, completion: nil)
+    }
+  }
+  
+  func toggleReaderMode() {
+    guard let tab = tabManager.selectedTab else { return }
+    if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler {
+      switch readerMode.state {
+      case .available:
+        enableReaderMode()
+      case .active:
+        disableReaderMode()
+      case .unavailable:
+        break
+      }
     }
   }
   
@@ -2774,7 +2817,7 @@ extension BrowserViewController: TabDelegate {
       contentController: vc,
       contentSizeBehavior: .preferredContentSize)
     popover.addsConvenientDismissalMargins = false
-    popover.present(from: topToolbar.locationView.rewardsButton, on: self)
+    popover.present(from: topToolbar.rewardsButton, on: self)
     popover.popoverDidDismiss = { _ in
       // This gets called if popover is dismissed by user gesture
       // This does not conflict with 'Enable Rewards' button.
@@ -2791,7 +2834,7 @@ extension BrowserViewController: TabDelegate {
       let popover2 = PopoverController(
         contentController: vc2,
         contentSizeBehavior: .preferredContentSize)
-      popover2.present(from: self.topToolbar.locationView.rewardsButton, on: self)
+      popover2.present(from: self.topToolbar.rewardsButton, on: self)
     }
 
     vc.linkTapped = { [unowned self] request in
@@ -3408,6 +3451,73 @@ extension BrowserViewController: IAPObserverDelegate {
     Task.delayed(bySeconds: 2.0) { @MainActor in
       self.popToBVC()
       self.navigationHelper.openVPNBuyScreen(iapObserver: self.iapObserver)
+    }
+  }
+}
+
+// Certificate info
+extension BrowserViewController {
+  
+  func displayPageCertificateInfo() {
+    guard let webView = tabManager.selectedTab?.webView else {
+      Logger.module.error("Invalid WebView")
+      return
+    }
+    
+    let getServerTrustForErrorPage = { () -> SecTrust? in
+      do {
+        if let url = webView.url {
+          return try ErrorPageHelper.serverTrust(from: url)
+        }
+      } catch {
+        Logger.module.error("\(error.localizedDescription)")
+      }
+      
+      return nil
+    }
+    
+    guard let trust = webView.serverTrust ?? getServerTrustForErrorPage() else {
+      return
+    }
+    
+    let host = webView.url?.host
+    
+    Task.detached {
+      let serverCertificates: [SecCertificate] = SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
+      
+      // TODO: Instead of showing only the first cert in the chain,
+      // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
+      if let serverCertificate = serverCertificates.first,
+         let certificate = BraveCertificateModel(certificate: serverCertificate) {
+        
+        var errorDescription: String?
+        
+        do {
+          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
+        } catch {
+          Logger.module.error("\(error.localizedDescription)")
+          
+          // Remove the common-name from the first part of the error message
+          // This is because the certificate viewer already displays it.
+          // If it doesn't match, it won't be removed, so this is fine.
+          errorDescription = error.localizedDescription
+          if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ") ??
+              errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ") {
+            errorDescription = errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
+          }
+        }
+        
+        await MainActor.run { [errorDescription] in
+          if #available(iOS 16.0, *) {
+            // System components sit on top so we want to dismiss it
+            webView.findInteraction?.dismissFindNavigator()
+          }
+          let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
+          certificateViewController.modalPresentationStyle = .pageSheet
+          certificateViewController.sheetPresentationController?.detents = [.medium(), .large()]
+          self.present(certificateViewController, animated: true)
+        }
+      }
     }
   }
 }

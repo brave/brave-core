@@ -30,8 +30,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    let isBeta = AppConstants.buildChannel == .beta
-    actionButtons = [backButton, isBeta ? shareButton : forwardButton, addTabButton, searchButton, tabsButton, menuButton]
+    actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
     super.init(frame: .zero)
     setupAccessibility()
 
@@ -141,6 +140,16 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       }
     default:
       break
+    }
+  }
+  
+  func updateForwardStatus(_ canGoForward: Bool) {
+    if canGoForward, let shareIndex = contentView.arrangedSubviews.firstIndex(of: shareButton) {
+      shareButton.removeFromSuperview()
+      contentView.insertArrangedSubview(forwardButton, at: shareIndex)
+    } else if !canGoForward, let forwardIndex = contentView.arrangedSubviews.firstIndex(of: forwardButton) {
+      forwardButton.removeFromSuperview()
+      contentView.insertArrangedSubview(shareButton, at: forwardIndex)
     }
   }
 }

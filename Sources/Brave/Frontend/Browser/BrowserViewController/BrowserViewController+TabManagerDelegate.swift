@@ -426,6 +426,7 @@ extension BrowserViewController: TabManagerDelegate {
     toolbar?.searchButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
     
     // Update Actions for Add-Tab Button
+    topToolbar.addTabButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
     toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
   }
 }

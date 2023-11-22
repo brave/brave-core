@@ -60,69 +60,6 @@ extension BrowserViewController: TopToolbarDelegate {
     present(container, animated: !isExternallyPresented)
   }
 
-  func topToolbarDidPressLockImageView(_ urlBar: TopToolbarView) {
-    guard let webView = tabManager.selectedTab?.webView else {
-      Logger.module.error("Invalid WebView")
-      return
-    }
-    
-    let getServerTrustForErrorPage = { () -> SecTrust? in
-      do {
-        if let url = webView.url {
-          return try ErrorPageHelper.serverTrust(from: url)
-        }
-      } catch {
-        Logger.module.error("\(error.localizedDescription)")
-      }
-      
-      return nil
-    }
-    
-    guard let trust = webView.serverTrust ?? getServerTrustForErrorPage() else {
-      return
-    }
-    
-    let host = webView.url?.host
-
-    Task.detached {
-      let serverCertificates: [SecCertificate] = SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
-      
-      // TODO: Instead of showing only the first cert in the chain,
-      // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
-      if let serverCertificate = serverCertificates.first,
-         let certificate = BraveCertificateModel(certificate: serverCertificate) {
-        
-        var errorDescription: String?
-        
-        do {
-          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
-        } catch {
-          Logger.module.error("\(error.localizedDescription)")
-
-          // Remove the common-name from the first part of the error message
-          // This is because the certificate viewer already displays it.
-          // If it doesn't match, it won't be removed, so this is fine.
-          errorDescription = error.localizedDescription
-          if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ") ??
-              errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ") {
-            errorDescription = errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
-          }
-        }
-        
-        await MainActor.run { [errorDescription] in
-          if #available(iOS 16.0, *) {
-            // System components sit on top so we want to dismiss it
-            webView.findInteraction?.dismissFindNavigator()
-          }
-          let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
-          let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .autoLayout(.phoneBounds))
-          popover.addsConvenientDismissalMargins = true
-          popover.present(from: self.topToolbar.locationView.lockImageView.imageView!, on: self)
-        }
-      }
-    }
-  }
-
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
     if let url = topToolbar.currentURL {
       if url.isIPFSScheme {
@@ -189,18 +126,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView) {
-    if let tab = tabManager.selectedTab {
-      if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler {
-        switch readerMode.state {
-        case .available:
-          enableReaderMode()
-        case .active:
-          disableReaderMode()
-        case .unavailable:
-          break
-        }
-      }
-    }
+    toggleReaderMode()
   }
 
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {
@@ -518,7 +444,7 @@ extension BrowserViewController: TopToolbarDelegate {
     
     let container = PopoverNavigationController(rootViewController: shields)
     let popover = PopoverController(contentController: container, contentSizeBehavior: .preferredContentSize)
-    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+    popover.present(from: topToolbar.shieldsButton, on: self)
   }
   
   func showSubmitReportView(for url: URL) {
@@ -535,8 +461,8 @@ extension BrowserViewController: TopToolbarDelegate {
     viewController.modalPresentationStyle = .popover
 
     if let popover = viewController.popoverPresentationController {
-      popover.sourceView = topToolbar.locationView.shieldsButton
-      popover.sourceRect = topToolbar.locationView.shieldsButton.bounds
+      popover.sourceView = topToolbar.shieldsButton
+      popover.sourceRect = topToolbar.shieldsButton.bounds
       
       let sheet = popover.adaptiveSheetPresentationController
       sheet.largestUndimmedDetentIdentifier = .medium
@@ -886,8 +812,15 @@ extension BrowserViewController: ToolbarDelegate {
     let selectedTabURL: URL? = {
       guard let url = tabManager.selectedTab?.url else { return nil }
 
-      if (InternalURL.isValid(url: url) || url.isLocal) && !url.isReaderModeURL { return nil }
-
+      if let internalURL = InternalURL(url) {
+        if internalURL.isErrorPage {
+          return internalURL.originalURLFromErrorPage
+        }
+        if internalURL.isReaderModePage {
+          return internalURL.extractedUrlParam
+        }
+        return nil
+      }
       return url
     }()
     
@@ -935,6 +868,22 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     showTabTray()
+  }
+  
+  func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView) {
+    guard let tab = tabManager.selectedTab, let url = tab.url, let secureContentStateButton = urlBar.locationView.secureContentStateButton else { return }
+    let hasCertificate = (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
+    let pageSecurityView = PageSecurityView(
+      displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
+      secureState: tab.secureContentState,
+      hasCertificate: hasCertificate,
+      presentCertificateViewer: { [weak self] in
+        self?.dismiss(animated: true)
+        self?.displayPageCertificateInfo()
+      }
+    )
+    let popoverController = PopoverController(content: pageSecurityView)
+    popoverController.present(from: secureContentStateButton, on: self)
   }
 
   func showBackForwardList() {

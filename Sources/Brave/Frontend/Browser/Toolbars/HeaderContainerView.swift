@@ -13,7 +13,6 @@ class HeaderContainerView: UIView {
   
   let expandedBarStackView = UIStackView().then {
     $0.axis = .vertical
-    $0.clipsToBounds = true
   }
   let collapsedBarContainerView = UIControl().then {
     $0.alpha = 0

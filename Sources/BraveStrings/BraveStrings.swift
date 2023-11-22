@@ -444,7 +444,17 @@ extension Strings {
   public static let findOnPageSectionHeader = NSLocalizedString("FindOnPageSectionHeader", tableName: "BraveShared", bundle: .module, value: "On This Page", comment: "Section header for find in page option")
   public static let searchHistorySectionHeader = NSLocalizedString("SearchHistorySectionHeader", tableName: "BraveShared", bundle: .module, value: "Open Tabs & Bookmarks & History", comment: "Section header for history and bookmarks and open tabs option")
   public static let searchSuggestionOpenTabActionTitle = NSLocalizedString("searchSuggestionOpenTabActionTitle", tableName: "BraveShared", bundle: .module, value: "Switch to this tab", comment: "Action title for Switching to an existing tab for the suggestion item shown on the table list")
-  
+  public static let tabToolbarNotSecureTitle = NSLocalizedString("tabToolbarNotSecureTitle", tableName: "BraveShared", bundle: .module, value: "Not Secure", comment: "A label shown next to a URL that loaded in some insecure way")
+}
+
+// MARK: - PageSecurityView.swift
+extension Strings {
+  public enum PageSecurityView {
+    public static let pageNotSecureTitle = NSLocalizedString("pageSecurityView.pageNotSecureTitle", tableName: "BraveShared", bundle: .module, value: "Your connection to this site is not secure.", comment: "")
+    public static let pageNotFullySecureTitle = NSLocalizedString("pageSecurityView.pageNotFullySecureTitle", tableName: "BraveShared", bundle: .module, value: "Your connection to this site is not fully secure.", comment: "")
+    public static let pageNotSecureDetailedWarning = NSLocalizedString("pageSecurityView.pageNotSecureDetailedWarning", tableName: "BraveShared", bundle: .module, value: "You should not enter any sensitive information on this site (for example, passwords or credit cards), because it could be stolen by attackers.", comment: "")
+    public static let viewCertificateButtonTitle = NSLocalizedString("pageSecurityView.viewCertificateButtonTitle", tableName: "BraveShared", bundle: .module, value: "View Certificate", comment: "")
+  }
 }
 
 // MARK:-  TabToolbar.swift
@@ -1081,6 +1091,8 @@ extension Strings {
   public static let forcePaste = NSLocalizedString("ForcePaste", tableName: "BraveShared", bundle: .module, value: "Force Paste", comment: "A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website)")
   public static let addToFavorites = NSLocalizedString("AddToFavorites", tableName: "BraveShared", bundle: .module, value: "Add to Favorites", comment: "Add to favorites share action.")
   public static let createPDF = NSLocalizedString("CreatePDF", tableName: "BraveShared", bundle: .module, value: "Create PDF", comment: "Create PDF share action.")
+  public static let displayCertificate = NSLocalizedString("DisplayCertificate", tableName: "BraveShared", bundle: .module, value: "Security Certificate", comment: "Button title that when tapped displays a websites HTTPS security certificate information")
+  public static let toggleReaderMode = NSLocalizedString("ToggleReaderMode", tableName: "BraveShared", bundle: .module, value: "Toggle Reader Mode", comment: "Button title that when tapped toggles the web page in our out of reader mode")
 
   public static let showBookmarks = NSLocalizedString("ShowBookmarks", tableName: "BraveShared", bundle: .module, value: "Show Bookmarks", comment: "Button to show the bookmarks list")
   public static let showHistory = NSLocalizedString("ShowHistory", tableName: "BraveShared", bundle: .module, value: "Show History", comment: "Button to show the history list")

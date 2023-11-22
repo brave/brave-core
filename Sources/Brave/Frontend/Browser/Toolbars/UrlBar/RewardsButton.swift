@@ -40,7 +40,7 @@ class RewardsButton: UIButton {
     updateView()
     
     lookAtMeBadge.snp.makeConstraints {
-      $0.top.equalToSuperview()
+      $0.centerY.equalTo(imageView!.snp.centerY).offset(-8)
       $0.leading.equalTo(imageView!.snp.centerX)
       $0.size.equalTo(16)
     }

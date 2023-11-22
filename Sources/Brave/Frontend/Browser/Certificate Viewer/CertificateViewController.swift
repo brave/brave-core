@@ -10,43 +10,34 @@ import BraveUI
 import Shared
 import BraveShared
 import CertificateUtilities
+import DesignSystem
 
 private struct CertificateTitleView: View {
   let isRootCertificate: Bool
-  let commonName: String
   let evaluationError: String?
 
   var body: some View {
     VStack {
-      Text(commonName)
-        .font(.callout.weight(.bold))
-        .lineLimit(nil)
-        .multilineTextAlignment(.center)
-        .fixedSize(horizontal: false, vertical: true)
       HStack(alignment: .firstTextBaseline, spacing: 4.0) {
         if let evaluationError = evaluationError {
-          Image(systemName: "xmark.circle.fill")
-            .foregroundColor(Color(.braveErrorLabel))
-            .font(.callout)
+          Image(braveSystemName: "leo.warning.triangle-filled")
+            .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
           Text(evaluationError)
-            .font(.callout)
-            .foregroundColor(Color(.braveErrorLabel))
+            .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
             .lineLimit(nil)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
         } else {
-          Image(systemName: "checkmark.seal")
-            .foregroundColor(Color(.braveSuccessLabel))
-            .font(.callout)
+          Image(braveSystemName: "leo.verification.outline")
+            .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessIcon))
           Text(Strings.CertificateViewer.certificateIsValidTitle)
-            .font(.callout)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
             .lineLimit(nil)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
         }
       }
+      .font(.callout)
+      .multilineTextAlignment(.center)
+      .fixedSize(horizontal: false, vertical: true)
     }
+    .frame(maxWidth: .infinity)
   }
 }
 
@@ -90,27 +81,33 @@ private struct CertificateView: View {
   let model: BraveCertificateModel
   let evaluationError: String?
 
+  @Environment(\.dismiss) private var dismiss
+  
   var body: some View {
-    VStack(spacing: 0.0) {
-      CertificateTitleView(
-        isRootCertificate: model.isRootCertificate,
-        commonName: model.subjectName.commonName,
-        evaluationError: evaluationError
-      )
-      .padding()
-      .frame(maxWidth: .infinity, alignment: .center)
-      .background(Color(.secondaryBraveGroupedBackground))
-      
-      Divider()
-        .shadow(color: Color.black.opacity(0.1),
-                radius: 5.0)
-
+    NavigationView {
       List {
+        Section(header: Color.clear.frame(height: 0)) {
+          CertificateTitleView(
+            isRootCertificate: model.isRootCertificate,
+            evaluationError: evaluationError
+          )
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
         content
       }
       .listStyle(InsetGroupedListStyle())
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .toolbar {
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+          Button(Strings.done) {
+            dismiss()
+          }
+        }
+      }
+      .navigationTitle(model.subjectName.commonName)
+      .navigationBarTitleDisplayMode(.inline)
     }
+    .navigationViewStyle(.stack)
   }
 
   @ViewBuilder

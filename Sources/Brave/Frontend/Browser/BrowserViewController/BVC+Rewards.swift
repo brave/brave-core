@@ -22,11 +22,11 @@ extension BrowserViewController {
   func updateRewardsButtonState() {
     if !isViewLoaded { return }
     if !BraveRewards.isAvailable {
-      self.topToolbar.locationView.rewardsButton.isHidden = true
+      self.topToolbar.rewardsButton.isHidden = true
       return
     }
-    self.topToolbar.locationView.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
-    self.topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
+    self.topToolbar.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
+    self.topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
   }
 
   func showBraveRewardsPanel() {
@@ -44,7 +44,7 @@ extension BrowserViewController {
 
       Preferences.FullScreenCallout.rewardsCalloutCompleted.value = true
       present(controller, animated: true)
-      topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
+      topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
       return
     }
 
@@ -70,7 +70,7 @@ extension BrowserViewController {
 
     let popover = PopoverController(contentController: braveRewardsPanel)
     popover.addsConvenientDismissalMargins = false
-    popover.present(from: topToolbar.locationView.rewardsButton, on: self)
+    popover.present(from: topToolbar.rewardsButton, on: self)
     popover.popoverDidDismiss = { [weak self] _ in
       guard let self = self else { return }
       if let tabId = self.tabManager.selectedTab?.rewardsId, self.rewards.rewardsAPI?.selectedTabId == 0 {
