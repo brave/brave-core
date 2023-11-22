@@ -26,7 +26,7 @@ interface NewsScrollData {
 }
 
 const FeedContainer = styled.div`
-  max-width: 540px;
+  width: 540px;
   display: flex;
   flex-direction: column;
   gap: 12px;
