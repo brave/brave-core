@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 
 namespace brave_ads {
