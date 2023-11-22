@@ -11,7 +11,6 @@ type State = { ui: UIState }
 export const selectedPendingTransactionId = ({ ui }: State) =>
   ui.selectedPendingTransactionId
 export const isPanel = ({ ui }: State) => ui.isPanel
-export const isCreatingWallet = ({ ui }: State) => ui.isCreatingWallet
 
 // unsafe
 export const transactionProviderErrorRegistry = ({ ui }: State) =>

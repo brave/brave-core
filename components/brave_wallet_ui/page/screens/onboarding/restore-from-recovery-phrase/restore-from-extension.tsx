@@ -15,8 +15,6 @@ import {
   useImportFromMetaMaskMutation,
   useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -62,23 +60,35 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
   // routing
   let history = useHistory()
 
-  // redux
-  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
-
   // queries
   const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery()
 
   // mutations
   const [report] = useReportOnboardingActionMutation()
 
-  const [importFromCryptoWallets, { data: importFromLegacyWalletResult }] =
-    useImportFromCryptoWalletsMutation()
-
-  const [importFromMetaMask, { data: importFromMetaMaskResult }] =
-    useImportFromMetaMaskMutation()
-
   const [checkExtensionPassword, { isLoading: isCheckingImportPassword }] =
     useCheckExternalWalletPasswordMutation()
+
+  const [
+    importFromCryptoWallets,
+    {
+      data: importFromLegacyWalletResult,
+      isLoading: isImportingFromLegacyExtension
+    }
+  ] = useImportFromCryptoWalletsMutation()
+
+  const [
+    importFromMetaMask,
+    {
+      data: importFromMetaMaskResult,
+      isLoading: isImportingFromMetaMaskExtension
+    }
+  ] = useImportFromMetaMaskMutation()
+
+  // computed from mutations
+  const isCreatingWallet =
+    (restoreFrom === 'legacy' && isImportingFromLegacyExtension) ||
+    (restoreFrom === 'metamask' && isImportingFromMetaMaskExtension)
 
   // state
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)

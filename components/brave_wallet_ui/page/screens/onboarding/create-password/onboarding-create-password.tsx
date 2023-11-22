@@ -15,10 +15,9 @@ import {
   useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
 import {
-  useSafeUISelector,
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../../common/selectors'
+import { WalletSelectors } from '../../../../common/selectors'
 
 // components
 import {
@@ -51,14 +50,14 @@ export const OnboardingCreatePassword = ({
 }: OnboardingCreatePasswordProps) => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
 
   // mutations
-  const [createWallet] = useCreateWalletMutation()
+  const [createWallet, { isLoading: isCreatingWallet }] =
+    useCreateWalletMutation()
   const [report] = useReportOnboardingActionMutation()
 
   // methods

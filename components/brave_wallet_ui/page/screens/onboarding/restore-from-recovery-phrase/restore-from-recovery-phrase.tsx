@@ -15,8 +15,6 @@ import {
   useReportOnboardingActionMutation,
   useRestoreWalletMutation
 } from '../../../../common/slices/api.slice'
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
 
 // styles
 import {
@@ -56,11 +54,9 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // routing
   const history = useHistory()
 
-  // redux
-  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
-
   // mutations
-  const [restoreWalletFromSeed] = useRestoreWalletMutation()
+  const [restoreWalletFromSeed, { isLoading: isCreatingWallet }] =
+    useRestoreWalletMutation()
   const [report] = useReportOnboardingActionMutation()
 
   // state

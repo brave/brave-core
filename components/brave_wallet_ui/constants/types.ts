@@ -195,7 +195,6 @@ export interface UIState {
   isPanel: boolean
   collapsedPortfolioAccountAddresses: string[]
   collapsedPortfolioNetworkKeys: string[]
-  isCreatingWallet: boolean
 }
 
 export interface WalletState {
