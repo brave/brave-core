@@ -99,7 +99,11 @@ bool SystemDarkModeEnabled() {
   if (g_is_test_)
     return g_system_dark_mode_enabled_in_test_;
 
+#if BUILDFLAG(IS_LINUX)
+  return HasCachedSystemDarkModeType();
+#else
   return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
+#endif
 }
 
 void SetUseSystemDarkModeEnabledForTest(bool enabled) {
