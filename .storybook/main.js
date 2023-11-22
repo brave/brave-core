@@ -2,20 +2,17 @@ const path = require('path')
 
 const isCI = Boolean(process.env.JENKINS_URL && process.env.BUILD_ID)
 
+/** @type {import('@storybook/react-webpack5').StorybookConfig} */
 module.exports = {
   stories: ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
   typescript: {
     check: true,
+    reactDocgenTypescriptOptions: false,
     checkOptions: {
-      tsconfig: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
-      compilerOptions: {
-        'react-docgen-typescript': false,
-        allowJs: true,
-        skipLibCheck: true,
-        noImplicitAny: true,
-        outDir: './storybook_dist'
-      },
-      async: !isCI
+      async: !isCI,
+      typescript: {
+        configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json')
+      }
     }
   },
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
@@ -29,9 +26,5 @@ module.exports = {
   ],
   features: {
     storyStoreV7: false
-  },
-  typescript: {
-    check: false,
-    reactDocgen: false
   }
 }

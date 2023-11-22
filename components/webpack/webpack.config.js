@@ -179,7 +179,7 @@ module.exports = async function (env, argv) {
         // it to provide file extensions (which it does not), so we need to
         // special case it here.
         {
-          test: /@brave\/brave-ui.*\.js$/,
+          test: p => p.includes(path.join('@brave', 'brave-ui')) && p.endsWith('.js'),
           resolve: {
               fullySpecified: false,
           },
