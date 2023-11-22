@@ -54,8 +54,9 @@ function toGClientConfigItem(name, value, pretty = true) {
   return `${name} = ${pythonLikeValue}\n`
 }
 
-function buildDefaultGClientConfig(targetOSList, targetArchList) {
-  let out = toGClientConfigItem('solutions', [
+function buildDefaultGClientConfig(
+  targetOSList, targetArchList, onlyChromium = false) {
+  const items = [
     {
       managed: '%False%',
       name: 'src',
@@ -74,15 +75,20 @@ function buildDefaultGClientConfig(targetOSList, targetArchList) {
         'checkout_pgo_profiles': config.isBraveReleaseBuild() ? '%True%' :
                                                                 '%False%'
       }
-    },
-    {
+    }
+  ]
+
+  if (!onlyChromium) {
+    items.push({
       managed: '%False%',
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
       // actually get used.
       url: 'https://github.com/brave/brave-core.git'
-    }
-  ])
+    })
+  }
+
+  let out = toGClientConfigItem('solutions', items);
 
   if (process.env.GIT_CACHE_PATH) {
     out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)

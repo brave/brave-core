@@ -19,9 +19,9 @@ const Log = require('./logging')
 const getOutputFilename = () => {
   const platform = (() => {
     if (config.getTargetOS() === 'win')
-      return 'win32';
+      return 'win32'
     if (config.getTargetOS() === 'mac')
-      return 'darwin';
+      return 'darwin'
     return config.getTargetOS()
   })()
   return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
@@ -59,6 +59,16 @@ const chromiumConfigs = {
   },
   'mac': {
     buildTarget: 'chrome',
+    extraHooks: () => {
+      Log.progressScope('download_hermetic_xcode', () => {
+        util.run('vpython3',
+          [
+            path.join(config.braveCoreDir, 'build', 'mac', 'download_hermetic_xcode.py'),
+          ],
+          config.defaultOptions)
+        util.runGClient(['runhooks'])
+      })
+    },
     processArtifacts: () => {
       util.run('zip',
         ['-r', '-y', `${getOutputFilename()}.zip`, 'Chromium.app'],
@@ -81,37 +91,36 @@ const chromiumConfigs = {
 // 1. Chromium perf builds: tools/mb/mb_config_expectations/chromium.perf.json
 // 2. Brave Release build configuration
 function getChromiumGnArgs() {
-  const braveGnArgs = config.buildArgs()
-  const chromiumGnArgs = {
-    target_cpu: config.targetArch,
-    target_os: config.getTargetOS(),
+  const targetOs = config.getTargetOS()
+  const targetArch = config.targetArch
+  const args = {
+    target_cpu: targetArch,
+    target_os: targetOs,
     is_official_build: true,
-    symbol_level: 1,
     enable_keystone_registration_framework: false,
     ffmpeg_branding: 'Chrome',
+    enable_widevine: true,
     ignore_missing_widevine_signing_cert: true,
   }
 
-  if (config.isAndroid) {
-    chromiumGnArgs.debuggable_apks = false
+  if (targetOs === 'android') {
+    args.debuggable_apks = false
   } else {
-    chromiumGnArgs.enable_hangout_services_extension = true
-    chromiumGnArgs.enable_nacl = false
+    args.enable_hangout_services_extension = true
+    args.enable_nacl = false
   }
 
-  if (braveGnArgs.use_system_xcode !== undefined) {
-    chromiumGnArgs.use_system_xcode = braveGnArgs.use_system_xcode
+  if (targetOs === 'mac') {
+    args.use_system_xcode = true
   }
 
-  chromiumGnArgs.enable_widevine = braveGnArgs.enable_widevine
-
-  return chromiumGnArgs
+  return args
 }
 
-function buildChromium(options = {}) {
+function buildChromium(buildOptions = {}) {
   config.buildConfig = 'Release'
   config.isChromium = true
-  config.update(options)
+  config.update(buildOptions)
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   if (chromiumConfig == undefined)
@@ -119,7 +128,7 @@ function buildChromium(options = {}) {
 
   syncUtil.maybeInstallDepotTools()
   syncUtil.buildDefaultGClientConfig(
-    [config.getTargetOS()], [config.targetArch])
+    [config.getTargetOS()], [config.targetArch], true)
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 
@@ -132,13 +141,23 @@ function buildChromium(options = {}) {
     util.runGClient(['runhooks'])
   })
 
-  config.buildTarget = chromiumConfig.buildTarget
+  chromiumConfig?.extraHooks()
+
+  const options = config.defaultOptions
   const buildArgsStr = util.buildArgsToString(getChromiumGnArgs())
   util.run('gn', ['gen', config.outputDir,
     '--args="' + buildArgsStr + '"', config.extraGnGenOpts],
-    config.defaultOptions)
+    options)
 
-  util.buildTarget()
+
+  Log.progressScope(`ninja`, () => {
+    const target = chromiumConfig.buildTarget
+    const ninjaOpts = [
+      '-C', options.outputDir || config.outputDir, target,
+      ...config.extraNinjaOpts
+    ]
+    util.run('autoninja', ninjaOpts, config.defaultOptions)
+  })
 
   Log.progressScope('make archive', () => {
     chromiumConfig.processArtifacts()
