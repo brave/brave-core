@@ -14,17 +14,17 @@ struct CatalogInfo;
 
 class CatalogUrlRequestDelegate {
  public:
-  // Invoked to tell the delegate we will fetch the catalog at |fetch_at|.
+  // Invoked to tell the delegate we will fetch the catalog at `fetch_at`.
   virtual void OnWillFetchCatalog(const base::Time fetch_at) {}
 
-  // Invoked to tell the delegate we successfully fetched the |catalog|.
+  // Invoked to tell the delegate we successfully fetched the `catalog`.
   virtual void OnDidFetchCatalog(const CatalogInfo& catalog) {}
 
   // Invoked to tell the delegate we failed to fetch the catalog.
   virtual void OnFailedToFetchCatalog() {}
 
   // Invoked to tell the delegate we will retry fetching the catalog at
-  // |retry_at|.
+  // `retry_at`.
   virtual void OnWillRetryFetchingCatalog(const base::Time retry_at) {}
 
   // Invoked to tell the delegate we retried fetching the catalog.

@@ -20,7 +20,7 @@ class PublicKey;
 class SignedToken;
 class SigningKey;
 
-// A |DLEQProof| is a proof of the equivalence of the discrete logarithm between
+// A `DLEQProof` is a proof of the equivalence of the discrete logarithm between
 // two pairs of points.
 
 class DLEQProof {

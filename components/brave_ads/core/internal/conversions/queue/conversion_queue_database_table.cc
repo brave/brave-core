@@ -190,9 +190,9 @@ void MigrateToV10(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "conversion_queue");
 
-  // campaign_id and advertiser_id can be NULL for legacy conversions migrated
-  // from |ad_conversions.json| and conversion_id and advertiser_public_key will
-  // be empty for non verifiable conversions
+  // `campaign_id` and `advertiser_id` can be `NULL` for legacy conversions
+  // migrated from "ad_conversions.json" and `conversion_id` and
+  // `advertiser_public_key` will be empty for non verifiable conversions.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -206,7 +206,7 @@ void MigrateToV10(mojom::DBTransactionInfo* transaction) {
 void MigrateToV11(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |advertiser_public_key| column
+  // Create a temporary table with new `advertiser_public_key` column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -238,7 +238,7 @@ void MigrateToV17(mojom::DBTransactionInfo* transaction) {
 void MigrateToV21(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |ad_type| and |was_processed| column
+  // Create a temporary table with new `ad_type` and `was_processed` column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -273,7 +273,7 @@ void MigrateToV21(mojom::DBTransactionInfo* transaction) {
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |segment| column
+  // Create a temporary table with new `segment` column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -306,7 +306,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with renamed |timestamp| to |process_at| column
+  // Create a temporary table with renamed `timestamp` to `process_at` column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -354,11 +354,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 void MigrateToV30(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with a new |type| column defaulted to
-  // |kViewThroughConversionActionType| for legacy conversions, rename the
-  // |conversion_id| column to |verifiable_conversion_id| and
-  // rename the |advertiser_public_key| column to
-  // |verifiable_advertiser_public_key|.
+  // Create a temporary table with a new `type` column defaulted to
+  // `kViewThroughConversionActionType` for legacy conversions, rename the
+  // `conversion_id` column to `verifiable_conversion_id` and rename the
+  // `advertiser_public_key` column to `verifiable_advertiser_public_key`.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(

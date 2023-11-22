@@ -27,8 +27,6 @@ LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 
 LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
-LinearModel::~LinearModel() = default;
-
 absl::optional<PredictionMap> LinearModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;

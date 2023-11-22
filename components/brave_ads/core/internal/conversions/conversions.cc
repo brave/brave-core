@@ -135,7 +135,7 @@ void Conversions::CheckForConversions(
   bool did_convert = false;
 
   // Click-through conversions should take priority over view-through
-  // conversions. Ad events are ordered in descending order by |created_at|;
+  // conversions. Ad events are ordered in descending order by `created_at`;
   // click events are guaranteed to occur after view events.
   for (const auto& ad_event : ad_events) {
     // Do we have a bucket with creative set conversions for this ad event?

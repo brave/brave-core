@@ -14,17 +14,17 @@ struct IssuersInfo;
 
 class IssuersUrlRequestDelegate {
  public:
-  // Invoked to tell the delegate we will fetch the issuers at |fetch_at|.
+  // Invoked to tell the delegate we will fetch the issuers at `fetch_at`.
   virtual void OnWillFetchIssuers(const base::Time fetch_at) {}
 
-  // Invoked to tell the delegate we successfully fetched the |issuers|.
+  // Invoked to tell the delegate we successfully fetched the `issuers`.
   virtual void OnDidFetchIssuers(const IssuersInfo& issuers) {}
 
   // Invoked to tell the delegate we failed to fetch the issuers.
   virtual void OnFailedToFetchIssuers() {}
 
   // Invoked to tell the delegate we will retry fetching the issuers at
-  // |retry_at|.
+  // `retry_at`.
   virtual void OnWillRetryFetchingIssuers(const base::Time retry_at) {}
 
   // Invoked to tell the delegate we retried fetching the issuers.

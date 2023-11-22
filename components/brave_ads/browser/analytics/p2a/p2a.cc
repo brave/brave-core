@@ -79,8 +79,8 @@ void RecordAndEmitP2AHistogramName(PrefService* prefs,
 }
 
 void SuspendP2AHistograms() {
-  // Record |kSuspendedMetricValue| to prevent sending this week's data to the
-  // P2A server. Equivalent to |kSuspendedMetricValue| in |p3a_service.cc|.
+  // Record `kSuspendedMetricValue` to prevent sending this week's data to the
+  // P2A server. Equivalent to `kSuspendedMetricValue` in `p3a_service.cc`.
 
   const int exclusive_max =
       std::size(kP2AAnswerIndexIntervals) + /*answer_index=8*/ 1;

@@ -129,7 +129,7 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with renamed |expire_at| column.
+  // Create a temporary table with renamed `expire_at` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -173,10 +173,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 void MigrateToV30(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with a new |extract_verifiable_id| column
-  // defaulted to |true| for legacy conversions, remove the deprecated |type|
-  // column and rename the |advertiser_public_key| column to
-  // |verifiable_advertiser_public_key|.
+  // Create a temporary table with a new `extract_verifiable_id` column
+  // defaulted to `true` for legacy conversions, remove the deprecated `type`
+  // column and rename the `advertiser_public_key` column to
+  // `verifiable_advertiser_public_key`.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -208,7 +208,7 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
 void MigrateToV31(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table deprecating |extract_verifiable_id| column.
+  // Create a temporary table deprecating `extract_verifiable_id` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =

@@ -29,18 +29,18 @@ class Timer final {
 
   ~Timer();
 
-  // |location| provides basic info where the timer was posted from. Start a
-  // timer to run at the given |delay| from now. If the timer is already
-  // running, it will be replaced to call the given |user_task|. Returns the
+  // `location` provides basic info where the timer was posted from. Start a
+  // timer to run at the given `delay` from now. If the timer is already
+  // running, it will be replaced to call the given `user_task`. Returns the
   // time the delayed task will be fired.
   base::Time Start(const base::Location& location,
                    base::TimeDelta delay,
                    base::OnceClosure user_task);
 
-  // |location| provides basic info where the timer was posted from. Returns the
+  // `location` provides basic info where the timer was posted from. Returns the
   // time the delayed task will be fired. Start a timer to run at a
-  // geometrically distributed number of seconds |~delay| from now. If the timer
-  // is already running, it will be replaced to call the given |user_task|.
+  // geometrically distributed number of seconds `delay` from now. If the timer
+  // is already running, it will be replaced to call the given `user_task`.
   base::Time StartWithPrivacy(const base::Location& location,
                               base::TimeDelta delay,
                               base::OnceClosure user_task);
@@ -49,8 +49,8 @@ class Timer final {
   bool IsRunning() const;
 
   // Call this method to stop the timer. It is a no-op if the timer is not
-  // running. Returns |true| if the timer was stopped, otherwise returns
-  // |false|.
+  // running. Returns `true` if the timer was stopped, otherwise returns
+  // `false`.
   bool Stop();
 
   base::Time desired_run_time() const { return timer_.desired_run_time(); }

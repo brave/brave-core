@@ -226,7 +226,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
   FastForwardClockToNextPendingTask();
 
   // Act & Assert
-  RemoveAllPaymentTokens();  // Force |MaybeAddPaymentToken| to succeed.
+  RemoveAllPaymentTokens();  // Force `MaybeAddPaymentToken()` to succeed.
 
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);

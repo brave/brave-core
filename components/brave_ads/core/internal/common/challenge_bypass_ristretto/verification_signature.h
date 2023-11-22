@@ -15,7 +15,7 @@
 
 namespace brave_ads::cbr {
 
-// A |VerificationSignature| which can be verified given the |VerificationKey|
+// A `VerificationSignature` which can be verified given the `VerificationKey`
 // and message.
 
 class VerificationSignature {

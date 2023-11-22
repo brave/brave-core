@@ -891,7 +891,7 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 void AdsServiceImpl::CloseAllNotificationAds() {
   // TODO(https://github.com/brave/brave-browser/issues/25410): Temporary
   // solution until we refactor the shutdown business logic and investigate
-  // calling |NotificationAdManager| to cleanup notification ads.
+  // calling `NotificationAdManager` to cleanup notification ads.
 
 #if BUILDFLAG(IS_ANDROID)
   if (!ShouldShowCustomNotificationAds()) {
@@ -1487,7 +1487,7 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
             notification_data, nullptr);
 
 #if !BUILDFLAG(IS_MAC) || defined(OFFICIAL_BUILD)
-    // set_never_timeout uses an XPC service which requires signing so for now
+    // `set_never_timeout` uses an XPC service which requires signing so for now
     // we don't set this for macos dev builds
     notification->set_never_timeout(true);
 #endif

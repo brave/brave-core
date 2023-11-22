@@ -25,7 +25,7 @@ class RefillConfirmationTokensDelegate {
   virtual void OnFailedToRefillConfirmationTokens() {}
 
   // Invoked to tell the delegate that we will retry refilling the confirmation
-  // tokens at |retry_at|.
+  // tokens at `retry_at`.
   virtual void OnWillRetryRefillingConfirmationTokens(
       const base::Time retry_at) {}
 
@@ -34,7 +34,7 @@ class RefillConfirmationTokensDelegate {
   virtual void OnDidRetryRefillingConfirmationTokens() {}
 
   // Invoked to tell the delegate that the user must solve a scheduled captcha
-  // with the given |captcha_id| before we can refill the confirmation tokens.
+  // with the given `captcha_id` before we can refill the confirmation tokens.
   virtual void OnCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) {}
 

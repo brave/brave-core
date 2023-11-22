@@ -75,7 +75,7 @@ SealVerifiableConversionEnvelope(
   const std::vector<uint8_t> padded_ciphertext = crypto::Encrypt(
       plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
 
-  // API requires |crypto_box_BOXZEROBYTES| leading zero-padding bytes.
+  // API requires `crypto_box_BOXZEROBYTES` leading zero-padding bytes.
   const std::vector<uint8_t> ciphertext(
       padded_ciphertext.cbegin() + crypto_box_BOXZEROBYTES,
       padded_ciphertext.cend());

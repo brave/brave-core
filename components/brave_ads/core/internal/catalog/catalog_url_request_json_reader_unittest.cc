@@ -33,13 +33,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kInvalidCatalog[] = "INVALID_JSON";
-constexpr char kEmptyCatalog[] = "empty_catalog.json";
-constexpr char kCatalogWithSingleCampaign[] =
-    "catalog_with_single_campaign.json";
-constexpr char kCatalogWithMultipleCampaigns[] =
-    "catalog_with_multiple_campaigns.json";
-
 CatalogCampaignInfo BuildCatalogCampaign1() {
   // Segments
   CatalogSegmentList catalog_segments;
@@ -439,7 +432,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
+      ReadFileFromTestPathAndParseTagsToString(
+          kCatalogWithSingleCampaignFilename);
   ASSERT_TRUE(json);
 
   // Act & Assert
@@ -455,7 +449,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+      ReadFileFromTestPathAndParseTagsToString(
+          kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(json);
 
   // Act & Assert
@@ -471,7 +466,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
+      ReadFileFromTestPathAndParseTagsToString(kEmptyCatalogFilename);
   ASSERT_TRUE(json);
 
   // Act & Assert
@@ -484,7 +479,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalog));
+  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalogJson));
 }
 
 }  // namespace brave_ads

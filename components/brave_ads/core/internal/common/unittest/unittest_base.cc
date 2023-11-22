@@ -75,12 +75,10 @@ void UnitTestBase::SetUp(const bool is_integration_test) {
 }
 
 AdsImpl& UnitTestBase::GetAds() const {
-  CHECK(is_integration_test_)
-      << "|GetAds| should only be called if |SetUp| is initialized "
-         "for integration testing";
+  CHECK(is_integration_test_) << "GetAds should only be called if SetUp is "
+                                 "initialized for integration testing";
 
   CHECK(ads_);
-
   return *ads_;
 }
 
@@ -88,8 +86,7 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
     const std::string& from_path,
     const std::string& to_path) const {
   CHECK(setup_called_)
-      << "|CopyFileFromTestPathToTempPath| should be called after "
-         "|SetUp|";
+      << "CopyFileFromTestPathToTempPath should be called after SetUp";
 
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
@@ -106,8 +103,7 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
     const std::string& from_path,
     const std::string& to_path) const {
   CHECK(setup_called_)
-      << "|CopyDirectoryFromTestPathToTempPath| should be called after "
-         "|SetUp|";
+      << "CopyDirectoryFromTestPathToTempPath should be called after SetUp";
 
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
@@ -256,8 +252,8 @@ void UnitTestBase::SetUpTest() {
 
 void UnitTestBase::SetUpIntegrationTest() {
   CHECK(is_integration_test_)
-      << "|SetUpIntegrationTest| should only be called if |SetUp| is "
-         "initialized for integration testing";
+      << "SetUpIntegrationTest should only be called if SetUp is initialized "
+         "for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
@@ -278,8 +274,8 @@ void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
 
 void UnitTestBase::SetUpUnitTest() {
   CHECK(!is_integration_test_)
-      << "|SetUpUnitTest| should only be called if |SetUp| is not "
-         "initialized for integration testing";
+      << "SetUpUnitTest should only be called if SetUp is not initialized for "
+         "integration testing";
 
   global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
 

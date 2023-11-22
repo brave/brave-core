@@ -15,10 +15,10 @@
 
 namespace brave_ads {
 
-// |PredictorsManager| collects training data for federated services such as
+// `PredictorsManager` collects training data for federated services such as
 // learning, tuning and evaluation. A row in the training data set is called an
 // "instance ". A column is called a "feature". Predictor variables can be of
-// different data types defined in |brave_federated::mojom::CovariateInfoPtr|.
+// different data types defined in `brave_federated::mojom::CovariateInfoPtr`.
 // Predictors are only session based at the moment, i.e. no measurements are
 // persisted across sessions.
 class PredictorsManager final {

@@ -33,8 +33,6 @@ NeuralModel::NeuralModel(NeuralModel&& other) noexcept = default;
 
 NeuralModel& NeuralModel::operator=(NeuralModel&& other) noexcept = default;
 
-NeuralModel::~NeuralModel() = default;
-
 absl::optional<PredictionMap> NeuralModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;

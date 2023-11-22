@@ -45,7 +45,7 @@ bool IsSearchEngineResultsPage(const GURL& url) {
   }
 
   if (search_engine->search_term_query_key.empty()) {
-    // We should only match |result_page_url_pattern| if the search engine does
+    // We should only match `result_page_url_pattern` if the search engine does
     // not have a search term query key
     return true;
   }

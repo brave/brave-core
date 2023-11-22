@@ -15,7 +15,7 @@
 
 namespace brave_ads::cbr {
 
-// A |SignedToken| is the result of signing a |BlindedToken|.
+// A `SignedToken` is the result of signing a `BlindedToken`.
 
 class SignedToken {
  public:

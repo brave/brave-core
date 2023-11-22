@@ -66,7 +66,7 @@ TransactionList GetAllUnreconciledTransactions(
                                               from_time, to_time);
 
   for (auto& transaction : unreconciled_transactions) {
-    // |created_at|, |value| and |confirmation_type| are set from legacy state
+    // `created_at`, `value` and `confirmation_type` are set from legacy state
     transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
     transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
     transaction.ad_type = AdType::kNotificationAd;
@@ -94,7 +94,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   // Add a transaction with the payment balance for this month as the value
   reconciled_transactions.push_back(BuildTransaction(time, payment->balance));
 
-  // Add |transaction_count - 1| transactions with a value of 0.0 to migrate ads
+  // Add `transaction_count` - 1 transactions with a value of 0.0 to migrate ads
   // received this month
   for (int i = 0; i < payment->transaction_count - 1; ++i) {
     reconciled_transactions.push_back(BuildTransaction(time,

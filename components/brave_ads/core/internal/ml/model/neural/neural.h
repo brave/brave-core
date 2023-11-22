@@ -29,7 +29,7 @@ class NeuralModel final {
   NeuralModel(NeuralModel&&) noexcept;
   NeuralModel& operator=(NeuralModel&&) noexcept;
 
-  ~NeuralModel();
+  ~NeuralModel() = default;
 
   const neural_text_classification::flat::Model* model() const {
     return model_.get();

@@ -9,32 +9,32 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 
 namespace brave_ads {
 
 class NotificationAd {
  public:
-  // Create a new notification ad with an |id|, |title| text and |body| text.
-  // |delegate| will influence the behavior of this notification ad and receives
+  // Create a new notification ad with an `id, `title` text and `body` text.
+  // delegate will influence the behavior of this notification ad and receives
   // events on its behalf. The delegate may be omitted
   NotificationAd(const std::string& id,
                  const std::u16string& title,
                  const std::u16string& body,
                  scoped_refptr<NotificationAdDelegate> delegate);
 
-  // Creates a copy of the |other| notification ad. The delegate, if any, will
-  // be identical for both notification ad instances. The |id| of the ad
+  // Creates a copy of the `other` notification ad. The delegate, if any, will
+  // be identical for both notification ad instances. The `id` of the ad
   // notification will be replaced by the given value
   NotificationAd(const std::string& id, const NotificationAd&);
 
-  // Creates a copy of the |other| notification ad. The delegate will be
-  // replaced by |delegate|
+  // Creates a copy of the `other` notification ad. The delegate will be
+  // replaced by `delegate`
   NotificationAd(scoped_refptr<NotificationAdDelegate> delegate,
                  const NotificationAd&);
 
-  // Creates a copy of the |other| notification ad. The delegate, if any, will
+  // Creates a copy of the `other` notification ad. The delegate, if any, will
   // be identical for both notification ad instances
   NotificationAd(const NotificationAd&);
 

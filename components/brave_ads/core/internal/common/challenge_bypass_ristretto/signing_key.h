@@ -21,8 +21,8 @@ class SignedToken;
 class TokenPreimage;
 class UnblindedToken;
 
-// A |SigningKey| is used to sign a |BlindedToken| and to verify an
-// |UnblindedToken|.
+// A `SigningKey` is used to sign a `BlindedToken` and to verify an
+// `UnblindedToken`.
 
 class SigningKey {
  public:

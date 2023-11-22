@@ -30,7 +30,7 @@ const char* ToString(AdType type);
 AdType ParseAdType(std::string_view value);
 
 // Creates an AdType instance from a mojom::AdType instance.
-AdType FromMojomTypeToAdType(const mojom::AdType value);
+AdType FromMojomTypeToAdType(mojom::AdType value);
 
 std::ostream& operator<<(std::ostream& os, AdType type);
 

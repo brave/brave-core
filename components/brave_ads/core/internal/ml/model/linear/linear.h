@@ -31,7 +31,7 @@ class LinearModel final {
   LinearModel(LinearModel&&) noexcept;
   LinearModel& operator=(LinearModel&&) noexcept;
 
-  ~LinearModel();
+  ~LinearModel() = default;
 
   absl::optional<PredictionMap> Predict(const VectorData& data) const;
 

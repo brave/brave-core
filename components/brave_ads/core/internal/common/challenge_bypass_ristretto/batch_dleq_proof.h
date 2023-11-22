@@ -23,7 +23,7 @@ class SigningKey;
 class Token;
 class UnblindedToken;
 
-// A |BatchDLEQProof| is a proof of the equivalence of the discrete logarithm
+// A `BatchDLEQProof` is a proof of the equivalence of the discrete logarithm
 // between a common pair of points and one or more other pairs of points.
 
 class BatchDLEQProof {

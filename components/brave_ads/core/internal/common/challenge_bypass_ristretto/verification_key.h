@@ -15,8 +15,8 @@ namespace brave_ads::cbr {
 
 class VerificationSignature;
 
-// A shared |VerificationKey| for proving and verifying the validity of an
-// |UnblindedToken|. (K = H_2(t, W)).
+// A shared `VerificationKey` for proving and verifying the validity of an
+// `UnblindedToken`. (K = H_2(t, W)).
 
 class VerificationKey {
  public:

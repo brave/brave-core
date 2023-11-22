@@ -125,7 +125,7 @@ void MigrateToV5(mojom::DBTransactionInfo* transaction) {
 void MigrateToV13(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |advertiser_id| column.
+  // Create a temporary table with new `advertiser_id` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -161,7 +161,7 @@ void MigrateToV17(mojom::DBTransactionInfo* transaction) {
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |segment| column.
+  // Create a temporary table with new `segment` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =

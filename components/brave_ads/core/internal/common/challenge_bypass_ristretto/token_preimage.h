@@ -15,7 +15,7 @@
 
 namespace brave_ads::cbr {
 
-// A |TokenPreimage| is a slice of bytes which can be hashed to a ristretto
+// A `TokenPreimage` is a slice of bytes which can be hashed to a ristretto
 // point. The hash function must ensure the discrete log with respect to other
 // points is unknown.
 

@@ -130,8 +130,8 @@ void AdsTabHelper::DidFinishNavigation(
   const bool tab_not_restored =
       navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
 
-  // Some browser initiated navigations have HasUserGesture set to false.
-  // This should eventually be fixed in crbug.com/617904.
+  // Some browser initiated navigations have HasUserGesture set to false. This
+  // should eventually be fixed in crbug.com/617904.
   if (tab_not_restored && (navigation_handle->HasUserGesture() ||
                            !navigation_handle->IsRendererInitiated())) {
     ads_service_->NotifyUserGestureEventTriggered(
@@ -218,7 +218,7 @@ void AdsTabHelper::WebContentsDestroyed() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-// components/brave_ads/browser/background_helper_android.cc handles Android
+// "components/brave_ads/browser/background_helper_android.cc" handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!browser || !ads_service_) {
     return;
