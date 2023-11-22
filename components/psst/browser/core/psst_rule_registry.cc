@@ -79,6 +79,7 @@ void PsstRuleRegistry::CheckIfMatch(
                          rule.GetTestScript(), rule.GetPolicyScript(),
                          rule.GetVersion()),
           std::move(cb));
+      return;
     }
   }
   return;
