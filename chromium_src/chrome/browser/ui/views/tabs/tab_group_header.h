@@ -10,9 +10,11 @@
   TabGroupEditorBubbleViewDialogBrowserTest;      \
   friend class BraveTabGroupHeader
 #define VisualsChanged virtual VisualsChanged
+#define GetDesiredWidth virtual GetDesiredWidth
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_header.h"  // IWYU pragma: export
 
+#undef GetDesiredWidth
 #undef VisualsChanged
 #undef TabGroupEditorBubbleViewDialogBrowserTest
 

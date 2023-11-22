@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-RewardInfo BuildRewardForTesting(const ConfirmationInfo& confirmation) {
+RewardInfo BuildReward(const ConfirmationInfo& confirmation) {
   RewardInfo reward;
 
   reward.token = cbr::Token(
@@ -41,4 +41,4 @@ RewardInfo BuildRewardForTesting(const ConfirmationInfo& confirmation) {
   return reward;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

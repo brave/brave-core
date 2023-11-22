@@ -5,6 +5,8 @@
 
 module misc_metrics.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
+
 // Handler for Android misc metric events from UI.
 interface MiscAndroidMetrics {
   // Records view of Privacy Hub report.
@@ -13,6 +15,17 @@ interface MiscAndroidMetrics {
   // Records enabled status of Privacy Hub report.
   RecordPrivacyHubEnabledStatus(bool isEnabled);
 
-  // Records a location bar search query event, for measuring "queries before churn".
-  RecordLocationBarQuery();
+  // Records browser usage duration, for measuring usage time per day.
+  RecordBrowserUsageDuration(mojo_base.mojom.TimeDelta duration);
+
+  // Records a location bar change (search query or direct URL entry), and
+  // whether the change was made on a new tab.
+  RecordLocationBarChange(bool isNewTab, bool isSearchQuery);
+
+  // Records the creation of a new tab via the tab app menu.
+  RecordAppMenuNewTab();
+
+  // Records the creation of a new tab via the bottom toolbar button
+  // in the tab switcher.
+  RecordTabSwitcherNewTab();
 };

@@ -29,7 +29,9 @@
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_inline_content_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
@@ -55,7 +57,9 @@ const base::Feature* const kFeatures[] = {
     &kCatalogFeature,
     &kConfirmationsFeature,
     &kConversionsFeature,
-    &kCreativeAdModelBasedPredictorFeature,
+    &kCreativeInlineContentAdModelBasedPredictorFeature,
+    &kCreativeNewTabPageAdModelBasedPredictorFeature,
+    &kCreativeNotificationAdModelBasedPredictorFeature,
     &kEligibleAdFeature,
     &kEpsilonGreedyBanditFeature,
     &kExclusionRulesFeature,

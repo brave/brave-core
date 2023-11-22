@@ -14,13 +14,17 @@ import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
 import PromptAutoSuggestion from '../prompt_auto_suggestion'
-import ErrorConnection from '../error_connection'
-import ErrorRateLimit from '../error_rate_limit'
+import ErrorConnection from '../alerts/error_connection'
+import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
-import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
+import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import WarningLongPage from '../alerts/warning_long_page'
+import InfoLongConversation from '../alerts/info_long_conversation'
+import ErrorConversationEnd from '../alerts/error_conversation_end'
+import styles from './style.module.scss'
 
 function Main() {
   const context = React.useContext(DataContext)
@@ -38,14 +42,20 @@ function Main() {
 
   const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionForModel = hasAcceptedAgreement && !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldShowPremiumSuggestionForModel =
+    hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
+    !context.isPremiumUser &&
+    context.currentModel?.isPremium
 
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
-    !siteInfo &&
+    siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
@@ -76,6 +86,12 @@ function Main() {
         />
       )
     }
+
+    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+      currentErrorElement = (
+        <ErrorConversationEnd />
+      )
+    }
   }
 
   return (
@@ -84,7 +100,7 @@ function Main() {
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>
-            Brave <span>Leo</span>
+            <span>Leo</span>
           </div>
           {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
@@ -111,7 +127,7 @@ function Main() {
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
-        {context.hasChangedModel && <ModelIntro />}
+        {context.showModelIntro && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
@@ -125,7 +141,7 @@ function Main() {
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.dismissPremiumPrompt()}
+                    onClick={() => context.switchToDefaultModel()}
                   >
                     {getLocale('switchToDefaultModelButtonLabel')}
                   </Button>
@@ -152,6 +168,19 @@ function Main() {
             </div>
           )
         }
+        {context.isPremiumUserDisconnected &&
+        <div className={styles.promptContainer}>
+          <WarningPremiumDisconnected />
+        </div>
+        }
+        {context.shouldShowLongPageWarning &&
+        <div className={styles.promptContainer}>
+            <WarningLongPage />
+        </div>}
+        {context.shouldShowLongConversationInfo &&
+        <div className={styles.promptContainer}>
+            <InfoLongConversation />
+        </div>}
       </div>
       <div className={styles.inputBox}>
         {shouldPromptSuggestQuestions &&

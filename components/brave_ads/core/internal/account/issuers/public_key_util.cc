@@ -5,13 +5,24 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
 
+#include <string>
+
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
-  return base::Contains(issuer.public_keys, public_key);
+bool PublicKeyExists(const IssuerInfo& issuer,
+                     const cbr::PublicKey& public_key) {
+  const absl::optional<std::string> public_key_base64 =
+      public_key.EncodeBase64();
+  if (!public_key_base64) {
+    return false;
+  }
+
+  return base::Contains(issuer.public_keys, public_key_base64);
 }
 
 }  // namespace brave_ads

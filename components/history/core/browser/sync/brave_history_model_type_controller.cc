@@ -5,19 +5,14 @@
 
 #include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
 
-#include "base/feature_list.h"
-#include "components/sync/base/features.h"
-
 namespace history {
 
 BraveHistoryModelTypeController::BraveHistoryModelTypeController(
-    syncer::ModelType model_type,
     syncer::SyncService* sync_service,
     signin::IdentityManager* identity_manager,
     HistoryService* history_service,
     PrefService* pref_service)
-    : HistoryModelTypeController(model_type,
-                                 sync_service,
+    : HistoryModelTypeController(sync_service,
                                  identity_manager,
                                  history_service,
                                  pref_service) {}
@@ -26,16 +21,6 @@ BraveHistoryModelTypeController::~BraveHistoryModelTypeController() = default;
 
 syncer::DataTypeController::PreconditionState
 BraveHistoryModelTypeController::GetPreconditionState() const {
-  if (!base::FeatureList::IsEnabled(syncer::kSyncEnableHistoryDataType)) {
-    DCHECK_EQ(type(), syncer::TYPED_URLS);
-    return HistoryModelTypeController::GetPreconditionState();
-  }
-
-  // If the History feature flag is enabled, HISTORY replaces TYPED_URLS.
-  if (type() == syncer::TYPED_URLS) {
-    return PreconditionState::kMustStopAndClearData;
-  }
-  DCHECK_EQ(type(), syncer::HISTORY);
   return PreconditionState::kPreconditionsMet;
 }
 

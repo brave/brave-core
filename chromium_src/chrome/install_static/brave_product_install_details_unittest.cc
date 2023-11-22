@@ -9,7 +9,7 @@
 #include "base/files/file_path.h"
 #include "base/i18n/case_conversion.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "base/test/test_reg_util_win.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
@@ -28,21 +28,36 @@ namespace install_static {
 namespace {
 
 TEST(ProductInstallDetailsTest, GetInstallSuffix) {
-  std::wstring suffix;
-  const std::pair<const wchar_t*, const wchar_t*> kData[] = {
-      {L"%ls\\Application", L""},
-      {L"%ls\\Application\\", L""},
-      {L"\\%ls\\Application", L""},
-      {L"\\%ls\\Application\\", L""},
-      {L"C:\\foo\\%ls\\Application\\foo.exe", L""},
-      {L"%ls-Blorf\\Application", L"-Blorf"},
-      {L"%ls-Blorf\\Application\\", L"-Blorf"},
-      {L"\\%ls-Blorf\\Application", L"-Blorf"},
-      {L"\\%ls-Blorf\\Application\\", L"-Blorf"},
-      {L"C:\\foo\\%ls-Blorf\\Application\\foo.exe", L"-Blorf"},
+  const std::pair<const wchar_t*, const wchar_t*> kData1[] = {
+      {L"\\Application", L""},
+      {L"\\Application\\", L""},
+      {L"-Blorf\\Application", L"-Blorf"},
+      {L"-Blorf\\Application\\", L"-Blorf"},
   };
-  for (const auto& data : kData) {
-    const std::wstring path = base::StringPrintf(data.first, kProductPathName);
+  for (const auto& data : kData1) {
+    const std::wstring path = base::StrCat({kProductPathName, data.first});
+    EXPECT_EQ(std::wstring(data.second), GetInstallSuffix(path)) << path;
+  }
+
+  const std::pair<const wchar_t*, const wchar_t*> kData2[] = {
+      {L"\\Application", L""},
+      {L"\\Application\\", L""},
+      {L"-Blorf\\Application", L"-Blorf"},
+      {L"-Blorf\\Application\\", L"-Blorf"},
+  };
+  for (const auto& data : kData2) {
+    const std::wstring path =
+        base::StrCat({L"\\", kProductPathName, data.first});
+    EXPECT_EQ(std::wstring(data.second), GetInstallSuffix(path)) << path;
+  }
+
+  const std::pair<const wchar_t*, const wchar_t*> kData3[] = {
+      {L"-Blorf\\Application\\foo.exe", L"-Blorf"},
+      {L"\\Application\\foo.exe", L""},
+  };
+  for (const auto& data : kData3) {
+    const std::wstring path =
+        base::StrCat({L"C:\\foo\\", kProductPathName, data.first});
     EXPECT_EQ(std::wstring(data.second), GetInstallSuffix(path)) << path;
   }
 }

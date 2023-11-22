@@ -47,7 +47,7 @@ constexpr char kLegacyIsFlagged[] = "flagged_ad";
 
 base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
   return base::Value::Dict()
-      .Set(kType, ad_content.type.ToString())
+      .Set(kType, ToString(ad_content.type))
       .Set(kPlacementId, ad_content.placement_id)
       .Set(kCreativeInstanceId, ad_content.creative_instance_id)
       .Set(kCreativeSetId, ad_content.creative_set_id)
@@ -59,7 +59,7 @@ base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
       .Set(kBrandDisplayUrl, ad_content.brand_display_url)
       .Set(kBrandUrl, ad_content.brand_url.spec())
       .Set(kUserReactionType, static_cast<int>(ad_content.user_reaction_type))
-      .Set(kConfirmationType, ad_content.confirmation_type.ToString())
+      .Set(kConfirmationType, ToString(ad_content.confirmation_type))
       .Set(kIsSaved, ad_content.is_saved)
       .Set(kIsFlagged, ad_content.is_flagged);
 }
@@ -70,9 +70,9 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
   AdContentInfo ad_content;
 
   if (const auto* const type = dict.FindString(kType)) {
-    ad_content.type = AdType(*type);
+    ad_content.type = ParseAdType(*type);
   } else if (const auto* const legacy_ad_type = dict.FindString(kLegacyType)) {
-    ad_content.type = AdType(*legacy_ad_type);
+    ad_content.type = ParseAdType(*legacy_ad_type);
   } else {
     ad_content.type = AdType::kNotificationAd;
   }
@@ -152,10 +152,11 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
 
   if (const auto* const confirmation_type =
           dict.FindString(kConfirmationType)) {
-    ad_content.confirmation_type = ConfirmationType(*confirmation_type);
+    ad_content.confirmation_type = ParseConfirmationType(*confirmation_type);
   } else if (const auto* const legacy_confirmation_type =
                  dict.FindString(kLegacyConfirmationType)) {
-    ad_content.confirmation_type = ConfirmationType(*legacy_confirmation_type);
+    ad_content.confirmation_type =
+        ParseConfirmationType(*legacy_confirmation_type);
   }
 
   if (const auto is_saved = dict.FindBool(kIsSaved)) {

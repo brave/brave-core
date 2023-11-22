@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/scoped_observation.h"
 #include "ui/compositor/layer_delegate.h"
 #include "ui/compositor/layer_owner.h"
 #include "ui/gfx/geometry/insets.h"
@@ -34,7 +35,9 @@
 //     ViewShadow shadow_{this, kCornerRadius, kShadow};
 //   };
 //
-class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
+class ViewShadow : public ui::LayerDelegate,
+                   public ui::LayerOwner::Observer,
+                   public views::ViewObserver {
  public:
   struct ShadowParameters {
     int offset_x;
@@ -57,6 +60,8 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
   void SetInsets(const gfx::Insets& insets);
   const gfx::Insets& insets() const { return insets_; }
 
+  void SetVisible(bool visible);
+
  protected:
   ui::Layer* shadow_layer() { return layer_owner_.layer(); }
   const ui::Layer* shadow_layer() const { return layer_owner_.layer(); }
@@ -64,6 +69,9 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
   // views::ViewObserver:
   void OnViewLayerBoundsSet(views::View* view) override;
   void OnViewIsDeleting(views::View* view) override;
+
+  // ui::LayerOwner::Observer,
+  void OnLayerRecreated(ui::Layer* old_layer) override;
 
   // LayerDelegate:
   void OnPaintLayer(const ui::PaintContext& context) override;
@@ -78,6 +86,9 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
   int corner_radius_ = 0;
   raw_ref<const gfx::ShadowValues> shadow_values_;
   gfx::Insets insets_;
+
+  base::ScopedObservation<ui::LayerOwner, ui::LayerOwner::Observer>
+      layer_owner_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_VIEW_SHADOW_H_

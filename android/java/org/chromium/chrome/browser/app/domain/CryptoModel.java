@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -31,7 +30,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
@@ -181,18 +179,20 @@ public class CryptoModel {
                 mContext.getString(R.string.brave_wallet_create_account_ethereum_description),
                 mContext.getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth));
 
-        if (isSolanaEnabled()) {
-            cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
-                    mContext.getString(R.string.brave_wallet_create_account_solana_description),
-                    mContext.getString(R.string.wallet_sol_name), CoinType.SOL,
-                    R.drawable.ic_sol_asset_icon));
-        }
-        if (isFilecoinEnabled()) {
-            cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
-                    mContext.getString(R.string.brave_wallet_create_account_filecoin_description),
-                    mContext.getString(R.string.wallet_fil_name), CoinType.FIL,
-                    R.drawable.ic_fil_asset_icon));
-        }
+        cryptoAccountTypeInfos.add(
+                new CryptoAccountTypeInfo(
+                        mContext.getString(R.string.brave_wallet_create_account_solana_description),
+                        mContext.getString(R.string.wallet_sol_name),
+                        CoinType.SOL,
+                        R.drawable.ic_sol_asset_icon));
+
+        cryptoAccountTypeInfos.add(
+                new CryptoAccountTypeInfo(
+                        mContext.getString(
+                                R.string.brave_wallet_create_account_filecoin_description),
+                        mContext.getString(R.string.wallet_fil_name),
+                        CoinType.FIL,
+                        R.drawable.ic_fil_asset_icon));
         return cryptoAccountTypeInfos;
     }
 
@@ -225,14 +225,6 @@ public class CryptoModel {
     public UserAssetModel createUserAssetModel(WalletCoinAdapter.AdapterType type) {
         return new UserAssetModel(
                 mBraveWalletService, mJsonRpcService, mBlockchainRegistry, mSharedData, type);
-    }
-
-    public boolean isSolanaEnabled() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SOLANA);
-    }
-
-    public boolean isFilecoinEnabled() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_FILECOIN);
     }
 
     public void updateCoinType() {

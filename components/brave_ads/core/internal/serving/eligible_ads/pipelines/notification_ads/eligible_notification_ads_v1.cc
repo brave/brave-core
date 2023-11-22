@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads.h"
@@ -61,14 +61,7 @@ void EligibleNotificationAdsV1::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
-}
-
-void EligibleNotificationAdsV1::GetBrowsingHistory(
-    UserModelInfo user_model,
-    const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeNotificationAdList> callback) {
-  AdsClientHelper::GetInstance()->GetBrowsingHistory(
+  GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleNotificationAdsV1::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),

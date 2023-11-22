@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">ሁሉንም ትሮች መዝጋት Braveን ይዘጋል</translation>
 <translation id="8308305244351876417">በ Brave ውስጥ ወይም በሌላ መተግበሪያ ውስጥ ወደሌላ ትር ሲቀይሩ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ድምጽ እንዲጫወት ይፈቅዳል።</translation>
 <translation id="4150201353443180367">ማሳያ</translation>
+<translation id="4275663329226226506">ማህደረ መረጃ</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">በአሳሹ ውስጥ የተጠበቀ የሚዲያ ይዘትን ለመመልከት Widevine digital rights management (DRM)ን ይጠቀሙ።</translation>
+<translation id="255204363133978824">የተጠበቀ ይዘትን ይፍቀዱ</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>ስለ Widevine የበለጠ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">ይፍቀዱ (አሁኑ ዳግም ያስጀምሩ)</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
 <translation id="9040069796107003510">የ Brave Rewards አዶ</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
+<translation id="6915830896450988084">በ <ph name="CUSTODIAN"/> ይላኩ</translation>
 <translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="1366855498335432549">ማጠራቀም</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">ምናሌ</translation>
 <translation id="42981349822642051">ይዘርጉ</translation>
 <translation id="3586752056660754651">ፈርም</translation>
+<translation id="3950820424414687140">ይግቡ</translation>
 <translation id="6592721981110586529">ከ Brave ዋሌት ጋር ይገናኙ</translation>
 <translation id="329813193938846695">መለያ (ሮች) ምረጥ</translation>
 <translation id="291375746846291973">ከሚያምኗቸው ጣቢያዎች ጋር ብቻ ይገናኙ።</translation>
@@ -949,7 +957,7 @@
 <translation id="6044189892950611565">ለ Brave Browser የማስታወቂያ ጣቢያ</translation>
 <translation id="1173919438868967364">መለያ ይምረጡ</translation>
 <translation id="8922793255489232731">የሚዛመደውን የሰዓት ሰቅ ማግኘት አልተቻለም ለ፦ <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">የኪስ ቦርሳ ውሂብ ፋይል በማውረድ ላይ \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">የዋሌት ውሂብ ፋይልን በማውረድ ላይ \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">ከ<ph name="VALUE"/> ጋር ተገናኝቷል</translation>
 <translation id="1968852757206592413">ሙከራ</translation>
 <translation id="7733890291091968191">የዊብ3 ማሳወቂያዎችን አሳይ</translation>
@@ -1051,6 +1059,14 @@
 <translation id="5802752138057422257">NON-ASCII ቁምፊዎች ተገኝተዋል!</translation>
 <translation id="442709594176931966">ዋናውን መልእክት ይመልከቱ</translation>
 <translation id="2239252396088484499">መልዕክቱን በ ASCII ኢንኮዲንግ ይመልከቱ</translation>
+<translation id="4530494379350999373">መነሻ</translation>
+<translation id="6736243959894955139">አድራሻ</translation>
+<translation id="3095940652251934233">መግለጫ</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">ስሪት</translation>
+<translation id="1313065465616456728">የተሰጠው በ</translation>
+<translation id="7902225556763260253">የአገልግሎት ጊዜ ማብቂያ</translation>
+<translation id="1908159733454294871">የደህንነት አደጋ ተለይቷል</translation>
 <translation id="4220693114674044366">የተለዋጭ ስም አድራሻ</translation>
 <translation id="5658257029899993935">ግዢውን ከ Brave መለያዎ ጋር ያገናኙ</translation>
 <translation id="1187061015547219282">በሌሎች መሳሪያዎች ላይ Brave VPN ለመጠቀም የ Play Store ግዢዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
@@ -1183,4 +1199,11 @@
 <translation id="5494920125229734069">ሁሉንም ይመርጣል</translation>
 <translation id="5972844218283131174">ሁሉንም አትምረጥ</translation>
 <translation id="6322030314101903925">ምንም የሚገኙ ንብረቶች የሉም</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">በBrave Wallet ይግቡ</translation>
+<translation id="3696514931437952995">እርስዎ ወደ <ph name="ORIGIN"/>እየገቡ ነው። Brave ዋሌት የእርስዎን የዋሌት አድራሻ ከ<ph name="ORIGIN"/>ጋር ያጋራል።</translation>
+<translation id="1028781062521375153">ዝርዝሮችን ይመልከቱ</translation>
+<translation id="6759710362319508545">ሃብቶች</translation>
+<translation id="2471230424465522689">እስከዚህ ጊዜ አይደለም</translation>
+<translation id="4841860051609590575">መታወቂያ ጠይቅ</translation>
 </translationbundle>

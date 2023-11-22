@@ -8,9 +8,9 @@
 
 namespace version_info {
 namespace constants {
-constexpr char kBraveBrowserVersion[] = "@BRAVE_BROWSER_VERSION@";
-constexpr char kBraveChromiumVersion[] = "@BRAVE_CHROMIUM_VERSION@";
-constexpr char kBraveVersionNumberForDisplay[] = "@BRAVE_BROWSER_VERSION@ Chromium: @BRAVE_CHROMIUM_VERSION@";
+inline constexpr char kBraveBrowserVersion[] = "@BRAVE_BROWSER_VERSION@";
+inline constexpr char kBraveChromiumVersion[] = "@BRAVE_CHROMIUM_VERSION@";
+inline constexpr char kBraveVersionNumberForDisplay[] = "@BRAVE_BROWSER_VERSION@ Chromium: @BRAVE_CHROMIUM_VERSION@";
 }  // namespace constants
 }  // namespace version_info
 

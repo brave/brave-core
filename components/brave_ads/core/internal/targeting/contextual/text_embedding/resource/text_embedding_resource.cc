@@ -29,11 +29,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 TextEmbeddingResource::TextEmbeddingResource() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 TextEmbeddingResource::~TextEmbeddingResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

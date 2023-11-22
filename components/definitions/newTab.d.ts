@@ -131,6 +131,7 @@ declare namespace NewTab {
     textDirection: string
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
     featureFlagBraveNewsPromptEnabled: boolean
+    featureFlagBraveNewsFeedV2Enabled: boolean
     searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
     isIncognito: boolean

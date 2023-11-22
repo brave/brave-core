@@ -13,7 +13,7 @@ class PrefService;
 namespace sidebar {
 namespace p3a {
 
-extern const char kSidebarEnabledHistogramName[];
+inline constexpr char kSidebarEnabledHistogramName[] = "Brave.Sidebar.Enabled";
 
 class SidebarP3A {
  public:

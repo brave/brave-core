@@ -23,16 +23,18 @@
 namespace brave_wallet {
 
 // Selector for `OffchainLookup(address,string[],bytes,bytes4,bytes)`
-constexpr uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
+inline constexpr uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
 
 // Selector for `resolve(bytes,bytes)`
-constexpr uint8_t kResolveBytesBytesSelector[] = {0x90, 0x61, 0xb9, 0x23};
+inline constexpr uint8_t kResolveBytesBytesSelector[] = {0x90, 0x61, 0xb9,
+                                                         0x23};
 
 // Selector for `addr(bytes32)`
-constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
+inline constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
 
 // Selector for `contenthash(bytes32)`
-constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58, 0xd1};
+inline constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58,
+                                                          0xd1};
 
 std::vector<uint8_t> MakeAddrCall(const std::string& domain);
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain);

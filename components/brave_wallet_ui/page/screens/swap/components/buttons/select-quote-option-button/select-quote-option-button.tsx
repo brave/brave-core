@@ -6,34 +6,23 @@
 import * as React from 'react'
 
 // Utils
+import { getLocale } from '../../../../../../../common/locale'
 import {
-  getLocale
-} from '../../../../../../../common/locale'
-import {
-  getTokenPriceAmountFromRegistry
+  getTokenPriceAmountFromRegistry //
 } from '../../../../../../utils/pricing-utils'
 
 // Selectors
+import { WalletSelectors } from '../../../../../../common/selectors'
 import {
-  WalletSelectors
-} from '../../../../../../common/selectors'
-import {
-  useSafeWalletSelector
+  useSafeWalletSelector //
 } from '../../../../../../common/hooks/use-safe-selector'
 
 // Types
-import {
-  QuoteOption
-} from '../../../constants/types'
-import {
-  SpotPriceRegistry
-} from '../../../../../../constants/types'
+import { QuoteOption } from '../../../constants/types'
+import { SpotPriceRegistry } from '../../../../../../constants/types'
 
 // Styled Components
-import {
-  BestOptionBadge,
-  Button
-} from './select-quote-option-button.style'
+import { BestOptionBadge, Button } from './select-quote-option-button.style'
 import { Text, Column } from '../../shared-swap.styles'
 
 interface Props {
@@ -48,8 +37,9 @@ export const SelectQuoteOptionButton = (props: Props) => {
   const { onClick, option, isSelected, isBest, spotPrices } = props
 
   // Selectors
-  const defaultFiatCurrency =
-    useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
 
   // Methods
   const onSelectToken = React.useCallback(() => {
@@ -61,22 +51,21 @@ export const SelectQuoteOptionButton = (props: Props) => {
       return ''
     }
 
-    return option
-      .toAmount
+    return option.toAmount
       .times(getTokenPriceAmountFromRegistry(spotPrices, option.toToken))
       .formatAsFiat(defaultFiatCurrency)
   }, [spotPrices, option, defaultFiatCurrency])
 
   return (
-    <Button onClick={onSelectToken} isSelected={isSelected}>
-      {
-        isBest &&
-        <BestOptionBadge
-          isSelected={isSelected}
-        >
+    <Button
+      onClick={onSelectToken}
+      isSelected={isSelected}
+    >
+      {isBest && (
+        <BestOptionBadge isSelected={isSelected}>
           {getLocale('braveSwapBest')}
         </BestOptionBadge>
-      }
+      )}
       <Text
         isBold={true}
         textColor='text01'
@@ -94,7 +83,11 @@ export const SelectQuoteOptionButton = (props: Props) => {
         >
           {option.toAmount.formatAsAsset(6, option.toToken.symbol)}
         </Text>
-        <Text textColor='text03' textSize='14px' textAlign='right'>
+        <Text
+          textColor='text03'
+          textSize='14px'
+          textAlign='right'
+        >
           ~{quoteFiatValue}
         </Text>
       </Column>

@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -175,8 +174,10 @@ public class BraveVpnUtils {
             String expiryTimeInString = purchase.getString("expiryTimeMillis");
             return Long.parseLong(expiryTimeInString);
         } catch (JSONException | NumberFormatException e) {
-            Log.e(TAG,
-                    "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException error "
+            Log.e(
+                    TAG,
+                    "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException"
+                            + " error "
                             + e);
         }
         return 0L;
@@ -278,17 +279,8 @@ public class BraveVpnUtils {
         return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported());
     }
 
-    private static boolean isBraveVpnFeatureEnable() {
-        if ((ContextUtils.getApplicationContext().getPackageName().equals(
-                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())) {
-            return true;
-        }
-        return false;
-    }
-
     public static boolean isVpnFeatureSupported(Context context) {
-        return isBraveVpnFeatureEnable() && isRegionSupported()
+        return isRegionSupported()
                 && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
     }
 }

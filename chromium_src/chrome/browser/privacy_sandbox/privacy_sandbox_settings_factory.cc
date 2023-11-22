@@ -6,6 +6,8 @@
 #include "chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
+#include "chrome/browser/privacy_sandbox/tracking_protection_settings_factory.h"
+#include "chrome/browser/tpcd/experiment/experiment_manager_impl.h"
 
 #define BuildServiceInstanceForBrowserContext \
   BuildServiceInstanceForBrowserContext_ChromiumImpl
@@ -18,7 +20,11 @@ PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
   return std::make_unique<BravePrivacySandboxSettings>(
-      std::make_unique<PrivacySandboxSettingsDelegate>(profile),
+      std::make_unique<PrivacySandboxSettingsDelegate>(
+          profile,
+          tpcd::experiment::ExperimentManagerImpl::GetForProfile(profile)),
       HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());
+      CookieSettingsFactory::GetForProfile(profile).get(),
+      TrackingProtectionSettingsFactory::GetForProfile(profile),
+      profile->GetPrefs());
 }

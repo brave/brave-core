@@ -16,15 +16,11 @@
 #include "base/types/expected.h"
 #include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
-
-class PrefRegistrySimple;
-class PrefService;
 
 namespace content {
 class NavigationHandle;
@@ -61,19 +57,12 @@ using RefreshPublisherCallback =
 using GetPublisherInfoCallback =
     base::OnceCallback<void(const mojom::Result, mojom::PublisherInfoPtr)>;
 using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
-using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
 using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
-using FetchBalanceResult =
-    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
-using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
-using GetExternalWalletResult =
-    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
+    base::OnceCallback<void(mojom::ConnectExternalWalletResult)>;
+using FetchBalanceCallback = base::OnceCallback<void(mojom::BalancePtr)>;
 using GetExternalWalletCallback =
-    base::OnceCallback<void(GetExternalWalletResult)>;
+    base::OnceCallback<void(mojom::ExternalWalletPtr)>;
 using ClaimPromotionCallback = base::OnceCallback<void(const mojom::Result,
                                                        const std::string&,
                                                        const std::string&,
@@ -253,9 +242,6 @@ class RewardsService : public KeyedService {
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
 
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-
   // DEPRECATED: Use `SetMonthlyContribution`.
   virtual void SaveRecurringTip(const std::string& publisher_key,
                                 double amount,
@@ -286,14 +272,6 @@ class RewardsService : public KeyedService {
                                  mojom::PublisherInfoPtr publisher_info,
                                  SavePublisherInfoCallback callback) = 0;
 
-  virtual void SetInlineTippingPlatformEnabled(
-      const std::string& key,
-      bool enabled) = 0;
-
-  virtual void GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) = 0;
-
   virtual void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) = 0;
@@ -306,12 +284,17 @@ class RewardsService : public KeyedService {
 
   virtual std::vector<std::string> GetExternalWalletProviders() const = 0;
 
+  using BeginExternalWalletLoginCallback =
+      base::OnceCallback<void(mojom::ExternalWalletLoginParamsPtr)>;
+
+  virtual void BeginExternalWalletLogin(
+      const std::string& wallet_type,
+      BeginExternalWalletLoginCallback callback) = 0;
+
   // Connects Rewards with a custodial wallet service (e.g. bitFlyer, Gemini,
   // Uphold).
   // |path| is the authorization URL's path
   // |query| is the authorization URL's query
-  // The callback is called with a ConnectExternalWalletError on failure,
-  // and with an empty result on success.
   virtual void ConnectExternalWallet(const std::string& path,
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
@@ -347,8 +330,6 @@ class RewardsService : public KeyedService {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
   virtual void GetEnvironment(GetEnvironmentCallback callback) = 0;
 

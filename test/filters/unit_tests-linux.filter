@@ -17,14 +17,15 @@
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledUmaOnly/1
 
-# These fail because OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux
-# hard-codes "chrome-" into the shortcut name and the shortcut start with
-# "brave-".
+# These fail because OsIntegrationTestOverride::GetShortcutPath and
+# OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
+# into the shortcut name but our shortcut starts with "brave-".
 -All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_Disabled
 -All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateAndExecute
 -All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateToDB
 -All/RunOnOsLoginSubManagerExecuteTest.*
 -All/ShortcutSubManagerExecuteTest.*
+-WebAppPolicyForceUnregistrationTest.*
 
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromePaths.*

@@ -15,8 +15,8 @@ class PrefService;
 
 namespace misc_metrics {
 
-extern const char kViewsMonthlyHistogramName[];
-extern const char kIsEnabledHistogramName[];
+inline constexpr char kViewsMonthlyHistogramName[] = "Brave.PrivacyHub.Views";
+inline constexpr char kIsEnabledHistogramName[] = "Brave.PrivacyHub.IsEnabled";
 
 class PrivacyHubMetrics {
  public:

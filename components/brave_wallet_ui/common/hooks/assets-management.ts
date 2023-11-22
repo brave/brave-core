@@ -7,9 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 // Selectors
-import {
-  useUnsafeWalletSelector
-} from './use-safe-selector'
+import { useUnsafeWalletSelector } from './use-safe-selector'
 import { WalletSelectors } from '../selectors'
 
 // Constants
@@ -21,28 +19,47 @@ import { WalletActions } from '../actions'
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 import { getAssetIdKey } from '../../utils/asset-utils'
 
-const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
-  left.filter(leftValue =>
-    !right.some(rightValue =>
-      leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
-      leftValue.chainId === rightValue.chainId && leftValue.tokenId === rightValue.tokenId))
+const onlyInLeft = (
+  left: BraveWallet.BlockchainToken[],
+  right: BraveWallet.BlockchainToken[]
+) =>
+  left.filter(
+    (leftValue) =>
+      !right.some(
+        (rightValue) =>
+          leftValue.contractAddress.toLowerCase() ===
+            rightValue.contractAddress.toLowerCase() &&
+          leftValue.chainId === rightValue.chainId &&
+          leftValue.tokenId === rightValue.tokenId
+      )
+  )
 
-const findTokensWithMismatchedVisibility = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
-  left.filter(leftValue =>
-    right.some(rightValue =>
-      leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
-      leftValue.chainId === rightValue.chainId &&
-      leftValue.tokenId === rightValue.tokenId &&
-      leftValue.visible !== rightValue.visible))
+const findTokensWithMismatchedVisibility = (
+  left: BraveWallet.BlockchainToken[],
+  right: BraveWallet.BlockchainToken[]
+) =>
+  left.filter((leftValue) =>
+    right.some(
+      (rightValue) =>
+        leftValue.contractAddress.toLowerCase() ===
+          rightValue.contractAddress.toLowerCase() &&
+        leftValue.chainId === rightValue.chainId &&
+        leftValue.tokenId === rightValue.tokenId &&
+        leftValue.visible !== rightValue.visible
+    )
+  )
 
-export function useAssetManagement () {
+export function useAssetManagement() {
   // selectors
-  const userVisibleTokensInfo =
-    useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-  const removedFungibleTokenIds =
-    useUnsafeWalletSelector(WalletSelectors.removedFungibleTokenIds)
-  const removedNonFungibleTokenIds =
-    useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokenIds)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const removedFungibleTokenIds = useUnsafeWalletSelector(
+    WalletSelectors.removedFungibleTokenIds
+  )
+  const removedNonFungibleTokenIds = useUnsafeWalletSelector(
+    WalletSelectors.removedNonFungibleTokenIds
+  )
   const deletedNonFungibleTokenIds = useUnsafeWalletSelector(
     WalletSelectors.deletedNonFungibleTokenIds
   )
@@ -51,22 +68,17 @@ export function useAssetManagement () {
   const dispatch = useDispatch()
 
   const tokenIsSetAsRemovedInLocalStorage = React.useCallback(
-    (
-      token: BraveWallet.BlockchainToken
-    ) => {
+    (token: BraveWallet.BlockchainToken) => {
       const assetId = getAssetIdKey(token)
-      return token.isNft ||
-        token.isErc1155 ||
-        token.isErc721
+      return token.isNft || token.isErc1155 || token.isErc721
         ? removedNonFungibleTokenIds.includes(assetId)
         : removedFungibleTokenIds.includes(assetId)
-    }, [removedNonFungibleTokenIds, removedFungibleTokenIds])
+    },
+    [removedNonFungibleTokenIds, removedFungibleTokenIds]
+  )
 
   const addOrRemoveTokenInLocalStorage = React.useCallback(
-    (
-      token: BraveWallet.BlockchainToken,
-      addOrRemove: 'add' | 'remove'
-    ) => {
+    (token: BraveWallet.BlockchainToken, addOrRemove: 'add' | 'remove') => {
       const assetId = getAssetIdKey(token)
       const isNFT = token.isNft || token.isErc1155 || token.isErc721
       const removedList = isNFT
@@ -101,8 +113,9 @@ export function useAssetManagement () {
         // persist array
         localStorage.setItem(localStorageKey, JSON.stringify(newList))
       }
-
-    }, [removedNonFungibleTokenIds, removedFungibleTokenIds])
+    },
+    [removedNonFungibleTokenIds, removedFungibleTokenIds]
+  )
 
   const addNftToDeletedNftsList = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
@@ -120,26 +133,23 @@ export function useAssetManagement () {
   )
 
   const onAddUserAsset = React.useCallback(
-    (
-      token: BraveWallet.BlockchainToken
-    ) => {
+    (token: BraveWallet.BlockchainToken) => {
       if (tokenIsSetAsRemovedInLocalStorage(token)) {
         addOrRemoveTokenInLocalStorage(token, 'add')
       } else {
-        dispatch(WalletActions.addUserAsset({
-          ...token,
-          logo: stripERC20TokenImageURL(token.logo) || ''
-        }))
+        dispatch(
+          WalletActions.addUserAsset({
+            ...token,
+            logo: stripERC20TokenImageURL(token.logo) || ''
+          })
+        )
       }
-    }, [
-    addOrRemoveTokenInLocalStorage,
-    tokenIsSetAsRemovedInLocalStorage
-  ])
+    },
+    [addOrRemoveTokenInLocalStorage, tokenIsSetAsRemovedInLocalStorage]
+  )
 
   const onAddCustomAsset = React.useCallback(
-    (
-      token: BraveWallet.BlockchainToken
-    ) => {
+    (token: BraveWallet.BlockchainToken) => {
       onAddUserAsset(token)
 
       // We handle refreshing balances for ERC721 tokens in the
@@ -147,53 +157,72 @@ export function useAssetManagement () {
       if (!(token.isErc721 || token.isNft)) {
         dispatch(WalletActions.refreshBalancesAndPriceHistory())
       }
-    }, [onAddUserAsset])
+    },
+    [onAddUserAsset]
+  )
 
-  const onUpdateVisibleAssets = React.useCallback((updatedTokensList: BraveWallet.BlockchainToken[]) => {
-    // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
-    onlyInLeft(updatedTokensList, userVisibleTokensInfo)
-      .forEach(token => onAddUserAsset(token))
+  const onUpdateVisibleAssets = React.useCallback(
+    (updatedTokensList: BraveWallet.BlockchainToken[]) => {
+      // Gets a list of all added tokens and adds them to the
+      // userVisibleTokensInfo list
+      onlyInLeft(updatedTokensList, userVisibleTokensInfo).forEach((token) =>
+        onAddUserAsset(token)
+      )
 
-    // Gets a list of all removed tokens and removes them from the userVisibleTokensInfo list
-    onlyInLeft(userVisibleTokensInfo, updatedTokensList)
-      .forEach(token => {
+      // Gets a list of all removed tokens and removes them from the
+      // userVisibleTokensInfo list
+      onlyInLeft(userVisibleTokensInfo, updatedTokensList).forEach((token) => {
         dispatch(WalletActions.removeUserAsset(token))
         if (!tokenIsSetAsRemovedInLocalStorage(token)) {
           addOrRemoveTokenInLocalStorage(token, 'remove')
         }
       })
 
-    // Gets a list of custom tokens and native assets returned from updatedTokensList payload
-    // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
-    findTokensWithMismatchedVisibility(updatedTokensList, userVisibleTokensInfo)
-      .forEach(token => dispatch(WalletActions.setUserAssetVisible({ token, isVisible: token.visible })))
+      // Gets a list of custom tokens and native assets returned from
+      // updatedTokensList payload then compares against userVisibleTokensInfo
+      // list and updates the tokens visibility if it has changed.
+      findTokensWithMismatchedVisibility(
+        updatedTokensList,
+        userVisibleTokensInfo
+      ).forEach((token) =>
+        dispatch(
+          WalletActions.setUserAssetVisible({ token, isVisible: token.visible })
+        )
+      )
 
-    // Refresh Balances, Prices and Price History when done.
-    dispatch(WalletActions.refreshBalancesAndPriceHistory())
-  }, [userVisibleTokensInfo, addOrRemoveTokenInLocalStorage])
+      // Refresh Balances, Prices and Price History when done.
+      dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    },
+    [userVisibleTokensInfo, addOrRemoveTokenInLocalStorage]
+  )
 
-  const makeTokenVisible = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    const foundTokenIdx = userVisibleTokensInfo.findIndex(t =>
-      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId)
+  const makeTokenVisible = React.useCallback(
+    (token: BraveWallet.BlockchainToken) => {
+      const foundTokenIdx = userVisibleTokensInfo.findIndex(
+        (t) =>
+          t.contractAddress.toLowerCase() ===
+            token.contractAddress.toLowerCase() && t.chainId === token.chainId
+      )
 
-    const updatedTokensList = [...userVisibleTokensInfo]
+      const updatedTokensList = [...userVisibleTokensInfo]
 
-    // If token is not part of user-visible tokens, add it.
-    if (foundTokenIdx === -1) {
-      return onUpdateVisibleAssets([...updatedTokensList, token])
-    }
+      // If token is not part of user-visible tokens, add it.
+      if (foundTokenIdx === -1) {
+        return onUpdateVisibleAssets([...updatedTokensList, token])
+      }
 
-    if (userVisibleTokensInfo[foundTokenIdx].visible) {
-      return
-    }
+      if (userVisibleTokensInfo[foundTokenIdx].visible) {
+        return
+      }
 
-    // If token is part of user-visible tokens, then:
-    //   - toggle visibility for custom tokens
-    //   - do nothing for non-custom tokens
-    updatedTokensList.splice(foundTokenIdx, 1, { ...token, visible: true })
-    onUpdateVisibleAssets(updatedTokensList)
-  }, [userVisibleTokensInfo, onUpdateVisibleAssets])
+      // If token is part of user-visible tokens, then:
+      //   - toggle visibility for custom tokens
+      //   - do nothing for non-custom tokens
+      updatedTokensList.splice(foundTokenIdx, 1, { ...token, visible: true })
+      onUpdateVisibleAssets(updatedTokensList)
+    },
+    [userVisibleTokensInfo, onUpdateVisibleAssets]
+  )
 
   return {
     onUpdateVisibleAssets,

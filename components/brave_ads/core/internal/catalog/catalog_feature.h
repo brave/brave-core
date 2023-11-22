@@ -14,7 +14,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCatalogFeature);
 
-constexpr base::FeatureParam<base::TimeDelta> kCatalogLifespan{
+inline constexpr base::FeatureParam<base::TimeDelta> kCatalogLifespan{
     &kCatalogFeature, "lifespan", base::Days(1)};
 
 }  // namespace brave_ads

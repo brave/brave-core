@@ -10,11 +10,11 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string EnvironmentTypeEnumToStringForTesting(
+std::string EnvironmentTypeEnumToString(
     mojom::EnvironmentType environment_type);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_ENVIRONMENT_ENVIRONMENT_TYPES_UNITTEST_UTIL_H_

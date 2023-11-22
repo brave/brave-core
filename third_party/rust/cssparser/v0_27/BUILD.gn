@@ -46,10 +46,10 @@ cargo_crate("lib") {
   deps = [
     "//brave/third_party/rust/cssparser_macros/v0_6:lib",
     "//brave/third_party/rust/dtoa_short/v0_3:lib",
+    "//brave/third_party/rust/itoa/v0_4:lib",
     "//brave/third_party/rust/matches/v0_1:lib",
     "//brave/third_party/rust/phf/v0_8:lib",
     "//brave/third_party/rust/smallvec/v1:lib",
-    "//third_party/rust/itoa/v0_4:lib",
   ]
   build_deps = [
     "//third_party/rust/proc_macro2/v1:lib",

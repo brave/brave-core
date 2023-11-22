@@ -5,26 +5,23 @@
 
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/adapters.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
 namespace brave_ads::ml {
 
 LinearModel::LinearModel() = default;
 
-LinearModel::LinearModel(std::map<std::string, VectorData> weights,
-                         std::map<std::string, double> biases) {
-  weights_ = std::move(weights);
-  biases_ = std::move(biases);
+LinearModel::LinearModel(const linear_text_classification::flat::Model* model)
+    : model_(model) {
+  CHECK(model_);
 }
-
-LinearModel::LinearModel(const LinearModel& other) = default;
-
-LinearModel& LinearModel::operator=(const LinearModel& other) = default;
 
 LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 
@@ -32,45 +29,71 @@ LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
 LinearModel::~LinearModel() = default;
 
-PredictionMap LinearModel::Predict(const VectorData& data) const {
+absl::optional<PredictionMap> LinearModel::Predict(
+    const VectorData& data) const {
   PredictionMap predictions;
-  for (const auto& kv : weights_) {
-    double prediction = kv.second * data;
-    const auto iter = biases_.find(kv.first);
-    if (iter != biases_.cend()) {
-      prediction += iter->second;
+  const auto* classifier = model_->classifier();
+  if (!classifier || !classifier->biases() ||
+      !classifier->segment_weight_vectors()) {
+    return absl::nullopt;
+  }
+
+  for (const auto* segment_weight : *classifier->segment_weight_vectors()) {
+    if (!segment_weight || !segment_weight->segment() ||
+        !segment_weight->weights()) {
+      return absl::nullopt;
     }
-    predictions[kv.first] = prediction;
+    const std::string segment = segment_weight->segment()->str();
+    if (segment.empty()) {
+      return absl::nullopt;
+    }
+    std::vector<float> weights;
+    weights.reserve(segment_weight->weights()->size());
+    base::ranges::copy(*segment_weight->weights(), std::back_inserter(weights));
+    VectorData weight_vector(std::move(weights));
+    double prediction = weight_vector * data;
+    const auto* iter = classifier->biases()->LookupByKey(segment.c_str());
+    if (iter) {
+      prediction += iter->bias();
+    }
+    predictions[segment] = prediction;
   }
   return predictions;
 }
 
-PredictionMap LinearModel::GetTopPredictions(const VectorData& data) const {
+absl::optional<PredictionMap> LinearModel::GetTopPredictions(
+    const VectorData& data) const {
   return GetTopCountPredictionsImpl(data, absl::nullopt);
 }
 
-PredictionMap LinearModel::GetTopCountPredictions(const VectorData& data,
-                                                  size_t top_count) const {
+absl::optional<PredictionMap> LinearModel::GetTopCountPredictions(
+    const VectorData& data,
+    size_t top_count) const {
   return GetTopCountPredictionsImpl(data, top_count);
 }
 
-PredictionMap LinearModel::GetTopCountPredictionsImpl(
+absl::optional<PredictionMap> LinearModel::GetTopCountPredictionsImpl(
     const VectorData& data,
     absl::optional<size_t> top_count) const {
-  const PredictionMap prediction_map = Predict(data);
-  const PredictionMap prediction_map_softmax = Softmax(prediction_map);
+  const absl::optional<PredictionMap> predictions = Predict(data);
+  if (!predictions) {
+    return absl::nullopt;
+  }
+
+  const PredictionMap predictions_softmax = Softmax(*predictions);
   std::vector<std::pair<double, std::string>> prediction_order;
-  prediction_order.reserve(prediction_map_softmax.size());
-  for (const auto& prediction : prediction_map_softmax) {
-    prediction_order.emplace_back(prediction.second, prediction.first);
+  prediction_order.reserve(predictions_softmax.size());
+  for (const auto& [segment, probability] : predictions_softmax) {
+    prediction_order.emplace_back(probability, segment);
   }
   base::ranges::sort(base::Reversed(prediction_order));
+
   PredictionMap top_predictions;
   if (top_count && *top_count < prediction_order.size()) {
     prediction_order.resize(*top_count);
   }
-  for (const auto& prediction_order_item : prediction_order) {
-    top_predictions[prediction_order_item.second] = prediction_order_item.first;
+  for (const auto& [probability, segment] : prediction_order) {
+    top_predictions[segment] = probability;
   }
   return top_predictions;
 }

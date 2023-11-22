@@ -174,8 +174,7 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
 mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin) {
-  auto token_info =
-      api::asset_ratio::TokenInfo::FromValueDeprecated(json_value);
+  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
   if (!token_info) {
     LOG(ERROR) << "Invalid response, could not parse JSON. ";
     return nullptr;
@@ -196,19 +195,18 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
 
   return mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC20 /* is_erc20 */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_erc721 */,
+      result.token_type == api::asset_ratio::TokenType::kErc20 /* is_erc20 */,
+      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_erc721 */,
       result.token_type ==
-          api::asset_ratio::TOKEN_TYPE_ERC1155 /* is_erc1155 */,
-      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_nft */,
+          api::asset_ratio::TokenType::kErc1155 /* is_erc1155 */,
+      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_nft */,
       false /* is_spam */, result.symbol, decimals, true /* visible */,
       "" /* token_id */, "" /* coingecko_id */, chain_id, coin);
 }
 
 absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value) {
-  auto coin_market_data =
-      api::asset_ratio::CoinMarket::FromValueDeprecated(json_value);
+  auto coin_market_data = api::asset_ratio::CoinMarket::FromValue(json_value);
 
   if (!coin_market_data) {
     return absl::nullopt;

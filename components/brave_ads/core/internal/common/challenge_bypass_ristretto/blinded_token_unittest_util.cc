@@ -8,22 +8,22 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 
-namespace brave_ads::cbr {
+namespace brave_ads::cbr::test {
 
-BlindedToken GetBlindedTokenForTesting() {
+BlindedToken GetBlindedToken() {
   return BlindedToken(kBlindedTokenBase64);
 }
 
-BlindedToken GetInvalidBlindedTokenForTesting() {
+BlindedToken GetInvalidBlindedToken() {
   return BlindedToken(kInvalidBase64);
 }
 
-std::vector<BlindedToken> GetBlindedTokensForTesting() {
-  return {GetBlindedTokenForTesting()};
+std::vector<BlindedToken> GetBlindedTokens() {
+  return {GetBlindedToken()};
 }
 
-std::vector<BlindedToken> GetInvalidBlindedTokensForTesting() {
-  return {GetInvalidBlindedTokenForTesting()};
+std::vector<BlindedToken> GetInvalidBlindedTokens() {
+  return {GetInvalidBlindedToken()};
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test

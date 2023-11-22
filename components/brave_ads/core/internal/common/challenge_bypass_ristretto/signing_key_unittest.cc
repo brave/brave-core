@@ -76,8 +76,7 @@ TEST_F(BraveAdsSigningKeyTest, Sign) {
   const SigningKey signing_key(kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_EQ(GetSignedTokenForTesting(),
-            signing_key.Sign(GetBlindedTokenForTesting()));
+  EXPECT_EQ(test::GetSignedToken(), signing_key.Sign(test::GetBlindedToken()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
@@ -85,7 +84,7 @@ TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   const SigningKey signing_key(kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_FALSE(signing_key.Sign(GetInvalidBlindedTokenForTesting()));
+  EXPECT_FALSE(signing_key.Sign(test::GetInvalidBlindedToken()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
@@ -93,8 +92,8 @@ TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_EQ(GetUnblindedTokenForTesting(),
-            signing_key.RederiveUnblindedToken(GetTokenPreimageForTesting()));
+  EXPECT_EQ(test::GetUnblindedToken(),
+            signing_key.RederiveUnblindedToken(test::GetTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest,
@@ -104,7 +103,7 @@ TEST_F(BraveAdsSigningKeyTest,
 
   // Act & Assert
   EXPECT_FALSE(
-      signing_key.RederiveUnblindedToken(GetInvalidTokenPreimageForTesting()));
+      signing_key.RederiveUnblindedToken(test::GetInvalidTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {

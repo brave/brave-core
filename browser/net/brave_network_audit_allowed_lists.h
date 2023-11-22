@@ -9,12 +9,12 @@
 namespace brave {
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlProtocols[] = {
+inline constexpr const char* kAllowedUrlProtocols[] = {
     "chrome-extension", "chrome", "brave", "file", "data", "blob",
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlPrefixes[] = {
+inline constexpr const char* kAllowedUrlPrefixes[] = {
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
     "https://crxdownload.brave.com/crx/blobs/",
@@ -63,13 +63,16 @@ constexpr const char* kAllowedUrlPrefixes[] = {
     "https://rewards-stg.bravesoftware.com/publishers/prefix-list",
     "https://grant.rewards.bravesoftware.com/v1/promotions",
 
+    // p3a
+    "https://p3a-creative.brave.com/",
+    "https://p3a-json.brave.com/",
+    "https://p3a.brave.com/",
+    "https://star-randsrv.bsg.brave.com/",
+
     // Other
     "https://brave-core-ext.s3.brave.com/",
     "https://dict.brave.com/",
     "https://go-updater.brave.com/",
-    "https://p3a.brave.com/",
-    "https://p3a-creative.brave.com/",
-    "https://p3a-json.brave.com/",
     "https://redirector.brave.com/",
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
@@ -77,7 +80,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kAllowedUrlPatterns[] = {
+inline constexpr const char* kAllowedUrlPatterns[] = {
     // allowed because it's url for fetching super referral's mapping table
     "https://mobile-data.s3.brave.com/superreferrer/map-table.json",
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",

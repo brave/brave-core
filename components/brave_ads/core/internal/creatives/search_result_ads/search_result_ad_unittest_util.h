@@ -8,13 +8,12 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAdForTesting(
-    bool should_use_random_uuids);
-mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversionForTesting(
+mojom::SearchResultAdInfoPtr BuildSearchResultAd(bool should_use_random_uuids);
+mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
     bool should_use_random_uuids);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_UNITTEST_UTIL_H_

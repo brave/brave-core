@@ -18,6 +18,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class NavigationHandle;
@@ -107,6 +108,14 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
+#if !BUILDFLAG(IS_ANDROID)
+  friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
+
+  void SetSetShowFallbackInfobarCallbackForTesting(
+      base::RepeatingCallback<void(const GURL&)> callback) {
+    show_fallback_infobar_callback_for_testing_ = callback;
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
   GURL GetCurrentPageURL() const;
@@ -114,8 +123,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
   bool IsDNSLinkCheckEnabled() const;
   bool IsAutoRedirectIPFSResourcesEnabled() const;
   void IPFSResourceLinkResolved(const GURL& ipfs);
-  void DNSLinkResolved(const GURL& ipfs, bool is_gateway_url);
-  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
+  void DNSLinkResolved(const GURL& ipfs,
+                       bool is_gateway_url,
+                       const bool& auto_redirect_blocked);
+  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
+                               const bool& auto_redirect_blocked);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
@@ -131,15 +143,25 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header);
+                          absl::optional<std::string> x_ipfs_path_header,
+                          const bool& auto_redirect_blocked);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
                             absl::optional<std::string> x_ipfs_path_header,
+                            const bool auto_redirect_blocked,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
   void LoadUrl(const GURL& gurl);
+
+#if !BUILDFLAG(IS_ANDROID)
+  void LoadUrlForAutoRedirect(const GURL& gurl);
+  void LoadUrlForFallback(const GURL& gurl);
+  void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
+  base::RepeatingCallback<void(const GURL&)>
+      show_fallback_infobar_callback_for_testing_;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;

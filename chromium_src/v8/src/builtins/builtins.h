@@ -19,7 +19,7 @@ class BuiltinArguments;
 void ReportBuiltinCallAndResponse(Isolate* isolate,
                                   const char* builtin_name,
                                   const BuiltinArguments& builtin_args,
-                                  const Object& builtin_result);
+                                  const Tagged<Object>& builtin_result);
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 
 }  // namespace internal

@@ -34,7 +34,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
 
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildRedeemPaymentTokensUserData(BuildPaymentTokensForTesting(/*count=*/2),
+  BuildRedeemPaymentTokensUserData(test::BuildPaymentTokens(/*count=*/2),
                                    callback.Get());
 }
 

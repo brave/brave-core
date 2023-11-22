@@ -24,10 +24,10 @@
     automatic downloads
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_AUTO_PICTURE_IN_PICTURE" desc="The label used for the auto-picture-in-picture site settings controls.">
-    Auto picture-in-picture
+    Automatic picture-in-picture
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_AUTO_PICTURE_IN_PICTURE_MID_SENTENCE" desc="The label used for the auto-picture-in-picture site settings controls when used mid-sentence.">
-    auto picture-in-picture
+    automatic picture-in-picture
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync site settings controls.">
     Background sync
@@ -161,6 +161,12 @@
   <message name="IDS_SITE_SETTINGS_TYPE_VR_MID_SENTENCE" desc="The label used for the VR site settings controls when used mid-sentence.">
     virtual reality
   </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page.">
+    Embedded content
+  </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS_MID_SENTENCE" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page. Used mid-sentence.">
+    embedded content
+  </message>
 
   <!-- Site Settings desktop-only -->
   <if expr="not is_android">
@@ -226,12 +232,6 @@
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_WINDOW_MANAGEMENT_MID_SENTENCE" desc="The label used for the window management site settings controls when used mid-sentence.">
     window management
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page.">
-    Embedded content
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS_MID_SENTENCE" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page. Used mid-sentence.">
-    embedded content
   </message>
   </if>
 </grit-part>

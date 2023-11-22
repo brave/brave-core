@@ -9,7 +9,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/search_engines/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -50,6 +50,8 @@ SearchEngineP3A GetSearchEngineProvider(const GURL& search_engine_url,
     result = SearchEngineP3A::kDaum;
   } else if (type == SEARCH_ENGINE_NAVER) {
     result = SearchEngineP3A::kNaver;
+  } else if (type == SEARCH_ENGINE_BRAVE) {
+    result = SearchEngineP3A::kBrave;
   } else if (type == SEARCH_ENGINE_OTHER) {
     if (base::EndsWith(search_engine_url.host(), "startpage.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
@@ -181,6 +183,10 @@ SearchEngineTracker::SearchEngineTracker(
       kWebDiscoveryEnabled,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_ads::prefs::kOptedInToNotificationAds,
+      base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
+                          base::Unretained(this)));
 #endif
 }
 
@@ -222,6 +228,10 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric,
                         profile_prefs_->GetBoolean(kWebDiscoveryEnabled));
+  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryAndAdsMetric,
+                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled) &&
+                            profile_prefs_->GetBoolean(
+                                brave_ads::prefs::kOptedInToNotificationAds));
 }
 #endif
 

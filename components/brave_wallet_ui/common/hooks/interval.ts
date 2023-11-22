@@ -4,7 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { useEffect, useLayoutEffect, useRef } from 'react'
 
-function useInterval (callback: () => void, delay: number | null, initialDelay?: number | null) {
+function useInterval(
+  callback: () => void,
+  delay: number | null,
+  initialDelay?: number | null
+) {
   const savedCallback = useRef(callback)
 
   // Remember the latest callback if it changes.

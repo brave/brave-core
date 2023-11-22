@@ -13,7 +13,7 @@
 class SidebarButtonView : public views::ImageButton {
  public:
   METADATA_HEADER(SidebarButtonView);
-  static constexpr int kSidebarButtonSize = 36;
+  static constexpr int kSidebarButtonSize = 32;
   static constexpr int kIconSize = 16;
   static constexpr int kMargin = 4;
 
@@ -24,6 +24,7 @@ class SidebarButtonView : public views::ImageButton {
   SidebarButtonView operator=(const SidebarButtonView&) = delete;
 
   // views::ImageButton overrides:
+  void OnThemeChanged() override;
   gfx::Size CalculatePreferredSize() const override;
   std::u16string GetTooltipText(const gfx::Point& p) const override;
 };

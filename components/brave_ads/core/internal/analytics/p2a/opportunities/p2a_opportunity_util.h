@@ -10,13 +10,12 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
-class AdType;
-
 std::vector<std::string> BuildP2AAdOpportunityEvents(
-    const AdType& ad_type,
+    AdType ad_type,
     const SegmentList& segments);
 
 }  // namespace brave_ads

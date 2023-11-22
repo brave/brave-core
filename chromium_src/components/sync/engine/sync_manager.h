@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_MANAGER_H_
 
 #include "base/functional/callback_forward.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 #define ShutdownOnSyncThread                                          \
   PermanentlyDeleteAccount(                                           \

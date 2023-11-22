@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  Input,
-  SearchIconStyle
-} from './search-input.style'
+import { Input, SearchIconStyle } from './search-input.style'
 
 interface Props {
   onChange: (value: string) => void
@@ -30,7 +27,10 @@ export const SearchInput = (props: Props) => {
 
   return (
     <>
-      <SearchIconStyle name='search' size={22} />
+      <SearchIconStyle
+        name='search'
+        size={22}
+      />
       <Input
         placeholder={placeholder}
         spellCheck={false}

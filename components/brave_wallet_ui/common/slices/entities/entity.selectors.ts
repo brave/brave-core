@@ -18,7 +18,7 @@ export type EntityByIdFromRegistryQuerySelector<T> = Selector<
 export type EntityByIdFromRegistryResultSelectorFactory<T> =
   () => EntityByIdFromRegistryQuerySelector<T>
 
-export function makeSelectEntityByIdFromRegistryQuery<T> () {
+export function makeSelectEntityByIdFromRegistryQuery<T>() {
   return createSelector(
     // get data from query response
     (res: { data?: EntityState<T> | undefined }) => res.data,

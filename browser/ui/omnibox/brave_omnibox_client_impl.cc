@@ -14,7 +14,6 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
@@ -23,6 +22,12 @@
 #include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif
 
 namespace {
 
@@ -48,7 +53,7 @@ bool IsSearchEvent(const AutocompleteMatch& match) {
 }
 
 void RecordSearchEventP3A(uint64_t number_of_searches) {
-  p3a_utils::RecordToHistogramBucket("Brave.Omnibox.SearchCount.2",
+  p3a_utils::RecordToHistogramBucket("Brave.Omnibox.SearchCount.3",
                                      {0, 5, 10, 20, 50, 100, 500},
                                      number_of_searches);
 }
@@ -62,12 +67,17 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
       profile_(profile),
       search_engine_tracker_(
           SearchEngineTrackerFactory::GetForBrowserContext(profile)),
-      scheme_classifier_(profile) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      ai_chat_metrics_(
+          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()),
+#endif
+      scheme_classifier_(profile),
+      search_storage_(profile_->GetPrefs(), kSearchCountPrefName) {
   // Record initial search count p3a value.
-  const auto& search_p3a = profile_->GetPrefs()->GetList(kSearchCountPrefName);
-  if (search_p3a.size() == 0) {
-    RecordSearchEventP3A(0);
-  }
+  RecordSearchEventP3A(search_storage_.GetWeeklySum());
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  CHECK(ai_chat_metrics_);
+#endif
 }
 
 BraveOmniboxClientImpl::~BraveOmniboxClientImpl() = default;
@@ -112,12 +122,14 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     IDNA2008DeviationCharacter deviation_char_in_hostname) {
   if (IsSearchEvent(match)) {
     // TODO(iefremov): Optimize this.
-    WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
-    storage.AddDelta(1);
-    RecordSearchEventP3A(storage.GetWeeklySum());
+    search_storage_.AddDelta(1);
+    RecordSearchEventP3A(search_storage_.GetWeeklySum());
     if (search_engine_tracker_ != nullptr) {
       search_engine_tracker_->RecordLocationBarQuery();
     }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    ai_chat_metrics_->RecordOmniboxSearchQuery();
+#endif
   }
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,

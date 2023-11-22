@@ -6,6 +6,7 @@
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc"
 
 #include "base/check_is_test.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -32,19 +33,30 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     return;
   }
 
-  // Sets fixed heights for |button| regardless of non client top height.
   if (delegate_->GetFrameButtonStyle() ==
       OpaqueBrowserFrameViewLayoutDelegate::FrameButtonStyle::kMdButton) {
+    // Synchronize frame button's bounds with toolbar's bounds.
     gfx::Size size = button->GetPreferredSize();
     DCHECK_LT(0, size.width());
-    size.set_height(size.width());
+    auto* toolbar = view_->browser_view()->toolbar();
+    const auto toolbar_height = toolbar->GetPreferredSize().height();
+    size.set_height(toolbar_height);
     button->SetPreferredSize(size);
     button->SetSize(size);
-    const auto toolbar_height =
-        view_->browser_view()->toolbar()->GetPreferredSize().height();
-    button->SetY(view_->GetTopAreaHeight() +
-                 (toolbar_height - size.height()) / 2);
+    gfx::Point toolbar_origin;
+    views::View::ConvertPointToTarget(toolbar, button->parent(),
+                                      &toolbar_origin);
+    button->SetY(toolbar_origin.y());
+
     static_cast<views::FrameCaptionButton*>(button)->SetInkDropCornerRadius(
         views::kCaptionButtonInkDropDefaultCornerRadius);
   }
+}
+
+int BrowserFrameViewLayoutLinux::GetNonClientRestoredExtraThickness() const {
+  if (base::FeatureList::IsEnabled(
+          tabs::features::kBraveHorizontalTabsUpdate)) {
+    return 0;
+  }
+  return OpaqueBrowserFrameViewLayout::GetNonClientRestoredExtraThickness();
 }

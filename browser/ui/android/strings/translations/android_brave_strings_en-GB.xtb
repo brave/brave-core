@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Closing all tabs closes Brave</translation>
 <translation id="8308305244351876417">Allows audio to play when you switch to another tab in Brave or another app, or your device screen is off.</translation>
 <translation id="4150201353443180367">Display</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Use Widevine digital rights management (DRM) to view protected media content in the browser.</translation>
+<translation id="255204363133978824">Allow protected content</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Learn more about Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Allow (relaunch now)</translation>
 <translation id="2433507940547922241">Appearance</translation>
 <translation id="9040069796107003510">Brave Rewards icon</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
@@ -583,6 +589,7 @@ Are you sure you want to do this?</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
+<translation id="6915830896450988084">Send with <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposit</translation>
@@ -899,6 +906,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Expand</translation>
 <translation id="3586752056660754651">Sign</translation>
+<translation id="3950820424414687140">Sign in</translation>
 <translation id="6592721981110586529">Connect with Brave Wallet</translation>
 <translation id="329813193938846695">Select account(s)</translation>
 <translation id="291375746846291973">Only connect with sites you trust.</translation>
@@ -1047,6 +1055,14 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5802752138057422257">NON-ASCII characters detected!</translation>
 <translation id="442709594176931966">View original message</translation>
 <translation id="2239252396088484499">View message in ASCII encoding</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Address</translation>
+<translation id="3095940652251934233">Statement</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Version</translation>
+<translation id="1313065465616456728">Issued at</translation>
+<translation id="7902225556763260253">Expiration time</translation>
+<translation id="1908159733454294871">Security risk detected</translation>
 <translation id="4220693114674044366">Token address</translation>
 <translation id="5658257029899993935">Link purchase to your Brave account</translation>
 <translation id="1187061015547219282">Link your Play Store purchase to your Brave account to use Brave VPN on other devices.</translation>
@@ -1179,4 +1195,11 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5494920125229734069">Select all</translation>
 <translation id="5972844218283131174">Deselect all</translation>
 <translation id="6322030314101903925">No available assets</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Sign in with Brave Wallet</translation>
+<translation id="3696514931437952995">You are signing into <ph name="ORIGIN"/>. Brave wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">See details</translation>
+<translation id="6759710362319508545">Resources</translation>
+<translation id="2471230424465522689">Not before</translation>
+<translation id="4841860051609590575">Request ID</translation>
 </translationbundle>

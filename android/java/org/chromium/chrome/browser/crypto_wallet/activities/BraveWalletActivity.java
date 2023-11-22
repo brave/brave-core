@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboarding
 import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.BackupWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.CreatingWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.RecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.RestoreWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.SecurePasswordFragment;
@@ -313,6 +314,15 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                                 getResources().getString(R.string.restore_crypto_account),
                                 restoreWalletFragment),
                         mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+
+                CreatingWalletFragment creatingWalletFragment = new CreatingWalletFragment();
+                creatingWalletFragment.setOnNextPageListener(this);
+                mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
+                        new NavigationItem(
+                                getResources()
+                                        .getString(R.string.your_wallet_is_restoring_page_title),
+                                creatingWalletFragment),
+                        mCryptoWalletOnboardingPagerAdapter.getCount());
             } else if (type == ONBOARDING_ACTION) {
                 List<NavigationItem> navigationItems = new ArrayList<>();
                 SecurePasswordFragment securePasswordFragment = new SecurePasswordFragment();
@@ -320,6 +330,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 navigationItems.add(
                         new NavigationItem(getResources().getString(R.string.secure_your_crypto),
                                 securePasswordFragment));
+                addWalletCreatingPage(navigationItems, true);
                 addBackupWalletSequence(navigationItems, true);
                 mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
                         navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
@@ -384,12 +395,24 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         verifyRecoveryPhraseFragment));
     }
 
+    private void addWalletCreatingPage(List<NavigationItem> navigationItems, boolean isOnboarding) {
+        CreatingWalletFragment creatingWalletFragment = new CreatingWalletFragment();
+        creatingWalletFragment.setOnNextPageListener(this);
+        navigationItems.add(
+                new NavigationItem(
+                        getResources().getString(R.string.your_wallet_is_creating_page_title),
+                        creatingWalletFragment));
+    }
+
     public void showOnboardingLayout() {
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
+        // We don't need addWalletCreatingPage here, as showOnboardingLayout
+        // is invoked only when we didn't back up wallet initially and doing
+        // it later from `Backup your crypto wallet` bubble.
         addBackupWalletSequence(navigationItems, false);
 
         if (mCryptoWalletOnboardingPagerAdapter != null

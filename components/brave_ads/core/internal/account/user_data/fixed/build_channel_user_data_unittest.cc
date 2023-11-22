@@ -29,7 +29,7 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
 TEST_F(BraveAdsBuildChannelUserDataTest,
        DoNotBuildBuildChannelUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   EXPECT_TRUE(BuildBuildChannelUserData().empty());

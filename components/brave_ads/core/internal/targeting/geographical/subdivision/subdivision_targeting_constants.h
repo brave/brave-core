@@ -8,8 +8,8 @@
 
 namespace brave_ads {
 
-constexpr char kSubdivisionTargetingAuto[] = "AUTO";
-constexpr char kSubdivisionTargetingDisabled[] = "DISABLED";
+inline constexpr char kSubdivisionTargetingAuto[] = "AUTO";
+inline constexpr char kSubdivisionTargetingDisabled[] = "DISABLED";
 
 }  // namespace brave_ads
 

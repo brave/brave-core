@@ -24,12 +24,11 @@ struct InterestUserModelInfo final {
 
   ~InterestUserModelInfo();
 
+  bool operator==(const InterestUserModelInfo&) const = default;
+
   SegmentList segments;
   TextEmbeddingHtmlEventList text_embedding_html_events;
 };
-
-bool operator==(const InterestUserModelInfo&, const InterestUserModelInfo&);
-bool operator!=(const InterestUserModelInfo&, const InterestUserModelInfo&);
 
 }  // namespace brave_ads
 

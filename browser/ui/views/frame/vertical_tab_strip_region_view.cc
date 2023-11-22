@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -30,6 +31,8 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -62,60 +65,37 @@ namespace {
 
 constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 
-// Inherits NewTabButton in order to synchronize ink drop effect with
-// the search button. Unfortunately, we can't inherit BraveTabSearchButton
-// as NotifyClick() is marked as 'final'.
-class ToggleButton : public BraveNewTabButton {
+// Use toolbar button's ink drop effect.
+class ToggleButton : public ToolbarButton {
  public:
   METADATA_HEADER(ToggleButton);
 
-  ToggleButton(Button::PressedCallback callback,
+  ToggleButton(PressedCallback callback,
                VerticalTabStripRegionView* region_view)
-      : BraveNewTabButton(region_view->tab_strip(),
-                          std::move(std::move(callback))),
-        region_view_(region_view),
-        tab_strip_(region_view_->tab_strip()) {
+      : ToolbarButton(std::move(callback)), region_view_(*region_view) {
+    SetVectorIcon(kVerticalTabStripToggleButtonIcon);
     SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
+    SetHorizontalAlignment(gfx::ALIGN_CENTER);
   }
   ~ToggleButton() override = default;
 
-  constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
-
-  // views::BraveNewTabButton:
+  // ToolbarButton:
   void OnThemeChanged() override {
-    BraveNewTabButton::OnThemeChanged();
+    ToolbarButton::OnThemeChanged();
+    SetHighlighted(region_view_->state() ==
+                   VerticalTabStripRegionView::State::kExpanded);
+  }
 
-    // Resets the ink drop highlight color
-    views::InkDrop::Get(this)->GetInkDrop()->HostViewThemeChanged();
-    if (views::InkDrop::Get(this)->GetHighlighted()) {
-      // Note that we're calling this to make InkDropHighlight visible even if
-      // the state could already be transitioned to activated.
-      views::InkDrop::Get(this)->GetInkDrop()->SnapToActivated();
+  void StateChanged(ButtonState old_state) override {
+    ToolbarButton::StateChanged(old_state);
+
+    if (GetState() == views::Button::STATE_NORMAL) {
+      // Double check highlight state after changing state to normal. Dragging
+      // the button can make the highlight effect hidden.
+      // https://github.com/brave/brave-browser/issues/31421
+      SetHighlighted(region_view_->state() ==
+                     VerticalTabStripRegionView::State::kExpanded);
     }
-
-    // Resets icon.
-    auto* cp = GetColorProvider();
-    CHECK(cp);
-
-    auto color = cp->GetColor(kColorBraveVerticalTabHeaderButtonColor);
-    icon_ = gfx::CreateVectorIcon(kVerticalTabStripToggleButtonIcon, color);
-  }
-
-  void PaintButtonContents(gfx::Canvas* canvas) override {
-    const gfx::Point origin =
-        GetContentsBounds().CenterPoint() -
-        gfx::Vector2d(icon_.width() / 2, icon_.height() / 2);
-    canvas->DrawImageInt(icon_, origin.x(), origin.y());
-  }
-
-  gfx::Insets GetInsets() const override {
-    // By pass BraveNewTabButton::GetInsets().
-    return NewTabButton::GetInsets();
-  }
-
-  int GetCornerRadius() const override {
-    return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-        views::Emphasis::kMaximum, GetPreferredSize());
   }
 
   std::u16string GetTooltipText(const gfx::Point& p) const override {
@@ -134,36 +114,13 @@ class ToggleButton : public BraveNewTabButton {
   }
 #endif
 
-  void NotifyClick(const ui::Event& event) override {
-    // Bypass NewTab::NotifyClick implementation in order keep ink drop state
-    // ACTIVATED. As NewTabButton::NotifyClick animate ink drop state to
-    // ActionTriggered after notifying this event, we shouldn't use it.
-    // otherwise, ink drop state will be hidden.
-    views::InkDrop::Get(this)->GetInkDrop()->AnimateToState(
-        views::InkDropState::ACTION_TRIGGERED);
-    ImageButton::NotifyClick(event);
-  }
-
-  void StateChanged(ButtonState old_state) override {
-    BraveNewTabButton::StateChanged(old_state);
-
-    if (GetState() == views::Button::STATE_NORMAL) {
-      // Double check highlight state after changing state to normal. Dragging
-      // the button can make the highlight effect hidden.
-      // https://github.com/brave/brave-browser/issues/31421
-      SetHighlighted(region_view_->state() ==
-                     VerticalTabStripRegionView::State::kExpanded);
-    }
-  }
+  constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
  private:
-  raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
-  raw_ptr<const TabStrip> tab_strip_ = nullptr;
-
-  gfx::ImageSkia icon_;
+  raw_ref<VerticalTabStripRegionView> region_view_;
 };
 
-BEGIN_METADATA(ToggleButton, views::Button)
+BEGIN_METADATA(ToggleButton, ToolbarButton)
 END_METADATA
 
 // A custom scroll view to avoid crash on Mac
@@ -196,8 +153,8 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
  public:
   METADATA_HEADER(VerticalTabSearchButton);
 
-  explicit VerticalTabSearchButton(TabStrip* tab_strip)
-      : BraveTabSearchButton(tab_strip) {
+  explicit VerticalTabSearchButton(TabStrip* tab_strip, Edge flat_edge)
+      : BraveTabSearchButton(tab_strip, flat_edge) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
@@ -213,13 +170,41 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     BraveTabSearchButton::UpdateColors();
 
     // Override images set from UpdateIcon().
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromVectorIcon(
-                      kLeoSearchIcon, kColorBraveVerticalTabHeaderButtonColor,
-                      /* icon_size= */ 16));
+    SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(kLeoSearchIcon, GetForegroundColor(),
+                                       /* icon_size= */ 16));
     SetImageModel(views::Button::STATE_HOVERED, ui::ImageModel());
     SetImageModel(views::Button::STATE_PRESSED, ui::ImageModel());
     SetBackground(nullptr);
+  }
+
+  void OnThemeChanged() override {
+    BraveTabSearchButton::OnThemeChanged();
+    ConfigureInkDropForToolbar(this);
+  }
+
+  ui::ColorId GetForegroundColor() override {
+    if (views::InkDrop::Get(this)->GetInkDrop()->GetTargetInkDropState() ==
+        views::InkDropState::ACTIVATED) {
+      return kColorToolbarButtonActivated;
+    }
+    return kColorToolbarButtonIcon;
+  }
+
+  void UpdateInkDrop() override {
+    // Do nothing as we don't need to change ink drop configs at this time.
+  }
+
+  int GetCornerRadius() const override {
+    // As this button uses toolbar button's style, use toolbar's radius also.
+    return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+        views::Emphasis::kMaximum, GetContentsBounds().size());
+  }
+
+  void StateChanged(ButtonState old_state) override {
+    BraveTabSearchButton::StateChanged(old_state);
+    UpdateColors();
   }
 };
 
@@ -499,8 +484,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 
     // We layout the search button at the end, because there's no
     // way to change its bubble arrow from TOP_RIGHT at the moment.
-    tab_search_button_ = AddChildView(
-        std::make_unique<VerticalTabSearchButton>(region_view->tab_strip()));
+    tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
+        region_view->tab_strip(), Edge::kNone));
     UpdateTabSearchButtonVisibility();
   }
   ~HeaderView() override = default;
@@ -794,6 +779,7 @@ void VerticalTabStripRegionView::SetState(State state) {
   }
 
   PreferredSizeChanged();
+  UpdateBorder();
 }
 
 void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
@@ -905,6 +891,8 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
     mouse_enter_timer_.Stop();
     SetState(State::kCollapsed);
   }
+
+  UpdateBorder();
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
@@ -967,12 +955,9 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 
   const auto background_color = cp->GetColor(kColorToolbar);
   SetBackground(views::CreateSolidBackground(background_color));
+  UpdateBorder();
 
   new_tab_button_->FrameColorsChanged();
-
-  SetBorder(views::CreateSolidSidedBorder(
-      gfx::Insets().set_right(1),
-      cp->GetColor(kColorBraveVerticalTabSeparator)));
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
@@ -1145,8 +1130,39 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
   const bool use_search_button =
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-  if (auto* tab_search_button = original_region_view_->tab_search_button()) {
-    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+  if (auto* tab_search_container =
+          original_region_view_->tab_search_container()) {
+    if (auto* tab_search_button = tab_search_container->tab_search_button()) {
+      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+    }
+  }
+}
+
+void VerticalTabStripRegionView::UpdateBorder() {
+  auto show_visible_border = [&]() {
+    // The color provider might not be available during initialization.
+    if (!GetColorProvider()) {
+      return false;
+    }
+
+    if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+      return true;
+    }
+
+    // Only show the border if the vertical tabs are enabled and in floating
+    // mode, and the tabstrip is hovered.
+    return tabs::utils::ShouldShowVerticalTabs(browser_) &&
+           state_ == State::kFloating;
+  };
+
+  gfx::Insets border_insets = gfx::Insets::TLBR(0, 0, 0, 1);
+
+  if (show_visible_border()) {
+    SetBorder(views::CreateSolidSidedBorder(
+        border_insets,
+        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
+  } else {
+    SetBorder(views::CreateEmptyBorder(border_insets));
   }
 }
 

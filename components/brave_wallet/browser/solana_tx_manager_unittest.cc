@@ -13,7 +13,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -33,7 +32,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -67,10 +65,6 @@ class SolanaTxManagerUnitTest : public testing::Test {
     last_valid_block_height2_ = 3290;
     last_valid_block_height3_ = 3490;
 
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletSolanaFeature);
-
     SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
                    false, last_valid_block_height1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
@@ -82,8 +76,9 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                                         &prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
+        &prefs_, temp_dir_.GetPath(),
+        base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     CreateWallet();
 

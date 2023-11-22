@@ -21,8 +21,7 @@ struct CatalogTypeInfo final {
 
   ~CatalogTypeInfo();
 
-  bool operator==(const CatalogTypeInfo&) const;
-  bool operator!=(const CatalogTypeInfo&) const;
+  bool operator==(const CatalogTypeInfo&) const = default;
 
   std::string code;
   std::string name;

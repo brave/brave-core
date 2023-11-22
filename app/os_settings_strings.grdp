@@ -791,8 +791,8 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY" desc="Label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
     Manage user dictionaries
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_CLEAR_PERSONALIZATION_DATA" desc="The label for the button leading to the page within japanese input settings which can be used to clear personalization data for Japanese input. In Japanese, this should be '入力履歴の消去...'.">
-    Clear personalization data...
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_PERSONALIZATION_DATA" desc="The label for the button leading to the page within japanese input settings which can be used to delete personalization data for Japanese input. In Japanese, this should be '入力履歴の消去...'.">
+    Delete personalization data...
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY_SUBTITLE" desc="Subheading for the label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
     Add your own words to the user dictionaries in order to customize the conversion candidates.
@@ -897,6 +897,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_PERSONALIZATION" desc="Name of the OS settings page which displays personalization preferences.">
     Wallpaper and style
+  </message>
+  <message name="IDS_OS_SETTINGS_PERSONALIZATION_MENU_ITEM_DESCRIPTION" desc="Description for the Personalization menu item in the left menu.">
+    Dark theme, screen saver
   </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
     Set your wallpaper &amp; style
@@ -1130,7 +1133,7 @@
   <message name="IDS_SETTINGS_ONE_DRIVE_SIGNED_IN_AS" desc="Label indicating, in the Files Settings subpage, the email address with which the user is currently signed in in OneDrive">
     Signed in as <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECTED" desc="Label indicating, in the Files Settings subpage, that the user is currently not signed in in OneDrive">
+  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECTED" desc="Label prompting, in the Files Settings subpage, the user to add a new account for OneDrive">
     Add your Microsoft account
   </message>
   <message name="IDS_SETTINGS_ONE_DRIVE_CONNECT" desc="Action to connect OneDrive in Settings: Files: OneDrive.">
@@ -1151,10 +1154,10 @@
   <message name="IDS_SETTINGS_OFFICE_SUBPAGE_TITLE" desc="Title of the Microsoft 365 subpage.">
     Microsoft 365 files
   </message>
-  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always move files to Drive without asking for confirmation.">
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always copy/move files to Drive without asking for confirmation.">
     Ask before copying or moving Microsoft files to Google Drive
   </message>
-  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always move files to OneDrive without asking for confirmation.">
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always copy/move files to OneDrive without asking for confirmation.">
     Ask before copying or moving Microsoft files to Microsoft OneDrive
   </message>
 
@@ -1175,6 +1178,15 @@
   </message>
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_LABEL" desc="Label for checkbox which enables showing a larger mouse cursor than normal.">
     Show large mouse cursor
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_LABEL" desc="Label for checkbox which enables controlling the mouse cursor and keyboard with face movements.">
+    Face tracking
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_DESCRIPTION" desc="The description for the checkbox that enables controlling the mouse cursor and keyboard with face movements.">
+    Control your cursor and keyboard with face movements
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_SETTINGS" desc="Label for the option to configure the feature that enables controlling the mouse cursor and keyboard with face movements.">
+    Face tracking settings
   </message>
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_SIZE_LABEL" desc="Label for a slider which changes the size of large mouse cursor.">
     Cursor size
@@ -2767,6 +2779,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_RENAMING_DIALOG_INPUT_LABEL" translateable="false" desc="Label above renaming button input field on the dialog in customize device buttons pages.">
     New button name
   </message>
+  <message name="IDS_SETTINGS_KEY_COMBINATION_DIALOG_TITLE" translateable="false" desc="Title of the key combination dialog that pops up after clicking key combination choice in the button remapping action dropdown menu.">
+    Enter key combination
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_SUBPAGE_DESCRIPTION" translateable="false" desc="In customize buttons subpage, the description label above customize buttons to describe the actions user can perform.">
+    Click additional buttons on your <ph name="DEVICE_NAME">$1<ex>MX Anywhere 2S</ex></ph> to add or locate buttons.
+  </message>
 
   <!-- Bluetooth page (OS settings) -->
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
@@ -3177,6 +3195,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MOUSE_SCROLL_ACCELERATION_LABEL" desc="In Device Settings, the text next to the toggle for mouse scroll acceleration. Faster scrolling with your mouse will scroll farther.">
     Scroll acceleration <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_MOUSE_CONTROLLED_SCROLLING_LABEL" desc="In Device Settings, the text next to the toggle for mouse controlled scrolling. Scroll at a controlled pace without automatic acceleration.">
+    Controlled scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_SETTINGS_CURSOR_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the mouse cursor.">
     Cursor speed
   </message>
@@ -3309,10 +3330,113 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_SIX_PACK_KEY_OPTION_DISABLED" desc="In the keyboard settings subpage, the dropdown list item for the disabled option.">
     Disabled
   </message>
+    <!-- TODO(b/298073742): Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_F11_KEY_LABEL" translateable="false" desc="In the keyboard settings subpage, the label for the F11 row.">
+    F11
+  </message>
+  <message name="IDS_SETTINGS_F12_KEY_LABEL" translateable="false" desc="In the keyboard settings subpage, the label for the F12 row.">
+    F12
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_SHIFT_DROPDOWN_OPTION_SEARCH" translateable="false" desc="">
+    search + shift + <ph name="TOP_ROW_KEY">$1<ex>back</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_SHIFT_DROPDOWN_OPTION_LAUNCHER" translateable="false" desc="">
+    launcher + shift + <ph name="TOP_ROW_KEY">$1<ex>refresh</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_ALT_DROPDOWN_OPTION_SEARCH" translateable="false" desc="">
+    search + alt + <ph name="TOP_ROW_KEY">$1<ex>back</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_ALT_DROPDOWN_OPTION_LAUNCHER" translateable="false" desc="">
+    launcher + alt + <ph name="TOP_ROW_KEY">$1<ex>refresh</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_CTRL_SHIFT_DROPDOWN_OPTION_SEARCH" translateable="false" desc="">
+    search + ctrl + shift + <ph name="TOP_ROW_KEY">$1<ex>back</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_CTRL_SHIFT_DROPDOWN_OPTION_LAUNCHER" translateable="false" desc="">
+    launcher + ctrl + shift + <ph name="TOP_ROW_KEY">$1<ex>refresh</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_SHIFT_DROPDOWN_OPTION" translateable="false" desc="">
+    shift + <ph name="TOP_ROW_KEY">$1<ex>back</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_ALT_DROPDOWN_OPTION" translateable="false" desc="">
+    alt + <ph name="TOP_ROW_KEY">$1<ex>back</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_F_KEY_CTRL_SHIFT_DROPDOWN_OPTION" translateable="false" desc="">
+    ctrl + shift + <ph name="TOP_ROW_KEY">$1<ex>refresh</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BACK" translateable="false" desc="Describes the Back key on the top row of a ChromeOS keyboard.">
+    back
+  </message>
+  <message name="IDS_SETTINGS_FORWARD" translateable="false" desc="Describes the Forward key on the top row of a ChromeOS keyboard.">
+    forward
+  </message>
+  <message name="IDS_SETTINGS_FULLSCREEN" translateable="false" desc="Describes the Fullscreen key on the top row of a ChromeOS keyboard.">
+    fullscreen
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_BACKLIGHT_DOWN" translateable="false" desc="Describes the key for decreasing keyboard backlight brightness on the top row of a ChromeOS keyboard.">
+    keyboard brightness down
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_BACKLIGHT_TOGGLE" translateable="false" desc="Describes the key for toggling the keyboard backlight on the top row of a ChromeOS keyboard.">
+    keyboard backlight toggle
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_BACKLIGHT_UP" translateable="false" desc="Describes the key for increasing keyboard backlight brightness on the top row of a ChromeOS keyboard.">
+    keyboard brightness up
+  </message>
+  <message name="IDS_SETTINGS_MICROPHONE_MUTE" translateable="false" desc="Describes the key on the top row of a ChromeOS keyboard.">
+    microphone mute
+  </message>
+  <message name="IDS_SETTINGS_MUTE" translateable="false" desc="Describes the Mute key on the top row of a ChromeOS keyboard.">
+    mute
+  </message>
+  <message name="IDS_SETTINGS_OVERVIEW" translateable="false" desc="Describes the Overview key on the top row of a ChromeOS keyboard.">
+    overview
+  </message>
+  <message name="IDS_SETTINGS_PLAY_PAUSE" translateable="false" desc="Describes the play/pause key on the top row of a ChromeOS keyboard.">
+    play/pause
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SCREEN_TOGGLE" translateable="false" desc="Describes the key on the top row of a ChromeOS keyboard.">
+    privacy screen toggle
+  </message>
+  <message name="IDS_SETTINGS_REFRESH" translateable="false" desc="Describes the Refresh key on the top row of a ChromeOS keyboard.">
+    refresh
+  </message>
+  <message name="IDS_SETTINGS_SCREENSHOT" translateable="false" desc="Describes the Screenshot key on the top row of a ChromeOS keyboard.">
+    screenshot
+  </message>
+  <message name="IDS_SETTINGS_SCREEN_BRIGHTNESS_DOWN" translateable="false" desc="Describes the key for decreasing display brightness on the top row of a ChromeOS keyboard.">
+    display brightness down
+  </message>
+  <message name="IDS_SETTINGS_SCREEN_BRIGHTNESS_UP" translateable="false" desc="Describes the key for increasing display brightness on the top row of a ChromeOS keyboard.">
+    display brightness up
+  </message>
+  <message name="IDS_SETTINGS_SCREEN_MIRROR" translateable="false" desc="Describes the key on the top row of a ChromeOS keyboard.">
+    screen mirror
+  </message>
+  <message name="IDS_SETTINGS_TRACK_NEXT" translateable="false" desc="Describes the next track key on the top row of a ChromeOS keyboard.">
+    next track
+  </message>
+  <message name="IDS_SETTINGS_TRACK_PREVIOUS" translateable="false" desc="Describes the previous track key on the top row of a ChromeOS keyboard.">
+    previous track
+  </message>
+  <message name="IDS_SETTINGS_VOLUME_DOWN" translateable="false" desc="Describes the volume down key on the top row of a ChromeOS keyboard.">
+    volume down
+  </message>
+  <message name="IDS_SETTINGS_VOLUME_UP" translateable="false" desc="Describes the volume up key on the top row of a ChromeOS keyboard.">
+    volume up
+  </message>
+  <message name="IDS_SETTINGS_ALL_APPLICATIONS" translateable="false" desc="Describes the all applications key on the top row of a ChromeOS keyboard.">
+    all applications
+  </message>
+  <message name="IDS_SETTINGS_EMOJI_PICKER" translateable="false" desc="Describes the emoji picker key on the top row of a ChromeOS keyboard.">
+    emoji pciker
+  </message>
+  <message name="IDS_SETTINGS_DICTATION" translateable="false" desc="Describes the dictation key on the top row of a ChromeOS keyboard.">
+    dictation
+  </message>
 
   <!-- Printing Page (OS Settings)-->
   <message name="IDS_SETTINGS_PRINT_AND_SCAN" desc="Title of the printing and scanning page and navigation item to get there.">
-    Printers and Scanners
+    Printers and scanners
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINT_SERVER" desc="Label for button that allows the user to access the add print server dialog.">
     Print server
@@ -4376,11 +4500,17 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_ITEM_HEADING" desc="Heading for settings item that allows the user to connect their phone to their Chromebook.">
     Android phone
   </message>
+   <message name="IDS_OS_SETTINGS_MULTIDEVICE_SUBPAGE_TITLE" desc="Title for the multidevice detail subpage.">
+    Android phone (<ph name="HOST_DEVICE_NAME">$1<ex>Android phone</ex></ph>)
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ENABLED" desc="Text to tell user multidevice features are turned on">
     Enabled
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_DISABLED" desc="Text to tell user multidevice features are turned off">
     Disabled
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_MULTIDEVICE_TOGGLE_LABEL" desc="Label for the top level toggle button on the Connected Devices details subpage">
+    Connect to your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
     Connected phone features enable.
@@ -4391,11 +4521,17 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_SUMMARY" desc="Description of for the 'Instant Tethering' setting. This feature automatically offers the user to tether to their phone if their Chromebook is offline and their phone supports tethering.">
     Connect to the internet through your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES" desc="Name of a feature. This feature lets the user read and reply to text messages from their Chromebook. New text messages will appear as notifications.">
-    Messages
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_CONNECTED_DESCRIPTION" desc="Description of for the 'Instant Tethering' setting when it's connected. This feature automatically offers the user to tether to their phone if their Chromebook is offline and their phone supports tethering.">
+    Connected to internet through <ph name="HOST_DEVICE_NAME">$1<ex>Android phone</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Chromebook. New text messages will appear as notifications.">
-    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_CONNECTING_DESCRIPTION" desc="Description of for the 'Instant Tethering' setting when it's being connected.">
+    Connecting to <ph name="HOST_DEVICE_NAME">$1<ex>Android phone</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_NO_NETWORK_DESCRIPTION" desc="Description of for the 'Instant Tethering' setting when it's not connected.">
+    No network through <ph name="HOST_DEVICE_NAME">$1<ex>Android phone</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_DISABLED_DESCRIPTION" desc="Description of for the 'Instant Tethering' setting when it's diabled.">
+    Connect to the internet through your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" desc="The title of the Phone Hub section on the settings page.">
     Phone Hub
@@ -5330,6 +5466,14 @@ Press an assigned switch or key to remove assignment.
     Confirm your PIN
   </message>
 
+  <!-- Set local password dialog -->
+  <message name="IDS_OS_SETTINGS_PEOPLE_SET_LOCAL_PASSWORD_DIALOG_TITLE" desc="Title of the dialog that lets the user change their local password.">
+    Set device password
+  </message>
+  <message name="IDS_OS_SETTINGS_PEOPLE_SET_LOCAL_PASSWORD_DIALOG_INTERNAL_ERROR" desc="Error message when setting a local password doesn't work for undetermined reasons.">
+    Internal error
+  </message>
+
   <!-- Setup fingerprint dialog (OS settings) -->
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
     Set up your fingerprint
@@ -5502,6 +5646,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
     Keyboard
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_KEYBOARD_AND_INPUTS_TITLE" desc="In Device Settings, the title of the keyboard and input settings subpage.">
+    Keyboard and inputs
+  </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_LEFT_CTRL" desc="In Device Settings, the label and dropdown list item for the Ctrl key.">
     Ctrl
   </message>
@@ -5625,6 +5772,15 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Notifications
   </message>
+  <message name="IDS_SETTINGS_MANAGE_ISOLATED_WEB_APPS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the Manage Isolated Web Apps page.">
+    Manage isolated web apps (beta)
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_ISOLATED_WEB_APPS_SUBPAGE_TITLE" desc="The title of the Manage Isolated Web Apps subpage.">
+    Isolated web apps (beta)
+  </message>
+  <message name="IDS_SETTINGS_ISOLATED_WEB_APPS_DESCRIPTION" desc="A short description for Isolated Web Apps and a link for additional information.">
+    Packaged web applications with enhanced capabilities. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_LINK_DESCRIPTION" desc="The description for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Manage app notifications, Do not disturb, and app badging
   </message>
@@ -5651,6 +5807,9 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
   <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_SUBLABEL" desc="The sublabel for the app badging toggle in the App Notifications page of OS Settings.">
     Show dot on app icon for app alerts
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_ISOLATED_WEB_APPS_LABEL" desc="The label for the enable Isolated Web Apps toggle in the Manage Isolated Web Apps page of OS Settings.">
+    Turn on isolated web apps
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
@@ -5793,10 +5952,22 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
     <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex.">
       Help improve ChromeOS Flex features and performance
     </message>
+    <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex.">
+      Send crash reports and diagnostic and usage data to ChromeOS Flex
+    </message>
+    <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex for user of the device.">
+      Help improve ChromeOS Flex features and performance. Data is aggregated and highly protected.
+    </message>
   </if>
   <if expr="not reven">
     <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS.">
       Help improve ChromeOS features and performance
+    </message>
+    <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS.">
+      Send crash reports and diagnostic and usage data to ChromeOS
+    </message>
+    <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
+      Help improve ChromeOS features and performance. Data is aggregated and highly protected.
     </message>
   </if>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
@@ -5805,8 +5976,14 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
     Suggest new content to explore
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
+    Get content recommendations
+  </message>
   <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_DESC" desc="The description of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
     Includes apps, webpages, and more. Sends statistics to improve suggestions only if you’ve chosen to share usage data.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_SUGGESTED_CONTENT_DESCRIPTION" desc="The description of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
+  See suggestions for new apps and web content in Launcher and search results. Sends statistics to improve suggestions only if you have chosen to send crash reports and diagnostics and usage data to ChromeOS.
   </message>
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access
@@ -5814,23 +5991,41 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
     Data access protection for peripherals
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DATA_ACCESS_PROTECTION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
+    Block external accessories from accessing and sharing memory (RAM)
+  </message>
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_DESCRIPTION" desc="The description of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
     Some devices require you to disable data access protection to work properly or at full performance.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DATA_ACCESS_PROTECTION_TOGGLE_DESCRIPTION" desc="The description of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
+    Some Thunderbolt or USB4 accessories need memory access to work properly.
   </message>
   <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_TITLE" desc="The title of the dialog that asks users for confirmation that they indeed do want to disable Data Access Protection.">
     Disable data access protection for peripherals
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_TITLE" desc="The title of the dialog that asks users for confirmation that they indeed do want to disable Data Access Protection.">
+    Allow external accessories to access memory?
+  </message>
   <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DESCRIPTION" desc="The description of the dialog that asks users for confirmation that they indeed do want to disable Data Access Protection.">
     Disabling can make your peripherals perform better, but may expose your personal data through unauthorized usage.
   </message>
-  <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_SUB_DESCRIPTION" desc="The description of the dialog that states that disabling peripheral data acces protection may reset the user's peripherals and may take a few seconds.">
+  <message name="IDS_OS_SETTINGS_REVAMP_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DESCRIPTION" desc="The description of the dialog that asks users for confirmation that they indeed do want to disable Data Access Protection.">
+    External accessories may be able to access or share personal data.
+  </message>
+  <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_SUB_DESCRIPTION" desc="The description of the dialog that states that disabling peripheral data access protection may reset the user's peripherals and may take a few seconds.">
     Your displays and peripherals may reset briefly. For this change to take effect, unplug and replug your peripherals.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_SUB_DESCRIPTION" desc="The description of the dialog that states that disabling peripheral data access protection may reset the user's peripherals and may take a few seconds.">
+    For this change to take effect, reconnect your external accessories.
   </message>
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_CANCEL_BUTTON_LABEL" desc="The label of the cancel button for the data access protection confirmation dialog">
     Cancel
   </message>
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DISABLE_BUTTON_LABEL" desc="The label of the confirmation button to disable data access protection">
     Disable
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_ALLOW_BUTTON_LABEL" desc="The label of the confirmation button to disable data access protection">
+    Allow
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Text on the privacy page that opens up the smart privacy section.">
     Screen privacy
@@ -5910,9 +6105,21 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_DESC" desc="The description of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
     Let Brave use your hardware data to help improve <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph>. If you decline, this data is still sent to Brave to determine proper updates, but is not stored or used otherwise.
   </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_WEBSITES_SECTION_TITLE" translateable="false" desc="The title of the Websites section of the privacy hub sensor subpages.">
+    Websites
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_MIC_PERMISSIONS_IN_CHROME_TEXT" translateable="false" desc="The label of the Brave row in the Websites section of the microphone subpage. This row is displayed when microphone is allowed.">
+    Manage site microphone permissions in Brave
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_MIC_TEXT" translateable="false" desc="The text displayed in the Websites section of the microphone subpage when microphone is not allowed.">
+    No website is allowed to use your microphone
+  </message>
 
 
   <!-- On Startup (OS settings) -->
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_SETTINGS_CARD_TITLE" desc="The title of the settings card that allows the user to configure the restore apps and pages options on startup.">
+    Startup
+  </message>
   <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
     Restore apps on startup
   </message>
@@ -5934,7 +6141,7 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
 
   <!-- System Preferences Page -->
   <message name="IDS_OS_SETTINGS_SYSTEM_PREFERENCES_TITLE" desc="The title of the System Preferences page and respective menu item.">
-    System Preferences
+    System preferences
   </message>
   <message name="IDS_OS_SETTINGS_SYSTEM_PREFERENCES_STORAGE_AND_POWER_TITLE" desc="The title of the Storage and Power settings card in the System Preferences page.">
     Storage and power

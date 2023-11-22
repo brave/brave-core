@@ -17,10 +17,10 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -39,6 +39,11 @@ const char kMatchDarkModeFormatString[] =
 
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
+  BraveDarkModeFingerprintProtectionTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShowStrictFingerprintingMode);
+  }
+
   class BraveContentBrowserClientWithWebTheme
       : public BraveContentBrowserClient {
    public:
@@ -163,6 +168,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL dark_mode_url_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {

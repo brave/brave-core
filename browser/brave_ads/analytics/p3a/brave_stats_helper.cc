@@ -23,9 +23,6 @@ const int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
 
 }  // namespace
 
-const char kAdsEnabledInstallationTimeHistogramName[] =
-    "Brave.Rewards.EnabledInstallationTime";
-
 BraveStatsHelper::BraveStatsHelper()
     : local_state_(g_browser_process->local_state()),
       profile_manager_(g_browser_process->profile_manager()) {

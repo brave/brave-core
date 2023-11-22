@@ -15,7 +15,12 @@ import { WalletRoutes } from '../../../constants/types'
 // style
 import { LinkText } from '../../../components/shared/style'
 import { BackIcon } from '../../buy-send-swap/select-header/style'
-import { BackButton, DotsWrapper, FlexBox, Wrapper } from './steps-navigation.style'
+import {
+  BackButton,
+  DotsWrapper,
+  FlexBox,
+  Wrapper
+} from './steps-navigation.style'
 
 export interface StepsNavigationProps<T extends string> {
   currentStep: T
@@ -44,64 +49,63 @@ export const StepsNavigation: <T extends string>(
   const history = useHistory()
 
   // computed
-  const currentStepIndex = steps.findIndex(s => s === currentStep)
+  const currentStepIndex = steps.findIndex((s) => s === currentStep)
 
   // memos
   const buttonProps = React.useMemo(() => {
     return goBackUrl
-      ? { as: Link, to: goBackUrl } as const
-      : { onClick: goBack || history.goBack, as: 'button' } as const
+      ? ({ as: Link, to: goBackUrl } as const)
+      : ({ onClick: goBack || history.goBack, as: 'button' } as const)
   }, [goBackUrl, goBack, history])
 
   return (
     <Wrapper>
-      {preventGoBack
-        ? <FlexBox />
-        : <BackButton
-            as={buttonProps.as}
-            to={buttonProps.to}
-            onClick={buttonProps.onClick}
-          >
-            <BackIcon />
-            <span>{getLocale('braveWalletBack')}</span>
-          </BackButton>
-      }
+      {preventGoBack ? (
+        <FlexBox />
+      ) : (
+        <BackButton
+          as={buttonProps.as}
+          to={buttonProps.to}
+          onClick={buttonProps.onClick}
+        >
+          <BackIcon />
+          <span>{getLocale('braveWalletBack')}</span>
+        </BackButton>
+      )}
 
       <DotsWrapper>
         {steps.map((stepName, stepIndex) => {
           const isCurrentStep = currentStep === stepName
 
           const isAvailableNextStep =
-            !preventSkipAhead &&
-            stepIndex > currentStepIndex
+            !preventSkipAhead && stepIndex > currentStepIndex
 
           const isAvailablePrevStep =
-            !preventGoBack &&
-            stepIndex < currentStepIndex
+            !preventGoBack && stepIndex < currentStepIndex
 
           const showLink =
-            isCurrentStep ||
-            isAvailableNextStep ||
-            isAvailablePrevStep
+            isCurrentStep || isAvailableNextStep || isAvailablePrevStep
 
-          return showLink
-            ? <NavLink
-                to={stepName}
-                key={stepName}
-                isActive={() => currentStep === stepName}
-                activeClassName="active"
-              />
-            : <div key={stepName} />
+          return showLink ? (
+            <NavLink
+              to={stepName}
+              key={stepName}
+              isActive={() => currentStep === stepName}
+              activeClassName='active'
+            />
+          ) : (
+            <div key={stepName} />
+          )
         })}
       </DotsWrapper>
 
-      {onSkip
-        ? <LinkText onClick={onSkip}>
-            {skipButtonText || getLocale('braveWalletButtonSkip')}
-          </LinkText>
-        : <FlexBox />
-      }
-
+      {onSkip ? (
+        <LinkText onClick={onSkip}>
+          {skipButtonText || getLocale('braveWalletButtonSkip')}
+        </LinkText>
+      ) : (
+        <FlexBox />
+      )}
     </Wrapper>
   )
 }

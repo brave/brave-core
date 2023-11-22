@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -16,8 +16,8 @@ namespace brave_ads {
 namespace {
 
 void MockDiagnosticId() {
-  SetStringPrefValue(prefs::kDiagnosticId,
-                     "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetProfileStringPrefValue(prefs::kDiagnosticId,
+                            "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 }
 
 }  // namespace

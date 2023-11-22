@@ -56,7 +56,7 @@ class BraveWalleBrowserClientUnitTest
                                       .Set("name", "ext")
                                       .Set("version", "0.1")
                                       .Set("manifest_version", 2))
-                     .SetID(ethereum_remote_client_extension_id)
+                     .SetID(kEthereumRemoteClientExtensionId)
                      .Build();
     ASSERT_TRUE(extension_);
     ExtensionRegistry::Get(browser_context())->AddReady(extension_.get());
@@ -84,7 +84,7 @@ TEST_F(BraveWalleBrowserClientUnitTest,
   GURL url("chrome://wallet/");
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
-  ASSERT_STREQ(url.spec().c_str(), ethereum_remote_client_base_url);
+  EXPECT_EQ(url, GURL(kEthereumRemoteClientBaseUrl));
 }
 
 }  // namespace extensions

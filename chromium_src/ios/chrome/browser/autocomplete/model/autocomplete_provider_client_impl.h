@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_AUTOCOMPLETE_MODEL_AUTOCOMPLETE_PROVIDER_CLIENT_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_AUTOCOMPLETE_MODEL_AUTOCOMPLETE_PROVIDER_CLIENT_IMPL_H_
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 

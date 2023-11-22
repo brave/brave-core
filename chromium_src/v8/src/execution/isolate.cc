@@ -17,10 +17,10 @@ GetExecutingScriptsImpl(Isolate* isolate, bool all, bool include_position) {
   JavaScriptStackFrameIterator it(isolate);
   while (!it.done()) {
     JavaScriptFrame* frame = it.frame();
-    std::vector<SharedFunctionInfo> functions;
+    std::vector<Tagged<SharedFunctionInfo>> functions;
     frame->GetFunctions(&functions);
     for (const auto& shared : functions) {
-      Object maybe_script = shared.script();
+      Tagged<Object> maybe_script = shared->script();
       if (!IsScript(maybe_script)) {
         continue;
       }

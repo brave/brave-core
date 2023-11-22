@@ -5,6 +5,12 @@
 
 import * as mojo from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
+type MojomEnum = {
+  [key: string]: number,
+  MIN_VALUE: number,
+  MAX_VALUE: number
+}
+
 /**
  * Converts a mojo time to a JS time.
  */
@@ -31,4 +37,9 @@ export function mojoTimeToJSDate (mojoTime: mojo.Time): Date {
  */
 export function mojoTimeDeltaToJSDate (mojoTime: mojo.TimeDelta) {
   return new Date(Number(mojoTime.microseconds) / 1000)
+}
+
+export function getKeysForMojomEnum<T extends MojomEnum>(mojomEnum: T): Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>> {
+  const ignoreKeys = ['MIN_VALUE', 'MAX_VALUE']
+  return Object.keys(mojomEnum).filter(k => !ignoreKeys.includes(k)) as Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>>
 }

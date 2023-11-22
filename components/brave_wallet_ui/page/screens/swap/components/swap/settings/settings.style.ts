@@ -4,12 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { StyledDiv, IconButton, StyledButton, Icon } from '../../shared-swap.styles'
+import {
+  StyledDiv,
+  IconButton,
+  StyledButton,
+  Icon
+} from '../../shared-swap.styles'
 
 export const Modal = styled(StyledDiv)`
-  background-color: ${p => p.theme.color.background02};
+  background-color: ${(p) => p.theme.color.background02};
   border-radius: 16px;
-  border: 1px solid ${p => p.theme.color.disabled};
+  border: 1px solid ${(p) => p.theme.color.disabled};
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   flex-direction: column;
@@ -23,7 +28,7 @@ export const Modal = styled(StyledDiv)`
   right: -16px;
   top: 28px;
   @media (prefers-color-scheme: dark) {
-    border: 1px solid ${p => p.theme.color.divider01};
+    border: 1px solid ${(p) => p.theme.color.divider01};
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
   }
   @media screen and (max-width: 570px) {
@@ -45,21 +50,21 @@ export const ExchangesColumn = styled(StyledDiv)`
   grid-gap: 20px;
 `
 
-export const Button = styled(StyledButton) <{
+export const Button = styled(StyledButton)<{
   isSelected: boolean
 }>`
-  --border-selected: ${p => p.theme.color.interactive05};
+  --border-selected: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    --border-selected: ${p => p.theme.color.focusBorder};
+    --border-selected: ${(p) => p.theme.color.focusBorder};
   }
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   border-radius: 8px;
   border: 1px solid
-    ${p =>
-    p.isSelected ? 'var(--border-selected)' : p.theme.color.divider01};
+    ${(p) =>
+      p.isSelected ? 'var(--border-selected)' : p.theme.color.divider01};
   padding: 12px 16px;
   margin-bottom: 8px;
   &:hover {
@@ -88,7 +93,7 @@ export const ButtonIcon = styled(Icon)`
   }
 `
 
-export const MoreButton = styled(IconButton) <{
+export const MoreButton = styled(IconButton)<{
   isSelected: boolean
   expandOut?: boolean
 }>`

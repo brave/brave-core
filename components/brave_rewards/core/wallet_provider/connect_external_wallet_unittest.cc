@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
@@ -39,7 +40,11 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override { return "test"; }
 
-  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback callback) override {
+  std::string GetOAuthLoginURL() const override {
+    return "https://test.com?" + oauth_info_.one_time_string;
+  }
+
+  void Authorize(ConnectExternalWalletCallback callback) override {
     OnConnect(std::move(callback), "token", "address",
               Result(post_connect_result_));
   }
@@ -54,7 +59,7 @@ using ConnectExternalWalletTestParamType = std::tuple<
     std::string,                               // one time string
     base::flat_map<std::string, std::string>,  // query parameters
     Result,                                    // post connect result
-    ConnectExternalWalletResult                // expected result
+    mojom::ConnectExternalWalletResult         // expected result
 >;
 // clang-format on
 
@@ -70,9 +75,8 @@ TEST_P(ConnectExternalWalletTest, Paths) {
                post_connect_result, expected_result] = GetParam();
 
   std::string test_wallet = FakeEncryption::Base64EncryptString(
-      R"({ "one_time_string": ")" + one_time_string + R"(",
-          "status": )" +
-      std::to_string(static_cast<int>(wallet_status)) + "}");
+      R"({ "status": )" +
+      base::NumberToString(static_cast<int>(wallet_status)) + "}");
 
   ON_CALL(*mock_engine_impl_.mock_client(), GetStringState("wallets.test", _))
       .WillByDefault([&](const std::string&, auto callback) {
@@ -87,8 +91,14 @@ TEST_P(ConnectExternalWalletTest, Paths) {
   base::MockCallback<ConnectExternalWalletCallback> callback;
   EXPECT_CALL(callback, Run(expected_result)).Times(1);
 
-  ConnectTestWallet(mock_engine_impl_, post_connect_result)
-      .Run(query_parameters, callback.Get());
+  ConnectTestWallet connect_wallet(mock_engine_impl_, post_connect_result);
+
+  is_testing = true;
+  EXPECT_EQ(connect_wallet.GenerateLoginURL(), "https://test.com?123456789");
+  is_testing = false;
+
+  connect_wallet.SetOAuthStateForTesting(one_time_string, "");
+  connect_wallet.Run(query_parameters, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -101,60 +111,60 @@ INSTANTIATE_TEST_SUITE_P(
     ConnectExternalWalletTestParamType{
       "unexpected_wallet_state",
       mojom::WalletStatus::kConnected,
-      "",
+      "one_time_string",
       {},
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_error_description_user_does_not_meet_minimum_requirements",
       mojom::WalletStatus::kNotConnected,
-      "",
+      "one_time_string",
       base::flat_map<std::string, std::string>{
         {"error_description", "User does not meet minimum requirements"}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired)
+      mojom::ConnectExternalWalletResult::kKYCRequired
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_error_description_not_available_for_user_geolocation",
       mojom::WalletStatus::kNotConnected,
-      "",
+      "one_time_string",
       base::flat_map<std::string, std::string>{
         {"error_description", "not available for user geolocation"}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kRegionNotSupported)
+      mojom::ConnectExternalWalletResult::kRegionNotSupported
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_error_description_unknown_error_message",
       mojom::WalletStatus::kNotConnected,
-      "",
+      "one_time_string",
       base::flat_map<std::string, std::string>{
         {"error_description", "unknown error message"}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_code_is_missing",
       mojom::WalletStatus::kNotConnected,
-      "",
+      "one_time_string",
       base::flat_map<std::string, std::string>{
         {"state", ""}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_state_is_missing",
       mojom::WalletStatus::kNotConnected,
-      "",
+      "one_time_string",
       base::flat_map<std::string, std::string>{
         {"code", ""}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "query_parameters_one_time_string_mismatch",
@@ -165,7 +175,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string_2"}
       },
       {},
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "post_connect_failed_to_create_request",
@@ -176,7 +186,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kFailedToCreateRequest),
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "post_connect_flagged_wallet",
@@ -187,7 +197,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kFlaggedWallet),
-      base::unexpected(mojom::ConnectExternalWalletError::kFlaggedWallet)
+      mojom::ConnectExternalWalletResult::kFlaggedWallet
     },
     ConnectExternalWalletTestParamType{
       "post_connect_mismatched_countries",
@@ -198,7 +208,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kMismatchedCountries),
-      base::unexpected(mojom::ConnectExternalWalletError::kMismatchedCountries)
+      mojom::ConnectExternalWalletResult::kMismatchedCountries
     },
     ConnectExternalWalletTestParamType{
       "post_connect_provider_unavailable",
@@ -209,7 +219,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kProviderUnavailable),
-      base::unexpected(mojom::ConnectExternalWalletError::kProviderUnavailable)
+      mojom::ConnectExternalWalletResult::kProviderUnavailable
     },
     ConnectExternalWalletTestParamType{
       "post_connect_region_not_supported",
@@ -220,7 +230,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kRegionNotSupported),
-      base::unexpected(mojom::ConnectExternalWalletError::kRegionNotSupported)
+      mojom::ConnectExternalWalletResult::kRegionNotSupported
     },
     ConnectExternalWalletTestParamType{
       "post_connect_unknown_message",
@@ -231,7 +241,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kUnknownMessage),
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "post_connect_kyc_required",
@@ -242,7 +252,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kKYCRequired),
-      base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired)
+      mojom::ConnectExternalWalletResult::kKYCRequired
     },
     ConnectExternalWalletTestParamType{
       "post_connect_mismatched_provider_accounts",
@@ -253,7 +263,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kMismatchedProviderAccounts),
-      base::unexpected(mojom::ConnectExternalWalletError::kMismatchedProviderAccounts)
+      mojom::ConnectExternalWalletResult::kMismatchedProviderAccounts
     },
     ConnectExternalWalletTestParamType{
       "post_connect_request_signature_verification_failure",
@@ -264,7 +274,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kRequestSignatureVerificationFailure),
-      base::unexpected(mojom::ConnectExternalWalletError::kRequestSignatureVerificationFailure)
+      mojom::ConnectExternalWalletResult::kRequestSignatureVerificationFailure
     },
     ConnectExternalWalletTestParamType{
       "post_connect_transaction_verification_failure",
@@ -275,7 +285,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kTransactionVerificationFailure),
-      base::unexpected(mojom::ConnectExternalWalletError::kUpholdTransactionVerificationFailure)
+      mojom::ConnectExternalWalletResult::kUpholdTransactionVerificationFailure
     },
     ConnectExternalWalletTestParamType{
       "post_connect_device_limit_reached",
@@ -286,7 +296,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kDeviceLimitReached),
-      base::unexpected(mojom::ConnectExternalWalletError::kDeviceLimitReached)
+      mojom::ConnectExternalWalletResult::kDeviceLimitReached
     },
     ConnectExternalWalletTestParamType{
       "post_connect_unexpected_error",
@@ -297,7 +307,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kUnexpectedError),
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "post_connect_unexpected_status_code",
@@ -308,7 +318,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kUnexpectedStatusCode),
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "post_connect_failed_to_parse_body",
@@ -319,7 +329,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       base::unexpected(mojom::PostConnectError::kFailedToParseBody),
-      base::unexpected(mojom::ConnectExternalWalletError::kUnexpected)
+      mojom::ConnectExternalWalletResult::kUnexpected
     },
     ConnectExternalWalletTestParamType{
       "success",
@@ -330,7 +340,7 @@ INSTANTIATE_TEST_SUITE_P(
         {"state", "one_time_string"}
       },
       "US",
-      {}
+      mojom::ConnectExternalWalletResult::kSuccess
     }
   ),
   [](const TestParamInfo<ConnectExternalWalletTestParamType>& info) {

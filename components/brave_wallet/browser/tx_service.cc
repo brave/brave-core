@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/grit/brave_components_strings.h"
@@ -46,6 +47,10 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 
   if (tx_data_union.is_btc_tx_data()) {
     return mojom::CoinType::BTC;
+  }
+
+  if (tx_data_union.is_zec_tx_data()) {
+    return mojom::CoinType::ZEC;
   }
 
   NOTREACHED_NORETURN();
@@ -91,6 +96,7 @@ size_t CalculatePendingTxCount(
 
 TxService::TxService(JsonRpcService* json_rpc_service,
                      BitcoinWalletService* bitcoin_wallet_service,
+                     ZCashWalletService* zcash_wallet_service,
                      KeyringService* keyring_service,
                      PrefService* prefs,
                      const base::FilePath& context_path,
@@ -116,6 +122,13 @@ TxService::TxService(JsonRpcService* json_rpc_service,
     CHECK(bitcoin_wallet_service);
     tx_manager_map_[mojom::CoinType::BTC] = std::make_unique<BitcoinTxManager>(
         this, bitcoin_wallet_service, keyring_service, prefs, delegate_.get(),
+        account_resolver_delegate_.get());
+  }
+
+  if (IsZCashEnabled()) {
+    CHECK(zcash_wallet_service);
+    tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
+        this, zcash_wallet_service, keyring_service, prefs, delegate_.get(),
         account_resolver_delegate_.get());
   }
 }
@@ -189,14 +202,17 @@ void TxService::BindFilTxManagerProxy(
 
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
+    const std::string& chain_id,
     mojom::AccountIdPtr from,
     AddUnapprovedTransactionCallback callback) {
-  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), std::move(from),
-                                     absl::nullopt, std::move(callback));
+  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
+                                     std::move(from), absl::nullopt,
+                                     std::move(callback));
 }
 
 void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::TxDataUnionPtr tx_data_union,
+    const std::string& chain_id,
     mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
@@ -216,8 +232,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
 
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
-      json_rpc_service_->GetChainIdSync(coin_type, origin),
-      std::move(tx_data_union), from, origin, std::move(callback));
+      chain_id, std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

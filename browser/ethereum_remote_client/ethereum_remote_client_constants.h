@@ -6,13 +6,24 @@
 #ifndef BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_CONSTANTS_H_
 #define BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_CONSTANTS_H_
 
-extern const char ethereum_remote_client_extension_id[];
-extern const char ethereum_remote_client_extension_name[];
-extern const char ethereum_remote_client_extension_public_key[];
-extern const char ethereum_remote_client_base_url[];
-extern const char ethereum_remote_client_phishing_url[];
-extern const char ethereum_remote_client_ens_redirect_url[];
-extern const char ethereum_remote_client_host[];
-extern const char metamask_extension_id[];
+inline constexpr char kEthereumRemoteClientExtensionId[] =
+    "odbfpeeihdkbihmopkbjmoonfanlbfcl";
+inline constexpr char kEthereumRemoteClientExtensionName[] = "Crypto Wallets";
+inline constexpr char kEthereumRemoteClientExtensionPublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl7ZLkqbq8pHRcYANANXmhGKZKHsru"
+    "BqS0ssf8aI5R5E5FBaWui73FPWMj0g4eggrJeSfF/x/nIIq3Z24Joq1ULuWtheQjbOwqj0yL2"
+    "ZaxMA6rc5cW2OmGZ0aNXMFclusXftJmwpb/pztHzw55yv8BfJr873HOxtlW2MP1VvSFQjigsb"
+    "JedlkoS4SKC0U3j8/mjAYR0+lpmBtPitObnYnM5qmtrlg2hgm+sqAon9WKj9nDIjPpXJaCs7k"
+    "pVl7oQOoYpv47ZT1tnu0o03AL3RZbxPU1N04X3JN6nC+g4gaCgiLkZ+dD79yIt7Il0+vSKuJ+"
+    "EGySVmv6czOI5eJYezWXwIDAQAB";
+inline constexpr char16_t kEthereumRemoteClientBaseUrl[] =
+    u"chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
+inline constexpr char16_t kEthereumRemoteClientPhishingUrl[] =
+    u"chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/phishing.html";
+inline constexpr char16_t kEthereumRemoteClientEnsRedirectUrl[] =
+    u"chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/loading.html";
+inline constexpr char kEthereumRemoteClientHost[] = "wallet";
+inline constexpr char kMetamaskExtensionId[] =
+    "nkbihfbeogaeaoehlefnkodbefgpgknn";
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_CONSTANTS_H_

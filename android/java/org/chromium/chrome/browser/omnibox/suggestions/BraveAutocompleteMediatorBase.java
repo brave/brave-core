@@ -11,25 +11,42 @@ import androidx.annotation.NonNull;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.OmniboxSuggestionType;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.url.GURL;
 
 class BraveAutocompleteMediatorBase {
     void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
             @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList,
             boolean openInNewTab) {
+        Context context =
+                (Context)
+                        BraveReflectionUtil.getField(AutocompleteMediator.class, "mContext", this);
+        LocationBarDataProvider dataProvider =
+                (LocationBarDataProvider)
+                        BraveReflectionUtil.getField(
+                                AutocompleteMediator.class, "mDataProvider", this);
+
+        if (dataProvider != null
+                && !dataProvider.isIncognito()
+                && context != null
+                && context instanceof BraveActivity) {
+            MiscAndroidMetrics miscAndroidMetrics =
+                    ((BraveActivity) context).getMiscAndroidMetrics();
+            if (miscAndroidMetrics != null) {
+                boolean isNewTab = dataProvider.getNewTabPageDelegate().isCurrentlyVisible();
+                boolean isSearchQuery =
+                        suggestion.getType() == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
+                                || suggestion.getType() == OmniboxSuggestionType.SEARCH_SUGGEST;
+                miscAndroidMetrics.recordLocationBarChange(isNewTab, isSearchQuery);
+            }
+        }
+
         BraveReflectionUtil.InvokeMethod(AutocompleteMediator.class, this, "loadUrlForOmniboxMatch",
                 int.class, matchIndex, AutocompleteMatch.class, suggestion, GURL.class, url,
                 long.class, inputStart, boolean.class, inVisibleSuggestionList, boolean.class,
                 openInNewTab);
-        if (suggestion.getType() == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
-                || suggestion.getType() == OmniboxSuggestionType.SEARCH_SUGGEST) {
-            Context context = (Context) BraveReflectionUtil.getField(
-                    AutocompleteMediator.class, "mContext", this);
-            if (context != null && context instanceof BraveActivity) {
-                ((BraveActivity) context).getMiscAndroidMetrics().recordLocationBarQuery();
-            }
-        }
     }
 }

@@ -17,12 +17,12 @@ if (!is_android) {
     "//brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h",
     "//brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.cc",
     "//brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h",
+    "//brave/browser/infobars/dev_channel_deprecation_infobar_delegate.cc",
+    "//brave/browser/infobars/dev_channel_deprecation_infobar_delegate.h",
     "//brave/browser/infobars/request_otr_infobar_delegate.cc",
     "//brave/browser/infobars/request_otr_infobar_delegate.h",
     "//brave/browser/infobars/sync_cannot_run_infobar_delegate.cc",
     "//brave/browser/infobars/sync_cannot_run_infobar_delegate.h",
-    "//brave/browser/infobars/sync_v2_migrate_infobar_delegate.cc",
-    "//brave/browser/infobars/sync_v2_migrate_infobar_delegate.h",
   ]
 
   brave_browser_infobar_deps += [
@@ -34,7 +34,7 @@ if (!is_android) {
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
     "//brave/components/p3a",
-    "//chrome/app:chromium_strings",
+    "//chrome/app:branded_strings",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
@@ -51,12 +51,15 @@ if (!is_android) {
     ]
     if (!is_android) {
       brave_browser_infobar_sources += [
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
       ]
       brave_browser_infobar_deps += [
         "//brave/browser/ui/views/infobars:infobars",
         "//brave/components/infobars/core:core",
+        "//brave/components/vector_icons",
       ]
     }
   }

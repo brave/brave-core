@@ -23,16 +23,15 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_delegate.h"
 
 namespace brave_ads {
 
 namespace {
 
 #if BUILDFLAG(IS_WIN)
-constexpr int kNotificationWidth = 350;
+constexpr int kNotificationWidth = 336;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kNotificationWidth = 350;
+constexpr int kNotificationWidth = 344;
 #elif BUILDFLAG(IS_LINUX)
 constexpr int kNotificationWidth = 370;
 #endif

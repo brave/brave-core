@@ -60,8 +60,8 @@ TEST_F(BraveAdsTransferTest,
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_visible=*/true);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
   transfer_->MaybeTransferAd(/*tab_id=*/1,
                              {GURL("https://basicattentiontoken.org")});
@@ -76,8 +76,8 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_visible=*/true);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
   EXPECT_CALL(observer_mock_,
               OnWillTransferAd(ad, Now() + kTransferAfter.Get()));
@@ -96,8 +96,8 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
         /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
         /*is_visible=*/true);
 
-    const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                          /*should_use_random_uuids=*/true);
+    const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+                                      /*should_use_random_uuids=*/true);
     transfer_->SetLastClickedAd(ad_1);
     EXPECT_CALL(observer_mock_,
                 OnWillTransferAd(ad_1, Now() + kTransferAfter.Get()));
@@ -109,8 +109,8 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
         /*tab_id=*/2, /*redirect_chain=*/{GURL("https://brave.com")},
         /*is_visible=*/true);
 
-    const AdInfo ad_2 = BuildAdForTesting(AdType::kNotificationAd,
-                                          /*should_use_random_uuids=*/true);
+    const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
+                                      /*should_use_random_uuids=*/true);
     transfer_->SetLastClickedAd(ad_2);
     EXPECT_CALL(observer_mock_,
                 OnWillTransferAd(ad_2, Now() + kTransferAfter.Get()));
@@ -129,8 +129,8 @@ TEST_F(BraveAdsTransferTest,
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_visible=*/true);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
 
   // Act & Assert
@@ -147,8 +147,8 @@ TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/new_tab")},
       /*is_visible=*/false);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
 
   // Act & Assert
@@ -167,8 +167,8 @@ TEST_F(BraveAdsTransferTest,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
       /*is_visible=*/true);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
 
   // Act & Assert
@@ -185,8 +185,8 @@ TEST_F(BraveAdsTransferTest, CancelTransferAdIfTheTabIsClosed) {
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_visible=*/true);
 
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   transfer_->SetLastClickedAd(ad);
 
   // Act & Assert

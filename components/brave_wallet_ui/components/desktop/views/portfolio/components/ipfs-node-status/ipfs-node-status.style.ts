@@ -20,7 +20,8 @@ export const StatusIcon = styled.div<{ running?: boolean }>`
   height: 8px;
   mask-image: url(${NodeStatus});
   -webkit-mask-image: url(${NodeStatus});
-  background-color: ${p => p.running ? p.theme.color.successBorder : p.theme.color.errorBorder} ;
+  background-color: ${(p) =>
+    p.running ? p.theme.color.successBorder : p.theme.color.errorBorder};
 `
 
 export const Text = styled.p`
@@ -29,7 +30,7 @@ export const Text = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin: 0;
   padding: 0;
 `

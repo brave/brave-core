@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
@@ -23,7 +22,7 @@ class BraveAdsHistoryItemUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert
@@ -36,6 +35,7 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   expected_history_item.ad_content.creative_set_id = ad.creative_set_id;
   expected_history_item.ad_content.campaign_id = ad.campaign_id;
   expected_history_item.ad_content.advertiser_id = ad.advertiser_id;
+  expected_history_item.ad_content.segment = ad.segment;
   expected_history_item.ad_content.brand = ad.title;
   expected_history_item.ad_content.brand_info = ad.body;
   expected_history_item.ad_content.brand_display_url = ad.target_url.host();

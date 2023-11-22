@@ -16,8 +16,8 @@
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
-#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -48,10 +48,6 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 
 void BraveSyncServiceImpl::Initialize() {
   SyncServiceImpl::Initialize();
-  if (!brave_sync_prefs_.IsSyncV1Migrated()) {
-    StopAndClear();
-    brave_sync_prefs_.SetSyncV1Migrated(true);
-  }
 
   // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {

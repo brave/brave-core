@@ -12,9 +12,15 @@ export const NftGridViewItemSkeleton = () => {
     <NFTWrapper>
       <LoadingSkeleton height={222} />
       <VerticalSpace space='8px' />
-      <LoadingSkeleton width='80%' height={20} />
+      <LoadingSkeleton
+        width='80%'
+        height={20}
+      />
       <VerticalSpace space='8px' />
-      <LoadingSkeleton width={40} height={20} />
+      <LoadingSkeleton
+        width={40}
+        height={20}
+      />
     </NFTWrapper>
   )
 }

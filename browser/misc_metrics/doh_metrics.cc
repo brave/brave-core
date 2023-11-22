@@ -24,9 +24,6 @@ const int kAutoSecureRequestsBuckets[] = {5, 50, 90};
 
 }  // namespace
 
-const char kAutoSecureRequestsHistogramName[] = "Brave.DNS.AutoSecureRequests";
-const char kSecureDnsSettingHistogramName[] = "Brave.DNS.SecureSetting";
-
 const char kDohModeAutomatic[] = "automatic";
 const char kDohModeSecure[] = "secure";
 const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);

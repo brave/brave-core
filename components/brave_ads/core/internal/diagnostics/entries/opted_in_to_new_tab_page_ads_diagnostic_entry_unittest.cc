@@ -29,7 +29,7 @@ TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedIn) {
 
 TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedOut) {
   // Arrange
-  OptOutOfNewTabPageAdsForTesting();
+  test::OptOutOfNewTabPageAds();
 
   const OptedInToNewTabPageAdsDiagnosticEntry diagnostic_entry;
 

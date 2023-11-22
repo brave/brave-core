@@ -11,7 +11,6 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,7 +21,6 @@
 #include "chrome/browser/usb/usb_chooser_context_factory.h"
 #include "chrome/browser/usb/usb_chooser_controller.h"
 #include "chrome/browser/usb/web_usb_chooser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -166,8 +164,6 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
@@ -195,10 +191,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
     browser_content_client_->ResetUsbDelegate();
   }
 
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
-  }
+  void TearDown() override { browser_content_client_.reset(); }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -260,7 +253,6 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<TestContentBrowserClient> browser_content_client_;
   device::FakeUsbDeviceManager device_manager_;
   device::mojom::UsbDeviceInfoPtr fake_device_info_;

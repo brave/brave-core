@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -24,7 +25,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -54,7 +55,10 @@
 #include "ui/views/layout/box_layout.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace {
@@ -104,6 +108,30 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
   }
 
   return views::View::CalculatePreferredSize();
+}
+
+void SidebarItemsContentsView::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  // Skip when each item view is not attached.
+  if (children().empty()) {
+    return;
+  }
+
+  // Refresh favicons for web type items when theme changes.
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  const size_t items_num = items.size();
+  CHECK_EQ(items_num, children().size()) << "Can contain only item view";
+
+  for (size_t item_index = 0; item_index < items_num; ++item_index) {
+    const auto item = items[item_index];
+    if (!sidebar::IsWebType(item)) {
+      continue;
+    }
+
+    SetDefaultImageFor(item);
+    sidebar_model_->FetchFavicon(item);
+  }
 }
 
 void SidebarItemsContentsView::Update() {
@@ -266,21 +294,19 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                          sidebar_model_->GetAllSidebarItems()[index].title),
                      index);
   item_view->set_context_menu_controller(this);
-  item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
       base::BindRepeating(&SidebarItemsContentsView::OnItemPressed,
                           base::Unretained(this), item_view));
   item_view->set_drag_controller(drag_controller_);
 
   if (sidebar::IsWebType(item)) {
-    SetDefaultImageAt(index, item);
+    SetDefaultImageFor(item);
   }
 
   UpdateItemViewStateAt(index, false);
 }
 
-void SidebarItemsContentsView::SetDefaultImageAt(
-    int index,
+void SidebarItemsContentsView::SetDefaultImageFor(
     const sidebar::SidebarItem& item) {
   SkColor text_color = SK_ColorWHITE;
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
@@ -307,7 +333,7 @@ void SidebarItemsContentsView::UpdateItem(
     const sidebar::SidebarItemUpdate& update) {
   //  Set default for new url. Then waiting favicon update event.
   if (update.url_updated) {
-    SetDefaultImageAt(update.index, item);
+    SetDefaultImageFor(item);
   }
 
   // Each item button uses accessible name as a title.
@@ -366,6 +392,7 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   if (!index) {
     return;
   }
+  CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
   item_view->SetImage(
@@ -464,8 +491,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   SidebarItemView* item_view = GetItemViewAt(index);
 
   if (item.open_in_panel) {
-    item_view->set_draw_highlight(active);
-    item_view->set_draw_highlight_on_left(sidebar_on_left_);
+    item_view->SetActiveState(active);
   }
 
   if (sidebar::IsBuiltInType(item)) {
@@ -480,7 +506,8 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
     }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
+    if (ai_chat::features::IsAIChatEnabled() &&
+        !brave::IsRegularProfile(browser_->profile())) {
       auto is_ai_chat = [](const auto& item) {
         return item.built_in_item_type ==
                sidebar::SidebarItem::BuiltInItemType::kChatUI;
@@ -507,6 +534,10 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         item_view->SetEnabled(false);
       }
     }
+
+    if (item.disabled && item_view->GetEnabled()) {
+      item_view->SetEnabled(false);
+    }
   }
 }
 
@@ -521,6 +552,15 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
   if (item_model.open_in_panel) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (item_model.built_in_item_type ==
+        sidebar::SidebarItem::BuiltInItemType::kChatUI) {
+      ai_chat::AIChatMetrics* metrics =
+          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+      CHECK(metrics);
+      metrics->HandleOpenViaSidebar();
+    }
+#endif
     controller->ActivatePanelItem(item_model.built_in_item_type);
     return;
   }
@@ -582,11 +622,6 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   }
 
   return false;
-}
-
-void SidebarItemsContentsView::SetSidebarOnLeft(bool sidebar_on_left) {
-  sidebar_on_left_ = sidebar_on_left;
-  UpdateAllBuiltInItemsViewState();
 }
 
 BEGIN_METADATA(SidebarItemsContentsView, views::View)

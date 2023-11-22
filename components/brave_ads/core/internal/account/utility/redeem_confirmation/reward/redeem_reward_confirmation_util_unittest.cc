@@ -16,7 +16,7 @@ class BraveAdsRedeemRewardConfirmationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, AddPaymentToken) {
   // Arrange
-  const PaymentTokenInfo payment_token = BuildPaymentTokenForTesting();
+  const PaymentTokenInfo payment_token = test::BuildPaymentToken();
 
   // Act
   const auto result = MaybeAddPaymentToken(payment_token);
@@ -28,7 +28,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, AddPaymentToken) {
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest,
        DoNotAddDuplicatePaymentToken) {
   // Arrange
-  const PaymentTokenInfo payment_token = BuildPaymentTokenForTesting();
+  const PaymentTokenInfo payment_token = test::BuildPaymentToken();
 
   {
     const auto result = MaybeAddPaymentToken(payment_token);

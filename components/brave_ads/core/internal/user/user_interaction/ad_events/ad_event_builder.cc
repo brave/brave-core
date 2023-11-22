@@ -7,13 +7,12 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
 
 namespace brave_ads {
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const ConfirmationType& confirmation_type,
+                         ConfirmationType confirmation_type,
                          const base::Time created_at) {
   AdEventInfo ad_event;
 
@@ -31,7 +30,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
 }
 
 AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
-                           const ConfirmationType& confirmation_type,
+                           ConfirmationType confirmation_type,
                            const base::Time created_at) {
   AdEventInfo mutable_ad_event(ad_event);
 

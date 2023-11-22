@@ -22,7 +22,7 @@ TEST(BraveAdsAdsUtilTest, IsSupportedRegion) {
 
 TEST(BraveAdsAdsUtilTest, IsUnsupportedRegion) {
   // Arrange
-  brave_l10n::test::ScopedDefaultLocale default_locale(/*cuba=*/"en_CU");
+  brave_l10n::test::ScopedDefaultLocale default_locale(/*cuba*/ "en_CU");
 
   // Act & Assert
   EXPECT_FALSE(IsSupportedRegion());

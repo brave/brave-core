@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js'
+import { ConnectExternalWalletResult, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
 import { Optional } from '../../shared/lib/optional'
 import { PublisherStatus } from '../../shared/lib/publisher_status'
 import { UserType } from '../../shared/lib/user_type'
@@ -44,12 +44,6 @@ export interface State {
   enabledContribute: boolean
   externalWallet?: ExternalWallet
   initializing: boolean
-  inlineTipsEnabled: boolean
-  inlineTip: {
-    twitter: boolean
-    reddit: boolean
-    github: boolean
-  }
   isUnsupportedRegion: boolean
   excludedList: ExcludedPublisher[]
   externalWalletProviderList: string[]
@@ -63,7 +57,7 @@ export interface State {
   tipsList: Publisher[]
   ui: {
     modalConnect: boolean
-    modalRedirect: ConnectExternalWalletError
+    modalRedirect: ConnectExternalWalletResult
       | 'error'
       | 'hide'
       | 'show'
@@ -71,7 +65,6 @@ export interface State {
     modalAdsHistory: boolean
     adsSettings: boolean
     autoContributeSettings: boolean
-    contributionsSettings: boolean
     promosDismissed: {
       [key: string]: boolean
     }
@@ -260,7 +253,6 @@ export interface ExternalWallet {
   type: WalletType
   userName?: string
   accountUrl: string
-  loginUrl: string
   activityUrl: string
 }
 

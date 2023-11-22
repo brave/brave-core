@@ -62,6 +62,7 @@ content::NavigationThrottle::ThrottleCheckResult
 TorNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
   if (url.SchemeIsHTTPOrHTTPS() || url.SchemeIs(content::kChromeUIScheme) ||
+      url.SchemeIs(content::kChromeUIUntrustedScheme) ||
       url.SchemeIs(extensions::kExtensionScheme) ||
       url.SchemeIs(content::kChromeDevToolsScheme)) {
     if (!tor_launcher_factory_->IsTorConnected() &&

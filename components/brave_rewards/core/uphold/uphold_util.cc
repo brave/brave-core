@@ -37,6 +37,10 @@ std::string GetActivityUrl(const std::string& address) {
                             GetUrl(UrlType::kOAuth).c_str(), address.c_str());
 }
 
+}  // namespace
+
+namespace uphold {
+
 std::string GetLoginUrl(const std::string& state) {
   return base::StringPrintf(
       "%s/authorize/%s"
@@ -52,9 +56,6 @@ std::string GetLoginUrl(const std::string& state) {
       GetUrl(UrlType::kOAuth).c_str(), uphold::GetClientId().c_str(),
       state.c_str());
 }
-}  // namespace
-
-namespace uphold {
 
 std::string GetClientId() {
   return _environment == mojom::Environment::PRODUCTION
@@ -80,7 +81,6 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
                                ? GetActivityUrl(wallet->address)
                                : "";
-    wallet->login_url = GetLoginUrl(wallet->one_time_string);
   }
 
   return wallet;

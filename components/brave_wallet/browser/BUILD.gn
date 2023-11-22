@@ -205,8 +205,19 @@ static_library("browser") {
     "unstoppable_domains_multichain_calls.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
+    "wallet_data_files_installer_delegate.h",
+    "zcash/zcash_block_tracker.cc",
+    "zcash/zcash_block_tracker.h",
     "zcash/zcash_rpc.cc",
     "zcash/zcash_rpc.h",
+    "zcash/zcash_transaction.cc",
+    "zcash/zcash_transaction.h",
+    "zcash/zcash_tx_manager.cc",
+    "zcash/zcash_tx_manager.h",
+    "zcash/zcash_tx_meta.cc",
+    "zcash/zcash_tx_meta.h",
+    "zcash/zcash_tx_state_manager.cc",
+    "zcash/zcash_tx_state_manager.h",
     "zcash/zcash_wallet_service.cc",
     "zcash/zcash_wallet_service.h",
   ]
@@ -251,6 +262,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
+    "//components/update_client",
     "//components/value_store",
     "//crypto",
     "//services/data_decoder/public/cpp",
@@ -270,14 +282,6 @@ static_library("browser") {
   }
 
   configs += [ ":sardine_config" ]
-
-  if (is_android) {
-    sources += [
-      "wallet_data_files_installer_android_util.cc",
-      "wallet_data_files_installer_android_util.h",
-    ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
 }
 
 if (!is_ios) {
@@ -316,10 +320,7 @@ source_set("constants") {
 }
 
 source_set("pref_names") {
-  sources = [
-    "pref_names.cc",
-    "pref_names.h",
-  ]
+  sources = [ "pref_names.h" ]
 }
 
 source_set("utils") {

@@ -6,11 +6,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  Input,
-  Label,
-  Switch
-} from './standard-switch.style'
+import { Input, Label, Switch } from './standard-switch.style'
 
 interface Props {
   isChecked: boolean
@@ -25,7 +21,11 @@ export const StandardSwitch = (props: Props) => {
 
   return (
     <Label>
-      <Input checked={isChecked} type='checkbox' onChange={handleChange} />
+      <Input
+        checked={isChecked}
+        type='checkbox'
+        onChange={handleChange}
+      />
       <Switch />
     </Label>
   )

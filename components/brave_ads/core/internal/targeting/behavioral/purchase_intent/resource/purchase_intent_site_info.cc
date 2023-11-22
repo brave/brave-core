@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_site_info.h"
 
-#include <tuple>
 #include <utility>
 
 namespace brave_ads {
@@ -32,21 +31,5 @@ PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
     PurchaseIntentSiteInfo&& other) noexcept = default;
 
 PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
-
-bool PurchaseIntentSiteInfo::operator==(
-    const PurchaseIntentSiteInfo& other) const {
-  const auto tie = [](const PurchaseIntentSiteInfo& purchase_intent_site) {
-    return std::tie(purchase_intent_site.segments,
-                    purchase_intent_site.url_netloc,
-                    purchase_intent_site.weight);
-  };
-
-  return tie(*this) == tie(other);
-}
-
-bool PurchaseIntentSiteInfo::operator!=(
-    const PurchaseIntentSiteInfo& other) const {
-  return !(*this == other);
-}
 
 }  // namespace brave_ads

@@ -12,12 +12,11 @@
 namespace brave_ads {
 
 struct CatalogGeoTargetInfo final {
+  bool operator==(const CatalogGeoTargetInfo&) const = default;
+
   std::string code;
   std::string name;
 };
-
-bool operator==(const CatalogGeoTargetInfo&, const CatalogGeoTargetInfo&);
-bool operator!=(const CatalogGeoTargetInfo&, const CatalogGeoTargetInfo&);
 
 using CatalogGeoTargetList = std::vector<CatalogGeoTargetInfo>;
 

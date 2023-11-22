@@ -47,10 +47,6 @@ async def main():
         help='Directory to output all files for symbol server.',
     )
     parser.add_argument(
-        '--pdb-only-symbols-dir',
-        help='Directory to output only pdb files.',
-    )
-    parser.add_argument(
         '--run-source-index',
         default=False,
         action='store_true',
@@ -76,8 +72,6 @@ async def main():
 
     if args.clear:
         shutil.rmtree(args.symbols_dir, ignore_errors=True)
-        if args.pdb_only_symbols_dir:
-            shutil.rmtree(args.pdb_only_symbols_dir, ignore_errors=True)
 
     tasks = [
         run_with_semaphore(process_image(args, image_path))
@@ -153,10 +147,6 @@ async def process_image(args, image_path):
     if args.run_source_index:
         run_source_index_result = await run_source_index(args, copied_pdb_path)
         output += '\n' + run_source_index_result.strip()
-
-    if args.pdb_only_symbols_dir:
-        await copy_symbol(copied_pdb_path, pdb_fingerprint,
-                          args.pdb_only_symbols_dir)
 
     elapsed = datetime.utcnow() - start_time
     output += (f'\nCompleted. Elapsed time {elapsed.total_seconds()} seconds')

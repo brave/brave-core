@@ -6,8 +6,6 @@
 import * as React from 'react'
 
 // Redux
-import { useDispatch } from 'react-redux'
-import { WalletActions } from '../../../common/actions'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import {
@@ -20,7 +18,6 @@ import { BraveWallet } from '../../../constants/types'
 
 // Components
 import { NavButton } from '../../extension/buttons/nav-button/index'
-import { LockPanel } from '../../extension/lock-panel'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -28,11 +25,7 @@ import { suggestNewAccountName } from '../../../utils/address-utils'
 import { keyringIdForNewAccount } from '../../../utils/account-utils'
 
 // Styled Components
-import {
-  StyledWrapper,
-  Description,
-  ButtonRow
-} from './style'
+import { StyledWrapper, Description, ButtonRow } from './style'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 export interface Props {
@@ -44,10 +37,9 @@ export interface Props {
 export const CreateAccountTab = ({
   network: accountNetwork,
   onCreated,
-  onCancel,
+  onCancel
 }: Props) => {
   // redux
-  const dispatch = useDispatch()
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
   // queries
@@ -94,12 +86,8 @@ export const CreateAccountTab = ({
     showUnlock,
     accountNetwork,
     suggestedAccountName,
-    onCreated,
+    onCreated
   ])
-
-  const handleUnlockAttempt = React.useCallback((password: string): void => {
-    dispatch(WalletActions.unlockWallet({ password }))
-  }, [])
 
   // effects
   React.useEffect(() => {
@@ -110,18 +98,6 @@ export const CreateAccountTab = ({
   }, [isWalletLocked, showUnlock])
 
   // render
-  if (isWalletLocked && showUnlock) {
-    return <StyledWrapper>
-      <Description style={{ fontSize: 16 }}>
-        {getLocale('braveWalletUnlockNeededToCreateAccount')}
-      </Description>
-      <LockPanel
-        hideBackground
-        onSubmit={handleUnlockAttempt}
-      />
-    </StyledWrapper>
-  }
-
   return (
     <StyledWrapper>
       <Description>

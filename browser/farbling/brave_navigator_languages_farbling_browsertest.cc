@@ -9,7 +9,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
@@ -20,7 +19,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/pref_names.h"
@@ -41,6 +39,7 @@
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;
+using brave_shields::features::kBraveShowStrictFingerprintingMode;
 using content::TitleWatcher;
 
 namespace {
@@ -52,7 +51,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(kBraveReduceLanguage);
+    feature_list_.InitWithFeatures(
+        {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode}, {});
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -82,10 +82,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
-    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
     g_brave_browser_process->brave_farbling_service()
         ->set_session_tokens_for_testing(kTestingSessionToken,
                                          kTestingSessionToken);
@@ -100,11 +96,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
   }
 
  protected:
@@ -164,8 +155,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  std::unique_ptr<ChromeContentClient> content_client_;
-  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
   std::string expected_http_accept_language_;
 };
 

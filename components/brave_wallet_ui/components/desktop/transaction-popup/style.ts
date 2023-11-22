@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
   top: 15px;
   right: 15px;
   z-index: 15;
- `
+`
 
 export const PopupButton = styled(WalletButton)`
   display: flex;

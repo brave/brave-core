@@ -10,30 +10,25 @@ import { walletApi } from './api.slice'
 import { SetTransactionProviderErrorType } from '../constants/action_types'
 
 // Utils
-import {
-  parseJSONFromLocalStorage
-} from '../../utils/local-storage-utils'
+import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
 export const defaultUIState: UIState = {
+  isCreatingWallet: false,
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
   isPanel: false,
-  collapsedPortfolioAccountAddresses:
-    parseJSONFromLocalStorage(
-      'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
-      []
-    ),
-  collapsedPortfolioNetworkKeys:
-    parseJSONFromLocalStorage(
-      'COLLAPSED_PORTFOLIO_NETWORK_KEYS',
-      []
-    )
+  collapsedPortfolioAccountAddresses: parseJSONFromLocalStorage(
+    'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
+    []
+  ),
+  collapsedPortfolioNetworkKeys: parseJSONFromLocalStorage(
+    'COLLAPSED_PORTFOLIO_NETWORK_KEYS',
+    []
+  )
 }
 
 // slice
-export const createUISlice = (
-  initialState: UIState = defaultUIState
-) => {
+export const createUISlice = (initialState: UIState = defaultUIState) => {
   return createSlice({
     name: 'ui',
     initialState,
@@ -53,22 +48,19 @@ export const createUISlice = (
           payload.providerError
       },
 
-      setCollapsedPortfolioAccountAddresses
-        (
-          state: UIState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setCollapsedPortfolioAccountAddresses(
+        state: UIState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.collapsedPortfolioAccountAddresses = payload
       },
 
-      setCollapsedPortfolioNetworkKeys
-        (
-          state: UIState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setCollapsedPortfolioNetworkKeys(
+        state: UIState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.collapsedPortfolioNetworkKeys = payload
-      },
-
+      }
     },
     extraReducers: (builder) => {
       builder.addMatcher(
@@ -109,6 +101,32 @@ export const createUISlice = (
           ) {
             state.selectedPendingTransactionId = payload.txId
           }
+        }
+      )
+
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchPending(action) ||
+          walletApi.endpoints.importFromMetaMask.matchPending(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchPending(action) ||
+          walletApi.endpoints.restoreWallet.matchPending(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = true
+        }
+      )
+
+      builder.addMatcher(
+        (action) =>
+          walletApi.endpoints.createWallet.matchFulfilled(action) ||
+          walletApi.endpoints.createWallet.matchRejected(action) ||
+          walletApi.endpoints.importFromMetaMask.matchFulfilled(action) ||
+          walletApi.endpoints.importFromMetaMask.matchRejected(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchFulfilled(action) ||
+          walletApi.endpoints.importFromCryptoWallets.matchRejected(action) ||
+          walletApi.endpoints.restoreWallet.matchFulfilled(action) ||
+          walletApi.endpoints.restoreWallet.matchRejected(action),
+        (state, { payload }) => {
+          state.isCreatingWallet = false
         }
       )
     }

@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 namespace {
 
@@ -24,7 +24,7 @@ IssuerInfo BuildIssuer(const IssuerType type, const PublicKeyMap& public_keys) {
 
 }  // namespace
 
-std::string BuildIssuersUrlResponseBodyForTesting() {
+std::string BuildIssuersUrlResponseBody() {
   return R"(
       {
         "ping": 7200000,
@@ -59,10 +59,9 @@ std::string BuildIssuersUrlResponseBodyForTesting() {
       })";
 }
 
-IssuersInfo BuildIssuersForTesting(
-    const int ping,
-    const PublicKeyMap& confirmations_public_keys,
-    const PublicKeyMap& payments_public_keys) {
+IssuersInfo BuildIssuers(const int ping,
+                         const PublicKeyMap& confirmations_public_keys,
+                         const PublicKeyMap& payments_public_keys) {
   IssuersInfo issuers;
 
   issuers.ping = ping;
@@ -82,17 +81,16 @@ IssuersInfo BuildIssuersForTesting(
   return issuers;
 }
 
-IssuersInfo BuildIssuersForTesting() {
-  return BuildIssuersForTesting(
-      7'200'000,
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+IssuersInfo BuildIssuers() {
+  return BuildIssuers(7'200'000,
+                      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+                       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
+                      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+                       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 }
 
-void BuildAndSetIssuersForTesting() {
-  SetIssuers(BuildIssuersForTesting());
+void BuildAndSetIssuers() {
+  SetIssuers(BuildIssuers());
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -15,7 +15,7 @@
 
 namespace brave_ads::database::table {
 
-constexpr char kEmbeddingStringDelimiter[] = ",";
+inline constexpr char kEmbeddingStringDelimiter[] = ",";
 
 class Embeddings final : public TableInterface {
  public:

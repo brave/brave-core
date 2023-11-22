@@ -5,7 +5,7 @@
 
 import { EntityId, EntityState } from '@reduxjs/toolkit'
 
-export function getEntitiesListFromEntityState <T> (
+export function getEntitiesListFromEntityState<T>(
   state: EntityState<T>,
   /**
    * Use to select a subset of entities by id
@@ -14,7 +14,7 @@ export function getEntitiesListFromEntityState <T> (
 ): T[] {
   const ids = altIds || state.ids
   const entitiesList: T[] = []
-  ids.forEach(id => {
+  ids.forEach((id) => {
     const entity = state.entities[id]
     if (entity) {
       entitiesList.push(entity)

@@ -26,7 +26,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -51,7 +51,7 @@
 #include "ui/gfx/geometry/point.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 using ::testing::Eq;
@@ -415,6 +415,36 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 #endif
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  // Wait till panel UI opens.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // Check bookmarks panel is shown.
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Toggle();
+
+  // Wait till panel UI opens.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // Check bookmarks item is opened after toggle.
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
 // Test sidebar's initial horizontal option is set properly.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
@@ -664,6 +694,25 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTestWithGuestWindow) {
+  auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
+  auto* controller = guest_browser->sidebar_controller();
+  auto* model = controller->model();
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller);
+  for (const auto& item : model->GetAllSidebarItems()) {
+    auto index = model->GetIndexOf(item);
+    ASSERT_TRUE(index.has_value());
+    auto* item_view = sidebar_items_contents_view->children()[*index];
+    ASSERT_TRUE(item_view);
+    if (IsBuiltInType(item) &&
+        SidebarService::IsDisabledItemForGuest(item.built_in_item_type)) {
+      EXPECT_FALSE(item_view->GetEnabled());
+    } else {
+      EXPECT_TRUE(item_view->GetEnabled());
+    }
+  }
+}
+
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithPlaylist() {
@@ -781,11 +830,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   tab_model()->ActivateTabAt(0);
   auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
   // Wait till sidebar show ends.
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+  // Unmanaged entry becomes managed when its panel is shown
+  // and it becomes active item.
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);
@@ -798,15 +850,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
-
-  // Unmanaged entry could not be active.
-  EXPECT_FALSE(!!model()->active_index());
+  EXPECT_TRUE(model()->active_index().has_value());
+  EXPECT_EQ(model()->active_index(),
+            model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,

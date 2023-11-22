@@ -187,7 +187,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
-  void SetExternalWalletType(const std::string& wallet_type) override;
 
   RewardsNotificationService* GetNotificationService() const override;
   void GetRewardsInternalsInfo(
@@ -245,14 +244,6 @@ class RewardsServiceImpl : public RewardsService,
                          mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(
-      const std::string& key,
-      bool enabled) override;
-
-  void GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) override;
-
   void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
@@ -273,6 +264,10 @@ class RewardsServiceImpl : public RewardsService,
   std::string GetExternalWalletType() const override;
 
   std::vector<std::string> GetExternalWalletProviders() const override;
+
+  void BeginExternalWalletLogin(
+      const std::string& wallet_type,
+      BeginExternalWalletLoginCallback callback) override;
 
   void ConnectExternalWallet(const std::string& path,
                              const std::string& query,
@@ -530,7 +525,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(bool delay_report,
-                                        GetExternalWalletResult result);
+                                        mojom::ExternalWalletPtr wallet);
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
       std::vector<mojom::ContributionInfoPtr> list);

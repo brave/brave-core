@@ -2,6 +2,8 @@
   "extends": "./tsconfig",
   "include": [
     "./components/definitions/*",
-    "./components/**/storybook"
+    "./components/**/storybook",
+    "./components/**/stories/*.tsx",
+    "./components/**/*.stories.tsx"
   ]
 }

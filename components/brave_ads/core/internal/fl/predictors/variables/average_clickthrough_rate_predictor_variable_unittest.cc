@@ -50,7 +50,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
           /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -71,7 +71,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
           /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -88,7 +88,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
           /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -106,7 +106,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
           /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -124,7 +124,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
           /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);

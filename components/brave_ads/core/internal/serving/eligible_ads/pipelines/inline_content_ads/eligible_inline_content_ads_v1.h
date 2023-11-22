@@ -41,13 +41,6 @@ class EligibleInlineContentAdsV1 final : public EligibleInlineContentAdsBase {
       EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const AdEventList& ad_events);
-
-  void GetBrowsingHistory(
-      UserModelInfo user_model,
-      const std::string& dimensions,
-      const AdEventList& ad_events,
-      EligibleAdsCallback<CreativeInlineContentAdList> callback);
-
   void GetEligibleAds(UserModelInfo user_model,
                       const std::string& dimensions,
                       const AdEventList& ad_events,

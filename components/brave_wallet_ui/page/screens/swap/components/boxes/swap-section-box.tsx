@@ -23,7 +23,7 @@ export const SwapSectionBox = (props: Props) => {
   return <Wrapper boxType={boxType}>{children}</Wrapper>
 }
 
-const Wrapper = styled(StyledDiv) <BoxStyleProps>`
+const Wrapper = styled(StyledDiv)<BoxStyleProps>`
   background-color: ${(p) =>
     p.boxType === 'primary'
       ? 'var(--box-background-primary)'

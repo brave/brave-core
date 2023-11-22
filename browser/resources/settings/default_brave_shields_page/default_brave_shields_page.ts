@@ -109,6 +109,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
       },
+      showStrictFingerprintingMode_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('showStrictFingerprintingMode')
+      },
       isForgetFirstPartyStorageFeatureEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
@@ -119,6 +123,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           key: '',
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: false,
+        }
+      },
+      isFingerprintingEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
         }
       }
     }
@@ -167,6 +179,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
+      this.isFingerprintingEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value != 'allow',
+      }
     })
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
@@ -193,12 +210,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setCookieControlType(this.$.cookieControlType.value)
   }
 
-  onFingerprintingControlChange_ () {
-    this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingControlType.value)
+  onFingerprintingSelectControlChange_ () {
+    this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingSelectControlType.value)
   }
 
-  onHTTPSEverywhereControlChange_ () {
-    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked)
+  onFingerprintingToggleControlChange_ () {
+    this.browserProxy_.setFingerprintingBlockEnabled(this.$.fingerprintingToggleControlType.checked)
   }
 
   onHttpsUpgradeControlChange_ () {

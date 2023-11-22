@@ -24,7 +24,7 @@
 
 namespace {
 
-constexpr gfx::Size kToolbarActionSize(34, 24);
+constexpr gfx::Size kToolbarActionSize(34, 30);
 
 }  // namespace
 

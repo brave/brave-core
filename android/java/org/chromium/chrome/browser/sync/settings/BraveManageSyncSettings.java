@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.sync.settings;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -168,6 +169,13 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         updateSyncPasswordsSummary();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Do not let timer run when we closed the settings
+        cleanupPasswordsSummaryUpdater();
+    }
+
     private void updateSyncPasswordsSummary() {
         if (ReauthenticationManager.isScreenLockSetUp(ContextUtils.getApplicationContext())) {
             if (ReauthenticationManager.authenticationStillValid(
@@ -190,22 +198,24 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void scheduleCheckForStillValidAuth() {
-        if (mPasswordsSummaryUpdater != null) {
-            mPasswordsSummaryUpdater.cancel();
-            mPasswordsSummaryUpdater.purge();
-            mPasswordsSummaryUpdater = null;
-        }
+        // Cancel old timer before creating new. Otherwise when we turn on/off passwords sync for
+        // several times, we will have several timer procedures at the same time.
+        cleanupPasswordsSummaryUpdater();
+
         mPasswordsSummaryUpdater = new Timer();
         mPasswordsSummaryUpdater.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateSyncPasswordsSummary();
-                            }
-                        });
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateSyncPasswordsSummary();
+                                }
+                            });
+                        }
                     }
                 },
                 0,
@@ -216,5 +226,13 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                 // ReauthenticationHelper.reauthenticate actually asks bio/pattern/code auth,
                 // onResume is invoked, and the timer is cancelled.
                 RECHECK_VALID_AUTHENTICATION_INTERVAL_MILLIS);
+    }
+
+    private void cleanupPasswordsSummaryUpdater() {
+        if (mPasswordsSummaryUpdater != null) {
+            mPasswordsSummaryUpdater.cancel();
+            mPasswordsSummaryUpdater.purge();
+            mPasswordsSummaryUpdater = null;
+        }
     }
 }

@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -74,13 +76,14 @@ import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
+import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -95,6 +98,7 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -112,7 +116,6 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
-import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
@@ -167,6 +170,7 @@ import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -209,22 +213,22 @@ public abstract class BraveActivity extends ChromeActivity
                    BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                    MiscAndroidMetricsConnectionErrorHandler
                            .MiscAndroidMetricsConnectionErrorHandlerDelegate {
-    public static final String BRAVE_BUY_URL = "brave://wallet/fund-wallet";
+    public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
-    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/deposit-funds";
+    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/crypto/deposit-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
+    public static final String BRAVE_REWARDS_WALLET_RECONNECT_URL = "brave://rewards/reconnect";
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
-    public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
+    public static final String REWARDS_LEARN_MORE_URL =
+            "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/browser/#rewards";
-    private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
-    private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
 
     private static final int DAYS_1 = 1;
@@ -273,6 +277,7 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mNativeInitialized;
     private boolean mSafeBrowsingFlagEnabled;
     private NewTabPageManager mNewTabPageManager;
+    private UsageMonitor mUsageMonitor;
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
@@ -327,6 +332,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onPauseWithNative() {
+        if (mUsageMonitor != null) {
+            mUsageMonitor.stop();
+        }
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
@@ -671,6 +679,23 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(int itemId, @Nullable Bundle menuItemData) {
+        if (itemId == R.id.new_tab_menu_id) {
+            LayoutManagerChrome layoutManager =
+                    (LayoutManagerChrome)
+                            BraveReflectionUtil.getField(
+                                    ChromeTabbedActivity.class, "mLayoutManager", this);
+            if (layoutManager != null
+                    && layoutManager.getOverviewLayout() != null
+                    && !layoutManager.getOverviewLayout().isActive()
+                    && mMiscAndroidMetrics != null) {
+                mMiscAndroidMetrics.recordAppMenuNewTab();
+            }
+        }
+        return super.onOptionsItemSelected(itemId, menuItemData);
+    }
+
+    @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         if (isSuccess) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
@@ -848,6 +873,9 @@ public abstract class BraveActivity extends ChromeActivity
                     BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO,
                     appOpenCountForWidgetPromo + 1);
         } */
+        if (mUsageMonitor != null) {
+            mUsageMonitor.start();
+        }
     }
 
     @Override
@@ -1024,8 +1052,6 @@ public abstract class BraveActivity extends ChromeActivity
             showCrossPromotionalDialog();
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
-        BraveSyncInformers.show();
-        BraveAndroidSyncDisabledInformer.showInformers();
         BraveSyncAccountDeletedInformer.show();
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
@@ -1120,6 +1146,9 @@ public abstract class BraveActivity extends ChromeActivity
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         }
+
+        mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
+        mUsageMonitor.start();
     }
 
     private void handleDeepLinkVpn() {
@@ -1160,8 +1189,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         if (mBraveNewsConnectionErrorHandler == null) {
-            mBraveNewsConnectionErrorHandler = BraveNewsConnectionErrorHandler.getInstance();
-            mBraveNewsConnectionErrorHandler.setDelegate(this);
+            mBraveNewsConnectionErrorHandler = new BraveNewsConnectionErrorHandler(this);
         }
 
         if (BravePrefServiceBridge.getInstance().getShowNews()
@@ -1511,11 +1539,13 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private boolean isNoRestoreState() {
-        return SharedPreferencesManager.getInstance().readBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, false);
     }
 
     private boolean isClearBrowsingDataOnExit() {
-        return SharedPreferencesManager.getInstance().readBoolean(PREF_CLEAR_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
     }
 
     public void onRewardsPanelDismiss() {
@@ -1717,7 +1747,8 @@ public abstract class BraveActivity extends ChromeActivity
     private void showCrossPromotionalDialog() {
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
                 new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+        mCrossPromotionalModalDialogFragment.show(
+                getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
@@ -1994,8 +2025,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         if (mMiscAndroidMetricsConnectionErrorHandler == null) {
             mMiscAndroidMetricsConnectionErrorHandler =
-                    MiscAndroidMetricsConnectionErrorHandler.getInstance();
-            mMiscAndroidMetricsConnectionErrorHandler.setDelegate(this);
+                    new MiscAndroidMetricsConnectionErrorHandler(this);
         }
 
         mMiscAndroidMetrics = MiscAndroidMetricsFactory.getInstance().getMetricsService(
@@ -2092,5 +2122,37 @@ public abstract class BraveActivity extends ChromeActivity
                 sheetContainer.setLayoutParams(params);
             }
         }
+    }
+
+    /**
+     * Calls to {@link ChromeTabbedActivity#maybeHandleUrlIntent} will be redirected here via
+     * bytecode changes.
+     */
+    public boolean maybeHandleUrlIntent(Intent intent) {
+        // Redirect requests if necessary
+        String url = IntentHandler.getUrlFromIntent(intent);
+        if (url != null && url.equals(BraveIntentHandler.CONNECTION_INFO_HELP_URL)) {
+            intent.setData(Uri.parse(BraveIntentHandler.BRAVE_CONNECTION_INFO_HELP_URL));
+        }
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            String lastPathSegment = appLinkData.getLastPathSegment();
+            if (lastPathSegment != null
+                    && (lastPathSegment.equalsIgnoreCase(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)
+                            || lastPathSegment.equalsIgnoreCase(
+                                    BraveConstants.DEEPLINK_ANDROID_VPN))) {
+                return false;
+            }
+        }
+        // Call ChromeTabbedActivity's version.
+        return (boolean)
+                BraveReflectionUtil.InvokeMethod(
+                        ChromeTabbedActivity.class,
+                        this,
+                        "maybeHandleUrlIntent",
+                        Intent.class,
+                        intent);
     }
 }

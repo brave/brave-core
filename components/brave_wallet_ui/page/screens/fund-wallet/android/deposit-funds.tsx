@@ -24,12 +24,13 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store, walletPageApiProxy } from '../../../store'
-import BraveCoreThemeProvider
-  from '../../../../../common/BraveCoreThemeProvider'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
 import { DepositFundsScreen } from '../deposit-funds'
 import { LibContext } from '../../../../common/context/lib.context'
-import { ApiProxyContext }
-  from '../../../../common/context/api-proxy.context'
+import { ApiProxyContext } from '../../../../common/context/api-proxy.context'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
@@ -38,10 +39,13 @@ export function AndroidDepositApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
-              <DepositFundsScreen />
+              <DepositFundsScreen isAndroid={true} />
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
@@ -50,7 +54,7 @@ export function AndroidDepositApp() {
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
   render(<AndroidDepositApp />, document.getElementById('root'))

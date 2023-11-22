@@ -14,3 +14,9 @@
                       coin="[[solCoin]]"
                       list-title="$i18n{walletSolNetworksListTitle}">
 </wallet-networks-list>
+<template is="dom-if" if="[[isBitcoinEnabled]]" restamp>
+  <wallet-networks-list id="btc-networks-section"
+                        coin="[[btcCoin]]"
+                        list-title="$i18n{walletBtcNetworksListTitle}">
+  </wallet-networks-list>
+</template>

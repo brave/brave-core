@@ -69,23 +69,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   private onRewardsEnabled_ () {
     this.isRewardsEnabled_ = true
   }
-
-  private shouldShowRestartButtonForTipButtons_(
-    buttonsEnabled: boolean,
-    redditEnabled: boolean,
-    twitterEnabled: boolean,
-    githubEnabled: boolean) {
-    return (
-      buttonsEnabled !== this.browserProxy_.wasInlineTipButtonsEnabledAtStartup() ||
-      redditEnabled !== this.browserProxy_.wasInlineTipRedditEnabledAtStartup() ||
-      twitterEnabled !== this.browserProxy_.wasInlineTipTwitterEnabledAtStartup() ||
-      githubEnabled !== this.browserProxy_.wasInlineTipGithubEnabledAtStartup())
-  }
-
-  private restartBrowser_ (e: Event) {
-    e.stopPropagation()
-    window.open('chrome://restart', '_self')
-  }
 }
 
 customElements.define(

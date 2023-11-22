@@ -18,7 +18,7 @@ interface Props {
   originInfo: BraveWallet.OriginInfo
 }
 
-export function Origin (props: Props) {
+export function Origin(props: Props) {
   const { originInfo } = props
   return (
     <>
@@ -30,7 +30,10 @@ export function Origin (props: Props) {
         }
       />
       <URLText>
-        <CreateSiteOrigin originSpec={originInfo.originSpec} eTldPlusOne={originInfo.eTldPlusOne} />
+        <CreateSiteOrigin
+          originSpec={originInfo.originSpec}
+          eTldPlusOne={originInfo.eTldPlusOne}
+        />
       </URLText>
     </>
   )

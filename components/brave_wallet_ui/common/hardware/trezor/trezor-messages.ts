@@ -14,7 +14,9 @@ import {
   EthereumSignTypedHash
 } from './trezor-connect-types'
 import { MessageSignature } from 'trezor-connect/lib/typescript/trezor/protobuf'
-export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
+export const kTrezorBridgeUrl = loadTimeData.getString(
+  'braveWalletTrezorBridgeUrl'
+)
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
@@ -48,9 +50,11 @@ export type TrezorError = {
 }
 
 // Unlock command
-export type UnlockResponse = Unsuccessful | {
-  success: boolean
-}
+export type UnlockResponse =
+  | Unsuccessful
+  | {
+      success: boolean
+    }
 export type UnlockResponsePayload = CommandMessage & {
   payload: UnlockResponse
 }
@@ -69,7 +73,8 @@ export type GetAccountsCommand = CommandMessage & {
 }
 
 // SignTransaction command
-export type SignTransactionCommandPayload = CommonParams & EthereumSignTransaction
+export type SignTransactionCommandPayload = CommonParams &
+  EthereumSignTransaction
 export type SignTransactionCommand = CommandMessage & {
   command: TrezorCommand.SignTransaction
   payload: SignTransactionCommandPayload
@@ -91,7 +96,8 @@ export type SignMessageResponsePayload = CommandMessage & {
 }
 
 // SignTypedMessage command
-export type SignTypedMessageCommandPayload = CommonParams & EthereumSignTypedHash
+export type SignTypedMessageCommandPayload = CommonParams &
+  EthereumSignTypedHash
 export type SignTypedMessageCommand = CommandMessage & {
   command: TrezorCommand.SignTypedMessage
   payload: SignTypedMessageCommandPayload
@@ -101,15 +107,24 @@ export type SignTypedMessageResponsePayload = CommandMessage & {
   payload: SignTypedMessageResponse
 }
 
-export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand | SignTransactionCommand | SignMessageCommand | SignTypedMessageCommand
-export type TrezorFrameResponse = UnlockResponsePayload | GetAccountsResponsePayload | SignTransactionResponsePayload | SignMessageResponsePayload
+export type TrezorFrameCommand =
+  | GetAccountsCommand
+  | UnlockCommand
+  | SignTransactionCommand
+  | SignMessageCommand
+  | SignTypedMessageCommand
+export type TrezorFrameResponse =
+  | UnlockResponsePayload
+  | GetAccountsResponsePayload
+  | SignTransactionResponsePayload
+  | SignMessageResponsePayload
 
 // Trezor library is loaded inside the chrome-untrusted webui page
 // and communication is going through posting messages between parent window
 // and frame window. This class handles low level messages transport to add,
 // remove callbacks and allows to process messages for childrens.
 export abstract class MessagingTransport {
-  constructor () {
+  constructor() {
     this.handlers = new Map<string, Function>()
   }
 
@@ -138,7 +153,7 @@ export abstract class MessagingTransport {
     return true
   }
 
-  protected abstract onMessageReceived (event: MessageEvent): unknown
+  protected abstract onMessageReceived(event: MessageEvent): unknown
 
   private readonly addWindowMessageListener = () => {
     window.addEventListener('message', this.onMessageReceived)

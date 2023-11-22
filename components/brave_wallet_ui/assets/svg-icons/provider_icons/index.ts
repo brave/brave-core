@@ -8,9 +8,4 @@ import GeminiIcon from './gemini_icon.svg'
 import ZebpayIcon from './zebpay_icon.svg'
 import BitflyerIcon from './bitflyer_icon.svg'
 
-export {
-  UpholdIcon,
-  GeminiIcon,
-  ZebpayIcon,
-  BitflyerIcon
-}
+export { UpholdIcon, GeminiIcon, ZebpayIcon, BitflyerIcon }

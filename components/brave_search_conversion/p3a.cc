@@ -18,15 +18,6 @@
 namespace brave_search_conversion {
 namespace p3a {
 
-const char kSearchPromoButtonHistogramName[] = "Brave.Search.Promo.Button";
-const char kSearchPromoBannerAHistogramName[] = "Brave.Search.Promo.BannerA";
-const char kSearchPromoBannerBHistogramName[] = "Brave.Search.Promo.BannerB";
-const char kSearchPromoBannerCHistogramName[] = "Brave.Search.Promo.BannerC";
-const char kSearchPromoBannerDHistogramName[] = "Brave.Search.Promo.BannerD";
-const char kSearchPromoNTPHistogramName[] = "Brave.Search.Promo.NewTabPage";
-const char kSearchQueriesBeforeChurnHistogramName[] =
-    "Brave.Search.QueriesBeforeChurn";
-
 namespace {
 
 const char kButtonShownKey[] = "button.shown";

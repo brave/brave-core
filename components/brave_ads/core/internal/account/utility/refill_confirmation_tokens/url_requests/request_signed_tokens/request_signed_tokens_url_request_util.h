@@ -13,6 +13,8 @@
 
 namespace brave_ads {
 
+absl::optional<bool> ParseIsEligible(const base::Value::Dict& dict);
+
 absl::optional<std::string> ParseNonce(const base::Value::Dict& dict);
 
 }  // namespace brave_ads

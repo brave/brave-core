@@ -6,18 +6,18 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
 BrowserManager::BrowserManager() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 BrowserManager::~BrowserManager() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 // static
@@ -78,8 +78,7 @@ void BrowserManager::LogBrowserForegroundState() const {
 }
 
 void BrowserManager::OnNotifyDidInitializeAds() {
-  const bool is_browser_active =
-      AdsClientHelper::GetInstance()->IsBrowserActive();
+  const bool is_browser_active = IsBrowserActive();
 
   is_active_ = is_browser_active;
   LogBrowserActiveState();

@@ -14,8 +14,8 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/common/mojom/page_content_extractor.mojom-shared.h"
-#include "brave/components/ai_chat/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -72,13 +72,17 @@ const char16_t kVideoTrackTranscriptUrlExtractionScript[] =
       })()
     )JS";
 
-constexpr auto kYouTubeHosts = base::MakeFixedFlatSet<std::string_view>(
-    {"www.youtube.com", "m.youtube.com"});
+constexpr auto kYouTubeHosts = base::MakeFixedFlatSetSorted<std::string_view>({
+    "m.youtube.com",
+    "www.youtube.com",
+});
 
 // TODO(petemill): Use heuristics to determine if page's main focus is
 // a video, and not a hard-coded list of Url hosts.
 constexpr auto kVideoTrackHosts =
-    base::MakeFixedFlatSet<std::string_view>({"www.ted.com"});
+    base::MakeFixedFlatSetSorted<std::string_view>({
+        "www.ted.com",
+    });
 
 }  // namespace
 

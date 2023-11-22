@@ -30,15 +30,14 @@ class BraveAdsRedeemPaymentTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count=*/7);
+  const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/7);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&payment_tokens](base::Value::Dict user_data) {
         RedeemPaymentTokensUrlRequestBuilder url_request_builder(
-            GetWalletForTesting(), payment_tokens, std::move(user_data));
+            test::GetWallet(), payment_tokens, std::move(user_data));
 
         const mojom::UrlRequestInfoPtr url_request =
             url_request_builder.Build();

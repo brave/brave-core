@@ -23,10 +23,8 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
-#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
@@ -39,7 +37,6 @@
 #include "content/public/browser/web_ui_controller_factory.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/common/content_client.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -142,23 +139,6 @@ constexpr char kPrintConsoleMarkerScript[] = R"(setTimeout(() => {
 
 constexpr char kPasswordBrave[] = "brave";
 
-void BindCosmeticFiltersResourcesOnTaskRunner(
-    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
-        receiver) {
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
-          g_brave_browser_process->ad_block_service()),
-      std::move(receiver));
-}
-
-void BindCosmeticFiltersResources(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
-        receiver) {
-  g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
-                                std::move(receiver)));
-}
 }  // namespace
 
 class TestWebUIControllerFactory : public content::WebUIControllerFactory {
@@ -200,9 +180,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   AndroidPageAppearingBrowserTest() {
     factory_ = std::make_unique<TestWebUIControllerFactory>(kWalletPageHost);
     content::WebUIControllerFactory::RegisterFactory(factory_.get());
-    scoped_feature_list_.InitWithFeatures(
-        {}, {features::kBraveWalletFilecoinFeature,
-             features::kBraveWalletSolanaFeature});
   }
 
   void SetUpOnMainThread() override {
@@ -237,30 +214,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   }
 
  protected:
-  class TestContentBrowserClient : public ChromeContentBrowserClient {
-   public:
-    TestContentBrowserClient() = default;
-    TestContentBrowserClient(const TestContentBrowserClient&) = delete;
-    TestContentBrowserClient& operator=(const TestContentBrowserClient&) =
-        delete;
-    ~TestContentBrowserClient() override = default;
-
-    void RegisterBrowserInterfaceBindersForFrame(
-        content::RenderFrameHost* render_frame_host,
-        mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override {
-      ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
-          render_frame_host, map);
-      content::RegisterWebUIControllerInterfaceBinder<
-          brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
-      map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
-          base::BindRepeating(&BindCosmeticFiltersResources));
-    }
-  };
-  TestContentBrowserClient test_content_browser_client_;
-
   void InitWallet() {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    content::SetBrowserClientForTesting(&test_content_browser_client_);
 
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -390,7 +345,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   absl::optional<std::string> file_digest_;
 
   std::unique_ptr<TestWebUIControllerFactory> factory_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   raw_ptr<brave_wallet::AssetRatioService> asset_ratio_service_;
   raw_ptr<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
@@ -418,14 +372,14 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  GURL url = GURL("chrome://wallet/deposit-funds");
+  GURL url = GURL("chrome://wallet/crypto/deposit-funds");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
-  GURL url = GURL("chrome://wallet/fund-wallet");
+  GURL url = GURL("chrome://wallet/crypto/fund-wallet");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);

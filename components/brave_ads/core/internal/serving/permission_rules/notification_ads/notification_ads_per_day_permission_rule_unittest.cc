@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
@@ -14,48 +14,46 @@
 namespace brave_ads {
 
 class BraveAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
- protected:
-  const NotificationAdsPerDayPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumNotificationAdsPerDay.Get() - 1);
+  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumNotificationAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumNotificationAdsPerDay.Get());
+  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumNotificationAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasNotificationAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumNotificationAdsPerDay.Get());
+  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumNotificationAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(HasNotificationAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

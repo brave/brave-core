@@ -263,19 +263,19 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
   tokenId: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
   coingeckoId: '',
   coin: BraveWallet.CoinType.SOL,
-  chainId: BraveWallet.SOLANA_MAINNET,
+  chainId: BraveWallet.SOLANA_MAINNET
 }
 
 const mockSplBat = {
   ...mockBasicAttentionToken,
   contractAddress: 'splBat498tu349u498j',
-  chainId: BraveWallet.SOLANA_MAINNET,
+  chainId: BraveWallet.SOLANA_MAINNET
 }
 
 const mockSplUSDC = {
   ...mockUSDCoin,
   contractAddress: 'splusd09856080378450y75',
-  chainId: BraveWallet.SOLANA_MAINNET,
+  chainId: BraveWallet.SOLANA_MAINNET
 }
 
 export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
@@ -291,7 +291,7 @@ export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
   mockUSDCoin,
   mockSplBat,
   mockSplNft,
-  mockSplUSDC,
+  mockSplUSDC
 ]
 
 export const mockErc20TokensList = [

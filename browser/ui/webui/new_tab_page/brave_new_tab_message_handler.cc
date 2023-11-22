@@ -312,15 +312,16 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 
+  bat_ads_observer_receiver_.reset();
   if (ads_service_) {
-    ads_service_observation_.Reset();
-    ads_service_observation_.Observe(ads_service_);
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
-  ads_service_observation_.Reset();
+  bat_ads_observer_receiver_.reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
@@ -557,16 +558,13 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
 base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   base::Value::Dict ads_data;
 
-  bool needs_browser_update_to_see_ads = false;
-  if (ads_service_) {
-    needs_browser_update_to_see_ads =
-        ads_service_->NeedsBrowserUpgradeToServeAds();
-  }
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds, needs_browser_update_to_see_ads);
+  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
+               browser_upgrade_required_to_serve_ads_);
 
   return ads_data;
 }
 
-void BraveNewTabMessageHandler::OnNeedsBrowserUpgradeToServeAds() {
+void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
+  browser_upgrade_required_to_serve_ads_ = true;
   FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
 }

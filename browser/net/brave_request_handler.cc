@@ -14,7 +14,6 @@
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
@@ -69,11 +68,6 @@ void BraveRequestHandler::SetupCallbacks() {
 
   callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork);
   before_url_request_callbacks_.push_back(callback);
-
-  if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
-    callback = base::BindRepeating(brave::OnBeforeURLRequest_HttpsePreFileWork);
-    before_url_request_callbacks_.push_back(callback);
-  }
 
   callback =
       base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);

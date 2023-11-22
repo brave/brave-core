@@ -24,7 +24,7 @@ class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -47,7 +47,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -67,9 +67,9 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -92,9 +92,9 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -114,7 +114,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionUserDataForMissingCreativeInstanceId) {
   // Arrange
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -127,7 +127,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildVerifiableConversionUserDataForMissingCreativeInstanceId) {
   // Arrange
-  BuildAndSaveConversionQueueForTesting(
+  test::BuildAndSaveConversionQueue(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 

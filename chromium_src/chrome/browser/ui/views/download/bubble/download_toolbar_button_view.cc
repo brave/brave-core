@@ -42,12 +42,10 @@ SkRect AdjustRingBounds(const gfx::RectF& ring_bounds) {
 }  // namespace gfx
 
 SkColor DownloadToolbarButtonView::GetIconColor() const {
-  const DownloadDisplayController::IconInfo icon_info = GetIconInfo();
-
   // Apply active color only when download is completed and user doesn't
   // interact with this button.
-  if (icon_info.icon_state == download::DownloadIconState::kComplete &&
-      icon_info.is_active) {
+  if (GetIconState() == DownloadDisplay::IconState::kComplete &&
+      active_ == DownloadDisplay::IconActive::kActive) {
     return GetColorProvider()->GetColor(kColorBraveDownloadToolbarButtonActive);
   }
 

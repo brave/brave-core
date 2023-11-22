@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Brave gesloten</translation>
 <translation id="8308305244351876417">Maakt audio afspelen mogelijk wanneer u naar een ander tabblad in Brave of naar een andere app gaat of wanneer het scherm van uw apparaat uit is.</translation>
 <translation id="4150201353443180367">Weergave</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Gebruik digitaal rechtenbeheer (DRM) om beschermde mediacontent in de browser te bekijken.</translation>
+<translation id="255204363133978824">Beschermde content toestaan</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Meer informatie over Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Toestaan (opnieuw starten)</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
 <translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
@@ -583,6 +589,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
+<translation id="6915830896450988084">Versturen met <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Sturen</translation>
 <translation id="538450413584738399">Wisselen</translation>
 <translation id="1366855498335432549">Storting</translation>
@@ -899,6 +906,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Uitvouwen</translation>
 <translation id="3586752056660754651">Sign</translation>
+<translation id="3950820424414687140">Inloggen</translation>
 <translation id="6592721981110586529">Verbinden met Brave Wallet</translation>
 <translation id="329813193938846695">Selecteer account(s)</translation>
 <translation id="291375746846291973">Maak alleen verbinding met sites die u vertrouwt.</translation>
@@ -1047,6 +1055,14 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5802752138057422257">Niet-ASCII-tekens gedetecteerd!</translation>
 <translation id="442709594176931966">Oorspronkelijk bericht weergeven</translation>
 <translation id="2239252396088484499">Bericht in ASCII-codering weergeven</translation>
+<translation id="4530494379350999373">Oorsprong</translation>
+<translation id="6736243959894955139">Adres</translation>
+<translation id="3095940652251934233">Statement</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versie</translation>
+<translation id="1313065465616456728">Verleend om</translation>
+<translation id="7902225556763260253">Vervaltijd</translation>
+<translation id="1908159733454294871">Beveiligingsrisico gedetecteerd</translation>
 <translation id="4220693114674044366">Token-adres</translation>
 <translation id="5658257029899993935">Aankoop koppelen aan uw Brave-account</translation>
 <translation id="1187061015547219282">Koppel uw Play Store-aankoop aan uw Brave-account om Brave VPN op andere apparaten te gebruiken.</translation>
@@ -1179,4 +1195,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5494920125229734069">Alles selecteren</translation>
 <translation id="5972844218283131174">Alles selecties ongedaan maken</translation>
 <translation id="6322030314101903925">Geen beschikbare assets</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
+<translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Gegevens bekijken</translation>
+<translation id="6759710362319508545">Resources</translation>
+<translation id="2471230424465522689">Niet voor</translation>
+<translation id="4841860051609590575">Aanvraag-ID</translation>
 </translationbundle>

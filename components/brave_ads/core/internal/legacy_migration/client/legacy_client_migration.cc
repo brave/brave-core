@@ -10,7 +10,7 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
@@ -27,8 +27,7 @@ void FailedToMigrate(InitializeCallback callback) {
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
-                                                 true);
+  SetProfileBooleanPref(prefs::kHasMigratedClientState, true);
   std::move(callback).Run(/*success=*/true);
 }
 
@@ -39,49 +38,47 @@ void MigrateClientState(InitializeCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
-  AdsClientHelper::GetInstance()->Load(
-      kClientStateFilename,
-      base::BindOnce(
-          [](InitializeCallback callback,
-             const absl::optional<std::string>& json) {
-            if (!json) {
-              // Client state does not exist
-              return SuccessfullyMigrated(std::move(callback));
-            }
+  Load(kClientStateFilename,
+       base::BindOnce(
+           [](InitializeCallback callback,
+              const absl::optional<std::string>& json) {
+             if (!json) {
+               // Client state does not exist
+               return SuccessfullyMigrated(std::move(callback));
+             }
 
-            ClientInfo client;
-            if (!client.FromJson(*json)) {
-              // TODO(https://github.com/brave/brave-browser/issues/32066):
-              // Remove migration failure dumps.
-              base::debug::DumpWithoutCrashing();
+             ClientInfo client;
+             if (!client.FromJson(*json)) {
+               // TODO(https://github.com/brave/brave-browser/issues/32066):
+               // Remove migration failure dumps.
+               base::debug::DumpWithoutCrashing();
 
-              BLOG(0, "Failed to load client state");
-              return FailedToMigrate(std::move(callback));
-            }
+               BLOG(0, "Failed to load client state");
+               return FailedToMigrate(std::move(callback));
+             }
 
-            BLOG(1, "Migrating client state");
+             BLOG(1, "Migrating client state");
 
-            const std::string migrated_json = client.ToJson();
+             const std::string migrated_json = client.ToJson();
 
-            AdsClientHelper::GetInstance()->Save(
-                kClientStateFilename, migrated_json,
-                base::BindOnce(
-                    [](InitializeCallback callback, const bool success) {
-                      if (!success) {
-                        // TODO(https://github.com/brave/brave-browser/issues/32066):
-                        // Remove migration failure dumps.
-                        base::debug::DumpWithoutCrashing();
+             Save(kClientStateFilename, migrated_json,
+                  base::BindOnce(
+                      [](InitializeCallback callback, const bool success) {
+                        if (!success) {
+                          // TODO(https://github.com/brave/brave-browser/issues/32066):
+                          // Remove migration failure dumps.
+                          base::debug::DumpWithoutCrashing();
 
-                        BLOG(0, "Failed to save client state");
-                        return FailedToMigrate(std::move(callback));
-                      }
+                          BLOG(0, "Failed to save client state");
+                          return FailedToMigrate(std::move(callback));
+                        }
 
-                      BLOG(3, "Successfully migrated client state");
-                      SuccessfullyMigrated(std::move(callback));
-                    },
-                    std::move(callback)));
-          },
-          std::move(callback)));
+                        BLOG(3, "Successfully migrated client state");
+                        SuccessfullyMigrated(std::move(callback));
+                      },
+                      std::move(callback)));
+           },
+           std::move(callback)));
 }
 
 }  // namespace brave_ads

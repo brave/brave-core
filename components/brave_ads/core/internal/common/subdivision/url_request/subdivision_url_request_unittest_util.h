@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildSubdivisionUrlResponseBodyForTesting(
+std::string BuildSubdivisionUrlResponseBody(
     const std::string& country_code,
     const std::string& subdivision_code);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_UNITTEST_UTIL_H_

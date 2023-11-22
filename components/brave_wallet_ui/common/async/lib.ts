@@ -6,7 +6,7 @@
 import { mapLimit } from 'async'
 
 import {
-  HardwareWalletConnectOpts
+  HardwareWalletConnectOpts //
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
   BraveWallet,
@@ -14,14 +14,12 @@ import {
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
-  SolanaSerializedTransactionParams,
+  SolanaSerializedTransactionParams
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import {
-  hasEIP1559Support
-} from '../../utils/network-utils'
+import { hasEIP1559Support } from '../../utils/network-utils'
 import { getAccountType } from '../../utils/account-utils'
 import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
 import {
@@ -33,22 +31,37 @@ import { getVisibleNetworksList } from '../../utils/api-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardware/types'
+import {
+  GetAccountsHardwareOperationResult,
+  LedgerDerivationPaths,
+  SolDerivationPaths,
+  TrezorDerivationPaths
+} from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { AllAccountsOptionUniqueKey, applySelectedAccountFilter } from '../../options/account-filter-options'
+import {
+  AllNetworksOption,
+  AllNetworksOptionDefault
+} from '../../options/network-filter-options'
+import {
+  AllAccountsOptionUniqueKey,
+  applySelectedAccountFilter
+} from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
-import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
+import {
+  IPFS_PROTOCOL,
+  isIpfs,
+  stripERC20TokenImageURL
+} from '../../utils/string-utils'
 import { toTxDataUnion } from '../../utils/tx-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
   ownerAddress: string,
   spenderAddress: string,
-  chainId: string,
+  chainId: string
 ): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
@@ -67,11 +80,31 @@ export const getERC20Allowance = (
   })
 }
 
-export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
+export const onConnectHardwareWallet = (
+  opts: HardwareWalletConnectOpts
+): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
-    const keyring = getHardwareKeyring(opts.hardware, opts.coin, opts.onAuthorized)
-    if ((keyring instanceof EthereumLedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) && opts.scheme) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
+    const keyring = getHardwareKeyring(
+      opts.hardware,
+      opts.coin,
+      opts.onAuthorized
+    )
+    const isLedger = keyring instanceof EthereumLedgerBridgeKeyring
+    const isTrezor = keyring instanceof TrezorBridgeKeyring
+    if ((isLedger || isTrezor) && opts.scheme) {
+      const promise = isLedger
+        ? keyring.getAccounts(
+            opts.startIndex,
+            opts.stopIndex,
+            opts.scheme as LedgerDerivationPaths
+          )
+        : keyring.getAccounts(
+            opts.startIndex,
+            opts.stopIndex,
+            opts.scheme as TrezorDerivationPaths
+          )
+
+      promise
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             return resolve(result.payload)
@@ -80,7 +113,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
         })
         .catch(reject)
     } else if (keyring instanceof FilecoinLedgerBridgeKeyring && opts.network) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.network)
+      keyring
+        .getAccounts(opts.startIndex, opts.stopIndex, opts.network)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             return resolve(result.payload)
@@ -88,13 +122,24 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network && opts.scheme) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme as SolDerivationPaths)
+    } else if (
+      keyring instanceof SolanaLedgerBridgeKeyring &&
+      opts.network &&
+      opts.scheme
+    ) {
+      keyring
+        .getAccounts(
+          opts.startIndex,
+          opts.stopIndex,
+          opts.scheme as SolDerivationPaths
+        )
         .then(async (result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             const { braveWalletService } = getAPIProxy()
             const addressesEncoded = await braveWalletService.base58Encode(
-              result.payload.map((hardwareAccount) => [...(hardwareAccount.addressBytes || [])])
+              result.payload.map((hardwareAccount) => [
+                ...(hardwareAccount.addressBytes || [])
+              ])
             )
             for (let i = 0; i < result.payload.length; i++) {
               result.payload[i].address = addressesEncoded.addresses[i]
@@ -108,48 +153,19 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   })
 }
 
-export async function getChecksumEthAddress (value: string) {
-  const { keyringService } = getAPIProxy()
-  return (await keyringService.getChecksumEthAddress(value))
-}
-
-export async function isBase58EncodedSolanaPubkey (value: string) {
-  const { braveWalletService } = getAPIProxy()
-  return braveWalletService.isBase58EncodedSolanaPubkey(value)
-}
-
-export async function isStrongPassword (value: string) {
+export async function isStrongPassword(value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringService.isStrongPassword(value)).result
 }
 
-export async function enableEnsOffchainLookup () {
+export async function getBlockchainTokenInfo(
+  contractAddress: string
+): Promise<GetBlockchainTokenInfoReturnInfo> {
   const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.setEnsOffchainLookupResolveMethod(BraveWallet.ResolveMethod.kEnabled)
+  return await apiProxy.assetRatioService.getTokenInfo(contractAddress)
 }
 
-export async function findENSAddress (address: string) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.ensGetEthAddr(address)
-}
-
-export async function findSNSAddress (address: string) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.snsGetSolAddr(address)
-}
-
-export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.unstoppableDomainsGetWalletAddr(address, token)
-}
-
-export async function getBlockchainTokenInfo (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> {
-  const apiProxy = getAPIProxy()
-  return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
-}
-
-
-export async function getSellAssetUrl (args: {
+export async function getSellAssetUrl(args: {
   asset: BraveWallet.BlockchainToken
   offRampProvider: BraveWallet.OffRampProvider
   chainId: string
@@ -174,29 +190,22 @@ export async function getSellAssetUrl (args: {
   return url
 }
 
-export const getTokenList = async (
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-): Promise<{ tokens: BraveWallet.BlockchainToken[] }> => {
-  const { blockchainRegistry } = getAPIProxy()
-  return blockchainRegistry.getAllTokens(network.chainId, network.coin)
-}
-
-export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Promise<boolean> {
-  const { swapService } = getAPIProxy()
-  return (await swapService.isSwapSupported(network.chainId)).result
-}
-
-export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
+export function refreshVisibleTokenInfo(
+  targetNetwork?: BraveWallet.NetworkInfo
+) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const api = getAPIProxy()
     const { braveWalletService } = api
     const networkList = await getVisibleNetworksList(api)
 
-    async function inner (network: BraveWallet.NetworkInfo) {
+    async function inner(network: BraveWallet.NetworkInfo) {
       const nativeAsset = makeNetworkAsset(network)
 
       // Get a list of user tokens for each coinType and network.
-      const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
+      const getTokenList = await braveWalletService.getUserAssets(
+        network.chainId,
+        network.coin
+      )
 
       // Adds a logo and chainId to each token object
       const tokenList = getTokenList.tokens.map((token) => ({
@@ -214,24 +223,23 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
           async (item: BraveWallet.NetworkInfo) => await inner(item)
         )
 
-    const removedAssetIds =
-      [
-        ...getState().wallet.removedFungibleTokenIds,
-        ...getState().wallet.removedNonFungibleTokenIds,
-        ...getState().wallet.deletedNonFungibleTokenIds
-      ]
+    const removedAssetIds = [
+      ...getState().wallet.removedFungibleTokenIds,
+      ...getState().wallet.removedNonFungibleTokenIds,
+      ...getState().wallet.deletedNonFungibleTokenIds
+    ]
     const userVisibleTokensInfo = visibleAssets
       .flat(1)
-      .filter(token => !removedAssetIds.includes(getAssetIdKey(token)))
+      .filter((token) => !removedAssetIds.includes(getAssetIdKey(token)))
     const removedNfts = visibleAssets
       .flat(1)
-      .filter(token => removedAssetIds.includes(getAssetIdKey(token)))
+      .filter((token) => removedAssetIds.includes(getAssetIdKey(token)))
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
   }
 }
 
-export function refreshSitePermissions () {
+export function refreshSitePermissions() {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { braveWalletService } = apiProxy
@@ -241,14 +249,17 @@ export function refreshSitePermissions () {
     } = await apiProxy.keyringService.getAllAccounts()
 
     // Get a list of accounts with permissions of the active origin
-    const { accountsWithPermission } =
-      await braveWalletService.hasPermission(accounts.map((acc) => acc.accountId))
+    const { accountsWithPermission } = await braveWalletService.hasPermission(
+      accounts.map((acc) => acc.accountId)
+    )
 
-    dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
+    dispatch(
+      WalletActions.setSitePermissions({ accounts: accountsWithPermission })
+    )
   }
 }
 
-export async function sendEthTransaction (payload: SendEthTransactionParams) {
+export async function sendEthTransaction(payload: SendEthTransactionParams) {
   const apiProxy = getAPIProxy()
   /***
    * Determine whether to create a legacy or EIP-1559 transaction.
@@ -264,7 +275,8 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
   let isEIP1559
   switch (true) {
     // Transaction payload has hardcoded EIP-1559 gas fields.
-    case payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined:
+    case payload.maxPriorityFeePerGas !== undefined &&
+      payload.maxFeePerGas !== undefined:
       isEIP1559 = true
       break
 
@@ -275,7 +287,10 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = hasEIP1559Support(getAccountType(payload.fromAccount), payload.network)
+      isEIP1559 = hasEIP1559Support(
+        getAccountType(payload.fromAccount),
+        payload.network
+      )
   }
 
   const txData: BraveWallet.TxData = {
@@ -303,12 +318,14 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     return await apiProxy.txService.addUnapprovedTransaction(
       toTxDataUnion({ ethTxData1559: txData1559 }),
+      payload.network.chainId,
       payload.fromAccount.accountId
     )
   }
 
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ ethTxData: txData }),
+    payload.network.chainId,
     payload.fromAccount.accountId
   )
 }
@@ -326,6 +343,7 @@ export async function sendFilTransaction(payload: SendFilTransactionParams) {
   }
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ filTxData: filTxData }),
+    payload.network.chainId,
     payload.fromAccount.accountId
   )
 }
@@ -339,6 +357,7 @@ export async function sendSolTransaction(payload: SendSolTransactionParams) {
   )
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
+    payload.network.chainId,
     payload.fromAccount.accountId
   )
 }
@@ -360,40 +379,47 @@ export async function sendSolanaSerializedTransaction(
 
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
+    payload.chainId,
     payload.accountId
   )
 }
 
-export function getSwapService () {
+export function getSwapService() {
   const { swapService } = getAPIProxy()
   return swapService
 }
 
-export function getEthTxManagerProxy () {
+export function getEthTxManagerProxy() {
   const { ethTxManagerProxy } = getAPIProxy()
   return ethTxManagerProxy
 }
 
-export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
+export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {
   const { jsonRpcService } = getAPIProxy()
   if (token.coin === BraveWallet.CoinType.ETH) {
     return await jsonRpcService.getERC721Metadata(
-      token.contractAddress, token.tokenId, token.chainId)
+      token.contractAddress,
+      token.tokenId,
+      token.chainId
+    )
   } else if (token.coin === BraveWallet.CoinType.SOL) {
     return await jsonRpcService.getSolTokenMetadata(
-      token.chainId, token.contractAddress)
+      token.chainId,
+      token.contractAddress
+    )
   }
 
   return undefined
 }
 
-export async function isTokenPinningSupported (token: BraveWallet.BlockchainToken) {
+export async function isTokenPinningSupported(
+  token: BraveWallet.BlockchainToken
+) {
   const { braveWalletPinService } = getAPIProxy()
   return await braveWalletPinService.isTokenSupported(token)
 }
 
-
-export function refreshPortfolioFilterOptions () {
+export function refreshPortfolioFilterOptions() {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { selectedAccountFilter, selectedNetworkFilter } = getState().wallet
 
@@ -416,7 +442,9 @@ export function refreshPortfolioFilterOptions () {
     }
 
     if (!applySelectedAccountFilter(accounts, selectedAccountFilter).accounts) {
-      dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOptionUniqueKey))
+      dispatch(
+        WalletActions.setSelectedAccountFilterItem(AllAccountsOptionUniqueKey)
+      )
     }
   }
 }
@@ -431,7 +459,7 @@ export const areSupportedForPinning = async (urls: string[]) => {
     )
   ).flat(1)
 
-  return results.every(result => result?.startsWith(IPFS_PROTOCOL))
+  return results.every((result) => result?.startsWith(IPFS_PROTOCOL))
 }
 
 // Extracts ipfs:// url from gateway-like url
@@ -441,8 +469,10 @@ export const extractIpfsUrl = async (url: string | undefined) => {
   if (isIpfs(trimmedUrl)) {
     return trimmedUrl
   }
-  return (await braveWalletIpfsService
-    .extractIPFSUrlFromGatewayLikeUrl(trimmedUrl))?.ipfsUrl || undefined
+  return (
+    (await braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(trimmedUrl))
+      ?.ipfsUrl || undefined
+  )
 }
 
 // Translates ipfs:// url or gateway-like url to the NFT gateway url
@@ -461,11 +491,10 @@ export const translateToNftGateway = async (url: string | undefined) => {
 // TODO(apaymyshev): This function should not exist. Backend should be
 // responsible in providing correct logo.
 export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
-
   const isNative = isNativeAsset(token)
 
   if (
-    !isNative && !token.logo ||
+    (!isNative && !token.logo) ||
     token.logo?.startsWith('data:image/') ||
     token.logo?.startsWith('chrome://erc-token-images/')
   ) {

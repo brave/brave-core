@@ -46,7 +46,7 @@ export const CopyAddress = (props: Props) => {
           {address}
         </Text>
       </AddressButton>
-      {isCopied &&
+      {isCopied && (
         <Text
           textSize='12px'
           textColor='success'
@@ -54,7 +54,7 @@ export const CopyAddress = (props: Props) => {
         >
           {getLocale('braveWalletButtonCopied')}
         </Text>
-      }
+      )}
     </Row>
   )
 }

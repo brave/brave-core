@@ -15,7 +15,7 @@
 
 namespace brave_ads {
 
-extern const char kScheduledCaptchaTooltipId[];
+inline constexpr char kScheduledCaptchaTooltipId[] = "scheduled-captcha";
 
 class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
  public:

@@ -13,8 +13,20 @@ import ChecksumInfoGraphic from '../../assets/checksum-info-graphic.png'
 import { getLocale } from '../../../../../../common/locale'
 
 // Styled Components
-import { StyledWrapper, Modal, InfoColumn, InfoGraphic, Link } from './checksum-info-modal.style'
-import { Column, Text, VerticalSpacer, IconButton, Row } from '../../shared.styles'
+import {
+  StyledWrapper,
+  Modal,
+  InfoColumn,
+  InfoGraphic,
+  Link
+} from './checksum-info-modal.style'
+import {
+  Column,
+  Text,
+  VerticalSpacer,
+  IconButton,
+  Row
+} from '../../shared.styles'
 
 interface Props {
   onClose: () => void
@@ -33,7 +45,11 @@ export const ChecksumInfoModal = React.forwardRef<HTMLDivElement, Props>(
             horizontalAlign='flex-end'
             horizontalPadding={32}
           >
-            <IconButton icon={CloseIcon} onClick={onClose} size={18} />
+            <IconButton
+              icon={CloseIcon}
+              onClick={onClose}
+              size={18}
+            />
           </Row>
           <VerticalSpacer size={8} />
           <Column

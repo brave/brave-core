@@ -9,9 +9,12 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal::bitflyer {
+
+std::string GetLoginUrl(const std::string& state,
+                        const std::string& code_verifier);
 
 std::string GetClientId();
 

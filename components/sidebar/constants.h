@@ -8,16 +8,16 @@
 
 namespace sidebar {
 
-constexpr char kSidebarItemURLKey[] = "url";
-constexpr char kSidebarItemTypeKey[] = "type";
-constexpr char kSidebarItemBuiltInItemTypeKey[] = "built_in_item_type";
-constexpr char kSidebarItemTitleKey[] = "title";
-constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
+inline constexpr char kSidebarItemURLKey[] = "url";
+inline constexpr char kSidebarItemTypeKey[] = "type";
+inline constexpr char kSidebarItemBuiltInItemTypeKey[] = "built_in_item_type";
+inline constexpr char kSidebarItemTitleKey[] = "title";
+inline constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
 constexpr int kDefaultSidePanelWidth = 320;
 
 // list is provided from chrome layer.
-constexpr char kBraveTalkURL[] = "https://talk.brave.com/widget";
-constexpr char kBraveTalkHost[] = "talk.brave.com";
+inline constexpr char kBraveTalkURL[] = "https://talk.brave.com/widget";
+inline constexpr char kBraveTalkHost[] = "talk.brave.com";
 
 }  // namespace sidebar
 

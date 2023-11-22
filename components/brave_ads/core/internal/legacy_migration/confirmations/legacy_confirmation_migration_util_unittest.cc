@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,7 +17,7 @@ class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, true);
+  SetProfileBooleanPrefValue(prefs::kHasMigratedConfirmationState, true);
 
   // Act & Assert
   EXPECT_TRUE(HasMigratedConfirmation());
@@ -25,7 +25,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
+  SetProfileBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
 
   // Act & Assert
   EXPECT_FALSE(HasMigratedConfirmation());

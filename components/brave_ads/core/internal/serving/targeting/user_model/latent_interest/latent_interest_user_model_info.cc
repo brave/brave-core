@@ -28,18 +28,4 @@ LatentInterestUserModelInfo& LatentInterestUserModelInfo::operator=(
 
 LatentInterestUserModelInfo::~LatentInterestUserModelInfo() = default;
 
-bool operator==(const LatentInterestUserModelInfo& lhs,
-                const LatentInterestUserModelInfo& rhs) {
-  const auto tie = [](const LatentInterestUserModelInfo& user_model) {
-    return std::tie(user_model.segments);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const LatentInterestUserModelInfo& lhs,
-                const LatentInterestUserModelInfo& rhs) {
-  return !(lhs == rhs);
-}
-
 }  // namespace brave_ads

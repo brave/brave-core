@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.61.38",
+  "version": "1.62.72",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -267,7 +267,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "118.0.5993.96",
+        "tag": "119.0.6045.163",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -317,7 +317,7 @@
     "eslint-plugin-licenses": "1.0.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.1.1",
-    "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",
+    "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "1.1.11",
     "follow-redirects": "1.14.8",
@@ -356,7 +356,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#783acfeea549fa424a2ae6dbb6c19fc97d568e67",
+    "@brave/leo": "github:brave/leo#99fe83ce417b4dadc22e6c9989f8f52f9e39daa5",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "~0.0.10",
     "@dnd-kit/core": "6.0.5",
@@ -376,7 +376,6 @@
     "bignumber.js": "^9.0.2",
     "core-js": "^3.9.1",
     "date-fns": "^2.15.0",
-    "fuse.js": "6.6.2",
     "jszip": "^3.8.0",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
@@ -392,6 +391,7 @@
     "webtorrent": "^0.114.0"
   },
   "overrides": {
+    "axios": "1.6.0",
     "loader-utils": "2.0.4",
     "json5": "2.2.3",
     "protobufjs": "7.2.4",

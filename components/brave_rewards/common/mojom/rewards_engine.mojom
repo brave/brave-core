@@ -6,7 +6,6 @@ module brave_rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/rewards.mojom";
 import "brave/components/brave_rewards/common/mojom/rewards_database.mojom";
-import "brave/components/brave_rewards/common/mojom/rewards_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
@@ -127,16 +126,14 @@ interface RewardsEngine {
   SavePublisherInfo(uint64 window_id, PublisherInfo publisher_info)
       => (Result result);
 
-  SetInlineTippingPlatformEnabled(InlineTipsPlatforms platform, bool enabled);
-
-  GetInlineTippingPlatformEnabled(InlineTipsPlatforms platform)
-      => (bool enabled);
-
   GetShareURL(map<string, string> args) => (string url);
 
-  FetchBalance() => (FetchBalanceResult result);
+  FetchBalance() => (Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (GetExternalWalletResult result);
+  GetExternalWallet() => (ExternalWallet? external_wallet);
+
+  BeginExternalWalletLogin(string wallet_type)
+      => (ExternalWalletLoginParams? params);
 
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);

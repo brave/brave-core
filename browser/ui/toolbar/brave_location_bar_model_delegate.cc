@@ -35,18 +35,15 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   if (url.SchemeIs(kChromeExtensionScheme) &&
-      url.host() == ethereum_remote_client_extension_id) {
+      url.host() == kEthereumRemoteClientExtensionId) {
     base::ReplaceFirstSubstringAfterOffset(
-        new_formatted_url, 0,
-        base::UTF8ToUTF16(ethereum_remote_client_base_url), u"brave://wallet");
-    base::ReplaceFirstSubstringAfterOffset(
-        new_formatted_url, 0,
-        base::UTF8ToUTF16(ethereum_remote_client_phishing_url),
-        u"brave://wallet");
-    base::ReplaceFirstSubstringAfterOffset(
-        new_formatted_url, 0,
-        base::UTF8ToUTF16(ethereum_remote_client_ens_redirect_url),
-        u"brave://wallet");
+        new_formatted_url, 0, kEthereumRemoteClientBaseUrl, u"brave://wallet");
+    base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0,
+                                           kEthereumRemoteClientPhishingUrl,
+                                           u"brave://wallet");
+    base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0,
+                                           kEthereumRemoteClientEnsRedirectUrl,
+                                           u"brave://wallet");
   }
 #endif
 }

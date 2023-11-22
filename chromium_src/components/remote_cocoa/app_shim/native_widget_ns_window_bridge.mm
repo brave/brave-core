@@ -3,8 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "skia/ext/skia_utils_mac.h"
+
 #include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.mm"
 
+namespace {
+NSColor* g_brave_title_color = nil;
+}  // namespace
+
+@interface NSThemeFrame (BraveTheme)
+- (NSColor*)_currentTitleColor;  // Forward declaration of method
+@end
+
+@interface BrowserWindowFrame : NativeWidgetMacNSWindowTitledFrame
+@end
+
+// Custom implementation for BrowserWindowFrame only
+@implementation BrowserWindowFrame (BraveTheme)
+
+// Override currentTitleColor to return our own.
+- (NSColor*)_currentTitleColor {
+  return g_brave_title_color;
+}
+
+@end
 namespace remote_cocoa {
 
 void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
@@ -50,6 +72,24 @@ void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   } else {
     LOG(ERROR) << "Failed to find selector for resetting window controls";
   }
+}
+
+void NativeWidgetNSWindowBridge::UpdateWindowTitleColor(SkColor color) {
+  NSView* frameView = window_.contentView.superview;
+  if (![frameView isKindOfClass:[BrowserWindowFrame class]]) {
+    return;
+  }
+
+  if (![frameView respondsToSelector:@selector(_currentTitleColor)]) {
+    return;
+  }
+
+  g_brave_title_color = skia::SkColorToDeviceNSColor(color);
+
+  // Reset title to apply new title color.
+  NSString* title = window_.title;
+  window_.title = @"";
+  window_.title = title;
 }
 
 }  // namespace remote_cocoa

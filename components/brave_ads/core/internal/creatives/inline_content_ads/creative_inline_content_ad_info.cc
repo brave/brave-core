@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
-#include <tuple>
-
 namespace brave_ads {
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo() = default;
@@ -28,20 +26,5 @@ CreativeInlineContentAdInfo& CreativeInlineContentAdInfo::operator=(
     CreativeInlineContentAdInfo&& other) noexcept = default;
 
 CreativeInlineContentAdInfo::~CreativeInlineContentAdInfo() = default;
-
-bool CreativeInlineContentAdInfo::operator==(
-    const CreativeInlineContentAdInfo& other) const {
-  const auto tie = [](const CreativeInlineContentAdInfo& ad) {
-    return std::tie(ad.title, ad.description, ad.image_url, ad.dimensions,
-                    ad.cta_text);
-  };
-
-  return CreativeAdInfo::operator==(other) && tie(*this) == tie(other);
-}
-
-bool CreativeInlineContentAdInfo::operator!=(
-    const CreativeInlineContentAdInfo& other) const {
-  return !(*this == other);
-}
 
 }  // namespace brave_ads

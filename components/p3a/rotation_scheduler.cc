@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/rotation_scheduler.h"
 
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/timer/wall_clock_timer.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -14,14 +15,18 @@ namespace p3a {
 
 namespace {
 
-constexpr char kLastSlowRotationTimeStampPref[] =
+constexpr char kLastSlowJsonRotationTimeStampPref[] =
     "p3a.last_slow_rotation_timestamp";
 constexpr char kLastTypicalJsonRotationTimeStampPref[] =
     "p3a.last_rotation_timestamp";
 constexpr char kLastExpressJsonRotationTimeStampPref[] =
     "p3a.last_express_rotation_timestamp";
-constexpr char kLastConstellationRotationTimeStampPref[] =
+constexpr char kLastTypicalConstellationRotationTimeStampPref[] =
     "p3a.last_constellation_rotation_timestamp";
+constexpr char kLastSlowConstellationRotationTimeStampPref[] =
+    "p3a.last_slow_constellation_rotation_timestamp";
+constexpr char kLastExpressConstellationRotationTimeStampPref[] =
+    "p3a.last_express_constellation_rotation_timestamp";
 
 base::Time NextFirstDayOfMonth(base::Time time) {
   base::Time::Exploded exploded;
@@ -79,11 +84,25 @@ base::Time GetNextJsonRotationTime(MetricLogType log_type,
 const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
   switch (log_type) {
     case MetricLogType::kSlow:
-      return kLastSlowRotationTimeStampPref;
+      return kLastSlowJsonRotationTimeStampPref;
     case MetricLogType::kTypical:
       return kLastTypicalJsonRotationTimeStampPref;
     case MetricLogType::kExpress:
       return kLastExpressJsonRotationTimeStampPref;
+    default:
+      NOTREACHED();
+  }
+  return nullptr;
+}
+
+const char* GetConstellationRotationTimestampPref(MetricLogType log_type) {
+  switch (log_type) {
+    case MetricLogType::kSlow:
+      return kLastSlowConstellationRotationTimeStampPref;
+    case MetricLogType::kTypical:
+      return kLastTypicalConstellationRotationTimeStampPref;
+    case MetricLogType::kExpress:
+      return kLastExpressConstellationRotationTimeStampPref;
     default:
       NOTREACHED();
   }
@@ -95,18 +114,20 @@ const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
 RotationScheduler::RotationScheduler(
     PrefService& local_state,
     const P3AConfig* config,
-    JsonRotationCallback json_rotation_callback,
-    ConstellationRotationCallback constellation_rotation_callback)
+    RotationCallback json_rotation_callback,
+    RotationCallback constellation_rotation_callback)
     : json_rotation_callback_(json_rotation_callback),
       constellation_rotation_callback_(constellation_rotation_callback),
       local_state_(local_state),
       config_(config) {
   for (MetricLogType log_type : kAllMetricLogTypes) {
     json_rotation_timers_[log_type] = std::make_unique<base::WallClockTimer>();
+    constellation_rotation_timers_[log_type] =
+        std::make_unique<base::WallClockTimer>();
+    last_constellation_rotation_times_[log_type] =
+        local_state_->GetTime(GetConstellationRotationTimestampPref(log_type));
     InitJsonTimer(log_type);
   }
-  last_constellation_rotation_time_ =
-      local_state_->GetTime(kLastConstellationRotationTimeStampPref);
 }
 
 RotationScheduler::~RotationScheduler() = default;
@@ -114,10 +135,15 @@ RotationScheduler::~RotationScheduler() = default;
 void RotationScheduler::RegisterPrefs(PrefRegistrySimple* registry) {
   // Using "year ago" as default value to fix macOS test crashes
   const base::Time year_ago = base::Time::Now() - base::Days(365);
-  registry->RegisterTimePref(kLastSlowRotationTimeStampPref, year_ago);
+  registry->RegisterTimePref(kLastSlowJsonRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastTypicalJsonRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastExpressJsonRotationTimeStampPref, year_ago);
-  registry->RegisterTimePref(kLastConstellationRotationTimeStampPref, year_ago);
+  registry->RegisterTimePref(kLastTypicalConstellationRotationTimeStampPref,
+                             year_ago);
+  registry->RegisterTimePref(kLastSlowConstellationRotationTimeStampPref,
+                             year_ago);
+  registry->RegisterTimePref(kLastExpressConstellationRotationTimeStampPref,
+                             year_ago);
 }
 
 void RotationScheduler::InitJsonTimer(MetricLogType log_type) {
@@ -147,10 +173,12 @@ void RotationScheduler::InitJsonTimer(MetricLogType log_type) {
   UpdateJsonTimer(log_type);
 }
 
-void RotationScheduler::InitConstellationTimer(base::Time next_epoch_time) {
-  constellation_rotation_timer_.Start(
-      FROM_HERE, next_epoch_time + base::Seconds(5), this,
-      &RotationScheduler::HandleConstellationTimerTrigger);
+void RotationScheduler::InitConstellationTimer(MetricLogType log_type,
+                                               base::Time next_epoch_time) {
+  constellation_rotation_timers_[log_type]->Start(
+      FROM_HERE, next_epoch_time + base::Seconds(5),
+      base::BindOnce(&RotationScheduler::HandleConstellationTimerTrigger,
+                     base::Unretained(this), log_type));
 }
 
 void RotationScheduler::UpdateJsonTimer(MetricLogType log_type) {
@@ -178,8 +206,9 @@ base::Time RotationScheduler::GetLastJsonRotationTime(MetricLogType log_type) {
   return last_json_rotation_times_[log_type];
 }
 
-base::Time RotationScheduler::GetLastConstellationRotationTime() {
-  return last_constellation_rotation_time_;
+base::Time RotationScheduler::GetLastConstellationRotationTime(
+    MetricLogType log_type) {
+  return last_constellation_rotation_times_[log_type];
 }
 
 void RotationScheduler::HandleJsonTimerTrigger(MetricLogType log_type) {
@@ -190,11 +219,12 @@ void RotationScheduler::HandleJsonTimerTrigger(MetricLogType log_type) {
   json_rotation_callback_.Run(log_type);
 }
 
-void RotationScheduler::HandleConstellationTimerTrigger() {
-  last_constellation_rotation_time_ = base::Time::Now();
-  local_state_->SetTime(kLastConstellationRotationTimeStampPref,
-                        last_constellation_rotation_time_);
-  constellation_rotation_callback_.Run();
+void RotationScheduler::HandleConstellationTimerTrigger(
+    MetricLogType log_type) {
+  last_constellation_rotation_times_[log_type] = base::Time::Now();
+  local_state_->SetTime(GetConstellationRotationTimestampPref(log_type),
+                        last_constellation_rotation_times_[log_type]);
+  constellation_rotation_callback_.Run(log_type);
 }
 
 }  // namespace p3a

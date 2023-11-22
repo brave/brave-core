@@ -19,7 +19,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -37,7 +37,7 @@
 #include "ui/base/resource/resource_bundle.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -125,6 +125,20 @@ bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
 }
 
 // static
+bool SidebarService::IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      return false;
+  }
+  NOTREACHED_NORETURN();
+}
+
+// static
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
                                           version_info::Channel channel) {
   registry->RegisterListPref(kSidebarItems);
@@ -136,10 +150,13 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
+  registry->RegisterIntegerPref(
+      kLastUsedBuiltInItemType,
+      static_cast<int>(SidebarItem::BuiltInItemType::kNone));
 }
 
-SidebarService::SidebarService(PrefService* prefs)
-    : prefs_(prefs), sidebar_p3a_(prefs) {
+SidebarService::SidebarService(PrefService* prefs, bool is_guest)
+    : prefs_(prefs), sidebar_p3a_(prefs), is_guest_(is_guest) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -613,6 +630,7 @@ std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
   for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
     if (auto item = GetBuiltInItemForType(item_type);
         item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
+      item.disabled = (is_guest_ && IsDisabledItemForGuest(item_type));
       items.push_back(std::move(item));
     }
   }

@@ -85,6 +85,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
                               content::BrowserContext* context,
                               const url::Origin& origin,
                               const std::string& account);
+  static void ResetAllPermissions(content::BrowserContext* context);
 
   static std::vector<std::string> GetWebSitesWithPermission(
       blink::PermissionType permission,

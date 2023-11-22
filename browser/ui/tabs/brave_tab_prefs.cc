@@ -10,17 +10,6 @@
 
 namespace brave_tabs {
 
-const char kTabHoverMode[] = "brave.tabs.hover_mode";
-
-const char kVerticalTabsEnabled[] = "brave.tabs.vertical_tabs_enabled";
-const char kVerticalTabsCollapsed[] = "brave.tabs.vertical_tabs_collapsed";
-const char kVerticalTabsShowTitleOnWindow[] =
-    "brave.tabs.vertical_tabs_show_title_on_window";
-const char kVerticalTabsFloatingEnabled[] =
-    "brave.tabs.vertical_tabs_floating_enabled";
-const char kVerticalTabsExpandedWidth[] =
-    "brave.tabs.vertical_tabs_expanded_width";
-
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
   registry->RegisterBooleanPref(kVerticalTabsEnabled, false);
@@ -33,7 +22,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
-  registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 250);
+  registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
 }
 
 bool AreTooltipsEnabled(PrefService* prefs) {

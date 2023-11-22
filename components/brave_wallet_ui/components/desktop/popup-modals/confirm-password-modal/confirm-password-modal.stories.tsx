@@ -9,9 +9,11 @@ import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-
 import { ConfirmPasswordModal } from './confirm-password-modal'
 
 export const _ConfirmPasswordModal = () => {
-  return <WalletPageStory>
-    <ConfirmPasswordModal />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <ConfirmPasswordModal />
+    </WalletPageStory>
+  )
 }
 
 _ConfirmPasswordModal.storyName = 'Confirm Password Modal'

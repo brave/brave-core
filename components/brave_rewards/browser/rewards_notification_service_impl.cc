@@ -183,7 +183,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
     if (notification_id_opt)
       notification_id = *notification_id_opt;
     int notification_type = dict.FindInt("type").value_or(0);
-    int notification_timestamp = dict.FindInt("timestamp").value_or(0);
+    int notification_timestamp = dict.FindDouble("timestamp").value_or(0.0);
     RewardsNotificationArgs notification_args;
 
     // The notification ID was originally an integer, but now it's a

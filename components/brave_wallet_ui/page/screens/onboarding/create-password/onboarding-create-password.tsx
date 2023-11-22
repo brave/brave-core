@@ -4,24 +4,30 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
 // routes
-import { WalletRoutes, WalletState } from '../../../../constants/types'
-
-// actions
-import { WalletPageActions } from '../../../actions'
+import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
-import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
+import {
+  NewPasswordInput,
+  NewPasswordValues
+} from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
 // styles
 import {
@@ -38,42 +44,57 @@ interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
 }
 
-export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) => {
+export const OnboardingCreatePassword = (
+  props: OnboardingCreatePasswordProps
+) => {
   const { isHardwareOnboarding, onWalletCreated } = props
 
   // redux
-  const dispatch = useDispatch()
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
 
-  // methods
-  const nextStep = React.useCallback(() => {
-    if (isValid) {
-      dispatch(WalletPageActions.createWallet({ password }))
-    }
-  }, [password, isValid])
+  // mutations
+  const [createWallet] = useCreateWalletMutation()
 
-  const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
-    setPassword(password)
-    setIsValid(isValid)
-  }, [])
+  // methods
+  const nextStep = React.useCallback(async () => {
+    if (isValid) {
+      // Note: intentionally not using unwrapped value
+      // results are returned before other redux actions complete
+      await createWallet({ password }).unwrap()
+    }
+  }, [password, isValid, createWallet])
+
+  const handlePasswordChange = React.useCallback(
+    ({ isValid, password }: NewPasswordValues) => {
+      setPassword(password)
+      setIsValid(isValid)
+    },
+    []
+  )
 
   // effects
   React.useEffect(() => {
-    if (isWalletCreated) {
+    // wait for redux before redirecting
+    // otherwise, the restricted routes in the router will not be available
+    if (!isCreatingWallet && isWalletCreated) {
       onWalletCreated()
     }
-  }, [isWalletCreated, onWalletCreated])
+  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
+
+  if (isCreatingWallet) {
+    return <CreatingWallet />
+  }
 
   // render
   return (
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
@@ -83,7 +104,9 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletCreatePasswordTitle')}</Title>
-            <Description>{getLocale('braveWalletCreatePasswordDescription')}</Description>
+            <Description>
+              {getLocale('braveWalletCreatePasswordDescription')}
+            </Description>
           </TitleAndDescriptionContainer>
 
           <NewPasswordInput
@@ -100,7 +123,6 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
               disabled={!isValid}
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

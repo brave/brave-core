@@ -4,13 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import {
-  BraveWallet,
-  SupportedOffRampNetworks
-} from '../../../constants/types'
-import {
-  WalletApiEndpointBuilderParams
-} from '../api-base.slice'
+import { BraveWallet, SupportedOffRampNetworks } from '../../../constants/types'
+import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
@@ -21,9 +16,7 @@ import {
 import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
 
-export const offRampEndpoints = ({
-  query
-}: WalletApiEndpointBuilderParams) => {
+export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
   return {
     getOffRampAssets: query<
       {
@@ -62,24 +55,19 @@ export const offRampEndpoints = ({
           } = getNativeTokensFromList(rampAssetOptions)
 
           // separate BAT from other tokens
-          const {
-            bat: rampBatTokens,
-            nonBat: rampNonBatTokens
-          } = getBatTokensFromList(rampTokenOptions)
+          const { bat: rampBatTokens, nonBat: rampNonBatTokens } =
+            getBatTokensFromList(rampTokenOptions)
 
           // moves Gas coins and BAT to front of list
-          const sortedRampOptions =
-            [
-              ...rampNativeAssetOptions,
-              ...rampBatTokens,
-              ...rampNonBatTokens
-            ]
+          const sortedRampOptions = [
+            ...rampNativeAssetOptions,
+            ...rampBatTokens,
+            ...rampNonBatTokens
+          ]
 
           const results = {
             rampAssetOptions: sortedRampOptions,
-            allAssetOptions: getUniqueAssets([
-              ...sortedRampOptions
-            ])
+            allAssetOptions: getUniqueAssets([...sortedRampOptions])
           }
 
           return {
@@ -92,7 +80,8 @@ export const offRampEndpoints = ({
             error: errorMessage
           }
         }
-      }, providesTags: (_results, error, _arg) => {
+      },
+      providesTags: (_results, error, _arg) => {
         if (error) {
           return ['UNKNOWN_ERROR']
         }

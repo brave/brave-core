@@ -21,21 +21,16 @@ interface Props {
 }
 
 export const PortfolioAccountMenu = (props: Props) => {
-  const {
-    onClickSell,
-    onClickViewOnExplorer
-  } = props
+  const { onClickSell, onClickViewOnExplorer } = props
 
   return (
     <StyledWrapper yPosition={42}>
-      {onClickSell &&
+      {onClickSell && (
         <PopupButton onClick={onClickSell}>
           <ButtonIcon name='usd-circle' />
-          <PopupButtonText>
-            {getLocale('braveWalletSell')}
-          </PopupButtonText>
+          <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
         </PopupButton>
-      }
+      )}
       <PopupButton onClick={onClickViewOnExplorer}>
         <ButtonIcon name='launch' />
         <PopupButtonText>

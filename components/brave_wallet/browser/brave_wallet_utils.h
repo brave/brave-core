@@ -53,6 +53,10 @@ bool DecodeString(size_t offset, const std::string& input, std::string* output);
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
 
+// Use kBraveWalletLastUnlockTime pref to determine if any wallets has been
+// created before, regardless of still existed or not.
+bool HasCreatedWallets(PrefService* prefs);
+
 base::Value::Dict TransactionReceiptToValue(
     const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
@@ -97,6 +101,7 @@ std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetKnownFilNetworkId(const std::string& chain_id);
 std::string GetKnownBtcNetworkId(const std::string& chain_id);
 std::string GetKnownSolNetworkId(const std::string& chain_id);
+std::string GetKnownZecNetworkId(const std::string& chain_id);
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id);
 std::string GetNetworkId(PrefService* prefs,
@@ -117,6 +122,7 @@ std::vector<std::string> GetAllKnownEthNetworkIds();
 std::vector<std::string> GetAllKnownSolNetworkIds();
 std::vector<std::string> GetAllKnownFilNetworkIds();
 std::vector<std::string> GetAllKnownBtcNetworkIds();
+std::vector<std::string> GetAllKnownZecNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);

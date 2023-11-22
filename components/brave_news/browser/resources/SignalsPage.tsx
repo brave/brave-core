@@ -3,17 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react';
-import { useInspectContext } from './context';
-import Card from './feed/Card';
-import Radio from '@brave/leo/react/radioButton'
-import Button from '@brave/leo/react/button'
+import Flex from '$web-common/Flex';
+import Button from '@brave/leo/react/button';
 import Dropdown from '@brave/leo/react/dropdown';
 import Input from '@brave/leo/react/input';
-import Flex from '$web-common/Flex'
+import Radio from '@brave/leo/react/radioButton';
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import * as React from 'react';
 import styled from 'styled-components';
 import FeedStats, { getFeedStats } from './FeedStats';
+import { useInspectContext } from './context';
+import Card from './feed/Card';
+import { useBraveNews } from './shared/Context';
 
 interface Props {
 }
@@ -49,6 +50,8 @@ function SignalCards<T>({ items, sort, filter, getName, getKey, stats }: { items
       <b>Visit Weighting:</b> {signals[getKey(a)]?.visitWeight}
       <br />
       <b>Shown count:</b> {stats[getKey(a)] ?? 0}
+      <br />
+      <b>Total articles:</b> {signals[getKey(a)]?.articleCount ?? 0}
     </Card>)}
   </>
 }
@@ -58,11 +61,13 @@ const getPublisherKey = (p: Publisher) => p.publisherId
 const getPublisherName = (p: Publisher) => p.publisherName
 
 export default function SignalsPage(props: Props) {
-  const { publishers, channels, feed, truncate, setTruncate } = useInspectContext();
+  const { truncate, setTruncate } = useInspectContext();
+  const { feedV2, channels, publishers } = useBraveNews();
+
   const [show, setShow] = React.useState<'all' | 'publishers' | 'channels'>('all')
   const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight' | 'shownCount'>('visitWeight')
   const [filter, setFilter] = React.useState('')
-  const { channelStats, publisherStats, counts } = getFeedStats(feed, truncate)
+  const { channelStats, publisherStats, counts } = getFeedStats(feedV2, truncate)
 
   return <Container direction='column'>
     <h2>Signals</h2>
@@ -90,7 +95,7 @@ export default function SignalsPage(props: Props) {
         <leo-option>visitWeight</leo-option>
         <leo-option>shownCount</leo-option>
       </Dropdown>
-      <Input type="text" hasErrors={false} showErrors={false} mode='outline' size='normal' value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
+      <Input type="text" value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
         Consider first {"{n}"} cards
       </Input>
     </Flex>

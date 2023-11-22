@@ -19,9 +19,7 @@ namespace brave_ads {
 
 class BraveAdsCashDepositIntegrationTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
-  }
+  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {

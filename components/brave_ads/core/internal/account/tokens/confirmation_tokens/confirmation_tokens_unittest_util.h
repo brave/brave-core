@@ -12,11 +12,15 @@ namespace brave_ads {
 
 class ConfirmationTokens;
 
-ConfirmationTokens& GetConfirmationTokensForTesting();
-ConfirmationTokenList SetConfirmationTokensForTesting(int count);
+namespace test {
 
-ConfirmationTokenInfo BuildConfirmationTokenForTesting();
-ConfirmationTokenList BuildConfirmationTokensForTesting(int count);
+ConfirmationTokens& GetConfirmationTokens();
+ConfirmationTokenList SetConfirmationTokens(int count);
+
+ConfirmationTokenInfo BuildConfirmationToken();
+ConfirmationTokenList BuildConfirmationTokens(int count);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

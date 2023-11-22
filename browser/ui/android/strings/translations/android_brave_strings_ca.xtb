@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Si tanques totes les pestanyes, es tancarà Brave</translation>
 <translation id="8308305244351876417">Permet que es reprodueixi l'àudio quan canvieu a una altra pestanya de Brave, a una altra aplicació o la pantalla del dispositiu estigui desactivada.</translation>
 <translation id="4150201353443180367">Pantalla</translation>
+<translation id="4275663329226226506">Multimèdia</translation>
+<translation id="5950428831347558278">DRM de Widevine</translation>
+<translation id="6716942308303275900">Utilitzeu la gestió de drets digitals (DRM) de Widevine per veure contingut multimèdia protegit al navegador.</translation>
+<translation id="255204363133978824">Permet el contingut protegit</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Més informació sobre Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Permet (reinicia ara)</translation>
 <translation id="2433507940547922241">Aparença</translation>
 <translation id="9040069796107003510">Icona de Premis de Brave</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
@@ -583,6 +589,7 @@ Segur que vols continuar?</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
+<translation id="6915830896450988084">Envia amb <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Envia</translation>
 <translation id="538450413584738399">Intercanvi</translation>
 <translation id="1366855498335432549">Dipositar</translation>
@@ -899,6 +906,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="3897092660631435901">Menú</translation>
 <translation id="42981349822642051">Expandeix</translation>
 <translation id="3586752056660754651">Signar</translation>
+<translation id="3950820424414687140">Inicia la sessió</translation>
 <translation id="6592721981110586529">Connecta't amb la Brave Wallet</translation>
 <translation id="329813193938846695">Seleccioni els comptes</translation>
 <translation id="291375746846291973">Només connecti amb webs amb els quals confiï.</translation>
@@ -945,7 +953,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="6044189892950611565">Canal de notificacions per al navegador de Brave</translation>
 <translation id="1173919438868967364">Selecciona un compte</translation>
 <translation id="8922793255489232731">No s'ha pogut obtenir la zona horària corresponent per a: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">S'està baixant el fitxer de dades de la cartera \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">S'està baixant el fitxer de dades de cartera \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Connectat anb <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prova</translation>
 <translation id="7733890291091968191">Mostra les notificacions de Web3</translation>
@@ -1047,6 +1055,14 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="5802752138057422257">S'han detectat caràcters NON-ASCII.</translation>
 <translation id="442709594176931966">Vegis el missatge original</translation>
 <translation id="2239252396088484499">Mostra el missatge en la codificació ASCII</translation>
+<translation id="4530494379350999373">Origen</translation>
+<translation id="6736243959894955139">Adreça</translation>
+<translation id="3095940652251934233">Declaració</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versió</translation>
+<translation id="1313065465616456728">Emès el</translation>
+<translation id="7902225556763260253">Data de caducitat</translation>
+<translation id="1908159733454294871">S'ha detectat un risc per a la seguretat</translation>
 <translation id="4220693114674044366">Adreça del testimoni</translation>
 <translation id="5658257029899993935">Enllaça la compra al teu compte de Brave</translation>
 <translation id="1187061015547219282">Enllaceu la compra de Play Store al vostre compte de Brave per utilitzar Brave VPN en altres dispositius.</translation>
@@ -1179,4 +1195,11 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="5494920125229734069">Selecciona-ho tot</translation>
 <translation id="5972844218283131174">Desselecciona-ho tot</translation>
 <translation id="6322030314101903925">No hi ha cap actiu disponible</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Inicieu la sessió amb la cartera de Brave</translation>
+<translation id="3696514931437952995">Esteu iniciant la sessió a <ph name="ORIGIN"/>. La cartera de Brave compartirà l'adreça de la vostra cartera amb <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Mostra'n els detalls</translation>
+<translation id="6759710362319508545">Recursos</translation>
+<translation id="2471230424465522689">No anterior a</translation>
+<translation id="4841860051609590575">ID de la sol·licitud</translation>
 </translationbundle>

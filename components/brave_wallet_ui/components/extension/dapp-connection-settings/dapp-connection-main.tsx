@@ -10,25 +10,17 @@ import { useDispatch } from 'react-redux'
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
-import {
-  WalletActions
-} from '../../../common/actions'
+import { WalletActions } from '../../../common/actions'
 
 // Selectors
 import {
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Types
-import {
-  DAppConnectionOptionsType
-} from './dapp-connection-settings'
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { DAppConnectionOptionsType } from './dapp-connection-settings'
+import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
@@ -36,19 +28,17 @@ import {
   useGetSelectedChainQuery
 } from '../../../common/slices/api.slice'
 import {
-  useSelectedAccountQuery
+  useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../utils/reduce-address'
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Components
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
@@ -65,12 +55,7 @@ import {
   ButtonIcon,
   FavIcon
 } from './dapp-connection-settings.style'
-import {
-  VerticalSpace,
-  HorizontalSpace,
-  Column,
-  Row
-} from '../../shared/style'
+import { VerticalSpace, HorizontalSpace, Column, Row } from '../../shared/style'
 
 interface Props {
   isConnected: boolean
@@ -92,8 +77,7 @@ export const DAppConnectionMain = (props: Props) => {
   const dispatch = useDispatch()
 
   // Selectors
-  const activeOrigin =
-    useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -115,10 +99,7 @@ export const DAppConnectionMain = (props: Props) => {
       return Amount.empty()
     }
     return getAccountsFiatValue(selectedAccount)
-  }, [
-    getAccountsFiatValue,
-    selectedAccount
-  ])
+  }, [getAccountsFiatValue, selectedAccount])
 
   // Methods
   const onClickConnect = React.useCallback(() => {
@@ -126,10 +107,9 @@ export const DAppConnectionMain = (props: Props) => {
       return
     }
     dispatch(
-      PanelActions
-        .requestSitePermission(
-          { accountId: selectedAccount.accountId }
-        )
+      PanelActions.requestSitePermission({
+        accountId: selectedAccount.accountId
+      })
     )
   }, [selectedAccount])
 
@@ -138,27 +118,22 @@ export const DAppConnectionMain = (props: Props) => {
       return
     }
     dispatch(
-      WalletActions
-        .removeSitePermission(
-          { accountId: selectedAccount.accountId }
-        )
+      WalletActions.removeSitePermission({
+        accountId: selectedAccount.accountId
+      })
     )
   }, [selectedAccount])
 
   return (
     <>
-      {!isChromeOrigin &&
+      {!isChromeOrigin && (
         <>
           <Row
             justifyContent='flex-start'
             marginBottom={16}
           >
             <ConnectedIcon
-              name={
-                isConnected
-                  ? 'check-circle-filled'
-                  : 'social-dribbble'
-              }
+              name={isConnected ? 'check-circle-filled' : 'social-dribbble'}
               dappConnected={isConnected}
               size='16px'
             />
@@ -172,15 +147,11 @@ export const DAppConnectionMain = (props: Props) => {
             </ConnectedText>
           </Row>
           <SectionRow>
-            <Row
-              width='unset'
-            >
+            <Row width='unset'>
               <FavIcon
                 size='32px'
                 marginRight='16px'
-                src={
-                  `chrome://favicon/size/64@1x/${activeOrigin.originSpec}`
-                }
+                src={`chrome://favicon/size/64@1x/${activeOrigin.originSpec}`}
               />
               <Column
                 alignItems='flex-start'
@@ -203,46 +174,32 @@ export const DAppConnectionMain = (props: Props) => {
                 </DescriptionText>
               </Column>
             </Row>
-            {!isPermissionDenied &&
-              <Row
-                width='unset'
-              >
+            {!isPermissionDenied && (
+              <Row width='unset'>
                 <Button
                   size='small'
-                  onClick={
-                    isConnected
-                      ? onClickDisconnect
-                      : onClickConnect
-                  }
+                  onClick={isConnected ? onClickDisconnect : onClickConnect}
                 >
-                  {
-                    isConnected
-                      ? getLocale('braveWalletSitePermissionsDisconnect')
-                      : getLocale('braveWalletAddAccountConnect')
-                  }
+                  {isConnected
+                    ? getLocale('braveWalletSitePermissionsDisconnect')
+                    : getLocale('braveWalletAddAccountConnect')}
                 </Button>
               </Row>
-            }
+            )}
           </SectionRow>
-          {!isPermissionDenied &&
+          {!isPermissionDenied && (
             <>
               <VerticalSpace space='8px' />
-              <SectionButton
-                onClick={() => onSelectOption('accounts')}
-              >
-                <Row
-                  width='unset'
-                >
-                  {selectedAccount &&
+              <SectionButton onClick={() => onSelectOption('accounts')}>
+                <Row width='unset'>
+                  {selectedAccount && (
                     <CreateAccountIcon
                       size='medium'
                       account={selectedAccount}
                       marginRight={16}
                     />
-                  }
-                  <Column
-                    alignItems='flex-start'
-                  >
+                  )}
+                  <Column alignItems='flex-start'>
                     <NameText
                       textSize='14px'
                       isBold={true}
@@ -253,15 +210,15 @@ export const DAppConnectionMain = (props: Props) => {
                       textSize='12px'
                       isBold={false}
                     >
-                      {
-                        reduceAddress(
-                          selectedAccount?.accountId?.address ?? '')
-                      }
+                      {reduceAddress(selectedAccount?.accountId?.address ?? '')}
                     </DescriptionText>
                     {selectedAccountFiatValue.isUndefined() ? (
                       <>
                         <VerticalSpace space='3px' />
-                        <LoadingSkeleton width={60} height={12} />
+                        <LoadingSkeleton
+                          width={60}
+                          height={12}
+                        />
                         <VerticalSpace space='3px' />
                       </>
                     ) : (
@@ -269,10 +226,9 @@ export const DAppConnectionMain = (props: Props) => {
                         textSize='12px'
                         isBold={false}
                       >
-                        {
-                          selectedAccountFiatValue
-                            .formatAsFiat(defaultFiatCurrency)
-                        }
+                        {selectedAccountFiatValue.formatAsFiat(
+                          defaultFiatCurrency
+                        )}
                       </DescriptionText>
                     )}
                   </Column>
@@ -280,10 +236,10 @@ export const DAppConnectionMain = (props: Props) => {
                 <ButtonIcon />
               </SectionButton>
             </>
-          }
+          )}
           <VerticalSpace space='8px' />
         </>
-      }
+      )}
       <SectionButton
         onClick={() => onSelectOption('networks')}
         data-test-id='select-network-button'
@@ -297,9 +253,7 @@ export const DAppConnectionMain = (props: Props) => {
             marginRight={16}
             size='huge'
           />
-          <Column
-            alignItems='flex-start'
-          >
+          <Column alignItems='flex-start'>
             <DescriptionText
               textSize='12px'
               isBold={false}

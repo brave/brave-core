@@ -64,54 +64,53 @@ export const OnboardingSuccess = () => {
   }, [])
 
   // render
-  return <CenteredPageLayout>
+  return (
+    <CenteredPageLayout>
+      <MainWrapper>
+        <StyledWrapper>
+          <CloseButtonContainer>
+            <LinkText onClick={onComplete}>
+              {getLocale('braveWalletButtonDone')}
+            </LinkText>
+          </CloseButtonContainer>
+        </StyledWrapper>
 
-    <MainWrapper>
-      <StyledWrapper>
-        <CloseButtonContainer>
-          <LinkText onClick={onComplete}>
-            {getLocale('braveWalletButtonDone')}
+        <IntroContainer>
+          <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
+
+          <Description>
+            {getLocale('braveWalletOnboardingSuccessDescription')}
+          </Description>
+
+          <IntroImg
+            src={WalletAccessSvg}
+            height={138}
+          />
+        </IntroContainer>
+
+        <ArticleLinksContainer>
+          <LinkText
+            rel='noreferrer'
+            target='_blank'
+            href='https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
+          >
+            {getLocale('braveWalletLearnAboutMyWallet')}
           </LinkText>
-        </CloseButtonContainer>
-      </StyledWrapper>
+        </ArticleLinksContainer>
 
-      <IntroContainer>
-        <Title>{
-          getLocale('braveWalletOnboardingSuccessTitle')
-        }</Title>
+        <ButtonContainer>
+          <NavButton
+            buttonType='primary'
+            text={getLocale('braveWalletBuyCryptoButton')}
+            onSubmit={onClickBuyCrypto}
+          />
 
-        <Description>{
-          getLocale('braveWalletOnboardingSuccessDescription')
-        }</Description>
-
-        <IntroImg src={WalletAccessSvg} height={138} />
-
-      </IntroContainer>
-
-      <ArticleLinksContainer>
-        <LinkText
-          rel="noreferrer"
-          target='_blank'
-          href='https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
-        >
-          {getLocale('braveWalletLearnAboutMyWallet')}
-        </LinkText>
-      </ArticleLinksContainer>
-
-      <ButtonContainer>
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletBuyCryptoButton')}
-          onSubmit={onClickBuyCrypto}
-        />
-
-        <LinkText onClick={onClickDepositCrypto}>
-          <DepositIcon />
-          {getLocale('braveWalletDepositCryptoButton')}
-        </LinkText>
-
-      </ButtonContainer>
-
-    </MainWrapper>
-  </CenteredPageLayout>
+          <LinkText onClick={onClickDepositCrypto}>
+            <DepositIcon />
+            {getLocale('braveWalletDepositCryptoButton')}
+          </LinkText>
+        </ButtonContainer>
+      </MainWrapper>
+    </CenteredPageLayout>
+  )
 }

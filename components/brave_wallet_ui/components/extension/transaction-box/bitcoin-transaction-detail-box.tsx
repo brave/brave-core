@@ -11,25 +11,21 @@ import { getLocale } from '../../../../common/locale'
 // types
 import { BraveWallet } from '../../../constants/types'
 
-import {
-  CodeSnippet,
-  CodeSnippetText,
-  DetailColumn,
-} from './style'
+import { CodeSnippet, CodeSnippetText, DetailColumn } from './style'
 
 interface Props {
   data: BraveWallet.BtcTxData | undefined
 }
 
 // TODO(apaymyshev): better design for this
-export const BitcoinTransactionDetailBox = ({
-  data,
-}: Props) => {
+export const BitcoinTransactionDetailBox = ({ data }: Props) => {
   if (!data) {
     return (
       <CodeSnippet>
         <code>
-          <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
+          <CodeSnippetText>
+            {getLocale('braveWalletConfirmTransactionNoData')}
+          </CodeSnippetText>
         </code>
       </CodeSnippet>
     )
@@ -40,14 +36,20 @@ export const BitcoinTransactionDetailBox = ({
       {
         <DetailColumn>
           {data.inputs?.map((input, index) => {
-            return <code key={index}>{`input-${input.value}-${input.address}`}</code>
+            return (
+              <code key={index}>{`input-${input.value}-${input.address}`}</code>
+            )
           })}
         </DetailColumn>
       }
       {
         <DetailColumn>
           {data.outputs?.map((output, index) => {
-            return <code key={index}>{`output-${output.value}-${output.address}`}</code>
+            return (
+              <code
+                key={index}
+              >{`output-${output.value}-${output.address}`}</code>
+            )
           })}
         </DetailColumn>
       }

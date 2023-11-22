@@ -9,19 +9,21 @@ import { act, renderHook } from '@testing-library/react-hooks'
 
 import { usePasswordAttempts } from './use-password-attempts'
 import { ApiProxyContext } from '../context/api-proxy.context'
-import { getMockedAPIProxy, makeMockedStoreWithSpy } from '../async/__mocks__/bridge'
+import {
+  getMockedAPIProxy,
+  makeMockedStoreWithSpy
+} from '../async/__mocks__/bridge'
 import { WalletActions } from '../actions'
 
 const proxy = getMockedAPIProxy()
 
-function renderHookOptionsWithCustomStore (store: any) {
+function renderHookOptionsWithCustomStore(store: any) {
   return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) =>
-    <ApiProxyContext.Provider value={proxy}>
-      <Provider store={store}>
-        {children}
-      </Provider>
-    </ApiProxyContext.Provider>
+    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+      <ApiProxyContext.Provider value={proxy}>
+        <Provider store={store}>{children}</Provider>
+      </ApiProxyContext.Provider>
+    )
   }
 }
 
@@ -30,9 +32,10 @@ describe('usePasswordAttempts hook', () => {
     const { store, dispatchSpy } = makeMockedStoreWithSpy()
     proxy.setMockedStore(store)
 
-    const {
-      result
-    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
+    const { result } = renderHook(
+      () => usePasswordAttempts(),
+      renderHookOptionsWithCustomStore(store)
+    )
 
     expect(result.current.attempts).toEqual(0)
 
@@ -67,9 +70,10 @@ describe('usePasswordAttempts hook', () => {
   it('should return "true" for valid password', async () => {
     const { store } = makeMockedStoreWithSpy()
 
-    const {
-      result
-    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
+    const { result } = renderHook(
+      () => usePasswordAttempts(),
+      renderHookOptionsWithCustomStore(store)
+    )
 
     expect(result.current.attempts).toEqual(0)
 
@@ -83,9 +87,10 @@ describe('usePasswordAttempts hook', () => {
   it('should return "false" for invalid password', async () => {
     const { store } = makeMockedStoreWithSpy()
 
-    const {
-      result
-    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
+    const { result } = renderHook(
+      () => usePasswordAttempts(),
+      renderHookOptionsWithCustomStore(store)
+    )
 
     expect(result.current.attempts).toEqual(0)
 

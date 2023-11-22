@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -37,11 +38,6 @@ class SharedURLLoaderFactory;
 class PrefService;
 
 namespace brave_wallet {
-
-extern const char kBraveWalletWeeklyHistogramName[];
-extern const char kBraveWalletMonthlyHistogramName[];
-extern const char kBraveWalletNewUserReturningHistogramName[];
-extern const char kBraveWalletLastUsageTimeHistogramName[];
 
 class KeyringService;
 class JsonRpcService;
@@ -79,6 +75,7 @@ class BraveWalletService : public KeyedService,
       JsonRpcService* json_rpc_service,
       TxService* tx_service,
       BitcoinWalletService* bitcoin_wallet_service,
+      ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
       PrefService* local_state);
 
@@ -114,6 +111,7 @@ class BraveWalletService : public KeyedService,
   static base::Value::Dict GetDefaultSolanaAssets();
   static base::Value::Dict GetDefaultFilecoinAssets();
   static base::Value::Dict GetDefaultBitcoinAssets();
+  static base::Value::Dict GetDefaultZCashAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -257,6 +255,9 @@ class BraveWalletService : public KeyedService,
   void GenerateReceiveAddress(mojom::AccountIdPtr account_id,
                               GenerateReceiveAddressCallback callback) override;
 
+  void GetAnkrSupportedChainIds(
+      GetAnkrSupportedChainIdsCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -308,6 +309,10 @@ class BraveWalletService : public KeyedService,
     sign_all_txs_request_added_cb_for_testing_ = std::move(callback);
   }
 
+  BraveWalletServiceDelegate* GetDelegateForTesting() {
+    return delegate_.get();
+  }
+
  protected:
   // For tests
   BraveWalletService();
@@ -338,6 +343,11 @@ class BraveWalletService : public KeyedService,
   void OnGenerateBtcReceiveAddress(
       GenerateReceiveAddressCallback callback,
       mojom::BitcoinAddressPtr,
+      const absl::optional<std::string>& error_message);
+
+  void OnGenerateZecReceiveAddress(
+      GenerateReceiveAddressCallback callback,
+      mojom::ZCashAddressPtr,
       const absl::optional<std::string>& error_message);
 
   static absl::optional<std::string> GetChecksumAddress(
@@ -407,6 +417,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<BitcoinWalletService> bitcoin_wallet_service_ = nullptr;
+  raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;

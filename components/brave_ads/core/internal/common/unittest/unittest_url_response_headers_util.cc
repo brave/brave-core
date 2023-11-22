@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_headers_util.h"
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/strings/string_split.h"
 
 namespace brave_ads {
@@ -17,7 +17,7 @@ base::flat_map<std::string, std::string> ToUrlResponseHeaders(
   for (const auto& header : headers) {
     const std::vector<std::string> components = base::SplitString(
         header, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-    CHECK(components.size() == 2) << "Invalid header: " << header;
+    CHECK_EQ(2U, components.size()) << "Invalid header: " << header;
 
     const std::string& name = components.at(0);
     const std::string& value = components.at(1);

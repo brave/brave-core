@@ -7,13 +7,12 @@
 
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_constants.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
 ConversionActionType ToConversionActionType(
-    const ConfirmationType& confirmation_type) {
-  switch (confirmation_type.value()) {
+    ConfirmationType confirmation_type) {
+  switch (confirmation_type) {
     case ConfirmationType::kViewed: {
       return ConversionActionType::kViewThrough;
     }

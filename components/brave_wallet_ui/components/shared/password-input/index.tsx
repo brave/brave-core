@@ -24,7 +24,8 @@ interface PasswordInputState {
   value?: string
 }
 
-export interface Props extends Pick<React.DOMAttributes<HTMLInputElement>, 'onFocus' | 'onBlur'> {
+export interface Props
+  extends Pick<React.DOMAttributes<HTMLInputElement>, 'onFocus' | 'onBlur'> {
   onChange: (value: string) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   onVisibilityToggled?: (isVisible: boolean) => void
@@ -36,11 +37,13 @@ export interface Props extends Pick<React.DOMAttributes<HTMLInputElement>, 'onFo
   showToggleButton?: boolean
   label?: string
   name?: string
-  children?: React.ReactChild | ((state: PasswordInputState) => React.ReactElement)
+  children?:
+    | React.ReactChild
+    | ((state: PasswordInputState) => React.ReactElement)
   revealValue?: boolean
 }
 
-export function PasswordInput ({
+export function PasswordInput({
   onChange,
   onKeyDown,
   placeholder,
@@ -61,12 +64,15 @@ export function PasswordInput ({
   const [showPassword, setShowPassword] = React.useState(false)
 
   // methods
-  const inputPassword = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value)
-  }, [onChange])
+  const inputPassword = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(event.target.value)
+    },
+    [onChange]
+  )
 
   const onTogglePasswordVisibility = React.useCallback(() => {
-    setShowPassword(prev => !prev)
+    setShowPassword((prev) => !prev)
   }, [])
 
   // effects
@@ -77,14 +83,17 @@ export function PasswordInput ({
   // render
   return (
     <StyledWrapper>
-
       {label && name && <label htmlFor={name}>{label}</label>}
 
       <InputWrapper>
         <Input
           name={name}
           hasError={hasError}
-          type={(revealValue || (showToggleButton && showPassword)) ? 'text' : 'password'}
+          type={
+            revealValue || (showToggleButton && showPassword)
+              ? 'text'
+              : 'password'
+          }
           placeholder={placeholder}
           value={value}
           onChange={inputPassword}
@@ -94,29 +103,27 @@ export function PasswordInput ({
           onBlur={onBlur}
           onFocus={onFocus}
         />
-        {showToggleButton &&
+        {showToggleButton && (
           <ToggleVisibilityButton onClick={onTogglePasswordVisibility}>
             <ToggleVisibilityIcon showPassword={showPassword} />
           </ToggleVisibilityButton>
-        }
+        )}
       </InputWrapper>
-      {hasError && error &&
+      {hasError && error && (
         <ErrorRow>
           <WarningIcon />
           <ErrorText>{error}</ErrorText>
         </ErrorRow>
-      }
+      )}
       {/* Allow custom child elements */}
-      {children &&
-        typeof children === 'function'
-          ? children({
-              error,
-              hasError,
-              showPassword,
-              value
-            })
-          : children
-      }
+      {children && typeof children === 'function'
+        ? children({
+            error,
+            hasError,
+            showPassword,
+            value
+          })
+        : children}
     </StyledWrapper>
   )
 }

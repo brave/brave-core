@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_commit_transaction.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

@@ -5,9 +5,7 @@
 
 import styled from 'styled-components'
 import { Column } from '../../shared-swap.styles'
-import {
-  StandardButton
-} from '../../buttons/standard-button/standard-button'
+import { StandardButton } from '../../buttons/standard-button/standard-button'
 
 export const Button = styled(StandardButton)`
   align-self: flex-end;

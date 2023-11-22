@@ -20,7 +20,6 @@ export const mockPanelState: PanelState = {
   hasInitialized: false,
   connectToSiteOrigin: mockOriginInfo,
   selectedPanel: 'main',
-  panelTitle: '',
   connectingAccounts: [],
   addChainRequest: mockAddChainRequest,
   signMessageData: [mockSignMessageRequest],
@@ -31,11 +30,13 @@ export const mockPanelState: PanelState = {
   switchChainRequest: mockSwitchChainRequest,
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
-  signMessageErrorData: [{
-    chainId: '1',
-    localizedErrMsg: 'This is an error message, unable to sign.',
-    type: 1,
-    id: '1',
-    originInfo: mockOriginInfo
-  }]
+  signMessageErrorData: [
+    {
+      chainId: '1',
+      localizedErrMsg: 'This is an error message, unable to sign.',
+      type: 1,
+      id: '1',
+      originInfo: mockOriginInfo
+    }
+  ]
 }

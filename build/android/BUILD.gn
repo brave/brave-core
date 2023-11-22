@@ -6,6 +6,7 @@
 import("//brave/android/brave_xml_preprocessor.gni")
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 import("//tools/grit/grit_rule.gni")
 
 _apksigner = "$android_sdk_build_tools/apksigner"
@@ -17,7 +18,7 @@ action("sign_app_convert_aab_to_apk") {
 
   deps = [ ":sign_app" ]
 
-  target_aab_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+  target_aab_path = "$root_out_dir/apks/MonochromePublic64.aab"
   output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
   output_path = "$root_out_dir/apks/"
   bundletool = "//third_party/android_build_tools/bundletool/bundletool.jar"
@@ -46,7 +47,7 @@ action("sign_app") {
 
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
-      target_sign_app_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+      target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.aab"
     } else {
       target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
     }
@@ -87,8 +88,8 @@ copy("brave") {
   sources = []
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:monochrome_64_32_public_bundle" ]
-      sources += [ "$root_out_dir/apks/MonochromePublic6432.aab" ]
+      deps += [ "//chrome/android:monochrome_64_public_bundle" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic64.aab" ]
     } else {
       # There is no 64-bit apk target for Mono
       deps += [ "//chrome/android:monochrome_public_apk" ]
@@ -213,7 +214,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/component_updater/BraveComponentUpdater.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
@@ -224,7 +224,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/TxServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstaller.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstallerUtil.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",

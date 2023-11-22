@@ -60,6 +60,7 @@ class BookmarksSidePanelHeaderView : public views::View {
         l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_TITLE)));
     header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
     header_label->SetEnabledColorId(kColorSidebarPanelHeaderTitle);
+    header_label->SetAutoColorReadabilityEnabled(false);
     header_label->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
@@ -88,9 +89,6 @@ class BookmarksSidePanelHeaderView : public views::View {
         ui::ImageModel::FromVectorIcon(kLeoLaunchIcon,
                                        kColorSidebarPanelHeaderButtonHovered,
                                        kHeaderButtonSize));
-
-    SetBackground(
-        views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
   }
 
   ~BookmarksSidePanelHeaderView() override = default;

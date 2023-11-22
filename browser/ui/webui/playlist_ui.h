@@ -60,6 +60,7 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void ShowRemovePlaylistUI(const std::string& playlist_id) override;
   void ShowMoveItemsUI(const std::string& playlist_id,
                        const std::vector<std::string>& items) override;
+  void OpenSettingsPage() override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;

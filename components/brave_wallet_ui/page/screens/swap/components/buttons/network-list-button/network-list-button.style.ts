@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import { StyledButton } from '../../shared-swap.styles'
 
-export const Button = styled(StyledButton) <{
+export const Button = styled(StyledButton)<{
   isHeader?: boolean
 }>`
   justify-content: space-between;
@@ -18,6 +18,6 @@ export const Button = styled(StyledButton) <{
     color: ${(p) => p.theme.color.text01};
   }
   @media screen and (max-width: 570px) {
-    padding: ${p => (p.isHeader ? '8px 20px' : '8px 12px')};
+    padding: ${(p) => (p.isHeader ? '8px 20px' : '8px 12px')};
   }
 `

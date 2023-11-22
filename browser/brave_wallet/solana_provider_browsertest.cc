@@ -4,19 +4,19 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -27,7 +27,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/constants/brave_paths.h"
@@ -258,6 +257,10 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
   TestTxServiceObserver() = default;
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
+    new_unapproved_txs_.push_back(std::move(tx));
+    if (!run_loop_new_unapproved_) {
+      return;
+    }
     run_loop_new_unapproved_->Quit();
   }
 
@@ -265,18 +268,27 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
 
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
     if (tx->tx_status == mojom::TransactionStatus::Rejected) {
-      run_loop_rejected_->Quit();
+      rejected_txs_.push_back(std::move(tx));
+      if (run_loop_rejected_) {
+        run_loop_rejected_->Quit();
+      }
     }
   }
 
   void OnTxServiceReset() override {}
 
   void WaitForNewUnapprovedTx() {
+    if (!new_unapproved_txs_.empty()) {
+      return;
+    }
     run_loop_new_unapproved_ = std::make_unique<base::RunLoop>();
     run_loop_new_unapproved_->Run();
   }
 
-  void WaitForRjectedStatus() {
+  void WaitForRejectedStatus() {
+    if (!rejected_txs_.empty()) {
+      return;
+    }
     run_loop_rejected_ = std::make_unique<base::RunLoop>();
     run_loop_rejected_->Run();
   }
@@ -290,6 +302,8 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
       this};
   std::unique_ptr<base::RunLoop> run_loop_new_unapproved_;
   std::unique_ptr<base::RunLoop> run_loop_rejected_;
+  std::vector<mojom::TransactionInfoPtr> new_unapproved_txs_;
+  std::vector<mojom::TransactionInfoPtr> rejected_txs_;
 };
 
 bool WaitForWalletBubble(content::WebContents* web_contents) {
@@ -317,16 +331,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
   SolanaProviderTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
         https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    base::FieldTrialParams parameters;
-    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
-
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaProviderFeature,
-        base::FieldTrialParams());
-    feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
 
   ~SolanaProviderTest() override = default;
@@ -353,8 +357,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
         KeyringServiceFactory::GetServiceForContext(browser()->profile());
     json_rpc_service_ =
         JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
+    AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
+        ->EnableDummyPricesForTesting();
     tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
-    tx_service_->AddObserver(observer()->GetReceiver());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     StartRPCServer(base::BindRepeating(&SolanaProviderTest::HandleRequest,
                                        base::Unretained(this)));
@@ -442,7 +448,13 @@ class SolanaProviderTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server_for_rpc() {
     return &https_server_for_rpc_;
   }
-  TestTxServiceObserver* observer() { return &observer_; }
+
+  std::unique_ptr<TestTxServiceObserver> CreateObserver() {
+    std::unique_ptr<TestTxServiceObserver> obs =
+        std::make_unique<TestTxServiceObserver>();
+    tx_service_->AddObserver(obs->GetReceiver());
+    return obs;
+  }
 
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -525,12 +537,13 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void RejectTransaction(const std::string& tx_meta_id) {
+    auto observer = CreateObserver();
     base::RunLoop run_loop;
     tx_service_->RejectTransaction(
         mojom::CoinType::SOL, mojom::kLocalhostChainId, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
-          observer()->WaitForRjectedStatus();
+          observer->WaitForRejectedStatus();
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -696,7 +709,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
  private:
   TestTxServiceObserver observer_;
-  base::test::ScopedFeatureList feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
   raw_ptr<TxService> tx_service_ = nullptr;
@@ -993,8 +1005,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
+  auto observer = CreateObserver();
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr);
-  observer()->WaitForNewUnapprovedTx();
+  observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   auto infos = GetAllTransactionInfo(account_0->account_id);
@@ -1024,8 +1037,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   const std::string send_options =
       R"({"maxRetries":1,"preflightCommitment":"confirmed","skipPreflight":true})";
+  observer = CreateObserver();
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr, send_options);
-  observer()->WaitForNewUnapprovedTx();
+  observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   infos = GetAllTransactionInfo(account_0->account_id);
@@ -1065,10 +1079,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   WaitForResultReady();
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
 
+  observer = CreateObserver();
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr2, send_options,
                                    account_1->address,
                                    kSecondAccountSignatureArray);
-  observer()->WaitForNewUnapprovedTx();
+  observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   // Test transaction.signatures.
@@ -1123,8 +1138,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
 
   // Test v0 transaction.
+  observer = CreateObserver();
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStrV0, "{}", "", "", true);
-  observer()->WaitForNewUnapprovedTx();
+  observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   infos = GetAllTransactionInfo(account_0->account_id);
@@ -1407,13 +1423,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_EQ(GetRequestResult(), kEncodedSignature);
 
   // signAndSendTransaction
+  auto observer = CreateObserver();
   const std::string send_options =
       R"({"maxRetries":1,"preflightCommitment":"confirmed","skipPreflight":true})";
   CallSolanaRequest(base::StringPrintf(R"(
     {method: "signAndSendTransaction", params: { message: '%s', options: %s }})",
                                        kEncodedUnsignedTxArrayStr,
                                        send_options.c_str()));
-  observer()->WaitForNewUnapprovedTx();
+  observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   auto infos = GetAllTransactionInfo(account_0->account_id);
   ASSERT_EQ(infos.size(), 1u);

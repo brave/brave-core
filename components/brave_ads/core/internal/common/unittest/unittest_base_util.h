@@ -29,19 +29,13 @@ void MockLoadDataResource(AdsClientMock& mock);
 
 void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
-void MockGetBooleanPref(const AdsClientMock& mock);
-void MockGetIntegerPref(const AdsClientMock& mock);
-void MockGetDoublePref(const AdsClientMock& mock);
-void MockGetStringPref(const AdsClientMock& mock);
-void MockGetInt64Pref(const AdsClientMock& mock);
-void MockGetUint64Pref(const AdsClientMock& mock);
-void MockGetTimePref(const AdsClientMock& mock);
-void MockGetDictPref(const AdsClientMock& mock);
-void MockGetListPref(const AdsClientMock& mock);
-void MockClearPref(AdsClientMock& mock);
-void MockHasPrefPath(const AdsClientMock& mock);
+void MockGetProfilePref(const AdsClientMock& mock);
+void MockClearProfilePref(AdsClientMock& mock);
+void MockHasProfilePrefPath(const AdsClientMock& mock);
 
 void MockGetLocalStatePref(const AdsClientMock& mock);
+void MockClearLocalStatePref(AdsClientMock& mock);
+void MockHasLocalStatePrefPath(const AdsClientMock& mock);
 
 }  // namespace brave_ads
 

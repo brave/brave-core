@@ -9,7 +9,6 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
-#include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -50,91 +49,7 @@ const char* GetPrefNameForProfile(Profile* profile) {
   return nullptr;
 }
 
-BraveUptimeTracker* g_brave_uptime_tracker_instance = nullptr;
-
-constexpr base::TimeDelta kUsageTimeQueryInterval = base::Minutes(1);
-constexpr base::TimeDelta kUsageTimeReportInterval = base::Days(1);
-constexpr char kDailyUptimesListPrefName[] = "daily_uptimes";  // DEPRECATED
-constexpr char kDailyUptimeSumPrefName[] = "brave.misc_metrics.uptime_sum";
-constexpr char kDailyUptimeFrameStartTimePrefName[] =
-    "brave.misc_metrics.uptime_frame_start_time";
-
-constexpr char kBrowserOpenTimeHistogramName[] = "Brave.Uptime.BrowserOpenTime";
-
-constexpr int kBrowserOpenTimeBuckets[] = {30, 60, 120, 180, 300, 420, 600};
-
 }  // namespace
-
-BraveUptimeTracker::BraveUptimeTracker(PrefService* local_state)
-    : local_state_(local_state),
-      report_frame_start_time_(
-          local_state->GetTime(kDailyUptimeFrameStartTimePrefName)),
-      report_frame_time_sum_(
-          local_state_->GetTimeDelta(kDailyUptimeSumPrefName)) {
-  if (report_frame_start_time_.is_null()) {
-    // If today is the first time monitoring uptime, set the frame start time
-    // to now.
-    ResetReportFrame();
-  }
-  RecordP3A();
-  timer_.Start(FROM_HERE, kUsageTimeQueryInterval,
-               base::BindRepeating(&BraveUptimeTracker::RecordUsage,
-                                   base::Unretained(this)));
-}
-
-void BraveUptimeTracker::RecordUsage() {
-  const base::TimeDelta new_total = usage_clock_.GetTotalUsageTime();
-  const base::TimeDelta total_diff = new_total - current_total_usage_;
-  if (total_diff > base::TimeDelta()) {
-    report_frame_time_sum_ += total_diff;
-    current_total_usage_ = new_total;
-    local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
-
-    RecordP3A();
-  }
-}
-
-void BraveUptimeTracker::RecordP3A() {
-  if ((base::Time::Now() - report_frame_start_time_) <
-      kUsageTimeReportInterval) {
-    // Do not report, since 1 day has not passed.
-    return;
-  }
-  p3a_utils::RecordToHistogramBucket(kBrowserOpenTimeHistogramName,
-                                     kBrowserOpenTimeBuckets,
-                                     report_frame_time_sum_.InMinutes());
-  ResetReportFrame();
-}
-
-void BraveUptimeTracker::ResetReportFrame() {
-  report_frame_time_sum_ = base::TimeDelta();
-  report_frame_start_time_ = base::Time::Now();
-  local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
-  local_state_->SetTime(kDailyUptimeFrameStartTimePrefName,
-                        report_frame_start_time_);
-}
-
-BraveUptimeTracker::~BraveUptimeTracker() = default;
-
-void BraveUptimeTracker::CreateInstance(PrefService* local_state) {
-  g_brave_uptime_tracker_instance = new BraveUptimeTracker(local_state);
-}
-
-void BraveUptimeTracker::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterTimeDeltaPref(kDailyUptimeSumPrefName, base::TimeDelta());
-  registry->RegisterTimePref(kDailyUptimeFrameStartTimePrefName, base::Time());
-}
-
-void BraveUptimeTracker::RegisterPrefsForMigration(
-    PrefRegistrySimple* registry) {
-  // Added 10/2023
-  registry->RegisterListPref(kDailyUptimesListPrefName);
-}
-
-void BraveUptimeTracker::MigrateObsoletePrefs(PrefService* local_state) {
-  // Added 10/2023
-  local_state->ClearPref(kDailyUptimesListPrefName);
-}
 
 BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     : local_state_(local_state) {

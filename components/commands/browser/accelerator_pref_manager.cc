@@ -32,7 +32,7 @@ constexpr char kDefaultAcceleratorsPrefs[] = "brave.default_accelerators";
 AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
     const std::string& pref,
     PrefService* prefs,
-    const base::flat_set<int> command_ids) {
+    const base::flat_set<int>& command_ids) {
   AcceleratorPrefManager::Accelerators result;
 
   const auto& accelerators = prefs->GetDict(pref);

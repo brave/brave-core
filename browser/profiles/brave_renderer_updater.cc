@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -26,6 +25,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
@@ -42,7 +42,6 @@ BraveRendererUpdater::BraveRendererUpdater(
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
-  widevine_enabled_.Init(kWidevineEnabled, local_state);
 
   CheckActiveWallet();
 
@@ -65,11 +64,14 @@ BraveRendererUpdater::BraveRendererUpdater(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled_.Init(kWidevineEnabled, local_state);
   local_state_change_registrar_.Init(local_state);
   local_state_change_registrar_.Add(
       kWidevineEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -150,8 +152,7 @@ void BraveRendererUpdater::UpdateRenderer(
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =
-      registry &&
-      registry->enabled_extensions().Contains(metamask_extension_id);
+      registry && registry->enabled_extensions().Contains(kMetamaskExtensionId);
 #else
   bool has_installed_metamask = false;
 #endif
@@ -164,7 +165,7 @@ void BraveRendererUpdater::UpdateRenderer(
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool install_window_brave_ethereum_provider =
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled() &&
+      is_wallet_allowed_for_context_ &&
       default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
   bool install_window_ethereum_provider =
       ((default_ethereum_wallet ==
@@ -172,7 +173,7 @@ void BraveRendererUpdater::UpdateRenderer(
         !should_ignore_brave_wallet_for_eth) ||
        default_ethereum_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_ethereum_provider =
       default_ethereum_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
@@ -185,14 +186,17 @@ void BraveRendererUpdater::UpdateRenderer(
         !should_ignore_brave_wallet_for_sol) ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_solana_provider =
       default_solana_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
-  bool widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  bool widevine_enabled = false;
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+#endif
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(

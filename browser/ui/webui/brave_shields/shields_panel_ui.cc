@@ -10,6 +10,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_localized_strings.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -46,6 +47,11 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
 
   source->AddBoolean("isHttpsByDefaultEnabled",
                      brave_shields::IsHttpsByDefaultFeatureEnabled());
+
+  source->AddBoolean(
+      "showStrictFingerprintingMode",
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShowStrictFingerprintingMode));
 
   source->AddBoolean("isTorProfile", profile_->IsTor());
 

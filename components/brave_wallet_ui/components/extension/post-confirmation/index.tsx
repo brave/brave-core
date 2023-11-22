@@ -46,7 +46,7 @@ interface Props {
   transactionId: string
 }
 
-export function TransactionStatus (props: Props) {
+export function TransactionStatus(props: Props) {
   const { transactionId } = props
 
   // redux
@@ -137,8 +137,10 @@ export function TransactionStatus (props: Props) {
     return <Skeleton />
   }
 
-  if (tx.txStatus === BraveWallet.TransactionStatus.Submitted ||
-      tx.txStatus === BraveWallet.TransactionStatus.Signed) {
+  if (
+    tx.txStatus === BraveWallet.TransactionStatus.Submitted ||
+    tx.txStatus === BraveWallet.TransactionStatus.Signed
+  ) {
     return (
       <TransactionSubmittedOrSigned
         headerTitle={transactionIntent}
@@ -164,12 +166,15 @@ export function TransactionStatus (props: Props) {
 
   if (tx.txStatus === BraveWallet.TransactionStatus.Error) {
     const providerError = transactionProviderErrorRegistry[tx.id]
-    const errorDetailContent = providerError && `${providerError.code}: ${providerError.message}`
+    const errorDetailContent =
+      providerError && `${providerError.code}: ${providerError.message}`
     return (
       <TransactionFailed
         headerTitle={transactionIntent}
         isPrimaryCTADisabled={false}
-        errorDetailTitle={getLocale('braveWalletTransactionFailedModalSubtitle')}
+        errorDetailTitle={getLocale(
+          'braveWalletTransactionFailedModalSubtitle'
+        )}
         errorDetailContent={errorDetailContent}
         onClose={onClose}
         onClickPrimaryCTA={onClose}
@@ -178,7 +183,11 @@ export function TransactionStatus (props: Props) {
   }
 
   return (
-    <Panel navAction={onClose} title={transactionIntent} headerStyle='slim'>
+    <Panel
+      navAction={onClose}
+      title={transactionIntent}
+      headerStyle='slim'
+    >
       <Loader />
     </Panel>
   )

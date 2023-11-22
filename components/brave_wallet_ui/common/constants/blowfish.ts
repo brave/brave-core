@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from "../../constants/types"
+import { BraveWallet } from '../../constants/types'
 
 export const BLOWFISH_URL_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kBlocklistedDomainCrossOrigin,
@@ -32,5 +32,5 @@ export const BLOWFISH_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kTooManyTransactions,
   BraveWallet.BlowfishWarningKind.kCompromisedAuthorityUpgrade,
   BraveWallet.BlowfishWarningKind.kPoisonedAddress,
-  BraveWallet.BlowfishWarningKind.kApprovalToEOA,
+  BraveWallet.BlowfishWarningKind.kApprovalToEOA
 ] as const

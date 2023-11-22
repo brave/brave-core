@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting() {
+std::string BuildCreateNonRewardConfirmationUrlResponseBody() {
   return R"(
               {
                 "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -18,4 +18,4 @@ std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting() {
               })";
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

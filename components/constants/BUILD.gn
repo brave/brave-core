@@ -30,15 +30,10 @@ source_set("constants") {
     "brave_constants.h",
     "brave_paths.cc",
     "brave_paths.h",
-    "brave_switches.cc",
     "brave_switches.h",
-    "network_constants.cc",
     "network_constants.h",
-    "pref_names.cc",
     "pref_names.h",
-    "url_constants.cc",
     "url_constants.h",
-    "webui_url_constants.cc",
     "webui_url_constants.h",
   ]
 

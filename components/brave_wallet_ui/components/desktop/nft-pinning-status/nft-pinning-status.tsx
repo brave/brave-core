@@ -31,11 +31,12 @@ export const NftPinningStatus = (props: Props) => {
 
   // methods
   const onToggleErrorTooltip = React.useCallback(() => {
-    if (pinningStatusCode === BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED) {
-      setShowTooltip(showTooltip => !showTooltip)
+    if (
+      pinningStatusCode === BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED
+    ) {
+      setShowTooltip((showTooltip) => !showTooltip)
     }
   }, [pinningStatusCode])
-
 
   // effects
   React.useEffect(() => {
@@ -68,9 +69,7 @@ export const NftPinningStatus = (props: Props) => {
         {icon}
         <Text>{message}</Text>
       </ContentWrapper>
-      {showTooltip &&
-        <ErrorTooltip />
-      }
+      {showTooltip && <ErrorTooltip />}
     </StyledWrapper>
   )
 }

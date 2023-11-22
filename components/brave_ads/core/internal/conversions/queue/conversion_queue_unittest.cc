@@ -37,8 +37,8 @@ class BraveAdsConversionQueueTest : public UnitTestBase {
 
 TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/false);
 
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()),
@@ -60,8 +60,8 @@ TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
 
 TEST_F(BraveAdsConversionQueueTest, ProcessConversionInQueue) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/false);
 
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()),
@@ -83,8 +83,8 @@ TEST_F(BraveAdsConversionQueueTest, ProcessConversionInQueue) {
 
 TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
   // Arrange
-  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   const ConversionInfo conversion_1 = BuildConversion(
       BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at=*/Now()),
       /*verifiable_conversion=*/absl::nullopt);
@@ -101,8 +101,8 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
     EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
 
-  const AdInfo ad_2 = BuildAdForTesting(AdType::kSearchResultAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_2 = test::BuildAd(AdType::kSearchResultAd,
+                                    /*should_use_random_uuids=*/true);
   const ConversionInfo conversion_2 = BuildConversion(
       BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at=*/Now()),
       /*verifiable_conversion=*/absl::nullopt);

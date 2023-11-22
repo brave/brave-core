@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -29,13 +28,15 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
@@ -88,6 +89,19 @@ absl::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
 }
 
 }  // namespace
+
+BraveLocationBarView::BraveLocationBarView(Browser* browser,
+                                           Profile* profile,
+                                           CommandUpdater* command_updater,
+                                           Delegate* delegate,
+                                           bool is_popup_mode)
+    : LocationBarView(browser,
+                      profile,
+                      command_updater,
+                      delegate,
+                      is_popup_mode) {}
+
+BraveLocationBarView::~BraveLocationBarView() = default;
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
@@ -278,6 +292,17 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   return views;
 }
 
+void BraveLocationBarView::RefreshBackground() {
+  LocationBarView::RefreshBackground();
+
+  if (shadow_) {
+    const bool show_shadow =
+        IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
+    shadow_->SetVisible(show_shadow);
+    return;
+  }
+}
+
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
   if (brave_actions_ && brave_actions_->GetVisible()) {
@@ -317,7 +342,11 @@ void BraveLocationBarView::OnThemeChanged() {
   }
 
   Update(nullptr);
-  RefreshBackground();
+  SetupShadow();
+}
+
+void BraveLocationBarView::AddedToWidget() {
+  SetupShadow();
 }
 
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
@@ -332,9 +361,25 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   }
 }
 
+void BraveLocationBarView::SetupShadow() {
+  const auto* const color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  const int radius = GetBorderRadius();
+  ViewShadow::ShadowParameters shadow{
+      .offset_x = 0,
+      .offset_y = 1,
+      .blur_radius = radius,
+      .shadow_color = color_provider->GetColor(kColorLocationBarHoveredShadow)};
+
+  shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
+}
+
 int BraveLocationBarView::GetBorderRadius() const {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kHigh, size());
+      views::Emphasis::kMaximum, size());
 }
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {
@@ -348,3 +393,6 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
 }
+
+BEGIN_METADATA(BraveLocationBarView, LocationBarView)
+END_METADATA

@@ -30,7 +30,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
 
   // Assert
   EXPECT_EQ(verifiable_conversion.id,
-            OpenVerifiableConversionEnvelopeForTesting(
+            test::OpenVerifiableConversionEnvelope(
                 *verifiable_conversion_envelope,
                 kVerifiableConversionAdvertiserSecretKey));
 }

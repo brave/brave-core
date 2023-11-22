@@ -43,8 +43,9 @@ export const BarProgress = styled.div<{ criteria: boolean[] }>`
   flex-direction: row;
   height: 8px;
   border-radius: 100px;
-  
-  width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
+
+  width: ${(p) =>
+    (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100}%;
   background-color: ${(p) => {
     return getCriteriaPercentColor(p)
   }};
@@ -71,13 +72,19 @@ export const BarMessage = styled.p<{ criteria: boolean[] }>`
   text-align: right;
   letter-spacing: 0.01em;
 `
-const getCriteriaPercentColor = (p: ThemedStyledProps<{
-  criteria: boolean[]
-}, DefaultTheme>) => {
-  const percentComplete = (p.criteria.filter(c => !!c).length / p.criteria.length) * 100
+const getCriteriaPercentColor = (
+  p: ThemedStyledProps<
+    {
+      criteria: boolean[]
+    },
+    DefaultTheme
+  >
+) => {
+  const percentComplete =
+    (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100
   return percentComplete === 100
     ? p.theme.color.successBorder
     : percentComplete < 50
-      ? p.theme.color.errorIcon
-      : p.theme.color.warningIcon
+    ? p.theme.color.errorIcon
+    : p.theme.color.warningIcon
 }

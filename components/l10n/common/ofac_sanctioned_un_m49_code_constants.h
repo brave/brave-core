@@ -14,8 +14,8 @@ namespace brave_l10n {
 
 // See https://orpa.princeton.edu/export-controls/sanctioned-countries.
 
-constexpr auto kOFACSactionedUnM49Codes =
-    base::MakeFixedFlatSet<std::string_view>({
+inline constexpr auto kOFACSactionedUnM49Codes =
+    base::MakeFixedFlatSetSorted<std::string_view>({
         // See https://en.wikipedia.org/wiki/UN_M49.
 
         "001",  // World which includes sanctioned Cuba, Iran, North Korea,

@@ -25,9 +25,8 @@ export const PriceChange = styled.span<{
   line-height: normal;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
-
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font-size: 12px;
@@ -41,6 +40,6 @@ export const Arrow = styled(Icon)<{
   --leo-icon-size: 24px;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
 `

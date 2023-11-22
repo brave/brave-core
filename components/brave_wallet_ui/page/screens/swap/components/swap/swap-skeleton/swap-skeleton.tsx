@@ -6,14 +6,10 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import {
-  SwapSectionBox
-} from '../../swap-section-box/swap-section-box'
+import { SwapSectionBox } from '../../swap-section-box/swap-section-box'
 import { Skeleton } from './skeleton'
 
 // Styled Components
@@ -38,7 +34,10 @@ export const SwapSkeleton = () => {
   return (
     <SwapSkeletonWrapper>
       <Header>
-        <Row rowHeight='full' verticalAlign='center'>
+        <Row
+          rowHeight='full'
+          verticalAlign='center'
+        >
           <BraveLogo />
           <HiddenResponsiveRow maxWidth={570}>
             <HorizontalDivider

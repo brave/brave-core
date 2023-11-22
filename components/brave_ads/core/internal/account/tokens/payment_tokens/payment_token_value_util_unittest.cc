@@ -44,7 +44,7 @@ class BraveAdsPaymentTokenValueUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToValue) {
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
-            PaymentTokensToValue(BuildPaymentTokensForTesting(/*count=*/2)));
+            PaymentTokensToValue(test::BuildPaymentTokens(/*count=*/2)));
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToEmptyValue) {
@@ -57,7 +57,7 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, FromValue) {
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
   // Act & Assert
-  EXPECT_EQ(BuildPaymentTokensForTesting(/*count=*/2),
+  EXPECT_EQ(test::BuildPaymentTokens(/*count=*/2),
             PaymentTokensFromValue(list));
 }
 

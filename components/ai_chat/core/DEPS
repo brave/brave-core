@@ -1,4 +1,0 @@
-include_rules = [
-  "+services/network/public",
-  "+absl/types/optional.h",
-]

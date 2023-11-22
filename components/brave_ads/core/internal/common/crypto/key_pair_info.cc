@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 
-#include <tuple>
-
 namespace brave_ads::crypto {
 
 KeyPairInfo::KeyPairInfo() = default;
@@ -20,18 +18,6 @@ KeyPairInfo::KeyPairInfo(KeyPairInfo&& other) noexcept = default;
 KeyPairInfo& KeyPairInfo::operator=(KeyPairInfo&& other) noexcept = default;
 
 KeyPairInfo::~KeyPairInfo() = default;
-
-bool KeyPairInfo::operator==(const KeyPairInfo& other) const {
-  const auto tie = [](const KeyPairInfo& keypair) {
-    return std::tie(keypair.public_key, keypair.secret_key);
-  };
-
-  return tie(*this) == tie(other);
-}
-
-bool KeyPairInfo::operator!=(const KeyPairInfo& other) const {
-  return !(*this == other);
-}
 
 bool KeyPairInfo::IsValid() const {
   return !public_key.empty() && !secret_key.empty();

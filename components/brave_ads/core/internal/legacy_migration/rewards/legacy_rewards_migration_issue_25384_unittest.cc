@@ -5,8 +5,9 @@
 
 #include "base/test/mock_callback.h"
 
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -31,14 +32,14 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetBooleanPrefValue(prefs::kHasMigratedRewardsState, false);
+  SetProfileBooleanPrefValue(prefs::kHasMigratedRewardsState, false);
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   rewards::Migrate(callback.Get());
 
-  EXPECT_TRUE(ads_client_mock_.GetBooleanPref(prefs::kHasMigratedRewardsState));
+  EXPECT_TRUE(GetProfileBooleanPref(prefs::kHasMigratedRewardsState));
 }
 
 }  // namespace brave_ads

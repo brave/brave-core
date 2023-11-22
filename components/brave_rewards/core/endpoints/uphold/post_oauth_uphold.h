@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
@@ -48,7 +48,7 @@ class PostOAuthUphold final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostOAuthUphold(RewardsEngineImpl& engine, std::string&& code);
+  PostOAuthUphold(RewardsEngineImpl& engine, const std::string& code);
   ~PostOAuthUphold() override;
 
  private:

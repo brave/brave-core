@@ -41,6 +41,9 @@ class BitcoinSerializerStream {
 // TODO(apaymyshev): test with reference test vectors.
 class BitcoinSerializer {
  public:
+  static std::vector<uint8_t> AddressToScriptPubkey(const std::string& address,
+                                                    bool testnet);
+
   static absl::optional<SHA256HashArray> SerializeInputForSign(
       const BitcoinTransaction& tx,
       size_t input_index);

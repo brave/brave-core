@@ -23,12 +23,10 @@ class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<TargetingHelperForTesting>();
-
-    NotifyDidInitializeAds();
+    targeting_ = std::make_unique<test::TargetingHelper>();
   }
 
-  std::unique_ptr<TargetingHelperForTesting> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_;
 };
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
@@ -37,11 +35,13 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.0"}});
 
+  NotifyDidInitializeAds();
+
   targeting_->MockLatentInterest();
 
   // Act & Assert
   const SegmentList expected_latent_interest_segments =
-      TargetingHelperForTesting::LatentInterestExpectation().segments;
+      test::TargetingHelper::LatentInterestExpectation().segments;
   EXPECT_EQ(expected_latent_interest_segments, BuildLatentInterestSegments());
 }
 
@@ -50,6 +50,8 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kEpsilonGreedyBanditFeature);
+
+  NotifyDidInitializeAds();
 
   // Act
   const SegmentList segments = BuildLatentInterestSegments();
@@ -63,6 +65,8 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEpsilonGreedyBanditFeature);
+
+  NotifyDidInitializeAds();
 
   targeting_->MockLatentInterest();
 

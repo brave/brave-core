@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
-
 #include <stddef.h>
+
 #include <algorithm>
-#include <cmath>
 #include <iterator>
+#include <locale>
+#include <numeric>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -17,37 +18,119 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
 namespace {
 
-// An ArticleInfo is a tuple of (item, signal, weighting). They're stored like
-// this for performance, so we only need to calculate things once.
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
+// An ArticleWeight has a few different components
+struct ArticleWeight {
+  // The pop_recency of the article. This is used for discover cards, where we
+  // don't consider the subscription status or visit_weighting.
+  double pop_recency = 0;
+
+  // The complete weighting of the article, combining the pop_score,
+  // visit_weighting & subscribed_weighting.
+  double weighting = 0;
+
+  // Whether the source which this article comes from has been visited. This
+  // only considers Publishers, not Channels.
+  bool visited = false;
+
+  // Whether any sources/channels that could cause this article to be shown are
+  // subscribed. At this point, disabled sources have already been filtered out.
+  bool subscribed = false;
+};
+
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
-                 const Signals& signals) {
-  auto it = signals.find(article->publisher_id);
-  if (it == signals.end()) {
-    return nullptr;
+std::string GetFeedHash(const Channels& channels,
+                        const Publishers& publishers,
+                        const ETags& etags) {
+  std::vector<std::string> hash_items;
+  for (const auto& [channel_id, channel] : channels) {
+    if (!channel->subscribed_locales.empty()) {
+      hash_items.push_back(channel_id);
+    }
   }
-  return it->second->Clone();
+
+  for (const auto& [id, publisher] : publishers) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+      hash_items.push_back(id);
+    }
+  }
+
+  for (const auto& [region, etag] : etags) {
+    hash_items.push_back(region + etag);
+  }
+
+  std::hash<std::string> hasher;
+  std::string hash;
+
+  for (const auto& hash_item : hash_items) {
+    hash = base::NumberToString(hasher(hash + hash_item));
+  }
+
+  return hash;
+}
+
+// Gets all relevant signals for an article.
+// **Note:** Importantly, this function returns the Signal from the publisher
+// first, and |GetArticleWeight| depends on this to determine whether the
+// Publisher has been visited.
+std::vector<mojom::Signal*> GetSignals(
+    const std::string& locale,
+    const mojom::FeedItemMetadataPtr& article,
+    const Publishers& publishers,
+    const Signals& signals) {
+  std::vector<mojom::Signal*> result;
+  auto it = signals.find(article->publisher_id);
+  if (it != signals.end()) {
+    result.push_back(it->second.get());
+  }
+
+  auto publisher_it = publishers.find(article->publisher_id);
+  if (publisher_it == publishers.end()) {
+    return result;
+  }
+
+  for (const auto& locale_info : publisher_it->second->locales) {
+    if (locale_info->locale != locale) {
+      continue;
+    }
+    for (const auto& channel : locale_info->channels) {
+      auto signal_it = signals.find(channel);
+      if (signal_it == signals.end()) {
+        continue;
+      }
+      result.push_back(signal_it->second.get());
+    }
+  }
+  return result;
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -66,13 +149,32 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
          pow(0.5, dt.InHours() / pop_recency_half_life_in_hours);
 }
 
-double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                        const Signal& signal) {
+double GetSubscribedWeight(const mojom::FeedItemMetadataPtr& article,
+                           const std::vector<mojom::Signal*>& signals) {
+  return std::reduce(
+      signals.begin(), signals.end(), 0.0, [](double prev, const auto* signal) {
+        return prev + signal->subscribed_weight / signal->article_count;
+      });
+}
+
+ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
+                               const std::vector<mojom::Signal*>& signals) {
+  // We should have at least one |Signal| from the |Publisher| for this source.
+  CHECK(!signals.empty());
+
+  const auto subscribed_weight = GetSubscribedWeight(article, signals);
   const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
-  double source_visits_projected =
-      source_visits_min + signal->visit_weight * (1 - source_visits_min);
-  return source_visits_projected * signal->subscribed_weight *
-         GetPopRecency(article);
+  const double source_visits_projected =
+      source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
+  const auto pop_recency = GetPopRecency(article);
+  return {
+      .pop_recency = pop_recency,
+      .weighting = source_visits_projected * subscribed_weight * pop_recency,
+      // Note: GetArticleWeight returns the Signal for the Publisher first, and
+      // we use that to determine whether this Publisher has ever been visited.
+      .visited = signals.at(0)->visit_weight != 0,
+      .subscribed = subscribed_weight != 0,
+  };
 }
 
 std::string PickRandom(const std::vector<std::string>& items) {
@@ -81,7 +183,9 @@ std::string PickRandom(const std::vector<std::string>& items) {
   return items[base::RandInt(0, items.size() - 1)];
 }
 
-ArticleInfos GetArticleInfos(const FeedItems& feed_items,
+ArticleInfos GetArticleInfos(const std::string& locale,
+                             const FeedItems& feed_items,
+                             const Publishers& publishers,
                              const Signals& signals) {
   ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
@@ -99,16 +203,21 @@ ArticleInfos GetArticleInfos(const FeedItems& feed_items,
 
       seen_articles.insert(article->data->url);
 
-      auto signal = GetSignal(article->data, signals);
+      auto article_signals =
+          GetSignals(locale, article->data, publishers, signals);
 
-      // If we don't have a signal for this article, filter it out.
-      if (!signal) {
+      // If we don't have any signals for this article, or the source this
+      // article comes from has been disabled then filter it out.
+      if (article_signals.empty() ||
+          base::ranges::any_of(article_signals, [](const auto* signal) {
+            return signal->disabled;
+          })) {
         continue;
       }
 
-      std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair =
-          std::tuple(article->data->Clone(), std::move(signal),
-                     GetArticleWeight(article->data, signal));
+      ArticleInfo pair =
+          std::tuple(article->data->Clone(),
+                     GetArticleWeight(article->data, article_signals));
       articles.push_back(std::move(pair));
     }
   }
@@ -151,20 +260,17 @@ int GetNormal(int min, int max) {
   return min + floor((max - min) * GetNormal());
 }
 
-using ShouldConsiderPredicate = bool(const Signal& signal);
+using GetWeighting = double(const ArticleWeight& weight);
 
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    ShouldConsiderPredicate should_consider = [](const auto& signal) {
-      return true;
+    GetWeighting get_weighting = [](const auto& weight) {
+      return weight.weighting;
     }) {
   double total_weight = 0;
-  for (const auto& [article, signal, weight] : articles) {
-    if (!should_consider(signal)) {
-      continue;
-    }
-    total_weight += weight;
+  for (const auto& [article, weight] : articles) {
+    total_weight += get_weighting(weight);
   }
 
   // None of the items are eligible to be picked.
@@ -177,18 +283,14 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
-    auto& [article, signal, weight] = articles[i];
-    if (!should_consider(signal)) {
-      continue;
-    }
-
-    current_weight += weight;
+    auto& [article, weight] = articles[i];
+    current_weight += get_weighting(weight);
     if (current_weight > picked_value) {
       break;
     }
   }
 
-  auto [article, signal, weight] = std::move(articles[i]);
+  auto [article, weight] = std::move(articles[i]);
   articles.erase(articles.begin() + i);
 
   return std::move(article);
@@ -200,15 +302,25 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles, [](const auto& signal) {
-    return signal->subscribed_weight != 0 && signal->visit_weight == 0;
+  return PickRouletteAndRemove(articles, [](const auto& weight) {
+    if (weight.subscribed || weight.visited) {
+      return 0.;
+    }
+    return weight.pop_recency;
   });
 }
 
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
+    ArticleInfos& articles,
+    // Ratio of inline articles to discovery articles.
+    // discover ratio % of the time, we should do a discover card here instead
+    // of a roulette card.
+    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get()) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -227,12 +339,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    const double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get();
     bool is_discover = base::RandDouble() < inline_discovery_ratio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);
@@ -251,11 +357,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
 // 1 - 5 Inline Articles (from the channel)
 // This function is the same as GenerateBlock, except that the available
 // articles are filtered to only be from the specified channel.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.kxe6xeqm2vfn
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
-    ArticleInfos& articles,
+    const std::string& locale,
     const Publishers& publishers,
     const std::string& channel,
-    const std::string& locale) {
+    ArticleInfos& articles) {
   DVLOG(1) << __FUNCTION__;
   // First, create a set of all publishers in this channel.
   base::flat_set<std::string> allowed_publishers;
@@ -288,7 +395,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     --i;
   }
 
-  auto block = GenerateBlock(allowed_articles);
+  auto block = GenerateBlock(allowed_articles, /*inline_discovery_ratio=*/0);
 
   // Put the unused articles back in the original list.
   base::ranges::move(allowed_articles, std::back_inserter(articles));
@@ -310,8 +417,98 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   }
 
   std::vector<mojom::FeedItemV2Ptr> result;
-  result.push_back(mojom::FeedItemV2::NewCluster(
-      mojom::Cluster::New("channel", channel, std::move(article_elements))));
+  result.push_back(mojom::FeedItemV2::NewCluster(mojom::Cluster::New(
+      mojom::ClusterType::CHANNEL, channel, std::move(article_elements))));
+  return result;
+}
+
+// Generate a Topic Cluster block
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
+std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
+    const Publishers& publishers,
+    base::span<const TopicAndArticles>& topics) {
+  if (topics.empty()) {
+    return {};
+  }
+  DVLOG(1) << __FUNCTION__;
+  auto result = mojom::Cluster::New();
+  result->type = mojom::ClusterType::TOPIC;
+
+  auto& [topic, articles] = topics.front();
+  result->id = topic.title;
+
+  uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
+  for (const auto& article : articles) {
+    auto item = mojom::FeedItemMetadata::New();
+    auto id_it = base::ranges::find_if(publishers, [&article](const auto& p) {
+      return p.second->publisher_name == article.publisher_name;
+    });
+    if (id_it != publishers.end()) {
+      item->publisher_id = id_it->first;
+    }
+    item->publisher_name = article.publisher_name;
+    item->category_name = article.category;
+    item->description = article.description.value_or("");
+    item->title = article.title;
+    item->url = GURL(article.url);
+    item->publish_time = base::Time::Now();
+    item->image = mojom::Image::NewImageUrl(GURL(article.img.value_or("")));
+    result->articles.push_back(mojom::ArticleElements::NewArticle(
+        mojom::Article::New(std::move(item), false)));
+
+    // For now, we truncate at |max_articles|. In future we may want to include
+    // more articles here and have the option to show more in the front end.
+    if (result->articles.size() >= max_articles) {
+      break;
+    }
+  }
+
+  // Make sure we don't reuse the topic by excluding it from our span.
+  topics = base::make_span(std::next(topics.begin()), topics.end());
+
+  std::vector<mojom::FeedItemV2Ptr> items;
+  items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
+  return items;
+}
+
+// This function will generate a cluster block (if we have
+// articles/topics/channels available).
+// This could be either a Channel cluster or a Topic cluster, based on a ratio
+// configured through the |kBraveNewsCategoryTopicRatio| FeatureParam.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.agyx2d7gifd9
+std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
+    const std::string& locale,
+    const Publishers& publishers,
+    const std::vector<std::string>& channels,
+    base::span<const TopicAndArticles>& topics,
+    ArticleInfos& articles) {
+  // If we have no channels, and no topics there's nothing we can do here.
+  if (channels.empty() && topics.empty()) {
+    DVLOG(1) << "Nothing (no subscribed channels or unshown topics)";
+    return {};
+  }
+
+  // Determine whether we should generate a channel or topic cluster.
+  auto generate_channel =
+      (!channels.empty() &&
+       base::RandDouble() < features::kBraveNewsCategoryTopicRatio.Get()) ||
+      topics.empty();
+
+  if (generate_channel) {
+    auto channel = PickRandom(channels);
+    DVLOG(1) << "Cluster Block (channel: " << channel << ")";
+    return GenerateChannelBlock(locale, publishers, PickRandom(channels),
+                                articles);
+  } else {
+    DVLOG(1) << "Cluster Block (topic)";
+    return GenerateTopicBlock(publishers, topics);
+  }
+}
+
+std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
+  DVLOG(1) << __FUNCTION__;
+  std::vector<mojom::FeedItemV2Ptr> result;
+  result.push_back(mojom::FeedItemV2::NewAdvert(mojom::FeedV2Ad::New()));
   return result;
 }
 
@@ -328,39 +525,60 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   // 2. Fallback to a discover card.
   // Ads have not been integrated with this process yet, so this is being
   // mocked with another coin toss.
-  std::vector<mojom::FeedItemV2Ptr> result;
 
   if (TossCoin()) {
-    DVLOG(1) << "Generating advert";
-    auto metadata = mojom::FeedItemMetadata::New(
-        "ad", base::Time::Now(), "Advert", "Some handy info",
-        GURL("https://example.com"), "foo",
-        mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")), "",
-        "", 0.0, 0.0, "Now");
-    result.push_back(mojom::FeedItemV2::NewAdvert(
-        mojom::PromotedArticle::New(std::move(metadata), "test")));
-  } else {
-    if (!suggested_publisher_ids.empty()) {
-      size_t preferred_count = 3;
-      auto count = std::min(preferred_count, suggested_publisher_ids.size());
-      std::vector<std::string> suggestions(
-          suggested_publisher_ids.begin(),
-          suggested_publisher_ids.begin() + count);
+    return GenerateAd();
+  }
 
-      // Remove the suggested publisher ids, so we don't suggest them again.
-      suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
-                                    suggested_publisher_ids.begin() + count);
+  std::vector<mojom::FeedItemV2Ptr> result;
+  if (!suggested_publisher_ids.empty()) {
+    size_t preferred_count = 3;
+    auto count = std::min(preferred_count, suggested_publisher_ids.size());
+    std::vector<std::string> suggestions(
+        suggested_publisher_ids.begin(),
+        suggested_publisher_ids.begin() + count);
 
-      DVLOG(1) << "Generating publisher suggestions (discover)";
-      result.push_back(mojom::FeedItemV2::NewDiscover(
-          mojom::Discover::New(std::move(suggestions))));
-    }
+    // Remove the suggested publisher ids, so we don't suggest them again.
+    suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
+                                  suggested_publisher_ids.begin() + count);
+
+    DVLOG(1) << "Generating publisher suggestions (discover)";
+    result.push_back(mojom::FeedItemV2::NewDiscover(
+        mojom::Discover::New(std::move(suggestions))));
   }
 
   return result;
 }
 
 }  // namespace
+
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
+                                            UpdateCallback callback)
+    : settings(std::move(settings)) {
+  callbacks.push_back(std::move(callback));
+}
+FeedV2Builder::UpdateRequest::~UpdateRequest() = default;
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateRequest&&) = default;
+FeedV2Builder::UpdateRequest& FeedV2Builder::UpdateRequest::operator=(
+    UpdateRequest&&) = default;
+bool FeedV2Builder::UpdateRequest::IsSufficient(
+    const UpdateSettings& other_settings) {
+  return !(
+      (other_settings.feed && !settings.feed) ||
+      (other_settings.signals && !settings.signals) ||
+      (other_settings.suggested_publishers && !settings.suggested_publishers) ||
+      (other_settings.topics && !settings.topics));
+}
+
+void FeedV2Builder::UpdateRequest::AlsoUpdate(
+    const UpdateSettings& other_settings,
+    UpdateCallback callback) {
+  settings.feed |= other_settings.feed;
+  settings.signals |= other_settings.signals;
+  settings.suggested_publishers |= other_settings.suggested_publishers;
+  settings.topics |= other_settings.suggested_publishers;
+  callbacks.push_back(std::move(callback));
+}
 
 FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
@@ -374,6 +592,7 @@ FeedV2Builder::FeedV2Builder(
       suggestions_controller_(suggestions_controller),
       prefs_(prefs),
       fetcher_(publishers_controller, channels_controller, url_loader_factory),
+      topics_fetcher_(url_loader_factory),
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
@@ -381,49 +600,169 @@ FeedV2Builder::FeedV2Builder(
 
 FeedV2Builder::~FeedV2Builder() = default;
 
-void FeedV2Builder::Build(bool recalculate_signals,
-                          BuildFeedCallback callback) {
-  pending_callbacks_.push_back(std::move(callback));
+void FeedV2Builder::AddListener(
+    mojo::PendingRemote<mojom::FeedListener> listener) {
+  listeners_.Add(std::move(listener));
+}
 
-  if (is_building_) {
-    return;
-  }
+void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
+  GenerateFeed(
+      {.signals = true},
+      mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
+      base::BindOnce(
+          [](FeedV2Builder* builder) {
+            return builder->GenerateBasicFeed(builder->raw_feed_items_);
+          },
+          base::Unretained(this)),
+      std::move(callback));
+}
 
-  is_building_ = true;
+void FeedV2Builder::BuildChannelFeed(const std::string& channel,
+                                     BuildFeedCallback callback) {
+  GenerateFeed(
+      {.signals = true},
+      mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
+      base::BindOnce(
+          [](FeedV2Builder* builder, const std::string& channel) {
+            auto& publishers =
+                builder->publishers_controller_->GetLastPublishers();
+            auto& locale = builder->publishers_controller_->GetLastLocale();
 
-  if (raw_feed_items_.size()) {
-    if (recalculate_signals) {
-      signals_.clear();
-      CalculateSignals();
+            FeedItems feed_items;
+            for (const auto& item : builder->raw_feed_items_) {
+              if (!item->is_article()) {
+                continue;
+              }
+
+              auto publisher_it =
+                  publishers.find(item->get_article()->data->publisher_id);
+              if (publisher_it == publishers.end()) {
+                continue;
+              }
+
+              auto locale_info_it =
+                  base::ranges::find_if(publisher_it->second->locales,
+                                        [&locale](const auto& locale_info) {
+                                          return locale == locale_info->locale;
+                                        });
+              if (locale_info_it == publisher_it->second->locales.end()) {
+                continue;
+              }
+
+              if (!base::Contains(locale_info_it->get()->channels, channel)) {
+                continue;
+              }
+
+              feed_items.push_back(item->Clone());
+            }
+
+            return builder->GenerateBasicFeed(feed_items);
+          },
+          base::Unretained(this), channel),
+      std::move(callback));
+}
+
+void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
+                                       BuildFeedCallback callback) {
+  GenerateFeed(
+      {.signals = true},
+      mojom::FeedV2Type::NewPublisher(
+          mojom::FeedV2PublisherType::New(publisher_id)),
+      base::BindOnce(
+          [](FeedV2Builder* builder, const std::string& publisher_id) {
+            FeedItems items;
+
+            for (const auto& item : builder->raw_feed_items_) {
+              if (!item->is_article()) {
+                continue;
+              }
+              if (item->get_article()->data->publisher_id != publisher_id) {
+                continue;
+              }
+
+              items.push_back(item->Clone());
+            }
+
+            return builder->GenerateBasicFeed(items);
+          },
+          base::Unretained(this), publisher_id),
+      std::move(callback));
+}
+
+void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
+  GenerateFeed(
+      {.signals = true, .suggested_publishers = true},
+      mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
+      base::BindOnce(&FeedV2Builder::GenerateAllFeed, base::Unretained(this)),
+      std::move(callback));
+}
+
+void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
+  UpdateData({.signals = true},
+             base::BindOnce(
+                 [](base::WeakPtr<FeedV2Builder> builder,
+                    GetSignalsCallback callback) {
+                   if (builder) {
+                     std::move(callback).Run({});
+                     return;
+                   }
+                   base::flat_map<std::string, Signal> signals;
+                   for (const auto& [key, value] : builder->signals_) {
+                     signals[key] = value->Clone();
+                   }
+                   std::move(callback).Run(std::move(signals));
+                 },
+                 weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void FeedV2Builder::UpdateData(UpdateSettings settings,
+                               base::OnceCallback<void()> callback) {
+  if (current_update_) {
+    if (current_update_->IsSufficient(settings)) {
+      current_update_->callbacks.push_back(std::move(callback));
     } else {
-      BuildFeedFromArticles();
+      if (!next_update_) {
+        next_update_.emplace(std::move(settings), std::move(callback));
+      } else {
+        next_update_->AlsoUpdate(std::move(settings), std::move(callback));
+      }
     }
     return;
   }
 
-  FetchFeed();
-}
-
-void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
-  auto cb = base::BindOnce(
-      [](FeedV2Builder* builder, GetSignalsCallback callback,
-         mojom::FeedV2Ptr _) {
-        base::flat_map<std::string, Signal> signals;
-        for (const auto& [key, value] : builder->signals_) {
-          signals[key] = value->Clone();
-        }
-        std::move(callback).Run(std::move(signals));
-      },
-      this, std::move(callback));
-  if (signals_.empty()) {
-    Build(/*recalculate_signals=*/true, std::move(cb));
-  } else {
-    std::move(cb).Run(/*feed=*/nullptr);
+  if (settings.signals) {
+    signals_.clear();
   }
+
+  if (settings.feed) {
+    raw_feed_items_.clear();
+  }
+
+  if (settings.suggested_publishers) {
+    suggested_publisher_ids_.clear();
+  }
+
+  if (settings.topics) {
+    topics_.clear();
+  }
+
+  current_update_.emplace(std::move(settings), std::move(callback));
+
+  FetchFeed();
 }
 
 void FeedV2Builder::FetchFeed() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't refetch the feed if we have items (clearing the items will trigger a
+  // refresh).
+  if (!raw_feed_items_.empty()) {
+    // Note: This isn't ideal because we double move the raw_feed_items and
+    // etags, but it makes the algorithm easier to follow.
+    OnFetchedFeed(std::move(raw_feed_items_), std::move(feed_etags_));
+    return;
+  }
+
   fetcher_.FetchFeed(
       base::BindOnce(&FeedV2Builder::OnFetchedFeed,
                      // Unretained is safe here because the FeedFetcher is owned
@@ -435,11 +774,21 @@ void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
   raw_feed_items_ = std::move(items);
+  feed_etags_ = std::move(tags);
+
   CalculateSignals();
 }
 
 void FeedV2Builder::CalculateSignals() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't recalculate the signals unless they've been cleared.
+  if (!signals_.empty()) {
+    // Note: We double move signals here because it makes the algorithm easier
+    // to follow.
+    OnCalculatedSignals(std::move(signals_));
+    return;
+  }
 
   signal_calculator_.GetSignals(
       raw_feed_items_,
@@ -459,6 +808,13 @@ void FeedV2Builder::OnCalculatedSignals(Signals signals) {
 
 void FeedV2Builder::GetSuggestedPublisherIds() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't get suggested publisher ids unless they're empty - clearing indicates
+  // we should refetch.
+  if (!suggested_publisher_ids_.empty()) {
+    OnGotSuggestedPublisherIds(std::move(suggested_publisher_ids_));
+    return;
+  }
   suggestions_controller_->GetSuggestedPublisherIds(
       base::BindOnce(&FeedV2Builder::OnGotSuggestedPublisherIds,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -468,10 +824,126 @@ void FeedV2Builder::OnGotSuggestedPublisherIds(
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
   suggested_publisher_ids_ = suggested_ids;
-  BuildFeedFromArticles();
+
+  GetTopics();
 }
 
-void FeedV2Builder::BuildFeedFromArticles() {
+void FeedV2Builder::GetTopics() {
+  DVLOG(1) << __FUNCTION__;
+
+  // Don't refetch topics, unless we need to.
+  if (!topics_.empty()) {
+    OnGotTopics(std::move(topics_));
+    return;
+  }
+
+  topics_fetcher_.GetTopics(publishers_controller_->GetLastLocale(),
+                            base::BindOnce(&FeedV2Builder::OnGotTopics,
+                                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void FeedV2Builder::OnGotTopics(TopicsResult topics) {
+  DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
+  topics_ = std::move(topics);
+
+  NotifyUpdateCompleted();
+}
+
+void FeedV2Builder::NotifyUpdateCompleted() {
+  CHECK(current_update_);
+
+  // Fire all the pending callbacks.
+  for (auto& callback : current_update_->callbacks) {
+    std::move(callback).Run();
+  }
+
+  // If we have a |next_update_| then request an update with that data.
+  current_update_ = std::move(next_update_);
+  next_update_ = absl::nullopt;
+
+  if (current_update_) {
+    UpdateData(current_update_->settings);
+  }
+}
+
+void FeedV2Builder::GenerateFeed(
+    UpdateSettings settings,
+    mojom::FeedV2TypePtr type,
+    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+    BuildFeedCallback callback) {
+  UpdateData(
+      std::move(settings),
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder, mojom::FeedV2TypePtr type,
+             base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+             BuildFeedCallback callback) {
+            if (!builder) {
+              std::move(callback).Run(mojom::FeedV2::New());
+              return;
+            }
+
+            const auto& publishers =
+                builder->publishers_controller_->GetLastPublishers();
+            auto channels =
+                builder->channels_controller_->GetChannelsFromPublishers(
+                    publishers, &*builder->prefs_);
+            auto source_hash =
+                GetFeedHash(channels, publishers, builder->feed_etags_);
+
+            auto feed = std::move(build_feed).Run();
+            feed->type = std::move(type);
+            feed->source_hash = source_hash;
+
+            std::move(callback).Run(feed->Clone());
+
+            for (const auto& listener : builder->listeners_) {
+              listener->OnUpdateAvailable(source_hash);
+            }
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(type),
+          std::move(build_feed), std::move(callback)));
+}
+
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
+  DVLOG(1) << __FUNCTION__;
+
+  auto suggested_publisher_ids = suggested_publisher_ids_;
+  auto articles =
+      GetArticleInfos(publishers_controller_->GetLastLocale(), feed_items,
+                      publishers_controller_->GetLastPublishers(), signals_);
+
+  auto feed = mojom::FeedV2::New();
+
+  constexpr size_t kIterationsPerAd = 2;
+  size_t blocks = 0;
+  while (!articles.empty()) {
+    auto items = GenerateBlock(articles, /*inline_discovery_ratio=*/0);
+    if (items.empty()) {
+      break;
+    }
+
+    // After the first block, every second block should be an ad.
+    if (blocks % kIterationsPerAd == 0 && blocks != 0) {
+      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids),
+                        std::back_inserter(items));
+    }
+
+    std::ranges::move(items, std::back_inserter(feed->items));
+    blocks++;
+  }
+
+  // Insert an ad as the second item.
+  if (feed->items.size() > 1) {
+    auto ad = GenerateAd();
+    feed->items.insert(feed->items.begin() + 1,
+                       std::make_move_iterator(ad.begin()),
+                       std::make_move_iterator(ad.end()));
+  }
+
+  return feed;
+}
+
+mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
   DVLOG(1) << __FUNCTION__;
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
@@ -489,8 +961,11 @@ void FeedV2Builder::BuildFeedFromArticles() {
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   auto suggested_publisher_ids = suggested_publisher_ids_;
-  auto articles = GetArticleInfos(raw_feed_items_, signals_);
+  auto articles =
+      GetArticleInfos(locale, raw_feed_items_, publishers, signals_);
   auto feed = mojom::FeedV2::New();
+
+  base::span<const TopicAndArticles> topics = base::make_span(topics_);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
@@ -503,14 +978,20 @@ void FeedV2Builder::BuildFeedFromArticles() {
            << " articles)";
   add_items(initial_block);
 
-  // Step 2: Generate a top news block
+  // Step 2: We always add an advertisment after the first block.
+  // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.82154jsxm16
+  auto advert = GenerateAd();
+  DVLOG(1) << "Step 2: Advertisement";
+  add_items(advert);
+
+  // Step 3: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   auto top_news_block =
-      GenerateChannelBlock(articles, publishers, kTopNewsChannel, locale);
-  DVLOG(1) << "Step 2: Top News Block";
+      GenerateChannelBlock(locale, publishers, kTopNewsChannel, articles);
+  DVLOG(1) << "Step 3: Top News Block";
   add_items(top_news_block);
 
-  // Repeat step 3 - 5 until we don't have any more articles to add to the feed.
+  // Repeat step 4 - 6 until we don't have any more articles to add to the feed.
   constexpr uint8_t kIterationTypes = 3;
   uint32_t iteration = 0;
   while (true) {
@@ -518,36 +999,30 @@ void FeedV2Builder::BuildFeedFromArticles() {
 
     auto iteration_type = iteration % kIterationTypes;
 
-    // Step 3: Block Generation
+    // Step 4: Block Generation
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
-      DVLOG(1) << "Step 3: Standard Block";
+      DVLOG(1) << "Step 4: Standard Block";
       items = GenerateBlock(articles);
     } else if (iteration_type == 1) {
-      // Step 4: Block or Cluster Generation
+      // Step 5: Block or Cluster Generation
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
-        DVLOG(1) << "Step 4: Standard Block";
+        DVLOG(1) << "Step 5: Standard Block";
         items = GenerateBlock(articles);
-      } else if (!subscribed_channels.empty()) {
-        // If we have any subscribed channels, display a channel cluster.
-        // TODO(fallaciousreasoning): When we have topic support, add them here
-        // too.
-        auto channel = PickRandom(subscribed_channels);
-        DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
-        items = GenerateChannelBlock(articles, publishers, channel, locale);
       } else {
-        DVLOG(1) << "Step 4: Nothing (no subscribed channels)";
+        items = GenerateClusterBlock(locale, publishers, subscribed_channels,
+                                     topics, articles);
       }
     } else if (iteration_type == 2) {
-      // Step 5: Optional special card
+      // Step 6: Optional special card
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
-        DVLOG(1) << "Step 5: Special Block";
+        DVLOG(1) << "Step 6: Special Block";
         items = GenerateSpecialBlock(suggested_publisher_ids);
       } else {
-        DVLOG(1) << "Step 5: None (approximately half the time)";
+        DVLOG(1) << "Step 6: None (approximately half the time)";
       }
     } else {
       NOTREACHED();
@@ -565,13 +1040,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
     ++iteration;
   }
 
-  // Fire all the pending callbacks.
-  for (auto& callback : pending_callbacks_) {
-    std::move(callback).Run(feed->Clone());
-  }
-
-  pending_callbacks_.clear();
-  is_building_ = false;
+  return feed;
 }
 
 }  // namespace brave_news

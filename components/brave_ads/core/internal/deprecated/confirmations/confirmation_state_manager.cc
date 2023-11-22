@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
@@ -47,9 +47,9 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
     dict.Set("creative_instance_id", confirmation.creative_instance_id);
 
-    dict.Set("type", confirmation.type.ToString());
+    dict.Set("type", ToString(confirmation.type));
 
-    dict.Set("ad_type", confirmation.ad_type.ToString());
+    dict.Set("ad_type", ToString(confirmation.ad_type));
 
     dict.Set("created_at", base::TimeToValue(confirmation.created_at));
 
@@ -133,16 +133,16 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
-void ConfirmationStateManager::Load(const absl::optional<WalletInfo>& wallet,
-                                    InitializeCallback callback) {
+void ConfirmationStateManager::LoadState(
+    const absl::optional<WalletInfo>& wallet,
+    InitializeCallback callback) {
   BLOG(3, "Loading confirmation state");
 
   wallet_ = wallet;
 
-  AdsClientHelper::GetInstance()->Load(
-      kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::LoadCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  Load(kConfirmationStateFilename,
+       base::BindOnce(&ConfirmationStateManager::LoadCallback,
+                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConfirmationStateManager::LoadCallback(
@@ -153,7 +153,7 @@ void ConfirmationStateManager::LoadCallback(
 
     is_initialized_ = true;
 
-    Save();
+    SaveState();
   } else {
     if (!FromJson(*json)) {
       BLOG(0, "Failed to load confirmation state");
@@ -170,22 +170,21 @@ void ConfirmationStateManager::LoadCallback(
   std::move(callback).Run(/*success=*/true);
 }
 
-void ConfirmationStateManager::Save() {
+void ConfirmationStateManager::SaveState() {
   if (!is_initialized_) {
     return;
   }
 
   BLOG(9, "Saving confirmation state");
 
-  AdsClientHelper::GetInstance()->Save(
-      kConfirmationStateFilename, ToJson(),
-      base::BindOnce([](const bool success) {
-        if (!success) {
-          return BLOG(0, "Failed to save confirmation state");
-        }
+  Save(kConfirmationStateFilename, ToJson(),
+       base::BindOnce([](const bool success) {
+         if (!success) {
+           return BLOG(0, "Failed to save confirmation state");
+         }
 
-        BLOG(9, "Successfully saved confirmation state");
-      }));
+         BLOG(9, "Successfully saved confirmation state");
+       }));
 }
 
 absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
@@ -305,7 +304,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Type
     if (const auto* const value = item_dict->FindString("type")) {
-      confirmation.type = ConfirmationType(*value);
+      confirmation.type = ParseConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
       continue;
@@ -313,7 +312,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Ad type
     if (const auto* const value = item_dict->FindString("ad_type")) {
-      confirmation.ad_type = AdType(*value);
+      confirmation.ad_type = ParseAdType(*value);
     } else {
       BLOG(0, "Missing confirmation ad type");
       continue;
@@ -402,21 +401,21 @@ std::string ConfirmationStateManager::ToJson() {
 }
 
 bool ConfirmationStateManager::FromJson(const std::string& json) {
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json);
+  if (!dict) {
     return false;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  if (!ParseConfirmationsFromDictionary(dict)) {
+  if (!ParseConfirmationsFromDictionary(*dict)) {
     BLOG(1, "Failed to parse confirmations");
   }
 
-  if (!ParseConfirmationTokensFromDictionary(dict)) {
+  if (!ParseConfirmationTokensFromDictionary(*dict)) {
     BLOG(1, "Failed to parse confirmation tokens");
   }
 
-  if (!ParsePaymentTokensFromDictionary(dict)) {
+  if (!ParsePaymentTokensFromDictionary(*dict)) {
     BLOG(1, "Failed to parse payment tokens");
   }
 

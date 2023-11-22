@@ -25,6 +25,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
@@ -195,15 +196,14 @@ void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnBalance(
-    base::expected<brave_rewards::mojom::BalancePtr,
-                   brave_rewards::mojom::FetchBalanceError> result) {
-  if (result.has_value()) {
-    balance_ = *result.value();
+    brave_rewards::mojom::BalancePtr balance) {
+  if (balance) {
+    balance_ = *balance;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onBalance(
-      env, weak_java_brave_rewards_native_worker_.get(env), result.has_value());
+      env, weak_java_brave_rewards_native_worker_.get(env), !!balance);
 }
 
 void BraveRewardsNativeWorker::GetPublisherInfo(
@@ -933,9 +933,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
-    base::expected<brave_rewards::mojom::ExternalWalletPtr,
-                   brave_rewards::mojom::GetExternalWalletError> result) {
-  auto wallet = std::move(result).value_or(nullptr);
+    brave_rewards::mojom::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
     json_wallet = "";
@@ -949,7 +947,6 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.Set("type", wallet->type);
     dict.Set("user_name", wallet->user_name);
     dict.Set("account_url", wallet->account_url);
-    dict.Set("login_url", wallet->login_url);
     base::JSONWriter::Write(dict, &json_wallet);
   }
   JNIEnv* env = base::android::AttachCurrentThread();
@@ -1019,6 +1016,13 @@ void BraveRewardsNativeWorker::SetAutoContributeEnabled(
     bool isAutoContributeEnabled) {
   if (brave_rewards_service_) {
     brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
+  }
+}
+
+void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetP3AConversionMonitor()->RecordPanelTrigger(
+        brave_rewards::p3a::PanelTrigger::kToolbarButton);
   }
 }
 

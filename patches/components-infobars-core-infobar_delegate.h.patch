@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index be20a21aa17688c9635d13a6b591cd817715c164..be3a6a526f47ed2fcd739452ecd8c8e1ba4e7912 100644
+index 0d6de9b9c5fb005e78a7342194fc4c5a38a2f6aa..6b79d970e59f69b62bcb5aaf39c18d7602a03557 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -188,6 +188,7 @@ class InfoBarDelegate {
-     TAB_PICKUP_INFOBAR_DELEGATE = 114,
+@@ -189,6 +189,7 @@ class InfoBarDelegate {
      LOCAL_TEST_POLICIES_APPLIED_INFOBAR = 115,
      BIDDING_AND_AUCTION_CONSENTED_DEBUGGING_DELEGATE = 116,
+     PARCEL_TRACKING_INFOBAR_DELEGATE = 117,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

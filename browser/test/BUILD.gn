@@ -14,6 +14,7 @@ source_set("browser_tests") {
     "disabled_features/navigator_storage_browsertest.cc",
     "disabled_features/reporting_observer_browsertest.cc",
     "disabled_features/window_name_browsertest.cc",
+    "document_location_browsertest.cc",
   ]
 
   deps = [
@@ -27,6 +28,7 @@ source_set("browser_tests") {
     "//chrome/test:test_support_ui",
     "//content/public/browser",
     "//content/test:test_support",
+    "//ui/webui:test_support",
   ]
 
   if (is_mac) {

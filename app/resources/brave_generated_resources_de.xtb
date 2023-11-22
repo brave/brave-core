@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
 <translation id="4900351245762303149">Google Widevine installieren</translation>
 <translation id="2313383941300459392">Starten Sie den Browser neu, um Google Widevine zu aktivieren</translation>
+<translation id="8342816622062204340"><ph name="URL"/> möchte geschützte Google Widevine-Inhalte abspielen. Dafür müssen Sie die Widevine-Unterstützung für das Android-System zulassen. Wenn Sie dies zulassen, erklären Sie sich mit den Nutzungsbedingungen von Google einverstanden.</translation>
 <translation id="2200626478572277092">WideVine ist manchmal erforderlich, um Medien auf einer Webseite abzuspielen. Dies ist eine von Google-Servern geladene Google-Erweiterung, die Brave nicht inspizieren kann. Durch die Installation stimmen Sie den Nutzungsbedingungen von Google zu.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Rechte Maustaste klicken zum Entfernen</translation>
 <translation id="495046168593986294">Nach oben scrollen</translation>
 <translation id="4021716437419160885">Nach unten scrollen</translation>
+<translation id="2702801445560668637">Leseliste</translation>
+<translation id="2533715613366623756">Lesezeichenmanager</translation>
+<translation id="3405021928725149239">Lesezeichenmanager</translation>
 <translation id="6284218950354553099">Ping der täglichen Nutzung automatisch an Brave senden.</translation>
 <translation id="5288333155754958121">Mit diesem anonymen, privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
 <translation id="1872784258300710671">Brave verwendet vollständig private Produktanalysen, um die Gesamtnutzung bestimmter Funktionen einzuschätzen</translation>
@@ -237,7 +241,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">Um ein Lesezeichen hinzuzufügen, klicken Sie auf die Lesezeichen-Schaltfläche neben der Adressleiste</translation>
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
-<translation id="2702801445560668637">Leseliste</translation>
 <translation id="1968543937259008435">Bereit für die beste Privatsphäre im Internet?</translation>
 <translation id="6817415381278637662">Legen Sie Brave als Ihren Standardbrowser fest, um den Datenschutz von Brave auf jeder Webseite zu erhalten, die Sie öffnen.</translation>
 <translation id="8722651357687610395">Brave als Standard einrichten</translation>
@@ -284,6 +287,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Verschieben</translation>
 <translation id="6648536728577053364">Offline-Daten entfernen</translation>
 <translation id="5181358966317519720">Aus Playlist entfernen</translation>
+<translation id="2377705456080309463">Originalseite anzeigen</translation>
+<translation id="158894735649719362">Interessant wird es, wenn Sie etwas abzuspielen haben. Fügen Sie Ihre Lieblingsmedien hinzu und spielen Sie sie jederzeit und überall ab – sogar offline!</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="4472575034687746823">Start</translation>
@@ -296,9 +301,12 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Wie Linux</translation>
 <translation id="1336940801687497203">Wie Windows</translation>
 <translation id="8721331068159819483">Dasselbe wie macOS</translation>
+<translation id="4171684937791228083">Werkzeugleiste im Vollbildmodus immer anzeigen</translation>
 <translation id="1692470335103807198">Mehr Themen erhalten</translation>
 <translation id="2906510232093002459">Brave-Standardbilder</translation>
+<translation id="8000020256436988724">Werkzeugleiste</translation>
 <translation id="8076492880354921740">Tabs</translation>
+<translation id="8168435359814927499">Inhalte</translation>
 <translation id="5860254591544742609">Titelleiste</translation>
 <translation id="5371926069408837914">Wenn es minimiert ist, Menü für vertikale Tabs erweitern, wenn Maus darüber gehalten wird</translation>
 <translation id="3367129510799209147">„Mauszeiger über einen Tab“-Modus</translation>
@@ -311,7 +319,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Top-Websites</translation>
 <translation id="7859704718976024901">Browserverlauf</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
-<translation id="2245286910966863912">Die Schaltfläche Brave-Nachrichten in der Adressleiste anzeigen</translation>
+<translation id="7310387888625228830">Leo KI-Assistent</translation>
+<translation id="5222974844674487962">Brave News-Schaltfläche anzeigen</translation>
 <translation id="383007806262310953">Lesezeichenleiste anzeigen</translation>
 <translation id="4054323497808446566">Lesezeichenleiste ist auf allen Seiten sichtbar</translation>
 <translation id="8693858092251192712">Lesezeichenleiste ist auf allen Seiten außer auf der neuen Tab-Seite ausgeblendet</translation>
@@ -419,7 +428,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Alle Cookies und lokal gespeicherten Daten für diese Website anzeigen</translation>
 <translation id="8339059274628563283">Für <ph name="SITE"/> lokal gespeicherte Daten</translation>
 <translation id="1963227389609234879">Alle entfernen</translation>
-<translation id="8168435359814927499">Inhalte</translation>
 <translation id="7702907602086592255">Domain</translation>
 <translation id="3202131003361292969">Pfad</translation>
 <translation id="5390743329570580756">Senden für</translation>
@@ -590,7 +598,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="702381242110464396">Erweiterungen (Brave-Wallet Backup)</translation>
 <translation id="4718664830805652430">Standardmäßige Basiswährung</translation>
 <translation id="7992507032049865603">Standardmäßige Basis-Kryptowährung</translation>
-<translation id="1834467296210148203">Brave-Wallet-Symbol in der Werkzeugleiste anzeigen</translation>
+<translation id="3044369626313583722">Brave Wallet-Schaltfläche anzeigen</translation>
 <translation id="7568430944629653319">NFT Discovery aktivieren</translation>
 <translation id="970496996377628529">Fügen Sie NFTs, die Sie besitzen, mithilfe von Drittanbieter-APS automatisch zu Ihrem Wallet hinzu.</translation>
 <translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
@@ -699,6 +707,13 @@ Hinweis: Bei Auswahl des lokalen Knotens wird die Ressource direkt von Ihrem Com
 <translation id="2751872555001636931">Leo-Symbol in der Seitenleiste anzeigen</translation>
 <translation id="8172263161008556851">Vorgeschlagene Befehle im Gespräch anzeigen</translation>
 <translation id="1014480593522400586">Leo-Daten löschen</translation>
+<translation id="8681157601856387010">Wenn Sie den Leo-Assistenten zurücksetzen, müssen Sie sich in Zukunft
+erneut bereiterklären, Brave Leo zu nutzen. Außerdem wird Ihr Chatverlauf
+gelöscht. Wenn Sie Ihren Chatverlauf löschen, werden alle bisherigen
+Unterhaltungen mit Brave Leo entfernt. Dieser Vorgang kann nicht
+rückgängig gemacht werden.</translation>
+<translation id="8157373421434119674">Daten- und Chatverlauf</translation>
+<translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
 <translation id="6624718837376802990">Kantiger Avatar Belohnungen</translation>
 <translation id="6617313057407561765">Kantiger Avatar "Brave"</translation>
 <translation id="6754445808455578019">Kantiger Avatar Meer</translation>

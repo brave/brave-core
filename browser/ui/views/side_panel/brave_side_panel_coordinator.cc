@@ -9,6 +9,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 
 namespace {
@@ -24,17 +25,29 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 
 }  // namespace
 
-BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
+BraveSidePanelCoordinator::~BraveSidePanelCoordinator() {
+  if (auto key = GetLastActiveEntryKey()) {
+    sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
+                                  key->id());
+  }
+}
 
 void BraveSidePanelCoordinator::Show(
     absl::optional<SidePanelEntry::Id> entry_id,
     absl::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
   // Choose Brave's own default, and exclude items that user has removed
   // from sidebar. If none are enabled, do nothing.
+  auto* profile = browser_view_->GetProfile();
   if (!entry_id.has_value() && !GetLastActiveEntryKey()) {
-    entry_id = GetDefaultEntryId(browser_view_->GetProfile());
-    if (!entry_id.has_value()) {
+    // Early return as user removes all default panel entries.
+    auto default_entry_id = GetDefaultEntryId(profile);
+    if (!default_entry_id.has_value()) {
       return;
+    }
+    entry_id = sidebar::GetLastUsedSidePanel(browser_view_->browser());
+    if (!entry_id.has_value()) {
+      // Use default pick when we don't have lastly used panel.
+      entry_id = default_entry_id;
     }
   }
 
@@ -68,4 +81,16 @@ std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
   // hide the Chromium combobox-style header.
   header->SetVisible(false);
   return header;
+}
+
+void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
+    bool side_panel_visible) {
+  // Workaround to prevent crashing while window closing.
+  // See https://github.com/brave/brave-browser/issues/34334
+  if (!browser_view_ || !browser_view_->GetWidget() ||
+      browser_view_->GetWidget()->IsClosed()) {
+    return;
+  }
+
+  SidePanelCoordinator::UpdateToolbarButtonHighlight(side_panel_visible);
 }

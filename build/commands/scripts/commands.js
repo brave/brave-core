@@ -156,7 +156,9 @@ program
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma')
+  .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
+  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
+  .option('--offline', 'use offline mode for goma/RBE')
   .option('--force_gn_gen', 'always run gn gen')
   .option('--target <target>', 'Custom target to build, instead of the default browser target')
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
@@ -212,6 +214,7 @@ program
   .option('--channel <target_channel>', 'target channel to build', /^(beta|dev|nightly|release)$/i)
   .option('--build_omaha', 'build omaha stub/standalone installer')
   .option('--tag_ap <ap>', 'ap for stub/standalone installer')
+  .option('--tag_installdataindex <index>', 'installdataindex for stub/standalone installer')
   .option('--skip_signing', 'skip signing dmg/brave_installer.exe')
   .option('--build_delta_installer', 'build delta mini installer')
   .option('--last_chrome_installer <last_chrome_installer>', 'folder contains previous version uncompressed chrome.7z pack file. This folder should be in out dir.')
@@ -225,7 +228,9 @@ program
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma')
+  .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
+  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
+  .option('--offline', 'use offline mode for goma/RBE')
   .option('--force_gn_gen', 'always run gn gen')
   .option('--android_aab_to_apk',
     'applies an aab to apk conversion to the output aab')
@@ -322,7 +327,9 @@ program
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .option('--android_test_emulator_version <emulator_version>', 'set Android version for the emulator for tests', parseInteger, '30')
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
+  .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--goma_offline', 'use offline mode for goma')
+  .option('--offline', 'use offline mode for goma/RBE')
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))
 
@@ -366,7 +373,9 @@ program
 program
   .command('build_fuzzer <fuzzer_test_target>')
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma')
+  .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
+  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
+  .option('--offline', 'use offline mode for goma/RBE')
   .action(buildFuzzer)
 
 program

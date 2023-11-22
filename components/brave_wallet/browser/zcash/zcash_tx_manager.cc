@@ -1,0 +1,238 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
+
+#include <memory>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/functional/bind.h"
+#include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+
+namespace brave_wallet {
+
+ZCashTxManager::ZCashTxManager(
+    TxService* tx_service,
+    ZCashWalletService* zcash_wallet_service,
+    KeyringService* keyring_service,
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxManager(
+          std::make_unique<ZCashTxStateManager>(prefs,
+                                                delegate,
+                                                account_resolver_delegate),
+          std::make_unique<ZCashBlockTracker>(
+              zcash_wallet_service->zcash_rpc()),
+          tx_service,
+          keyring_service,
+          prefs),
+      zcash_wallet_service_(zcash_wallet_service),
+      zcash_rpc_(zcash_wallet_service->zcash_rpc()) {
+  block_tracker_observation_.Observe(GetZCashBlockTracker());
+}
+
+ZCashTxManager::~ZCashTxManager() = default;
+
+void ZCashTxManager::OnLatestHeightUpdated(const std::string& chain_id,
+                                           uint32_t latest_height) {
+  UpdatePendingTransactions(chain_id);
+}
+
+void ZCashTxManager::AddUnapprovedTransaction(
+    const std::string& chain_id,
+    mojom::TxDataUnionPtr tx_data_union,
+    const mojom::AccountIdPtr& from,
+    const absl::optional<url::Origin>& origin,
+    AddUnapprovedTransactionCallback callback) {
+  const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
+
+  zcash_wallet_service_->CreateTransaction(
+      chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount,
+      base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
+                     std::move(callback)));
+}
+
+void ZCashTxManager::ContinueAddUnapprovedTransaction(
+    const std::string& chain_id,
+    const mojom::AccountIdPtr& from,
+    const absl::optional<url::Origin>& origin,
+    AddUnapprovedTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> zcash_transaction) {
+  if (!zcash_transaction.has_value()) {
+    std::move(callback).Run(false, "", zcash_transaction.error());
+    return;
+  }
+
+  ZCashTxMeta meta(from, std::make_unique<ZCashTransaction>(
+                             std::move(zcash_transaction.value())));
+  meta.set_id(TxMeta::GenerateMetaID());
+  meta.set_origin(
+      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
+  meta.set_created_time(base::Time::Now());
+  meta.set_status(mojom::TransactionStatus::Unapproved);
+  meta.set_chain_id(chain_id);
+  if (!tx_state_manager_->AddOrUpdateTx(meta)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  std::move(callback).Run(true, meta.id(), "");
+}
+
+void ZCashTxManager::ApproveTransaction(const std::string& chain_id,
+                                        const std::string& tx_meta_id,
+                                        ApproveTransactionCallback callback) {
+  std::unique_ptr<ZCashTxMeta> meta =
+      GetZCashTxStateManager()->GetZCashTx(chain_id, tx_meta_id);
+  if (!meta) {
+    DCHECK(false) << "Transaction should be found";
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewZcashProviderError(
+            mojom::ZCashProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  zcash_wallet_service_->SignAndPostTransaction(
+      meta->chain_id(), meta->from(), std::move(*meta->tx()),
+      base::BindOnce(&ZCashTxManager::ContinueApproveTransaction,
+                     weak_factory_.GetWeakPtr(), chain_id, tx_meta_id,
+                     std::move(callback)));
+}
+
+void ZCashTxManager::ContinueApproveTransaction(
+    const std::string& chain_id,
+    const std::string& tx_meta_id,
+    ApproveTransactionCallback callback,
+    std::string tx_cid,
+    ZCashTransaction transaction,
+    std::string error) {
+  std::unique_ptr<ZCashTxMeta> meta =
+      GetZCashTxStateManager()->GetZCashTx(chain_id, tx_meta_id);
+  if (!meta) {
+    DCHECK(false) << "Transaction should be found";
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewZcashProviderError(
+            mojom::ZCashProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  const bool success = error.empty();
+  if (success) {
+    meta->set_status(mojom::TransactionStatus::Submitted);
+    meta->set_submitted_time(base::Time::Now());
+    meta->set_tx_hash(tx_cid);
+    meta->set_tx(std::make_unique<ZCashTransaction>(std::move(transaction)));
+  } else {
+    meta->set_status(mojom::TransactionStatus::Error);
+  }
+
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewZcashProviderError(
+            mojom::ZCashProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  if (success) {
+    UpdatePendingTransactions(chain_id);
+  }
+  std::move(callback).Run(
+      success,
+      mojom::ProviderErrorUnion::NewZcashProviderError(
+          success ? mojom::ZCashProviderError::kSuccess
+                  : mojom::ZCashProviderError::kInternalError),
+      error);
+}
+
+void ZCashTxManager::SpeedupOrCancelTransaction(
+    const std::string& chain_id,
+    const std::string& tx_meta_id,
+    bool cancel,
+    SpeedupOrCancelTransactionCallback callback) {
+  NOTIMPLEMENTED() << "ZCash transaction speedup or cancel is not supported";
+}
+
+void ZCashTxManager::RetryTransaction(const std::string& chain_id,
+                                      const std::string& tx_meta_id,
+                                      RetryTransactionCallback callback) {
+  NOTIMPLEMENTED() << "ZCash transaction retry is not supported";
+}
+
+void ZCashTxManager::GetTransactionMessageToSign(
+    const std::string& chain_id,
+    const std::string& tx_meta_id,
+    GetTransactionMessageToSignCallback callback) {
+  NOTIMPLEMENTED() << "ZCash hardware signing is not supported";
+}
+
+ZCashTxStateManager* ZCashTxManager::GetZCashTxStateManager() {
+  return static_cast<ZCashTxStateManager*>(tx_state_manager_.get());
+}
+
+ZCashBlockTracker* ZCashTxManager::GetZCashBlockTracker() {
+  return static_cast<ZCashBlockTracker*>(block_tracker_.get());
+}
+
+mojom::CoinType ZCashTxManager::GetCoinType() const {
+  return mojom::CoinType::ZEC;
+}
+
+void ZCashTxManager::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id) {
+  auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
+      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+  std::set<std::string> pending_chain_ids;
+  for (const auto& pending_transaction : pending_transactions) {
+    auto pending_chain_id = pending_transaction->chain_id();
+    zcash_wallet_service_->GetTransactionStatus(
+        pending_transaction->chain_id(), pending_transaction->tx_hash(),
+        base::BindOnce(&ZCashTxManager::OnGetTransactionStatus,
+                       weak_factory_.GetWeakPtr(), pending_chain_id,
+                       pending_transaction->id()));
+    pending_chain_ids.emplace(pending_chain_id);
+  }
+  CheckIfBlockTrackerShouldRun(pending_chain_ids);
+}
+
+void ZCashTxManager::OnGetTransactionStatus(
+    const std::string& chain_id,
+    const std::string& tx_meta_id,
+    base::expected<bool, std::string> confirm_status) {
+  if (!confirm_status.has_value()) {
+    return;
+  }
+  std::unique_ptr<ZCashTxMeta> meta =
+      GetZCashTxStateManager()->GetZCashTx(chain_id, tx_meta_id);
+  if (!meta) {
+    return;
+  }
+  if (confirm_status.value()) {
+    // TODO(cypt4): dropped and error state.
+    mojom::TransactionStatus status = mojom::TransactionStatus::Confirmed;
+    meta->set_status(status);
+    meta->set_confirmed_time(base::Time::Now());
+    tx_state_manager_->AddOrUpdateTx(*meta);
+  }
+}
+
+}  // namespace brave_wallet

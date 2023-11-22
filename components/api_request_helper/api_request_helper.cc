@@ -419,7 +419,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
   // TODO(@nullhook): Parse both JSON and string values. The below currently
   // only identifies JSON values.
   static constexpr char kDataPrefix[] = "data: {";
-  base::EraseIf(stream_data, [](std::string_view item) {
+  std::erase_if(stream_data, [](std::string_view item) {
     DVLOG(3) << "Received chunk: " << item;
     if (!base::StartsWith(item, kDataPrefix)) {
       // This is useful to log in case an API starts
@@ -453,7 +453,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
         };
 
     DVLOG(2) << "Going to call ParseJson";
-    GetDataDecoder()->ParseJson(std::move(json.data()),
+    GetDataDecoder()->ParseJson(std::move(std::string(json)),
                                 base::BindOnce(std::move(on_json_parsed),
                                                weak_ptr_factory_.GetWeakPtr()));
   }

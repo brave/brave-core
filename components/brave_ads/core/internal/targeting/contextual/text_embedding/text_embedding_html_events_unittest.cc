@@ -23,7 +23,7 @@ class BraveAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      ml::pipeline::BuildTextEmbeddingForTesting();
+      ml::pipeline::test::BuildTextEmbedding();
 
   // Act
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
@@ -39,7 +39,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      ml::pipeline::BuildTextEmbeddingForTesting();
+      ml::pipeline::test::BuildTextEmbedding();
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(text_embedding);
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
   for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; ++i) {
     const ml::pipeline::TextEmbeddingInfo text_embedding =
-        ml::pipeline::BuildTextEmbeddingForTesting();
+        ml::pipeline::test::BuildTextEmbedding();
     const TextEmbeddingHtmlEventInfo text_embedding_html_event =
         BuildTextEmbeddingHtmlEvent(text_embedding);
 

@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
@@ -82,8 +81,6 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
       return false;
   }
 
-  wallet->one_time_string = util::GenerateRandomHexString();
-  wallet->code_verifier = util::GeneratePKCECodeVerifier();
   wallet = wallet::GenerateLinks(std::move(wallet));
   if (!wallet) {
     BLOG(0, "Failed to generate links for " << wallet_type << " wallet!");

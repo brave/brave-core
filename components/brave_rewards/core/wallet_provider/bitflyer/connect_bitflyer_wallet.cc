@@ -25,6 +25,7 @@ namespace brave_rewards::internal {
 
 using endpoints::PostConnectBitflyer;
 using endpoints::RequestFor;
+using mojom::ConnectExternalWalletResult;
 using wallet_provider::ConnectExternalWallet;
 
 namespace bitflyer {
@@ -38,16 +39,18 @@ const char* ConnectBitFlyerWallet::WalletType() const {
   return constant::kWalletBitflyer;
 }
 
-void ConnectBitFlyerWallet::Authorize(OAuthInfo&& oauth_info,
-                                      ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
-  DCHECK(!oauth_info.code_verifier.empty());
+std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string, oauth_info_.code_verifier);
+}
+
+void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
+  DCHECK(!oauth_info_.code_verifier.empty());
 
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   const std::string hashed_payment_id =
@@ -56,8 +59,7 @@ void ConnectBitFlyerWallet::Authorize(OAuthInfo&& oauth_info,
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
   bitflyer_server_.post_oauth().Request(
-      external_account_id, std::move(oauth_info.code),
-      std::move(oauth_info.code_verifier),
+      external_account_id, oauth_info_.code, oauth_info_.code_verifier,
       base::BindOnce(&ConnectBitFlyerWallet::OnAuthorize,
                      base::Unretained(this), std::move(callback)));
 }
@@ -69,32 +71,27 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
                                         std::string&& linking_info) const {
   if (!engine_->bitflyer()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                          mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Couldn't get token");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (address.empty()) {
     BLOG(0, "Address is empty");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (linking_info.empty()) {
     BLOG(0, "Linking info is empty");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto on_connect =

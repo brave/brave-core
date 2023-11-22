@@ -11,14 +11,11 @@
 namespace brave_ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperFocalPointInfo final {
+  bool operator==(const NewTabPageAdWallpaperFocalPointInfo&) const = default;
+
   int x = 0;
   int y = 0;
 };
-
-bool operator==(const NewTabPageAdWallpaperFocalPointInfo&,
-                const NewTabPageAdWallpaperFocalPointInfo&);
-bool operator!=(const NewTabPageAdWallpaperFocalPointInfo&,
-                const NewTabPageAdWallpaperFocalPointInfo&);
 
 }  // namespace brave_ads
 

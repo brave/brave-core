@@ -28,7 +28,7 @@ if (!is_android) {
     "//brave/app:brave_generated_resources_grit",
     "//brave/common/importer:importer",
     "//brave/common/importer:interfaces",
-    "//chrome/app:chromium_strings",
+    "//chrome/app:branded_strings",
     "//components/os_crypt/sync",
     "//components/password_manager/core/browser",
     "//components/webdata/common",

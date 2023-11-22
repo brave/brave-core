@@ -467,14 +467,7 @@ if (should_generate_symbols) {
     }
   }
 
-  if (is_win) {
-    create_dist_template("create_native_symbols_dist") {
-      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
-      dir_inputs = [ "$brave_product_name.pdb.syms" ]
-
-      deps = [ "//brave/app/win:generate_symbols" ]
-    }
-  } else if (is_mac) {
+  if (is_mac) {
     copy("create_native_symbols_dist") {
       sources = [ "$root_out_dir/$chrome_product_full_name.dSYM.tar.bz2" ]
       outputs = [ "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.tar.bz2" ]

@@ -6,12 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_AD_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_AD_UNITTEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
+
 namespace brave_ads {
 
-class AdType;
 struct AdInfo;
 
-AdInfo BuildAdForTesting(const AdType& ad_type, bool should_use_random_uuids);
+namespace test {
+
+AdInfo BuildAd(AdType ad_type, bool should_use_random_uuids);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

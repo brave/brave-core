@@ -3,16 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  BraveWallet
-} from '../constants/types'
+import { BraveWallet } from '../constants/types'
 import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys
 } from './local-storage-utils'
-import {
-  networkEntityAdapter
-} from '../common/slices/entities/network.entity'
+import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { AllNetworksOptionDefault } from '../options/network-filter-options'
 
 const mockSolanaOption = {
@@ -21,84 +17,84 @@ const mockSolanaOption = {
 }
 
 const mockInitialFilteredOutNetworkKeys = [
-  networkEntityAdapter.selectId(
-    {
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.GOERLI_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.SOLANA_DEVNET,
       coin: BraveWallet.CoinType.SOL
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.SOLANA_TESTNET,
       coin: BraveWallet.CoinType.SOL
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.FILECOIN_TESTNET,
       coin: BraveWallet.CoinType.FIL
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.BITCOIN_TESTNET,
       coin: BraveWallet.CoinType.BTC
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.Z_CASH_TESTNET,
       coin: BraveWallet.CoinType.ZEC
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.SOL
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.FIL
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.BTC
-    }
-  ).toString(),
-  networkEntityAdapter.selectId(
-    {
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.ZEC
-    }
-  ).toString()
+    })
+    .toString()
 ]
 
 describe('Test parseJSONFromLocalStorage', () => {
@@ -112,14 +108,18 @@ describe('Test parseJSONFromLocalStorage', () => {
   })
   it('getItem should return a value and parse correctly to return mockSolanaOption.', () => {
     mockLocalStorageGet.mockReturnValue(mockValue)
-    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(mockSolanaOption)
+    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(
+      mockSolanaOption
+    )
     expect(window.localStorage.getItem).toHaveBeenCalledWith(key)
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(mockValue)
   })
   it('getItem should return null, then parse should fail and return the fallback AllNetworksOptionDefault.', () => {
     mockLocalStorageGet.mockReturnValue(null)
-    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(AllNetworksOptionDefault)
+    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(
+      AllNetworksOptionDefault
+    )
     expect(window.localStorage.getItem).toHaveBeenCalledWith(key)
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(null)
@@ -128,7 +128,8 @@ describe('Test parseJSONFromLocalStorage', () => {
 
 describe('Test makeInitialFilteredOutNetworkKeys', () => {
   it('Should construct a string array of test network keys', () => {
-    expect(makeInitialFilteredOutNetworkKeys())
-      .toEqual(mockInitialFilteredOutNetworkKeys)
+    expect(makeInitialFilteredOutNetworkKeys()).toEqual(
+      mockInitialFilteredOutNetworkKeys
+    )
   })
 })

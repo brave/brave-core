@@ -17,10 +17,14 @@ import type {
   SolLedgerFrameResponse
 } from './sol-ledger-messages'
 
-const braveWalletLedgerBridgeUrl = loadTimeData.getString('braveWalletLedgerBridgeUrl')
-export const LEDGER_BRIDGE_URL = braveWalletLedgerBridgeUrl.charAt(braveWalletLedgerBridgeUrl.length - 1) === '/'
-                                 ? braveWalletLedgerBridgeUrl.slice(0, -1) // Strip off trailing '/' in URL
-                                 : braveWalletLedgerBridgeUrl
+const braveWalletLedgerBridgeUrl = loadTimeData.getString(
+  'braveWalletLedgerBridgeUrl'
+)
+export const LEDGER_BRIDGE_URL =
+  braveWalletLedgerBridgeUrl.charAt(braveWalletLedgerBridgeUrl.length - 1) ===
+  '/'
+    ? braveWalletLedgerBridgeUrl.slice(0, -1) // Strip off trailing '/' in URL
+    : braveWalletLedgerBridgeUrl
 export enum LedgerCommand {
   Unlock = 'ledger-unlock',
   GetAccount = 'ledger-get-accounts',
@@ -78,9 +82,21 @@ export type AuthorizationSuccessCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationSuccess
 }
 
-export type LedgerFrameCommand = UnlockCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand | SolLedgerFrameCommand | EthLedgerFrameCommand | FilLedgerFrameCommand
-export type LedgerFrameResponse = UnlockResponse | SolLedgerFrameResponse | EthLedgerFrameResponse | FilLedgerFrameResponse
+export type LedgerFrameCommand =
+  | UnlockCommand
+  | AuthorizationRequiredCommand
+  | AuthorizationSuccessCommand
+  | SolLedgerFrameCommand
+  | EthLedgerFrameCommand
+  | FilLedgerFrameCommand
+export type LedgerFrameResponse =
+  | UnlockResponse
+  | SolLedgerFrameResponse
+  | EthLedgerFrameResponse
+  | FilLedgerFrameResponse
 
-type LedgerCommandHandler <T> = ((command: LedgerFrameCommand) => Promise<T>)
-type LedgerCommandResponseHandler <T> = ((response: T) => void)
-export type LedgerCommandHandlerUnion <T> = LedgerCommandHandler<T> | LedgerCommandResponseHandler<T>
+type LedgerCommandHandler<T> = (command: LedgerFrameCommand) => Promise<T>
+type LedgerCommandResponseHandler<T> = (response: T) => void
+export type LedgerCommandHandlerUnion<T> =
+  | LedgerCommandHandler<T>
+  | LedgerCommandResponseHandler<T>

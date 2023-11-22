@@ -13,6 +13,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
@@ -47,7 +48,7 @@ std::wstring GetWireguardConfigName(const std::wstring& prefix) {
 }
 
 struct SidAccessDescriptor {
-  const base::win::Sid& sid;
+  base::win::WellKnownSid well_known_sid;
   DWORD access_mask;
   base::win::SecurityAccessMode access_mode;
 };
@@ -66,8 +67,9 @@ bool AddACEToPath(const base::FilePath& path,
 
   std::vector<base::win::ExplicitAccessEntry> entries;
   for (const auto& descriptor : descriptors) {
-    entries.emplace_back(descriptor.sid, descriptor.access_mode,
-                         descriptor.access_mask, inheritance);
+    entries.emplace_back(base::win::Sid(descriptor.well_known_sid),
+                         descriptor.access_mode, descriptor.access_mask,
+                         inheritance);
   }
 
   if (!sd.SetDaclEntries(entries)) {
@@ -90,26 +92,16 @@ bool AddACEToPath(const base::FilePath& path,
 }
 
 bool ConfigureConfigPermissions(const base::FilePath& config_path) {
-  const absl::optional<base::win::Sid> service_sid =
-      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
-  const absl::optional<base::win::Sid> administrators_sid =
-      base::win::Sid::FromKnownSid(
-          base::win::WellKnownSid::kBuiltinAdministrators);
-  if (!service_sid.has_value() || !administrators_sid.has_value()) {
-    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
-            << ") or administrators(" << administrators_sid.has_value() << ")";
-    return false;
-  }
-
-  return AddACEToPath(config_path,
-                      // Let only windows services to read the config.
-                      {{service_sid.value(),
-                        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
-                        base::win::SecurityAccessMode::kGrant},
-                       // Let windows administrators only to remove the config.
-                       {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
-                        base::win::SecurityAccessMode::kGrant}},
-                      0, /*recursive=*/false);
+  return AddACEToPath(
+      config_path,
+      {// Let only windows services to read the config.
+       {base::win::WellKnownSid::kService,
+        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+        base::win::SecurityAccessMode::kGrant},
+       // Let windows administrators only to remove the config.
+       {base::win::WellKnownSid::kBuiltinAdministrators,
+        GENERIC_EXECUTE | DELETE, base::win::SecurityAccessMode::kGrant}},
+      0, /*recursive=*/false);
 }
 
 absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {

@@ -16,7 +16,8 @@ namespace brave_ads {
 constexpr int kDefaultNotificationAdFadeDuration = 200;
 
 // Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
-constexpr char kDefaultNotificationAdDarkModeBackgroundColor[] = "202327";
+inline constexpr char kDefaultNotificationAdDarkModeBackgroundColor[] =
+    "202327";
 
 // Do not support multiple displays by default
 constexpr bool kDefaultShouldSupportMultipleDisplays = true;

@@ -23,7 +23,7 @@ export const ButtonsContainer = styled.div`
   position: relative;
 `
 
-export const Button = styled(StyledButton) <{
+export const Button = styled(StyledButton)<{
   isSelected: boolean
   buttonAlign: 'left' | 'right'
 }>`

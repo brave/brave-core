@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 namespace {
 
@@ -25,7 +25,7 @@ constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 
 }  // namespace
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAdForTesting(
+mojom::SearchResultAdInfoPtr BuildSearchResultAd(
     const bool should_use_random_uuids) {
   mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
 
@@ -61,10 +61,10 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdForTesting(
   return ad;
 }
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversionForTesting(
+mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
     const bool should_use_random_uuids) {
   mojom::SearchResultAdInfoPtr ad =
-      BuildSearchResultAdForTesting(should_use_random_uuids);
+      BuildSearchResultAd(should_use_random_uuids);
   CHECK(ad);
 
   ad->conversion = mojom::ConversionInfo::New();
@@ -76,4 +76,4 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversionForTesting(
   return ad;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

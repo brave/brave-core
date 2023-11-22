@@ -20,6 +20,7 @@ brave_browser_ntp_background_deps = [
   "//brave/browser/profiles:util",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
+  "//brave/components/brave_rewards/common",
   "//brave/components/brave_stats/browser",
   "//brave/components/constants",
   "//brave/components/ntp_background_images/browser",

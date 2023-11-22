@@ -14,7 +14,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_headers_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -77,7 +77,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
 }
 
 bool ShouldReadResponseBodyFromFile(const std::string& response_body) {
-  return base::StartsWith(response_body, "/");
+  return response_body.starts_with("/");
 }
 
 std::string ParseFilenameFromResponseBody(const std::string& response_body) {

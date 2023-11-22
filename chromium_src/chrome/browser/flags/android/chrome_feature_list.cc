@@ -6,7 +6,7 @@
 #include "base/feature_override.h"
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -22,7 +22,7 @@
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #define BRAVE_AI_CHAT_FLAG &ai_chat::features::kAIChat,
 #else
 #define BRAVE_AI_CHAT_FLAG
@@ -35,9 +35,6 @@
     &brave_search_conversion::features::kOmniboxBanner,                 \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
-    &brave_wallet::features::kBraveWalletSolanaFeature,                 \
-    &brave_wallet::features::kBraveWalletFilecoinFeature,               \
-    &brave_wallet::features::kBraveWalletSnsFeature,                    \
     &playlist::features::kPlaylist,                                     \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &request_otr::features::kBraveRequestOTRTab,                        \
@@ -47,6 +44,7 @@
     &net::features::kBraveHttpsByDefault,                               \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
+    &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
     &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
@@ -61,9 +59,7 @@ namespace android {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBaselineGM3SurfaceColors, base::FEATURE_DISABLED_BY_DEFAULT},
-    // Disable until we sort out UI issues
-    // https://github.com/brave/brave-browser/issues/29688
-    {kIncognitoReauthenticationForAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kShowScrollableMVTOnNTPAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kStartSurfaceAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

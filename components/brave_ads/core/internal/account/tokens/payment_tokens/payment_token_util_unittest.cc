@@ -18,8 +18,7 @@ class BraveAdsPaymentTokenUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPaymentTokenUtilTest, GetPaymentToken) {
   // Arrange
-  const PaymentTokenList payment_tokens =
-      SetPaymentTokensForTesting(/*count=*/2);
+  const PaymentTokenList payment_tokens = test::SetPaymentTokens(/*count=*/2);
 
   // Act & Assert
   EXPECT_EQ(payment_tokens.front(), MaybeGetPaymentToken());
@@ -32,14 +31,13 @@ TEST_F(BraveAdsPaymentTokenUtilTest, DoNotGetPaymentToken) {
 
 TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
   // Arrange
-  const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count=*/2);
+  const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/2);
   ASSERT_EQ(2U, payment_tokens.size());
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
   const PaymentTokenInfo& token_2 = payment_tokens.at(1);
 
-  GetPaymentTokensForTesting().SetTokens({token_1});
+  test::GetPaymentTokens().SetTokens({token_1});
 
   // Act
   AddPaymentTokens({token_2});
@@ -51,15 +49,14 @@ TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
 
 TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
   // Arrange
-  const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count=*/3);
+  const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/3);
   ASSERT_EQ(3U, payment_tokens.size());
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
   const PaymentTokenInfo& token_2 = payment_tokens.at(1);
   const PaymentTokenInfo& token_3 = payment_tokens.at(2);
 
-  GetPaymentTokensForTesting().SetTokens(payment_tokens);
+  test::GetPaymentTokens().SetTokens(payment_tokens);
 
   // Act
   RemovePaymentToken(token_2);
@@ -71,7 +68,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
 
 TEST_F(BraveAdsPaymentTokenUtilTest, PaymentTokenCount) {
   // Arrange
-  SetPaymentTokensForTesting(/*count=*/3);
+  test::SetPaymentTokens(/*count=*/3);
 
   // Act & Assert
   EXPECT_EQ(3U, PaymentTokenCount());

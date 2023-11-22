@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -94,12 +95,14 @@ TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
 TEST(BitcoinTransaction, TxOutput_Value) {
   BitcoinTransaction::TxOutput output;
   output.address = kAddress2;
+  output.script_pubkey.assign({0, 1, 2, 7});
   output.amount = 555666777;
 
   auto parsed = output.FromValue(output.ToValue());
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed, output);
   EXPECT_EQ(parsed->address, output.address);
+  EXPECT_EQ(parsed->script_pubkey, output.script_pubkey);
   EXPECT_EQ(parsed->amount, output.amount);
 }
 
@@ -126,10 +129,14 @@ TEST(BitcoinTransaction, Value) {
 
   auto& output1 = tx.outputs().emplace_back();
   output1.address = kAddress1;
+  output1.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
   output1.amount = 5;
 
   auto& output2 = tx.outputs().emplace_back();
   output2.address = kAddress2;
+  output2.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
 
   tx.set_to(kAddress1);

@@ -8,22 +8,22 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 
-namespace brave_ads::cbr {
+namespace brave_ads::cbr::test {
 
-SignedToken GetSignedTokenForTesting() {
+SignedToken GetSignedToken() {
   return SignedToken(kSignedTokenBase64);
 }
 
-SignedToken GetInvalidSignedTokenForTesting() {
+SignedToken GetInvalidSignedToken() {
   return SignedToken(kInvalidBase64);
 }
 
-std::vector<SignedToken> GetSignedTokensForTesting() {
-  return {GetSignedTokenForTesting()};
+std::vector<SignedToken> GetSignedTokens() {
+  return {GetSignedToken()};
 }
 
-std::vector<SignedToken> GetInvalidSignedTokensForTesting() {
-  return {GetInvalidSignedTokenForTesting()};
+std::vector<SignedToken> GetInvalidSignedTokens() {
+  return {GetInvalidSignedToken()};
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test

@@ -27,4 +27,16 @@ const char* MetricLogTypeToString(MetricLogType log_type) {
   NOTREACHED();
 }
 
+absl::optional<MetricLogType> StringToMetricLogType(
+    const std::string& log_type_str) {
+  if (log_type_str == kSlowStr) {
+    return MetricLogType::kSlow;
+  } else if (log_type_str == kTypicalStr) {
+    return MetricLogType::kTypical;
+  } else if (log_type_str == kExpressStr) {
+    return MetricLogType::kExpress;
+  }
+  return absl::nullopt;
+}
+
 }  // namespace p3a

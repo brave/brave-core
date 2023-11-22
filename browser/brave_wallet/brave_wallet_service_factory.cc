@@ -14,6 +14,7 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -72,6 +73,7 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
   DependsOn(JsonRpcServiceFactory::GetInstance());
   DependsOn(TxServiceFactory::GetInstance());
   DependsOn(BitcoinWalletServiceFactory::GetInstance());
+  DependsOn(ZCashWalletServiceFactory::GetInstance());
 }
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
@@ -87,6 +89,7 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
       JsonRpcServiceFactory::GetServiceForContext(context),
       TxServiceFactory::GetServiceForContext(context),
       BitcoinWalletServiceFactory::GetServiceForContext(context),
+      ZCashWalletServiceFactory::GetServiceForContext(context),
       user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
 }
 

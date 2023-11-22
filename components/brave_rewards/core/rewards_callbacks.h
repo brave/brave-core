@@ -13,37 +13,31 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace brave_rewards::internal {
 
 using AttestPromotionCallback = mojom::RewardsEngine::AttestPromotionCallback;
+
+using BeginExternalWalletLoginCallback =
+    mojom::RewardsEngine::BeginExternalWalletLoginCallback;
 
 using ClaimPromotionCallback = mojom::RewardsEngine::ClaimPromotionCallback;
 
 using ConnectExternalWalletCallback =
     mojom::RewardsEngine::ConnectExternalWalletCallback;
 
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
-
 using CreateRewardsWalletCallback =
     mojom::RewardsEngine::CreateRewardsWalletCallback;
 
 using FetchBalanceCallback = mojom::RewardsEngine::FetchBalanceCallback;
 
-using FetchBalanceResult =
-    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
-
 using FetchPromotionsCallback = mojom::RewardsEngine::FetchPromotionsCallback;
 
 using GetExternalWalletCallback =
     mojom::RewardsEngine::GetExternalWalletCallback;
-
-using GetExternalWalletResult =
-    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 
 using GetRewardsParametersCallback =
     mojom::RewardsEngine::GetRewardsParametersCallback;

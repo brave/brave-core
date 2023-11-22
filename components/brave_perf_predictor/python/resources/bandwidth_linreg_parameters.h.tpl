@@ -18,21 +18,21 @@ namespace brave_perf_predictor {
 
 constexpr double model_intercept = {{model.intercept}};
 constexpr int feature_count = {{model.coefficients | length}};
-constexpr std::array<double, feature_count> model_coefficients = {
+inline constexpr std::array<double, feature_count> model_coefficients = {
 {{model.coefficients | join(',\n')}}
 };
 
 constexpr unsigned int standardise_feat_count = {{transformers.standardise.features | length}};
 
-constexpr std::array<double, standardise_feat_count> standardise_feat_means = {
+inline constexpr std::array<double, standardise_feat_count> standardise_feat_means = {
 {{transformers.standardise.mean | join(',\n')}}
 };
 
-constexpr std::array<double, standardise_feat_count> standardise_feat_scale = {
+inline constexpr std::array<double, standardise_feat_count> standardise_feat_scale = {
 {{transformers.standardise.scale | join(',\n')}}
 };
 
-const std::array<std::string, feature_count> feature_sequence{
+inline constexpr std::array<std::string, feature_count> feature_sequence{
     {% for feature in transformers.standardise.features %}
     "{{feature}}",
     {% endfor %}
@@ -41,13 +41,13 @@ const std::array<std::string, feature_count> feature_sequence{
     {% endfor %}
 };
 
-const std::array<std::string, {{misc.entities | length}}> relevant_entities{
+inline constexpr std::array<std::string, {{misc.entities | length}}> relevant_entities{
   {% for entity in misc.entities %}
   "{{entity}}",
   {% endfor %}
 };
 
-const base::flat_set<std::string> relevant_entity_set(
+inline constexpr base::flat_set<std::string> relevant_entity_set(
     relevant_entities.begin(),
     relevant_entities.end());
 
@@ -55,7 +55,7 @@ struct stdfactor {
   double mean, scale;
 };
 
-const base::flat_map<std::string, stdfactor> stdfactor_map = {
+inline constexpr base::flat_map<std::string, stdfactor> stdfactor_map = {
   {% for feature, (mean, scale) in transformers.standardise.feature_map %}
   {
     "{{feature}}",

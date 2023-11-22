@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_layout_constants.h"
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "ui/base/pointer/touch_ui_controller.h"
@@ -21,9 +22,10 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   //     ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
     case TAB_HEIGHT: {
-      const int tab_height = HorizontalTabsUpdateEnabled() ? 36 : 30;
-      return (touch ? 41 : tab_height) +
-             GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+      if (HorizontalTabsUpdateEnabled()) {
+        return brave_tabs::kHorizontalTabViewHeight;
+      }
+      return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
     }
     case TABSTRIP_TOOLBAR_OVERLAP: {
       if (!HorizontalTabsUpdateEnabled()) {
@@ -34,6 +36,8 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
     }
+    case LOCATION_BAR_HEIGHT:
+      return touch ? 36 : 34;
     default:
       break;
   }

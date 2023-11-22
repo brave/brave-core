@@ -18,6 +18,7 @@ The tool gives more stable results on prepared hardware/OS to minimize jitter.
 """
 import argparse
 import logging
+import shutil
 import sys
 import os
 
@@ -52,6 +53,10 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   logging.basicConfig(level=log_level, format=log_format)
 
   logging.info('Use working directory %s', options.working_directory)
+  if options.ci_mode and os.path.exists(options.working_directory):
+    logging.info('Cleaning working directory %s', options.working_directory)
+    shutil.rmtree(options.working_directory)
+
   if not os.path.exists(options.working_directory):
     os.mkdir(options.working_directory)
   json_config = perf_test_utils.LoadJsonConfig(args.config,

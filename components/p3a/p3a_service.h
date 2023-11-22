@@ -57,11 +57,21 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void InitCallbacks();
 
   // Called by other components to add/remove dynamic metrics
-  // (metrics not included in the metric_names.h static list)
+  // (metrics not included in the metric_names.h static list).
+  // All dynamic metrics are ephemeral.
   void RegisterDynamicMetric(const std::string& histogram_name,
                              MetricLogType log_type,
                              bool should_be_on_ui_thread = true);
   void RemoveDynamicMetric(const std::string& histogram_name);
+  // Updates the metric value for a single upload format (JSON or
+  // Constellation). This method is required by NTP/creative metrics; the
+  // differing rotation schedules between upload formats require that the
+  // differing values are recorded for each format.
+  // TODO(djandries): this method should be removed once JSON reporting is fully
+  // removed
+  void UpdateMetricValueForSingleFormat(const std::string& histogram_name,
+                                        size_t bucket,
+                                        bool is_constellation);
 
   // Callbacks are invoked after rotation for a particular log type,
   // before metrics are sent. Useful for just-in-time metrics collection
@@ -107,7 +117,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                               size_t bucket);
 
   // Updates or removes a metric from the log.
-  void HandleHistogramChange(std::string_view histogram_name, size_t bucket);
+  void HandleHistogramChange(
+      std::string_view histogram_name,
+      size_t bucket,
+      absl::optional<bool> only_update_for_constellation = absl::nullopt);
 
   // General prefs:
   bool initialized_ = false;

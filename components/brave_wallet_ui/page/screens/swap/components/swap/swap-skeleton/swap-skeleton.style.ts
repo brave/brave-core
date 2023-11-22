@@ -20,11 +20,9 @@ export const Wrapper = styled.div<Props>`
   width: ${(p) => (p.width ? `${p.width}px` : '100%')};
   height: ${(p) => (p.height ? `${p.height}px` : '100%')};
   border-radius: ${(p) => (p.borderRadius ? `${p.borderRadius}px` : 'none')};
-  background-color: var(--background-color--${(p) =>
-    p.background
-      ? p.background
-      : 'primary'
-  });
+  background-color: var(
+    --background-color--${(p) => (p.background ? p.background : 'primary')}
+  );
   position: sticky;
   overflow: hidden;
 `

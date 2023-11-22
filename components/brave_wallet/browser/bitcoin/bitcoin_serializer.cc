@@ -64,30 +64,11 @@ SHA256HashArray HashSequence(const BitcoinTransaction& tx) {
   return DoubleSHA256Hash(data);
 }
 
-std::vector<uint8_t> AddressToScriptPubkey(const std::string& address) {
-  auto decoded_address = DecodeBitcoinAddress(address);
-  // TODO(apaymyshev): support more types
-  if (decoded_address && decoded_address->address_type ==
-                             BitcoinAddressType::kWitnessV0PubkeyHash) {
-    auto pubkey_hash = std::move(decoded_address->pubkey_hash);
-    CHECK_EQ(pubkey_hash.size(), 20u);
-
-    // https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wpkh
-    std::vector<uint8_t> data;
-    BitcoinSerializerStream stream(&data);
-    stream.Push8AsLE(0);                   // OP_0
-    stream.Push8AsLE(pubkey_hash.size());  // OP_14
-    stream.PushBytes(pubkey_hash);
-    return data;
-  }
-
-  NOTREACHED_NORETURN();
-}
-
 void PushOutput(const BitcoinTransaction::TxOutput& output,
                 BitcoinSerializerStream& stream) {
   stream.Push64AsLE(output.amount);
-  stream.PushSizeAndBytes(AddressToScriptPubkey(output.address));
+  CHECK(output.script_pubkey.size());
+  stream.PushSizeAndBytes(output.script_pubkey);
 }
 
 SHA256HashArray HashOutputs(const BitcoinTransaction& tx) {
@@ -216,6 +197,83 @@ void BitcoinSerializerStream::PushBytesReversed(
   serialized_bytes_ += bytes.size();
 }
 
+std::vector<uint8_t> BitcoinSerializer::AddressToScriptPubkey(
+    const std::string& address,
+    bool testnet) {
+  auto decoded_address = DecodeBitcoinAddress(address);
+  if (!decoded_address) {
+    return {};
+  }
+
+  if (testnet != decoded_address->testnet) {
+    return {};
+  }
+
+  std::vector<uint8_t> data;
+  BitcoinSerializerStream stream(&data);
+
+  // https://github.com/bitcoin/bitcoin/blob/v25.0/src/script/standard.cpp#L302-L325
+
+  // Size is always less than OP_PUSHDATA1, so we encode it as one byte.
+  CHECK_LT(decoded_address->pubkey_hash.size(), 0x4cUL);
+
+  if (decoded_address->address_type == BitcoinAddressType::kPubkeyHash) {
+    CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
+
+    stream.Push8AsLE(0x76);                          // OP_DUP
+    stream.Push8AsLE(0xa9);                          // OP_HASH
+    stream.Push8AsLE(0x14);                          // hash size
+    stream.PushBytes(decoded_address->pubkey_hash);  // hash
+    stream.Push8AsLE(0x88);                          // OP_EQUALVERIFY
+    stream.Push8AsLE(0xac);                          // OP_CHECKSIG
+
+    return data;
+  }
+
+  if (decoded_address->address_type == BitcoinAddressType::kScriptHash) {
+    CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
+
+    stream.Push8AsLE(0xa9);                          // OP_HASH
+    stream.Push8AsLE(0x14);                          // hash size
+    stream.PushBytes(decoded_address->pubkey_hash);  // hash
+    stream.Push8AsLE(0x87);                          // OP_EQUAL
+
+    return data;
+  }
+
+  if (decoded_address->address_type ==
+      BitcoinAddressType::kWitnessV0PubkeyHash) {
+    CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
+
+    stream.Push8AsLE(0x00);                          // OP_0
+    stream.Push8AsLE(0x14);                          // hash size
+    stream.PushBytes(decoded_address->pubkey_hash);  // hash
+    return data;
+  }
+
+  if (decoded_address->address_type ==
+      BitcoinAddressType::kWitnessV0ScriptHash) {
+    CHECK_EQ(decoded_address->pubkey_hash.size(), 32u);
+
+    stream.Push8AsLE(0x00);                          // OP_0
+    stream.Push8AsLE(0x20);                          // hash size
+    stream.PushBytes(decoded_address->pubkey_hash);  // hash
+    return data;
+  }
+
+  if (decoded_address->address_type == BitcoinAddressType::kWitnessV1Taproot) {
+    CHECK_EQ(decoded_address->pubkey_hash.size(), 32u);
+
+    stream.Push8AsLE(0x51);                          // OP_1
+    stream.Push8AsLE(0x20);                          // hash size
+    stream.PushBytes(decoded_address->pubkey_hash);  // hash
+    return data;
+  }
+
+  NOTREACHED();
+  return {};
+}
+
 // static
 absl::optional<SHA256HashArray> BitcoinSerializer::SerializeInputForSign(
     const BitcoinTransaction& tx,
@@ -224,6 +282,11 @@ absl::optional<SHA256HashArray> BitcoinSerializer::SerializeInputForSign(
   auto& input = tx.inputs()[input_index];
   auto decoded_address = DecodeBitcoinAddress(input.utxo_address);
   if (!decoded_address) {
+    return absl::nullopt;
+  }
+  // TODO(apaymyshev): support other account types.
+  if (decoded_address->address_type !=
+      BitcoinAddressType::kWitnessV0PubkeyHash) {
     return absl::nullopt;
   }
 

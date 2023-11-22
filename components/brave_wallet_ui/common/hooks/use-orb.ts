@@ -14,9 +14,13 @@ interface OrbOptions {
   scale: number
 }
 
-const applyDefaults = (options: Partial<OrbOptions> | undefined): OrbOptions => {
-  return { size: options?.size || 8, scale: options?.scale || 16 }
+const applyDefaults = (
+  options: Partial<OrbOptions> | undefined
+): OrbOptions => {
+  return { size: options?.size || 4, scale: options?.scale || 25 }
 }
+
+const serializer = new XMLSerializer()
 
 export const useAccountOrb = (
   accountInfo:
@@ -29,7 +33,8 @@ export const useAccountOrb = (
       return ''
     }
 
-    // Using hash of uniqueKey so similar unique keys don't produce similar colors.
+    // Using hash of uniqueKey so similar unique keys don't produce similar
+    // colors.
     const seed =
       accountInfo.address?.toLowerCase() ||
       crypto
@@ -37,13 +42,20 @@ export const useAccountOrb = (
         .update(accountInfo.accountId.uniqueKey)
         .digest('hex')
 
-    return (
+    const svgString = serializer.serializeToString(
       EthereumBlockies.create({
-        seed,
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
-  }, [accountInfo?.address, accountInfo?.accountId.uniqueKey, options?.size, options?.scale])
+        ...applyDefaults(options),
+        seed
+      })
+    )
+    const encodedSvg = btoa(svgString)
+    return 'data:image/svg+xml;base64,' + encodedSvg
+  }, [
+    accountInfo?.address,
+    accountInfo?.accountId.uniqueKey,
+    options?.size,
+    options?.scale
+  ])
 }
 
 export const useAddressOrb = (
@@ -55,12 +67,14 @@ export const useAddressOrb = (
       return ''
     }
 
-    return (
+    const svgString = serializer.serializeToString(
       EthereumBlockies.create({
-        seed: address.toLowerCase(),
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
+        ...applyDefaults(options),
+        seed: address.toLowerCase()
+      })
+    )
+    const encodedSvg = btoa(svgString)
+    return 'data:image/svg+xml;base64,' + encodedSvg
   }, [address, options?.size, options?.scale])
 }
 
@@ -73,11 +87,9 @@ export const useNetworkOrb = (
       return ''
     }
 
-    return (
-      EthereumBlockies.create({
-        seed: networkInfo.chainName,
-        ...applyDefaults(options)
-      }) as HTMLCanvasElement
-    ).toDataURL()
+    return EthereumBlockies.background({
+      ...applyDefaults(options),
+      seed: networkInfo.chainName
+    })
   }, [networkInfo, options?.size, options?.scale])
 }

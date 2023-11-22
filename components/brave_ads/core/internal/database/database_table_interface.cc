@@ -14,7 +14,7 @@ void TableInterface::Migrate(mojom::DBTransactionInfo* transaction,
                              const int to_version) {
   CHECK(transaction);
 
-  if (to_version == database::kVersion) {
+  if (to_version == kVersion) {
     Create(transaction);
   }
 }

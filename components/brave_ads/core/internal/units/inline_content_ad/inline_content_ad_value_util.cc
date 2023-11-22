@@ -16,7 +16,7 @@ constexpr char kTypeKey[] = "type";
 
 base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
   return base::Value::Dict()
-      .Set(kTypeKey, ad.type.ToString())
+      .Set(kTypeKey, ToString(ad.type))
       .Set(kInlineContentAdPlacementIdKey, ad.placement_id)
       .Set(kInlineContentAdCreativeInstanceIdKey, ad.creative_instance_id)
       .Set(kInlineContentAdCreativeSetIdKey, ad.creative_set_id)
@@ -35,7 +35,7 @@ InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {
   InlineContentAdInfo ad;
 
   if (const auto* const value = dict.FindString(kTypeKey)) {
-    ad.type = AdType(*value);
+    ad.type = ParseAdType(*value);
   }
 
   if (const auto* const value =

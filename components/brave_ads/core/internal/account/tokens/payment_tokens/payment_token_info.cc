@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 
-#include <tuple>
-
 namespace brave_ads {
 
 PaymentTokenInfo::PaymentTokenInfo() = default;
@@ -22,19 +20,5 @@ PaymentTokenInfo& PaymentTokenInfo::operator=(
     PaymentTokenInfo&& other) noexcept = default;
 
 PaymentTokenInfo::~PaymentTokenInfo() = default;
-
-bool PaymentTokenInfo::operator==(const PaymentTokenInfo& other) const {
-  const auto tie = [](const PaymentTokenInfo& payment_token) {
-    return std::tie(payment_token.transaction_id, payment_token.public_key,
-                    payment_token.unblinded_token,
-                    payment_token.confirmation_type, payment_token.ad_type);
-  };
-
-  return tie(*this) == tie(other);
-}
-
-bool PaymentTokenInfo::operator!=(const PaymentTokenInfo& other) const {
-  return !(*this == other);
-}
 
 }  // namespace brave_ads

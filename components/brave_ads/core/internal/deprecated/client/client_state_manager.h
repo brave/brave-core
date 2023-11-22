@@ -20,11 +20,11 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class AdType;
 struct AdContentInfo;
 struct AdInfo;
 
@@ -42,7 +42,7 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
-  void Load(InitializeCallback callback);
+  void LoadState(InitializeCallback callback);
 
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
@@ -73,15 +73,13 @@ class ClientStateManager final {
   bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content);
 
   void UpdateSeenAd(const AdInfo& ad);
-  const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
-  void ResetSeenAdsForType(const CreativeAdList& creative_ads,
-                           const AdType& type);
-  void ResetAllSeenAdsForType(const AdType& type);
-  const std::map<std::string, bool>& GetSeenAdvertisersForType(
-      const AdType& type);
+  const std::map<std::string, bool>& GetSeenAdsForType(AdType type);
+  void ResetSeenAdsForType(const CreativeAdList& creative_ads, AdType type);
+  void ResetAllSeenAdsForType(AdType type);
+  const std::map<std::string, bool>& GetSeenAdvertisersForType(AdType type);
   void ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
-                                   const AdType& type);
-  void ResetAllSeenAdvertisersForType(const AdType& type);
+                                   AdType type);
+  void ResetAllSeenAdvertisersForType(AdType type);
 
   void AppendTextClassificationProbabilitiesToHistory(
       const TextClassificationProbabilityMap& probabilities);
@@ -89,7 +87,7 @@ class ClientStateManager final {
   GetTextClassificationProbabilitiesHistory() const;
 
  private:
-  void Save();
+  void SaveState();
 
   void LoadCallback(InitializeCallback callback,
                     const absl::optional<std::string>& json);

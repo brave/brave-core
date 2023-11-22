@@ -34,7 +34,7 @@ export const InstructionParamBox = styled.div`
   & > * {
     font-style: normal;
     width: 100%;
-  } 
+  }
 
   & > var {
     font-weight: 600;
@@ -42,7 +42,7 @@ export const InstructionParamBox = styled.div`
     display: block;
     font-size: 12px;
   }
-  
+
   & > samp {
     font-weight: 400;
     color: ${(p) => p.theme.color.text02};
@@ -51,11 +51,9 @@ export const InstructionParamBox = styled.div`
   }
 `
 
-export const AddressText = styled.span<
-  { isBold?: true }
->`
+export const AddressText = styled.span<{ isBold?: true }>`
   font-family: Poppins;
-  font-weight: ${(p) => p.isBold ? 600 : 400};
+  font-weight: ${(p) => (p.isBold ? 600 : 400)};
   color: ${(p) => p.theme.color.text02};
   font-size: 12px;
   margin-left: 4px;

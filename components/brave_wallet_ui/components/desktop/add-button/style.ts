@@ -12,7 +12,7 @@ interface StyleProps {
 
 // Will need to change to brave-ui button
 
-export const StyledButton = styled(WalletButton) <StyleProps>`
+export const StyledButton = styled(WalletButton)<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,9 @@ export const StyledButton = styled(WalletButton) <StyleProps>`
   padding: 12px 22px;
   outline: none;
   background-color: ${(p) =>
-    p.buttonType === 'primary' ? `${p.theme.palette.blurple500}` : 'transparent'};
+    p.buttonType === 'primary'
+      ? `${p.theme.palette.blurple500}`
+      : 'transparent'};
   border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'

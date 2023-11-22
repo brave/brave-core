@@ -11,11 +11,6 @@
 
 namespace translate {
 
-namespace prefs {
-const char kMigratedToInternalTranslation[] =
-    "brave.translate_migrated_from_extension";
-}  // namespace prefs
-
 void RegisterBraveProfilePrefsForMigration(PrefRegistrySimple* registry) {
   // No sync for migration prefs
   registry->RegisterBooleanPref(prefs::kMigratedToInternalTranslation, false);

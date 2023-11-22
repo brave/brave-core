@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/omnibox/browser/leo_action.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_input.h"

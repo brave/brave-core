@@ -5,11 +5,14 @@
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #endif  // BUILDFLAG(!IS_ANDROID)
@@ -20,8 +23,9 @@
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
-#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -43,7 +47,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // so active browser is unlikely to be changed
   // * Even if the active browser is changed, it'd be better to open the Leo in
   // the new active browser.
-  CHECK(!profile_->IsTor());
+  CHECK(brave::IsRegularProfile(profile_));
   Browser* browser =
       chrome::FindTabbedBrowser(profile_,
                                 /*match_original_profiles=*/true);
@@ -66,6 +70,10 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
       ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
       base::UTF16ToUTF8(query)};
   chat_tab_helper->MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
+  ai_chat::AIChatMetrics* metrics =
+      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+  CHECK(metrics);
+  metrics->RecordOmniboxOpen();
 #endif
 }
 
@@ -73,7 +81,7 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
 #if BUILDFLAG(IS_ANDROID)
   return false;
 #else
-  return !profile_->IsTor() &&
+  return brave::IsRegularProfile(profile_) &&
          GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif

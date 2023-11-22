@@ -6,10 +6,9 @@
 import styled from 'styled-components'
 import { StyledDiv } from '../../shared-swap.styles'
 
-
 export const Wrapper = styled(StyledDiv)`
-  background-color: ${p => p.theme.color.background01};
-  border: 1px solid ${p => p.theme.color.disabled};
+  background-color: ${(p) => p.theme.color.background01};
+  border: 1px solid ${(p) => p.theme.color.disabled};
   border-radius: 4px;
   box-sizing: border-box;
   flex-direction: row;

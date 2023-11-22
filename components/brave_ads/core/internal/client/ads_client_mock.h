@@ -45,14 +45,10 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo& ad));
   MOCK_METHOD(void, CloseNotificationAd, (const std::string& placement_id));
 
-  MOCK_METHOD(void, ShowReminder, (const mojom::ReminderType type));
-
-  MOCK_METHOD(void, UpdateAdRewards, ());
-
   MOCK_METHOD(void,
               CacheAdEventForInstanceId,
               (const std::string& id,
-               const std::string& type,
+               const std::string& ad_type,
                const std::string& confirmation_type,
                const base::Time time),
               (const));
@@ -105,59 +101,27 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
 
   MOCK_METHOD(void,
-              AddTrainingSample,
+              AddFederatedLearningPredictorTrainingSample,
               (const std::vector<brave_federated::mojom::CovariateInfoPtr>
                    training_sample));
 
-  MOCK_METHOD(bool, GetBooleanPref, (const std::string& path), (const));
+  MOCK_METHOD(absl::optional<base::Value>,
+              GetProfilePref,
+              (const std::string& path));
   MOCK_METHOD(void,
-              SetBooleanPref,
-              (const std::string& path, const bool value));
-  MOCK_METHOD(int, GetIntegerPref, (const std::string& path), (const));
-  MOCK_METHOD(void, SetIntegerPref, (const std::string& path, const int value));
-  MOCK_METHOD(double, GetDoublePref, (const std::string& path), (const));
-  MOCK_METHOD(void,
-              SetDoublePref,
-              (const std::string& path, const double value));
-  MOCK_METHOD(std::string, GetStringPref, (const std::string& path), (const));
-  MOCK_METHOD(void,
-              SetStringPref,
-              (const std::string& path, const std::string& value));
-  MOCK_METHOD(int64_t, GetInt64Pref, (const std::string& path), (const));
-  MOCK_METHOD(void,
-              SetInt64Pref,
-              (const std::string& path, const int64_t value));
-  MOCK_METHOD(uint64_t, GetUint64Pref, (const std::string& path), (const));
-  MOCK_METHOD(void,
-              SetUint64Pref,
-              (const std::string& path, const uint64_t value));
-  MOCK_METHOD(base::Time, GetTimePref, (const std::string& path), (const));
-  MOCK_METHOD(void,
-              SetTimePref,
-              (const std::string& path, const base::Time value));
-  MOCK_METHOD(absl::optional<base::Value::Dict>,
-              GetDictPref,
-              (const std::string& path),
-              (const));
-  MOCK_METHOD(void,
-              SetDictPref,
-              (const std::string& path, base::Value::Dict value));
-  MOCK_METHOD(absl::optional<base::Value::List>,
-              GetListPref,
-              (const std::string& path),
-              (const));
-  MOCK_METHOD(void,
-              SetListPref,
-              (const std::string& path, base::Value::List value));
-  MOCK_METHOD(void, ClearPref, (const std::string& path));
-  MOCK_METHOD(bool, HasPrefPath, (const std::string& path), (const));
+              SetProfilePref,
+              (const std::string& path, base::Value value));
+  MOCK_METHOD(void, ClearProfilePref, (const std::string& path));
+  MOCK_METHOD(bool, HasProfilePrefPath, (const std::string& path), (const));
+
   MOCK_METHOD(absl::optional<base::Value>,
               GetLocalStatePref,
-              (const std::string& path),
-              (const));
+              (const std::string& path));
   MOCK_METHOD(void,
               SetLocalStatePref,
               (const std::string& path, base::Value value));
+  MOCK_METHOD(void, ClearLocalStatePref, (const std::string& path));
+  MOCK_METHOD(bool, HasLocalStatePrefPath, (const std::string& path), (const));
 
   MOCK_METHOD(void,
               Log,

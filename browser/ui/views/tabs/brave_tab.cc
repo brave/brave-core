@@ -38,13 +38,7 @@ constexpr ViewShadow::ShadowParameters kShadow{
 
 }  // namespace
 
-BraveTab::BraveTab(TabSlotController* controller)
-    : Tab(controller),
-      normal_font_(views::Label::GetDefaultFontList()),
-      active_tab_font_(
-          normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {
-  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
-}
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
 
 BraveTab::~BraveTab() = default;
 
@@ -76,8 +70,6 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
-
-  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
 
   // This should be called whenever the active state changes
   // see comment on UpdateEnabledForMuteToggle();
@@ -200,7 +192,8 @@ void BraveTab::UpdateShadowForActiveTab() {
     if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
       // For horizontal tabs, inset the shadow layer to match the visual rounded
       // rectangle of the tab, which is inset from the tab view.
-      shadow_insets = gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
+      shadow_insets = gfx::Insets::VH(brave_tabs::kHorizontalTabVerticalSpacing,
+                                      brave_tabs::kHorizontalTabInset);
     }
     view_shadow_->SetInsets(shadow_insets);
   } else if (view_shadow_) {

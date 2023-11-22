@@ -6,7 +6,8 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -319,6 +320,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
       "views/frame/brave_browser_view_layout.h",
+      "views/frame/brave_contents_view_util.cc",
+      "views/frame/brave_contents_view_util.h",
       "views/frame/brave_non_client_hit_test_helper.cc",
       "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
@@ -493,7 +496,7 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/components/ai_chat/common/buildflags",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
@@ -505,6 +508,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/common/mojom:webui",
     "//brave/components/brave_rewards/core:headers",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",
@@ -731,8 +735,6 @@ source_set("ui") {
     ]
 
     sources += [
-      "views/frame/brave_contents_layout_manager.cc",
-      "views/frame/brave_contents_layout_manager.h",
       "views/sidebar/sidebar_add_item_bubble_delegate_view.cc",
       "views/sidebar/sidebar_add_item_bubble_delegate_view.h",
       "views/sidebar/sidebar_button_view.cc",
@@ -790,7 +792,7 @@ source_set("ui") {
       "//brave/components/speedreader/common:mojom",
       "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
-      "//chrome/app:chromium_strings",
+      "//chrome/app:branded_strings",
       "//chrome/browser/ui/tabs:tab_enums",
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",
@@ -800,10 +802,10 @@ source_set("ui") {
 
   if (enable_ai_chat) {
     deps += [
-      "//brave/components/ai_chat/browser",
-      "//brave/components/ai_chat/common",
-      "//brave/components/ai_chat/common/mojom",
-      "//brave/components/ai_chat/core",
+      "//brave/components/ai_chat/content/browser",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/ai_chat/resources/page:generated_resources",
     ]
   }
@@ -973,6 +975,8 @@ source_set("ui") {
       "webui/brave_news_internals/brave_news_internals_ui.h",
       "webui/brave_wallet/ledger/ledger_ui.cc",
       "webui/brave_wallet/ledger/ledger_ui.h",
+      "webui/brave_wallet/line_chart/line_chart_ui.cc",
+      "webui/brave_wallet/line_chart/line_chart_ui.h",
       "webui/brave_wallet/market/market_ui.cc",
       "webui/brave_wallet/market/market_ui.h",
       "webui/brave_wallet/nft/nft_ui.cc",
@@ -1000,6 +1004,7 @@ source_set("ui") {
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
+      "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
       "//brave/components/brave_wallet_ui/market:market_display_generated",
       "//brave/components/brave_wallet_ui/nft:nft_display_generated",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
@@ -1077,6 +1082,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//components/user_prefs",
     ]
   }
 
@@ -1085,6 +1091,23 @@ source_set("ui") {
       "//components/constrained_window",
       "//ui/events",
       "//ui/views",
+    ]
+  }
+
+  if (enable_brave_player) {
+    sources += [
+      "webui/brave_player_ui.cc",
+      "webui/brave_player_ui.h",
+    ]
+    if (toolkit_views) {
+      sources += [
+        "views/brave_player/brave_player_action_icon_view.cc",
+        "views/brave_player/brave_player_action_icon_view.h",
+      ]
+    }
+    deps += [
+      "//brave/components/brave_player/browser/resources:generated_resources",
+      "//brave/components/brave_player/common",
     ]
   }
 }

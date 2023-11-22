@@ -36,12 +36,6 @@ class EligibleNewTabPageAdsV1 final : public EligibleNewTabPageAdsBase {
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const AdEventList& ad_events);
-
-  void GetBrowsingHistory(
-      UserModelInfo user_model,
-      const AdEventList& ad_events,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
-
   void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
                       EligibleAdsCallback<CreativeNewTabPageAdList> callback,

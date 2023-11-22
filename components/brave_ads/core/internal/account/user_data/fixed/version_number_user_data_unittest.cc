@@ -35,7 +35,7 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   EXPECT_TRUE(BuildVersionNumberUserData().empty());

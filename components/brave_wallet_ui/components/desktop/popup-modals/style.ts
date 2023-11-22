@@ -5,14 +5,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import CloseIcon from '../../../assets/svg-icons/close.svg'
-import {
-  WalletButton,
-  Column,
-  Row
-} from '../../shared/style'
-import {
-  layoutPanelWidth
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import { WalletButton, Column, Row } from '../../shared/style'
+import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -30,20 +24,20 @@ export const StyledWrapper = styled.div`
 `
 
 export const Modal = styled.div<{
-  width?: string,
-  borderRadius?: number,
+  width?: string
+  borderRadius?: number
   height?: string
 }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: ${p => p.width ? p.width : '580px'};
-  max-width: ${p => p.width ? p.width : '580px'};
+  min-width: ${(p) => (p.width ? p.width : '580px')};
+  max-width: ${(p) => (p.width ? p.width : '580px')};
   max-height: 90vh;
   height: ${(p) => p.height ?? 'unset'};
   background-color: ${leo.color.container.background};
-  border-radius: ${(p) => p.borderRadius ? p.borderRadius : 8}px;
+  border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 8)}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   @media screen and (max-width: ${layoutPanelWidth}px) {
@@ -102,7 +96,7 @@ export const CloseButton = styled(WalletButton)`
 export const Divider = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 2px solid ${p => p.theme.color.divider01};
+  border-bottom: 2px solid ${(p) => p.theme.color.divider01};
   padding-bottom: 6px;
 `
 

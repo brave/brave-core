@@ -23,9 +23,6 @@ using brave_component_updater::LocalDataFilesService;
 
 namespace request_otr {
 
-const char kRequestOTRConfigFile[] = "request-otr.json";
-const char kRequestOTRConfigFileVersion[] = "1";
-
 RequestOTRComponentInstallerPolicy::RequestOTRComponentInstallerPolicy(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service) {}

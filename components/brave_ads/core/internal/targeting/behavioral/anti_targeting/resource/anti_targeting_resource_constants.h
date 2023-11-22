@@ -8,7 +8,8 @@
 
 namespace brave_ads {
 
-constexpr char kAntiTargetingResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
+inline constexpr char kAntiTargetingResourceId[] =
+    "mkdhnfmjhklfnamlheoliekgeohamoig";
 
 }  // namespace brave_ads
 

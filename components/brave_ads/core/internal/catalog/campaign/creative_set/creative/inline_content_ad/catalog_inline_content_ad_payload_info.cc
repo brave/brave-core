@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_inline_content_ad_payload_info.h"
 
-#include <tuple>
-
 namespace brave_ads {
 
 CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo() =
@@ -26,20 +24,5 @@ CatalogInlineContentAdPayloadInfo& CatalogInlineContentAdPayloadInfo::operator=(
 
 CatalogInlineContentAdPayloadInfo::~CatalogInlineContentAdPayloadInfo() =
     default;
-
-bool CatalogInlineContentAdPayloadInfo::operator==(
-    const CatalogInlineContentAdPayloadInfo& other) const {
-  const auto tie = [](const CatalogInlineContentAdPayloadInfo& payload) {
-    return std::tie(payload.title, payload.description, payload.image_url,
-                    payload.dimensions, payload.cta_text, payload.target_url);
-  };
-
-  return tie(*this) == tie(other);
-}
-
-bool CatalogInlineContentAdPayloadInfo::operator!=(
-    const CatalogInlineContentAdPayloadInfo& other) const {
-  return !(*this == other);
-}
 
 }  // namespace brave_ads

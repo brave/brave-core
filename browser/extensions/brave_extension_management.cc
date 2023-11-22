@@ -62,7 +62,7 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
 #endif
   // Make IsInstallationExplicitlyAllowed to be true
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  AccessById(ethereum_remote_client_extension_id)->installation_mode =
+  AccessById(kEthereumRemoteClientExtensionId)->installation_mode =
       INSTALLATION_RECOMMENDED;
 #endif
   Cleanup(profile);

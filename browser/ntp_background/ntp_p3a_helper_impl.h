@@ -28,7 +28,8 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
  public:
   NTPP3AHelperImpl(PrefService* local_state,
                    p3a::P3AService* p3a_service,
-                   PrefService* prefs);
+                   PrefService* prefs,
+                   bool use_uma_for_testing = false);
   ~NTPP3AHelperImpl() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
@@ -43,12 +44,21 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
   // See BraveP3AService::RegisterDynamicMetric and
   // BraveP3AService::RegisterMetricCycledCallback header comments for more
   // info.
-  void OnP3ARotation(p3a::MetricLogType log_type, bool is_star);
-  void OnP3AMetricCycled(const std::string& histogram_name, bool is_star);
+  void OnP3ARotation(p3a::MetricLogType log_type, bool is_constellation);
+  void OnP3AMetricCycled(const std::string& histogram_name,
+                         bool is_constellation);
 
  private:
   std::string BuildHistogramName(const std::string& creative_instance_id,
                                  const std::string& event_type);
+
+  void RecordMetric(const std::string& histogram_name,
+                    int count,
+                    bool is_constellation);
+  void RemoveMetricIfInstanceDoesNotExist(
+      const std::string& histogram_name,
+      const std::string& event_type,
+      const std::string& creative_instance_id);
 
   void UpdateMetricCount(const std::string& creative_instance_id,
                          const std::string& event_type);
@@ -68,6 +78,8 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   base::CallbackListSubscription metric_sent_subscription_;
   base::CallbackListSubscription rotation_subscription_;
+
+  bool use_uma_for_testing_;
 };
 
 }  // namespace ntp_background_images

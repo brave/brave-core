@@ -41,7 +41,7 @@ import("//brave/browser/web_discovery/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -88,6 +88,8 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_shell_integration.h",
   "//brave/browser/brave_tab_helpers.cc",
   "//brave/browser/brave_tab_helpers.h",
+  "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.cc",
+  "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h",
   "//brave/browser/browser_context_keyed_service_factories.cc",
   "//brave/browser/browser_context_keyed_service_factories.h",
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.cc",
@@ -130,7 +132,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/tabs",
   "//brave/common",
-  "//brave/components/ai_chat/common/buildflags",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
@@ -145,6 +147,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_rewards/common:features",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_rewards/common/mojom",
+  "//brave/components/brave_rewards/common/mojom:webui",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/common:mojom",
@@ -184,6 +187,9 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a:buildflags",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
+  "//brave/components/psst/browser/content",
+  "//brave/components/psst/browser/core",
+  "//brave/components/psst/common",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -280,10 +286,10 @@ if (enable_request_otr) {
 
 if (enable_ai_chat) {
   brave_chrome_browser_deps += [
-    "//brave/components/ai_chat/browser",
-    "//brave/components/ai_chat/common",
-    "//brave/components/ai_chat/common/mojom",
-    "//brave/components/ai_chat/core",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
   ]
 }
 

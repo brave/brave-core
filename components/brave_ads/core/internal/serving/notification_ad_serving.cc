@@ -7,7 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -35,11 +35,11 @@ NotificationAdServing::NotificationAdServing(
       kNotificationAdServingVersion.Get(), subdivision_targeting,
       anti_targeting_resource);
 
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 NotificationAdServing::~NotificationAdServing() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   delegate_ = nullptr;
 }
 
@@ -110,7 +110,6 @@ void NotificationAdServing::BuildUserModelCallback(
     const UserModelInfo& user_model) {
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
-  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,
       base::BindOnce(&NotificationAdServing::GetEligibleAdsForUserModelCallback,
@@ -172,7 +171,6 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     return FailedToServeAd();
   }
 
-  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   SuccessfullyServedAd(ad);

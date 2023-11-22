@@ -38,7 +38,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   NotifyBrowserDidBecomeActive();
 
   // Assert
-  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserActive());
+  EXPECT_TRUE(BrowserManager::GetInstance().IsActive());
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
@@ -51,7 +51,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   NotifyBrowserDidResignActive();
 
   // Assert
-  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserActive());
+  EXPECT_FALSE(BrowserManager::GetInstance().IsActive());
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
@@ -62,7 +62,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   NotifyBrowserDidEnterForeground();
 
   // Assert
-  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserInForeground());
+  EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
@@ -75,7 +75,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserInForeground());
+  EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());
 }
 
 TEST_F(BraveAdsBrowserManagerTest,
@@ -84,8 +84,8 @@ TEST_F(BraveAdsBrowserManagerTest,
   NotifyDidInitializeAds();
 
   // Assert
-  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserActive());
-  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserInForeground());
+  EXPECT_TRUE(BrowserManager::GetInstance().IsActive());
+  EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
 }
 
 TEST_F(BraveAdsBrowserManagerTest,
@@ -97,8 +97,8 @@ TEST_F(BraveAdsBrowserManagerTest,
   NotifyDidInitializeAds();
 
   // Assert
-  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserActive());
-  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserInForeground());
+  EXPECT_FALSE(BrowserManager::GetInstance().IsActive());
+  EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());
 }
 
 }  // namespace brave_ads

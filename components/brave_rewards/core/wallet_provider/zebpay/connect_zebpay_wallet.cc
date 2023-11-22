@@ -13,11 +13,13 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 
 using brave_rewards::internal::endpoints::PostConnectZebPay;
 using brave_rewards::internal::endpoints::PostOAuthZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
 using brave_rewards::internal::wallet_provider::ConnectExternalWallet;
+using brave_rewards::mojom::ConnectExternalWalletResult;
 
 namespace brave_rewards::internal::zebpay {
 
@@ -30,11 +32,14 @@ const char* ConnectZebPayWallet::WalletType() const {
   return constant::kWalletZebPay;
 }
 
-void ConnectZebPayWallet::Authorize(OAuthInfo&& oauth_info,
-                                    ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
+std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string);
+}
 
-  RequestFor<PostOAuthZebPay>(*engine_, std::move(oauth_info.code))
+void ConnectZebPayWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
+
+  RequestFor<PostOAuthZebPay>(*engine_, oauth_info_.code)
       .Send(base::BindOnce(&ConnectZebPayWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }
@@ -44,14 +49,12 @@ void ConnectZebPayWallet::OnAuthorize(
     endpoints::PostOAuthZebPay::Result&& result) const {
   if (!engine_->zebpay()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (!result.has_value()) {
     BLOG(0, "Couldn't exchange code for the access token!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto [access_token, linking_info, deposit_id] = std::move(result.value());

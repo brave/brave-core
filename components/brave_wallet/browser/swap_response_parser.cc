@@ -120,7 +120,7 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   // }
 
   auto swap_response_value =
-      swap_responses::SwapResponse0x::FromValueDeprecated(json_value);
+      swap_responses::SwapResponse0x::FromValue(json_value);
   if (!swap_response_value) {
     return nullptr;
   }
@@ -205,7 +205,7 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
   // }
 
   auto swap_error_response_value =
-      swap_responses::SwapErrorResponse0x::FromValueDeprecated(json_value);
+      swap_responses::SwapErrorResponse0x::FromValue(json_value);
   if (!swap_error_response_value) {
     return nullptr;
   }
@@ -271,7 +271,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
   //    }
 
   auto quote_value =
-      swap_responses::JupiterQuoteResponse::FromValueDeprecated(json_value);
+      swap_responses::JupiterQuoteResponse::FromValue(json_value);
   if (!quote_value) {
     return nullptr;
   }
@@ -370,8 +370,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
 
 mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
     const base::Value& json_value) {
-  auto value =
-      swap_responses::JupiterSwapTransactions::FromValueDeprecated(json_value);
+  auto value = swap_responses::JupiterSwapTransactions::FromValue(json_value);
   if (!value) {
     return nullptr;
   }
@@ -384,7 +383,7 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
 mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
     const base::Value& json_value) {
   auto jupiter_error_response_value =
-      swap_responses::JupiterErrorResponse::FromValueDeprecated(json_value);
+      swap_responses::JupiterErrorResponse::FromValue(json_value);
   if (!jupiter_error_response_value) {
     return nullptr;
   }

@@ -10,7 +10,8 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -21,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
@@ -49,12 +49,13 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
     : global_state_(ads_client),
       account_(&token_generator_),
       ad_handler_(account_),
-      user_reactions_(account_) {
-  account_.AddObserver(this);
-}
+      user_reactions_(account_) {}
 
-AdsImpl::~AdsImpl() {
-  account_.RemoveObserver(this);
+AdsImpl::~AdsImpl() = default;
+
+void AdsImpl::AddBatAdsObserver(
+    std::unique_ptr<AdsObserverInterface> observer) {
+  AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 
 void AdsImpl::SetSysInfo(mojom::SysInfoPtr sys_info) {
@@ -94,9 +95,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  NotificationAdManager::GetInstance().CloseAll();
-
-  NotificationAdManager::GetInstance().RemoveAll();
+  NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
 
   std::move(callback).Run(/*success=*/true);
 }
@@ -205,13 +204,11 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              const bool success) {
             if (!success) {
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-              return std::move(callback).Run(/*success=*/false);
+            } else {
+              BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
             }
 
-            RebuildAdEventCache();
-
-            BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-            std::move(callback).Run(/*success=*/true);
+            std::move(callback).Run(success);
           },
           ad_type, std::move(callback)));
 }
@@ -324,8 +321,6 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  RebuildAdEventCache();
-
   rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
                                   weak_factory_.GetWeakPtr(), std::move(wallet),
                                   std::move(callback)));
@@ -350,7 +345,7 @@ void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  ClientStateManager::GetInstance().Load(base::BindOnce(
+  ClientStateManager::GetInstance().LoadState(base::BindOnce(
       &AdsImpl::LoadClientStateCallback, weak_factory_.GetWeakPtr(),
       std::move(wallet), std::move(callback)));
 }
@@ -387,7 +382,7 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
     }
   }
 
-  ConfirmationStateManager::GetInstance().Load(
+  ConfirmationStateManager::GetInstance().LoadState(
       new_wallet, base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                                  weak_factory_.GetWeakPtr(), std::move(wallet),
                                  std::move(callback)));
@@ -413,14 +408,9 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
     account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
   }
 
-  AdsClientHelper::GetInstance()->NotifyPendingObservers();
+  NotifyPendingAdsClientObservers();
 
   std::move(callback).Run(/*success=*/true);
-}
-
-void AdsImpl::OnStatementOfAccountsDidChange() {
-  // TODO(https://github.com/brave/brave-browser/issues/28726): Decouple.
-  AdsClientHelper::GetInstance()->UpdateAdRewards();
 }
 
 }  // namespace brave_ads

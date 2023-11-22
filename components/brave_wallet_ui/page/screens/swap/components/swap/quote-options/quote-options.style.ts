@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import { IconButton } from '../../shared-swap.styles'
 
-export const MoreOptionsButton = styled(IconButton) <{
+export const MoreOptionsButton = styled(IconButton)<{
   isSelected: boolean
 }>`
   transform: ${(p) => (p.isSelected ? 'rotate(180deg)' : 'unset')};

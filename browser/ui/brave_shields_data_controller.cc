@@ -164,7 +164,8 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
                                     nullptr) == is_enabled) {
     brave_shields::ResetBraveShieldsEnabled(map, GetCurrentSiteURL());
   } else {
-    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
+    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
+                                          g_browser_process->local_state());
   }
   ReloadWebContents();
 }
@@ -242,11 +243,6 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
   }
   NOTREACHED();
   return CookieBlockMode::BLOCKED;
-}
-
-bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
-  return brave_shields::GetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
 HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
@@ -386,14 +382,6 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 
   brave_shields::SetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), control_type,
-      GetCurrentSiteURL(), g_browser_process->local_state());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
-  brave_shields::SetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 
   ReloadWebContents();

@@ -128,7 +128,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               text={programId}
               tooltipText={programId}
               isAddress
-              position="left"
+              position='left'
             >
               {getSolanaProgramIdName(programId)} - {type}
             </CopyTooltip>
@@ -139,8 +139,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
           <>
             <Divider />
 
-            {accountParams.map((
-              { localizedName, name, value }, i) => {
+            {accountParams.map(({ localizedName, name, value }, i) => {
               // signers param
               if (name === BraveWallet.SIGNERS) {
                 if (!value) {
@@ -199,7 +198,10 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
                 <InstructionParamBox key={name}>
                   <var>{localizedName}</var>
                   {isAddressParam ? (
-                    <AddressParamValue accounts={accounts} pubkey={value} />
+                    <AddressParamValue
+                      accounts={accounts}
+                      pubkey={value}
+                    />
                   ) : (
                     <samp>{formattedValue}</samp>
                   )}
@@ -232,33 +234,28 @@ const AddressParamValue = ({
   // render
   return (
     <>
-      {lookupTableIndex !== undefined &&
+      {lookupTableIndex !== undefined && (
         <AddressText isBold={true}>
           {getLocale('braveWalletSolanaAddressLookupTableAccount')}
         </AddressText>
-      }
+      )}
       <CopyTooltip
         key={pubkey}
         text={pubkey}
-        tooltipText={
-          formattedValue === pubkey
-            ? undefined
-            : pubkey
-        }
+        tooltipText={formattedValue === pubkey ? undefined : pubkey}
         isAddress
         position='left'
       >
         <AddressText>{formattedValue}</AddressText>
       </CopyTooltip>
-      {
-        lookupTableIndex !== undefined &&
+      {lookupTableIndex !== undefined && (
         <>
           <AddressText isBold={true}>
             {getLocale('braveWalletSolanaAddressLookupTableIndex')}
           </AddressText>
           <AddressText>{lookupTableIndex}</AddressText>
         </>
-      }
+      )}
     </>
   )
 }

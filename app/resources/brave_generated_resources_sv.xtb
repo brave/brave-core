@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Fråga inte igen.</translation>
 <translation id="4900351245762303149">Installera Google Widevine</translation>
 <translation id="2313383941300459392">Starta om webbläsaren för att aktivera Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> vill spela upp skyddat Google Widevine-innehåll, vilket kräver att du tillåter Android-systemstöd för Widevine. Genom att tillåta godkänner du Googles användarvillkor.</translation>
 <translation id="2200626478572277092">Widevine behövs ibland för att spela upp media på en webbsida. Det är ett Google-tillägg som läses in från Googles servrar, som Brave inte kan inspektera. Genom att installera godkänner du Googles användarvillkor.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Högerklicka för att ta bort</translation>
 <translation id="495046168593986294">Bläddra uppåt</translation>
 <translation id="4021716437419160885">Bläddra nedåt</translation>
+<translation id="2702801445560668637">Läslista</translation>
+<translation id="2533715613366623756">Bokmärkeshanteraren</translation>
+<translation id="3405021928725149239">Bokmärkshanteraren</translation>
 <translation id="6284218950354553099">Skicka daglig användningsping till Brave automatiskt</translation>
 <translation id="5288333155754958121">Den här anonyma pingen låter Brave uppskatta antalet aktiva användare.</translation>
 <translation id="1872784258300710671">Brave använder helt privat produktanalys för att uppskatta den sammanlagda användningen av vissa funktioner.</translation>
@@ -237,7 +241,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">För att spara ett bokmärke, klicka på bokmärkesknappen bredvid adressraden</translation>
 <translation id="8487693399751278191">Importera bokmärken nu ...</translation>
 <translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
-<translation id="2702801445560668637">Läslista</translation>
 <translation id="1968543937259008435">Är du redo för den bästa sekretessen online?</translation>
 <translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
@@ -284,6 +287,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Flytta</translation>
 <translation id="6648536728577053364">Ta bort offlinedata</translation>
 <translation id="5181358966317519720">Ta bort från spellista</translation>
+<translation id="2377705456080309463">Visa originalsidan</translation>
+<translation id="158894735649719362">Det roliga börjar när du har något att spela upp. Lägg till dina favoritmedia och spela upp när som helst, var som helst. Till och med offline.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="4472575034687746823">Kom igång</translation>
@@ -296,9 +301,12 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Samma som Linux</translation>
 <translation id="1336940801687497203">Samma som Windows</translation>
 <translation id="8721331068159819483">Samma som MacOS</translation>
+<translation id="4171684937791228083">Visa alltid verktygsfältet i helskärmsläge</translation>
 <translation id="1692470335103807198">Få fler teman</translation>
 <translation id="2906510232093002459">Ordinarie bilder i Brave</translation>
+<translation id="8000020256436988724">Verktygsfält</translation>
 <translation id="8076492880354921740">Flikar</translation>
+<translation id="8168435359814927499">Innehåll</translation>
 <translation id="5860254591544742609">Visa namnlist</translation>
 <translation id="5371926069408837914">Expandera panelens vertikala flikar när du för muspekaren över den när den är komprimerad</translation>
 <translation id="3367129510799209147">Läge för hovring av flikar</translation>
@@ -311,7 +319,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Populärt</translation>
 <translation id="7859704718976024901">Webbhistorik</translation>
 <translation id="8820817407110198400">Bokmärkesfältet</translation>
-<translation id="2245286910966863912">Visa Brave News-knapp i adressfältet</translation>
+<translation id="7310387888625228830">Leo AI-assistent</translation>
+<translation id="5222974844674487962">Visa Brave News-knapp</translation>
 <translation id="383007806262310953">Visa bokmärkesfältet</translation>
 <translation id="4054323497808446566">Bokmärkesfältet är synligt på alla sidor</translation>
 <translation id="8693858092251192712">Bokmärkesfältet är dolt på alla sidor utom på sidan Ny flik</translation>
@@ -419,7 +428,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Visa alla cookies och lokalt lagrade data för denna webbplats</translation>
 <translation id="8339059274628563283">Lokalt lagrad data för <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Ta bort &amp;alla</translation>
-<translation id="8168435359814927499">Innehåll</translation>
 <translation id="7702907602086592255">Domän</translation>
 <translation id="3202131003361292969">Sökväg</translation>
 <translation id="5390743329570580756">Skicka för</translation>
@@ -590,7 +598,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="702381242110464396">Tillägg (Brave Wallet-reserv)</translation>
 <translation id="4718664830805652430">Standard basvaluta</translation>
 <translation id="7992507032049865603">Standard baskryptovaluta</translation>
-<translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
+<translation id="3044369626313583722">Visa Brave Wallet-knapp</translation>
 <translation id="7568430944629653319">Aktivera NFT-upptäckt</translation>
 <translation id="970496996377628529">Lägg automatiskt till NFT:er som du äger i plånboken med hjälp av tredjeparts-API:er.</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
@@ -699,6 +707,12 @@ Obs: Om lokal nod är vald kommer resurs att begäras direkt från din dator och
 <translation id="2751872555001636931">Visa Leo-ikonen i sidofältet</translation>
 <translation id="8172263161008556851">Visa föreslagna uppmaningar i konversationen</translation>
 <translation id="1014480593522400586">Rensa Leo-data</translation>
+<translation id="8681157601856387010">För att återställa Leo-assistenten måste du välja att använda Brave
+Leo i framtiden och det kommer också att rensa din chatthistorik. När din
+chatthistorik rensas raderas alla dina tidigare konversationer med Brave
+Leo. Det går inte att ångra den här åtgärden.</translation>
+<translation id="8157373421434119674">Data och chatthistorik</translation>
+<translation id="614530507403667291">Standardmodell för nya konversationer</translation>
 <translation id="6624718837376802990">Avataren Vassa belöningar</translation>
 <translation id="6617313057407561765">Avataren Vasst modig</translation>
 <translation id="6754445808455578019">Avataren Vass ocean</translation>

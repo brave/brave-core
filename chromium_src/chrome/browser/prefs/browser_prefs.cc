@@ -7,6 +7,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -21,6 +22,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -30,7 +32,6 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #endif
 
@@ -70,9 +71,9 @@
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
-void MigrateObsoleteProfilePrefs(Profile* profile) {
+void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
+  DCHECK(profile_prefs);
   // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
-  PrefService* profile_prefs = profile->GetPrefs();
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Added 02/2020.
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
@@ -80,7 +81,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   gcm::MigrateGCMPrefs(profile_prefs);
 #endif
 
-  MigrateObsoleteProfilePrefs_ChromiumImpl(profile);
+  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2019.
@@ -263,11 +264,12 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
-  brave::BraveUptimeTracker::MigrateObsoletePrefs(local_state);
 #endif
 
+  misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

@@ -19,6 +19,7 @@ public class BraveAutocompleteMediatorBaseClassAdapter extends BraveClassVisitor
         changeSuperName(sAutocompleteMediator, sBraveAutocompleteMediatorBase);
 
         makeProtectedField(sAutocompleteMediator, "mContext");
+        makeProtectedField(sAutocompleteMediator, "mDataProvider");
         changeMethodOwner(
                 sAutocompleteMediator, "loadUrlForOmniboxMatch", sBraveAutocompleteMediatorBase);
     }

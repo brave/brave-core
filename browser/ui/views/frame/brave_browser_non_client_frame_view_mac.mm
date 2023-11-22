@@ -62,13 +62,23 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
-  if (ShouldShowWindowTitleForVerticalTabs()) {
-    // Set minimum top inset to show caption buttons on frame.
-    return 30;
+  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+    if (ShouldShowWindowTitleForVerticalTabs()) {
+      // Set minimum top inset to show caption buttons on frame.
+      return 30;
+    }
+
+    // Bypassing BrowserNonClientFrameViewMac's implementation so that we don't
+    // have any inset when hiding title bar.
+    return 0;
   }
 
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
     return BrowserNonClientFrameViewMac::GetTopInset(restored);
+  }
+
+  if (!browser_view()->ShouldDrawTabStrip()) {
+    return 0;
   }
 
   // The tab region view maintains its own padding, but insert a small gap to
@@ -89,6 +99,15 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility() {
   frame()->SetWindowTitleVisibility(ShouldShowWindowTitleForVerticalTabs());
 }
 
+void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleColor() {
+  if (!browser_view()->browser()->is_type_normal()) {
+    return;
+  }
+
+  frame()->UpdateWindowTitleColor(
+      GetCaptionColor(BrowserFrameActiveState::kUseCurrent));
+}
+
 int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
     const gfx::Point& point) {
   if (auto res = brave::NonClientHitTest(browser_view(), point);
@@ -97,6 +116,11 @@ int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
   }
 
   return BrowserNonClientFrameViewMac::NonClientHitTest(point);
+}
+
+void BraveBrowserNonClientFrameViewMac::OnThemeChanged() {
+  BrowserNonClientFrameViewMac::OnThemeChanged();
+  UpdateWindowTitleColor();
 }
 
 void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {

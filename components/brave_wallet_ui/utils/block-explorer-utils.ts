@@ -64,6 +64,16 @@ export const buildExplorerUrl = (
     )}/${type}/${value}${explorerURL.substring(explorerIndex)}`
   }
 
+  if (network.chainId === BraveWallet.BITCOIN_MAINNET) {
+    if (type === 'tx') {
+      return `${explorerURL}/transactions/btc/${value}`
+    }
+    if (type === 'address') {
+      return `${explorerURL}/addresses/btc/${value}`
+    }
+    return `${explorerURL}/search?search=${value}`
+  }
+
   return `${explorerURL}/${type}/${value}`
 }
 

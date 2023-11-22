@@ -22,7 +22,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     // tipping buttons
     const bool value = prefs->GetBoolean(prefs::kShowButton);
     prefs->SetBoolean(prefs::kShowLocationBarButton, value);
-    prefs->SetBoolean(prefs::kInlineTipButtonsEnabled, value);
   }
 
   prefs->ClearPref(prefs::kShowButton);

@@ -11,21 +11,33 @@ namespace brave_ads {
 
 const SegmentList& SupportedEpsilonGreedyBanditSegments() {
   static const base::NoDestructor<SegmentList> kSegments(
-      {"architecture", "arts & entertainment",
-       "automotive",   "business",
-       "careers",      "cell phones",
-       "crypto",       "drugs",
-       "education",    "family & parenting",
-       "fashion",      "folklore",
-       "food & drink", "health & fitness",
-       "history",      "hobbies & interests",
-       "home",         "law",
-       "military",     "personal finance",
-       "pets",         "politics",
-       "real estate",  "religion",
-       "science",      "society",
-       "sports",       "technology & computing",
-       "travel",       "weather"});
+      {"architecture",
+       "arts & entertainment",
+       "automotive",
+       "business",
+       "careers",
+       "cell phones",
+       "crypto",
+       "education",
+       "family & parenting",
+       "fashion",
+       "folklore",
+       "food & drink",
+       "gaming",
+       "health & fitness",
+       "history",
+       "hobbies & interests",
+       "home",
+       "law",
+       "military",
+       "personal finance",
+       "pets",
+       "real estate",
+       "science",
+       "sports",
+       "technology & computing",
+       "travel",
+       "weather"});
 
   return *kSegments;
 }

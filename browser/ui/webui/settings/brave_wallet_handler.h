@@ -49,6 +49,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void AddHiddenNetwork(const base::Value::List& args);
   void RemoveHiddenNetwork(const base::Value::List& args);
   void IsNftPinningEnabled(const base::Value::List& args);
+  void IsBitcoinEnabled(const base::Value::List& args);
   void GetPinnedNftCount(const base::Value::List& args);
   void ClearPinnedNft(const base::Value::List& args);
 

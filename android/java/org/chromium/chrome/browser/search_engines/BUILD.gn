@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 
 android_library("java") {
   srcjar_deps = [ ":jni_headers" ]
@@ -24,6 +25,7 @@ android_library("java") {
     "//chrome/browser/search_engines/android:java",
     "//components/search_engines/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
   ]
 
   resources_package = "org.chromium.chrome.browser.search_engines"

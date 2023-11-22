@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_UNITTEST_UTIL_H_
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-void DisableBraveRewardsForTesting();
+void DisableBraveRewards();
 
-void OptOutOfBraveNewsAdsForTesting();
+void OptOutOfBraveNewsAds();
 
-void OptOutOfNewTabPageAdsForTesting();
+void OptOutOfNewTabPageAds();
 
-void OptOutOfNotificationAdsForTesting();
-void SetMaximumNotificationAdsPerHourForTesting(int max_ads_per_hour);
+void OptOutOfNotificationAds();
+void SetMaximumNotificationAdsPerHour(int max_ads_per_hour);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_UNITTEST_UTIL_H_

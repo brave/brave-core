@@ -35,3 +35,18 @@ TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
         << "' was not present in the list of commands.";
   }
 }
+
+TEST(CommandUtilsUnitTest, NoTranslationsIncludeAmpersand) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(commands::features::kBraveCommands);
+
+  for (const auto& command : commands::GetCommands()) {
+    auto translation = commands::GetCommandName(command);
+    EXPECT_FALSE(base::Contains(translation, "&"))
+        << translation
+        << " contains an '&' character. If this '&' is meant to be in the "
+           "translation then this might be a false positive, in which case the "
+           "test should be updated. The test is to ensure keyboard shortcuts "
+           "from menus are not included in the name of commands.";
+  }
+}

@@ -12,10 +12,14 @@ namespace brave_ads::cbr {
 
 class Token;
 
-Token GetTokenForTesting();
-Token GetInvalidTokenForTesting();
-std::vector<Token> GetTokensForTesting();
-std::vector<Token> GetInvalidTokensForTesting();
+namespace test {
+
+Token GetToken();
+Token GetInvalidToken();
+std::vector<Token> GetTokens();
+std::vector<Token> GetInvalidTokens();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

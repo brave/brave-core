@@ -14,40 +14,41 @@ import StripeIcon from '../assets/svg-icons/stripe-logo.svg'
 import CoinbaseIcon from '../assets/svg-icons/coinbase-logo.svg'
 import { isStripeSupported } from '../utils/asset-utils'
 
-function getBuyOptions (): BuyOption[] {
-  const buyOptions = [{
-    id: BraveWallet.OnRampProvider.kRamp,
-    actionText: getLocale('braveWalletBuyWithRamp'),
-    icon: RampIcon,
-    name: getLocale('braveWalletBuyRampNetworkName'),
-    description: getLocale('braveWalletBuyRampDescription')
-  },
-  {
-    id: BraveWallet.OnRampProvider.kTransak,
-    actionText: getLocale('braveWalletBuyWithTransak'),
-    icon: TransakIcon,
-    name: getLocale('braveWalletBuyTransakName'),
-    description: getLocale('braveWalletBuyTransakDescription')
-  },
-  {
-    id: BraveWallet.OnRampProvider.kSardine,
-    actionText: getLocale('braveWalletBuyWithSardine'),
-    icon: window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? SardineIconDark
-      : SardineIconLight,
-    name: getLocale('braveWalletBuySardineName'),
-    description: getLocale('braveWalletBuySardineDescription')
-  },
-  {
-    id: BraveWallet.OnRampProvider.kCoinbase,
-    actionText: getLocale('braveWalletBuyWithCoinbase'),
-    icon: CoinbaseIcon,
-    name: getLocale('braveWalletBuyCoinbaseName'),
-    description: getLocale('braveWalletBuyCoinbaseDescription')
-  }
-]
+function getBuyOptions(): BuyOption[] {
+  const buyOptions = [
+    {
+      id: BraveWallet.OnRampProvider.kRamp,
+      actionText: getLocale('braveWalletBuyWithRamp'),
+      icon: RampIcon,
+      name: getLocale('braveWalletBuyRampNetworkName'),
+      description: getLocale('braveWalletBuyRampDescription')
+    },
+    {
+      id: BraveWallet.OnRampProvider.kTransak,
+      actionText: getLocale('braveWalletBuyWithTransak'),
+      icon: TransakIcon,
+      name: getLocale('braveWalletBuyTransakName'),
+      description: getLocale('braveWalletBuyTransakDescription')
+    },
+    {
+      id: BraveWallet.OnRampProvider.kSardine,
+      actionText: getLocale('braveWalletBuyWithSardine'),
+      icon: window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? SardineIconDark
+        : SardineIconLight,
+      name: getLocale('braveWalletBuySardineName'),
+      description: getLocale('braveWalletBuySardineDescription')
+    },
+    {
+      id: BraveWallet.OnRampProvider.kCoinbase,
+      actionText: getLocale('braveWalletBuyWithCoinbase'),
+      icon: CoinbaseIcon,
+      name: getLocale('braveWalletBuyCoinbaseName'),
+      description: getLocale('braveWalletBuyCoinbaseDescription')
+    }
+  ]
 
-  if(isStripeSupported()) {
+  if (isStripeSupported()) {
     buyOptions.push({
       id: BraveWallet.OnRampProvider.kStripe,
       actionText: getLocale('braveWalletBuyWithStripe'),

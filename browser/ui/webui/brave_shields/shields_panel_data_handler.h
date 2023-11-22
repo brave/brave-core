@@ -48,7 +48,6 @@ class ShieldsPanelDataHandler
   void SetCookieBlockMode(CookieBlockMode mode) override;
   void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
-  void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void SetForgetFirstPartyStorageEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;

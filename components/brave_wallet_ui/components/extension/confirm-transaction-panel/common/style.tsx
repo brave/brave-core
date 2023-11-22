@@ -13,6 +13,7 @@ export const FooterContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 12px;
+  width: 90%;
 `
 
 export const QueueStepRow = styled.div`
@@ -25,7 +26,7 @@ export const QueueStepRow = styled.div`
 export const QueueStepText = styled.span`
   font-family: Poppins;
   font-size: 13px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   font-weight: 600;
   margin-right: 9px;
 `
@@ -35,14 +36,14 @@ export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
-  color: ${p => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
   border: none;
   margin: 0;
   padding: 0;
-  margin-bottom: ${p => (p.needsMargin ? '12px' : '0px')};
+  margin-bottom: ${(p) => (p.needsMargin ? '12px' : '0px')};
 `
 
 export const ErrorText = styled.span`
@@ -50,7 +51,7 @@ export const ErrorText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   text-align: center;
 `
 
@@ -63,7 +64,7 @@ export const ConfirmingButton = styled(WalletButton)`
   padding: 8px 16px;
   outline: none;
   margin: 0px;
-  background-color: ${p => p.theme.color.disabled};
+  background-color: ${(p) => p.theme.color.disabled};
   border: none;
 `
 
@@ -73,7 +74,7 @@ export const ConfirmingButtonText = styled.span`
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.interactive07};
+  color: ${(p) => p.theme.color.interactive07};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -81,7 +82,7 @@ export const ConfirmingButtonText = styled.span`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${(p) => p.theme.color.interactive08};
   height: 25px;
   width: 24px;
   opacity: 0.4;
@@ -101,6 +102,6 @@ export const FavIcon = styled.img`
   width: auto;
   height: 40px;
   border-radius: 5px;
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   margin-bottom: 7px;
 `

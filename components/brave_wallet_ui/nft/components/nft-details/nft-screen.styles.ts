@@ -5,7 +5,10 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { layoutPanelWidth, layoutSmallWidth } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import {
+  layoutPanelWidth,
+  layoutSmallWidth
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { WalletButton } from '../../../components/shared/style'
 import { BraveWallet } from '../../../constants/types'
 
@@ -47,7 +50,7 @@ export const NftName = styled.h2`
   text-overflow: ellipsis;
   margin: 0;
   padding: 16px 0 0 0;
-  `
+`
 
 export const CollectionName = styled.p`
   font-family: 'Poppins';
@@ -63,7 +66,7 @@ export const CollectionName = styled.p`
   text-overflow: ellipsis;
   margin: 0;
   padding: 0;
-  `
+`
 
 export const PurchaseDate = styled.p`
   font-family: 'Poppins';
@@ -79,7 +82,7 @@ export const PurchaseDate = styled.p`
   text-overflow: ellipsis;
   margin: 0;
   padding: 0;
-  `
+`
 
 export const SectionTitle = styled.h3`
   display: flex;
@@ -129,7 +132,7 @@ export const InfoTitle = styled.p`
   margin: 0;
   padding: 0;
   width: 100%;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `
@@ -319,9 +322,10 @@ export const PinningStatus = styled.span<{
   pinningStatus: BraveWallet.TokenPinStatusCode
 }>`
   color: ${(p) =>
-    (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS) ||
-    (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING) ||
-    (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED)
+    p.pinningStatus ===
+      BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ||
+    p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING ||
+    p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED
       ? `${leo.color.systemfeedback.warningIcon}`
       : p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNED
       ? `${leo.color.systemfeedback.successIcon}`
@@ -376,10 +380,9 @@ export const NetworkIconWrapper = styled.div`
   padding: 2px;
 `
 
-
 export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
   width: 100%;
-  height: ${p => p.visible ? '360px' : '0px'};
+  height: ${(p) => (p.visible ? '360px' : '0px')};
   border: none;
-  visibility: ${p => p.visible ? 'visible' : 'hidden'};
+  visibility: ${(p) => (p.visible ? 'visible' : 'hidden')};
 `

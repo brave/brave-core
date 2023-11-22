@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index cf6352455a01a1f6ac234eb58ee4c8d1333783f9..bc27e29f2cec81e20bba658801b6defc24974870 100644
+index dff2c49b830a5feb7f35ba1db89f70f83877b84e..5547ce8e403d6dc1ddb012f7b65260ee7633c12e 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -440,6 +440,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
-       "safetyCheckShowReviewPanel",
-       base::FeatureList::IsEnabled(features::kSafetyCheckExtensions));
+@@ -442,6 +442,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+   source->AddBoolean("safetyHubShowReviewPanel",
+                      base::FeatureList::IsEnabled(features::kSafetyHub));
  
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;

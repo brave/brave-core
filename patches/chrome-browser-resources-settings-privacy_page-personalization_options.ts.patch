@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 4fd564ebb19be9fdb8f545a21e5fe1492313dc0c..d9572759a91d65a09a93dd43f804c1d01b8f6844 100644
+index 78dea0520e47faece3dc7a50372cbe75057dfd16..928ea30c37f46c09465c4129d93aa2909a2442ca 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -71,7 +71,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -80,7 +80,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,8 +11,8 @@ index 4fd564ebb19be9fdb8f545a21e5fe1492313dc0c..d9572759a91d65a09a93dd43f804c1d0
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -106,7 +106,7 @@ export class SettingsPersonalizationOptionsElement extends
-   pageVisibility: PrivacyPageVisibility;
+@@ -123,7 +123,7 @@ export class SettingsPersonalizationOptionsElement extends
+   focusConfig: FocusConfig;
    syncStatus: SyncStatus;
  
 -  // <if expr="_google_chrome and not chromeos_ash">
@@ -20,7 +20,7 @@ index 4fd564ebb19be9fdb8f545a21e5fe1492313dc0c..d9572759a91d65a09a93dd43f804c1d0
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -139,7 +139,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -173,7 +173,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index 4fd564ebb19be9fdb8f545a21e5fe1492313dc0c..d9572759a91d65a09a93dd43f804c1d0
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -173,7 +173,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -207,7 +207,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

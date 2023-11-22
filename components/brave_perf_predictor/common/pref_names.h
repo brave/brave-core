@@ -10,8 +10,10 @@ namespace brave_perf_predictor {
 
 namespace prefs {
 
-extern const char kBandwidthSavedBytes[];
-extern const char kBandwidthSavedDailyBytes[];
+inline constexpr char kBandwidthSavedBytes[] =
+    "brave.stats.bandwidth_saved_bytes";
+inline constexpr char kBandwidthSavedDailyBytes[] =
+    "brave.stats.daily_saving_predictions_bytes";
 
 }  // namespace prefs
 

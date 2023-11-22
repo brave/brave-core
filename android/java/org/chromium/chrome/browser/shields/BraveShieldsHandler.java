@@ -14,8 +14,10 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.text.SpannableString;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.util.Pair;
 import android.view.ContextThemeWrapper;
@@ -72,12 +74,12 @@ import java.util.Map;
  */
 public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
     private static final String TAG = "BraveShieldsHandler";
+    private static final int URL_SPEC_MAX_LINES = 3;
 
     private static class BlockersInfo {
         public BlockersInfo() {
             mAdsBlocked = 0;
             mTrackersBlocked = 0;
-            mHTTPSUpgrades = 0;
             mScriptsBlocked = 0;
             mFingerprintsBlocked = 0;
             mBlockerNames = new ArrayList<String>();
@@ -85,7 +87,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         public int mAdsBlocked;
         public int mTrackersBlocked;
-        public int mHTTPSUpgrades;
         public int mScriptsBlocked;
         public int mFingerprintsBlocked;
         public ArrayList<String> mBlockerNames;
@@ -100,12 +101,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
     private ArrayList<Pair<String, String>> mResourceToCompanyNameList = new ArrayList<>();
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
-    private SwitchCompat mBraveShieldsHTTPSEverywhereSwitch;
-    private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
     private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
     private SwitchCompat mBraveShieldsForgetFirstPartyStorageSwitch;
     private OnCheckedChangeListener mBraveShieldsForgetFirstPartyStorageChangeListener;
+    private SwitchCompat mFingerprintingSwitch;
+    private OnCheckedChangeListener mBraveShieldsFingerprintingChangeListener;
 
     private View mPopupView;
     private LinearLayout mMainLayout;
@@ -124,19 +125,20 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsHelper mIconFetcher;
 
+    private String mUrlSpec;
     private String mHost;
-    private String mTitle;
     private int mTabId;
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
 
     private static Context scanForActivity(Context cont) {
-        if (cont == null)
+        if (cont == null) {
             return null;
-        else if (cont instanceof Activity)
+        } else if (cont instanceof Activity) {
             return cont;
-        else if (cont instanceof ContextWrapper)
+        } else if (cont instanceof ContextWrapper) {
             return scanForActivity(((ContextWrapper)cont).getBaseContext());
+        }
 
         return cont;
     }
@@ -198,32 +200,31 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return json;
     }
 
-    public void addStat(int tabId, String block_type, String subresource) {
+    public void addStat(int tabId, String blockType, String subResource) {
         if (!mTabsStat.containsKey(tabId)) {
             mTabsStat.put(tabId, new BlockersInfo());
         }
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
-        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
+        if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
             blockersInfo.mAdsBlocked++;
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subresource);
+                blockersInfo = addBlockerNames(blockersInfo, subResource);
             }
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
             blockersInfo.mTrackersBlocked++;
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subresource);
+                blockersInfo = addBlockerNames(blockersInfo, subResource);
             }
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            blockersInfo.mHTTPSUpgrades++;
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             blockersInfo.mScriptsBlocked++;
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+        } else if (blockType.equals(
+                           BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             blockersInfo.mFingerprintsBlocked++;
         }
     }
 
-    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subresource) {
-        GURL gurl = new GURL(subresource);
+    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subResource) {
+        GURL gurl = new GURL(subResource);
         if (!GURL.isEmptyOrInvalid(gurl)) {
             String companyName = getBlockerCompanyName(gurl);
             if (!blockersInfo.mBlockerNames.contains(companyName)) {
@@ -274,8 +275,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             return;
         }
 
-        mHost = tab.getUrl().getSpec();
-        mTitle = tab.getUrl().getHost();
+        mUrlSpec = tab.getUrl().getSpec();
+        mHost = tab.getUrl().getHost();
         mTabId = tab.getId();
         mProfile = Profile.fromWebContents(tab.getWebContents());
 
@@ -376,8 +377,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return popupWindow;
     }
 
-    public void updateHost(String host) {
-        mHost = host;
+    public void updateUrlSpec(String urlSpec) {
+        mUrlSpec = urlSpec;
     }
 
     public void updateValues(int tabId) {
@@ -385,8 +386,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             return;
         }
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
-        updateValues(blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked,
-                     blockersInfo.mHTTPSUpgrades, blockersInfo.mScriptsBlocked, blockersInfo.mFingerprintsBlocked);
+        updateValues(
+                blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked,
+                blockersInfo.mScriptsBlocked,
+                blockersInfo.mFingerprintsBlocked);
     }
 
     public int getAdsBlockedCount(int tabId) {
@@ -407,15 +410,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mTrackersBlocked;
     }
 
-    public int getHttpsUpgradeCount(int tabId) {
-        if (!mTabsStat.containsKey(tabId)) {
-            return 0;
-        }
-
-        BlockersInfo blockersInfo = mTabsStat.get(tabId);
-        return blockersInfo.mHTTPSUpgrades;
-    }
-
     public ArrayList<String> getBlockerNamesList(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return new ArrayList<String>();
@@ -425,30 +419,33 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mBlockerNames;
     }
 
-    public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
+    public void updateValues(int adsAndTrackers, int scriptsBlocked, int fingerprintsBlocked) {
         if (mContext == null) {
             return;
         }
         final int fadsAndTrackers = adsAndTrackers;
-        final int fhttpsUpgrades = httpsUpgrades;
         final int fscriptsBlocked = scriptsBlocked;
         final int ffingerprintsBlocked = fingerprintsBlocked;
-        ((Activity)mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!isShowing()) {
-                    return;
-                }
-                try {
-                    mSiteBlockCounterText.setText(String.valueOf(fadsAndTrackers
-                                                  + fhttpsUpgrades
-                                                  + fscriptsBlocked
-                                                  + ffingerprintsBlocked));
-                } catch (NullPointerException exc) {
-                    // It means that the Bravery Panel was destroyed during the update, we just do nothing
-                }
-            }
-        });
+        ((Activity) mContext)
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!isShowing()) {
+                                    return;
+                                }
+                                try {
+                                    mSiteBlockCounterText.setText(
+                                            String.valueOf(
+                                                    fadsAndTrackers
+                                                            + fscriptsBlocked
+                                                            + ffingerprintsBlocked));
+                                } catch (NullPointerException exc) {
+                                    // It means that the Bravery Panel was destroyed during the
+                                    // update, we just do nothing
+                                }
+                            }
+                        });
     }
 
     public boolean isShowing() {
@@ -492,7 +489,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
 
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
-        mSiteText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
+        mSiteText.setText(mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
         SwitchCompat mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
@@ -573,7 +570,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpSecondaryLayout() {
         TextView shieldsText = mSecondaryLayout.findViewById(R.id.brave_shields_text);
-        shieldsText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
+        shieldsText.setText(mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
         setUpSwitchLayouts();
 
@@ -585,12 +582,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         ArrayList<String> detailsLayouts = new ArrayList<>();
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
-        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
             detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
         } else {
             mPopupView.findViewById(R.id.brave_shields_secondary_https_upgrade_layout_id)
+                    .setVisibility(View.GONE);
+        }
+        if (ChromeFeatureList.isEnabled((BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE))) {
+            detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+        } else {
+            mPopupView
+                    .findViewById(R.id.brave_shields_fingerprinting_layout_id)
                     .setVisibility(View.GONE);
         }
 
@@ -681,7 +684,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             mBlockShieldsText.setText(titleStringId);
 
             String settingOption =
-                    BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, layout);
+                    BraveShieldsContentSettings.getShieldsValue(mProfile, mUrlSpec, layout);
             if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 mBlockShieldsOption1.setChecked(true);
             } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
@@ -718,11 +721,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                             boolean isChecked = checkedRadioButton.isChecked();
                             if (isChecked) {
                                 if (checkedId == R.id.option1) {
-                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                             layout, BraveShieldsContentSettings.BLOCK_RESOURCE,
                                             false);
                                 } else if (checkedId == R.id.option2) {
-                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                             layout,
                                             layout.equals(
                                                     BraveShieldsContentSettings
@@ -732,7 +735,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                                               .BLOCK_THIRDPARTY_RESOURCE,
                                             false);
                                 } else if (checkedId == R.id.option3) {
-                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
                                             layout, BraveShieldsContentSettings.ALLOW_RESOURCE,
                                             false);
                                 }
@@ -748,14 +751,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private void setUpSwitchLayouts() {
         LinearLayout upgradeHttpsLayout =
                 mSecondaryLayout.findViewById(R.id.brave_shields_upgrade_https_id);
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
-            TextView upgradeHttpsText =
-                    upgradeHttpsLayout.findViewById(R.id.brave_shields_switch_text);
-            mBraveShieldsHTTPSEverywhereSwitch =
-                    upgradeHttpsLayout.findViewById(R.id.brave_shields_switch);
-            upgradeHttpsText.setText(R.string.brave_shields_https_everywhere_switch);
-            setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
-        } else {
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
             upgradeHttpsLayout.setVisibility(View.GONE);
         }
 
@@ -776,6 +772,19 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             setupForgetFirstPartyStorageSwitchClick(mBraveShieldsForgetFirstPartyStorageSwitch);
         } else {
             forgetFirstPartyStorageLayout.setVisibility(View.GONE);
+        }
+
+        LinearLayout fingerprintingSwitchLayout =
+                mSecondaryLayout.findViewById(R.id.brave_shields_fingerprinting_switch_id);
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE)) {
+            TextView fingerprintingSwitchText =
+                    fingerprintingSwitchLayout.findViewById(R.id.brave_shields_switch_text);
+            mFingerprintingSwitch =
+                    fingerprintingSwitchLayout.findViewById(R.id.brave_shields_switch);
+            setupFingerprintingSwitchClick(mFingerprintingSwitch);
+            fingerprintingSwitchText.setText(R.string.block_fingerprinting);
+        } else {
+            fingerprintingSwitchLayout.setVisibility(View.GONE);
         }
     }
 
@@ -802,7 +811,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpReportBrokenSiteLayout() {
         TextView mReportSiteUrlText = mReportBrokenSiteLayout.findViewById(R.id.report_site_url);
-        mReportSiteUrlText.setText(mTitle);
+        final Uri reportUri = Uri.parse(mUrlSpec).buildUpon().clearQuery().build();
+        mReportSiteUrlText.setText(reportUri.toString());
+        mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -821,7 +832,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 String referralApiKey =
                         NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
                 BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                        new BraveShieldsUtils.BraveShieldsWorkerTask(mTitle, referralApiKey);
+                        new BraveShieldsUtils.BraveShieldsWorkerTask(
+                                reportUri.toString(), referralApiKey);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 mReportBrokenSiteLayout.setVisibility(View.GONE);
                 mThankYouLayout.setVisibility(View.VISIBLE);
@@ -885,55 +897,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpMainLayout();
     }
 
-    private void setupHTTPSEverywhereSwitchClick(SwitchCompat braveShieldsHTTPSEverywhereSwitch) {
-        if (null == braveShieldsHTTPSEverywhereSwitch) {
-            return;
-        }
-        setupHTTPSEverywhereSwitch(braveShieldsHTTPSEverywhereSwitch, false);
-
-        mBraveShieldsHTTPSEverywhereChangeListener = new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, isChecked, false);
-                    if (null != mMenuObserver) {
-                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    }
-                }
-            }
-        };
-
-        braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(mBraveShieldsHTTPSEverywhereChangeListener);
-    }
-
-    private void setupHTTPSEverywhereSwitch(
-            SwitchCompat braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
-        if (null == braveShieldsHTTPSEverywhereSwitch) {
-            return;
-        }
-        if (fromTopSwitch) {
-            // Prevents to fire an event when top shields changed
-            braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(null);
-        }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-                    braveShieldsHTTPSEverywhereSwitch.setChecked(true);
-                } else {
-                    braveShieldsHTTPSEverywhereSwitch.setChecked(false);
-                }
-                braveShieldsHTTPSEverywhereSwitch.setEnabled(true);
-            } else {
-                braveShieldsHTTPSEverywhereSwitch.setChecked(false);
-                braveShieldsHTTPSEverywhereSwitch.setEnabled(false);
-            }
-        }
-        if (fromTopSwitch) {
-            braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(mBraveShieldsHTTPSEverywhereChangeListener);
-        }
-    }
-
     private void setupBlockingScriptsSwitchClick(SwitchCompat braveShieldsBlockingScriptsSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
@@ -944,8 +907,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, false);
+                if (0 != mUrlSpec.length()) {
+                    BraveShieldsContentSettings.setShields(mProfile, mUrlSpec,
+                            BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked,
+                            false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -965,9 +930,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             // Prevents to fire an event when top shields changed
             braveShieldsBlockingScriptsSwitch.setOnCheckedChangeListener(null);
         }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+        if (0 != mUrlSpec.length()) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mUrlSpec,
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mUrlSpec,
+                            BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
                     braveShieldsBlockingScriptsSwitch.setChecked(true);
                 } else {
                     braveShieldsBlockingScriptsSwitch.setChecked(false);
@@ -993,8 +960,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mBraveShieldsForgetFirstPartyStorageChangeListener = new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost,
+                if (0 != mUrlSpec.length()) {
+                    BraveShieldsContentSettings.setShields(mProfile, mUrlSpec,
                             BraveShieldsContentSettings
                                     .RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE,
                             isChecked, false);
@@ -1015,10 +982,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             // Prevents to fire an event when top shields changed
             braveShieldsForgetFirstPartyStorageSwitch.setOnCheckedChangeListener(null);
         }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost,
+        if (0 != mUrlSpec.length()) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mUrlSpec,
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mProfile, mHost,
+                if (BraveShieldsContentSettings.getShields(mProfile, mUrlSpec,
                             BraveShieldsContentSettings
                                     .RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
                     braveShieldsForgetFirstPartyStorageSwitch.setChecked(true);
@@ -1037,12 +1004,74 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    private void setupFingerprintingSwitchClick(SwitchCompat fingerprintingSwitch) {
+        if (null == fingerprintingSwitch) {
+            return;
+        }
+        setupFingerprintingSwitch(fingerprintingSwitch, false);
+
+        mBraveShieldsFingerprintingChangeListener =
+                new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (0 != mHost.length()) {
+                            BraveShieldsContentSettings.setShieldsValue(
+                                    mProfile,
+                                    mHost,
+                                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                                    isChecked
+                                            ? BraveShieldsContentSettings.DEFAULT
+                                            : BraveShieldsContentSettings.ALLOW_RESOURCE,
+                                    false);
+                        }
+                    }
+                };
+
+        fingerprintingSwitch.setOnCheckedChangeListener(mBraveShieldsFingerprintingChangeListener);
+    }
+
+    private void setupFingerprintingSwitch(
+            SwitchCompat braveShieldsFingerprintingSwitch, boolean fromTopSwitch) {
+        if (null == braveShieldsFingerprintingSwitch) {
+            return;
+        }
+        if (fromTopSwitch) {
+            // Prevents to fire an event when top shields changed
+            braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(null);
+        }
+        if (0 != mHost.length()) {
+            if (BraveShieldsContentSettings.getShields(
+                    mProfile,
+                    mHost,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (!BraveShieldsContentSettings.getShieldsValue(
+                                mProfile,
+                                mHost,
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)
+                        .equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                    braveShieldsFingerprintingSwitch.setChecked(true);
+                } else {
+                    braveShieldsFingerprintingSwitch.setChecked(false);
+                }
+                braveShieldsFingerprintingSwitch.setEnabled(true);
+            } else {
+                braveShieldsFingerprintingSwitch.setChecked(false);
+                braveShieldsFingerprintingSwitch.setEnabled(false);
+            }
+        }
+        if (fromTopSwitch) {
+            braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(
+                    mBraveShieldsFingerprintingChangeListener);
+        }
+    }
+
     private void setupMainSwitchClick(SwitchCompat braveShieldsSwitch) {
         if (null == braveShieldsSwitch) {
             return;
         }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+        if (0 != mUrlSpec.length()) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mUrlSpec,
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
                 braveShieldsSwitch.setChecked(true);
                 setUpMainSwitchLayout(true);
             } else {
@@ -1054,9 +1083,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
-                    setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
+                if (0 != mUrlSpec.length()) {
+                    BraveShieldsContentSettings.setShields(mProfile, mUrlSpec,
+                            BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS,
+                            isChecked, false);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
                     setupForgetFirstPartyStorageSwitch(
                             mBraveShieldsForgetFirstPartyStorageSwitch, true);
@@ -1072,11 +1102,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     @Override
     public void onLargeIconReady(Bitmap icon) {
-        SetFavIcon(icon);
+        setFavIcon(icon);
     }
 
-
-    private void SetFavIcon(Bitmap bmp) {
+    private void setFavIcon(Bitmap bmp) {
         if (bmp != null && mContext != null) {
             ((Activity)mContext).runOnUiThread(
             new Runnable() {

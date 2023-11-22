@@ -9,14 +9,12 @@
 namespace brave_ads {
 
 struct CatalogNewTabPageAdWallpaperFocalPointInfo final {
+  bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo&) const =
+      default;
+
   int x = 0;
   int y = 0;
 };
-
-bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo&,
-                const CatalogNewTabPageAdWallpaperFocalPointInfo&);
-bool operator!=(const CatalogNewTabPageAdWallpaperFocalPointInfo&,
-                const CatalogNewTabPageAdWallpaperFocalPointInfo&);
 
 }  // namespace brave_ads
 

@@ -5,12 +5,9 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import org.chromium.chrome.browser.flags.CachedFeatureFlags;
-
 /**
  * The variation manager helps figure out the current variation and the visibility of buttons on
- * bottom toolbar. Every operation related to the variation, e.g. getting variation value, should be
- * through {@link BottomToolbarVariationManager} rather than calling {@link CachedFeatureFlags}.
+ * bottom toolbar.
  */
 public class BottomToolbarVariationManager {
     /**

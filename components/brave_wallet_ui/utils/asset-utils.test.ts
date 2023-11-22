@@ -4,8 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { checkIfTokensMatch, checkIfTokenNeedsNetworkIcon } from './asset-utils'
-import { mockEthMainnet, } from '../stories/mock-data/mock-networks'
-import { mockEthToken, mockBasicAttentionToken, mockMoonCatNFT } from '../stories/mock-data/mock-asset-options'
+import { mockEthMainnet } from '../stories/mock-data/mock-networks'
+import {
+  mockEthToken,
+  mockBasicAttentionToken,
+  mockMoonCatNFT
+} from '../stories/mock-data/mock-asset-options'
 
 const ethToken = mockEthToken
 const batToken = mockBasicAttentionToken
@@ -32,10 +36,14 @@ describe('Check if tokens match', () => {
 
 describe('Check if token needs Network icon', () => {
   test('Comparing ETH to Ethereum Network, should return false', () => {
-    expect(checkIfTokenNeedsNetworkIcon(mockEthMainnet, ethToken.contractAddress)).toBeFalsy()
+    expect(
+      checkIfTokenNeedsNetworkIcon(mockEthMainnet, ethToken.contractAddress)
+    ).toBeFalsy()
   })
 
   test('Comparing BAT to Ethereum Network, should return true', () => {
-    expect(checkIfTokenNeedsNetworkIcon(mockEthMainnet, batToken.contractAddress)).toBeTruthy()
+    expect(
+      checkIfTokenNeedsNetworkIcon(mockEthMainnet, batToken.contractAddress)
+    ).toBeTruthy()
   })
 })

@@ -35,20 +35,20 @@ export const useMultiChainSellAssets = () => {
 
   // State
   const [sellAmount, setSellAmount] = React.useState<string>('')
-  const [selectedSellAsset, setSelectedSellAsset] = React.useState<BraveWallet.BlockchainToken>()
+  const [selectedSellAsset, setSelectedSellAsset] =
+    React.useState<BraveWallet.BlockchainToken>()
 
   // Memos
   const allSellAssetOptions = React.useMemo(() => {
     if (!allAssetOptions) {
       return []
     }
-    return filterTokensByNetworks(
-      allAssetOptions,
-      offRampNetworks
-    )
+    return filterTokensByNetworks(allAssetOptions, offRampNetworks)
   }, [offRampNetworks, allAssetOptions])
 
-  const selectedSellAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
+  const selectedSellAssetNetwork = React.useMemo(():
+    | BraveWallet.NetworkInfo
+    | undefined => {
     if (selectedSellAsset?.chainId && selectedSellAsset?.coin) {
       return getNetworkInfo(
         selectedSellAsset.chainId,
@@ -108,13 +108,18 @@ export const useMultiChainSellAssets = () => {
     [getSellAssetUrl, defaultFiatCurrency, sellAmount]
   )
 
-  const checkIsAssetSellSupported = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    return allSellAssetOptions.some(
-      (asset) =>
-        (asset.symbol.toLowerCase() === token.symbol.toLowerCase() ||
-          asset.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()) &&
-        asset.chainId === token.chainId)
-  }, [allSellAssetOptions])
+  const checkIsAssetSellSupported = React.useCallback(
+    (token: BraveWallet.BlockchainToken) => {
+      return allSellAssetOptions.some(
+        (asset) =>
+          (asset.symbol.toLowerCase() === token.symbol.toLowerCase() ||
+            asset.contractAddress.toLowerCase() ===
+              token.contractAddress.toLowerCase()) &&
+          asset.chainId === token.chainId
+      )
+    },
+    [allSellAssetOptions]
+  )
 
   return {
     allSellAssetOptions,

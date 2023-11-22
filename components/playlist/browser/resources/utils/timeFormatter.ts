@@ -7,7 +7,7 @@ import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlis
 
 export type DelimType = 'colon' | 'space'
 
-export function getItemDurationInSeconds (item: PlaylistItem) {
+export function getItemDurationInSeconds(item: PlaylistItem) {
   // item.duration is in microseconds
   if (!item.duration) {
     return 0
@@ -16,11 +16,13 @@ export function getItemDurationInSeconds (item: PlaylistItem) {
   return microSecondsToSeconds(+item.duration)
 }
 
-export function microSecondsToSeconds (timeInMicroseconds: number) {
+export function microSecondsToSeconds(timeInMicroseconds: number) {
   return Math.floor(timeInMicroseconds / 1_000_000)
 }
 
-export function formatTimeInSeconds (timeInSeconds: number, delim: DelimType) {
+export function formatTimeInSeconds(timeInSeconds: number, delim: DelimType) {
+  if (Number.isNaN(timeInSeconds)) timeInSeconds = 0
+
   const hours = Math.floor(timeInSeconds / 3600)
   const minutes = Math.floor((timeInSeconds % 3600) / 60)
   const seconds = Math.floor(timeInSeconds % 60)

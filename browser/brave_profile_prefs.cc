@@ -15,13 +15,14 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -45,8 +46,8 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
-#include "chrome/browser/prefetch/prefetch_prefs.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
+#include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
@@ -114,8 +115,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
-#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -192,7 +193,7 @@ void RegisterProfilePrefsForMigration(
   // Added Feb 2023
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 
-  brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
+  brave_rewards::RegisterProfilePrefsForMigration(registry);
 
   brave_news::p3a::RegisterProfilePrefsForMigration(registry);
 
@@ -275,6 +276,9 @@ void RegisterProfilePrefsForMigration(
   // Added 2023-09
   ntp_background_images::ViewCounterService::RegisterProfilePrefsForMigration(
       registry);
+
+  // Added 2023-11
+  brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

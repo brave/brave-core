@@ -30,7 +30,6 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_client_ios.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_notification.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
-#import "brave/ios/browser/api/brave_rewards/rewards_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -447,13 +446,12 @@ static const auto kOneDay =
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
   [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->FetchBalance(base::BindOnce(
-        ^(base::expected<brave_rewards::mojom::BalancePtr,
-                         brave_rewards::mojom::FetchBalanceError> result) {
+    engine->FetchBalance(
+        base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
           const auto strongSelf = weakSelf;
-          if (result.has_value()) {
+          if (balance) {
             strongSelf.balance = [[BraveRewardsBalance alloc]
-                initWithBalancePtr:std::move(result.value())];
+                initWithBalancePtr:std::move(balance)];
           }
           dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {

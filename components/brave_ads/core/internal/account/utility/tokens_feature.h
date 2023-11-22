@@ -13,10 +13,10 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kAccountTokensFeature);
 
-constexpr base::FeatureParam<int> kMinConfirmationTokens{
+inline constexpr base::FeatureParam<int> kMinConfirmationTokens{
     &kAccountTokensFeature, "minimum_confirmation_tokens", 20};
 
-constexpr base::FeatureParam<int> kMaxConfirmationTokens{
+inline constexpr base::FeatureParam<int> kMaxConfirmationTokens{
     &kAccountTokensFeature, "maximum_confirmation_tokens", 50};
 
 }  // namespace brave_ads

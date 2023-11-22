@@ -15,14 +15,11 @@
 namespace brave_ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
+  bool operator==(const NewTabPageAdWallpaperInfo&) const = default;
+
   GURL image_url;
   NewTabPageAdWallpaperFocalPointInfo focal_point;
 };
-
-bool operator==(const NewTabPageAdWallpaperInfo&,
-                const NewTabPageAdWallpaperInfo&);
-bool operator!=(const NewTabPageAdWallpaperInfo&,
-                const NewTabPageAdWallpaperInfo&);
 
 using NewTabPageAdWallpaperList = std::vector<NewTabPageAdWallpaperInfo>;
 

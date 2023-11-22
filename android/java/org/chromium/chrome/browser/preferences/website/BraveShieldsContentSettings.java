@@ -18,7 +18,6 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
     static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
-    static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
     static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
@@ -85,8 +84,6 @@ public class BraveShieldsContentSettings {
         String setting_string = (value ? BLOCK_RESOURCE : ALLOW_RESOURCE);
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
@@ -119,8 +116,6 @@ public class BraveShieldsContentSettings {
         String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
@@ -149,12 +144,6 @@ public class BraveShieldsContentSettings {
             }
         }
         return settings;
-    }
-
-    public static void setHTTPSEverywherePref(boolean value) {
-        setShields(Profile.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, value,
-                false);
     }
 
     public static void setFingerprintingPref(String value) {
@@ -208,11 +197,6 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
     }
 
-    public static boolean getHTTPSEverywherePref() {
-        return getShields(Profile.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES);
-    }
-
     public static boolean getForgetFirstPartyStoragePref() {
         return getShields(Profile.getLastUsedRegularProfile(), "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
@@ -251,8 +235,6 @@ public class BraveShieldsContentSettings {
         String getCookieControlType(String url, Profile profile);
         void setFingerprintingControlType(String type, String url, Profile profile);
         String getFingerprintingControlType(String url, Profile profile);
-        void setHTTPSEverywhereEnabled(boolean enabled, String url, Profile profile);
-        boolean getHTTPSEverywhereEnabled(String url, Profile profile);
         void setHttpsUpgradeControlType(String type, String url, Profile profile);
         String getHttpsUpgradeControlType(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);

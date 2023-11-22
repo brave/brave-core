@@ -16,7 +16,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'addEthereumChain',
   'allowReadingEncryptedMessage', // For grep: 'decryptRequest'
   'approveTransaction',
-  'apps',
   'assets',
   'buy',
   'connectHardwareWallet',
@@ -37,7 +36,7 @@ const PANEL_TYPES: PanelTypes[] = [
   'switchEthereumChain',
   'transactionDetails',
   'activity', // Transactions
-  'transactionStatus',
+  'transactionStatus'
 ]
 
 export const isValidPanelNavigationOption = (
@@ -57,7 +56,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
-    route: WalletRoutes.SendPageStart
+    route: WalletRoutes.Send
   },
   {
     id: 'swap',
@@ -79,12 +78,6 @@ const ActivityNavOption: NavOption = {
   icon: 'activity',
   route: WalletRoutes.Activity
 }
-
-// We can remove this once we go live with Panel 2.0
-export const PanelNavOptionsOld: NavOption[] = [
-  ...BuySendSwapDepositOptions,
-  ActivityNavOption
-]
 
 export const PanelNavOptions: NavOption[] = [
   {
@@ -148,7 +141,7 @@ export const PortfolioNavOptions: NavOption[] = [
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
-  },
+  }
 ]
 
 export const PortfolioAssetOptions: NavOption[] = [
@@ -199,7 +192,7 @@ export const CreateAccountOptions: NavOption[] = [
     name: 'braveWalletConnectHardwareWallet',
     icon: 'flashdrive',
     route: WalletRoutes.AddHardwareAccountModalStart
-  },
+  }
 ]
 
 export const AccountDetailsOptions: NavOption[] = [
@@ -220,5 +213,5 @@ export const AccountDetailsOptions: NavOption[] = [
     name: 'braveWalletTransactions',
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
-  },
+  }
 ]

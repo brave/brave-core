@@ -48,7 +48,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
@@ -67,7 +67,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
@@ -89,7 +89,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
@@ -110,7 +110,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);

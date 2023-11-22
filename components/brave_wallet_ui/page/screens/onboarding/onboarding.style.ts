@@ -38,9 +38,10 @@ export const MainWrapper = styled.div<{ isTabView?: boolean }>`
   justify-content: center;
   background-color: ${(p) => p.theme.color.background02};
   padding: 30px;
-  border-radius: ${(p) => p.isTabView ? 24 : 8}px;
-  margin-top: ${(p) => p.isTabView ? '100px' : '10vh'};
-  box-shadow: ${(p) => p.isTabView ? '0px 4px 20px rgba(0, 0, 0, 0.1)' : 'none'};
+  border-radius: ${(p) => (p.isTabView ? 24 : 8)}px;
+  margin-top: ${(p) => (p.isTabView ? '100px' : '10vh')};
+  box-shadow: ${(p) =>
+    p.isTabView ? '0px 4px 20px rgba(0, 0, 0, 0.1)' : 'none'};
 `
 
 export const StyledWrapper = styled.div`
@@ -124,10 +125,10 @@ export const PhraseCardBody = styled.div`
   border-radius: 4px;
 `
 
-export const PhraseCardBottomRow = styled(PhraseCardTopRow) <{
+export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
   centered?: boolean
 }>`
-  justify-content: ${(p) => p.centered ? 'center' : 'flex-start'};
+  justify-content: ${(p) => (p.centered ? 'center' : 'flex-start')};
   height: 40px;
   gap: 14px;
 `

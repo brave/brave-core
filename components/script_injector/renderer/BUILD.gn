@@ -1,0 +1,32 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("renderer") {
+  output_name = "script_injector_renderer"
+
+  defines = [ "IS_SCRIPT_INJECTOR_RENDERER_IMPL" ]
+
+  sources = [
+    "script_injector_render_frame_observer.cc",
+    "script_injector_render_frame_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/script_injector/common/mojom",
+    "//content/public/renderer",
+    "//third_party/blink/public:blink",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "script_injector_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/script_injector/renderer:renderer",
+    "//components/prefs:test_support",
+  ]
+}

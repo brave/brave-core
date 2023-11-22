@@ -5,6 +5,49 @@
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
 import { Checkbox, Select } from 'brave-ui/components'
+
+// Types
+import {
+  LedgerDerivationPath,
+  SolDerivationPaths,
+  TrezorDerivationPath,
+  TrezorDerivationPaths
+} from '../../../../../common/hardware/types'
+import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
+import {
+  HardwareWalletDerivationPathLocaleMapping,
+  HardwareWalletDerivationPathsMapping,
+  SolHardwareWalletDerivationPathLocaleMapping
+} from './types'
+import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+
+// Utils
+import { getLocale } from '../../../../../../common/locale'
+import { reduceAddress } from '../../../../../utils/reduce-address'
+import Amount from '../../../../../utils/amount'
+import {
+  useGetHardwareAccountDiscoveryBalanceQuery,
+  useGetNetworksRegistryQuery
+} from '../../../../../common/slices/api.slice'
+import { useAddressOrb } from '../../../../../common/hooks/use-orb'
+import { makeNetworkAsset } from '../../../../../options/asset-options'
+import {
+  networkEntityAdapter //
+} from '../../../../../common/slices/entities/network.entity'
+import {
+  getPathForEthLedgerIndex,
+  getPathForSolLedgerIndex,
+  getPathForTrezorIndex
+} from '../../../../../utils/derivation_path_utils'
+
+// Components
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
+import { SearchBar } from '../../../../shared/search-bar/index'
+import { NetworkFilterSelector } from '../../../network-filter-selector'
+import { Skeleton } from '../../../../shared/loading-skeleton/styles'
+
+// Styles
+import { DisclaimerText } from '../style'
 import {
   ButtonsContainer,
   DisclaimerWrapper,
@@ -19,38 +62,9 @@ import {
   AddressBalanceWrapper,
   NoSearchResultText
 } from './style'
-import {
-  HardwareWalletDerivationPathLocaleMapping,
-  HardwareWalletDerivationPathsMapping,
-  SolHardwareWalletDerivationPathLocaleMapping
-} from './types'
-import { SolDerivationPaths } from '../../../../../common/hardware/types'
-import {
-  BraveWallet,
-  FilecoinNetwork
-} from '../../../../../constants/types'
-import { getLocale } from '../../../../../../common/locale'
-import { NavButton } from '../../../../extension/buttons/nav-button/index'
-import { SearchBar } from '../../../../shared/search-bar/index'
-import { NetworkFilterSelector } from '../../../network-filter-selector'
-import { DisclaimerText } from '../style'
-import { Skeleton } from '../../../../shared/loading-skeleton/styles'
-
-// Utils
-import { reduceAddress } from '../../../../../utils/reduce-address'
-import Amount from '../../../../../utils/amount'
-import {
-  useGetHardwareAccountDiscoveryBalanceQuery,
-  useGetNetworksRegistryQuery
-} from '../../../../../common/slices/api.slice'
-import { useAddressOrb } from '../../../../../common/hooks/use-orb'
-import { makeNetworkAsset } from '../../../../../options/asset-options'
-import {
-  networkEntityAdapter
-} from '../../../../../common/slices/entities/network.entity'
 
 interface Props {
-  hardwareWallet: string
+  hardwareWallet: HardwareVendor
   accounts: BraveWallet.HardwareWalletAccount[]
   preAddedHardwareWalletAccounts: BraveWallet.AccountInfo[]
   onLoadMore: () => void
@@ -117,14 +131,15 @@ export const HardwareWalletAccountsList = ({
   const solDerivationPathsEnum = SolHardwareWalletDerivationPathLocaleMapping
 
   // methods
-  const onSelectAccountCheckbox = (account: BraveWallet.HardwareWalletAccount) => () => {
-    const { derivationPath } = account
-    const isSelected = selectedDerivationPaths.includes(derivationPath)
-    const updatedPaths = isSelected
-      ? selectedDerivationPaths.filter((path) => path !== derivationPath)
-      : [...selectedDerivationPaths, derivationPath]
-    setSelectedDerivationPaths(updatedPaths)
-  }
+  const onSelectAccountCheckbox =
+    (account: BraveWallet.HardwareWalletAccount) => () => {
+      const { derivationPath } = account
+      const isSelected = selectedDerivationPaths.includes(derivationPath)
+      const updatedPaths = isSelected
+        ? selectedDerivationPaths.filter((path) => path !== derivationPath)
+        : [...selectedDerivationPaths, derivationPath]
+      setSelectedDerivationPaths(updatedPaths)
+    }
 
   const filterAccountList = (event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event?.target?.value || ''
@@ -146,9 +161,14 @@ export const HardwareWalletAccountsList = ({
     onLoadMore()
   }
 
-  const isPreAddedAccount = React.useCallback((account: BraveWallet.HardwareWalletAccount) => {
-    return preAddedHardwareWalletAccounts.some(e => e.address === account.address)
-  }, [preAddedHardwareWalletAccounts])
+  const isPreAddedAccount = React.useCallback(
+    (account: BraveWallet.HardwareWalletAccount) => {
+      return preAddedHardwareWalletAccounts.some(
+        (e) => e.address === account.address
+      )
+    },
+    [preAddedHardwareWalletAccounts]
+  )
 
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
@@ -175,9 +195,7 @@ export const HardwareWalletAccountsList = ({
     }
 
     // set network dropdown default value
-    setSelectedNetworkId(
-      networksRegistry.idsByCoinType[coin][0]
-    )
+    setSelectedNetworkId(networksRegistry.idsByCoinType[coin][0])
   }, [networksRegistry, coin])
 
   // render
@@ -189,27 +207,57 @@ export const HardwareWalletAccountsList = ({
             networkListSubset={networksSubset}
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
+            disableAllAccountsOption
           />
           {coin === BraveWallet.CoinType.ETH ? (
-            <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
-              {Object.keys(ethDerivationPathsEnum).map((path, index) => {
-                const pathValue = ethDerivationPathsEnum[path]
-                const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
+            <Select
+              value={selectedDerivationScheme}
+              onChange={setSelectedDerivationScheme}
+              showAllContents
+            >
+              {Object.keys(ethDerivationPathsEnum).map((path) => {
+                const pathValue: LedgerDerivationPath | TrezorDerivationPath =
+                  ethDerivationPathsEnum[path]
+
+                const pathLocale =
+                  HardwareWalletDerivationPathLocaleMapping[pathValue]
+
+                const isTrezorPath = pathValue === TrezorDerivationPaths.Default
+
                 return (
-                  <div data-value={pathValue} key={index}>
-                    {pathLocale}
+                  <div
+                    data-value={pathValue}
+                    key={pathValue}
+                  >
+                    {pathLocale}{' '}
+                    {`"${
+                      isTrezorPath
+                        ? getPathForTrezorIndex(undefined, pathValue)
+                        : getPathForEthLedgerIndex(undefined, pathValue)
+                    }"`}
                   </div>
                 )
               })}
             </Select>
           ) : null}
           {coin === BraveWallet.CoinType.SOL ? (
-            <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
-              {Object.keys(solDerivationPathsEnum).map((path, index) => {
+            <Select
+              value={selectedDerivationScheme}
+              onChange={setSelectedDerivationScheme}
+              showAllContents
+            >
+              {Object.keys(solDerivationPathsEnum).map((path) => {
                 const pathLocale = solDerivationPathsEnum[path]
                 return (
-                  <div data-value={path} key={index}>
-                    {pathLocale}
+                  <div
+                    data-value={path}
+                    key={path}
+                  >
+                    {pathLocale}{' '}
+                    {`"${getPathForSolLedgerIndex(
+                      undefined,
+                      path as SolDerivationPaths
+                    )}"`}
                   </div>
                 )
               })}
@@ -218,7 +266,9 @@ export const HardwareWalletAccountsList = ({
         </SelectWrapper>
       </SelectRow>
       <DisclaimerWrapper>
-        <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
+        <DisclaimerText>
+          {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
+        </DisclaimerText>
       </DisclaimerWrapper>
       <SearchBar
         placeholder={getLocale('braveWalletSearchScannedAccounts')}
@@ -237,39 +287,51 @@ export const HardwareWalletAccountsList = ({
           </NoSearchResultText>
         )}
 
-        {accountNativeAsset && accounts.length > 0 && filteredAccountList.length > 0 && (
-          <>
-            {filteredAccountList.map((account) => {
-              return (
-                <AccountListItem
-                  key={account.derivationPath}
-                  balanceAsset={accountNativeAsset}
-                  account={account}
-                  selected={
-                    selectedDerivationPaths.includes(account.derivationPath) ||
-                    isPreAddedAccount(account)
-                  }
-                  disabled={isPreAddedAccount(account)}
-                  onSelect={onSelectAccountCheckbox(account)}
-                />
-              )
-            })}
-          </>
-        )}
+        {accountNativeAsset &&
+          accounts.length > 0 &&
+          filteredAccountList.length > 0 && (
+            <>
+              {filteredAccountList.map((account) => {
+                return (
+                  <AccountListItem
+                    key={account.derivationPath}
+                    balanceAsset={accountNativeAsset}
+                    account={account}
+                    selected={
+                      selectedDerivationPaths.includes(
+                        account.derivationPath
+                      ) || isPreAddedAccount(account)
+                    }
+                    disabled={isPreAddedAccount(account)}
+                    onSelect={onSelectAccountCheckbox(account)}
+                  />
+                )
+              })}
+            </>
+          )}
       </HardwareWalletAccountsListContainer>
       <ButtonsContainer>
         <NavButton
           onSubmit={onClickLoadMore}
-          text={isLoadingMore ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
-            : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
+          text={
+            isLoadingMore
+              ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
+              : getLocale('braveWalletLoadMoreAccountsHardwareWallet')
+          }
           buttonType='primary'
-          disabled={isLoadingMore || accounts.length === 0 || selectedDerivationScheme === SolDerivationPaths.Bip44Root}
+          disabled={
+            isLoadingMore ||
+            accounts.length === 0 ||
+            selectedDerivationScheme === SolDerivationPaths.Bip44Root
+          }
         />
         <NavButton
           onSubmit={onAddAccounts}
           text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')}
           buttonType='primary'
-          disabled={accounts.length === 0 || selectedDerivationPaths.length === 0}
+          disabled={
+            accounts.length === 0 || selectedDerivationPaths.length === 0
+          }
         />
       </ButtonsContainer>
     </>
@@ -303,13 +365,11 @@ function AccountListItem({
 }: AccountListItemProps) {
   // queries
   const { data: balanceResult, isFetching: isLoadingBalance } =
-    useGetHardwareAccountDiscoveryBalanceQuery(
-      {
-        coin: balanceAsset.coin,
-        chainId: balanceAsset.chainId,
-        address: account.address,
-      }
-    )
+    useGetHardwareAccountDiscoveryBalanceQuery({
+      coin: balanceAsset.coin,
+      chainId: balanceAsset.chainId,
+      address: account.address
+    })
 
   // memos
   const orb = useAddressOrb(account.address)
@@ -342,11 +402,18 @@ function AccountListItem({
           <div>{reduceAddress(account.address)}</div>
         </AddressBalanceWrapper>
         {isLoadingBalance ? (
-          <Skeleton width={'140px'} height={'100%'} />
+          <Skeleton
+            width={'140px'}
+            height={'100%'}
+          />
         ) : (
           <AddressBalanceWrapper>{balance}</AddressBalanceWrapper>
         )}
-        <Checkbox value={{ selected }} onChange={onSelect} disabled={disabled}>
+        <Checkbox
+          value={{ selected }}
+          onChange={onSelect}
+          disabled={disabled}
+        >
           <div data-key={'selected'} />
         </Checkbox>
       </HardwareWalletAccountListItemRow>

@@ -26,10 +26,12 @@ const auto& BraveSyncablePreferences() {
       base::MakeFixedFlatMap<std::string_view, SyncablePrefMetadata>(
           {{prefs::kSyncedDefaultPrivateSearchProviderGUID,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID,
-             syncer::PREFERENCES, /*is_history_opt_in_required*/ false}},
+             syncer::PREFERENCES, /*is_history_opt_in_required*/ false,
+             MergeBehavior::kNone}},
            {prefs::kSyncedDefaultPrivateSearchProviderData,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderData,
-             syncer::PREFERENCES, /*is_history_opt_in_required*/ false}}});
+             syncer::PREFERENCES, /*is_history_opt_in_required*/ false,
+             MergeBehavior::kNone}}});
   return kBraveCommonSyncablePrefsAllowlist;
 }
 }  // namespace

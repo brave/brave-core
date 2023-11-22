@@ -65,9 +65,14 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           &DefaultBraveShieldsHandler::SetFingerprintingControlType,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setHTTPSEverywhereEnabled",
+      "getFingerprintingBlockEnabled",
       base::BindRepeating(
-          &DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled,
+          &DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setFingerprintingBlockEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getHttpsUpgradeControlType",
@@ -228,14 +233,27 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
       profile_->GetPrefs());
 }
 
-void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
+void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  ControlType setting = brave_shields::GetFingerprintingControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  bool result = setting != ControlType::ALLOW;
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(result));
+}
+
+void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
+  brave_shields::SetFingerprintingControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
 }
 

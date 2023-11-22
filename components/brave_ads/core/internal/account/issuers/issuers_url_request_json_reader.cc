@@ -14,18 +14,18 @@
 namespace brave_ads::json::reader {
 
 absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json);
+  if (!dict) {
     return absl::nullopt;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  const absl::optional<int> ping = ParsePing(dict);
+  const absl::optional<int> ping = ParsePing(*dict);
   if (!ping) {
     return absl::nullopt;
   }
 
-  const absl::optional<IssuerList> issuers = ParseIssuers(dict);
+  const absl::optional<IssuerList> issuers = ParseIssuers(*dict);
   if (!issuers) {
     return absl::nullopt;
   }

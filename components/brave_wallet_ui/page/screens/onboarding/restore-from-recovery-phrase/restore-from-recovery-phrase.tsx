@@ -4,17 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-
-// actions
-import { WalletPageActions } from '../../../actions'
+import {
+  useCheckExternalWalletPasswordMutation,
+  useGetWalletsToImportQuery,
+  useImportFromCryptoWalletsMutation,
+  useImportFromMetaMaskMutation,
+  useRestoreWalletMutation
+} from '../../../../common/slices/api.slice'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
 
 // types
-import { PageState, WalletRoutes, WalletState } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
@@ -48,6 +54,7 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 import { RecoveryInput } from './recovery-input'
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
+import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
 enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
@@ -68,82 +75,94 @@ const RESTORE_FROM_EXTENSION_STEPS: RestoreFromOtherWalletSteps[] = [
   RestoreFromOtherWalletSteps.complete
 ]
 
+const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
+
 interface Props {
-  restoreFrom: 'metamask'
-  | 'metamask-seed'
-  | 'legacy'
-  | 'legacy-seed'
-  | 'seed'
+  restoreFrom: 'metamask' | 'metamask-seed' | 'legacy' | 'legacy-seed' | 'seed'
 }
 
 export const OnboardingRestoreFromRecoveryPhrase = ({
   restoreFrom = 'seed'
 }: Props) => {
+  // computed from props
+  const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
+  const isImportingFromLegacyExtension = restoreFrom === 'legacy'
+  const isImportingFromExtension =
+    isImportingFromMetaMaskExtension || isImportingFromLegacyExtension
+
   // routing
   let history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
-  const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
-  const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
-  const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
-  const importWalletAttempts = useSelector(({ page }: { page: PageState }) => page.importWalletAttempts)
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
-  // computed
-  const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
-  const isImportingFromLegacyExtension = restoreFrom === 'legacy'
-  const isImportingFromExtension = isImportingFromMetaMaskExtension || isImportingFromLegacyExtension
-  const isCheckingExtensions = !restoreFrom.includes('seed') && !isImportWalletsCheckComplete
+  // queries
+  const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery(
+    isImportingFromExtension ? undefined : skipToken
+  )
+
+  // mutations
+  const [importFromCryptoWallets, { data: importFromLegacyWalletResult }] =
+    useImportFromCryptoWalletsMutation()
+
+  const [importFromMetaMask, { data: importFromMetaMaskResult }] =
+    useImportFromMetaMaskMutation()
+
+  const [restoreWalletFromSeed] = useRestoreWalletMutation()
+
+  const [checkExtensionPassword, { isLoading: isCheckingImportPassword }] =
+    useCheckExternalWalletPasswordMutation()
 
   // state
+  const [hasInvalidSeedError, setHasInvalidSeedError] = React.useState(false)
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
-  const [isCheckingImportPassword, setIsCheckingImportPassword] = React.useState(false)
-  const [currentImportAttempt, setCurrentImportAttempt] = React.useState(importWalletAttempts)
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [extensionPassword, setExtensionPassword] = React.useState('')
+  const [extensionPasswordError, setExtensionPasswordError] = React.useState('')
   const [phraseInput, setPhraseInput] = React.useState('')
   const [phraseWordsLength, setPhraseWordsLength] = React.useState(0)
-  const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] = React.useState(false)
-  const [currentStep, setCurrentStep] = React.useState<RestoreFromOtherWalletSteps>(
-    isImportingFromExtension
-      ? RestoreFromOtherWalletSteps.currentPassword
-      : RestoreFromOtherWalletSteps.phrase
-  )
+  const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] =
+    React.useState(false)
+  const [currentStep, setCurrentStep] =
+    React.useState<RestoreFromOtherWalletSteps>(
+      isImportingFromExtension
+        ? RestoreFromOtherWalletSteps.currentPassword
+        : RestoreFromOtherWalletSteps.phrase
+    )
 
-  // 12, 15, 18, 21, or 24
-  const isCorrectPhraseLength =
-    phraseWordsLength === 12 ||
-    phraseWordsLength === 15 ||
-    phraseWordsLength === 18 ||
-    phraseWordsLength === 21 ||
-    phraseWordsLength === 24
+  const importWalletError = isImportingFromExtension
+    ? extensionPasswordError ||
+      (isImportingFromMetaMaskExtension &&
+        importFromMetaMaskResult?.errorMessage) ||
+      (isImportingFromLegacyExtension &&
+        importFromLegacyWalletResult?.errorMessage)
+    : hasInvalidSeedError
+    ? getLocale('braveWalletInvalidMnemonicError')
+    : undefined
+
+  const isCorrectPhraseLength = VALID_PHRASE_LENGTHS.includes(phraseWordsLength)
 
   // methods
-  const checkImportPassword = React.useCallback(() => {
-    setIsCheckingImportPassword(true)
-    setCurrentImportAttempt(importWalletAttempts)
-
-    if (isImportingFromMetaMaskExtension) {
-      dispatch(WalletPageActions.importFromMetaMask({
-        password: extensionPassword,
-        newPassword: '' // required arg, just checking import Password
-      }))
-      return
-    }
-
-    if (isImportingFromLegacyExtension) {
-      dispatch(WalletPageActions.importFromCryptoWallets({
-        password: extensionPassword,
-        newPassword: '' // required arg, just checking import Password
-      }))
+  const checkImportPassword = React.useCallback(async () => {
+    if (isImportingFromMetaMaskExtension || isImportingFromLegacyExtension) {
+      const results = await checkExtensionPassword({
+        walletType: isImportingFromMetaMaskExtension
+          ? BraveWallet.ExternalWalletType.MetaMask
+          : BraveWallet.ExternalWalletType.CryptoWallets,
+        password: extensionPassword
+      }).unwrap()
+      if (results.errorMessage) {
+        setExtensionPasswordError(results.errorMessage)
+      } else {
+        setExtensionPasswordError('')
+        setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
+      }
     }
   }, [
     isImportingFromMetaMaskExtension,
     isImportingFromLegacyExtension,
-    extensionPassword,
-    importWalletAttempts
+    extensionPassword
   ])
 
   const restoreWallet = React.useCallback(async () => {
@@ -152,33 +171,32 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }
 
     if (isImportingFromMetaMaskExtension) {
-      dispatch(WalletPageActions.importFromMetaMask({
+      await importFromMetaMask({
         password: extensionPassword,
         newPassword: password
-      }))
+      }).unwrap()
       return
     }
 
     if (isImportingFromLegacyExtension) {
-      dispatch(WalletPageActions.importFromCryptoWallets({
+      await importFromCryptoWallets({
         password: extensionPassword,
         newPassword: password
-      }))
+      }).unwrap()
       return
     }
 
-    if (invalidMnemonic) {
-      return
-    }
-
-    dispatch(WalletPageActions.restoreWallet({
+    const { invalidMnemonic } = await restoreWalletFromSeed({
       // added an additional trim here in case the phrase length is
       // 12, 15, 18 or 21 long and has a space at the end.
       mnemonic: phraseInput.trimEnd(),
       password,
       isLegacy: isImportingFromLegacySeed,
-      completeWalletSetup: false // postpone until wallet onboarding success screen
-    }))
+      // postpone until wallet onboarding success screen
+      completeWalletSetup: false
+    }).unwrap()
+
+    setHasInvalidSeedError(invalidMnemonic)
   }, [
     isPasswordValid,
     isImportingFromMetaMaskExtension,
@@ -186,58 +204,45 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     password,
     isImportingFromLegacyExtension,
     phraseInput,
-    invalidMnemonic,
     isImportingFromLegacySeed
   ])
 
-  const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
-    setPassword(password)
-    setIsPasswordValid(isValid)
-  }, [])
+  const handlePasswordChange = React.useCallback(
+    ({ isValid, password }: NewPasswordValues) => {
+      setPassword(password)
+      setIsPasswordValid(isValid)
+    },
+    []
+  )
 
-  const onExtensionPasswordChange = React.useCallback((value: string): void => {
-    if (importWalletError?.hasError) {
-      dispatch(WalletPageActions.setImportWalletError({
-        hasError: false
-      }))
-    }
-    setExtensionPassword(value)
-  }, [importWalletError?.hasError])
-
-  const onContinueClicked = React.useCallback(() => {
-    // reset previous errors
-    if (importWalletError?.hasError) {
-      dispatch(WalletPageActions.setImportWalletError({
-        hasError: false
-      }))
-    }
-
-    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && extensionPassword) {
-      return checkImportPassword()
+  const onContinueClicked = React.useCallback(async () => {
+    if (
+      currentStep === RestoreFromOtherWalletSteps.currentPassword &&
+      extensionPassword
+    ) {
+      return await checkImportPassword()
     }
 
     if (currentStep === RestoreFromOtherWalletSteps.phrase) {
       return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
 
-    if (currentStep === RestoreFromOtherWalletSteps.newPassword && isPasswordValid) {
-      return restoreWallet()
+    if (
+      currentStep === RestoreFromOtherWalletSteps.newPassword &&
+      isPasswordValid
+    ) {
+      return await restoreWallet()
     }
   }, [
-    importWalletError?.hasError,
     currentStep,
     extensionPassword,
-    invalidMnemonic,
     isPasswordValid,
     restoreWallet,
     checkImportPassword
   ])
 
   const onGoBack = React.useCallback(() => {
-    // clear errors
-    if (invalidMnemonic) {
-      dispatch(WalletPageActions.hasMnemonicError(false))
-    }
+    setHasInvalidSeedError(false)
 
     if (
       currentStep === RestoreFromOtherWalletSteps.currentPassword ||
@@ -250,230 +255,235 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       setPhraseInput('') // reset input state
       return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
     }
-  }, [invalidMnemonic, currentStep])
+  }, [currentStep])
 
-  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter') {
-      onContinueClicked()
-    }
-  }, [onContinueClicked])
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
+      if (event.key === 'Enter') {
+        onContinueClicked()
+      }
+    },
+    [onContinueClicked]
+  )
 
-  const onRecoveryInputChanged = React.useCallback(({ value, phraseLength }: { value: string, isValid: boolean, phraseLength: number }): void => {
-    setPhraseInput(value)
-    setPhraseWordsLength(phraseLength)
-  }, [])
+  const onRecoveryInputChanged = React.useCallback(
+    ({
+      value,
+      phraseLength
+    }: {
+      value: string
+      isValid: boolean
+      phraseLength: number
+    }): void => {
+      setPhraseInput(value)
+      setPhraseWordsLength(phraseLength)
+    },
+    []
+  )
 
   // memos
   const pageText = React.useMemo(() => {
     switch (currentStep) {
-      case RestoreFromOtherWalletSteps.currentPassword: return {
-        title: restoreFrom === 'metamask'
-          ? getLocale('braveWalletMetaMaskExtensionDetected')
-          : getLocale('braveWalletCryptoWalletsDetected'),
-        description: restoreFrom === 'metamask'
-          ? getLocale('braveWalletMetaMaskExtensionImportDescription')
-          : getLocale('braveWalletImportBraveLegacyDescription')
-      }
+      case RestoreFromOtherWalletSteps.currentPassword:
+        return {
+          title:
+            restoreFrom === 'metamask'
+              ? getLocale('braveWalletMetaMaskExtensionDetected')
+              : getLocale('braveWalletCryptoWalletsDetected'),
+          description:
+            restoreFrom === 'metamask'
+              ? getLocale('braveWalletMetaMaskExtensionImportDescription')
+              : getLocale('braveWalletImportBraveLegacyDescription')
+        }
 
-      case RestoreFromOtherWalletSteps.newPassword: return {
-        title: getLocale('braveWalletCreatePasswordTitle'),
-        description: getLocale('braveWalletCreatePasswordDescription')
-      }
+      case RestoreFromOtherWalletSteps.newPassword:
+        return {
+          title: getLocale('braveWalletCreatePasswordTitle'),
+          description: getLocale('braveWalletCreatePasswordDescription')
+        }
 
-      case RestoreFromOtherWalletSteps.phrase: return {
-        title: restoreFrom.includes('metamask')
-          ? getLocale('braveWalletImportFromMetaMask')
-          : getLocale('braveWalletRestoreMyBraveWallet'),
+      case RestoreFromOtherWalletSteps.phrase:
+        return {
+          title: restoreFrom.includes('metamask')
+            ? getLocale('braveWalletImportFromMetaMask')
+            : getLocale('braveWalletRestoreMyBraveWallet'),
 
-        description: restoreFrom.includes('metamask')
-          ? getLocale('braveWalletImportFromMetaMaskSeedInstructions')
-          : getLocale('braveWalletRestoreMyBraveWalletInstructions')
-      }
+          description: restoreFrom.includes('metamask')
+            ? getLocale('braveWalletImportFromMetaMaskSeedInstructions')
+            : getLocale('braveWalletRestoreMyBraveWalletInstructions')
+        }
 
-      default: return { title: '', description: '' }
+      default:
+        return { title: '', description: '' }
     }
   }, [currentStep, restoreFrom])
 
-  // effects
-  React.useEffect(() => {
-    if (isCheckingExtensions) {
-      // check if MM or legacy wallet is installed
-      dispatch(WalletPageActions.checkWalletsToImport())
-    }
-  }, [isCheckingExtensions])
-
-  React.useEffect(() => {
-    // go to onboarding success screen when wallet restoration completes
-    if (isWalletCreated) {
-      history.push(WalletRoutes.OnboardingComplete)
-    }
-  }, [isWalletCreated])
-
-  React.useEffect(() => {
-    // clear other errors on step change
-    if (
-      currentStep === RestoreFromOtherWalletSteps.newPassword &&
-      importWalletError?.hasError &&
-      importWalletError.errorMessage
-    ) {
-      dispatch(WalletPageActions.setImportWalletError({
-        hasError: false
-      }))
-    }
-  }, [currentStep, importWalletError])
-
-  React.useEffect(() => {
-    // runs after a wallet import password check has completed
-    if (
-      currentStep === RestoreFromOtherWalletSteps.currentPassword &&
-      importWalletAttempts > currentImportAttempt
-    ) {
-      setCurrentImportAttempt(importWalletAttempts)
-      setIsCheckingImportPassword(false)
-      // redirect after a successful password check
-      if (!importWalletError?.hasError) {
-        return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
-      }
-    }
-  }, [currentStep, importWalletAttempts, currentImportAttempt, importWalletError?.hasError])
-
   // render
+  if (isCreatingWallet) {
+    return <CreatingWallet />
+  }
+
   return (
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
           <StepsNavigation
-            steps={isImportingFromExtension ? RESTORE_FROM_EXTENSION_STEPS : RESTORE_FROM_PHRASE_STEPS}
+            steps={
+              isImportingFromExtension
+                ? RESTORE_FROM_EXTENSION_STEPS
+                : RESTORE_FROM_PHRASE_STEPS
+            }
             currentStep={currentStep}
             goBack={onGoBack}
             preventSkipAhead
-            onSkip={!restoreFrom.includes('seed') ? () => {
-              return restoreFrom.includes('metamask')
-                ? history.push(WalletRoutes.OnboardingImportMetaMaskSeed)
-                : history.push(WalletRoutes.OnboardingImportCryptoWalletsSeed)
-            } : undefined}
+            onSkip={
+              !restoreFrom.includes('seed')
+                ? () => {
+                    // TODO: why was this needed?
+                    // Can we use regular "restore" page
+                    return restoreFrom.includes('metamask')
+                      ? history.push(WalletRoutes.OnboardingImportMetaMaskSeed)
+                      : history.push(
+                          WalletRoutes.OnboardingImportCryptoWalletsSeed
+                        )
+                  }
+                : undefined
+            }
             skipButtonText={<CloseIcon />}
           />
 
           <TitleAndDescriptionContainer>
-            {
-              isCheckingExtensions
-                ? <>
-                  <Title>
-                    {getLocale('braveWalletCheckingInstalledExtensions')}
-                  </Title>
-                </>
-                : <>
-                  <Title>{pageText.title}</Title>
-                  <Description>{pageText.description}</Description>
-                </>
-            }
+            {isCheckingExtensions ? (
+              <>
+                <Title>
+                  {getLocale('braveWalletCheckingInstalledExtensions')}
+                </Title>
+              </>
+            ) : (
+              <>
+                <Title>{pageText.title}</Title>
+                <Description>{pageText.description}</Description>
+              </>
+            )}
           </TitleAndDescriptionContainer>
 
-          {isCheckingExtensions &&
+          {isCheckingExtensions && (
             <>
-              <LoadingSkeleton width={375} height={168} />
+              <LoadingSkeleton
+                width={375}
+                height={168}
+              />
               <VerticalSpace space={'100px'} />
             </>
-          }
+          )}
 
-          {!isCheckingExtensions && currentStep === RestoreFromOtherWalletSteps.phrase &&
-            <>
-              <PhraseCard>
-                <RecoveryInput
-                  onChange={onRecoveryInputChanged}
+          {!isCheckingExtensions &&
+            currentStep === RestoreFromOtherWalletSteps.phrase && (
+              <>
+                <PhraseCard>
+                  <RecoveryInput
+                    onChange={onRecoveryInputChanged}
+                    onKeyDown={handleKeyDown}
+                    onToggleShowPhrase={setIsPhraseShown}
+                  />
+                </PhraseCard>
+
+                <VerticalSpace space={isPhraseShown ? '20px' : '130px'} />
+
+                <Row
+                  alignItems='center'
+                  style={{ minHeight: 53 }}
+                >
+                  {phraseWordsLength === 24 && (
+                    <Checkbox
+                      isChecked={isImportingFromLegacySeed}
+                      onChange={setIsImportingFromLegacySeed}
+                      disabled={false}
+                    >
+                      <Description>
+                        {getLocale('braveWalletRestoreLegacyCheckBox')}
+                      </Description>
+                    </Checkbox>
+                  )}
+
+                  {phraseInput &&
+                    phraseWordsLength > 12 &&
+                    !isCorrectPhraseLength && (
+                      <ErrorText>
+                        {getLocale('braveWalletRecoveryPhraseLengthError')}
+                      </ErrorText>
+                    )}
+                </Row>
+              </>
+            )}
+
+          {!isCheckingExtensions &&
+            currentStep === RestoreFromOtherWalletSteps.currentPassword && (
+              <>
+                <PasswordInput
+                  autoFocus={true}
+                  onChange={setExtensionPassword}
+                  value={extensionPassword}
+                  error={importWalletError || ''}
+                  hasError={!!importWalletError}
                   onKeyDown={handleKeyDown}
-                  onToggleShowPhrase={setIsPhraseShown}
+                  placeholder={
+                    restoreFrom === 'metamask'
+                      ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
+                      : getLocale('braveWalletImportBraveLegacyInput')
+                  }
+                  name='extensionPassword'
+                  label={getLocale('braveWalletInputLabelPassword')}
                 />
-              </PhraseCard>
 
-              <VerticalSpace space={isPhraseShown ? '20px' : '130px'} />
+                <VerticalSpace space='100px' />
+              </>
+            )}
 
-              <Row alignItems='center' style={{ minHeight: 53 }}>
-                {phraseWordsLength === 24 &&
-                  <Checkbox isChecked={isImportingFromLegacySeed} onChange={setIsImportingFromLegacySeed} disabled={false}>
-                    <Description>
-                      {getLocale('braveWalletRestoreLegacyCheckBox')}
-                    </Description>
-                  </Checkbox>
-                }
-
-                {phraseInput && phraseWordsLength > 12 && !isCorrectPhraseLength &&
-                  <ErrorText>
-                    {getLocale('braveWalletRecoveryPhraseLengthError')}
-                  </ErrorText>
-                }
-              </Row>
-            </>
-          }
-
-          {!isCheckingExtensions && currentStep === RestoreFromOtherWalletSteps.currentPassword &&
-            <>
-              <PasswordInput
-                autoFocus={true}
-                onChange={onExtensionPasswordChange}
-                value={extensionPassword}
-                error={importWalletError?.errorMessage || ''}
-                hasError={importWalletError?.hasError}
-                onKeyDown={handleKeyDown}
-                placeholder={
-                  restoreFrom === 'metamask'
-                    ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
-                    : getLocale('braveWalletImportBraveLegacyInput')
-                }
-                name='extensionPassword'
-                label={getLocale('braveWalletInputLabelPassword')}
-              />
-
-              <VerticalSpace space='100px' />
-            </>
-          }
-
-          {currentStep === RestoreFromOtherWalletSteps.newPassword &&
+          {currentStep === RestoreFromOtherWalletSteps.newPassword && (
             <>
               <NewPasswordInput
                 autoFocus={true}
                 onSubmit={restoreWallet}
                 onChange={handlePasswordChange}
               />
-              {importWalletError?.hasError &&
-                <ErrorText>
-                  {importWalletError.errorMessage}
-                </ErrorText>
-              }
-              {!!invalidMnemonic &&
-                <ErrorText>
-                  {getLocale('braveWalletInvalidMnemonicError')}
-                </ErrorText>
-              }
+              {importWalletError && <ErrorText>{importWalletError}</ErrorText>}
             </>
-          }
+          )}
 
-          {!isCheckingExtensions &&
+          {!isCheckingExtensions && (
             <NextButtonRow>
               <NavButton
                 buttonType='primary'
-                text={isCheckingImportPassword
-                  ? <LoadingIcon
-                    size='24px'
-                    opacity={0.8}
-                    color='interactive08'
-                  /> as unknown as string
-                  : getLocale('braveWalletButtonContinue')
+                text={
+                  isCheckingImportPassword
+                    ? ((
+                        <LoadingIcon
+                          size='24px'
+                          opacity={0.8}
+                          color='interactive08'
+                        />
+                      ) as unknown as string)
+                    : getLocale('braveWalletButtonContinue')
                 }
                 onSubmit={onContinueClicked}
                 disabled={
                   isCheckingImportPassword ||
-                  isImportingFromExtension && currentStep === RestoreFromOtherWalletSteps.currentPassword && !extensionPassword ||
-                  restoreFrom === 'seed' && !phraseInput ||
-                  currentStep === RestoreFromOtherWalletSteps.phrase && (!phraseInput || phraseWordsLength < 12 || (phraseWordsLength > 12 && !isCorrectPhraseLength)) ||
-                  currentStep === RestoreFromOtherWalletSteps.newPassword && (!isPasswordValid || invalidMnemonic)
+                  (isImportingFromExtension &&
+                    currentStep ===
+                      RestoreFromOtherWalletSteps.currentPassword &&
+                    !extensionPassword) ||
+                  (restoreFrom === 'seed' && !phraseInput) ||
+                  (currentStep === RestoreFromOtherWalletSteps.phrase &&
+                    (!phraseInput ||
+                      phraseWordsLength < 12 ||
+                      (phraseWordsLength > 12 && !isCorrectPhraseLength))) ||
+                  (currentStep === RestoreFromOtherWalletSteps.newPassword &&
+                    (!isPasswordValid || hasInvalidSeedError))
                 }
               />
             </NextButtonRow>
-          }
-
+          )}
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

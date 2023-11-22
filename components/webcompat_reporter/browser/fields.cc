@@ -18,20 +18,6 @@ const char kAllow[] = "allow";
 
 }  // namespace
 
-const char kFPBlockSettingField[] = "fpBlockSetting";
-const char kAdBlockSettingField[] = "adBlockSetting";
-const char kAdBlockListsField[] = "adBlockLists";
-const char kShieldsEnabledField[] = "shieldsEnabled";
-const char kLanguagesField[] = "languages";
-const char kLanguageFarblingField[] = "languageFarblingEnabled";
-const char kBraveVPNEnabledField[] = "braveVPNEnabled";
-
-const char kSiteURLField[] = "url";
-const char kDomainField[] = "domain";
-const char kDetailsField[] = "additionalDetails";
-const char kContactField[] = "contactInfo";
-const char kApiKeyField[] = "api_key";
-
 const char* GetAdBlockModeString(
     brave_shields::mojom::AdBlockMode ad_block_mode) {
   switch (ad_block_mode) {

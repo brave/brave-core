@@ -11,7 +11,7 @@
 
 namespace brave_private_new_tab {
 
-constexpr webui::LocalizedString kLocalizedStrings[] = {
+inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"headerTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW},
     {"headerText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC},
     {"headerText1", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1},

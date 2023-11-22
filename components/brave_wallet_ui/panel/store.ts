@@ -18,10 +18,7 @@ import walletReducer from '../common/slices/wallet.slice'
 import pageReducer from '../page/reducers/page_reducer'
 import accountsTabReducer from '../page/reducers/accounts-tab-reducer'
 import { panelReducer } from './reducers/panel_reducer'
-import {
-  uiReducer,
-  defaultUIState
-} from '../common/slices/ui.slice'
+import { uiReducer, defaultUIState } from '../common/slices/ui.slice'
 
 // utils
 import { setApiProxyFetcher } from '../common/async/base-query-cache'
@@ -50,13 +47,10 @@ const store = configureStore({
       isPanel: true
     }
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: false
-  }).concat(
-    walletAsyncHandler,
-    walletPanelAsyncHandler,
-    walletApi.middleware
-  )
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    }).concat(walletAsyncHandler, walletPanelAsyncHandler, walletApi.middleware)
 })
 
 export type RootStoreState = ReturnType<typeof store.getState>
@@ -66,9 +60,13 @@ proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))
 proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
-proxy.addBraveWalletServiceTokenObserver(makeBraveWalletServiceTokenObserver(store))
+proxy.addBraveWalletServiceTokenObserver(
+  makeBraveWalletServiceTokenObserver(store)
+)
 proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
-proxy.addBraveWalletAutoPinServiceObserver(makeBraveWalletAutoPinServiceObserver(store))
+proxy.addBraveWalletAutoPinServiceObserver(
+  makeBraveWalletAutoPinServiceObserver(store)
+)
 
 // use this proxy in the api slice of the store
 setApiProxyFetcher(getWalletPanelApiProxy)

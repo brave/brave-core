@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(int count);
-CreativeNewTabPageAdInfo BuildCreativeNewTabPageAdForTesting(
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
+CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     bool should_use_random_uuids);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_UNITTEST_UTIL_H_

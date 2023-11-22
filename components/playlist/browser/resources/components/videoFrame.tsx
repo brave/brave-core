@@ -30,7 +30,7 @@ const VideoFrameContainer = styled.div<Props>`
         `
       : css`
           // 16:9 aspect ratio for video and fixed height for the controls area
-          height: calc(56vw);
+          height: calc(56vw + var(--player-controls-area-height));
           margin-bottom: 8px;
           box-shadow: ${effect.elevation['02']};
         `}

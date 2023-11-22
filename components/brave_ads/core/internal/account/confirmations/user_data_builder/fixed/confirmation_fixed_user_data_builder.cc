@@ -51,7 +51,7 @@ void BuildFixedUserData(const TransactionInfo& transaction,
                         BuildUserDataCallback callback) {
   if (transaction.confirmation_type != ConfirmationType::kConversion) {
     return BuildFixedUserDataCallback(transaction, std::move(callback),
-                                      /*conversion_user_data=*/{});
+                                      /*user_data=*/{});
   }
 
   BuildConversionUserData(transaction.creative_instance_id,

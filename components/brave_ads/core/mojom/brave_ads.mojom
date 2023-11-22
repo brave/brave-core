@@ -39,7 +39,7 @@ struct StatementInfo {
   double max_earnings_this_month;
   mojo_base.mojom.Time next_payment_date;
   int32 ads_received_this_month;
-  map<string, int32> ad_types_received_this_month;
+  map<string, int32> ads_summary_this_month;
 };
 
 enum ReminderType {

@@ -10,22 +10,19 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-class TextEmbeddingHelperForTesting final {
+class TextEmbeddingHelper final {
  public:
-  TextEmbeddingHelperForTesting();
+  TextEmbeddingHelper();
 
-  TextEmbeddingHelperForTesting(const TextEmbeddingHelperForTesting&) = delete;
-  TextEmbeddingHelperForTesting& operator=(
-      const TextEmbeddingHelperForTesting&) = delete;
+  TextEmbeddingHelper(const TextEmbeddingHelper&) = delete;
+  TextEmbeddingHelper& operator=(const TextEmbeddingHelper&) = delete;
 
-  TextEmbeddingHelperForTesting(TextEmbeddingHelperForTesting&&) noexcept =
-      delete;
-  TextEmbeddingHelperForTesting& operator=(
-      TextEmbeddingHelperForTesting&&) noexcept = delete;
+  TextEmbeddingHelper(TextEmbeddingHelper&&) noexcept = delete;
+  TextEmbeddingHelper& operator=(TextEmbeddingHelper&&) noexcept = delete;
 
-  ~TextEmbeddingHelperForTesting();
+  ~TextEmbeddingHelper();
 
   void Mock();
 
@@ -36,6 +33,6 @@ class TextEmbeddingHelperForTesting final {
   TextEmbeddingProcessor processor_;
 };
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_UNITTEST_HELPER_H_

@@ -7,7 +7,10 @@ import BigNumber from 'bignumber.js'
 import { CurrencySymbols } from './currency-symbols'
 
 export type AbbreviationOptions =
-  'thousand' | 'million' | 'billion' | 'trillion'
+  | 'thousand'
+  | 'million'
+  | 'billion'
+  | 'trillion'
 type BigNumberIsh = BigNumber | string | number
 type AmountLike = Amount | BigNumberIsh
 
@@ -32,15 +35,15 @@ export default class Amount {
     this.value = value === '' ? undefined : new BigNumber(value)
   }
 
-  static zero (): Amount {
+  static zero(): Amount {
     return new Amount('0')
   }
 
-  static empty (): Amount {
+  static empty(): Amount {
     return new Amount('')
   }
 
-  plus (value: AmountLike): Amount {
+  plus(value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.plus(value.value || '')
     }
@@ -54,7 +57,7 @@ export default class Amount {
     return new Amount(this.value.plus(value))
   }
 
-  minus (value: AmountLike): Amount {
+  minus(value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.minus(value.value || '')
     }
@@ -68,7 +71,7 @@ export default class Amount {
     return new Amount(this.value.minus(value))
   }
 
-  times (value: AmountLike): Amount {
+  times(value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.times(value.value || '')
     }
@@ -80,7 +83,7 @@ export default class Amount {
     return new Amount(this.value.times(value))
   }
 
-  div (value: AmountLike): Amount {
+  div(value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.div(value.value || '')
     }
@@ -96,7 +99,7 @@ export default class Amount {
     return new Amount(this.value.div(value))
   }
 
-  divideByDecimals (decimals: number): Amount {
+  divideByDecimals(decimals: number): Amount {
     if (this.value === undefined) {
       return Amount.empty()
     }
@@ -104,7 +107,7 @@ export default class Amount {
     return new Amount(this.value.dividedBy(10 ** decimals))
   }
 
-  multiplyByDecimals (decimals: number): Amount {
+  multiplyByDecimals(decimals: number): Amount {
     if (this.value === undefined) {
       return Amount.empty()
     }
@@ -112,7 +115,7 @@ export default class Amount {
     return new Amount(this.value.multipliedBy(10 ** decimals))
   }
 
-  gt (amount: AmountLike): boolean {
+  gt(amount: AmountLike): boolean {
     if (this.value === undefined) {
       return false
     }
@@ -128,11 +131,11 @@ export default class Amount {
     return this.value.gt(amount)
   }
 
-  gte (amount: AmountLike): boolean {
+  gte(amount: AmountLike): boolean {
     return this.gt(amount) || this.eq(amount)
   }
 
-  lt (amount: AmountLike): boolean {
+  lt(amount: AmountLike): boolean {
     if (amount === '') {
       return false
     }
@@ -148,11 +151,11 @@ export default class Amount {
     return this.value.lt(amount)
   }
 
-  lte (amount: AmountLike): boolean {
+  lte(amount: AmountLike): boolean {
     return this.lt(amount) || this.eq(amount)
   }
 
-  eq (amount: AmountLike): boolean {
+  eq(amount: AmountLike): boolean {
     if (amount instanceof Amount) {
       return this.eq(amount.value || '')
     }
@@ -178,7 +181,7 @@ export default class Amount {
    *
    * @param value Numeric value to normalize.
    */
-  static normalize (value: string): string {
+  static normalize(value: string): string {
     if (value === '') {
       return ''
     }
@@ -195,7 +198,10 @@ export default class Amount {
     return amount.format()
   }
 
-  private static formatAmountWithCommas (value: string, commas: boolean): string {
+  private static formatAmountWithCommas(
+    value: string,
+    commas: boolean
+  ): string {
     // Remove trailing zeros, including the decimal separator if necessary.
     // Example: 1.0000000000 becomes 1.
     const trimmedResult = value.replace(/\.0*$|(\.\d*[1-9])0+$/, '$1')
@@ -207,7 +213,7 @@ export default class Amount {
       : trimmedResult
   }
 
-  format (significantDigits?: number, commas: boolean = false): string {
+  format(significantDigits?: number, commas: boolean = false): string {
     if (this.value === undefined || this.value.isNaN()) {
       return ''
     }
@@ -219,22 +225,24 @@ export default class Amount {
     // Handle the case where the value is large enough that formatting with
     // significant figures will result in an undesirable loss of precision.
     const desiredDecimalPlaces = 2
-    if (this.value.isGreaterThanOrEqualTo(10 ** (significantDigits - desiredDecimalPlaces))) {
-      return Amount
-        .formatAmountWithCommas(
-          this.value.toFixed(desiredDecimalPlaces),
-          commas
-        )
-    }
-
-    return Amount.
-      formatAmountWithCommas(
-        this.value.precision(significantDigits).toFixed(),
+    if (
+      this.value.isGreaterThanOrEqualTo(
+        10 ** (significantDigits - desiredDecimalPlaces)
+      )
+    ) {
+      return Amount.formatAmountWithCommas(
+        this.value.toFixed(desiredDecimalPlaces),
         commas
       )
+    }
+
+    return Amount.formatAmountWithCommas(
+      this.value.precision(significantDigits).toFixed(),
+      commas
+    )
   }
 
-  formatAsAsset (significantDigits?: number, symbol?: string): string {
+  formatAsAsset(significantDigits?: number, symbol?: string): string {
     const result = this.format(significantDigits, true)
     if (!symbol) {
       return result
@@ -243,7 +251,7 @@ export default class Amount {
     return result === '' ? '' : `${result} ${symbol}`
   }
 
-  formatAsFiat (currency?: string, maxDecimals: number = 20): string {
+  formatAsFiat(currency?: string, maxDecimals: number = 20): string {
     if (this.value === undefined || this.value.isNaN()) {
       return ''
     }
@@ -265,7 +273,7 @@ export default class Amount {
     )
   }
 
-  toHex (): string {
+  toHex(): string {
     if (this.value === undefined) {
       return ''
     }
@@ -277,7 +285,7 @@ export default class Amount {
     return `0x${this.value.toString(16)}`
   }
 
-  toNumber (): number {
+  toNumber(): number {
     if (this.value === undefined || this.value.isNaN()) {
       return 0
     }
@@ -285,27 +293,27 @@ export default class Amount {
     return this.value.toNumber()
   }
 
-  isUndefined (): boolean {
+  isUndefined(): boolean {
     return this.value === undefined
   }
 
-  isNaN (): boolean {
+  isNaN(): boolean {
     return this.value !== undefined && this.value.isNaN()
   }
 
-  isZero (): boolean {
+  isZero(): boolean {
     return this.value !== undefined && this.value.isZero()
   }
 
-  isPositive (): boolean {
+  isPositive(): boolean {
     return this.value !== undefined && this.value.isPositive()
   }
 
-  isNegative (): boolean {
+  isNegative(): boolean {
     return this.value !== undefined && this.value.isNegative()
   }
 
-  parseInteger (): Amount {
+  parseInteger(): Amount {
     if (this.value === undefined) {
       return Amount.empty()
     }
@@ -313,7 +321,7 @@ export default class Amount {
     return new Amount(this.value.integerValue(BigNumber.ROUND_DOWN))
   }
 
-  toAbsoluteValue (): Amount {
+  toAbsoluteValue(): Amount {
     if (this.value === undefined || this.value.isNaN()) {
       return Amount.empty()
     }
@@ -322,7 +330,7 @@ export default class Amount {
   }
 
   // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
-  abbreviate (
+  abbreviate(
     decimals: number,
     currency?: string,
     forceAbbreviation?: AbbreviationOptions
@@ -348,7 +356,11 @@ export default class Amount {
     let value = this.value.toNumber()
     let abbreviation = ''
 
-    if (forceAbbreviation && abbreviations[forceAbbreviation] && powers[forceAbbreviation]) {
+    if (
+      forceAbbreviation &&
+      abbreviations[forceAbbreviation] &&
+      powers[forceAbbreviation]
+    ) {
       abbreviation = abbreviations[forceAbbreviation]
       value = value / powers[forceAbbreviation]
 

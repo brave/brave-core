@@ -15,9 +15,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "brave/components/ai_chat/browser/ai_chat_feedback_api.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -76,7 +76,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                     const std::string& feedback,
                     const std::string& rating_id,
                     SendFeedbackCallback callback) override;
-
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
@@ -86,12 +85,13 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
   void OnAPIResponseError(mojom::APIError error) override;
+  void OnModelChanged(const std::string& model_key) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
       bool has_generated,
       mojom::AutoGenerateQuestionsPref auto_generate) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent() override;
+  void OnPageHasContent(bool page_contents_is_truncated) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
   absl::optional<mojom::SiteInfo> BuildSiteInfo();

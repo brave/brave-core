@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -16,7 +16,7 @@ namespace brave_ads {
 namespace {
 
 bool HasPreviouslyServedAnAd() {
-  return AdsClientHelper::GetInstance()->HasPrefPath(prefs::kServeAdAt);
+  return HasProfilePrefPath(prefs::kServeAdAt);
 }
 
 base::TimeDelta DelayBeforeServingAnAd() {
@@ -38,11 +38,11 @@ bool ShouldServeAdsAtRegularIntervals() {
 }
 
 void SetServeAdAt(const base::Time serve_ad_at) {
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kServeAdAt, serve_ad_at);
+  SetProfileTimePref(prefs::kServeAdAt, serve_ad_at);
 }
 
 base::Time ServeAdAt() {
-  return AdsClientHelper::GetInstance()->GetTimePref(prefs::kServeAdAt);
+  return GetProfileTimePref(prefs::kServeAdAt);
 }
 
 base::TimeDelta CalculateDelayBeforeServingAnAd() {

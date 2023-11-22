@@ -13,8 +13,8 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
+#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/promoted_content_ad/promoted_content_ad_info.h"
 
 namespace brave_ads {
 
@@ -47,6 +47,10 @@ void PromotedContentAdHandler::TriggerEvent(
   CHECK_NE(mojom::PromotedContentAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
+
+  if (creative_instance_id.empty()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   if (!UserHasOptedInToBraveNewsAds()) {
     return std::move(callback).Run(/*success=*/false);

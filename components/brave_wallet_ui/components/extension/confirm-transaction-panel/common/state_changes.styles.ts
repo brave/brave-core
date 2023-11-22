@@ -8,7 +8,7 @@ import { color } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
 export const StateChangeText = styled.span<{ color?: string }>`
-  color: ${p => p.color || color.text.secondary};
+  color: ${(p) => p.color || color.text.secondary};
   font-family: Poppins;
   font-size: 12px;
   font-style: normal;
@@ -25,7 +25,7 @@ export const StateChangeText = styled.span<{ color?: string }>`
     font-style: normal;
     font-weight: 600;
     font-size: 12px;
-    color: ${p => p.color || color.text.primary};
+    color: ${(p) => p.color || color.text.primary};
     word-break: break-all;
   }
 `

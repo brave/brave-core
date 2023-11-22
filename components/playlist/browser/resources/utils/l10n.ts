@@ -29,7 +29,10 @@ export type Message =
   | 'bravePlaylistA11YRewind'
   | 'bravePlaylistA11YForward'
   | 'bravePlaylistA11YClose'
+  | 'bravePlaylistA11YLoopOff'
+  | 'bravePlaylistA11YLoopOne'
+  | 'bravePlaylistA11YLoopAll'
 
-export function getLocalizedString (message: Message) {
+export function getLocalizedString(message: Message) {
   return getLocale(message)
 }

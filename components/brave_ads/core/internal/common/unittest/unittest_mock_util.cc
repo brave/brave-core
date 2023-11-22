@@ -62,7 +62,6 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
 
   switch (type) {
     case PlatformType::kUnknown: {
-      is_mobile = false;
       name = "unknown";
       break;
     }
@@ -80,19 +79,16 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
     }
 
     case PlatformType::kLinux: {
-      is_mobile = false;
       name = "linux";
       break;
     }
 
     case PlatformType::kMacOS: {
-      is_mobile = false;
       name = "macos";
       break;
     }
 
     case PlatformType::kWindows: {
-      is_mobile = false;
       name = "windows";
       break;
     }
@@ -109,16 +105,14 @@ void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
       .WillByDefault(::testing::Return(is_available));
 }
 
-void MockIsBrowserActive(const AdsClientMock& mock,
-                         const bool is_browser_active) {
-  ON_CALL(mock, IsBrowserActive())
-      .WillByDefault(::testing::Return(is_browser_active));
+void MockIsBrowserActive(const AdsClientMock& mock, const bool is_active) {
+  ON_CALL(mock, IsBrowserActive()).WillByDefault(::testing::Return(is_active));
 }
 
 void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
-                                   const bool is_browser_in_full_screen_mode) {
+                                   const bool is_full_screen_mode) {
   ON_CALL(mock, IsBrowserInFullScreenMode())
-      .WillByDefault(::testing::Return(is_browser_in_full_screen_mode));
+      .WillByDefault(::testing::Return(is_full_screen_mode));
 }
 
 void MockCanShowNotificationAds(AdsClientMock& mock, const bool can_show) {

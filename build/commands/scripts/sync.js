@@ -9,7 +9,6 @@ const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/logging')
-const updateChromeVersion = require('../lib/sync/updateChromeVersion')
 const chalk = require('chalk')
 
 program
@@ -268,7 +267,6 @@ async function RunCommand() {
   })
 
   await util.applyPatches()
-  updateChromeVersion(config)
 
   if (!program.nohooks) {
     // Run hooks for the root .gclient, this will include Chromium and Brave

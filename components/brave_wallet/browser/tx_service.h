@@ -36,6 +36,7 @@ namespace brave_wallet {
 class AccountResolverDelegate;
 class JsonRpcService;
 class BitcoinWalletService;
+class ZCashWalletService;
 class KeyringService;
 class TxManager;
 class TxStorageDelegate;
@@ -43,6 +44,7 @@ class TxStorageDelegateImpl;
 class EthTxManager;
 class SolanaTxManager;
 class FilTxManager;
+class ZecTxManager;
 
 class TxService : public KeyedService,
                   public mojom::TxService,
@@ -52,6 +54,7 @@ class TxService : public KeyedService,
  public:
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
+            ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs,
             const base::FilePath& context_path,
@@ -76,10 +79,12 @@ class TxService : public KeyedService,
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+                                const std::string& chain_id,
                                 mojom::AccountIdPtr from,
                                 AddUnapprovedTransactionCallback) override;
   void AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnionPtr tx_data_union,
+      const std::string& chain_id,
       mojom::AccountIdPtr from,
       const absl::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback);
@@ -242,6 +247,7 @@ class TxService : public KeyedService,
   EthTxManager* GetEthTxManager();
   SolanaTxManager* GetSolanaTxManager();
   FilTxManager* GetFilTxManager();
+  ZecTxManager* GetZecTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

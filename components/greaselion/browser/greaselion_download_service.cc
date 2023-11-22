@@ -27,8 +27,11 @@
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
 
-#if !defined(OFFICIAL_BUILD)
+namespace greaselion {
+
 namespace {
+
+#if !defined(OFFICIAL_BUILD)
 bool StartFilePathWatcher(base::FilePathWatcher* watcher,
                           const base::FilePath& file_path,
                           base::FilePathWatcher::Type type,
@@ -39,13 +42,8 @@ bool StartFilePathWatcher(base::FilePathWatcher* watcher,
 
   return watcher->Watch(file_path, type, callback);
 }
-}  // namespace
 #endif
 
-namespace greaselion {
-
-const char kGreaselionConfigFile[] = "Greaselion.json";
-const char kGreaselionConfigFileVersion[] = "1";
 const char kRuleNameFormat[] = "greaselion-%zu";
 // Greaselion.json keys
 const char kPreconditions[] = "preconditions";
@@ -58,13 +56,12 @@ const char kMessages[] = "messages";
 const char kMinimumBraveVersion[] = "minimum_brave_version";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
-const char kTwitterTips[] = "twitter-tips-enabled";
-const char kRedditTips[] = "reddit-tips-enabled";
-const char kGithubTips[] = "github-tips-enabled";
 const char kAutoContribution[] = "auto-contribution-enabled";
 const char kAds[] = "ads-enabled";
 const char kSupportsMinimumBraveVersion[] =
     "supports-minimum-brave-version";
+
+}  // namespace
 
 GreaselionRule::GreaselionRule(const std::string& name) : name_(name) {}
 
@@ -93,12 +90,6 @@ void GreaselionRule::Parse(base::Value::Dict* preconditions_value,
       GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
       if (kv.first == kRewards) {
         preconditions_.rewards_enabled = condition;
-      } else if (kv.first == kTwitterTips) {
-        preconditions_.twitter_tips_enabled = condition;
-      } else if (kv.first == kRedditTips) {
-        preconditions_.reddit_tips_enabled = condition;
-      } else if (kv.first == kGithubTips) {
-        preconditions_.github_tips_enabled = condition;
       } else if (kv.first == kAutoContribution) {
         preconditions_.auto_contribution_enabled = condition;
       } else if (kv.first == kAds) {
@@ -159,15 +150,6 @@ bool GreaselionRule::Matches(
   // Validate against preconditions.
   if (!PreconditionFulfilled(preconditions_.rewards_enabled,
                              state[greaselion::REWARDS]))
-    return false;
-  if (!PreconditionFulfilled(preconditions_.twitter_tips_enabled,
-                             state[greaselion::TWITTER_TIPS]))
-    return false;
-  if (!PreconditionFulfilled(preconditions_.reddit_tips_enabled,
-                             state[greaselion::REDDIT_TIPS]))
-    return false;
-  if (!PreconditionFulfilled(preconditions_.github_tips_enabled,
-                             state[greaselion::GITHUB_TIPS]))
     return false;
   if (!PreconditionFulfilled(preconditions_.auto_contribution_enabled,
                              state[greaselion::AUTO_CONTRIBUTION]))

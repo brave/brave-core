@@ -48,8 +48,6 @@ absl::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);
 absl::optional<std::string> ParseEthGasPrice(const base::Value& json_value);
 bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs);
 
-bool ParseEnsResolverContentHash(const base::Value& json_value,
-                                 std::vector<uint8_t>* content_hash);
 absl::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value);
 

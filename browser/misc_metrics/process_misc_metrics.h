@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
@@ -27,8 +27,10 @@ class MenuMetrics;
 class VerticalTabMetrics;
 #else
 class PrivacyHubMetrics;
+class TabMetrics;
 #endif
 class DohMetrics;
+class UptimeMonitor;
 
 class ProcessMiscMetrics {
  public:
@@ -45,6 +47,8 @@ class ProcessMiscMetrics {
   VerticalTabMetrics* vertical_tab_metrics();
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
+  TabMetrics* tab_metrics();
+  UptimeMonitor* uptime_monitor();
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics* ai_chat_metrics();
@@ -56,11 +60,13 @@ class ProcessMiscMetrics {
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
+  std::unique_ptr<TabMetrics> tab_metrics_;
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
 #endif
   std::unique_ptr<DohMetrics> doh_metrics_;
+  std::unique_ptr<UptimeMonitor> uptime_monitor_;
 };
 
 }  // namespace misc_metrics

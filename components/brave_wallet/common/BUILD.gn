@@ -64,7 +64,6 @@ static_library("common") {
     "solana_utils.h",
     "string_utils.cc",
     "string_utils.h",
-    "switches.cc",
     "switches.h",
     "value_conversion_utils.cc",
     "value_conversion_utils.h",
@@ -93,7 +92,6 @@ static_library("common") {
 source_set("common_constants") {
   sources = [
     "brave_wallet_constants.h",
-    "web3_provider_constants.cc",
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]

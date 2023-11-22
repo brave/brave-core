@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_COUNTRY_CODE_COUNTRY_CODE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_COUNTRY_CODE_COUNTRY_CODE_H_
 
-#include <memory>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer.h"

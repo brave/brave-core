@@ -44,8 +44,9 @@ class GeneralBrowserUsage;
 
 namespace brave_stats {
 
-extern const char kP3AMonthlyPingHistogramName[];
-extern const char kP3ADailyPingHistogramName[];
+inline constexpr char kP3AMonthlyPingHistogramName[] =
+    "Brave.Core.UsageMonthly";
+inline constexpr char kP3ADailyPingHistogramName[] = "Brave.Core.UsageDaily";
 
 class BraveStatsUpdaterParams;
 

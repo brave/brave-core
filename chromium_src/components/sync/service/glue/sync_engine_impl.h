@@ -11,7 +11,7 @@
 // DisableProtocolEventForwarding include explicitly it to avoid compilation
 // error 'DisableProtocolEventForwarding' macro redefined
 #include "components/sync/engine/sync_engine.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 #define DisableProtocolEventForwarding                                       \
   PermanentlyDeleteAccount(                                                  \

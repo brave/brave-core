@@ -11,14 +11,15 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -27,7 +28,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/google/core/common/google_util.h"
 #include "components/grit/brave_components_strings.h"
@@ -38,6 +39,10 @@
 #include "extensions/common/extension_urls.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/common/features.h"
+#endif
 
 namespace settings {
 
@@ -388,6 +393,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL},
     {"leoClearHistoryDataSubLabel",
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL},
+    {"braveLeoAssistantModelSelectionLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
+    {"braveLeoModelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
+    {"braveLeoModelSubtitle-chat-default", IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE},
+    {"braveLeoModelSubtitle-chat-leo-expanded",
+     IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
+    {"braveLeoModelSubtitle-chat-claude-instant",
+     IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
 
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
@@ -409,14 +422,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
     {"braveRewardsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
-    {"braveRewardsShowTipButtonsLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL},
-    {"braveRewardsInlineTipRedditLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL},
-    {"braveRewardsInlineTipTwitterLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_TWITTER_LABEL},
-    {"braveRewardsInlineTipGithubLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL},
     // Misc (TODO: Organize this)
     {"showSearchTabsBtn", IDS_SETTINGS_TABS_SEARCH_SHOW},
     {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
@@ -568,6 +573,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletEthNetworksListTitle", IDS_SETTINGS_WALLET_ETH_NETWORK_LIST_TITLE},
     {"walletFilNetworksListTitle", IDS_SETTINGS_WALLET_FIL_NETWORK_LIST_TITLE},
     {"walletSolNetworksListTitle", IDS_SETTINGS_WALLET_SOL_NETWORK_LIST_TITLE},
+    {"walletBtcNetworksListTitle", IDS_SETTINGS_WALLET_BTC_NETWORK_LIST_TITLE},
     {"walletNetworksItemDesc", IDS_SETTINGS_WALLET_NETWORKS_ITEM_DESC},
     {"walletNetworksError", IDS_SETTINGS_WALLET_NETWORKS_ERROR},
     {"walletDeleteNetworkConfirmation",
@@ -717,10 +723,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 
-  std::u16string ipfs_method_desc = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_IPFS_METHOD_DESC,
-      base::ASCIIToUTF16(ipfs::kIPFSLearnMorePrivacyURL));
-  html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
+  html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
+                                               IDS_SETTINGS_IPFS_METHOD_DESC,
+                                               ipfs::kIPFSLearnMorePrivacyURL));
 
   html_source->AddString("resolveUnstoppableDomainsSubDesc",
                          l10n_util::GetStringFUTF16(
@@ -735,7 +740,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsDefaultsSectionDescription2",
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
-                             base::ASCIIToUTF16(kBraveUIRewardsURL)));
+                             kBraveUIRewardsURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
@@ -772,20 +777,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
 
-  // Load time data for brave://settings/rewards
-  html_source->AddBoolean("inlineTipButtonsEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipButtonsEnabled));
-  html_source->AddBoolean("inlineTipTwitterEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipTwitterEnabled));
-  html_source->AddBoolean("inlineTipRedditEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipRedditEnabled));
-  html_source->AddBoolean("inlineTipGithubEnabled",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_rewards::prefs::kInlineTipGithubEnabled));
-
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
       "signInAllowedOnNextStartupInitialValue",
@@ -795,16 +786,13 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                           media_router::MediaRouterEnabled(profile));
 
   html_source->AddBoolean(
-      "isENSL2Enabled", base::FeatureList::IsEnabled(
-                            brave_wallet::features::kBraveWalletENSL2Feature));
-
-  html_source->AddBoolean("isSnsEnabled",
-                          base::FeatureList::IsEnabled(
-                              brave_wallet::features::kBraveWalletSnsFeature));
-
-  html_source->AddBoolean(
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+
+  html_source->AddBoolean(
+      "showStrictFingerprintingMode",
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShowStrictFingerprintingMode));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
@@ -933,6 +921,23 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "serviceWorkerSize",
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // We add strings regardless of the FeatureFlag state to prevent crash
+
+  // At this moment, the feature name is DNT.
+  html_source->AddString("playlist", "Playlist");
+
+  html_source->AddString("bravePlaylistEnablePlaylistLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL));
+  html_source->AddString("bravePlaylistCacheByDefaultLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL));
+  html_source->AddString("bravePlaylistCacheByDefaultSubLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL));
+#endif
 }
 
 }  // namespace settings

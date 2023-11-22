@@ -12,7 +12,11 @@ import {
   AppsListType
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
-import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
+import {
+  TopTabNav,
+  WalletBanner,
+  AddAccountModal
+} from '../../components/desktop'
 import { SearchBar, AppList } from '../../components/shared'
 import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
@@ -27,19 +31,20 @@ export interface Props {
 }
 
 const CryptoStoryView = (props: Props) => {
-  const {
-    needsBackup,
-    showAddModal,
-    onShowBackup
-  } = props
-  const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
-  const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
+  const { needsBackup, showAddModal, onShowBackup } = props
+  const [showBackupWarning, setShowBackupWarning] =
+    React.useState<boolean>(needsBackup)
+  const [showDefaultWalletBanner, setShowDefaultWalletBanner] =
+    React.useState<boolean>(needsBackup)
   const [hideNav] = React.useState<boolean>(false)
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
-    AppsList()[0].appList[0]
-  ])
-  const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
+  const [filteredAppsList, setFilteredAppsList] = React.useState<
+    AppsListType[]
+  >(AppsList())
+  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>(
+    [AppsList()[0].appList[0]]
+  )
+  const [selectedTab, setSelectedTab] =
+    React.useState<TopTabNavTypes>('portfolio')
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const browseMore = () => {
@@ -55,9 +60,7 @@ const CryptoStoryView = (props: Props) => {
     setFavoriteApps(newList)
   }
   const removeFromFavorites = (app: BraveWallet.AppItem) => {
-    const newList = favoriteApps.filter(
-      (fav) => fav.name !== app.name
-    )
+    const newList = favoriteApps.filter((fav) => fav.name !== app.name)
     setFavoriteApps(newList)
   }
 
@@ -91,7 +94,7 @@ const CryptoStoryView = (props: Props) => {
   return (
     <WalletPageStory>
       <StyledWrapper onClick={onHideMore}>
-        {!hideNav &&
+        {!hideNav && (
           <>
             <TopTabNav
               tabList={TopNavOptions()}
@@ -103,7 +106,7 @@ const CryptoStoryView = (props: Props) => {
               onClickMore={onClickMore}
               onClickSettings={onClickSettings}
             />
-            {showDefaultWalletBanner &&
+            {showDefaultWalletBanner && (
               <WalletBanner
                 description={getLocale('braveWalletDefaultWalletBanner')}
                 onDismiss={onDismissDefaultWalletBanner}
@@ -111,9 +114,9 @@ const CryptoStoryView = (props: Props) => {
                 bannerType='warning'
                 buttonText={getLocale('braveWalletWalletPopupSettings')}
               />
-            }
+            )}
 
-            {needsBackup && showBackupWarning &&
+            {needsBackup && showBackupWarning && (
               <WalletBanner
                 description={getLocale('braveWalletBackupWarningText')}
                 onDismiss={onDismissBackupWarning}
@@ -121,10 +124,10 @@ const CryptoStoryView = (props: Props) => {
                 bannerType='danger'
                 buttonText={getLocale('braveWalletBackupButton')}
               />
-            }
+            )}
           </>
-        }
-        {selectedTab === 'apps' &&
+        )}
+        {selectedTab === 'apps' && (
           <>
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
@@ -138,16 +141,10 @@ const CryptoStoryView = (props: Props) => {
               action={browseMore}
             />
           </>
-        }
-        {selectedTab === 'portfolio' &&
-          <PortfolioOverview />
-        }
-        {selectedTab === 'accounts' &&
-          <Accounts />
-        }
-        {showAddModal &&
-          <AddAccountModal />
-        }
+        )}
+        {selectedTab === 'portfolio' && <PortfolioOverview />}
+        {selectedTab === 'accounts' && <Accounts />}
+        {showAddModal && <AddAccountModal />}
       </StyledWrapper>
     </WalletPageStory>
   )

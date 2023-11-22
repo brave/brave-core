@@ -35,9 +35,9 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
+#include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
@@ -89,7 +89,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/url_constants.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
@@ -150,8 +150,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/common/features.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -224,7 +224,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/tip_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -778,11 +778,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     const absl::optional<url::Origin>& initiating_origin,
     content::RenderFrameHost* initiator_document,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
-  if (brave_rewards::IsRewardsProtocol(url)) {
-    brave_rewards::HandleRewardsProtocol(url, web_contents_getter,
-                                         page_transition);
-    return true;
-  }
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, frame_tree_node_id, navigation_data,
@@ -1048,11 +1043,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
         EthereumRemoteClientServiceFactory::GetForContext(browser_context);
     if (service->IsCryptoWalletsReady() &&
         url->SchemeIs(content::kChromeUIScheme) &&
-        url->host() == ethereum_remote_client_host) {
+        url->host() == kEthereumRemoteClientHost) {
       auto* registry = extensions::ExtensionRegistry::Get(browser_context);
       if (registry && registry->ready_extensions().GetByID(
-                          ethereum_remote_client_extension_id)) {
-        *url = GURL(ethereum_remote_client_base_url);
+                          kEthereumRemoteClientExtensionId)) {
+        *url = GURL(kEthereumRemoteClientBaseUrl);
         return true;
       }
     }
@@ -1067,6 +1062,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationHandle* handle) {
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+
+  // inserting the navigation throttle at the fist position before any java
+  // navigation happens
+  throttles.insert(
+      throttles.begin(),
+      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
+          handle));
 
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
@@ -14,48 +14,46 @@
 namespace brave_ads {
 
 class BraveAdsSearchResultAdsPerDayPermissionRuleTest : public UnitTestBase {
- protected:
-  const SearchResultAdsPerDayPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumSearchResultAdsPerDay.Get() - 1);
+  test::RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumSearchResultAdsPerDay.Get() - 1);
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumSearchResultAdsPerDay.Get());
+  test::RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumSearchResultAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasSearchResultAdsPerDayPermission());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
-                           /*count=*/kMaximumSearchResultAdsPerDay.Get());
+  test::RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                       /*count=*/kMaximumSearchResultAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(HasSearchResultAdsPerDayPermission());
 }
 
 }  // namespace brave_ads

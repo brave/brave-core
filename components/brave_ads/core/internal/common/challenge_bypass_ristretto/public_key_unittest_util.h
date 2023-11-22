@@ -10,9 +10,13 @@ namespace brave_ads::cbr {
 
 class PublicKey;
 
-PublicKey GetPublicKeyForTesting();
-PublicKey GetMismatchingPublicKeyForTesting();
-PublicKey GetInvalidPublicKeyForTesting();
+namespace test {
+
+PublicKey GetPublicKey();
+PublicKey GetMismatchingPublicKey();
+PublicKey GetInvalidPublicKey();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

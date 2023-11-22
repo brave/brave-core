@@ -17,8 +17,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDownloadBubbleV2, base::FEATURE_ENABLED_BY_DEFAULT},
 #endif
     {kExtensionTelemetry, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kExtensionTelemetryDeclarativeNetRequestSignal,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionTelemetryDisableOffstoreExtensions,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionTelemetryTabsApiSignal, base::FEATURE_DISABLED_BY_DEFAULT},

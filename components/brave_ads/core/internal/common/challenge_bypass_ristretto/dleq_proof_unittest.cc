@@ -50,9 +50,8 @@ TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
 
 TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
   // Arrange
-  const DLEQProof dleq_proof(GetInvalidBlindedTokenForTesting(),
-                             GetSignedTokenForTesting(),
-                             GetSigningKeyForTesting());
+  const DLEQProof dleq_proof(test::GetInvalidBlindedToken(),
+                             test::GetSignedToken(), test::GetSigningKey());
 
   // Act & Assert
   EXPECT_FALSE(dleq_proof.has_value());
@@ -60,9 +59,9 @@ TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
 
 TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
   // Arrange
-  const DLEQProof dleq_proof(GetBlindedTokenForTesting(),
-                             GetInvalidSignedTokenForTesting(),
-                             GetSigningKeyForTesting());
+  const DLEQProof dleq_proof(test::GetBlindedToken(),
+                             test::GetInvalidSignedToken(),
+                             test::GetSigningKey());
 
   // Act & Assert
   EXPECT_FALSE(dleq_proof.has_value());
@@ -70,9 +69,8 @@ TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
 
 TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
-  const DLEQProof dleq_proof(GetBlindedTokenForTesting(),
-                             GetSignedTokenForTesting(),
-                             GetInvalidSigningKeyForTesting());
+  const DLEQProof dleq_proof(test::GetBlindedToken(), test::GetSignedToken(),
+                             test::GetInvalidSigningKey());
 
   // Act & Assert
   EXPECT_FALSE(dleq_proof.has_value());
@@ -123,9 +121,8 @@ TEST_F(BraveAdsDLEQProofTest, Verify) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act & Assert
-  EXPECT_TRUE(dleq_proof.Verify(GetBlindedTokenForTesting(),
-                                GetSignedTokenForTesting(),
-                                GetPublicKeyForTesting()));
+  EXPECT_TRUE(dleq_proof.Verify(test::GetBlindedToken(), test::GetSignedToken(),
+                                test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
@@ -133,9 +130,8 @@ TEST_F(BraveAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
   DLEQProof dleq_proof;
 
   // Act & Assert
-  EXPECT_FALSE(dleq_proof.Verify(GetBlindedTokenForTesting(),
-                                 GetSignedTokenForTesting(),
-                                 GetPublicKeyForTesting()));
+  EXPECT_FALSE(dleq_proof.Verify(test::GetBlindedToken(),
+                                 test::GetSignedToken(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
@@ -143,9 +139,8 @@ TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act & Assert
-  EXPECT_FALSE(dleq_proof.Verify(GetInvalidBlindedTokenForTesting(),
-                                 GetSignedTokenForTesting(),
-                                 GetPublicKeyForTesting()));
+  EXPECT_FALSE(dleq_proof.Verify(test::GetInvalidBlindedToken(),
+                                 test::GetSignedToken(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
@@ -153,9 +148,9 @@ TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act & Assert
-  EXPECT_FALSE(dleq_proof.Verify(GetBlindedTokenForTesting(),
-                                 GetInvalidSignedTokenForTesting(),
-                                 GetPublicKeyForTesting()));
+  EXPECT_FALSE(dleq_proof.Verify(test::GetBlindedToken(),
+                                 test::GetInvalidSignedToken(),
+                                 test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
@@ -163,9 +158,9 @@ TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act & Assert
-  EXPECT_FALSE(dleq_proof.Verify(GetBlindedTokenForTesting(),
-                                 GetSignedTokenForTesting(),
-                                 GetMismatchingPublicKeyForTesting()));
+  EXPECT_FALSE(dleq_proof.Verify(test::GetBlindedToken(),
+                                 test::GetSignedToken(),
+                                 test::GetMismatchingPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
@@ -173,9 +168,9 @@ TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act & Assert
-  EXPECT_FALSE(dleq_proof.Verify(GetBlindedTokenForTesting(),
-                                 GetSignedTokenForTesting(),
-                                 GetInvalidPublicKeyForTesting()));
+  EXPECT_FALSE(dleq_proof.Verify(test::GetBlindedToken(),
+                                 test::GetSignedToken(),
+                                 test::GetInvalidPublicKey()));
 }
 
 TEST_F(BraveAdsDLEQProofTest, IsEqual) {

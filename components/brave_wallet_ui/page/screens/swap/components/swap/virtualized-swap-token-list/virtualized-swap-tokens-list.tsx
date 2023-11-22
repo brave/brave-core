@@ -7,16 +7,12 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 
-import {
-  useGetSelectedChainQuery
-} from '../../../../../../common/slices/api.slice'
-
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  TokenListButton
+  TokenListButton //
 } from '../../buttons/token-list-button/token-list-button'
 import Amount from '../../../../../../utils/amount'
 
@@ -24,13 +20,17 @@ interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
   getCachedAssetBalance: (token: BraveWallet.BlockchainToken) => Amount
-  disabledToken: Pick<BraveWallet.BlockchainToken, 'contractAddress'> | undefined
+  disabledToken:
+    | Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+    | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   index: number
   data: BraveWallet.BlockchainToken[]
   style: React.CSSProperties
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 const itemSize = 72
@@ -50,12 +50,10 @@ const ListItem = (props: ListItemProps) => {
     getCachedAssetBalance,
     disabledToken,
     onSelectToken,
-    style
+    style,
+    selectedNetwork
   } = props
   const token = data[index]
-
-  // Queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   return (
     <div style={style}>
@@ -79,7 +77,8 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
     tokenList,
     disabledToken,
     getCachedAssetBalance,
-    onSelectToken
+    onSelectToken,
+    selectedNetwork
   } = props
 
   return (
@@ -106,6 +105,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
                 getCachedAssetBalance={getCachedAssetBalance}
                 disabledToken={disabledToken}
                 onSelectToken={onSelectToken}
+                selectedNetwork={selectedNetwork}
               />
             )}
           />

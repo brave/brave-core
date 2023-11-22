@@ -9,9 +9,11 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import { RecoveryPhraseExplainer } from './explain-recovery-phrase'
 
 export const _BackupRecoveryPhraseExplainer = () => {
-  return <WalletPageStory>
-    <RecoveryPhraseExplainer />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <RecoveryPhraseExplainer />
+    </WalletPageStory>
+  )
 }
 
 _BackupRecoveryPhraseExplainer.story = {

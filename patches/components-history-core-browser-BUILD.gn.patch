@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index fcd97b996f10aca76a8406fc4058ce69355ca87e..5e64c0d27c4f9473eed3b077685b907d17149075 100644
+index fc27ae207fbb87e7b72b0cb976ed5ed0f7dff367..ff0395c8a861dcdf37af877c292d2967687a12c7 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
-@@ -157,6 +157,7 @@ static_library("browser") {
+@@ -153,6 +153,7 @@ static_library("browser") {
        "android/visit_sql_handler.h",
      ]
    }

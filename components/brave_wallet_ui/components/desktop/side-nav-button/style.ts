@@ -19,7 +19,9 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
   outline: none;
   padding: 13px;
   background: ${(p) =>
-    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : 'none'};
+    p.isSelected
+      ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)'
+      : 'none'};
   border: none;
 `
 

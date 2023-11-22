@@ -23,6 +23,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -68,6 +69,7 @@ struct NewTabPageAdInfo;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,
+                       public bat_ads::mojom::BatAdsObserver,
                        BackgroundHelper::Observer,
                        public ResourceComponentObserver,
                        public brave_rewards::RewardsServiceObserver,
@@ -117,8 +119,7 @@ class AdsServiceImpl : public AdsService,
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
   void StartBatAdsService();
-  void RestartBatAdsServiceAfterDelay();
-  void CancelRestartBatAdsService();
+  void DisconnectHandler();
   bool ShouldProceedInitialization(size_t current_start_number) const;
   void BatAdsServiceCreatedCallback(size_t current_start_number);
   void InitializeBasePathDirectoryCallback(size_t current_start_number,
@@ -141,6 +142,8 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
+
+  void ShowReminder(mojom::ReminderType type);
 
   void CloseAdaptiveCaptcha();
 
@@ -196,9 +199,10 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  int64_t GetMaximumNotificationAdsPerHour() const override;
+  void AddBatAdsObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
-  bool NeedsBrowserUpgradeToServeAds() const override;
+  int64_t GetMaximumNotificationAdsPerHour() const override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
@@ -299,10 +303,6 @@ class AdsServiceImpl : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void ShowReminder(mojom::ReminderType type) override;
-
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& type,
                                  const std::string& confirmation_type,
@@ -348,51 +348,34 @@ class AdsServiceImpl : public AdsService,
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
-  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                             training_sample) override;
+  void AddFederatedLearningPredictorTrainingSample(
+      std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
+      override;
 
-  void GetBooleanPref(const std::string& path,
-                      GetBooleanPrefCallback callback) override;
-  void GetIntegerPref(const std::string& path,
-                      GetIntegerPrefCallback callback) override;
-  void GetDoublePref(const std::string& path,
-                     GetDoublePrefCallback callback) override;
-  void GetStringPref(const std::string& path,
-                     GetStringPrefCallback callback) override;
-  void GetInt64Pref(const std::string& path,
-                    GetInt64PrefCallback callback) override;
-  void GetUint64Pref(const std::string& path,
-                     GetUint64PrefCallback callback) override;
-  void GetTimePref(const std::string& path,
-                   GetTimePrefCallback callback) override;
-  void GetDictPref(const std::string& path,
-                   GetDictPrefCallback callback) override;
-  void GetListPref(const std::string& path,
-                   GetListPrefCallback callback) override;
-  void HasPrefPath(const std::string& path,
-                   HasPrefPathCallback callback) override;
-
-  void SetBooleanPref(const std::string& path, bool value) override;
-  void SetIntegerPref(const std::string& path, int value) override;
-  void SetDoublePref(const std::string& path, double value) override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  void SetInt64Pref(const std::string& path, int64_t value) override;
-  void SetUint64Pref(const std::string& path, uint64_t value) override;
-  void SetTimePref(const std::string& path, base::Time value) override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-
-  void ClearPref(const std::string& path) override;
+  void GetProfilePref(const std::string& path,
+                      GetProfilePrefCallback callback) override;
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  void ClearProfilePref(const std::string& path) override;
+  void HasProfilePrefPath(const std::string& path,
+                          HasProfilePrefPathCallback callback) override;
 
   void GetLocalStatePref(const std::string& path,
                          GetLocalStatePrefCallback callback) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
+  void ClearLocalStatePref(const std::string& path) override;
+  void HasLocalStatePrefPath(const std::string& path,
+                             HasLocalStatePrefPathCallback callback) override;
 
   void Log(const std::string& file,
            int32_t line,
            int32_t verbose_level,
            const std::string& message) override;
+
+  // bat_ads::mojom::BatAdsObserver:
+  void OnAdRewardsDidChange() override {}
+  void OnBrowserUpgradeRequiredToServeAds() override {}
+  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnRemindUser(mojom::ReminderType type) override;
 
   // BackgroundHelper::Observer:
   void OnBrowserDidEnterForeground() override;
@@ -409,7 +392,6 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
-  bool needs_browser_upgrade_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.
@@ -420,8 +402,6 @@ class AdsServiceImpl : public AdsService,
   PrefChangeRegistrar pref_change_registrar_;
 
   PrefChangeRegistrar local_state_pref_change_registrar_;
-
-  base::OneShotTimer restart_bat_ads_service_timer_;
 
   mojom::SysInfo sys_info_;
 
@@ -470,12 +450,17 @@ class AdsServiceImpl : public AdsService,
   const raw_ptr<brave_federated::AsyncDataStore>
       notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
 
-  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
-  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
-  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
-  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
+
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
+  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
+  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_associated_remote_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
-      bat_ads_client_notifier_receiver_;
+      bat_ads_client_notifier_pending_receiver_;
 };
 
 }  // namespace brave_ads

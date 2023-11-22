@@ -6,9 +6,7 @@
 import styled from 'styled-components'
 import { WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
-import {
-  layoutPanelWidth
-} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AdvancedButton = styled(WalletButton)`
   display: flex;
@@ -22,11 +20,13 @@ export const AdvancedButton = styled(WalletButton)`
   padding: 0px;
 `
 
-export const AdvancedIcon = styled(CaratStrongDownIcon) <Partial<{ rotated: boolean }>>`
+export const AdvancedIcon = styled(CaratStrongDownIcon)<
+  Partial<{ rotated: boolean }>
+>`
   width: 18px;
   height: 18px;
   color: ${(p) => p.theme.color.interactive07};
-  transform: ${(p) => p.rotated ? 'rotate(180deg)' : 'rotate(0deg)'};
+  transform: ${(p) => (p.rotated ? 'rotate(180deg)' : 'rotate(0deg)')};
   margin-right: 10px;
 `
 
@@ -128,7 +128,7 @@ export const InputLabel = styled.span`
 
 export const Input = styled.input`
   outline: none;
-  width: ${p => p.width ? p.width : '100%'};
+  width: ${(p) => (p.width ? p.width : '100%')};
   background-image: none;
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;

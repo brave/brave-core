@@ -289,7 +289,7 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
 
   for (const auto& logs_list_it : *result) {
     auto log_item_value =
-        json_rpc_responses::EthGetLogsResult::FromValueDeprecated(logs_list_it);
+        json_rpc_responses::EthGetLogsResult::FromValue(logs_list_it);
     if (!log_item_value) {
       return false;
     }
@@ -323,18 +323,6 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
     logs->push_back(log);
   }
 
-  return true;
-}
-
-bool ParseEnsResolverContentHash(const base::Value& json_value,
-                                 std::vector<uint8_t>* content_hash) {
-  content_hash->clear();
-
-  std::string string_content_hash;
-  if (!ParseStringResult(json_value, &string_content_hash)) {
-    return false;
-  }
-  content_hash->assign(string_content_hash.begin(), string_content_hash.end());
   return true;
 }
 

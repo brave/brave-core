@@ -9,6 +9,7 @@ generated_types("api") {
   sources = [
     "combined_feed.idl",
     "publisher.idl",
+    "topics.idl",
   ]
 
   root_namespace = "brave_news::api::%(namespace)s"

@@ -19,7 +19,7 @@ You should set up mocks in `SetUpMocks`, `TEST_F`, or `TEST_P`. You should **NOT
 
 ## Integration Testing
 
-Override `SetUp` and call `SetUpForTesting` with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances with data to replicate live settings to simulate a real user scenario from start to finish.
+Override `SetUp` and call `SetUp` with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances with data to replicate live settings to simulate a real user scenario from start to finish.
 
 Use the `GetAds` convenience function to access `AdsImpl`. i.e.
 
@@ -48,7 +48,6 @@ You can mock file resources loaded with `LoadFileResource` by placing your mocke
 
 You can mock files loaded with `LoadFile` by placing your mocked files in the following directory:
 
-
     .
     └── brave/components/brave_ads/core/
         └── test/
@@ -58,9 +57,7 @@ You can copy files to the simulated user profile (temp path) using `CopyFileFrom
 
 ## Mocking Prefs
 
-Prefs must be registered in [unittest_pref_registry_util.cc](./unittest_pref_registry_util.cc).
-
-You can call `ads_client_mock_->Set*Pref` to set a pref and notify listeners. If you do not want to notify listeners, you can call `Set*Pref`, which will only set the pref. See [unittest_pref_util.h](./unittest_pref_util.h).
+Profile and local state prefs must be registered in [unittest_profile_pref_registry.cc](./unittest_profile_pref_registry.cc) and [unittest_local_state_pref_registry.cc](./unittest_local_state_pref_registry.cc). You can call `SetProfile*Pref` or `SetLocalState*Pref` to set a pref and notify listeners. If you do not want to notify listeners, call `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [unittest_profile_pref_value.h](./unittest_profile_pref_value.h) and [unittest_local_state_pref_value.h](./unittest_local_state_pref_value.h).
 
 ## Mocking Server Responses
 
@@ -79,7 +76,7 @@ Mocked responses for URL requests can be defined inline or read from a text file
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
-Inline responses can contain `<time:period>` tags for mocking timestamps, where `period` can be `now`, `distant_past`, `distant_future`, `+/-# seconds`, `+/-# minutes`, `+/-# hours` or `+/-# days`, i.e.
+Inline or text file responses can contain `<time:period>` tags for mocking timestamps, where `period` can be `now`, `distant_past`, `distant_future`, `+/-# seconds`, `+/-# minutes`, `+/-# hours` or `+/-# days`, i.e.
 
     const URLResponseMap url_responses = {
       "/foo/bar", {
@@ -124,8 +121,8 @@ See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
 | mock  | type  | default  | example  |
 |---|---|---|---|
 | Device identifier  |  |  | `MockDeviceId();`  |
-| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
-| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
+| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kNightly);`  |
+| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
 | Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |

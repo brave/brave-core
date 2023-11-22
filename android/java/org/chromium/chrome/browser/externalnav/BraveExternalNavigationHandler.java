@@ -8,8 +8,9 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveWalletProvider;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
@@ -20,8 +21,6 @@ import org.chromium.url.GURL;
  * Extends Chromium's ExternalNavigationHandler
  */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
-    // private static final String TAG = "BraveUrlHandler";
-    private BraveWalletProvider mBraveWalletProvider;
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);
@@ -29,18 +28,9 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
-        if (isWalletProviderOverride(params)) {
-            String originalUrl = params.getUrl().getSpec();
-            String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
-            GURL browserFallbackGURL = new GURL(url);
-            if (params.getRedirectHandler() != null) {
-                params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
-            }
-            return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
-        }
         // TODO: Once we have a ready for https://github.com/brave/brave-browser/issues/33015, We'll
         // use this code
-        /*else if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
+        /*if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
             try {
                 BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -51,32 +41,16 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
         return super.shouldOverrideUrlLoading(params);
     }
 
-    private boolean isWalletProviderOverride(ExternalNavigationParams params) {
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.UPHOLD_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.BITFLYER_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.GEMINI_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.ZEBPAY_REDIRECT_URL)) {
-            return true;
-        }
-
-        return false;
-    }
-
     @Override
     protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
             QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
             GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS, true)) {
+        boolean isYoutubeDomain = intentDataUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
+        if ((isYoutubeDomain
+                        && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
+                || (!isYoutubeDomain
+                        && ContextUtils.getAppSharedPreferences()
+                                .getBoolean(BravePrivacySettings.PREF_APP_LINKS, true))) {
             return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
                     resolveActivity, browserFallbackUrl, intentDataUrl, params);
         } else {

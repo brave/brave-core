@@ -7,6 +7,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
@@ -27,8 +28,6 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
               {kColorBraveVerticalTabInactiveBackground,
                kColorTabBackgroundActiveFrameActive},
               {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
-              {kColorBraveVerticalTabHeaderButtonColor,
-               kColorToolbarButtonIcon},
               {kColorBraveVerticalTabNTBIconColor,
                kColorTabForegroundInactiveFrameActive},
               {kColorBraveVerticalTabNTBTextColor,
@@ -71,12 +70,9 @@ void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
   static constexpr const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
           {kColorBraveVerticalTabActiveBackground, SK_ColorWHITE},
-          {kColorBraveVerticalTabInactiveBackground,
-           SkColorSetRGB(0xf3, 0xf3, 0xf3)},
+          {kColorBraveVerticalTabInactiveBackground, kLightToolbar},
           {kColorBraveVerticalTabSeparator,
            SkColorSetA(SK_ColorBLACK, 0.05 * 255)},
-          {kColorBraveVerticalTabHeaderButtonColor,
-           SkColorSetRGB(0x6B, 0x70, 0x84)},
           {kColorBraveVerticalTabNTBIconColor,
            SkColorSetARGB(0.6 * 255, 0x1D, 0x1F, 0x25)},
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x6B, 0x70, 0x84)},
@@ -95,13 +91,10 @@ void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
 
   static constexpr const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
-          {kColorBraveVerticalTabActiveBackground,
-           SkColorSetA(SK_ColorBLACK, 0.3 * 255)},
-          {kColorBraveVerticalTabInactiveBackground,
-           SkColorSetRGB(0x30, 0x34, 0x43)},
+          {kColorBraveVerticalTabActiveBackground, kDarkFrame},
+          {kColorBraveVerticalTabInactiveBackground, kDarkToolbar},
           {kColorBraveVerticalTabSeparator,
            SkColorSetA(SK_ColorWHITE, 0.1 * 255)},
-          {kColorBraveVerticalTabHeaderButtonColor, SK_ColorWHITE},
           {kColorBraveVerticalTabNTBIconColor,
            SkColorSetA(SK_ColorWHITE, 0.6 * 255)},
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x8C, 0x90, 0xA1)},

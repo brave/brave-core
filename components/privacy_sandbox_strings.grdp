@@ -2156,4 +2156,70 @@
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V2_TOPIC_ID_629" desc="Taxonomy Member. Meaning: [holiday &amp; vacation packages, these typically include transportation &amp; accommodation and sometimes meals; also theme or activity-based travel packages] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/3495940381581141578">
     Vacation Offers
   </message>
+
+  <!-- Tracking Protection -->
+  <!-- TODO(b/295926938: finalize the strings. -->
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Tracking Protection
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+    Brave limits the amount of information sites can use to track you as you browse. You can change your settings to choose your own level of protection.
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_TITLE" desc="Title of the tracking protection onboarding notice" translateable="false">
+    Browse with more privacy
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_BODY" desc="Content of the tracking protection notice, informing the user that they now have their third party cookies disabled by default" translateable="false">
+    You’re one of the first to experience Tracking Protection, which limits sites from using third-party cookies to track you as you browse.
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_SETTINGS_BUTTON_LABEL" desc="The user can choose to click “Settings“ to visit chrome://settings/cookies. If they do, they will find the cookie controls reflecting the new tracking protections." translateable="false">
+    Settings
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Brave automatically limits third-party cookies
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+    Most sites can’t use third-party cookies to track you as you browse, and sites can’t use third-party cookies in Private mode.
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Most sites should work as expected
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+    If a site isn’t working, you can try giving it temporary permission to use third-party cookies. Learn more
+  </message>
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ADVANCED_CATEGORY" desc="" translateable="false" formatter_data="android_java">
+    Advanced
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Block all third-party cookies
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_SUMMARY" desc="" translateable="false" formatter_data="android_java">
+    Features on some sites may not work. Learn more
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Send a “Do Not Track” request with your browsing traffic
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_SUMMARY" desc="" translateable="false" formatter_data="android_java">
+    Sites use their discretion when responding to this request
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_TITLE" desc="" translateable="false" formatter_data="android_java">
+    Sites allowed to use third-party cookies
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+    Affects the sites listed here and their subdomains. For example, adding “google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_NEVER_EXPIRES_LABEL" desc="" translateable="false" formatter_data="android_java">
+    Does not expire
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_EXPIRES_TODAY_LABEL" desc="" translateable="false" formatter_data="android_java">
+    Expires today
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_EXPIRES_LABEL" desc="" translateable="false" formatter_data="android_java">
+    {COUNT, plural,
+      =1 {Expires tomorrow}
+      other {Expires in # days}
+    }
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_DELETE_SITE_LABEL" desc="" translateable="false" formatter_data="android_java">
+    Delete site
+  </message>
 </grit-part>

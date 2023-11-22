@@ -20,6 +20,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -33,6 +34,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -64,8 +66,7 @@ constexpr base::TimeDelta kP3AEnabledReportTimeDelay = base::Seconds(3);
 bool GetIsEnabled(PrefService* prefs) {
   bool should_show = prefs->GetBoolean(prefs::kNewTabPageShowToday);
   bool opted_in = prefs->GetBoolean(prefs::kBraveNewsOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  return is_enabled;
+  return should_show && opted_in;
 }
 
 // static
@@ -152,6 +153,22 @@ void BraveNewsController::ClearHistory() {
   // feed cache somewhere.
 }
 
+bool BraveNewsController::MaybeInitFeedV2() {
+  if (!GetIsEnabled(prefs_) ||
+      !base::FeatureList::IsEnabled(
+          brave_news::features::kBraveNewsFeedUpdate)) {
+    return false;
+  }
+
+  if (!feed_v2_builder_) {
+    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
+  }
+
+  return true;
+}
+
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
   mojo::PendingRemote<mojom::BraveNewsController> remote;
@@ -175,35 +192,48 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
   feed_controller_.GetOrFetchFeed(std::move(callback));
 }
 
-void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
-  if (!GetIsEnabled(prefs_) ||
-      !base::FeatureList::IsEnabled(
-          brave_news::features::kBraveNewsFeedUpdate)) {
+void BraveNewsController::GetFollowingFeed(GetFollowingFeedCallback callback) {
+  if (!MaybeInitFeedV2()) {
     std::move(callback).Run(mojom::FeedV2::New());
     return;
   }
 
-  if (!feed_v2_builder_) {
-    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
-        publishers_controller_, channels_controller_, suggestions_controller_,
-        *prefs_.get(), *history_service_.get(), url_loader_factory_);
-  }
-
-  feed_v2_builder_->Build(/*recalculate_signals=*/true, std::move(callback));
+  feed_v2_builder_->BuildFollowingFeed(std::move(callback));
 }
 
-void BraveNewsController::GetSignals(GetSignalsCallback callback) {
-  if (!GetIsEnabled(prefs_) ||
-      !base::FeatureList::IsEnabled(
-          brave_news::features::kBraveNewsFeedUpdate)) {
-    std::move(callback).Run({});
+void BraveNewsController::GetChannelFeed(const std::string& channel,
+                                         GetChannelFeedCallback callback) {
+  if (!MaybeInitFeedV2()) {
+    std::move(callback).Run(mojom::FeedV2::New());
     return;
   }
 
-  if (!feed_v2_builder_) {
-    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
-        publishers_controller_, channels_controller_, suggestions_controller_,
-        *prefs_.get(), *history_service_.get(), url_loader_factory_);
+  feed_v2_builder_->BuildChannelFeed(channel, std::move(callback));
+}
+
+void BraveNewsController::GetPublisherFeed(const std::string& publisher_id,
+                                           GetPublisherFeedCallback callback) {
+  if (!MaybeInitFeedV2()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  feed_v2_builder_->BuildPublisherFeed(publisher_id, std::move(callback));
+}
+
+void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
+  if (!MaybeInitFeedV2()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  feed_v2_builder_->BuildAllFeed(std::move(callback));
+}
+
+void BraveNewsController::GetSignals(GetSignalsCallback callback) {
+  if (!MaybeInitFeedV2()) {
+    std::move(callback).Run({});
+    return;
   }
 
   feed_v2_builder_->GetSignals(std::move(callback));
@@ -501,7 +531,28 @@ void BraveNewsController::IsFeedUpdateAvailable(
 
 void BraveNewsController::AddFeedListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
-  feed_controller_.AddListener(std::move(listener));
+  if (MaybeInitFeedV2()) {
+    feed_controller_.AddListener(std::move(listener));
+  } else {
+    feed_controller_.AddListener(std::move(listener));
+  }
+}
+void BraveNewsController::SetConfiguration(
+    mojom::ConfigurationPtr configuration,
+    SetConfigurationCallback callback) {
+  prefs_->SetBoolean(prefs::kBraveNewsOptedIn, configuration->isOptedIn);
+  prefs_->SetBoolean(prefs::kNewTabPageShowToday, configuration->showOnNTP);
+  std::move(callback).Run();
+}
+
+void BraveNewsController::AddConfigurationListener(
+    mojo::PendingRemote<mojom::ConfigurationListener> listener) {
+  auto id = configuration_listeners_.Add(std::move(listener));
+
+  auto event = mojom::Configuration::New();
+  event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
+  event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  configuration_listeners_.Get(id)->Changed(std::move(event));
 }
 
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
@@ -650,7 +701,12 @@ void BraveNewsController::CheckForFeedsUpdate() {
 
 void BraveNewsController::Prefetch() {
   VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
-  feed_controller_.EnsureFeedIsCached();
+
+  if (MaybeInitFeedV2()) {
+    feed_v2_builder_->BuildAllFeed(base::DoNothing());
+  } else {
+    feed_controller_.EnsureFeedIsCached();
+  }
 }
 
 void BraveNewsController::OnOptInChange() {
@@ -658,6 +714,13 @@ void BraveNewsController::OnOptInChange() {
       FROM_HERE, kP3AEnabledReportTimeDelay,
       base::BindOnce(&p3a::RecordFeatureEnabledChange, prefs_));
   ConditionallyStartOrStopTimer();
+
+  auto event = mojom::Configuration::New();
+  event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
+  event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  for (const auto& listener : configuration_listeners_) {
+    listener->Changed(event->Clone());
+  }
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
@@ -698,6 +761,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
+    feed_v2_builder_ = nullptr;
   }
 }
 

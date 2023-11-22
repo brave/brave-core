@@ -19,7 +19,7 @@ import {
   useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetUserTokensRegistryQuery,
+  useGetUserTokensRegistryQuery
 } from './api.slice'
 
 // entities
@@ -70,16 +70,22 @@ export const useAccountQuery = (
 }
 
 export const useAccountFromAddressQuery = (
-  address: string | undefined | typeof skipToken
+  uniqueKeyOrAddress: string | undefined | typeof skipToken
 ) => {
-  const skip = address === undefined || address === skipToken
+  const skip =
+    uniqueKeyOrAddress === undefined || uniqueKeyOrAddress === skipToken
   return useGetAccountInfosRegistryQuery(skip ? skipToken : undefined, {
     skip: skip,
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
       account:
-        res.data && !skip ? findAccountByAddress(address, res.data) : undefined
+        res.data && !skip
+          ? findAccountByAccountId(
+              { address: '', uniqueKey: uniqueKeyOrAddress },
+              res.data
+            ) || findAccountByAddress(uniqueKeyOrAddress, res.data)
+          : undefined
     })
   })
 }
@@ -91,7 +97,7 @@ export const useSelectedAccountQuery = () => {
   } = useGetAccountInfosRegistryQuery(undefined)
 
   const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
-  useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
+    useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
   const selectedAccount = selectedAccountId
     ? accountInfosRegistry.entities[

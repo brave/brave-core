@@ -31,7 +31,6 @@ source_set("brave_rewards") {
 
   deps = [
     ":rewards_mojom_wrappers",
-    ":rewards_types_mojom_wrappers",
     "//base",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
@@ -49,16 +48,6 @@ source_set("brave_rewards") {
 }
 
 ios_objc_mojom_wrappers("rewards_mojom_wrappers") {
-  mojom_target =
-      "//brave/components/brave_rewards/common/mojom:rewards_interfaces"
+  mojom_target = "//brave/components/brave_rewards/common/mojom:mojom"
   sources = [ "//brave/components/brave_rewards/common/mojom/rewards.mojom" ]
-}
-
-ios_objc_mojom_wrappers("rewards_types_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_rewards/common/mojom:rewards_types"
-
-  # rewards_types.mojom shares the same namespace/module as rewards.mojom
-  generate_namespace = false
-  sources =
-      [ "//brave/components/brave_rewards/common/mojom/rewards_types.mojom" ]
 }

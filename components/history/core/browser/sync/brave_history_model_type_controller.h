@@ -27,8 +27,7 @@ class HistoryService;
 
 class BraveHistoryModelTypeController : public HistoryModelTypeController {
  public:
-  BraveHistoryModelTypeController(syncer::ModelType model_type,
-                                  syncer::SyncService* sync_service,
+  BraveHistoryModelTypeController(syncer::SyncService* sync_service,
                                   signin::IdentityManager* identity_manager,
                                   HistoryService* history_service,
                                   PrefService* pref_service);

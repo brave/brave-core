@@ -318,12 +318,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Sync Infobars -->
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Brave Sync has been upgraded and requires setup
-      </message>
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Begin Setup
-      </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
         This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
       </message>
@@ -456,7 +450,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           With a Directory
         </message>
       </if>
-
+      <!-- Dev channel deprecation infobar -->
+      <message name="IDS_DEV_CHANNEL_DEPRECATION_INFOBAR_MESSAGE" desc="The text label of dev channel deprecation announcement.">
+        Beginning on December 1, 2023, Brave Dev channel will no longer receive browser updates. We recommend users migrate to the Nightly, Beta, or Release versions of Brave.
+      </message>
       <!-- Mac Menubar Menus -->
       <if expr="is_macosx">
         <message name="IDS_REPORT_BROKEN_SITE_MAC" desc="The Mac menu item to report a broken site in the Help menu.">
@@ -886,6 +883,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
         Learn how this affects my privacy
       </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_TEXT" desc="Prompt, asking the user whether they'd like to load the original URL rather than the resolved one when the page load fails">
+        There was an error loading the IPFS URL. Would you like to redirect to the original URL?
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_REDIRECT" desc="Redirect to the original url">
+        Redirect
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
+        No thanks
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
@@ -1291,7 +1297,22 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_A11Y_CLOSE" desc="An a11y name for a 'close' button in media player when it's mini player mode">
           Close
         </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_OFF" desc="An a11y name for a 'loop' button in media player when the loop is off">
+          Repeat off
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_ONE" desc="An a11y name for a 'loop' button in media player when repeating one item">
+          Repeat one
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
+          Repeat all
+        </message>
       </if> <!-- enable_playlist_webui -->
+
+      <if expr="enable_brave_player">
+        <message name="IDS_BRAVE_PLAYER_ACTION_VIEW" desc="A label for a button in the omnibox to open the 'Brave Player Page'">
+          Brave Player
+        </message>
+      </if> <!-- enable_brave_player -->
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

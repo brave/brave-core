@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_components_browsing_data_core_deps =
-    [ "//brave/components/ai_chat/common/buildflags" ]
+    [ "//brave/components/ai_chat/core/common/buildflags" ]

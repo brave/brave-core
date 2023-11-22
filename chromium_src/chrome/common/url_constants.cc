@@ -67,6 +67,8 @@ const char kIsolatedAppScheme[] = "isolated-app";
 
 const char kChromeNativeScheme[] = "chrome-native";
 
+const char kChromeSafePageURL[] = "https://support.brave.com/";
+
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
 
 const char kChromeSearchMostVisitedHost[] = "most-visited";
@@ -125,7 +127,8 @@ const char kExtensionControlledSettingLearnMoreURL[] =
 
 const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
-const char kFamilyGroupSiteURL[] = "https://support.brave.com/";
+const char kFamilyGroupCreateURL[] = "https://support.brave.com/";
+const char kFamilyGroupViewURL[] = "https://support.brave.com/";
 
 const char kFlashDeprecationLearnMoreURL[] =
     "https://blog.chromium.org/2017/07/so-long-and-thanks-for-all-flash.html";
@@ -148,11 +151,19 @@ const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
+const char kManage3pcHelpCenterURL[] = "https://support.brave.com/";
+
 const char kHighEfficiencyModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13383683902733";
 
 const char kHighEfficiencyModeTabDiscardingHelpUrl[] =
     "https://support.brave.com/";
+
+const char kIncognitoHelpCenterURL[] = "https://support.brave.com";
+
+const char kTrackingProtectionHelpCenterURL[] = "https://support.brave.com/";
+
+const char kUserBypassHelpCenterURL[] = "https://support.brave.com/";
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
@@ -178,6 +189,10 @@ const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185951-How-do-I-use-the-built-in-password-manager-";
 
+const char kPasswordSharingLearnMoreURL[] = "https://support.brave.com/";
+
+const char kPasswordSharingTroubleshootURL[] = "https://support.brave.com/";
+
 const char kPaymentMethodsURL[] = "https://support.brave.com";
 
 const char kPrivacyLearnMoreURL[] =
@@ -199,6 +214,8 @@ const char kSafeBrowsingHelpCenterURL[] =
 const char kSafeBrowsingHelpCenterUpdatedURL[] = "https://support.brave.com/";
 
 const char kSafeBrowsingInChromeHelpCenterURL[] = "https://support.brave.com/";
+
+const char kSafeBrowsingPTourURL[] = "https://support.brave.com/";
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/17550072876045-Lookalike-URLs";

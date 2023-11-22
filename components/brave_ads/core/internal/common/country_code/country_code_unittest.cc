@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 
-#include "base/values.h"
+#include <memory>
+
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_unittest_util.h"
@@ -22,6 +24,14 @@
 
 namespace brave_ads {
 
+namespace {
+
+absl::optional<std::string> GetCountryCode() {
+  return GetLocalStateStringPref(brave_l10n::prefs::kCountryCode);
+}
+
+}  // namespace
+
 class BraveAdsCountryCodeTest : public UnitTestBase {
  public:
   void SetUp() override {
@@ -36,18 +46,9 @@ class BraveAdsCountryCodeTest : public UnitTestBase {
                              const std::string& subdivision_code) {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
+         {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
                              country_code, subdivision_code)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
-  }
-
-  absl::optional<std::string> GetCountryCode() const {
-    auto pref_value =
-        ads_client_mock_.GetLocalStatePref(brave_l10n::prefs::kCountryCode);
-    if (!pref_value || !pref_value->is_string()) {
-      return absl::nullopt;
-    }
-    return pref_value->GetString();
   }
 
  protected:
@@ -69,7 +70,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidInitializeAds) {
 
 TEST_F(BraveAdsCountryCodeTest, PrefsNotEnabledOnDidInitializeAds) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
@@ -82,12 +83,12 @@ TEST_F(BraveAdsCountryCodeTest, PrefsNotEnabledOnDidInitializeAds) {
 
 TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "CA");
@@ -95,13 +96,12 @@ TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
 
 TEST_F(BraveAdsCountryCodeTest, OnDidChangePrefOutside) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  ads_client_mock_.SetLocalStatePref(brave_l10n::prefs::kCountryCode,
-                                     base::Value("CA"));
+  SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "CA");
@@ -109,14 +109,14 @@ TEST_F(BraveAdsCountryCodeTest, OnDidChangePrefOutside) {
 
 TEST_F(BraveAdsCountryCodeTest, PrefWasChangedBefore) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  ads_client_mock_.SetLocalStatePref(brave_l10n::prefs::kCountryCode,
-                                     base::Value("CA"));
+  SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
+
   MockHttpOkUrlResponse(/*country_code=*/"XX", /*subdivision_code=*/"sd");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "XX");
@@ -130,7 +130,7 @@ TEST_F(BraveAdsCountryCodeTest, RetryAfterInvalidUrlResponseStatusCode) {
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK,
-         BuildSubdivisionUrlResponseBodyForTesting(
+         test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

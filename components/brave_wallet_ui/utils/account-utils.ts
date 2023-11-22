@@ -3,14 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assertNotReached } from 'chrome://resources/js/assert_ts.js';
+import { assertNotReached } from 'chrome://resources/js/assert_ts.js'
 import { getLocale } from '../../common/locale'
 
 // types
-import {
-  BraveWallet,
-  WalletAccountTypeName
-} from '../constants/types'
+import { BraveWallet, WalletAccountTypeName } from '../constants/types'
 
 // constants
 import registry from '../common/constants/registry'
@@ -84,10 +81,11 @@ export const findAccountByAddress = (
   address: string,
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
-  if (!address || ! accounts)
-    return undefined
+  if (!address || !accounts) return undefined
   for (const id of accounts.ids) {
-    if (accounts.entities[id]?.address.toLowerCase() === address.toLowerCase()) {
+    if (
+      accounts.entities[id]?.address.toLowerCase() === address.toLowerCase()
+    ) {
       return accounts.entities[id]
     }
   }
@@ -95,13 +93,29 @@ export const findAccountByAddress = (
 }
 
 export const findAccountByAccountId = (
-  accountId: BraveWallet.AccountId,
+  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>,
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
   if (!accounts) {
     return undefined
   }
-  return accounts.entities[entityIdFromAccountId(accountId)]
+
+  for (const id of accounts.ids) {
+    const entity = accounts.entities[id]
+    if (!entity) {
+      continue
+    }
+    if (
+      entity.accountId.address.toLowerCase() ===
+        accountId.address.toLowerCase() ||
+      entity.accountId.uniqueKey.toLowerCase() ===
+        accountId.uniqueKey.toLowerCase()
+    ) {
+      return entity
+    }
+  }
+
+  return undefined
 }
 
 export const getAddressLabel = (
@@ -167,7 +181,6 @@ export const keyringIdForNewAccount = (
       return BraveWallet.KeyringId.kZCashTestnet
     }
   }
-
 
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }

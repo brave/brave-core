@@ -13,20 +13,13 @@ import {
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
-  ImportWalletErrorPayloadType,
-  ShowRecoveryPhrasePayload,
-  CreateWalletPayloadType,
   ImportAccountFromJsonPayloadType,
-  ImportFromExternalWalletPayloadType,
-  RestoreWalletPayloadType,
-  UpdateSelectedAssetType,
+  UpdateSelectedAssetType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
   showRecoveryPhrase: false,
-  invalidMnemonic: false,
-  importWalletError: { hasError: false },
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
   isFetchingNFTMetadata: true,
@@ -35,26 +28,19 @@ const defaultState: PageState = {
   enablingAutoPin: false,
   isAutoPinEnabled: false,
   pinStatusOverview: undefined,
-  showIsRestoring: false,
   setupStillInProgress: false,
-  isCryptoWalletsInitialized: false,
-  isMetaMaskInitialized: false,
-  isImportWalletsCheckComplete: false,
-  importWalletAttempts: 0,
   walletTermsAcknowledged: false,
   selectedCoinMarket: undefined
 }
 
 export const WalletPageAsyncActions = {
-  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
-  checkWalletsToImport: createAction('checkWalletsToImport'),
-  createWallet: createAction<CreateWalletPayloadType>('createWallet'),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
-  importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
-  importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
-  openWalletSettings: createAction('openWalletSettings'),
-  restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
-  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
+  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>(
+    'addHardwareAccounts'
+  ),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
+    'importAccountFromJson'
+  ),
+  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -64,10 +50,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
     reducers: {
       agreeToWalletTerms(state) {
         state.walletTermsAcknowledged = true
-      },
-
-      hasMnemonicError(state, { payload }: PayloadAction<boolean>) {
-        state.invalidMnemonic = payload
       },
 
       recoveryWordsAvailable(
@@ -86,47 +68,8 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.selectedCoinMarket = payload
       },
 
-      setCryptoWalletsInitialized(state, { payload }: PayloadAction<boolean>) {
-        state.isCryptoWalletsInitialized = payload
-      },
-
-      setImportWalletError(
-        state,
-        { payload }: PayloadAction<ImportWalletErrorPayloadType>
-      ) {
-        const { hasError, errorMessage, incrementAttempts } = payload
-
-        state.importWalletError = { hasError, errorMessage }
-
-        if (incrementAttempts) {
-          state.importWalletAttempts = state.importWalletAttempts + 1
-        }
-      },
-
-      setImportWalletsCheckComplete(
-        state,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.isImportWalletsCheckComplete = payload
-      },
-
       setIsFetchingNFTMetadata(state, { payload }: PayloadAction<boolean>) {
         state.isFetchingNFTMetadata = payload
-      },
-
-      setMetaMaskInitialized(state, { payload }: PayloadAction<boolean>) {
-        state.isMetaMaskInitialized = payload
-      },
-
-      setShowIsRestoring(state, action: PayloadAction<boolean>) {
-        state.showIsRestoring = action.payload
-      },
-
-      showRecoveryPhrase(
-        state,
-        { payload }: PayloadAction<ShowRecoveryPhrasePayload>
-      ) {
-        state.showRecoveryPhrase = payload.show
       },
 
       updateNFTMetadata(

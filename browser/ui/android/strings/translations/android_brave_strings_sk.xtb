@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Zatvorením všetkých kariet sa zavrie prehliadač Brave</translation>
 <translation id="8308305244351876417">Umožňuje prehrávať zvuk, keď prepnete na inú kartu v prehliadači Brave, keď prepnete na inú aplikáciu alebo keď je obrazovka zariadenia vypnutá.</translation>
 <translation id="4150201353443180367">Displej</translation>
+<translation id="4275663329226226506">Médiá</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Na zobrazenie chráneného mediálneho obsahu v prehliadači použite správu digitálnych práv Widevine (DRM).</translation>
+<translation id="255204363133978824">Povoliť chránený obsah</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Získajte viac informácií o Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Povoliť (spustiť ešte raz)</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
 <translation id="9040069796107003510">Ikona Brave Rewards</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
@@ -583,6 +589,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
+<translation id="6915830896450988084">Odoslať pomocou <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Záloha</translation>
@@ -899,6 +906,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Rozšíriť</translation>
 <translation id="3586752056660754651">Podepsat</translation>
+<translation id="3950820424414687140">Prihlásiť sa</translation>
 <translation id="6592721981110586529">Prepojiť s peňaženkou Brave</translation>
 <translation id="329813193938846695">Vyberte účty</translation>
 <translation id="291375746846291973">Spojte sa iba s webmi, ktorým dôverujete.</translation>
@@ -1047,6 +1055,14 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5802752138057422257">Zistili sa iné znaky ako ASCII!</translation>
 <translation id="442709594176931966">Zobraziť pôvodnú správu</translation>
 <translation id="2239252396088484499">Zobraziť správu v kódovaní ASCII</translation>
+<translation id="4530494379350999373">Pôvod</translation>
+<translation id="6736243959894955139">Adresa</translation>
+<translation id="3095940652251934233">Výpis</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Verzia</translation>
+<translation id="1313065465616456728">Vydané o</translation>
+<translation id="7902225556763260253">Čas vypršania platnosti</translation>
+<translation id="1908159733454294871">Zistené bezpečnostné riziko</translation>
 <translation id="4220693114674044366">Adresa tokenu</translation>
 <translation id="5658257029899993935">Prepojenie nákupu s účtom Brave</translation>
 <translation id="1187061015547219282">Prepojte svoj nákup v Obchode Play s účtom Brave a používajte Brave VPN na iných zariadeniach.</translation>
@@ -1179,4 +1195,11 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5494920125229734069">Vybrať všetko</translation>
 <translation id="5972844218283131174">Odznačiť všetko</translation>
 <translation id="6322030314101903925">Žiadne dostupné aktíva</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
+<translation id="3696514931437952995">Prihlasujete sa do <ph name="ORIGIN"/>. Peňaženka Brave bude zdieľať adresu vašej peňaženky s <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Zobraziť podrobnosti</translation>
+<translation id="6759710362319508545">Zdroje</translation>
+<translation id="2471230424465522689">Nie pred</translation>
+<translation id="4841860051609590575">ID žiadosti</translation>
 </translationbundle>

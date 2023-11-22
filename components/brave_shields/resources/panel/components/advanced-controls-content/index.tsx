@@ -77,8 +77,13 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleFingerprintModeChange = (value: string) => {
+  const handleFingerprintModeSelectionChange = (value: string) => {
     getPanelBrowserAPI().dataHandler.setFingerprintMode(parseInt(value))
+    if (getSiteSettings) getSiteSettings()
+  }
+
+  const handleFingerprintModeToggleChange = (isEnabled: boolean) => {
+    getPanelBrowserAPI().dataHandler.setFingerprintMode(isEnabled ? FingerprintMode.STANDARD : FingerprintMode.ALLOW)
     if (getSiteSettings) getSiteSettings()
   }
 
@@ -97,11 +102,6 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleHTTPSEverywhereEnabledChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setHTTPSEverywhereEnabled(isEnabled)
-    if (getSiteSettings) getSiteSettings()
-  }
-
   const handleForgetFirstPartyStorageEnabledChange = (isEnabled: boolean) => {
     getPanelBrowserAPI().dataHandler.setForgetFirstPartyStorageEnabled(
       isEnabled
@@ -110,9 +110,9 @@ function AdvancedControlsContent () {
   }
 
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
-  const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
+  const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
   const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
     'isForgetFirstPartyStorageEnabled'
@@ -150,26 +150,6 @@ function AdvancedControlsContent () {
             <span>{adsListCount > 99 ? '99+' : adsListCount}</span>
           </S.CountButton>
         </S.ControlGroup>
-        {!isHttpsByDefaultEnabled && <S.ControlGroup>
-          <label>
-            <span>{getLocale('braveShieldsConnectionsUpgraded')}</span>
-            <Toggle
-              onChange={handleHTTPSEverywhereEnabledChange}
-              isOn={siteSettings?.isHttpsEverywhereEnabled}
-              size='sm'
-              accessibleLabel='Enable HTTPS'
-              disabled={siteBlockInfo?.isBraveShieldsManaged}
-            />
-          </label>
-          <S.CountButton
-            title={httpRedirectsListCount.toString()}
-            aria-label={getLocale('braveShieldsConnectionsUpgraded')}
-            onClick={() => setViewType?.(ViewType.HttpsList)}
-            disabled={httpRedirectsListCount <= 0}
-          >
-            {httpRedirectsListCount > 99 ? '99+' : httpRedirectsListCount}
-          </S.CountButton>
-        </S.ControlGroup>}
         {(isHttpsByDefaultEnabled && !isTorProfile) && <S.ControlGroup>
           <div className="col-2">
             <Select
@@ -207,10 +187,10 @@ function AdvancedControlsContent () {
         </S.ControlGroup>
         <S.ControlGroup>
           <div className="col-2">
-            <Select
+            {showStrictFingerprintingMode ? <Select
               value={siteSettings?.fingerprintMode}
               ariaLabel={getLocale('braveShieldsFingerprintingBlocked')}
-              onChange={handleFingerprintModeChange}
+              onChange={handleFingerprintModeSelectionChange}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
             {fingerprintModeOptions.map(entry => {
@@ -218,7 +198,17 @@ function AdvancedControlsContent () {
                   <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
               })}
-            </Select>
+            </Select> :
+            <label>
+            <span>{getLocale('braveShieldsFingerprintingBlockedStd')}</span>
+            <Toggle
+              onChange={handleFingerprintModeToggleChange}
+              isOn={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW}
+              size='sm'
+              accessibleLabel={getLocale('braveShieldsFingerprintingBlockedStd')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
+            />
+            </label>}
           </div>
         </S.ControlGroup>
         <S.ControlGroup>

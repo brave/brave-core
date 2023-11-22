@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr char kRewardsSwitch[] = "rewards";
+inline constexpr char kRewardsSwitch[] = "rewards";
 
 }  // namespace brave_ads
 

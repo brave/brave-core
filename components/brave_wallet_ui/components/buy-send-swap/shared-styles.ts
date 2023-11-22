@@ -5,19 +5,19 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
-export const BubbleContainer = styled.div<
-  { 
-    isV2?: boolean 
-  }>`
+export const BubbleContainer = styled.div<{
+  isV2?: boolean
+}>`
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border-radius: ${(p) => p.isV2 ? '16px' : '12px'};
-  padding: ${(p) => p.isV2 ? '24px': '5px 12px'};
-  background-color: ${(p) => p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
-  border: ${(p) => p.isV2 ? 'none' : `1px solid ${p.theme.color.divider01}`};
+  border-radius: ${(p) => (p.isV2 ? '16px' : '12px')};
+  padding: ${(p) => (p.isV2 ? '24px' : '5px 12px')};
+  background-color: ${(p) =>
+    p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
+  border: ${(p) => (p.isV2 ? 'none' : `1px solid ${p.theme.color.divider01}`)};
   margin-bottom: 12px;
   box-sizing: border-box;
 `

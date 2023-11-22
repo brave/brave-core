@@ -5,14 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 bool HasMigratedConfirmation() {
-  return AdsClientHelper::GetInstance()->GetBooleanPref(
-      prefs::kHasMigratedConfirmationState);
+  return GetProfileBooleanPref(prefs::kHasMigratedConfirmationState);
 }
 
 }  // namespace brave_ads

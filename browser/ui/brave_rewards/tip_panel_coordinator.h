@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -32,9 +32,6 @@ class TipPanelCoordinator : public BrowserUserData<TipPanelCoordinator> {
 
   // Displays the tip panel for the specified publisher.
   void ShowPanelForPublisher(const std::string& publisher_id);
-
-  // Displays the tip panel after an inline tip button has been displayed.
-  void ShowPanelForInlineTip(const std::string& publisher_id);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -60,11 +57,9 @@ class TipPanelCoordinator : public BrowserUserData<TipPanelCoordinator> {
   friend class BrowserUserData<TipPanelCoordinator>;
 
   void GetUserTypeCallback(const std::string& publisher_id,
-                           bool inline_tip,
                            mojom::UserType user_type);
 
   void IsPublisherRegisteredCallback(const std::string& publisher_id,
-                                     bool inline_tip,
                                      bool is_publisher_registered);
 
   void OpenPanel(const std::string& publisher_id);

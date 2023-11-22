@@ -46,7 +46,7 @@ export const SectionBox = styled(StyledDiv)<{
   min-height: ${(p) => (p.minHeight ? `${p.minHeight}px` : 'unset')};
 `
 
-export const AmountInput = styled(StyledInput) <{
+export const AmountInput = styled(StyledInput)<{
   hasError: boolean
 }>`
   color: ${(p) => (p.hasError ? p.theme.color.errorBorder : 'inherit')};
@@ -60,7 +60,7 @@ export const AmountInput = styled(StyledInput) <{
   }
 `
 
-export const AddressInput = styled(StyledInput) <{
+export const AddressInput = styled(StyledInput)<{
   hasError: boolean
 }>`
   color: ${(p) => (p.hasError ? p.theme.color.errorBorder : 'inherit')};
@@ -84,7 +84,7 @@ export const DIVForWidth = styled.div`
   display: inline-block;
   visibility: hidden;
   position: fixed;
-  overflow:auto;
+  overflow: auto;
   font-family: 'Poppins';
   font-weight: 400;
   font-size: 16px;
@@ -96,8 +96,8 @@ export const InputRow = styled(Row)`
   position: relative;
 `
 
-export const DomainLoadIcon = styled(LoaderIcon) <{ position: number }>`
-  color: ${p => p.theme.palette.blurple500};
+export const DomainLoadIcon = styled(LoaderIcon)<{ position: number }>`
+  color: ${(p) => p.theme.palette.blurple500};
   height: 16px;
   width: 16px;
   opacity: 0.4;

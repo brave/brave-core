@@ -3,13 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { kTrezorBridgeUrl, MessagingTransport, TrezorErrorsCodes, TrezorFrameCommand } from './trezor-messages'
+import {
+  kTrezorBridgeUrl,
+  MessagingTransport,
+  TrezorErrorsCodes,
+  TrezorFrameCommand
+} from './trezor-messages'
 
 // Handles sending messages to the Trezor library, creates untrusted iframe,
 // loads library and allows to send commands to the library and subscribe
 // for responses.
 export class TrezorBridgeTransport extends MessagingTransport {
-  constructor (bridgeFrameUrl: string) {
+  constructor(bridgeFrameUrl: string) {
     super()
     this.bridgeFrameUrl = bridgeFrameUrl
     this.frameId = crypto.randomUUID()
@@ -27,8 +32,13 @@ export class TrezorBridgeTransport extends MessagingTransport {
     element?.parentNode?.removeChild(element)
   }
 
-  // T is response type, e.g. UnlockResponse. Resolves as `false` if transport error
-  sendCommandToTrezorFrame = <T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> => {
+  /**
+   * `T` is response type, e.g. UnlockResponse. Resolves as `false` if transport
+   * error
+   */
+  sendCommandToTrezorFrame = <T>(
+    command: TrezorFrameCommand
+  ): Promise<T | TrezorErrorsCodes> => {
     return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
       if (!this.bridge && !this.hasBridgeCreated()) {
         this.bridge = await this.createBridge()
@@ -46,9 +56,11 @@ export class TrezorBridgeTransport extends MessagingTransport {
   }
 
   protected onMessageReceived = (event: MessageEvent) => {
-    if (event.origin !== this.getTrezorBridgeOrigin() ||
-        event.type !== 'message' ||
-        !this.handlers.size) {
+    if (
+      event.origin !== this.getTrezorBridgeOrigin() ||
+      event.type !== 'message' ||
+      !this.handlers.size
+    ) {
       return
     }
 
@@ -62,7 +74,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
   }
 
   private readonly getTrezorBridgeOrigin = () => {
-    return (new URL(this.bridgeFrameUrl)).origin
+    return new URL(this.bridgeFrameUrl).origin
   }
 
   private readonly createBridge = () => {
@@ -84,14 +96,16 @@ export class TrezorBridgeTransport extends MessagingTransport {
 }
 
 let transport: TrezorBridgeTransport
-export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> {
+export async function sendTrezorCommand<T>(
+  command: TrezorFrameCommand
+): Promise<T | TrezorErrorsCodes> {
   if (!transport) {
     transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
   }
   return transport.sendCommandToTrezorFrame<T>(command)
 }
 
-export async function closeTrezorBridge () {
+export async function closeTrezorBridge() {
   if (!transport) {
     return
   }

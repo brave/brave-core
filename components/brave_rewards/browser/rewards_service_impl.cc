@@ -230,22 +230,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
-mojom::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
-    const std::string& key) {
-  if (key == "reddit") {
-    return mojom::InlineTipsPlatforms::REDDIT;
-  }
-  if (key == "twitter") {
-    return mojom::InlineTipsPlatforms::TWITTER;
-  }
-  if (key == "github") {
-    return mojom::InlineTipsPlatforms::GITHUB;
-  }
-
-  NOTREACHED();
-  return mojom::InlineTipsPlatforms::TWITTER;
-}
-
 std::string GetPrefPath(const std::string& name) {
   return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
 }
@@ -308,7 +292,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
                             kDiagnosticLogMaxFileSize,
                             kDiagnosticLogKeepNumLines)),
-      notification_service_(new RewardsNotificationServiceImpl(profile)) {
+      notification_service_(new RewardsNotificationServiceImpl(profile)),
+      conversion_monitor_(profile->GetPrefs()) {
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -533,8 +518,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
         auto on_balance = [](base::WeakPtr<RewardsServiceImpl> self,
-                             FetchBalanceResult result) {
-          if (self && result.has_value() && result.value()->total == 0) {
+                             mojom::BalancePtr balance) {
+          if (self && balance && balance->total == 0) {
             self->SetAutoContributeEnabled(true);
           }
         };
@@ -573,14 +558,13 @@ void RewardsServiceImpl::GetUserType(
 
   auto on_external_wallet = [](base::WeakPtr<RewardsServiceImpl> self,
                                base::OnceCallback<void(UserType)> callback,
-                               GetExternalWalletResult result) {
+                               mojom::ExternalWalletPtr wallet) {
     if (!self) {
       std::move(callback).Run(UserType::kUnconnected);
       return;
     }
 
-    auto wallet = std::move(result).value_or(nullptr);
-    if (!wallet || wallet->status != mojom::WalletStatus::kNotConnected) {
+    if (wallet) {
       std::move(callback).Run(UserType::kConnected);
       return;
     }
@@ -622,11 +606,10 @@ void RewardsServiceImpl::GetAvailableCountries(
   }
 
   auto on_external_wallet = [](GetAvailableCountriesCallback callback,
-                               GetExternalWalletResult result) {
-    auto wallet = std::move(result).value_or(nullptr);
+                               mojom::ExternalWalletPtr wallet) {
     // If the user is not currently connected to any wallet provider, then all
     // ISO country codes are available.
-    if (!wallet || wallet->status == mojom::WalletStatus::kNotConnected) {
+    if (!wallet) {
       return std::move(callback).Run(kISOCountries);
     }
 
@@ -653,7 +636,6 @@ void RewardsServiceImpl::GetAvailableCountries(
   };
 
   engine_->GetExternalWallet(
-      GetExternalWalletType(),
       base::BindOnce(on_external_wallet, std::move(callback)));
 }
 
@@ -1272,6 +1254,8 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
 
+  providers.push_back(internal::constant::kWalletUphold);
+
   if (IsBitFlyerCountry()) {
     providers.push_back(internal::constant::kWalletBitflyer);
     return providers;
@@ -1287,8 +1271,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletGemini);
   }
 #endif
-
-  providers.push_back(internal::constant::kWalletUphold);
 
   return providers;
 }
@@ -1344,21 +1326,6 @@ void RewardsServiceImpl::EnableGreaselion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(
                            brave_ads::prefs::kOptedInToNotificationAds));
-
-  const bool show_buttons =
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::TWITTER_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_buttons);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::REDDIT_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_buttons);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::GITHUB_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_buttons);
 
   greaselion_enabled_ = true;
 }
@@ -2231,28 +2198,6 @@ RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
 }
 
-void RewardsServiceImpl::SetInlineTippingPlatformEnabled(
-    const std::string& key,
-    bool enabled) {
-  if (!Connected()) {
-    return;
-  }
-
-  const auto platform = ConvertInlineTipStringToPlatform(key);
-  engine_->SetInlineTippingPlatformEnabled(platform, enabled);
-}
-
-void RewardsServiceImpl::GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  const auto platform = ConvertInlineTipStringToPlatform(key);
-  engine_->GetInlineTippingPlatformEnabled(platform, std::move(callback));
-}
-
 void RewardsServiceImpl::GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) {
@@ -2265,9 +2210,7 @@ void RewardsServiceImpl::GetShareURL(
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
-    return DeferCallback(
-        FROM_HERE, std::move(callback),
-        base::unexpected(mojom::FetchBalanceError::kUnexpected));
+    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
   engine_->FetchBalance(std::move(callback));
@@ -2286,12 +2229,19 @@ void RewardsServiceImpl::GetLegacyWallet(GetLegacyWalletCallback callback) {
 
 void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   if (!Connected()) {
-    return DeferCallback(
-        FROM_HERE, std::move(callback),
-        base::unexpected(mojom::GetExternalWalletError::kUnexpected));
+    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  engine_->GetExternalWallet(GetExternalWalletType(), std::move(callback));
+  engine_->GetExternalWallet(std::move(callback));
+}
+
+void RewardsServiceImpl::BeginExternalWalletLogin(
+    const std::string& wallet_type,
+    BeginExternalWalletLoginCallback callback) {
+  if (!Connected() || !IsValidWalletType(wallet_type)) {
+    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
+  }
+  engine_->BeginExternalWalletLogin(wallet_type, std::move(callback));
 }
 
 void RewardsServiceImpl::ConnectExternalWallet(
@@ -2301,24 +2251,22 @@ void RewardsServiceImpl::ConnectExternalWallet(
   auto inner_callback = base::BindOnce(
       [](base::WeakPtr<RewardsServiceImpl> self,
          ConnectExternalWalletCallback callback,
-         ConnectExternalWalletResult result) {
+         mojom::ConnectExternalWalletResult result) {
         std::move(callback).Run(result);
         self->RecordBackendP3AStats();
       },
       AsWeakPtr(), std::move(callback));
 
   if (!Connected()) {
-    return DeferCallback(
-        FROM_HERE, std::move(inner_callback),
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return DeferCallback(FROM_HERE, std::move(inner_callback),
+                         mojom::ConnectExternalWalletResult::kUnexpected);
   }
 
   const auto path_items = base::SplitString(path, "/", base::TRIM_WHITESPACE,
                                             base::SPLIT_WANT_NONEMPTY);
   if (path_items.empty()) {
-    return DeferCallback(
-        FROM_HERE, std::move(inner_callback),
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return DeferCallback(FROM_HERE, std::move(inner_callback),
+                         mojom::ConnectExternalWalletResult::kUnexpected);
   }
 
   const std::string wallet_type = path_items.at(0);
@@ -2371,12 +2319,11 @@ void RewardsServiceImpl::OnP3ADailyTimer() {
 
 void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     bool delay_report,
-    GetExternalWalletResult result) {
+    mojom::ExternalWalletPtr wallet) {
   if (!Connected()) {
     return;
   }
 
-  auto wallet = std::move(result).value_or(nullptr);
   if (!wallet || wallet->status != mojom::WalletStatus::kConnected) {
     // Do not report "tips sent" and "auto-contribute" enabled metrics if user
     // does not have a custodial account linked.
@@ -2704,12 +2651,6 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
   }
 
   return internal::constant::kWalletUphold;
-}
-
-void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
-  if (IsValidWalletType(wallet_type)) {
-    profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
-  }
 }
 
 }  // namespace brave_rewards

@@ -89,6 +89,8 @@ export const TransactionAmountBig = styled.span`
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
+  word-break: break-all;
+  text-align: center;
 `
 
 export const TransactionFiatAmountBig = styled.span`
@@ -98,9 +100,11 @@ export const TransactionFiatAmountBig = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
+  word-break: break-all;
+  text-align: center;
 `
 
-export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>`
+export const MessageBox = styled.div<{ isDetails: boolean }>`
   display: flex;
   align-items: flex-start;
   justify-content: 'flex-start';
@@ -108,10 +112,9 @@ export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
-  height: ${(p) => p.isApprove ? '120px' : '140px'};
-  padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
-  margin-bottom: 14px;
+  width: 90%;
+  height: 140px;
+  padding: ${(p) => (p.isDetails ? '14px' : '4px 14px')};
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
@@ -133,6 +136,8 @@ export const TransactionTypeText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   font-weight: 600;
+  word-break: break-all;
+  text-align: left;
 `
 
 export const FromToRow = styled.div`
@@ -201,8 +206,10 @@ export const TransactionText = styled.span<{ hasError?: boolean }>`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
+  color: ${(p) =>
+    p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
+  word-break: break-all;
 `
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
@@ -217,10 +224,10 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${(p) => p.theme.color.interactive08};
   height: 25px;
   width: 24px;
-  opacity: .4;
+  opacity: 0.4;
 `
 
 export const ContractButton = styled(WalletButton)`
@@ -255,13 +262,13 @@ export const InlineAddressButton = styled(ContractButton)`
 `
 
 export const ExplorerIcon = styled.div`
- -webkit-mask-image: url(${LinkIcon});
- mask-image: url(${LinkIcon});
- width: 12px;
- height: 12px;
- margin-left: 8px;
- mask-size: contain;
- background-color: ${(p) => p.theme.color.interactive05};
+  -webkit-mask-image: url(${LinkIcon});
+  mask-image: url(${LinkIcon});
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  mask-size: contain;
+  background-color: ${(p) => p.theme.color.interactive05};
 `
 
 export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`

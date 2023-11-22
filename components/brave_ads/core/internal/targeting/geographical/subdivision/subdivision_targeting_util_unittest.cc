@@ -14,8 +14,8 @@ namespace brave_ads {
 TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldTargetSubdivisionCountryCode) {
   // Act & Assert
   EXPECT_TRUE(ShouldTargetSubdivisionCountryCode(
-      /*United States of America=*/"US"));
-  EXPECT_TRUE(ShouldTargetSubdivisionCountryCode(/*Canada=*/"CA"));
+      /*United States of America*/ "US"));
+  EXPECT_TRUE(ShouldTargetSubdivisionCountryCode(/*Canada*/ "CA"));
 }
 
 TEST(BraveAdsSubdivisionTargetingUtilTest,
@@ -27,13 +27,13 @@ TEST(BraveAdsSubdivisionTargetingUtilTest,
 TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldTargetSubdivision) {
   // Act & Assert
   EXPECT_TRUE(ShouldTargetSubdivision(
-      /*United States of America=*/"US", /*subdivision=*/"US-CA"));
+      /*United States of America*/ "US", /*subdivision=*/"US-CA"));
 }
 
 TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldNotTargetSubdivision) {
   // Act & Assert
   EXPECT_FALSE(ShouldTargetSubdivision(
-      /*United States of America=*/"US", /*subdivision=*/"US-XX"));
+      /*United States of America*/ "US", /*subdivision=*/"US-XX"));
 }
 
 }  // namespace brave_ads

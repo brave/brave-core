@@ -6,37 +6,23 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 
-// Queries
-import {
-  useGetSelectedChainQuery
-} from '../../../../../../common/slices/api.slice'
-
 // Types
-import {
-  BraveWallet
-} from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  SearchWithNetworkSelector
+  SearchWithNetworkSelector //
 } from '../search-with-network-selector/search-with-network-selector'
+import { StandardModal } from '../../modals/standard-modal/standard-modal'
 import {
-  StandardModal
-} from '../../modals/standard-modal/standard-modal'
-import {
-  VirtualizedTokenList
+  VirtualizedTokenList //
 } from '../virtualized-swap-token-list/virtualized-swap-tokens-list'
 
 // Styled Components
-import {
-  Button,
-  ScrollContainer
-} from './select-token-modal.style'
+import { Button, ScrollContainer } from './select-token-modal.style'
 import {
   Row,
   Text,
@@ -55,6 +41,8 @@ interface Props {
   getNetworkAssetsList: (
     network: BraveWallet.NetworkInfo
   ) => BraveWallet.BlockchainToken[]
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  setSelectedNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -65,11 +53,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       getCachedAssetBalance,
       getNetworkAssetsList,
       disabledToken,
-      selectingFromOrTo
+      selectingFromOrTo,
+      selectedNetwork,
+      setSelectedNetwork
     } = props
-
-    // Queries
-    const { data: selectedNetwork } = useGetSelectedChainQuery()
 
     // State
     const [hideTokensWithZeroBalances, setHideTokensWithZeroBalances] =
@@ -78,7 +65,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Methods
     const toggleHideTokensWithZeroBalances = React.useCallback(() => {
-      setHideTokensWithZeroBalances(prev => !prev)
+      setHideTokensWithZeroBalances((prev) => !prev)
     }, [])
 
     const handleOnSearchChanged = React.useCallback((value: string) => {
@@ -113,10 +100,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const tokenListWithBalances: BraveWallet.BlockchainToken[] =
       React.useMemo(() => {
-        return filteredTokenListBySearch
-          .filter((token: BraveWallet.BlockchainToken) =>
+        return filteredTokenListBySearch.filter(
+          (token: BraveWallet.BlockchainToken) =>
             getCachedAssetBalance(token).gt(0)
-          )
+        )
       }, [filteredTokenListBySearch, getCachedAssetBalance])
 
     const filteredTokenList: BraveWallet.BlockchainToken[] =
@@ -149,25 +136,38 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <StandardModal
         ref={forwardedRef}
-        modalHeight={
-          hideTokensWithZeroBalances
-            ? 'standard'
-            : 'full'
-        }
+        modalHeight={hideTokensWithZeroBalances ? 'standard' : 'full'}
       >
-        <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
-          <Text textSize='18px' responsiveTextSize='20px' isBold={true}>
+        <Row
+          rowWidth='full'
+          horizontalPadding={24}
+          verticalPadding={20}
+        >
+          <Text
+            textSize='18px'
+            responsiveTextSize='20px'
+            isBold={true}
+          >
             {getLocale('braveSwapSelectAToken')}
           </Text>
           <IconButton onClick={onClose}>
-            <Icon name='close' size={24} />
+            <Icon
+              name='close'
+              size={24}
+            />
           </IconButton>
         </Row>
-        <Row rowWidth='full' horizontalPadding={20} marginBottom={16}>
+        <Row
+          rowWidth='full'
+          horizontalPadding={20}
+          marginBottom={16}
+        >
           <SearchWithNetworkSelector
             onSearchChanged={handleOnSearchChanged}
             searchValue={searchValue}
             networkSelectorDisabled={selectingFromOrTo === 'to'}
+            selectedNetwork={selectedNetwork}
+            setSelectedNetwork={setSelectedNetwork}
           />
         </Row>
         <HiddenResponsiveRow maxWidth={570}>
@@ -184,6 +184,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               getCachedAssetBalance={getCachedAssetBalance}
               onSelectToken={onSelectToken}
               tokenList={filteredTokenList}
+              selectedNetwork={selectedNetwork}
             />
           )}
         </ScrollContainer>

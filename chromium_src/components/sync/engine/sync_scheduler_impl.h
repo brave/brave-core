@@ -8,11 +8,12 @@
 
 namespace syncer {
 
-extern const char kNigoriFolderNotReadyError[];
+inline constexpr char kNigoriFolderNotReadyError[] =
+    "nigori root folder entity is not ready yet";
 
 }  // namespace syncer
 
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 #define DoPollSyncCycleJob                                                   \
   HandleBraveConfigurationFailure(                                           \

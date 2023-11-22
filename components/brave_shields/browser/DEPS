@@ -7,7 +7,6 @@ include_rules = [
   "+storage/browser/blob",
   "+third_party/abseil-cpp/absl/random",
   "+third_party/blink/public/mojom",
-  "+third_party/leveldatabase",
   "+third_party/re2",
   "+third_party/zlib",
 ]

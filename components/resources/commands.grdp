@@ -7,9 +7,6 @@
     If the command is only available on a platform we don't support (i.e.
     ChromeOS) prefer to not add the command.
   -->
-  <message name="IDS_IDC_ADD_NEW_PROFILE">
-    Add new profile
-  </message>
   <message name="IDS_IDC_BACK">
     Back
   </message>
@@ -28,23 +25,11 @@
   <message name="IDS_IDC_RELOAD_CLEARING_CACHE">
     Reload clearing cache
   </message>
-  <message name="IDS_IDC_NEW_INCOGNITO_WINDOW">
-    New private window
-  </message>
   <message name="IDS_IDC_CLOSE_WINDOW">
     Close window
   </message>
-  <message name="IDS_IDC_NEW_TAB">
-    New tab
-  </message>
   <message name="IDS_IDC_CLOSE_TAB">
     Close tab
-  </message>
-  <message name="IDS_IDC_RESTORE_TAB">
-    Reopen closed tab
-  </message>
-  <message name="IDS_IDC_SHOW_AS_TAB">
-    Show as tab
   </message>
   <message name="IDS_IDC_SELECT_NEXT_TAB">
     Next tab
@@ -94,9 +79,6 @@
   <message name="IDS_IDC_WINDOW_MENU">
     Window menu
   </message>
-  <message name="IDS_IDC_FULLSCREEN">
-    Toggle full screen
-  </message>
   <message name="IDS_IDC_MINIMIZE_WINDOW">
     Minimize window
   </message>
@@ -105,21 +87,6 @@
   </message>
   <message name="IDS_IDC_ALL_WINDOWS_FRONT">
     Show all windows
-  </message>
-  <message name="IDS_IDC_EXIT">
-    Exit
-  </message>
-  <message name="IDS_IDC_NAME_WINDOW">
-    Name window
-  </message>
-  <message name="IDS_IDC_COPY_URL">
-    Copy URL
-  </message>
-  <message name="IDS_IDC_OPEN_GUEST_PROFILE">
-    Open Guest profile
-  </message>
-  <message name="IDS_IDC_OPEN_IN_CHROME">
-    Open in Brave
   </message>
   <message name="IDS_IDC_OPEN_IN_PWA_WINDOW">
     Open in PWA window
@@ -130,56 +97,11 @@
   <message name="IDS_IDC_WEB_APP_MENU_APP_INFO">
     Web app info
   </message>
-  <message name="IDS_IDC_BOOKMARK_THIS_TAB">
-    Bookmark tab
-  </message>
-  <message name="IDS_IDC_BOOKMARK_ALL_TABS">
-    Bookmark all tabs
-  </message>
   <message name="IDS_IDC_EMAIL_PAGE_LOCATION">
     Email page URL
   </message>
   <message name="IDS_IDC_BASIC_PRINT">
     Basic print
-  </message>
-  <message name="IDS_IDC_SAVE_PAGE">
-    Save page as
-  </message>
-  <message name="IDS_IDC_CUT">
-    Cut
-  </message>
-  <message name="IDS_IDC_COPY">
-    Copy
-  </message>
-  <message name="IDS_IDC_PASTE">
-    Paste
-  </message>
-  <message name="IDS_IDC_FIND">
-    Find
-  </message>
-  <message name="IDS_IDC_DEV_TOOLS">
-    Developer tools
-  </message>
-  <message name="IDS_IDC_DEV_TOOLS_CONSOLE">
-    Javascript console
-  </message>
-  <message name="IDS_IDC_VIEW_SOURCE">
-    View source
-  </message>
-  <message name="IDS_IDC_TASK_MANAGER">
-    Task manager
-  </message>
-  <message name="IDS_IDC_DEV_TOOLS_DEVICES">
-    Inspect devices
-  </message>
-  <message name="IDS_IDC_OPTIONS">
-    Show settings
-  </message>
-  <message name="IDS_IDC_TAKE_SCREENSHOT">
-    Take screenshot
-  </message>
-  <message name="IDS_IDC_SHOW_TRANSLATE">
-    Translate page
   </message>
   <message name="IDS_IDC_ROUTE_MEDIA">
     Route media
@@ -283,9 +205,6 @@
   <message name="IDS_IDC_FOCUS_WEB_CONTENTS_PANE">
     Focus web contents pane
   </message>
-  <message name="IDS_IDC_SHOW_BOOKMARK_BAR">
-    Show bookmark bar
-  </message>
   <message name="IDS_IDC_SHOW_HISTORY">
     Show history
   </message>
@@ -331,9 +250,6 @@
   <message name="IDS_IDC_SHOW_MANAGEMENT_PAGE">
     Show management page
   </message>
-  <message name="IDS_IDC_PASTE_AND_GO">
-    Paste and go
-  </message>
   <message name="IDS_IDC_SHOW_FULL_URLS">
     Show full URLs
   </message>
@@ -346,17 +262,11 @@
   <message name="IDS_IDC_SHOW_BOOKMARK_SIDE_PANEL">
     Show bookmark side panel
   </message>
-  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL">
-    Bookmark bar open all
-  </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW">
     Bookmark bar open all in new window
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_INCOGNITO">
     Bookmark bar open all in private window
-  </message>
-  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_INCOGNITO">
-    Bookmark bar open in private
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_TAB_GROUP">
     Bookmark bar open all new tab group
@@ -382,14 +292,8 @@
   <message name="IDS_IDC_BOOKMARK_BAR_NEW_FOLDER">
     Bookmark bar new folder
   </message>
-  <message name="IDS_IDC_BOOKMARK_MANAGER">
-    Bookmark manager
-  </message>
   <message name="IDS_IDC_BOOKMARK_BAR_ALWAYS_SHOW">
     Bookmark bar always show
-  </message>
-  <message name="IDS_IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT">
-    Bookmark bar show apps shortcut
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_MANAGED_BOOKMARKS">
     Bookmark bar show managed bookmarks

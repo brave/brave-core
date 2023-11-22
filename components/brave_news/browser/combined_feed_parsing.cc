@@ -29,12 +29,11 @@ namespace {
 
 base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
     const base::Value& value) {
-  std::u16string error;
-  auto parsed_feed_item =
-      api::combined_feed::Item::FromValueDeprecated(value, &error);
-  if (!parsed_feed_item) {
-    return base::unexpected(base::StrCat(
-        {"Failed to parse feed item. ", base::UTF16ToASCII(error)}));
+  auto parsed_feed_item = api::combined_feed::Item::FromValue(value);
+  if (!parsed_feed_item.has_value()) {
+    return base::unexpected(
+        base::StrCat({"Failed to parse feed item. ",
+                      base::UTF16ToASCII(parsed_feed_item.error())}));
   }
   api::combined_feed::Item& feed_item = *parsed_feed_item;
 

@@ -8,12 +8,11 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/zebpay/connect_zebpay_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/zebpay/get_zebpay_wallet.h"
 
 using brave_rewards::internal::endpoints::GetBalanceZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
@@ -23,7 +22,6 @@ namespace brave_rewards::internal::zebpay {
 ZebPay::ZebPay(RewardsEngineImpl& engine)
     : WalletProvider(engine), engine_(engine) {
   connect_wallet_ = std::make_unique<ConnectZebPayWallet>(engine);
-  get_wallet_ = std::make_unique<GetZebPayWallet>(engine);
 }
 
 const char* ZebPay::WalletType() const {

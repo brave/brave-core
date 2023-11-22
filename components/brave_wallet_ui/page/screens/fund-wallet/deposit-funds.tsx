@@ -15,11 +15,13 @@ import { getBatTokensFromList, getAssetIdKey } from '../../../utils/asset-utils'
 import { WalletActions } from '../../../common/slices/wallet.slice'
 import { WalletSelectors } from '../../../common/selectors'
 import { makeDepositFundsRoute } from '../../../utils/routes-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 
 // types
 import {
   BraveWallet,
   NetworkFilterType,
+  SupportedTestNetworks,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -29,9 +31,10 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
-  useGetMainnetsQuery,
+  useGenerateReceiveAddressMutation,
   useGetNetworkQuery,
-  useGetQrCodeImageQuery
+  useGetQrCodeImageQuery,
+  useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -102,7 +105,11 @@ function getItemSize(index: number): number {
 const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
   getAssetIdKey(data[i])
 
-export const DepositFundsScreen = () => {
+interface Props {
+  isAndroid?: boolean
+}
+
+export const DepositFundsScreen = ({ isAndroid }: Props) => {
   // routing
   const history = useHistory()
 
@@ -117,8 +124,13 @@ export const DepositFundsScreen = () => {
   // render
   return (
     <Switch>
-      <Route path={WalletRoutes.DepositFundsAccountPage} exact>
+      <Route
+        path={WalletRoutes.DepositFundsAccountPage}
+        exact
+      >
         <WalletPageWrapper
+          hideNav={isAndroid}
+          hideHeader={isAndroid}
           wrapContentInBox={true}
           cardWidth={456}
           cardHeader={
@@ -138,6 +150,8 @@ export const DepositFundsScreen = () => {
 
       <Route>
         <WalletPageWrapper
+          hideNav={isAndroid}
+          hideHeader={isAndroid}
           wrapContentInBox={true}
           cardWidth={456}
           cardHeader={
@@ -171,10 +185,7 @@ function AssetSelection() {
   )
 
   // refs
-  const listItemRefs = React.useRef<Map<
-    string,
-    HTMLButtonElement
-  > | null>(null)
+  const listItemRefs = React.useRef<Map<string, HTMLButtonElement> | null>(null)
 
   const getRefsMap = React.useCallback(
     function () {
@@ -214,15 +225,27 @@ function AssetSelection() {
     (token) => getAssetIdKey(token) === selectedDepositAssetId
   )
 
-  const { data: mainnetsList = [] } = useGetMainnetsQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // computed
   const isNextStepEnabled = !!selectedAsset
 
   // memos
-  const mainnetNetworkAssetsList = React.useMemo(() => {
-    return (mainnetsList || []).map(makeNetworkAsset)
-  }, [mainnetsList])
+  const { mainnetNetworkAssetsList, testnetAssetsList } = React.useMemo(() => {
+    const mainnetNetworkAssetsList = []
+    const testnetAssetsList = []
+    for (const net of visibleNetworks) {
+      if (SupportedTestNetworks.includes(net.chainId)) {
+        testnetAssetsList.push(net)
+      } else {
+        mainnetNetworkAssetsList.push(net)
+      }
+    }
+    return {
+      mainnetNetworkAssetsList: mainnetNetworkAssetsList.map(makeNetworkAsset),
+      testnetAssetsList: testnetAssetsList.map(makeNetworkAsset)
+    }
+  }, [visibleNetworks])
 
   // Combine all NFTs from each collection
   // into a single "asset" for depositing purposes.
@@ -248,16 +271,48 @@ function AssetSelection() {
       return nftContractTokens
     }, [combinedTokensList])
 
+  // removes pre-categorized assets from combined list
+  const tokensList = React.useMemo(() => {
+    const mainnetNetworkAssetsListIds = mainnetNetworkAssetsList.map((t) =>
+      getAssetIdKey(t)
+    )
+    const testnetAssetsListIds = testnetAssetsList.map((t) => getAssetIdKey(t))
+    const nftCollectionAssetsIds = nftCollectionAssets.map((t) =>
+      getAssetIdKey(t)
+    )
+
+    return combinedTokensList.filter((t) => {
+      const id = getAssetIdKey(t)
+      return (
+        !mainnetNetworkAssetsListIds.includes(id) &&
+        !testnetAssetsListIds.includes(id) &&
+        !nftCollectionAssetsIds.includes(id)
+      )
+    })
+  }, [
+    combinedTokensList,
+    nftCollectionAssets,
+    mainnetNetworkAssetsList,
+    testnetAssetsList
+  ])
+
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    // separate BAT from other tokens in the list so they can be placed higher in the list
-    const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
+    // separate BAT from other tokens in the list so they can be placed higher
+    // in the list
+    const { bat, nonBat } = getBatTokensFromList(tokensList)
     return [
       ...mainnetNetworkAssetsList,
       ...bat,
       ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
+      ...testnetAssetsList,
       ...nftCollectionAssets
     ]
-  }, [mainnetNetworkAssetsList, combinedTokensList, nftCollectionAssets])
+  }, [
+    mainnetNetworkAssetsList,
+    tokensList,
+    nftCollectionAssets,
+    testnetAssetsList
+  ])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
     const assets =
@@ -277,8 +332,8 @@ function AssetSelection() {
     return assetsForFilteredNetwork.filter((asset) => {
       const searchValueLower = searchValue.toLowerCase()
       return (
-        asset.name.toLowerCase().startsWith(searchValueLower) ||
-        asset.symbol.toLowerCase().startsWith(searchValueLower)
+        asset.name.toLowerCase().includes(searchValueLower) ||
+        asset.symbol.toLowerCase().includes(searchValueLower)
       )
     })
   }, [searchValue, assetsForFilteredNetwork])
@@ -357,8 +412,15 @@ function AssetSelection() {
   return (
     <>
       <SelectAssetWrapper>
-        <FilterTokenRow horizontalPadding={0} isV2={false}>
-          <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
+        <FilterTokenRow
+          horizontalPadding={0}
+          isV2={false}
+        >
+          <Column
+            flex={1}
+            style={{ minWidth: '25%' }}
+            alignItems='flex-start'
+          >
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
@@ -383,7 +445,11 @@ function AssetSelection() {
           />
         ) : (
           <Column>
-            <LoadingIcon opacity={1} size={'100px'} color={'interactive05'} />
+            <LoadingIcon
+              opacity={1}
+              size={'100px'}
+              color={'interactive05'}
+            />
           </Column>
         )}
 
@@ -426,10 +492,15 @@ function DepositAccount() {
     selectedAsset ?? skipToken
   )
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
-    return selectedAsset
-      ? accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
+    return selectedAssetNetwork
+      ? accounts.filter((a) =>
+          networkSupportsAccount(selectedAssetNetwork, a.accountId)
+        )
       : []
   }, [selectedAssetNetwork, accounts])
+
+  // mutations
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
 
   // search
   const [showAccountSearch, setShowAccountSearch] =
@@ -440,8 +511,9 @@ function DepositAccount() {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
+  const [receiveAddress, setReceiveAddress] = React.useState<string>('')
   const { data: qrCode, isLoading: isLoadingQrCode } = useGetQrCodeImageQuery(
-    selectedAccount?.accountId.address || skipToken
+    receiveAddress || skipToken
   )
 
   // custom hooks
@@ -457,7 +529,7 @@ function DepositAccount() {
     }
 
     return accountsForSelectedAssetCoinType.filter((item) => {
-      return item.name.toLowerCase().startsWith(accountSearchText.toLowerCase())
+      return item.name.toLowerCase().includes(accountSearchText.toLowerCase())
     })
   }, [accountSearchText, accountsForSelectedAssetCoinType])
 
@@ -517,8 +589,8 @@ function DepositAccount() {
   )
 
   const copyAddressToClipboard = React.useCallback(() => {
-    copyToClipboard(selectedAccount?.address || '')
-  }, [copyToClipboard, selectedAccount?.address])
+    copyToClipboard(receiveAddress || '')
+  }, [copyToClipboard, receiveAddress])
 
   const onCopyKeyPress = React.useCallback(
     ({ key }: React.KeyboardEvent) => {
@@ -529,6 +601,32 @@ function DepositAccount() {
     },
     [copyAddressToClipboard]
   )
+
+  // effects
+  React.useEffect(() => {
+    // force selected account option state
+    setSelectedAccount(accountsForSelectedAssetCoinType[0])
+  }, [accountsForSelectedAssetCoinType[0]])
+
+  React.useEffect(() => {
+    let ignore = false
+    ;(async () => {
+      if (!selectedAccount) {
+        return
+      }
+      const address = await generateReceiveAddress(
+        selectedAccount.accountId
+      ).unwrap()
+      if (!ignore) {
+        setReceiveAddress(address)
+      }
+    })()
+
+    // cleanup
+    return () => {
+      ignore = true
+    }
+  }, [selectedAccount])
 
   // render
   if (!selectedDepositAssetId) {
@@ -550,7 +648,7 @@ function DepositAccount() {
     )
   }
 
-  if (showAccountSearch) {
+  if (!selectedAccount || showAccountSearch) {
     return (
       <SearchWrapper>
         <SelectHeader
@@ -609,7 +707,7 @@ function DepositAccount() {
         <AddressTextLabel>Address:</AddressTextLabel>
 
         <Row gap={'12px'}>
-          <AddressText>{selectedAccount?.address}</AddressText>
+          <AddressText>{receiveAddress}</AddressText>
           <CopyButton
             iconColor={'interactive05'}
             onKeyPress={onCopyKeyPress}

@@ -2,19 +2,22 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-export const MAX_UINT256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+export const MAX_UINT256 =
+  '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
 /**
  * Blowfish's value for "Unlimited" is lower than our known max (MAX_UINT256)
  */
-export const BLOWFISH_UNLIMITED_VALUE = '0xffffffffffffffffffffffffffffffffffffffffffffffffe43e9298b137ffff'
+export const BLOWFISH_UNLIMITED_VALUE =
+  '0xffffffffffffffffffffffffffffffffffffffffffffffffe43e9298b137ffff'
 
 // Placeholder contract address used for native asset (ETH, BNB, XDAI) by 0x,
 // CoW protocol, etc.
 export const NATIVE_EVM_ASSET_CONTRACT_ADDRESS =
   '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
-export const WRAPPED_SOL_CONTRACT_ADDRESS = 'So11111111111111111111111111111111111111112'
+export const WRAPPED_SOL_CONTRACT_ADDRESS =
+  'So11111111111111111111111111111111111111112'
 
 /**
  * Set this as a token's coingecko id to flag the token as "unknown"
@@ -25,7 +28,7 @@ export const UNKNOWN_TOKEN_COINGECKO_ID = 'UNKNOWN_TOKEN'
 /**
  * use this ID to prevent looking up a token's price on coingecko
  */
-export const SKIP_PRICE_LOOKUP_COINGECKO_ID ='skip-coingecko-price'
+export const SKIP_PRICE_LOOKUP_COINGECKO_ID = 'skip-coingecko-price'
 
 /**
  * Fiat value threshold for hidding small balances on the portolio view.

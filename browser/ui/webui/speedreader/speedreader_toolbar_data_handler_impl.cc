@@ -9,11 +9,12 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,7 +27,7 @@
 #include "ui/color/color_provider.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
@@ -301,6 +302,13 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   colors->foreground =
       color_provider->GetColor(kColorSpeedreaderToolbarForeground);
   colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
+  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    // The border is rendered in HTML. Hide the border by giving it the same
+    // color as the background. When this feature flag is removed, consider
+    // removing the border in HTML.
+    colors->border =
+        color_provider->GetColor(kColorSpeedreaderToolbarBackground);
+  }
   colors->button_hover =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
   colors->button_active =

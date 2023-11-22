@@ -9,17 +9,16 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
-    const ConfirmationType& confirmation_type) {
+    ConfirmationType confirmation_type) {
   if (!UserHasJoinedBraveRewards()) {
     return std::make_unique<NonCashDeposit>();
   }
 
-  switch (confirmation_type.value()) {
+  switch (confirmation_type) {
     case ConfirmationType::kViewed: {
       return std::make_unique<CashDeposit>();
     }

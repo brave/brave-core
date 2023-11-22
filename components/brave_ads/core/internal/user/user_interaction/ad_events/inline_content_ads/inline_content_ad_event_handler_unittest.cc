@@ -26,7 +26,7 @@ namespace {
 
 InlineContentAdInfo BuildAndSaveAd() {
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/false);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/false);
   database::SaveCreativeInlineContentAds({creative_ad});
   return BuildInlineContentAd(creative_ad);
 }
@@ -42,7 +42,7 @@ class BraveAdsInlineContentAdEventHandlerTest : public UnitTestBase {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::InlineContentAdEventType& event_type,
+                 const mojom::InlineContentAdEventType event_type,
                  const bool should_fire_event) {
     base::MockCallback<FireInlineContentAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,

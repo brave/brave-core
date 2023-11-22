@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
@@ -60,10 +61,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void ShowReminder(brave_ads::mojom::ReminderType type) override;
-
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,
@@ -101,36 +98,20 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
-  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                             training_sample) override;
+  void AddFederatedLearningPredictorTrainingSample(
+      std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
+      override;
 
-  bool GetBooleanPref(const std::string& path) const override;
-  void SetBooleanPref(const std::string& path, bool value) override;
-  int GetIntegerPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, int value) override;
-  double GetDoublePref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, double value) override;
-  std::string GetStringPref(const std::string& path) const override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
-  void SetInt64Pref(const std::string& path, int64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
-  void SetUint64Pref(const std::string& path, uint64_t value) override;
-  base::Time GetTimePref(const std::string& path) const override;
-  void SetTimePref(const std::string& path, base::Time value) override;
-  absl::optional<base::Value::Dict> GetDictPref(
-      const std::string& path) const override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  absl::optional<base::Value::List> GetListPref(
-      const std::string& path) const override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-  void ClearPref(const std::string& path) override;
-  bool HasPrefPath(const std::string& path) const override;
+  absl::optional<base::Value> GetProfilePref(const std::string& path) override;
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  void ClearProfilePref(const std::string& path) override;
+  bool HasProfilePrefPath(const std::string& path) const override;
 
   absl::optional<base::Value> GetLocalStatePref(
-      const std::string& path) const override;
+      const std::string& path) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
+  void ClearLocalStatePref(const std::string& path) override;
+  bool HasLocalStatePrefPath(const std::string& path) const override;
 
   void Log(const char* file,
            int line,
@@ -138,7 +119,17 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
            const std::string& message) override;
 
  private:
-  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  absl::optional<base::Value> CachedProfilePrefValue(
+      const std::string& path) const;
+  absl::optional<base::Value> CachedLocalStatePrefValue(
+      const std::string& path) const;
+
+  base::flat_map</*path=*/std::string, /*value=*/base::Value>
+      cached_profile_prefs_;
+  base::flat_map</*path=*/std::string, /*value=*/base::Value>
+      cached_local_state_prefs_;
+  mojo::AssociatedRemote<mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
   BatAdsClientNotifierImpl notifier_impl_;
 };
 

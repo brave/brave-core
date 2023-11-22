@@ -54,7 +54,7 @@ TEST_F(BraveAdsTabManagerTest, IsVisible) {
           /*is_visible=*/true);
 
   // Act & Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*id=*/1));
+  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*tab_id=*/1));
 }
 
 TEST_F(BraveAdsTabManagerTest, IsOccluded) {
@@ -63,7 +63,7 @@ TEST_F(BraveAdsTabManagerTest, IsOccluded) {
           /*is_visible=*/false);
 
   // Act & Assert
-  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*id=*/1));
+  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*tab_id=*/1));
 }
 
 TEST_F(BraveAdsTabManagerTest, IsPlayingMedia) {
@@ -74,7 +74,7 @@ TEST_F(BraveAdsTabManagerTest, IsPlayingMedia) {
   PlayMedia(/*tab_id=*/1);
 
   // Act & Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(/*id=*/1));
+  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(/*tab_id=*/1));
 }
 
 TEST_F(BraveAdsTabManagerTest, IsNotPlayingMedia) {
@@ -83,7 +83,7 @@ TEST_F(BraveAdsTabManagerTest, IsNotPlayingMedia) {
           /*is_visible=*/true);
 
   // Act & Assert
-  EXPECT_FALSE(TabManager::GetInstance().IsPlayingMedia(/*id=*/1));
+  EXPECT_FALSE(TabManager::GetInstance().IsPlayingMedia(/*tab_id=*/1));
 }
 
 TEST_F(BraveAdsTabManagerTest, OpenNewTab) {

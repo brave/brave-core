@@ -12,13 +12,13 @@ namespace {
 void SimulatePollFailedRegularTransientError(ModelTypeSet requested_types,
                                              SyncCycle* cycle) {
   cycle->mutable_status_controller()->set_last_download_updates_result(
-      SyncerError(SyncerError::SERVER_RETURN_TRANSIENT_ERROR));
+      SyncerError::ProtocolError(TRANSIENT_ERROR));
 }
 
 void SimulatePollFailedNigoryNotReady(ModelTypeSet requested_types,
                                       SyncCycle* cycle) {
   cycle->mutable_status_controller()->set_last_download_updates_result(
-      SyncerError(SyncerError::SERVER_RETURN_TRANSIENT_ERROR));
+      SyncerError::ProtocolError(TRANSIENT_ERROR));
 
   cycle->mutable_status_controller()->set_last_server_error_message(
       kNigoriFolderNotReadyError);

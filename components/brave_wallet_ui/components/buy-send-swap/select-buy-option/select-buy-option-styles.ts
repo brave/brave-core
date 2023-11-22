@@ -12,13 +12,13 @@ export const StyledWrapper = styled.div<{
   flex-direction: column;
   align-items: flex-start;
 
-  ${(p) => p?.layoutType === 'loose'
-    ? css`
-      width: 100%;
-      align-items: stretch;
-    `
-    : ''
-  }
+  ${(p) =>
+    p?.layoutType === 'loose'
+      ? css`
+          width: 100%;
+          align-items: stretch;
+        `
+      : ''}
 `
 
 export const SubDivider = styled.div`

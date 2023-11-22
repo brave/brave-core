@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Το κλείσιμο όλων των καρτελών κλείνει το Brave</translation>
 <translation id="8308305244351876417">Επιτρέπει τη συνέχιση της αναπαραγωγής του ήχου όταν κάνετε εναλλαγή σε άλλη καρτέλα στο Brave, σε άλλη εφαρμογή ή όταν η οθόνη της συσκευής σας είναι απενεργοποιημένη.</translation>
 <translation id="4150201353443180367">Οθόνη</translation>
+<translation id="4275663329226226506">Μέσα</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Χρησιμοποιήστε τη διαχείριση ψηφιακών δικαιωμάτων (DRM) Widevine για να προβάλετε προστατευμένο περιεχόμενο πολυμέσων στο πρόγραμμα περιήγησης.</translation>
+<translation id="255204363133978824">Να επιτρέπεται προστατευμένο περιεχόμενο</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα για το Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Να επιτρέπεται (Επανεκκίνηση τώρα)</translation>
 <translation id="2433507940547922241">Εμφάνιση</translation>
 <translation id="9040069796107003510">Εικονίδιο ανταμοιβών Brave</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
 <translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
 <translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>
+<translation id="6915830896450988084">Αποστολή με <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Αποστολή</translation>
 <translation id="538450413584738399">Ανταλλαγή</translation>
 <translation id="1366855498335432549">Κατάθεση</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">Μενού</translation>
 <translation id="42981349822642051">Ανάπτυξη</translation>
 <translation id="3586752056660754651">Υπογραφή</translation>
+<translation id="3950820424414687140">Σύνδεση</translation>
 <translation id="6592721981110586529">Σύνδεση με το Πορτοφόλι Brave</translation>
 <translation id="329813193938846695">Επιλογή λογαριασμών</translation>
 <translation id="291375746846291973">Συνδεθείτε μόνο με ιστότοπους που εμπιστεύεστε.</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">Εντοπίστηκαν μη ASCII χαρακτήρες!</translation>
 <translation id="442709594176931966">Προβολή αρχικού μηνύματος</translation>
 <translation id="2239252396088484499">Προβολή μηνύματος σε κωδικοποίηση ASCII</translation>
+<translation id="4530494379350999373">Προέλευση</translation>
+<translation id="6736243959894955139">Διεύθυνση</translation>
+<translation id="3095940652251934233">Δήλωση</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Έκδοση</translation>
+<translation id="1313065465616456728">Εκδόθηκε στις</translation>
+<translation id="7902225556763260253">Ώρα λήξης</translation>
+<translation id="1908159733454294871">Εντοπίστηκε κίνδυνος ασφάλειας</translation>
 <translation id="4220693114674044366">Διεύθυνση διακριτικού</translation>
 <translation id="5658257029899993935">Συνδέστε την αγορά στον λογαριασμό σας Brave</translation>
 <translation id="1187061015547219282">Συνδέστε την αγορά σας από το Play Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Brave VPN σε άλλες συσκευές.</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">Επιλογή όλων</translation>
 <translation id="5972844218283131174">Κατάργηση επιλογής όλων</translation>
 <translation id="6322030314101903925">Δεν υπάρχουν διαθέσιμα στοιχεία</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Σύνδεση με το Πορτοφόλι Brave</translation>
+<translation id="3696514931437952995">Συνδέεστε στο<ph name="ORIGIN"/>. Το Πορτοφόλι Brave θα κοινοποιήσει τη διεύθυνση του πορτοφολιού σας με <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Προβολή λεπτομερειών</translation>
+<translation id="6759710362319508545">Πόροι</translation>
+<translation id="2471230424465522689">Όχι πριν από</translation>
+<translation id="4841860051609590575">Αναγνωριστικό αιτήματος</translation>
 </translationbundle>

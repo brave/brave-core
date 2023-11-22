@@ -13,14 +13,15 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/common/pref_names.h"
-#include "brave/components/ai_chat/core/constants.h"
-#include "brave/components/ai_chat/core/models.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -102,11 +103,11 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
                    return model_match->second.Clone();
                  });
   std::move(callback).Run(std::move(models),
-                          active_chat_tab_helper_->GetCurrentModel().Clone());
+                          active_chat_tab_helper_->GetCurrentModel().key);
 }
 
 void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
-  active_chat_tab_helper_->ChangelModel(model_key);
+  active_chat_tab_helper_->ChangeModel(model_key);
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
@@ -167,8 +168,11 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
   auto site_info = BuildSiteInfo();
-  std::move(callback).Run(site_info.has_value() ? site_info.value().Clone()
-                                                : nullptr);
+  const bool is_fetching_content = active_chat_tab_helper_->HasPageContent() ==
+                                   PageContentAssociation::FETCHING_CONTENT;
+  std::move(callback).Run(is_fetching_content, site_info.has_value()
+                                                   ? site_info.value().Clone()
+                                                   : nullptr);
 }
 
 void AIChatUIPageHandler::OpenBraveLeoSettings() {
@@ -176,10 +180,15 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
 #if !BUILDFLAG(IS_ANDROID)
-  contents_to_navigate->OpenURL({GURL("brave://settings/leo-assistant"),
-                                 content::Referrer(),
-                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                 ui::PAGE_TRANSITION_LINK, false});
+  const GURL url("brave://settings/leo-assistant");
+  if (auto* browser =
+          chrome::FindBrowserWithWebContents(contents_to_navigate)) {
+    ShowSingletonTab(browser, url);
+  } else {
+    contents_to_navigate->OpenURL({url, content::Referrer(),
+                                   WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                   ui::PAGE_TRANSITION_LINK, false});
+  }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
 #endif
@@ -191,12 +200,18 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
+#if !BUILDFLAG(IS_ANDROID)
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
   contents_to_navigate->OpenURL({url, content::Referrer(),
                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                  ui::PAGE_TRANSITION_LINK, false});
+#else
+  // TODO(sergz): Disable subscriptions on Android until in store purchases
+  // are done.
+  return;
+#endif
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
@@ -238,11 +253,18 @@ void AIChatUIPageHandler::GetCanShowPremiumPrompt(
 
   base::Time last_accepted_disclaimer =
       profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+
+  // Can't show if we haven't accepted disclaimer yet
+  if (last_accepted_disclaimer.is_null()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
   bool is_more_than_24h_since_last_seen =
       last_accepted_disclaimer < time_1_day_ago;
 
-  if (is_more_than_24h_since_last_seen && !has_user_dismissed_prompt) {
+  if (is_more_than_24h_since_last_seen) {
     std::move(callback).Run(true);
     return;
   }
@@ -334,6 +356,12 @@ void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
   }
 }
 
+void AIChatUIPageHandler::OnModelChanged(const std::string& model_key) {
+  if (page_.is_bound()) {
+    page_->OnModelChanged(model_key);
+  }
+}
+
 void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
     std::vector<std::string> questions,
     bool has_generated,
@@ -359,12 +387,22 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent() {
+void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
   if (page_.is_bound()) {
+    // TODO(petemill): Looking at the target webcontents'
+    // |IsDocumentOnLoadCompletedInPrimaryMainFrame| could be improved with
+    // a function on TabHelper / Conversation, e.g. IsContentLoading so that
+    // MaybeGeneratePageText and this function are looking at the same thing.
+    // This should be refactored with iOS support.
+    const bool is_fetching_content =
+        (active_chat_tab_helper_->HasPageContent() ==
+         PageContentAssociation::FETCHING_CONTENT) ||
+        !active_chat_tab_helper_->web_contents()
+             ->IsDocumentOnLoadCompletedInPrimaryMainFrame();
     auto site_info = BuildSiteInfo();
-
-    page_->OnSiteInfoChanged(site_info.has_value() ? site_info.value().Clone()
-                                                   : nullptr);
+    page_->OnSiteInfoChanged(
+        is_fetching_content,
+        site_info.has_value() ? site_info.value().Clone() : nullptr);
   }
 }
 
@@ -401,10 +439,13 @@ void AIChatUIPageHandler::GetFaviconImageData(
 }
 
 absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
-  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent()) {
+  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent() ==
+                                     PageContentAssociation::HAS_CONTENT) {
     mojom::SiteInfo site_info;
     site_info.title =
         base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+    site_info.is_content_truncated =
+        active_chat_tab_helper_->IsPageContentsTruncated();
 
     return site_info;
   }

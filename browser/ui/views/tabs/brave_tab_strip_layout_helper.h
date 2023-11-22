@@ -27,7 +27,7 @@ struct TabLayoutConstants;
 
 namespace tabs {
 
-constexpr int kVerticalTabHeight = 36;
+constexpr int kVerticalTabHeight = 32;
 constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 constexpr int kVerticalTabsSpacing = 4;
 constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
@@ -39,10 +39,6 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     absl::optional<int> width,
     bool is_floating_mode);
-
-std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
-    const std::vector<TabSlotView*>& views,
-    TabStrip* tab_strip);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,

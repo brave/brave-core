@@ -17,7 +17,7 @@ import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
-public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
+public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 

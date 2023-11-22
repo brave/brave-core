@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
 
-#include <tuple>
-
 namespace brave_ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
@@ -27,22 +25,6 @@ ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::IsValid() const {
   return conversion.IsValid() && !process_at.is_null();
-}
-
-bool operator==(const ConversionQueueItemInfo& lhs,
-                const ConversionQueueItemInfo& rhs) {
-  const auto tie = [](const ConversionQueueItemInfo& conversion_queue_item) {
-    return std::tie(conversion_queue_item.conversion,
-                    conversion_queue_item.process_at,
-                    conversion_queue_item.was_processed);
-  };
-
-  return tie(lhs) == tie(rhs);
-}
-
-bool operator!=(const ConversionQueueItemInfo& lhs,
-                const ConversionQueueItemInfo& rhs) {
-  return !(lhs == rhs);
 }
 
 }  // namespace brave_ads

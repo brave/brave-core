@@ -24,7 +24,7 @@ class BraveAdsInterestSegmentsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<TargetingHelperForTesting>();
+    targeting_ = std::make_unique<test::TargetingHelper>();
 
     LoadResource();
 
@@ -37,7 +37,7 @@ class BraveAdsInterestSegmentsTest : public UnitTestBase {
     task_environment_.RunUntilIdle();
   }
 
-  std::unique_ptr<TargetingHelperForTesting> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_;
 };
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
@@ -47,10 +47,11 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
       {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
 
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   // Act & Assert
   const SegmentList expected_interest_segments =
-      TargetingHelperForTesting::InterestExpectation().segments;
+      test::TargetingHelper::InterestExpectation().segments;
   EXPECT_EQ(expected_interest_segments, BuildInterestSegments());
 }
 
@@ -75,6 +76,7 @@ TEST_F(BraveAdsInterestSegmentsTest,
       {{kTextClassificationFeature, false}, {kTextEmbeddingFeature, false}});
 
   targeting_->MockInterest();
+  task_environment_.RunUntilIdle();
 
   // Act
   const SegmentList segments = BuildInterestSegments();

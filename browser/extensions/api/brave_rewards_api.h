@@ -11,10 +11,8 @@
 #include <string>
 #include <vector>
 
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -162,22 +160,6 @@ class BraveRewardsTipSiteFunction : public ExtensionFunction {
   ~BraveRewardsTipSiteFunction() override;
 
   ResponseAction Run() override;
-};
-
-class BraveRewardsTipUserFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipUser", UNKNOWN)
-
- protected:
-  ~BraveRewardsTipUserFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnTipUserGetPublisherInfo(const brave_rewards::mojom::Result result,
-                                 brave_rewards::mojom::PublisherInfoPtr info);
-  void OnTipUserSavePublisherInfo(const brave_rewards::mojom::Result result);
-  void ShowTipDialog();
 };
 
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
@@ -429,22 +411,6 @@ class BraveRewardsGetAllNotificationsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetInlineTippingPlatformEnabledFunction :
-    public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getInlineTippingPlatformEnabled",
-      UNKNOWN)
-
- protected:
-  ~BraveRewardsGetInlineTippingPlatformEnabledFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnInlineTipSetting(bool value);
-};
-
 class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.fetchBalance", UNKNOWN)
@@ -455,9 +421,7 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnFetchBalance(
-      base::expected<brave_rewards::mojom::BalancePtr,
-                     brave_rewards::mojom::FetchBalanceError> result);
+  void OnFetchBalance(brave_rewards::mojom::BalancePtr balance);
 };
 
 class BraveRewardsGetExternalWalletProvidersFunction
@@ -481,9 +445,7 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetExternalWallet(
-      base::expected<brave_rewards::mojom::ExternalWalletPtr,
-                     brave_rewards::mojom::GetExternalWalletError> result);
+  void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
 };
 
 class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {

@@ -10,7 +10,7 @@ namespace whats_new::prefs {
 
 // Store lastly shown whats-new version - major version.
 // Ex, "1.50" means browser launched whats-new page for v1.50 update already.
-constexpr char kWhatsNewLastVersion[] = "brave.whats_new.last_version";
+inline constexpr char kWhatsNewLastVersion[] = "brave.whats_new.last_version";
 
 }  // namespace whats_new::prefs
 

@@ -9,7 +9,11 @@
 namespace perf::switches {
 
 // All switches in alphabetical order.
-extern const char kEnableBraveFeaturesForPerfTesting[];
+
+// Enables some Brave's widely used features for a testing profile in perf
+// tests. --user-data-dir should be set.
+inline constexpr char kEnableBraveFeaturesForPerfTesting[] =
+    "enable-brave-features-for-perf-testing";
 
 }  // namespace perf::switches
 

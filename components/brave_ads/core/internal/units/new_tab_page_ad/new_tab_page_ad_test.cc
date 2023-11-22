@@ -25,9 +25,7 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
-  }
+  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
@@ -39,7 +37,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
 
   void TriggerNewTabPageAdEvent(const std::string& placement_id,
                                 const std::string& creative_instance_id,
-                                const mojom::NewTabPageAdEventType& event_type,
+                                const mojom::NewTabPageAdEventType event_type,
                                 const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
@@ -64,7 +62,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
@@ -75,7 +73,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
-TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       DoNotServeAdIfPermissionRulesAreDenied) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
@@ -88,12 +87,46 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       DoNotServeAdIfUserHasNotOptedInToNewTabPageAds) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+  test::ForcePermissionRules();
+
+  test::OptOutOfNewTabPageAds();
+
+  // Act & Assert
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
+
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run(::testing::Eq(absl::nullopt)));
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+}
+
+TEST_F(
+    BraveAdsNewTabPageAdIntegrationTest,
+    DoNotServeAdIfShouldNotAlwaysTriggerEventsAndUserHasNotJoinedBraveRewards) {
+  // Arrange
+  test::ForcePermissionRules();
+
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
+
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run(::testing::Eq(absl::nullopt)));
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+}
+
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -116,7 +149,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -128,7 +161,7 @@ TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
     DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -141,7 +174,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -168,7 +201,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,
@@ -184,7 +217,7 @@ TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
     DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kServed,
@@ -197,6 +230,29 @@ TEST_F(
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kClicked,
                            /*should_fire_event=*/false);
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       DoNotTriggerEventForInvalidCreativeInstanceId) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+  test::ForcePermissionRules();
+
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+        ASSERT_TRUE(ad);
+        ASSERT_TRUE(ad->IsValid());
+
+        // Act & Assert
+        TriggerNewTabPageAdEvent(ad->placement_id, kInvalidCreativeInstanceId,
+                                 mojom::NewTabPageAdEventType::kViewed,
+                                 /*should_fire_event=*/false);
+      });
+
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
 }  // namespace brave_ads

@@ -47,6 +47,7 @@ class SidebarItemsContentsView : public views::View,
 
   // views::View overrides:
   gfx::Size CalculatePreferredSize() const override;
+  void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:
   void ShowContextMenuForViewImpl(views::View* source,
@@ -84,8 +85,6 @@ class SidebarItemsContentsView : public views::View,
 
   bool IsBubbleVisible() const;
   void Update();
-  void SetDefaultImageAt(int index, const sidebar::SidebarItem& item);
-  void SetSidebarOnLeft(bool sidebar_on_left);
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -100,6 +99,7 @@ class SidebarItemsContentsView : public views::View,
                    bool user_gesture);
   void UpdateItemViewStateAt(size_t index, bool active);
   bool IsBuiltInTypeItemView(views::View* view) const;
+  void SetDefaultImageFor(const sidebar::SidebarItem& item);
 
   // Called when each item is pressed.
   void OnItemPressed(const views::View* item, const ui::Event& event);
@@ -120,7 +120,6 @@ class SidebarItemsContentsView : public views::View,
   SidebarItemView* GetItemViewAt(size_t index);
   void LaunchEditItemDialog();
 
-  bool sidebar_on_left_ = true;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<views::DragController> drag_controller_ = nullptr;
   raw_ptr<views::View> view_for_context_menu_ = nullptr;

@@ -13,13 +13,14 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -32,6 +33,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -47,7 +49,7 @@
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -79,6 +81,10 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "sandbox/policy/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/components/brave_player/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -209,14 +215,6 @@
               brave_wallet::features::kBraveWalletNftPinningFeature),         \
       },                                                                      \
       {                                                                       \
-          "enable-panel-v2",                                                  \
-          "Enable Panel v2",                                                  \
-          "Enable Panel v2 for Brave Wallet",                                 \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletPanelV2Feature),            \
-      },                                                                      \
-      {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
           "Native cryptocurrency wallet support without the use of "          \
@@ -226,44 +224,21 @@
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-filecoin",                                            \
-          "Enable Brave Wallet Filecoin support",                             \
-          "Filecoin support for native Brave Wallet",                         \
+          "brave-wallet-bitcoin",                                             \
+          "Enable Brave Wallet Bitcoin support",                              \
+          "Bitcoin support for native Brave Wallet",                          \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletFilecoinFeature),           \
+              brave_wallet::features::kBraveWalletBitcoinFeature),            \
       },                                                                      \
       {                                                                       \
-          "brave-wallet-solana",                                              \
-          "Enable Brave Wallet Solana support",                               \
-          "Solana support for native Brave Wallet",                           \
+          "brave-wallet-enable-ankr-balances",                                \
+          "Enable Ankr balances",                                             \
+          "Enable usage of Ankr Advanced API for fetching balances in Brave " \
+          "Wallet",                                                           \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaFeature),             \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-solana-provider",                                     \
-          "Enable Brave Wallet Solana provider support",                      \
-          "Solana provider support for native Brave Wallet",                  \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletSolanaProviderFeature),     \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-sns",                                                 \
-          "Enable Solana Name Service support",                               \
-          "Enable Solana Name Service(.sol) support for Wallet and omnibox "  \
-          "address resolution",                                               \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature), \
-      },                                                                      \
-      {                                                                       \
-          "brave-wallet-dapps-support",                                       \
-          "Enable Brave Wallet Dapps support",                                \
-          "Brave Wallet Dapps support",                                       \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletDappsSupportFeature),       \
+              brave_wallet::features::kBraveWalletAnkrBalancesFeature),       \
       })
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \
@@ -436,6 +411,16 @@
       FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
   })
 
+#define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
+  IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
+               EXPAND_FEATURE_ENTRIES({                                      \
+                   "brave-player",                                           \
+                   "Brave Player",                                           \
+                   "Enables Brave Player",                                   \
+                   kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
+                   FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
+               }))
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -605,6 +590,13 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveLocalhostAccessPermission),       \
+      },                                                                       \
+      {                                                                        \
+          "brave-psst",                                                        \
+          "Enable PSST (Privacy Site Settings Tool) feature",                  \
+          "Enable PSST feature",                                               \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(psst::features::kBravePsst),                      \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \
@@ -886,6 +878,15 @@
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       },                                                                       \
       {                                                                        \
+          "brave-show-strict-fingerprinting-mode",                             \
+          "Show Strict Fingerprinting Mode",                                   \
+          "Show Strict (aggressive) option for Fingerprinting Mode in "        \
+          "Brave Shields ",                                                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShowStrictFingerprintingMode),    \
+      },                                                                       \
+      {                                                                        \
           "brave-override-download-danger-level",                              \
           "Override download danger level",                                    \
           "Disables download warnings for files which are considered "         \
@@ -893,6 +894,14 @@
           "Not recommended.",                                                  \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-web-view-rounded-corners",                                    \
+          "Use rounded corners on main content areas",                         \
+          "Renders the main content area and sidebar panel with rounded "      \
+          "corners, padding, and a drop shadow",                               \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
@@ -916,6 +925,7 @@
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
+  BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

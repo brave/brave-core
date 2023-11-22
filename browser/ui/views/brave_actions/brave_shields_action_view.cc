@@ -17,6 +17,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -70,17 +71,10 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
     brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
         ->AddObserver(this);
   }
-  auto* ink_drop = views::InkDrop::Get(this);
-  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-  ink_drop->SetBaseColorCallback(base::BindRepeating(
-      [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
-      this));
 
   SetAccessibleName(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS));
-  SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   tab_strip_model_->AddObserver(this);
 
   // The MenuButtonController makes sure the panel closes when clicked if the
@@ -247,6 +241,23 @@ std::u16string BraveShieldsActionView::GetTooltipText(
   }
 
   return brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS);
+}
+
+void BraveShieldsActionView::OnThemeChanged() {
+  LabelButton::OnThemeChanged();
+
+  const auto* const color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  // Apply same ink drop effect with location bar's other icon views.
+  auto* ink_drop = views::InkDrop::Get(this);
+  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  SetHasInkDropActionOnClick(true);
+  views::InkDrop::Get(this)->SetVisibleOpacity(kOmniboxOpacitySelected);
+  views::InkDrop::Get(this)->SetHighlightOpacity(kOmniboxOpacityHovered);
+  ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
 }
 
 void BraveShieldsActionView::Update() {

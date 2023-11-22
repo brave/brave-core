@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Cando se peche Brave, péchanse todas as lapelas</translation>
 <translation id="8308305244351876417">Permite que o audio se reproduza cando cambias de separador en Brave, cando cambias de aplicación ou cando a pantalla do dispositivo está apagada.</translation>
 <translation id="4150201353443180367">Pantalla</translation>
+<translation id="4275663329226226506">Multimedia</translation>
+<translation id="5950428831347558278">DRM de Widevine</translation>
+<translation id="6716942308303275900">Empregue a xestión de dereitos dixitais (DRM) de Widevine para ver contido multimedia protexido no navegador.</translation>
+<translation id="255204363133978824">Permitir contido protexido</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Máis información acerca de Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Permitir (reiniciar agora)</translation>
 <translation id="2433507940547922241">Aparencia</translation>
 <translation id="9040069796107003510">Icona de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
@@ -583,6 +589,7 @@ Seguro que queres facelo?</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas predeterminadas</translation>
 <translation id="5825943197137337319">Só interface pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP non proxied</translation>
+<translation id="6915830896450988084">Enviar con <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Ingreso</translation>
@@ -899,6 +906,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3897092660631435901">Menú</translation>
 <translation id="42981349822642051">Expandir</translation>
 <translation id="3586752056660754651">Rexistrarse</translation>
+<translation id="3950820424414687140">Iniciar sesión</translation>
 <translation id="6592721981110586529">Conectar con Carteira de Brave</translation>
 <translation id="329813193938846695">Seleccionar contas</translation>
 <translation id="291375746846291973">Conecta só con sitios de confianza.</translation>
@@ -1047,6 +1055,14 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5802752138057422257">Detectáronse caracteres que non son ASCII!</translation>
 <translation id="442709594176931966">Ver mensaxe orixinal</translation>
 <translation id="2239252396088484499">Ver mensaxe en codificación ASCII</translation>
+<translation id="4530494379350999373">Orixe</translation>
+<translation id="6736243959894955139">Enderezo</translation>
+<translation id="3095940652251934233">Declaración</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versión</translation>
+<translation id="1313065465616456728">Emitido ás</translation>
+<translation id="7902225556763260253">Hora de vencemento</translation>
+<translation id="1908159733454294871">Risco para a seguridade detectado</translation>
 <translation id="4220693114674044366">Enderezo do token</translation>
 <translation id="5658257029899993935">Liga a compra á túa conta de Brave</translation>
 <translation id="1187061015547219282">Liga a compra que fixeches en Play Store á túa conta de Brave para usar a VPN de Brave noutros dispositivos.</translation>
@@ -1179,4 +1195,11 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="5972844218283131174">Anular toda a selección</translation>
 <translation id="6322030314101903925">Ningún activo dispoñible</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Inicie sesión con Carteira de Brave</translation>
+<translation id="3696514931437952995">Está iniciando sesión en <ph name="ORIGIN"/>. Carteira de Brave compartirá o enderezo da súa carteira con <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Ver detalles</translation>
+<translation id="6759710362319508545">Recursos</translation>
+<translation id="2471230424465522689">Non antes de</translation>
+<translation id="4841860051609590575">ID da solicitude</translation>
 </translationbundle>

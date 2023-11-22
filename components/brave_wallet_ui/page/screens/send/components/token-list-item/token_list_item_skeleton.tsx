@@ -13,7 +13,7 @@ import {
   HorizontalSpace
 } from '../../../../../components/shared/style'
 import {
-  LoadingSkeleton
+  LoadingSkeleton //
 } from '../../../../../components/shared/loading-skeleton/index'
 
 interface Props {
@@ -27,32 +27,38 @@ export const TokenListItemSkeleton = (props: Props) => {
       padding='8px 12px'
       justifyContent='space-between'
     >
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <LoadingSkeleton
           circle={true}
           width={40}
           height={40}
         />
         <HorizontalSpace space='16px' />
-        <Column
-          alignItems='flex-start'
-        >
-          <LoadingSkeleton width={isNFT ? 120 : 80} height={18} />
+        <Column alignItems='flex-start'>
+          <LoadingSkeleton
+            width={isNFT ? 120 : 80}
+            height={18}
+          />
           <VerticalSpace space='2px' />
-          <LoadingSkeleton width={120} height={18} />
+          <LoadingSkeleton
+            width={120}
+            height={18}
+          />
         </Column>
       </Row>
-      {!isNFT &&
-        <Column
-          alignItems='flex-end'
-        >
-          <LoadingSkeleton width={60} height={18} />
+      {!isNFT && (
+        <Column alignItems='flex-end'>
+          <LoadingSkeleton
+            width={60}
+            height={18}
+          />
           <VerticalSpace space='2px' />
-          <LoadingSkeleton width={40} height={18} />
+          <LoadingSkeleton
+            width={40}
+            height={18}
+          />
         </Column>
-      }
+      )}
     </Row>
   )
 }

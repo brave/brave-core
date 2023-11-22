@@ -186,7 +186,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data), from_account->account_id.Clone(),
+        std::move(tx_data),
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::FIL,
+                                        absl::nullopt),
+        from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           first_tx_meta_id = id;
@@ -229,6 +233,9 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         std::vector<uint8_t>(), false, absl::nullopt);
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::ETH,
+                                        absl::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -262,6 +269,9 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::SOL,
+                                        absl::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -359,7 +369,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data), from_account->account_id.Clone(),
+        std::move(tx_data),
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::FIL,
+                                        absl::nullopt),
+        from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           tx_meta_id = id;

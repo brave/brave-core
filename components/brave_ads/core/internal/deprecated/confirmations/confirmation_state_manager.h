@@ -34,12 +34,12 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void Load(const absl::optional<WalletInfo>& wallet,
-            InitializeCallback callback);
+  void LoadState(const absl::optional<WalletInfo>& wallet,
+                 InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void Save();
+  void SaveState();
 
   std::string ToJson();
   [[nodiscard]] bool FromJson(const std::string& json);

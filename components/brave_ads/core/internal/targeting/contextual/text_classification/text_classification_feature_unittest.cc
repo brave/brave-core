@@ -30,16 +30,16 @@ TEST(BraveAdsTextClassificationFeatureTest, TextClassificationResourceVersion) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kTextClassificationFeature, {{"resource_version", "0"}});
+      kTextClassificationFeature, {{"flatbuffers_resource_version", "0"}});
 
   // Act & Assert
-  EXPECT_EQ(0, kTextClassificationResourceVersion.Get());
+  EXPECT_EQ(0, kFlatBuffersTextClassificationResourceVersion.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationResourceVersion) {
   // Act & Assert
-  EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
+  EXPECT_EQ(1, kFlatBuffersTextClassificationResourceVersion.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
@@ -49,7 +49,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act & Assert
-  EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
+  EXPECT_EQ(1, kFlatBuffersTextClassificationResourceVersion.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,

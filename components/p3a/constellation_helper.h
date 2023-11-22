@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/p3a/star_randomness_points.h"
 
@@ -32,6 +33,7 @@ class ConstellationHelper {
  public:
   using ConstellationMessageCallback = base::RepeatingCallback<void(
       std::string histogram_name,
+      MetricLogType log_type,
       uint8_t epoch,
       std::unique_ptr<std::string> serialized_message)>;
 
@@ -48,14 +50,16 @@ class ConstellationHelper {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void UpdateRandomnessServerInfo();
+  void UpdateRandomnessServerInfo(MetricLogType log_type);
 
   bool StartMessagePreparation(std::string histogram_name,
+                               MetricLogType log_type,
                                std::string serialized_log);
 
  private:
   void HandleRandomnessData(
       std::string histogram_name,
+      MetricLogType log_type,
       uint8_t epoch,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
@@ -63,6 +67,7 @@ class ConstellationHelper {
       std::unique_ptr<rust::Vec<constellation::VecU8>> resp_proofs);
 
   bool ConstructFinalMessage(
+      MetricLogType log_type,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>&
           randomness_request_state,
       const rust::Vec<constellation::VecU8>& resp_points,

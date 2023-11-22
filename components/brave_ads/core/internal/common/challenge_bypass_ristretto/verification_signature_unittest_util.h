@@ -10,8 +10,12 @@ namespace brave_ads::cbr {
 
 class VerificationSignature;
 
-VerificationSignature GetVerificationSignatureForTesting();
-VerificationSignature GetInvalidVerificationSignatureForTesting();
+namespace test {
+
+VerificationSignature GetVerificationSignature();
+VerificationSignature GetInvalidVerificationSignature();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

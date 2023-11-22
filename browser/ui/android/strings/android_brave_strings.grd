@@ -207,7 +207,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You're already sending monthly contributions to this creator
       </message>
       <message name="IDS_ALREADY_MONTHLY_CONTRIBUTION_DESCRIPTION" desc="Text for You're already sending monthly contributions description">
-        You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from <ph name="MONTHLY_CONTRIBUTION">%1$s</ph>.
+        You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="MONTHLY_CONTRIBUTION">%1$s</ph>.
       </message>
       <message name="IDS_CONTRIBUTION_SENT" desc="Text for Contribution sent">
         Contribution sent!
@@ -240,7 +240,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         It looks like you're logged out of <ph name="CUSTODIAN">%1$s</ph> for Brave Rewards. Log in again to continue.
       </message>
       <message name="IDS_INFO_CREATOR_NOT_VERIFIED"  desc="Text for This creator is not verified description">
-        This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
+        This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_SEND_CONTRIBUTION"  desc="Text for Send contribution">
         Send Contribution
@@ -279,7 +279,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Please try again.
       </message>
       <message name="IDS_TIPPING_TOOLTIP_DESCRIPTION"  desc="Text for tipping tooltip description">
-        This Creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE">%1$s</ph>
+        This creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
@@ -392,9 +392,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_STATS_NOTIFICATION_ON"  desc="Text for Turn on notifications">
         Turn on notifications
       </message>
-      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
-        Upgrade connections to HTTPS
-      </message>
       <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">
         Brave collects 5% of the sent amount as a processing fee.
       </message>
@@ -409,9 +406,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUCCESS_TWEET" desc="Text of a tweet after tipping a verified creator.">
         I just contributed <ph name="AMOUNT">%1$s<ex>ContributionAmount</ex></ph> BAT using the Brave Browser. See how you can support your favorite creators and sites too: https://brave.com/rewards
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
-        Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
       <message name="IDS_DE_AMP_SWITCH" desc="Switch to activate De-AMP feature">
         Auto-redirect AMP pages
@@ -554,6 +548,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_UPDATE_FAILED_CUSTOM_FILTER" desc="Custom filter Update failed.">
         <ph name="TIME">%1$s<ex>1 hours ago</ex></ph> Update failed
       </message>
+      <message name="IDS_CREATE_CUSTOM_FILTERS_TITLE" desc="Title for Create Custom filters.">
+        Create custom filters
+      </message>
+      <message name="IDS_SAVE_CHANGES" desc="Button text for create custom filter lists.">
+        Save changes
+      </message>
+      <message name="IDS_SAVED_CHANGES_SUCCESS" desc="Create custom filter lists success text.">
+        Saved changes successfully
+      </message>
+      <message name="IDS_CREATE_CUSTOM_FILTER_SUMMARY" desc="Create custom filter summary.">
+        Add custom filters you've created, one per line, in the field above. Be sure to use the <ph name="ADBLOCK_FILTER_SYNTAX">%1$s</ph>.
+      </message>
+      <message name="IDS_ADBLOCK_FILTER_SYNTAX" desc="Text for Adblock filter syntax.">
+        Adblock filter syntax
+      </message>
       <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
         <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
@@ -684,7 +693,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Choose content sources
       </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
-        Prevents browser from fingerprinting
+        Prevents websites from fingerprinting me
       </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_TITLE" desc="Title for closing tabs on exit.">
         Close tabs on exit
@@ -714,7 +723,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Don't upgrade connections to HTTPS (disabled)
       </message>
       <message name="IDS_BRAVE_FORGET_FIRST_PARTY_STORAGE_SWITCH" desc="Text for First Party Storage cleanup shields setting.">
-        Forget me when I close this site
+        Clear session data when a site is closed
       </message>
       <message name="IDS_BRAVE_FORGET_FIRST_PARTY_STORAGE_SUMMARY" desc="Extended text for First Party Storage cleanup shields setting.">
         Clears cookies and other site data when you close a site
@@ -739,12 +748,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
-      </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
-        Video playback in Brave
-      </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
-        If enabled, videos will be played in Brave instead of corresponding app
       </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
@@ -801,11 +804,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
         Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
-      <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
-        Enabled
-      </message>
-      <message name="IDS_TEXT_DISABLED" desc="Text indicating that an option is disabled">
-        Disabled
+      <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in brave">
+        Open YouTube links in Brave
       </message>
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
         Display
@@ -1073,9 +1073,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
         You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
-      <message name="IDS_BRAVE_WALLET_PORTFOLIO_BALANCE_UPDATING" desc="A placeholder to display for unupdated balance" translateable="false">
-        ...
-      </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
       </message>
@@ -1302,28 +1299,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_OPEN_FOLDER" desc="Open folder button text for export bookmarks success.">
         Open folder
       </message>
-      <!-- Sync Infobar -->
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Brave Sync has been upgraded and requires setup
-      </message>
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Begin Setup
-      </message>
       <!-- P3A Android Infobar -->
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
-      <message name="IDS_BRAVE_SYNC_ANDROID_SYNC_DISABLED" desc="The message for hint that Brave sync does not work because Android system sync is disabled and required need to open and enable">
-        We detected that you have Brave Sync enabled, however your system sync is turned off and will not allow Brave to sync. Press to open settings
-      </message>
       <message name="IDS_BRAVE_OPEN_SYSTEM_SYNC_SETTINGS" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to open system settings">
         Open Settings
-      </message>
-      <message name="IDS_BRAVE_ANDROID_SYNC_DISABLED_OK" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to ignore informer">
-        OK
-      </message>
-      <message name="IDS_BRAVE_ANDROID_SYNC_DISABLED_DONT_SHOW" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to disable informer">
-        Don't show again
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
         This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">%1$s<ex>re-create the account</ex></ph>
@@ -1633,7 +1614,7 @@ Are you sure you want to do this?
         Reduces how much websites can learn about you based on your browser's language settings.
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
-        Prevents browser from recognizing your device
+        Prevents websites from recognizing your device
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_1" desc="Title for shields option.">
         Fingerprinting blocked (strict, may break sites)
@@ -2074,10 +2055,19 @@ Are you sure you want to do this?
       Verify password
     </message>
     <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
+      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Verified password did not match
+    </message>
+    <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
+      Creating Wallet...
+    </message>
+    <message name="IDS_YOUR_WALLET_IS_RESTORING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet restoring. It is not displayed anywhere" translateable="false">
+      Your wallet is restoring...
+    </message>
+    <message name="IDS_YOUR_WALLET_IS_CREATING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet creating. It is not displayed anywhere" translateable="false">
+      Your wallet is being created...
     </message>
     <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
       1H
@@ -2176,7 +2166,7 @@ Are you sure you want to do this?
       Enter password to unlock wallet
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
+      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
@@ -3210,9 +3200,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SETTINGS_SOLANA_TITLE" desc="Title for Solana section in site settings" translateable="false">
       Solana
     </message>
-    <message name="IDS_DOWNLOAD_WALLET_DATA_FILES_PROGRESS" desc="Caption for displaying download progress of Brave Wallet datafiles component">
-      Downloading wallet data file \u2022 <ph name="PERCENTAGE">%1$d<ex>37</ex></ph>\u0025\u0025
-    </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>
     </message>
@@ -4054,7 +4041,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       No available assets
     </message>
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
-      Brave Leo
+      Leo
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
@@ -4074,17 +4061,20 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_REQUEST_ID" desc="Sign in with Brave Wallet Request ID label">
       Request ID
     </message>
-    <message name="IDS_LEO_SUMMARY" desc="Title for Brave Leo options.">
+    <message name="IDS_LEO_SUMMARY" desc="Title for Leo options.">
       Leo is an AI-powered smart assistant, built right into the browser
     </message>
-    <message name="IDS_LEO_RESET_DATA" desc="Title for Brave Leo Reset and clear data option.">
+    <message name="IDS_LEO_RESET_DATA" desc="Title for Leo Reset and clear data option.">
       Reset and clear Leo data
     </message>
-    <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Brave Leo.">
-      Resetting the Leo assistant will require you to opt-in to use Brave Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Brave Leo. This action cannot be undone.
+    <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Leo.">
+      Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.
     </message>
-    <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Brave Leo confirm button text.">
+    <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
+    </message>
+    <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
+      ...
     </message>
   </messages>
   </release>

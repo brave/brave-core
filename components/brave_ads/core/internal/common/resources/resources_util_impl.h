@@ -17,7 +17,6 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -33,7 +32,7 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     return base::ok(T{});
   }
 
-  absl::optional<base::Value> root;
+  absl::optional<base::Value::Dict> dict;
   {
     // |content| can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.
@@ -44,13 +43,13 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
       return base::unexpected("Failed to read file");
     }
 
-    root = base::JSONReader::Read(content);
-    if (!root || !root->is_dict()) {
+    dict = base::JSONReader::ReadDict(content);
+    if (!dict) {
       return base::unexpected("Invalid JSON");
     }
   }
 
-  return T::CreateFromValue(std::move(root).value().TakeDict());
+  return T::CreateFromValue(std::move(*dict));
 }
 
 template <typename T>
@@ -67,7 +66,7 @@ template <typename T>
 void LoadAndParseResource(const std::string& id,
                           const int version,
                           LoadAndParseResourceCallback<T> callback) {
-  AdsClientHelper::GetInstance()->LoadFileResource(
+  LoadFileResource(
       id, version,
       base::BindOnce(&LoadFileResourceCallback<T>, std::move(callback)));
 }

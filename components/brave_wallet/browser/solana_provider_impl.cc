@@ -140,7 +140,7 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
     const auto allowed_accounts =
         delegate_->GetAllowedAccounts(mojom::CoinType::SOL, addresses);
     if (allowed_accounts) {
-      base::EraseIf(addresses, [&allowed_accounts](const auto& address) {
+      std::erase_if(addresses, [&allowed_accounts](const auto& address) {
         return base::Contains(*allowed_accounts, address);
       });
     }
@@ -522,6 +522,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   tx_service_->AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
+                                        delegate_->GetOrigin()),
       account->account_id.Clone(), delegate_->GetOrigin(),
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

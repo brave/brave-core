@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="4900351245762303149">Instalați Google Widevine</translation>
 <translation id="2313383941300459392">Reporniți browserul pentru a activa Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> vrea să redea conținut Google Widevine protejat, ceea ce solicită să permiteți suport pentru sistemul Android pentru Widevine. Oferind acces, vă exprimați acordul cu condițiile de utilizare Google.</translation>
 <translation id="2200626478572277092">Uneori, e nevoie de Widevine pentru a reda conținut media pe o pagină web. Este o extensie Google încărcată de pe serverele Google pe care Brave nu o poate verifica. Instalarea presupune că acceptați termenii de utilizare Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6959315322491671328">Dați clic dreapta pentru a elimina</translation>
 <translation id="495046168593986294">Derulați în sus</translation>
 <translation id="4021716437419160885">Derulați în jos</translation>
+<translation id="2702801445560668637">Lista de lectură</translation>
+<translation id="2533715613366623756">Manager de marcaje</translation>
+<translation id="3405021928725149239">Manager de marcaje</translation>
 <translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
 <translation id="5288333155754958121">Prin acest ping anonim și confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="1872784258300710671">Brave folosește statistici de produs complet private pentru a estima utilizarea totală a anumitor funcții</translation>
@@ -237,7 +241,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="796831669370432378">Pentru a adăuga un marcaj, apăsați butonul de marcare de lângă bara de adrese</translation>
 <translation id="8487693399751278191">Se importă marcajele acum...</translation>
 <translation id="2557899542277210112">Pentru acces rapid, rețineți-vă marcajele aici, în bara de marcaje.</translation>
-<translation id="2702801445560668637">Lista de lectură</translation>
 <translation id="1968543937259008435">Sunteți gata pentru cea mai bună experiență de confidențialitate online?</translation>
 <translation id="6817415381278637662">Setați Brave ca browser implicit pentru a beneficia de protecțiile de confidențialitate Brave pentru fiecare pagină deschisă.</translation>
 <translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
@@ -284,6 +287,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7765158879357617694">Mută</translation>
 <translation id="6648536728577053364">Eliminați datele offline</translation>
 <translation id="5181358966317519720">Eliminați din lista de redare</translation>
+<translation id="2377705456080309463">Afișați pagina originală</translation>
+<translation id="158894735649719362">Distracția începe când aveți posibilitatea să redați conținut media. Adăugați conținutul media preferat și redați-l oricând și oriunde. Chiar și offline.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -296,9 +301,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
 <translation id="1336940801687497203">Aceeași cu Windows</translation>
 <translation id="8721331068159819483">La fel ca macOS</translation>
+<translation id="4171684937791228083">Afișați mereu bara de instrumente în modul ecran complet</translation>
 <translation id="1692470335103807198">Obține mai multe teme</translation>
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
+<translation id="8000020256436988724">Bară de instrumente</translation>
 <translation id="8076492880354921740">File</translation>
+<translation id="8168435359814927499">Conținut</translation>
 <translation id="5860254591544742609">Afișați bara de titlu</translation>
 <translation id="5371926069408837914">Extindeți panoul de file vertical când treceți cu mouse-ul deasupra atunci când este restrâns</translation>
 <translation id="3367129510799209147">Modul de trecere a filei</translation>
@@ -311,7 +319,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2858138569776157458">Site-uri de top</translation>
 <translation id="7859704718976024901">Istoric de navigare</translation>
 <translation id="8820817407110198400">Bookmark</translation>
-<translation id="2245286910966863912">Afișați butonul Brave News în bara de adrese</translation>
+<translation id="7310387888625228830">Asistentul IA Leo</translation>
+<translation id="5222974844674487962">Afișați butonul Brave News</translation>
 <translation id="383007806262310953">Afișează bara de marcaje</translation>
 <translation id="4054323497808446566">Bara de marcaje este vizibilă pe toate paginile</translation>
 <translation id="8693858092251192712">Bara de marcaje este ascunsă pe toate paginile, cu excepția paginii cu fila nouă</translation>
@@ -419,7 +428,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7050661313034564003">Afișați toate cookie-urile și datele stocate local pentru acest site</translation>
 <translation id="8339059274628563283">Date salvate local de <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Elimină tot</translation>
-<translation id="8168435359814927499">Conținut</translation>
 <translation id="7702907602086592255">Domeniu</translation>
 <translation id="3202131003361292969">Cale</translation>
 <translation id="5390743329570580756">Trimis pentru</translation>
@@ -590,7 +598,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="702381242110464396">Extensii (rezervă portofel Brave)</translation>
 <translation id="4718664830805652430">Moneda de bază implicită</translation>
 <translation id="7992507032049865603">Criptomoneda de bază implicită</translation>
-<translation id="1834467296210148203">Afișați pictograma Brave Wallet în bara de instrumente</translation>
+<translation id="3044369626313583722">Afișați butonul Brave Wallet</translation>
 <translation id="7568430944629653319">Activați descoperirea NFT-urilor</translation>
 <translation id="970496996377628529">Adăugați în mod automat NFT-urile pe care le dețineți în portofel folosind API-uri terțe.</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
@@ -699,6 +707,12 @@ Notă: Dacă se selectează nodul local, resursa va fi solicitată direct de pe 
 <translation id="2751872555001636931">Afișați pictograma Leo în bara laterală</translation>
 <translation id="8172263161008556851">Afișați mesajele sugerate în conversație</translation>
 <translation id="1014480593522400586">Ștergeți datele Leo</translation>
+<translation id="8681157601856387010">Resetarea asistentului Leo necesită acceptarea folosirii Brave
+Leo în viitor și va șterge istoricul de chat. Prin ștergerea
+istoricului de chat se vor șterge toate conversațiile anterioare cu Brave
+Leo. Această acțiune nu poate fi anulată.</translation>
+<translation id="8157373421434119674">Istoric de date și chat</translation>
+<translation id="614530507403667291">Model implicit pentru conversații noi</translation>
 <translation id="6624718837376802990">Avatar Recompense Tăioase</translation>
 <translation id="6617313057407561765">Avatar Brave Tăios</translation>
 <translation id="6754445808455578019">Avatar Ocean Tăios</translation>

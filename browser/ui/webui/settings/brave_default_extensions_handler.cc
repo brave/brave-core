@@ -359,7 +359,7 @@ void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   service->DisableExtension(
-      ethereum_remote_client_extension_id,
+      kEthereumRemoteClientExtensionId,
       extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
 }
 
@@ -446,10 +446,10 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
-    service->EnableExtension(ethereum_remote_client_extension_id);
+    service->EnableExtension(kEthereumRemoteClientExtensionId);
   } else {
     service->DisableExtension(
-        ethereum_remote_client_extension_id,
+        kEthereumRemoteClientExtensionId,
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }

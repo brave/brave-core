@@ -20,10 +20,10 @@ namespace {
 
 // We keep the ethereum pattern is for backward compatibility because we
 // already wrote some content setting using this pattern.
-constexpr char kEthAddrPattern[] = "addr%3D(0x[[:xdigit:]]{40})";
+constexpr char kEthAddrPattern[] = "addr=(0x[[:xdigit:]]{40})";
 // This is generic pattern for all coins, we put maximum length bump 128 is to
 // prevent ReDoS attack.
-constexpr char kAddrPattern[] = "addr%3D([[:alnum:]]{1,128})";
+constexpr char kAddrPattern[] = "addr=([[:alnum:]]{1,128})";
 
 // Given an origin and an account address, append the account address to the
 // end of the host piece of the origin, then return it as the new origin.
@@ -88,12 +88,12 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
   std::string pattern;
   if (type == permissions::RequestType::kBraveEthereum) {
     pattern = sub_req_format ? "(.*)(0x[[:xdigit:]]{40})(:[0-9]+)*"
-                             : "(.*)%7Baddr%3D0x[[:xdigit:]]{40}(%"
-                               "26addr%3D0x[[:xdigit:]]{40})*%7D(:[0-9]+)*";
+                             : "(.*){addr=0x[[:xdigit:]]{40}(&"
+                               "addr=0x[[:xdigit:]]{40})*}(:[0-9]+)*";
   } else {
     pattern = sub_req_format ? "(.*)__([[:alnum:]]{1,128})(:[0-9]+)*"
-                             : "(.*)%7Baddr%3D[[:alnum:]]{1,128}(%"
-                               "26addr%3D[[:alnum:]]{1,128})*%7D(:[0-9]+)*";
+                             : "(.*){addr=[[:alnum:]]{1,128}(&"
+                               "addr=[[:alnum:]]{1,128})*}(:[0-9]+)*";
   }
   RE2 full_pattern(pattern);
   if (!re2::RE2::FullMatch(origin.Serialize(), full_pattern, &scheme_host_group,

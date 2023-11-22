@@ -8,10 +8,14 @@
 #include "base/feature_override.h"
 #include "build/build_config.h"
 
-namespace content {
+namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kResourceTimingForCancelledNavigationInFrame,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSignedExchangeReportingForDistributors,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kServiceWorkerAutoPreload, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace content
+}  // namespace features

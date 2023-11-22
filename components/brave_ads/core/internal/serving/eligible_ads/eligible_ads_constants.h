@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr char kUntargeted[] = "untargeted";
+inline constexpr char kUntargeted[] = "untargeted";
 
 }  // namespace brave_ads
 

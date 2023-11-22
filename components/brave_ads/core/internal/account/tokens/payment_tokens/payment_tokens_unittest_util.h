@@ -7,20 +7,23 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_UNITTEST_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
-class AdType;
 class PaymentTokens;
 
-PaymentTokens& GetPaymentTokensForTesting();
-PaymentTokenList SetPaymentTokensForTesting(int count);
+namespace test {
 
-PaymentTokenInfo BuildPaymentTokenForTesting(
-    const ConfirmationType& confirmation_type,
-    const AdType& ad_type);
-PaymentTokenInfo BuildPaymentTokenForTesting();
-PaymentTokenList BuildPaymentTokensForTesting(int count);
+PaymentTokens& GetPaymentTokens();
+PaymentTokenList SetPaymentTokens(int count);
+
+PaymentTokenInfo BuildPaymentToken(ConfirmationType confirmation_type,
+                                   AdType ad_type);
+PaymentTokenInfo BuildPaymentToken();
+PaymentTokenList BuildPaymentTokens(int count);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

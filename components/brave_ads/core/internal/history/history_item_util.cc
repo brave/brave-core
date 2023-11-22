@@ -8,14 +8,13 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
 
 namespace brave_ads {
 
 HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
-                                 const ConfirmationType& confirmation_type,
+                                 ConfirmationType confirmation_type,
                                  const std::string& title,
                                  const std::string& description) {
   HistoryItemInfo history_item;

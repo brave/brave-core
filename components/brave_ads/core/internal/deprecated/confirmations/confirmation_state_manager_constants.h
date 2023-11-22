@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr char kConfirmationStateFilename[] = "confirmations.json";
+inline constexpr char kConfirmationStateFilename[] = "confirmations.json";
 
 }  // namespace brave_ads
 

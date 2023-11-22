@@ -79,7 +79,7 @@ class IpfsImportWorkerBase {
                                 api_request_helper::APIRequestResult response);
   void CopyFilesToBraveDirectory();
   void OnImportFilesMoved(api_request_helper::APIRequestResult response);
-  bool ParseResponseBody(const std::string& response_body,
+  bool ParseResponseBody(std::unique_ptr<std::string> response_body,
                          ipfs::ImportedData* data);
   void PublishContent();
   void OnContentPublished(api_request_helper::APIRequestResult response);

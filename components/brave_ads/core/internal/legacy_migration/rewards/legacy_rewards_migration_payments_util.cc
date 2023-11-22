@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -20,7 +19,6 @@ namespace {
 std::string GetFormattedBalanceDate(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   return base::StringPrintf("%04d-%02d", exploded.year, exploded.month);
 }

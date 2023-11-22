@@ -9,39 +9,59 @@ import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-
 import { AccountSettingsModal } from './account-settings-modal'
 
 export const _AccountSettingsModalPrivateKey: React.FC = () => {
-  return <WalletPageStory
-    accountTabStateOverride={{ selectedAccount: mockAccount, accountModalType: 'privateKey' }}
-    apiOverrides={{ selectedAccountId: mockAccount.accountId }}
-  >
-    <AccountSettingsModal />
-  </WalletPageStory>
+  return (
+    <WalletPageStory
+      accountTabStateOverride={{
+        selectedAccount: mockAccount,
+        accountModalType: 'privateKey'
+      }}
+      apiOverrides={{ selectedAccountId: mockAccount.accountId }}
+    >
+      <AccountSettingsModal />
+    </WalletPageStory>
+  )
 }
 
 export const _AccountSettingsModalDeposit: React.FC = () => {
-  return <WalletPageStory
-    apiOverrides={{ selectedAccountId: mockAccount.accountId }}
-    accountTabStateOverride={{ selectedAccount: mockAccount, accountModalType: 'deposit' }}
-  >
-    <AccountSettingsModal />
-  </WalletPageStory>
+  return (
+    <WalletPageStory
+      apiOverrides={{ selectedAccountId: mockAccount.accountId }}
+      accountTabStateOverride={{
+        selectedAccount: mockAccount,
+        accountModalType: 'deposit'
+      }}
+    >
+      <AccountSettingsModal />
+    </WalletPageStory>
+  )
 }
 
 export const _AccountSettingsModalEdit: React.FC = () => {
-  return <WalletPageStory
-    apiOverrides={{ selectedAccountId: mockAccount.accountId }}
-    accountTabStateOverride={{ selectedAccount: mockAccount, accountModalType: 'edit' }}
-  >
-    <AccountSettingsModal />
-  </WalletPageStory>
+  return (
+    <WalletPageStory
+      apiOverrides={{ selectedAccountId: mockAccount.accountId }}
+      accountTabStateOverride={{
+        selectedAccount: mockAccount,
+        accountModalType: 'edit'
+      }}
+    >
+      <AccountSettingsModal />
+    </WalletPageStory>
+  )
 }
 
 export const _AccountSettingsModalRemove: React.FC = () => {
-  return <WalletPageStory
-    apiOverrides={{ selectedAccountId: mockAccount.accountId }}
-    accountTabStateOverride={{ selectedAccount: mockAccount, accountModalType: 'remove' }}
-  >
-    <AccountSettingsModal />
-  </WalletPageStory>
+  return (
+    <WalletPageStory
+      apiOverrides={{ selectedAccountId: mockAccount.accountId }}
+      accountTabStateOverride={{
+        selectedAccount: mockAccount,
+        accountModalType: 'remove'
+      }}
+    >
+      <AccountSettingsModal />
+    </WalletPageStory>
+  )
 }
 
 export default _AccountSettingsModalPrivateKey

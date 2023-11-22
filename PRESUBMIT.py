@@ -286,11 +286,18 @@ chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
 
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
-        r'/\bStringPiece',
+        r'/\b(Basic|W)?StringPiece(16)?\b',
         ('Use std::string_view instead', ),
         True,
         [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
-    ), )
+    ),
+    BanRule(
+        'base::PathService::Get',
+        ('Prefer using base::PathService::CheckedGet() instead', ),
+        treat_as_error=False,
+        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
+    ),
+)
 
 
 # Extend BanRule exclude lists with Brave-specific paths.

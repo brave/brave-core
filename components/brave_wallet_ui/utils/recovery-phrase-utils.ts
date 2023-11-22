@@ -8,10 +8,10 @@ export const isPhraseLengthValid = (phrase: string) => {
   // valid lengths: 12, 15, 18, 21, or 24
   const isInvalid =
     wordsInPhraseValue < 12 ||
-    wordsInPhraseValue > 12 && wordsInPhraseValue < 15 ||
-    wordsInPhraseValue > 15 && wordsInPhraseValue < 18 ||
-    wordsInPhraseValue > 18 && wordsInPhraseValue < 21 ||
-    wordsInPhraseValue > 21 && wordsInPhraseValue < 24 ||
+    (wordsInPhraseValue > 12 && wordsInPhraseValue < 15) ||
+    (wordsInPhraseValue > 15 && wordsInPhraseValue < 18) ||
+    (wordsInPhraseValue > 18 && wordsInPhraseValue < 21) ||
+    (wordsInPhraseValue > 21 && wordsInPhraseValue < 24) ||
     wordsInPhraseValue > 24
 
   return { isInvalid, wordsInPhraseValue }
@@ -28,11 +28,10 @@ export const cleanupRecoveryPhraseInput = (value: string) => {
   const maxLength = 24
 
   // This prevents an extra space at the end of a 24 word phrase.
-  const needsCleaning = removedBeginingWhiteSpace.split(' ').length >= (maxLength + 1)
+  const needsCleaning =
+    removedBeginingWhiteSpace.split(' ').length >= maxLength + 1
 
-  const cleanedInput = needsCleaning
-    ? removePeriod.trimEnd()
-    : removePeriod
+  const cleanedInput = needsCleaning ? removePeriod.trimEnd() : removePeriod
 
   return cleanedInput
 }

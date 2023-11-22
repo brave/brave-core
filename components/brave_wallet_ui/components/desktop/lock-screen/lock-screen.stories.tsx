@@ -4,17 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import LockScreen from '.'
+
+import {
+  WalletPageStory //
+} from '../../../stories/wrappers/wallet-page-story-wrapper'
+import { LockScreen } from '.'
 
 export const _LockScreen: React.FC = () => {
   return (
-    <LockScreen
-      disabled={false}
-      hasPasswordError={false}
-      onPasswordChanged={() => null}
-      onShowRestore={() => null}
-      onSubmit={() => null}
-    />
+    <WalletPageStory>
+      <LockScreen />
+    </WalletPageStory>
   )
 }
 

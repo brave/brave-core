@@ -23,6 +23,8 @@ struct VerifiableConversionEnvelopeInfo final {
 
   ~VerifiableConversionEnvelopeInfo();
 
+  bool operator==(const VerifiableConversionEnvelopeInfo&) const = default;
+
   [[nodiscard]] bool IsValid() const;
 
   std::string algorithm;
@@ -30,11 +32,6 @@ struct VerifiableConversionEnvelopeInfo final {
   std::string ephemeral_public_key;
   std::string nonce;
 };
-
-bool operator==(const VerifiableConversionEnvelopeInfo&,
-                const VerifiableConversionEnvelopeInfo&);
-bool operator!=(const VerifiableConversionEnvelopeInfo&,
-                const VerifiableConversionEnvelopeInfo&);
 
 }  // namespace brave_ads
 

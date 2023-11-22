@@ -19,7 +19,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldRefillConfirmationTokens) {
   // Arrange
   const int count = kMinConfirmationTokens.Get() - 1;
-  SetConfirmationTokensForTesting(count);
+  test::SetConfirmationTokens(count);
 
   // Act & Assert
   EXPECT_TRUE(ShouldRefillConfirmationTokens());
@@ -29,7 +29,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldNotRefillConfirmationTokens) {
   // Arrange
   const int count = kMinConfirmationTokens.Get();
-  SetConfirmationTokensForTesting(count);
+  test::SetConfirmationTokens(count);
 
   // Act & Assert
   EXPECT_FALSE(ShouldRefillConfirmationTokens());
@@ -38,7 +38,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        CalculateAmountOfConfirmationTokensToRefill) {
   // Arrange
-  SetConfirmationTokensForTesting(/*count=*/10);
+  test::SetConfirmationTokens(/*count=*/10);
 
   // Act & Assert
   EXPECT_EQ(kMaxConfirmationTokens.Get() - 10,

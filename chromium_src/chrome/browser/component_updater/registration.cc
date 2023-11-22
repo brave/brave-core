@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/component_updater/registration.h"
+#include "base/functional/bind.h"
 #include "brave/components/widevine/static_buildflags.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 
@@ -22,17 +23,21 @@
 #undef RegisterWidevineCdmComponent
 #undef RegisterComponentsForUpdate
 
-#include "brave/browser/brave_shields/https_everywhere_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/component_updater/component_updater_utils.h"
 
 namespace component_updater {
 
 void RegisterComponentsForUpdate() {
   RegisterComponentsForUpdate_ChromiumImpl();
   ComponentUpdateService* cus = g_browser_process->component_updater();
-  brave_wallet::RegisterWalletDataFilesComponent(cus);
-  brave_shields::RegisterHTTPSEverywhereComponent(cus);
+  brave_wallet::WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponent(cus,
+                                             g_browser_process->local_state());
+  psst::RegisterPsstComponent(
+      cus, base::BindOnce(&component_updater::BraveOnDemandUpdate));
 }
 
 }  // namespace component_updater

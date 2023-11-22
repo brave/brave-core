@@ -24,7 +24,7 @@ export function useDebouncedCallback<A extends any[]>(
   useEffect(() => cleanup, [cleanup])
 
   return useCallback(
-    async function debouncedCallback (...args: A) {
+    async function debouncedCallback(...args: A) {
       // capture latest args
       argsRef.current = args
 

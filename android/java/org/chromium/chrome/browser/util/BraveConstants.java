@@ -33,4 +33,6 @@ public final class BraveConstants {
     // Deeplinks
     public static final String DEEPLINK_ANDROID_PLAYLIST = "deeplink-android-playlist";
     public static final String DEEPLINK_ANDROID_VPN = "deeplink-android-vpn";
+
+    public static final String YOUTUBE_DOMAIN = "youtube.com";
 }

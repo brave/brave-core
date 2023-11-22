@@ -97,7 +97,6 @@ declare namespace chrome.braveRewards {
 
   const savePublisherInfo: (windowId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, callback: (result: RewardsExtension.Result) => void) => {}
   const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
-  const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, publisherScreenName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
   const onPublisherData: {
@@ -136,7 +135,6 @@ declare namespace chrome.braveRewards {
   }
   const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
-  const getInlineTippingPlatformEnabled: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance?: number) => void) => {}
   const onReconcileComplete: {
     addListener: (callback: (result: number, type: number) => void) => void

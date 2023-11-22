@@ -72,9 +72,7 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     ASSERT_TRUE(btc_account_);
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_account_->account_id);
     keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
-        btc_account_->account_id, mojom::BitcoinKeyId::New(0, 5));
-    keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
-        btc_account_->account_id, mojom::BitcoinKeyId::New(1, 5));
+        btc_account_->account_id, 5, 5);
   }
 
   AccountUtils GetAccountUtils() {
@@ -304,6 +302,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
 
   auto& output_0 = actual_tx.outputs().at(0);
   EXPECT_EQ(output_0.address, kMockBtcAddress);
+  EXPECT_EQ(base::HexEncode(output_0.script_pubkey),
+            "0014751E76E8199196D454941C45D1B3A323F1433BD6");
   EXPECT_EQ(output_0.amount, 6000u);
 
   auto& output_1 = actual_tx.outputs().at(1);
@@ -311,6 +311,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
             keyring_service_->GetBitcoinAccountInfo(account_id())
                 ->next_change_address->address_string);
   EXPECT_EQ(output_1.amount, 50000u + 5000u - 6000u - 4878u);
+  EXPECT_EQ(base::HexEncode(output_1.script_pubkey),
+            "00142DAF8BA8858A8D65B8C6107ECE99DA1FAEF0B944");
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
@@ -360,6 +362,112 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
       "922F95AAEEE1A30EED02202510CA7CDF4D49C448162BF5FB0F39FC4BEF244830CDABA966"
       "D73C315DA8899A0121038F616FB0894BD77263DA0111E3BAB673AB9B77309FD724717797"
       "5698FEB2CDDE39300000");
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
+  base::MockCallback<BitcoinWalletService::DiscoverAccountCallback> callback;
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
+
+  // By default discovered receive and change indexes are zero.
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                expected.account_index = 1;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Receive addresses 5 and 30 for account 0 are transacted.
+  auto receive_address_5 =
+      keyring_service_
+          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
+                                              mojom::BitcoinKeyId::New(0, 5))
+          ->address_string;
+  bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_5);
+  auto receive_address_30 =
+      keyring_service_
+          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
+                                              mojom::BitcoinKeyId::New(0, 30))
+          ->address_string;
+  bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_30);
+
+  // For acc 0 next recieve address is 6.
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                expected.next_unused_receive_index = 6;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // For acc 1 nothing is still discovered.
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                expected.account_index = 1;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Receive address 15 and change address 17 for account 0 are transacted.
+  auto receive_address_15 =
+      keyring_service_
+          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
+                                              mojom::BitcoinKeyId::New(0, 15))
+          ->address_string;
+  bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_15);
+  auto change_address_17 =
+      keyring_service_
+          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
+                                              mojom::BitcoinKeyId::New(1, 17))
+          ->address_string;
+  bitcoin_test_rpc_server_->AddTransactedAddress(change_address_17);
+  // Receive address 8 for account 1 is transacted.
+  auto receive_address_8 =
+      keyring_service_
+          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 1,
+                                              mojom::BitcoinKeyId::New(0, 8))
+          ->address_string;
+  bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_8);
+
+  // Discovered are 30+1 and 17+1.
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                expected.next_unused_receive_index = 31;
+                expected.next_unused_change_index = 18;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Discovered 9 and 0.
+  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
+                DiscoveredBitcoinAccount expected;
+                expected.account_index = 1;
+                expected.next_unused_receive_index = 9;
+                return arg.value() == expected;
+              })));
+  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
+                                           callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 }  // namespace brave_wallet

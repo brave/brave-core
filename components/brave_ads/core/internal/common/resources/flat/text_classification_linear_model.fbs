@@ -1,0 +1,27 @@
+include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_transformation.fbs";
+
+namespace brave_ads.linear_text_classification.flat;
+
+table SegmentBias {
+    segment: string (key, required);
+    bias: float32;
+}
+
+table SegmentWeightVector {
+    segment: string (key, required);
+    weights: [float32] (required);
+}
+
+table Classifier {
+  type: string (required);
+  biases: [SegmentBias] (required);
+  segment_weight_vectors: [SegmentWeightVector] (required);
+}
+
+table Model {
+  classifier: Classifier (required);
+  locale: string (required);
+  transformations: [Transformation] (required);
+}
+
+root_type Model;

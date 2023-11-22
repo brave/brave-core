@@ -35,6 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:scrollbars = "vertical"
+        android:maxLines="3"
+        android:fadeScrollbars="false"
         android:textColor="@color/shield_back_button_tint"
         android:layout_marginBottom="14dp"/>
 

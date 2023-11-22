@@ -4,13 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { withKnobs, select } from '@storybook/addon-knobs'
 import styles from './style.module.scss'
 
 import './locale'
 import '$web-components/app.global.scss'
 import '@brave/leo/tokens/css/variables.css'
-
+import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
@@ -50,16 +49,20 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false
+    isPremium: false,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   },
   {
     key: '2',
-    name: 'model-two',
+    name: 'model-two-premium',
     displayName: 'Model Two',
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true
+    isPremium: true,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   }
 ]
 
@@ -71,68 +74,83 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO = {
-  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass'
-}
-
-interface StoryArgs {
-  hasQuestions: boolean
-  hasAcceptedAgreement: boolean
-  currentErrorState: mojom.APIError
+  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
+  isContentTruncated: false
 }
 
 export default {
-  title: 'Chat/Page',
+  title: 'Chat/Chat',
   parameters: {
     layout: 'centered'
   },
+  argTypes: {
+    currentErrorState: {
+      options: getKeysForMojomEnum(mojom.APIError),
+      control: { type: 'select' }
+    },
+    suggestedQuestionsPref: {
+      options: getKeysForMojomEnum(mojom.AutoGenerateQuestionsPref),
+      control: { type: 'select' }
+    },
+    model: {
+      options: MODELS.map(m => m.name),
+      control: { type: 'select' }
+    }
+  },
   args: {
-    hasQuestions: true,
-    hasChangedModel: false,
+    hasConversation: true,
+    hasSuggestedQuestions: true,
+    hasSiteInfo: true,
+    showModelIntro: true,
+    canShowPremiumPrompt: false,
     hasAcceptedAgreement: true,
-    currentErrorState: select(
-      'Current Status',
-      mojom.APIError,
-      mojom.APIError.RateLimitReached
-    )
+    isPremiumModel: false,
+    isPremiumUser: true,
+    isPremiumUserDisconnected: false,
+    currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
+    suggestedQuestionsPref: 'Unset' satisfies keyof typeof mojom.AutoGenerateQuestionsPref,
+    model: MODELS[0].name
   },
   decorators: [
     (Story: any, options: any) => {
-      const [conversationHistory] =
-        React.useState<mojom.ConversationTurn[]>(HISTORY)
-      const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] =
-        React.useState<mojom.AutoGenerateQuestionsPref>()
-      const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
+      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = mojom.AutoGenerateQuestionsPref[options.args.suggestedQuestionsPref]
       const [favIconUrl] = React.useState<string>()
-      const [currentError] = React.useState<mojom.APIError>(
-        options.args.currentErrorState
-      )
-      const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
-      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
+      const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : null
+      const suggestedQuestions = options.args.hasSuggestedQuestions
+        ? SAMPLE_QUESTIONS
+        : siteInfo
+        ? [SAMPLE_QUESTIONS[0]]
+        : []
+
+      const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
 
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        hasChangedModel: options.args.hasChangedModel,
+        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
-        currentModel: MODELS[0],
-        conversationHistory,
+        currentModel: MODELS.find(m => m.name === options.args.model),
+        conversationHistory: options.args.hasConversation ? HISTORY : [],
         isGenerating,
+        isPremiumStatusFetching: false,
         suggestedQuestions,
         canGenerateQuestions,
         userAutoGeneratePref,
+        canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         siteInfo,
         favIconUrl,
         currentError,
         hasAcceptedAgreement,
         apiHasError,
         shouldDisableUserInput,
-        isPremiumUser
+        isPremiumUser: options.args.isPremiumUser,
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
       }
 
       return (
@@ -142,12 +160,11 @@ export default {
           </ThemeProvider>
         </AIChatDataContext.Provider>
       )
-    },
-    withKnobs
+    }
   ]
 }
 
-export const _Main = (props: StoryArgs) => {
+export const _Panel = (props: {}) => {
   return (
     <div className={styles.container}>
       <Main />

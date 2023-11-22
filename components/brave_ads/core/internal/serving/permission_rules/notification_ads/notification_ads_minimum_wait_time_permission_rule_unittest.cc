@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
@@ -15,40 +15,38 @@ namespace brave_ads {
 
 class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
- protected:
-  const NotificationAdMinimumWaitTimePermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasNotificationAdMinimumWaitTimePermission());
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  SetMaximumNotificationAdsPerHourForTesting(5);
+  test::SetMaximumNotificationAdsPerHour(5);
 
-  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
+  test::RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   AdvanceClockBy(base::Minutes(12));
 
   // Act & Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_TRUE(HasNotificationAdMinimumWaitTimePermission());
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldNotAllowIfExceedsCap) {
   // Arrange
-  SetMaximumNotificationAdsPerHourForTesting(5);
+  test::SetMaximumNotificationAdsPerHour(5);
 
-  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
+  test::RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+  EXPECT_FALSE(HasNotificationAdMinimumWaitTimePermission());
 }
 
 }  // namespace brave_ads

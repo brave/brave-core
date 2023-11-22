@@ -12,12 +12,11 @@
 namespace brave_ads {
 
 struct CatalogSegmentInfo final {
+  bool operator==(const CatalogSegmentInfo&) const = default;
+
   std::string code;
   std::string name;
 };
-
-bool operator==(const CatalogSegmentInfo&, const CatalogSegmentInfo&);
-bool operator!=(const CatalogSegmentInfo&, const CatalogSegmentInfo&);
 
 using CatalogSegmentList = std::vector<CatalogSegmentInfo>;
 

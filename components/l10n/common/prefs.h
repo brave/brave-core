@@ -13,7 +13,7 @@ namespace brave_l10n {
 namespace prefs {
 
 // The country code used to register component resources.
-extern const char kCountryCode[];
+inline constexpr char kCountryCode[] = "brave.country_code";
 
 }  // namespace prefs
 

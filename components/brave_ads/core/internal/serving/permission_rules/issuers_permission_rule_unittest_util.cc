@@ -7,10 +7,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-void ForceIssuersPermissionRuleForTesting() {
-  BuildAndSetIssuersForTesting();
+void ForceIssuersPermissionRule() {
+  BuildAndSetIssuers();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -27,6 +27,8 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -35,8 +37,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -49,6 +49,8 @@ class BraveAdsAccountTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
+    ads_observer_mock_ = AddAdsObserverMock();
+
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(&observer_mock_);
   }
@@ -60,6 +62,8 @@ class BraveAdsAccountTest : public UnitTestBase {
   }
 
   TokenGeneratorMock token_generator_mock_;
+
+  raw_ptr<AdsObserverMock> ads_observer_mock_;
 
   std::unique_ptr<Account> account_;
   AccountObserverMock observer_mock_;
@@ -99,29 +103,28 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
 
 TEST_F(BraveAdsAccountTest, GetIssuersForRewardsUser) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
-       {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}},
+       {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}},
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
-       {{net::HTTP_CREATED,
-         BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
+       {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, BuildGetSignedTokensUrlResponseBodyForTesting()}}}};
+       {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   NotifyDidInitializeAds();
 
   // Act & Assert
-  EXPECT_EQ(BuildIssuersForTesting(), GetIssuers());
+  EXPECT_EQ(test::BuildIssuers(), GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
@@ -256,29 +259,29 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
-  MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
            kTransactionId, kCreateRewardConfirmationCredential),
        {{net::HTTP_CREATED,
-         BuildCreateRewardConfirmationUrlResponseBodyForTesting()}}},
+         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
       {BuildFetchPaymentTokenUrlPath(kTransactionId),
-       {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBodyForTesting()}}}};
+       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetConfirmationTokensForTesting(/*count=*/1);
+  test::SetConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);
@@ -286,14 +289,14 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count=*/1);
+  test::SetConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
@@ -301,16 +304,16 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
 
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);
@@ -322,46 +325,46 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 = BuildTransactionForTesting(
+  const TransactionInfo transaction_4 = test::BuildTransaction(
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 = BuildTransactionForTesting(
+  const TransactionInfo transaction_6 = test::BuildTransaction(
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
-  const TransactionInfo transaction_7 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
-  SaveTransactionsForTesting(transactions);
+  test::SaveTransactions(transactions);
 
   // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
@@ -374,7 +377,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   expected_statement->next_payment_date =
       TimeFromString("7 January 2021 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 3;
-  expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
+  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -383,7 +386,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   base::MockCallback<GetStatementOfAccountsCallback> callback;

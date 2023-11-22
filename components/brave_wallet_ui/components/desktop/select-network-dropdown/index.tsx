@@ -46,24 +46,28 @@ export const SelectNetworkDropdown = (props: Props) => {
   } = props
 
   return (
-    <StyledWrapper
-      useWithSearch={useWithSearch}
-    >
+    <StyledWrapper useWithSearch={useWithSearch}>
       <NetworkButton
         onClick={onClick}
         useWithSearch={useWithSearch}
       >
         <LeftSide>
-          {selectedNetwork && selectedNetwork.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='big' />
-          }
+          {selectedNetwork &&
+            selectedNetwork.chainId !== AllNetworksOption.chainId && (
+              <CreateNetworkIcon
+                network={selectedNetwork}
+                marginRight={14}
+                size='big'
+              />
+            )}
           <NetworkText>
-            {selectedNetwork?.chainName || getLocale('braveWalletSelectNetwork')}
+            {selectedNetwork?.chainName ||
+              getLocale('braveWalletSelectNetwork')}
           </NetworkText>
         </LeftSide>
         <DropDownIcon isOpen={showNetworkDropDown} />
       </NetworkButton>
-      {showNetworkDropDown &&
+      {showNetworkDropDown && (
         <DropDown useWithSearch={useWithSearch}>
           <SelectNetwork
             onSelectCustomNetwork={onSelectCustomNetwork}
@@ -71,8 +75,8 @@ export const SelectNetworkDropdown = (props: Props) => {
             customNetwork={customNetwork}
           />
         </DropDown>
-      }
-    </StyledWrapper >
+      )}
+    </StyledWrapper>
   )
 }
 

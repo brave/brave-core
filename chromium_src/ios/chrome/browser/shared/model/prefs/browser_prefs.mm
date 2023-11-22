@@ -1,8 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -12,6 +14,8 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/p3a/star_randomness_meta.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -21,6 +25,9 @@
 
 void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  brave_ads::RegisterProfilePrefs(registry);
+  brave_rewards::RegisterProfilePrefs(registry);
+  brave_rewards::RegisterProfilePrefsForMigration(registry);
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefsForMigration(registry);
@@ -34,17 +41,14 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_wallet::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   decentralized_dns::RegisterLocalStatePrefs(registry);
+  skus::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
+  p3a::StarRandomnessMeta::RegisterPrefsForMigration(registry);
 #endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
-}
-
-void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
-  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
@@ -52,10 +56,30 @@ void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
 
 #define BRAVE_REGISTER_LOCAL_STATE_PREFS BraveRegisterLocalStatePrefs(registry);
 
-#define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
-  BraveMigrateObsoleteBrowserStatePrefs(prefs);
+#define MigrateObsoleteBrowserStatePrefs \
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl
+
+#define MigrateObsoleteLocalStatePrefs \
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl
 
 #include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
-#undef BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+
+#undef MigrateObsoleteLocalStatePrefs
+#undef MigrateObsoleteBrowserStatePrefs
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
+
+void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(prefs);
+
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
+  brave_wallet::MigrateObsoleteProfilePrefs(prefs);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl(prefs);
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(prefs);
+#endif
+}

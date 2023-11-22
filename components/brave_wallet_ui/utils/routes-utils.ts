@@ -3,7 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AccountPageTabs, BraveWallet, WalletRoutes } from '../constants/types'
+import {
+  AccountPageTabs,
+  BraveWallet,
+  WalletRoutes,
+  SendPageTabHashes,
+  WalletOrigin
+} from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
 /**
@@ -25,7 +31,7 @@ export function isPersistableSessionRoute(route?: string) {
     route.includes(WalletRoutes.PortfolioNFTAsset) ||
     route.includes(WalletRoutes.Market) ||
     route.includes(WalletRoutes.Swap) ||
-    route.includes(WalletRoutes.SendPageStart) ||
+    route.includes(WalletRoutes.Send) ||
     route.includes(WalletRoutes.LocalIpfsNode) ||
     route.includes(WalletRoutes.InspectNfts)
   )
@@ -57,7 +63,9 @@ export const makeAccountTransactionRoute = (
     WalletRoutes.Account.replace(':accountId', id).replace(
       ':selectedTab?',
       AccountPageTabs.AccountTransactionsSub
-    ) + '#' + transactionId.replace('#', '')
+    ) +
+    '#' +
+    transactionId.replace('#', '')
   )
 }
 
@@ -120,4 +128,38 @@ export const makeDepositFundsRoute = (
   return `${WalletRoutes.DepositFundsPage}${
     paramsString ? `?${paramsString}` : ''
   }`
+}
+
+export const makeSendRoute = (
+  asset: BraveWallet.BlockchainToken,
+  account: BraveWallet.AccountInfo
+) => {
+  const isNftTab = asset.isErc721 || asset.isNft
+  const baseQueryParams = {
+    chainId: asset.chainId,
+    token: asset.contractAddress || asset.symbol.toUpperCase(),
+    account: account.accountId.uniqueKey
+  }
+  const params = new URLSearchParams(
+    asset.tokenId
+      ? { ...baseQueryParams, tokenId: asset.tokenId }
+      : baseQueryParams
+  )
+
+  if (isNftTab) {
+    return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.nft}`
+  }
+
+  return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
+}
+
+export const openWalletRouteTab = (route: WalletRoutes) => {
+  chrome.tabs.create({ url: `${WalletOrigin}${route}` }, () => {
+    if (chrome.runtime.lastError) {
+      console.error(
+        'tabs.create failed: ' + //
+          chrome.runtime.lastError.message
+      )
+    }
+  })
 }

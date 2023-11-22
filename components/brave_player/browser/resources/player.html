@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brave Player</title>
+<link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
+<script src="/player.bundle.js"></script>
+<style>
+  #root { 
+    position: fixed;
+    width: 100vw;
+    height: 100vh; 
+  }
+
+  svg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    filter: blur(150px);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--leo-color-primitive-primary-100);
+  }
+</style>
+</head>
+<body>
+  <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1432 930">
+    <g opacity=".5" clip-path="url(#a)">
+      <path fill="#161065" d="M0 0h1432v930H0z"/>
+      <g filter="url(#b)">
+        <ellipse cx="374.247" cy="536.436" rx="374.247" ry="536.436" transform="matrix(.246 .96927 -.97832 .2071 907.992 -168.972)" fill="#2D2307"/>
+      </g>
+      <g filter="url(#c)">
+        <ellipse cx="654.862" cy="710.413" rx="654.862" ry="710.413" transform="matrix(.246 .96927 -.97832 .2071 944.006 244.755)" fill="#5E0E36"/>
+      </g>
+      <g filter="url(#d)">
+        <ellipse cx="749.407" cy="339.648" rx="749.407" ry="339.648" transform="matrix(.246 .96927 -.97832 .2071 152.43 -433.213)" fill="#460A10"/>
+      </g>
+    </g>
+    <defs>
+      <filter id="b" x="-357.654" y="-374.606" width="1665.82" height="1358.96" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+        <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_829_4366"/>
+      </filter>
+      <filter id="c" x="-603.501" y="74.91" width="2027.19" height="1903.42" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+        <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_829_4366"/>
+      </filter>
+      <filter id="d" x="-675.566" y="-666.32" width="1360.14" height="2059.65" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+        <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_829_4366"/>
+      </filter>
+      <clipPath id="a">
+        <path fill="#fff" d="M0 0h1432v930H0z"/>
+      </clipPath>
+    </defs>
+  </svg>
+  <div id="root"></div>
+</body>
+</html>

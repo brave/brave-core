@@ -5,12 +5,14 @@
 
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
@@ -21,7 +23,6 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
-#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -32,6 +33,10 @@ namespace {
 
 constexpr char kNewTabPageEventCountDictPref[] =
     "brave.brave_ads.p3a.ntp_event_count";
+constexpr char kNewTabPageEventCountConstellationDictPref[] =
+    "brave.brave_ads.p3a.ntp_event_count_constellation";
+const char* kAllCountDicts[] = {kNewTabPageEventCountDictPref,
+                                kNewTabPageEventCountConstellationDictPref};
 
 constexpr int kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
 
@@ -39,8 +44,8 @@ constexpr char kViewEventKey[] = "views";
 constexpr char kClickEventKey[] = "clicks";
 constexpr char kLandEventKey[] = "lands";
 
-constexpr char kCreativeTotalCountEventKey[] = "count";
-constexpr char kCreativeTotalInstanceId[] = "total";
+constexpr char kCreativeTotalCountHistogramName[] =
+    "creativeInstanceId.total.count";
 
 constexpr char kInflightDictKey[] = "inflight";
 constexpr char kExpireTimeKey[] = "expiry_time";
@@ -55,12 +60,23 @@ bool IsRewardsDisabled(PrefService* prefs) {
              brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 }
 
+const char* GetCountDictPref(bool is_constellation) {
+  if (is_constellation) {
+    return kNewTabPageEventCountConstellationDictPref;
+  } else {
+    return kNewTabPageEventCountDictPref;
+  }
+}
 }  // namespace
 
 NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
                                    p3a::P3AService* p3a_service,
-                                   PrefService* prefs)
-    : local_state_(local_state), p3a_service_(p3a_service), prefs_(prefs) {
+                                   PrefService* prefs,
+                                   bool use_uma_for_testing)
+    : local_state_(local_state),
+      p3a_service_(p3a_service),
+      prefs_(prefs),
+      use_uma_for_testing_(use_uma_for_testing) {
   DCHECK(local_state);
   DCHECK(p3a_service);
   DCHECK(prefs);
@@ -76,6 +92,7 @@ NTPP3AHelperImpl::~NTPP3AHelperImpl() = default;
 
 void NTPP3AHelperImpl::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kNewTabPageEventCountDictPref);
+  registry->RegisterDictionaryPref(kNewTabPageEventCountConstellationDictPref);
 }
 
 void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id) {
@@ -102,11 +119,11 @@ void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
 }
 
 void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
-                                     bool is_star) {
-  if (log_type != p3a::MetricLogType::kExpress || is_star) {
+                                     bool is_constellation) {
+  if (log_type != p3a::MetricLogType::kExpress) {
     return;
   }
-  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
+  ScopedDictPrefUpdate update(local_state_, GetCountDictPref(is_constellation));
   base::Value::Dict& update_dict = update.Get();
 
   if (!p3a_service_->IsP3AEnabled()) {
@@ -126,36 +143,24 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
       }
       int count = value.GetInt();
       inflight_dict->Set(key, count);
-      p3a_utils::RecordToHistogramBucket(
-          BuildHistogramName(creative_instance_id, key).c_str(), kCountBuckets,
-          count);
+      RecordMetric(BuildHistogramName(creative_instance_id, key), count,
+                   is_constellation);
       is_active_creative = true;
     }
     if (is_active_creative) {
       total_active_creatives++;
     }
   }
-  std::string creative_total_histogram_name =
-      BuildHistogramName(kCreativeTotalInstanceId, kCreativeTotalCountEventKey);
   // Always send the creative total if ads are disabled (as per spec),
   // or send the total if there were outstanding events sent
   if (IsRewardsDisabled(prefs_) || total_active_creatives > 0) {
-    p3a_service_->RegisterDynamicMetric(creative_total_histogram_name,
-                                        p3a::MetricLogType::kExpress);
-    p3a_utils::RecordToHistogramBucket(creative_total_histogram_name.c_str(),
-                                       kCountBuckets, total_active_creatives);
-  } else {
-    p3a_service_->RemoveDynamicMetric(creative_total_histogram_name);
+    RecordMetric(kCreativeTotalCountHistogramName, total_active_creatives,
+                 is_constellation);
   }
 }
 
 void NTPP3AHelperImpl::OnP3AMetricCycled(const std::string& histogram_name,
-                                         bool is_star) {
-  if (is_star) {
-    // TODO(djandries): Monitor both STAR and JSON metric cycles once STAR is
-    // supported for express metrics
-    return;
-  }
+                                         bool is_constellation) {
   if (!base::StartsWith(histogram_name, p3a::kCreativeMetricPrefix)) {
     return;
   }
@@ -170,38 +175,43 @@ void NTPP3AHelperImpl::OnP3AMetricCycled(const std::string& histogram_name,
   const std::string& creative_instance_id = histogram_name_tokens[1];
   const std::string& event_type = histogram_name_tokens[2];
 
-  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
-  base::Value::Dict& update_dict = update.Get();
+  [&]() {
+    ScopedDictPrefUpdate update(local_state_,
+                                GetCountDictPref(is_constellation));
+    base::Value::Dict& update_dict = update.Get();
 
-  base::Value::Dict* creative_dict = update_dict.FindDict(creative_instance_id);
-  if (creative_dict == nullptr) {
-    p3a_service_->RemoveDynamicMetric(histogram_name);
-    return;
-  }
-  base::Value::Dict* inflight_dict = creative_dict->FindDict(kInflightDictKey);
-  DCHECK(inflight_dict);
-  if (inflight_dict == nullptr) {
-    // Unexpected condition, return to avoid crash.
-    return;
-  }
-
-  int full_count = creative_dict->FindInt(event_type).value_or(0);
-  int inflight_count = inflight_dict->FindInt(event_type).value_or(0);
-  int new_count = full_count - inflight_count;
-
-  inflight_dict->Remove(event_type);
-
-  if (new_count > 0) {
-    creative_dict->Set(event_type, new_count);
-  } else {
-    p3a_service_->RemoveDynamicMetric(histogram_name);
-    creative_dict->Remove(event_type);
-    // If the only elements left in the dict are expiry time and inflight dict,
-    // then remove the creative dict
-    if (creative_dict->size() <= 2) {
-      update_dict.Remove(creative_instance_id);
+    base::Value::Dict* creative_dict =
+        update_dict.FindDict(creative_instance_id);
+    if (creative_dict == nullptr) {
+      return;
     }
-  }
+    base::Value::Dict* inflight_dict =
+        creative_dict->FindDict(kInflightDictKey);
+    DCHECK(inflight_dict);
+    if (inflight_dict == nullptr) {
+      // Unexpected condition, return to avoid crash.
+      return;
+    }
+
+    int full_count = creative_dict->FindInt(event_type).value_or(0);
+    int inflight_count = inflight_dict->FindInt(event_type).value_or(0);
+    int new_count = full_count - inflight_count;
+
+    inflight_dict->Remove(event_type);
+
+    if (new_count > 0) {
+      creative_dict->Set(event_type, new_count);
+    } else {
+      creative_dict->Remove(event_type);
+      // If the only elements left in the dict are expiry time and inflight
+      // dict, then remove the creative dict
+      if (creative_dict->size() <= 2) {
+        update_dict.Remove(creative_instance_id);
+      }
+    }
+  }();
+  RemoveMetricIfInstanceDoesNotExist(histogram_name, event_type,
+                                     creative_instance_id);
 }
 
 std::string NTPP3AHelperImpl::BuildHistogramName(
@@ -209,6 +219,41 @@ std::string NTPP3AHelperImpl::BuildHistogramName(
     const std::string& event_type) {
   return base::StrCat(
       {p3a::kCreativeMetricPrefix, creative_instance_id, ".", event_type});
+}
+
+void NTPP3AHelperImpl::RecordMetric(const std::string& histogram_name,
+                                    int count,
+                                    bool is_constellation) {
+  const int* it_count =
+      std::lower_bound(kCountBuckets, std::end(kCountBuckets), count);
+  int answer = it_count - kCountBuckets;
+  if (use_uma_for_testing_) {
+    if (!is_constellation) {
+      base::UmaHistogramExactLinear(histogram_name, answer,
+                                    std::size(kCountBuckets) + 1);
+    }
+    return;
+  }
+  p3a_service_->UpdateMetricValueForSingleFormat(histogram_name, answer,
+                                                 is_constellation);
+}
+
+void NTPP3AHelperImpl::RemoveMetricIfInstanceDoesNotExist(
+    const std::string& histogram_name,
+    const std::string& event_type,
+    const std::string& creative_instance_id) {
+  bool creative_instance_exists =
+      base::ranges::any_of(kAllCountDicts, [&](const char* dict_pref_name) {
+        const auto& count_dict = local_state_->GetDict(dict_pref_name);
+        const auto* creative_dict = count_dict.FindDict(creative_instance_id);
+        if (creative_dict == nullptr) {
+          return false;
+        }
+        return creative_dict->contains(event_type);
+      });
+  if (!creative_instance_exists) {
+    p3a_service_->RemoveDynamicMetric(histogram_name);
+  }
 }
 
 void NTPP3AHelperImpl::UpdateMetricCount(
@@ -220,29 +265,32 @@ void NTPP3AHelperImpl::UpdateMetricCount(
   p3a_service_->RegisterDynamicMetric(histogram_name,
                                       p3a::MetricLogType::kExpress);
 
-  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
-  base::Value::Dict& update_dict = update.Get();
+  // Perform updates for both JSON & Constellation dictionaries
+  // The counts need to be monitored separately, as JSON and Constellation
+  // epochs do not perfectly align.
+  // TODO(djandries): Remove JSON counts once transition to Constellation
+  // is complete
+  for (const char* dict_pref : kAllCountDicts) {
+    ScopedDictPrefUpdate update(local_state_, dict_pref);
+    base::Value::Dict& update_dict = update.Get();
 
-  base::Value* creative_instance_value = update_dict.Find(creative_instance_id);
-  if (creative_instance_value == nullptr ||
-      !creative_instance_value->is_dict()) {
-    creative_instance_value =
-        update_dict.Set(creative_instance_id, base::Value::Dict());
-    creative_instance_value->GetDict().Set(kInflightDictKey,
-                                           base::Value::Dict());
+    base::Value::Dict* creative_instance_dict =
+        update_dict.FindDict(creative_instance_id);
+    if (creative_instance_dict == nullptr) {
+      creative_instance_dict = update_dict.EnsureDict(creative_instance_id);
+      creative_instance_dict->EnsureDict(kInflightDictKey);
+    }
+
+    const absl::optional<int> current_value =
+        creative_instance_dict->FindInt(event_type);
+
+    const int count = current_value.value_or(0) + 1;
+
+    creative_instance_dict->Set(event_type, count);
+    const base::Time new_expiry_time = base::Time::Now() + kCountExpiryTime;
+    creative_instance_dict->Set(kExpireTimeKey,
+                                base::TimeToValue(new_expiry_time).GetString());
   }
-  base::Value::Dict& creative_instance_dict =
-      creative_instance_value->GetDict();
-
-  const absl::optional<int> current_value =
-      creative_instance_dict.FindInt(event_type);
-
-  const int count = current_value.value_or(0) + 1;
-
-  creative_instance_dict.Set(event_type, count);
-  const base::Time new_expiry_time = base::Time::Now() + kCountExpiryTime;
-  creative_instance_dict.Set(kExpireTimeKey,
-                             base::TimeToValue(new_expiry_time).GetString());
 }
 
 void NTPP3AHelperImpl::OnLandingStartCheck(

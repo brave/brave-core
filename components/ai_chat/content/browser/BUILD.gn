@@ -1,0 +1,41 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+
+static_library("browser") {
+  sources = [
+    "ai_chat_tab_helper.cc",
+    "ai_chat_tab_helper.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:strings_grit",
+    "//components/favicon/content",
+    "//components/favicon/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//ui/base",
+    "//url",
+  ]
+}

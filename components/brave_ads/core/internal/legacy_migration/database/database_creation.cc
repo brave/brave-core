@@ -100,8 +100,8 @@ void Create(ResultCallback callback) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::MIGRATE;
 
-  transaction->version = database::kVersion;
-  transaction->compatible_version = database::kCompatibleVersion;
+  transaction->version = kVersion;
+  transaction->compatible_version = kCompatibleVersion;
   transaction->commands.push_back(std::move(command));
 
   RunTransaction(std::move(transaction), std::move(callback));

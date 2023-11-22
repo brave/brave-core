@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-void ForceUserActivityPermissionRuleForTesting() {
+void ForceUserActivityPermissionRule() {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

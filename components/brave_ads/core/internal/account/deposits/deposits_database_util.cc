@@ -12,7 +12,7 @@
 namespace brave_ads::database {
 
 void PurgeExpiredDeposits() {
-  const database::table::Deposits database_table;
+  const table::Deposits database_table;
   database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge expired deposits");

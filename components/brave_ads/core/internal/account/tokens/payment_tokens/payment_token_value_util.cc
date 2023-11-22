@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
 
 #include <string>
-#include <utility>
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
@@ -41,15 +40,13 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
       continue;
     }
 
-    auto dict = base::Value::Dict()
+    list.Append(base::Value::Dict()
                     .Set(kTransactionIdKey, payment_token.transaction_id)
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
                     .Set(kConfirmationTypeKey,
-                         payment_token.confirmation_type.ToString())
-                    .Set(kAdTypeKey, payment_token.ad_type.ToString());
-
-    list.Append(std::move(dict));
+                         ToString(payment_token.confirmation_type))
+                    .Set(kAdTypeKey, ToString(payment_token.ad_type)));
   }
 
   return list;
@@ -102,12 +99,12 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
 
     // Confirmation type
     if (const auto* const value = item_dict->FindString(kConfirmationTypeKey)) {
-      payment_token.confirmation_type = ConfirmationType(*value);
+      payment_token.confirmation_type = ParseConfirmationType(*value);
     }
 
     // Ad type
     if (const auto* const value = item_dict->FindString(kAdTypeKey)) {
-      payment_token.ad_type = AdType(*value);
+      payment_token.ad_type = ParseAdType(*value);
     }
 
     payment_tokens.push_back(payment_token);

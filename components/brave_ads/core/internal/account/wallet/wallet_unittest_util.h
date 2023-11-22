@@ -12,9 +12,12 @@ namespace brave_ads {
 
 struct WalletInfo;
 
-WalletInfo GetWalletForTesting();
+namespace test {
 
-mojom::WalletInfoPtr GetWalletPtrForTesting();
+WalletInfo GetWallet();
+mojom::WalletInfoPtr GetWalletPtr();
+
+}  // namespace test
 
 }  // namespace brave_ads
 

@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -68,9 +69,7 @@ ExtensionFunction::ResponseAction BraveWalletNotifyWalletUnlockFunction::Run() {
     return RespondNow(Error("Not available in Tor context"));
   }
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  ::brave_wallet::UpdateLastUnlockPref(profile->GetPrefs());
-
+  ::brave_wallet::UpdateLastUnlockPref(g_browser_process->local_state());
   return RespondNow(NoArguments());
 }
 
@@ -154,7 +153,7 @@ ExtensionFunction::ResponseAction BraveWalletGetWeb3ProviderFunction::Run() {
       default_wallet ==
           ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
       default_wallet == ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-    extension_id = ethereum_remote_client_extension_id;
+    extension_id = kEthereumRemoteClientExtensionId;
   }
   return RespondNow(WithArguments(extension_id));
 }
@@ -175,7 +174,7 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   if (base::FeatureList::IsEnabled(ethereum_remote_client::features::
                                        kCryptoWalletsForNewInstallsFeature) ||
       extensions::ExtensionPrefs::Get(browser_context())
-          ->HasPrefForExtension(ethereum_remote_client_extension_id)) {
+          ->HasPrefForExtension(kEthereumRemoteClientExtensionId)) {
     list.Append(MakeSelectValue(
         brave_l10n::GetLocalizedResourceUTF16String(
             IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED),

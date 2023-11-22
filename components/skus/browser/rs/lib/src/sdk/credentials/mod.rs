@@ -31,6 +31,9 @@ where
         order_id: &str,
         domain: &str,
     ) -> Result<Option<CredentialSummary>, SkusError> {
+        // refresh order credentials if necessary
+        self.refresh_order_credentials(order_id).await?;
+
         let wrapped_order = self.client.get_order(order_id).await?;
         let order = wrapped_order.ok_or(InternalError::NotFound)?;
         if !order.location_matches(&self.environment, domain) {
@@ -46,17 +49,6 @@ where
                         .await?
                         .map(|cred| cred.valid_to)
                         .or(expires_at);
-                    if let Some(expires_at) = expires_at {
-                        // attempt to refresh credentials if we're within 5 days of expiry
-                        if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
-                            error!("Within 5 days of expiry; refreshing order credentials.");
-                            let refreshed = self.refresh_order_credentials(order_id).await;
-                            if refreshed.is_err() {
-                                error!("Error refreshing order credentials.");
-                            }
-                        }
-                    }
-
                     if let Some(creds) = self.matching_time_limited_v2_credential(&item.id).await? {
                         let unblinded_creds =
                             creds.unblinded_creds.ok_or(InternalError::NotFound)?;
@@ -101,16 +93,6 @@ where
                         .await?
                         .map(|cred| cred.expires_at)
                         .or(expires_at);
-                    if let Some(expires_at) = expires_at {
-                        // attempt to refresh credentials if we're within 5 days of expiry
-                        if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
-                            error!("Within 5 days of expiry; refreshing order credentials.");
-                            let refreshed = self.refresh_order_credentials(order_id).await;
-                            if refreshed.is_err() {
-                                error!("Error refreshing order credentials.");
-                            }
-                        }
-                    }
 
                     if let Ok(Some(_)) = self.matching_time_limited_credential(&item.id).await {
                         return Ok(Some(CredentialSummary {

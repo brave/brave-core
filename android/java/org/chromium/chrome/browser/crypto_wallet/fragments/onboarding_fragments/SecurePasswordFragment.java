@@ -165,6 +165,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 mOnboardingViewModel.setPassword(passwordInput);
                 onNextPage.gotoNextPage(false);
             });
+            showCreatingWalletPage();
         }
     }
 
@@ -182,5 +183,9 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                                         BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
+    }
+
+    private void showCreatingWalletPage() {
+        onNextPage.gotoNextPage(false);
     }
 }

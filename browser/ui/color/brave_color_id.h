@@ -12,20 +12,23 @@
 
 // clang-format off
 
-#define BRAVE_COMMON_COLOR_IDS                  \
-    E_CPONLY(kColorForTest)                     \
-    E_CPONLY(kColorIconBase)                    \
-    E_CPONLY(kColorMenuItemSubText)             \
-    E_CPONLY(kColorBookmarkBarInstructionsText) \
-    E_CPONLY(kColorLocationBarFocusRing)        \
-    E_CPONLY(kColorDialogDontAskAgainButton)    \
-    E_CPONLY(kColorDialogDontAskAgainButtonHovered) \
-    E_CPONLY(kColorWebDiscoveryInfoBarBackground)   \
-    E_CPONLY(kColorWebDiscoveryInfoBarMessage)      \
-    E_CPONLY(kColorWebDiscoveryInfoBarLink)         \
-    E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)     \
-    E_CPONLY(kColorWebDiscoveryInfoBarClose)        \
-    E_CPONLY(kColorBraveDownloadToolbarButtonActive)
+#define BRAVE_COMMON_COLOR_IDS                       \
+    E_CPONLY(kColorForTest)                          \
+    E_CPONLY(kColorIconBase)                         \
+    E_CPONLY(kColorMenuItemSubText)                  \
+    E_CPONLY(kColorBookmarkBarInstructionsText)      \
+    E_CPONLY(kColorLocationBarFocusRing)             \
+    E_CPONLY(kColorLocationBarHoveredShadow)         \
+    E_CPONLY(kColorDialogDontAskAgainButton)         \
+    E_CPONLY(kColorDialogDontAskAgainButtonHovered)  \
+    E_CPONLY(kColorTabGroupBackgroundAlpha)          \
+    E_CPONLY(kColorWebDiscoveryInfoBarBackground)    \
+    E_CPONLY(kColorWebDiscoveryInfoBarMessage)       \
+    E_CPONLY(kColorWebDiscoveryInfoBarLink)          \
+    E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)      \
+    E_CPONLY(kColorWebDiscoveryInfoBarClose)         \
+    E_CPONLY(kColorBraveDownloadToolbarButtonActive) \
+    E_CPONLY(kColorToolbarButtonActivated)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionCloseButton)                       \
@@ -52,7 +55,6 @@
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
     E_CPONLY(kColorSidebarButtonPressed)                      \
-    E_CPONLY(kColorSidebarItemBackgroundHovered)              \
     E_CPONLY(kColorSidebarItemDragIndicator)                  \
     E_CPONLY(kColorSidebarSeparator)                          \
     E_CPONLY(kColorSidebarPanelHeaderSeparator)               \
@@ -103,7 +105,6 @@
     E_CPONLY(kColorBraveVerticalTabSeparator)           \
     E_CPONLY(kColorBraveVerticalTabActiveBackground)    \
     E_CPONLY(kColorBraveVerticalTabInactiveBackground)  \
-    E_CPONLY(kColorBraveVerticalTabHeaderButtonColor)   \
     E_CPONLY(kColorBraveVerticalTabNTBIconColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
@@ -119,7 +120,8 @@
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
 
 #define BRAVE_OMNIBOX_COLOR_IDS \
-    E_CPONLY(kColorBraveOmniboxResultViewSeparator)
+    E_CPONLY(kColorBraveOmniboxResultViewSeparator) \
+    E_CPONLY(kColorBravePlayerActionViewBorder)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \

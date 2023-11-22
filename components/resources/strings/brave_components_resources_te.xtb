@@ -93,6 +93,7 @@
 <translation id="4378551569595875038">కనెక్ట్ అవుతోంది...</translation>
 <translation id="4522570452068850558">వివరాలు</translation>
 <translation id="9220525904950070496">ఖాతాను తీసివేయి</translation>
+<translation id="3586931643579894722">వివరాలను దాచిపెట్టు</translation>
 <translation id="7702907602086592255">డొమైన్</translation>
 <translation id="5039804452771397117">అనుమతించు</translation>
 <translation id="9065203028668620118">సవరించు</translation>
@@ -110,6 +111,10 @@
 <translation id="4289540628985791613">స్థూలదృష్టి</translation>
 <translation id="4430019312045809116">వాల్యూమ్</translation>
 <translation id="5494920125229734069">అన్నీ ఎంచుకోండి</translation>
+<translation id="3950820424414687140">సైన్ ఇన్</translation>
+<translation id="4530494379350999373">మూలం</translation>
+<translation id="6736243959894955139">చిరునామా</translation>
+<translation id="308268297242056490">URI</translation>
 <translation id="6129953537138746214">ఖాళీ</translation>
 <translation id="4412698727486357573">సహాయ కేంద్రం</translation>
 <translation id="8297006494302853456">బలహీనం</translation>
@@ -135,14 +140,14 @@
 <translation id="5546865291508181392">కనుగొను</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">మోనోస్పేస్</translation>
-<translation id="7053983685419859001">నిరోధించు</translation>
-<translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
-<translation id="2453860139492968684">ముగించు</translation>
 <translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="7473891865547856676">వద్దు, ధన్యవాదాలు</translation>
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
+<translation id="7138678301420049075">ఇతర</translation>
+<translation id="7053983685419859001">నిరోధించు</translation>
+<translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
+<translation id="2453860139492968684">ముగించు</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>
 <translation id="1116694919640316211">గురించి</translation>
-<translation id="7138678301420049075">ఇతర</translation>
 <translation id="2740531572673183784">సరే</translation>
 </translationbundle>

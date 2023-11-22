@@ -24,7 +24,23 @@
 namespace p3a {
 
 namespace {
-constexpr std::size_t kP3AConstellationAttributeCount = 8;
+const char kMetricNameAttributeName[] = "metric_name";
+const char kMetricValueAttributeName[] = "metric_value";
+const char kPlatformAttributeName[] = "platform";
+const char kChannelAttributeName[] = "channel";
+const char kYosAttributeName[] = "yos";
+const char kWosAttributeName[] = "wos";
+const char kMosAttributeName[] = "mos";
+const char kWoiAttributeName[] = "woi";
+const char kYoiAttributeName[] = "yoi";
+const char kCountryCodeAttributeName[] = "country_code";
+const char kVersionAttributeName[] = "version";
+const char kCadenceAttributeName[] = "cadence";
+
+const char kSlowCadence[] = "slow";
+const char kTypicalCadence[] = "typical";
+const char kExpressCadence[] = "express";
+
 }  // namespace
 
 MessageMetainfo::MessageMetainfo() = default;
@@ -38,11 +54,11 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
   base::Value::Dict result;
 
   // Fill basic meta.
-  result.Set("platform", meta.platform);
-  result.Set("channel", meta.channel);
+  result.Set(kPlatformAttributeName, meta.platform);
+  result.Set(kChannelAttributeName, meta.channel);
   // Set the metric
-  result.Set("metric_name", metric_name);
-  result.Set("metric_value", static_cast<int>(metric_value));
+  result.Set(kMetricNameAttributeName, metric_name);
+  result.Set(kMetricValueAttributeName, static_cast<int>(metric_value));
 
   if (upload_type == kP3ACreativeUploadType) {
     return result;
@@ -67,60 +83,71 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
   date_of_install_monday.LocalExplode(&install_exploded);
 
   DCHECK_GE(survey_exploded.year, 999);
-  result.Set("yos", survey_exploded.year);
+  result.Set(kYosAttributeName, survey_exploded.year);
 
   DCHECK_GE(install_exploded.year, 999);
-  result.Set("yoi", install_exploded.year);
+  result.Set(kYoiAttributeName, install_exploded.year);
 
   // Fill meta.
-  result.Set("country_code", meta.country_code);
-  result.Set("version", meta.version);
-  result.Set("woi", meta.woi);
+  result.Set(kCountryCodeAttributeName, meta.country_code);
+  result.Set(kVersionAttributeName, meta.version);
+  result.Set(kWoiAttributeName, meta.woi);
 
   if (log_type == MetricLogType::kSlow) {
-    result.Set("mos", survey_exploded.month);
+    result.Set(kMosAttributeName, survey_exploded.month);
   } else {
-    result.Set("wos", brave_stats::GetIsoWeekNumber(date_of_survey));
+    result.Set(kWosAttributeName,
+               brave_stats::GetIsoWeekNumber(date_of_survey));
   }
 
   std::string cadence;
   switch (log_type) {
     case MetricLogType::kSlow:
-      cadence = "slow";
+      cadence = kSlowCadence;
       break;
     case MetricLogType::kTypical:
-      cadence = "typical";
+      cadence = kTypicalCadence;
       break;
     case MetricLogType::kExpress:
-      cadence = "express";
+      cadence = kExpressCadence;
       break;
   }
-  result.Set("cadence", cadence);
+  result.Set(kCadenceAttributeName, cadence);
 
   return result;
 }
 
 std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
-                                            const MessageMetainfo& meta) {
+                                            const MessageMetainfo& meta,
+                                            const std::string& upload_type) {
   base::Time::Exploded exploded;
   meta.date_of_install.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
 
-  std::array<std::array<std::string, 2>, kP3AConstellationAttributeCount>
-      attributes = {{
-          {"metric_name", std::string(metric_name)},
-          {"metric_value", base::NumberToString(metric_value)},
-          {"version", meta.version},
-          {"yoi", base::NumberToString(exploded.year)},
-          {"channel", meta.channel},
-          {"platform", meta.platform},
-          {"country_code", meta.country_code},
-          {"woi", base::NumberToString(meta.woi)},
-      }};
+  std::vector<std::array<std::string, 2>> attributes;
 
-  std::array<std::string, kP3AConstellationAttributeCount>
-      serialized_attributes;
+  if (upload_type == kP3ACreativeUploadType) {
+    attributes = {{
+        {kMetricNameAttributeName, std::string(metric_name)},
+        {kMetricValueAttributeName, base::NumberToString(metric_value)},
+        {kChannelAttributeName, meta.channel},
+        {kPlatformAttributeName, meta.platform},
+    }};
+  } else {
+    attributes = {{
+        {kMetricNameAttributeName, std::string(metric_name)},
+        {kMetricValueAttributeName, base::NumberToString(metric_value)},
+        {kVersionAttributeName, meta.version},
+        {kYoiAttributeName, base::NumberToString(exploded.year)},
+        {kChannelAttributeName, meta.channel},
+        {kPlatformAttributeName, meta.platform},
+        {kCountryCodeAttributeName, meta.country_code},
+        {kWoiAttributeName, base::NumberToString(meta.woi)},
+    }};
+  }
+
+  std::vector<std::string> serialized_attributes(attributes.size());
 
   std::transform(attributes.begin(), attributes.end(),
                  serialized_attributes.begin(), [](auto& attr) -> std::string {

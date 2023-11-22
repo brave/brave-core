@@ -10,14 +10,16 @@
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arms_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -32,7 +34,8 @@ constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
+  return base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature) &&
+         UserHasOptedInToNotificationAds();
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
@@ -97,11 +100,11 @@ void UpdateArm(const double reward, const std::string& segment) {
 }  // namespace
 
 EpsilonGreedyBanditProcessor::EpsilonGreedyBanditProcessor() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 EpsilonGreedyBanditProcessor::~EpsilonGreedyBanditProcessor() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 void EpsilonGreedyBanditProcessor::Process(

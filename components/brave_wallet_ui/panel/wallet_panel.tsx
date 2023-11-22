@@ -23,8 +23,9 @@ import { ApiProxyContext } from '../common/context/api-proxy.context'
 import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 
-function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+function App() {
+  const [initialThemeType, setInitialThemeType] =
+    React.useState<chrome.braveTheme.ThemeType>()
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
@@ -35,7 +36,7 @@ function App () {
 
   return (
     <Provider store={store}>
-      {initialThemeType &&
+      {initialThemeType && (
         <BraveCoreThemeProvider
           initialThemeType={initialThemeType}
           dark={walletDarkTheme}
@@ -49,16 +50,18 @@ function App () {
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
-      }
+      )}
     </Provider>
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({
-    skipBalancesRefresh: true
-  }))
+  store.dispatch(
+    WalletActions.initialize({
+      skipBalancesRefresh: true
+    })
+  )
   render(<App />, document.getElementById('mountPoint'))
 }
 

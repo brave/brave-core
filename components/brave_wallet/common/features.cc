@@ -14,34 +14,6 @@ namespace features {
 BASE_FEATURE(kNativeBraveWalletFeature,
              "NativeBraveWallet",
              base::FEATURE_ENABLED_BY_DEFAULT);
-const base::FeatureParam<bool> kShowToolbarTxStatus{
-    &kNativeBraveWalletFeature, "show_toolbar_tx_status", true};
-
-BASE_FEATURE(kBraveWalletFilecoinFeature,
-             "BraveWalletFilecoin",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletSolanaFeature,
-             "BraveWalletSolana",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-const base::FeatureParam<bool> kCreateDefaultSolanaAccount{
-    &kBraveWalletSolanaFeature, "create_default_solana_account", true};
-
-BASE_FEATURE(kBraveWalletSolanaProviderFeature,
-             "BraveWalletSolanaProvider",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletDappsSupportFeature,
-             "BraveWalletDappsSupport",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletENSL2Feature,
-             "BraveWalletENSL2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWalletSnsFeature,
-             "BraveWalletSns",
-             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWalletNftPinningFeature,
              "BraveWalletNftPinning",
@@ -52,19 +24,20 @@ BASE_FEATURE(kBraveWalletNftPinningFeature,
 #endif
 );
 
-BASE_FEATURE(kBraveWalletPanelV2Feature,
-             "BraveWalletPanelV2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
-                                                  "rpc_throttle", 0};
+                                                  "rpc_throttle", 3};
+const base::FeatureParam<bool> kBitcoinTestnetDiscovery{
+    &kBraveWalletBitcoinFeature, "testnet_discovery", false};
 
 BASE_FEATURE(kBraveWalletZCashFeature,
              "BraveWalletZCash",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
+             "BraveWalletAnkrBalances",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 }  // namespace features
 }  // namespace brave_wallet

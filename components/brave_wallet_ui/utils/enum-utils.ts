@@ -15,11 +15,13 @@ export type CleanedFromMojoEnumKey<T extends string | number | symbol> =
     : never
 
 export const getGetCleanedMojoEnumKeys = <T extends object>(mojoEnum: T) => {
-  return Object.keys(mojoEnum)
-    // remove MIN/MAX_VALUE props
-    .filter((type) => type !== 'MIN_VALUE' && type !== 'MAX_VALUE')
-    // remove leading 'k' from constant names
-    .map((type) =>
-      type.startsWith('k') ? type.replace('k', '') : type
-    ) as Array<CleanedFromMojoEnumKey<keyof typeof mojoEnum>>
+  return (
+    Object.keys(mojoEnum)
+      // remove MIN/MAX_VALUE props
+      .filter((type) => type !== 'MIN_VALUE' && type !== 'MAX_VALUE')
+      // remove leading 'k' from constant names
+      .map((type) =>
+        type.startsWith('k') ? type.replace('k', '') : type
+      ) as Array<CleanedFromMojoEnumKey<keyof typeof mojoEnum>>
+  )
 }

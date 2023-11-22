@@ -6,6 +6,8 @@
 #include "brave/components/brave_ads/core/internal/reminder/reminders/clicked_same_ad_multiple_times_reminder_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
@@ -38,8 +40,8 @@ HistoryItemInfo AddHistory(
   AdInfo ad;
   for (int i = 0; i < count; ++i) {
     if (i == 0 || should_use_random_creative_instance_uuid) {
-      ad = BuildAdForTesting(AdType::kNotificationAd,
-                             /*should_use_random_uuids=*/true);
+      ad = test::BuildAd(AdType::kNotificationAd,
+                         /*should_use_random_uuids=*/true);
       CHECK(ad.IsValid());
     }
 
@@ -52,6 +54,14 @@ HistoryItemInfo AddHistory(
 }  // namespace
 
 class BraveAdsClickedSameAdMultipleTimesReminderUtilTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    ads_observer_mock_ = AddAdsObserverMock();
+  }
+
+  raw_ptr<AdsObserverMock> ads_observer_mock_;
 };
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
@@ -126,8 +136,8 @@ TEST_F(
     BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
     RemindUserAfterClickingTheSameAdMultipleTimesOnTheCuspOfExpiringHistory) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   AddHistory(ad, ConfirmationType::kClicked);
   AddHistory(ad, ConfirmationType::kClicked);
@@ -174,8 +184,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindTheUserForTheSameAdWithDifferentConfirmationTypes) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   AddHistory(ad, ConfirmationType::kServed);
   AddHistory(ad, ConfirmationType::kViewed);
@@ -189,8 +199,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_,
-              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
+  EXPECT_CALL(*ads_observer_mock_,
+              OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 
@@ -200,8 +210,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_,
-              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
+  EXPECT_CALL(*ads_observer_mock_,
+              OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 

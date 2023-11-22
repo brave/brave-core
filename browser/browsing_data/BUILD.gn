@@ -16,7 +16,7 @@ source_set("browser_tests") {
     deps = [
       "//base",
       "//base/test:test_support",
-      "//brave/components/ai_chat/common/buildflags:buildflags",
+      "//brave/components/ai_chat/core/common/buildflags:buildflags",
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/browsing_data:constants",

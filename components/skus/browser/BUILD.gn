@@ -5,7 +5,6 @@
 
 static_library("browser") {
   sources = [
-    "pref_names.cc",
     "pref_names.h",
     "skus_context_impl.cc",
     "skus_context_impl.h",

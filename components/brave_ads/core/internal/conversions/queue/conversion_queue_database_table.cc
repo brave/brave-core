@@ -12,7 +12,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -64,7 +64,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& conversion_queue_item : conversion_queue_items) {
     BindString(command, index++,
-               conversion_queue_item.conversion.ad_type.ToString());
+               ToString(conversion_queue_item.conversion.ad_type));
     BindString(command, index++, conversion_queue_item.conversion.campaign_id);
     BindString(command, index++,
                conversion_queue_item.conversion.creative_set_id);
@@ -100,7 +100,8 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   CHECK(record);
 
   ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.conversion.ad_type = AdType(ColumnString(record, 0));
+  conversion_queue_item.conversion.ad_type =
+      ParseAdType(ColumnString(record, 0));
   conversion_queue_item.conversion.campaign_id = ColumnString(record, 1);
   conversion_queue_item.conversion.creative_set_id = ColumnString(record, 2);
   conversion_queue_item.conversion.creative_instance_id =
@@ -464,9 +465,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetUnprocessed(
@@ -484,9 +484,8 @@ void ConversionQueue::GetUnprocessed(
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
@@ -510,10 +509,9 @@ void ConversionQueue::GetForCreativeInstanceId(
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
-                     std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetForCreativeInstanceIdCallback,
+                                  creative_instance_id, std::move(callback)));
 }
 
 std::string ConversionQueue::GetTableName() const {

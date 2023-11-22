@@ -1,0 +1,12 @@
+[
+    {
+        "include": [
+            "https://a.com/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "test_script": "a/test.js",
+        "policy_script": "a/policy.js"
+    }
+]

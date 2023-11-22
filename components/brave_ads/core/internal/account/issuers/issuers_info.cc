@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 
-#include <tuple>
-
 namespace brave_ads {
 
 IssuersInfo::IssuersInfo() = default;
@@ -20,17 +18,5 @@ IssuersInfo::IssuersInfo(IssuersInfo&& other) noexcept = default;
 IssuersInfo& IssuersInfo::operator=(IssuersInfo&& other) noexcept = default;
 
 IssuersInfo::~IssuersInfo() = default;
-
-bool IssuersInfo::operator==(const IssuersInfo& other) const {
-  const auto tie = [](const IssuersInfo& info) {
-    return std::tie(info.ping, info.issuers);
-  };
-
-  return tie(*this) == tie(other);
-}
-
-bool IssuersInfo::operator!=(const IssuersInfo& other) const {
-  return !(*this == other);
-}
 
 }  // namespace brave_ads

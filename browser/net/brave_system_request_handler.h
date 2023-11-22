@@ -12,8 +12,6 @@ namespace network {
 struct ResourceRequest;
 }
 
-extern const char kBraveServicesKeyHeader[];
-
 namespace brave {
 
 std::string BraveServicesKeyForTesting();

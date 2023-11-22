@@ -65,7 +65,6 @@ static_library("tor") {
 
 source_set("common") {
   sources = [
-    "tor_constants.cc",
     "tor_constants.h",
     "tor_switches.h",
     "tor_utils.cc",
@@ -80,10 +79,7 @@ source_set("common") {
 }
 
 source_set("pref_names") {
-  sources = [
-    "pref_names.cc",
-    "pref_names.h",
-  ]
+  sources = [ "pref_names.h" ]
 }
 
 source_set("tor_unit_tests") {

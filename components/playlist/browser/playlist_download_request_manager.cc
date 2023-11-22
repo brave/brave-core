@@ -358,6 +358,19 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
   }
 }
 
+void PlaylistDownloadRequestManager::ResetRequests() {
+  if (web_contents_) {
+    Observe(nullptr);
+    web_contents_.reset();
+  }
+
+  pending_requests_.clear();
+  requested_url_ = {};
+  request_start_time_ = {};
+  in_progress_urls_count_ = 0;
+  callback_for_current_request_ = base::NullCallback();
+}
+
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
   if (!web_contents_) {

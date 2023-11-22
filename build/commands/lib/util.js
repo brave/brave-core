@@ -11,6 +11,7 @@ const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
+const updateChromeVersion = require('./updateChromeVersion')
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -58,6 +59,8 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+
+  updateChromeVersion()
   Log.progressFinish('apply patches')
 }
 
@@ -401,6 +404,8 @@ const util = {
       const androidComponentsOmniboxResDest = path.join(config.srcDir, 'components', 'omnibox', 'browser', 'android', 'java', 'res')
       const androidBrowserUiOmniboxResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'omnibox', 'java', 'brave_res')
       const androidBrowserUiOmniboxResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'omnibox', 'java', 'res')
+      const androidBrowserPrivateResSource = path.join(config.braveCoreDir, 'browser', 'incognito', 'android', 'java', 'res')
+      const androidBrowserPrivateResDest = path.join(config.srcDir, 'chrome', 'browser', 'incognito', 'android', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -418,7 +423,8 @@ const util = {
         [androidDownloadInternalResSource]: [androidDownloadInternalResDest],
         [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
         [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
-        [androidBrowserUiOmniboxResSource]: [androidBrowserUiOmniboxResDest]
+        [androidBrowserUiOmniboxResSource]: [androidBrowserUiOmniboxResDest],
+        [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest]
       }
 
       console.log('copy Android app icons and app resources')
@@ -552,9 +558,8 @@ const util = {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
-    // Only build if the source has changed unless it's CI
-    if (!config.isCI &&
-        fs.existsSync(redirectCC) &&
+    // Only build if the source has changed.
+    if (fs.existsSync(redirectCC) &&
         fs.statSync(redirectCC).mtime >=
         fs.statSync(path.join(config.braveCoreDir, 'tools', 'redirect_cc', 'redirect_cc.cc')).mtime) {
       return
@@ -566,6 +571,10 @@ const util = {
       use_goma: config.use_goma,
       goma_dir: config.realGomaDir,
       real_gomacc: path.join(config.realGomaDir, 'gomacc'),
+      use_remoteexec: config.useRemoteExec,
+      rbe_exec_root: config.rbeExecRoot,
+      rbe_bin_dir: config.realRewrapperDir,
+      real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
@@ -630,8 +639,8 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    const use_goma_online = config.use_goma && !config.goma_offline
-    if (use_goma_online) {
+    const useGomaOnline = config.use_goma && !config.offline
+    if (useGomaOnline) {
       if (config.isCI) {
         Log.progressStart('goma pre build')
       }
@@ -666,7 +675,7 @@ const util = {
       util.run('autoninja', ninjaOpts, options)
     })
 
-    if (config.isCI && use_goma_online) {
+    if (config.isCI && useGomaOnline) {
       Log.progressScope('goma post build', () => {
         util.run('goma_ctl', ['stat'], options)
       })

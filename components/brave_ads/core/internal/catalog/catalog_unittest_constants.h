@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr char kCatalogId[] = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
+inline constexpr char kCatalogId[] = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
 
 }  // namespace brave_ads
 

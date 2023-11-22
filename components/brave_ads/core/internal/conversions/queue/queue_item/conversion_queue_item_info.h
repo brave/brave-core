@@ -24,15 +24,14 @@ struct ConversionQueueItemInfo final {
 
   ~ConversionQueueItemInfo();
 
+  bool operator==(const ConversionQueueItemInfo&) const = default;
+
   [[nodiscard]] bool IsValid() const;
 
   ConversionInfo conversion;
   base::Time process_at;
   bool was_processed = false;
 };
-
-bool operator==(const ConversionQueueItemInfo&, const ConversionQueueItemInfo&);
-bool operator!=(const ConversionQueueItemInfo&, const ConversionQueueItemInfo&);
 
 using ConversionQueueItemList = std::vector<ConversionQueueItemInfo>;
 

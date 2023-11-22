@@ -12,9 +12,9 @@
 namespace brave_search {
 namespace features {
 
-constexpr char kBraveSearchDefaultAPIDailyLimitName[] =
+inline constexpr char kBraveSearchDefaultAPIDailyLimitName[] =
     "BraveSearchDefaultAPIDailyLimit";
-constexpr char kBraveSearchDefaultAPITotalLimitName[] =
+inline constexpr char kBraveSearchDefaultAPITotalLimitName[] =
     "BraveSearchDefaultAPITotalLimit";
 
 BASE_DECLARE_FEATURE(kBraveSearchDefaultAPIFeature);

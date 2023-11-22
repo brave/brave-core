@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 
+#include <memory>
 #include <string>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/brave_ads/core/public/export.h"
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
@@ -38,6 +40,9 @@ class ADS_EXPORT Ads {
   virtual ~Ads() = default;
 
   static Ads* CreateInstance(AdsClient* ads_client);
+
+  virtual void AddBatAdsObserver(
+      std::unique_ptr<AdsObserverInterface> observer) = 0;
 
   virtual void SetSysInfo(mojom::SysInfoPtr sys_info) = 0;
 

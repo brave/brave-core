@@ -28,6 +28,10 @@ class ZCashRpc {
  public:
   using GetUtxoListCallback = base::OnceCallback<void(
       base::expected<std::vector<zcash::ZCashUtxo>, std::string>)>;
+  using GetLatestBlockCallback =
+      base::OnceCallback<void(base::expected<zcash::BlockID, std::string>)>;
+  using GetTransactionCallback = base::OnceCallback<void(
+      base::expected<zcash::RawTransaction, std::string>)>;
 
   explicit ZCashRpc(
       PrefService* prefs,
@@ -38,12 +42,29 @@ class ZCashRpc {
                    const std::string& address,
                    GetUtxoListCallback callback);
 
+  void GetLatestBlock(const std::string& chain_id,
+                      GetLatestBlockCallback callback);
+
+  void GetTransaction(const std::string& chain_id,
+                      const std::string& tx_hash,
+                      GetTransactionCallback callback);
+
  private:
   using UrlLoadersList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
                           UrlLoadersList::iterator it,
                           const std::unique_ptr<std::string> response_body);
+
+  void OnGetLatestBlockResponse(
+      ZCashRpc::GetLatestBlockCallback callback,
+      UrlLoadersList::iterator it,
+      const std::unique_ptr<std::string> response_body);
+
+  void OnGetTransactionResponse(
+      ZCashRpc::GetTransactionCallback callback,
+      UrlLoadersList::iterator it,
+      const std::unique_ptr<std::string> response_body);
 
   UrlLoadersList url_loaders_list_;
   raw_ptr<PrefService> prefs_;

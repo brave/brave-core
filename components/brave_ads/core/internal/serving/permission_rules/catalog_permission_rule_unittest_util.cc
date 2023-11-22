@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-void ForceCatalogPermissionRuleForTesting() {
+void ForceCatalogPermissionRule() {
   SetCatalogId(kCatalogId);
   SetCatalogVersion(1);
   SetCatalogPing(base::Hours(2));
   SetCatalogLastUpdated(Now());
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

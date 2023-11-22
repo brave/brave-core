@@ -22,11 +22,11 @@ def LoadPList(path):
         return plistlib.load(f)
 
 # This contains binaries from Xcode 14.3, along with the macOS 13.3 SDK
-XCODE_VERSION = '14.3'
+XCODE_VERSION = '15.0'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_URL +
     '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' +
-    XCODE_VERSION + '-sdk-13.3-13.0.tar.gz')
+    XCODE_VERSION + '-sdk-14.0-13.3.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on
@@ -61,10 +61,8 @@ def GetHermeticXcodeVersion(binaries_root):
 def InstallXcodeBinaries():
     """Installs the Xcode binaries and accepts the license."""
 
-    # only download for Brave goma users
-    goma_server_host = os.environ.get('npm_config_goma_server_host')
-    if goma_server_host is None or not goma_server_host.endswith('.brave.com'):
-        print("Goma server host is not configured for Brave")
+    if os.environ.get('USE_BRAVE_HERMETIC_TOOLCHAIN') != '1':
+        print("Brave hermetic toolchain is not configured")
         return 0
 
     binaries_root = os.path.join(MAC_TOOLCHAIN_ROOT, 'xcode_binaries')

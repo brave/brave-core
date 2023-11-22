@@ -14,12 +14,9 @@
 #include "brave/components/sync/engine/brave_sync_server_commands.h"
 
 #include "base/functional/callback.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 namespace syncer {
-
-const char kNigoriFolderNotReadyError[] =
-    "nigori root folder entity is not ready yet";
 
 void SyncSchedulerImpl::HandleBraveConfigurationFailure(
     const ModelNeutralState& model_neutral_state) {

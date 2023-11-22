@@ -11,6 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
@@ -21,7 +22,6 @@ class Time;
 
 namespace brave_ads {
 
-class ConfirmationType;
 struct AdContentInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
@@ -53,15 +53,15 @@ class HistoryManager final {
                              base::Time to_time);
 
   void Add(const InlineContentAdInfo& ad,
-           const ConfirmationType& confirmation_type) const;
+           ConfirmationType confirmation_type) const;
   void Add(const NewTabPageAdInfo& ad,
-           const ConfirmationType& confirmation_type) const;
+           ConfirmationType confirmation_type) const;
   void Add(const NotificationAdInfo& ad,
-           const ConfirmationType& confirmation_type) const;
+           ConfirmationType confirmation_type) const;
   void Add(const PromotedContentAdInfo& ad,
-           const ConfirmationType& confirmation_type) const;
+           ConfirmationType confirmation_type) const;
   void Add(const SearchResultAdInfo& ad,
-           const ConfirmationType& confirmation_type) const;
+           ConfirmationType confirmation_type) const;
 
   mojom::UserReactionType LikeAd(const AdContentInfo& ad_content) const;
   mojom::UserReactionType DislikeAd(const AdContentInfo& ad_content) const;

@@ -10,11 +10,11 @@ export type AccountPayloadType = {
 }
 
 export type RequestSitePermissionPayloadType = {
-  accountId: BraveWallet.AccountId,
+  accountId: BraveWallet.AccountId
 }
 
 export type ConnectWithSitePayloadType = {
-  addressToConnect: string,
+  addressToConnect: string
   duration: BraveWallet.PermissionLifetimeOption
 }
 

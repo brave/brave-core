@@ -5,7 +5,7 @@
 
 #include "src/components/sync/service/glue/sync_engine_backend.cc"
 
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 namespace syncer {
 

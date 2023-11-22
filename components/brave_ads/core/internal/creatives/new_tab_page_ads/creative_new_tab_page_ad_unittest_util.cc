@@ -14,16 +14,16 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_unittest_constants.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(const int count) {
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
   CHECK_GT(count, 0);
 
   CreativeNewTabPageAdList creative_ads;
 
   for (int i = 0; i < count; ++i) {
     CreativeNewTabPageAdInfo creative_ad =
-        BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+        BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];
 
     creative_ads.push_back(creative_ad);
@@ -32,10 +32,9 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(const int count) {
   return creative_ads;
 }
 
-CreativeNewTabPageAdInfo BuildCreativeNewTabPageAdForTesting(
+CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     const bool should_use_random_uuids) {
-  const CreativeAdInfo creative_ad =
-      BuildCreativeAdForTesting(should_use_random_uuids);
+  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_uuids);
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
   creative_new_tab_page_ad.company_name = "Test Ad Company Name";
@@ -53,4 +52,4 @@ CreativeNewTabPageAdInfo BuildCreativeNewTabPageAdForTesting(
   return creative_new_tab_page_ad;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

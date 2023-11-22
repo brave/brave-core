@@ -25,6 +25,7 @@ public class MediaPreferences
         extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
+    public static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,15 @@ public class MediaPreferences
                     || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
             backgroundVideoPlaybackPref.setChecked(enabled);
         }
+
+        ChromeSwitchPreference openYoutubeLinksBravePref =
+                (ChromeSwitchPreference) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
+        if (openYoutubeLinksBravePref != null) {
+            // Initially enabled.
+            openYoutubeLinksBravePref.setChecked(
+                    BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled());
+            openYoutubeLinksBravePref.setOnPreferenceChangeListener(this);
+        }
     }
 
     @Override
@@ -74,6 +84,8 @@ public class MediaPreferences
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
                     false);
             shouldRelaunch = true;
+        } else if (PLAY_YT_VIDEO_IN_BROWSER_KEY.equals(key)) {
+            BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled((boolean) newValue);
         }
 
         if (shouldRelaunch) {

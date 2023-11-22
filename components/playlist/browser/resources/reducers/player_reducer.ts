@@ -11,7 +11,7 @@ import { PlayerState } from '../reducers/states'
 import { types } from '../constants/player_types'
 import { SelectedPlaylistUpdatedPayload } from '../api/playerApi'
 
-function shuffleItems (
+function shuffleItems(
   itemsInOrder: PlaylistItem[],
   currentItem: PlaylistItem | undefined
 ) {
@@ -39,7 +39,8 @@ const playerReducer: Reducer<PlayerState | undefined> = (
       currentItem: undefined,
       playing: false,
       shuffleEnabled: false,
-      autoPlayEnabled: true
+      autoPlayEnabled: true,
+      loopMode: undefined
     }
   }
 
@@ -81,24 +82,24 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           return map
         }, new Map<string, PlaylistItem>())
 
-        const oldItemIds = state.currentList.items.map(i => i.id)
+        const oldItemIds = state.currentList.items.map((i) => i.id)
         const oldItemsSet = new Set(oldItemIds)
         const removedItems = new Set(
-          oldItemIds.filter(id => !currentItemsMap.has(id))
+          oldItemIds.filter((id) => !currentItemsMap.has(id))
         )
 
         const newList = state.currentList.items
           // Reorder items from top frame in the shuffled order
-          .filter(oldItem => !removedItems.has(oldItem.id))
-          .map(oldItem => currentItemsMap.get(oldItem.id)!)
+          .filter((oldItem) => !removedItems.has(oldItem.id))
+          .map((oldItem) => currentItemsMap.get(oldItem.id)!)
           // Append new items to the end
-          .concat(currentList.items.filter(item => !oldItemsSet.has(item.id)))
+          .concat(currentList.items.filter((item) => !oldItemsSet.has(item.id)))
 
         currentList.items = newList
       }
 
       const currentItem = currentList.items.find(
-        e => e.id === state?.currentItem?.id
+        (e) => e.id === state?.currentItem?.id
       )
       state = { ...state, currentList, currentItem, itemsInOrder }
       break
@@ -120,9 +121,16 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           throw new Error("Couldn't find the index of the current item ")
         }
 
-        if (currentIndex !== items.length - 1) {
-          const currentItem = items[currentIndex + 1]
-          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
+        // Do nothing
+        if (currentIndex === items.length - 1 && state.loopMode !== 'all-items')
+          break
+
+        const currentItem = items[(currentIndex + 1) % items.length]
+        if (currentItem) {
+          if (+currentItem.duration / 1e6 < 10 * 60) {
+            // Don't resume at the last position unless the track is no longer than 10 mins.
+            currentItem.lastPlayedPosition = 0
+          }
           state = { ...state, currentItem }
         }
       }
@@ -136,9 +144,15 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           throw new Error("Couldn't find the index of the current item ")
         }
 
-        if (currentIndex !== 0) {
-          const currentItem = items[currentIndex - 1]
-          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
+        // Do nothing
+        if (currentIndex === 0 && state.loopMode !== 'all-items') break
+
+        const currentItem = items.at(currentIndex - 1)
+        if (currentItem) {
+          if (+currentItem.duration / 1e6 < 10 * 60) {
+            // Don't resume at the last position unless the track is no longer than 10 mins.
+            currentItem.lastPlayedPosition = 0
+          }
           state = { ...state, currentItem }
         }
       }
@@ -171,6 +185,14 @@ const playerReducer: Reducer<PlayerState | undefined> = (
 
       state = { ...state, shuffleEnabled }
       break
+    }
+
+    case types.PLAYER_ADVANCE_LOOP_MODE: {
+      let loopMode = state.loopMode
+      if (!loopMode) loopMode = 'all-items'
+      else if (loopMode === 'all-items') loopMode = 'single-item'
+      else loopMode = undefined
+      state = { ...state, loopMode }
     }
   }
   return state

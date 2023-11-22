@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -200,6 +201,7 @@ BraveWalletService::BraveWalletService(
     JsonRpcService* json_rpc_service,
     TxService* tx_service,
     BitcoinWalletService* bitcoin_wallet_service,
+    ZCashWalletService* zcash_wallet_service,
     PrefService* profile_prefs,
     PrefService* local_state)
     : delegate_(std::move(delegate)),
@@ -207,6 +209,7 @@ BraveWalletService::BraveWalletService(
       json_rpc_service_(json_rpc_service),
       tx_service_(tx_service),
       bitcoin_wallet_service_(bitcoin_wallet_service),
+      zcash_wallet_service_(zcash_wallet_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
       eth_allowance_manager_(
@@ -1418,11 +1421,39 @@ base::Value::Dict BraveWalletService::GetDefaultBitcoinAssets() {
       asset.Set("symbol", "BTC");
       asset.Set("coingecko_id", "btc");
     } else if (network_id == "testnet") {
-      asset.Set("symbol", "tBTC");
+      asset.Set("symbol", "BTC");
     } else {
       NOTREACHED();
     }
     user_assets_list.Append(std::move(asset));
+    user_assets.Set(network_id, std::move(user_assets_list));
+  }
+
+  return user_assets;
+}
+
+// static
+base::Value::Dict BraveWalletService::GetDefaultZCashAssets() {
+  base::Value::Dict user_assets;
+
+  base::Value::Dict zec;
+  zec.Set("address", "");
+  zec.Set("name", "ZCash");
+  zec.Set("decimals", 8);
+  zec.Set("is_erc20", false);
+  zec.Set("is_erc721", false);
+  zec.Set("is_erc1155", false);
+  zec.Set("is_spam", false);
+  zec.Set("is_nft", false);
+  zec.Set("visible", true);
+  zec.Set("logo", "zec.png");
+  zec.Set("symbol", "ZEC");
+  zec.Set("coingecko_id", "zec");
+
+  std::vector<std::string> network_ids = GetAllKnownZecNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value::List user_assets_list;
+    user_assets_list.Append(zec.Clone());
     user_assets.Set(network_id, std::move(user_assets_list));
   }
 
@@ -1589,7 +1620,8 @@ void BraveWalletService::OnActiveOriginChanged(
 
 void BraveWalletService::WalletRestored() {
   account_discovery_manager_ = std::make_unique<AccountDiscoveryManager>(
-      json_rpc_service_.get(), keyring_service_.get());
+      json_rpc_service_.get(), keyring_service_.get(),
+      bitcoin_wallet_service_.get());
   account_discovery_manager_->StartDiscovery();
 }
 
@@ -1651,7 +1683,17 @@ void BraveWalletService::OnGetImportInfo(
                                                  mojom::kDefaultKeyringId,
                                                  info.number_of_accounts - 1);
   }
-  std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
+
+  // Only register the component if the import is successful.
+  CHECK(is_valid_mnemonic);
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          [](base::OnceCallback<void(bool, const absl::optional<std::string>&)>
+                 callback) {
+            std::move(callback).Run(true /* is_valid_mnemonic */,
+                                    absl::nullopt);
+          },
+          std::move(callback)));
 }
 
 void BraveWalletService::AddSignMessageRequest(
@@ -2030,6 +2072,18 @@ void BraveWalletService::GenerateReceiveAddress(
     return;
   }
 
+  if (account_id->coin == mojom::CoinType::ZEC) {
+    if (!zcash_wallet_service_) {
+      std::move(callback).Run("", WalletInternalErrorMessage());
+      return;
+    }
+    zcash_wallet_service_->GetReceiverAddress(
+        std::move(account_id),
+        base::BindOnce(&BraveWalletService::OnGenerateZecReceiveAddress,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+
   if (account_id->coin == mojom::CoinType::ETH ||
       account_id->coin == mojom::CoinType::SOL ||
       account_id->coin == mojom::CoinType::FIL) {
@@ -2051,6 +2105,19 @@ void BraveWalletService::GenerateReceiveAddress(
 void BraveWalletService::OnGenerateBtcReceiveAddress(
     GenerateReceiveAddressCallback callback,
     mojom::BitcoinAddressPtr address,
+    const absl::optional<std::string>& error_message) {
+  if (address) {
+    std::move(callback).Run(address->address_string, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(absl::nullopt,
+                          error_message.value_or(WalletInternalErrorMessage()));
+}
+
+void BraveWalletService::OnGenerateZecReceiveAddress(
+    GenerateReceiveAddressCallback callback,
+    mojom::ZCashAddressPtr address,
     const absl::optional<std::string>& error_message) {
   if (address) {
     std::move(callback).Run(address->address_string, absl::nullopt);
@@ -2155,6 +2222,7 @@ void BraveWalletService::OnNetworkChanged() {
 
 void BraveWalletService::Reset() {
   delegate_->ClearWalletUIStoragePartition();
+  delegate_->ResetAllPermissions();
 
   if (eth_allowance_manager_) {
     eth_allowance_manager_->Reset();
@@ -2165,6 +2233,9 @@ void BraveWalletService::Reset() {
   }
   if (json_rpc_service_) {
     json_rpc_service_->Reset();
+  }
+  if (bitcoin_wallet_service_) {
+    bitcoin_wallet_service_->Reset();
   }
 
   // Clear BraveWalletService
@@ -2190,6 +2261,18 @@ void BraveWalletService::DiscoverEthAllowances(
     DiscoverEthAllowancesCallback callback) {
   eth_allowance_manager_->DiscoverEthAllowancesOnAllSupportedChains(
       std::move(callback));
+}
+
+void BraveWalletService::GetAnkrSupportedChainIds(
+    GetAnkrSupportedChainIdsCallback callback) {
+  const auto& blockchains = GetAnkrBlockchains();
+
+  std::vector<std::string> chain_ids;
+  for (const auto& entry : blockchains) {
+    chain_ids.push_back(entry.first);
+  }
+
+  std::move(callback).Run(std::move(chain_ids));
 }
 
 }  // namespace brave_wallet

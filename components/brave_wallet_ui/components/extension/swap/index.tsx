@@ -108,7 +108,6 @@ const makeToken = (
   }
 }
 
-
 interface Props {
   sellToken?: SwapToken
   buyToken?: SwapToken
@@ -135,32 +134,24 @@ export function SwapBase(props: Props) {
   } = props
 
   // queries
-  const { data: sellAssetNetwork } = useGetNetworkQuery(
-    sellToken ?? skipToken
-  )
+  const { data: sellAssetNetwork } = useGetNetworkQuery(sellToken ?? skipToken)
 
-  const { data: buyAssetNetwork } = useGetNetworkQuery(
-    buyToken ?? skipToken
-  )
+  const { data: buyAssetNetwork } = useGetNetworkQuery(buyToken ?? skipToken)
 
-  const {
-    data: sellTokenDecimals
-  } = useGetEthTokenDecimalsQuery(
+  const { data: sellTokenDecimals } = useGetEthTokenDecimalsQuery(
     sellToken &&
-    sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    !isNativeToken(sellToken)
+      sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+      !isNativeToken(sellToken)
       ? {
           chainId: sellToken.chainId,
           contractAddress: sellToken.contractAddress
-       }
+        }
       : skipToken
   )
-  const {
-    data: sellTokenSymbol
-  } = useGetEthTokenSymbolQuery(
+  const { data: sellTokenSymbol } = useGetEthTokenSymbolQuery(
     sellToken &&
-    sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    !isNativeToken(sellToken)
+      sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+      !isNativeToken(sellToken)
       ? {
           chainId: sellToken.chainId,
           contractAddress: sellToken.contractAddress
@@ -168,24 +159,20 @@ export function SwapBase(props: Props) {
       : skipToken
   )
 
-  const {
-    data: buyTokenDecimals
-  } = useGetEthTokenDecimalsQuery(
+  const { data: buyTokenDecimals } = useGetEthTokenDecimalsQuery(
     buyToken &&
-    buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    !isNativeToken(buyToken)
+      buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+      !isNativeToken(buyToken)
       ? {
           chainId: buyToken.chainId,
           contractAddress: buyToken.contractAddress
-       }
+        }
       : skipToken
   )
-  const {
-    data: buyTokenSymbol
-  } = useGetEthTokenSymbolQuery(
+  const { data: buyTokenSymbol } = useGetEthTokenSymbolQuery(
     buyToken &&
-    buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    !isNativeToken(buyToken)
+      buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+      !isNativeToken(buyToken)
       ? {
           chainId: buyToken.chainId,
           contractAddress: buyToken.contractAddress
@@ -193,49 +180,35 @@ export function SwapBase(props: Props) {
       : skipToken
   )
 
-  const buyTokenResult = React.useMemo(() =>
-    makeToken(
-      buyToken,
-      buyAssetNetwork,
-      buyTokenSymbol,
-      buyTokenDecimals
-    ),
-    [
-      buyToken,
-      buyAssetNetwork,
-      buyTokenSymbol,
-      buyTokenDecimals
-    ])
-  const sellTokenResult = React.useMemo(() =>
-    makeToken(
-      sellToken,
-      sellAssetNetwork,
-      sellTokenSymbol,
-      sellTokenDecimals
-    ),
-    [
-      sellToken,
-      sellAssetNetwork,
-      sellTokenSymbol,
-      sellTokenDecimals
-    ])
+  const buyTokenResult = React.useMemo(
+    () =>
+      makeToken(buyToken, buyAssetNetwork, buyTokenSymbol, buyTokenDecimals),
+    [buyToken, buyAssetNetwork, buyTokenSymbol, buyTokenDecimals]
+  )
+  const sellTokenResult = React.useMemo(
+    () =>
+      makeToken(
+        sellToken,
+        sellAssetNetwork,
+        sellTokenSymbol,
+        sellTokenDecimals
+      ),
+    [sellToken, sellAssetNetwork, sellTokenSymbol, sellTokenDecimals]
+  )
 
   return (
     <>
-      {buyTokenResult &&
-        sellTokenResult &&
-        buyAmount &&
-        sellAmount && (
-          <ExchangeRate>
-            1 {sellTokenResult.symbol} ={' '}
-            {new Amount(buyAmount)
-              .divideByDecimals(buyTokenResult.decimals)
-              .div(sellAmount)
-              .multiplyByDecimals(sellTokenResult.decimals)
-              .format(6)}{' '}
-            {buyTokenResult.symbol}
-          </ExchangeRate>
-        )}
+      {buyTokenResult && sellTokenResult && buyAmount && sellAmount && (
+        <ExchangeRate>
+          1 {sellTokenResult.symbol} ={' '}
+          {new Amount(buyAmount)
+            .divideByDecimals(buyTokenResult.decimals)
+            .div(sellAmount)
+            .multiplyByDecimals(sellTokenResult.decimals)
+            .format(6)}{' '}
+          {buyTokenResult.symbol}
+        </ExchangeRate>
+      )}
       <SwapDetails>
         <SwapAsset
           type='sell'
@@ -280,7 +253,7 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-function SwapAsset (props: SwapAssetProps) {
+function SwapAsset(props: SwapAssetProps) {
   const { type, address, orb, expectAddress, asset, amount, network } = props
 
   // computed
@@ -304,7 +277,11 @@ function SwapAsset (props: SwapAssetProps) {
             {address && orb ? (
               <AddressOrb orb={orb} />
             ) : (
-              <LoadingSkeleton width={10} height={10} circle={true} />
+              <LoadingSkeleton
+                width={10}
+                height={10}
+                circle={true}
+              />
             )}
 
             {address ? (
@@ -319,17 +296,30 @@ function SwapAsset (props: SwapAssetProps) {
       <SwapAssetDetailsContainer>
         <SwapAssetIconWrapper>
           {!AssetIconWithPlaceholder || !asset || !network ? (
-            <LoadingSkeleton circle={true} width={40} height={40} />
+            <LoadingSkeleton
+              circle={true}
+              width={40}
+              height={40}
+            />
           ) : (
             <>
               {asset.isErc721 ? (
-                <NftIconWithPlaceholder asset={asset} network={network} />
+                <NftIconWithPlaceholder
+                  asset={asset}
+                  network={network}
+                />
               ) : (
-                <AssetIconWithPlaceholder asset={asset} network={network} />
+                <AssetIconWithPlaceholder
+                  asset={asset}
+                  network={network}
+                />
               )}
               {network && asset.contractAddress !== '' && (
                 <NetworkIconWrapper>
-                  <CreateNetworkIcon network={network} marginRight={0} />
+                  <CreateNetworkIcon
+                    network={network}
+                    marginRight={0}
+                  />
                 </NetworkIconWrapper>
               )}
             </>
@@ -338,9 +328,15 @@ function SwapAsset (props: SwapAssetProps) {
         <SwapAmountColumn>
           {!networkDescription || !asset || !amount ? (
             <>
-              <LoadingSkeleton width={200} height={18} />
+              <LoadingSkeleton
+                width={200}
+                height={18}
+              />
               <Spacer />
-              <LoadingSkeleton width={200} height={18} />
+              <LoadingSkeleton
+                width={200}
+                height={18}
+              />
             </>
           ) : (
             <>
@@ -348,20 +344,19 @@ function SwapAsset (props: SwapAssetProps) {
                 <SwapAssetAmountSymbol>
                   {new Amount(amount)
                     .divideByDecimals(asset.decimals)
-                    .formatAsAsset(6, asset.symbol)
-                  }
+                    .formatAsAsset(6, asset.symbol)}
                 </SwapAssetAmountSymbol>
-                  {asset.contractAddress !== '' &&
-                    <LaunchButton
-                      onClick={openBlockExplorerURL({
-                        type: 'token',
-                        network,
-                        value: asset.contractAddress
-                      })}
-                    >
-                      <LaunchIcon/>
-                    </LaunchButton>
-                  }
+                {asset.contractAddress !== '' && (
+                  <LaunchButton
+                    onClick={openBlockExplorerURL({
+                      type: 'token',
+                      network,
+                      value: asset.contractAddress
+                    })}
+                  >
+                    <LaunchIcon />
+                  </LaunchButton>
+                )}
               </SwapAmountRow>
               <NetworkDescriptionText>
                 {networkDescription}

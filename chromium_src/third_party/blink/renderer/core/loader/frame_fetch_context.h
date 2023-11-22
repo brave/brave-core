@@ -8,8 +8,10 @@
 
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_context.h"
 
-#define AddAdditionalRequestHeaders                              \
-  NotUsedOverride() {}                                           \
+#define DoesLCPPHaveAnyHintData                                  \
+  NotUsedOverride() {                                            \
+    return false;                                                \
+  }                                                              \
   String GetCacheIdentifierIfCrossSiteSubframe() const override; \
                                                                  \
  private:                                                        \
@@ -18,10 +20,10 @@
   mutable String cache_identifier_if_cross_site_subframe_;       \
                                                                  \
  public:                                                         \
-  void AddAdditionalRequestHeaders
+  bool DoesLCPPHaveAnyHintData
 
 #include "src/third_party/blink/renderer/core/loader/frame_fetch_context.h"  // IWYU pragma: export
 
-#undef AddAdditionalRequestHeaders
+#undef DoesLCPPHaveAnyHintData
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_FRAME_FETCH_CONTEXT_H_

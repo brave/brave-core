@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -84,6 +85,12 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/tor_internals_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/browser/ui/webui/brave_player_ui.h"
+#include "brave/components/brave_player/common/features.h"
+#include "brave/components/brave_player/common/url_constants.h"
 #endif
 
 using content::WebUI;
@@ -188,7 +195,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+  } else if (host == brave_player::kBravePlayerHost) {
+    return new BravePlayerUI(web_ui);
+#endif
   }
+
   return nullptr;
 }
 
@@ -220,8 +232,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&
        (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath || url.path() == kWalletBuyPagePath ||
-        url.path() == kWalletDepositPagePath)) ||
+        url.path() == kWalletSendPagePath ||
+        url.path().starts_with(kWalletBuyPagePath) ||
+        url.path().starts_with(kWalletDepositPagePath))) ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
@@ -246,6 +259,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+      (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) &&
+       url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost) {

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/gfx/geometry/point.h"
@@ -36,7 +38,7 @@ class BraveNewTabButton : public NewTabButton {
   const TabStrip* tab_strip() const { return tab_strip_; }
 
   views::InkDropContainerView* ink_drop_container() {
-    return base::to_address(ink_drop_container_);
+    return std::to_address(ink_drop_container_);
   }
 
   // Allow child classes to override PaintFill().

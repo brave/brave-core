@@ -17,7 +17,8 @@ import {
   SupportedCoinTypes,
   SupportedTestNetworks,
   SupportedOnRampNetworks,
-  SupportedOffRampNetworks
+  SupportedOffRampNetworks,
+  ERC721Metadata
 } from '../../constants/types'
 
 // entities
@@ -39,7 +40,11 @@ import {
 
 // utils
 import getAPIProxy from './bridge'
-import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
+import {
+  addChainIdToToken,
+  getAssetIdKey,
+  GetBlockchainTokenIdArg
+} from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
@@ -50,9 +55,9 @@ import { getEnabledCoinTypes } from '../../utils/api-utils'
  * @returns function that returns an ApiProxy instance
  */
 export let apiProxyFetcher = () =>
-  (getAPIProxy() as WalletApiProxy &
+  getAPIProxy() as WalletApiProxy &
     Partial<WalletPanelApiProxy> &
-    Partial<WalletPageApiProxy>)
+    Partial<WalletPageApiProxy>
 
 /**
  * Assigns a function to use for fetching the walletApiProxy
@@ -76,6 +81,7 @@ export class BaseQueryCache {
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
+  private _erc721MetadataRegistry: Record<string, ERC721Metadata>
 
   getWalletInfo = async () => {
     if (!this._walletInfo) {
@@ -126,15 +132,17 @@ export class BaseQueryCache {
       const { jsonRpcService } = apiProxyFetcher()
 
       // network type flags
-      const { isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled } =
-        await this.getWalletInfo()
+      const {
+        isBitcoinEnabled,
+        isZCashEnabled
+      } = await this.getWalletInfo()
 
       // Get all networks
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
         // FIL and SOL networks, unless enabled by brave://flags
         return (
-          (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-          (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+          coin === BraveWallet.CoinType.FIL ||
+          coin === BraveWallet.CoinType.SOL ||
           (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
           (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
           coin === BraveWallet.CoinType.ETH
@@ -146,6 +154,7 @@ export class BaseQueryCache {
       const idsByCoinType: Record<EntityId, EntityId[]> = {}
       const hiddenIdsByCoinType: Record<EntityId, string[]> = {}
       const mainnetIds: string[] = []
+      const testnetIds: string[] = []
       const onRampIds: string[] = []
       const offRampIds: string[] = []
 
@@ -192,8 +201,9 @@ export class BaseQueryCache {
               })
               .toString()
 
-            if (!SupportedTestNetworks.includes(chainId)) {
-              // skip testnet & localhost chains
+            if (SupportedTestNetworks.includes(chainId)) {
+              testnetIds.push(networkId)
+            } else {
               mainnetIds.push(networkId)
             }
 
@@ -234,7 +244,8 @@ export class BaseQueryCache {
           visibleIds,
           onRampIds,
           offRampIds,
-          mainnetIds
+          mainnetIds,
+          testnetIds
         },
         networksList
       )
@@ -363,6 +374,34 @@ export class BaseQueryCache {
     }
 
     return this._enabledCoinTypes
+  }
+
+  getErc721Metadata = async (tokenArg: GetBlockchainTokenIdArg) => {
+    if (!tokenArg.isErc721) {
+      throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
+    }
+
+    const tokenId = blockchainTokenEntityAdaptor.selectId(tokenArg)
+
+    if (!this._erc721MetadataRegistry[tokenId]) {
+      const { jsonRpcService } = apiProxyFetcher()
+
+      const result = await jsonRpcService.getERC721Metadata(
+        tokenArg.contractAddress,
+        tokenArg.tokenId,
+        tokenArg.chainId
+      )
+
+      if (result.error || result.errorMessage) {
+        throw new Error(result.errorMessage)
+      }
+
+      const metadata: ERC721Metadata = JSON.parse(result.response)
+
+      this._erc721MetadataRegistry[tokenId] = metadata
+    }
+
+    return this._erc721MetadataRegistry[tokenId]
   }
 }
 

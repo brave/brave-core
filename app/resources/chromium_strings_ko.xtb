@@ -18,11 +18,14 @@
 <translation id="1203500561924088507">설치해 주셔서 감사합니다. <ph name="BUNDLE_NAME"/>을(를) 사용하려면 브라우저를 다시 시작해야 합니다.</translation>
 <translation id="4658574652223735641">메모리 절약 모드로 더 빨라진 Brave</translation>
 <translation id="8799570501820813406">이 탭이 비활성 상태인 동안 Brave의 속도를 빠르게 유지하기 위해 메모리를 확보했습니다. 이 사이트가 비활성 상태가 되지 않도록 항상 제외할 수 있습니다.</translation>
+<translation id="8767381092474532098">위험한 파일이므로 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="4798342026247191171">새 Brave 프로필 설정</translation>
+<translation id="108284536240904209">Brave(<ph name="URL"/>)에서도 데이터 삭제</translation>
 <translation id="8132634101975074716">Brave에 로그인했습니다.</translation>
 <translation id="1586284627848250203">Brave for Testing 관련 지원받기</translation>
 <translation id="5147525139567260139">Brave 탭 공유</translation>
 <translation id="1530633922026945685">Brave에서 주변 3D 지도를 만들려면 카메라 액세스 권한이 필요합니다.</translation>
+<translation id="6570689355868013775">Brave의 안전 도구</translation>
 <translation id="4449148723378534338">Brave의 주요 개인 정보 보호 및 보안 제어 기능을 검토합니다.</translation>
 <translation id="1640672724030957280">다운로드 중...</translation>
 <translation id="5616153642055197778">새롭고 안전한 Brave의 새 버전을 사용할 수 있습니다.</translation>
@@ -37,19 +40,23 @@
 <translation id="1649714546770135458">이 기능을 사용 중지하면 Brave에 로그인하지 않고도 Gmail 등의 Brave 사이트에 로그인할 수 있습니다.</translation>
 <translation id="189297655255130768">Brave이 응답하지 않습니다. 다시 시작하시겠습니까?</translation>
 <translation id="4035053306113201399">업데이트를 적용하려면 ChromeOS를 다시 시작해야 합니다.</translation>
+<translation id="9048754176089806686">일반적으로 다운로드하지 않는 파일 형식이며 위험할 가능성이 있기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="1953553007165777902">다운로드 중... <ph name="MINUTE"/>분 남음</translation>
 <translation id="1775322105159056176">Brave에서 기본 브라우저를 확인하거나 설정할 수 없습니다.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="2018879682492276940">설치할 수 없습니다. 다시 시도해 보세요.</translation>
 <translation id="831418749472885028">다른 암호가 정보 유출 및 다른 보안 문제로부터 안전한지 확인하려면 <ph name="BEGIN_LINK"/>Brave에 로그인<ph name="END_LINK"/>하세요.</translation>
 <translation id="5499149312981370855">보다 맞춤설정된 Brave 서비스 환경을 사용하기 위해 Brave 방문 기록을 포함할지 선택하세요.</translation>
+<translation id="2472891440303445472">사기성 파일이며 기기에 예기치 않은 변경사항이 적용될 수 있기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="849607431499549468">Brave의 루트 인증서 관리 방식에 관한 정보</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Brave을 1분 동안 사용하지 않으면 조직에서 인터넷 사용 기록을 자동으로 삭제합니다. 여기에는 방문 기록, 자동 완성, 다운로드가 포함될 수 있습니다. 탭이 열린 상태로 유지됩니다.}other{Brave을 #분 동안 사용하지 않으면 조직에서 인터넷 사용 기록을 자동으로 삭제합니다. 여기에는 방문 기록, 자동 완성, 다운로드가 포함될 수 있습니다. 탭이 열린 상태로 유지됩니다.}}</translation>
+<translation id="5789330946301045610">사이트에서 보안 연결을 사용하고 있지 않으며 파일이 조작되었을 가능성이 있기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="142389341645668510">Brave 맞춤설정</translation>
 <translation id="2174917724755363426">설치가 완료되지 않았습니다. 취소하시겠습니까?</translation>
 <translation id="8745514854244955877">Brave - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">컴퓨터를 공유하는 경우 친구와 가족이 개별적으로 탐색하고 원하는 대로 Brave을 설정할 수 있습니다.</translation>
 <translation id="7810992039564280750">Brave에 저장된 안전하지 않은 사이트 목록을 사용하여 URL을 검사합니다. 사이트에서 사용자의 비밀번호를 도용하려고 하거나 사용자가 유해한 파일을 다운로드하는 경우, Brave에서 페이지 콘텐츠 일부를 비롯한 URL을 세이프 브라우징 서비스에 보낼 수 있습니다.</translation>
+<translation id="7682239218279776307">사용 설정하면 Brave에서 페이지를 미리 로드하여 더 빠르게 탐색하고 검색할 수 있습니다.</translation>
 <translation id="9095263438435683933">여기에서 Android 휴대전화로 번호를 전송하려면 두 기기 모두에서 Brave에 로그인하세요.</translation>
 <translation id="3813272600615358652">Brave을 시작하면 표시되는 페이지가 이 확장 프로그램으로 인해 변경되었습니다.</translation>
 <translation id="2359808026110333948">계속</translation>
@@ -57,6 +64,7 @@
 <translation id="2576129394594491151">Brave을 시작하면 표시되는 페이지가 '<ph name="EXTENSION_NAME"/>' 확장 프로그램으로 인해 변경되었습니다.</translation>
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{하나 이상의 Brave 확장 프로그램에서 HID 기기 1대에 액세스함}=1{하나 이상의 Brave 확장 프로그램에서 HID 기기 1대에 액세스 중}other{하나 이상의 Brave 확장 프로그램에서 HID 기기 #대에 액세스 중}}</translation>
 <translation id="1248225940185478633">Brave에서 사이트에 대한 카메라 및 마이크 권한이 필요합니다.</translation>
+<translation id="2118275934191847461"><ph name="BEGIN_LINK"/>Brave의 도구<ph name="END_LINK"/>로 안전하게 탐색하고 관리할 수 있습니다.</translation>
 <translation id="2451727308784734061">바로가기를 사용하여 비밀번호 관리자로 빠르게 이동하세요. 바로가기는 컴퓨터의 홈 화면이나 앱 런처로 이동할 수 있습니다.</translation>
 <translation id="6381750314821942592">Brave이 곧 종료됩니다</translation>
 <translation id="6078442581074612226">Brave에서</translation>
@@ -112,7 +120,6 @@
 <translation id="8703492925273919597">Brave 창을 모두 닫고 다시 시도해 보세요.</translation>
 <translation id="4061445349373849749">개인 정보를 보호하기 위해 Brave에서는 4주가 지난 관심분야를 자동 삭제합니다. 인터넷 사용에 따라 특정 관심분야가 목록에 다시 표시될 수 있습니다. Brave에서 고려하지 않았으면 하는 관심분야가 있으면 직접 삭제하세요.</translation>
 <translation id="691208314680168371">이 기기에서 Brave을 사용해 방문한 사이트의 기록인 방문 기록이 사용됩니다.</translation>
-<translation id="1384923383737428730">컴퓨터에 유해한 소프트웨어가 있습니다. Brave에서 유해한 소프트웨어를 삭제하고, 설정을 복원하고, 확장 프로그램을 사용 중지하여 브라우저가 다시 정상적으로 작동하도록 할 수 있습니다.</translation>
 <translation id="1073077513148817424">이미 다른 계정으로 로그인되어 있습니다. 인터넷 사용 기록을 별도로 보관하기 위해 Brave에서 나만의 프로필을 만들 수 있습니다.</translation>
 <translation id="4250277591581952830">향후 Brave 업데이트를 받으려면 macOS 10.15 이상이 필요합니다. 이 컴퓨터에서는 macOS 10.13을 사용 중입니다.</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/>에서 Android 휴대전화로 번호를 전송하려면 두 기기 모두에서 Brave에 로그인하세요.</translation>
@@ -121,6 +128,7 @@
 <translation id="1807774211756215222">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="2106568569080763501">Brave을 사용하면 웹에서 전화번호를 클릭하여 Skype로 통화할 수 있습니다.</translation>
 <translation id="308146532933302843">Brave에서 일부 다운로드를 차단하는 이유 알아보기</translation>
+<translation id="2189149060536531804">검토가 필요한 경우 Brave에서 알려드립니다</translation>
 <translation id="6324134303015966238">Brave은 사용자가 방문할 가능성이 있는 페이지를 미리 로드하여 사용자가 방문할 때 페이지를 더 빠르게 로드합니다.</translation>
 <translation id="2401189691232800402">ChromeOS 시스템</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -133,6 +141,7 @@
 <translation id="2337217774418822704">내 계정은 <ph name="MANAGER_NAME"/>에서 관리합니다. 관리자가 이 Brave 브라우저 프로필과 북마크, 방문 기록, 비밀번호 등의 데이터를 보고 수정할 수 있습니다.</translation>
 <translation id="8090497651549769448">Brave에서 비밀번호를 복사하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="7133557675784723900">위험할 수 있는 파일이므로 검사하는 것이 좋습니다.</translation>
+<translation id="4194619960643453552">Brave이 사용자를 안전하게 보호하는 방법 알아보기</translation>
 <translation id="1311808042904310985">&amp;Brave for Testing 정보</translation>
 <translation id="1152920704813762236">ChromeOS 정보</translation>
 <translation id="3703994572283698466"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux 개발 환경<ph name="END_LINK_LINUX_OSS"/>과 마찬가지로, ChromeOS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용하여 개발되었습니다.</translation>
@@ -162,6 +171,7 @@
 <translation id="2633397153656205379">문제가 발생하여 Brave을 업데이트할 수 없습니다. <ph name="BEGIN_LINK"/>Brave 업데이트 문제 및 업데이트 실패 문제 해결하기<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">새 Brave 프로필로 계속하시겠습니까?</translation>
 <translation id="4567424176335768812"><ph name="USER_EMAIL_ADDRESS"/>(으)로 로그인되어 있습니다. 이제 로그인한 모든 기기에서 북마크, 방문 기록 및 기타 설정에 액세스할 수 있습니다.</translation>
+<translation id="8669339108356170796">사용자가 세이프 브라우징을 사용 중지했으며 파일을 확인할 수 없기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="4594305310729380060">기기의 비밀번호 관리자에 저장합니다.</translation>
 <translation id="300669147395456190">Brave 앱</translation>
 <translation id="4970880042055371251">ChromeOS 버전</translation>
@@ -185,6 +195,7 @@
 <translation id="729580998737807583"><ph name="EXISTING_USER"/>님이 이미 Brave 프로필에 로그인되어 있습니다. <ph name="USER_EMAIL_ADDRESS"/>님을 위한 새 Brave 프로필이 생성됩니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="300369155175407115">무료 체험이 사용 설정되어 있는 경우와 Brave에서 임의로 나에게 현재 진행 중인 무료 체험을 적용한 경우, 표시되는 광고 및 아래의 예측 관심분야에 방문 기록이 영향을 미칩니다. 개인 정보를 보호하기 위해 Brave에서는 매월 최소 한 번씩 수시로 관심분야를 삭제합니다.</translation>
+<translation id="7573068992266397941">Brave에서 발견한 보안 권장사항을 검토해 주세요</translation>
 <translation id="7708394612738038097">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave 로그인 허용</translation>
@@ -249,6 +260,7 @@
 <translation id="6327105987658262776">사용 가능한 업데이트가 없습니다.</translation>
 <translation id="1819119299840995223">Brave에서 다른 작업이 진행 중입니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="8616874628011103667">이제 Brave 계정으로 공유 컴퓨터에서 Brave을 손쉽게 사용할 수 있습니다.</translation>
+<translation id="6890616081898535725">일반적으로 다운로드하지 않는 파일이며 위험할 가능성이 있기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="335632367599648646">Brave을 제거하시겠습니까?</translation>
 <translation id="6375219077595103062">비밀번호 관리자로 연결되는 바로가기를 추가하세요</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Brave의 데이터 사용 방식:<ph name="END_BOLD"/> Brave은 내 관심분야를 예측할 수 있습니다. 나중에 사이트를 방문하면 사이트에서 광고 개인 최적화를 위해 내 관심분야를 알려달라고 Brave에 요청할 수 있습니다.</translation>
@@ -321,7 +333,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3962395975456095331">Brave을 다시 시작하시겠습니까?</translation>
 <translation id="2619516027171717873">이미 실행 중인 Brave과 동일한 버전을 설치할 수 없습니다. Brave을 종료한 뒤 다시 시도하세요.</translation>
 <translation id="3186363903915641692">{0,plural, =1{1분 후 Brave이 다시 시작됩니다}other{#분 후 Brave이 다시 시작됩니다}}</translation>
-<translation id="8516116288943000095">Brave(<ph name="URL"/>)에서도 데이터 삭제</translation>
 <translation id="6378857626787254617">Brave에서 내 관심분야를 예측할 수 있습니다. 나중에 사이트를 방문하면 사이트에서 광고 개인 최적화를 위해 내 관심분야를 알려달라고 Brave에 요청할 수 있습니다.</translation>
 <translation id="7583399374488819119"><ph name="COMPANY_NAME"/> 설치 프로그램</translation>
 <translation id="3293668930608086049">Brave이 카메라와 마이크를 사용 중입니다.</translation>
@@ -351,6 +362,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7344826952831915813">위험한 유형의 파일이기 때문에 Brave에서 파일을 차단했습니다.</translation>
 <translation id="8207657266087451193">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave로 전송됩니다. 이 기능은 언제든지 설정에서 사용 중지할 수 있습니다.</translation>
 <translation id="8622246347342688645">로그인되어 있지 않으므로 Brave에서 비밀번호를 확인할 수 없습니다.</translation>
+<translation id="976541154724186511">안전하지 않은 사이트 및 다운로드에 대해 <ph name="BEGIN_LINK"/>Brave에서 경고<ph name="END_LINK"/></translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
 <translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave을 종료합니다.</translation>
 <translation id="5196445203969439095">Brave으로 더 많은 작업하기</translation>
@@ -364,6 +376,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="4378573854226202617">Brave은 Windows 10 이상 버전에서 사용할 수 있습니다.</translation>
 <translation id="6431861494713261006">선택사항: 진단 및 사용 데이터를 Brave에 자동으로 전송하여 ChromeOS의 기능 및 성능 개선에 참여합니다.</translation>
 <translation id="2097604701283463988">Brave이 이전 버전임</translation>
+<translation id="871233388178581868">비밀번호를 저장하면 Brave에서 확인할 수 있습니다</translation>
 <translation id="8550334526674375523">이 직장 프로필은 개인 프로필과 완전히 분리됩니다.</translation>
 <translation id="227028348235968071">Brave 계정으로 로그인하면 Brave에서 비밀번호를 확인할 수 있습니다.</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
@@ -422,4 +435,5 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2176087127109773485">귀하의 로그인된 Brave 동기화 체인을 관리할 수 있습니다. Brave 동기화 체인은 Brave 브라우저, Play 스토어, Gmail 등에 사용됩니다. 가족 구성원 등 다른 사람을 위한 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 새 프로필을 추가하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 모드에서는 꺼집니다.</translation>
 <translation id="3739288578188828252">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 Google 드라이브로 보내 항목 추천 결과를 개선합니다. 비공개 모드에서는 꺼집니다.</translation>
+<translation id="2589970573128789862">Brave Private</translation>
 </translationbundle>
