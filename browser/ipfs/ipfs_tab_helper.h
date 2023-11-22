@@ -25,7 +25,7 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
-class BraveGlobalInfoBarManager;
+class BraveGlobalInfobarService;
 class PrefService;
 
 namespace ipfs {
@@ -173,7 +173,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 #if !BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<BraveGlobalInfoBarManager> allways_start_global_infobar_;
+  raw_ptr<BraveGlobalInfobarService> global_infobar_service_;
 #endif  // !BUILDFLAG(IS_ANDROID)
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;

@@ -11,11 +11,12 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "brave/browser/infobars/brave_global_confirm_infobar_delegate.h"
 
 class PrefService;
 
-class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
+class BraveIPFSAlwaysStartInfoBarDelegate
+    : public BraveGlobalConfirmInfobarDelegate {
  public:
   BraveIPFSAlwaysStartInfoBarDelegate(
       const BraveIPFSAlwaysStartInfoBarDelegate&) = delete;
@@ -44,12 +45,12 @@ class BraveIPFSAlwaysStartInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 };
 
 class BraveIPFSAlwaysStartInfoBarDelegateFactory
-    : public BraveConfirmInfoBarDelegateFactory {
+    : public BraveGlobalConfirmInfoBarDelegateFactory {
  public:
   explicit BraveIPFSAlwaysStartInfoBarDelegateFactory(PrefService* local_state);
   ~BraveIPFSAlwaysStartInfoBarDelegateFactory() override = default;
 
-  std::unique_ptr<BraveConfirmInfoBarDelegate> Create() override;
+  std::unique_ptr<BraveGlobalConfirmInfobarDelegate> Create() override;
   infobars::InfoBarDelegate::InfoBarIdentifier GetInfoBarIdentifier()
       const override;
 

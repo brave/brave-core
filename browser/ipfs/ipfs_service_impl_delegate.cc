@@ -9,18 +9,22 @@
 
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
+#include "brave/browser/infobars/brave_global_infobar_service.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace ipfs {
 
-IpfsServiceImplDelegate::IpfsServiceImplDelegate(PrefService* local_state)
+IpfsServiceImplDelegate::IpfsServiceImplDelegate(
+    PrefService* local_state
+#if !BUILDFLAG(IS_ANDROID)
+    ,
+    BraveGlobalInfobarService* global_infobar_service
+#endif  // !BUILDFLAG(IS_ANDROID)
+    )
     : local_state_(local_state)
 #if !BUILDFLAG(IS_ANDROID)
       ,
-      allways_start_global_infobar_(std::make_unique<BraveGlobalInfoBarManager>(
-          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-              local_state)))
+      global_infobar_service_(global_infobar_service)
 #endif  // !BUILDFLAG(IS_ANDROID)
 {
 }
@@ -30,7 +34,9 @@ IpfsServiceImplDelegate::~IpfsServiceImplDelegate() = default;
 void IpfsServiceImplDelegate::OnImportToIpfsFinished(
     IpfsService* ipfs_service) {
 #if !BUILDFLAG(IS_ANDROID)
-  allways_start_global_infobar_->Show();
+  if (global_infobar_service_) {
+    global_infobar_service_->ShowAlwaysStartInfobar();
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

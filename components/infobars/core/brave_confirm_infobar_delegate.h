@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 #define BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -31,26 +30,8 @@ class BraveConfirmInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   int GetButtons() const override;
 
-  infobars::InfoBar* GetInfobar() { return this->infobar(); }
-
  protected:
   BraveConfirmInfoBarDelegate();
-};
-
-class BraveConfirmInfoBarDelegateFactory {
- public:
-  BraveConfirmInfoBarDelegateFactory(
-      const BraveConfirmInfoBarDelegateFactory&) = delete;
-  BraveConfirmInfoBarDelegateFactory& operator=(
-      const BraveConfirmInfoBarDelegateFactory&) = delete;
-  virtual ~BraveConfirmInfoBarDelegateFactory() = default;
-
-  virtual std::unique_ptr<BraveConfirmInfoBarDelegate> Create() = 0;
-  virtual infobars::InfoBarDelegate::InfoBarIdentifier GetInfoBarIdentifier()
-      const = 0;
-
- protected:
-  BraveConfirmInfoBarDelegateFactory() = default;
 };
 
 #endif  // BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_

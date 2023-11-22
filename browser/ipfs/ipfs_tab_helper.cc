@@ -14,6 +14,7 @@
 
 #include "base/functional/bind.h"
 #include "base/supports_user_data.h"
+#include "brave/browser/infobars/brave_global_infobar_service.h"
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -37,6 +38,7 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
 #include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
@@ -158,9 +160,9 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))
 #if !BUILDFLAG(IS_ANDROID)
       ,
-      allways_start_global_infobar_(std::make_unique<BraveGlobalInfoBarManager>(
-          std::make_unique<BraveIPFSAlwaysStartInfoBarDelegateFactory>(
-              pref_service_)))
+      global_infobar_service_(
+          BraveGlobalInfobarServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext()))
 #endif  // !BUILDFLAG(IS_ANDROID)
 {
   resolver_ = std::make_unique<IPFSHostResolver>(
@@ -210,7 +212,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
     if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-      allways_start_global_infobar_->Show();
+      global_infobar_service_->ShowAlwaysStartInfobar();
     }
 #else
   ) {
@@ -440,7 +442,7 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
       if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-        allways_start_global_infobar_->Show();
+        global_infobar_service_->ShowAlwaysStartInfobar();
       }
 #else
       LoadUrl(possible_redirect.value());

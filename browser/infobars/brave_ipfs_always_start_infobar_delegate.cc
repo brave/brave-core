@@ -15,7 +15,7 @@ BraveIPFSAlwaysStartInfoBarDelegateFactory::
     BraveIPFSAlwaysStartInfoBarDelegateFactory(PrefService* local_state)
     : local_state_(local_state) {}
 
-std::unique_ptr<BraveConfirmInfoBarDelegate>
+std::unique_ptr<BraveGlobalConfirmInfobarDelegate>
 BraveIPFSAlwaysStartInfoBarDelegateFactory::Create() {
   if (!local_state_ || local_state_->GetBoolean(kIPFSAlwaysStartMode)) {
     return nullptr;
@@ -75,16 +75,17 @@ bool BraveIPFSAlwaysStartInfoBarDelegate::Accept() {
     local_state_->SetBoolean(kIPFSAlwaysStartMode, true);
   }
   SetLastShownTime();
-  return true;
+  return BraveGlobalConfirmInfobarDelegate::Accept();
 }
 
 bool BraveIPFSAlwaysStartInfoBarDelegate::Cancel() {
   SetLastShownTime();
-  return true;
+  return BraveGlobalConfirmInfobarDelegate::Cancel();
 }
 
 void BraveIPFSAlwaysStartInfoBarDelegate::InfoBarDismissed() {
   SetLastShownTime();
+  BraveGlobalConfirmInfobarDelegate::InfoBarDismissed();
 }
 
 void BraveIPFSAlwaysStartInfoBarDelegate::SetLastShownTime() {

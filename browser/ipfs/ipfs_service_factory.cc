@@ -33,6 +33,10 @@
 #include "extensions/browser/extensions_browser_client.h"
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
+#endif
+
 namespace {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 // IPFS companion installed?
@@ -91,12 +95,17 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   RecordIPFSCompanionInstalled(extensions::ExtensionRegistry::Get(context));
 #endif
-  return new IpfsService(user_prefs::UserPrefs::Get(context),
-                         std::move(url_loader), std::move(context_getter),
-                         ipfs_updater, user_data_dir, chrome::GetChannel(),
-                         std::make_unique<IpfsDnsResolverImpl>(),
-                         std::make_unique<IpfsServiceImplDelegate>(
-                             user_prefs::UserPrefs::Get(context)));
+  return new IpfsService(
+      user_prefs::UserPrefs::Get(context), std::move(url_loader),
+      std::move(context_getter), ipfs_updater, user_data_dir,
+      chrome::GetChannel(), std::make_unique<IpfsDnsResolverImpl>(),
+      std::make_unique<IpfsServiceImplDelegate>(
+          user_prefs::UserPrefs::Get(context)
+#if !BUILDFLAG(IS_ANDROID)
+              ,
+          BraveGlobalInfobarServiceFactory::GetForBrowserContext(context)
+#endif
+              ));
 }
 
 // static

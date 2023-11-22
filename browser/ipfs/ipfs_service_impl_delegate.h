@@ -3,30 +3,37 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/ipfs_service_delegate.h"
-
 #ifndef BRAVE_BROWSER_IPFS_IPFS_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_BROWSER_IPFS_IPFS_SERVICE_IMPL_DELEGATE_H_
 
+#include <memory>
+
+#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service_delegate.h"
+
 #if !BUILDFLAG(IS_ANDROID)
-class BraveGlobalInfoBarManager;
+class BraveGlobalInfobarService;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace ipfs {
 
 class IpfsServiceImplDelegate : public IpfsServiceDelegate {
  public:
-  explicit IpfsServiceImplDelegate(PrefService* local_state);
+  explicit IpfsServiceImplDelegate(
+      PrefService* local_state
+#if !BUILDFLAG(IS_ANDROID)
+      ,
+      BraveGlobalInfobarService* global_infobar_service
+#endif  // !BUILDFLAG(IS_ANDROID)
+  );
   ~IpfsServiceImplDelegate() override;
   void OnImportToIpfsFinished(IpfsService* ipfs_service) override;
 
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<BraveGlobalInfoBarManager> allways_start_global_infobar_;
+  raw_ptr<BraveGlobalInfobarService> global_infobar_service_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 };
 
