@@ -41,21 +41,3 @@ static_library("browser") {
     "//url",
   ]
 }
-
-source_set("unit_tests") {
-  testonly = true
-  sources = [ "ai_chat_throttle_unittest.cc" ]
-
-  deps = [
-    ":browser",
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/constants",
-    "//chrome/common",
-    "//chrome/test:test_support",
-    "//content/public/browser",
-    "//content/test:test_support",
-    "//testing/gtest",
-    "//url",
-  ]
-}
