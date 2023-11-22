@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 
@@ -141,19 +142,19 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
 }
 
 TEST_F(AIChatMetricsUnitTest, UsageDaily) {
-  is_premium_ = true;
+  is_premium_ = false;
 
   ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
+  task_environment_.RunUntilIdle();
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
 
   RecordPrompts(true, 1);
-  histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
 
-  is_premium_ = false;
-  ai_chat_metrics_->OnPremiumStatusUpdated(false,
-                                           mojom::PremiumStatus::Inactive);
+  is_premium_ = true;
+  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active);
   RecordPrompts(true, 1);
-  histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
 
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 2);
 }
@@ -243,8 +244,9 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
 TEST_F(AIChatMetricsUnitTest, Reset) {
   ai_chat_metrics_->RecordReset();
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName,
-                                       INT_MAX - 1, 1);
-  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, INT_MAX - 1, 1);
+                                       std::numeric_limits<int>::max() - 1, 1);
+  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName,
+                                       std::numeric_limits<int>::max() - 1, 1);
 }
 
 }  // namespace ai_chat

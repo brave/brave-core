@@ -202,7 +202,7 @@ void ConversationDriver::OnUserOptedIn() {
   }
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
-    ai_chat_metrics_->RecordEnabled(true, absl::nullopt);
+    ai_chat_metrics_->RecordEnabled(true, {});
   }
 }
 

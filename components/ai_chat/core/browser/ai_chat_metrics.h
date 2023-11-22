@@ -49,9 +49,9 @@ class AIChatMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void RecordEnabled(bool is_new_user,
-                     absl::optional<RetrievePremiumStatusCallback>
-                         retrieve_premium_status_callback);
+  void RecordEnabled(
+      bool is_new_user,
+      RetrievePremiumStatusCallback retrieve_premium_status_callback);
   void RecordReset();
 
   void RecordNewChat();

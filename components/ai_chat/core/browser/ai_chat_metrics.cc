@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
 #include <algorithm>
+#include <limits>
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
@@ -58,9 +59,9 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveChatP3ALastPremiumStatus, false);
 }
 
-void AIChatMetrics::RecordEnabled(bool is_new_user,
-                                  absl::optional<RetrievePremiumStatusCallback>
-                                      retrieve_premium_status_callback) {
+void AIChatMetrics::RecordEnabled(
+    bool is_new_user,
+    RetrievePremiumStatusCallback retrieve_premium_status_callback) {
   if (retrieve_premium_status_callback) {
     base::Time last_premium_check =
         local_state_->GetTime(prefs::kBraveChatP3ALastPremiumCheck);
@@ -68,7 +69,7 @@ void AIChatMetrics::RecordEnabled(bool is_new_user,
         (base::Time::Now() - last_premium_check) >= kPremiumCheckInterval) {
       if (!premium_check_in_progress_) {
         premium_check_in_progress_ = true;
-        std::move(*retrieve_premium_status_callback)
+        std::move(retrieve_premium_status_callback)
             .Run(base::BindOnce(&AIChatMetrics::OnPremiumStatusUpdated,
                                 weak_ptr_factory_.GetWeakPtr(), is_new_user));
       }
@@ -87,8 +88,10 @@ void AIChatMetrics::RecordEnabled(bool is_new_user,
 }
 
 void AIChatMetrics::RecordReset() {
-  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName, INT_MAX - 1, 3);
-  UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName, INT_MAX - 1, 2);
+  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
+                             std::numeric_limits<int>::max() - 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
+                             std::numeric_limits<int>::max() - 1, 2);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(
@@ -100,7 +103,7 @@ void AIChatMetrics::OnPremiumStatusUpdated(
   local_state_->SetTime(prefs::kBraveChatP3ALastPremiumCheck,
                         base::Time::Now());
   premium_check_in_progress_ = false;
-  RecordEnabled(is_new_user, absl::nullopt);
+  RecordEnabled(is_new_user, {});
 }
 
 void AIChatMetrics::RecordNewChat() {
