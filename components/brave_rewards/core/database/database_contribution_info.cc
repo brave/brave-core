@@ -368,23 +368,19 @@ void DatabaseContributionInfo::OnGetContributionReport(
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback = std::bind(
-      &DatabaseContributionInfo::OnGetContributionReportPublishers, this, _1,
-      std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
-          std::move(list)),
-      callback);
-
-  publishers_.GetContributionPublisherPairList(contribution_ids,
-                                               publisher_callback);
+  publishers_.GetContributionPublisherPairList(
+      contribution_ids,
+      base::BindOnce(
+          &DatabaseContributionInfo::OnGetContributionReportPublishers,
+          base::Unretained(this), std::move(list), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
-    std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-        shared_contributions,
-    GetContributionReportCallback callback) {
+    std::vector<mojom::ContributionInfoPtr> contributions,
+    GetContributionReportCallback callback,
+    std::vector<ContributionPublisherInfoPair> publisher_pair_list) {
   std::vector<mojom::ContributionReportInfoPtr> report_list;
-  for (const auto& contribution : *shared_contributions) {
+  for (const auto& contribution : contributions) {
     auto report = mojom::ContributionReportInfo::New();
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;

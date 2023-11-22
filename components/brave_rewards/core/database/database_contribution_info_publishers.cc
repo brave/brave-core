@@ -121,7 +121,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
     BLOG(1, "Contribution ids is empty");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -166,7 +166,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -189,7 +189,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
                            std::move(publisher));
   }
 
-  callback(std::move(pair_list));
+  std::move(callback).Run(std::move(pair_list));
 }
 
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(
