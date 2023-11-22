@@ -120,9 +120,9 @@ class Publisher {
                                mojom::Result result,
                                mojom::PublisherInfoPtr info);
 
-  void OnGetActivityInfo(std::vector<mojom::PublisherInfoPtr> list,
-                         PublisherInfoCallback callback,
-                         const std::string& publisher_key);
+  void OnGetActivityInfo(PublisherInfoCallback callback,
+                         const std::string& publisher_key,
+                         std::vector<mojom::PublisherInfoPtr> list);
 
   void SaveVisitInternal(const mojom::PublisherStatus,
                          const std::string& publisher_key,

@@ -57,10 +57,10 @@ using RunDBTransactionCallback =
 using ContributionInfoListCallback =
     base::OnceCallback<void(std::vector<mojom::ContributionInfoPtr>)>;
 
-// Legacy callbacks:
-
 using GetActivityInfoListCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
+
+// Legacy callbacks:
 
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;

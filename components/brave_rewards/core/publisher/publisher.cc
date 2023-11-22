@@ -170,16 +170,15 @@ void Publisher::OnSaveVisitServerPublisher(
       std::bind(&Publisher::SaveVisitInternal, this, status, publisher_key,
                 visit_data, duration, first_visit, window_id, callback, _1, _2);
 
-  auto list_callback = std::bind(&Publisher::OnGetActivityInfo, this, _1,
-                                 get_callback, filter->id);
-
-  engine_->database()->GetActivityInfoList(0, 2, std::move(filter),
-                                           list_callback);
+  engine_->database()->GetActivityInfoList(
+      0, 2, std::move(filter),
+      base::BindOnce(&Publisher::OnGetActivityInfo, base::Unretained(this),
+                     std::move(get_callback), filter->id));
 }
 
-void Publisher::OnGetActivityInfo(std::vector<mojom::PublisherInfoPtr> list,
-                                  PublisherInfoCallback callback,
-                                  const std::string& publisher_key) {
+void Publisher::OnGetActivityInfo(PublisherInfoCallback callback,
+                                  const std::string& publisher_key,
+                                  std::vector<mojom::PublisherInfoPtr> list) {
   if (list.empty()) {
     engine_->database()->GetPublisherInfo(publisher_key, callback);
     return;
@@ -498,7 +497,8 @@ void Publisher::SynopsisNormalizer() {
                            engine_->state()->GetPublisherMinVisits());
   engine_->database()->GetActivityInfoList(
       0, 0, std::move(filter),
-      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1));
+      base::BindOnce(&Publisher::SynopsisNormalizerCallback,
+                     base::Unretained(this)));
 }
 
 void Publisher::SynopsisNormalizerCallback(

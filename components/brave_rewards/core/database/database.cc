@@ -70,7 +70,8 @@ void Database::GetActivityInfoList(uint32_t start,
                                    uint32_t limit,
                                    mojom::ActivityInfoFilterPtr filter,
                                    GetActivityInfoListCallback callback) {
-  activity_info_.GetRecordsList(start, limit, std::move(filter), callback);
+  activity_info_.GetRecordsList(start, limit, std::move(filter),
+                                std::move(callback));
 }
 
 void Database::DeleteActivityInfo(const std::string& publisher_key,

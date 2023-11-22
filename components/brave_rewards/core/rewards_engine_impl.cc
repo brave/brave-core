@@ -459,7 +459,7 @@ void RewardsEngineImpl::GetActivityInfoList(
     mojom::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   WhenReady([this, start, limit, filter = std::move(filter),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+             callback = std::move(callback)]() mutable {
     database()->GetActivityInfoList(start, limit, std::move(filter),
                                     std::move(callback));
   });

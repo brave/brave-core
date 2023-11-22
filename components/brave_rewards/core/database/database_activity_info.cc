@@ -215,7 +215,7 @@ void DatabaseActivityInfo::GetRecordsList(
     mojom::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   if (!filter) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -270,7 +270,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -299,7 +299,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
