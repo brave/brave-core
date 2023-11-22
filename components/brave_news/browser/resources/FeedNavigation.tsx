@@ -23,6 +23,9 @@ const Container = styled(Card)`
   align-self: flex-start;
   position: sticky;
   top: ${spacing.xl};
+
+  max-height: calc(100vh - ${spacing.xl} * 2);
+  overflow-y: auto;
 `
 
 const Heading = styled.h3`
