@@ -47,6 +47,7 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
+  allowNewWalletFilecoinAccount: true,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
@@ -455,6 +456,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<ImportAccountErrorType>
       ) {
         state.importAccountError = payload
+      },
+      setAllowNewWalletFilecoinAccount(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
+        state.allowNewWalletFilecoinAccount = payload
       }
     },
     extraReducers: (builder) => {

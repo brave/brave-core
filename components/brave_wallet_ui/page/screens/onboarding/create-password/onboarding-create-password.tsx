@@ -56,6 +56,9 @@ export const OnboardingCreatePassword = ({
 }: OnboardingCreatePasswordProps) => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const allowNewWalletFilecoinAccount = useSafeWalletSelector(
+    WalletSelectors.allowNewWalletFilecoinAccount
+  )
   const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
 
   // state
@@ -87,15 +90,12 @@ export const OnboardingCreatePassword = ({
     // results are returned before other redux actions complete
     await createWallet({ password }).unwrap()
 
-    // TODO: FIL mainnet cannot be hidden
-    // find another way to prevent account creation
-
     // create accounts for visible network coin types if needed
     for (const netType of visibleNetworkTypes) {
       if (
-        // TODO: remove this check when disable ETH and SOL default networks
-        netType.coin !== BraveWallet.CoinType.ETH &&
-        netType.coin !== BraveWallet.CoinType.SOL
+        // TODO: remove this check when we can hide "default" networks
+        netType.coin === BraveWallet.CoinType.FIL &&
+        allowNewWalletFilecoinAccount
       ) {
         await addAccount({
           accountName: suggestNewAccountName(accounts, netType),
@@ -105,12 +105,13 @@ export const OnboardingCreatePassword = ({
       }
     }
   }, [
-    password,
     isValid,
     createWallet,
+    password,
     visibleNetworkTypes,
-    accounts,
-    addAccount
+    allowNewWalletFilecoinAccount,
+    addAccount,
+    accounts
   ])
 
   const handlePasswordChange = React.useCallback(

@@ -57,6 +57,8 @@ export const importAccountError = ({ wallet }: State) =>
   wallet.importAccountError
 export const selectedOnRampAssetId = ({ wallet }: State) =>
   wallet.selectedDepositAssetId
+export const allowNewWalletFilecoinAccount = ({ wallet }: State) =>
+  wallet.allowNewWalletFilecoinAccount
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)

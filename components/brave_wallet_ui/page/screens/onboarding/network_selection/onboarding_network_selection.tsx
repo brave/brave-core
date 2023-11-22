@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 import { EntityId } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
 import Checkbox from '@brave/leo/react/checkbox'
@@ -77,6 +78,7 @@ import {
   SelectAllText,
   GroupingText
 } from './onboarding_network_selection.style'
+import { WalletActions } from '../../../../common/actions'
 
 // Featured Networks
 const EthMainnetId = getNetworkId({
@@ -100,8 +102,11 @@ const featuredChainIds = [
   BraveWallet.FILECOIN_MAINNET
 ]
 
-/** Forcing ETH, SOL & FILaccount creation until their networks can be hidden */
-const mandatoryChainIds = featuredChainIds
+/** Forcing ETH, SOL account creation until their networks can be hidden */
+const mandatoryChainIds = [
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.MAINNET_CHAIN_ID
+]
 
 function NetworkCheckbox({
   network,
@@ -152,6 +157,9 @@ export const OnboardingNetworkSelection = () => {
   const history = useHistory()
   const path = useLocationPathName()
   const onboardingType = getOnboardingTypeFromPath(path)
+
+  // redux
+  const dispatch = useDispatch()
 
   // state
   const [searchText, setSearchText] = React.useState('')
@@ -257,6 +265,13 @@ export const OnboardingNetworkSelection = () => {
 
     // force show selected networks
     await restoreNetworks(selectedNetworks).unwrap()
+
+    // Temporary workaround to prevent unwanted filecoin account creation
+    dispatch(
+      WalletActions.setAllowNewWalletFilecoinAccount(
+        selectedNetworks.some((net) => net.coin === BraveWallet.CoinType.FIL)
+      )
+    )
 
     // TODO: mark coin-types for wallet creation
     history.push(
