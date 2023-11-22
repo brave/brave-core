@@ -34,7 +34,7 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
 
   absl::optional<base::Value::Dict> dict;
   {
-    // |content| can be up to 10 MB, so we keep the scope of this object to this
+    // `content` can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.
 
     std::string content;

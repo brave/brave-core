@@ -15,7 +15,7 @@
 
 namespace brave_ads::cbr {
 
-// A |PublicKey| is a commitment by the server to a particular |SigningKey|.
+// A `PublicKey` is a commitment by the server to a particular `SigningKey`.
 
 class PublicKey {
  public:

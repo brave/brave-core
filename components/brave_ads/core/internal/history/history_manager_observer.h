@@ -26,10 +26,10 @@ class HistoryManagerObserver : public base::CheckedObserver {
   // Invoked when the user dislikes an ad.
   virtual void OnDidDislikeAd(const AdContentInfo& ad_content) {}
 
-  // Invoked when the likes a |category|.
+  // Invoked when the likes a `category`.
   virtual void OnDidLikeCategory(const std::string& category) {}
 
-  // Invoked when the user dislikes a |category|.
+  // Invoked when the user dislikes a `category`.
   virtual void OnDidDislikeCategory(const std::string& category) {}
 
   // Invoked when a user saves an ad.

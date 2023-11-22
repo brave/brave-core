@@ -146,7 +146,7 @@ absl::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
 
   for (const auto& keyword : purchase_intent->segment_keywords) {
     // Intended behavior relies on early return from list traversal and
-    // implicitely on the ordering of |segment_keywords_| to ensure specific
+    // implicitely on the ordering of `segment_keywords_` to ensure specific
     // segments are matched over general segments, e.g. "audi a6" segments
     // should be returned over "audi" segments if possible.
     if (IsSubset(search_query_keywords, ToKeywords(keyword.keywords))) {

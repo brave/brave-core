@@ -23,7 +23,7 @@ class VectorData final : public Data {
   // ({0, data[0]}, {1, data[0]}, .., {n-1, data[n-1]}}
   explicit VectorData(std::vector<float> data);
 
-  // Make a "sparse" DataVector using points from |data|.
+  // Make a "sparse" DataVector using points from `data`.
   // double is used for backward compatibility with the current code.
   VectorData(size_t dimension_count, const std::map<uint32_t, double>& data);
 

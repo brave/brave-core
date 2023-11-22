@@ -15,8 +15,8 @@
 
 namespace brave_ads::cbr {
 
-// A |BlindedToken| is sent to the server for signing. It is the result of the
-// scalar multiplication of the point derived from the |TokenPreimage| with the
+// A `BlindedToken` is sent to the server for signing. It is the result of the
+// scalar multiplication of the point derived from the `TokenPreimage` with the
 // blinding factor. (P = T^r = H_1(t)^r).
 
 class BlindedToken {

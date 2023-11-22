@@ -78,7 +78,7 @@ class BraveAdsConversionsTest : public UnitTestBase {
   }
 
   void DrainConversionQueue() {
-    // Conversions are added to the |ConversionQueue|, so if the conversion
+    // Conversions are added to the `ConversionQueue`, so if the conversion
     // queue has pending conversions, we must force the processing of those
     // conversions to notify this observer.
     while (HasPendingTasks()) {

@@ -17,8 +17,8 @@ namespace brave_ads::cbr {
 
 class BlindedToken;
 
-// A |Token| consists of a randomly chosen preimage and blinding factor. Since a
-// |Token| includes the blinding factor it should be treated as a client secret
+// A `Token` consists of a randomly chosen preimage and blinding factor. Since a
+// `Token` includes the blinding factor it should be treated as a client secret
 // and NEVER revealed to the server.
 
 class Token {

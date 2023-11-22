@@ -25,7 +25,7 @@ constexpr double kMinimumVectorLength = 1e-7;
 // can consume a lot.
 // There is two types of DataVectors:
 // 1. The "dense" case: ({0, v0}, {1, v1}, .., {n, vn}}.
-// We don't store first elements in this case, |points| is empty().
+// We don't store first elements in this case, `points` is empty().
 // 2. The sparse(general) case: ({p0, v0}, ..., {pn, vn}). We store points as
 // {p0, .., pn} and values as {v0, .., vn}, points.size() == values.size().
 class VectorDataStorage {

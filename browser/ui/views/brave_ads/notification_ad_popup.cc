@@ -131,13 +131,13 @@ void NotificationAdPopup::AdjustBoundsAndSnapToFitWorkAreaForWidget(
 }
 
 void NotificationAdPopup::OnDisplayAdded(const display::Display& new_display) {
-  // Called when |new_display| has been added
+  // Called when `new_display` has been added
   RecomputeAlignment();
 }
 
 void NotificationAdPopup::OnDisplayRemoved(
     const display::Display& old_display) {
-  // Called when |old_display| has been removed
+  // Called when `old_display` has been removed
   RecomputeAlignment();
 }
 

@@ -25,7 +25,7 @@ namespace brave_ads {
 
 namespace {
 
-// Binds the |receiver| to a new provider on a background task runner.
+// Binds the `receiver` to a new provider on a background task runner.
 void BindInProcessBatAdsService(
     mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
   mojo::MakeSelfOwnedReceiver(std::make_unique<bat_ads::BatAdsServiceImpl>(),

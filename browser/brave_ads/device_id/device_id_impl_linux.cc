@@ -74,7 +74,7 @@ std::string GetDiskUuid() {
     disks[device_name] = uuid;
   } while (true);
 
-  // Look for first device name matching an entry of |kDeviceNames|.
+  // Look for first device name matching an entry of `kDeviceNames`.
   std::string result;
   for (const char* device_name : kDeviceNames) {
     DiskMap::iterator iter = disks.find(base::FilePath(device_name));

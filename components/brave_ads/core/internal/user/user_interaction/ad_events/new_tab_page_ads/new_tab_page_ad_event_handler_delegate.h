@@ -16,17 +16,17 @@ struct NewTabPageAdInfo;
 
 class NewTabPageAdEventHandlerDelegate {
  public:
-  // Invoked when the new tab page |ad| is served.
+  // Invoked when the new tab page `ad` is served.
   virtual void OnDidFireNewTabPageAdServedEvent(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when the new tab page |ad| is viewed.
+  // Invoked when the new tab page `ad` is viewed.
   virtual void OnDidFireNewTabPageAdViewedEvent(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when the new tab page |ad| is clicked.
+  // Invoked when the new tab page `ad` is clicked.
   virtual void OnDidFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when the new tab page |ad| event fails for |placement_id|,
-  // |creative_instance_id| and |event_type|.
+  // Invoked when the new tab page `ad` event fails for `placement_id`,
+  // `creative_instance_id` and `event_type`.
   virtual void OnFailedToFireNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

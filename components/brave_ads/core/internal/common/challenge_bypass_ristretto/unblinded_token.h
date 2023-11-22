@@ -18,7 +18,7 @@ namespace brave_ads::cbr {
 class TokenPreimage;
 class VerificationKey;
 
-// An |UnblindedToken| is the result of unblinding a |SignedToken|. While both
+// An `UnblindedToken` is the result of unblinding a `SignedToken`. While both
 // the client and server both "know" this value, it should nevertheless not be
 // sent between the two.
 

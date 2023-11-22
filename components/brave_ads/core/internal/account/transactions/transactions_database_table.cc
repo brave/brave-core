@@ -133,7 +133,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |segment| column.
+  // Create a temporary table with new `segment` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =

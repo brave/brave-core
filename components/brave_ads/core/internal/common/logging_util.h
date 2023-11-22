@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-// |verbose_level| is an arbitrary integer value (higher numbers should be used
+// `verbose_level` is an arbitrary integer value (higher numbers should be used
 // for more verbose logging), so you can make your logging levels as granular as
 // you wish and can be adjusted on a per-module basis at runtime. Defaults to 0
 //

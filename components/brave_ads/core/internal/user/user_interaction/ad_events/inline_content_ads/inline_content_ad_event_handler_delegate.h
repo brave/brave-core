@@ -16,20 +16,20 @@ struct InlineContentAdInfo;
 
 class InlineContentAdEventHandlerDelegate {
  public:
-  // Invoked when the inline content |ad| is served.
+  // Invoked when the inline content `ad` is served.
   virtual void OnDidFireInlineContentAdServedEvent(
       const InlineContentAdInfo& ad) {}
 
-  // Invoked when the inline content |ad| is viewed.
+  // Invoked when the inline content `ad` is viewed.
   virtual void OnDidFireInlineContentAdViewedEvent(
       const InlineContentAdInfo& ad) {}
 
-  // Invoked when the inline content |ad| is clicked.
+  // Invoked when the inline content `ad` is clicked.
   virtual void OnDidFireInlineContentAdClickedEvent(
       const InlineContentAdInfo& ad) {}
 
-  // Invoked when the inline content |ad| event fails for |placement_id|,
-  // |creative_instance_id| and |event_type|.
+  // Invoked when the inline content `ad` event fails for `placement_id`,
+  // `creative_instance_id` and `event_type`.
   virtual void OnFailedToFireInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

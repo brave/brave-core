@@ -50,7 +50,7 @@ void MockFlags() {
   GlobalState::GetInstance()->Flags() = *BuildFlags();
 
   // Use the staging environment for tests if we did not append command line
-  // switches in |SetUpMocks|.
+  // switches in `SetUpMocks()`.
   if (!DidAppendCommandLineSwitches()) {
     CHECK(GlobalState::HasInstance());
     GlobalState::GetInstance()->Flags().environment_type =

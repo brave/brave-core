@@ -20,7 +20,6 @@ namespace brave_ads {
 
 namespace {
 
-// Compute HMAC-SHA256(|key|, |text|) as a string.
 bool ComputeHmacSha256(const std::string& key,
                        const std::string& text,
                        std::string* signature_return) {
