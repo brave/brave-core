@@ -17,7 +17,10 @@ class CollapsedURLBarView: UIView {
     $0.alignment = .firstBaseline
   }
   
-  private let secureContentStateView = UIButton()
+  private let secureContentStateView = UIButton().then {
+    $0.tintAdjustmentMode = .normal
+  }
+  
   private let separatorLine = UILabel().then {
     $0.isUserInteractionEnabled = false
     $0.isAccessibilityElement = false

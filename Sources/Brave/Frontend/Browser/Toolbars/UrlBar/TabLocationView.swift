@@ -119,6 +119,7 @@ class TabLocationView: UIView {
     button.configurationUpdateHandler = { [unowned self] btn in
       btn.configuration = secureContentStateButtonConfiguration
     }
+    button.tintAdjustmentMode = .normal
     secureContentStateButton = button
     leadingView = button
   }
