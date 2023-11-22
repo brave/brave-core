@@ -12,10 +12,6 @@
 #include "components/infobars/core/infobar_delegate.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-namespace content {
-class BrowserContext;
-}
-
 class BraveGlobalInfoBarManager;
 class PrefService;
 

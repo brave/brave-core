@@ -85,7 +85,7 @@ class FakeIpfsService : public ipfs::IpfsService {
             user_dir,
             channel,
             std::make_unique<ipfs::IpfsDnsResolverImpl>(),
-            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs)) {}
+            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs, nullptr)) {}
   ~FakeIpfsService() override = default;
 
   void LaunchDaemon(BoolCallback callback) override {

@@ -44,7 +44,7 @@ class BraveGlobalInfoBarManager
   void MaybeAddInfoBar(infobars::InfoBarManager* infobar_manager);
   void OnInfoBarClosed() override;
 
-  bool is_closed_{false};
+  bool is_closed_{true};
   std::unique_ptr<BrowserTabStripTracker> browser_tab_strip_tracker_;
   std::unique_ptr<BraveGlobalConfirmInfoBarDelegateFactory> delegate_factory_;
   base::WeakPtrFactory<BraveGlobalInfoBarManager> weak_factory_{this};

@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
@@ -67,6 +68,26 @@ void RemoveInfobarsByIdentifier(
     }
   }
 }
+
+void RemoveObserverForInfobarManagers(
+    const infobars::InfoBarDelegate::InfoBarIdentifier& id,
+    BraveGlobalInfoBarManager* observer) {
+  for (const auto* browser : *BrowserList::GetInstance()) {
+    const auto* tab_strip_model = browser->tab_strip_model();
+    for (int i = 0; i < tab_strip_model->count(); ++i) {
+      auto* web_contents = tab_strip_model->GetWebContentsAt(i);
+      DCHECK(web_contents);
+      if (!web_contents) {
+        continue;
+      }
+      if (auto* infobar_manager =
+              infobars::ContentInfoBarManager::FromWebContents(web_contents)) {
+        infobar_manager->RemoveObserver(observer);
+        RemoveInfobarsByIdentifier(infobar_manager, id, observer);
+      }
+    }
+  }
+}
 }  // namespace
 
 BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
@@ -74,16 +95,15 @@ BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
     : delegate_factory_(std::move(delegate_factory)) {}
 
 BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
-  infobars::InfoBarManager* infobar_manager = GetCurrentInfoBarManager();
-  if (!infobar_manager) {
-    return;
-  }
-  infobar_manager->RemoveObserver(this);
-  RemoveInfobarsByIdentifier(infobar_manager,
-                             delegate_factory_->GetInfoBarIdentifier(), this);
+  RemoveObserverForInfobarManagers(delegate_factory_->GetInfoBarIdentifier(),
+                                   this);
 }
 
 void BraveGlobalInfoBarManager::Show() {
+  DCHECK(is_closed_);
+  if (!is_closed_) {
+    return;
+  }
   is_closed_ = false;
   browser_tab_strip_tracker_ =
       std::make_unique<BrowserTabStripTracker>(this, nullptr);
@@ -137,6 +157,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
   }
   auto delegate = delegate_factory_->Create();
   if (!delegate) {
+    is_closed_ = true;
     return;
   }
 
@@ -167,4 +188,5 @@ void BraveGlobalInfoBarManager::OnManagerShuttingDown(
                              this);
   manager->RemoveObserver(this);
   is_closed_ = true;
+  browser_tab_strip_tracker_.reset();
 }

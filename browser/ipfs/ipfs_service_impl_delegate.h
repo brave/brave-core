@@ -8,10 +8,10 @@
 
 #include <memory>
 
-#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
-#include "brave/components/ipfs/ipfs_service.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/ipfs/ipfs_service_delegate.h"
 
+class PrefService;
 #if !BUILDFLAG(IS_ANDROID)
 class BraveGlobalInfobarService;
 #endif  // !BUILDFLAG(IS_ANDROID)
