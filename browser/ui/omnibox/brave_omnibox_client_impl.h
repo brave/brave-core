@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 
 class PrefRegistrySimple;
@@ -57,6 +58,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   raw_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
 #endif
   BraveAutocompleteSchemeClassifier scheme_classifier_;
+  WeeklyStorage search_storage_;
 };
 
 #endif  // BRAVE_BROWSER_UI_OMNIBOX_BRAVE_OMNIBOX_CLIENT_IMPL_H_

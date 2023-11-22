@@ -60,7 +60,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.NTP.NewTabsCreated.2",
     "Brave.NTP.SponsoredImagesEnabled",
     "Brave.NTP.SponsoredNewTabsCreated",
-    "Brave.Omnibox.SearchCount.2",
+    "Brave.Omnibox.SearchCount.3",
 
     // P2A
     // Ad Impressions
