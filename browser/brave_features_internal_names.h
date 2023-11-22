@@ -9,6 +9,8 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
+inline constexpr char kMobileViewSidePanelFeatureInternalName[] =
+    "mobile-view-side-panel";
 inline constexpr char kPlaylistFeatureInternalName[] = "playlist";
 inline constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
