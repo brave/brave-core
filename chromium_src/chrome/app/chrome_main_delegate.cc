@@ -57,6 +57,7 @@ absl::optional<int> ChromeMainDelegate::BasicStartupComplete() {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);
+  command_line.AppendSwitch(switches::kEnableDistillabilityService);
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
