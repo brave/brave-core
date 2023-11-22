@@ -9,6 +9,9 @@ import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
 
+// allows lazy-loading
+import '../../common/defaultTrustedTypesPolicy'
+
 // assets
 import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 
@@ -35,6 +38,7 @@ import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
+
 setIconBasePath('chrome://resources/brave-icons')
 
 function App() {
