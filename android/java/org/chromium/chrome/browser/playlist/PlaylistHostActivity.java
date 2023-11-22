@@ -195,20 +195,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         return;
                     }
                     PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
-                    if (option == PlaylistOptionsEnum.REMOVE_PLAYLIST_OFFLINE_DATA) {
-                        if (playlistOptionsModel.getPlaylistModel() != null) {
-                            mPlaylistService.removeLocalDataForItemsInPlaylist(
-                                    playlistOptionsModel.getPlaylistModel().getId());
-                        }
-                    } else if (option == PlaylistOptionsEnum.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
-                        if (playlistOptionsModel.getPlaylistModel() != null) {
-                            for (PlaylistItemModel playlistItemModel :
-                                    playlistOptionsModel.getPlaylistModel().getItems()) {
-                                mPlaylistService.recoverLocalDataForItem(
-                                        playlistItemModel.getId(), true, playlistItem -> {});
-                            }
-                        }
-                    } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST) {
+                    if (option == PlaylistOptionsEnum.DELETE_PLAYLIST) {
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             mPlaylistService.removePlaylist(
                                     playlistOptionsModel.getPlaylistModel().getId());
@@ -217,33 +204,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         showMoveOrCopyPlaylistBottomSheet();
                     } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
                         showMoveOrCopyPlaylistBottomSheet();
-                    }
-                });
-
-        mPlaylistViewModel.getAllPlaylistOption().observe(
-                PlaylistHostActivity.this, playlistOptionsModel -> {
-                    if (mPlaylistService == null) {
-                        return;
-                    }
-                    PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
-                    if (option == PlaylistOptionsEnum.REMOVE_ALL_OFFLINE_DATA) {
-                        if (playlistOptionsModel.getAllPlaylistModels() != null) {
-                            for (PlaylistModel playlistModel :
-                                    playlistOptionsModel.getAllPlaylistModels()) {
-                                mPlaylistService.removeLocalDataForItemsInPlaylist(
-                                        playlistModel.getId());
-                            }
-                        }
-                    } else if (option
-                            == PlaylistOptionsEnum.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
-                        mPlaylistService.getAllPlaylists(playlists -> {
-                            for (Playlist playlist : playlists) {
-                                for (PlaylistItem playlistItem : playlist.items) {
-                                    mPlaylistService.recoverLocalDataForItem(
-                                            playlistItem.id, true, tempPlaylistItem -> {});
-                                }
-                            }
-                        });
                     }
                 });
 
@@ -271,10 +231,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         mPlaylistService.removeItemFromPlaylist(playlistItemOption.getPlaylistId(),
                                 playlistItemOption.getPlaylistItemModel().getId());
                         loadPlaylist(playlistItemOption.getPlaylistId());
-                    } else if (option == PlaylistOptionsEnum.RECOVER_PLAYLIST_ITEM) {
-                        mPlaylistService.recoverLocalDataForItem(
-                                playlistItemOption.getPlaylistItemModel().getId(), true,
-                                playlistItem -> {});
                     }
                 });
 

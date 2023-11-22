@@ -1369,8 +1369,6 @@ void PlaylistService::OnResponseStarted(const std::string& url,
 void PlaylistService::OnDataReceived(
     data_decoder::DataDecoder::ValueOrError result) {
   if (!result.has_value()) {
-    // LOG(ERROR) << "data_source : "
-    //            << "PlaylistService::OnDataReceived : empty";
     return;
   }
 
@@ -1380,34 +1378,14 @@ void PlaylistService::OnDataReceived(
   for (auto& observer : streaming_observers_) {
     observer->OnDataReceived(data_received);
   }
-
-  // JNIEnv* env = base::android::AttachCurrentThread();
-  // Java_BraveVpnNativeWorker_onDataReceived(
-  //     env, weak_java_brave_vpn_native_worker_.get(env),
-  //     base::android::ToJavaByteArray(env, vec));
 }
 
 void PlaylistService::OnDataComplete(
     api_request_helper::APIRequestResult result) {
   if (result.Is2XXResponseCode()) {
-    // if (!result.headers().empty()) {
-    //   for (auto entry : result.headers()) {
-    //     LOG(ERROR) << "data_source : "
-    //                << "PlaylistService::OnDataComplete : "
-    //                << "entry.first : \n"
-    //                << entry.first
-    //                << "\nOnAPIStreamDataComplete entry.second : \n"
-    //                << entry.second;
-    //   }
-    // }
-
     for (auto& observer : streaming_observers_) {
       observer->OnDataCompleted();
     }
-
-    // JNIEnv* env = base::android::AttachCurrentThread();
-    // Java_BraveVpnNativeWorker_onDataCompleted(
-    //     env, weak_java_brave_vpn_native_worker_.get(env));
   }
 }
 

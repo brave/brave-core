@@ -20,16 +20,16 @@ namespace playlist {
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
-  return net::DefineNetworkTrafficAnnotation("playlist_thumbnail_downloader",
+  return net::DefineNetworkTrafficAnnotation("playlist_streaming",
                                              R"(
       semantics {
-        sender: "Brave playlist thumbnail downloader"
+        sender: "Brave playlist streaming"
         description:
-          "Fetching thumbnail image for newly created playlist item"
+          "Fetching the playlist content"
         trigger:
-          "User-initiated for creating new playlist item"
+          "User-initiated for steraming playlist content"
         data:
-          "Thumbnail for playlist item"
+          "Playlist data for playlist item"
         destination: WEBSITE
       }
       policy {

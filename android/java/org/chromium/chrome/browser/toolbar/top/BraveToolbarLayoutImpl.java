@@ -672,11 +672,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         } else if (playlistOptionsModel.getOptionType()
                                 == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
                             BraveActivity.getBraveActivity().openBravePlaylistSettings();
-                        } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptionsEnum.PLAYLIST_HIDE) {
-                            hidePlaylistButton();
-                            SharedPreferencesManager.getInstance().writeBoolean(
-                                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, false);
                         }
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "showPlaylistButton onOptionClicked " + e);

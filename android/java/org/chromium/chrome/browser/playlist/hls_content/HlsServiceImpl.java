@@ -64,6 +64,12 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         }
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startHlsContentFromQueue();
+        return Service.START_NOT_STICKY;
+    }
+
     private void startHlsContentFromQueue() {
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
@@ -145,12 +151,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                     playlistItem.cached, false);
             VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
         });
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        startHlsContentFromQueue();
-        return Service.START_NOT_STICKY;
     }
 
     @Override
