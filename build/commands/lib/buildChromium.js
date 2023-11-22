@@ -88,29 +88,23 @@ function getChromiumGnArgs() {
     is_official_build: true,
     symbol_level: 1,
     enable_keystone_registration_framework: false,
+    ffmpeg_branding: 'Chrome',
+    ignore_missing_widevine_signing_cert: true,
   }
 
-  if (config.isAndroid)
+  if (config.isAndroid) {
     chromiumGnArgs.debuggable_apks = false
-
-  const gnArgsToMirror = [
-    'enable_hangout_services_extension',
-    'enable_widevine',
-    'ignore_missing_widevine_signing_cert',
-    'enable_nacl',
-    'ffmpeg_branding',
-  ]
+  } else {
+    chromiumGnArgs.enable_hangout_services_extension = true
+    chromiumGnArgs.enable_nacl = false
+  }
 
   if (braveGnArgs.use_system_xcode !== undefined) {
     chromiumGnArgs.use_system_xcode = braveGnArgs.use_system_xcode
   }
 
-  for (const arg of gnArgsToMirror) {
-    const braveArg = braveGnArgs[arg]
-    if (braveArg == undefined)
-      throw Error(`Gn arg ${arg} doesn't exist in config.buildArgs()`)
-    chromiumGnArgs[arg] = braveArg
-  }
+  chromiumGnArgs.enable_widevine = braveGnArgs.enable_widevine
+
   return chromiumGnArgs
 }
 
