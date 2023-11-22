@@ -60,6 +60,9 @@ using ContributionInfoListCallback =
 using GetActivityInfoListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
+using GetBalanceReportListCallback =
+    base::OnceCallback<void(std::vector<mojom::BalanceReportInfoPtr>)>;
+
 // Legacy callbacks:
 
 using GetAllMonthlyReportIdsCallback =
@@ -67,9 +70,6 @@ using GetAllMonthlyReportIdsCallback =
 
 using GetAllPromotionsCallback =
     std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
-
-using GetBalanceReportListCallback = std::function<void(
-    std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
 
 using GetContributionReportCallback =
     std::function<void(std::vector<mojom::ContributionReportInfoPtr>)>;

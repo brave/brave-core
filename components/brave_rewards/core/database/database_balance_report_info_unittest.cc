@@ -78,9 +78,11 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetBalanceReportListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.GetAllRecords(callback.AsStdFunction());
+  testing::StrictMock<
+      base::MockOnceCallback<void(std::vector<mojom::BalanceReportInfoPtr>)>>
+      callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.GetAllRecords(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

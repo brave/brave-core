@@ -114,15 +114,14 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
 }
 
 void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
-  auto balance_reports_callback =
-      std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
-
-  engine_->database()->GetAllBalanceReports(balance_reports_callback);
+  engine_->database()->GetAllBalanceReports(
+      base::BindOnce(&Report::OnGetAllBalanceReports, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void Report::OnGetAllBalanceReports(
-    std::vector<mojom::BalanceReportInfoPtr> reports,
-    GetAllMonthlyReportIdsCallback callback) {
+    GetAllMonthlyReportIdsCallback callback,
+    std::vector<mojom::BalanceReportInfoPtr> reports) {
   if (reports.empty()) {
     callback({});
     return;

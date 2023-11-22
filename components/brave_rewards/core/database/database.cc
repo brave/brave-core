@@ -114,7 +114,7 @@ void Database::GetBalanceReportInfo(
 }
 
 void Database::GetAllBalanceReports(GetBalanceReportListCallback callback) {
-  balance_report_.GetAllRecords(callback);
+  balance_report_.GetAllRecords(std::move(callback));
 }
 
 void Database::DeleteAllBalanceReports(LegacyResultCallback callback) {

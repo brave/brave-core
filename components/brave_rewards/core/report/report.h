@@ -48,8 +48,8 @@ class Report {
       std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
       GetMonthlyReportCallback callback);
 
-  void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
-                              GetAllMonthlyReportIdsCallback callback);
+  void OnGetAllBalanceReports(GetAllMonthlyReportIdsCallback callback,
+                              std::vector<mojom::BalanceReportInfoPtr> reports);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };
