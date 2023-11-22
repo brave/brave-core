@@ -19,10 +19,12 @@
 #include "brave/browser/misc_metrics/extension_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/auth_notification_types.h"
 #include "chrome/browser/browser_process.h"
@@ -126,6 +128,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
 #if !BUILDFLAG(IS_ANDROID)
   misc_metrics::ExtensionMetricsServiceFactory::GetServiceForContext(profile);
+#endif
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
 #endif
 }
 
