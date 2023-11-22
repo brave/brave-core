@@ -54,10 +54,10 @@ using ResultCallback = base::OnceCallback<void(mojom::Result)>;
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
-// Legacy callbacks:
-
 using ContributionInfoListCallback =
-    std::function<void(std::vector<mojom::ContributionInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionInfoPtr>)>;
+
+// Legacy callbacks:
 
 using GetActivityInfoListCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;

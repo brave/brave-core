@@ -167,10 +167,8 @@ void Contribution::OnProcessContributionQueue(
 }
 
 void Contribution::CheckNotCompletedContributions() {
-  auto get_callback =
-      std::bind(&Contribution::NotCompletedContributions, this, _1);
-
-  engine_->database()->GetNotCompletedContributions(get_callback);
+  engine_->database()->GetNotCompletedContributions(base::BindOnce(
+      &Contribution::NotCompletedContributions, base::Unretained(this)));
 }
 
 void Contribution::NotCompletedContributions(

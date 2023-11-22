@@ -134,7 +134,7 @@ void Database::GetContributionInfo(const std::string& contribution_id,
 }
 
 void Database::GetAllContributions(ContributionInfoListCallback callback) {
-  contribution_info_.GetAllRecords(callback);
+  contribution_info_.GetAllRecords(std::move(callback));
 }
 
 void Database::GetOneTimeTips(const mojom::ActivityMonth month,
@@ -151,7 +151,7 @@ void Database::GetContributionReport(const mojom::ActivityMonth month,
 
 void Database::GetNotCompletedContributions(
     ContributionInfoListCallback callback) {
-  contribution_info_.GetNotCompletedRecords(callback);
+  contribution_info_.GetNotCompletedRecords(std::move(callback));
 }
 
 void Database::UpdateContributionInfoStep(const std::string& contribution_id,
@@ -408,7 +408,7 @@ void Database::GetNextMonthlyContributionTime(
 }
 
 void Database::GetRecurringTips(GetRecurringTipsCallback callback) {
-  recurring_tip_.GetAllRecords(callback);
+  recurring_tip_.GetAllRecords(std::move(callback));
 }
 
 void Database::RemoveRecurringTip(const std::string& publisher_key,

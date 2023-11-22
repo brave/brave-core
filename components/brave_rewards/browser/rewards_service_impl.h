@@ -282,7 +282,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
 
-  void GetAllContributions(GetAllContributionsCallback callback) override;
+  void GetAllContributions(ContributionInfoListCallback callback) override;
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 

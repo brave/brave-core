@@ -81,8 +81,8 @@ using GetMonthlyReportCallback =
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
 
-using GetAllContributionsCallback = base::OnceCallback<void(
-    std::vector<mojom::ContributionInfoPtr> contributions)>;
+using ContributionInfoListCallback =
+    base::OnceCallback<void(std::vector<mojom::ContributionInfoPtr>)>;
 
 using GetAllPromotionsCallback =
     base::OnceCallback<void(std::vector<mojom::PromotionPtr> list)>;
@@ -307,8 +307,7 @@ class RewardsService : public KeyedService {
   virtual void GetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback) = 0;
 
-  virtual void GetAllContributions(
-      GetAllContributionsCallback callback) = 0;
+  virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
 
   virtual void GetAllPromotions(
       GetAllPromotionsCallback callback) = 0;

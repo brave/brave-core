@@ -35,7 +35,7 @@ using ContributionQueuePublishersListCallback =
     std::function<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(std::vector<mojom::ContributionPublisherPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionPublisherPtr>)>;
 
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;

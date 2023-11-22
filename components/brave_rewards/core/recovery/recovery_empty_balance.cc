@@ -32,8 +32,8 @@ EmptyBalance::EmptyBalance(RewardsEngineImpl& engine)
 EmptyBalance::~EmptyBalance() = default;
 
 void EmptyBalance::Check() {
-  auto get_callback = std::bind(&EmptyBalance::OnAllContributions, this, _1);
-  engine_->database()->GetAllContributions(get_callback);
+  engine_->database()->GetAllContributions(base::BindOnce(
+      &EmptyBalance::OnAllContributions, base::Unretained(this)));
 }
 
 void EmptyBalance::OnAllContributions(

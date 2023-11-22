@@ -664,8 +664,8 @@ void RewardsEngineImpl::GetContributionReport(
 }
 
 void RewardsEngineImpl::GetAllContributions(
-    GetAllContributionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    ContributionInfoListCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllContributions(std::move(callback));
   });
 }
