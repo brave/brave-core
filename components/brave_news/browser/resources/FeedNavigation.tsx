@@ -162,8 +162,8 @@ export default function Sidebar() {
       <summary>
         {Marker}
         Publishers
-        <CustomButton faint>
-          <Icon name='plus-add' onClick={() => setCustomizePage('news')} />
+        <CustomButton faint onClick={() => setCustomizePage('news')}>
+          <Icon name='plus-add' />
           Add
         </CustomButton>
       </summary>
