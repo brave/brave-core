@@ -20,8 +20,12 @@ public class TimerUtils {
 
     public static void scheduleVpnAction(Context context, int minutes) {
         Intent vpnActionIntent = new Intent(context, TimerVpnActionReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, sVpnActionRequestCode,
-                vpnActionIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        context,
+                        sVpnActionRequestCode,
+                        vpnActionIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.MINUTE, minutes);
@@ -34,8 +38,12 @@ public class TimerUtils {
 
     public static void cancelScheduledVpnAction(Context context) {
         Intent vpnActionIntent = new Intent(context, TimerVpnActionReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, sVpnActionRequestCode,
-                vpnActionIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        context,
+                        sVpnActionRequestCode,
+                        vpnActionIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(true));
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;

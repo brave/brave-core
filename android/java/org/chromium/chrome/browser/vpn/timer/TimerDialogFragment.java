@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TimerDialogFragment
-        extends BottomSheetDialogFragment implements TimerItemAdapter.TimerItemClickListener {
+public class TimerDialogFragment extends BottomSheetDialogFragment
+        implements TimerItemAdapter.TimerItemClickListener {
     public static final String TAG = TimerDialogFragment.class.getName();
 
     @Override
@@ -36,7 +36,9 @@ public class TimerDialogFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_timer_dialog_list_dialog, container, false);
     }
@@ -45,15 +47,25 @@ public class TimerDialogFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.timer_action_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<TimerItemModel> timerItemModels = new ArrayList<>(Arrays.asList(
-                new TimerItemModel(requireContext().getString(R.string.pause_for_15_minutes),
-                        R.drawable.ic_pause_filled, TimerItemModel.TimerDuration.MINUTES_15),
-                new TimerItemModel(requireContext().getString(R.string.pause_for_1_hour),
-                        R.drawable.ic_pause_filled, TimerItemModel.TimerDuration.MINUTES_60),
-                new TimerItemModel(requireContext().getString(R.string.disable),
-                        R.drawable.ic_disabled, TimerItemModel.TimerDuration.NONE),
-                new TimerItemModel(requireContext().getString(android.R.string.cancel),
-                        R.drawable.ic_cancel_filled, TimerItemModel.TimerDuration.CANCEL)));
+        List<TimerItemModel> timerItemModels =
+                new ArrayList<>(
+                        Arrays.asList(
+                                new TimerItemModel(
+                                        requireContext().getString(R.string.pause_for_15_minutes),
+                                        R.drawable.ic_pause_filled,
+                                        TimerItemModel.TimerDuration.MINUTES_15),
+                                new TimerItemModel(
+                                        requireContext().getString(R.string.pause_for_1_hour),
+                                        R.drawable.ic_pause_filled,
+                                        TimerItemModel.TimerDuration.MINUTES_60),
+                                new TimerItemModel(
+                                        requireContext().getString(R.string.disable),
+                                        R.drawable.ic_disabled,
+                                        TimerItemModel.TimerDuration.NONE),
+                                new TimerItemModel(
+                                        requireContext().getString(android.R.string.cancel),
+                                        R.drawable.ic_cancel_filled,
+                                        TimerItemModel.TimerDuration.CANCEL)));
         recyclerView.setAdapter(new TimerItemAdapter(timerItemModels, TimerDialogFragment.this));
     }
 

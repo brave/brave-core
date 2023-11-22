@@ -98,39 +98,43 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
         mVpnSwitch.setChecked(
                 BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
-        mVpnSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (mVpnSwitch != null) {
-                    mVpnSwitch.setChecked(
-                            BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
-                }
-                if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity())) {
-                    TimerDialogFragment timerDialogFragment = new TimerDialogFragment();
-                    timerDialogFragment.show(
-                            getActivity().getSupportFragmentManager(), TimerDialogFragment.TAG);
-                } else {
-                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                        BraveVpnPrefUtils.setSubscriptionPurchase(true);
-                        if (WireguardConfigUtils.isConfigExist(getActivity())) {
-                            BraveVpnProfileUtils.getInstance().startVpn(getActivity());
-                        } else {
-                            BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
+        mVpnSwitch.setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mVpnSwitch != null) {
+                            mVpnSwitch.setChecked(
+                                    BraveVpnProfileUtils.getInstance()
+                                            .isBraveVPNConnected(getActivity()));
                         }
-                    } else {
-                        BraveVpnUtils.showProgressDialog(
-                                getActivity(), getResources().getString(R.string.vpn_connect_text));
-                        if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            verifyPurchase(true);
+                        if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity())) {
+                            TimerDialogFragment timerDialogFragment = new TimerDialogFragment();
+                            timerDialogFragment.show(
+                                    getActivity().getSupportFragmentManager(),
+                                    TimerDialogFragment.TAG);
                         } else {
-                            BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
-                            BraveVpnUtils.dismissProgressDialog();
+                            if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                                BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                                if (WireguardConfigUtils.isConfigExist(getActivity())) {
+                                    BraveVpnProfileUtils.getInstance().startVpn(getActivity());
+                                } else {
+                                    BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
+                                }
+                            } else {
+                                BraveVpnUtils.showProgressDialog(
+                                        getActivity(),
+                                        getResources().getString(R.string.vpn_connect_text));
+                                if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
+                                    verifyPurchase(true);
+                                } else {
+                                    BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
+                                    BraveVpnUtils.dismissProgressDialog();
+                                }
+                            }
                         }
+                        return false;
                     }
-                }
-                return false;
-            }
-        });
+                });
 
         mSubscriptionStatus = (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_STATUS);
         mSubscriptionExpires = (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_EXPIRES);

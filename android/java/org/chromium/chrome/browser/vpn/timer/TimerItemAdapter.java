@@ -34,8 +34,9 @@ public class TimerItemAdapter extends RecyclerView.Adapter<TimerItemViewHolder> 
     @Override
     public TimerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View timerItem = layoutInflater.inflate(
-                R.layout.fragment_timer_dialog_list_dialog_item, parent, false);
+        View timerItem =
+                layoutInflater.inflate(
+                        R.layout.fragment_timer_dialog_list_dialog_item, parent, false);
         return new TimerItemViewHolder(timerItem);
     }
 
