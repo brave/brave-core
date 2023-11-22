@@ -141,7 +141,9 @@ function buildChromium(buildOptions = {}) {
     util.runGClient(['runhooks'])
   })
 
-  chromiumConfig?.extraHooks()
+  if (chromiumConfig.extraHooks != undefined) {
+    chromiumConfig.extraHooks()
+  }
 
   const options = config.defaultOptions
   const buildArgsStr = util.buildArgsToString(getChromiumGnArgs())
