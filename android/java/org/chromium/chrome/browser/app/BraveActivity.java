@@ -178,6 +178,7 @@ import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
+import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -383,10 +384,8 @@ public abstract class BraveActivity extends ChromeActivity
                 Toast.makeText(BraveActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
             } else {
                 if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(BraveActivity.this)) {
-                    BraveVpnUtils.showProgressDialog(BraveActivity.this,
-                            getResources().getString(R.string.vpn_disconnect_text));
-                    BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
-                    BraveVpnUtils.dismissProgressDialog();
+                    TimerDialogFragment timerDialogFragment = new TimerDialogFragment();
+                    timerDialogFragment.show(getSupportFragmentManager(), TimerDialogFragment.TAG);
                 } else {
                     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                         BraveVpnPrefUtils.setSubscriptionPurchase(true);

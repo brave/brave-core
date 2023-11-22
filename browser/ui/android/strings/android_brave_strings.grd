@@ -2555,9 +2555,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_CONNECT_TEXT" desc="Brave Vpn loading text">
       Connecting to your server. Should only take a moment...
     </message>
-    <message name="IDS_VPN_DISCONNECT_TEXT" desc="Brave Vpn loading text">
-      Disconnecting from your server. Should only take a moment...
-    </message>
     <message name="IDS_SUBSCRIPTION_CONSUMED" desc="Brave Vpn in app purchase message">
       Subscription successfully consumed
     </message>
@@ -3226,6 +3223,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_TRIAL" desc="Brave VPN trial text">
       Trial
+    </message>
+    <message name="IDS_DISABLE_BRAVE_VPN" desc="Brave VPN timer bottom sheet title">
+      Disable Brave VPN
+    </message>
+    <message name="IDS_PAUSE_FOR_15_MINUTES" desc="Brave VPN timer action text">
+      Pause for 15 minutes
+    </message>
+    <message name="IDS_PAUSE_FOR_1_HOUR" desc="Brave VPN timer action text">
+      Pause for 1 hour
+    </message>
+    <message name="IDS_DISABLE" desc="Brave VPN timer action text">
+      Disable
     </message>
     <message name="IDS_BRAVE_WALLET_SHOW_WEB3_NOTIFICATIONS" desc="Brave wallet show web3 notifications preference title text">
       Display Web3 notifications

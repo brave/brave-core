@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="20"
+    android:viewportHeight="20">
+    <path
+        android:fillColor="@color/vpn_timer_icon_color"
+        android:fillType="evenOdd"
+        android:pathData="M10,18.333C5.405,18.333 1.666,14.595 1.666,10C1.666,5.405 5.405,1.666 10,1.666C14.595,1.666 18.333,5.405 18.333,10C18.333,14.595 14.595,18.333 10,18.333ZM3.055,10C3.055,13.829 6.171,16.944 10,16.944C11.665,16.944 13.194,16.354 14.392,15.373L4.626,5.607C3.646,6.805 3.055,8.335 3.055,10ZM10,3.055C8.335,3.055 6.806,3.645 5.608,4.626L15.373,14.392C16.354,13.194 16.944,11.664 16.944,10C16.944,6.171 13.829,3.055 10,3.055Z" />
+</vector>
