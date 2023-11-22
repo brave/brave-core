@@ -625,25 +625,25 @@ public class BrowserViewController: UIViewController {
   
   fileprivate func updateToolbarStateForTraitCollection(_ newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator? = nil) {
     let showToolbar = shouldShowFooterForTraitCollection(newCollection)
-
-    topToolbar.setShowToolbar(!showToolbar)
-    toolbar?.removeFromSuperview()
-    toolbar?.tabToolbarDelegate = nil
-    toolbar = nil
-    bottomTouchArea.isEnabled = showToolbar
-
-    if showToolbar {
-      toolbar = BottomToolbarView(privateBrowsingManager: privateBrowsingManager)
-      toolbar?.setSearchButtonState(url: tabManager.selectedTab?.url)
-      footer.addSubview(toolbar!)
-      toolbar?.tabToolbarDelegate = self
-      toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
+    if (showToolbar && toolbar == nil) || (!showToolbar && toolbar != nil) {
+      topToolbar.setShowToolbar(!showToolbar)
+      toolbar?.removeFromSuperview()
+      toolbar?.tabToolbarDelegate = nil
+      toolbar = nil
+      bottomTouchArea.isEnabled = showToolbar
+      
+      if showToolbar {
+        toolbar = BottomToolbarView(privateBrowsingManager: privateBrowsingManager)
+        toolbar?.setSearchButtonState(url: tabManager.selectedTab?.url)
+        footer.addSubview(toolbar!)
+        toolbar?.tabToolbarDelegate = self
+        toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
+      }
+      updateToolbarUsingTabManager(tabManager)
+      updateUsingBottomBar(using: newCollection)
+      
+      view.setNeedsUpdateConstraints()
     }
-    updateToolbarUsingTabManager(tabManager)
-    updateUsingBottomBar(using: newCollection)
-    
-    view.setNeedsUpdateConstraints()
-
     if let tab = tabManager.selectedTab,
       let webView = tab.webView {
       updateURLBar()
