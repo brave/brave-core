@@ -25,10 +25,13 @@ public class Blockies {
     private static final int SIZE = 8;
     private static final int SCALE = 16;
     private static final long[] RAND_SEED = new long[4];
-    private static final String[] COLORS = {"#423EEE", "#E2E2FC", "#FE5907", "#FEDED6", "#5F5CF1", "#171553", "#1C1E26", "#E1E2E8"};
+    private static final String[] COLORS = {
+        "#423EEE", "#E2E2FC", "#FE5907", "#FEDED6", "#5F5CF1", "#171553", "#1C1E26", "#E1E2E8"
+    };
 
     @NonNull
-    public static Bitmap createIcon(@NonNull final String address, final boolean lowerCase, final boolean circular) {
+    public static Bitmap createIcon(
+            @NonNull final String address, final boolean lowerCase, final boolean circular) {
         if (lowerCase) {
             return createIcon(address.toLowerCase(Locale.ENGLISH), circular);
         }
@@ -64,8 +67,12 @@ public class Blockies {
         return createCanvas(imageData, color, bgColor, spotColor, circular);
     }
 
-    private static Bitmap createCanvas(@NonNull final double[] imgData, @NonNull final String color, @NonNull final String bgColor,
-                                       @NonNull final String spotColor, final boolean circular) {
+    private static Bitmap createCanvas(
+            @NonNull final double[] imgData,
+            @NonNull final String color,
+            @NonNull final String bgColor,
+            @NonNull final String spotColor,
+            final boolean circular) {
         float width = (int) Math.sqrt(imgData.length);
 
         float w = width * SCALE;
@@ -96,18 +103,26 @@ public class Blockies {
 
                 final int shapeType = (int) Math.floor(rand() * 3);
                 switch (shapeType) {
-                    // Rectangle shape type.
+                        // Rectangle shape type.
                     case 0:
                         final float rectSizeMultiplier = (float) (rand() * 2);
-                        canvas.drawRect(col * SCALE, row * SCALE, (col * SCALE) + SCALE * rectSizeMultiplier,
-                                (row * SCALE) + SCALE * rectSizeMultiplier, paint);
+                        canvas.drawRect(
+                                col * SCALE,
+                                row * SCALE,
+                                (col * SCALE) + SCALE * rectSizeMultiplier,
+                                (row * SCALE) + SCALE * rectSizeMultiplier,
+                                paint);
                         break;
-                    // Circle shape type.
+                        // Circle shape type.
                     case 1:
                         final float circleSizeMultiplier = (float) rand();
-                        canvas.drawCircle(col * SCALE + SCALE / 2f, row * SCALE + SCALE / 2f, (SCALE / 2f) * circleSizeMultiplier, paint);
+                        canvas.drawCircle(
+                                col * SCALE + SCALE / 2f,
+                                row * SCALE + SCALE / 2f,
+                                (SCALE / 2f) * circleSizeMultiplier,
+                                paint);
                         break;
-                    // Do not add any shape.
+                        // Do not add any shape.
                     default:
                         break;
                 }
