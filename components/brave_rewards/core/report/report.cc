@@ -123,7 +123,7 @@ void Report::OnGetAllBalanceReports(
     GetAllMonthlyReportIdsCallback callback,
     std::vector<mojom::BalanceReportInfoPtr> reports) {
   if (reports.empty()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -135,7 +135,7 @@ void Report::OnGetAllBalanceReports(
 
   std::sort(ids.begin(), ids.end(), CompareReportIds);
 
-  callback(ids);
+  std::move(callback).Run(ids);
 }
 
 }  // namespace report

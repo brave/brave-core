@@ -63,10 +63,10 @@ using GetActivityInfoListCallback =
 using GetBalanceReportListCallback =
     base::OnceCallback<void(std::vector<mojom::BalanceReportInfoPtr>)>;
 
-// Legacy callbacks:
-
 using GetAllMonthlyReportIdsCallback =
-    std::function<void(const std::vector<std::string>&)>;
+    base::OnceCallback<void(const std::vector<std::string>&)>;
+
+// Legacy callbacks:
 
 using GetAllPromotionsCallback =
     std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
