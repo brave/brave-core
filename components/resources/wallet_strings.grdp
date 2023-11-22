@@ -1004,4 +1004,5 @@
   <message name="IDS_BRAVE_WALLET_SHOW_TESTNETS" desc="Checkbox label for hide/show blockchain test networks">Show testnets</message>
   <message name="IDS_BRAVE_WALLET_FEATURED" desc="Grouping label/heading for featured options">Featured</message>
   <message name="IDS_BRAVE_WALLET_POPULAR" desc="Grouping label/heading for popular options">Popular</message>
+  <message name="IDS_BRAVE_WALLET_TEST_NETWORK_ACCOUNT" desc="Partial account name suggestion for test network account">Test Network Account</message>
 </grit-part>

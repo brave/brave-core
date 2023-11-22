@@ -1221,5 +1221,6 @@ provideStrings({
   braveWalletLogIn: 'Log in',
   braveWalletViewOn: 'View on $1',
   braveWalletRewardsSettings: 'Rewards settings',
-  braveWalletPlatforms: 'Platforms'
+  braveWalletPlatforms: 'Platforms',
+  braveWalletTestNetworkAccount: 'Test Network Account'
 })
