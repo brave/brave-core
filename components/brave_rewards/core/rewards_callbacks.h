@@ -73,7 +73,7 @@ using GetContributionReportCallback =
     base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
-    std::function<void(std::vector<mojom::EventLogPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::EventLogPtr>)>;
 
 using GetExcludedListCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;

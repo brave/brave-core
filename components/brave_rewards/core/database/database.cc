@@ -257,7 +257,7 @@ void Database::SaveEventLogs(const std::map<std::string, std::string>& records,
 }
 
 void Database::GetLastEventLogs(GetEventLogsCallback callback) {
-  event_log_.GetLastRecords(callback);
+  event_log_.GetLastRecords(std::move(callback));
 }
 
 /**

@@ -704,7 +704,7 @@ void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
 }
 
 void RewardsEngineImpl::GetEventLogs(GetEventLogsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetLastEventLogs(std::move(callback));
   });
 }
