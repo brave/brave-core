@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -18,6 +19,7 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_manager.h"
+#include "content/public/browser/browser_context.h"
 
 namespace {
 std::unique_ptr<infobars::InfoBar> CreateBraveGlobalInfoBar(
@@ -25,13 +27,17 @@ std::unique_ptr<infobars::InfoBar> CreateBraveGlobalInfoBar(
   return std::make_unique<BraveConfirmInfoBar>(std::move(delegate));
 }
 
-content::WebContents* GetCurrentWebContents() {
+TabStripModel* GetActiveBrowserTabStrip() {
   Browser* browser = chrome::FindLastActive();
   if (!browser) {
     return nullptr;
   }
 
-  TabStripModel* model = browser->tab_strip_model();
+  return browser->tab_strip_model();
+}
+
+content::WebContents* GetCurrentWebContents() {
+  TabStripModel* model = GetActiveBrowserTabStrip();
   if (!model) {
     return nullptr;
   }
@@ -113,6 +119,11 @@ void BraveGlobalInfoBarManager::Show() {
 void BraveGlobalInfoBarManager::TabChangedAt(content::WebContents* contents,
                                              int index,
                                              TabChangeType change_type) {
+  const auto* tab_strip_model = GetActiveBrowserTabStrip();
+  if (tab_strip_model && tab_strip_model->profile()->IsIncognitoProfile()) {
+    return;
+  }
+
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(contents);
   MaybeAddInfoBar(infobar_manager);
@@ -122,6 +133,10 @@ void BraveGlobalInfoBarManager::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
+  if (tab_strip_model && tab_strip_model->profile()->IsIncognitoProfile()) {
+    return;
+  }
+
   if (!selection.new_contents || is_closed_) {
     return;
   }
@@ -180,6 +195,8 @@ void BraveGlobalInfoBarManager::OnInfoBarClosed() {
     return;
   }
   OnManagerShuttingDown(current_infobar_manager);
+  is_closed_ = true;
+  browser_tab_strip_tracker_.reset();
 }
 
 void BraveGlobalInfoBarManager::OnManagerShuttingDown(
@@ -187,6 +204,4 @@ void BraveGlobalInfoBarManager::OnManagerShuttingDown(
   RemoveInfobarsByIdentifier(manager, delegate_factory_->GetInfoBarIdentifier(),
                              this);
   manager->RemoveObserver(this);
-  is_closed_ = true;
-  browser_tab_strip_tracker_.reset();
 }
