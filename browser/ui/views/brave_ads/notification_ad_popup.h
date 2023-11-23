@@ -64,8 +64,8 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   // Disables fade in animation for snapshot tests.
   static void SetDisableFadeInAnimationForTesting(bool disable);
 
-  void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
-                                                 const gfx::Rect& bounds);
+  gfx::Rect AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
+                                                      const gfx::Rect& bounds);
 
   // display::DisplayObserver:
   void OnDisplayAdded(const display::Display& new_display) override;
@@ -113,14 +113,13 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                    gfx::NativeView browser_native_view);
 
   bool WasNotificationAdPopupShownBefore() const;
-  void SetInitialWidgetOrigin(gfx::NativeView browser_native_view);
-  gfx::Point GetWidgetOriginForSize(const gfx::Size& size,
-                                    gfx::NativeView browser_native_view);
+  gfx::Rect GetInitialWidgetBounds(gfx::NativeView browser_native_view);
+  gfx::Rect GetWidgetBoundsForSize(const gfx::Size& size,
+                                   gfx::NativeView browser_native_view);
   void SaveWidgetOrigin(const gfx::Point& origin,
                         gfx::NativeView native_view) const;
 
   gfx::Size CalculateViewSize() const;
-  gfx::Rect CalculateBounds();
 
   void RecomputeAlignment();
 
