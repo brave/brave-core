@@ -590,7 +590,21 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
       let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
+        .map { networkAssets in
+          NetworkAssets(
+            network: networkAssets.network,
+            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
+            sortOrder: networkAssets.sortOrder
+          )
+        }
       let userHiddenAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
+        .map { networkAssets in
+          NetworkAssets(
+            network: networkAssets.network,
+            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
+            sortOrder: networkAssets.sortOrder
+          )
+        }
       let unionedSpamNFTs = computeSpamNFTs(
         selectedNetworks: selectedNetworks,
         selectedAccounts: selectedAccounts,
