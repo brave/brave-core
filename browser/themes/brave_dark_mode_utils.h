@@ -57,6 +57,13 @@ void SetUseSystemDarkModeEnabledForTest(bool enabled);
 // By overriding, base ui components also use same brave theme type.
 void SetSystemDarkMode(BraveDarkModeType type);
 
+#if BUILDFLAG(IS_LINUX)
+// Cache system preference from DarkModeManagerLinux.
+// This cached value is used whenever user chooses "Same as Linux" option.
+void CacheSystemDarkModePrefs(bool prefer_dark_theme);
+bool HasCachedSystemDarkModeType();
+#endif
+
 }  // namespace dark_mode
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_DARK_MODE_UTILS_H_
