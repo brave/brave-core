@@ -255,9 +255,10 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
     return visible_opacity;
   }
 
-  // Show separator if there is a group header between this tab and the next.
+  // Don't show separator if there is a group header between this tab and the
+  // next.
   if (next_tab->group().has_value() && tab()->group() != next_tab->group()) {
-    return visible_opacity;
+    return 0;
   }
 
   if (has_visible_background(next_tab)) {
