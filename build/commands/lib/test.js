@@ -18,6 +18,13 @@ const getTestsToRun = (config, suite) => {
       testsToRun.push('bin/run_brave_public_test_apk')
     }
   }
+
+  if (suite === 'chrome_junit_tests' && config.targetOS === 'android') {
+    testsToRun = ['bin/run_chrome_junit_tests']
+    // Full command line to run it is
+    // npm run test --  chrome_junit_tests  Release  --target_os=android --target_arch=x86 --filter=org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegateUnitTest.brave*
+  }
+
   return testsToRun
 }
 
@@ -155,6 +162,14 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             `--avd-config tools/android/avd/proto/generic_android${options.android_test_emulator_version}.textpb`)
       }
       let runOptions = config.defaultOptions
+
+      if (suite === 'chrome_junit_tests' && config.targetOS === 'android') {
+          braveArgs = []
+          if (options.filter) {
+            braveArgs.push('--gtest_filter=' + options.filter)
+          }
+      }
+
       if (options.output)
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
