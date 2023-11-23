@@ -22,6 +22,10 @@ namespace brave_shields {
 class AdBlockService;
 }
 
+namespace brave_vpn {
+class BraveVPNOSConnectionAPI;
+}
+
 class TestingBraveBrowserProcess : public BraveBrowserProcess {
  public:
   // Initializes |g_brave_browser_process| with a new
@@ -85,6 +89,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave::BraveFarblingService* brave_farbling_service() override;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+  void SetBraveVPNOSConnectionAPIForTesting(
+      std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI> api);
 #endif
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
 
@@ -101,6 +107,11 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   ~TestingBraveBrowserProcess() override;
 
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
+      brave_vpn_os_connection_api_;
+#endif
 };
 
 class TestingBraveBrowserProcessInitializer {
