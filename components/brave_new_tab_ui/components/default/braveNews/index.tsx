@@ -127,7 +127,7 @@ export default function BraveNewsSection(props: Props) {
           <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
         </>
       }
-      {shouldDisplayContent && <React.Suspense fallback={(<CardLoading />)}>
+      {shouldDisplayContent && <React.Suspense fallback={defaultState.featureFlagBraveNewsFeedV2Enabled ? null : <CardLoading />}>
         {defaultState.featureFlagBraveNewsPromptEnabled
           && (defaultState.featureFlagBraveNewsFeedV2Enabled
             ? <FeedV2 />
