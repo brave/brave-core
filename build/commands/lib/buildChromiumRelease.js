@@ -117,7 +117,13 @@ function getChromiumGnArgs() {
   return args
 }
 
-function buildChromium(buildOptions = {}) {
+function buildChromiumRelease(buildOptions = {}) {
+  if (!config.isCI && !buildOptions.force) {
+    console.error(
+      'Warning: the script resets all changes src/ folder.\n' +
+      'src/brave stays untouched. Pass --force to continue.')
+    return 1
+  }
   config.buildConfig = 'Release'
   config.isChromium = true
   config.update(buildOptions)
@@ -166,4 +172,4 @@ function buildChromium(buildOptions = {}) {
   })
 }
 
-module.exports = buildChromium
+module.exports = buildChromiumRelease

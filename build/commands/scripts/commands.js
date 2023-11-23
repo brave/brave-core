@@ -9,7 +9,7 @@ const fs = require('fs-extra')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const build = require('../lib/build')
-const buildChromium = require('../lib/buildChromium')
+const buildChromiumRelease = require('../lib/buildChromiumRelease')
 const { buildFuzzer, runFuzzer } = require('../lib/fuzzer')
 const versions = require('../lib/versions')
 const start = require('../lib/start')
@@ -168,7 +168,8 @@ program
   .action(build)
 
 program
-  .command('build_chromium')
+  .command('build_chromium_release')
+  .option('--force', 'Ignore a warning about non-CI build')
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
@@ -177,7 +178,7 @@ program
   .option('--ninja <opt>',
     'Additional Ninja command-line options, in the form <key>:<value>',
     collect, [])
-  .action(buildChromium)
+  .action(buildChromiumRelease)
 
 program
   .command('create_dist')
