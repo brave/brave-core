@@ -1044,6 +1044,7 @@ test("brave_browser_tests") {
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
+      "//components/language/core/browser:browser",
     ]
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/core/common" ]
