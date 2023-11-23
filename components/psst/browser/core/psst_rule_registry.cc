@@ -79,9 +79,10 @@ void PsstRuleRegistry::CheckIfMatch(
                          rule.GetTestScript(), rule.GetPolicyScript(),
                          rule.GetVersion()),
           std::move(cb));
+      // Only ever find one matching rule.
+      return;
     }
   }
-  return;
 }
 
 void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
