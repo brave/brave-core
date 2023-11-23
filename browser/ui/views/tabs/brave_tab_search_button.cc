@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"
@@ -56,9 +57,10 @@ void BraveTabSearchButton::UpdateColors() {
 
   // Use a custom icon for tab search.
   constexpr int kIconSize = 16;
-  SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromVectorIcon(
-                    kLeoSearchIcon, GetForegroundColor(), kIconSize));
+  SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(vector_icons::kCaretDownIcon,
+                                     GetForegroundColor(), kIconSize));
   SetImageModel(views::Button::STATE_HOVERED, ui::ImageModel());
   SetImageModel(views::Button::STATE_PRESSED, ui::ImageModel());
 
