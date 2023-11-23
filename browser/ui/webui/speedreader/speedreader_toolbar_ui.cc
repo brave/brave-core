@@ -17,6 +17,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/prefs/prefs_tab_helper.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/web_contents.h"
@@ -56,6 +57,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
   source->AddBoolean("ttsEnabled",
                      speedreader::features::IsSpeedreaderEnabled() &&
                          speedreader::kSpeedreaderTTS.Get());
+  PrefsTabHelper::CreateForWebContents(web_ui->GetWebContents());
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;
