@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_BROWSER_IPFS_IPFS_SERVICE_IMPL_DELEGATE_H_
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ipfs/ipfs_service_delegate.h"
 
