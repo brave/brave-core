@@ -150,9 +150,10 @@ bool IpfsImportWorkerBase::ParseResponseBody(
     return false;
   }
   std::vector<std::string> parts = base::SplitString(
-      *response_body, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  if (!parts.size())
+      *response_body, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (!parts.size()) {
     return IPFSJSONParser::GetImportResponseFromJSON(*response_body, data);
+  }
 
   for (const auto& item : parts) {
     if (item.front() != '{' || item.back() != '}')
