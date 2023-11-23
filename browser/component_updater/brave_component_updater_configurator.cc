@@ -13,11 +13,14 @@
 #include <vector>
 
 #include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/version.h"
 #include "brave/components/constants/brave_switches.h"
 #include "build/build_config.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_command_line_config_policy.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -203,7 +206,11 @@ update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
 }
 
 absl::optional<base::FilePath> BraveConfigurator::GetCrxCachePath() const {
-  return absl::nullopt;
+  base::FilePath path;
+  bool result = base::PathService::Get(chrome::DIR_USER_DATA, &path);
+  return result ? absl::optional<base::FilePath>(
+                      path.AppendASCII("component_crx_cache"))
+                : absl::nullopt;
 }
 
 }  // namespace component_updater
