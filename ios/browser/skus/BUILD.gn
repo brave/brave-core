@@ -1,14 +1,14 @@
-# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("skus") {
   sources = [
     "skus_sdk_factory_wrappers.h",
     "skus_sdk_factory_wrappers.mm",
-    "skus_service_factory.cc",
     "skus_service_factory.h",
+    "skus_service_factory.mm",
   ]
   deps = [
     "//brave/components/skus/browser",
@@ -19,6 +19,7 @@ source_set("skus") {
     "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
     "//components/pref_registry",
+    "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
