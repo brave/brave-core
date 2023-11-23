@@ -38,7 +38,7 @@
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
-    "build-storybook": "storybook build -c .storybook -o .storybook-out",
+    "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "cross-env NODE_OPTIONS=--no-experimental-fetch jest -t",
     "test-unit:wallet": "cross-env NODE_OPTIONS=--no-experimental-fetch jest --coverage=false components/brave_wallet_ui",
