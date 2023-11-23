@@ -18,7 +18,7 @@ namespace brave_tabs {
 // The height of tab views in horizontal tabs mode. Note that the height of the
 // view may be greater than the visual height of the tab shape. See also
 // `kHorizontalTabVerticalSpacing`.
-constexpr int kHorizontalTabViewHeight = 44;
+constexpr int kHorizontalTabViewHeight = 40;
 
 // The amount of space before the first tab.
 constexpr int kHorizontalTabStripLeftMargin = 8;
