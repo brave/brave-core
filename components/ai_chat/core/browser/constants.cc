@@ -9,7 +9,7 @@
 namespace ai_chat {
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
-  constexpr webui::LocalizedString kLocalizedStrings[] = {
+  static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"siteTitle", IDS_CHAT_UI_TITLE},
       {"summarizeFailedLabel", IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL},
       {"acceptButtonLabel", IDS_CHAT_UI_ACCEPT_BUTTON_LABEL},
