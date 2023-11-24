@@ -23,8 +23,9 @@ Override `SetUp` and call `SetUp` with `is_integration_test` set to `true` to te
 
 Use the `GetAds` convenience function to access `AdsImpl`. i.e.
 
-    GetAds().TriggerNotificationAdEvent(/*placement_id*
-    "7ee858e8-6306-4317-88c3-9e7d58afad26", ConfirmationType::kClicked);
+    GetAds().TriggerNotificationAdEvent(
+        /*placement_id=*/"7ee858e8-6306-4317-88c3-9e7d58afad26",
+        ConfirmationType::kClicked);
 
 ## Mocking Command-Line Switches
 
@@ -76,7 +77,7 @@ Mocked responses for URL requests can be defined inline or read from a text file
           net::HTTP_OK, "/response.json"
         }
       }
-    }
+    };
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -88,7 +89,7 @@ Inline or text file responses can contain `<time:period>` tags for mocking times
           net::HTTP_OK, "An example response with a timestamp <time:+7 days> in the not too distant future"
         }
       }
-    }
+    };
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -96,23 +97,25 @@ Inline or text file responses can contain `<time:period>` tags for mocking times
 
 You can add one or more responses per request, which will be returned in the given order, then will wrap back to the first response after mocking the last, i.e.
 
-    const URLResponseMap url_responses = {
-      "/foo/bar", {
-        {
-           net::HTTP_INTERNAL_SERVER_ERROR, "Program say to kill, to disassemble, to make dead"
-        },
-        {
-           net::HTTP_CREATED, "To me there's no creativity without boundaries"
+    const URLResponseMap url_responses2 = {
+      {
+        "/foo/bar", {
+          {
+            net::HTTP_INTERNAL_SERVER_ERROR, "Program say to kill, to disassemble, to make dead"
+          },
+          {
+            net::HTTP_CREATED, "To me there's no creativity without boundaries"
+          }
+        }
+      },
+      {
+        "/baz", {
+          {
+            net::HTTP_IM_A_TEAPOT, "Keep Calm & Drink Tea! L. Masinter, 1 April 1998"
+          }
         }
       }
-    },
-    {
-      "/baz", {
-        {
-           net::HTTP_IM_A_TEAPOT, "Keep Calm & Drink Tea! L. Masinter, 1 April 1998"
-        }
-      }
-    }
+    };
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
