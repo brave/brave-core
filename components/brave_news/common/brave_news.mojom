@@ -39,6 +39,7 @@ struct FeedItemMetadata {
   Image image;
   string publisher_id;
   string publisher_name;
+  array<string> channels;
   double score;
   double pop_score;
   string relative_time_description;

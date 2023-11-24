@@ -26,15 +26,15 @@ const base::FeatureParam<int> kBraveNewsMaxBlockCards{&kBraveNewsFeedUpdate,
 const base::FeatureParam<double> kBraveNewsPopScoreHalfLife{
     &kBraveNewsFeedUpdate, "pop-score-half-life", 18};
 const base::FeatureParam<double> kBraveNewsPopScoreFallback{
-    &kBraveNewsFeedUpdate, "pop-score-fallback", 0.1};
+    &kBraveNewsFeedUpdate, "pop-score-fallback", 0.5};
 
 const base::FeatureParam<double> kBraveNewsInlineDiscoveryRatio{
     &kBraveNewsFeedUpdate, "inline-discovery-ratio", 0.25};
 
 const base::FeatureParam<double> kBraveNewsSourceSubscribedBoost{
-    &kBraveNewsFeedUpdate, "source-subscribed-boost", 0.5};
+    &kBraveNewsFeedUpdate, "source-subscribed-boost", 1.0};
 const base::FeatureParam<double> kBraveNewsChannelSubscribedBoost{
-    &kBraveNewsFeedUpdate, "channel-subscribed-boost", 0.5};
+    &kBraveNewsFeedUpdate, "channel-subscribed-boost", 1.0};
 
 const base::FeatureParam<double> kBraveNewsSourceVisitsMin{
     &kBraveNewsFeedUpdate, "source-visits-min", 0.2};
