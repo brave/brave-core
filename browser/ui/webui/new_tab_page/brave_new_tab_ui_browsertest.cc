@@ -13,8 +13,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/child_process_termination_info.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_process_host_observer.h"
 #include "content/public/test/browser_test.h"
@@ -44,12 +42,10 @@ class ObserverLogger : public RenderProcessHostObserver {
 
 class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
-  void GoBack(WebContents* web_contents) {
-    WindowedNotificationObserver load_stop_observer(
-        content::NOTIFICATION_LOAD_STOP,
-        NotificationService::AllSources());
+  void GoBack(WebContents* web_contents, const GURL& expected_url) {
+    ui_test_utils::UrlLoadObserver url_observer(expected_url);
     web_contents->GetController().GoBack();
-    load_stop_observer.Wait();
+    url_observer.Wait();
   }
 };
 
@@ -59,7 +55,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
   RenderProcessHost* host = contents->GetPrimaryMainFrame()->GetProcess();
   ObserverLogger observer_logger(host);
 
-  GURL new_tab_url(chrome::kChromeUINewTabURL);
+  const GURL new_tab_url(chrome::kChromeUINewTabURL);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
 
@@ -67,7 +63,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
   WaitForLoadStop(contents);
 
-  GoBack(contents);
+  GoBack(contents, new_tab_url);
   WaitForLoadStop(contents);
 }
 
