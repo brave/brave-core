@@ -26,7 +26,7 @@ class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
   // Arrange
   const absl::optional<std::string> contents =
-      MaybeReadFileResourceToString(kValidSpamClassificationPipeline);
+      MaybeReadFileToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(contents);
 
   // Act & Assert

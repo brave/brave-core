@@ -26,7 +26,7 @@ class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
   const absl::optional<std::string> contents =
-      MaybeReadFileResourceToString(kOnlyRequiredFieldsNeuralModelPipeline);
+      MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
   ASSERT_TRUE(contents);
 
   // Act & Assert

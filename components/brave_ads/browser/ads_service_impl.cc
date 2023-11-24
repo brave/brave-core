@@ -1625,9 +1625,10 @@ void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
           std::move(callback)));
 }
 
-void AdsServiceImpl::LoadFileResource(const std::string& id,
-                                      const int version,
-                                      LoadFileResourceCallback callback) {
+void AdsServiceImpl::LoadComponentResource(
+    const std::string& id,
+    const int version,
+    LoadComponentResourceCallback callback) {
   absl::optional<base::FilePath> file_path =
       g_brave_browser_process->resource_component()->GetPath(id, version);
   if (!file_path) {
@@ -1647,7 +1648,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
           },
           std::move(*file_path), file_task_runner_),
       base::BindOnce(
-          [](LoadFileResourceCallback callback,
+          [](LoadComponentResourceCallback callback,
              std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
             CHECK(file);
             std::move(callback).Run(std::move(*file));

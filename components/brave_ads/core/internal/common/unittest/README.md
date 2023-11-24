@@ -34,19 +34,9 @@ See [unittest_command_line_switch_util.h](unittest_command_line_switch_util.h).
 
 See [unittest_time_util.h](unittest_time_util.h).
 
-## Mocking File Resources
-
-You can mock file resources loaded with `LoadFileResource` by placing your mocked files in the following directory:
-
-    .
-    └── brave/components/brave_ads/core/
-        └── test/
-            └── data/
-                └── resources
-
 ## Mocking Files
 
-You can mock files loaded with `LoadFile` by placing your mocked files in the following directory:
+You can mock files loaded with `Load` by placing your mocked files in the following directory:
 
     .
     └── brave/components/brave_ads/core/
@@ -54,6 +44,20 @@ You can mock files loaded with `LoadFile` by placing your mocked files in the fo
             └── data
 
 You can copy files to the simulated user profile (temp path) using `CopyFileFromTestPathToTempPath` or `CopyDirectoryFromTestPathToTempPath` in `SetUpMocks`.
+
+See [unittest_file_path_util.h](unittest_file_path_util.h) and [unittest_file_util.h](unittest_file_util.h).
+
+## Mocking Component Resources
+
+You can mock component resources loaded with `LoadComponentResource` by placing your mocked files in the following directory:
+
+    .
+    └── brave/components/brave_ads/core/
+        └── test/
+            └── data/
+                └── resources
+
+See [unittest_file_path_util.h](unittest_file_path_util.h).
 
 ## Mocking Prefs
 

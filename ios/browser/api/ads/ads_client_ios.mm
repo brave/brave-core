@@ -92,10 +92,12 @@ void AdsClientIOS::Save(const std::string& name,
   [bridge_ save:name value:value callback:std::move(callback)];
 }
 
-void AdsClientIOS::LoadFileResource(const std::string& id,
-                                    const int version,
-                                    brave_ads::LoadFileCallback callback) {
-  [bridge_ loadFileResource:id version:version callback:std::move(callback)];
+void AdsClientIOS::LoadComponentResource(const std::string& id,
+                                         const int version,
+                                         brave_ads::LoadFileCallback callback) {
+  [bridge_ loadComponentResource:id
+                         version:version
+                        callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(

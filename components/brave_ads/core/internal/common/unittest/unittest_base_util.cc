@@ -153,7 +153,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = TestDataFileResourcesPath().AppendASCII(name);
+              path = TestDataPath().AppendASCII(name);
             }
 
             std::string value;
@@ -165,9 +165,9 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
           }));
 }
 
-void MockLoadFileResource(AdsClientMock& mock,
-                          const base::ScopedTempDir& temp_dir) {
-  ON_CALL(mock, LoadFileResource)
+void MockLoadComponentResource(AdsClientMock& mock,
+                               const base::ScopedTempDir& temp_dir) {
+  ON_CALL(mock, LoadComponentResource)
       .WillByDefault(::testing::Invoke(
           [&temp_dir](const std::string& id, const int /*version*/,
                       LoadFileCallback callback) {
@@ -175,9 +175,7 @@ void MockLoadFileResource(AdsClientMock& mock,
 
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = TestDataFileResourcesPath()
-                         .AppendASCII("resources")
-                         .AppendASCII(id);
+              path = TestDataComponentResourcesPath().AppendASCII(id);
             }
 
             base::File file(path, base::File::Flags::FLAG_OPEN |

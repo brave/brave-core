@@ -12,9 +12,9 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> MaybeReadFileResourceToString(
-    const std::string& name);
-absl::optional<std::string> MaybeReadAndReplaceTagsForFileResourceToString(
+absl::optional<std::string> MaybeReadFileToString(const std::string& name);
+
+absl::optional<std::string> MaybeReadFileToStringAndReplaceTags(
     const std::string& name);
 
 absl::optional<std::string> MaybeReadDataResourceToString(

@@ -432,8 +432,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> contents =
-      MaybeReadAndReplaceTagsForFileResourceToString(
-          kCatalogWithSingleCampaignFilename);
+      MaybeReadFileToStringAndReplaceTags(kCatalogWithSingleCampaignFilename);
   ASSERT_TRUE(contents);
 
   // Act & Assert
@@ -449,7 +448,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> contents =
-      MaybeReadAndReplaceTagsForFileResourceToString(
+      MaybeReadFileToStringAndReplaceTags(
           kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(contents);
 
@@ -466,7 +465,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> contents =
-      MaybeReadAndReplaceTagsForFileResourceToString(kEmptyCatalogFilename);
+      MaybeReadFileToStringAndReplaceTags(kEmptyCatalogFilename);
   ASSERT_TRUE(contents);
 
   // Act & Assert

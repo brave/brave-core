@@ -58,9 +58,11 @@ void Save(const std::string& name,
           const std::string& value,
           SaveCallback callback);
 void Load(const std::string& name, LoadCallback callback);
-void LoadFileResource(const std::string& id,
-                      int version,
-                      LoadFileCallback callback);
+
+void LoadComponentResource(const std::string& id,
+                           int version,
+                           LoadFileCallback callback);
+
 std::string LoadDataResource(const std::string& name);
 
 void GetScheduledCaptcha(const std::string& payment_id,

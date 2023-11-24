@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_PATH_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_PATH_UTIL_H_
 
-#include "base/files/file_path.h"
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace brave_ads {
 
-base::FilePath TestDataFileResourcesPath();
+base::FilePath TestDataPath();
+
+base::FilePath TestDataComponentResourcesPath();
 
 base::FilePath DataResourcesPath();
 

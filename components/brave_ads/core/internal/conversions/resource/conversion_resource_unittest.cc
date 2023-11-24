@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -54,19 +55,18 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_,
-          LoadFileResource(kConversionResourceId, ::testing::_, ::testing::_))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
-            const base::FilePath path = TestDataFileResourcesPath()
-                                            .AppendASCII("resources")
-                                            .AppendASCII(kMissingResourceId);
+  ON_CALL(ads_client_mock_, LoadComponentResource(kConversionResourceId,
+                                                  ::testing::_, ::testing::_))
+      .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
+                                          const int /*version*/,
+                                          LoadFileCallback callback) {
+        const base::FilePath path =
+            TestDataComponentResourcesPath().AppendASCII(kMissingResourceId);
 
-            base::File file(path, base::File::Flags::FLAG_OPEN |
-                                      base::File::Flags::FLAG_READ);
-            std::move(callback).Run(std::move(file));
-          }));
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));

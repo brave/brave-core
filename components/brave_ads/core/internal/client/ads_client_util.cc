@@ -115,10 +115,10 @@ void Load(const std::string& name, LoadCallback callback) {
   GetInstance()->Load(name, std::move(callback));
 }
 
-void LoadFileResource(const std::string& id,
-                      int version,
-                      LoadFileCallback callback) {
-  GetInstance()->LoadFileResource(id, version, std::move(callback));
+void LoadComponentResource(const std::string& id,
+                           int version,
+                           LoadFileCallback callback) {
+  GetInstance()->LoadComponentResource(id, version, std::move(callback));
 }
 
 std::string LoadDataResource(const std::string& name) {

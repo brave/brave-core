@@ -45,9 +45,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
             const std::string& value,
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
-  void LoadFileResource(const std::string& id,
-                        const int version,
-                        brave_ads::LoadFileCallback callback) override;
+  void LoadComponentResource(const std::string& id,
+                             const int version,
+                             brave_ads::LoadFileCallback callback) override;
   void GetBrowsingHistory(
       const int max_count,
       const int days_ago,

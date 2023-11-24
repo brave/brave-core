@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 
-#include "base/base_paths.h"xx
+#include "base/files/file_path.h"
 #include "base/path_service.h"
 
 namespace brave_ads {
@@ -21,9 +21,13 @@ base::FilePath TestDataRootPath() {
 
 }  // namespace
 
-base::FilePath TestDataFileResourcesPath() {
+base::FilePath TestDataPath() {
   return TestDataRootPath().AppendASCII("core").AppendASCII("test").AppendASCII(
       "data");
+}
+
+base::FilePath TestDataComponentResourcesPath() {
+  return TestDataPath().AppendASCII("resources");
 }
 
 base::FilePath DataResourcesPath() {

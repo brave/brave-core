@@ -23,9 +23,9 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback;
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
