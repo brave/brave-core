@@ -175,7 +175,7 @@ void MockLoadComponentResource(AdsClientMock& mock,
 
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = TestDataComponentResourcesPath().AppendASCII(id);
+              path = ComponentResourcesTestDataPath().AppendASCII(id);
             }
 
             base::File file(path, base::File::Flags::FLAG_OPEN |

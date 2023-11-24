@@ -64,15 +64,15 @@ absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
 
 absl::optional<std::string> ParseTimeTagValue(const std::string& value) {
   if (value == kNowTimeTagValue) {
-    return NowAsISO8601();
+    return NowAsIso8601();
   }
 
   if (value == kDistantPastTimeTagValue) {
-    return DistantPastAsISO8601();
+    return DistantPastAsIso8601();
   }
 
   if (value == kDistantFutureTimeTagValue) {
-    return DistantFutureAsISO8601();
+    return DistantFutureAsIso8601();
   }
 
   if (re2::RE2::FullMatch(value, "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {

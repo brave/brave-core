@@ -26,7 +26,7 @@ base::FilePath TestDataPath() {
       "data");
 }
 
-base::FilePath TestDataComponentResourcesPath() {
+base::FilePath ComponentResourcesTestDataPath() {
   return TestDataPath().AppendASCII("resources");
 }
 

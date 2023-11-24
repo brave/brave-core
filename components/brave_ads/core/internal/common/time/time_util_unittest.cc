@@ -235,14 +235,14 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtEndOfThisMonth());
 }
 
-TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
+TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingIso8601) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 23:45:12.345", /*is_local=*/false);
   AdvanceClockTo(time);
 
   // Act & Assert
-  EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingISO8601(Now()));
+  EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingIso8601(Now()));
 }
 
 #if BUILDFLAG(IS_LINUX)

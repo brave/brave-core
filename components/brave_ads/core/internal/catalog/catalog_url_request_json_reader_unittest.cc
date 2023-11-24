@@ -225,8 +225,8 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_campaign.id = "27a624a1-9c80-494a-bf1b-af327b563f85";
   catalog_campaign.priority = 1;
   catalog_campaign.pass_through_rate = 1.0;
-  catalog_campaign.start_at = DistantPastAsISO8601();
-  catalog_campaign.end_at = DistantFutureAsISO8601();
+  catalog_campaign.start_at = DistantPastAsIso8601();
+  catalog_campaign.end_at = DistantFutureAsIso8601();
   catalog_campaign.daily_cap = 10;
   catalog_campaign.advertiser_id = "a437c7f3-9a48-4fe8-b37b-99321bea93fe";
   catalog_campaign.creative_sets = catalog_creative_sets;
@@ -413,8 +413,8 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_campaign.id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
   catalog_campaign.priority = 2;
   catalog_campaign.pass_through_rate = 0.5;
-  catalog_campaign.start_at = DistantPastAsISO8601();
-  catalog_campaign.end_at = DistantFutureAsISO8601();
+  catalog_campaign.start_at = DistantPastAsIso8601();
+  catalog_campaign.end_at = DistantFutureAsIso8601();
   catalog_campaign.daily_cap = 25;
   catalog_campaign.advertiser_id = "7523854c-5f28-4153-9da8-d9da6804ed58";
   catalog_campaign.creative_sets = catalog_creative_sets;

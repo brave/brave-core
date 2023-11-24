@@ -14,7 +14,7 @@ namespace brave_ads {
 
 base::FilePath TestDataPath();
 
-base::FilePath TestDataComponentResourcesPath();
+base::FilePath ComponentResourcesTestDataPath();
 
 base::FilePath DataResourcesPath();
 

@@ -236,7 +236,7 @@ base::Time GetLocalTimeAtEndOfThisMonth() {
   return AdjustLocalTimeToEndOfMonth(now);
 }
 
-std::string TimeToPrivacyPreservingISO8601(const base::Time time) {
+std::string TimeToPrivacyPreservingIso8601(const base::Time time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
 

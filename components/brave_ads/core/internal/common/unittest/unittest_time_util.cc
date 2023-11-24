@@ -28,7 +28,7 @@ base::Time DistantPast() {
   return base::Time() + base::Microseconds(1);
 }
 
-std::string DistantPastAsISO8601() {
+std::string DistantPastAsIso8601() {
   return base::TimeFormatAsIso8601(DistantPast());
 }
 
@@ -37,7 +37,7 @@ base::Time Now() {
   return base::Time::Now();
 }
 
-std::string NowAsISO8601() {
+std::string NowAsIso8601() {
   return base::TimeFormatAsIso8601(Now());
 }
 
@@ -49,7 +49,7 @@ base::Time DistantFuture() {
       /*Tuesday, 19 January 2038 03:14:07=*/2147483647);
 }
 
-std::string DistantFutureAsISO8601() {
+std::string DistantFutureAsIso8601() {
   return base::TimeFormatAsIso8601(DistantFuture());
 }
 
