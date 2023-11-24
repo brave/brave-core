@@ -1092,8 +1092,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   auto expected_count = sidebar_items->size();
 #else
-  auto expected_count =
-      sidebar_items->size() - 1
+  auto expected_count = sidebar_items->size() - 1;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

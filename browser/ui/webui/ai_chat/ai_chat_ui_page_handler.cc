@@ -93,6 +93,12 @@ void AIChatUIPageHandler::SetClientPage(
 }
 
 void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
+  if (!active_chat_tab_helper_) {
+    VLOG(2) << "Chat tab helper is not set";
+    std::move(callback).Run(std::vector<mojom::ModelPtr>(), std::string());
+    return;
+  }
+
   std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
   // Ensure we return only in intended display order
   std::transform(kAllModelKeysDisplayOrder.cbegin(),
@@ -167,6 +173,12 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 }
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
+  if (!active_chat_tab_helper_) {
+    VLOG(2) << "Chat tab helper is not set";
+    std::move(callback).Run(false, nullptr);
+    return;
+  }
+
   auto site_info = BuildSiteInfo();
   const bool is_fetching_content = active_chat_tab_helper_->HasPageContent() ==
                                    PageContentAssociation::FETCHING_CONTENT;
@@ -463,6 +475,12 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
+  if (!active_chat_tab_helper_) {
+    VLOG(2) << "Chat tab helper is not set";
+    std::move(callback).Run(mojom::PremiumStatus::Inactive);
+    return;
+  }
+
   active_chat_tab_helper_->GetPremiumStatus(std::move(callback));
 }
 
