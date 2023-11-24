@@ -27,15 +27,6 @@ std::unique_ptr<infobars::InfoBar> CreateBraveGlobalInfoBar(
   return std::make_unique<BraveConfirmInfoBar>(std::move(delegate));
 }
 
-TabStripModel* GetActiveBrowserTabStrip() {
-  Browser* browser = chrome::FindLastActive();
-  if (!browser) {
-    return nullptr;
-  }
-
-  return browser->tab_strip_model();
-}
-
 void RemoveInfobarsByIdentifier(
     infobars::InfoBarManager* infobar_manager,
     const infobars::InfoBarDelegate::InfoBarIdentifier& id,
@@ -51,7 +42,7 @@ void RemoveInfobarsByIdentifier(
   }
 }
 
-void RemoveObserverForInfobarManagers(
+void RemoveAllInfobarsByIdentifier(
     const infobars::InfoBarDelegate::InfoBarIdentifier& id,
     BraveGlobalInfoBarManager* observer) {
   for (const auto* browser : *BrowserList::GetInstance()) {
@@ -76,7 +67,7 @@ BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
     : delegate_factory_(std::move(delegate_factory)) {}
 
 BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
-  RemoveObserverForInfobarManagers(delegate_factory_->GetInfoBarIdentifier(),
+  RemoveAllInfobarsByIdentifier(delegate_factory_->GetInfoBarIdentifier(),
                                    this);
 }
 
@@ -94,8 +85,7 @@ void BraveGlobalInfoBarManager::Show() {
 void BraveGlobalInfoBarManager::TabChangedAt(content::WebContents* contents,
                                              int index,
                                              TabChangeType change_type) {
-  const auto* tab_strip_model = GetActiveBrowserTabStrip();
-  if (tab_strip_model && tab_strip_model->profile()->IsIncognitoProfile()) {
+  if (contents && contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }
 
@@ -108,11 +98,8 @@ void BraveGlobalInfoBarManager::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (tab_strip_model && tab_strip_model->profile()->IsIncognitoProfile()) {
-    return;
-  }
-
-  if (!selection.new_contents || is_closed_) {
+  if (!selection.new_contents || is_closed_ ||
+      selection.new_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }
 
@@ -160,7 +147,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
 }
 
 void BraveGlobalInfoBarManager::OnInfoBarClosed() {
-  RemoveObserverForInfobarManagers(delegate_factory_->GetInfoBarIdentifier(),
+  RemoveAllInfobarsByIdentifier(delegate_factory_->GetInfoBarIdentifier(),
                                    this);
   is_closed_ = true;
   browser_tab_strip_tracker_.reset();
