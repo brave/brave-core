@@ -120,7 +120,7 @@ function getChromiumGnArgs() {
 function buildChromiumRelease(buildOptions = {}) {
   if (!config.isCI && !buildOptions.force) {
     console.error(
-      'Warning: the script resets all changes src/ folder.\n' +
+      'Warning: the command resets all changes in src/ folder.\n' +
       'src/brave stays untouched. Pass --force to continue.')
     return 1
   }
