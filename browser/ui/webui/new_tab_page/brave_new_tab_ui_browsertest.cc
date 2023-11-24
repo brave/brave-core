@@ -13,8 +13,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/child_process_termination_info.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_process_host_observer.h"
 #include "content/public/test/browser_test.h"
@@ -45,11 +43,10 @@ class ObserverLogger : public RenderProcessHostObserver {
 class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
   void GoBack(WebContents* web_contents) {
-    WindowedNotificationObserver load_stop_observer(
-        content::NOTIFICATION_LOAD_STOP,
-        NotificationService::AllSources());
+    ui_test_utils::AllBrowserTabAddedWaiter waiter;
     web_contents->GetController().GoBack();
-    load_stop_observer.Wait();
+    waiter.Wait();
+    content::WaitForLoadStop(web_contents);
   }
 };
 
