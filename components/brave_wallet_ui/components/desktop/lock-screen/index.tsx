@@ -16,6 +16,7 @@ import {
 import { WalletRoutes } from '../../../constants/types'
 
 // Utils
+import { loadTimeData } from '../../../../common/loadTimeData'
 import { getLocale } from '../../../../common/locale'
 import { openWalletRouteTab } from '../../../utils/routes-utils'
 import { UISelectors, WalletSelectors } from '../../../common/selectors'
@@ -96,6 +97,8 @@ export const LockScreen = () => {
     }
   }, [isPanel])
 
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // render
   return (
     <StyledWrapper>
@@ -135,12 +138,14 @@ export const LockScreen = () => {
         >
           {getLocale('braveWalletLockScreenButton')}
         </UnlockButton>
+        {!isAndroid && (
         <Button
           onClick={onShowRestore}
           kind='plain'
         >
           {getLocale('braveWalletWelcomeRestoreButton')}
         </Button>
+        )}
       </InputColumn>
     </StyledWrapper>
   )
