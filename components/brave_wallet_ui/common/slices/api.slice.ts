@@ -38,7 +38,6 @@ import { PanelActions } from '../../panel/actions'
 // entities
 import {
   networkEntityAdapter,
-  selectSwapSupportedNetworksFromQueryResult,
   selectMainnetNetworksFromQueryResult,
   selectAllNetworksFromQueryResult,
   selectOffRampNetworksFromQueryResult,
@@ -2004,7 +2003,7 @@ export const {
   useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
-  useGetSwapSupportedNetworkIdsQuery,
+  useGetSwapSupportedNetworksQuery,
   useGetTokenBalancesForChainIdQuery,
   useGetTokenBalancesRegistryQuery,
   useGetTokenSpotPricesQuery,
@@ -2039,7 +2038,7 @@ export const {
   useLazyGetSelectedChainQuery,
   useLazyGetSolanaEstimatedFeeQuery,
   useLazyGetSolanaTransactionSimulationQuery,
-  useLazyGetSwapSupportedNetworkIdsQuery,
+  useLazyGetSwapSupportedNetworksQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenBalancesRegistryQuery,
   useLazyGetTokenSpotPricesQuery,
@@ -2085,29 +2084,6 @@ export const {
 } = walletApi
 
 // Derived Data Queries
-const emptyIds: string[] = []
-
-export const useGetSwapSupportedNetworksQuery = () => {
-  // queries
-  const registryQueryResult = useGetNetworksRegistryQuery()
-  const { data: networksRegistry } = registryQueryResult
-  const swapNetworksQueryResult = useGetSwapSupportedNetworkIdsQuery(
-    undefined,
-    {
-      selectFromResult: (res) => ({
-        isLoading: res.isLoading,
-        error: res.error,
-        data: selectSwapSupportedNetworksFromQueryResult(
-          registryQueryResult,
-          res.data || emptyIds
-        )
-      }),
-      skip: !networksRegistry
-    }
-  )
-
-  return swapNetworksQueryResult
-}
 
 export const useGetMainnetsQuery = (opts?: { skip?: boolean }) => {
   const queryResults = useGetNetworksRegistryQuery(undefined, {

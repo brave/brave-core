@@ -20,7 +20,9 @@ import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Query hooks
 import {
-  useGetDefaultFiatCurrencyQuery //
+  useApproveERC20AllowanceMutation,
+  useGetDefaultFiatCurrencyQuery,
+  useSendEthTransactionMutation
 } from '../../../../common/slices/api.slice'
 import { useLib } from '../../../../common/hooks/useLib'
 
@@ -53,14 +55,10 @@ export function useZeroEx(params: SwapParams) {
 
   // Custom hooks
   // FIXME(josheleonard): use slices API
-  const {
-    getERC20Allowance,
-    getEthTxManagerProxy,
-    getSwapService,
-    sendEthTransaction
-  } = useLib()
+  const [sendEthTransaction] = useSendEthTransactionMutation()
+  const [approveERC20Allowance] = useApproveERC20AllowanceMutation()
+  const { getERC20Allowance, getSwapService } = useLib()
   const swapService = getSwapService()
-  const ethTxManagerProxy = getEthTxManagerProxy()
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -127,6 +125,7 @@ export function useZeroEx(params: SwapParams) {
       let priceQuoteResponse
       try {
         priceQuoteResponse = await swapService.getPriceQuote({
+          chainId: selectedNetwork.chainId,
           takerAddress: overriddenParams.fromAddress,
           sellAmount:
             overriddenParams.fromAmount &&
@@ -239,7 +238,7 @@ export function useZeroEx(params: SwapParams) {
     },
     [
       params,
-      selectedNetwork?.coin,
+      selectedNetwork,
       selectedAccount,
       reset,
       swapService,
@@ -295,6 +294,7 @@ export function useZeroEx(params: SwapParams) {
       let transactionPayloadResponse
       try {
         transactionPayloadResponse = await swapService.getTransactionPayload({
+          chainId: selectedNetwork.chainId,
           takerAddress: overriddenParams.fromAddress,
           sellAmount: new Amount(overriddenParams.fromAmount)
             .multiplyByDecimals(overriddenParams.fromToken.decimals)
@@ -368,24 +368,15 @@ export function useZeroEx(params: SwapParams) {
 
     const { allowanceTarget, sellTokenAddress } = quote
     try {
-      const { success, data } = await ethTxManagerProxy.makeERC20ApproveData(
-        allowanceTarget,
+      await approveERC20Allowance({
+        network: selectedNetwork,
+        fromAccount: selectedAccount,
+        contractAddress: sellTokenAddress,
+        spenderAddress: allowanceTarget,
+
         // FIXME(onyb): reduce allowance to the minimum required amount
         // for security reasons.
-        new Amount(MAX_UINT256).toHex()
-      )
-
-      if (!success) {
-        console.error(`Error creating ERC20 approve data.`)
-        return
-      }
-
-      await sendEthTransaction({
-        fromAccount: selectedAccount,
-        to: sellTokenAddress,
-        value: '0x0',
-        data,
-        network: selectedNetwork
+        allowance: new Amount(MAX_UINT256).toHex()
       })
     } catch (e) {
       // bubble up error
@@ -396,8 +387,7 @@ export function useZeroEx(params: SwapParams) {
     hasAllowance,
     selectedAccount,
     selectedNetwork,
-    sendEthTransaction,
-    ethTxManagerProxy.makeERC20ApproveData
+    approveERC20Allowance
   ])
 
   const networkFee = useMemo(() => {

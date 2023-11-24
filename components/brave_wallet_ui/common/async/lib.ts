@@ -11,16 +11,11 @@ import {
 import {
   BraveWallet,
   GetBlockchainTokenInfoReturnInfo,
-  SendEthTransactionParams,
-  SendFilTransactionParams,
-  SendSolTransactionParams,
   SolanaSerializedTransactionParams
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { hasEIP1559Support } from '../../utils/network-utils'
-import { getAccountType } from '../../utils/account-utils'
 import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
 import {
   makeNativeAssetLogo,
@@ -259,109 +254,6 @@ export function refreshSitePermissions() {
   }
 }
 
-export async function sendEthTransaction(payload: SendEthTransactionParams) {
-  const apiProxy = getAPIProxy()
-  /***
-   * Determine whether to create a legacy or EIP-1559 transaction.
-   *
-   * isEIP1559 is true IFF:
-   *   - network supports EIP-1559
-   *   - keyring supports EIP-1559 (ex: certain hardware wallets vendors)
-   *   - payload: SendEthTransactionParams has specified EIP-1559 gas-pricing
-   *     fields.
-   *
-   * In all other cases, fallback to legacy gas-pricing fields.
-   */
-  let isEIP1559
-  switch (true) {
-    // Transaction payload has hardcoded EIP-1559 gas fields.
-    case payload.maxPriorityFeePerGas !== undefined &&
-      payload.maxFeePerGas !== undefined:
-      isEIP1559 = true
-      break
-
-    // Transaction payload has hardcoded legacy gas fields.
-    case payload.gasPrice !== undefined:
-      isEIP1559 = false
-      break
-
-    // Check if network and keyring support EIP-1559.
-    default:
-      isEIP1559 = hasEIP1559Support(
-        getAccountType(payload.fromAccount),
-        payload.network
-      )
-  }
-
-  const txData: BraveWallet.TxData = {
-    nonce: '',
-    // Estimated by eth_tx_service if value is '' for legacy transactions
-    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
-    // Estimated by eth_tx_service if value is ''
-    gasLimit: payload.gas || '',
-    to: payload.to,
-    value: payload.value,
-    data: payload.data || [],
-    signOnly: false,
-    signedTransaction: ''
-  }
-
-  if (isEIP1559) {
-    const txData1559: BraveWallet.TxData1559 = {
-      baseData: txData,
-      chainId: payload.network.chainId,
-      // Estimated by eth_tx_service if value is ''
-      maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
-      // Estimated by eth_tx_service if value is ''
-      maxFeePerGas: payload.maxFeePerGas || '',
-      gasEstimation: undefined
-    }
-    return await apiProxy.txService.addUnapprovedTransaction(
-      toTxDataUnion({ ethTxData1559: txData1559 }),
-      payload.network.chainId,
-      payload.fromAccount.accountId
-    )
-  }
-
-  return await apiProxy.txService.addUnapprovedTransaction(
-    toTxDataUnion({ ethTxData: txData }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
-export async function sendFilTransaction(payload: SendFilTransactionParams) {
-  const apiProxy = getAPIProxy()
-  const filTxData: BraveWallet.FilTxData = {
-    nonce: payload.nonce || '',
-    gasPremium: payload.gasPremium || '',
-    gasFeeCap: payload.gasFeeCap || '',
-    gasLimit: payload.gasLimit || '',
-    maxFee: payload.maxFee || '0',
-    to: payload.to,
-    value: payload.value
-  }
-  return await apiProxy.txService.addUnapprovedTransaction(
-    toTxDataUnion({ filTxData: filTxData }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
-export async function sendSolTransaction(payload: SendSolTransactionParams) {
-  const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(
-    payload.fromAccount.address,
-    payload.to,
-    BigInt(payload.value)
-  )
-  return await txService.addUnapprovedTransaction(
-    toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
 export async function sendSolanaSerializedTransaction(
   payload: SolanaSerializedTransactionParams
 ) {
@@ -387,11 +279,6 @@ export async function sendSolanaSerializedTransaction(
 export function getSwapService() {
   const { swapService } = getAPIProxy()
   return swapService
-}
-
-export function getEthTxManagerProxy() {
-  const { ethTxManagerProxy } = getAPIProxy()
-  return ethTxManagerProxy
 }
 
 export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {

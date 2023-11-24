@@ -17,6 +17,7 @@ import { IsEip1559Changed } from '../../constants/action_types'
 import { IsEip1559ChangedMutationArg } from '../api.slice'
 import { NetworksRegistry } from '../entities/network.entity'
 import { ACCOUNT_TAG_IDS } from './account.endpoints'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
@@ -49,7 +50,7 @@ export const networkEndpoints = ({
           ? ['UNKNOWN_ERROR']
           : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
     }),
-    getSwapSupportedNetworkIds: query<string[], void>({
+    getSwapSupportedNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const {
@@ -78,7 +79,7 @@ export const networkEndpoints = ({
             .map((net) => net.chainId.toString())
 
           return {
-            data: swapChainIds
+            data: getEntitiesListFromEntityState(networksRegistry, swapChainIds)
           }
         } catch (error) {
           return handleEndpointError(

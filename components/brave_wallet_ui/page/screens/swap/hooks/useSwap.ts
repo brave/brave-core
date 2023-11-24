@@ -95,12 +95,12 @@ export const useSwap = () => {
   >(undefined)
 
   const selectedNetwork = useMemo(() => {
-    if (!selectedNetworkState && supportedNetworks.length) {
+    if (!selectedNetworkState && supportedNetworks?.length) {
       return (
-        supportedNetworks.find(
+        supportedNetworks?.find(
           (network) => network.chainId === BraveWallet.MAINNET_CHAIN_ID
         ) ||
-        supportedNetworks.find(
+        supportedNetworks?.find(
           (network) => network.chainId === BraveWallet.SOLANA_MAINNET
         )
       )

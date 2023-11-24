@@ -69,18 +69,6 @@ export const {
   selectTotal: selectTotalNetworksFromQueryResult
 } = networkEntityAdapter.getSelectors(selectNetworksRegistryFromQueryResult)
 
-export const selectSwapSupportedNetworksFromQueryResult =
-  createDraftSafeSelector(
-    // inputs
-    [
-      selectNetworksRegistryFromQueryResult,
-      (registry, swapSupportedIds: string[]) => swapSupportedIds
-    ],
-    // output
-    (registry, swapSupportedIds) =>
-      getEntitiesListFromEntityState(registry, swapSupportedIds)
-  )
-
 export const selectMainnetNetworksFromQueryResult = createDraftSafeSelector(
   // inputs
   [selectNetworksRegistryFromQueryResult],
