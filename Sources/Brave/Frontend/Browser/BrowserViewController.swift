@@ -625,12 +625,13 @@ public class BrowserViewController: UIViewController {
   
   fileprivate func updateToolbarStateForTraitCollection(_ newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator? = nil) {
     let showToolbar = shouldShowFooterForTraitCollection(newCollection)
+    bottomTouchArea.isEnabled = showToolbar
+    topToolbar.setShowToolbar(!showToolbar)
+    
     if (showToolbar && toolbar == nil) || (!showToolbar && toolbar != nil) {
-      topToolbar.setShowToolbar(!showToolbar)
       toolbar?.removeFromSuperview()
       toolbar?.tabToolbarDelegate = nil
       toolbar = nil
-      bottomTouchArea.isEnabled = showToolbar
       
       if showToolbar {
         toolbar = BottomToolbarView(privateBrowsingManager: privateBrowsingManager)
@@ -639,11 +640,12 @@ public class BrowserViewController: UIViewController {
         toolbar?.tabToolbarDelegate = self
         toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
       }
-      updateToolbarUsingTabManager(tabManager)
-      updateUsingBottomBar(using: newCollection)
-      
       view.setNeedsUpdateConstraints()
     }
+    
+    updateToolbarUsingTabManager(tabManager)
+    updateUsingBottomBar(using: newCollection)
+    
     if let tab = tabManager.selectedTab,
       let webView = tab.webView {
       updateURLBar()
@@ -1116,6 +1118,17 @@ public class BrowserViewController: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    updateToolbarUsingTabManager(tabManager)
+
+    if let tabId = tabManager.selectedTab?.rewardsId, rewards.rewardsAPI?.selectedTabId == 0 {
+      rewards.rewardsAPI?.selectedTabId = tabId
+    }
+  }
+  
+#if swift(>=5.9)
+  public override func viewIsAppearing(_ animated: Bool) {
+    super.viewIsAppearing(animated)
+    
     if #available(iOS 17, *) {
       // Have to defer this to the next cycle to avoid an iOS bug which lays out the toolbars without any
       // bottom safe area, resulting in a layout bug.
@@ -1126,12 +1139,8 @@ public class BrowserViewController: UIViewController {
         self.updateToolbarStateForTraitCollection(self.traitCollection)
       }
     }
-    updateToolbarUsingTabManager(tabManager)
-
-    if let tabId = tabManager.selectedTab?.rewardsId, rewards.rewardsAPI?.selectedTabId == 0 {
-      rewards.rewardsAPI?.selectedTabId = tabId
-    }
   }
+#endif
 
   private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
