@@ -45,7 +45,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     static let locationPadding: CGFloat = 8
     static let locationHeight: CGFloat = 44
     static let textFieldCornerRadius: CGFloat = 10
-    static let buttonWidth: CGFloat = 32
   }
   
   // MARK: URLBarButton
@@ -143,8 +142,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.setImage(UIImage(braveSystemNamed: "leo.product.bookmarks"), for: .normal)
     $0.accessibilityLabel = Strings.bookmarksMenuItem
     $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
+    $0.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
     $0.snp.makeConstraints {
-      $0.width.greaterThanOrEqualTo(UX.buttonWidth)
+      $0.size.greaterThanOrEqualTo(32)
     }
   }
 
@@ -188,7 +188,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private let shieldsRewardsStack = UIStackView().then {
     $0.distribution = .fillEqually
-    $0.spacing = 0 // buttons contain padding
+    $0.spacing = 8
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
 
@@ -237,6 +237,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     button.accessibilityLabel = Strings.bravePanel
     button.imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
     button.accessibilityIdentifier = "urlBar-shieldsButton"
+    button.contentEdgeInsets = .init(top: 4, left: 5, bottom: 4, right: 5)
     return button
   }()
   
@@ -244,7 +245,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     let button = RewardsButton()
     button.addTarget(self, action: #selector(didTapBraveRewardsButton), for: .touchUpInside)
     // Visual centering
-    button.contentEdgeInsets = .init(top: 1, left: 0, bottom: 1, right: 0)
+    button.contentEdgeInsets = .init(top: 4, left: 4, bottom: 6, right: 4)
     return button
   }()
   
@@ -378,17 +379,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private func updateForTraitCollection() {
     let toolbarSizeCategory = traitCollection.toolbarButtonContentSizeCategory
-    let pointSize = UIFont.preferredFont(forTextStyle: .headline, compatibleWith: .init(preferredContentSizeCategory: toolbarSizeCategory)).lineHeight
+    let pointSize = UIFontMetrics(forTextStyle: .body).scaledValue(for: 28, compatibleWith: .init(preferredContentSizeCategory: toolbarSizeCategory))
     shieldsButton.snp.remakeConstraints {
-      $0.width.greaterThanOrEqualTo(UX.buttonWidth)
-      $0.height.equalTo(pointSize)
+      $0.size.equalTo(pointSize)
     }
     rewardsButton.snp.remakeConstraints {
-      $0.width.greaterThanOrEqualTo(UX.buttonWidth)
-      $0.height.equalTo(pointSize)
+      $0.size.equalTo(pointSize)
     }
     let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
-    locationTextField?.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
+    locationTextField?.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
   }
   
   private func setupConstraints() {
@@ -416,7 +415,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   override func layoutSubviews() {
     super.layoutSubviews()
     // Increase the inset of the main stack view if there's no additional space from safe areas
-    let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : UX.locationPadding
+    let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : 12
     mainStackView.layoutMargins = .init(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
     
     locationContainer.layoutIfNeeded()
@@ -446,6 +445,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationTextField?.backgroundColor = browserColors.containerBackground
     locationTextField?.textColor = browserColors.textPrimary
     locationTextField?.attributedPlaceholder = makePlaceholder(colors: browserColors)
+    for button in [qrCodeButton, voiceSearchButton] {
+      button.primaryTintColor = browserColors.iconDefault
+      button.disabledTintColor = browserColors.iconDisabled
+      button.selectedTintColor = browserColors.iconActive
+    }
   }
     
   /// Created whenever the location bar on top is selected

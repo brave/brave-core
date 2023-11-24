@@ -163,7 +163,7 @@ class TabLocationView: UIView {
     urlDisplayLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .horizontal)
     urlDisplayLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     urlDisplayLabel.accessibilityIdentifier = "url"
-    urlDisplayLabel.font = .preferredFont(forTextStyle: .subheadline)
+    urlDisplayLabel.font = .preferredFont(forTextStyle: .body)
     urlDisplayLabel.backgroundColor = .clear
     urlDisplayLabel.clipsToBounds = true
     urlDisplayLabel.lineBreakMode = .byClipping
@@ -369,7 +369,7 @@ class TabLocationView: UIView {
   private func updateForTraitCollection() {
     let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
     let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
-    urlDisplayLabel.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
+    urlDisplayLabel.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
     placeholderLabel.font = urlDisplayLabel.font
     let pointSize = UIFont.preferredFont(
       forTextStyle: .footnote,
