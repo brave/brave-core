@@ -125,6 +125,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   const gfx::ShadowDetails& GetShadowDetails() const;
   gfx::Insets GetShadowMargin() const;
+  gfx::Insets GetWidgetMargin() const;
 
   void CreateWidgetView(gfx::NativeWindow browser_native_window,
                         gfx::NativeView browser_native_view);

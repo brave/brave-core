@@ -55,7 +55,7 @@ constexpr SkColor kDarkModeBorderColor = SkColorSetRGB(0x3f, 0x41, 0x45);
 constexpr int kBorderThickness = 1;
 
 #if BUILDFLAG(IS_WIN)
-constexpr int kShadowElevation = 5;
+constexpr int kShadowElevation = 4;
 constexpr int kCornerRadius = 0;
 #elif BUILDFLAG(IS_MAC)
 constexpr int kShadowElevation = 5;
@@ -171,7 +171,7 @@ void NotificationAdPopup::OnPaintBackground(gfx::Canvas* canvas) {
   CHECK(GetWidget());
 
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
-  bounds.Inset(-GetShadowMargin());
+  bounds.Inset(GetWidgetMargin());
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
@@ -325,7 +325,7 @@ void NotificationAdPopup::CreatePopup(gfx::NativeWindow browser_native_window,
   notification_ad_view_ = container_view->AddChildView(
       NotificationAdViewFactory::Create(notification_ad_));
 
-  const gfx::Point point(-GetShadowMargin().top(), -GetShadowMargin().left());
+  const gfx::Point point(GetWidgetMargin().top(), GetWidgetMargin().left());
   container_view->SetPosition(point);
   container_view->SetSize(notification_ad_view_->size());
 
@@ -379,16 +379,6 @@ gfx::Rect NotificationAdPopup::GetWidgetBoundsForSize(
   gfx::Rect bounds(origin, size);
   bounds.AdjustToFit(display_work_area);
 
-  if (!WasNotificationAdPopupShownBefore()) {
-    // Apply default insets
-    const gfx::Vector2d insets(kCustomNotificationAdInsetX.Get(),
-                               kCustomNotificationAdInsetY.Get());
-    bounds += insets;
-
-    // Adjust to fit display work area
-    bounds.AdjustToFit(display_work_area);
-  }
-
   return bounds;
 }
 
@@ -421,7 +411,7 @@ gfx::Size NotificationAdPopup::CalculateViewSize() const {
   gfx::Size size = notification_ad_view_->size();
   CHECK(!size.IsEmpty());
 
-  size += gfx::Size(-GetShadowMargin().width(), -GetShadowMargin().height());
+  size += gfx::Size(GetWidgetMargin().width(), GetWidgetMargin().height());
   return size;
 }
 
@@ -447,6 +437,12 @@ const gfx::ShadowDetails& NotificationAdPopup::GetShadowDetails() const {
 gfx::Insets NotificationAdPopup::GetShadowMargin() const {
   const gfx::ShadowDetails& shadow_details = GetShadowDetails();
   return gfx::ShadowValue::GetMargin(shadow_details.values);
+}
+
+gfx::Insets NotificationAdPopup::GetWidgetMargin() const {
+  gfx::Insets widget_margin(kCustomNotificationAdMargin.Get());
+  widget_margin.SetToMax(-GetShadowMargin());
+  return widget_margin;
 }
 
 void NotificationAdPopup::CreateWidgetView(
