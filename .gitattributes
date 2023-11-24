@@ -36,6 +36,7 @@
 *.xslt  text eol=lf
 *.xtb   text eol=lf
 
+.ci_features             text eol=lf
 .clang*                  text eol=lf
 .git-blame-ignore-revs   text eol=lf
 .gitattributes           text eol=lf
