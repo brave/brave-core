@@ -4,6 +4,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 
 | term  | description  |
 |---|---|
+| Ad unit  | An ad unit is displayed to the user. Also known as an ad placement.  |
 | Advertiser  | An advertiser is someone or a company that promotes products, services, or ideas through various mediums to reach and persuade potential customers or target audiences.  |
 | Advertisement  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
 | Analytics  | Examine data to uncover meaningful insights, trends, and patterns that can inform decision-making and improve understanding of a given subject or domain. See P2A and P3A.  |
