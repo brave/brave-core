@@ -27,6 +27,7 @@ source_set("headers") {
     "history/history_item_info.h",
     "history/history_item_value_util.h",
     "history/history_sort_types.h",
+    "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
     "prefs/pref_registry.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",

@@ -255,9 +255,8 @@ void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
 
 void NotificationAdPopup::OnWidgetBoundsChanged(views::Widget* widget,
                                                 const gfx::Rect& new_bounds) {
-  CHECK(widget);
   if (!inside_adjust_bounds_) {
-    return RecomputeAlignment();
+    RecomputeAlignment();
   }
 }
 
