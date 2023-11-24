@@ -43,7 +43,6 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveExternalNavigationHandlerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceMediatorClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFourStateCookieSettingsPreferenceBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFreIntentCreatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHelpAndFeedbackLauncherImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHomepageManagerClassAdapter.java",
