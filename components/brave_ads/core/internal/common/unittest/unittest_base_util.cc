@@ -138,8 +138,8 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
 
 void MockSave(AdsClientMock& mock) {
   ON_CALL(mock, Save)
-      .WillByDefault(::testing::Invoke([](const std::string& /*name=*/,
-                                          const std::string& /*value=*/,
+      .WillByDefault(::testing::Invoke([](const std::string& /*name*/,
+                                          const std::string& /*value*/,
                                           SaveCallback callback) {
         std::move(callback).Run(/*success=*/true);
       }));
@@ -168,7 +168,7 @@ void MockLoadFileResource(AdsClientMock& mock,
                           const base::ScopedTempDir& temp_dir) {
   ON_CALL(mock, LoadFileResource)
       .WillByDefault(::testing::Invoke(
-          [&temp_dir](const std::string& id, const int /*version=*/,
+          [&temp_dir](const std::string& id, const int /*version*/,
                       LoadFileCallback callback) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(id);
 

@@ -78,7 +78,7 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void GetForCreativeInstanceIdCallback(
-    const std::string& /*creative_instance_id=*/,
+    const std::string& /*creative_instance_id*/,
     GetDepositsCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||

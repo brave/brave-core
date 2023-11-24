@@ -57,9 +57,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_, LoadFileResource(kPurchaseIntentResourceId,
                                              ::testing::_, ::testing::_))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& /*id=*/, const int /*version=*/,
-             LoadFileCallback callback) {
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
+                               LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 

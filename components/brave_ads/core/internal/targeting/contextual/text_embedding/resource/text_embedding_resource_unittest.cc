@@ -57,9 +57,9 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_, LoadFileResource(kTextEmbeddingResourceId,
                                              ::testing::_, ::testing::_))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& /*id=*/, const int /*version=*/,
-             LoadFileCallback callback) {
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
+                               LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 

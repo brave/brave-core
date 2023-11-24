@@ -83,7 +83,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads");

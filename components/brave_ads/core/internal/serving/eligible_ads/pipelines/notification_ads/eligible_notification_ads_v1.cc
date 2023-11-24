@@ -107,7 +107,7 @@ void EligibleNotificationAdsV1::GetForChildSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for child segments");
@@ -158,7 +158,7 @@ void EligibleNotificationAdsV1::GetForParentSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for parent segments");
@@ -199,7 +199,7 @@ void EligibleNotificationAdsV1::GetForUntargetedCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for untargeted segment");

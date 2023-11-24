@@ -131,7 +131,7 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history) {
   ON_CALL(mock, GetBrowsingHistory)
       .WillByDefault(::testing::Invoke(
-          [history](const size_t max_count, const size_t /*recent_day_range=*/,
+          [history](const size_t max_count, const size_t /*recent_day_range*/,
                     GetBrowsingHistoryCallback callback) {
             CHECK_LE(history.size(), max_count);
 
