@@ -1145,11 +1145,17 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetUserType(int userType) {
+        if (mExternalWallet == null) {
+            return;
+        }
+        int walletStatus = mExternalWallet.getStatus();
         if (UserType.LEGACY_UNCONNECTED == userType
                 && mBraveRewardsNativeWorker.getVbatDeadline() > System.currentTimeMillis()) {
             showVbatExpireNotice();
         } else if (UserType.UNCONNECTED == userType) {
-            newInstallViewChanges();
+            unconnectedViewChanges();
+        } else if (UserType.CONNECTED == userType || WalletStatus.LOGGED_OUT == walletStatus) {
+            connectedOrLoggedOutViewChanges();
         }
     }
 
@@ -1192,10 +1198,10 @@ public class BraveRewardsPanel
             mShouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
         } else if (mExternalWallet != null) {
-            if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
-                mBraveRewardsNativeWorker.getUserType();
-            }
-            showViewsBasedOnExternalWallet();
+            // if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
+            mBraveRewardsNativeWorker.getUserType();
+            // }
+            // showViewsBasedOnExternalWallet();
         }
     }
 
@@ -1223,7 +1229,12 @@ public class BraveRewardsPanel
         if (mExternalWallet != null && BraveRewardsHelper.isRewardsEnabled()) {
             mBraveRewardsNativeWorker.GetRewardsParameters();
         } else {
-            showOnBoarding();
+            if (!BraveRewardsHelper.isRewardsEnabled()) {
+                showOnBoarding();
+            } else {
+                unconnectedViewChanges(); // unconnected UI
+                // connectedOrLoggedOutViewChanges(); // connected or logged out UI
+            }
         }
     }
 
@@ -1239,26 +1250,28 @@ public class BraveRewardsPanel
         }
     }
 
-    private void showViewsBasedOnExternalWallet() {
-        int walletStatus = mExternalWallet.getStatus();
-        if (PackageUtils.isFirstInstall(mActivity)) {
-            if (walletStatus == WalletStatus.CONNECTED || walletStatus == WalletStatus.LOGGED_OUT) {
-                existingUserViewChanges();
-            } else if (walletStatus == WalletStatus.NOT_CONNECTED) {
-                newInstallViewChanges();
-            }
-        } else {
-            existingUserViewChanges();
-        }
-    }
+    // private void showViewsBasedOnExternalWallet() {
+    //     int walletStatus = mExternalWallet.getStatus();
+    //     if (PackageUtils.isFirstInstall(mActivity)) {
+    //         if (walletStatus == WalletStatus.CONNECTED || walletStatus ==
+    // WalletStatus.LOGGED_OUT) {
+    //             existingUserViewChanges();
+    //         } else if (walletStatus == WalletStatus.NOT_CONNECTED) {
+    //             newInstallViewChanges();
+    //         }
+    //     } else {
+    //         existingUserViewChanges();
+    //     }
+    // }
 
     // Generic UI changes
-    OnCheckedChangeListener autoContributeSwitchListener = new OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mBraveRewardsNativeWorker.IncludeInAutoContribution(mCurrentTabId, !isChecked);
-        }
-    };
+    OnCheckedChangeListener autoContributeSwitchListener =
+            new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mBraveRewardsNativeWorker.IncludeInAutoContribution(mCurrentTabId, !isChecked);
+                }
+            };
 
     View.OnClickListener braveRewardsOnboardingClickListener = new View.OnClickListener() {
         @Override
@@ -1291,7 +1304,6 @@ public class BraveRewardsPanel
                                     && !BraveRewardsHelper.isRewardsEnabled()) {
                                 showOnBoarding();
                             } else {
-                                // fetchRewardsData();
                                 mBraveRewardsNativeWorker.GetExternalWallet();
                                 panelShadow(false);
                             }
@@ -1314,7 +1326,7 @@ public class BraveRewardsPanel
         }
     };
 
-    private void newInstallViewChanges() {
+    private void unconnectedViewChanges() {
         showUnverifiedLayout();
         checkForRewardsOnboarding();
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
@@ -1330,7 +1342,7 @@ public class BraveRewardsPanel
         }
     }
 
-    private void existingUserViewChanges() {
+    private void connectedOrLoggedOutViewChanges() {
         showRewardsMainUI();
         requestPublisherInfo();
         setNotificationsControls();
