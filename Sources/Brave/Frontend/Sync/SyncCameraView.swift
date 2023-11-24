@@ -124,7 +124,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     videoPreviewLayer?.frame = layer.bounds
     layer.addSublayer(videoPreviewLayer!)
 
-    captureSession.startRunning()
+    startRunning()
     bringSubviewToFront(cameraOverlayView)
 
     AVCaptureDevice.requestAccess(
@@ -143,11 +143,19 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   }
 
   func startRunning() {
-    captureSession?.startRunning()
+    DispatchQueue.global(qos: .default).async { [weak self] in
+      guard let self else { return }
+      
+      if self.captureSession?.isRunning == false {
+        self.captureSession?.startRunning()
+      }
+    }
   }
 
   func stopRunning() {
-    captureSession?.stopRunning()
+    if captureSession?.isRunning == true {
+      captureSession?.stopRunning()
+    }
   }
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {

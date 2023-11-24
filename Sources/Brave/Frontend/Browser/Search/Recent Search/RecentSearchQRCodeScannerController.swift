@@ -66,6 +66,13 @@ class RecentSearchQRCodeScannerController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    scannerView.cameraView.stopRunning()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    if let orientation = view.window?.windowScene?.interfaceOrientation {
+        scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(ui: orientation)
+    }
     scannerView.cameraView.startRunning()
   }
   
