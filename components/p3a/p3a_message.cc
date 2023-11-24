@@ -18,8 +18,11 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/p3a/uploader.h"
 #include "brave/components/version_info/version_info.h"
+#include "components/prefs/pref_service.h"
 
 namespace p3a {
 
@@ -89,7 +92,7 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
   result.Set(kYoiAttributeName, install_exploded.year);
 
   // Fill meta.
-  result.Set(kCountryCodeAttributeName, meta.country_code);
+  result.Set(kCountryCodeAttributeName, meta.country_code_from_timezone);
   result.Set(kVersionAttributeName, meta.version);
   result.Set(kWoiAttributeName, meta.woi);
 
@@ -133,6 +136,7 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
         {kMetricValueAttributeName, base::NumberToString(metric_value)},
         {kChannelAttributeName, meta.channel},
         {kPlatformAttributeName, meta.platform},
+        {kCountryCodeAttributeName, meta.country_code_from_locale},
     }};
   } else {
     attributes = {{
@@ -142,7 +146,7 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
         {kYoiAttributeName, base::NumberToString(exploded.year)},
         {kChannelAttributeName, meta.channel},
         {kPlatformAttributeName, meta.platform},
-        {kCountryCodeAttributeName, meta.country_code},
+        {kCountryCodeAttributeName, meta.country_code_from_timezone},
         {kWoiAttributeName, base::NumberToString(meta.woi)},
     }};
   }
@@ -173,13 +177,20 @@ void MessageMetainfo::Init(PrefService* local_state,
   }
   woi = brave_stats::GetIsoWeekNumber(date_of_install);
 
-  country_code = base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
+  country_code_from_timezone =
+      base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
+  if (local_state->FindPreference(brave_l10n::prefs::kCountryCode)) {
+    // Since the country code pref is not available in unit tests,
+    // only load it if it's available.
+    country_code_from_locale = brave_l10n::GetCountryCode(local_state);
+  }
   MaybeStripCountry();
 
   Update();
 
   VLOG(2) << "Message meta: " << platform << " " << channel << " " << version
-          << " " << woi << " " << country_code;
+          << " " << woi << " " << country_code_from_timezone << " "
+          << country_code_from_locale;
 }
 
 void MessageMetainfo::Update() {
@@ -213,14 +224,14 @@ void MessageMetainfo::MaybeStripCountry() {
   if (platform == "linux-bc") {
     // If we have more than 3/0.05 = 60 users in a country for
     // a week of install, we can send country.
-    if (kLinuxCountries.count(country_code) == 0) {
-      country_code = kCountryOther;
+    if (kLinuxCountries.count(country_code_from_timezone) == 0) {
+      country_code_from_timezone = kCountryOther;
     }
   } else {
     // Now the minimum platform is MacOS at ~3%, so cut off for a group under
     // here becomes 3/(0.05*0.03) = 2000.
-    if (kNotableCountries.count(country_code) == 0) {
-      country_code = kCountryOther;
+    if (kNotableCountries.count(country_code_from_timezone) == 0) {
+      country_code_from_timezone = kCountryOther;
     }
   }
 }

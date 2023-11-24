@@ -38,7 +38,8 @@ class MessageMetainfo {
   base::Time date_of_install;
   base::Time date_of_survey;
   int woi;  // Week of install. Remove this occasionally and extract from above.
-  std::string country_code;
+  std::string country_code_from_timezone;
+  std::string country_code_from_locale;
 
  private:
   // Used to report major/minor version numbers to reduce amount of
