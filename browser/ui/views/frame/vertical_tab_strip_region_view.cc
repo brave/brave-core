@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -1145,7 +1144,7 @@ void VerticalTabStripRegionView::UpdateBorder() {
       return false;
     }
 
-    if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
       return true;
     }
 
