@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "url/gurl.h"
 
@@ -431,10 +431,10 @@ class BraveAdsCatalogUrlRequestJsonReaderTest : public UnitTestBase {};
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
-  const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(
+  const absl::optional<std::string> contents =
+      MaybeReadAndReplaceTagsForFileResourceToString(
           kCatalogWithSingleCampaignFilename);
-  ASSERT_TRUE(json);
+  ASSERT_TRUE(contents);
 
   // Act & Assert
   CatalogInfo expected_catalog;
@@ -442,16 +442,16 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
-  const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(
+  const absl::optional<std::string> contents =
+      MaybeReadAndReplaceTagsForFileResourceToString(
           kCatalogWithMultipleCampaignsFilename);
-  ASSERT_TRUE(json);
+  ASSERT_TRUE(contents);
 
   // Act & Assert
   CatalogInfo expected_catalog;
@@ -460,21 +460,21 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
-  const absl::optional<std::string> json =
-      ReadFileFromTestPathAndParseTagsToString(kEmptyCatalogFilename);
-  ASSERT_TRUE(json);
+  const absl::optional<std::string> contents =
+      MaybeReadAndReplaceTagsForFileResourceToString(kEmptyCatalogFilename);
+  ASSERT_TRUE(contents);
 
   // Act & Assert
   CatalogInfo expected_catalog;
   expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {

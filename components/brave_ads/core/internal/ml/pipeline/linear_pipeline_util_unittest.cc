@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -25,13 +25,13 @@ class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
   // Arrange
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  ASSERT_TRUE(buffer);
+  const absl::optional<std::string> contents =
+      MaybeReadFileResourceToString(kValidSpamClassificationPipeline);
+  ASSERT_TRUE(contents);
 
   // Act & Assert
   EXPECT_TRUE(pipeline::LoadLinearPipeline(
-      reinterpret_cast<const uint8_t*>(buffer->data()), buffer->size()));
+      reinterpret_cast<const uint8_t*>(contents->data()), contents->size()));
 }
 
 }  // namespace brave_ads::ml

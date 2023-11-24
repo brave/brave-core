@@ -88,7 +88,8 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
   CHECK(setup_called_)
       << "CopyFileFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
+  const base::FilePath from_test_path =
+      TestDataFileResourcesPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyFile(from_test_path, to_temp_path);
@@ -105,7 +106,8 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   CHECK(setup_called_)
       << "CopyDirectoryFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
+  const base::FilePath from_test_path =
+      TestDataFileResourcesPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyDirectory(from_test_path, to_temp_path,

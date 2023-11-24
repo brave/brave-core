@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -152,7 +153,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = GetTestPath().AppendASCII(name);
+              path = TestDataFileResourcesPath().AppendASCII(name);
             }
 
             std::string value;
@@ -174,7 +175,9 @@ void MockLoadFileResource(AdsClientMock& mock,
 
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = GetFileResourcePath().AppendASCII(id);
+              path = TestDataFileResourcesPath()
+                         .AppendASCII("resources")
+                         .AppendASCII(id);
             }
 
             base::File file(path, base::File::Flags::FLAG_OPEN |
@@ -187,7 +190,7 @@ void MockLoadDataResource(AdsClientMock& mock) {
   ON_CALL(mock, LoadDataResource)
       .WillByDefault(
           ::testing::Invoke([](const std::string& name) -> std::string {
-            return ReadFileFromDataResourcePathToString(name).value_or("");
+            return MaybeReadDataResourceToString(name).value_or("");
           }));
 }
 
