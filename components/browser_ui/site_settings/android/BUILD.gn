@@ -7,7 +7,6 @@ import("//build/config/android/rules.gni")
 android_library("java") {
   sources = [
     "java/src/org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources.java",
-    "java/src/org/chromium/components/browser_ui/site_settings/BraveFourStateCookieSettingsPreferenceBase.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings.java",
     "java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory.java",
