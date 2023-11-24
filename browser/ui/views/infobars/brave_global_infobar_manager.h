@@ -18,7 +18,6 @@ class InfoBarManager;
 
 class BraveGlobalInfoBarManager
     : public TabStripModelObserver,
-      public infobars::InfoBarManager::Observer,
       public BraveGlobalConfirmInfobarDelegate::Observer {
  public:
   explicit BraveGlobalInfoBarManager(
@@ -29,9 +28,6 @@ class BraveGlobalInfoBarManager
   void Show();
 
  private:
-  // infobars::InfoBarManager::Observer:
-  void OnManagerShuttingDown(infobars::InfoBarManager* manager) override;
-
   // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
