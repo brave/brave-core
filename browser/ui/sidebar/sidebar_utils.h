@@ -36,6 +36,8 @@ absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser);
 absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
                                                           SidePanelEntryId id);
 
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type);
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_

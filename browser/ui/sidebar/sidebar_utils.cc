@@ -203,4 +203,28 @@ absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
   return SidePanelIdFromSideBarItemType(type);
 }
 
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
 }  // namespace sidebar

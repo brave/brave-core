@@ -57,7 +57,6 @@ struct SidebarItem {
   std::u16string title;
   // Set false to open this item in new tab.
   bool open_in_panel = false;
-  bool disabled = false;
 };
 
 bool IsBuiltInType(const SidebarItem& item);

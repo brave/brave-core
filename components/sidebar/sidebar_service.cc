@@ -72,70 +72,11 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   return SidebarItem::BuiltInItemType::kNone;
 }
 
-SidebarItem::BuiltInItemType GetPrevBuiltInItemFor(
-    const SidebarItem::BuiltInItemType& item) {
-  auto* iter_begin = std::cbegin(SidebarService::kDefaultBuiltInItemTypes);
-  auto* iter_end = std::cend(SidebarService::kDefaultBuiltInItemTypes);
-  auto* iter = std::find(iter_begin, iter_end, item);
-
-  CHECK(iter_end != iter);
-
-  if (iter_begin == iter) {
-    return SidebarItem::BuiltInItemType::kNone;
-  }
-
-  return *std::prev(iter);
-}
-
-size_t GetBuiltInItemIndexToInsert(const std::vector<SidebarItem>& items,
-                                   const SidebarItem& item) {
-  auto prev_builtin_item = GetPrevBuiltInItemFor(item.built_in_item_type);
-
-  auto find_prev_builtin_in_items = [&]() {
-    return std::find_if(items.cbegin(), items.cend(),
-                        [&prev_builtin_item](const SidebarItem& item) {
-                          return IsBuiltInType(item) &&
-                                 item.built_in_item_type == prev_builtin_item;
-                        });
-  };
-
-  auto insert_pos_it = items.cend();
-
-  while (insert_pos_it == items.cend() &&
-         SidebarItem::BuiltInItemType::kNone != prev_builtin_item) {
-    insert_pos_it = find_prev_builtin_in_items();
-
-    if (insert_pos_it != items.cend()) {
-      break;
-    }
-
-    prev_builtin_item = GetPrevBuiltInItemFor(prev_builtin_item);
-  }
-
-  return insert_pos_it == items.cend()
-             ? 0
-             : std::distance(items.cbegin(), insert_pos_it) + 1;
-}
-
 }  // namespace
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
   return index == update.index && title_updated == update.title_updated &&
          url_updated == update.url_updated;
-}
-
-// static
-bool SidebarService::IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
-  switch (type) {
-    case SidebarItem::BuiltInItemType::kBookmarks:
-    case SidebarItem::BuiltInItemType::kReadingList:
-    case SidebarItem::BuiltInItemType::kChatUI:
-    case SidebarItem::BuiltInItemType::kPlaylist:
-      return true;
-    default:
-      return false;
-  }
-  NOTREACHED_NORETURN();
 }
 
 // static
@@ -155,8 +96,12 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
       static_cast<int>(SidebarItem::BuiltInItemType::kNone));
 }
 
-SidebarService::SidebarService(PrefService* prefs, bool is_guest)
-    : prefs_(prefs), sidebar_p3a_(prefs), is_guest_(is_guest) {
+SidebarService::SidebarService(
+    PrefService* prefs,
+    const std::vector<SidebarItem::BuiltInItemType>& default_builtin_items)
+    : prefs_(prefs),
+      sidebar_p3a_(prefs),
+      default_builtin_items_(default_builtin_items) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -606,10 +551,9 @@ void SidebarService::LoadSidebarItems() {
   // Get the initial order of items so that we can attempt to
   // insert at the intended order.
   for (const auto& item : default_items_to_add) {
-    const auto* default_item_iter = base::ranges::find(
-        SidebarService::kDefaultBuiltInItemTypes, item.built_in_item_type);
-    auto default_index = default_item_iter -
-                         std::begin(SidebarService::kDefaultBuiltInItemTypes);
+    const auto default_item_iter =
+        base::ranges::find(default_builtin_items_, item.built_in_item_type);
+    auto default_index = default_item_iter - std::begin(default_builtin_items_);
     // Add at the default index for the first time. For users which haven't
     // changed any order, or removed items, this will be at the intentional
     // index. For users who have re-ordered, this will be different but still
@@ -627,10 +571,9 @@ void SidebarService::LoadSidebarItems() {
 
 std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
   std::vector<SidebarItem> items;
-  for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
+  for (const auto& item_type : default_builtin_items_) {
     if (auto item = GetBuiltInItemForType(item_type);
         item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
-      item.disabled = (is_guest_ && IsDisabledItemForGuest(item_type));
       items.push_back(std::move(item));
     }
   }
@@ -741,6 +684,52 @@ void SidebarService::AddItemAtForTesting(const SidebarItem& item,
   }
 
   UpdateSidebarItemsToPrefStore();
+}
+
+SidebarItem::BuiltInItemType SidebarService::GetPrevBuiltInItemFor(
+    const SidebarItem::BuiltInItemType& item) const {
+  auto iter_begin = std::cbegin(default_builtin_items_);
+  auto iter_end = std::cend(default_builtin_items_);
+  auto iter = std::find(iter_begin, iter_end, item);
+
+  CHECK(iter_end != iter);
+
+  if (iter_begin == iter) {
+    return SidebarItem::BuiltInItemType::kNone;
+  }
+
+  return *std::prev(iter);
+}
+
+size_t SidebarService::GetBuiltInItemIndexToInsert(
+    const std::vector<SidebarItem>& items,
+    const SidebarItem& item) const {
+  auto prev_builtin_item = GetPrevBuiltInItemFor(item.built_in_item_type);
+
+  auto find_prev_builtin_in_items = [&]() {
+    return std::find_if(items.cbegin(), items.cend(),
+                        [&prev_builtin_item](const SidebarItem& item) {
+                          return IsBuiltInType(item) &&
+                                 item.built_in_item_type == prev_builtin_item;
+                        });
+  };
+
+  auto insert_pos_it = items.cend();
+
+  while (insert_pos_it == items.cend() &&
+         SidebarItem::BuiltInItemType::kNone != prev_builtin_item) {
+    insert_pos_it = find_prev_builtin_in_items();
+
+    if (insert_pos_it != items.cend()) {
+      break;
+    }
+
+    prev_builtin_item = GetPrevBuiltInItemFor(prev_builtin_item);
+  }
+
+  return insert_pos_it == items.cend()
+             ? 0
+             : std::distance(items.cbegin(), insert_pos_it) + 1;
 }
 
 }  // namespace sidebar

@@ -228,8 +228,9 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
   size_t GetDefaultItemCount() const {
-    auto item_count = std::size(SidebarService::kDefaultBuiltInItemTypes) -
-                      1 /* for history*/;
+    auto item_count =
+        std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
+        1 /* for history*/;
 #if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
@@ -694,21 +695,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTestWithGuestWindow) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
   auto* controller = guest_browser->sidebar_controller();
   auto* model = controller->model();
-  auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller);
   for (const auto& item : model->GetAllSidebarItems()) {
-    auto index = model->GetIndexOf(item);
-    ASSERT_TRUE(index.has_value());
-    auto* item_view = sidebar_items_contents_view->children()[*index];
-    ASSERT_TRUE(item_view);
-    if (IsBuiltInType(item) &&
-        SidebarService::IsDisabledItemForGuest(item.built_in_item_type)) {
-      EXPECT_FALSE(item_view->GetEnabled());
-    } else {
-      EXPECT_TRUE(item_view->GetEnabled());
+    // Check disabled builtin items are not included in guest browser's items
+    // list.
+    if (IsBuiltInType(item)) {
+      EXPECT_FALSE(IsDisabledItemForGuest(item.built_in_item_type));
+    }
+  }
+
+  auto* private_browser =
+      static_cast<BraveBrowser*>(CreateIncognitoBrowser(browser()->profile()));
+  controller = private_browser->sidebar_controller();
+  model = controller->model();
+  for (const auto& item : model->GetAllSidebarItems()) {
+    // Check disabled builtin items are not included in private browser's items
+    // list.
+    if (IsBuiltInType(item)) {
+      EXPECT_FALSE(IsDisabledItemForPrivate(item.built_in_item_type));
     }
   }
 }
@@ -725,23 +732,20 @@ class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   // There should be no crash with incognito.
-  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* private_browser =
+      static_cast<BraveBrowser*>(CreateIncognitoBrowser(browser()->profile()));
   ASSERT_TRUE(private_browser);
 
   auto* sidebar_service =
-      SidebarServiceFactory::GetForProfile(browser()->profile());
+      SidebarServiceFactory::GetForProfile(private_browser->profile());
   const auto& items = sidebar_service->items();
   auto iter = base::ranges::find_if(items, [](const auto& item) {
     return item.type == SidebarItem::Type::kTypeBuiltIn &&
            item.built_in_item_type == SidebarItem::BuiltInItemType::kPlaylist;
   });
-  ASSERT_NE(iter, items.end());
 
-  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
-      static_cast<BraveBrowser*>(private_browser)->sidebar_controller());
-  EXPECT_FALSE(sidebar_items_contents_view->children()
-                   .at(std::distance(items.begin(), iter))
-                   ->GetEnabled());
+  // Check playlist item is not included in private window.
+  EXPECT_EQ(iter, items.end());
 
   // Try Adding an item
   sidebar_service->AddItem(sidebar::SidebarItem::Create(

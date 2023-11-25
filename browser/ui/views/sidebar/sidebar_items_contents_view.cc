@@ -15,6 +15,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -55,8 +57,6 @@
 #include "ui/views/layout/box_layout.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
@@ -503,40 +503,6 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
 
       item_view->SetImageModel(
           state, GetImageForBuiltInItems(item.built_in_item_type, color_state));
-    }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-    if (ai_chat::features::IsAIChatEnabled() &&
-        !brave::IsRegularProfile(browser_->profile())) {
-      auto is_ai_chat = [](const auto& item) {
-        return item.built_in_item_type ==
-               sidebar::SidebarItem::BuiltInItemType::kChatUI;
-      };
-
-      if (is_ai_chat(item) && item_view->GetEnabled()) {
-        item_view->SetEnabled(false);
-      }
-    }
-#endif
-
-    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-        browser_->profile()->IsOffTheRecord()) {
-      // We don't support Playlist on OTR profile. As SidebarService is shared
-      // regardless of profile type, we should remove it here.
-      // TODO(sko) If we have another item disabled on OTR profile, we should
-      // make a property in SidebarItem.
-      auto is_playlist = [](const auto& item) {
-        return item.built_in_item_type ==
-               sidebar::SidebarItem::BuiltInItemType::kPlaylist;
-      };
-
-      if (is_playlist(item) && item_view->GetEnabled()) {
-        item_view->SetEnabled(false);
-      }
-    }
-
-    if (item.disabled && item_view->GetEnabled()) {
-      item_view->SetEnabled(false);
     }
   }
 }
