@@ -1,4 +1,9 @@
 Name: star-constellation
-URL: https://https://github.com/brave/constellation/
+URL: https://crates.io/crates/star-constellation
+Description: Nested threshold aggregation built on the STAR protocol
+Version: 0.2.3
+Security Critical: yes
+Shipped: yes
 License: MPL-2.0
-License File: /brave/third_party/constellation/crate/LICENSE
+License File: 
+Revision: 4f2220b014fb858bb7aa6de95b433de1d060bd71

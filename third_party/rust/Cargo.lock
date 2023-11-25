@@ -37,12 +37,12 @@ name = "adler"
 version = "1.0.2"
 
 [[package]]
-name = "adss-rs"
-version = "0.2.0"
+name = "adss"
+version = "0.2.2"
 dependencies = [
  "rand 0.8.5",
- "sharks",
- "strobe-rng",
+ "rand_core 0.6.4",
+ "star-sharks",
  "strobe-rs",
  "zeroize",
 ]
@@ -266,7 +266,7 @@ version = "1.0.1"
 dependencies = [
  "base64",
  "crypto-mac 0.10.1",
- "curve25519-dalek",
+ "curve25519-dalek 3.2.1",
  "digest 0.9.0",
  "hmac 0.10.1",
  "rand 0.7.3",
@@ -298,7 +298,9 @@ dependencies = [
  "cpufeatures",
  "crunchy",
  "cssparser 0.28.1",
- "curve25519-dalek",
+ "curve25519-dalek 3.2.1",
+ "curve25519-dalek 4.1.1",
+ "curve25519-dalek-derive",
  "cxx",
  "cxxbridge-cmd",
  "data-encoding",
@@ -435,7 +437,7 @@ dependencies = [
 
 [[package]]
 name = "cpufeatures"
-version = "0.2.5"
+version = "0.2.11"
 dependencies = [
  "libc",
 ]
@@ -531,6 +533,30 @@ dependencies = [
  "serde",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "curve25519-dalek"
+version = "4.1.1"
+dependencies = [
+ "cfg-if",
+ "cpufeatures",
+ "curve25519-dalek-derive",
+ "platforms",
+ "rand_core 0.6.4",
+ "rustc_version",
+ "serde",
+ "subtle",
+ "zeroize",
+]
+
+[[package]]
+name = "curve25519-dalek-derive"
+version = "0.1.1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.29",
 ]
 
 [[package]]
@@ -634,7 +660,7 @@ dependencies = [
 name = "ed25519-dalek"
 version = "1.0.1"
 dependencies = [
- "curve25519-dalek",
+ "curve25519-dalek 3.2.1",
  "ed25519",
  "rand 0.7.3",
  "serde",
@@ -1495,19 +1521,23 @@ name = "pin-utils"
 version = "0.1.0"
 
 [[package]]
+name = "platforms"
+version = "3.2.0"
+
+[[package]]
 name = "ppoprf"
-version = "0.2.0"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d97a7a93423a5988e153e29de494b2625528196476213a4401e91140487faf1a"
 dependencies = [
  "base64",
  "bincode",
  "bitvec",
- "curve25519-dalek",
+ "curve25519-dalek 4.1.1",
  "derive_more",
  "rand 0.8.5",
  "rand_core 0.5.1",
- "rand_core 0.6.4",
  "serde",
- "strobe-rng",
  "strobe-rs",
  "zeroize",
 ]
@@ -1943,14 +1973,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "sharks"
-version = "0.5.0"
+name = "star-sharks"
+version = "0.6.1"
 dependencies = [
  "bitvec",
  "byteorder",
  "ff 0.13.0",
  "rand 0.8.5",
- "rand_core 0.6.4",
  "zeroize",
 ]
 
@@ -1986,12 +2015,12 @@ version = "1.10.0"
 
 [[package]]
 name = "sta-rs"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
- "adss-rs",
+ "adss",
  "ppoprf",
+ "rand 0.8.5",
  "rand_core 0.6.4",
- "strobe-rng",
  "strobe-rs",
  "zeroize",
 ]
@@ -2002,7 +2031,7 @@ version = "1.2.0"
 
 [[package]]
 name = "star-constellation"
-version = "0.2.0"
+version = "0.2.3"
 dependencies = [
  "bincode",
  "lazy_static",
