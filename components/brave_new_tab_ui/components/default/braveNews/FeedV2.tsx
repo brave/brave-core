@@ -10,6 +10,7 @@ import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigat
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
+import ButtonReact from '@brave/leo/react/button'
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
@@ -31,8 +32,22 @@ const SidebarContainer = styled.div`
   }
 `
 
+const CustomizeButton = styled(ButtonReact)`
+  visibility: hidden;
+
+  position: fixed;
+  bottom: ${spacing.xl};
+  right: ${spacing.xl};
+
+  opacity: calc((var(--ntp-scroll-percent) - 0.5) / 0.5);
+
+  .${CLASSNAME_PAGE_STUCK} & {
+    visibility: visible;
+  }
+`
+
 export default function FeedV2() {
-  const { feedV2 } = useBraveNews()
+  const { feedV2, setCustomizePage } = useBraveNews()
 
   const ref = React.useRef<HTMLDivElement>()
 
@@ -61,5 +76,6 @@ export default function FeedV2() {
       <FeedNavigation />
     </SidebarContainer>
     <Feed feed={feedV2} />
+    <CustomizeButton kind='outline' onClick={() => setCustomizePage('news')}>Customize</CustomizeButton>
   </Root>
 }

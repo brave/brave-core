@@ -12,6 +12,8 @@ import Cluster from "./feed/Cluster";
 import Discover from "./feed/Discover";
 import HeroArticle from "./feed/Hero";
 import { getHistoryValue, setHistoryState } from "./shared/history";
+import NoArticles from "./feed/NoArticles";
+import LoadingCard from "./feed/LoadingCard";
 
 // Restoring scroll position is complicated - we have two available strategies:
 // 1. Scroll to the same position - as long as the window hasn't been resized,
@@ -26,7 +28,7 @@ interface NewsScrollData {
 }
 
 const FeedContainer = styled.div`
-  max-width: 540px;
+  width: 540px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -135,6 +137,8 @@ export default function Component({ feed }: Props) {
   }, [cardCount, feed?.items])
 
   return <FeedContainer className={NEWS_FEED_CLASS} ref={setLastCardRef}>
-    {cards}
+    {feed
+      ? !feed.items.length ? <NoArticles /> : cards
+      : <LoadingCard />}
   </FeedContainer>
 }

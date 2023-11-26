@@ -19,6 +19,7 @@ export const Title = styled.h3`
   --leo-icon-color: ${color.icon.default};
 
   display: flex;
+  align-items: center;
 
   margin: 0;
 

@@ -23,6 +23,9 @@ const Container = styled(Card)`
   align-self: flex-start;
   position: sticky;
   top: ${spacing.xl};
+
+  max-height: calc(100vh - ${spacing.xl} * 2);
+  overflow-y: auto;
 `
 
 const Heading = styled.h3`
@@ -101,6 +104,15 @@ const Section = styled.details`
   }
 `
 
+function usePersistedState<T>(name: string, defaultValue: T) {
+  const [value, setValue] = React.useState<T>(JSON.parse(localStorage[name] ?? null) ?? defaultValue)
+  React.useEffect(() => {
+    localStorage[name] = JSON.stringify(value)
+  }, [name, value])
+
+  return [value, setValue] as const
+}
+
 const Marker = <Icon name='arrow-small-right' className='marker' />
 
 export function Item(props: { id: FeedView, name: string }) {
@@ -115,21 +127,24 @@ export default function Sidebar() {
   const { channels, publishers, setCustomizePage } = useBraveNews()
   const { signals } = useInspectContext()
 
-  const [showingMoreChannels, setShowingMoreChannels] = React.useState(false)
-  const [showingMorePublishers, setShowingMorePublishers] = React.useState(false)
+  const [showingMoreChannels, setShowingMoreChannels] = usePersistedState("showingMoreChannels", false)
+  const [showingMorePublishers, setShowingMorePublishers] = usePersistedState("showingMorePublishers", false)
 
-  const slicedPublisherIds = React.useMemo(() => Object.keys(publishers)
+  const subscribedPublisherIds = React.useMemo(() => Object.keys(publishers)
     .filter(p => isPublisherEnabled(publishers[p]))
-    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight)
-    .slice(0, showingMorePublishers ? undefined : DEFAULT_SHOW_COUNT), [publishers, showingMorePublishers, signals])
-  const slicedChannelIds = React.useMemo(() => Object.keys(channels)
+    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight), [publishers, signals])
+  const slicedPublisherIds = React.useMemo(() => subscribedPublisherIds
+    .slice(0, showingMorePublishers ? undefined : DEFAULT_SHOW_COUNT), [subscribedPublisherIds, showingMorePublishers])
+  const subscribedChannels = React.useMemo(() => Object.keys(channels)
     .filter(c => channels[c].subscribedLocales.length)
-    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight)
-    .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [channels, showingMoreChannels, signals])
+    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight),
+    [channels, signals])
+  const slicedChannelIds = React.useMemo(() => subscribedChannels
+    .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
     <Heading>My Feed</Heading>
-    <Item id='all' name="All" />
+    <Item id='all' name="For You" />
     <Item id='following' name="Following" />
     <Section open>
       <summary>
@@ -141,19 +156,19 @@ export default function Sidebar() {
         </CustomButton>
       </summary>
       {slicedChannelIds.map(c => <Item key={c} id={`channels/${c}`} name={c} />)}
-      {!showingMoreChannels && slicedChannelIds.length >= DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMoreChannels(true)}>Show all</CustomButton>}
+      {subscribedChannels.length > DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>{showingMoreChannels ? 'Show less' : 'Show all'}</CustomButton>}
     </Section>
     <Section open>
       <summary>
         {Marker}
         Publishers
-        <CustomButton faint>
-          <Icon name='plus-add' onClick={() => setCustomizePage('news')} />
+        <CustomButton faint onClick={() => setCustomizePage('news')}>
+          <Icon name='plus-add' />
           Add
         </CustomButton>
       </summary>
       {slicedPublisherIds.map(p => <Item key={p} id={`publishers/${p}`} name={publishers[p]?.publisherName} />)}
-      {!showingMorePublishers && slicedPublisherIds.length >= DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMorePublishers(true)}>Show all</CustomButton>}
+      {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>{showingMorePublishers ? 'Show less' : 'Show all'}</CustomButton>}
     </Section>
   </Container>
 }
