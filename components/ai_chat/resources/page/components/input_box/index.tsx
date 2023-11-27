@@ -8,6 +8,7 @@ import * as React from 'react'
 import classnames from 'classnames'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
@@ -24,7 +25,9 @@ function InputBox () {
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const parentNode = e.target.parentNode as HTMLDivElement
     setInputText(e.target.value)
+    parentNode.dataset.replicatedValue = e.target.value
   }
 
   const submitInputTextToAPI = () => {
@@ -36,7 +39,7 @@ function InputBox () {
     setInputText('')
   }
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = (e: CustomEvent<any>) => {
     e.preventDefault()
     submitInputTextToAPI()
   }
@@ -52,37 +55,38 @@ function InputBox () {
   }
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form}>
-        <div className={styles.textareaBox}>
-          <textarea
-            className={styles.textarea}
-            placeholder={getLocale('placeholderLabel')}
-            onChange={onInputChange}
-            onKeyDown={onUserPressEnter}
-            value={inputText}
-            autoFocus
-          />
-          <div className={classnames({
-            [styles.counterText]: true,
-            [styles.counterTextVisible]: isCharLimitApproaching,
-            [styles.counterTextError]: isCharLimitExceeded
-          })}>
-            {`${inputText.length} / ${MAX_INPUT_CHAR}`}
-          </div>
+    <form className={styles.form}>
+      <div className={styles.growWrap}>
+        <textarea
+          className={styles.textarea}
+          placeholder={getLocale('placeholderLabel')}
+          onChange={onInputChange}
+          onKeyDown={onUserPressEnter}
+          value={inputText}
+          autoFocus
+          rows={1}
+        />
+      </div>
+      {isCharLimitApproaching && (
+        <div className={classnames({
+          [styles.counterText]: true,
+          [styles.counterTextVisible]: isCharLimitApproaching,
+          [styles.counterTextError]: isCharLimitExceeded
+        })}>
+          {`${inputText.length} / ${MAX_INPUT_CHAR}`}
         </div>
-        <div>
-          <button
-            className={styles.buttonSend}
-            onClick={handleSubmit}
-            disabled={context.shouldDisableUserInput}
-            title={getLocale('sendChatButtonLabel')}
+      )}
+      <div className={styles.actionsContainer}>
+        <Button
+          kind="plain-faint"
+          onClick={handleSubmit}
+          disabled={context.shouldDisableUserInput}
+          title={getLocale('sendChatButtonLabel')}
           >
-            <Icon name='send' />
-          </button>
-        </div>
-      </form>
-    </div>
+          <Icon name='send' />
+        </Button>
+      </div>
+    </form>
   )
 }
 

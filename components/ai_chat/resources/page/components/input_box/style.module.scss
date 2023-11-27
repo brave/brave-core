@@ -9,7 +9,12 @@
 }
 
 .form {
-  display: flex;
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-strong);
+  width: 100%;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+  position: relative;
 
   &:has(textarea:disabled) {
     border-color: var(--leo-color-divider-subtle);
@@ -21,19 +26,15 @@
   }
 }
 
-.textareaBox {
-  width: 100%;
-  font: var(--leo-font-default-regular);
-  color: var(--leo-color-text-primary);
-}
-
 .textarea {
   width: 100%;
-  padding: 10px 16px;
+  padding: 10px var(--leo-spacing-xl);
   resize: none;
   background-color: transparent;
   border: 0;
-
+  resize: none;
+  overflow: hidden;
+  grid-area: 1 / 1 / 2 / 2;
 
   &:focus {
     outline: none;
@@ -44,16 +45,27 @@
   }
 }
 
-.buttonSend {
-  background-color: transparent;
-  border: 0;
-  padding: 14px;
-  color: var(--leo-color-icon-default);
-  cursor: pointer;
+.growWrap {
+  display: grid;
+  grid-template-columns: calc(100% - 20px);
+  max-height: 300px;
+  overflow-y: auto;
 
-  &:disabled {
-    color: var(--leo-color-icon-disabled);
-    cursor: not-allowed;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
+  }
+
+  &::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+    padding: 10px var(--leo-spacing-xl);
+    grid-area: 1 / 1 / 2 / 2;
   }
 }
 
@@ -97,3 +109,8 @@
   color: var(--leo-color-systemfeedback-error-icon);
 }
 
+.actionsContainer {
+  position: absolute;
+  top: 2px;
+  right: var(--leo-spacing-m);
+}
