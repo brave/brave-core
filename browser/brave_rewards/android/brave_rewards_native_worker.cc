@@ -937,7 +937,18 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     brave_rewards::mojom::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
-    json_wallet = "";
+    // If the user does not have an external wallet, expose a default/empty
+    // wallet for backward compatibility with Android code that expects an
+    // external wallet structure with a NOT_CONNECTED status.
+    base::Value::Dict dict;
+    dict.Set("token", "");
+    dict.Set("address", "");
+    dict.Set("status", static_cast<int32_t>(
+                           brave_rewards::mojom::WalletStatus::kNotConnected));
+    dict.Set("type", brave_rewards_service_->GetExternalWalletType());
+    dict.Set("user_name", "");
+    dict.Set("account_url", "");
+    base::JSONWriter::Write(dict, &json_wallet);
   } else {
     base::Value::Dict dict;
     dict.Set("token", wallet->token);
