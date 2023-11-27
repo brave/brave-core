@@ -12,7 +12,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   'use strict';
 
   tr.exportTo('tr.metrics', function () {
-    const SUM_HISTOGRAM_LIST = [
+    const SUM_AND_COUNT_HISTOGRAM_LIST = [
       'Brave.Adblock.MakeEngineWithRules.Default',
       'Brave.Adblock.MakeEngineWithRules.Additional',
 
@@ -22,16 +22,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       'Brave.Adblock.ShouldBlockRequest',
 
       'Brave.ProxyingURLLoader.TotalRequestTime',
-    ];
 
-    const COUNT_HISTOGRAM_LIST = [
       'ChildProcess.Launched.UtilityProcessHash',
     ];
 
     function braveGeneralUmaMetric(histograms, model) {
       tr.metrics.braveExtendedUmaMetrics(histograms, model, {
-        sumHistograms: SUM_HISTOGRAM_LIST,
-        countHistograms: COUNT_HISTOGRAM_LIST,
+        sumAndCountHistograms: SUM_AND_COUNT_HISTOGRAM_LIST,
       });
     }
 
