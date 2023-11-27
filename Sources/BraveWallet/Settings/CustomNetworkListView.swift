@@ -138,6 +138,9 @@ struct CustomNetworkListView: View {
       }
       .navigationViewStyle(StackNavigationViewStyle())
     }
+    .task {
+      await networkStore.updateChainList()
+    }
   }
 }
 

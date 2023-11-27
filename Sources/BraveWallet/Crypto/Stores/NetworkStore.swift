@@ -167,7 +167,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     self.isSwapSupported = await swapService.isSwapSupported(chain.chainId)
   }
 
-  @MainActor private func updateChainList() async {
+  @MainActor func updateChainList() async {
     // fetch all networks for all coin types
     self.allChains = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
     
