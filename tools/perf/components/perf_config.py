@@ -23,7 +23,7 @@ class RunnerConfig:
   extra_benchmark_args: List[str] = []
   browser_type: BrowserType
   dashboard_bot_name: Optional[str] = None
-  save_artifacts = False
+  save_artifacts = True
 
   def __init__(self, json: Dict[str, str]):
     assert isinstance(json, dict)
