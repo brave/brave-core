@@ -13,11 +13,6 @@ import { BraveWallet } from '../../../constants/types'
 // utils
 import { getLocale } from '../../../../common/locale'
 
-// hooks
-import {
-  useSelectedPendingTransaction //
-} from '../../../common/hooks/use-pending-transaction'
-
 // components
 import {
   getComponentForEvmApproval,
@@ -29,12 +24,10 @@ import {
 } from './common/svm_state_changes'
 
 // style
-import { TransactionTitle, TransactionTypeText } from './style'
 import {
   groupSimulatedEVMStateChanges,
   decodeSimulatedSVMStateChanges
 } from '../../../utils/tx-simulation-utils'
-import { Column, Row } from '../../shared/style'
 import {
   CollapseHeaderDivider,
   Divider,
@@ -63,12 +56,8 @@ export const TransactionSimulationInfo = ({
   simulationType,
   network
 }: TransactionInfoProps) => {
-  // custom hooks
-  const tx = useSelectedPendingTransaction()
-
   // computed
   const { expectedStateChanges } = simulation
-  const sendOptions = tx?.txDataUnion.solanaTxData?.sendOptions
 
   const { evmChanges, svmChanges } =
     simulationType === 'EVM'
@@ -245,53 +234,6 @@ export const TransactionSimulationInfo = ({
             )}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>
-      )}
-
-      {/* SEND OPTIONS */}
-      {sendOptions && (
-        <Column margin={'16px 4px 0px 4px'}>
-          {!!Number(sendOptions?.maxRetries?.maxRetries) && (
-            <Row
-              justifyContent='flex-start'
-              gap={'4px'}
-            >
-              <TransactionTitle>
-                {getLocale('braveWalletSolanaMaxRetries')}
-              </TransactionTitle>
-              <TransactionTypeText>
-                {Number(sendOptions?.maxRetries?.maxRetries)}
-              </TransactionTypeText>
-            </Row>
-          )}
-
-          {sendOptions?.preflightCommitment && (
-            <Row
-              justifyContent='flex-start'
-              gap={'4px'}
-            >
-              <TransactionTitle>
-                {getLocale('braveWalletSolanaPreflightCommitment')}
-              </TransactionTitle>
-              <TransactionTypeText>
-                {sendOptions.preflightCommitment}
-              </TransactionTypeText>
-            </Row>
-          )}
-
-          {sendOptions?.skipPreflight && (
-            <Row
-              justifyContent='flex-start'
-              gap={'4px'}
-            >
-              <TransactionTitle>
-                {getLocale('braveWalletSolanaSkipPreflight')}
-              </TransactionTitle>
-              <TransactionTypeText>
-                {sendOptions.skipPreflight.skipPreflight.toString()}
-              </TransactionTypeText>
-            </Row>
-          )}
-        </Column>
       )}
     </TransactionChangeCollapseContainer>
   )
