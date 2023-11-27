@@ -82,7 +82,6 @@ def _GetBraveDownloadUrl(tag: BraveVersion, filename: str) -> str:
 
 
 def _GetChromiumDownloadUrl(version: ChromiumVersion, filename: str) -> str:
-  #/119.0.6045.163/chromium-119.0.6045.163-android-arm64.apk
   return ('https://build-artifacts.brave.com/chromium-builds/' +
           f'{version}/{filename}')
 
@@ -145,7 +144,7 @@ class FieldTrialsMode(Enum):
 class BrowserType:
   _name: str
   _mac_name: str
-  _channel: Optional[str]
+  _channel: Optional[str] = None
   _extra_browser_args: List[str] = []
   _extra_benchmark_args: List[str] = []
   _field_trials_mode: FieldTrialsMode
@@ -388,7 +387,7 @@ class ChromeBrowserTypeImpl(BrowserType):
   def __init__(self, channel: str,
                field_trials_mode: Optional[FieldTrialsMode]):
     if field_trials_mode is None:
-      field_trials_mode = FieldTrialsMode.TESTING_FIELD_TRIALS
+      field_trials_mode = FieldTrialsMode.NO_TRIALS
 
     browser_args = []
     if field_trials_mode == FieldTrialsMode.TESTING_FIELD_TRIALS:
