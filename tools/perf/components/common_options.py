@@ -45,8 +45,8 @@ class CommonOptions:
         'config',
         type=str,
         help='The path/URL to a config. See configs/**/.json for examples.'
-        'Also could be set to "auto" to auto select config by '
-        'machine-id + chromium + target-os')
+        'Also could be set to "auto" to select the config by '
+        'machine-id + chromium')
     parser.add_argument(
         'targets',
         type=str,
@@ -82,12 +82,12 @@ class CommonOptions:
                         help='Used for CI (brave-browser-test-perf-* builds).')
     parser.add_argument('--chromium',
                         action='store_true',
-                        help='(for ci-mode) Run chromium (reference) build. '
-                        'Used to find the right configuration for config=auto')
+                        help='(with config=auto) Run chromium (reference) build'
+                        'Used select the config by machine-id + chromium')
     parser.add_argument('--machine-id',
                         type=str,
-                        help='(for ci-mode) Specify the machine id to find '
-                        'the right configuration for config=auto')
+                        help='(with config=auto) The name of machine on CI.'
+                        'Used select the config by machine-id + chromium')
     parser.add_argument('--no-report',
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
