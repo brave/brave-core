@@ -1150,7 +1150,7 @@ static const auto kOneDay =
             (brave_rewards::mojom::RewardsEngineClient::SetTimeStateCallback)
                 callback {
   const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(value.ToDoubleT());
+  self.prefs[key] = @(value.InSecondsFSinceUnixEpoch());
   [self savePrefs];
   std::move(callback).Run();
 }
@@ -1161,7 +1161,7 @@ static const auto kOneDay =
                  callback {
   const auto key = base::SysUTF8ToNSString(name);
   std::move(callback).Run(
-      base::Time::FromDoubleT([self.prefs[key] doubleValue]));
+      base::Time::FromSecondsSinceUnixEpoch([self.prefs[key] doubleValue]));
 }
 
 - (void)clearState:(const std::string&)name

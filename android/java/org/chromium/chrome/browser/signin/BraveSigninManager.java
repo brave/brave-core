@@ -10,10 +10,12 @@ import android.accounts.Account;
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.Callback;
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.signin.base.CoreAccountId;
+import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
@@ -62,6 +64,12 @@ public class BraveSigninManager implements SigninManager {
 
     @Override
     public void signinAndEnableSync(Account account, @SigninAccessPoint int accessPoint,
+            @Nullable SignInCallback callback) {}
+
+    @Override
+    public void signinAndEnableSync(
+            CoreAccountInfo coreAccountInfo,
+            @SigninAccessPoint int accessPoint,
             @Nullable SignInCallback callback) {}
 
     @Override
@@ -121,4 +129,10 @@ public class BraveSigninManager implements SigninManager {
     @Override
     public void revokeSyncConsent(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
+
+    @Override
+    public void signin(
+            CoreAccountInfo coreAccountInfo,
+            @SigninAccessPoint int accessPoint,
+            @Nullable SignInCallback callback) {}
 }

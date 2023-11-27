@@ -75,12 +75,6 @@ class IpfsPolicyTest : public InProcessBrowserTest {
     return web_contents()->GetBrowserContext();
   }
 
-  size_t infobar_count() const {
-    infobars::ContentInfoBarManager* infobar_manager =
-        infobars::ContentInfoBarManager::FromWebContents(web_contents());
-    return infobar_manager->infobar_count();
-  }
-
   const GURL& ipfs_url() { return ipfs_url_; }
 
  private:

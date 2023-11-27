@@ -30,6 +30,7 @@ class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
   permissions::PermissionPromptDisposition GetPromptDisposition()
       const override;
   absl::optional<gfx::Rect> GetViewBoundsInScreen() const override;
+  bool ShouldFinalizeRequestAfterDecided() const override;
 
  private:
   void ShowBubble();

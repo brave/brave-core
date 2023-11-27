@@ -27,15 +27,3 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
         ->CreateAndRegisterEntry(global_registry);
   }
 }
-
-// static
-std::string SidePanelUtil::GetHistogramNameForId(SidePanelEntry::Id id) {
-  if (id == SidePanelEntry::Id::kPlaylist)
-    return "Brave.Playlist";
-
-  if (id == SidePanelEntry::Id::kChatUI) {
-    return "Brave.AIChat";
-  }
-
-  return ::GetHistogramNameForId(id);
-}

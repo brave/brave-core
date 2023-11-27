@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/gcapi/google_update_util.cc b/chrome/installer/gcapi/google_update_util.cc
-index d1de653cc87b7db90575728cd0e3d7e753aa6010..b025cd24f6b29aedbbdc44b0126f171de1f3665e 100644
+index 433098591b24fa90174181a723c1715ad8391971..57fee82dd77b8159d47334893ef2e64970d75dcd 100644
 --- a/chrome/installer/gcapi/google_update_util.cc
 +++ b/chrome/installer/gcapi/google_update_util.cc
-@@ -11,6 +11,17 @@
+@@ -11,12 +11,24 @@
  
  namespace gcapi_internals {
  
@@ -20,9 +20,8 @@ index d1de653cc87b7db90575728cd0e3d7e753aa6010..b025cd24f6b29aedbbdc44b0126f171d
  const wchar_t kChromeRegClientsKey[] =
      L"Software\\Google\\Update\\Clients\\"
      L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
-@@ -20,6 +31,7 @@ const wchar_t kChromeRegClientStateKey[] =
- const wchar_t kChromeRegClientStateMediumKey[] =
-     L"Software\\Google\\Update\\ClientStateMedium\\"
+ const wchar_t kChromeRegClientStateKey[] =
+     L"Software\\Google\\Update\\ClientState\\"
      L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
 +#endif
  

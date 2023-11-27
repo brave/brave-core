@@ -56,9 +56,9 @@ mojom::TransactionInfoPtr BitcoinTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewBtcTxData(ToBtcTxData(*tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
-      base::Milliseconds(created_time_.ToJavaTime()),
-      base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
       tx_->to());
 }

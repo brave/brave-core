@@ -18,7 +18,7 @@
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
-#include "chrome/browser/chrome_notification_types.h"
+#include "chrome/browser/auth_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
@@ -467,8 +467,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   // Renderer initiated navigations.
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-  content::ExecJs(browser()->tab_strip_model()->GetActiveWebContents(),
-                  kScript);
+  EXPECT_TRUE(content::ExecJs(
+      browser()->tab_strip_model()->GetActiveWebContents(), kScript));
   browser_creation_observer.Wait();
 
   BrowserList* browser_list = BrowserList::GetInstance();

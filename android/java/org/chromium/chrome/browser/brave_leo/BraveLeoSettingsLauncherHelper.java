@@ -7,7 +7,8 @@ package org.chromium.chrome.browser.brave_leo;
 
 import android.content.Context;
 
-import org.chromium.base.annotations.CalledByNative;
+import org.jni_zero.CalledByNative;
+
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;

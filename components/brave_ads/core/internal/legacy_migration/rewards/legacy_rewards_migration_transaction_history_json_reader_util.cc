@@ -38,7 +38,8 @@ absl::optional<TransactionInfo> ParseTransaction(
   if (!base::StringToDouble(*created_at, &created_at_as_double)) {
     return absl::nullopt;
   }
-  transaction.created_at = base::Time::FromDoubleT(created_at_as_double);
+  transaction.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(created_at_as_double);
 
   // Value
   const absl::optional<double> redemption_value =

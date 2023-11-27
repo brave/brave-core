@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index fab2a25f61a2c87afcec1cc409d177909d29b263..3bb9af6d47378c49375a99babfebdc0dae0d5401 100644
+index 6da95969383cab043601d17b435ecf2f742015b3..a78e2039ecc644463558a0084e645f003e6d8975 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-@@ -661,6 +661,7 @@ void ExtensionInfoGenerator::CreateExtensionInfoHelper(
+@@ -662,6 +662,7 @@ void ExtensionInfoGenerator::CreateExtensionInfoHelper(
    info->incognito_access.is_enabled = util::CanBeIncognitoEnabled(&extension);
    info->incognito_access.is_active =
        util::IsIncognitoEnabled(extension.id(), browser_context_);

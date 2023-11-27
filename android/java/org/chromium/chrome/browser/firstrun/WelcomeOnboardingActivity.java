@@ -47,7 +47,7 @@ import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -110,42 +110,51 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
-        referrerClient.startConnection(new InstallReferrerStateListener() {
-            @Override
-            public void onInstallReferrerSetupFinished(int responseCode) {
-                switch (responseCode) {
-                    case InstallReferrerResponse.OK:
-                        try {
-                            ReferrerDetails response = referrerClient.getInstallReferrer();
-                            String referrerUrl = response.getInstallReferrer();
-                            if (referrerUrl == null) return;
+        referrerClient.startConnection(
+                new InstallReferrerStateListener() {
+                    @Override
+                    public void onInstallReferrerSetupFinished(int responseCode) {
+                        switch (responseCode) {
+                            case InstallReferrerResponse.OK:
+                                try {
+                                    ReferrerDetails response = referrerClient.getInstallReferrer();
+                                    String referrerUrl = response.getInstallReferrer();
+                                    if (referrerUrl == null) return;
 
-                            if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)) {
-                                SharedPreferencesManager.getInstance().writeBoolean(
-                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, true);
-                            } else if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_VPN)) {
-                                SharedPreferencesManager.getInstance().writeBoolean(
-                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, true);
-                            }
-                        } catch (RemoteException e) {
-                            Log.e(TAG, "Could not get referral: " + e.getMessage());
+                                    if (referrerUrl.equals(
+                                            BraveConstants.DEEPLINK_ANDROID_PLAYLIST)) {
+                                        ChromeSharedPreferences.getInstance()
+                                                .writeBoolean(
+                                                        BravePreferenceKeys
+                                                                .BRAVE_DEFERRED_DEEPLINK_PLAYLIST,
+                                                        true);
+                                    } else if (referrerUrl.equals(
+                                            BraveConstants.DEEPLINK_ANDROID_VPN)) {
+                                        ChromeSharedPreferences.getInstance()
+                                                .writeBoolean(
+                                                        BravePreferenceKeys
+                                                                .BRAVE_DEFERRED_DEEPLINK_VPN,
+                                                        true);
+                                    }
+                                } catch (RemoteException e) {
+                                    Log.e(TAG, "Could not get referral: " + e.getMessage());
+                                }
+                                // Connection established.
+                                break;
+                            case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                                // API not available on the current Play Store app.
+                                Log.e(TAG, "InstallReferrerResponse.FEATURE_NOT_SUPPORTED");
+                                break;
+                            case InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                                // Connection couldn't be established.
+                                Log.e(TAG, "InstallReferrerResponse.SERVICE_UNAVAILABLE");
+                                break;
                         }
-                        // Connection established.
-                        break;
-                    case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
-                        // API not available on the current Play Store app.
-                        Log.e(TAG, "InstallReferrerResponse.FEATURE_NOT_SUPPORTED");
-                        break;
-                    case InstallReferrerResponse.SERVICE_UNAVAILABLE:
-                        // Connection couldn't be established.
-                        Log.e(TAG, "InstallReferrerResponse.SERVICE_UNAVAILABLE");
-                        break;
-                }
-            }
+                    }
 
-            @Override
-            public void onInstallReferrerServiceDisconnected() {}
-        });
+                    @Override
+                    public void onInstallReferrerServiceDisconnected() {}
+                });
     }
 
     private void initViews() {
@@ -407,8 +416,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
             FirstRunStatus.setFirstRunFlowComplete(true);
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
             finish();
             sendFirstRunCompletePendingIntent();

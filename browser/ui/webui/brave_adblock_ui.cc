@@ -284,8 +284,7 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 #else
-  auto* browser =
-      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 #endif
 }
@@ -302,9 +301,10 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
     dict.Set("subscription_url", subscription.subscription_url.spec());
     dict.Set("enabled", subscription.enabled);
     dict.Set("last_update_attempt",
-             subscription.last_update_attempt.ToJsTime());
+             subscription.last_update_attempt.InMillisecondsFSinceUnixEpoch());
     dict.Set("last_successful_update_attempt",
-             subscription.last_successful_update_attempt.ToJsTime());
+             subscription.last_successful_update_attempt
+                 .InMillisecondsFSinceUnixEpoch());
     if (subscription.homepage) {
       dict.Set("homepage", *subscription.homepage);
     }

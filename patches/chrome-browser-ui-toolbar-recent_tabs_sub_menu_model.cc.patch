@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-index 3360fdefa3d26a7cc323d57743b02849d920ec2d..66850d8e345681de9ee976946f8b53b2dd98a645 100644
+index 3a2cc5ad6b50afd552c0642d75e30ac5ce272ed9..d7586bf37511204aec0cc31ef2573f08ba9c4edb 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-@@ -334,6 +334,7 @@ void RecentTabsSubMenuModel::Build() {
-                    vector_icons::kHistoryChromeRefreshIcon);
+@@ -348,6 +348,7 @@ void RecentTabsSubMenuModel::Build() {
    }
-   InsertSeparatorAt(1, ui::NORMAL_SEPARATOR);
+   AddSeparator(ui::NORMAL_SEPARATOR);
+   history_separator_index_ = GetItemCount() - 1;
 +  BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
    BuildLocalEntries();
    BuildTabsFromOtherDevices();
  }
-@@ -472,6 +473,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+@@ -486,6 +487,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
             ++k) {
          BuildOtherDevicesTabItem(this, session_tag, *tabs_in_session[k]);
        }  // for all tabs in one session

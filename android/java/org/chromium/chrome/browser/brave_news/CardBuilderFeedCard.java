@@ -70,7 +70,7 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.DisplayAdsTable;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -723,9 +723,11 @@ public class CardBuilderFeedCard {
 
     private void openUrlInSameTabAndSavePosition(String myUrl) {
         try {
-            SharedPreferencesManager.getInstance().writeInt(
-                    Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
-                    mPosition);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(
+                            Integer.toString(
+                                    BraveActivity.getBraveActivity().getActivityTab().getId()),
+                            mPosition);
             TabUtils.openUrlInSameTab(myUrl);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInSameTabAndSavePosition " + e);
@@ -1305,34 +1307,39 @@ public class CardBuilderFeedCard {
     private void setListeners(
             View view, String urlString, String creativeInstanceId, boolean isPromo) {
         DisplayAd displayAd = mNewsItem.getDisplayAd();
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBraveNewsController != null) {
-                    if (isPromo) {
-                        // Updates the no. of promotion cards visited
-                        mBraveNewsController.onPromotedItemVisit(
-                                mNewsItem.getUuid(), creativeInstanceId);
-                    } else if (displayAd != null) {
-                        // Updates the no. of ads cards visited
-                        mBraveNewsController.onDisplayAdVisit(
-                                displayAd.uuid, displayAd.creativeInstanceId);
-                    } else {
-                        // Brave News updates the no. of "normal" cards visited
-                        int visitedNewsCardsCount = SharedPreferencesManager.getInstance().readInt(
-                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED);
-                        visitedNewsCardsCount++;
-                        SharedPreferencesManager.getInstance().writeInt(
-                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
-                                visitedNewsCardsCount);
-                        if (visitedNewsCardsCount > 0) {
-                            mBraveNewsController.onSessionCardVisitsCountChanged(
-                                    (short) visitedNewsCardsCount);
+        view.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mBraveNewsController != null) {
+                            if (isPromo) {
+                                // Updates the no. of promotion cards visited
+                                mBraveNewsController.onPromotedItemVisit(
+                                        mNewsItem.getUuid(), creativeInstanceId);
+                            } else if (displayAd != null) {
+                                // Updates the no. of ads cards visited
+                                mBraveNewsController.onDisplayAdVisit(
+                                        displayAd.uuid, displayAd.creativeInstanceId);
+                            } else {
+                                // Brave News updates the no. of "normal" cards visited
+                                int visitedNewsCardsCount =
+                                        ChromeSharedPreferences.getInstance()
+                                                .readInt(
+                                                        BravePreferenceKeys
+                                                                .BRAVE_NEWS_CARDS_VISITED);
+                                visitedNewsCardsCount++;
+                                ChromeSharedPreferences.getInstance()
+                                        .writeInt(
+                                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
+                                                visitedNewsCardsCount);
+                                if (visitedNewsCardsCount > 0) {
+                                    mBraveNewsController.onSessionCardVisitsCountChanged(
+                                            (short) visitedNewsCardsCount);
+                                }
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
     }
 
     private void setText(FeedItemMetadata itemData, TextView textView, int type) {

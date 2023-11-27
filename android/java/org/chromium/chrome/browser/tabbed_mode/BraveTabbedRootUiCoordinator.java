@@ -44,7 +44,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.features.start_surface.StartSurface;
-import org.chromium.components.browser_ui.widget.InsetObserverView;
+import org.chromium.components.browser_ui.widget.InsetObserver;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
@@ -56,7 +56,8 @@ import java.util.function.Function;
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     protected AppCompatActivity mActivity;
 
-    public BraveTabbedRootUiCoordinator(@NonNull AppCompatActivity activity,
+    public BraveTabbedRootUiCoordinator(
+            @NonNull AppCompatActivity activity,
             @Nullable Callback<Boolean> onOmniboxFocusChangedListener,
             @NonNull ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             @NonNull ActivityTabProvider tabProvider,
@@ -85,33 +86,65 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull Supplier<CompositorViewHolder> compositorViewHolderSupplier,
             @NonNull Supplier<TabContentManager> tabContentManagerSupplier,
             @NonNull Supplier<SnackbarManager> snackbarManagerSupplier,
-            @ActivityType int activityType, @NonNull Supplier<Boolean> isInOverviewModeSupplier,
+            @ActivityType int activityType,
+            @NonNull Supplier<Boolean> isInOverviewModeSupplier,
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull AppMenuDelegate appMenuDelegate,
             @NonNull StatusBarColorProvider statusBarColorProvider,
-            @NonNull ObservableSupplierImpl<EphemeralTabCoordinator>
-                    ephemeralTabCoordinatorSupplier,
-            @NonNull IntentRequestTracker intentRequestTracker, int controlContainerHeightResource,
-            @NonNull Supplier<InsetObserverView> insetObserverViewSupplier,
+            @NonNull
+                    ObservableSupplierImpl<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
+            @NonNull IntentRequestTracker intentRequestTracker,
+            int controlContainerHeightResource,
+            @NonNull Supplier<InsetObserver> insetObserverViewSupplier,
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
-            boolean initializeUiWithIncognitoColors, @NonNull BackPressManager backPressManager,
+            boolean initializeUiWithIncognitoColors,
+            @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState) {
-        super(activity, onOmniboxFocusChangedListener, shareDelegateSupplier, tabProvider,
-                profileSupplier, bookmarkModelSupplier, tabBookmarkerSupplier,
-                contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
-                tabSwitcherSupplier, intentMetadataOneshotSupplier,
-                layoutStateProviderOneshotSupplier, startSurfaceParentTabSupplier,
-                browserControlsManager, windowAndroid, activityLifecycleDispatcher,
-                layoutManagerSupplier, menuOrKeyboardActionController, activityThemeColorSupplier,
-                modalDialogManagerSupplier, appMenuBlocker, supportsAppMenuSupplier,
-                supportsFindInPage, tabCreatorManagerSupplier, fullscreenManager,
-                compositorViewHolderSupplier, tabContentManagerSupplier, snackbarManagerSupplier,
-                activityType, isInOverviewModeSupplier, isWarmOnResumeSupplier, appMenuDelegate,
-                statusBarColorProvider, ephemeralTabCoordinatorSupplier, intentRequestTracker,
-                controlContainerHeightResource, insetObserverViewSupplier,
-                backButtonShouldCloseTabFn, tabReparentingControllerSupplier,
-                initializeUiWithIncognitoColors, backPressManager, savedInstanceState);
+        super(
+                activity,
+                onOmniboxFocusChangedListener,
+                shareDelegateSupplier,
+                tabProvider,
+                profileSupplier,
+                bookmarkModelSupplier,
+                tabBookmarkerSupplier,
+                contextualSearchManagerSupplier,
+                tabModelSelectorSupplier,
+                startSurfaceSupplier,
+                tabSwitcherSupplier,
+                intentMetadataOneshotSupplier,
+                layoutStateProviderOneshotSupplier,
+                startSurfaceParentTabSupplier,
+                browserControlsManager,
+                windowAndroid,
+                activityLifecycleDispatcher,
+                layoutManagerSupplier,
+                menuOrKeyboardActionController,
+                activityThemeColorSupplier,
+                modalDialogManagerSupplier,
+                appMenuBlocker,
+                supportsAppMenuSupplier,
+                supportsFindInPage,
+                tabCreatorManagerSupplier,
+                fullscreenManager,
+                compositorViewHolderSupplier,
+                tabContentManagerSupplier,
+                snackbarManagerSupplier,
+                activityType,
+                isInOverviewModeSupplier,
+                isWarmOnResumeSupplier,
+                appMenuDelegate,
+                statusBarColorProvider,
+                ephemeralTabCoordinatorSupplier,
+                intentRequestTracker,
+                controlContainerHeightResource,
+                insetObserverViewSupplier,
+                backButtonShouldCloseTabFn,
+                tabReparentingControllerSupplier,
+                initializeUiWithIncognitoColors,
+                backPressManager,
+                savedInstanceState);
 
         mActivity = activity;
     }

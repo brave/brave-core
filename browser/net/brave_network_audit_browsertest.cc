@@ -21,7 +21,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "chrome/browser/password_manager/password_store_factory.h"
+#include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -219,8 +219,8 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    base::FilePath source_root_path;
-    base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root_path);
+    base::FilePath source_root_path =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
     // Full log containing all the network requests.
     net_log_path_ = source_root_path.AppendASCII("network_log.json");
@@ -303,8 +303,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
 
   // Add a password to the password manager.
   password_manager::PasswordStoreInterface* password_store =
-      PasswordStoreFactory::GetForProfile(browser()->profile(),
-                                          ServiceAccessType::IMPLICIT_ACCESS)
+      ProfilePasswordStoreFactory::GetForProfile(
+          browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS)
           .get();
   password_manager::PasswordForm signin_form;
   signin_form.signon_realm = "https://www.facebook.com/";

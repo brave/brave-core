@@ -6,7 +6,6 @@
 #include "base/feature_list.h"
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
-#include "chrome/browser/apps/intent_helper/intent_picker_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
@@ -73,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+#include "chrome/browser/apps/link_capturing/link_capturing_features.h"
 #include "components/device_signals/core/common/signals_features.h"
 #endif
 
@@ -116,11 +116,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
-    &apps::features::kLinkCapturingInfoBar,
-    &attribution_reporting::features::
-        kAttributionReportingNullAggregatableReports,
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    &apps::features::kDesktopPWAsLinkCapturing,
+#endif
+    &attribution_reporting::features::kAttributionReportingTriggerConfig,
     &attribution_reporting::features::kConversionMeasurement,
-    &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
@@ -130,6 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kAdAuctionReportingWithMacroApi,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
+    &blink::features::kAttributionReportingInBrowserMigration,
     &blink::features::kBackgroundResourceFetch,
     &blink::features::kBiddingAndScoringDebugReportingAPI,
     &blink::features::kBrowsingTopics,
@@ -149,7 +150,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kPrerender2,
     &blink::features::kPrivacySandboxAdsAPIs,
     &blink::features::kPrivateAggregationApi,
+    &blink::features::kPrivateAggregationApiMultipleCloudProviders,
     &blink::features::kSharedStorageAPI,
+    &blink::features::kSharedStorageAPIM118,
     &blink::features::kSharedStorageSelectURLLimit,
     &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
     &blink::features::kSpeculationRulesPrefetchFuture,
@@ -183,11 +186,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kBookmarkTriggerForPrerender2,
     &features::kChromeLabs,
     &features::kChromeRefresh2023,
+    &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
-#endif
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-    &features::kDesktopPWAsLinkCapturing,
 #endif
     &features::kDigitalGoodsApi,
     &features::kDIPS,
@@ -200,6 +201,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &features::kIdleDetection,
     &features::kKAnonymityService,
+    &features::kKAnonymityServiceOHTTPRequests,
+    &features::kLegacyTechReportEnableCookieIssueReports,
+    &features::kLegacyTechReportTopLevelUrl,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kOmniboxTriggerForPrerender2,
@@ -272,12 +276,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleDiscounts,
     &ntp_features::kNtpHistoryClustersModuleLoad,
-    &omnibox::kInspireMe,
     &omnibox::kDocumentProviderNoSetting,
     &omnibox::kDocumentProviderNoSyncRequirement,
     &omnibox::kExpandedStateHeight,
     &omnibox::kExpandedStateShape,
-    &omnibox::kOmniboxMostVisitedTilesOnSrp,
     &omnibox::kOmniboxSteadyStateHeight,
     &omnibox::kRichAutocompletion,
     &optimization_guide::features::kOptimizationGuideFetchingForSRP,
@@ -294,22 +296,20 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &permissions::features::kPermissionStorageAccessAPI,
+    &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
     &privacy_sandbox::kEnforcePrivacySandboxAttestations,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
     &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
-    &privacy_sandbox::kTrackingProtectionOnboardingForceEligibility,
     &promos_features::kIOSPromoPasswordBubble,
-    &safe_browsing::kExtensionTelemetry,
     &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
     &safe_browsing::kExtensionTelemetryTabsApiSignal,
     &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
     &segmentation_platform::features::kSegmentationPlatformDeviceTier,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
-    &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingManager,
     &subresource_filter::kAdTagging,
@@ -334,7 +334,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-    &performance_manager::features::kHeuristicMemorySaver,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
     &sharing_hub::kDesktopScreenshots,

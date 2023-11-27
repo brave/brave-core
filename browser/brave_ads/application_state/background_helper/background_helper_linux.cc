@@ -5,6 +5,18 @@
 
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper_linux.h"
 
+// Something in (or included in) chrome/browser/ui/browser.h causes a build
+// error when ui/base/x/x11_util.h is included after it:
+// ../../ui/base/x/x11_util.h:367:68: error: invalid operands to binary
+// expression ('x11::EventMask' and 'x11::EventMask')
+//  367 |     x11::EventMask event_mask = x11::EventMask::SubstructureNotify |
+//      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+//  368 |                                 x11::EventMask::SubstructureRedirect);
+//      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// clang-format off
+#include "ui/base/x/x11_util.h"
+// clang-format on
+
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/ui/browser.h"
@@ -12,7 +24,6 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/aura/window.h"
 #include "ui/aura/window_tree_host.h"
-#include "ui/base/x/x11_util.h"
 #include "ui/gfx/x/x11_atom_cache.h"
 #include "ui/gfx/x/xproto_util.h"
 

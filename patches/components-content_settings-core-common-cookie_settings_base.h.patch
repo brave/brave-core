@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index d5960ea1a4d48739bd37dd042563a42e637a604e..1a68bc5a3d90a692cf4db4779304beeef976251d 100644
+index 7312b5bfc9318220b5fcc8dac09850dd331c078e..0b7a07e8e1a0c1b9ebeac9590dde8da171b4743f 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
-@@ -72,7 +72,7 @@ class CookieSettingsBase {
+@@ -73,7 +73,7 @@ class CookieSettingsBase {
    CookieSettingsBase(const CookieSettingsBase&) = delete;
    CookieSettingsBase& operator=(const CookieSettingsBase&) = delete;
  

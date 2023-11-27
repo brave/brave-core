@@ -42,8 +42,9 @@ void ContributionMonthly::AdvanceContributionDates(
                   if (!publisher || publisher->id.empty()) {
                     return true;
                   }
-                  base::Time next_contribution = base::Time::FromDoubleT(
-                      static_cast<double>(publisher->reconcile_stamp));
+                  base::Time next_contribution =
+                      base::Time::FromSecondsSinceUnixEpoch(
+                          static_cast<double>(publisher->reconcile_stamp));
                   return cutoff_time && next_contribution > cutoff_time;
                 });
 

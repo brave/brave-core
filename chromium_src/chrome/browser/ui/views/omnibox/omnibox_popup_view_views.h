@@ -6,15 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_POPUP_VIEW_VIEWS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_POPUP_VIEW_VIEWS_H_
 
-#define OmniboxPopupViewViewsTest \
-  OmniboxPopupViewViewsTest;      \
+#define OmniboxSuggestionButtonRowBrowserTest \
+  OmniboxSuggestionButtonRowBrowserTest;      \
   friend class BraveOmniboxPopupViewViews
 
 #define GetTargetBounds virtual GetTargetBounds
 
 #include "src/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"  // IWYU pragma: export
 
-#undef OmniboxPopupViewViewsTest
+#undef OmniboxSuggestionButtonRowBrowserTest
 #undef GetTargetBounds
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_POPUP_VIEW_VIEWS_H_

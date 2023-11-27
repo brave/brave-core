@@ -12,11 +12,15 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAttributionFencedFrameReportingBeacon, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kCookieDeprecationFacilitatedTesting, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDIPS, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kLegacyTechReportEnableCookieIssueReports,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kLegacyTechReportTopLevelUrl, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedHTTPExchange, base::FEATURE_DISABLED_BY_DEFAULT},

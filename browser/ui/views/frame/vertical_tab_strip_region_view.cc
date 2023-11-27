@@ -196,8 +196,9 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
  public:
   METADATA_HEADER(VerticalTabSearchButton);
 
-  explicit VerticalTabSearchButton(TabStrip* tab_strip, Edge flat_edge)
-      : BraveTabSearchButton(tab_strip, flat_edge) {
+  explicit VerticalTabSearchButton(TabStripController* tab_strip_controller,
+                                   Edge flat_edge)
+      : BraveTabSearchButton(tab_strip_controller, flat_edge) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
@@ -500,7 +501,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     // We layout the search button at the end, because there's no
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
-        region_view->tab_strip(), Edge::kNone));
+        region_view->tab_strip()->controller(), Edge::kNone));
     UpdateTabSearchButtonVisibility();
   }
   ~HeaderView() override = default;

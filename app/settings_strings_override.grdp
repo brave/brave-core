@@ -133,9 +133,10 @@
   </message>
   <if expr="_google_chrome">
     </if>
-  <message name="IDS_SETTINGS_PRIVACY_SEARCH_SUGGESTIONS_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'search suggestions' in the 'Privacy Guide'.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'search suggestions' in the 'Privacy Guide'.">
     When you click or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
   </message>
+
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
     {NUM_EXTENSIONS, plural,
      =1 {Review 1 extension that was taken down from the Web Store}
@@ -143,6 +144,9 @@
   </message>
   <if expr="_google_chrome">
     </if>
+  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
+    Provides Brave’s strongest account security for profiles at risk of targeted attacks
+  </message>
   <if expr="chromeos_ash">
     </if>
   <if expr="is_win and _google_chrome">
@@ -212,4 +216,8 @@
   <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_SUBHEADER" desc="The subheader of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">
     Private mode keeps <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>your browsing private from others<ph name="END_LINK">&lt;/a&gt;</ph> who use your device
   </message>
+  <if expr="not is_chromeos">
+    </if>
+  <if expr="is_chromeos">
+    </if>
   </grit-part>

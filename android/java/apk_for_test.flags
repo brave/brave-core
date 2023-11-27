@@ -384,7 +384,7 @@
     *** getModel(...);
 }
 
--keep class org.chromium.components.permissions.PermissionDialogModel {
+-keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);
 }
 
@@ -510,14 +510,6 @@
     *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
     *** getCardViewBackgroundColor(...);
-}
-
--keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.autofill.BraveAutofillPopupBridge {
-    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
@@ -654,12 +646,10 @@
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
     public <init>(...);
-    *** inflateIfVisible(...);
 }
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveManageAccountDevicesLinkView {
     public <init>(...);
-    *** inflateIfVisible(...);
 }
 
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl
@@ -816,5 +806,14 @@
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.identity_disc.IdentityDiscController {
+    public <init>(...);
+    *** calculateButtonData(...);
+}
+
+-keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
     public <init>(...);
 }

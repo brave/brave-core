@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/syncer.cc b/components/sync/engine/syncer.cc
-index 382a33e0e165ac9801b83d7ee290469c0722849a..170df65769202cb1513ca84047949ea5d0b7af4c 100644
+index 3b5b90e7f61ad0af902369086c74f4c39553022b..18108cd6540caf2dd7019db1dd55134637547e42 100644
 --- a/components/sync/engine/syncer.cc
 +++ b/components/sync/engine/syncer.cc
-@@ -247,6 +247,7 @@ SyncerError Syncer::BuildAndPostCommits(const ModelTypeSet& request_types,
+@@ -245,6 +245,7 @@ SyncerError Syncer::BuildAndPostCommits(const ModelTypeSet& request_types,
      }
      nudge_tracker->RecordSuccessfulCommitMessage(
          commit->GetContributingDataTypes());
