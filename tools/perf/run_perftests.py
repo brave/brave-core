@@ -18,7 +18,6 @@ The tool gives more stable results on prepared hardware/OS to minimize jitter.
 """
 import argparse
 import logging
-import platform
 import shutil
 import sys
 import os
