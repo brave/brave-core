@@ -229,15 +229,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
-#else
-      (url.is_valid() && url.host_piece() == kWalletPageHost &&
-       (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath ||
-        url.path().starts_with(kWalletBuyPagePath) ||
-        url.path().starts_with(kWalletDepositPagePath))) ||
-#endif  // BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
@@ -316,16 +308,11 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
   }
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
-#if BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
   // Support to unlock Wallet has been extended also through WebUI,
   // so we block only when Wallet hasn't been created yet, as onboarding
   // is offered only via native Andrioid UI.
   return !keyring_service ||
          (keyring_service && !keyring_service->IsWalletCreatedSync());
-#else
-  return !keyring_service ||
-         (keyring_service && keyring_service->IsLockedSync());
-#endif
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 }  // namespace

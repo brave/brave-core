@@ -40,7 +40,6 @@ source_set("constants") {
   public_deps = [ ":brave_services_key" ]
   deps = [
     "//base",
-    "//brave/android/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/widevine:static_buildflags",
   ]

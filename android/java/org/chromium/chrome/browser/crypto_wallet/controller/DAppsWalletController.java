@@ -23,7 +23,6 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -141,9 +140,7 @@ public class DAppsWalletController
 
     private void createAndShowWalletPanel() {
         boolean showExpandButton =
-                !BraveConfig.WEB_WALLET_ENABLED
-                        || (mVisibleUrl != null
-                                && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST));
+                mVisibleUrl != null && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST);
         mBraveWalletPanel =
                 new BraveWalletPanel(
                         mAnchorViewHost, mDialogOrPanelDismissListener, this, showExpandButton);

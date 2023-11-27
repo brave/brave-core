@@ -5,10 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.ACCOUNTS_FRAGMENT_POSITION;
-import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.MARKET_FRAGMENT_POSITION;
-import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.PORTFOLIO_FRAGMENT_POSITION;
-import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FIRST_PAGE_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
@@ -36,7 +32,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -350,38 +345,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(false);
 
         mCryptoOnboardingLayout.setVisibility(View.GONE);
-        if (BraveConfig.WEB_WALLET_ENABLED) {
-            WalletUtils.openWebWallet();
-        } else {
-            mCryptoLayout.setVisibility(View.VISIBLE);
-
-            mBottomNavigationView.setOnItemSelectedListener(
-                    menuItem -> {
-                        final int menuItemId = menuItem.getItemId();
-                        if (menuItemId == R.id.action_wallet_portfolio) {
-                            mViewPager.setCurrentItem(PORTFOLIO_FRAGMENT_POSITION, true);
-                        } else if (menuItemId == R.id.action_wallet_activity) {
-                            mViewPager.setCurrentItem(
-                                    TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION, true);
-                        } else if (menuItemId == R.id.action_wallet_accounts) {
-                            mViewPager.setCurrentItem(ACCOUNTS_FRAGMENT_POSITION, true);
-                        } else if (menuItemId == R.id.action_wallet_explore) {
-                            mViewPager.setCurrentItem(MARKET_FRAGMENT_POSITION, true);
-                        }
-                        return true;
-                    });
-
-            if (mKeyringService != null) {
-                mKeyringService.isWalletBackedUp(
-                        backed_up -> {
-                            if (!backed_up) {
-                                showWalletBackupBanner();
-                            } else {
-                                findViewById(R.id.wallet_backup_banner).setVisibility(View.GONE);
-                            }
-                        });
-            }
-        }
+        WalletUtils.openWebWallet();
     }
 
     private void addBackupWalletSequence(

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
-#include "brave/android/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 
@@ -46,17 +45,6 @@ inline constexpr char kVPNPanelURL[] =
 inline constexpr char kVPNPanelHost[] = "vpn-panel.top-chrome";
 inline constexpr char kBraveUIWalletPageURL[] = "chrome://wallet/";
 inline constexpr char kWalletPageHost[] = "wallet";
-#if BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
-inline constexpr char kWalletPagePath[] = "/crypto/portfolio/assets";
-inline constexpr char kWalletUnlockPagePath[] = "/crypto/unlock";
-#else
-inline constexpr char kWalletBuyPagePath[] = "/crypto/fund-wallet";
-inline constexpr char kWalletSendPagePath[] = "/send";
-inline constexpr char kWalletSwapPagePath[] = "/swap";
-inline constexpr char kWalletDepositPagePath[] = "/crypto/deposit-funds";
-#endif  // BUILDFLAG(ENABLE_BRAVE_ANDROID_WEB_WALLET)
-#endif  // BUILDFLAG(IS_ANDROID)
 inline constexpr char kExtensionSettingsURL[] = "brave://settings/extensions";
 inline constexpr char kWalletSettingsURL[] = "brave://settings/wallet";
 inline constexpr char kBraveSyncPath[] = "braveSync";
