@@ -34,6 +34,14 @@ struct BackupWalletView: View {
       // user can press return in field to execute when continue button is disabled
       return
     }
+    
+    // Dismiss keyboard for password field before leaving this view #8445.
+    // Without dismissal, it's possible the scroll view in the detail view
+    // has incorrect frame (sitting above the area the keyboard used to be)
+    // which can show the scroll view contents out of the scroll bounds
+    // but will block tap interactions.
+    resignFirstResponder()
+    
     keyringStore.recoveryPhrase(password: password) { words in
       if words.isEmpty {
         passwordError = .incorrectPassword
@@ -41,6 +49,10 @@ struct BackupWalletView: View {
         recoveryWords = words
       }
     }
+  }
+  
+  private func resignFirstResponder() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
 
   var body: some View {
