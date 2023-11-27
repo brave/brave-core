@@ -194,8 +194,6 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     @Override
     public void OnGetExternalWallet(String externalWallet) {
-        int walletStatus = WalletStatus.NOT_CONNECTED;
-
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
@@ -206,16 +204,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                                     getWalletStringFromType(custodianType));
                     mSendButton.setText(sendWithCustodian);
                 }
-                walletStatus = mExternalWallet.getStatus();
-                if (walletStatus != WalletStatus.NOT_CONNECTED) {
-                    if (walletStatus == WalletStatus.LOGGED_OUT) {
-                        setLogoutStateMessage();
-                    } else {
-                        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId);
-                        setPublisherNoteText(pubStatus, walletStatus);
-                    }
+                int walletStatus = mExternalWallet.getStatus();
+
+                if (walletStatus == WalletStatus.LOGGED_OUT) {
+                    setLogoutStateMessage();
                 } else {
-                    mCustodianText.setVisibility(View.GONE);
+                    int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId);
+                    setPublisherNoteText(pubStatus, walletStatus);
                 }
             } catch (JSONException e) {
                 mExternalWallet = null;
