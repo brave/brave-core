@@ -43,7 +43,7 @@ def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
 
   elif os.path.isfile(config):  # Full config path
     config_path = config
-  elif config == 'auto':  # Select a config by machine_id and chromium
+  elif config == 'auto':  # Select the config by machine_id and chromium
     if options.machine_id is None:
       raise RuntimeError('Set --machine-id to use config=auto')
 
@@ -54,7 +54,7 @@ def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
         f'{prefix}-{platform_name}-{options.machine_id}.json5')
     if not os.path.isfile(config_path):
       raise RuntimeError(f'No config file {config_path}')
-  else:  # try relative path
+  else:  # config is a relative path
     config_path = os.path.join(path_util.GetBravePerfConfigDir(), config)
     if not os.path.isfile(config_path):
       raise RuntimeError(f'Can\'t find matching config {config}')

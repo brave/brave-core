@@ -20,11 +20,11 @@ import components.path_util as path_util
 def ToChromiumPlatformName(target_os: str) -> str:
   if target_os == 'mac':
     return 'mac-arm64' if platform.processor() == 'arm' else 'mac-x64'
-  elif target_os == 'windows':
+  if target_os == 'windows':
     return 'win64'
-  elif target_os == 'linux':
+  if target_os == 'linux':
     return 'linux64'
-  elif target_os == 'android':
+  if target_os == 'android':
     return 'android-arm64'
   raise RuntimeError('Platform is not supported')
 
