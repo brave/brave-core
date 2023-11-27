@@ -36,20 +36,20 @@ constexpr int kDefaultNotificationAdMargin = 12;
 
 // Default ad notification normalized display x coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 0.5;
 #endif
 
 // Default ad notification normalized display y coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.05;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.2;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.2;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.0;
 #endif
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

@@ -21,10 +21,10 @@ inline constexpr char kShouldShowOnboardingNotification[] =
 // Stores the last normalized screen position of custom notification ads and
 // whether to fallback from native to custom notification ads if native
 // notifications are disabled
-inline constexpr char kNotificationAdLastNormalizedDisplayCoordinateX[] =
-    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_x";
-inline constexpr char kNotificationAdLastNormalizedDisplayCoordinateY[] =
-    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_y";
+inline constexpr char kNotificationAdLastNormalizedCoordinateX[] =
+    "brave.brave_ads.ad_notification.last_normalized_coordinate_x";
+inline constexpr char kNotificationAdLastNormalizedCoordinateY[] =
+    "brave.brave_ads.ad_notification.last_normalized_coordinate_y";
 inline constexpr char kNotificationAdDidFallbackToCustom[] =
     "brave.brave_ads.ad_notification.did_fallback_to_custom";
 

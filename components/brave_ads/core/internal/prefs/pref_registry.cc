@@ -18,10 +18,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
 
-  registry->RegisterDoublePref(
-      prefs::kNotificationAdLastNormalizedDisplayCoordinateX, 0.0);
-  registry->RegisterDoublePref(
-      prefs::kNotificationAdLastNormalizedDisplayCoordinateY, 0.0);
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
+                               0.0);
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
+                               0.0);
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
