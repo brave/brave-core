@@ -9,7 +9,7 @@
   }],
   "benchmarks": [
     {
-      "name": "loading.desktop.brave",
+      "name": "loading.desktop.brave.startup",
       "pageset-repeat": 1,
       "stories": [
         "example.com_cold",

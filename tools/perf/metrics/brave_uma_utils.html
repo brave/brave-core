@@ -1,0 +1,103 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE html>
+
+<link rel="import" href="/tracing/base/unit.html">
+<link rel="import" href="/tracing/base/utils.html">
+<link rel="import" href="/tracing/extras/chrome/chrome_processes.html">
+<link rel="import" href="/tracing/value/histogram.html">
+<script>
+  'use strict';
+
+  /**
+   * @fileoverfiew This file contains implementation of extracting UMA histograms.
+   *
+   * UMA histograms are logged in trace events titled 'HistogramSample'. The
+   * event arguments contain the histogram name and the value.
+   */
+  tr.exportTo('tr.metrics', function () {
+    const REGULAR_SUMMARY_OPTIONS = {
+      avg: false,
+      count: false,
+      max: false,
+      min: false,
+      std: false,
+      sum: false,
+    };
+
+    const SUM_AND_COUNT_SUMMARY_OPTIONS = {
+      avg: false,
+      count: true,
+      max: false,
+      min: false,
+      std: false,
+      sum: true,
+    };
+
+    function braveExtendedUmaMetrics(histograms, model, attrs) {
+      const umaProcessingRules = new Map();
+      const addRule = (name, rule) => {
+        const rules = umaProcessingRules.get(name) || [];
+        if (rules.length == 0) umaProcessingRules.set(name, rules);
+        rules.push(rule)
+      };
+      attrs.regularHistograms && attrs.regularHistograms.forEach(name => {
+        addRule(name, { summaryOptions: REGULAR_SUMMARY_OPTIONS });
+      });
+
+      attrs.sumAndCountHistograms && attrs.sumAndCountHistograms.forEach(
+        name => {
+          addRule(name, { summaryOptions: SUM_AND_COUNT_SUMMARY_OPTIONS });
+        }
+      );
+
+      const chromeHelper = model.getOrCreateHelper(
+        tr.model.helpers.ChromeModelHelper);
+
+      const umaMap = new Map(); /* name -> [value1, value2, ..] */
+      let totalUmaCount = 0;
+      for (const helper of chromeHelper.browserHelpers) {
+        helper.iterAllThreads(function (thread) {
+          for (const slice of thread.sliceGroup.slices) {
+            if (slice.title !== 'HistogramSample') continue;
+            ++totalUmaCount;
+            const chrome_histogram_sample = slice.args.chrome_histogram_sample;
+            const name = chrome_histogram_sample.name;
+            if (!umaProcessingRules.has(name)) continue;
+            const value = chrome_histogram_sample.sample;
+            const valueList = umaMap.get(name) || [];
+            if (!umaMap.has(name)) umaMap.set(name, valueList);
+            valueList.push(value);
+          }
+        })
+      }
+      if (totalUmaCount === 0) {
+        throw new Error('Can\'t find any HistogramSample. ' +
+          'Enable disabled-by-default-histogram_samples category to fix it.')
+      }
+
+      for (const [name, values] of umaMap) {
+        for (const rule of umaProcessingRules.get(name)) {
+          const boundaries =
+            (attrs.getHistogramBoundaries &&
+              attrs.getHistogramBoundaries(name)) ||
+            tr.v.HistogramBinBoundaries.createExponential(1e-3, 1e3, 50);
+          const unit =
+            (attrs.getHistogramUnit && attrs.getHistogramUnit(name)) ||
+            tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
+          histograms.createHistogram(name, unit, values, {
+            binBoundaries: boundaries,
+            summaryOptions: rule.summaryOptions,
+          });
+        }
+      }
+    }
+
+    return {
+      braveExtendedUmaMetrics
+    };
+  });
+</script>
