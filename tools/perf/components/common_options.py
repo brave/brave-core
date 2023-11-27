@@ -30,6 +30,7 @@ class CommonOptions:
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
   target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
+  target_arch: str = ''
 
   do_run_tests: bool = True
   do_report: bool = False
@@ -68,7 +69,8 @@ class CommonOptions:
     parser.add_argument('--target-os',
                         '--target_os',
                         type=str,
-                        choices=['windows', 'macos', 'linux', 'android'])
+                        choices=['windows', 'mac', 'linux', 'android'])
+    parser.add_argument('--target-arch', type=str, choices=['x64', 'arm64'])
     parser.add_argument(
         '--local-run',
         action='store_true',
@@ -126,6 +128,11 @@ class CommonOptions:
     if args.target_os is not None:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
 
+    if args.target_arch is not None:
+      options.target_arch = args.target_arch
+    else:
+      options.target_arch = 'arm64' if options.target_os == 'android' else 'x64'
+
     options.report_on_failure = args.report_on_failure
     compare = args.targets is None or args.targets == '' or args.compare
     options.compare = compare
@@ -138,6 +145,3 @@ class CommonOptions:
                          and not compare)
 
     return options
-
-  def target_arch(self):
-    return 'arm64' if self.target_os == 'android' else 'x64'
