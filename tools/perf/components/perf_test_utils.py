@@ -6,6 +6,8 @@ import logging
 import os
 import subprocess
 import tempfile
+import platform
+
 from threading import Timer
 from typing import List, Optional, Tuple
 from urllib.request import urlopen
@@ -13,6 +15,18 @@ from urllib.request import urlopen
 from lib.util import extract_zip
 
 import components.path_util as path_util
+
+
+def ToChromiumPlatformName(target_os: str) -> str:
+  if target_os == 'mac':
+    return 'mac-arm64' if platform.processor() == 'arm' else 'mac-x64'
+  elif target_os == 'windows':
+    return 'win64'
+  elif target_os == 'linux':
+    return 'linux64'
+  elif target_os == 'android':
+    return 'android-arm64'
+  raise RuntimeError('Platform is not supported')
 
 
 def TerminateProcess(p):

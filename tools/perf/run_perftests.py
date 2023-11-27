@@ -18,6 +18,7 @@ The tool gives more stable results on prepared hardware/OS to minimize jitter.
 """
 import argparse
 import logging
+import platform
 import shutil
 import sys
 import os
@@ -47,9 +48,10 @@ def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
       raise RuntimeError('Set --machine-id to use config=auto')
 
     prefix = 'chromium' if options.chromium else 'brave'
+    platform_name = perf_test_utils.ToChromiumPlatformName(options.target_os)
     config_path = os.path.join(
-        path_util.GetBravePerfConfigDir(), 'dashboard',
-        f'{prefix}-{options.target_os}-{options.machine_id}.json5')
+        path_util.GetBravePerfConfigDir(), 'ci',
+        f'{prefix}-{platform_name}-{options.machine_id}.json5')
     if not os.path.isfile(config_path):
       raise RuntimeError(f'No config file {config_path}')
   else:  # try relative path
