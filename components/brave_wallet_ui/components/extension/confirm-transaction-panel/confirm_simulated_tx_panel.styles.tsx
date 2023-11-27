@@ -145,7 +145,8 @@ export const SimulationInfoColumn = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 255px;
+  width: 100%;
+  padding: 0px 8px;
 `
 
 export const ContractOriginColumn = styled.div`
@@ -173,7 +174,9 @@ export const AccountNameAndAddress = styled.div`
 export const TabsAndContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  width: 255px;
+  width: 100%;
+  /* width: 255px; */
+  padding: 0px 24px;
 `

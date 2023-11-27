@@ -41,7 +41,7 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
     queueNextSignTransaction,
     queueNumber,
     selectedQueueData,
-    signingAccount,
+    signingAccount
   } = useSignSolanaTransactionsQueue(signMode)
 
   // queries
@@ -77,11 +77,11 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   if (!network) {
     return <LoadingPanel />
   }
-  
+
   // Loading/Fetching Simulation or network
   if (
-    (txSimulationOptIn === 'allowed' &&
-      (isLoadingSolanaSimulation || isFetchingSolanaSimulation))
+    txSimulationOptIn === 'allowed' &&
+    (isLoadingSolanaSimulation || isFetchingSolanaSimulation)
   ) {
     return <LoadingSimulation />
   }
@@ -109,16 +109,18 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   }
 
   // Default (not simulated)
-  return <SignTransactionPanel
-    signMode={signMode}
-    isSigningDisabled={isDisabled}
-    network={network}
-    queueLength={queueLength}
-    queueNextSignTransaction={queueNextSignTransaction}
-    queueNumber={queueNumber}
-    selectedQueueData={selectedQueueData}
-    signingAccount={signingAccount}
-  />
+  return (
+    <SignTransactionPanel
+      signMode={signMode}
+      isSigningDisabled={isDisabled}
+      network={network}
+      queueLength={queueLength}
+      queueNextSignTransaction={queueNextSignTransaction}
+      queueNumber={queueNumber}
+      selectedQueueData={selectedQueueData}
+      signingAccount={signingAccount}
+    />
+  )
 }
 
 export default PendingSignatureRequestsPanel

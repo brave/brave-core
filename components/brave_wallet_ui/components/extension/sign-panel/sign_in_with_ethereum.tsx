@@ -58,9 +58,10 @@ export const getKeyLocale = (key: string) => {
 }
 
 const getFormattedKeyValue = (key: string, data?: BraveWallet.SIWEMessage) => {
-  if (!data) {
+  if (!data || !data[key]) {
     return ''
   }
+
   if (key === 'origin') {
     return (
       <CodeBlock>
@@ -87,6 +88,7 @@ const getFormattedKeyValue = (key: string, data?: BraveWallet.SIWEMessage) => {
       )
     })
   }
+
   return data[key].toString()
 }
 

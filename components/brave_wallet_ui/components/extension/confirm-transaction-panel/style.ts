@@ -113,7 +113,7 @@ export const MessageBox = styled.div<{ isDetails: boolean }>`
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
-  width: 90%;
+  width: 100%;
   height: 140px;
   padding: ${(p) => (p.isDetails ? '14px' : '4px 14px')};
   overflow-y: scroll;
