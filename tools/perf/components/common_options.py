@@ -65,7 +65,7 @@ class CommonOptions:
         '--variations-repo-dir',
         type=str,
         help='A path to brave-variation repository to use Griffin in tests')
-    parser.add_argument('--target_os',
+    parser.add_argument('--target-os', '--target_os',
                         type=str,
                         choices=['windows', 'macos', 'linux', 'android'])
     parser.add_argument(

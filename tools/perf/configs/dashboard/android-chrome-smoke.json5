@@ -1,11 +1,10 @@
 {
   "configurations": [{
     "dashboard-bot-name": "test-agent-android",
-    "browser-type": "chrome",
+    "browser-type": "chromium",
     "profile": "clean",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
-    "save-artifacts": false,
   }],
   "benchmarks": [
     {

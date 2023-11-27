@@ -5,7 +5,6 @@
     "profile": "clean",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
-    "save-artifacts": false,
   }],
   "benchmarks": [
     {
