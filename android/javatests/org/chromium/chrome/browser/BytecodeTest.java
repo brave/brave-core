@@ -368,6 +368,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/SwipeRefreshHandler"));
     }
 
     @Test
@@ -619,6 +620,17 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "getRootId", true, int.class, Tab.class));
+
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/SwipeRefreshHandler",
+                        "start",
+                        true,
+                        boolean.class,
+                        int.class,
+                        float.class,
+                        float.class,
+                        boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -861,6 +873,13 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, String.class,
                 boolean.class));
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/SwipeRefreshHandler",
+                        "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
+                        Tab.class));
+
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoMediator",
                 "org/chromium/chrome/browser/logo/BraveLogoMediator", Context.class, Callback.class,
                 PropertyModel.class, boolean.class, Callback.class, Runnable.class, boolean.class,
@@ -1179,6 +1198,9 @@ public class BytecodeTest {
         Assert.assertFalse(
                 fieldExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "mIsResetting"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mSwipeType"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mTab"));
     }
 
     @Test

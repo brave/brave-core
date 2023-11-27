@@ -810,3 +810,13 @@
 -keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.SwipeRefreshHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveSwipeRefreshHandler {
+    public <init>(...);
+    *** mSwipeType;
+    *** mTab;
+}
