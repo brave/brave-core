@@ -1,0 +1,15 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "pixel4",
+    "browser-type": "chromium",
+    "profile": "clean",
+    "extra-browser-args": [],
+    "extra-benchmark-args": [],
+  }],
+  "benchmarks": [
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 5
+    }
+  ]
+}
