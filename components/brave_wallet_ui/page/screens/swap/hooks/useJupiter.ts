@@ -153,6 +153,7 @@ export function useJupiter(params: SwapParams) {
       let jupiterQuoteResponse
       try {
         jupiterQuoteResponse = await swapService.getJupiterQuote({
+          chainId: selectedNetwork.chainId,
           inputMint:
             overriddenParams.fromToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
@@ -196,7 +197,7 @@ export function useJupiter(params: SwapParams) {
       // Return undefined if response is null.
       return jupiterQuoteResponse?.response || undefined
     },
-    [selectedNetwork?.coin, params, reset, swapService]
+    [selectedNetwork, params, reset, swapService]
   )
 
   const exchange = useCallback(
@@ -220,6 +221,7 @@ export function useJupiter(params: SwapParams) {
       try {
         jupiterTransactionsPayloadResponse =
           await swapService.getJupiterSwapTransactions({
+            chainId: selectedNetwork.chainId,
             userPublicKey: selectedAccount.address,
             route: selectedRoute || quote.routes[0],
             inputMint:
@@ -274,7 +276,7 @@ export function useJupiter(params: SwapParams) {
     },
     [
       quote,
-      selectedNetwork?.coin,
+      selectedNetwork,
       params.toToken,
       selectedAccount,
       swapService,

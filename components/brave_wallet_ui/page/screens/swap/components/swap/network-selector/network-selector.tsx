@@ -81,7 +81,7 @@ export const NetworkSelector = (props: Props) => {
         </IconButton>
       </HeaderRow>
       <VerticalSpacer size={4} />
-      {supportedNetworks.map((network) => (
+      {supportedNetworks?.map((network) => (
         <NetworkListButton
           key={network.chainId}
           onClick={onSelectNetwork}
