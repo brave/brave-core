@@ -1,0 +1,47 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "mac-mini-x64-typical",
+    "browser-type": "brave",
+    "profile": "brave-typical-mac-v1.60.41",
+    "extra-browser-args": [],
+    "extra-benchmark-args": [],
+  }],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 20,
+      "stories": [
+        "example.com_cold",
+        "wikipedia.com_cold",
+        "IGN_warm",
+      ]
+    },
+    {
+      "name": "loading.desktop.brave.startup",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
+        "browse:news:hackernews:2020",
+      ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 50
+    }
+  ]
+}
