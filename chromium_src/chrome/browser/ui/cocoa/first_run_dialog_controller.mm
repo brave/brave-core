@@ -97,7 +97,7 @@
           IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&dockCheckboxString);
   _dockCheckbox = [[NSButton alloc] init];
-  [_dockCheckbox setButtonType:NSSwitchButton];
+  [_dockCheckbox setButtonType:NSButtonTypeSwitch];
   [_dockCheckbox setTitle:base::SysUTF16ToNSString(dockCheckboxString)];
   [_dockCheckbox setFont:[NSFont systemFontOfSize:14.0
                                            weight:NSFontWeightRegular]];

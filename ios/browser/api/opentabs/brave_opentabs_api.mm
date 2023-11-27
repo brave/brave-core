@@ -13,7 +13,7 @@
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
 #include "components/sync_sessions/session_sync_service.h"
-#include "ios/chrome/browser/synced_sessions/synced_sessions.h"
+#include "ios/chrome/browser/synced_sessions/model/synced_sessions.h"
 #include "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

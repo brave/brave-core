@@ -29,7 +29,7 @@ BraveTabMenuModel::BraveTabMenuModel(
       is_vertical_tab_(is_vertical_tab) {
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   if (web_contents_) {
-    Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+    Browser* browser = chrome::FindBrowserWithTab(web_contents_);
     restore_service_ =
         TabRestoreServiceFactory::GetForProfile(browser->profile());
   }

@@ -100,8 +100,10 @@ void DatabaseRecurringTip::InsertOrUpdate(
 
   BindString(command.get(), 0, publisher_id);
   BindDouble(command.get(), 1, amount);
-  BindInt64(command.get(), 2, static_cast<int64_t>(added_at.ToDoubleT()));
-  BindInt64(command.get(), 3, static_cast<int64_t>(next_date.ToDoubleT()));
+  BindInt64(command.get(), 2,
+            static_cast<int64_t>(added_at.InSecondsFSinceUnixEpoch()));
+  BindInt64(command.get(), 3,
+            static_cast<int64_t>(next_date.InSecondsFSinceUnixEpoch()));
 
   transaction->commands.push_back(std::move(command));
 
@@ -125,7 +127,8 @@ void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
       auto command = mojom::DBCommand::New();
       command->type = mojom::DBCommand::Type::RUN;
       command->command = query;
-      BindInt64(command.get(), 0, static_cast<int64_t>(next.ToDoubleT()));
+      BindInt64(command.get(), 0,
+                static_cast<int64_t>(next.InSecondsFSinceUnixEpoch()));
       BindString(command.get(), 1, publisher_id);
       transaction->commands.push_back(std::move(command));
     }
@@ -171,7 +174,8 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
           const auto& record = response->result->get_records().front();
           int64_t timestamp = GetInt64Column(record.get(), 0);
           if (timestamp > 0) {
-            time = base::Time::FromDoubleT(static_cast<double>(timestamp));
+            time = base::Time::FromSecondsSinceUnixEpoch(
+                static_cast<double>(timestamp));
             if (time < base::Time::Now()) {
               time = base::Time::Now();
             }

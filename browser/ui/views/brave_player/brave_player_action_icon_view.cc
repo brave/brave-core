@@ -36,17 +36,9 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
       url.has_query()) {
     if (std::string video_id; net::GetValueForKeyInQuery(url, "v", &video_id)) {
       url::RawCanonOutputT<char> encoded_video_id;
-      // TODO(sko) In the latest upstream code, these are refactored to use
-      // std::string_view directly. So the following code should be
-      //
-      // url::EncodeURIComponent(video_id, &encoded_video_id);
-      // return GURL(base::StrCat({kBravePlayerURL, "youtube/",
-      //   encoded_video_id.view()}));
-      url::EncodeURIComponent(video_id.data(), video_id.size(),
-                              &encoded_video_id);
+      url::EncodeURIComponent(video_id, &encoded_video_id);
       return GURL(base::StrCat({brave_player::kBravePlayerURL, "youtube/",
-                                std::string_view(encoded_video_id.data(),
-                                                 encoded_video_id.length())}));
+                                encoded_video_id.view()}));
     }
   }
   return {};

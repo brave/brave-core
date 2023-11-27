@@ -49,7 +49,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -130,10 +130,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.hideStatsImg.setOnClickListener(view -> {
-                SharedPreferencesManager.getInstance().writeBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
-            });
+            statsViewHolder.hideStatsImg.setOnClickListener(
+                    view -> {
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(
+                                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
+                    });
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
             statsViewHolder.adsBlockedCountTv.setText(statsPairs.get(0).first);

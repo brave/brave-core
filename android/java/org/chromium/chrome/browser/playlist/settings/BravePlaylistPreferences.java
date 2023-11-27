@@ -17,7 +17,7 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -77,7 +77,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         });
 
         updatePlaylistSettingsState(
-                SharedPreferencesManager.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
+                ChromeSharedPreferences.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
     }
 
     @Override
@@ -119,8 +119,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         if (mAutoSaveMediaForOfflinePreference == null) {
             return;
         }
-        switch (SharedPreferencesManager.getInstance().readInt(
-                PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
+        switch (ChromeSharedPreferences.getInstance()
+                .readInt(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
             case 0:
                 mAutoSaveMediaForOfflinePreference.setSummary(
                         getActivity().getResources().getString(R.string.on_text));

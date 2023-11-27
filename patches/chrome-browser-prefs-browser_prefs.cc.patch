@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index fc8d276b5191adf8bf3d68107d9b98d74a80be82..6837c8993f08b6b358677baa0ccda3b703d7f320 100644
+index 1e7a865273e07486989ac33665e3f35c21bb7ace..bfc54e99cf02e37dfb5e9a81882f637abc627123 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1605,6 +1605,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1604,6 +1604,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index fc8d276b5191adf8bf3d68107d9b98d74a80be82..6837c8993f08b6b358677baa0ccda3b7
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2029,6 +2031,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
-   data_controls::RegisterProfilePrefs(registry);
- #endif  // BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
+@@ -2036,6 +2038,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   registry->RegisterBooleanPref(prefs::kNativeHostsExecutablesLaunchDirectly,
+                                 false);
+ #endif  // BUILDFLAG(IS_WIN)
 +  brave::RegisterProfilePrefs(registry);
  }
  

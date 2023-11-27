@@ -1,6 +1,13 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
+  use_typescript_sources = true
+
+  # Indirect dependency to `url_mojom_gurl` by
+  # `//brave/components/services/bat_ads/public/interfaces` necessitates the
+  # generation of legacy js bindings for this interface.
+  generate_legacy_js_bindings = true
+
   sources = [ "brave_federated.mojom" ]
   webui_module_path = "/brave/components/brave_federated/public/interfaces"
   public_deps = [ "//mojo/public/mojom/base" ]

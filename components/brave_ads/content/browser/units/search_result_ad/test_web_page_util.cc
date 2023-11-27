@@ -34,10 +34,6 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
   return schema_org::mojom::Values::NewLongValues({value});
 }
 
-schema_org::mojom::ValuesPtr CreateVectorValuesPtr(bool value) {
-  return schema_org::mojom::Values::NewBoolValues({value});
-}
-
 class TestWebPageEntitiesConstructor final {
  public:
   explicit TestWebPageEntitiesConstructor(
@@ -81,6 +77,10 @@ class TestWebPageEntitiesConstructor final {
     schema_org::mojom::PropertyPtr property =
         schema_org::mojom::Property::New();
     property->name = std::string(name);
+
+    static_assert(!std::is_same_v<T, bool>,
+                  "There are no bool overrides for CreateVectorValuesPtr in "
+                  "the overloads above.");
     property->values = CreateVectorValuesPtr(value);
 
     properties->push_back(std::move(property));

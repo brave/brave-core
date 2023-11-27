@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.share;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -26,7 +26,7 @@ public class BraveShareDelegateImpl extends ShareDelegateImpl {
     @Override
     public boolean isSharingHubEnabled() {
         return super.isSharingHubEnabled()
-                && !SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false);
+                && !ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false);
     }
 }

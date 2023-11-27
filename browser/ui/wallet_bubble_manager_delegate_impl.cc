@@ -190,7 +190,7 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
     content::WebContents* web_contents,
     const GURL& webui_url)
     : web_contents_(web_contents), webui_url_(webui_url) {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
   DCHECK(browser);
 
   views::View* anchor_view;

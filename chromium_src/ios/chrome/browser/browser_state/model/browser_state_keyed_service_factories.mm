@@ -17,10 +17,10 @@
 #include "ios/chrome/browser/favicon/ios_chrome_large_icon_service_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
-#include "ios/chrome/browser/invalidation/ios_chrome_profile_invalidation_provider_factory.h"
-#include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
-#include "ios/chrome/browser/reading_list/reading_list_model_factory.h"
-#include "ios/chrome/browser/search_engines/template_url_service_factory.h"
+#include "ios/chrome/browser/invalidation/model/ios_chrome_profile_invalidation_provider_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/reading_list/model/reading_list_model_factory.h"
+#include "ios/chrome/browser/search_engines/model/template_url_service_factory.h"
 #include "ios/chrome/browser/signin/account_consistency_service_factory.h"
 #include "ios/chrome/browser/signin/identity_manager_factory.h"
 #include "ios/chrome/browser/sync/model/ios_user_event_service_factory.h"
@@ -46,7 +46,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   IOSChromeFaviconLoaderFactory::GetInstance();
   IOSChromeLargeIconCacheFactory::GetInstance();
   IOSChromeLargeIconServiceFactory::GetInstance();
-  IOSChromePasswordStoreFactory::GetInstance();
+  IOSChromeProfilePasswordStoreFactory::GetInstance();
   IOSChromeProfileInvalidationProviderFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   ModelTypeStoreServiceFactory::GetInstance();

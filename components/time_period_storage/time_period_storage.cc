@@ -184,8 +184,8 @@ void TimePeriodStorage::Load() {
     if (daily_values_.size() == period_days_) {
       break;
     }
-    daily_values_.push_back(
-        {base::Time::FromDoubleT(*day), static_cast<uint64_t>(*value)});
+    daily_values_.push_back({base::Time::FromSecondsSinceUnixEpoch(*day),
+                             static_cast<uint64_t>(*value)});
   }
 }
 
@@ -198,7 +198,7 @@ void TimePeriodStorage::Save() {
   list.clear();
   for (const auto& u : daily_values_) {
     base::Value::Dict value;
-    value.Set("day", u.day.ToDoubleT());
+    value.Set("day", u.day.InSecondsFSinceUnixEpoch());
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }

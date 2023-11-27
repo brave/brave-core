@@ -57,7 +57,8 @@ bool IsRevivedAC(const mojom::ContributionInfo& contribution) {
   }
 
   // ACs that were started over 20 days ago are considered "revived".
-  base::Time created_at = base::Time::FromDoubleT(contribution.created_at);
+  base::Time created_at =
+      base::Time::FromSecondsSinceUnixEpoch(contribution.created_at);
   return base::Time::Now() - created_at > base::Days(20);
 }
 

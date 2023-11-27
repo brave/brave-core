@@ -23,7 +23,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -125,8 +125,11 @@ public class AppearancePreferences extends BravePreferenceFragment
             disableSharingHub.setOnPreferenceChangeListener(this);
             if (disableSharingHub instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) disableSharingHub)
-                        .setChecked(SharedPreferencesManager.getInstance().readBoolean(
-                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false));
+                        .setChecked(
+                                ChromeSharedPreferences.getInstance()
+                                        .readBoolean(
+                                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB,
+                                                false));
             }
         }
 
@@ -191,11 +194,12 @@ public class AppearancePreferences extends BravePreferenceFragment
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             shouldRelaunch = true;
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SPEEDREADER_PREF_ENABLED, (boolean) newValue);

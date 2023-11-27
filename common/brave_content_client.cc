@@ -65,7 +65,7 @@ BraveContentClient::~BraveContentClient() = default;
 
 base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
     int resource_id) {
-  if (resource_id == IDR_FLAGS_UI_FLAGS_JS) {
+  if (resource_id == IDR_FLAGS_UI_APP_JS) {
     const ui::ResourceBundle& resource_bundle =
         ui::ResourceBundle::GetSharedInstance();
     const std::string flags_js =

@@ -1,5 +1,5 @@
 diff --git a/content/browser/resources/gpu/browser_bridge.ts b/content/browser/resources/gpu/browser_bridge.ts
-index ec2e8ea91adab6f48b86be61b8702fa81459a600..88573b18a76f9e9a29640fe2f49672839b992e68 100644
+index d6d58da3120f6cc53b2e834fcb3f8e3aa675b413..85c3d62dc0800a66572430c13ec597cf43972da0 100644
 --- a/content/browser/resources/gpu/browser_bridge.ts
 +++ b/content/browser/resources/gpu/browser_bridge.ts
 @@ -12,6 +12,7 @@ export interface ClientInfo {

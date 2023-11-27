@@ -846,16 +846,16 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
       blink::mojom::ConsoleMessageSource::kJavaScript,
       blink::mojom::ConsoleMessageSource::kConsoleApi,
   };
-  if (!base::Contains(kValidSources, console_message->Source())) {
+  if (!base::Contains(kValidSources, console_message->GetSource())) {
     return;
   }
 
   std::ostringstream str;
   base::Value::Dict dict;
-  str << console_message->Source();
+  str << console_message->GetSource();
   dict.Set("source", str.str());
   str.str("");
-  str << console_message->Level();
+  str << console_message->GetLevel();
   dict.Set("level", str.str());
   dict.Set("message", console_message->Message().Utf8());
 

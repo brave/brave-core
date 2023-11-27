@@ -45,7 +45,7 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
-    Browser* browser = chrome::FindBrowserWithWebContents(GetWebContentsAt(0));
+    Browser* browser = chrome::FindBrowserWithTab(GetWebContentsAt(0));
     if (!browser)
       return;
 

@@ -24,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String IS_FROM_MENU = "is_from_menu";
@@ -75,8 +75,9 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
 
         CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
 
-        int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+        int braveDefaultModalCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
 
         if (braveDefaultModalCount > 2 && !isFromMenu) {
             dontAskCheckBox.setVisibility(View.VISIBLE);

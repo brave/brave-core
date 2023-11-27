@@ -189,7 +189,7 @@ void SpeedreaderTabHelper::ShowSpeedreaderBubble(
     SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* contents = web_contents();
-  Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  Browser* browser = chrome::FindBrowserWithTab(contents);
   DCHECK(browser);
 
   speedreader_bubble_ = static_cast<BraveBrowserWindow*>(browser->window())
@@ -308,8 +308,7 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (const auto* browser =
-          chrome::FindBrowserWithWebContents(web_contents())) {
+  if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
     if (!DistillStates::IsDistilled(PageDistillState())) {
       static_cast<BraveBrowserWindow*>(browser->window())
           ->HideReaderModeToolbar();

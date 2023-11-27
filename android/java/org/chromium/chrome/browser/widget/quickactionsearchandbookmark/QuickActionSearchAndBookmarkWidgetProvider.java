@@ -45,7 +45,7 @@ import org.chromium.chrome.browser.document.ChromeLauncherActivity;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -469,7 +469,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     widgetTilesJsonArray.put(widgetTile.toJSONObject());
                 }
             }
-            SharedPreferencesManager.getInstance()
+            ChromeSharedPreferences.getInstance()
                     .writeString(
                             BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
                             widgetTilesJsonArray.toString());
@@ -478,7 +478,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
         public static List<WidgetTile> readWidgetTiles() {
             String widgetTilesJson =
-                    SharedPreferencesManager.getInstance()
+                    ChromeSharedPreferences.getInstance()
                             .readString(
                                     BravePreferenceKeys
                                             .BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
