@@ -14,13 +14,6 @@ from lib.util import extract_zip
 
 import components.path_util as path_util
 
-# pylint: disable=import-error
-# pytype: disable=import-error
-with path_util.SysPath(path_util.GetPyJson5Dir()):
-  import json5
-# pylint: enable=import-error
-# pytype: enable=import-error
-
 
 def TerminateProcess(p):
   logging.error('terminating process by timeout %r', p.args)
@@ -81,16 +74,6 @@ def GetProcessOutput(args: List[str],
     return False, e.output
 
 
-def GetConfigPath(config_path: str) -> str:
-  if os.path.isfile(config_path):
-    return config_path
-
-  config_path = os.path.join(path_util.GetBravePerfConfigDir(), config_path)
-  if os.path.isfile(config_path):
-    return config_path
-  raise RuntimeError(f'Bad config {config_path}')
-
-
 def DownloadFile(url: str, output: str):
   logging.debug('Downloading %s', url)
   f = urlopen(url)
@@ -103,17 +86,6 @@ def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
   extract_zip(f, output_directory)
-
-
-def LoadJsonConfig(config: str, working_directory: str) -> dict:
-  if config.startswith('https://'):
-    _, config_filename = tempfile.mkstemp(dir=working_directory,
-                                          prefix='config-')
-    DownloadFile(config, config_filename)
-  else:
-    config_filename = GetConfigPath(config)
-  with open(config_filename, 'r', encoding='utf-8') as config_file:
-    return json5.load(config_file)
 
 
 def GetRevisionNumberAndHash(revision: str, ci_mode: bool) -> Tuple[str, str]:

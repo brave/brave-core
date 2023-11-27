@@ -25,6 +25,8 @@ with path_util.SysPath(path_util.GetTelemetryDir()):
 class CommonOptions:
   verbose: bool = False
   ci_mode: bool = False
+  chromium: bool = False
+  machine_id: Optional[str] = None
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
   target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
@@ -42,7 +44,9 @@ class CommonOptions:
     parser.add_argument(
         'config',
         type=str,
-        help='The path/URL to a config. See configs/**/.json for examples.')
+        help='The path/URL to a config. See configs/**/.json for examples.'
+        'Also could be set to "auto" to auto select config by '
+        'machine-id + chromium + target-os')
     parser.add_argument(
         'targets',
         type=str,
@@ -76,6 +80,14 @@ class CommonOptions:
     parser.add_argument('--ci-mode',
                         action='store_true',
                         help='Used for CI (brave-browser-test-perf-* builds).')
+    parser.add_argument('--chromium',
+                        action='store_true',
+                        help='(for ci-mode) Run chromium (reference) build. '
+                        'Used to find the right configuration for config=auto')
+    parser.add_argument('--machine-id',
+                        type=str,
+                        help='(for ci-mode) Specify the machine id to find '
+                        'the right configuration for config=auto')
     parser.add_argument('--no-report',
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
@@ -105,6 +117,9 @@ class CommonOptions:
 
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
+    options.chromium = args.chromium
+    options.machine_id = args.machine_id
+
     if args.variations_repo_dir is not None:
       options.variations_repo_dir = os.path.expanduser(args.variations_repo_dir)
     if args.target_os is not None:
