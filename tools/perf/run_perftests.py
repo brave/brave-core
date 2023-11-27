@@ -47,10 +47,10 @@ def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
       raise RuntimeError('Set --machine-id to use config=auto')
 
     prefix = 'chromium' if options.chromium else 'brave'
-    platform_name = perf_test_utils.ToChromiumPlatformName(options.target_os)
     config_path = os.path.join(
         path_util.GetBravePerfConfigDir(), 'ci',
-        f'{prefix}-{platform_name}-{options.machine_id}.json5')
+        f'{prefix}-{options.target_os}-'
+        f'{options.target_arch()}-{options.machine_id}.json5')
     if not os.path.isfile(config_path):
       raise RuntimeError(f'No config file {config_path}')
   else:  # config is a relative path

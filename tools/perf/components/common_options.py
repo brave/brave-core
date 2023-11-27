@@ -138,3 +138,6 @@ class CommonOptions:
                          and not compare)
 
     return options
+
+  def target_arch(self):
+    return 'arm64' if self.target_os == 'android' else 'x64'
