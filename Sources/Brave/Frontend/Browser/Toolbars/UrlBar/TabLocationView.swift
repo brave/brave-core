@@ -79,7 +79,7 @@ class TabLocationView: UIView {
     var title = AttributedString(Strings.tabToolbarNotSecureTitle)
     title.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
     
-    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory && bounds.width > 200
     
     switch secureContentState {
     case .localhost, .secure:
@@ -226,6 +226,8 @@ class TabLocationView: UIView {
   private let placeholderLabel = UILabel().then {
     $0.text = Strings.tabToolbarSearchAddressPlaceholderText
     $0.isHidden = true
+    $0.adjustsFontSizeToFitWidth = true
+    $0.minimumScaleFactor = 0.5
   }
   
   // A layout guide defining the available space for the URL itself
@@ -364,6 +366,12 @@ class TabLocationView: UIView {
     set {
       super.accessibilityElements = newValue
     }
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    secureContentStateButton?.setNeedsUpdateConfiguration()
   }
   
   private func updateForTraitCollection() {
