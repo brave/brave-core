@@ -149,6 +149,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     public void onPublisherBanner(String jsonBannerInfo) {
         try {
             mBannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+            Log.e("publisher", jsonBannerInfo);
             setTitle();
             setDescription();
             setLogo();
@@ -265,19 +266,16 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     private void setTitle() {
         if (mBannerInfo == null) return;
         TextView titleTextView = mContentView.findViewById(R.id.tipping_publisher_name);
-        String title = mBannerInfo.getName();
-        if (!TextUtils.isEmpty(title)) {
+        if (!TextUtils.isEmpty(mBannerInfo.getName())) {
+            String title = mBannerInfo.getName();
             String provider = getProvider(mBannerInfo.getProvider());
             if (!TextUtils.isEmpty(provider)) {
                 title = String.format(
                         getResources().getString(R.string.title_on_provider), title, provider);
             }
             titleTextView.setText(title);
-        } else {
-            title = mBannerInfo.getTitle();
-            if (!TextUtils.isEmpty(title)) {
-                titleTextView.setText(title);
-            }
+        } else if (!TextUtils.isEmpty(mBannerInfo.getTitle())) {
+            titleTextView.setText(mBannerInfo.getTitle());
         }
     }
 

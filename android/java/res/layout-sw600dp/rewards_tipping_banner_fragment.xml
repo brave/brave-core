@@ -54,6 +54,7 @@
         android:scrollbars="vertical"
         android:textColor="@color/tipping_details_description_text_color"
         android:textSize="14sp"
+        android:text="@string/rewards_tip_default_creator_description"
         app:layout_constrainedHeight="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="262dp"

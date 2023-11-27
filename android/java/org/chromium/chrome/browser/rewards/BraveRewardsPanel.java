@@ -1118,9 +1118,6 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetUserType(int userType) {
-        if (mExternalWallet == null) {
-            return;
-        }
         int walletStatus = mExternalWallet.getStatus();
         if (UserType.UNCONNECTED == userType) {
             unconnectedViewChanges();
