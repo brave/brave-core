@@ -1,7 +1,7 @@
 {
   "configurations": [{
     "dashboard-bot-name": "test-agent",
-    "browser-type": "chrome",
+    "browser-type": "chromium",
     "profile": "chrome-typical-win-117",
     "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
