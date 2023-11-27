@@ -261,24 +261,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
       
-      // user visible NFTs
-      let userVisibleNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
-        .map { networkAssets in
-          NetworkAssets(
-            network: networkAssets.network,
-            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-            sortOrder: networkAssets.sortOrder
-          )
-        }
-      // user hidden NFTs
-      let userHiddenNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
-        .map { networkAssets in
-          NetworkAssets(
-            network: networkAssets.network,
-            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-            sortOrder: networkAssets.sortOrder
-          )
-        }
       // all spam NFTs marked by SimpleHash
       simpleHashSpamNFTs = await walletService.simpleHashSpamNFTs(for: selectedAccounts, on: selectedNetworks)
       let unionedSpamNFTs = computeSpamNFTs(
@@ -287,29 +269,21 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         simpleHashSpamNFTs: simpleHashSpamNFTs
       )
       
-      let allNetworkNFTs = generateAllNFTsInNetworks(
-        userVisibleNFTs: userVisibleNFTs,
-        userHiddenNFTs: userHiddenNFTs,
-        computedSpamNFTs: unionedSpamNFTs
-      )
-      userNFTGroups = buildNFTGroupModels(
+      let (userNFTGroups, allUserNFTs) = buildNFTGroupModels(
         groupBy: filters.groupBy,
-        allUserNFTs: allNetworkNFTs,
+        spams: unionedSpamNFTs,
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )
+      self.userNFTGroups = userNFTGroups
       
-      var allNFTs: [BraveWallet.BlockchainToken] = []
-      for networkAssets in [userVisibleNFTs, userHiddenNFTs, unionedSpamNFTs] {
-        allNFTs.append(contentsOf: networkAssets.flatMap(\.tokens))
-      }
       // if we're not hiding unowned or grouping by account, balance isn't needed
       if filters.isHidingUnownedNFTs || filters.groupBy == .accounts {
         let allAccounts = filters.accounts.map(\.model)
         nftBalancesCache = await withTaskGroup(
           of: [String: [String: Int]].self,
           body: { @MainActor [nftBalancesCache, rpcService] group in
-            for nft in allNFTs { // for each NFT
+            for nft in allUserNFTs { // for each NFT
               guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
                 continue
               }
@@ -343,25 +317,27 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       }
       
       guard !Task.isCancelled else { return }
-      userNFTGroups = buildNFTGroupModels(
+      let (userNFTGroupsWithBalance, _) = buildNFTGroupModels(
         groupBy: filters.groupBy,
-        allUserNFTs: allNetworkNFTs,
+        spams: unionedSpamNFTs,
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )
+      self.userNFTGroups = userNFTGroupsWithBalance
       
       // fetch nft metadata for all NFTs
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allUserNFTs, ipfsApi: ipfsApi)
       for (key, value) in allMetadata { // update cached values
         metadataCache[key] = value
       }
       guard !Task.isCancelled else { return }
-      userNFTGroups = buildNFTGroupModels(
+      let (userNFTGroupsWithMetadata, _) = buildNFTGroupModels(
         groupBy: filters.groupBy,
-        allUserNFTs: allNetworkNFTs,
+        spams: unionedSpamNFTs,
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )
+      self.userNFTGroups = userNFTGroupsWithMetadata
       
       isShowingNFTLoadingState = false
     }
@@ -520,29 +496,57 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   
   private func buildNFTGroupModels(
     groupBy: GroupBy,
-    allUserNFTs: [NetworkAssets],
+    spams: [NetworkAssets],
     selectedAccounts: [BraveWallet.AccountInfo],
     selectedNetworks: [BraveWallet.NetworkInfo]
-  ) -> [NFTGroupViewModel] {
+  ) -> ([NFTGroupViewModel], [BraveWallet.BlockchainToken]) {
+    
+    // user visible NFTs
+    let userVisibleNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
+      .map { networkAssets in
+        NetworkAssets(
+          network: networkAssets.network,
+          tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
+          sortOrder: networkAssets.sortOrder
+        )
+      }
+    // user hidden NFTs
+    let userHiddenNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
+      .map { networkAssets in
+        NetworkAssets(
+          network: networkAssets.network,
+          tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
+          sortOrder: networkAssets.sortOrder
+        )
+      }
+    
+    let allUserNFTsInNetworks = generateAllNFTsInNetworks(
+      userVisibleNFTs: userVisibleNFTs,
+      userHiddenNFTs: userHiddenNFTs,
+      computedSpamNFTs: spams
+    )
+    
+    let allUserNFTs = (userVisibleNFTs + userHiddenNFTs + spams).flatMap(\.tokens)
+
     let groups: [NFTGroupViewModel]
     switch filters.groupBy {
     case .none:
       let assets = buildNFTAssetViewModels(
         for: .none,
-        allUserNFTs: allUserNFTs
+        allUserNFTs: allUserNFTsInNetworks
       )
-      return [
+      return ([
         .init(
           groupType: .none,
           assets: assets
         )
-      ]
+      ], allUserNFTs)
     case .accounts:
       groups = selectedAccounts.map { account in
         let groupType: AssetGroupType = .account(account)
         let assets = buildNFTAssetViewModels(
           for: .account(account),
-          allUserNFTs: allUserNFTs
+          allUserNFTs: allUserNFTsInNetworks
         )
         return NFTGroupViewModel(
           groupType: groupType,
@@ -554,7 +558,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         let groupType: AssetGroupType = .network(network)
         let assets = buildNFTAssetViewModels(
           for: .network(network),
-          allUserNFTs: allUserNFTs
+          allUserNFTs: allUserNFTsInNetworks
         )
         return NFTGroupViewModel(
           groupType: groupType,
@@ -562,7 +566,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         )
       }
     }
-    return groups
+    return (groups, allUserNFTs)
   }
   
   @MainActor func isNFTDiscoveryEnabled() async -> Bool {
@@ -589,36 +593,16 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       guard let self else { return }
       let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
-      let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
-        .map { networkAssets in
-          NetworkAssets(
-            network: networkAssets.network,
-            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-            sortOrder: networkAssets.sortOrder
-          )
-        }
-      let userHiddenAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
-        .map { networkAssets in
-          NetworkAssets(
-            network: networkAssets.network,
-            tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-            sortOrder: networkAssets.sortOrder
-          )
-        }
+
       let unionedSpamNFTs = computeSpamNFTs(
         selectedNetworks: selectedNetworks,
         selectedAccounts: selectedAccounts,
         simpleHashSpamNFTs: simpleHashSpamNFTs
       )
       
-      let allNetworkNFTs = generateAllNFTsInNetworks(
-        userVisibleNFTs: userVisibleAssets,
-        userHiddenNFTs: userHiddenAssets,
-        computedSpamNFTs: unionedSpamNFTs
-      )
-      userNFTGroups = buildNFTGroupModels(
+      (userNFTGroups, _) = buildNFTGroupModels(
         groupBy: filters.groupBy,
-        allUserNFTs: allNetworkNFTs,
+        spams: unionedSpamNFTs,
         selectedAccounts: selectedAccounts,
         selectedNetworks: selectedNetworks
       )

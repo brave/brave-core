@@ -73,6 +73,8 @@ class NFTStoreTests: XCTestCase {
         completion([.mockFilecoinTestnet])
       case .btc:
         XCTFail("Should not fetch btc network")
+      case .zec:
+        XCTFail("Should not fetch zec network")
       @unknown default:
         XCTFail("Should not fetch unknown network")
       }

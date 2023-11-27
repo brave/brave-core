@@ -103,6 +103,8 @@ extension BraveWalletJsonRpcService {
       }
     case .btc:
       completion(nil)
+    case .zec:
+      completion(nil)
     @unknown default:
       completion(nil)
     }
