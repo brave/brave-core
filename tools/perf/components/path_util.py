@@ -68,9 +68,6 @@ def GetVpython3Path() -> str:
                       'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
 
 
-def GetChromeReleasesJsonPath() -> str:
-  return os.path.join(GetBravePerfDir(), 'chrome_releases.json')
-
 
 @contextlib.contextmanager
 def SysPath(path, position=None):

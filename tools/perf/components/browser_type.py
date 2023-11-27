@@ -326,30 +326,6 @@ def _MakeTestingFieldTrials(artifacts_dir: str, tag: BraveVersion,
   return target_path
 
 
-def _GetNearestChromeOfficialUrl(tag: BraveVersion) -> str:
-  chrome_versions = {}
-  with open(path_util.GetChromeReleasesJsonPath(), 'r') as config_file:
-    chrome_versions = json.load(config_file)
-
-  requested_version = tag.to_chromium_version(False)
-  logging.debug('Got requested_version: %s', requested_version)
-
-  best_candidate: Optional[ChromiumVersion] = None
-  for version_str in chrome_versions:
-    version = ChromiumVersion(version_str)
-    if (version.major() == requested_version.major()
-        and requested_version < version):
-      if not best_candidate or version < best_candidate:
-        best_candidate = version
-
-  if best_candidate:
-    logging.info('Use chromium version %s for requested %s', best_candidate,
-                 requested_version)
-    return chrome_versions[str(best_candidate)]['url']
-
-  raise RuntimeError(f'No chromium version found for {requested_version}')
-
-
 class ChromiumBrowserTypeImpl(BrowserType):
   def __init__(self, field_trials_mode: Optional[FieldTrialsMode]):
     if field_trials_mode is None:
@@ -410,15 +386,9 @@ class ChromeOfficialBrowserTypeImpl(ChromeBrowserTypeImpl):
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Google',
                         app_name, 'Application')
 
-  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
-                            common_options: CommonOptions) -> str:
-    if common_options.target_os == 'windows':
-      return _DownloadWinInstallerAndExtract(out_dir,
-                                             _GetNearestChromeOfficialUrl(tag),
-                                             self._GetWinInstallPath(),
-                                             'chrome.exe')
-
-    raise NotImplementedError()
+  def DownloadBrowserBinary(self, _tag: BraveVersion, _out_dir: str,
+                            _common_options: CommonOptions) -> str:
+    raise NotImplementedError('Specify the binary url explicitly')
 
 
 class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
