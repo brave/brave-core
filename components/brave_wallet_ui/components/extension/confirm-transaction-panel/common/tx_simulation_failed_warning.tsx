@@ -4,15 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 
 // style
-import { FullWidth, Text } from '../../../shared/style'
+import { Text } from '../../../shared/style'
+import {
+  AlertIcon,
+  WarningAlertRow
+} from './tx_simulation_failed_warning.styles'
 
 type Props = {
   retrySimulation?: (() => void) | (() => Promise<void>)
@@ -21,17 +23,19 @@ type Props = {
 export function TxSimulationFailedWarning({ retrySimulation }: Props) {
   // render
   return (
-    <FullWidth>
-      <Alert type='warning' mode='simple'>
-        <Text textSize='12px'>
-          {getLocale('braveWalletTransactionPreviewFailed')}
-        </Text>
-        {retrySimulation ? (
-          <Button kind='plain' onClick={retrySimulation}>
-            {getLocale('braveWalletButtonRetry')}
-          </Button>
-        ) : null}
-      </Alert>
-    </FullWidth>
+    <WarningAlertRow>
+      <AlertIcon />
+      <Text textSize='12px'>
+        {getLocale('braveWalletTransactionPreviewFailed')}
+      </Text>
+      {retrySimulation ? (
+        <Button
+          kind='plain'
+          onClick={retrySimulation}
+        >
+          {getLocale('braveWalletButtonRetry')}
+        </Button>
+      ) : null}
+    </WarningAlertRow>
   )
 }
