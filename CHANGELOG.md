@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.57.2](https://github.com/brave/brave-ios/releases/tag/v1.57.2)
+
+- Improved performance when closing all tabs opened due to "Block Popups" being disabled on certain websites. ([#8060](https://github.com/brave/brave-ios/issues/8060))
+- Fixed tab mode selection so that correct UI shows when switching between private and regular modes. ([#8146](https://github.com/brave/brave-ios/issues/8146))
+- Fixed background audio not stopping after closing tab in certain cases. ([#8141](https://github.com/brave/brave-ios/issues/8141))
+- Fixed intermittent crash when downloading shared playlists. ([#8013](https://github.com/brave/brave-ios/issues/8013))
+
 ## [1.57.1](https://github.com/brave/brave-ios/releases/tag/v1.57.1)
 
 - Resolved issue where Brave Ads are disabled if Brave News was already enabled. ([#8098](https://github.com/brave/brave-ios/issues/8098))
