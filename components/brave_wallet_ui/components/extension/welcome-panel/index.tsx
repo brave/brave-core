@@ -4,9 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../common/locale'
+import { PanelActions } from '../../../panel/actions'
 
 // components
 import { NavButton } from '../buttons/nav-button/index'
@@ -15,11 +17,16 @@ import { NavButton } from '../buttons/nav-button/index'
 import { VerticalSpace, WalletWelcomeGraphic } from '../../shared/style'
 import { StyledWrapper, Title, Description } from './style'
 
-interface Props {
-  onSetup: () => void
-}
+export const WelcomePanel = () => {
+  // redux
+  const dispatch = useDispatch()
 
-export const WelcomePanel = ({ onSetup }: Props) => {
+  // methods
+  const onSetup = () => {
+    dispatch(PanelActions.setupWallet())
+  }
+
+  // render
   return (
     <StyledWrapper>
       <WalletWelcomeGraphic scale={0.9} />
