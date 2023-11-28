@@ -8,6 +8,10 @@ import * as React from 'react'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
+// components
+import { NavButton } from '../../buttons'
+import { TxWarningBanner } from './tx_warning_banner'
+
 // Styled components
 import { TransactionText } from '../style'
 import {
@@ -20,7 +24,6 @@ import {
   NetworkFeeRow,
   QueueStepButton
 } from './style'
-import { NavButton } from '../../buttons'
 
 // Hooks
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
@@ -104,11 +107,7 @@ export function Footer(props: Props) {
       {showGasErrors &&
         !insufficientFundsForGasError &&
         insufficientFundsError && (
-          <NetworkFeeRow>
-            <TransactionText hasError={true}>
-              {getLocale('braveWalletSwapInsufficientBalance')}
-            </TransactionText>
-          </NetworkFeeRow>
+          <TxWarningBanner messageLocale='braveWalletSwapInsufficientBalance' />
         )}
 
       <ButtonRow>

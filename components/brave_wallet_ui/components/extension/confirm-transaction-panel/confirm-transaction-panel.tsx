@@ -43,8 +43,8 @@ import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
 import {
-  TxSimulationFailedWarning //
-} from './common/tx_simulation_failed_warning'
+  TxWarningBanner //
+} from './common/tx_warning_banner'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   PendingTransactionNetworkFeeAndSettings //
@@ -476,9 +476,7 @@ export const ConfirmTransactionPanel = ({
         />
       </NetworkFeeRow>
 
-      {retrySimulation && (
-        <TxSimulationFailedWarning retrySimulation={retrySimulation} />
-      )}
+      {retrySimulation && <TxWarningBanner retrySimulation={retrySimulation} />}
 
       <SignTransactionFooter
         onConfirm={onConfirm}

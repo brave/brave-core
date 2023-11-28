@@ -25,8 +25,8 @@ import {
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import { SwapBase } from '../swap'
 import {
-  TxSimulationFailedWarning //
-} from './common/tx_simulation_failed_warning'
+  TxWarningBanner //
+} from './common/tx_warning_banner'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
@@ -38,7 +38,7 @@ interface Props {
   retrySimulation?: () => void
 }
 
-export function ConfirmSwapTransaction ({ retrySimulation }: Props) {
+export function ConfirmSwapTransaction({ retrySimulation }: Props) {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -127,7 +127,7 @@ export function ConfirmSwapTransaction ({ retrySimulation }: Props) {
       {retrySimulation ? (
         <>
           <VerticalSpace space='16px' />
-          <TxSimulationFailedWarning retrySimulation={retrySimulation} />
+          <TxWarningBanner retrySimulation={retrySimulation} />
         </>
       ) : null}
 
