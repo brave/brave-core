@@ -7,6 +7,7 @@ const path = require('path')
 const webpack = require('webpack')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
 const pathMap = require('./path-map')
+const { fallback, provideNodeGlobals } = require('./polyfill')
 
 const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
 
@@ -50,20 +51,7 @@ module.exports = async function (env, argv) {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: pathMap,
     modules: ['node_modules'],
-    fallback: { 
-      stream: require.resolve("stream-browserify"),
-      path: require.resolve("path-browserify"),
-      querystring: require.resolve("querystring-es3"),
-      crypto: require.resolve("crypto-browserify"),
-      os: require.resolve("os-browserify/browser"),
-      zlib: require.resolve("browserify-zlib"),
-      fs: false,
-      http: require.resolve("stream-http"),
-      https: require.resolve("https-browserify"),
-      timers: require.resolve('timers-browserify'),
-      buffer: require.resolve('buffer'),
-      process: require.resolve('process/browser'),
-    }
+    fallback
   }
 
   if (env.extra_modules) {
@@ -104,14 +92,10 @@ module.exports = async function (env, argv) {
         depfilePath: process.env.DEPFILE_PATH,
         depfileSourceName: process.env.DEPFILE_SOURCE_NAME
       }),
-      // Provide globals from NodeJs polyfills
-      new webpack.ProvidePlugin({
-        'Buffer': ['buffer', 'Buffer'],
-        'process': 'process/browser.js'
-      }),
-      prefixReplacer('chrome://resources/brave/fonts', path.join(process.env.ROOT_GEN_DIR, 'brave/ui/webui/resources/fonts')),
-      prefixReplacer('chrome://resources/brave', path.join(process.env.ROOT_GEN_DIR, 'brave/ui/webui/resources/tsc')),
-      prefixReplacer('chrome://resources', path.join(process.env.ROOT_GEN_DIR, 'ui/webui/resources/tsc'))
+      provideNodeGlobals,
+      ...Object.keys(pathMap)
+        .filter(p => p.startsWith('chrome://'))
+        .map(p => prefixReplacer(p, pathMap[p])),
     ],
     module: {
       rules: [

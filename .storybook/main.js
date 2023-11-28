@@ -7,7 +7,7 @@ module.exports = {
   stories: ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
   typescript: {
     check: true,
-    reactDocgenTypescriptOptions: false,
+    reactDocgen: false,
     checkOptions: {
       async: !isCI,
       typescript: {
