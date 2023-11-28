@@ -1152,9 +1152,6 @@ public abstract class BraveActivity extends ChromeActivity
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         }
-
-        mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
-        mUsageMonitor.start();
     }
 
     private void handleDeepLinkVpn() {
@@ -2041,10 +2038,16 @@ public abstract class BraveActivity extends ChromeActivity
                     new MiscAndroidMetricsConnectionErrorHandler(this);
         }
 
-        mMiscAndroidMetrics = MiscAndroidMetricsFactory.getInstance().getMetricsService(
-                mMiscAndroidMetricsConnectionErrorHandler);
-        mMiscAndroidMetrics.recordPrivacyHubEnabledStatus(
-                OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+        MiscAndroidMetricsFactory.getInstance()
+                .getMetricsService(mMiscAndroidMetricsConnectionErrorHandler)
+                .then(
+                        miscAndroidMetrics -> {
+                            mMiscAndroidMetrics = miscAndroidMetrics;
+                            mMiscAndroidMetrics.recordPrivacyHubEnabledStatus(
+                                    OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+                            mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
+                            mUsageMonitor.start();
+                        });
     }
 
     private void initSwapService() {
