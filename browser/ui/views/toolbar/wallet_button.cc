@@ -214,13 +214,16 @@ void WalletButton::UpdateImageAndText(bool activated) {
   }
 
   constexpr int kIconSize = 16;
-  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, kIconSize,
-                                    color_provider->GetColor(color_id));
-
   if (counter_ == 0) {
-    SetImage(views::Button::STATE_NORMAL, icon);
+    SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(kLeoProductBraveWalletIcon, kIconSize,
+                                       color_provider->GetColor(color_id)));
     return;
   }
+
+  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, kIconSize,
+                                    color_provider->GetColor(color_id));
 
   size_t icon_size = std::max(icon.width(), icon.height());
   auto badge_size = brave::BraveIconWithBadgeImageSource::GetMaxBadgeSize();
@@ -238,8 +241,9 @@ void WalletButton::UpdateImageAndText(bool activated) {
   auto text = GetBadgeText();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
-  SetImage(views::Button::STATE_NORMAL,
-           gfx::ImageSkia(std::move(image_source), preferred_size));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkia(std::move(image_source), preferred_size)));
 }
 
 void WalletButton::UpdateVisibility() {

@@ -248,8 +248,9 @@ void BraveRewardsActionView::Update() {
       text, brave::kBadgeTextColor, background_color));
   image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
 
-  SetImage(views::Button::STATE_NORMAL,
-           gfx::ImageSkia(std::move(image_source), preferred_size));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkia(std::move(image_source), preferred_size)));
 }
 
 void BraveRewardsActionView::ClosePanelForTesting() {

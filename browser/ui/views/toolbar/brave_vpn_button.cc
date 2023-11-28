@@ -222,21 +222,22 @@ void BraveVPNButton::UpdateColorsAndInsets() {
                                         ? kColorBraveVpnButtonTextError
                                         : kColorBraveVpnButtonText));
   if (is_error_state_) {
-    SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kVpnIndicatorErrorIcon,
-                              cp->GetColor(kColorBraveVpnButtonIconError)));
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(
+                      kVpnIndicatorErrorIcon,
+                      cp->GetColor(kColorBraveVpnButtonIconError)));
 
     // Use background for inner color of error button image.
     image()->SetBackground(std::make_unique<ConnectErrorIconBackground>(
         cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
   } else {
-    SetImage(views::Button::STATE_NORMAL,
-             gfx::CreateVectorIcon(
-                 is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
-                 cp->GetColor(is_connected_
-                                  ? kColorBraveVpnButtonIconConnected
-                                  : kColorBraveVpnButtonIconDisconnected)));
+    SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(
+            is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
+            cp->GetColor(is_connected_
+                             ? kColorBraveVpnButtonIconConnected
+                             : kColorBraveVpnButtonIconDisconnected)));
 
     // Use background for inner color of button image.
     // Adjusted border thickness to make invisible to the outside of the icon.

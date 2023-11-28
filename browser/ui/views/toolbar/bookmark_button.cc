@@ -41,8 +41,8 @@ void BookmarkButton::UpdateImageAndText() {
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
   const gfx::VectorIcon& icon =
       active_ ? omnibox::kStarActiveIcon : omnibox::kStarIcon;
-  SetImage(views::Button::STATE_NORMAL,
-           gfx::CreateVectorIcon(icon, 16, icon_color));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromVectorIcon(icon, 16, icon_color));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
   SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
