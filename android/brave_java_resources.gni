@@ -729,7 +729,7 @@ brave_java_resources = [
   "java/res/drawable/unverified_48_rounded_bg.xml",
   "java/res/drawable/upload_icon.xml",
   "java/res/drawable/verification_tick_mark.xml",
-  "java/res/drawable/vpn_plan_action_rounded_button.xml",
+  "java/res/drawable/vpn_plan_action_gradient.xml",
   "java/res/drawable/vpn_plan_bg.xml",
   "java/res/drawable/vpn_plan_selected_bg.xml",
   "java/res/drawable/wallet_chip_outline.xml",

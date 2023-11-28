@@ -2419,13 +2419,13 @@ Are you sure you want to do this?
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
-      Try free for 6 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
+      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
     </message>
     <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
       Try for FREE
     </message>
     <message name="IDS_TRY_7_DAYS_FOR_FREE" desc="Brave VPN plan action text">
-      Try 7 Days Free
+      Try for Free for 7 Days
     </message>
     <message name="IDS_INSTALL_VPN" desc="Brave VPN plan text">
       Install VPN

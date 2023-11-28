@@ -260,7 +260,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="16dp"
-        android:background="@drawable/vpn_plan_action_rounded_button"
+        android:background="@drawable/vpn_plan_action_gradient"
         android:clickable="true"
         android:focusable="true"
         android:paddingVertical="14dp"
