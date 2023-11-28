@@ -13,7 +13,6 @@ import { NavButton } from '../../buttons'
 import { TxWarningBanner } from './tx_warning_banner'
 
 // Styled components
-import { TransactionText } from '../style'
 import {
   ButtonRow,
   ConfirmingButton,
@@ -21,7 +20,6 @@ import {
   ErrorText,
   FooterContainer,
   LoadIcon,
-  NetworkFeeRow,
   QueueStepButton
 } from './style'
 
@@ -97,11 +95,7 @@ export function Footer(props: Props) {
           .map((error) => <ErrorText key={error}>{error}</ErrorText>)}
 
       {showGasErrors && insufficientFundsForGasError && (
-        <NetworkFeeRow>
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletSwapInsufficientFundsForGas')}
-          </TransactionText>
-        </NetworkFeeRow>
+        <TxWarningBanner messageLocale='braveWalletSwapInsufficientFundsForGas' />
       )}
 
       {showGasErrors &&
