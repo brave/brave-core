@@ -953,6 +953,44 @@ extension BrowserViewController: WKUIDelegate {
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
+  
+  public func webView(
+    _ webView: WKWebView,
+    requestMediaCapturePermissionFor origin: WKSecurityOrigin,
+    initiatedByFrame frame: WKFrameInfo,
+    type: WKMediaCaptureType,
+    decisionHandler: @escaping (WKPermissionDecision) -> Void
+  ) {
+    let titleFormat: String = {
+      switch type {
+      case .camera:
+        return Strings.requestCameraPermissionPrompt
+      case .microphone:
+        return Strings.requestMicrophonePermissionPrompt
+      case .cameraAndMicrophone:
+        return Strings.requestCameraAndMicrophonePermissionPrompt
+      @unknown default:
+        return Strings.requestCaptureDevicePermissionPrompt
+      }
+    }()
+    let title = String.localizedStringWithFormat(titleFormat, origin.host)
+    let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    alertController.addAction(.init(title: Strings.requestCaptureDevicePermissionAllowButtonTitle, style: .default, handler: { _ in
+      decisionHandler(.grant)
+    }))
+    alertController.addAction(.init(title: Strings.CancelString, style: .cancel, handler: { _ in
+      decisionHandler(.deny)
+    }))
+    if #available(iOS 16.0, *) {
+      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
+        webView.closeAllMediaPresentations {
+          self.present(alertController, animated: true)
+        }
+        return
+      }
+    }
+    present(alertController, animated: true)
+  }
 
   fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
     // Only display a JS Alert if we are selected and there isn't anything being shown
