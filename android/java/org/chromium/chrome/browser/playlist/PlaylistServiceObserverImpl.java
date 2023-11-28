@@ -74,12 +74,22 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
         mDelegate.onItemCached(playlistItem);
 
         if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)) {
-            PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
-                    ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name, playlistItem.pageSource.url,
-                    playlistItem.mediaPath.url, playlistItem.hlsMediaPath.url,
-                    playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
-                    playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
-                    playlistItem.mediaFileBytes, playlistItem.cached, false);
+            PlaylistItemModel playlistItemModel =
+                    new PlaylistItemModel(
+                            playlistItem.id,
+                            ConstantUtils.DEFAULT_PLAYLIST,
+                            playlistItem.name,
+                            playlistItem.pageSource.url,
+                            playlistItem.mediaPath.url,
+                            playlistItem.hlsMediaPath.url,
+                            playlistItem.mediaSource.url,
+                            playlistItem.thumbnailPath.url,
+                            playlistItem.author,
+                            playlistItem.duration,
+                            playlistItem.lastPlayedPosition,
+                            playlistItem.mediaFileBytes,
+                            playlistItem.cached,
+                            false);
             VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
         }
     }
@@ -103,8 +113,12 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
-    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
-            byte percentComplete, String timeRemaining) {
+    public void onMediaFileDownloadProgressed(
+            String id,
+            long totalBytes,
+            long receivedBytes,
+            byte percentComplete,
+            String timeRemaining) {
         if (mDelegate == null) return;
         mDelegate.onMediaFileDownloadProgressed(
                 id, totalBytes, receivedBytes, percentComplete, timeRemaining);

@@ -11,7 +11,9 @@ import org.chromium.playlist.mojom.PlaylistStreamingObserver;
 public class PlaylistStreamingObserverImpl implements PlaylistStreamingObserver {
     public interface PlaylistStreamingObserverImplDelegate {
         default void onResponseStarted(String url, long contentLength) {}
+
         default void onDataReceived(byte[] dataReceived) {}
+
         default void onDataCompleted() {}
     }
 

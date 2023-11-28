@@ -39,7 +39,7 @@ import org.chromium.playlist.mojom.PlaylistService;
 import java.util.Queue;
 
 public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHandler {
-    private static final String TAG = "Playlist.HlsServiceImpl";
+    private static final String TAG = "Playlist/HlsServiceImpl";
     private final IBinder mBinder = new LocalBinder();
     private Context mContext = ContextUtils.getApplicationContext();
     private PlaylistService mPlaylistService;
@@ -71,93 +71,137 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     }
 
     private void startHlsContentFromQueue() {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-            if (playlistRepository != null) {
-                HlsContentQueueModel hlsContentQueueModel =
-                        playlistRepository.getFirstHlsContentQueueModel();
-                if (hlsContentQueueModel != null && mPlaylistService != null) {
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
+                    if (playlistRepository == null) {
+                        return;
+                    }
+                    HlsContentQueueModel hlsContentQueueModel =
+                            playlistRepository.getFirstHlsContentQueueModel();
+                    if (hlsContentQueueModel == null || mPlaylistService == null) {
+                        return;
+                    }
                     String playlistItemId = hlsContentQueueModel.getPlaylistItemId();
-                    mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
-                        HlsUtils.getManifestFile(mContext, mPlaylistService, playlistItem,
-                                new HlsUtils.HlsManifestDelegate() {
-                                    @Override
-                                    public void onHlsManifestCompleted(
-                                            Queue<Segment> segmentsQueue) {
-                                        int total = segmentsQueue.size();
-                                        String hlsMediaFilePath =
-                                                HlsUtils.getHlsMediaFilePath(playlistItem);
-                                        HlsUtils.deleteFileIfExist(hlsMediaFilePath);
-                                        HlsUtils.getHLSFile(mContext, mPlaylistService,
-                                                playlistItem, segmentsQueue,
-                                                new HlsUtils.HlsFileDelegate() {
-                                                    @Override
-                                                    public void onProgress(int sofar) {
-                                                        PlaylistUtils.updateHlsContentProgress(
-                                                                new HlsContentProgressModel(
-                                                                        playlistItem.id,
-                                                                        (long) total, (long) sofar,
-                                                                        String.valueOf((sofar * 100)
-                                                                                / total)));
-                                                    }
+                    mPlaylistService.getPlaylistItem(
+                            playlistItemId,
+                            playlistItem -> {
+                                HlsUtils.getManifestFile(
+                                        mContext,
+                                        mPlaylistService,
+                                        playlistItem,
+                                        new HlsUtils.HlsManifestDelegate() {
+                                            @Override
+                                            public void onHlsManifestCompleted(
+                                                    Queue<Segment> segmentsQueue) {
+                                                int total = segmentsQueue.size();
+                                                String hlsMediaFilePath =
+                                                        HlsUtils.getHlsMediaFilePath(playlistItem);
+                                                HlsUtils.deleteFileIfExist(hlsMediaFilePath);
+                                                HlsUtils.getHLSFile(
+                                                        mContext,
+                                                        mPlaylistService,
+                                                        playlistItem,
+                                                        segmentsQueue,
+                                                        new HlsUtils.HlsFileDelegate() {
+                                                            @Override
+                                                            public void onProgress(int sofar) {
+                                                                if (total > 0) {
+                                                                    PlaylistUtils
+                                                                            .updateHlsContentProgress(
+                                                                                    new HlsContentProgressModel(
+                                                                                            playlistItem
+                                                                                                    .id,
+                                                                                            (long)
+                                                                                                    total,
+                                                                                            (long)
+                                                                                                    sofar,
+                                                                                            String
+                                                                                                    .valueOf(
+                                                                                                            (sofar
+                                                                                                                            * 100)
+                                                                                                                    / total)));
+                                                                }
+                                                            }
 
-                                                    @Override
-                                                    public void onReady(String mediaPath) {
-                                                        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-                                                            long updatedFileSize =
-                                                                    MediaUtils.getFileSizeFromUri(
-                                                                            mContext,
-                                                                            Uri.parse("file://"
-                                                                                    + mediaPath));
-                                                            mPlaylistService
-                                                                    .updateItemHlsMediaFilePath(
-                                                                            playlistItem.id,
-                                                                            mediaPath,
-                                                                            updatedFileSize);
-                                                            playlistRepository
-                                                                    .updateHlsContentQueueModel(
-                                                                            new HlsContentQueueModel(
-                                                                                    playlistItem.id,
-                                                                                    HlsContentStatus
-                                                                                            .READY
-                                                                                            .name()));
-                                                            addNewPlaylistItemModel(
-                                                                    playlistItem.id);
-                                                            if (playlistRepository
-                                                                            .getFirstHlsContentQueueModel()
-                                                                    != null) {
-                                                                startHlsContentFromQueue();
-                                                            } else {
-                                                                getService().stopSelf();
+                                                            @Override
+                                                            public void onReady(String mediaPath) {
+                                                                PostTask.postTask(
+                                                                        TaskTraits
+                                                                                .BEST_EFFORT_MAY_BLOCK,
+                                                                        () -> {
+                                                                            long updatedFileSize =
+                                                                                    MediaUtils
+                                                                                            .getFileSizeFromUri(
+                                                                                                    mContext,
+                                                                                                    Uri
+                                                                                                            .parse(
+                                                                                                                    "file://"
+                                                                                                                            + mediaPath));
+                                                                            mPlaylistService
+                                                                                    .updateItemHlsMediaFilePath(
+                                                                                            playlistItem
+                                                                                                    .id,
+                                                                                            mediaPath,
+                                                                                            updatedFileSize);
+                                                                            playlistRepository
+                                                                                    .updateHlsContentQueueModel(
+                                                                                            new HlsContentQueueModel(
+                                                                                                    playlistItem
+                                                                                                            .id,
+                                                                                                    HlsContentStatus
+                                                                                                            .READY
+                                                                                                            .name()));
+                                                                            addNewPlaylistItemModel(
+                                                                                    playlistItem
+                                                                                            .id);
+                                                                            if (playlistRepository
+                                                                                            .getFirstHlsContentQueueModel()
+                                                                                    != null) {
+                                                                                startHlsContentFromQueue();
+                                                                            } else {
+                                                                                getService()
+                                                                                        .stopSelf();
+                                                                            }
+                                                                        });
                                                             }
                                                         });
-                                                    }
-                                                });
-                                    }
-                                });
-                    });
-                }
-            }
-        });
+                                            }
+                                        });
+                            });
+                });
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {
-        mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
-            PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id, "default",
-                    playlistItem.name, playlistItem.pageSource.url, playlistItem.mediaPath.url,
-                    playlistItem.hlsMediaPath.url, playlistItem.mediaSource.url,
-                    playlistItem.thumbnailPath.url, playlistItem.author, playlistItem.duration,
-                    playlistItem.lastPlayedPosition, playlistItem.mediaFileBytes,
-                    playlistItem.cached, false);
-            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
-        });
+        mPlaylistService.getPlaylistItem(
+                playlistItemId,
+                playlistItem -> {
+                    PlaylistItemModel playlistItemModel =
+                            new PlaylistItemModel(
+                                    playlistItem.id,
+                                    "default",
+                                    playlistItem.name,
+                                    playlistItem.pageSource.url,
+                                    playlistItem.mediaPath.url,
+                                    playlistItem.hlsMediaPath.url,
+                                    playlistItem.mediaSource.url,
+                                    playlistItem.thumbnailPath.url,
+                                    playlistItem.author,
+                                    playlistItem.duration,
+                                    playlistItem.lastPlayedPosition,
+                                    playlistItem.mediaFileBytes,
+                                    playlistItem.cached,
+                                    false);
+                    VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+                });
     }
 
     @Override
     public void onConnectionError(MojoException e) {
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                && SharedPreferencesManager.getInstance()
+                        .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();
         }
