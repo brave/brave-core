@@ -10,12 +10,13 @@ import re
 
 from typing import List, Optional, Dict, Tuple
 
-from components.browser_type import BrowserType, BraveVersion, ParseBrowserType
+from components.browser_type import BrowserType, ParseBrowserType
+from components.version import BraveVersion
 
 
 class RunnerConfig:
   """A description of a browser configuration that is able to run tests."""
-  tag: Optional[BraveVersion] = None
+  version: Optional[BraveVersion] = None
   location: Optional[str] = None
   label: Optional[str] = None
   profile = 'clean'
@@ -29,7 +30,7 @@ class RunnerConfig:
     assert isinstance(json, dict)
     for key in json:
       if key == 'target':
-        self.tag, location = ParseTarget(json[key])
+        self.version, location = ParseTarget(json[key])
         if not 'location' in json:
           self.location = location
         continue
@@ -43,13 +44,14 @@ class RunnerConfig:
 
 
 def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
-  m = re.match(r'^(v\d+\.\d+\.\d+)(?::(.+)|$)', target)
+  m = re.match(r'^(v\d+\.\d+\.\d+|\w+)(?::(.+)|$)', target)
   if not m:
     return None, target
-  tag = BraveVersion(m.group(1))
+  version = BraveVersion(m.group(1))
   location = m.group(2)
-  logging.debug('Parsed tag: %s, location : %s', tag, location)
-  return tag, location
+  logging.debug('Parsed version: %s, location : %s', version.to_string(),
+                location)
+  return version, location
 
 
 class BenchmarkConfig:

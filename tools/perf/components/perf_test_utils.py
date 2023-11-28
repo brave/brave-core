@@ -100,34 +100,3 @@ def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
   extract_zip(f, output_directory)
-
-
-def GetRevisionNumberAndHash(revision: str, ci_mode: bool) -> Tuple[str, str]:
-  """Returns pair [revision_number, sha1]. revision_number is a number "primary"
-  commits from the begging to `revision`.
-  Use this to get the commit from a revision number:
-  git rev-list --topo-order --first-parent --reverse origin/master
-  | head -n <rev_num> | tail -n 1 | git log -n 1 --stdin
-  """
-
-  if not ci_mode:
-    # Fetch the revision first:
-    GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
-                     cwd=path_util.GetBraveDir(),
-                     check=True)
-
-  # Get git hash of the revision:
-  _, git_hash_output = GetProcessOutput(['git', 'rev-parse', revision],
-                                        cwd=path_util.GetBraveDir(),
-                                        check=True)
-
-  rev_number_args = [
-      'git', 'rev-list', '--topo-order', '--first-parent', '--count', revision
-  ]
-
-  # Get the revision number:
-  _, rev_number_output = GetProcessOutput(rev_number_args,
-                                          cwd=path_util.GetBraveDir(),
-                                          check=True)
-
-  return (rev_number_output.rstrip(), git_hash_output.rstrip())
