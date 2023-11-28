@@ -9,7 +9,10 @@
 // This file is used in rc.exe which doesn't receive low priority additional
 // global include to support #include "src/...".
 // #include_next is used instead to include original upstream file.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-include-next"
 #include_next "build/buildflag.h"
+#pragma clang diagnostic pop
 
 // Use IF_BUILDFLAG(FLAG_NAME, { some_code_here(); }) to generate a single
 // conditional define.
