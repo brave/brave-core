@@ -88,8 +88,8 @@ export default {
       options: getKeysForMojomEnum(mojom.APIError),
       control: { type: 'select' }
     },
-    suggestedQuestionsPref: {
-      options: getKeysForMojomEnum(mojom.AutoGenerateQuestionsPref),
+    suggestionStatus: {
+      options: getKeysForMojomEnum(mojom.SuggestionGenerationStatus),
       control: { type: 'select' }
     },
     model: {
@@ -108,14 +108,12 @@ export default {
     isPremiumUser: true,
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
-    suggestedQuestionsPref: 'Unset' satisfies keyof typeof mojom.AutoGenerateQuestionsPref,
+    suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
     model: MODELS[0].name
   },
   decorators: [
     (Story: any, options: any) => {
       const [isGenerating] = React.useState(false)
-      const [canGenerateQuestions] = React.useState(false)
-      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = mojom.AutoGenerateQuestionsPref[options.args.suggestedQuestionsPref]
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
@@ -140,8 +138,7 @@ export default {
         isGenerating,
         isPremiumStatusFetching: false,
         suggestedQuestions,
-        canGenerateQuestions,
-        userAutoGeneratePref,
+        suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         siteInfo,
         favIconUrl,

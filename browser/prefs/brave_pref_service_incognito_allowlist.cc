@@ -39,7 +39,6 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
         ai_chat::prefs::kLastAcceptedDisclaimer,
-        ai_chat::prefs::kBraveChatAutoGenerateQuestions,
         ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   });

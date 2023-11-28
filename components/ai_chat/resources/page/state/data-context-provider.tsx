@@ -32,8 +32,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
-  const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
-  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
+  const [suggestionStatus, setSuggestionStatus] = React.useState<mojom.SuggestionGenerationStatus>(mojom.SuggestionGenerationStatus.None)
   // undefined for nothing received yet
   // null for no site info
   // mojom.SiteInfo for valid site info
@@ -83,18 +82,12 @@ function DataContextProvider (props: DataContextProviderProps) {
       .then((res) => setConversationHistory(res.conversationHistory))
   }
 
-  const setUserAllowsAutoGenerating = (value: boolean) => {
-    getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
-    setUserAutoGeneratePref(value ? mojom.AutoGenerateQuestionsPref.Enabled : mojom.AutoGenerateQuestionsPref.Disabled)
-  }
-
   const getSuggestedQuestions = () => {
     getPageHandlerInstance()
       .pageHandler.getSuggestedQuestions()
       .then((r) => {
         setSuggestedQuestions(r.questions)
-        setCanGenerateQuestions(r.canGenerate)
-        setUserAutoGeneratePref(r.autoGenerate)
+        setSuggestionStatus(r.suggestionStatus)
       })
   }
 
@@ -249,14 +242,12 @@ function DataContextProvider (props: DataContextProviderProps) {
     // Setup data event handlers
     getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
       getConversationHistory()
-      setCanGenerateQuestions(false)
     })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
     getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
-      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: mojom.AutoGenerateQuestionsPref) => {
+      .addListener((questions: string[], suggestionStatus: mojom.SuggestionGenerationStatus) => {
         setSuggestedQuestions(questions)
-        setCanGenerateQuestions(!hasGenerated)
-        setUserAutoGeneratePref(autoGenerate)
+        setSuggestionStatus(suggestionStatus)
       }
     )
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
@@ -290,8 +281,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     conversationHistory,
     isGenerating,
     suggestedQuestions,
-    canGenerateQuestions,
-    userAutoGeneratePref,
+    suggestionStatus,
     siteInfo: siteInfo,
     favIconUrl,
     currentError,
@@ -309,7 +299,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     goPremium,
     managePremium,
     generateSuggestedQuestions,
-    setUserAllowsAutoGenerating,
     handleAgreeClick,
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,

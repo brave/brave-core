@@ -74,8 +74,6 @@ public class BraveLeoResetPreference
                 }
                 UserPrefs.get(profile)
                         .clearPref(BravePref.LAST_ACCEPTED_DISCLAIMER);
-                UserPrefs.get(profile)
-                        .setBoolean(BravePref.BRAVE_CHAT_AUTO_GENERATE_QUESTIONS, false);
             } else {
                 dialog.dismiss();
             }

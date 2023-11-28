@@ -9,20 +9,33 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
-import getPageHandlerInstance, { CharacterType } from '../../api/page_handler'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ContextMenuAssistant from '../context_menu_assistant'
+import { getLocale } from '$web-common/locale'
+
+const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
+  mojom.SuggestionGenerationStatus.CanGenerate,
+  mojom.SuggestionGenerationStatus.IsGenerating
+]
 
 function ConversationList() {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
+
+  const context = React.useContext(DataContext)
   const {
     isGenerating,
     conversationHistory,
     suggestedQuestions,
     shouldDisableUserInput
-  } = React.useContext(DataContext)
+  } = context
+
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
+
+  const showSuggestions: boolean =
+    suggestedQuestions.length > 0 ||
+    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus)
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
@@ -50,8 +63,9 @@ function ConversationList() {
         {conversationHistory.map((turn, id) => {
           const isLastEntry = id === conversationHistory.length - 1
           const isLoading = isLastEntry && isGenerating
-          const isHuman = turn.characterType === CharacterType.HUMAN
-          const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
+          const isHuman = turn.characterType === mojom.CharacterType.HUMAN
+          const isAIAssistant =
+            turn.characterType === mojom.CharacterType.ASSISTANT
 
           const turnClass = classnames({
             [styles.turn]: true,
@@ -97,10 +111,10 @@ function ConversationList() {
           )
         })}
       </div>
-      {suggestedQuestions.length > 0 && (
+      {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            Suggested follow-ups
+            {getLocale('suggestionsTitle')}
           </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
@@ -113,6 +127,23 @@ function ConversationList() {
                 <span className={styles.buttonText}>{question}</span>
               </Button>
             ))}
+            {SUGGESTION_STATUS_SHOW_BUTTON.includes(
+              context.suggestionStatus
+            ) && (
+              <Button
+                onClick={() => context.generateSuggestedQuestions()}
+                // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
+                isLoading={
+                  context.suggestionStatus ===
+                  mojom.SuggestionGenerationStatus.IsGenerating
+                }
+                kind='outline'
+              >
+                <span className={styles.buttonText}>
+                  {getLocale('suggestQuestionsLabel')}
+                </span>
+              </Button>
+            )}
           </div>
         </div>
       )}

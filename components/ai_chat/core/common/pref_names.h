@@ -7,13 +7,12 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREF_NAMES_H_
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace ai_chat::prefs {
 
 inline constexpr char kLastAcceptedDisclaimer[] =
     "brave.ai_chat.last_accepted_disclaimer";
-inline constexpr char kBraveChatAutoGenerateQuestions[] =
-    "brave.ai_chat.auto_generate_questions";
 inline constexpr char kBraveChatAutocompleteProviderEnabled[] =
     "brave.ai_chat.autocomplete_provider_enabled";
 inline constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
@@ -33,6 +32,9 @@ inline constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_autocomplete";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateProfilePrefs(PrefService* profile_prefs);
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 

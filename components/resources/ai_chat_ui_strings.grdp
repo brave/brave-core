@@ -27,23 +27,17 @@
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
   </message>
-  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
-    Enable suggested questions?
+  <message name="IDS_CHAT_UI_SUGGESTIONS_TITLE" desc="Title for suggestions of what to ask the AI Chat">
+    Suggested follow-ups
+  </message>
+  <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
+    Suggest questions…
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
     Summarize this video
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
-  </message>
-  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
-    Leo can automatically suggest questions based on the content of the site. To do this, the page contents of your navigations will be sent to Leo to generate these suggestions while Leo is open. You can disable it later in Settings.
-  </message>
-  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_BUTTON_LABEL" desc="A button label to enable suggested questions">
-    Enable
-  </message>
-  <message name="IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL" desc="A button label to skip suggested questions option">
-    No Thanks
   </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
@@ -74,9 +68,6 @@
   </message>
   <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
     New chat
-  </message>
-  <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
-    Suggested questions
   </message>
   <message name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
     Go Premium

@@ -17,12 +17,6 @@ enum ConversationTurnVisibility {
   HIDDEN // does not get added to chat history, used as a flag internally
 };
 
-enum AutoGenerateQuestionsPref {
-  Unset,       // User has not made a choice yet
-  Enabled,     // User has chosen to enable auto-generation
-  Disabled     // User has chosen not to enable auto-generation
-};
-
 enum APIError {
   None,
   ConnectionIssue,
@@ -45,6 +39,13 @@ enum PremiumStatus {
   Inactive,
   Active,
   ActiveDisconnected,
+};
+
+enum SuggestionGenerationStatus {
+  None,
+  CanGenerate,
+  IsGenerating,
+  HasGenerated,
 };
 
 struct SiteInfo {
@@ -96,17 +97,17 @@ interface PageHandler {
   // Command to change the model for the Conversation to |model_name|.
   ChangeModel(string model_key);
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+
   // List of all suggested questions for the active tab in the page's Browser
   // window.
   GetSuggestedQuestions() => (
-      array<string> questions, bool can_generate,
-          AutoGenerateQuestionsPref auto_generate);
+      array<string> questions, SuggestionGenerationStatus suggestion_status);
   // The browser should generate some questions and fire an event when they
   // are ready.
   GenerateQuestions();
+
   SubmitHumanConversationEntry(string input);
   MarkAgreementAccepted();
-  SetAutoGenerateQuestions(bool can_auto_generate_questions);
   // Get associated page information. If there is none then |site_info| will be
   // |null|. If the reason for that is it's still being fetched, then
   // |is_fetching| will be |true|.
@@ -141,9 +142,7 @@ interface ChatUIPage {
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(
-      array<string> questions,
-          bool has_generated,
-              AutoGenerateQuestionsPref auto_generate);
+      array<string> questions, SuggestionGenerationStatus status);
   // Associated page information has changed. If there is none then |site_info|
   // will be |null|. If the reason for that is it's still being fetched, then
   // |is_fetching| will be |true|.

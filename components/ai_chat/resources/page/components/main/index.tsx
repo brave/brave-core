@@ -13,7 +13,6 @@ import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
-import PromptAutoSuggestion from '../prompt_auto_suggestion'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
@@ -30,7 +29,6 @@ function Main() {
   const context = React.useContext(DataContext)
   const {
     siteInfo,
-    userAutoGeneratePref,
     hasAcceptedAgreement,
     currentError,
     apiHasError
@@ -40,7 +38,6 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
@@ -52,7 +49,6 @@ function Main() {
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
-    !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
     !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
     siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
@@ -183,9 +179,6 @@ function Main() {
         </div>}
       </div>
       <div className={styles.inputBox}>
-        {shouldPromptSuggestQuestions &&
-        <PromptAutoSuggestion />
-        }
         <InputBox />
       </div>
     </main>

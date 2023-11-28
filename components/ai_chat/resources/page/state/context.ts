@@ -13,9 +13,8 @@ export interface AIChatContext {
   conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
-  canGenerateQuestions: boolean
+  suggestionStatus: mojom.SuggestionGenerationStatus
   hasAcceptedAgreement: boolean
-  userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
   siteInfo?: mojom.SiteInfo | null
   favIconUrl: string | undefined
   currentError: mojom.APIError | undefined
@@ -30,7 +29,6 @@ export interface AIChatContext {
   setCurrentModel: (model: mojom.Model) => void,
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
-  setUserAllowsAutoGenerating: (value: boolean) => void
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
@@ -47,14 +45,13 @@ export const defaultContext: AIChatContext = {
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,
-  canGenerateQuestions: false,
+  suggestionStatus: mojom.SuggestionGenerationStatus.None,
   hasAcceptedAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
   isPremiumStatusFetching: false,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
-  userAutoGeneratePref: undefined,
   siteInfo: undefined,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
@@ -64,7 +61,6 @@ export const defaultContext: AIChatContext = {
   setCurrentModel: () => {},
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
-  setUserAllowsAutoGenerating: () => {},
   goPremium: () => {},
   managePremium: () => {},
   handleAgreeClick: () => {},

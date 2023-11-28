@@ -58,7 +58,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
-  void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
@@ -88,8 +87,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnModelChanged(const std::string& model_key) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
-      bool has_generated,
-      mojom::AutoGenerateQuestionsPref auto_generate) override;
+      mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent(bool page_contents_is_truncated) override;
 

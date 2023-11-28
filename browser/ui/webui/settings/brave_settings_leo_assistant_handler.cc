@@ -142,8 +142,6 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 
   ShowLeoAssistantIconVisibleIfNot(service);
   profile_->GetPrefs()->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
-  profile_->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions, false);
 
   AllowJavascript();
 }
