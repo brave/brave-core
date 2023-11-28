@@ -47,10 +47,18 @@ import {
 } from './style'
 
 export interface Props {
-  onCancel: (account: BraveWallet.AccountInfo) => void
   account: BraveWallet.AccountInfo
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
-  onClickInstructions: () => void
+}
+
+const onClickInstructions = () => {
+  const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'
+
+  chrome.tabs.create({ url }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 }
 
 function getAppName(coinType: BraveWallet.CoinType): string {
@@ -65,10 +73,8 @@ function getAppName(coinType: BraveWallet.CoinType): string {
 }
 
 export const ConnectHardwareWalletPanel = ({
-  onCancel,
   account,
-  hardwareWalletCode,
-  onClickInstructions
+  hardwareWalletCode
 }: Props) => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
@@ -128,8 +134,8 @@ export const ConnectHardwareWalletPanel = ({
 
   // methods
   const onCancelConnect = React.useCallback(() => {
-    onCancel(account)
-  }, [onCancel, account])
+    dispatch(PanelActions.cancelConnectHardwareWallet(account))
+  }, [account])
 
   const onSignData = React.useCallback(() => {
     if (!messageAccount || !request) {

@@ -39,7 +39,6 @@ import {
 } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
 
-import * as WalletPanelActions from './actions/wallet_panel_actions'
 import { BraveWallet, WalletRoutes } from '../constants/types'
 
 import {
@@ -53,7 +52,6 @@ import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-t
 import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
 import { ConfirmZCashTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm_zcash_transaction_panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
-import { useDispatch } from 'react-redux'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
@@ -91,9 +89,6 @@ let hasInitializedRouter = false
 function Container() {
   // routing
   const history = useHistory()
-
-  // redux
-  const dispatch = useDispatch()
 
   // wallet selectors (safe)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
@@ -152,105 +147,6 @@ function Container() {
   // bundle and display that loading indicator ASAP.
   const { selectedPendingTransaction } = usePendingTransactions()
 
-  const onSetup = () => {
-    dispatch(WalletPanelActions.setupWallet())
-  }
-
-  const onCancelSigning = () => {
-    dispatch(
-      WalletPanelActions.signMessageProcessed({
-        approved: false,
-        id: signMessageData[0].id
-      })
-    )
-  }
-
-  const onApproveAddNetwork = () => {
-    dispatch(
-      WalletPanelActions.addEthereumChainRequestCompleted({
-        chainId: addChainRequest.networkInfo.chainId,
-        approved: true
-      })
-    )
-  }
-
-  const onCancelAddNetwork = () => {
-    dispatch(
-      WalletPanelActions.addEthereumChainRequestCompleted({
-        chainId: addChainRequest.networkInfo.chainId,
-        approved: false
-      })
-    )
-  }
-
-  const onApproveChangeNetwork = () => {
-    dispatch(
-      WalletPanelActions.switchEthereumChainProcessed({
-        requestId: switchChainRequest.requestId,
-        approved: true
-      })
-    )
-  }
-
-  const onCancelChangeNetwork = () => {
-    dispatch(
-      WalletPanelActions.switchEthereumChainProcessed({
-        requestId: switchChainRequest.requestId,
-        approved: false
-      })
-    )
-  }
-
-  const onCancelConnectHardwareWallet = (account: BraveWallet.AccountInfo) => {
-    dispatch(WalletPanelActions.cancelConnectHardwareWallet(account))
-  }
-
-  const onClickInstructions = () => {
-    const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'
-
-    chrome.tabs.create({ url }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }
-
-  const onProvideEncryptionKey = (requestId: string) => {
-    dispatch(
-      WalletPanelActions.getEncryptionPublicKeyProcessed({
-        requestId,
-        approved: true
-      })
-    )
-  }
-
-  const onCancelProvideEncryptionKey = (requestId: string) => {
-    dispatch(
-      WalletPanelActions.getEncryptionPublicKeyProcessed({
-        requestId,
-        approved: false
-      })
-    )
-  }
-
-  const onAllowReadingEncryptedMessage = (requestId: string) => {
-    dispatch(
-      WalletPanelActions.decryptProcessed({
-        requestId,
-        approved: true
-      })
-    )
-  }
-
-  const onCancelAllowReadingEncryptedMessage = (requestId: string) => {
-    dispatch(
-      WalletPanelActions.decryptProcessed({
-        requestId,
-        approved: false
-      })
-    )
-  }
-
   const canInitializePageRouter =
     !isWalletLocked &&
     !hasInitializedRouter &&
@@ -273,7 +169,7 @@ function Container() {
     return (
       <WelcomePanelWrapper>
         <LongWrapper>
-          <WelcomePanel onSetup={onSetup} />
+          <WelcomePanel />
         </LongWrapper>
       </WelcomePanelWrapper>
     )
@@ -309,10 +205,8 @@ function Container() {
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
           <ConnectHardwareWalletPanel
-            onCancel={onCancelConnectHardwareWallet}
             account={selectedAccount}
             hardwareWalletCode={hardwareWalletCode}
-            onClickInstructions={onClickInstructions}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
@@ -374,9 +268,6 @@ function Container() {
         <LongWrapper>
           <AllowAddChangeNetworkPanel
             originInfo={addChainRequest.originInfo}
-            onApproveAddNetwork={onApproveAddNetwork}
-            onApproveChangeNetwork={onApproveChangeNetwork}
-            onCancel={onCancelAddNetwork}
             networkPayload={addChainRequest.networkInfo}
             panelType='add'
           />
@@ -391,9 +282,6 @@ function Container() {
         <LongWrapper>
           <AllowAddChangeNetworkPanel
             originInfo={switchChainRequest.originInfo}
-            onApproveAddNetwork={onApproveAddNetwork}
-            onApproveChangeNetwork={onApproveChangeNetwork}
-            onCancel={onCancelChangeNetwork}
             networkPayload={switchChainRequestNetwork}
             panelType='change'
           />
@@ -416,7 +304,6 @@ function Container() {
         <LongWrapper>
           <SignPanel
             signMessageData={signMessageData}
-            onCancel={onCancelSigning}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />
@@ -449,11 +336,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <ProvidePubKeyPanel
-            payload={getEncryptionPublicKeyRequest}
-            onCancel={onCancelProvideEncryptionKey}
-            onProvide={onProvideEncryptionKey}
-          />
+          <ProvidePubKeyPanel payload={getEncryptionPublicKeyRequest} />
         </LongWrapper>
       </PanelWrapper>
     )
@@ -463,11 +346,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <DecryptRequestPanel
-            payload={decryptRequest}
-            onCancel={onCancelAllowReadingEncryptedMessage}
-            onAllow={onAllowReadingEncryptedMessage}
-          />
+          <DecryptRequestPanel payload={decryptRequest} />
         </LongWrapper>
       </PanelWrapper>
     )

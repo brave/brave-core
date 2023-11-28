@@ -469,22 +469,11 @@ _ConfirmErcApproveTransaction.story = {
 }
 
 export const _AllowAddChangeNetwork = () => {
-  const onApprove = () => {
-    alert('Will Approve adding or chainging networks')
-  }
-
-  const onCancel = () => {
-    alert('Canceled Adding Network')
-  }
-
   return (
     <StyledExtensionWrapperLonger>
       <AllowAddChangeNetworkPanel
         originInfo={originInfo}
         panelType='change'
-        onApproveAddNetwork={onApprove}
-        onApproveChangeNetwork={onApprove}
-        onCancel={onCancel}
         networkPayload={mockNetworks[0]}
       />
     </StyledExtensionWrapperLonger>
@@ -496,10 +485,6 @@ _AllowAddChangeNetwork.story = {
 }
 
 export const _SignData = () => {
-  const onCancel = () => {
-    alert('Canceled Signing Data')
-  }
-
   const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
     {
       id: 0,
@@ -527,7 +512,6 @@ export const _SignData = () => {
     <StyledExtensionWrapperLonger>
       <SignPanel
         signMessageData={signMessageDataPayload}
-        onCancel={onCancel}
         showWarning={true}
       />
     </StyledExtensionWrapperLonger>
@@ -539,21 +523,9 @@ _SignData.story = {
 }
 
 export const _ProvideEncryptionKey = () => {
-  const onProvide = () => {
-    alert('Will Provide Encryption Key')
-  }
-
-  const onCancel = () => {
-    alert('Will Cancel Providing Encryption Key')
-  }
-
   return (
     <StyledExtensionWrapperLonger>
-      <ProvidePubKeyPanel
-        payload={mockEncryptionKeyRequest}
-        onCancel={onCancel}
-        onProvide={onProvide}
-      />
+      <ProvidePubKeyPanel payload={mockEncryptionKeyRequest} />
     </StyledExtensionWrapperLonger>
   )
 }
@@ -563,21 +535,9 @@ _ProvideEncryptionKey.story = {
 }
 
 export const _ReadEncryptedMessage = () => {
-  const onAllow = () => {
-    alert('Will Allow Reading Encrypted Message')
-  }
-
-  const onCancel = () => {
-    alert('Will Not Allow Reading Encrypted Message')
-  }
-
   return (
     <StyledExtensionWrapperLonger>
-      <DecryptRequestPanel
-        payload={mockDecryptRequest}
-        onCancel={onCancel}
-        onAllow={onAllow}
-      />
+      <DecryptRequestPanel payload={mockDecryptRequest} />
     </StyledExtensionWrapperLonger>
   )
 }
@@ -604,13 +564,9 @@ _ConnectWithSite.story = {
 }
 
 export const _SetupWallet = () => {
-  const onSetup = () => {
-    alert('Will navigate to full wallet onboarding page')
-  }
-
   return (
     <StyledWelcomPanel>
-      <WelcomePanel onSetup={onSetup} />
+      <WelcomePanel />
     </StyledWelcomPanel>
   )
 }
@@ -620,25 +576,10 @@ _SetupWallet.story = {
 }
 
 export const _ConnectHardwareWallet = () => {
-  const onCancel = (account: BraveWallet.AccountInfo) => {
-    // Doesn't do anything in storybook
-  }
-
-  const onClickInstructions = () => {
-    // Open support link in new tab
-    window.open(
-      'https://support.brave.com/hc/en-us/articles/4409309138701',
-      '_blank',
-      'noreferrer'
-    )
-  }
-
   return (
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         account={{ ...mockAccounts[0], name: 'Ledger 1' }}
-        onCancel={onCancel}
-        onClickInstructions={onClickInstructions}
         hardwareWalletCode={undefined}
       />
     </StyledExtensionWrapper>

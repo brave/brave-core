@@ -64,7 +64,6 @@ import {
 
 interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
-  onCancel: () => void
   showWarning: boolean
 }
 
@@ -82,7 +81,7 @@ const onClickLearnMore = () => {
 }
 
 export const SignPanel = (props: Props) => {
-  const { signMessageData, onCancel, showWarning } = props
+  const { signMessageData, showWarning } = props
 
   // redux
   const dispatch = useDispatch()
@@ -111,9 +110,20 @@ export const SignPanel = (props: Props) => {
   const ethSIWETypedData = selectedQueueData.signData.ethSiweData
   const solanaSignTypedData = selectedQueueData.signData.solanaSignData
 
-  // memos
+  // methods
+  const onCancel = () => {
+    dispatch(
+      PanelActions.signMessageProcessed({
+        approved: false,
+        id: signMessageData[0].id
+      })
+    )
+  }
+
+  // custom hooks
   const orb = useAccountOrb(account)
 
+  // memos
   const signMessageQueueInfo = React.useMemo(() => {
     return {
       queueLength: signMessageData.length,
