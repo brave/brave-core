@@ -66,7 +66,6 @@ const chromiumConfigs = {
             path.join(config.braveCoreDir, 'build', 'mac', 'download_hermetic_xcode.py'),
           ],
           config.defaultOptions)
-        util.runGClient(['runhooks'])
       })
     },
     processArtifacts: () => {
@@ -101,6 +100,7 @@ function getChromiumGnArgs() {
     ffmpeg_branding: 'Chrome',
     enable_widevine: true,
     ignore_missing_widevine_signing_cert: true,
+    ...config.extraGnArgs,
   }
 
   if (targetOs === 'android') {
@@ -153,8 +153,7 @@ function buildChromiumRelease(buildOptions = {}) {
 
   const options = config.defaultOptions
   const buildArgsStr = util.buildArgsToString(getChromiumGnArgs())
-  util.run('gn', ['gen', config.outputDir,
-    '--args="' + buildArgsStr + '"', config.extraGnGenOpts],
+  util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'],
     options)
 
 
