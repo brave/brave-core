@@ -341,7 +341,10 @@ export const ConfirmSimulatedTransactionPanel = ({
         setIsWarningCollapsed={setIsWarningCollapsed}
       />
 
-      <Footer showGasErrors />
+      <Footer
+        showGasErrors
+        disableConfirmation={!!simulationResultsErrorText}
+      />
     </StyledWrapper>
   )
 }

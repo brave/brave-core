@@ -29,10 +29,11 @@ import { usePendingTransactions } from '../../../../common/hooks/use-pending-tra
 interface Props {
   rejectButtonType?: 'reject' | 'cancel'
   showGasErrors?: boolean
+  disableConfirmation?: boolean
 }
 
 export function Footer(props: Props) {
-  const { rejectButtonType, showGasErrors } = props
+  const { rejectButtonType, showGasErrors, disableConfirmation } = props
 
   const {
     isConfirmButtonDisabled,
@@ -128,7 +129,7 @@ export function Footer(props: Props) {
             buttonType='confirm'
             text={getLocale('braveWalletAllowSpendConfirmButton')}
             onSubmit={onClickConfirmTransaction}
-            disabled={isConfirmButtonDisabled}
+            disabled={disableConfirmation || isConfirmButtonDisabled}
             minWidth='45%'
           />
         )}
