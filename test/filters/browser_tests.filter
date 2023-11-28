@@ -763,14 +763,6 @@
 # pref: brave.rewards.notifications"
 -PdfOcrMenuObserverTest.*
 
-# These tests failed because we enable download bubble features by default.
-# safe_browsing::kDownloadBubble, safe_browsing::kDownloadBubbleV2
--DownloadExtensionTest.DownloadExtensionTest_Download_Incognito
--DownloadExtensionTest.DownloadExtensionTest_OnDeterminingFilename_IncognitoSpanning
--DownloadExtensionTest.DownloadExtensionTest_OnDeterminingFilename_IncognitoSplit
--DownloadExtensionTest.DownloadExtensionTest_SearchPauseResumeCancelGetFileIconIncognito
--DownloadTestWithFakeSafeBrowsing.NoUncommonDownloadReportIfIncognito
-
 # These tests fail because we have "ask for download destination" setting turned
 # on by default.
 -DownloadBubbleTest.IPHWithNoInteraction
