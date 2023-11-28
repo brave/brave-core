@@ -1,5 +1,7 @@
 const path = require('path')
 
+const isCI = Boolean(process.env.JENKINS_URL && process.env.BUILD_ID)
+
 module.exports = {
   stories: ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
   typescript: {
@@ -7,12 +9,13 @@ module.exports = {
     checkOptions: {
       tsconfig: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
       compilerOptions: {
+        'react-docgen-typescript': false,
         allowJs: true,
         skipLibCheck: true,
         noImplicitAny: true,
         outDir: './storybook_dist'
       },
-      async: false
+      async: !isCI
     }
   },
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
