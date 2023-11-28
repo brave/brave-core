@@ -109,8 +109,7 @@ class FakeIpfsService : public ipfs::IpfsService {
 infobars::InfoBar* FindInfobar(
     infobars::ContentInfoBarManager* content_infobar_manager,
     const infobars::InfoBarDelegate::InfoBarIdentifier& type) {
-  for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
-    auto* infobar = content_infobar_manager->infobar_at(i);
+  for (auto* infobar : content_infobar_manager->infobars()) {
     if (infobar->delegate()->GetIdentifier() == type) {
       return infobar;
     }

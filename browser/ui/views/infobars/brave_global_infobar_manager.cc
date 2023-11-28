@@ -31,9 +31,8 @@ void RemoveInfobarsByIdentifier(
     infobars::InfoBarManager* infobar_manager,
     const infobars::InfoBarDelegate::InfoBarIdentifier& id,
     BraveGlobalInfoBarManager* observer) {
-  for (size_t i = 0; i < infobar_manager->infobar_count(); i++) {
-    if (auto* current_infobar = infobar_manager->infobar_at(i);
-        current_infobar->delegate()->GetIdentifier() == id) {
+  for (auto* current_infobar : infobar_manager->infobars()) {
+    if (current_infobar->delegate()->GetIdentifier() == id) {
       static_cast<BraveGlobalConfirmInfobarDelegate*>(
           current_infobar->delegate())
           ->RemoveObserver(observer);
