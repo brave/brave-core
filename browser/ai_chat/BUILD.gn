@@ -15,6 +15,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/constants",
     "//chrome/common",
     "//chrome/test:test_support",

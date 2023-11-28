@@ -5,7 +5,9 @@
 
 #include <memory>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -36,6 +38,8 @@ class AiChatThrottleUnitTest : public testing::Test {
 
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
+
+    features_.InitAndEnableFeature(ai_chat::features::kAIChat);
   }
 
   void TearDown() override {
@@ -49,6 +53,7 @@ class AiChatThrottleUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
+  base::test::ScopedFeatureList features_;
 };
 
 TEST_F(AiChatThrottleUnitTest, CancelNavigationFromTab) {
