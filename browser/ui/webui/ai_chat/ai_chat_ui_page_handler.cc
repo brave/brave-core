@@ -389,7 +389,7 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
 void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
   if (!active_chat_tab_helper_) {
     VLOG(2) << "Chat tab helper is not set";
-    std::move(callback).Run(mojom::PremiumStatus::Inactive);
+    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
 
@@ -402,9 +402,10 @@ void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
 
 void AIChatUIPageHandler::OnGetPremiumStatus(
     GetPremiumStatusCallback callback,
-    ai_chat::mojom::PremiumStatus status) {
+    ai_chat::mojom::PremiumStatus status,
+    ai_chat::mojom::PremiumInfoPtr info) {
   if (page_.is_bound()) {
-    std::move(callback).Run(status);
+    std::move(callback).Run(status, std::move(info));
   }
 }
 

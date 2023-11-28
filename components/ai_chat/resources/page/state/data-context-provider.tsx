@@ -137,9 +137,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const updateCurrentPremiumStatus = async () => {
     console.debug('Getting premium status...')
-    const premiumStatus = await getPageHandlerInstance().pageHandler.getPremiumStatus()
-    console.debug('got premium status: ', premiumStatus.result)
-    setPremiumStatus(premiumStatus.result)
+    const { status } = await getPageHandlerInstance()
+      .pageHandler.getPremiumStatus()
+    console.debug('got premium status: ', status)
+    setPremiumStatus(status)
   }
 
   const userRefreshPremiumSession = () => {

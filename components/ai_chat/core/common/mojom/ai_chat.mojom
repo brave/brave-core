@@ -5,6 +5,7 @@
 
 module ai_chat.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
 enum CharacterType {
@@ -39,6 +40,15 @@ enum PremiumStatus {
   Inactive,
   Active,
   ActiveDisconnected,
+};
+
+struct PremiumInfo {
+  // How many credentials in the current batch are remaining
+  uint32 remaining_credential_count;
+
+  // When their next batch of credentials is active. If null, there is no
+  // next batch.
+  mojo_base.mojom.Time? next_active_at;
 };
 
 enum SuggestionGenerationStatus {
@@ -137,7 +147,7 @@ interface PageHandler {
   SendFeedback(string category,
       string feedback,
           string rating_id) => (bool is_success);
-  GetPremiumStatus() => (PremiumStatus result);
+  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
 };
 
 interface ChatUIPage {

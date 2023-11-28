@@ -94,9 +94,9 @@ void AIChatMetrics::RecordReset() {
                              std::numeric_limits<int>::max() - 1, 2);
 }
 
-void AIChatMetrics::OnPremiumStatusUpdated(
-    bool is_new_user,
-    mojom::PremiumStatus premium_status) {
+void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,
+                                           mojom::PremiumStatus premium_status,
+                                           mojom::PremiumInfoPtr) {
   is_premium_ = premium_status == mojom::PremiumStatus::Active ||
                 premium_status == mojom::PremiumStatus::ActiveDisconnected;
   local_state_->SetBoolean(prefs::kBraveChatP3ALastPremiumStatus, is_premium_);

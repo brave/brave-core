@@ -79,7 +79,8 @@ ConversationDriver::ConversationDriver(
   // not vary on premium status.
   if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
-        [](ConversationDriver* instance, mojom::PremiumStatus status) {
+        [](ConversationDriver* instance, mojom::PremiumStatus status,
+           mojom::PremiumInfoPtr) {
           instance->last_premium_status_ = status;
           if (status == mojom::PremiumStatus::Inactive) {
             // Not premium
@@ -761,7 +762,8 @@ void ConversationDriver::GetPremiumStatus(
 
 void ConversationDriver::OnPremiumStatusReceived(
     mojom::PageHandler::GetPremiumStatusCallback parent_callback,
-    mojom::PremiumStatus premium_status) {
+    mojom::PremiumStatus premium_status,
+    mojom::PremiumInfoPtr premium_info) {
   if (last_premium_status_ != premium_status &&
       premium_status == mojom::PremiumStatus::Active) {
     // Change model if we haven't already
@@ -769,9 +771,10 @@ void ConversationDriver::OnPremiumStatusReceived(
   }
   last_premium_status_ = premium_status;
   if (HasUserOptedIn()) {
-    ai_chat_metrics_->OnPremiumStatusUpdated(false, premium_status);
+    ai_chat_metrics_->OnPremiumStatusUpdated(false, premium_status,
+                                             std::move(premium_info));
   }
-  std::move(parent_callback).Run(premium_status);
+  std::move(parent_callback).Run(premium_status, std::move(premium_info));
 }
 
 void ConversationDriver::OnConversationEntryPending() {

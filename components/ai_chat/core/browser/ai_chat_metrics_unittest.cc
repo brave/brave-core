@@ -46,7 +46,8 @@ class AIChatMetricsUnitTest : public testing::Test {
     return base::BindLambdaForTesting(
         [is_premium](mojom::PageHandler::GetPremiumStatusCallback callback) {
           std::move(callback).Run(is_premium ? mojom::PremiumStatus::Active
-                                             : mojom::PremiumStatus::Inactive);
+                                             : mojom::PremiumStatus::Inactive,
+                                  nullptr);
         });
   }
 
@@ -66,7 +67,8 @@ TEST_F(AIChatMetricsUnitTest, Enabled) {
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 2);
 
   is_premium_ = true;
-  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active);
+  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active,
+                                           nullptr);
   histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 2, 1);
 
   is_premium_ = false;
@@ -154,7 +156,8 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyAndMonthly) {
   histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 
   is_premium_ = true;
-  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active);
+  ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active,
+                                           nullptr);
   RecordPrompts(true, 1);
   histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
   histogram_tester_.ExpectBucketCount(kUsageMonthlyHistogramName, 2, 1);
