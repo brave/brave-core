@@ -9,6 +9,7 @@ const fs = require('fs-extra')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const build = require('../lib/build')
+const buildChromiumRelease = require('../lib/buildChromiumRelease')
 const { buildFuzzer, runFuzzer } = require('../lib/fuzzer')
 const versions = require('../lib/versions')
 const start = require('../lib/start')
@@ -165,6 +166,24 @@ program
   .option('--no_gn_gen', 'Build without running gn gen')
   .arguments('[build_config]')
   .action(build)
+
+program
+  .command('build_chromium_release')
+  .description(
+    'Produces a chromium release build for performance testing.\n' +
+    'Uses the same /src directory; all brave patches are reverted.\n' +
+    'The default build_dir is `chromium_Release(_target_arch)`.\n' +
+    'Intended for use on CI, use locally with care.')
+  .option('--force', 'Ignore a warning about non-CI build')
+  .option('-C <build_dir>', 'build config (out/chromium_Release')
+  .option('--target_os <target_os>', 'target OS')
+  .option('--target_arch <target_arch>', 'target architecture')
+  .option('--gn <arg>', 'Additional gn args, in the form <key>:<value>',
+    collect, [])
+  .option('--ninja <opt>',
+    'Additional Ninja command-line options, in the form <key>:<value>',
+    collect, [])
+  .action(buildChromiumRelease)
 
 program
   .command('create_dist')

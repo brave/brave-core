@@ -107,6 +107,7 @@ const Config = function () {
   this.buildTarget = 'brave'
   this.rootDir = rootDir
   this.isUniversalBinary = false
+  this.isChromium = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
@@ -1288,6 +1289,9 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     }
     if (this.targetEnvironment) {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
+    }
+    if (this.isChromium) {
+      buildConfigDir = buildConfigDir + "_chromium"
     }
 
     return path.join(baseDir, buildConfigDir)
