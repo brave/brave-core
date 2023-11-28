@@ -5,12 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import { useDispatch } from 'react-redux'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
-
-import { WalletActions } from '../../../common/actions'
 
 // Selectors
 import {
@@ -25,7 +19,9 @@ import { BraveWallet } from '../../../constants/types'
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
+  useRemoveSitePermissionMutation,
+  useRequestSitePermissionMutation
 } from '../../../common/slices/api.slice'
 import {
   useSelectedAccountQuery //
@@ -73,9 +69,6 @@ export const DAppConnectionMain = (props: Props) => {
     onSelectOption,
     getAccountsFiatValue
   } = props
-  // Redux
-  const dispatch = useDispatch()
-
   // Selectors
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -83,6 +76,10 @@ export const DAppConnectionMain = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
+  // Mutations
+  const [requestSitePermission] = useRequestSitePermissionMutation()
+  const [removeSitePermission] = useRemoveSitePermissionMutation()
 
   // Memos
   const connectionStatusText = React.useMemo((): string => {
@@ -103,26 +100,16 @@ export const DAppConnectionMain = (props: Props) => {
 
   // Methods
   const onClickConnect = React.useCallback(() => {
-    if (!selectedAccount) {
-      return
+    if (selectedAccount) {
+      requestSitePermission(selectedAccount.accountId)
     }
-    dispatch(
-      PanelActions.requestSitePermission({
-        accountId: selectedAccount.accountId
-      })
-    )
-  }, [selectedAccount])
+  }, [selectedAccount, requestSitePermission])
 
   const onClickDisconnect = React.useCallback(() => {
-    if (!selectedAccount) {
-      return
+    if (selectedAccount) {
+      removeSitePermission(selectedAccount.accountId)
     }
-    dispatch(
-      WalletActions.removeSitePermission({
-        accountId: selectedAccount.accountId
-      })
-    )
-  }, [selectedAccount])
+  }, [selectedAccount, removeSitePermission])
 
   return (
     <>

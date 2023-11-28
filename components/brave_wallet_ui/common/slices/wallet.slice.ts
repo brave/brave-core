@@ -19,9 +19,7 @@ import {
   DefaultBaseCurrencyChanged,
   DefaultEthereumWalletChanged,
   DefaultSolanaWalletChanged,
-  RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
-  SitePermissionsPayloadType,
   UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
@@ -73,7 +71,6 @@ const defaultState: WalletState = {
     originSpec: ''
   },
   gasEstimates: undefined,
-  connectedAccounts: [],
   isMetaMaskInstalled: false,
   defaultCurrencies: {
     fiat: '',
@@ -180,9 +177,6 @@ export const WalletAsyncActions = {
     createAction<DefaultBaseCryptocurrencyChanged>(
       'defaultBaseCryptocurrencyChanged'
     ),
-  removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
-    'removeSitePermission'
-  ),
   refreshNetworksAndTokens: createAction<RefreshOpts>(
     'refreshNetworksAndTokens'
   ),
@@ -414,13 +408,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.hidePortfolioNFTsTab = payload
-      },
-
-      setSitePermissions(
-        state: WalletState,
-        { payload }: PayloadAction<SitePermissionsPayloadType>
-      ) {
-        state.connectedAccounts = payload.accounts
       },
 
       setSolFeeEstimates(

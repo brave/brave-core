@@ -93,6 +93,7 @@ import { networkEndpoints } from './endpoints/network.endpoints'
 import { coinMarketEndpoints } from './endpoints/market.endpoints'
 import { tokenBalancesEndpoints } from './endpoints/token_balances.endpoints'
 import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
+import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 
 interface GetTransactionsQueryArg {
   /**
@@ -1932,6 +1933,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: coinMarketEndpoints })
       // Fiat currency endpoints
       .injectEndpoints({ endpoints: fiatCurrencyEndpoints })
+      // Site permission (connected accounts) endpoints
+      .injectEndpoints({ endpoints: sitePermissionEndpoints })
   )
 }
 
@@ -1949,15 +1952,18 @@ export const {
   useApproveHardwareTransactionMutation,
   useApproveOrDeclineTokenSuggestionMutation,
   useApproveTransactionMutation,
+  useCancelConnectToSiteMutation,
   useCancelTransactionMutation,
   useCheckExternalWalletPasswordMutation,
   useClosePanelUIMutation,
   useCompleteWalletBackupMutation,
+  useConnectToSiteMutation,
   useCreateWalletMutation,
   useEnableEnsOffchainLookupMutation,
   useGenerateReceiveAddressMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
+  useGetActiveOriginConnectedAccountIdsQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAllKnownNetworksQuery,
@@ -2050,9 +2056,11 @@ export const {
   useRefreshNetworkInfoMutation,
   useRejectAllTransactionsMutation,
   useRejectTransactionMutation,
+  useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
   useReportActiveWalletsToP3AMutation,
   useReportOnboardingActionMutation,
+  useRequestSitePermissionMutation,
   useRestoreNetworksMutation,
   useRestoreWalletMutation,
   useRetryTransactionMutation,
