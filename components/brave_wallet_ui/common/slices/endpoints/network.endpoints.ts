@@ -58,7 +58,8 @@ export const networkEndpoints = ({
             error
           )
         }
-      }
+      },
+      providesTags: ['Network']
     }),
     getNetworksRegistry: query<NetworksRegistry, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
