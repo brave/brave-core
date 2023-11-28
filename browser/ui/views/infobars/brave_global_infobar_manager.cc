@@ -68,7 +68,7 @@ BraveGlobalInfoBarManager::BraveGlobalInfoBarManager(
 
 BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
   RemoveAllInfobarsByIdentifier(delegate_factory_->GetInfoBarIdentifier(),
-                                   this);
+                                this);
 }
 
 void BraveGlobalInfoBarManager::Show() {
@@ -148,7 +148,7 @@ void BraveGlobalInfoBarManager::MaybeAddInfoBar(
 
 void BraveGlobalInfoBarManager::OnInfoBarClosed() {
   RemoveAllInfobarsByIdentifier(delegate_factory_->GetInfoBarIdentifier(),
-                                   this);
+                                this);
   is_closed_ = true;
   browser_tab_strip_tracker_.reset();
 }

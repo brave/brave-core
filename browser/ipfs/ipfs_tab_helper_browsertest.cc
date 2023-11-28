@@ -53,7 +53,6 @@ class IPFSTabHelperTest : public IPFSTabHelper {
 
   bool IsResolveMethod(
       const ipfs::IPFSResolveMethodTypes& resolution_method) override {
-    LOG(ERROR) << "[IPFS] IPFSTabHelperTest::IsResolveMethod";
     return resolution_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
   }
 };

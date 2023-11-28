@@ -810,7 +810,9 @@ bool IpfsService::IsDaemonLaunched() const {
 void IpfsService::StartDaemonAndLaunch(
     base::OnceCallback<void(void)> success_callback) {
   if (IsDaemonLaunched()) {
-    std::move(success_callback).Run();
+    if (success_callback) {
+      std::move(success_callback).Run();
+    }
     return;
   }
   LaunchDaemon(base::BindOnce(
