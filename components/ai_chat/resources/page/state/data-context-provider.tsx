@@ -35,8 +35,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [suggestionStatus, setSuggestionStatus] = React.useState<mojom.SuggestionGenerationStatus>(mojom.SuggestionGenerationStatus.None)
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
     title: undefined,
-    isContentPresent: false,
+    isContentAssociationPossible: false,
     isContentTruncated: false,
+    hasContentAssociated: false
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
@@ -75,7 +76,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   // Wait to show model intro until we've received SiteInfo information
   // (valid or null) to avoid flash of content.
-  const showModelIntro = hasAcceptedAgreement && (hasChangedModel || siteInfo?.isContentPresent)
+  const showModelIntro = hasAcceptedAgreement && (hasChangedModel || siteInfo?.isContentAssociationPossible)
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -173,7 +174,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     // TODO(nullhook): make this more accurately based on the actual page content length
     let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
-    if (!siteInfo.isContentPresent) totalCharLimit += currentModel?.maxPageContentLength
+    if (!siteInfo.isContentAssociationPossible) totalCharLimit += currentModel?.maxPageContentLength
 
     if (
       !hasDismissedLongConversationInfo &&

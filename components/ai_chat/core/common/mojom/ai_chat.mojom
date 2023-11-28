@@ -51,9 +51,12 @@ enum SuggestionGenerationStatus {
 struct SiteInfo {
   // Title is present if the site has associated page content
   string? title;
+  // the content so long that it's being truncated
   bool is_content_truncated;
-  // If site has potential content to feed LLM
-  bool is_content_present;
+  // Indicates if the URL scheme is of a type that allows for content association.
+  bool is_content_association_possible;
+  // Indicates if there is currently content in-memory associated with this conversation.
+  bool has_content_associated;
 };
 
 // Represents a single turn in a conversation.

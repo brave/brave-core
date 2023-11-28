@@ -182,7 +182,7 @@ void ConversationDriver::InitEngine() {
 
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
-  if (HasPageContent() == PageContentAssociation::HAS_CONTENT) {
+  if (HasContentAssociated()) {
     OnPageHasContentChanged(IsPageContentsTruncated());
   }
 }
@@ -407,14 +407,8 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
   return suggestions_;
 }
 
-PageContentAssociation ConversationDriver::HasPageContent() {
-  if (is_page_text_fetch_in_progress_) {
-    return PageContentAssociation::FETCHING_CONTENT;
-  }
-  if (article_text_.empty()) {
-    return PageContentAssociation::NO_CONTENT;
-  }
-  return PageContentAssociation::HAS_CONTENT;
+bool ConversationDriver::HasContentAssociated() {
+  return !article_text_.empty();
 }
 
 void ConversationDriver::DisconnectPageContents() {
@@ -662,7 +656,7 @@ bool ConversationDriver::HasPendingConversationEntry() {
   return pending_conversation_entry_ != nullptr;
 }
 
-bool ConversationDriver::IsPageContentsPresent() {
+bool ConversationDriver::IsContentAssociationPossible() {
   const GURL url = GetPageURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
