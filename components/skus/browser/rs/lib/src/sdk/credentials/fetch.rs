@@ -95,7 +95,7 @@ where
             _ => self.refresh_order(order_id).await?,
         };
 
-        if !order.is_paid() || order.has_expired(Utc::now().naive_utc()) {
+        if !order.can_submit_credentials(Utc::now().naive_utc()) {
             return Err(InternalError::OrderUnpaid.into());
         }
 
