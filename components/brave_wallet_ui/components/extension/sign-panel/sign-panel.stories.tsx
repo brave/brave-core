@@ -65,7 +65,7 @@ export const _SignPanel = () => {
   return (
     <WalletPageStory>
       <SignPanel
-        onCancel={() => alert('')}
+        onCancel={() => alert('canceled')}
         showWarning={true}
         signMessageData={[evilUnicodeSignMessageData, signMessageData]}
       />
