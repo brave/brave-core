@@ -25,43 +25,31 @@ constexpr bool kDefaultShouldSupportMultipleDisplays = true;
 // Use the same z-order as the browser window by default
 constexpr bool kDefaultUseSameZOrderAsBrowserWindow = true;
 
-// Default ad notification normalized display coordinate
+// Default ad notification margin within the display's work area
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr int kDefaultNotificationAdMargin = 12;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr int kDefaultNotificationAdMargin = 16;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
+constexpr int kDefaultNotificationAdMargin = 12;
 #endif
 
-// Default ad notification x inset within the display's work area specified in
-// screen coordinates
+// Default ad notification normalized display x coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr int kDefaultNotificationAdInsetX = -370;
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kNativeNotificationWidth = 360;
-constexpr int kDefaultNotificationAdInsetX = -(10 + kNativeNotificationWidth);
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_LINUX)
-constexpr int kDefaultNotificationAdInsetX = -13;
+constexpr double kDefaultNotificationAdNormalizedCoordinateX = 0.5;
 #endif
 
-// Default ad notification normalized display coordinate
+// Default ad notification normalized display y coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 1.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.05;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.2;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
-#endif
-
-// Default ad notification y inset within the display's work area specified in
-// screen coordinates
-#if BUILDFLAG(IS_WIN)
-constexpr int kDefaultNotificationAdInsetY = -10;
-#elif BUILDFLAG(IS_MAC)
-constexpr int kDefaultNotificationAdInsetY = 11;
-#elif BUILDFLAG(IS_LINUX)
-constexpr int kDefaultNotificationAdInsetY = 18;
+constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.0;
 #endif
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

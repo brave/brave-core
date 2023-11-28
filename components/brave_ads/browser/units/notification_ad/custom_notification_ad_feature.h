@@ -41,31 +41,25 @@ inline constexpr base::FeatureParam<bool> kUseSameZOrderAsBrowserWindow{
     &kCustomNotificationAdFeature, "use_same_z_order_as_browser_window",
     kDefaultUseSameZOrderAsBrowserWindow};
 
+// Ad notification margin within the display's work area
+inline constexpr base::FeatureParam<int> kCustomNotificationAdMargin{
+    &kCustomNotificationAdFeature, "margin", kDefaultNotificationAdMargin};
+
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for left, 0.5 for center or 1.0 for right
 inline constexpr base::FeatureParam<double>
-    kCustomNotificationAdNormalizedDisplayCoordinateX{
-        &kCustomNotificationAdFeature, "normalized_display_coordinate_x",
-        kDefaultNotificationAdNormalizedDisplayCoordinateX};
-
-// Ad notification x inset within the display's work area specified in screen
-// coordinates
-inline constexpr base::FeatureParam<int> kCustomNotificationAdInsetX{
-    &kCustomNotificationAdFeature, "inset_x", kDefaultNotificationAdInsetX};
+    kCustomNotificationAdNormalizedCoordinateX{
+        &kCustomNotificationAdFeature, "normalized_coordinate_x",
+        kDefaultNotificationAdNormalizedCoordinateX};
 
 // Ad notification normalized display coordinate for the y component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for top, 0.5 for middle or 1.0 for bottom
 inline constexpr base::FeatureParam<double>
-    kCustomNotificationAdNormalizedDisplayCoordinateY{
-        &kCustomNotificationAdFeature, "normalized_display_coordinate_y",
-        kDefaultNotificationAdNormalizedDisplayCoordinateY};
-
-// Ad notification y inset within the display's work area specified in screen
-// coordinates
-inline constexpr base::FeatureParam<int> kCustomNotificationAdInsetY{
-    &kCustomNotificationAdFeature, "inset_y", kDefaultNotificationAdInsetY};
+    kCustomNotificationAdNormalizedCoordinateY{
+        &kCustomNotificationAdFeature, "normalized_coordinate_y",
+        kDefaultNotificationAdNormalizedCoordinateY};
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 

@@ -24,7 +24,7 @@ namespace brave_ads {
 
 gfx::Rect GetDefaultDisplayScreenWorkArea(gfx::NativeView browser_native_view);
 
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(const views::Widget& widget,
                                                    gfx::Rect* bounds);
 
 // Exposed here to be available in tests.

@@ -59,16 +59,15 @@ gfx::Rect GetDefaultDisplayScreenWorkArea(gfx::NativeView browser_native_view) {
              : GetPrimaryDisplayScreenWorkArea();
 }
 
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(const views::Widget& widget,
                                                    gfx::Rect* bounds) {
-  CHECK(widget);
   CHECK(bounds);
 
-  gfx::NativeView native_view = widget->GetNativeView();
+  gfx::NativeView native_view = widget.GetNativeView();
   gfx::Rect work_area;
   if (kUseSameZOrderAsBrowserWindow.Get()) {
-    if (widget->parent()) {
-      native_view = widget->parent()->GetNativeView();
+    if (widget.parent()) {
+      native_view = widget.parent()->GetNativeView();
     }
     work_area = GetNearestDisplayScreenWorkArea(native_view);
   } else if (kShouldSupportMultipleDisplays.Get()) {
