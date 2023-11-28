@@ -1220,7 +1220,7 @@ public class BraveRewardsPanel
                 mExternalWallet = null;
             }
         }
-        if (mExternalWallet != null) {
+        if (mExternalWallet != null && BraveRewardsHelper.isRewardsEnabled()) {
             mBraveRewardsNativeWorker.GetRewardsParameters();
         } else {
             showOnBoarding();
