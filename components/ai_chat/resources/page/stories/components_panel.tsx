@@ -76,13 +76,8 @@ const SAMPLE_QUESTIONS = [
 const SITE_INFO = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
   isContentTruncated: false,
-  isContentPresent: true
-}
-
-const SITE_INFO_DEFAULT = {
-  title: undefined,
-  isContentTruncated: false,
-  isContentPresent: false
+  isContentAssociationPossible: true,
+  hasContentAssociated: true
 }
 
 export default {
@@ -125,7 +120,7 @@ export default {
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : SITE_INFO_DEFAULT
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
@@ -157,7 +152,6 @@ export default {
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
-        shouldShowQuestions: options.args.shouldShowQuestions
       }
 
       return (
