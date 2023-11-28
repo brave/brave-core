@@ -52,7 +52,7 @@ class CommonOptions:
         'targets',
         type=str,
         nargs='?',
-        help='Format: tag1[:<path_or_url1>],..,tagN[:<path_or_urlN>].'
+        help='Format: version1[:<path_or_url1>],..,versionN[:<path_or_urlN>].'
         'Empty value enables the compare mode (see --compare).')
     parser.add_argument(
         '--working-directory',
