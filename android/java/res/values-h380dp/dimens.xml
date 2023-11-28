@@ -15,4 +15,7 @@
     <dimen name="verify_wallet_margin1_land">18dp</dimen>
     <dimen name="verify_wallet_margin2_land">16dp</dimen>
     <dimen name="verify_wallet_margin3_land">12dp</dimen>
+
+    <!-- <dimen name="vpn_plan_margin">16dp</dimen>
+    <dimen name="vpn_plan_section_margin">12dp</dimen> -->
 </resources>
