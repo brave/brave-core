@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/common/brave_renderer_configuration.mojom-forward.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
@@ -69,6 +70,9 @@ class BraveRendererUpdater : public KeyedService {
   IntegerPrefMember brave_wallet_ethereum_provider_;
   IntegerPrefMember brave_wallet_solana_provider_;
   BooleanPrefMember de_amp_enabled_;
+#if BUILDFLAG(ENABLE_TOR)
+  BooleanPrefMember onion_only_in_tor_windows_;
+#endif
   BooleanPrefMember widevine_enabled_;
   bool is_wallet_allowed_for_context_ = false;
   bool is_wallet_created_ = false;

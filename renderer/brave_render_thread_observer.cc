@@ -58,3 +58,8 @@ void BraveRenderThreadObserver::SetConfiguration(
     brave::mojom::DynamicParamsPtr params) {
   *GetDynamicConfigParams() = std::move(*params);
 }
+
+bool BraveRenderThreadObserver::IsOnionAllowed() const {
+  return is_tor_process_ ||
+         !GetDynamicConfigParams()->onion_only_in_tor_windows;
+}
