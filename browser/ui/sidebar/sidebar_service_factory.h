@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 
+#include <vector>
+
+#include "brave/components/sidebar/sidebar_item.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -27,12 +30,33 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
 
  private:
   friend base::NoDestructor<SidebarServiceFactory>;
+  friend class SidebarBrowserTest;
+
+  // This is the default display order
+  static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kHistory,
+      SidebarItem::BuiltInItemType::kPlaylist};
+  static_assert(
+      std::size(kDefaultBuiltInItemTypes) ==
+          static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
+      "A built-in item in this visual order is missing or you might forget to "
+      "update kBuiltInItemItemLast value. If you want to add a "
+      "new item while keeping that hidden, please visit "
+      "GetBuiltInItemForType() in sidebar_service.cc");
 
   SidebarServiceFactory();
   ~SidebarServiceFactory() override;
 
   SidebarServiceFactory(const SidebarServiceFactory&) = delete;
   SidebarServiceFactory& operator=(const SidebarServiceFactory&) = delete;
+
+  std::vector<SidebarItem::BuiltInItemType> GetBuiltInItemTypesForProfile(
+      Profile* profile) const;
 
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
