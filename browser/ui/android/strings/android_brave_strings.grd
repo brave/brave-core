@@ -2376,23 +2376,23 @@ Are you sure you want to do this?
     <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
       24/7 support
     </message>
-    <message name="IDS_BLOCK_ADS" desc="Brave VPN plan text">
-      Blocks unwanted network connections
+    <message name="IDS_PLAN_TEXT_1" desc="Brave VPN plan text">
+      Protect every app &amp; your whole device
     </message>
-    <message name="IDS_ACROSS_ALL_APPS" desc="Brave VPN plan text">
+    <message name="IDS_PLAN_TEXT_2" desc="Brave VPN plan text">
+      Safer for home or public Wi-Fi
+    </message>
+    <message name="IDS_PLAN_TEXT_3" desc="Brave VPN plan text">
+      Lightning-fast, up to 100 Mbps
+    </message>
+    <message name="IDS_PLAN_TEXT_4" desc="Brave VPN plan text">
       Choose your geo/country location
     </message>
-    <message name="IDS_KEEP_YOUR_IP_ADDRESS" desc="Brave VPN plan text">
-      Keeps you anonymous online
+    <message name="IDS_PLAN_TEXT_5" desc="Brave VPN plan text">
+      Brave never logs your activity
     </message>
-    <message name="IDS_SUPPORTS_SPEED" desc="Brave VPN plan text">
-      Supports speeds of up to 100 Mbps
-    </message>
-    <message name="IDS_USE_WIREGUARD" desc="Brave VPN plan text">
-      Uses WireGuard secure encrypted VPN tunnel
-    </message>
-    <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
-      We never share or sell your info
+    <message name="IDS_PLAN_TEXT_6" desc="Brave VPN plan text">
+      Protect 5 devices on 1 subscription
     </message>
     <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
       All plans include a free 7-day trial!
