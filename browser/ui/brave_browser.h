@@ -30,6 +30,8 @@ class BraveBrowser : public Browser {
   BraveBrowser(const BraveBrowser&) = delete;
   BraveBrowser& operator=(const BraveBrowser&) = delete;
 
+  static bool ShouldUseBraveWebViewRoundedCorners(Browser* browser);
+
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;

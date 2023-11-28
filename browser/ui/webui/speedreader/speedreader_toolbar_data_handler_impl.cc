@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -293,7 +294,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   colors->foreground =
       color_provider->GetColor(kColorSpeedreaderToolbarForeground);
   colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
     // The border is rendered in HTML. Hide the border by giving it the same
     // color as the background. When this feature flag is removed, consider
     // removing the border in HTML.

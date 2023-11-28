@@ -15,7 +15,6 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
@@ -196,7 +195,7 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
     // Collapse the separator line between the toolbar or bookmark bar and the
     // views below.
     contents_separator_->SetPreferredSize(gfx::Size());
@@ -248,7 +247,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
       sidebar_separator_view_ =
           AddChildView(std::make_unique<SidebarSeparator>());
     }
@@ -435,6 +434,10 @@ void BraveBrowserView::ShowReaderModeToolbar() {
   if (!reader_mode_toolbar_view_) {
     reader_mode_toolbar_view_ =
         std::make_unique<ReaderModeToolbarView>(GetProfile());
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+      SetBorder(views::CreateThemedSolidSidedBorder(
+          gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+    }
     AddChildView(reader_mode_toolbar_view_.get());
     GetBrowserViewLayout()->set_reader_mode_toolbar(
         reader_mode_toolbar_view_.get());
@@ -728,7 +731,7 @@ BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
 }
 
 void BraveBrowserView::UpdateWebViewRoundedCorners() {
-  if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
     return;
   }
 
