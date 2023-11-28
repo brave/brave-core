@@ -16,7 +16,7 @@ export const FooterContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 12px;
-  width: 90%;
+  width: 100%;
 `
 
 export const QueueStepRow = styled.div`
