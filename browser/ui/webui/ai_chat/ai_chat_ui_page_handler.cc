@@ -448,8 +448,7 @@ void AIChatUIPageHandler::GetFaviconImageData(
 }
 
 mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
-  bool has_content = active_chat_tab_helper_->HasPageContent() ==
-                     PageContentAssociation::HAS_CONTENT;
+  bool has_content = active_chat_tab_helper_->HasContentAssociated();
   mojom::SiteInfo site_info;
   if (has_content) {
     site_info.title =
@@ -458,8 +457,9 @@ mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
 
   site_info.is_content_truncated =
       active_chat_tab_helper_->IsPageContentsTruncated();
-  site_info.is_content_present =
-      active_chat_tab_helper_->IsPageContentsPresent();
+  site_info.is_content_association_possible =
+      active_chat_tab_helper_->IsContentAssociationPossible();
+  site_info.has_content_associated = has_content;
 
   return site_info;
 }

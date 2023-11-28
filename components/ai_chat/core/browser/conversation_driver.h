@@ -25,12 +25,6 @@ class PrefService;
 namespace ai_chat {
 class AIChatMetrics;
 
-enum PageContentAssociation {
-  HAS_CONTENT,
-  NO_CONTENT,
-  FETCHING_CONTENT,
-};
-
 class ConversationDriver {
  public:
   class Observer : public base::CheckedObserver {
@@ -79,7 +73,7 @@ class ConversationDriver {
   void GenerateQuestions();
   std::vector<std::string> GetSuggestedQuestions(
       mojom::SuggestionGenerationStatus& suggestion_status);
-  PageContentAssociation HasPageContent();
+  bool HasContentAssociated();
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
@@ -87,7 +81,7 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool IsPageContentsTruncated();
   bool HasPendingConversationEntry();
-  bool IsPageContentsPresent();
+  bool IsContentAssociationPossible();
   void SetPendingMessageNeedsPageContent(bool needs_content);
   void SubmitSummarizationRequest();
 
