@@ -257,6 +257,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                 IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION},
                {"braveNewsNoArticles", IDS_BRAVE_NEWS_NO_ARTICLES},
                {"braveNewsCustomizeFeed", IDS_BRAVE_NEWS_CUSTOMIZE_FEED},
+               { "braveNewsRefreshFeed", IDS_BRAVE_NEWS_REFRESH_FEED},
 
                // Brave News Channels
                {"braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},

@@ -54,6 +54,7 @@ class FeedV2Builder {
   void BuildPublisherFeed(const std::string& publisher_id,
                           BuildFeedCallback callback);
   void BuildAllFeed(BuildFeedCallback callback);
+  void EnsureFeedIsUpdating();
 
   void GetSignals(GetSignalsCallback callback);
 

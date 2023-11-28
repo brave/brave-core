@@ -98,6 +98,7 @@ class BraveNewsController : public KeyedService,
                       GetChannelFeedCallback callback) override;
   void GetPublisherFeed(const std::string& publisher_id,
                         GetPublisherFeedCallback callback) override;
+  void EnsureFeedV2IsUpdating() override;
   void GetFeedV2(GetFeedV2Callback callback) override;
   void GetSignals(GetSignalsCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;

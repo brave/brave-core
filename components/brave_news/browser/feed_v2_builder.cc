@@ -23,6 +23,7 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -698,6 +699,15 @@ void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
       std::move(callback));
 }
 
+void FeedV2Builder::EnsureFeedIsUpdating() {
+  UpdateData({
+              .signals = true,
+              .suggested_publishers = true,
+              .feed = true,
+              .topics = true},
+             base::DoNothing());
+}
+
 void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
   UpdateData({.signals = true},
              base::BindOnce(
@@ -862,6 +872,11 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   current_update_ = std::move(next_update_);
   next_update_ = std::nullopt;
 
+  for (const auto& listener : listeners_) {
+    // TODO: Actually send the hash
+    listener->OnUpdateAvailable("foo");
+  }
+
   if (current_update_) {
     UpdateData(current_update_->settings);
   }
@@ -892,6 +907,7 @@ void FeedV2Builder::GenerateFeed(
                 GetFeedHash(channels, publishers, builder->feed_etags_);
 
             auto feed = std::move(build_feed).Run();
+            feed->construct_time = base::Time::Now();
             feed->type = std::move(type);
             feed->source_hash = source_hash;
 
