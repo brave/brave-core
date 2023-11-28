@@ -898,26 +898,38 @@ public class BytecodeTest {
                 BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
                 BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class,
                 OpenHistoryClustersDelegate.class, ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
-                LocationBarLayout.class, LocationBarDataProvider.class, ObservableSupplier.class,
-                BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
-                OverrideUrlLoadingDelegate.class, BraveLocationBarMediator.getLocaleManagerClass(),
-                OneshotSupplier.class, BackKeyBehaviorDelegate.class, WindowAndroid.class,
-                boolean.class, SearchEngineLogoUtils.class,
-                BraveLocationBarMediator.getLensControllerClass(),
-                BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
-                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
-                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
-                ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/AppHooksImpl",
-                "org/chromium/chrome/browser/BraveAppHooks"));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
-                "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
-                "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, String.class,
-                boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator",
+                        Context.class,
+                        LocationBarLayout.class,
+                        LocationBarDataProvider.class,
+                        ObservableSupplier.class,
+                        BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
+                        OverrideUrlLoadingDelegate.class,
+                        BraveLocationBarMediator.getLocaleManagerClass(),
+                        OneshotSupplier.class,
+                        BackKeyBehaviorDelegate.class,
+                        WindowAndroid.class,
+                        boolean.class,
+                        SearchEngineLogoUtils.class,
+                        BraveLocationBarMediator.getLensControllerClass(),
+                        BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
+                        BraveLocationBarMediator.getOmniboxUmaClass(),
+                        BooleanSupplier.class,
+                        BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
+                        ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/AppHooksImpl",
+                        "org/chromium/chrome/browser/BraveAppHooks"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/flags/CachedFlag",
+                        "org/chromium/chrome/browser/flags/BraveCachedFlag",
+                        String.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 constructorsMatch(
