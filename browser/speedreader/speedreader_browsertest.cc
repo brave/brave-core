@@ -47,6 +47,7 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
+#include "components/language/core/browser/language_prefs.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
@@ -778,6 +779,23 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     WaitOriginal();
     EXPECT_FALSE(toolbar_view->GetVisible());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
+  language::LanguagePrefs language_prefs(browser()->profile()->GetPrefs());
+  language_prefs.SetUserSelectedLanguagesList(
+      {"en-US", "ja", "en-CA", "fr-CA"});
+
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
+                           ->reader_mode_toolbar_view_.get();
+  auto* toolbar = toolbar_view->GetWebContentsForTesting();
+
+  constexpr const char kGetLang[] = R"js( navigator.languages.toString() )js";
+  EXPECT_EQ("en-US,ja,en-CA,fr-CA",
+            content::EvalJs(toolbar, kGetLang).ExtractString());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
