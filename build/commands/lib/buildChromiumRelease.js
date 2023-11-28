@@ -63,7 +63,8 @@ const chromiumConfigs = {
       Log.progressScope('download_hermetic_xcode', () => {
         util.run('vpython3',
           [
-            path.join(config.braveCoreDir, 'build', 'mac', 'download_hermetic_xcode.py'),
+            path.join(config.braveCoreDir,
+                      'build', 'mac', 'download_hermetic_xcode.py'),
           ],
           config.defaultOptions)
       })
