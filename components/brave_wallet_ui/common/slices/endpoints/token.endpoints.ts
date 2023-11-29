@@ -340,6 +340,52 @@ export const tokenEndpoints = ({
               }
             ]
           : ['UNKNOWN_ERROR']
+    }),
+    getTokenInfo: query<
+      BraveWallet.BlockchainToken | null,
+      Pick<BraveWallet.BlockchainToken, 'chainId' | 'coin' | 'contractAddress'>
+    >({
+      queryFn: async (
+        { coin, chainId, contractAddress },
+        api,
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          if (coin !== BraveWallet.CoinType.ETH) {
+            return {
+              data: null
+            }
+          }
+
+          const { jsonRpcService } = baseQuery(undefined).data
+          const { token, error, errorMessage } =
+            await jsonRpcService.getEthTokenInfo(contractAddress, chainId)
+
+          if (error !== BraveWallet.ProviderError.kSuccess) {
+            throw new Error(errorMessage)
+          }
+
+          return {
+            data: token
+          }
+        } catch (err) {
+          console.error(err)
+          // Typically this means the token does not exist on the chain
+          return {
+            data: null
+          }
+        }
+      },
+      providesTags: (result, err, args) =>
+        err
+          ? ['TokenInfo', 'UNKNOWN_ERROR']
+          : [
+              {
+                type: 'TokenInfo',
+                id: `${args.coin}-${args.chainId}-${args.contractAddress}`
+              }
+            ]
     })
   }
 }

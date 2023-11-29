@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 
-#include <optional>
-
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -171,39 +169,6 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
   }
 
   return true;
-}
-
-mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
-                                         const std::string& chain_id,
-                                         mojom::CoinType coin) {
-  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
-  if (!token_info) {
-    LOG(ERROR) << "Invalid response, could not parse JSON. ";
-    return nullptr;
-  }
-
-  if (token_info->result.size() != 1) {
-    return nullptr;
-  }
-  const api::asset_ratio::TokenInfoResult& result = token_info->result.front();
-
-  int decimals = 0;
-  const auto eth_addr = EthAddress::FromHex(result.contract_address);
-  if (!base::StringToInt(result.divisor, &decimals) ||
-      result.token_name.empty() || result.symbol.empty() ||
-      eth_addr.IsEmpty()) {
-    return nullptr;
-  }
-
-  return mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
-      result.token_type == api::asset_ratio::TokenType::kErc20 /* is_erc20 */,
-      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_erc721 */,
-      result.token_type ==
-          api::asset_ratio::TokenType::kErc1155 /* is_erc1155 */,
-      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_nft */,
-      false /* is_spam */, result.symbol, decimals, true /* visible */,
-      "" /* token_id */, "" /* coingecko_id */, chain_id, coin);
 }
 
 std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(

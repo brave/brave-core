@@ -4,62 +4,51 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  BraveWallet,
-  GetBlockchainTokenInfoReturnInfo
-} from '../../constants/types'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
-export default function useTokenInfo(
-  getBlockchainTokenInfo: (
-    address: string
-  ) => Promise<GetBlockchainTokenInfoReturnInfo>,
-  tokensList: BraveWallet.BlockchainToken[],
-  selectedNetwork?: BraveWallet.NetworkInfo | null
-) {
-  const [tokenContractAddress, setTokenContractAddress] =
-    React.useState<string>('')
-  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] =
-    React.useState<BraveWallet.BlockchainToken | undefined>()
+import { BraveWallet } from '../../constants/types'
 
-  // Instead of having this be a useCallback hook here we are using useEffect to
-  // handle the asynchronous getBlockchainTokenInfo fallback method.
-  // That away each component that uses this hook will not have to handle
-  // this async call individually.
-  React.useEffect(() => {
-    const contractAddress = tokenContractAddress.toLowerCase()
-    if (contractAddress === '') {
-      setFoundTokenInfoByContractAddress(undefined)
-      return
+import { useGetTokenInfoQuery } from '../../common/slices/api.slice'
+import { useGetCombinedTokensListQuery } from '../../common/slices/api.slice.extra'
+
+interface Arg {
+  contractOrMintAddress: string
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+}
+
+export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+
+  const tokenInfoFromTokensList = React.useMemo(() => {
+    if (arg === skipToken) {
+      return undefined
     }
 
-    const checkedLists = tokensList.find(
-      (token) =>
-        token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+    return combinedTokensList.find(
+      (t) =>
+        t.contractAddress.toLowerCase() ===
+          arg.contractOrMintAddress.toLowerCase() &&
+        t.chainId === arg.network.chainId &&
+        t.coin === arg.network.coin
     )
+  }, [combinedTokensList, arg])
 
-    if (checkedLists) {
-      setFoundTokenInfoByContractAddress(checkedLists)
-      return
-    }
+  const { data: tokenInfoFromRpc, isFetching } = useGetTokenInfoQuery(
+    arg !== skipToken &&
+      arg.network &&
+      arg.contractOrMintAddress &&
+      !tokenInfoFromTokensList
+      ? {
+          coin: arg.network.coin,
+          chainId: arg.network.chainId,
+          contractAddress: arg.contractOrMintAddress
+        }
+      : skipToken
+  )
 
-    if (
-      !checkedLists &&
-      selectedNetwork?.chainId === BraveWallet.MAINNET_CHAIN_ID
-    ) {
-      getBlockchainTokenInfo(contractAddress)
-        .then((value: GetBlockchainTokenInfoReturnInfo) => {
-          if (value.token) {
-            setFoundTokenInfoByContractAddress(value.token)
-            return
-          }
-          setFoundTokenInfoByContractAddress(undefined)
-        })
-        .catch((e) => console.log(e))
-    }
-    setFoundTokenInfoByContractAddress(undefined)
-  }, [tokenContractAddress, tokensList, selectedNetwork?.chainId])
   return {
-    onFindTokenInfoByContractAddress: setTokenContractAddress,
-    foundTokenInfoByContractAddress
+    isVisible: tokenInfoFromTokensList?.visible ?? false,
+    tokenInfo: tokenInfoFromTokensList ?? tokenInfoFromRpc ?? undefined,
+    isLoading: combinedTokensList.length === 0 || isFetching
   }
 }

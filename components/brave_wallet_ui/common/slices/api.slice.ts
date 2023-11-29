@@ -267,6 +267,7 @@ export const {
   useGetEthAddressChecksumQuery,
   useGetEthTokenDecimalsQuery,
   useGetEthTokenSymbolQuery,
+  useGetTokenInfoQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,

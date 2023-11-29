@@ -31,7 +31,7 @@ import {
 import { makeNetworkAsset } from '../../options/asset-options'
 
 // Custom Hooks
-import useTokenInfo from './token'
+import useGetTokenInfo from './token'
 import { useLib } from './useLib'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector, useSafeWalletSelector } from './use-safe-selector'
@@ -183,13 +183,7 @@ export const usePendingTransactions = () => {
   const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
 
   // custom hooks
-  const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
-  const { onFindTokenInfoByContractAddress, foundTokenInfoByContractAddress } =
-    useTokenInfo(
-      getBlockchainTokenInfo,
-      combinedTokensList,
-      transactionsNetwork
-    )
+  const { getERC20Allowance } = useLib()
 
   // state
   const [erc20AllowanceResult, setERC20AllowanceResult] = React.useState<
@@ -604,20 +598,25 @@ export const usePendingTransactions = () => {
     getERC20Allowance
   ])
 
-  React.useEffect(() => {
-    if (
-      transactionDetails?.recipient &&
+  const { tokenInfo: erc20ApproveTokenInfo } = useGetTokenInfo(
+    transactionDetails?.recipient &&
+      txCoinType &&
       transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
-    ) {
-      onFindTokenInfoByContractAddress(transactionDetails.recipient)
-    }
-  }, [transactionDetails?.recipient, transactionInfo?.txType])
+      ? {
+          contractOrMintAddress: transactionDetails.recipient,
+          network: {
+            chainId: transactionDetails.chainId,
+            coin: txCoinType
+          }
+        }
+      : skipToken
+  )
 
   return {
     baseFeePerGas,
     currentTokenAllowance,
     isCurrentAllowanceUnlimited,
-    foundTokenInfoByContractAddress,
+    erc20ApproveTokenInfo,
     fromAccount: txAccount,
     fromOrb,
     isConfirmButtonDisabled,

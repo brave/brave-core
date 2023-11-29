@@ -459,10 +459,6 @@ export type TransactionInfo =
 export type GetUnstoppableDomainsWalletAddrReturnInfo =
   BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
 
-export interface GetBlockchainTokenInfoReturnInfo {
-  token: BraveWallet.BlockchainToken | null
-}
-
 export type GetIsStrongPassswordReturnInfo =
   BraveWallet.KeyringService_IsStrongPassword_ResponseParams
 

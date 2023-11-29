@@ -100,7 +100,7 @@ export const ConfirmTransactionPanel = () => {
 
   // custom hooks
   const {
-    foundTokenInfoByContractAddress,
+    erc20ApproveTokenInfo,
     fromAccount,
     fromOrb,
     isERC20Approve,
@@ -224,7 +224,7 @@ export const ConfirmTransactionPanel = () => {
           <PanelTitle>
             {getLocale('braveWalletAllowSpendTitle').replace(
               '$1',
-              foundTokenInfoByContractAddress?.symbol ?? ''
+              erc20ApproveTokenInfo?.symbol ?? ''
             )}
           </PanelTitle>
           <AddressAndOrb>
@@ -242,7 +242,7 @@ export const ConfirmTransactionPanel = () => {
           <Description>
             {getLocale('braveWalletAllowSpendDescription').replace(
               '$1',
-              foundTokenInfoByContractAddress?.symbol ?? ''
+              erc20ApproveTokenInfo?.symbol ?? ''
             )}
           </Description>
 

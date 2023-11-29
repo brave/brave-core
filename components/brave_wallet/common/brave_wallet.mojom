@@ -966,13 +966,6 @@ interface AssetRatioService {
       AssetPriceTimeframe timeframe) =>
           (bool success, array<AssetTimePrice> values);
 
-  // Obtain token info via contract address through etherscan API.
-  // This is only for Ethereum mainnet.
-  // Note: The is_nft property of the token is not reliable because
-  // the value is based on the value of is_erc721 only and doesn't
-  // consider Solana NFTs and ERC1155 NFTs.
-  GetTokenInfo(string contract_address) => (BlockchainToken? token);
-
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 };
@@ -1335,6 +1328,34 @@ interface JsonRpcService {
                       string chain_id) => (string decimals,
                                            ProviderError error,
                                            string error_message);
+
+  // Fetches name of an ERC20 or ERC721 token.
+  GetEthTokenName(string contract_address,
+                  string chain_id) => (string name,
+                                       ProviderError error,
+                                       string error_message);
+
+  // Fetches token info by contract address and chain ID. The returned token
+  // has the following fields populated:
+  //   - contract_address
+  //   - chain_id
+  //   - coin
+  //   - name
+  //   - symbol
+  //   - decimals
+  //   - coingecko_id
+  //
+  // The following fields are always set to false, and callers must NOT rely
+  // on them:
+  //   - is_erc721
+  //   - is_erc1155
+  //   - is_erc20
+  //   - is_nft
+  GetEthTokenInfo(string contract_address,
+                  string chain_id) => (BlockchainToken? token,
+                                       ProviderError error,
+                                       string error_message);
+
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 

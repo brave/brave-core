@@ -3,13 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  mockBasicAttentionToken //
-} from '../../../stories/mock-data/mock-asset-options'
-import {
-  BraveWallet,
-  GetBlockchainTokenInfoReturnInfo
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 let mockedAllowance = '1000000000000000000' // 1 unit
@@ -57,22 +51,6 @@ export const getBalance = (): Promise<string> => {
   return new Promise(async (resolve) => {
     resolve('0')
   })
-}
-
-export const getBlockchainTokenInfo = async (
-  contractAddress: string
-): Promise<GetBlockchainTokenInfoReturnInfo> => {
-  if (
-    contractAddress.toLowerCase() ===
-    mockBasicAttentionToken.contractAddress.toLowerCase()
-  ) {
-    return {
-      token: mockBasicAttentionToken
-    }
-  }
-  return {
-    token: null
-  }
 }
 
 export const translateToNftGateway = async (url: string | undefined) => {

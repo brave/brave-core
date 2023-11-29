@@ -427,6 +427,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            const std::string& chain_id,
                            GetEthTokenDecimalsCallback callback) override;
 
+  void GetEthTokenName(const std::string& contract_address,
+                       const std::string& chain_id,
+                       GetEthTokenNameCallback callback) override;
+
+  void GetEthTokenInfo(const std::string& contract_address,
+                       const std::string& chain_id,
+                       GetEthTokenInfoCallback callback) override;
+
   using SwitchEthereumChainRequestCallback =
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
@@ -643,6 +651,34 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnGetEthTokenDecimals(GetEthTokenDecimalsCallback callback,
                              APIRequestResult api_request_result);
+
+  void OnGetEthTokenName(GetEthTokenNameCallback callback,
+                         APIRequestResult api_request_result);
+
+  void OnGetEthTokenSymbolForInfo(const std::string& contract_address,
+                                  const std::string& chain_id,
+                                  GetEthTokenInfoCallback callback,
+                                  const std::string& symbol,
+                                  mojom::ProviderError error,
+                                  const std::string& error_message);
+
+  void OnGetEthTokenNameForInfo(const std::string& contract_address,
+                                const std::string& chain_id,
+                                GetEthTokenInfoCallback callback,
+                                const std::string& symbol,
+                                const std::string& name,
+                                mojom::ProviderError error,
+                                const std::string& error_message);
+
+  void OnGetEthTokenDecimalsForInfo(const std::string& contract_address,
+                                    const std::string& chain_id,
+                                    GetEthTokenInfoCallback callback,
+                                    const std::string& symbol,
+                                    const std::string& name,
+                                    const std::string& decimals,
+                                    mojom::ProviderError error,
+                                    const std::string& error_message);
+
   // Solana
   void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
                           APIRequestResult api_request_result);

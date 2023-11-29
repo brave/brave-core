@@ -52,6 +52,7 @@ export function createWalletApiBase() {
       'AutoPinEnabled',
       'SimpleHashSpamNFTs',
       'LocalIPFSNodeStatus',
+      'TokenInfo',
       'EthTokenDecimals',
       'EthTokenSymbol',
       'EnsOffchainLookupEnabled',
