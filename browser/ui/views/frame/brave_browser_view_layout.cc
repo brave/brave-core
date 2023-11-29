@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <limits>
 
-#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -292,7 +292,8 @@ void BraveBrowserViewLayout::LayoutReaderModeToolbar(
 }
 
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
-  if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+          browser_view_->browser())) {
     return {};
   }
 
