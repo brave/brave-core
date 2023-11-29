@@ -50,8 +50,8 @@ function getStyleElement() {
 }
 
 function applyInvertFilterToChildBackgroundImageElements(parentNode) {
-  parentNode.querySelectorAll("[style*=\"background\"]").forEach(function(el) {
-    if ((el.style.backgroundImage || "").startsWith("url")) {
+  [...parentNode.children].forEach(function(el) {
+    if ((getComputedStyle(el)["background-image"] || "").startsWith("url")) {
       applyInvertFilterToElement(el);
     }
   });
