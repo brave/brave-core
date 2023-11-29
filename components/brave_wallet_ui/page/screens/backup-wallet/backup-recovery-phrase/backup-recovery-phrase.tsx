@@ -4,14 +4,19 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useLocation } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
+import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { PageSelectors } from '../../../selectors'
+import { WalletPageActions } from '../../../actions'
+import {
+  useReportOnboardingActionMutation //
+} from '../../../../common/slices/api.slice'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // hooks
@@ -42,7 +47,9 @@ import {
 import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
@@ -50,11 +57,16 @@ import { StepsNavigation } from '../../../../components/desktop/steps-navigation
 
 export const BackupRecoveryPhrase = () => {
   // routing
+  const history = useHistory()
   const { pathname } = useLocation()
   const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // redux
+  const dispatch = useDispatch()
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
+
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
 
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
@@ -63,6 +75,16 @@ export const BackupRecoveryPhrase = () => {
   const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard()
 
   // methods
+  const skipBackup = () => {
+    dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    if (isOnboarding) {
+      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
+      history.push(WalletRoutes.OnboardingComplete)
+      return
+    }
+    history.push(WalletRoutes.PortfolioAssets)
+  }
+
   const revealPhrase = React.useCallback(() => {
     setIsPhraseShown(true)
   }, [])
@@ -85,17 +107,13 @@ export const BackupRecoveryPhrase = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          {isOnboarding && (
-            <OnboardingNewWalletStepsNavigation
-              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
-              currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
-            />
-          )}
-          {!isOnboarding && (
+          {isOnboarding ? (
+            <OnboardingStepsNavigation onSkip={skipBackup} />
+          ) : (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
-              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
               currentStep={WalletRoutes.BackupRecoveryPhrase}
+              onSkip={skipBackup}
             />
           )}
 

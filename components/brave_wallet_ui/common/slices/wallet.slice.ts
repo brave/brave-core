@@ -47,11 +47,11 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
+  allowNewWalletFilecoinAccount: true,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  isWalletBackedUp: false,
   hasIncorrectPassword: false,
   userVisibleTokensInfo: [],
   fullTokenList: [],
@@ -262,7 +262,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
-        state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
         state.isNftPinningFeatureEnabled =
           payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
@@ -457,6 +456,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<ImportAccountErrorType>
       ) {
         state.importAccountError = payload
+      },
+      setAllowNewWalletFilecoinAccount(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
+        state.allowNewWalletFilecoinAccount = payload
       }
     },
     extraReducers: (builder) => {

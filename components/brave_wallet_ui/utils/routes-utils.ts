@@ -8,7 +8,9 @@ import {
   BraveWallet,
   WalletRoutes,
   SendPageTabHashes,
-  WalletOrigin
+  WalletOrigin,
+  WalletCreationMode,
+  WalletImportMode
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -16,9 +18,11 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
  * Checks the provided route against a list of routes that we are OK with the
  * wallet opening to when the app is unlocked or when the panel is re-opened
  */
-export function isPersistableSessionRoute(route?: string) {
+export function isPersistableSessionRoute(
+  route?: string
+): route is WalletRoutes {
   if (!route) {
-    return
+    return false
   }
   return (
     route.includes(WalletRoutes.Accounts) ||
@@ -37,10 +41,34 @@ export function isPersistableSessionRoute(route?: string) {
   )
 }
 
-export function getInitialSessionRoute(): string | undefined {
+export function getInitialSessionRoute(): WalletRoutes | undefined {
   const route =
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.SESSION_ROUTE) || ''
   return isPersistableSessionRoute(route) ? route : undefined
+}
+
+export function getOnboardingTypeFromPath(
+  path: WalletRoutes | string
+): WalletCreationMode {
+  if (path.includes(WalletRoutes.OnboardingHardwareWalletStart)) {
+    return 'hardware'
+  }
+  if (path.includes(WalletRoutes.OnboardingImportStart)) {
+    return 'import'
+  }
+  return 'new'
+}
+
+export function getOnboardingImportTypeFromPath(
+  path: WalletRoutes | string
+): WalletImportMode {
+  if (path.includes(WalletRoutes.OnboardingRestoreWallet)) {
+    return 'seed'
+  }
+  if (path.includes(WalletRoutes.OnboardingImportMetaMask)) {
+    return 'metamask'
+  }
+  return 'legacy'
 }
 
 export const makeAccountRoute = (
@@ -153,13 +181,25 @@ export const makeSendRoute = (
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
 }
 
-export const openWalletRouteTab = (route: WalletRoutes) => {
-  chrome.tabs.create({ url: `${WalletOrigin}${route}` }, () => {
+// Tabs
+function openTab(url: string) {
+  chrome.tabs.create({ url }, () => {
     if (chrome.runtime.lastError) {
-      console.error(
-        'tabs.create failed: ' + //
-          chrome.runtime.lastError.message
-      )
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
+}
+
+// Wallet Page Tabs
+export const openWalletRouteTab = (route: WalletRoutes) => {
+  openTab(`${WalletOrigin}${route}`)
+}
+
+// Settings tabs
+export function openWalletSettings() {
+  openTab('chrome://settings/wallet')
+}
+
+export function openNetworkSettings() {
+  openTab('chrome://settings/wallet/networks')
 }

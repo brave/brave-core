@@ -4,239 +4,80 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router'
-
-// selectors
-import {
-  useSafePageSelector,
-  useSafeUISelector, //
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../selectors'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
-
-// utils
-import { useApiProxy } from '../../../common/hooks/use-api-proxy'
-
-// components
-import { BackupRecoveryPhrase } from '../backup-wallet/backup-recovery-phrase/backup-recovery-phrase'
-import { OnboardingCreatePassword } from './create-password/onboarding-create-password'
-import { RecoveryPhraseExplainer } from '../backup-wallet/explain-recovery-phrase/explain-recovery-phrase'
-import { VerifyRecoveryPhrase } from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase'
-import { OnboardingWelcome } from './welcome/onboarding-welcome'
-import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
-import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
+import { Redirect, Route, Switch } from 'react-router'
 
 // types
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
+
+// utils
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
+
+import {
+  WalletPageLayout //
+} from '../../../components/desktop/wallet-page-layout'
+import {
+  WalletSubViewLayout //
+} from '../../../components/desktop/wallet-sub-view-layout'
+import {
+  ProtectedRoute //
+} from '../../../components/shared/protected-routing/protected-route'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
-import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
+import { OnboardingNewWalletRoutes } from './onboarding_new_wallet.routes'
+import { OnboardingWelcome } from './welcome/onboarding-welcome'
+import { OnboardingImportWalletRoutes } from './onboarding_import_wallet.routes'
+import {
+  OnboardingHardwareWalletRoutes //
+} from './onboarding_hardware_wallet.routes'
 
 export const OnboardingRoutes = () => {
-  // routing
-  const history = useHistory()
-  const location = useLocation()
-
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
-
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const termsAcknowledged = useSafePageSelector(
-    PageSelectors.walletTermsAcknowledged
-  )
-  const isCreatingWallet = useSafeUISelector(UISelectors.isCreatingWallet)
-
-  // methods
-  const goToConnectHardware = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingConnectHardwareWalletStart)
-  }, [])
-
-  const goToExplainRecoveryPhrase = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
-  }, [])
-
-  // p3a onboarding updates
-  React.useEffect(() => {
-    let action: BraveWallet.OnboardingAction | null = null
-    switch (location.pathname) {
-      case WalletRoutes.OnboardingWelcome:
-        action = BraveWallet.OnboardingAction.Shown
-        break
-      case WalletRoutes.OnboardingCreatePassword:
-        action = BraveWallet.OnboardingAction.LegalAndPassword
-        break
-      case WalletRoutes.OnboardingExplainRecoveryPhrase:
-      case WalletRoutes.OnboardingBackupRecoveryPhrase:
-      case WalletRoutes.OnboardingVerifyRecoveryPhrase:
-        action = BraveWallet.OnboardingAction.RecoverySetup
-        break
-    }
-    if (action) {
-      braveWalletP3A.reportOnboardingAction(action)
-    }
-  }, [location])
-
-  // computed
-  const showOnboardingRestore = !isWalletCreated || isCreatingWallet
 
   // render
   return (
-    <Switch>
-      {!isWalletCreated && (
-        <Route
-          path={WalletRoutes.OnboardingWelcome}
-          exact
-        >
-          <OnboardingWelcome />
-        </Route>
-      )}
+    <WalletPageLayout>
+      <WalletSubViewLayout>
+        <Switch>
+          <ProtectedRoute
+            path={WalletRoutes.OnboardingWelcome}
+            requirement={!isWalletCreated}
+            redirectRoute={WalletRoutes.OnboardingComplete}
+          >
+            <OnboardingWelcome />
+          </ProtectedRoute>
 
-      {!isWalletCreated && (
-        <Route
-          path={WalletRoutes.Onboarding}
-          exact
-        >
-          <Redirect to={WalletRoutes.OnboardingWelcome} />
-        </Route>
-      )}
+          <Route path={WalletRoutes.OnboardingNewWalletStart}>
+            <OnboardingNewWalletRoutes />
+          </Route>
 
-      {!termsAcknowledged && !isWalletCreated && (
-        <Redirect to={WalletRoutes.OnboardingWelcome} />
-      )}
+          <Route path={WalletRoutes.OnboardingImportStart}>
+            <OnboardingImportWalletRoutes />
+          </Route>
 
-      <Route
-        path={WalletRoutes.OnboardingCreatePassword}
-        exact
-      >
-        <OnboardingCreatePassword onWalletCreated={goToExplainRecoveryPhrase} />
-      </Route>
+          <Route path={WalletRoutes.OnboardingHardwareWalletStart}>
+            <OnboardingHardwareWalletRoutes />
+          </Route>
 
-      <Route
-        path={WalletRoutes.OnboardingConnectHarwareWalletCreatePassword}
-        exact
-      >
-        <OnboardingCreatePassword
-          isHardwareOnboarding={true}
-          onWalletCreated={goToConnectHardware}
-        />
-      </Route>
+          <ProtectedRoute
+            path={WalletRoutes.OnboardingComplete}
+            exact
+            requirement={isWalletCreated}
+            redirectRoute={WalletRoutes.OnboardingWelcome}
+          >
+            <OnboardingSuccess />
+          </ProtectedRoute>
 
-      {!isWalletCreated && (
-        <Route
-          path={WalletRoutes.OnboardingImportOrRestore}
-          exact
-        >
-          <OnboardingImportOrRestoreWallet />
-        </Route>
-      )}
-
-      {showOnboardingRestore && (
-        <Route
-          path={WalletRoutes.OnboardingRestoreWallet}
-          exact
-        >
-          <OnboardingRestoreFromRecoveryPhrase
-            key='seed' // keys are set here to prevent holding state between page changes
-            restoreFrom='seed'
+          <Redirect
+            to={
+              isWalletCreated
+                ? WalletRoutes.OnboardingComplete
+                : WalletRoutes.OnboardingWelcome
+            }
           />
-        </Route>
-      )}
-
-      {showOnboardingRestore && (
-        <Route
-          path={WalletRoutes.OnboardingImportMetaMask}
-          exact
-        >
-          <OnboardingRestoreFromRecoveryPhrase
-            key='metamask'
-            restoreFrom='metamask'
-          />
-        </Route>
-      )}
-
-      {showOnboardingRestore && (
-        <Route
-          path={WalletRoutes.OnboardingImportMetaMaskSeed}
-          exact
-        >
-          <OnboardingRestoreFromRecoveryPhrase
-            key='metamask-seed'
-            restoreFrom='metamask-seed'
-          />
-        </Route>
-      )}
-
-      {showOnboardingRestore && (
-        <Route
-          path={WalletRoutes.OnboardingImportCryptoWallets}
-          exact
-        >
-          <OnboardingRestoreFromRecoveryPhrase
-            key='legacy'
-            restoreFrom='legacy'
-          />
-        </Route>
-      )}
-
-      {showOnboardingRestore && (
-        <Route
-          path={WalletRoutes.OnboardingImportCryptoWalletsSeed}
-          exact
-        >
-          <OnboardingRestoreFromRecoveryPhrase
-            key='legacy-seed'
-            restoreFrom='legacy-seed'
-          />
-        </Route>
-      )}
-
-      <Route
-        path={WalletRoutes.OnboardingConnectHardwareWalletStart}
-        exact
-      >
-        <OnboardingConnectHardwareWallet />
-      </Route>
-
-      <Route
-        path={WalletRoutes.OnboardingConnectHardwareWallet}
-        exact
-      >
-        <OnboardingConnectHardwareWallet />
-      </Route>
-
-      {!isWalletCreated && <Redirect to={WalletRoutes.OnboardingWelcome} />}
-
-      <Route
-        path={WalletRoutes.OnboardingExplainRecoveryPhrase}
-        exact
-      >
-        <RecoveryPhraseExplainer />
-      </Route>
-
-      <Route
-        path={WalletRoutes.OnboardingBackupRecoveryPhrase}
-        exact
-      >
-        <BackupRecoveryPhrase />
-      </Route>
-
-      <Route
-        path={WalletRoutes.OnboardingVerifyRecoveryPhrase}
-        exact
-      >
-        <VerifyRecoveryPhrase />
-      </Route>
-
-      <Route
-        path={WalletRoutes.OnboardingComplete}
-        exact
-      >
-        <OnboardingSuccess />
-      </Route>
-
-      <Redirect to={WalletRoutes.OnboardingComplete} />
-    </Switch>
+        </Switch>
+      </WalletSubViewLayout>
+    </WalletPageLayout>
   )
 }
 

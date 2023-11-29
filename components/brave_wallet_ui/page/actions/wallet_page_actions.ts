@@ -17,7 +17,6 @@ export const {
   updateNftMetadataError,
   selectPriceTimeframe,
   updateSelectedAsset,
-  walletBackupComplete,
   walletCreated,
   walletSetupComplete
 } = PageActions

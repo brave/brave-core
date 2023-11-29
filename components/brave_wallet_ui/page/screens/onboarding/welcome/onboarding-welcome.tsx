@@ -4,14 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
-// actions
+// redux
 import { WalletPageActions } from '../../../actions'
+import { PageSelectors } from '../../../selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import {
+  useReportOnboardingActionMutation //
+} from '../../../../common/slices/api.slice'
 
 // components
 import {
@@ -20,17 +24,9 @@ import {
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button'
-import {
-  OnboardingDisclosures,
-  OnboardingDisclosuresNextSteps
-} from '../disclosures/disclosures'
 
 // routes
-import {
-  BraveWallet,
-  PageState,
-  WalletRoutes
-} from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
@@ -51,67 +47,24 @@ import {
 } from './onboarding-welcome.style'
 
 export const OnboardingWelcome = () => {
+  // routing
+  const history = useHistory()
+
   // redux
   const dispatch = useDispatch()
-  const setupStillInProgress = useSelector(
-    ({ page }: { page: PageState }) => page.setupStillInProgress
-  )
+  const setupStillInProgress = useSelector(PageSelectors.setupStillInProgress)
 
-  // state
-  const [nextStep, setNextStep] = React.useState<
-    OnboardingDisclosuresNextSteps | undefined
-  >(undefined)
-
-  // methods
-  const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
-
-  const showNewWalletDisclosures = React.useCallback(
-    () => setNextStep(WalletRoutes.OnboardingCreatePassword),
-    []
-  )
-
-  const showRestoredWalletDisclosures = React.useCallback(
-    () => setNextStep(WalletRoutes.OnboardingImportOrRestore),
-    []
-  )
-
-  const showConnectHardwareDisclosures = React.useCallback(() => {
-    setNextStep(WalletRoutes.OnboardingConnectHarwareWalletCreatePassword)
-  }, [])
-
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
 
   // effects
   React.useEffect(() => {
     // start wallet setup
     if (!setupStillInProgress) {
+      report(BraveWallet.OnboardingAction.Shown)
       dispatch(WalletPageActions.walletSetupComplete(false))
     }
-  }, [setupStillInProgress])
-
-  React.useEffect(() => {
-    let action = BraveWallet.OnboardingAction.Shown
-    switch (nextStep) {
-      case WalletRoutes.OnboardingImportOrRestore:
-        action = BraveWallet.OnboardingAction.StartRestore
-        break
-      case WalletRoutes.OnboardingCreatePassword:
-        action = BraveWallet.OnboardingAction.LegalAndPassword
-        break
-    }
-    braveWalletP3A.reportOnboardingAction(action)
-  }, [nextStep, braveWalletP3A])
-
-  // render
-  if (nextStep !== undefined) {
-    return (
-      <OnboardingDisclosures
-        nextStep={nextStep}
-        onBack={hideDisclosures}
-      />
-    )
-  }
+  }, [setupStillInProgress, report])
 
   return (
     <WalletPageLayout>
@@ -135,7 +88,7 @@ export const OnboardingWelcome = () => {
           <NavButton
             buttonType='primary'
             text={getLocale('braveWalletWelcomeButton')}
-            onSubmit={showNewWalletDisclosures}
+            onSubmit={() => history.push(WalletRoutes.OnboardingNewWalletTerms)}
             maxHeight={'48px'}
             minWidth={'267px'}
           />
@@ -143,7 +96,7 @@ export const OnboardingWelcome = () => {
           <NavButton
             buttonType='secondary'
             text={getLocale('braveWalletImportExistingWallet')}
-            onSubmit={showRestoredWalletDisclosures}
+            onSubmit={() => history.push(WalletRoutes.OnboardingImportTerms)}
             maxHeight={'48px'}
             minWidth={'267px'}
           />
@@ -160,7 +113,9 @@ export const OnboardingWelcome = () => {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletConnectHardwareWallet')}
-          onSubmit={showConnectHardwareDisclosures}
+          onSubmit={() =>
+            history.push(WalletRoutes.OnboardingHardwareWalletTerms)
+          }
           maxHeight={'48px'}
           minWidth={'267px'}
         />

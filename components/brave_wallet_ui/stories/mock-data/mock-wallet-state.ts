@@ -41,7 +41,7 @@ export const mockWalletState: WalletState = {
   solFeeEstimates: {
     fee: (0.000005 * LAMPORTS_PER_SOL) as unknown as bigint
   },
-  isWalletBackedUp: true,
+  allowNewWalletFilecoinAccount: true,
   isWalletCreated: false,
   isWalletLocked: false,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,

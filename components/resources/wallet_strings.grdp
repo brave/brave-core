@@ -997,4 +997,12 @@
   <message name="IDS_BRAVE_WALLET_VIEW_ON" desc="Brave Rewards account on provider website.">View on <ph name="PROVIDER">$1<ex>Uphold</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_REWARDS_SETTINGS" desc="Brave Rewards settings button.">Rewards settings</message>
   <message name="IDS_BRAVE_WALLET_PLATFORMS" desc="Brave Rewards Platforms label">Platforms</message>
+  <message name="IDS_BRAVE_WALLET_CONTINUE_WITH_X_ITEMS" desc="Continue button explaining that X number of items are selected">Continue with <ph name="HOW_MANY">$1<ex>2</ex></ph> <ph name="ITEM_NAME_MAYBE_PLURAL">$2<ex>Network(s)</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_ADD_NETWORKS_ANYTIME_IN_SETTINGS" desc="Link text explaining that blockchain networks can be added from within the browser settings">You can add networks anytime in Settings.</message>
+  <message name="IDS_BRAVE_WALLET_SUPPORTED_NETWORKS" desc="Title for the onboarding screen where the user is asked to select one or more supported blockchain network to use">Supported networks</message>
+  <message name="IDS_BRAVE_WALLET_CHOOSE_CHAINS_TO_USE" desc="Page description text explaining that the user is to choose one or more blockchain networks to use in their wallet">Choose which blockchains to use in your wallet.</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_TESTNETS" desc="Checkbox label for hide/show blockchain test networks">Show testnets</message>
+  <message name="IDS_BRAVE_WALLET_FEATURED" desc="Grouping label/heading for featured options">Featured</message>
+  <message name="IDS_BRAVE_WALLET_POPULAR" desc="Grouping label/heading for popular options">Popular</message>
+  <message name="IDS_BRAVE_WALLET_TEST_NETWORK_ACCOUNT" desc="Partial account name suggestion for test network account">Test Network Account</message>
 </grit-part>

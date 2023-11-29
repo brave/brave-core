@@ -11,6 +11,5 @@ export const mockUiState: UIState = {
   selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
   isPanel: false,
   collapsedPortfolioAccountAddresses: [],
-  collapsedPortfolioNetworkKeys: [],
-  isCreatingWallet: false
+  collapsedPortfolioNetworkKeys: []
 }

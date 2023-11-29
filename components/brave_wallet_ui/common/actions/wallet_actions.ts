@@ -71,5 +71,6 @@ export const {
   removeAccount,
   importAccount,
   setImportAccountError,
-  importAccountFromJson
+  importAccountFromJson,
+  setAllowNewWalletFilecoinAccount
 } = WalletActions

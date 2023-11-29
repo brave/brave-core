@@ -26,7 +26,7 @@ import {
   ETHIconUrl,
   FILECOINIconUrl,
   SOLIconUrl
-} from '../../stories/mock-data/asset-icons'
+} from '../../assets/network_token_icons/network_token_icons'
 
 // utils
 import { getAssetIdKey } from '../../utils/asset-utils'

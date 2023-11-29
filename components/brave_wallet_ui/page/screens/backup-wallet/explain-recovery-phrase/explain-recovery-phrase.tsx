@@ -5,10 +5,14 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
+import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { WalletPageActions } from '../../../actions'
+import {
+  useReportOnboardingActionMutation //
+} from '../../../../common/slices/api.slice'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -22,7 +26,9 @@ import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
@@ -57,8 +63,11 @@ const ImportantTextSegments = () => {
 }
 
 export const RecoveryPhraseExplainer = () => {
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
+  // redux
+  const dispatch = useDispatch()
+
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
 
   // routing
   const history = useHistory()
@@ -66,30 +75,33 @@ export const RecoveryPhraseExplainer = () => {
   const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
-  const skipToOnboardingSuccess = () => {
-    braveWalletP3A.reportOnboardingAction(
-      BraveWallet.OnboardingAction.CompleteRecoverySkipped
-    )
-    history.push(WalletRoutes.OnboardingComplete)
-  }
-
   const skipBackup = () => {
+    dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    if (isOnboarding) {
+      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
+      history.push(WalletRoutes.OnboardingComplete)
+      return
+    }
     history.push(WalletRoutes.PortfolioAssets)
   }
+
+  // effects
+  React.useEffect(() => {
+    report(BraveWallet.OnboardingAction.RecoverySetup)
+  }, [report])
 
   // render
   return (
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          {isOnboarding && (
-            <OnboardingNewWalletStepsNavigation
+          {isOnboarding ? (
+            <OnboardingStepsNavigation
               preventGoBack
-              currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
-              onSkip={skipToOnboardingSuccess}
+              preventSkipAhead
+              onSkip={skipBackup}
             />
-          )}
-          {!isOnboarding && (
+          ) : (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
               preventGoBack

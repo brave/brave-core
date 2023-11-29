@@ -65,6 +65,13 @@ export const LinkText = styled.a`
   text-decoration: none;
 `
 
+export const MutedLinkText = styled(LinkText)`
+  font-family: 'Inter', 'Poppins';
+  font-size: 12px;
+  font-weight: 400;
+  color: ${leo.color.text.tertiary};
+`
+
 export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;

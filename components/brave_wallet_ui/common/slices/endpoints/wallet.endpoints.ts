@@ -3,8 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
+
 // types
-import { BraveWallet } from '../../../constants/types'
+import type { BaseQueryCache } from '../../async/base-query-cache'
+import { BraveWallet, WalletState } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   ImportFromExternalWalletPayloadType,
@@ -17,6 +20,9 @@ import { WalletPageActions } from '../../../page/actions'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { getLocale } from '../../../../common/locale'
+import { keyringIdForNewAccount } from '../../../utils/account-utils'
+import { suggestNewAccountName } from '../../../utils/address-utils'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -27,10 +33,34 @@ export const walletEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    createWallet: mutation<true, { password: string }>({
-      queryFn: async (arg, { endpoint, dispatch }, extraOptions, baseQuery) => {
+    getIsWalletBackedUp: query<boolean, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
+          const { walletInfo } = await api.walletHandler.getWalletInfo()
+          return {
+            data: walletInfo.isWalletBackedUp
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to check if wallet is backed up',
+            error
+          )
+        }
+      },
+      providesTags: ['IsWalletBackedUp']
+    }),
+
+    createWallet: mutation<true, { password: string }>({
+      queryFn: async (
+        arg,
+        { endpoint, dispatch, getState },
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService } = api
 
           const result = await keyringService.createWallet(arg.password)
@@ -38,6 +68,14 @@ export const walletEndpoints = ({
           dispatch(
             WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
           )
+
+          await createDefaultAccounts({
+            allowNewWalletFilecoinAccount: (
+              getState() as { wallet: WalletState }
+            ).wallet.allowNewWalletFilecoinAccount,
+            keyringService,
+            cache
+          })
 
           return {
             data: true
@@ -57,9 +95,14 @@ export const walletEndpoints = ({
         completeWalletSetup?: boolean
       }
     >({
-      queryFn: async (arg, { endpoint, dispatch }, extraOptions, baseQuery) => {
+      queryFn: async (
+        arg,
+        { endpoint, dispatch, getState },
+        extraOptions,
+        baseQuery
+      ) => {
         try {
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService } = api
 
           const result = await keyringService.restoreWallet(
@@ -77,6 +120,7 @@ export const walletEndpoints = ({
             }
           }
 
+          cache.clearWalletInfo()
           keyringService.notifyWalletBackupComplete()
 
           if (arg?.completeWalletSetup) {
@@ -84,6 +128,14 @@ export const walletEndpoints = ({
               WalletPageActions.walletSetupComplete(arg.completeWalletSetup)
             )
           }
+
+          await createDefaultAccounts({
+            allowNewWalletFilecoinAccount: (
+              getState() as { wallet: WalletState }
+            ).wallet.allowNewWalletFilecoinAccount,
+            keyringService,
+            cache
+          })
 
           return {
             data: {
@@ -99,7 +151,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'WalletInfo']
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     showRecoveryPhrase: mutation<boolean, ShowRecoveryPhrasePayload>({
@@ -203,20 +255,21 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     importFromCryptoWallets: mutation<
       { success: boolean; errorMessage?: string },
       ImportFromExternalWalletPayloadType
     >({
-      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint, getState }, extraOptions, baseQuery) => {
         try {
           if (!arg.newPassword) {
             throw new Error('A new password is required')
           }
 
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService, braveWalletService } = api
 
           const results: ImportWalletResults = await importFromExternalWallet(
@@ -234,6 +287,16 @@ export const walletEndpoints = ({
             }
           }
 
+          await createDefaultAccounts({
+            allowNewWalletFilecoinAccount: (
+              getState() as { wallet: WalletState }
+            ).wallet.allowNewWalletFilecoinAccount,
+            keyringService,
+            cache
+          })
+
+          cache.clearWalletInfo()
+
           return {
             data: {
               success: true
@@ -246,20 +309,21 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     importFromMetaMask: mutation<
       { success: boolean; errorMessage?: string },
       ImportFromExternalWalletPayloadType
     >({
-      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint, getState }, extraOptions, baseQuery) => {
         try {
           if (!arg.newPassword) {
             throw new Error('A new password is required')
           }
 
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { keyringService, braveWalletService } = api
 
           const { errorMessage }: ImportWalletResults =
@@ -278,6 +342,16 @@ export const walletEndpoints = ({
             }
           }
 
+          await createDefaultAccounts({
+            allowNewWalletFilecoinAccount: (
+              getState() as { wallet: WalletState }
+            ).wallet.allowNewWalletFilecoinAccount,
+            keyringService,
+            cache
+          })
+
+          cache.clearWalletInfo()
+
           return {
             data: { success: true }
           }
@@ -288,7 +362,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     completeWalletBackup: mutation<boolean, void>({
@@ -309,7 +384,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['IsWalletBackedUp']
     })
   }
 }
@@ -344,4 +420,54 @@ async function importFromExternalWallet(
   return {
     errorMessage: errorMessage || undefined
   }
+}
+
+async function createDefaultAccounts({
+  allowNewWalletFilecoinAccount,
+  keyringService,
+  cache
+}: {
+  cache: BaseQueryCache
+  keyringService: BraveWallet.KeyringServiceRemote
+  allowNewWalletFilecoinAccount: boolean
+}) {
+  const networksRegistry = await cache.getNetworksRegistry()
+  const accountsRegistry = await cache.getAccountsRegistry()
+
+  const visibleNetworks = getEntitiesListFromEntityState(
+    networksRegistry,
+    networksRegistry.visibleIds
+  )
+
+  const networkKeyrings: number[] = []
+  const networksWithUniqueKeyrings = []
+
+  for (const net of visibleNetworks) {
+    const keyringId = keyringIdForNewAccount(net.coin, net.chainId)
+    if (!networkKeyrings.includes(keyringId)) {
+      networkKeyrings.push(keyringId)
+      networksWithUniqueKeyrings.push(net)
+    }
+  }
+
+  const accounts = getEntitiesListFromEntityState(accountsRegistry)
+
+  // create accounts for visible network coin types if needed
+  await mapLimit(
+    networksWithUniqueKeyrings,
+    3,
+    async function (net: BraveWallet.NetworkInfo) {
+      if (
+        // TODO: remove this check when we can hide "default" networks
+        net.coin === BraveWallet.CoinType.FIL &&
+        allowNewWalletFilecoinAccount
+      ) {
+        await keyringService.addAccount(
+          net.coin,
+          keyringIdForNewAccount(net.coin, net.chainId),
+          suggestNewAccountName(accounts, net)
+        )
+      }
+    }
+  )
 }
