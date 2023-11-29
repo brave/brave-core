@@ -168,10 +168,7 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.BTC) {
-    if (
-      chainId === BraveWallet.BITCOIN_MAINNET ||
-      chainId === BraveWallet.LOCALHOST_CHAIN_ID
-    ) {
+    if (chainId === BraveWallet.BITCOIN_MAINNET) {
       return BraveWallet.KeyringId.kBitcoin84
     }
     if (chainId === BraveWallet.BITCOIN_TESTNET) {
@@ -180,10 +177,7 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.ZEC) {
-    if (
-      chainId === BraveWallet.Z_CASH_MAINNET ||
-      chainId === BraveWallet.LOCALHOST_CHAIN_ID
-    ) {
+    if (chainId === BraveWallet.Z_CASH_MAINNET) {
       return BraveWallet.KeyringId.kZCashMainnet
     }
     if (chainId === BraveWallet.Z_CASH_TESTNET) {
