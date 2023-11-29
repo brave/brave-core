@@ -14,23 +14,21 @@ import { AllNetworksOption } from './network-filter-options'
 
 // icons
 import {
-  ETHIconUrl,
-  SOLIconUrl,
-  AVAXIconUrl,
-  BNBIconUrl,
-  BTCIconUrl,
-  ZECIconUrl,
-  FILECOINIconUrl,
-  MATICIconUrl
-} from '../stories/mock-data/asset-icons'
-import {
   ArbIcon,
   AuroraIcon,
   BaseIcon,
   CeloIcon,
   FtmIcon,
   NeonIcon,
-  OpIcon
+  OpIcon,
+  AVAXIconUrl,
+  BNBIconUrl,
+  BTCIconUrl,
+  ETHIconUrl,
+  FILECOINIconUrl,
+  MATICIconUrl,
+  SOLIconUrl,
+  ZECIconUrl
 } from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {

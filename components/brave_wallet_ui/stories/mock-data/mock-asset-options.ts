@@ -2,20 +2,20 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { BraveWallet } from '../../constants/types'
-import {
-  ALGOIconUrl,
-  BATIconUrl,
-  BNBIconUrl,
-  BTCIconUrl,
-  ETHIconUrl,
-  FILECOINIconUrl,
-  SOLIconUrl,
-  USDCIconUrl,
-  ZRXIconUrl
-} from './asset-icons'
-import MoonCatIcon from '../../assets/png-icons/mooncat.png'
 import { getAssetIdKey } from '../../utils/asset-utils'
+
+// Icons
+import MoonCatIcon from '../../assets/png-icons/mooncat.png'
+import { ALGOIconUrl, BATIconUrl, USDCIconUrl, ZRXIconUrl } from './asset-icons'
+import {
+  ETHIconUrl,
+  SOLIconUrl,
+  FILECOINIconUrl,
+  BNBIconUrl,
+  BTCIconUrl
+} from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthToken = {
   contractAddress: '',
