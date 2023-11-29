@@ -88,9 +88,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
       return content::NavigationThrottle::PROCEED;
     }
     // If user prefers opening it automatically
-    if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
-      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url,
-                                 false);
+    if (ShouldAutoRedirect()) {
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);
       return content::NavigationThrottle::BLOCK_RESPONSE;
     } else {
       OnionLocationTabHelper::SetOnionLocation(
@@ -110,9 +109,8 @@ OnionLocationNavigationThrottle::WillStartRequest() {
   if (!is_tor_profile_) {
     GURL url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
-      if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
-        delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url,
-                                   navigation_handle()->IsRendererInitiated());
+      if (ShouldAutoRedirect()) {
+        delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);
       } else {
         OnionLocationTabHelper::SetOnionLocation(
             navigation_handle()->GetWebContents(), url);
@@ -128,6 +126,11 @@ OnionLocationNavigationThrottle::WillStartRequest() {
 
 const char* OnionLocationNavigationThrottle::GetNameForLogging() {
   return "OnionLocationNavigationThrottle";
+}
+
+bool OnionLocationNavigationThrottle::ShouldAutoRedirect() {
+  return is_tor_profile_ &&
+         pref_service_->GetBoolean(prefs::kAutoOnionRedirect);
 }
 
 }  // namespace tor
