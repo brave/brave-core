@@ -273,7 +273,7 @@ class ChromiumBrowserTypeImpl(BrowserType):
     chromium_version_str = version.chromium_version.to_string()
 
     if target_os == 'android':
-      filename = f'chromium-{version}-android-arm64.apk'
+      filename = f'chromium-{chromium_version_str}-android-arm64.apk'
       if url is None:
         url = _GetChromiumDownloadUrl(chromium_version_str, filename)
       apk_path = os.path.join(out_dir, os.pardir, filename)
@@ -281,7 +281,7 @@ class ChromiumBrowserTypeImpl(BrowserType):
       return apk_path
 
     platform_name = ToChromiumPlatformName(target_os)
-    filename = f'chromium-{version}-{platform_name}.zip'
+    filename = f'chromium-{chromium_version_str}-{platform_name}.zip'
     if url is None:
       url = _GetChromiumDownloadUrl(chromium_version_str, filename)
     DownloadArchiveAndUnpack(out_dir, url)
