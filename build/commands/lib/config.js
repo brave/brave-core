@@ -100,9 +100,9 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
   }
 }
 
-const getBraveVersion = (useFullVersion) => {
+const getBraveVersion = (ignorePatchVersionNumber) => {
   const braveVersion = packageConfig(['version'])
-  if (useFullVersion) {
+  if (!ignorePatchVersionNumber) {
     return braveVersion
   }
 
@@ -193,8 +193,8 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  this.useFullVersion = this.isBraveReleaseBuild() || getNPMConfig(['use_full_version'], this.isCI)
-  this.braveVersion = getBraveVersion(this.useFullVersion)
+  this.ignorePatchVersionNumber = !this.isBraveReleaseBuild() && getNPMConfig(['ignore_patch_version_number'], !this.isCI)
+  this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -440,7 +440,7 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (!this.useFullVersion) {
+  if (this.ignorePatchVersionNumber) {
     assert(!this.isBraveReleaseBuild())
 
     // Allow dummy LASTCHANGE to be set. When the real LASTCHANGE is used, ~2300
