@@ -39,7 +39,7 @@ class ConversationDriver {
         std::vector<std::string> questions,
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent(bool page_contents_is_truncated) {}
+    virtual void OnPageHasContent(const mojom::SiteInfo& site_info) {}
     virtual void OnConversationEntryPending() {}
   };
 
@@ -73,7 +73,6 @@ class ConversationDriver {
   void GenerateQuestions();
   std::vector<std::string> GetSuggestedQuestions(
       mojom::SuggestionGenerationStatus& suggestion_status);
-  bool HasContentAssociated();
   void DisconnectPageContents();
   void SetShouldSendPageContents(bool should_send);
   bool GetShouldSendPageContents();
@@ -85,9 +84,11 @@ class ConversationDriver {
   bool HasPendingConversationEntry();
   bool IsContentAssociationPossible();
   void SubmitSummarizationRequest();
+  mojom::SiteInfo BuildSiteInfo();
 
  protected:
   virtual GURL GetPageURL() const = 0;
+  virtual std::u16string GetPageTitle() const = 0;
   virtual void GetPageContent(
       base::OnceCallback<void(std::string, bool is_video)> callback) const = 0;
   virtual bool HasPrimaryMainFrame() const = 0;
@@ -121,7 +122,7 @@ class ConversationDriver {
   void OnSuggestedQuestionsResponse(int64_t navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged(bool page_contents_is_truncated);
+  void OnPageHasContentChanged(const mojom::SiteInfo& site_info);
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);

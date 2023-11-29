@@ -187,7 +187,7 @@ void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
     return;
   }
 
-  auto site_info = BuildSiteInfo();
+  auto site_info = active_chat_tab_helper_->BuildSiteInfo();
   std::move(callback).Run(site_info.Clone());
 }
 
@@ -409,9 +409,8 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
+void AIChatUIPageHandler::OnPageHasContent(const mojom::SiteInfo& site_info) {
   if (page_.is_bound()) {
-    auto site_info = BuildSiteInfo();
     page_->OnSiteInfoChanged(site_info.Clone());
   }
 }
@@ -452,22 +451,6 @@ void AIChatUIPageHandler::GetFaviconImageData(
       active_page_url, icon_types, kDesiredFaviconSizePixels, true,
       base::BindOnce(on_favicon_available, std::move(callback)),
       &favicon_task_tracker_);
-}
-
-mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
-  bool has_content = active_chat_tab_helper_->HasContentAssociated();
-  mojom::SiteInfo site_info;
-  if (has_content) {
-    site_info.title =
-        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
-  }
-
-  site_info.is_content_truncated =
-      active_chat_tab_helper_->IsPageContentsTruncated();
-  site_info.is_content_association_possible =
-      active_chat_tab_helper_->IsContentAssociationPossible();
-
-  return site_info;
 }
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {

@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
@@ -182,8 +183,8 @@ void ConversationDriver::InitEngine() {
 
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
-  if (HasContentAssociated()) {
-    OnPageHasContentChanged(IsPageContentsTruncated());
+  if (!article_text_.empty()) {
+    OnPageHasContentChanged(BuildSiteInfo());
   }
 }
 
@@ -280,7 +281,7 @@ void ConversationDriver::MaybeGeneratePageText() {
   // Call this observer in-case we early return
   // ex. a listener in the UI might expect siteInfo or its related property to
   // change
-  OnPageHasContentChanged(false);
+  OnPageHasContentChanged(BuildSiteInfo());
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
     return;
@@ -315,7 +316,7 @@ void ConversationDriver::MaybeGeneratePageText() {
   if (should_send_page_contents_) {
     is_page_text_fetch_in_progress_ = true;
     // Update fetching status
-    OnPageHasContentChanged(false);
+    OnPageHasContentChanged(BuildSiteInfo());
     GetPageContent(
         base::BindOnce(&ConversationDriver::OnPageContentRetrieved,
                        weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
@@ -341,7 +342,7 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   engine_->SanitizeInput(article_text_);
 
   // Update completion status
-  OnPageHasContentChanged(IsPageContentsTruncated());
+  OnPageHasContentChanged(BuildSiteInfo());
 
   // Now that we have article text, we can suggest to summarize it
   DCHECK(suggestions_.empty())
@@ -380,7 +381,7 @@ void ConversationDriver::CleanUp() {
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
     obs.OnAPIRequestInProgress(false);
-    obs.OnPageHasContent(/* page_contents_is_truncated */ false);
+    obs.OnPageHasContent(BuildSiteInfo());
   }
 }
 
@@ -405,10 +406,6 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
   // Can we get suggested questions
   suggestion_status = suggestion_generation_status_;
   return suggestions_;
-}
-
-bool ConversationDriver::HasContentAssociated() {
-  return !article_text_.empty();
 }
 
 void ConversationDriver::SetShouldSendPageContents(bool should_send) {
@@ -553,7 +550,7 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   if (!should_send_page_contents_) {
     article_text_.clear();
     suggestions_.clear();
-    OnPageHasContentChanged(false);
+    OnPageHasContentChanged(BuildSiteInfo());
     OnSuggestedQuestionsChanged();
   }
 
@@ -641,9 +638,10 @@ void ConversationDriver::OnSuggestedQuestionsChanged() {
   }
 }
 
-void ConversationDriver::OnPageHasContentChanged(bool page_contents_is_truncated) {
+void ConversationDriver::OnPageHasContentChanged(
+    const mojom::SiteInfo& site_info) {
   for (auto& obs : observers_) {
-    obs.OnPageHasContent(page_contents_is_truncated);
+    obs.OnPageHasContent(site_info);
   }
 }
 
@@ -686,6 +684,17 @@ void ConversationDriver::SubmitSummarizationRequest() {
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
   MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
   pending_message_needs_page_content_ = true;
+}
+
+mojom::SiteInfo ConversationDriver::BuildSiteInfo() {
+  mojom::SiteInfo site_info;
+  if (!article_text_.empty()) {
+    site_info.title = base::UTF16ToUTF8(GetPageTitle());
+  }
+  site_info.is_content_truncated = IsPageContentsTruncated();
+  site_info.is_content_association_possible = IsContentAssociationPossible();
+
+  return site_info;
 }
 
 void ConversationDriver::GetPremiumStatus(

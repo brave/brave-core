@@ -92,11 +92,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       std::vector<std::string> questions,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent(bool page_contents_is_truncated) override;
+  void OnPageHasContent(const mojom::SiteInfo& site_info) override;
   void OnConversationEntryPending() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  mojom::SiteInfo BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
