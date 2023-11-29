@@ -140,7 +140,8 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
       package = config.location[len('package:'):]
     else:
       raise RuntimeError(f'{config.location} doesn\'t exist')
-  else:
+
+  if not binary_location:
     assert config.version is not None
     binary_location = config.browser_type.DownloadBrowserBinary(
         url, config.version, binary_dir, common_options)
