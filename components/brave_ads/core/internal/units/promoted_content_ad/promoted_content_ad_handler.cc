@@ -20,11 +20,10 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(
-    TriggerAdEventCallback callback,
-    const bool success,
-    const std::string& /*placement_id=*/,
-    const mojom::PromotedContentAdEventType /*event_type=*/) {
+void FireEventCallback(TriggerAdEventCallback callback,
+                       const bool success,
+                       const std::string& /*placement_id*/,
+                       const mojom::PromotedContentAdEventType /*event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -77,7 +76,7 @@ void PromotedContentAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType /*event_type=*/) {
+    const mojom::PromotedContentAdEventType /*event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

@@ -32,8 +32,8 @@ void FireServedEventCallback(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback,
     const bool success,
-    const std::string& /*placement_id=*/,
-    const mojom::NewTabPageAdEventType /*event_type=*/) {
+    const std::string& /*placement_id*/,
+    const mojom::NewTabPageAdEventType /*event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*ad=*/absl::nullopt);
   }
@@ -43,8 +43,8 @@ void FireServedEventCallback(
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id=*/,
-                       const mojom::NewTabPageAdEventType /*event_type=*/) {
+                       const std::string& /*placement_id*/,
+                       const mojom::NewTabPageAdEventType /*event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -137,7 +137,7 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::NewTabPageAdEventType /*event_type=*/) {
+    const mojom::NewTabPageAdEventType /*event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

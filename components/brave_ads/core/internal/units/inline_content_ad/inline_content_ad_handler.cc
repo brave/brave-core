@@ -33,8 +33,8 @@ void FireServedEventCallback(
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback,
     const bool success,
-    const std::string& /*placement_id=*/,
-    const mojom::InlineContentAdEventType /*event_type=*/) {
+    const std::string& /*placement_id*/,
+    const mojom::InlineContentAdEventType /*event_type*/) {
   if (!success) {
     return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
   }
@@ -44,8 +44,8 @@ void FireServedEventCallback(
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id=*/,
-                       const mojom::InlineContentAdEventType /*event_type=*/) {
+                       const std::string& /*placement_id*/,
+                       const mojom::InlineContentAdEventType /*event_type*/) {
   std::move(callback).Run(success);
 }
 

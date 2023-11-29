@@ -27,7 +27,7 @@ void BuildConversionUserData(const std::string& creative_instance_id,
       creative_instance_id,
       base::BindOnce(
           [](BuildUserDataCallback callback, const bool success,
-             const std::string& /*creative_instance_id=*/,
+             const std::string& /*creative_instance_id*/,
              const ConversionQueueItemList& conversion_queue_items) {
             if (!success) {
               return std::move(callback).Run(/*user_data=*/{});

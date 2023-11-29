@@ -82,9 +82,11 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
             const std::string& value,
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
-  void LoadFileResource(const std::string& id,
-                        int version,
-                        brave_ads::LoadFileCallback callback) override;
+
+  void LoadComponentResource(const std::string& id,
+                             int version,
+                             brave_ads::LoadFileCallback callback) override;
+
   std::string LoadDataResource(const std::string& name) override;
 
   void GetScheduledCaptcha(

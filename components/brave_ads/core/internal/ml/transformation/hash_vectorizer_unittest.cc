@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
 
+#include "base/files/file_path.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -24,7 +25,7 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
   // Act
   const base::Value::Dict root =
-      base::test::ParseJsonDictFromFile(GetTestPath().AppendASCII(kHashCheck));
+      base::test::ParseJsonDictFromFile(TestDataPath().AppendASCII(kHashCheck));
 
   const base::Value::Dict* const test_case_name_dict =
       root.FindDict(test_case_name);

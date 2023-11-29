@@ -1490,9 +1490,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   std::move(callback).Run(contents);
 }
 
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback {
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 

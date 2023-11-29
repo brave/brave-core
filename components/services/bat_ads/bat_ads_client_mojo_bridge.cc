@@ -185,7 +185,7 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_associated_receiver_->Save(name, value, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::LoadFileResource(
+void BatAdsClientMojoBridge::LoadComponentResource(
     const std::string& id,
     const int version,
     brave_ads::LoadFileCallback callback) {
@@ -194,8 +194,8 @@ void BatAdsClientMojoBridge::LoadFileResource(
     return;
   }
 
-  bat_ads_client_associated_receiver_->LoadFileResource(id, version,
-                                                        std::move(callback));
+  bat_ads_client_associated_receiver_->LoadComponentResource(
+      id, version, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::GetBrowsingHistory(

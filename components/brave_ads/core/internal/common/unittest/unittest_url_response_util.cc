@@ -9,6 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -98,10 +99,10 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
 
   std::string response_body = url_response->second;
   if (ShouldReadResponseBodyFromFile(response_body)) {
-    const base::FilePath file_path =
-        GetTestPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
-    if (!base::ReadFileToString(file_path, &response_body)) {
-      NOTREACHED_NORETURN() << file_path << " not found";
+    const base::FilePath path = TestDataPath().AppendASCII(
+        ParseFilenameFromResponseBody(response_body));
+    if (!base::ReadFileToString(path, &response_body)) {
+      NOTREACHED_NORETURN() << path << " not found";
     }
 
     ParseAndReplaceTags(response_body);

@@ -46,7 +46,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadFileResourceCallback(base::File file);
+  void LoadComponentResourceCallback(base::File file);
   void LoadPipelineCallback(base::expected<bool, std::string> result);
 
   void MaybeReset();
