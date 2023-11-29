@@ -30,7 +30,7 @@ export default function Article({ info, hideChannel }: Props) {
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
     <Flex direction='row' gap={spacing.m} justify='space-between'>
       <Title>
-        <SecureLink onClick={e => e.stopPropagation()} href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</SecureLink>
+        <SecureLink onClick={e => e.stopPropagation()} href={url}>{info.data.title}</SecureLink>
       </Title>
       <SmallImage src={imageUrl} />
     </Flex>

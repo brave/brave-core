@@ -4,9 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import Card, { Title } from './Card';
+import { getLocale } from '../../../../common/locale';
 
 export default function NoArticles() {
     return <Card>
-      <Title>Feed is empty</Title>
+      <Title>{getLocale('braveNewsNoArticles')}</Title>
     </Card>
 }

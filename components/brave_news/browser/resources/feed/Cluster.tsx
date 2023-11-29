@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
 import { channelIcons } from '../shared/Icons';
 import { MetaInfoContainer } from './ArticleMetaRow';
+import { getTranslatedChannelName } from '../shared/channel';
 
 interface Props {
   info: Info
@@ -22,9 +23,12 @@ const Container = styled(Card)`
 `
 
 export default function Cluster({ info }: Props) {
+  const groupName = info.type == ClusterType.CHANNEL
+    ? getTranslatedChannelName(info.id)
+    : info.id
   return <Container>
     <MetaInfoContainer>
-      {channelIcons[info.id] ?? channelIcons.default} {info.id}
+      {channelIcons[info.id] ?? channelIcons.default} {groupName}
     </MetaInfoContainer>
     {info.articles.map((a, i) => {
       const info: any = a.article || a.hero

@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { channelIcons as ChannelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { useLazyFavicon } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
-import { getTranslatedChannelName } from './ChannelCard'
+import { getTranslatedChannelName } from '../../../../../brave_news/browser/resources/shared/channel'
 
 interface Props {
   publisherId: string
