@@ -11,7 +11,7 @@ import Card from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 import { FeedView } from './shared/useFeedV2';
-import { getLocale } from '../../../common/locale';
+import { getLocale } from '$web-common/locale';
 
 const DEFAULT_SHOW_COUNT = 4;
 

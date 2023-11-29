@@ -14,7 +14,7 @@ import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title } from './Card';
-import { getLocale } from '../../../../common/locale';
+import { getLocale } from '$web-common/locale';
 
 interface Props {
   info: FeedV2Ad

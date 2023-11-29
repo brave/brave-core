@@ -11,7 +11,7 @@ import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
 import ButtonReact from '@brave/leo/react/button'
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale';
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};

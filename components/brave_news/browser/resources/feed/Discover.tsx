@@ -12,7 +12,7 @@ import Button from '@brave/leo/react/button';
 import Icon from '@brave/leo/react/icon';
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { font, icon, spacing } from '@brave/leo/tokens/css';
-import { getLocale } from '../../../../common/locale';
+import { getLocale } from '$web-common/locale';
 
 const Row = styled.div`
   display: grid;
