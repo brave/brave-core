@@ -278,11 +278,6 @@ bool ConversationDriver::MaybePopPendingRequests() {
 void ConversationDriver::MaybeGeneratePageText() {
   const GURL url = GetPageURL();
 
-  // Call this observer in-case we early return
-  // ex. a listener in the UI might expect siteInfo or its related property to
-  // change
-  OnPageHasContentChanged(BuildSiteInfo());
-
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
     return;
   }
