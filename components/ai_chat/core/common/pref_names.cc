@@ -22,6 +22,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
   registry->RegisterStringPref(kDefaultModelKey, "chat-default");
+#if BUILDFLAG(IS_ANDROID)
+  registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
+#endif
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

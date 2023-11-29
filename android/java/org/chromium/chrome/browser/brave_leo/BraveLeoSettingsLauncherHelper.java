@@ -5,10 +5,12 @@
 
 package org.chromium.chrome.browser.brave_leo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import org.jni_zero.CalledByNative;
-import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -28,9 +30,12 @@ public class BraveLeoSettingsLauncherHelper {
     }
 
     @CalledByNative
-    private static void goPremium() {
-        InAppPurchaseWrapper.getInstance()
-                .queryProductDetailsAsync(InAppPurchaseWrapper.SubscriptionProduct.LEO);
+    private static void goPremium(WebContents webContents) {
+        Activity activity = webContents.getTopLevelNativeWindow().getActivity().get();
+        Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
+        braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveLeoPlansIntent.setAction(Intent.ACTION_VIEW);
+        activity.startActivity(braveLeoPlansIntent);
     }
 
     private static SettingsLauncher getLauncher() {

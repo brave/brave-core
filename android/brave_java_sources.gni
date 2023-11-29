@@ -77,6 +77,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoCMHelper.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPrefUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsAdapterFeedCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsBottomSheetDialogFragment.java",

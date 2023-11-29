@@ -212,7 +212,10 @@ void AIChatUIPageHandler::GoPremium() {
 #if !BUILDFLAG(IS_ANDROID)
   OpenURL(GURL(kURLGoPremium));
 #else
-  ai_chat::GoPremium();
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  ai_chat::GoPremium(contents_to_navigate);
 #endif
 }
 
