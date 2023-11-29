@@ -55,8 +55,15 @@ class BitcoinSerializer {
   static std::vector<uint8_t> SerializeSignedTransaction(
       const BitcoinTransaction& tx);
 
-  static uint32_t CalcTransactionWeight(const BitcoinTransaction& tx);
-  static uint32_t CalcVSize(const BitcoinTransaction& tx);
+  static uint32_t CalcOutputVBytesInTransaction(
+      const BitcoinTransaction::TxOutput& output);
+  static uint32_t CalcInputVBytesInTransaction(
+      const BitcoinTransaction::TxInput& input);
+
+  static uint32_t CalcTransactionWeight(const BitcoinTransaction& tx,
+                                        bool dummy_signatures);
+  static uint32_t CalcTransactionVBytes(const BitcoinTransaction& tx,
+                                        bool dummy_signatures);
 };
 
 }  // namespace brave_wallet
