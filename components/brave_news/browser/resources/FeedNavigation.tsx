@@ -150,7 +150,7 @@ export default function Sidebar() {
     <Section open>
       <summary>
         {Marker}
-        {getLocale('braveNewsBrowseChannelsHeader')}
+        {getLocale('braveNewsChannelsHeader')}
         <CustomButton faint onClick={() => setCustomizePage('news')}>
           <Icon name='plus-add' />
           {getLocale('braveNewsAddChannelsOrPublishers')}
@@ -168,7 +168,7 @@ export default function Sidebar() {
       <summary>
         {Marker}
         {getLocale('braveNewsPublishersHeading')}
-        <CustomButton faint onClick={() => setCustomizePage('news')}>
+        <CustomButton faint onClick={() => setCustomizePage('popular')}>
           <Icon name='plus-add' />
           {getLocale('braveNewsAddChannelsOrPublishers')}
         </CustomButton>
