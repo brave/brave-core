@@ -433,10 +433,6 @@ export const ConfirmTransactionPanel = ({
         )}
       </TabRow>
 
-      <Column
-        padding={'0px 5%'}
-        fullWidth
-      >
       <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <TransactionInfo
@@ -467,7 +463,6 @@ export const ConfirmTransactionPanel = ({
           />
         )}
       </MessageBox>
-      </Column>
 
       <NetworkFeeRow>
         <PendingTransactionNetworkFeeAndSettings

@@ -307,10 +307,7 @@ function Container() {
       selectedPanel === 'signAllTransactions')
   ) {
     return (
-      <PanelWrapper
-        width={390}
-        height={650}
-      >
+      <PanelWrapper isLonger={true}>
         <LongWrapper>
           <PendingSignatureRequestsPanel
             signMode={

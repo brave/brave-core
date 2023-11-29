@@ -9,7 +9,6 @@ export const PanelWrapper = styled.div<{
   width?: number
   height?: number
 }>`
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
