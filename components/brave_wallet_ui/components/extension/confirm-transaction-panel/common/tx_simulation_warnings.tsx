@@ -6,7 +6,6 @@
 /* eslint-disable @typescript-eslint/key-spacing */
 
 import * as React from 'react'
-import Alert from '@brave/leo/react/alert'
 
 // types
 import { BraveWallet } from '../../../../constants/types'
@@ -16,6 +15,9 @@ import { getLocale } from '../../../../../common/locale'
 import {
   translateSimulationWarning //
 } from '../../../../utils/tx-simulation-utils'
+
+// components
+import { TxWarningBanner } from './tx_warning_banner'
 
 // styles
 import { FullWidth } from '../../../shared/style'
@@ -48,9 +50,9 @@ export function SimulationWarnings({
   if (txSimulation.warnings.length === 1) {
     return (
       <FullWidth>
-        <Alert mode='simple' type={hasCriticalWarnings ? 'error' : 'warning'}>
+        <TxWarningBanner isCritical={hasCriticalWarnings}>
           {translateSimulationWarning(txSimulation.warnings[0])}
-        </Alert>
+        </TxWarningBanner>
       </FullWidth>
     )
   }
@@ -81,9 +83,7 @@ export function SimulationWarnings({
 
         <WarningsList>
           {txSimulation.warnings.map((warning) => (
-            <li key={warning.message}>
-              {translateSimulationWarning(warning)}
-            </li>
+            <li key={warning.message}>{translateSimulationWarning(warning)}</li>
           ))}
         </WarningsList>
       </WarningCollapse>

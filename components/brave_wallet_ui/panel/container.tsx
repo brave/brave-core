@@ -290,7 +290,7 @@ function Container() {
 
   if (selectedPendingTransaction) {
     return (
-      <PanelWrapper isLonger={true}>
+      <PanelWrapper isLonger>
         <LongWrapper padding='0px'>
           <PendingTransactionPanel
             selectedPendingTransaction={selectedPendingTransaction}

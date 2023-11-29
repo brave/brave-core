@@ -13,8 +13,9 @@ import { NavButton } from '../../buttons'
 import { TxWarningBanner } from './tx_warning_banner'
 
 // Styled components
+import { Row } from '../../../shared/style'
 import {
-  ButtonRow,
+  FooterButtonRow,
   ConfirmingButton,
   ConfirmingButtonText,
   ErrorText,
@@ -86,26 +87,35 @@ export function Footer(props: Props) {
         </QueueStepButton>
       )}
 
-      {transactionDetails &&
-        [
-          transactionDetails.contractAddressError,
-          transactionDetails.sameAddressError,
-          transactionDetails.missingGasLimitError
-        ]
-          .filter(Boolean)
-          .map((error) => <ErrorText key={error}>{error}</ErrorText>)}
+      <Row
+        margin={'8px 0px 0px 0px'}
+        padding={'0px 5%'}
+      >
+        {transactionDetails &&
+          [
+            transactionDetails.contractAddressError,
+            transactionDetails.sameAddressError,
+            transactionDetails.missingGasLimitError
+          ]
+            .filter(Boolean)
+            .map((error) => <ErrorText key={error}>{error}</ErrorText>)}
+      </Row>
 
       {showGasErrors && insufficientFundsForGasError && (
-        <TxWarningBanner messageLocale='braveWalletSwapInsufficientFundsForGas' />
+        <TxWarningBanner>
+          {getLocale('braveWalletSwapInsufficientFundsForGas')}
+        </TxWarningBanner>
       )}
 
       {showGasErrors &&
         !insufficientFundsForGasError &&
         insufficientFundsError && (
-          <TxWarningBanner messageLocale='braveWalletSwapInsufficientBalance' />
+          <TxWarningBanner>
+            {getLocale('braveWalletSwapInsufficientBalance')}
+          </TxWarningBanner>
         )}
 
-      <ButtonRow>
+      <FooterButtonRow>
         <NavButton
           buttonType={rejectButtonType || 'reject'}
           text={
@@ -133,7 +143,7 @@ export function Footer(props: Props) {
             minWidth='45%'
           />
         )}
-      </ButtonRow>
+      </FooterButtonRow>
     </FooterContainer>
   )
 }
@@ -157,7 +167,7 @@ export function SignTransactionFooter({
   // render
   return (
     <FooterContainer>
-      <ButtonRow>
+      <FooterButtonRow>
         <NavButton
           buttonType={'reject'}
           text={getLocale('braveWalletAllowSpendRejectButton')}
@@ -179,7 +189,7 @@ export function SignTransactionFooter({
             disabled={isConfirming}
           />
         )}
-      </ButtonRow>
+      </FooterButtonRow>
     </FooterContainer>
   )
 }

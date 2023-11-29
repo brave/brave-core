@@ -105,7 +105,7 @@ export const translateSimulationWarning = (
 
   switch (warning.kind) {
     case BraveWallet.BlowfishWarningKind.kApprovalToEOA:
-      return getLocale('braveWalletSimulationWarningApprovalToEOA')
+      return getLocale('braveWalletSimulationWarningApprovalToEoa')
 
     case BraveWallet.BlowfishWarningKind.kBulkApprovalsRequest:
       return getLocale('braveWalletSimulationWarningBulkApprovalsRequest')

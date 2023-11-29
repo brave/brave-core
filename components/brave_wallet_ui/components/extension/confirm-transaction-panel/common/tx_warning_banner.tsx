@@ -13,22 +13,26 @@ import { getLocale } from '../../../../../common/locale'
 import { FullWidth, Text } from '../../../shared/style'
 import { AlertIcon, WarningAlertRow } from './tx_warning_banner.styles'
 
-type Props = {
+type Props = React.PropsWithChildren<{
   retrySimulation?: (() => void) | (() => Promise<void>)
-  /**
-   * Defaults to Transaction preview failed message
-   */
-  messageLocale?: string
-}
+  isCritical?: boolean
+}>
 
-export function TxWarningBanner({ retrySimulation, messageLocale }: Props) {
+export function TxWarningBanner({
+  retrySimulation,
+  isCritical,
+  children
+}: Props) {
   // render
   return (
     <FullWidth>
-      <WarningAlertRow justifyContent={'flex-start'}>
-        <AlertIcon />
+      <WarningAlertRow
+        isCritical={isCritical}
+        justifyContent={'flex-start'}
+      >
+        <AlertIcon isCritical={isCritical} />
         <Text textSize='12px'>
-          {getLocale(messageLocale || 'braveWalletTransactionPreviewFailed')}
+          {children || getLocale('braveWalletTransactionPreviewFailed')}
         </Text>
         {retrySimulation ? (
           <Button

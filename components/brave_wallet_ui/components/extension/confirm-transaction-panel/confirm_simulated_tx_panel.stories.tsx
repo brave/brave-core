@@ -43,6 +43,8 @@ import {
 import {
   mockErc20TokensList //
 } from '../../../stories/mock-data/mock-asset-options'
+import { PanelWrapper } from '../../../panel/style'
+import { LongWrapper } from '../../../stories/style'
 
 const _mockEvmAccountInfos: BraveWallet.AccountInfo[] = [
   {
@@ -198,10 +200,14 @@ export const _ConfirmSimulatedEvmTransactionPanel = () => {
         transactionInfos: mockEvmTxInfos
       }}
     >
-      <ConfirmSimulatedTransactionPanel
-        simulationType='EVM'
-        txSimulation={evmSimulationResponse}
-      />
+      <PanelWrapper isLonger>
+        <LongWrapper padding='0px'>
+          <ConfirmSimulatedTransactionPanel
+            simulationType='EVM'
+            txSimulation={evmSimulationResponse}
+          />
+        </LongWrapper>
+      </PanelWrapper>
     </WalletPanelStory>
   )
 }

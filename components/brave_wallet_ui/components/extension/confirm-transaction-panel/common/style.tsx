@@ -16,7 +16,7 @@ export const FooterContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 12px;
-  width: 90%;
+  width: 100%;
 `
 
 export const QueueStepRow = styled.div`
@@ -91,8 +91,9 @@ export const LoadIcon = styled(LoaderIcon)`
   opacity: 0.4;
 `
 
-export const ButtonRow = styled.div`
+export const FooterButtonRow = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   flex-direction: row;

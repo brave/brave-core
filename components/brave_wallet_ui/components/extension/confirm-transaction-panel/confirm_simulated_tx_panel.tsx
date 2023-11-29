@@ -55,15 +55,16 @@ import { CriticalWarningPopup } from './critical-warning-popup'
 
 // Styled Components
 import { Column, ErrorText, Row } from '../../shared/style'
-import { TabRow } from '../shared-panel-styles'
 import { NetworkFeeRow } from './common/style'
-import { StyledWrapper, MessageBox } from './style'
 import {
   AccountNameAndAddress,
   NetworkNameText,
   OriginRow,
   SimulationInfoColumn,
-  TabsAndContent
+  TabsAndContent,
+  TabRow,
+  StyledWrapper,
+  SimulatedTxMessageBox
 } from './confirm_simulated_tx_panel.styles'
 
 type confirmPanelTabs = 'transaction' | 'details'
@@ -295,9 +296,9 @@ export const ConfirmSimulatedTransactionPanel = ({
               <>
                 {selectedTab === 'transaction' ? (
                   simulationResultsErrorText ? (
-                    <MessageBox isDetails={true}>
+                    <SimulatedTxMessageBox isDetails={true}>
                       <ErrorText>{simulationResultsErrorText}</ErrorText>
-                    </MessageBox>
+                    </SimulatedTxMessageBox>
                   ) : txSimulation && transactionsNetwork ? (
                     simulationType === 'EVM' ? (
                       <TransactionSimulationInfo
@@ -316,11 +317,11 @@ export const ConfirmSimulatedTransactionPanel = ({
                     )
                   ) : null
                 ) : (
-                  <MessageBox isDetails={selectedTab === 'details'}>
+                  <SimulatedTxMessageBox isDetails={selectedTab === 'details'}>
                     <TransactionDetailBox
                       transactionInfo={selectedPendingTransaction}
                     />
-                  </MessageBox>
+                  </SimulatedTxMessageBox>
                 )}
                 <NetworkFeeRow>
                   <PendingTransactionNetworkFeeAndSettings
@@ -334,17 +335,19 @@ export const ConfirmSimulatedTransactionPanel = ({
         </TabsAndContent>
       </Column>
 
-      <SimulationWarnings
-        txSimulation={txSimulation}
-        isWarningCollapsed={isWarningCollapsed}
-        hasCriticalWarnings={hasCriticalWarnings}
-        setIsWarningCollapsed={setIsWarningCollapsed}
-      />
+      <Column fullWidth>
+        <SimulationWarnings
+          txSimulation={txSimulation}
+          isWarningCollapsed={isWarningCollapsed}
+          hasCriticalWarnings={hasCriticalWarnings}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+        />
 
-      <Footer
-        showGasErrors
-        disableConfirmation={!!simulationResultsErrorText}
-      />
+        <Footer
+          showGasErrors
+          disableConfirmation={!!simulationResultsErrorText}
+        />
+      </Column>
     </StyledWrapper>
   )
 }

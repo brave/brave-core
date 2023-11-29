@@ -12,6 +12,19 @@ import Icon from '@brave/leo/react/icon'
 // mixins
 import { styledScrollbarMixin } from '../../shared/style'
 
+// shared styles
+import { MessageBox } from './style'
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${(p) => p.theme.color.background01};
+`
+
 export const IconButton = styled(Button)`
   background: none;
   border: none;
@@ -144,8 +157,8 @@ export const SimulationInfoColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
-  width: 255px;
+  justify-content: center;
+  width: 100%;
 `
 
 export const ContractOriginColumn = styled.div`
@@ -170,11 +183,24 @@ export const AccountNameAndAddress = styled.div`
   word-break: break-all;
 `
 
+export const SimulatedTxMessageBox = styled(MessageBox)`
+  width: 100%;
+`
+
 export const TabsAndContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
-  width: 255px;
+  justify-content: center;
+  width: 100%;
   padding: 0px 24px;
+`
+
+export const TabRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
 `

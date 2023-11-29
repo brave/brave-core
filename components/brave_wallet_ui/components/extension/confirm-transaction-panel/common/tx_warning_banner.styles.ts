@@ -10,16 +10,26 @@ import Icon from '@brave/leo/react/icon'
 // shared styles
 import { Row } from '../../../shared/style'
 
-export const AlertIcon = styled(Icon).attrs({
-  name: 'warning-triangle-filled'
-})`
+interface WarningBannerProps {
+  isCritical?: boolean
+}
+
+export const AlertIcon = styled(Icon).attrs<WarningBannerProps>((props) => ({
+  name: props.isCritical ? 'warning-circle-filled' : 'warning-triangle-filled'
+}))<WarningBannerProps>`
   --leo-icon-size: 20px;
   padding: 0px 16px;
-  color: ${leo.color.systemfeedback.warningIcon};
+  color: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.warningIcon};
 `
 
-export const WarningAlertRow = styled(Row)`
+export const WarningAlertRow = styled(Row)<WarningBannerProps>`
   min-height: 44px;
   color: ${leo.color.text.primary};
-  background-color: ${leo.color.systemfeedback.warningBackground};
+  background-color: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorBackground
+      : leo.color.systemfeedback.warningBackground};
 `
