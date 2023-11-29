@@ -50,6 +50,7 @@ extension BrowserViewController: TopToolbarDelegate {
         $0.toolbarUrlActionsDelegate = self
     }
     let container = UINavigationController(rootViewController: tabTrayController)
+    container.delegate = self
 
     if !UIAccessibility.isReduceMotionEnabled {
       if !isExternallyPresented {
@@ -1007,5 +1008,17 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
     }
     
     return UIMenu(options: .displayInline, children: children)
+  }
+}
+
+// MARK: UINavigationControllerDelegate
+
+extension BrowserViewController: UINavigationControllerDelegate {
+  public func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+    return navigationController.visibleViewController?.supportedInterfaceOrientations ?? navigationController.supportedInterfaceOrientations
+  }
+
+  public func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+    return navigationController.visibleViewController?.preferredInterfaceOrientationForPresentation ?? navigationController.preferredInterfaceOrientationForPresentation
   }
 }

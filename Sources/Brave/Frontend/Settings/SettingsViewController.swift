@@ -355,7 +355,7 @@ class SettingsViewController: TableViewController {
                 syncProfileService:
                   syncProfileServices,
                 tabManager: tabManager,
-                windowProtection: windowProtection)
+                windowProtection: windowProtection)  
 
               self.navigationController?
                 .pushViewController(syncSettingsViewController, animated: true)

@@ -1497,15 +1497,15 @@ public class BrowserViewController: UIViewController {
     }
     
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-    let nav = SettingsNavigationController(rootViewController: vc)
-    nav.navigationBar.topItem?.leftBarButtonItem =
-      .init(barButtonSystemItem: .cancel, target: nav, action: #selector(nav.done))
+    let navigationController = SettingsNavigationController(rootViewController: vc)
+    navigationController.navigationBar.topItem?.leftBarButtonItem =
+      .init(barButtonSystemItem: .cancel, target: navigationController, action: #selector(navigationController.done))
     let idiom = UIDevice.current.userInterfaceIdiom
 
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
-
-    nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-    present(nav, animated: true)
+    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
+ 
+    navigationController.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+    present(navigationController, animated: true)
   }
 
   func updateInContentHomePanel(_ url: URL?) {
@@ -2085,7 +2085,7 @@ public class BrowserViewController: UIViewController {
       UIBarButtonItem(barButtonSystemItem: .done, target: settingsNavigationController, action: #selector(settingsNavigationController.done))
 
     // All menu views should be opened in portrait on iPhones.
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
 
     present(settingsNavigationController, animated: true)
   }

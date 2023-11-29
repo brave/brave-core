@@ -9,6 +9,7 @@ import BraveCore
 import SwiftUI
 import Combine
 import BraveUI
+import Shared
 
 /// Displays a summary of the users wallet when they are visiting a webpage that wants to connect with the
 /// users wallet

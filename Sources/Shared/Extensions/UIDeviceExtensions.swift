@@ -62,13 +62,4 @@ public extension UIDevice {
   static var isPhone: Bool {
     return UIDevice.current.userInterfaceIdiom == .phone
   }
-
-  // Dev note: UIApplication.shared cannot be used in application extensions.
-  func forcePortraitIfIphone(for application: UIApplication) {
-    if userInterfaceIdiom != .pad && application.statusBarOrientation.isLandscape {
-      let value = UIInterfaceOrientation.portrait.rawValue
-      UIDevice.current.setValue(value, forKey: "orientation")
-    }
-  }
-
 }

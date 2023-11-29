@@ -746,14 +746,14 @@ class TabTrayController: AuthenticationController {
           return
         }
       
-      let syncSettingsScreen = SyncSettingsTableViewController(
-        isModallyPresented: true,
-        syncAPI: braveCore.syncAPI,
-        syncProfileService: braveCore.syncProfileService,
-        tabManager: tabManager,
-        windowProtection: windowProtection)
-      
-        syncSettingsScreen.syncStatusDelegate = self 
+        let syncSettingsScreen = SyncSettingsTableViewController(
+          isModallyPresented: true,
+          syncAPI: braveCore.syncAPI,
+          syncProfileService: braveCore.syncProfileService,
+          tabManager: tabManager,
+          windowProtection: windowProtection)
+       
+        syncSettingsScreen.syncStatusDelegate = self
       
         openInsideSettingsNavigation(with: syncSettingsScreen)
       default:
@@ -772,7 +772,7 @@ class TabTrayController: AuthenticationController {
     settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
       UIBarButtonItem(barButtonSystemItem: .done, target: settingsNavigationController, action: #selector(settingsNavigationController.done))
     
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
 
     present(settingsNavigationController, animated: true)
   }

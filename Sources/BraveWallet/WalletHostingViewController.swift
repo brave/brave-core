@@ -8,6 +8,7 @@ import SwiftUI
 import BraveCore
 import Combine
 import BraveUI
+import Shared
 
 /// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
 /// some integration with the browser
@@ -120,7 +121,11 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+    
+    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
+    if #available(iOS 16.0, *) {
+      self.setNeedsUpdateOfSupportedInterfaceOrientations()
+    }
   }
   
   public override func viewDidLoad() {

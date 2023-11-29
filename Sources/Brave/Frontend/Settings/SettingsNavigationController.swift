@@ -7,6 +7,14 @@ import UIKit
 class SettingsNavigationController: UINavigationController {
   var popoverDelegate: PresentingModalViewControllerDelegate?
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    if #available(iOS 16.0, *) {
+      self.setNeedsUpdateOfSupportedInterfaceOrientations()
+    }
+  }
+  
   @objc func done() {
     if let delegate = popoverDelegate {
       delegate.dismissPresentedModalViewController(self, animated: true)
@@ -28,10 +36,6 @@ class SettingsNavigationController: UINavigationController {
 
   override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
     return .portrait
-  }
-
-  override var shouldAutorotate: Bool {
-    return false
   }
 }
 
