@@ -29,7 +29,7 @@ function WelcomeGuide() {
       <h2 className={styles.subtitle}>{getLocale('welcomeGuideSubtitle')}</h2>
       <div className={`${styles.card} ${styles.siteHelpCard}`}>
         <h4 className={styles.cardTitle}>{getLocale('welcomeGuideSiteHelpCardTitle')}</h4>
-        {context.siteInfo?.isContentAssociationPossible ? (
+        {(context.siteInfo?.isContentAssociationPossible && context.shouldSendPageContents) ? (
           <>
             <p>{getLocale('welcomeGuideSiteHelpCardDescWithAction')}</p>
             <div className={styles.actions}>
