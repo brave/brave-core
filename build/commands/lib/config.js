@@ -1245,6 +1245,9 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
           env.CCACHE_DIR = path.join(env.RBE_cache_dir, 'ccache')
         }
         env.CCACHE_BASEDIR = this.rbeExecRoot
+        env.CCACHE_FILECLONE = '1'
+        env.CCACHE_DEPEND = '1'
+        env.CCACHE_SLOPPINESS = 'time_macros'
       }
     }
 
