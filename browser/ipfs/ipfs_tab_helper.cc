@@ -14,6 +14,7 @@
 
 #include "base/functional/bind.h"
 #include "base/supports_user_data.h"
+#include "brave/browser/infobars/brave_global_infobar_service.h"
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -37,7 +38,10 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
+#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
 #endif
 
 namespace {
@@ -153,7 +157,14 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       IpfsImportController(*web_contents),
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))
+#if !BUILDFLAG(IS_ANDROID)
+      ,
+      global_infobar_service_(
+          BraveGlobalInfobarServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext()))
+#endif  // !BUILDFLAG(IS_ANDROID)
+{
   resolver_ = std::make_unique<IPFSHostResolver>(
       web_contents->GetBrowserContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
@@ -180,6 +191,14 @@ void IPFSTabHelper::IPFSResourceLinkResolved(const GURL& ipfs) {
   UpdateLocationBar();
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+bool IPFSTabHelper::IsResolveMethod(
+    const ipfs::IPFSResolveMethodTypes& resolution_method) {
+  return pref_service_->GetInteger(kIPFSResolveMethod) ==
+         static_cast<int>(resolution_method);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
                                     bool is_gateway_url,
                                     const bool& auto_redirect_blocked) {
@@ -192,6 +211,9 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
 #if !BUILDFLAG(IS_ANDROID)
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
+    if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+      global_infobar_service_->ShowAlwaysStartInfobar();
+    }
 #else
   ) {
     LoadUrl(GetIPFSResolvedURL());
@@ -419,6 +441,9 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
+      if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
+        global_infobar_service_->ShowAlwaysStartInfobar();
+      }
 #else
       LoadUrl(possible_redirect.value());
 #endif  // !BUILDFLAG(IS_ANDROID)

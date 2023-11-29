@@ -1279,6 +1279,9 @@
   <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
     Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
   </message>
+  <message name="IDS_SETTINGS_IPFS_ALWAYS_START_MODE_LABEL" desc="The text label for IPFS always start mode switch">
+    Always start an IPFS node on browser startup?
+  </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
     Automatically redirect requests for IPFS network resources to the configured gateway.
   </message>

@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
+#include "brave/browser/ipfs/ipfs_service_impl_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -30,6 +31,10 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_system_provider.h"
 #include "extensions/browser/extensions_browser_client.h"
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #endif
 
 namespace {
@@ -90,10 +95,17 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   RecordIPFSCompanionInstalled(extensions::ExtensionRegistry::Get(context));
 #endif
-  return new IpfsService(user_prefs::UserPrefs::Get(context),
-                         std::move(url_loader), std::move(context_getter),
-                         ipfs_updater, user_data_dir, chrome::GetChannel(),
-                         std::make_unique<IpfsDnsResolverImpl>());
+  return new IpfsService(
+      user_prefs::UserPrefs::Get(context), std::move(url_loader),
+      std::move(context_getter), ipfs_updater, user_data_dir,
+      chrome::GetChannel(), std::make_unique<IpfsDnsResolverImpl>(),
+      std::make_unique<IpfsServiceImplDelegate>(
+          user_prefs::UserPrefs::Get(context)
+#if !BUILDFLAG(IS_ANDROID)
+              ,
+          BraveGlobalInfobarServiceFactory::GetForBrowserContext(context)
+#endif
+              ));
 }
 
 // static

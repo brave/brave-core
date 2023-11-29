@@ -158,6 +158,14 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked)
   }
 
+  /** @private */
+  onIPFSAlwaysStartModeChange_() {
+    if(!this.$.ipfsAlwaysStartModeEnabled.checked)
+      return;
+
+    this.browserProxy_.launchIPFSService()
+  }
+
   /** @private **/
   onChangeIPFSGatewayDialogTapped_() {
     this.showChangeIPFSGatewayDialog_ = true

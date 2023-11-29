@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 
+#include <memory>
 #include <set>
 #include <utility>
 
@@ -22,6 +23,7 @@
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/ipfs_service_delegate.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -112,8 +114,10 @@ IpfsService::IpfsService(
     ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
     const base::FilePath& user_data_dir,
     version_info::Channel channel,
-    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover)
+    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+    std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate)
     : prefs_(prefs),
+      pref_change_registrar_(std::make_unique<PrefChangeRegistrar>()),
       url_loader_factory_(url_loader_factory),
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
       server_endpoint_(GetAPIServer(channel)),
@@ -124,7 +128,8 @@ IpfsService::IpfsService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a_(this, prefs) {
+      ipfs_p3a_(this, prefs),
+      ipfs_service_delegate_(std::move(ipfs_service_delegate)) {
   DCHECK(!user_data_dir.empty());
 
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -146,6 +151,16 @@ IpfsService::IpfsService(
   ipfs_dns_resolver_subscription_ =
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
+
+  if (prefs_) {
+    pref_change_registrar_->Init(prefs_);
+    pref_change_registrar_->Add(
+        kIPFSAlwaysStartMode,
+        base::BindRepeating(&IpfsService::OnIPFSAlwaysStartModeChanged,
+                            weak_factory_.GetWeakPtr()));
+  }
+
+  OnIPFSAlwaysStartModeChanged();
 }
 
 IpfsService::~IpfsService() {
@@ -180,6 +195,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterBooleanPref(kIPFSAlwaysStartMode, false);
 
   registry->RegisterBooleanPref(kIPFSAutoRedirectToConfiguredGateway, false);
   registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
@@ -191,6 +207,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
   registry->RegisterDictionaryPref(kIPFSPinnedCids);
   registry->RegisterBooleanPref(kShowIPFSPromoInfobar, true);
+  registry->RegisterBooleanPref(kIPFSAlwaysStartInfobarShown, false);
 
   // Deprecated, kIPFSAutoRedirectToConfiguredGateway is used instead
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
@@ -264,6 +281,16 @@ void IpfsService::RestartDaemon() {
         }
       },
       std::move(launch_callback)));
+}
+
+void IpfsService::OnIPFSAlwaysStartModeChanged() {
+  const auto is_ipfs_local =
+      (prefs_ &&
+       prefs_->GetInteger(kIPFSResolveMethod) ==
+           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  if (is_ipfs_local && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+    StartDaemonAndLaunch(base::NullCallback());
+  }
 }
 
 void IpfsService::OnIpfsCrashed() {
@@ -661,10 +688,16 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
 void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
                                    size_t key,
                                    const ipfs::ImportedData& data) {
+  bool is_import_success{data.state == ipfs::IPFS_IMPORT_SUCCESS};
+
   if (callback)
     std::move(callback).Run(data);
 
   importers_.erase(key);
+
+  if (is_import_success && ipfs_service_delegate_) {
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
+  }
 }
 #endif
 
@@ -777,7 +810,9 @@ bool IpfsService::IsDaemonLaunched() const {
 void IpfsService::StartDaemonAndLaunch(
     base::OnceCallback<void(void)> success_callback) {
   if (IsDaemonLaunched()) {
-    std::move(success_callback).Run();
+    if (success_callback) {
+      std::move(success_callback).Run();
+    }
     return;
   }
   LaunchDaemon(base::BindOnce(
@@ -1074,6 +1109,10 @@ void IpfsService::OnPinAddResult(
   }
 
   parse_result->recursive = recursive;
+
+  if (ipfs_service_delegate_) {
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
+  }
 
   std::move(callback).Run(std::move(parse_result));
 }

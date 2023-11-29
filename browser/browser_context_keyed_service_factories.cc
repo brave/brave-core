@@ -60,6 +60,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -223,6 +224,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(IS_ANDROID)
   misc_metrics::MiscAndroidMetricsFactory::GetInstance();
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  BraveGlobalInfobarServiceFactory::GetInstance();
 #endif
 }
 

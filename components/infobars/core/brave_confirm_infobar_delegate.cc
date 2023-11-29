@@ -13,7 +13,7 @@ int BraveConfirmInfoBarDelegate::GetButtons() const {
 }
 
 std::vector<int> BraveConfirmInfoBarDelegate::GetButtonsOrder() const {
-  return {BUTTON_OK | BUTTON_EXTRA | BUTTON_CANCEL};
+  return {BUTTON_OK, BUTTON_EXTRA, BUTTON_CANCEL};
 }
 
 bool BraveConfirmInfoBarDelegate::IsProminent(int id) const {

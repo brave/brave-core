@@ -71,7 +71,8 @@ class IpfsService : public KeyedService,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel,
-              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover);
+              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+              std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate);
   IpfsService(const IpfsService&) = delete;
   IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
@@ -250,6 +251,7 @@ class IpfsService : public KeyedService,
 
   std::string GetStorageSize();
   void OnDnsConfigChanged(absl::optional<std::string> dns_server);
+  void OnIPFSAlwaysStartModeChanged();
 
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
@@ -260,6 +262,8 @@ class IpfsService : public KeyedService,
   base::ObserverList<IpfsServiceObserver> observers_;
 
   const raw_ptr<PrefService> prefs_ = nullptr;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;
@@ -288,6 +292,7 @@ class IpfsService : public KeyedService,
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
+  std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
   base::WeakPtrFactory<IpfsService> weak_factory_{this};
 };
 

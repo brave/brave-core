@@ -20,6 +20,7 @@
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_service_impl_delegate.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
@@ -39,7 +40,11 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -72,19 +77,22 @@ class FakeIpfsService : public ipfs::IpfsService {
       ipfs::BraveIpfsClientUpdater* updater,
       const base::FilePath& user_dir,
       version_info::Channel channel)
-      : ipfs::IpfsService(prefs,
-                          url_loader_factory,
-                          std::move(blob_getter_factory),
-                          updater,
-                          user_dir,
-                          channel,
-                          std::make_unique<ipfs::IpfsDnsResolverImpl>()) {}
+      : ipfs::IpfsService(
+            prefs,
+            url_loader_factory,
+            std::move(blob_getter_factory),
+            updater,
+            user_dir,
+            channel,
+            std::make_unique<ipfs::IpfsDnsResolverImpl>(),
+            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs, nullptr)) {}
   ~FakeIpfsService() override = default;
 
   void LaunchDaemon(BoolCallback callback) override {
     launched_ = true;
-    if (callback)
+    if (callback) {
       std::move(callback).Run(launch_result_);
+    }
   }
 
   void RestartDaemon() override { launched_ = true; }
@@ -97,6 +105,17 @@ class FakeIpfsService : public ipfs::IpfsService {
   bool launch_result_ = true;
   bool launched_ = false;
 };
+
+infobars::InfoBar* FindInfobar(
+    infobars::ContentInfoBarManager* content_infobar_manager,
+    const infobars::InfoBarDelegate::InfoBarIdentifier& type) {
+  for (auto* infobar : content_infobar_manager->infobars()) {
+    if (infobar->delegate()->GetIdentifier() == type) {
+      return infobar;
+    }
+  }
+  return nullptr;
+}
 
 }  // namespace
 
@@ -1714,6 +1733,48 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
 
     ipfs::IpfsService::MigrateProfilePrefs(prefs);
     EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       ImportToIpfs_AlwaysStartInfobar) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  std::string domain = "test.domain.com";
+  std::string text = "text to import";
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = domain;
+  filename += "_";
+  filename += base::NumberToString(key);
+  std::string expected_response = base::StringPrintf(
+      R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
+      R"(,"Size":"567857"})",
+      filename.c_str());
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+
+  prefs->SetInteger(kIPFSResolveMethod,
+                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
+  GURL gateway_url = GetURL("navigate.to", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  //  Show global infobar if resolve method is IPFS_LOCAL
+  {
+    ipfs_service()->ImportTextToIpfs(
+        text, domain,
+        base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                       base::Unretained(this)));
+    WaitForRequest();
+
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    auto* infobar = FindInfobar(
+        infobars::ContentInfoBarManager::FromWebContents(contents),
+        infobars::InfoBarDelegate::BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE);
+    ASSERT_TRUE(infobar);
   }
 }
 
