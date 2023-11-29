@@ -91,6 +91,7 @@ class AssetDetailStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
@@ -284,6 +285,7 @@ class AssetDetailStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
@@ -401,6 +403,7 @@ class AssetDetailStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketEth)

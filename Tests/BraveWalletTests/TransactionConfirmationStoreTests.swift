@@ -130,6 +130,7 @@ import Preferences
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
   }

@@ -83,7 +83,7 @@ struct PortfolioAssetsView: View {
   }
 
   private var editUserAssetsButton: some View {
-    AssetButton(braveSystemName: "leo.list.settings", action: {
+    WalletIconButton(braveSystemName: "leo.list.settings", action: {
       isPresentingEditUserAssets = true
     })
     .sheet(isPresented: $isPresentingEditUserAssets) {
@@ -98,7 +98,7 @@ struct PortfolioAssetsView: View {
   }
 
   private var filtersButton: some View {
-    AssetButton(braveSystemName: "leo.filter.settings", action: {
+    WalletIconButton(braveSystemName: "leo.filter.settings", action: {
       isPresentingFiltersDisplaySettings = true
     })
     .sheet(isPresented: $isPresentingFiltersDisplaySettings) {

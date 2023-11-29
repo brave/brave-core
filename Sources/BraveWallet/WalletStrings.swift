@@ -2400,7 +2400,7 @@ extension Strings {
       "wallet.transactionDetailsTransactionHashTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Transaction hash",
+      value: "Transaction Hash",
       comment: "The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction."
     )
     public static let transactionDetailsStatusTitle = NSLocalizedString(

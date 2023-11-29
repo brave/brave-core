@@ -144,7 +144,12 @@ struct TransactionConfirmationView: View {
         .sheet(
           isPresented: Binding(
             get: { self.transactionDetails != nil },
-            set: { if !$0 { self.transactionDetails = nil } }
+            set: {
+              if !$0 {
+                self.transactionDetails = nil
+                self.confirmationStore.closeTxDetailsStore()
+              }
+            }
           )
         ) {
           if let transactionDetailsStore = transactionDetails {

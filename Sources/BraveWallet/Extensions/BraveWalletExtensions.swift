@@ -16,6 +16,37 @@ extension BraveWallet.TransactionInfo {
       return false
     }
   }
+  
+  var isApprove: Bool {
+    txType == .erc20Approve
+  }
+  
+  var isSend: Bool {
+    switch txType {
+    case .ethSend,
+        .erc20Transfer,
+        .erc721TransferFrom,
+        .erc721SafeTransferFrom,
+        .erc1155SafeTransferFrom,
+        .solanaSystemTransfer,
+        .solanaSplTokenTransfer,
+        .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
+        .solanaDappSignAndSendTransaction,
+        .solanaDappSignTransaction,
+        .ethFilForwarderTransfer:
+      return true
+    case .other:
+      // Filecoin send
+      return txDataUnion.filTxData != nil
+    case .erc20Approve,
+        .ethSwap,
+        .solanaSwap:
+      return false
+    @unknown default:
+      return false
+    }
+  }
+  
   var isEIP1559Transaction: Bool {
     if coin == .eth {
       guard let ethTxData1559 = txDataUnion.ethTxData1559 else { return false }

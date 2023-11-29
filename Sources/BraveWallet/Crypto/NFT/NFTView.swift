@@ -98,7 +98,7 @@ struct NFTView: View {
   }
   
   private var filtersButton: some View {
-    AssetButton(braveSystemName: "leo.filter.settings", action: {
+    WalletIconButton(braveSystemName: "leo.filter.settings", action: {
       isPresentingFiltersDisplaySettings = true
     })
   }
@@ -150,7 +150,7 @@ struct NFTView: View {
   }
   
   private var addCustomAssetButton: some View {
-    AssetButton(braveSystemName: "leo.plus.add") {
+    WalletIconButton(braveSystemName: "leo.plus.add") {
       isShowingAddCustomNFT = true
     }
   }

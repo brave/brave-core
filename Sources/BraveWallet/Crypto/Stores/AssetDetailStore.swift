@@ -76,6 +76,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let ipfsApi: IpfsAPI
   private let swapService: BraveWalletSwapService
   private let assetManager: WalletUserAssetManagerType
   /// A list of tokens that are supported with the current selected network for all supported
@@ -119,6 +120,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI,
     swapService: BraveWalletSwapService,
     userAssetManager: WalletUserAssetManagerType,
     assetDetailType: AssetDetailType
@@ -130,6 +132,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
+    self.ipfsApi = ipfsApi
     self.swapService = swapService
     self.assetManager = userAssetManager
     self.assetDetailType = assetDetailType
@@ -145,6 +148,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     keyringServiceObserver = nil
     txServiceObserver = nil
     walletServiceObserver = nil
+    transactionDetailsStore?.tearDown()
   }
   
   func setupObservers() {
@@ -383,17 +387,28 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       }
   }
   
+  private var transactionDetailsStore: TransactionDetailsStore?
   func transactionDetailsStore(for transaction: BraveWallet.TransactionInfo) -> TransactionDetailsStore {
-    TransactionDetailsStore(
+    let transactionDetailsStore = TransactionDetailsStore(
       transaction: transaction,
+      parsedTransaction: nil,
       keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
+      txService: txService,
       solanaTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi,
       userAssetManager: assetManager
     )
+    self.transactionDetailsStore = transactionDetailsStore
+    return transactionDetailsStore
+  }
+  
+  func closeTransactionDetailsStore() {
+    self.transactionDetailsStore?.tearDown()
+    self.transactionDetailsStore = nil
   }
   
   /// Should be called after dismissing create account. Returns true if an account was created
@@ -452,7 +467,7 @@ extension AssetDetailStore: BraveWalletTxServiceObserver {
     update()
   }
   func onTxServiceReset() {
-  }  
+  }
 }
 
 extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {

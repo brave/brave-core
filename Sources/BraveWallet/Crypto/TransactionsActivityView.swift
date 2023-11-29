@@ -46,7 +46,12 @@ struct TransactionsActivityView: View {
     .sheet(
       isPresented: Binding(
         get: { self.transactionDetails != nil },
-        set: { if !$0 { self.transactionDetails = nil } }
+        set: {
+          if !$0 {
+            self.transactionDetails = nil
+            self.store.closeTransactionDetailsStore()
+          }
+        }
       )
     ) {
       if let transactionDetailsStore = self.transactionDetails {

@@ -11,15 +11,11 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   let transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
-  @Published private(set) var title: String?
-  @Published private(set) var value: String?
-  @Published private(set) var fiat: String?
-  @Published private(set) var gasFee: String?
-  @Published private(set) var marketPrice: String?
   
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
+      guard currencyCode != oldValue else { return }
       update()
     }
   }
@@ -34,36 +30,74 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let txService: BraveWalletTxService
   private let solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  private var nftMetadataCache: [String: NFTMetadata] = [:]
   
-  var isObserving: Bool = false
+  var isObserving: Bool {
+    txServiceObserver != nil
+  }
+
+  private var txServiceObserver: TxServiceObserver?
   
   init(
     transaction: BraveWallet.TransactionInfo,
+    parsedTransaction: ParsedTransaction?,
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
+    txService: BraveWalletTxService,
     solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.transaction = transaction
+    self.parsedTransaction = parsedTransaction
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
+    self.txService = txService
     self.solanaTxManagerProxy = solanaTxManagerProxy
+    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
+    
+    setupObservers()
     
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService,
+      _onNewUnapprovedTx: { [weak self] _ in
+        self?.update()
+      },
+      _onUnapprovedTxUpdated: { [weak self] _ in
+        self?.update()
+      },
+      _onTransactionStatusChanged: { [weak self] _ in
+        self?.update()
+      },
+      _onTxServiceReset: { [weak self] in
+        self?.update()
+      }
+    )
+  }
+  
+  func tearDown() {
+    txServiceObserver = nil
   }
   
   func update() {
@@ -112,77 +146,49 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         userAssets: userAssets,
         allTokens: allTokens,
         assetRatios: assetRatios,
-        nftMetadata: [:],
+        nftMetadata: nftMetadataCache,
         solEstimatedTxFee: solEstimatedTxFee,
         currencyFormatter: currencyFormatter
       ) else {
         return
       }
       self.parsedTransaction = parsedTransaction
-      self.currencyFormatter.maximumFractionDigits = 2 // use max. 2 digits for market price calculation
-      
+
+      // Fetch NFTMetadata if needed.
+      let nftToken: BraveWallet.BlockchainToken?
       switch parsedTransaction.details {
-      case let .ethSend(details),
-        let .erc20Transfer(details),
-        let .solSystemTransfer(details),
-        let .solSplTokenTransfer(details):
-        self.title = Strings.Wallet.sent
-        self.value = String(format: "%@ %@", details.fromAmount, details.fromToken?.symbol ?? "")
-        self.fiat = details.fromFiat
-        if let fromToken = details.fromToken, let tokenPrice = assetRatios[fromToken.assetRatioId.lowercased()] {
-          self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
-        }
-      case let .ethSwap(details):
-        self.title = Strings.Wallet.swap
-        if let fromToken = details.fromToken {
-          self.value = String(format: "%@ %@", details.fromAmount, fromToken.symbol)
-          if let tokenPrice = assetRatios[fromToken.assetRatioId.lowercased()] {
-            self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
-          }
+      case .erc721Transfer(let details):
+        if details.nftMetadata == nil {
+          nftToken = details.fromToken
         } else {
-          self.value = details.fromAmount
+          nftToken = nil
         }
-        self.fiat = details.fromFiat
-      case let .ethErc20Approve(details):
-        var token = details.token
-        if token == nil {
-          token = await self.fetchTokenInfo(for: details.tokenContractAddress)
-        }
-        
-        self.title = Strings.Wallet.approveNetworkButtonTitle
-        self.value = String(format: "%@ %@", details.approvalAmount, token?.symbol ?? "")
-        if let token = token, let tokenPrice = assetRatios[token.assetRatioId.lowercased()] {
-          self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
-        }
-      case let .erc721Transfer(details):
-        self.title = Strings.Wallet.swap
-        if let fromToken = details.fromToken {
-          self.value = String(format: "%@ %@", details.fromAmount, fromToken.symbol)
-          if let tokenPrice = assetRatios[fromToken.assetRatioId.lowercased()] {
-            self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
-          }
+      case .solSplTokenTransfer(let details):
+        if let fromToken = details.fromToken,
+           fromToken.isNft,
+           details.fromTokenMetadata == nil {
+          nftToken = fromToken
         } else {
-          self.value = details.fromAmount
+          nftToken = nil
         }
-      case let .solDappTransaction(details):
-        self.title = Strings.Wallet.solanaDappTransactionTitle
-        self.value = details.fromAmount
-      case let .solSwapTransaction(details):
-        self.title = Strings.Wallet.solanaSwapTransactionTitle
-        self.value = details.fromAmount
-      case let .filSend(details):
-        self.title = Strings.Wallet.sent
-        self.value = String(format: "%@ %@", details.sendAmount, details.sendToken?.symbol ?? "")
-        self.fiat = details.sendFiat
-        if let sendToken = details.sendToken, let tokenPrice = assetRatios[sendToken.assetRatioId.lowercased()] {
-          self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
-        }
-      case .other:
-        break
+      default:
+        nftToken = nil
       }
-      if let gasFee = parsedTransaction.gasFee {
-        self.gasFee = String(format: "%@ %@\n%@", gasFee.fee, parsedTransaction.networkSymbol, gasFee.fiat)
+      guard let nftToken else { return }
+      self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(for: nftToken, ipfsApi: ipfsApi)
+      guard let parsedTransaction = transaction.parsedTransaction(
+        network: network,
+        accountInfos: allAccounts,
+        userAssets: userAssets,
+        allTokens: allTokens,
+        assetRatios: assetRatios,
+        nftMetadata: nftMetadataCache,
+        solEstimatedTxFee: solEstimatedTxFee,
+        currencyFormatter: currencyFormatter
+      ) else {
+        return
       }
+      self.parsedTransaction = parsedTransaction
     }
   }
   

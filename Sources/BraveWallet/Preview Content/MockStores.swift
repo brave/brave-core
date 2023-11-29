@@ -144,6 +144,7 @@ extension AssetDetailStore {
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      ipfsApi: TestIpfsAPI(),
       swapService: MockSwapService(),
       userAssetManager: TestableWalletUserAssetManager(),
       assetDetailType: .blockchainToken(.previewToken)
@@ -215,6 +216,7 @@ extension TransactionConfirmationStore {
         return service
       }(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
     )
   }
