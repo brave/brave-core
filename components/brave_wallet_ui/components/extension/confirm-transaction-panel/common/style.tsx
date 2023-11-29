@@ -119,4 +119,6 @@ export const OriginURLText = styled.span`
   margin-bottom: 0px;
 `
 
-export const NetworkFeeRow = styled(TabRow)``
+export const NetworkFeeRow = styled(TabRow)`
+  margin-top: 8px;
+`
