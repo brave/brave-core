@@ -84,7 +84,7 @@ OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
 OnboardingTabHelper::~OnboardingTabHelper() = default;
 
 void OnboardingTabHelper::DidStopLoading() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
+  Browser* browser = chrome::FindBrowserWithTab(web_contents());
   DCHECK(browser);
 
   if (!browser) {
@@ -152,7 +152,7 @@ bool OnboardingTabHelper::CanHighlightBraveShields() {
 }
 
 void OnboardingTabHelper::ShowBraveHelpBubbleView() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
+  Browser* browser = chrome::FindBrowserWithTab(web_contents());
   DCHECK(browser);
   if (!browser) {
     return;
