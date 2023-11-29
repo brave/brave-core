@@ -416,7 +416,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    @Override
     public void setTabModelSelector(TabModelSelector selector) {
         // We might miss events before calling setTabModelSelector, so we need
         // to proactively update the shields button state here, otherwise shields

@@ -132,7 +132,6 @@
     *** mOverlayPanelVisibilitySupplier;
     *** mTabModelSelector;
     *** mIncognitoStateProvider;
-    *** mTabCountProvider;
     *** mTabGroupUi;
     *** mBottomSheetController;
     *** mActivityLifecycleDispatcher;
