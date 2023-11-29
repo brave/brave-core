@@ -39,7 +39,7 @@ class ConversationDriver {
         std::vector<std::string> questions,
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent(const mojom::SiteInfo& site_info) {}
+    virtual void OnSiteInfoChanged(mojom::SiteInfoPtr site_info) {}
     virtual void OnConversationEntryPending() {}
   };
 
@@ -84,7 +84,7 @@ class ConversationDriver {
   bool HasPendingConversationEntry();
   bool IsContentAssociationPossible();
   void SubmitSummarizationRequest();
-  mojom::SiteInfo BuildSiteInfo();
+  mojom::SiteInfoPtr BuildSiteInfo();
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -122,7 +122,7 @@ class ConversationDriver {
   void OnSuggestedQuestionsResponse(int64_t navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged(const mojom::SiteInfo& site_info);
+  void OnSiteInfoChanged();
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);

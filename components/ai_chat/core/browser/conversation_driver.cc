@@ -184,7 +184,7 @@ void ConversationDriver::InitEngine() {
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
   if (!article_text_.empty()) {
-    OnPageHasContentChanged(BuildSiteInfo());
+    OnSiteInfoChanged();
   }
 }
 
@@ -311,7 +311,7 @@ void ConversationDriver::MaybeGeneratePageText() {
   if (should_send_page_contents_) {
     is_page_text_fetch_in_progress_ = true;
     // Update fetching status
-    OnPageHasContentChanged(BuildSiteInfo());
+    OnSiteInfoChanged();
     GetPageContent(
         base::BindOnce(&ConversationDriver::OnPageContentRetrieved,
                        weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
@@ -337,7 +337,7 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   engine_->SanitizeInput(article_text_);
 
   // Update completion status
-  OnPageHasContentChanged(BuildSiteInfo());
+  OnSiteInfoChanged();
 
   // Now that we have article text, we can suggest to summarize it
   DCHECK(suggestions_.empty())
@@ -376,7 +376,7 @@ void ConversationDriver::CleanUp() {
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
     obs.OnAPIRequestInProgress(false);
-    obs.OnPageHasContent(BuildSiteInfo());
+    obs.OnSiteInfoChanged(BuildSiteInfo());
   }
 }
 
@@ -545,7 +545,7 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   if (!should_send_page_contents_) {
     article_text_.clear();
     suggestions_.clear();
-    OnPageHasContentChanged(BuildSiteInfo());
+    OnSiteInfoChanged();
     OnSuggestedQuestionsChanged();
   }
 
@@ -633,10 +633,9 @@ void ConversationDriver::OnSuggestedQuestionsChanged() {
   }
 }
 
-void ConversationDriver::OnPageHasContentChanged(
-    const mojom::SiteInfo& site_info) {
+void ConversationDriver::OnSiteInfoChanged() {
   for (auto& obs : observers_) {
-    obs.OnPageHasContent(site_info);
+    obs.OnSiteInfoChanged(BuildSiteInfo());
   }
 }
 
@@ -681,13 +680,11 @@ void ConversationDriver::SubmitSummarizationRequest() {
   pending_message_needs_page_content_ = true;
 }
 
-mojom::SiteInfo ConversationDriver::BuildSiteInfo() {
-  mojom::SiteInfo site_info;
-  if (!article_text_.empty()) {
-    site_info.title = base::UTF16ToUTF8(GetPageTitle());
-  }
-  site_info.is_content_truncated = IsPageContentsTruncated();
-  site_info.is_content_association_possible = IsContentAssociationPossible();
+mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
+  mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
+  site_info->title = base::UTF16ToUTF8(GetPageTitle());
+  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->is_content_association_possible = IsContentAssociationPossible();
 
   return site_info;
 }
