@@ -46,7 +46,6 @@ import {
   WalletSubViewLayout //
 } from '../components/desktop/wallet-sub-view-layout/index'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
-import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import {
   BackupWalletRoutes //
 } from './screens/backup-wallet/backup-wallet.routes'
@@ -65,6 +64,12 @@ import {
 import {
   PageTitleHeader //
 } from '../components/desktop/card-headers/page-title-header'
+
+// Lazy
+// import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
+const OnboardingRoutes = React.lazy(
+  () => import('./screens/onboarding/onboarding.routes')
+)
 
 const initialSessionRoute = getInitialSessionRoute()
 
@@ -131,7 +136,9 @@ export const Container = () => {
         {walletNotYetCreated ? (
           <WalletPageLayout>
             <WalletSubViewLayout>
-              <OnboardingRoutes />
+              <React.Suspense fallback={<div />}>
+                <OnboardingRoutes />
+              </React.Suspense>
             </WalletSubViewLayout>
           </WalletPageLayout>
         ) : (
