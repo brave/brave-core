@@ -14,8 +14,6 @@ from urllib.request import urlopen
 
 from lib.util import extract_zip
 
-import components.path_util as path_util
-
 
 def ToChromiumPlatformName(target_os: str) -> str:
   if target_os == 'mac':

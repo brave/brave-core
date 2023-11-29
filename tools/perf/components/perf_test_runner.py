@@ -22,7 +22,7 @@ from components.perf_config import BenchmarkConfig, ParseTarget, RunnerConfig
 def ReportToDashboardImpl(
     dashboard_bot_name: str, version: BraveVersion,
     output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
-  chromium_version_str = version.to_chromium_version.to_string()
+  chromium_version_str = version.chromium_version.to_string()
 
   args = [
       path_util.GetVpython3Path(),

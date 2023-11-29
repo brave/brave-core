@@ -240,7 +240,7 @@ class BraveBrowserTypeImpl(BrowserType):
 
 def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
                             variations_repo_dir: str, branch: str) -> str:
-  combined_version = version.to_combined_version
+  combined_version = version.combined_version
   logging.debug('Generating trials for combined_version %s', combined_version)
   target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')
 
@@ -270,7 +270,7 @@ class ChromiumBrowserTypeImpl(BrowserType):
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
                             out_dir: str, common_options: CommonOptions) -> str:
     target_os = common_options.target_os
-    chromium_version_str = version.to_chromium_version.to_string()
+    chromium_version_str = version.chromium_version.to_string()
 
     if target_os == 'android':
       filename = f'chromium-{version}-android-arm64.apk'
@@ -336,7 +336,7 @@ class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
                             out_dir: str, common_options: CommonOptions) -> str:
     chrome_platform = ToChromiumPlatformName(common_options.target_os)
-    chromium_version_str = version.to_chromium_version.to_string()
+    chromium_version_str = version.chromium_version.to_string()
     if url is None:
       url = _GetChromeForTestingDownloadUrl(chromium_version_str,
                                             chrome_platform)
