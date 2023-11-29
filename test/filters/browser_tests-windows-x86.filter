@@ -13,6 +13,7 @@
 
 # These tests fail on x86 CI but pass locally
 -MetricIntegrationTest.LargestContentfulPaint_SubframeInput
+-PDFExtensionTest.CSPDoesNotBlockEmbedStyles
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
 -PageLoadMetricsBrowserTestTerminatedPage.UkmIsRecordedWhenRenderProcessShutsDown

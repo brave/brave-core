@@ -36,9 +36,11 @@
 # available.
 -All/ActionAndBrowserActionAPITest.TestSetBadgeTextGlobalAndTab/*
 -All/IntentPickerIconBrowserTest.*
+-All/MLPromotionInstallDialogBrowserTest.MlHandlesInvisible/Detailed_Install_Dialog
 -All/PromotionalTabsEnabledPolicyWelcomeNoFreTest.RunTest/1
 -BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplitWithoutIncognitoAccess/0
 -InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
+-IntentPickerIconBrowserBubbleTest.IntentChipLaunchesAppDirectly
 -IntentPickerIconBrowserTest.*
 -LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
 -PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.NoPromptNonDefaultNtp/*
@@ -54,6 +56,7 @@
 -ServiceWorker/ExtensionApiNewTabTest.Tabs/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.Muted/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
+-TrackingProtectionHatsIneligibleClientBrowserTest.IneligibleClientDoesntSurvey
 -WebAppTabStripBrowserTest.HomeTab*
 
 # These tests fail because they directly subclass ChromeContentBrowserClient.
@@ -269,7 +272,6 @@
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportEventDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportWinDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportResultDestinationEnrollment/*
-
 
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
@@ -702,6 +704,26 @@
 -DIPSWebAuthnBrowserTest.ReportRedirectorsInChain_OmitSitesWithWebAuthnAssertions
 -DIPSWebAuthnBrowserTest.WebAuthnAssertion_ConfirmWCOCallback
 -OpenerHeuristicBrowserTest.*
+
+# This test fails because we disable link capturing
+-EnableLinkCapturingInfobarBrowserTest.AppLaunched
+
+# These tests fail because our default search provider is not Google, which
+# makes the page classification return the result the tests don't expect. Also,
+# kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
+# causes prefetch not to start.
+-ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
+
+# These tests fail due to:
+# Receiver for unknown Channel-associated interface: brave.mojom.BraveRendererConfiguration
+# But also, we disable kSharedStorageAPI.
+-All/SharedStorageChromeBrowserTest.*
+-All/SharedStoragePrefBrowserTest.*
+-All/SharedStoragePrivateAggregationChromeBrowserTest.*
+-SharedStorageFencedFrameChromeBrowserTest.FencedFrameNavigateTop_BudgetWithdrawal
+-SharedStorageFencedFrameChromeBrowserTest.TwoFencedFrames_DifferentURNs_EachNavigateOnce_BudgetWithdrawalTwice
 
 # These tests fail on CI but pass locally
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*

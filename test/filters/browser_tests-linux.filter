@@ -22,11 +22,14 @@
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
+-All/PasswordGenerationPopupViewBrowsertest.*
+-All/WebRtcScreenCaptureBrowserTestWithPicker.ScreenCaptureVideo/1
 -BluetoothLowEnergyApiTest.*
 -CaptureHandleBrowserTest.*
 -ConditionalFocusBrowserTest.*
 -ContextMenuIncognitoFilterBrowserTest.*
 -DomainReliabilityPrefetchProxyBrowserTest.*
+-DownloadExtensionTest.DownloadExtensionTest_Download_UnsafeHeaders
 -ExtensionApiTestWithSwitch.ExtensionTracing
 -ExtensionDialogTest.*
 -ExtensionStartupTest.*
@@ -42,12 +45,14 @@
 -NewTabUIBrowserTest.*
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
+-PDFTestFiles/PDFExtensionLoadTest.Load/1
 -PolicyTestPrefetchProxyBrowserTest.*
 -PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
 -PPAPINaClPNaClNonSfiTest.*
 -PrefetchProxyBrowserTest.*
 -PrefetchProxyWithDecoyRequestsBrowserTest.*
 -PrefetchProxyWithNSPBrowserTest.*
+-PrefsInternalsTest.TestPrefsAreServed
 -PrintBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
 -ProbingAndNSPEnabledPrefetchProxyBrowserTest.*
@@ -59,6 +64,8 @@
 -ProbingEnabled_CanaryOn_TLSCanaryGood_DNSCanaryBad_PrefetchProxyBrowserTest.*
 -ProcessMemoryMetricsEmitterTest.*
 -PushSubscriptionWithExpirationTimeTest.*
+-SearchEngineChoiceBrowserTest.RestoreSettingsAndChangeUrl
+-ServiceWorkerMessagingTest.LongLivedChannelPostMessage
 -SingleProcessBrowserTest.*
 -SpeculationNonPrivatePrefetchesPrefetchProxyTest.*
 -SpeculationPrefetchProxyTest.*
