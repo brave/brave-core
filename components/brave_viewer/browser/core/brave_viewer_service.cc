@@ -41,9 +41,11 @@ std::string ReadFile(const base::FilePath& file_path) {
 // static
 BraveViewerService* BraveViewerService::GetInstance() {
   // Check if feature flag is enabled.
+  #if !BUILDFLAG(IS_IOS)
   if (!base::FeatureList::IsEnabled(brave_viewer::features::kBraveViewer)) {
     return nullptr;
   }
+  #endif
   return base::Singleton<BraveViewerService>::get();
 }
 

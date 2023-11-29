@@ -19,6 +19,7 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_viewer/browser/core/brave_viewer_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -29,6 +30,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
+#include "brave/ios/browser/api/brave_viewer/brave_viewer_service+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
@@ -109,6 +111,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) WebImageDownloader* webImageDownloader;
+@property(nonatomic) BraveViewerService* braveViewerService;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
@@ -433,6 +436,13 @@ static bool CustomLogHandler(int severity,
         initWithBrowserState:_otr_browser->GetBrowserState()];
   }
   return _webImageDownloader;
+}
+
+- (BraveViewerService*)braveViewerService {
+  if (!_braveViewerService) {
+    _braveViewerService = [[BraveViewerService alloc] init];
+  }
+  return _braveViewerService;
 }
 
 - (BraveWalletAPI*)braveWalletAPI {

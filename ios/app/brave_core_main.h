@@ -19,6 +19,7 @@
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
+@class BraveViewerService;
 @class BraveWalletAPI;
 @class AdblockService;
 @class BraveTabGeneratorAPI;
@@ -59,6 +60,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
 @property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
+
+@property(nonatomic, readonly) BraveViewerService* braveViewerService;
 
 @property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
 
