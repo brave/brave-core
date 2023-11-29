@@ -19,8 +19,8 @@ namespace brave_wallet {
 // https://github.com/sparrowwallet/drongo/blob/master/src/main/java/com/sparrowwallet/drongo/wallet/KnapsackUtxoSelector.java#L8
 // and
 // https://github.com/bitcoin/bitcoin/blob/v25.1/src/wallet/coinselection.cpp#L255
-// Tries to find best set of inputs(minimal fee) for transaction.
-// Does two runs of serach: with and without change output. See
+// Tries to find the best set of inputs(minimal fee) for a transaction.
+// Does two runs of search: with and without change output. See
 // `SolveForTransaction` for details.
 class KnapsackSolver {
  public:

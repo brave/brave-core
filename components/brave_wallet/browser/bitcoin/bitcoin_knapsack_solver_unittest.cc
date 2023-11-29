@@ -22,8 +22,6 @@ using testing::UnorderedElementsAreArray;
 
 namespace brave_wallet {
 
-namespace {}  // namespace
-
 class BitcoinKnapsackSolverUnitTest : public testing::Test {
  public:
   BitcoinKnapsackSolverUnitTest() = default;
@@ -94,7 +92,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {
 
   KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(), {});
 
-  // Can't send exactily what we have as we need to add some fee.
+  // Can't send exactly what we have as we need to add some fee.
   EXPECT_EQ("Insufficient funds", solver.Solve().error());
 }
 
@@ -230,7 +228,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoDustChangeGenerated) {
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
-    // We have slighly more than needed for change output which all goes to
+    // We have slightly more than needed for change output which all goes to
     // change.
     EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
     EXPECT_EQ(tx->TotalInputsAmount(), total_input);

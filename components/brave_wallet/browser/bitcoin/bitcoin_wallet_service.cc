@@ -428,30 +428,28 @@ void CreateTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  {
-    BitcoinTransaction::TxOutput target_output;
-    target_output.type = BitcoinTransaction::TxOutputType::kTarget;
-    // TODO(apaymyshev): should fail if target output would be dust.
-    target_output.amount = transaction_.amount();
-    target_output.address = transaction_.to();
-    target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-        target_output.address, IsTestnet());
-    if (target_output.script_pubkey.empty()) {
-      SetError("Invalid send address");
-      ScheduleWorkOnTask();
-      return;
-    }
-    transaction_.AddOutput(std::move(target_output));
-
-    BitcoinTransaction::TxOutput change_output;
-    change_output.type = BitcoinTransaction::TxOutputType::kChange;
-    change_output.amount = 0;
-    change_output.address = change_address_->address_string;
-    change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-        change_output.address, IsTestnet());
-    CHECK(change_output.script_pubkey.size());
-    transaction_.AddOutput(std::move(change_output));
+  BitcoinTransaction::TxOutput target_output;
+  target_output.type = BitcoinTransaction::TxOutputType::kTarget;
+  // TODO(apaymyshev): should fail if target output would be dust.
+  target_output.amount = transaction_.amount();
+  target_output.address = transaction_.to();
+  target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      target_output.address, IsTestnet());
+  if (target_output.script_pubkey.empty()) {
+    SetError("Invalid send address");
+    ScheduleWorkOnTask();
+    return;
   }
+  transaction_.AddOutput(std::move(target_output));
+
+  BitcoinTransaction::TxOutput change_output;
+  change_output.type = BitcoinTransaction::TxOutputType::kChange;
+  change_output.amount = 0;
+  change_output.address = change_address_->address_string;
+  change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      change_output.address, IsTestnet());
+  CHECK(change_output.script_pubkey.size());
+  transaction_.AddOutput(std::move(change_output));
 
   // TODO(apaymyshev): consider moving this calulation to separate thread.
   KnapsackSolver solver(transaction_.Clone(), GetFeeRate(),
@@ -538,14 +536,9 @@ double CreateTransactionTask::GetFeeRate() {
 
 double CreateTransactionTask::GetLongtermFeeRate() {
   DCHECK(!estimates_.empty());
-  double result;
-  if (estimates_.empty()) {
-    result = IsTestnet() ? kFallbackTestnetFeeRate : kFallbackMainnetFeeRate;
-  } else {
-    result = estimates_.begin()->second;
-    for (auto& e : estimates_) {
-      result = std::min(result, e.second);
-    }
+  double result = estimates_.begin()->second;
+  for (auto& e : estimates_) {
+    result = std::min(result, e.second);
   }
   return std::max(result, kDustRelayFeeRate);
 }

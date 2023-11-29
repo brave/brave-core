@@ -33,7 +33,7 @@ KnapsackSolver::~KnapsackSolver() = default;
 
 // static
 uint64_t KnapsackSolver::ApplyFeeRate(double fee_rate, uint32_t vbytes) {
-  // Bitcoin core does ceililng here.
+  // Bitcoin core does ceiling here.
   // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/feerate.cpp#L29
   return static_cast<uint64_t>(std::ceil(fee_rate * vbytes));
 }
@@ -77,7 +77,7 @@ void KnapsackSolver::SolveForTransaction(
     // them. If we have a valid transaction discard last group and continue
     // trying to make valid transactions with smaller groups.
     // Second pass(if no valid transactions from 1st pass): Forcedly pick
-    // yet not picked groups(strarting from largest).
+    // yet not picked groups(starting from largest).
     for (int pass = 0; pass < 2; ++pass) {
       if (has_valid_transaction_for_iteration) {
         DCHECK_EQ(pass, 1);
@@ -98,14 +98,14 @@ void KnapsackSolver::SolveForTransaction(
         BitcoinTransaction next_transaction = cur_transaction.Clone();
         next_transaction.AddInputs(input_groups_[group_index].inputs());
 
-        // Minimum fee required needed for this transaction to be accepted.
+        // Minimum fee required for this transaction to be accepted.
         // Depends on transaction's size and current fee rate.
         uint64_t min_fee = ApplyFeeRate(
             fee_rate_,
             BitcoinSerializer::CalcTransactionVBytes(next_transaction, true));
 
         // Move everything except `min_fee` to change output(if any). Throw away
-        // possible transaction if resulting change amount is LT than dust
+        // possible transaction if resulting change amount is less than dust
         // threshold.
         if (auto change_amount =
                 next_transaction.MoveSurplusFeeToChangeOutput(min_fee)) {
@@ -147,13 +147,13 @@ base::expected<BitcoinTransaction, std::string> KnapsackSolver::Solve() {
 
   std::multimap<uint64_t, BitcoinTransaction> solutions;
 
-  // Try to find best transaction with change output which receives fee
+  // Try to find the best transaction with a change output which receives a fee
   // surplus.
   SolveForTransaction(base_transaction_, solutions);
 
-  // Drop change output from transaction and try to find best transaction
-  // again. Might find transaction with a bit higher fee but still less than
-  // cost of haiving change output.
+  // Drop the change output from the transaction and try to find the best
+  // transaction again. Might find a transaction with a slightly higher fee but
+  // still less than the cost of having a change output.
   auto no_change_transaction = base_transaction_.Clone();
   no_change_transaction.ClearChangeOutput();
   SolveForTransaction(no_change_transaction, solutions);
