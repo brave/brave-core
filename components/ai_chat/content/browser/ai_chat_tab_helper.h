@@ -67,6 +67,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                           callback) const override;
   bool HasPrimaryMainFrame() const override;
   bool IsDocumentOnLoadCompletedInPrimaryMainFrame() const override;
+  std::u16string GetPageTitle() const override;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 

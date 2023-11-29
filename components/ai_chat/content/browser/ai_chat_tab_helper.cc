@@ -141,6 +141,10 @@ bool AIChatTabHelper::IsDocumentOnLoadCompletedInPrimaryMainFrame() const {
   return web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
 }
 
+std::u16string AIChatTabHelper::GetPageTitle() const {
+  return web_contents()->GetTitle();
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
 
 }  // namespace ai_chat
