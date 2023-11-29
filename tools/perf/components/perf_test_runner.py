@@ -110,15 +110,16 @@ class RunableConfiguration:
 
     REBASE_TIMEOUT = 120
 
-    result = self.RunSingleTest(rebase_runner_config, rebase_benchmark, None,
-                                True, REBASE_TIMEOUT)
+    rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
+    result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
+                                rebase_out_dir, True, REBASE_TIMEOUT)
     self.status_line += f'Rebase {(time.time() - start_time):.2f}s '
     return result
 
   def RunSingleTest(self,
                     config: RunnerConfig,
                     benchmark_config: BenchmarkConfig,
-                    out_dir: Optional[str],
+                    out_dir: str,
                     local_run: bool,
                     timeout: Optional[int] = None) -> bool:
     assert self.binary
@@ -130,15 +131,11 @@ class RunableConfiguration:
     args.append(benchmark_name)
 
     if local_run:
-      if out_dir:
-        assert config.label is not None
-        args.append('--results-label=' + config.label)
-        args.append(f'--output-dir={out_dir}')
-      else:
-        args.append('--output-format=none')
+      assert config.label is not None
+      args.append('--results-label=' + config.label)
+      args.append(f'--output-dir={out_dir}')
 
     else:
-      assert out_dir
       # .reference suffix for benchmark folder is used in
       # process_perf_results.py to report the data as reference.
       suffix = '.reference' if config.browser_type.report_as_reference else ''
