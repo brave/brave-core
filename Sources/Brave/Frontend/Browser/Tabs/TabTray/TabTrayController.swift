@@ -13,6 +13,7 @@ import Data
 import SnapKit
 import BraveUI
 import LocalAuthentication
+import BraveShared
 
 protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
