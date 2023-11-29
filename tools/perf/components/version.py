@@ -1,14 +1,13 @@
 # Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# you can obtain one at https://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import logging
 import re
 import subprocess
 import json
 
-from functools import cached_property
 from typing import List, Optional
 
 import components.path_util as path_util
@@ -16,10 +15,28 @@ import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
 
 
+class ChromiumVersion:
+  _version: List[int]
+
+  def __init__(self, v: str) -> None:
+    super().__init__()
+    assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
+    self._version = list(map(int, v.split('.')))
+
+  def to_string(self) -> str:
+    return '.'.join(map(str, self._version))
+
+  def major(self) -> int:
+    return self._version[0]
+
+
 class BraveVersion:
   _is_tag: bool
   _git_hash: str
   _last_tag: str
+  _revision_number: str
+  _commit_date: str
+  _chromium_version: ChromiumVersion
 
   def __init__(self, version_str: str) -> None:
     m = re.match(r'v\d+\.\d+\.\d+', version_str)
@@ -38,16 +55,17 @@ class BraveVersion:
         raise RuntimeError(f'Bad git revision {revision}')
     self._git_hash = git_hash
 
+    package_json = json.loads(_GetFileAtRevision('package.json', self.git_hash))
+
     if self.is_tag:
       self._last_tag = version_str
     else:
-      package_json = json.loads(
-          _GetFileAtRevision('package.json', self.git_hash))
       self._last_tag = 'v' + package_json['version']
 
-    self.revision_number
-    self.commit_date
-    self.to_chromium_version
+    self._revision_number = _GetRevisionNumber(self.git_hash)
+    self._commit_date = _GetCommitDate(self.git_hash)
+    self._chromium_version = ChromiumVersion(
+        package_json['config']['projects']['chrome']['tag'])
 
   @property
   def last_tag(self) -> str:
@@ -66,50 +84,33 @@ class BraveVersion:
   def git_hash(self) -> str:
     return self._git_hash
 
-  @cached_property
+  @property
   def revision_number(self) -> str:
-    return _GetRevisionNumber(self.git_hash)
+    return self._revision_number
 
-  @cached_property
+  @property
   def commit_date(self) -> str:
-    return _GetCommitDate(self.git_hash)
+    return self._commit_date
 
-  @cached_property
-  def to_chromium_version(self) -> 'ChromiumVersion':
-    package_json = json.loads(_GetFileAtRevision('package.json', self.git_hash))
-    return ChromiumVersion(package_json['config']['projects']['chrome']['tag'])
+  @property
+  def chromium_version(self) -> ChromiumVersion:
+    return self._chromium_version
 
   # Returns a version like 108.1.48.1
-  @cached_property
-  def to_combined_version(self) -> str:
-    chromium_version = self.to_chromium_version
-    return f'{chromium_version.major()}.{self.last_tag[1:]}'
-
-
-class ChromiumVersion:
-  _version: List[int]
-
-  def __init__(self, v: str) -> None:
-    super().__init__()
-    assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
-    self._version = list(map(int, v.split('.')))
-
-  def to_string(self) -> str:
-    return '.'.join(map(str, self._version))
-
-  def major(self) -> int:
-    return self._version[0]
+  def combined_version(self) -> str:
+    return f'{self._chromium_version.major()}.{self.last_tag[1:]}'
 
 
 def _FetchRevision(revision: str):
   args = ['git', 'fetch', 'origin', revision]
-  logging.debug('Try to fetch %s' % revision)
+  logging.debug('Try to fetch %s', revision)
   GetProcessOutput(args, cwd=path_util.GetBraveDir())
 
 
 def _GetFileAtRevision(filepath: str, revision: str) -> str:
   return subprocess.check_output(['git', 'show', f'{revision}:{filepath}'],
-                                 cwd=path_util.GetBraveDir())
+                                 cwd=path_util.GetBraveDir(),
+                                 universal_newlines=True)
 
 
 def _GetCommitDate(revision: str) -> str:

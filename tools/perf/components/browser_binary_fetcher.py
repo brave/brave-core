@@ -14,8 +14,7 @@ from components.browser_type import BrowserType
 from components.common_options import CommonOptions
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
-from components.perf_test_utils import (DownloadArchiveAndUnpack,
-                                        GetProcessOutput)
+from components.perf_test_utils import GetProcessOutput
 from components.version import BraveVersion
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
@@ -103,9 +102,8 @@ def _InstallApk(apk_path: str, browser_type: BrowserType,
   if browser_type.name.startswith('brave') and version is not None:
     installed_version = 'v' + _GetPackageVersion(package)
     if installed_version != version.last_tag:
-      raise RuntimeError(
-          f'Version mismatch: expected {version.to_string()}, installed {version}'
-      )
+      raise RuntimeError('Version mismatch: expected ' +
+                         f'{version.to_string()}, installed {version}')
 
   return package
 
