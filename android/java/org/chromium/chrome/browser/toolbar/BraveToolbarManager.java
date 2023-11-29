@@ -101,7 +101,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
-    private TabCountProvider mTabCountProvider;
     private TabGroupUi mTabGroupUi;
     private BottomSheetController mBottomSheetController;
     private ActivityLifecycleDispatcher mActivityLifecycleDispatcher;
@@ -282,7 +281,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             tabSwitcherClickHandler,
                             wrappedNewTabClickHandler,
                             mWindowAndroid,
-                            mTabCountProvider,
+                            mTabModelSelector,
                             mIncognitoStateProvider,
                             mActivity.findViewById(R.id.control_container),
                             closeAllTabsAction);

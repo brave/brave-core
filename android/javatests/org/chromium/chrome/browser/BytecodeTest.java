@@ -1144,8 +1144,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabModelSelector"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mIncognitoStateProvider"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCountProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
         Assert.assertTrue(fieldExists(
