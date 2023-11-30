@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_DATA_FILES_INSTALLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -17,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer_delegate.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/update_client/update_client.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class FilePath;
@@ -27,7 +27,7 @@ class PrefService;
 
 namespace brave_wallet {
 
-absl::optional<base::Version> GetLastInstalledWalletVersion();
+std::optional<base::Version> GetLastInstalledWalletVersion();
 void SetLastInstalledWalletVersionForTest(const base::Version& version);
 
 class WalletDataFilesInstaller

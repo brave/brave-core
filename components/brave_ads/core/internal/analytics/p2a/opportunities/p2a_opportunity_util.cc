@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -26,7 +27,7 @@ std::string NormalizeSegment(const std::string& segment) {
   return normalized_segment;
 }
 
-absl::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
+std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
     AdType ad_type,
     const std::string& segment) {
   CHECK_NE(AdType::kUndefined, ad_type);
@@ -35,7 +36,7 @@ absl::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
   const std::string parent_segment = GetParentSegment(segment);
   const std::string normalized_segment = NormalizeSegment(parent_segment);
   if (normalized_segment.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return base::ReplaceStringPlaceholders(
@@ -60,7 +61,7 @@ std::vector<std::string> BuildP2AAdOpportunityEvents(
   std::vector<std::string> events;
 
   for (const auto& segment : segments) {
-    if (const absl::optional<std::string> ad_opportunities_per_segment_event =
+    if (const std::optional<std::string> ad_opportunities_per_segment_event =
             BuildAdOpportunitiesPerSegmentEvent(ad_type, segment)) {
       events.push_back(*ad_opportunities_per_segment_event);
     }

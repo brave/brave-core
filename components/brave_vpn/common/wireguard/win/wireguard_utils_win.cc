@@ -8,6 +8,8 @@
 #include <objbase.h>
 #include <stdint.h>
 #include <wrl/client.h>
+
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -24,12 +26,11 @@
 #include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace {
-absl::optional<bool> g_wireguard_service_registered_for_testing;
+std::optional<bool> g_wireguard_service_registered_for_testing;
 }  // namespace
 
 namespace wireguard {
@@ -145,7 +146,7 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
                               brave_vpn::GetBraveVpnWireguardServiceIid(),
                               IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (FAILED(CoSetProxyBlanket(
@@ -153,7 +154,7 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
           COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
           RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
     VLOG(1) << "Unable to call CoSetProxyBlanket";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DWORD error_code = 0;
@@ -163,7 +164,7 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
           public_key_raw.Receive(), private_key_raw.Receive(), &error_code)) ||
       error_code) {
     VLOG(1) << "Unable to generate keypair";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::wstring public_key_wide;

@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_EIP2930_TRANSACTION_H_
 
 #include <array>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -37,14 +37,14 @@ class Eip2930Transaction : public EthTransaction {
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
 
-  static absl::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
-                                                       uint256_t chain_id,
-                                                       bool strict = true);
-  static absl::optional<Eip2930Transaction> FromValue(
+  static std::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
+                                                      uint256_t chain_id,
+                                                      bool strict = true);
+  static std::optional<Eip2930Transaction> FromValue(
       const base::Value::Dict& value);
 
   static base::Value::List AccessListToValue(const AccessList&);
-  static absl::optional<AccessList> ValueToAccessList(const base::Value::List&);
+  static std::optional<AccessList> ValueToAccessList(const base::Value::List&);
 
   uint256_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
@@ -74,7 +74,7 @@ class Eip2930Transaction : public EthTransaction {
   uint256_t GetDataFee() const override;
 
  protected:
-  Eip2930Transaction(absl::optional<uint256_t> nonce,
+  Eip2930Transaction(std::optional<uint256_t> nonce,
                      uint256_t gas_price,
                      uint256_t gas_limit,
                      const EthAddress& to,

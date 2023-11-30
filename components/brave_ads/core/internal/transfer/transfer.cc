@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
@@ -16,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -90,7 +91,7 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
     return FailedToTransferAd(ad);
   }
 
-  const absl::optional<TabInfo> tab =
+  const std::optional<TabInfo> tab =
       TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
     return FailedToTransferAd(ad);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -39,7 +40,7 @@ std::unique_ptr<BitcoinTxMeta> BitcoinTxStateManager::ValueToBitcoinTxMeta(
 }
 
 std::string BitcoinTxStateManager::GetTxPrefPathPrefix(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
     return base::StrCat(
         {kBitcoinPrefKey, ".",
@@ -63,7 +64,7 @@ std::unique_ptr<TxMeta> BitcoinTxStateManager::ValueToTxMeta(
   if (!tx) {
     return nullptr;
   }
-  absl::optional<BitcoinTransaction> tx_from_value =
+  std::optional<BitcoinTransaction> tx_from_value =
       BitcoinTransaction::FromValue(*tx);
   if (!tx_from_value) {
     return nullptr;

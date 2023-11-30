@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 
+#include <optional>
+
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -14,13 +16,13 @@
 
 namespace {
 
-absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
+std::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile);
   auto panel_item = service->GetDefaultPanelItem();
   if (panel_item.has_value()) {
     return SidePanelIdFromSideBarItem(panel_item.value());
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
@@ -33,8 +35,8 @@ BraveSidePanelCoordinator::~BraveSidePanelCoordinator() {
 }
 
 void BraveSidePanelCoordinator::Show(
-    absl::optional<SidePanelEntry::Id> entry_id,
-    absl::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
+    std::optional<SidePanelEntry::Id> entry_id,
+    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
   // Choose Brave's own default, and exclude items that user has removed
   // from sidebar. If none are enabled, do nothing.
   auto* profile = browser_view_->GetProfile();

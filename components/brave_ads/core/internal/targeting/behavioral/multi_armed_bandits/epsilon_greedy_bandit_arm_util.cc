@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -23,7 +24,7 @@ void ResetEpsilonGreedyBanditArms() {
 }
 
 EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms() {
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       GetProfileDictPref(prefs::kEpsilonGreedyBanditArms);
   if (!dict) {
     return {};

@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/identity/brave_web_auth_flow.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -27,7 +28,7 @@ BraveWebAuthFlow::BraveWebAuthFlow() {}
 BraveWebAuthFlow::~BraveWebAuthFlow() {}
 
 // static
-absl::optional<std::string> BraveWebAuthFlow::token_for_testing_;
+std::optional<std::string> BraveWebAuthFlow::token_for_testing_;
 // static
 void BraveWebAuthFlow::SetTokenForTesting(const std::string& token) {
   token_for_testing_ = token;

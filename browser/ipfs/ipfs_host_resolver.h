@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_HOST_RESOLVER_H_
 #define BRAVE_BROWSER_IPFS_IPFS_HOST_RESOLVER_H_
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,7 +37,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
   using HostTextResultsCallback =
       base::OnceCallback<void(const std::string& host,
-                              const absl::optional<std::string>& dnslink)>;
+                              const std::optional<std::string>& dnslink)>;
 
   virtual void Resolve(const net::HostPortPair& host,
                        const net::NetworkAnonymizationKey& anonymization_key,
@@ -44,7 +45,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
                        HostTextResultsCallback callback);
 
   std::string host() const { return resolving_host_; }
-  absl::optional<std::string> dnslink() const { return dnslink_; }
+  std::optional<std::string> dnslink() const { return dnslink_; }
   void SetNetworkContextForTesting(
       network::mojom::NetworkContext* network_context) {
     network_context_for_testing_ = network_context;
@@ -54,16 +55,16 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
   // network::mojom::ResolveHostClient implementation:
   void OnComplete(int result,
                   const net::ResolveErrorInfo& resolve_error_info,
-                  const absl::optional<net::AddressList>& resolved_addresses,
-                  const absl::optional<net::HostResolverEndpointResults>&
+                  const std::optional<net::AddressList>& resolved_addresses,
+                  const std::optional<net::HostResolverEndpointResults>&
                       endpoint_results_with_metadata) override;
   void OnTextResults(const std::vector<std::string>& text_results) override;
   network::mojom::NetworkContext* GetNetworkContext();
 
   std::string resolving_host_;
   std::string prefix_;
-  absl::optional<std::string> dnslink_;
-  absl::optional<network::mojom::NetworkContext*> network_context_for_testing_;
+  std::optional<std::string> dnslink_;
+  std::optional<network::mojom::NetworkContext*> network_context_for_testing_;
 
   raw_ptr<content::BrowserContext> browser_context_;
   HostTextResultsCallback resolved_callback_;

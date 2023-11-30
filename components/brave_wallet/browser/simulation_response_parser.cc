@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/simulation_response_parser.h"
+
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/browser/simulation_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -277,12 +279,12 @@ std::vector<mojom::BlowfishWarningPtr> ParseWarnings(
   return warnings;
 }
 
-absl::optional<std::string> ParseNullableString(const base::Value& value) {
+std::optional<std::string> ParseNullableString(const base::Value& value) {
   if (value.is_string()) {
     return value.GetString();
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
@@ -1115,16 +1117,16 @@ mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
 
 }  // namespace solana
 
-absl::optional<std::string> ParseSimulationErrorResponse(
+std::optional<std::string> ParseSimulationErrorResponse(
     const base::Value& json_value) {
   if (!json_value.is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto error_response =
       simulation_responses::HTTPError::FromValue(json_value.GetDict());
   if (!error_response) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return error_response->error;

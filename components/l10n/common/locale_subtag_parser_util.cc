@@ -5,6 +5,8 @@
 
 #include "brave/components/l10n/common/locale_subtag_parser_util.h"
 
+#include <optional>
+
 #include "absl/types/optional.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
@@ -38,8 +40,8 @@ std::string NormalizeLocale(const std::string& locale) {
   return normalized_locale;
 }
 
-absl::optional<LocaleSubtagInfo>& CachedLocaleSubtag() {
-  static base::NoDestructor<absl::optional<LocaleSubtagInfo>>
+std::optional<LocaleSubtagInfo>& CachedLocaleSubtag() {
+  static base::NoDestructor<std::optional<LocaleSubtagInfo>>
       cached_locale_subtag;
   return *cached_locale_subtag;
 }

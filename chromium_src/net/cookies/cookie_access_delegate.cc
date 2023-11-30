@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "net/cookies/cookie_access_delegate.h"
+#include <optional>
 
 #include "base/notreached.h"
-
+#include "net/cookies/cookie_access_delegate.h"
 #include "src/net/cookies/cookie_access_delegate.cc"
 
 namespace net {
@@ -19,7 +19,7 @@ bool CookieAccessDelegate::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     net::CookieSettingOverrides overrides,
-    const absl::optional<url::Origin>& top_frame_origin) const {
+    const std::optional<url::Origin>& top_frame_origin) const {
   NOTREACHED() << "Should be overridden";
   return false;
 }

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check_is_test.h"
@@ -268,8 +269,8 @@ void SidebarItemsContentsView::OnItemRemoved(int index) {
 }
 
 void SidebarItemsContentsView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
   if (old_index) {
     UpdateItemViewStateAt(*old_index, false);
   }
@@ -407,7 +408,7 @@ void SidebarItemsContentsView::ClearDragIndicator() {
   }
 }
 
-absl::optional<size_t>
+std::optional<size_t>
 SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     const gfx::Point& screen_position) {
   // Find which item view includes this |screen_position|.
@@ -441,10 +442,10 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
   }
 
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
+std::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
     views::View* source,
     const gfx::Point& position) {
   auto source_view_index = GetIndexOf(source);
@@ -463,7 +464,7 @@ absl::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
 }
 
 void SidebarItemsContentsView::DoDrawDragIndicator(
-    absl::optional<size_t> index) {
+    std::optional<size_t> index) {
   // Clear current drag indicator.
   ClearDragIndicator();
 

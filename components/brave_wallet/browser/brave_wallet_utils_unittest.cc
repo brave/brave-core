@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <set>
 #include <sstream>
 #include <string>
@@ -20,7 +23,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
@@ -35,7 +37,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 using testing::ElementsAreArray;
@@ -481,7 +482,7 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
 
   base::Value::Dict tx_receipt_value = TransactionReceiptToValue(tx_receipt);
   auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);
-  ASSERT_NE(tx_receipt_from_value, absl::nullopt);
+  ASSERT_NE(tx_receipt_from_value, std::nullopt);
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 
@@ -1279,7 +1280,7 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     }
 
     // default value
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
 
     // fallback to default
@@ -1300,8 +1301,8 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
                                 url::Origin::Create(GURL("https://a.com"))),
               default_chain_ids.at(coin_type));
-    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, absl::nullopt, "0x5566"));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, std::nullopt, "0x5566"));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
 
     EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
@@ -1321,13 +1322,13 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type,
                                    url::Origin::Create(GURL("about:blank")),
                                    mojom::kLocalhostChainId));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
 
     // now we change the default
-    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, absl::nullopt,
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, std::nullopt,
                                   new_default_chain_ids.at(coin_type)));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               new_default_chain_ids.at(coin_type));
     // should not affect per origin pref
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
@@ -1338,12 +1339,12 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     EXPECT_TRUE(SetCurrentChainId(
         &prefs, coin_type, url::Origin::Create(GURL("file:///etc/passwd")),
         default_chain_ids.at(coin_type)));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
     EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
                                   url::Origin::Create(GURL("chrome://wallet")),
                                   new_default_chain_ids.at(coin_type)));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, std::nullopt),
               new_default_chain_ids.at(coin_type));
   }
 }

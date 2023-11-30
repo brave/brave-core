@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -33,7 +34,6 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -148,7 +148,7 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
                                             /*should_retry=*/true));
   }
 
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -223,7 +223,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
                                             /*should_retry=*/true));
   }
 
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -239,7 +239,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         false));
   }
 
-  const absl::optional<cbr::PublicKey> public_key = ParsePublicKey(*dict);
+  const std::optional<cbr::PublicKey> public_key = ParsePublicKey(*dict);
   if (!public_key.has_value()) {
     return base::unexpected(std::make_tuple("Failed to parse public key",
                                             /*should_retry=*/false));
@@ -268,7 +268,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 
 void RefillConfirmationTokens::ParseAndRequireCaptcha(
     const base::Value::Dict& dict) const {
-  if (const absl::optional<std::string> captcha_id = ParseCaptchaId(dict)) {
+  if (const std::optional<std::string> captcha_id = ParseCaptchaId(dict)) {
     NotifyCaptchaRequiredToRefillConfirmationTokens(*captcha_id);
   }
 }

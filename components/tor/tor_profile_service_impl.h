@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -18,7 +19,6 @@
 #include "brave/components/tor/tor_profile_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "net/proxy_resolution/proxy_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class BrowserContext;
@@ -32,7 +32,7 @@ class ProxyConfigServiceTor;
 namespace tor {
 
 using NewTorCircuitCallback =
-    base::OnceCallback<void(const absl::optional<net::ProxyInfo>& proxy_info)>;
+    base::OnceCallback<void(const std::optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl
     : public TorProfileService,

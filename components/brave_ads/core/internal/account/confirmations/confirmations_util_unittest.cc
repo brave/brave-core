@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
@@ -46,7 +48,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(&token_generator_mock_, transaction,
                               /*user_data=*/{});
   ASSERT_TRUE(confirmation);

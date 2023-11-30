@@ -6,6 +6,7 @@
 #include "brave/components/debounce/browser/debounce_rule.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -151,7 +152,7 @@ DebounceRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain debounce configuration");
   }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     return base::unexpected("Failed to parse debounce configuration");
   }

@@ -7,6 +7,7 @@
 
 #include <cinttypes>
 #include <cstdint>
+#include <optional>
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
@@ -17,12 +18,12 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> BuildRotatingHash(
+std::optional<std::string> BuildRotatingHash(
     const TransactionInfo& transaction) {
   const std::string& device_id =
       GlobalState::GetInstance()->SysInfo().device_id;
   if (device_id.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const int64_t timestamp_rounded_down_to_nearest_hour =

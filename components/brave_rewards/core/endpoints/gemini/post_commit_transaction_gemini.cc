@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/gemini/post_commit_transaction_gemini.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -61,11 +62,11 @@ Result PostCommitTransactionGemini::ProcessResponse(
   }
 }
 
-absl::optional<std::string> PostCommitTransactionGemini::Url() const {
+std::optional<std::string> PostCommitTransactionGemini::Url() const {
   return endpoint::gemini::GetApiServerUrl("/v1/payments/pay");
 }
 
-absl::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
+std::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
     const std::string&) const {
   base::Value::Dict payload;
   payload.Set("tx_ref", transaction_->transaction_id);
@@ -75,7 +76,7 @@ absl::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
 
   std::string json;
   if (!base::JSONWriter::Write(payload, &json)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string base64;

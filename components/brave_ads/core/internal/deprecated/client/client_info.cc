@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "build/build_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -213,7 +213,7 @@ std::string ClientInfo::ToJson() const {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+  const std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {

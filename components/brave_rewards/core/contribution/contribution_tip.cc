@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -28,7 +29,7 @@ void ContributionTip::Process(const std::string& publisher_id,
                               ProcessCallback callback) {
   if (publisher_id.empty()) {
     BLOG(0, "Failed to do tip due to missing publisher key");
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -45,7 +46,7 @@ void ContributionTip::OnPublisherDataRead(
     ProcessCallback callback,
     mojom::ServerPublisherInfoPtr server_info) {
   if (!server_info || server_info->address.empty()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -79,7 +80,7 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
     std::move(callback).Run(queue_id);
   } else {
     BLOG(0, "Queue was not saved");
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
   }
 }
 

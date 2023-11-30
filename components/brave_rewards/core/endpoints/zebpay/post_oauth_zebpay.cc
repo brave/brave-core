@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/zebpay/post_oauth_zebpay.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -106,19 +107,19 @@ PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine,
 
 PostOAuthZebPay::~PostOAuthZebPay() = default;
 
-absl::optional<std::string> PostOAuthZebPay::Url() const {
+std::optional<std::string> PostOAuthZebPay::Url() const {
   return endpoint::zebpay::GetOauthServerUrl("/connect/token");
 }
 
-absl::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
+std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
     const std::string&) const {
   return endpoint::zebpay::RequestAuthorization();
 }
 
-absl::optional<std::string> PostOAuthZebPay::Content() const {
+std::optional<std::string> PostOAuthZebPay::Content() const {
   if (code_.empty()) {
     BLOG(0, "code_ is empty!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return "grant_type=authorization_code"

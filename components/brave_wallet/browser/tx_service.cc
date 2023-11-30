@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_service.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/notreached.h"
@@ -210,7 +211,7 @@ void TxService::AddUnapprovedTransaction(
     mojom::AccountIdPtr from,
     AddUnapprovedTransactionCallback callback) {
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
-                                     std::move(from), absl::nullopt,
+                                     std::move(from), std::nullopt,
                                      std::move(callback));
 }
 
@@ -218,7 +219,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
     std::move(callback).Run(
@@ -265,11 +266,11 @@ void TxService::GetTransactionInfo(mojom::CoinType coin_type,
 
 void TxService::GetAllTransactionInfo(
     mojom::CoinType coin_type,
-    const absl::optional<std::string>& chain_id,
+    const std::optional<std::string>& chain_id,
     mojom::AccountIdPtr from,
     GetAllTransactionInfoCallback callback) {
-  absl::optional<mojom::AccountIdPtr> from_opt =
-      from ? std::move(from) : absl::optional<mojom::AccountIdPtr>();
+  std::optional<mojom::AccountIdPtr> from_opt =
+      from ? std::move(from) : std::optional<mojom::AccountIdPtr>();
   std::move(callback).Run(GetTxManager(coin_type)->GetAllTransactionInfo(
       chain_id, std::move(from_opt)));
 }
@@ -284,7 +285,7 @@ uint32_t TxService::GetPendingTransactionsCountSync() {
 
   for (auto& tx_manager : tx_manager_map_) {
     auto transactions =
-        tx_manager.second->GetAllTransactionInfo(absl::nullopt, absl::nullopt);
+        tx_manager.second->GetAllTransactionInfo(std::nullopt, std::nullopt);
     counter += CalculatePendingTxCount(transactions);
   }
 

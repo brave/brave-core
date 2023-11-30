@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -45,11 +46,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 // Function to convert all numbers in JSON string to strings.
 //
 // For sample JSON response, refer to ParseJupiterQuote.
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json =
       std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;

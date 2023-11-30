@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_REQUESTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_REQUESTS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -20,7 +20,7 @@ std::string getBalance(const std::string& pubkey);
 std::string getTokenAccountBalance(const std::string& pubkey);
 std::string sendTransaction(
     const std::string& signed_tx,
-    absl::optional<SolanaTransaction::SendOptions> options);
+    std::optional<SolanaTransaction::SendOptions> options);
 std::string getLatestBlockhash();
 std::string getSignatureStatuses(const std::vector<std::string>& tx_signatures);
 std::string getAccountInfo(const std::string& pubkey);
@@ -29,7 +29,7 @@ std::string getBlockHeight();
 std::string getTokenAccountsByOwner(const std::string& pubkey,
                                     const std::string& encoding);
 std::string isBlockhashValid(const std::string& blockhash,
-                             const absl::optional<std::string>& commitment);
+                             const std::optional<std::string>& commitment);
 
 }  // namespace solana
 

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
@@ -26,7 +28,7 @@ TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
   ConversionQueueItemInfo expected_conversion_queue_item;

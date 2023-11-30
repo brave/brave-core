@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 
+#include <optional>
+
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -71,12 +73,12 @@ void ResourceComponent::RegisterComponentForLanguageCode(
       language_code);
 }
 
-absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
-                                                          const int version) {
+std::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
+                                                         const int version) {
   const std::string index = GetResourceKey(id, version);
   const auto iter = resources_.find(index);
   if (iter == resources_.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto& [_, resource] = *iter;
@@ -117,7 +119,7 @@ void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const std::string& json) {
   VLOG(8) << "Manifest JSON: " << json;
 
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  const std::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
     return VLOG(1) << "Failed to parse manifest";
   }
@@ -144,13 +146,13 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& json) {
   VLOG(8) << "Resource JSON: " << json;
 
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  const std::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
     return VLOG(1) << "Failed to parse resource";
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const absl::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {
     return VLOG(1) << "Resource schema version is missing";
   }
@@ -177,7 +179,7 @@ void ResourceComponent::LoadResourceCallback(
       continue;
     }
 
-    const absl::optional<int> version = item_dict->FindInt(kResourceVersionKey);
+    const std::optional<int> version = item_dict->FindInt(kResourceVersionKey);
     if (!version) {
       VLOG(1) << *resource_id << " resource version is missing";
       continue;

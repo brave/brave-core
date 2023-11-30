@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
@@ -18,9 +20,9 @@ bool HasPaymentTokens() {
 
 }  // namespace
 
-absl::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
+std::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
   if (!HasPaymentTokens()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConfirmationStateManager::GetInstance().GetPaymentTokens().GetToken();

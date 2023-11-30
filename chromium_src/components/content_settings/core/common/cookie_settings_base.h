@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
 
+#include <optional>
+
 #include "components/content_settings/core/common/content_settings.h"
 
 namespace content_settings {
@@ -36,14 +38,14 @@ struct CookieSettingWithBraveMetadata {
   ShouldUseEphemeralStorage(                                               \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
       net::CookieSettingOverrides overrides,                               \
-      const absl::optional<url::Origin>& top_frame_origin) const;          \
+      const std::optional<url::Origin>& top_frame_origin) const;           \
   bool IsEphemeralCookieAccessAllowed(                                     \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const absl::optional<url::Origin>& top_frame_origin,                 \
+      const std::optional<url::Origin>& top_frame_origin,                  \
       net::CookieSettingOverrides overrides) const;                        \
   bool IsChromiumFullCookieAccessAllowed(                                  \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const absl::optional<url::Origin>& top_frame_origin,                 \
+      const std::optional<url::Origin>& top_frame_origin,                  \
       net::CookieSettingOverrides overrides,                               \
       CookieSettingWithMetadata* cookie_settings) const;                   \
   bool ShouldBlockThirdPartyIfSettingIsExplicit(                           \
@@ -58,7 +60,7 @@ struct CookieSettingWithBraveMetadata {
  private:                                                                  \
   bool IsCookieAccessAllowedImpl(                                          \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const absl::optional<url::Origin>& top_frame_origin,                 \
+      const std::optional<url::Origin>& top_frame_origin,                  \
       net::CookieSettingOverrides overrides,                               \
       CookieSettingWithMetadata* cookie_settings) const;                   \
                                                                            \

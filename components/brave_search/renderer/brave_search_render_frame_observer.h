@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_RENDER_FRAME_OBSERVER_H_
 
 #include <memory>
+#include <optional>
 
 #include "brave/components/brave_search/renderer/brave_search_default_js_handler.h"
 #include "content/public/renderer/render_frame.h"
@@ -31,7 +32,7 @@ class BraveSearchRenderFrameObserver : public content::RenderFrameObserver {
                               int32_t world_id) override;
   void DidStartNavigation(
       const GURL& url,
-      absl::optional<blink::WebNavigationType> navigation_type) override;
+      std::optional<blink::WebNavigationType> navigation_type) override;
 
  private:
   // RenderFrameObserver implementation.

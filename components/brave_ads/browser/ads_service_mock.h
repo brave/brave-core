@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -55,7 +56,7 @@ class AdsServiceMock : public AdsService {
                     TriggerAdEventCallback));
 
   MOCK_METHOD0(GetPrefetchedNewTabPageAdForDisplay,
-               absl::optional<NewTabPageAdInfo>());
+               std::optional<NewTabPageAdInfo>());
   MOCK_METHOD0(PrefetchNewTabPageAd, void());
   MOCK_METHOD4(TriggerNewTabPageAdEvent,
                void(const std::string&,

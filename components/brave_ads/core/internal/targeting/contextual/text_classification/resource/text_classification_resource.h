@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_RESOURCE_TEXT_CLASSIFICATION_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_RESOURCE_TEXT_CLASSIFICATION_RESOURCE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
@@ -15,12 +16,11 @@
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 using ClassifyPageCallback =
-    base::OnceCallback<void(absl::optional<ml::PredictionMap>)>;
+    base::OnceCallback<void(std::optional<ml::PredictionMap>)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
@@ -59,11 +59,11 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  absl::optional<const base::SequenceBound<ml::pipeline::TextProcessing>>
+  std::optional<const base::SequenceBound<ml::pipeline::TextProcessing>>
       text_processing_pipeline_;
 
   bool did_load_ = false;
-  absl::optional<std::string> manifest_version_;
+  std::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<TextClassificationResource> weak_factory_{this};
 };

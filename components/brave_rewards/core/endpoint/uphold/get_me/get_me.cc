@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -44,7 +45,7 @@ mojom::Result GetMe::ParseBody(const std::string& body,
                                internal::uphold::User* user) {
   DCHECK(user);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -105,7 +106,7 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
 SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
     const std::string& json,
     const std::string& locale) {
-  absl::optional<base::Value> records_v =
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {

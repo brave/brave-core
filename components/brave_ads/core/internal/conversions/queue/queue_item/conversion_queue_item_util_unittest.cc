@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_util.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -28,7 +30,7 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now() + base::Hours(1));
@@ -46,7 +48,7 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/DistantPast()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion, /*process_at=*/DistantPast());
 
@@ -64,7 +66,7 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now() + base::Milliseconds(1));

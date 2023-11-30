@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/ranges/algorithm.h"
@@ -16,7 +17,7 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
+std::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
     const std::vector<GURL>& redirect_chain,
     const ConversionResourceIdPatternInfo& resource_id_pattern) {
   const auto iter = base::ranges::find_if(
@@ -26,7 +27,7 @@ absl::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
 
   if (iter == redirect_chain.cend()) {
     // Resource id pattern was not found in the URL redirect chain.
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string_view url_string_piece(iter->spec());
@@ -36,7 +37,7 @@ absl::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
   if (!RE2::FindAndConsume(&url_string_piece, r, &verifiable_conversion_id)) {
     BLOG(1, "Failed to parse verifiable conversion id for "
                 << resource_id_pattern.id_pattern << " resource id pattern");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return verifiable_conversion_id;

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
+#include <optional>
 #include <set>
 #include <utility>
 
@@ -41,7 +42,7 @@ class GetTransparentUtxosContext
 
   std::set<std::string> addresses;
   ZCashWalletService::UtxoMap utxos;
-  absl::optional<std::string> error;
+  std::optional<std::string> error;
   GetUtxosCallback callback;
 
   bool ShouldRespond() { return callback && (error || addresses.empty()); }
@@ -86,10 +87,10 @@ class CreateTransparentTransactionTask {
   mojom::AccountIdPtr account_id_;
   CreateTransactionCallback callback_;
 
-  absl::optional<uint32_t> chain_height_;
+  std::optional<uint32_t> chain_height_;
   ZCashWalletService::UtxoMap utxo_map_;
 
-  absl::optional<std::string> error_;
+  std::optional<std::string> error_;
   ZCashTransaction transaction_;
 
   base::WeakPtrFactory<CreateTransparentTransactionTask> weak_ptr_factory_{
@@ -292,7 +293,7 @@ ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
 
 ZCashWalletService::~ZCashWalletService() = default;
 
-absl::optional<std::string> ZCashWalletService::GetUnusedChangeAddress(
+std::optional<std::string> ZCashWalletService::GetUnusedChangeAddress(
     const mojom::AccountId& account_id) {
   CHECK(IsZCashAccount(account_id));
   // TODO(cypt4): this always returns first change address. Should return
@@ -319,7 +320,7 @@ void ZCashWalletService::GetReceiverAddress(
   }
   // TODO(cypt4): Return unused receiver address
   std::move(callback).Run(mojom::ZCashAddress::New(*str_addr, std::move(id)),
-                          absl::nullopt);
+                          std::nullopt);
 }
 
 void ZCashWalletService::GetUtxos(const std::string& chain_id,
@@ -508,7 +509,7 @@ void ZCashWalletService::OnUtxosResolvedForBalance(
     result->total_balance += balance_by_addr;
     result->balances[by_addr.first] = balance_by_addr;
   }
-  std::move(initial_callback).Run(std::move(result), absl::nullopt);
+  std::move(initial_callback).Run(std::move(result), std::nullopt);
 }
 
 void ZCashWalletService::CreateTransaction(const std::string& chain_id,

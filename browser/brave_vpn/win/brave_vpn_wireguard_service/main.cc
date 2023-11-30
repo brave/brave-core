@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <optional>
+
 #include "base/at_exit.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -27,7 +29,6 @@
 #include "components/crash/core/app/fallback_crash_handling_win.h"
 #include "components/crash/core/app/run_as_crashpad_handler_win.h"
 #include "components/grit/brave_components_strings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -37,7 +38,7 @@ const char kLogFile[] = "log-file";
 }  // namespace
 
 // List of commands executed on user level and interacting with users.
-absl::optional<int> ProcessUserLevelCommands(
+std::optional<int> ProcessUserLevelCommands(
     const base::CommandLine& command_line) {
   brave_vpn::LoadLocaleResources();
   // User level command line. In this mode creates an invisible window and sets
@@ -68,7 +69,7 @@ absl::optional<int> ProcessUserLevelCommands(
             IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED)));
     return 0;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {

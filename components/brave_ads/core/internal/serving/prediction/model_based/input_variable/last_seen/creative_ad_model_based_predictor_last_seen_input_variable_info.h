@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_INPUT_VARIABLE_LAST_SEEN_CREATIVE_AD_MODEL_BASED_PREDICTOR_LAST_SEEN_INPUT_VARIABLE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_INPUT_VARIABLE_LAST_SEEN_CREATIVE_AD_MODEL_BASED_PREDICTOR_LAST_SEEN_INPUT_VARIABLE_INFO_H_
 
+#include <optional>
+
 #include "base/time/time.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -15,7 +16,7 @@ struct CreativeAdModelBasedPredictorLastSeenInputVariableInfo final {
   bool operator==(const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&)
       const = default;
 
-  absl::optional<base::TimeDelta> value;
+  std::optional<base::TimeDelta> value;
   double weight = 1.0;
 };
 

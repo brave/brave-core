@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -101,7 +102,7 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
     std::vector<std::string> tx_params;
     std::vector<std::string> tx_args;
     auto tx_info = GetTransactionInfoFromData(data);
-    ASSERT_NE(tx_info, absl::nullopt);
+    ASSERT_NE(tx_info, std::nullopt);
     std::tie(tx_type, tx_params, tx_args) = *tx_info;
     EXPECT_EQ(expected_type, tx_type);
   }
@@ -323,7 +324,7 @@ class EthTxManagerUnitTest : public testing::Test {
     auto tx_data =
         mojom::TxData::New(nonce, gas_price, "0x0974",
                            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                           "0x016345785d8a0000", data, false, absl::nullopt);
+                           "0x016345785d8a0000", data, false, std::nullopt);
     auto tx = EthTransaction::FromTxData(tx_data, false);
     ASSERT_TRUE(tx);
 
@@ -355,7 +356,7 @@ class EthTxManagerUnitTest : public testing::Test {
     auto tx_data1559 = mojom::TxData1559::New(
         mojom::TxData::New(nonce, "", "0x0974",
                            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                           "0x016345785d8a0000", data, false, absl::nullopt),
+                           "0x016345785d8a0000", data, false, std::nullopt),
 
         "0x539", max_priority_fee_per_gas, max_fee_per_gas, nullptr);
 
@@ -393,7 +394,7 @@ class EthTxManagerUnitTest : public testing::Test {
       const std::string& chain_id,
       mojom::TxDataUnionPtr tx_data,
       const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
     eth_tx_manager()->AddUnapprovedTransaction(
         chain_id, std::move(tx_data), from, origin, std::move(callback));
@@ -437,7 +438,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 std::vector<std::string> tx_args;
 
                 auto tx_info = GetTransactionInfoFromData(data);
-                ASSERT_NE(tx_info, absl::nullopt);
+                ASSERT_NE(tx_info, std::nullopt);
                 std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
                 EXPECT_EQ(expected_type, tx_type);
@@ -478,7 +479,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   auto tx_data =
       mojom::TxData::New("0x06", gas_price, gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -505,14 +506,14 @@ TEST_F(EthTxManagerUnitTest, WalletOrigin) {
   auto tx_data =
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
   AddUnapprovedTransaction(
       mojom::kLocalhostChainId,
       mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
-      absl::nullopt,
+      std::nullopt,
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
 
@@ -529,7 +530,7 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
   auto tx_data =
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -555,7 +556,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   auto tx_data =
       mojom::TxData::New("0x06", gas_price, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -606,7 +607,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
     tx_data = mojom::TxData::New("0x06", gas_price, "" /* gas_limit */,
                                  "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                                  "0x016345785d8a0000", data_decoded, false,
-                                 absl::nullopt);
+                                 std::nullopt);
 
     SetErrorInterceptor();
     callback_called = false;
@@ -631,7 +632,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -669,7 +670,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -706,7 +707,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData::New(
       "0x06", "" /* gas_price*/, "" /* gas_limit */,
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-      std::vector<uint8_t>(), false, absl::nullopt);
+      std::vector<uint8_t>(), false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -733,7 +734,7 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   auto tx_data = mojom::TxData::New(
       "0x06", "" /* gas_price*/, "" /* gas_limit */,
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-      std::vector<uint8_t>(), false, absl::nullopt);
+      std::vector<uint8_t>(), false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -829,7 +830,7 @@ TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
   auto tx_data = mojom::TxData::New(
       "0x06", "0x11" /* gas_price*/, "0x22" /* gas_limit */,
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-      initial_data, false, absl::nullopt);
+      initial_data, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
   AddUnapprovedTransaction(
@@ -884,7 +885,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   auto tx_data = mojom::TxData::New(
       "0x06", "0x11" /* gas_price*/, "0x22" /* gas_limit */,
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-      std::vector<uint8_t>(), false, absl::nullopt);
+      std::vector<uint8_t>(), false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
   AddUnapprovedTransaction(
@@ -962,7 +963,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   tx_meta =
       eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx()->nonce(), absl::nullopt);
+  EXPECT_EQ(tx_meta->tx()->nonce(), std::nullopt);
 }
 
 TEST_F(EthTxManagerUnitTest, ValidateTxData) {
@@ -971,7 +972,7 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData) {
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
 
   // Make sure if params are specified that they are valid hex strings
@@ -979,42 +980,42 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData) {
       mojom::TxData::New("hello", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "hello", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "hello",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974", "hello",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "hello",
-                         std::vector<uint8_t>(), false, absl::nullopt),
+                         std::vector<uint8_t>(), false, std::nullopt),
       &error_message));
   // to must not only be a valid hex string but also an address
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe",  // Invalid address
-                         "hello", std::vector<uint8_t>(), false, absl::nullopt),
+                         "hello", std::vector<uint8_t>(), false, std::nullopt),
       &error_message));
 
   // To can't be missing if Data is missing
   EXPECT_FALSE(EthTxManager::ValidateTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974", "",
                          "0x016345785d8a0000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       &error_message));
 }
 
@@ -1024,7 +1025,7 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData1559) {
       mojom::TxData1559::New(
           mojom::TxData::New(
               "0x00", "", "0x00", "0x0101010101010101010101010101010101010101",
-              "0x00", std::vector<uint8_t>(), false, absl::nullopt),
+              "0x00", std::vector<uint8_t>(), false, std::nullopt),
           "0x04", "0x0", "0x1", nullptr),
       &error_message));
 
@@ -1034,7 +1035,7 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData1559) {
           mojom::TxData::New("0x00", "0x1", "0x00",
                              "0x0101010101010101010101010101010101010101",
                              "0x00", std::vector<uint8_t>(), false,
-                             absl::nullopt),
+                             std::nullopt),
 
           "0x04", "0x0", "0x1", nullptr),
       &error_message));
@@ -1044,7 +1045,7 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -1087,7 +1088,7 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -1145,7 +1146,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   auto tx_data =
       mojom::TxData::New("", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -1162,7 +1163,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   callback_called = false;
   eth_tx_manager()->GetNonceForHardwareTransaction(
       mojom::kLocalhostChainId, tx_meta_id,
-      base::BindLambdaForTesting([&](const absl::optional<std::string>& nonce) {
+      base::BindLambdaForTesting([&](const std::optional<std::string>& nonce) {
         EXPECT_TRUE(nonce);
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(
@@ -1180,7 +1181,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
       mojom::kLocalhostChainId, tx_meta_id,
       base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
         ASSERT_TRUE(message->is_message_str());
-        absl::optional<std::string> message_str = message->get_message_str();
+        std::optional<std::string> message_str = message->get_message_str();
         EXPECT_EQ(
             message_str,
             "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
@@ -1198,7 +1199,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x00", "", "0x01",
                          "0x0101010101010101010101010101010101010101", "0x00",
-                         std::vector<uint8_t>(), false, absl::nullopt),
+                         std::vector<uint8_t>(), false, std::nullopt),
       "0x04", "0x1", "0x1", nullptr);
 
   bool callback_called = false;
@@ -1217,7 +1218,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
   callback_called = false;
   eth_tx_manager()->GetNonceForHardwareTransaction(
       mojom::kLocalhostChainId, tx_meta_id,
-      base::BindLambdaForTesting([&](const absl::optional<std::string>& nonce) {
+      base::BindLambdaForTesting([&](const std::optional<std::string>& nonce) {
         EXPECT_TRUE(nonce);
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(
@@ -1235,7 +1236,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
       mojom::kLocalhostChainId, tx_meta_id,
       base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
         ASSERT_TRUE(message->is_message_str());
-        absl::optional<std::string> message_str = message->get_message_str();
+        std::optional<std::string> message_str = message->get_message_str();
         EXPECT_EQ(
             message_str,
             "0x02dd04800101019401010101010101010101010101010101010101018080c0");
@@ -1252,7 +1253,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransactionFail) {
   tx_service_->AddObserver(observer.GetReceiver());
   eth_tx_manager()->GetNonceForHardwareTransaction(
       mojom::kLocalhostChainId, std::string(),
-      base::BindLambdaForTesting([&](const absl::optional<std::string>& nonce) {
+      base::BindLambdaForTesting([&](const std::optional<std::string>& nonce) {
         EXPECT_FALSE(nonce);
         callback_called = true;
       }));
@@ -1277,7 +1278,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithGasFeeAndLimit) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   bool callback_called = false;
@@ -1307,7 +1308,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   bool callback_called = false;
@@ -1338,7 +1339,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1371,7 +1372,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1433,7 +1434,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1508,7 +1509,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1566,7 +1567,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "0x9604",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1584,7 +1585,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New(
           "0x1", "", "", "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-          "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt),
+          "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1620,7 +1621,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New(
           "0x1", "", gas_limit, "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-          "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt),
+          "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   bool callback_called = false;
@@ -1651,7 +1652,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New(
           "0x1", "", "", "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-          "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt),
+          "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
   bool callback_called = false;
   std::string tx_meta_id;
@@ -1682,7 +1683,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New(
           "0x1", "", gas_limit, "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-          "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt),
+          "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -1716,7 +1717,7 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x04", "", "", nullptr);
   bool callback_called = false;
   std::string tx_meta_id;
@@ -1837,7 +1838,7 @@ TEST_F(EthTxManagerUnitTest,
   auto tx_data =
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -1877,7 +1878,7 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_status(mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
-  eth_tx_manager()->UpdatePendingTransactions(absl::nullopt);
+  eth_tx_manager()->UpdatePendingTransactions(std::nullopt);
 
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
@@ -2176,7 +2177,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   auto tx_data =
       mojom::TxData::New("0x07", "0x17fcf18322", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
+                         "0x016345785d8a0000", data_, false, std::nullopt);
   auto tx = EthTransaction::FromTxData(tx_data, false);
   ASSERT_TRUE(tx);
 
@@ -2206,7 +2207,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   auto tx_data1559 = mojom::TxData1559::New(
       mojom::TxData::New("0x08", "", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
+                         "0x016345785d8a0000", data_, false, std::nullopt),
       "0x539", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   auto tx1559 = Eip1559Transaction::FromTxData(tx_data1559, false);
@@ -2383,7 +2384,7 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   meta.set_status(mojom::TransactionStatus::Unapproved);
   auto tx_data = mojom::TxData::New(
       "0x1", "0x1", "0x0974", "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-      "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt);
+      "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt);
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
@@ -2402,7 +2403,7 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   base::RunLoop run_loop;
   static_cast<TxStorageDelegateImpl*>(tx_service_->GetDelegateForTesting())
       ->store_->Get("transactions", base::BindLambdaForTesting(
-                                        [&](absl::optional<base::Value> value) {
+                                        [&](std::optional<base::Value> value) {
                                           EXPECT_FALSE(value);
                                           run_loop.Quit();
                                         }));

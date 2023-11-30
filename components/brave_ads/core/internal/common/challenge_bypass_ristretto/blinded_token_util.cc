@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
@@ -18,7 +19,7 @@ std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
       return {};
     }
 
-    const absl::optional<BlindedToken> blinded_token = token.Blind();
+    const std::optional<BlindedToken> blinded_token = token.Blind();
     if (!blinded_token) {
       return {};
     }

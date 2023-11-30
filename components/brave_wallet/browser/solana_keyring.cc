@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
@@ -75,23 +76,23 @@ std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 // Create a valid program derived address without searching for a bump seed.
 // https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.create_program_address
 // static
-absl::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
+std::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
     const std::vector<std::vector<uint8_t>>& seeds,
     const std::string& program_id) {
   const std::string pda_marker = "ProgramDerivedAddress";
 
   std::vector<uint8_t> program_id_bytes;
   if (!Base58Decode(program_id, &program_id_bytes, kSolanaPubkeySize)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (seeds.size() > kMaxSeeds) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& seed : seeds) {
     if (seed.size() > kMaxSeedLen) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -109,7 +110,7 @@ absl::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
   // Invalid because program derived addresses have to be off-curve.
   if (bytes_are_curve25519_point(
           rust::Slice<const uint8_t>{hash_vec.data(), hash_vec.size()})) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return Base58Encode(hash_vec);
@@ -118,7 +119,7 @@ absl::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
 // Find a valid program derived address and its corresponding bump seed.
 // https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.find_program_address
 // static
-absl::optional<std::string> SolanaKeyring::FindProgramDerivedAddress(
+std::optional<std::string> SolanaKeyring::FindProgramDerivedAddress(
     const std::vector<std::vector<uint8_t>>& seeds,
     const std::string& program_id,
     uint8_t* ret_bump_seed) {
@@ -140,14 +141,14 @@ absl::optional<std::string> SolanaKeyring::FindProgramDerivedAddress(
     --bump_seed[0];
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 // Derives the associated token account address for the given wallet address and
 // token mint.
 // https://docs.rs/spl-associated-token-account/1.0.3/spl_associated_token_account/fn.get_associated_token_address.html
 // static
-absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
+std::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
     const std::string& spl_token_mint_address,
     const std::string& wallet_address) {
   std::vector<std::vector<uint8_t>> seeds;
@@ -160,7 +161,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
                     kSolanaPubkeySize) ||
       !Base58Decode(spl_token_mint_address, &spl_token_mint_address_bytes,
                     kSolanaPubkeySize)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   seeds.push_back(std::move(wallet_address_bytes));
@@ -175,7 +176,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
 // Derive metadata account using metadata seed constant, token metadata program
 // id, and the mint address as the seeds.
 // https://docs.metaplex.com/programs/token-metadata/accounts#metadata
-absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
+std::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
     const std::string& token_mint_address) {
   std::vector<std::vector<uint8_t>> seeds;
   const std::string metadata_seed_constant = "metadata";
@@ -188,7 +189,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
                     kSolanaPubkeySize) ||
       !Base58Decode(token_mint_address, &token_mint_address_bytes,
                     kSolanaPubkeySize)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   seeds.push_back(std::move(metaplex_seed_constant_bytes));

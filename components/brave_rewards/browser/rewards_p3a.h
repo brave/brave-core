@@ -6,12 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -89,7 +90,7 @@ class ConversionMonitor {
   base::OneShotTimer mobile_trigger_timer_;
   base::WallClockTimer daily_timer_;
 #else
-  absl::optional<PanelTrigger> last_trigger_;
+  std::optional<PanelTrigger> last_trigger_;
   base::Time last_trigger_time_;
 #endif
 };

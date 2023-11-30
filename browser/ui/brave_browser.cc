@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/browser/brave_browser_features.h"
@@ -90,7 +91,7 @@ void BraveBrowser::TabStripEmpty() {
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
-                                true, absl::nullopt));
+                                true, std::nullopt));
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(

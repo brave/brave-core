@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -150,12 +151,12 @@ void AddFederatedLearningPredictorTrainingSample(
       std::move(training_sample));
 }
 
-absl::optional<base::Value> GetProfilePref(const std::string& path) {
+std::optional<base::Value> GetProfilePref(const std::string& path) {
   return GetInstance()->GetProfilePref(path);
 }
 
 bool GetProfileBooleanPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return false;
   }
@@ -166,7 +167,7 @@ bool GetProfileBooleanPref(const std::string& path) {
 }
 
 int GetProfileIntegerPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return 0;
   }
@@ -177,7 +178,7 @@ int GetProfileIntegerPref(const std::string& path) {
 }
 
 double GetProfileDoublePref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return 0.0;
   }
@@ -188,7 +189,7 @@ double GetProfileDoublePref(const std::string& path) {
 }
 
 std::string GetProfileStringPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return "";
   }
@@ -199,7 +200,7 @@ std::string GetProfileStringPref(const std::string& path) {
 }
 
 base::Value::Dict GetProfileDictPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -210,7 +211,7 @@ base::Value::Dict GetProfileDictPref(const std::string& path) {
 }
 
 base::Value::List GetProfileListPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -221,19 +222,19 @@ base::Value::List GetProfileListPref(const std::string& path) {
 }
 
 int64_t GetProfileInt64Pref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return 0;
   }
 
   CHECK(value->is_string()) << "Wrong type for GetProfileInt64Pref: " << path;
 
-  const absl::optional<int64_t> integer = base::ValueToInt64(*value);
+  const std::optional<int64_t> integer = base::ValueToInt64(*value);
   return integer.value_or(0);
 }
 
 uint64_t GetProfileUint64Pref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return 0;
   }
@@ -251,19 +252,19 @@ uint64_t GetProfileUint64Pref(const std::string& path) {
 }
 
 base::Time GetProfileTimePref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return {};
   }
 
   CHECK(value->is_string()) << "Wrong type for GetProfileTimePref: " << path;
 
-  const absl::optional<base::Time> time = base::ValueToTime(*value);
+  const std::optional<base::Time> time = base::ValueToTime(*value);
   return time.value_or(base::Time());
 }
 
 base::TimeDelta GetProfileTimeDeltaPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -271,7 +272,7 @@ base::TimeDelta GetProfileTimeDeltaPref(const std::string& path) {
   CHECK(value->is_string())
       << "Wrong type for GetProfileTimedDeltaPref: " << path;
 
-  const absl::optional<base::TimeDelta> time_delta =
+  const std::optional<base::TimeDelta> time_delta =
       base::ValueToTimeDelta(*value);
   return time_delta.value_or(base::TimeDelta());
 }
@@ -328,12 +329,12 @@ bool HasProfilePrefPath(const std::string& path) {
   return GetInstance()->HasProfilePrefPath(path);
 }
 
-absl::optional<base::Value> GetLocalStatePref(const std::string& path) {
+std::optional<base::Value> GetLocalStatePref(const std::string& path) {
   return GetInstance()->GetLocalStatePref(path);
 }
 
 bool GetLocalStateBooleanPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return false;
   }
@@ -344,7 +345,7 @@ bool GetLocalStateBooleanPref(const std::string& path) {
 }
 
 int GetLocalStateIntegerPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
@@ -355,7 +356,7 @@ int GetLocalStateIntegerPref(const std::string& path) {
 }
 
 double GetLocalStateDoublePref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return 0.0;
   }
@@ -366,7 +367,7 @@ double GetLocalStateDoublePref(const std::string& path) {
 }
 
 std::string GetLocalStateStringPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return "";
   }
@@ -377,7 +378,7 @@ std::string GetLocalStateStringPref(const std::string& path) {
 }
 
 base::Value::Dict GetLocalStateDictPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -388,7 +389,7 @@ base::Value::Dict GetLocalStateDictPref(const std::string& path) {
 }
 
 base::Value::List GetLocalStateListPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -399,19 +400,19 @@ base::Value::List GetLocalStateListPref(const std::string& path) {
 }
 
 int64_t GetLocalStateInt64Pref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
 
   CHECK(value->is_string()) << "Wrong type for GetProfileBooleanPref: " << path;
 
-  const absl::optional<int64_t> integer = base::ValueToInt64(*value);
+  const std::optional<int64_t> integer = base::ValueToInt64(*value);
   return integer.value_or(0);
 }
 
 uint64_t GetLocalStateUint64Pref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
@@ -429,19 +430,19 @@ uint64_t GetLocalStateUint64Pref(const std::string& path) {
 }
 
 base::Time GetLocalStateTimePref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return {};
   }
 
   CHECK(value->is_string()) << "Wrong type for GetLocalStateTimePref: " << path;
 
-  const absl::optional<base::Time> time = base::ValueToTime(*value);
+  const std::optional<base::Time> time = base::ValueToTime(*value);
   return time.value_or(base::Time());
 }
 
 base::TimeDelta GetLocalStateTimeDeltaPref(const std::string& path) {
-  const absl::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value = GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -449,7 +450,7 @@ base::TimeDelta GetLocalStateTimeDeltaPref(const std::string& path) {
   CHECK(value->is_string())
       << "Wrong type for GetLocalStateTimedDeltaPref: " << path;
 
-  const absl::optional<base::TimeDelta> time_delta =
+  const std::optional<base::TimeDelta> time_delta =
       base::ValueToTimeDelta(*value);
   return time_delta.value_or(base::TimeDelta());
 }

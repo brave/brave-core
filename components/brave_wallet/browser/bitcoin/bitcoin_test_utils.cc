@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 
 #include <map>
+#include <optional>
 #include <string>
 
 #include "base/strings/string_split.h"
@@ -23,7 +24,7 @@ namespace brave_wallet {
 
 namespace {
 
-absl::optional<std::string> IsAddressStatsRequest(
+std::optional<std::string> IsAddressStatsRequest(
     const network::ResourceRequest& request) {
   auto parts =
       base::SplitStringPiece(request.url.path_piece(), "/",
@@ -32,10 +33,10 @@ absl::optional<std::string> IsAddressStatsRequest(
     return std::string(parts[1]);
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::string> IsAddressUtxoRequest(
+std::optional<std::string> IsAddressUtxoRequest(
     const network::ResourceRequest& request) {
   auto parts =
       base::SplitStringPiece(request.url.path_piece(), "/",
@@ -44,7 +45,7 @@ absl::optional<std::string> IsAddressUtxoRequest(
     return std::string(parts[1]);
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace

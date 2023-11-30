@@ -5,6 +5,7 @@
 
 #include "brave/net/http/partitioned_host_state_map.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/ranges/algorithm.h"
@@ -26,11 +27,11 @@ namespace net {
 PartitionedHostStateMapBase::PartitionedHostStateMapBase() = default;
 PartitionedHostStateMapBase::~PartitionedHostStateMapBase() = default;
 
-base::AutoReset<absl::optional<PartitionedHostStateMapBase::HashedHost>>
+base::AutoReset<std::optional<PartitionedHostStateMapBase::HashedHost>>
 PartitionedHostStateMapBase::SetScopedPartitionHash(
-    absl::optional<HashedHost> partition_hash) {
-  return base::AutoReset<absl::optional<HashedHost>>(&partition_hash_,
-                                                     std::move(partition_hash));
+    std::optional<HashedHost> partition_hash) {
+  return base::AutoReset<std::optional<HashedHost>>(&partition_hash_,
+                                                    std::move(partition_hash));
 }
 
 bool PartitionedHostStateMapBase::HasPartitionHash() const {

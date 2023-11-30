@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -105,7 +106,7 @@ class AdsClientMock : public AdsClient {
               (const std::vector<brave_federated::mojom::CovariateInfoPtr>
                    training_sample));
 
-  MOCK_METHOD(absl::optional<base::Value>,
+  MOCK_METHOD(std::optional<base::Value>,
               GetProfilePref,
               (const std::string& path));
   MOCK_METHOD(void,
@@ -114,7 +115,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ClearProfilePref, (const std::string& path));
   MOCK_METHOD(bool, HasProfilePrefPath, (const std::string& path), (const));
 
-  MOCK_METHOD(absl::optional<base::Value>,
+  MOCK_METHOD(std::optional<base::Value>,
               GetLocalStatePref,
               (const std::string& path));
   MOCK_METHOD(void,

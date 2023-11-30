@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
@@ -22,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -133,7 +133,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -176,7 +176,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -216,7 +216,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -258,7 +258,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -299,7 +299,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -342,7 +342,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -383,7 +383,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -426,7 +426,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -451,7 +451,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -472,7 +472,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -498,7 +498,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -520,7 +520,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreEnabled) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -554,12 +554,12 @@ TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad_1, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad_2, ConfirmationType::kClicked,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -581,7 +581,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -673,7 +673,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad_1, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 
@@ -724,7 +724,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -769,7 +769,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml);
@@ -797,7 +797,7 @@ TEST_F(
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(
       /*redirect_chain=*/{GURL("https://grault.com/garply"),
@@ -826,7 +826,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux=quux")}, kHtml);
@@ -880,7 +880,7 @@ TEST_F(BraveAdsConversionsTest,
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml);
@@ -935,7 +935,7 @@ TEST_F(
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at=*/Now()),
-                                  /*verifiable_conversion=*/absl::nullopt)));
+                                  /*verifiable_conversion=*/std::nullopt)));
 
   MaybeConvert(/*redirect_chain=*/{GURL("https://qux.com/quux/corge")}, kHtml);
 }

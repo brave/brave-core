@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 extern "C" {
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/lib.h"

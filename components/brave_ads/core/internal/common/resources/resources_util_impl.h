@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
 
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util.h"
-
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -17,7 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resources_util.h"
 
 namespace base {
 class File;
@@ -32,7 +31,7 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     return base::ok(T{});
   }
 
-  absl::optional<base::Value::Dict> dict;
+  std::optional<base::Value::Dict> dict;
   {
     // `content` can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.

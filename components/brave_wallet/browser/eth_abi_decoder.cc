@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <map>
+#include <optional>
 #include <tuple>
 
 #include "base/strings/strcat.h"
@@ -39,10 +40,10 @@ namespace brave_wallet {
 namespace {
 // GetArgFromData extracts a 32-byte wide hex string from the calldata at the
 // specified offset. The parsed value is NOT prefixed by "0x".
-absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
-                                           size_t offset) {
+std::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
+                                          size_t offset) {
   if (offset > input.size() || input.size() - offset < 32) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return HexEncodeLower(input.data() + offset, 32);
@@ -57,11 +58,10 @@ absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
 // https://ethereum-magicians.org/t/increasing-address-size-from-20-to-32-bytes
 //
 // The parsed address value is prefixed by "0x".
-absl::optional<std::string> GetAddressFromData(
-    const std::vector<uint8_t>& input,
-    size_t offset) {
+std::optional<std::string> GetAddressFromData(const std::vector<uint8_t>& input,
+                                              size_t offset) {
   if (offset > input.size() || input.size() - offset < 32) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return "0x" + HexEncodeLower(input.data() + offset + 12, 20);
@@ -73,24 +73,24 @@ absl::optional<std::string> GetAddressFromData(
 // Using this function to extract an integer outside the range of M is
 // considered an error.
 template <typename M>
-absl::optional<M> GetUintFromData(const std::vector<uint8_t>& input,
-                                  size_t offset) {
+std::optional<M> GetUintFromData(const std::vector<uint8_t>& input,
+                                 size_t offset) {
   static_assert(std::is_integral<M>::value, "M must be an integer type");
 
   auto arg = GetArgFromData(input, offset);
   if (!arg) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   uint256_t value;
   if (!HexValueToUint256("0x" + *arg, &value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // To prevent runtime errors, we make sure the value is within safe
   // limits of M.
   if (value > std::numeric_limits<M>::max()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return static_cast<M>(value);
@@ -99,12 +99,11 @@ absl::optional<M> GetUintFromData(const std::vector<uint8_t>& input,
 // GetUintHexFromData encodes the return value of GetUintFromData as a compact
 // hex string (without leading 0s), and prefixed by "0x".
 template <typename M>
-absl::optional<std::string> GetUintHexFromData(
-    const std::vector<uint8_t>& input,
-    size_t offset) {
+std::optional<std::string> GetUintHexFromData(const std::vector<uint8_t>& input,
+                                              size_t offset) {
   auto value = GetUintFromData<M>(input, offset);
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return Uint256ValueToHex(*value);
@@ -114,11 +113,11 @@ absl::optional<std::string> GetUintHexFromData(
 // calldata at the specified offset.
 //
 // The parsed bool value is serialized as "true" or "false" strings.
-absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
-                                            size_t offset) {
+std::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
+                                           size_t offset) {
   auto value = GetUintFromData<uint8_t>(input, offset);
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (value == static_cast<uint8_t>(0)) {
@@ -127,7 +126,7 @@ absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
     return "true";
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 // GetBytesHexFromData extracts a bytes value from the calldata at the
@@ -136,21 +135,21 @@ absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
 // followed by the actual content.
 //
 // The parsed bytearray is serialized as a hex string prefixed by "0x".
-absl::optional<std::string> GetBytesHexFromData(
+std::optional<std::string> GetBytesHexFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
   auto pointer = GetUintFromData<size_t>(input, offset);
   if (!pointer) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto bytes_len = GetUintFromData<size_t>(input, *pointer);
   if (!bytes_len) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (input.size() < static_cast<uint256_t>(*pointer) + 32 + *bytes_len) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return "0x" + HexEncodeLower(input.data() + *pointer + 32, *bytes_len);
 }
@@ -161,17 +160,17 @@ absl::optional<std::string> GetBytesHexFromData(
 // representing the number of elements in the array, followed by each element.
 //
 // The parsed data is joined together into a hex string prefixed by "0x".
-absl::optional<std::string> GetAddressArrayFromData(
+std::optional<std::string> GetAddressArrayFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
   auto pointer = GetUintFromData<size_t>(input, offset);
   if (!pointer) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto array_len = GetUintFromData<size_t>(input, *pointer);
   if (!array_len) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   size_t array_offset = *pointer + 32;
@@ -179,7 +178,7 @@ absl::optional<std::string> GetAddressArrayFromData(
   for (size_t i = 0; i < *array_len; i++) {
     auto value = GetAddressFromData(input, array_offset);
     if (!value) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     base::StrAppend(&arg, {value->substr(2)});
     array_offset += 32;
@@ -204,11 +203,11 @@ absl::optional<std::string> GetAddressArrayFromData(
 // │          │          │          │ ... │
 // │ 20 bytes │ 3 bytes  │ 20 bytes │     │
 // └──────────┴──────────┴──────────┴─────┘
-absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
+std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
     const std::string& encoded_path) {
   std::vector<uint8_t> data;
   if (!PrefixedHexStringToBytes(encoded_path, &data)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   size_t offset = 0;
   std::vector<std::string> path;
@@ -216,7 +215,7 @@ absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   // The path should be long enough to encode a single-hop swap.
   // 43 = 20(address) + 3(fee) + 20(address)
   if (data.size() < 43) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Parse first hop address.
@@ -230,14 +229,14 @@ absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
     // Parse the pool fee, and ignore.
     if (data.size() - offset < 3) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     offset += 3;
 
     // Parse next hop.
     if (data.size() - offset < 20) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     path.push_back("0x" + HexEncodeLower(data.data() + offset, 20));
     offset += 20;
@@ -245,14 +244,14 @@ absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
   // Require a minimum of 2 addresses for a single-hop swap.
   if (path.size() < 2) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return path;
 }
 
-absl::optional<std::tuple<std::vector<std::string>,   // params
-                          std::vector<std::string>>>  // args
+std::optional<std::tuple<std::vector<std::string>,   // params
+                         std::vector<std::string>>>  // args
 ABIDecode(const std::vector<std::string>& types,
           const std::vector<uint8_t>& data) {
   size_t offset = 0;
@@ -261,7 +260,7 @@ ABIDecode(const std::vector<std::string>& types,
   std::vector<std::string> args;
 
   for (const auto& type : types) {
-    absl::optional<std::string> value;
+    std::optional<std::string> value;
     if (type == "address") {
       value = GetAddressFromData(data, offset);
     } else if (type == "uint8") {  // Handle all unsigned integers of M bits,
@@ -290,7 +289,7 @@ ABIDecode(const std::vector<std::string>& types,
     }
 
     if (!value) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     // On encountering a dynamic type, we extract the reference to the start
@@ -299,7 +298,7 @@ ABIDecode(const std::vector<std::string>& types,
         calldata_tail == 0) {
       auto pointer = GetUintFromData<size_t>(data, offset);
       if (!pointer) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
       calldata_tail = *pointer;

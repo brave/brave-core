@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_UTIL_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/browser/component_updater/component_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<ComponentInfo> GetComponentInfo(const std::string& id);
+std::optional<ComponentInfo> GetComponentInfo(const std::string& id);
 
 }  // namespace brave_ads
 

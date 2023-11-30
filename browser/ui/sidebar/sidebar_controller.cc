@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 
+#include <optional>
 #include <vector>
 
 #include "base/check_op.h"
@@ -55,7 +56,7 @@ SidebarController::SidebarController(BraveBrowser* browser, Profile* profile)
 
 SidebarController::~SidebarController() = default;
 
-bool SidebarController::IsActiveIndex(absl::optional<size_t> index) const {
+bool SidebarController::IsActiveIndex(std::optional<size_t> index) const {
   return sidebar_model_->active_index() == index;
 }
 
@@ -77,7 +78,7 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
   return false;
 }
 
-void SidebarController::ActivateItemAt(absl::optional<size_t> index,
+void SidebarController::ActivateItemAt(std::optional<size_t> index,
                                        WindowOpenDisposition disposition) {
   // disengaged means there is no active item.
   if (!index) {

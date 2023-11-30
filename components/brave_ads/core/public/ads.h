@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -109,7 +109,7 @@ class ADS_EXPORT Ads {
 
   // Called to get the notification ad specified by `placement_id`. Returns
   // `NotificationAdInfo` containing the info of the ad.
-  virtual absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+  virtual std::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) = 0;
 
   // Called when a user views or interacts with a notification ad or the ad

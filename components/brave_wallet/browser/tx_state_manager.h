@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_STATE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -49,14 +49,14 @@ class TxStateManager {
       PrefService* prefs);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
+      const std::optional<std::string>& chain_id,
+      const std::optional<mojom::TransactionStatus>& status,
       const mojom::AccountIdPtr& from);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<mojom::AccountIdPtr>& from);
+      const std::optional<std::string>& chain_id,
+      const std::optional<mojom::TransactionStatus>& status,
+      const std::optional<mojom::AccountIdPtr>& from);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -98,7 +98,7 @@ class TxStateManager {
   // ex. ethereum and solana and it will be used to acess all the transactions
   // across different network for the coin.
   virtual std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) = 0;
+      const std::optional<std::string>& chain_id) = 0;
 
   raw_ptr<TxStorageDelegate> delegate_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;

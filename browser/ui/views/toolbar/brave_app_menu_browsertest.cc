@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
@@ -57,7 +59,7 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->OnPurchasedStateChanged(target_state, absl::nullopt);
+        ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

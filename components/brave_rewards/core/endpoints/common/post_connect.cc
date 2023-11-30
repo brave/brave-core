@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -168,11 +169,11 @@ PostConnect::PostConnect(RewardsEngineImpl& engine) : RequestBuilder(engine) {}
 
 PostConnect::~PostConnect() = default;
 
-absl::optional<std::string> PostConnect::Url() const {
+std::optional<std::string> PostConnect::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
@@ -181,12 +182,12 @@ absl::optional<std::string> PostConnect::Url() const {
       base::StringPrintf(Path(), wallet->payment_id.c_str()));
 }
 
-absl::optional<std::vector<std::string>> PostConnect::Headers(
+std::optional<std::vector<std::string>> PostConnect::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());

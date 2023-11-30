@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -68,7 +70,7 @@ TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
       base::Value(Eip2930Transaction::AccessListToValue(access_list));
   auto access_list_from_value =
       Eip2930Transaction::ValueToAccessList(access_list_value.GetList());
-  ASSERT_NE(access_list_from_value, absl::nullopt);
+  ASSERT_NE(access_list_from_value, std::nullopt);
   EXPECT_EQ(*access_list_from_value, access_list);
 }
 
@@ -78,7 +80,7 @@ TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
   Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x00", "0x00", "0x00",
                          "0x0101010101010101010101010101010101010101", "0x00",
-                         data, false, absl::nullopt),
+                         data, false, std::nullopt),
       0x01);
   ASSERT_EQ(tx.type(), 1);
   auto* access_list = tx.access_list();
@@ -99,7 +101,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
   Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x00", "0x3b9aca00", "0x62d4",
                          "0xdf0a88b2b68c673713a8ec826003676f272e3573", "0x01",
-                         std::vector<uint8_t>(), false, absl::nullopt),
+                         std::vector<uint8_t>(), false, std::nullopt),
       0x796f6c6f763378);
   ASSERT_EQ(tx.type(), 1);
   auto* access_list = tx.access_list();
@@ -152,7 +154,7 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
       mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>(), false,
-                         absl::nullopt),
+                         std::nullopt),
       0x15BE);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item_a;
@@ -164,7 +166,7 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
 
   base::Value::Dict tx_value = tx.ToValue();
   auto tx_from_value = Eip2930Transaction::FromValue(tx_value);
-  ASSERT_NE(tx_from_value, absl::nullopt);
+  ASSERT_NE(tx_from_value, std::nullopt);
   EXPECT_EQ(tx_from_value, tx);
 }
 
@@ -174,7 +176,7 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x0", "0x0", "0x0",
                          "0x3535353535353535353535353535353535353535", "0x0",
-                         data, false, absl::nullopt),
+                         data, false, std::nullopt),
       0x15BE);
 
   auto* access_list = tx.access_list();
@@ -192,7 +194,7 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
 
   Eip2930Transaction tx2 = *Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x0", "0x0", "0x0", "", "0x0", data, false,
-                         absl::nullopt),
+                         std::nullopt),
       0x15BE);
   *tx2.access_list() = *tx.access_list();
   // Plus contract creation
@@ -203,7 +205,7 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   Eip2930Transaction tx3 = *Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x0", "0x0", "0x0",
                          "0x3535353535353535353535353535353535353535", "0x0",
-                         std::vector<uint8_t>(), false, absl::nullopt),
+                         std::vector<uint8_t>(), false, std::nullopt),
       0x15BE);
 
   auto* access_list3 = tx3.access_list();
@@ -220,7 +222,7 @@ TEST(Eip2930TransactionUnitTest, FromTxData) {
   auto tx = Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x01", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, absl::nullopt),
+                         std::vector<uint8_t>{1}, false, std::nullopt),
       1);
   ASSERT_TRUE(tx);
   EXPECT_EQ(tx->nonce(), uint256_t(1));
@@ -236,7 +238,7 @@ TEST(Eip2930TransactionUnitTest, FromTxData) {
   tx = Eip2930Transaction::FromTxData(
       mojom::TxData::New("", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, absl::nullopt),
+                         std::vector<uint8_t>{1}, false, std::nullopt),
       0);
   ASSERT_TRUE(tx);
   EXPECT_FALSE(tx->nonce());
@@ -246,14 +248,14 @@ TEST(Eip2930TransactionUnitTest, FromTxData) {
   EXPECT_FALSE(Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x1", "0x3E8", "",
                          "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, absl::nullopt),
+                         std::vector<uint8_t>{1}, false, std::nullopt),
       0));
 
   // But missing data is allowed when strict is false
   tx = Eip2930Transaction::FromTxData(
       mojom::TxData::New("", "0x3E8", "",
                          "0x3535353535353535353535353535353535353535", "",
-                         std::vector<uint8_t>{1}, false, absl::nullopt),
+                         std::vector<uint8_t>{1}, false, std::nullopt),
       1, false);
   ASSERT_TRUE(tx);
   // Empty nonce should be nullopt

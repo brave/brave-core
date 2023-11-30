@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -29,13 +29,13 @@ EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
 EthPendingTxTracker::~EthPendingTxTracker() = default;
 
 bool EthPendingTxTracker::UpdatePendingTransactions(
-    const absl::optional<std::string>& chain_id,
+    const std::optional<std::string>& chain_id,
     std::set<std::string>* pending_chain_ids) {
   CHECK(pending_chain_ids);
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   auto signed_transactions = tx_state_manager_->GetTransactionsByStatus(
-      chain_id, mojom::TransactionStatus::Signed, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Signed, std::nullopt);
   pending_transactions.insert(
       pending_transactions.end(),
       std::make_move_iterator(signed_transactions.begin()),
@@ -105,7 +105,7 @@ void EthPendingTxTracker::OnSendRawTransaction(
 
 bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
-      meta.chain_id(), mojom::TransactionStatus::Confirmed, absl::nullopt);
+      meta.chain_id(), mojom::TransactionStatus::Confirmed, std::nullopt);
   for (const auto& confirmed_transaction : confirmed_transactions) {
     auto* eth_confirmed_transaction =
         static_cast<EthTxMeta*>(confirmed_transaction.get());

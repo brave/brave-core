@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -27,10 +28,10 @@
 
 namespace {
 
-absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
-                                      size_t& offset) {
+std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+                                     size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Read bytes in little endian order.
@@ -276,7 +277,7 @@ void NftMetadataFetcher::GetSolTokenMetadata(
     const std::string& token_mint_address,
     GetSolTokenMetadataCallback callback) {
   // Derive metadata PDA for the NFT accounts
-  absl::optional<std::string> associated_metadata_account =
+  std::optional<std::string> associated_metadata_account =
       SolanaKeyring::GetAssociatedMetadataAccount(token_mint_address);
   if (!associated_metadata_account) {
     std::move(callback).Run(
@@ -294,7 +295,7 @@ void NftMetadataFetcher::GetSolTokenMetadata(
 
 void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
     GetSolTokenMetadataCallback callback,
-    absl::optional<SolanaAccountInfo> account_info,
+    std::optional<SolanaAccountInfo> account_info,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess || !account_info) {
@@ -302,7 +303,7 @@ void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
     return;
   }
 
-  absl::optional<std::vector<uint8_t>> metadata =
+  std::optional<std::vector<uint8_t>> metadata =
       base::Base64Decode(account_info->data);
 
   if (!metadata) {
@@ -311,7 +312,7 @@ void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
     return;
   }
 
-  absl::optional<GURL> url = DecodeMetadataUri(*metadata);
+  std::optional<GURL> url = DecodeMetadataUri(*metadata);
   if (!url || !url.value().is_valid()) {
     std::move(callback).Run("", "", mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -344,7 +345,7 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
 // and returns the URI string in of the nested Data struct (see
 // https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
 // as a GURL.
-absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
+std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
     const std::vector<uint8_t>& data) {
   size_t offset = 0;
   offset = offset + /* Skip first byte for metadata.key */ 1 +
@@ -355,7 +356,7 @@ absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
   // whose length is represented by a leading 32 bit integer
   auto length = DecodeUint32(data, offset);
   if (!length) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   offset += static_cast<size_t>(*length);
 
@@ -363,19 +364,19 @@ absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
   // whose length is represented by a leading 32 bit integer
   length = DecodeUint32(data, offset);
   if (!length) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   offset += static_cast<size_t>(*length);
 
   // Parse next field, metadata.data.uri, a string
   length = DecodeUint32(data, offset);
   if (!length) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Prevent out of bounds access in case length value incorrent
   if (data.size() <= offset + *length) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::string uri =
       std::string(data.begin() + offset, data.begin() + offset + *length);

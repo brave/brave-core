@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_suggestions_claim/post_suggestions_claim.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -107,7 +108,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
     return;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(response->body);
+  std::optional<base::Value> value = base::JSONReader::Read(response->body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     std::move(callback).Run(mojom::Result::FAILED, "");

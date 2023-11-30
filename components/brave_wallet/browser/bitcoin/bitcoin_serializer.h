@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_SERIALIZER_H_
 
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -23,7 +24,7 @@ class BitcoinSerializer {
   static std::vector<uint8_t> AddressToScriptPubkey(const std::string& address,
                                                     bool testnet);
 
-  static absl::optional<SHA256HashArray> SerializeInputForSign(
+  static std::optional<SHA256HashArray> SerializeInputForSign(
       const BitcoinTransaction& tx,
       size_t input_index);
 

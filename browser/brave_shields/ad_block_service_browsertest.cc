@@ -6,6 +6,7 @@
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -848,9 +849,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
-    ASSERT_EQ(subscriptions[0].homepage, absl::nullopt);
+    ASSERT_EQ(subscriptions[0].homepage, std::nullopt);
     ASSERT_EQ(subscriptions[0].expires, 7 * 24);
-    ASSERT_EQ(subscriptions[0].title, absl::nullopt);
+    ASSERT_EQ(subscriptions[0].title, std::nullopt);
   }
 
   // Ensure that the subscription gets update attempts, and ultimately is

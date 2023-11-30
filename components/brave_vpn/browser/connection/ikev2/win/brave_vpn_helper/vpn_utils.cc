@@ -8,6 +8,8 @@
 #include <fwpmu.h>
 #include <iphlpapi.h>
 #include <ras.h>
+
+#include <optional>
 #include <vector>
 
 #include "base/logging.h"
@@ -18,7 +20,6 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -107,18 +108,18 @@ DWORD RegisterSublayer(HANDLE engine_handle, GUID uuid) {
   return ERROR_SUCCESS;
 }
 
-absl::optional<int> GetAdapterIndexByName(const std::string& name) {
+std::optional<int> GetAdapterIndexByName(const std::string& name) {
   ULONG adapter_info_size = 0;
   // Get the right buffer size in case of overflow
   if (::GetAdaptersInfo(nullptr, &adapter_info_size) != ERROR_BUFFER_OVERFLOW ||
       adapter_info_size == 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<byte> adapters(adapter_info_size);
   if (::GetAdaptersInfo(reinterpret_cast<PIP_ADAPTER_INFO>(adapters.data()),
                         &adapter_info_size) != ERROR_SUCCESS) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // The returned value is not an array of IP_ADAPTER_INFO elements but a linked
@@ -132,7 +133,7 @@ absl::optional<int> GetAdapterIndexByName(const std::string& name) {
     adapter = adapter->Next;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 DWORD BlockIPv4Queries(HANDLE engine_handle) {

@@ -6,6 +6,7 @@
 #include "brave/components/p3a/constellation_log_store.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string_view>
 
@@ -127,9 +128,9 @@ const std::string& ConstellationLogStore::staged_log_signature() const {
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
+std::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void ConstellationLogStore::StageNextLog() {

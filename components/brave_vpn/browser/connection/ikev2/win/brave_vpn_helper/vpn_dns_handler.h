@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
 
 #include <windows.h>
+
+#include <optional>
 #include <string>
 
 #include "base/gtest_prod_util.h"
@@ -15,7 +17,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/win/object_watcher.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -63,10 +64,10 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
   void Exit();
   virtual void SubscribeForRasNotifications(HANDLE event_handle);
 
-  absl::optional<ras::CheckConnectionResult> connection_result_for_testing_;
-  absl::optional<bool> platform_filters_result_for_testing_;
-  absl::optional<bool> close_engine_result_for_testing_;
-  absl::optional<int> waiting_interval_before_exit_for_testing_;
+  std::optional<ras::CheckConnectionResult> connection_result_for_testing_;
+  std::optional<bool> platform_filters_result_for_testing_;
+  std::optional<bool> close_engine_result_for_testing_;
+  std::optional<int> waiting_interval_before_exit_for_testing_;
   raw_ptr<BraveVpnDnsDelegate> delegate_;
   HANDLE engine_ = nullptr;
   HANDLE event_handle_for_vpn_ = nullptr;

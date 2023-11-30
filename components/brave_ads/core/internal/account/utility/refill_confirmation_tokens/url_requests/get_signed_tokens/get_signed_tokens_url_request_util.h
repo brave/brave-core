@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_URL_REQUESTS_GET_SIGNED_TOKENS_GET_SIGNED_TOKENS_URL_REQUEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_URL_REQUESTS_GET_SIGNED_TOKENS_GET_SIGNED_TOKENS_URL_REQUEST_UTIL_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -21,7 +21,7 @@ class UnblindedToken;
 
 struct WalletInfo;
 
-absl::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict);
+std::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict);
 
 void BuildAndAddConfirmationTokens(
     const std::vector<cbr::UnblindedToken>& unblinded_tokens,

@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/ipfs_api.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -96,7 +97,7 @@ ExtensionFunction::ResponseAction IpfsRemoveIpfsPeerFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  absl::optional<ipfs::RemoveIpfsPeer::Params> params =
+  std::optional<ipfs::RemoveIpfsPeer::Params> params =
       ipfs::RemoveIpfsPeer::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->GetConfig(
@@ -142,7 +143,7 @@ ExtensionFunction::ResponseAction IpfsAddIpfsPeerFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  absl::optional<ipfs::AddIpfsPeer::Params> params =
+  std::optional<ipfs::AddIpfsPeer::Params> params =
       ipfs::AddIpfsPeer::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->GetConfig(
@@ -217,7 +218,7 @@ ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
   if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
     return RespondNow(Error("IPFS node is not launched"));
   }
-  absl::optional<ipfs::RemoveIpnsKey::Params> params =
+  std::optional<ipfs::RemoveIpnsKey::Params> params =
       ipfs::RemoveIpnsKey::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   key_manager->RemoveKey(
@@ -243,7 +244,7 @@ ExtensionFunction::ResponseAction IpfsRotateKeyFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  absl::optional<ipfs::RotateKey::Params> params =
+  std::optional<ipfs::RotateKey::Params> params =
       ipfs::RotateKey::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->RotateKey(params->name,
@@ -267,7 +268,7 @@ ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
   if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
     return RespondNow(Error("IPFS node is not launched"));
   }
-  absl::optional<ipfs::AddIpnsKey::Params> params =
+  std::optional<ipfs::AddIpnsKey::Params> params =
       ipfs::AddIpnsKey::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   key_manager->GenerateNewKey(
@@ -431,7 +432,7 @@ ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
     return RespondNow(Error("IPFS not enabled"));
   }
 
-  absl::optional<ipfs::ResolveIPFSURI::Params> params =
+  std::optional<ipfs::ResolveIPFSURI::Params> params =
       ipfs::ResolveIPFSURI::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   GURL uri(params->uri);
@@ -453,7 +454,7 @@ ExtensionFunction::ResponseAction IpfsValidateGatewayUrlFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  absl::optional<ipfs::ValidateGatewayUrl::Params> params =
+  std::optional<ipfs::ValidateGatewayUrl::Params> params =
       ipfs::ValidateGatewayUrl::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -516,7 +517,7 @@ ExtensionFunction::ResponseAction IpfsSetPublicGatewayFunction::Run() {
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetPublicGateway::Params> params =
+  std::optional<ipfs::SetPublicGateway::Params> params =
       ipfs::SetPublicGateway::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -536,7 +537,7 @@ ExtensionFunction::ResponseAction IpfsSetPublicNFTGatewayFunction::Run() {
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetPublicNFTGateway::Params> params =
+  std::optional<ipfs::SetPublicNFTGateway::Params> params =
       ipfs::SetPublicNFTGateway::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -556,7 +557,7 @@ ExtensionFunction::ResponseAction IpfsSetResolveMethodFunction::Run() {
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetResolveMethod::Params> params =
+  std::optional<ipfs::SetResolveMethod::Params> params =
       ipfs::SetResolveMethod::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -585,7 +586,7 @@ IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction::Run() {
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params>
+  std::optional<ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params>
       params = ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params::Create(
           args());
   EXTENSION_FUNCTION_VALIDATE(params);
@@ -601,7 +602,7 @@ ExtensionFunction::ResponseAction IpfsSetGatewayFallbackEnabledFunction::Run() {
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetGatewayFallbackEnabled::Params> params =
+  std::optional<ipfs::SetGatewayFallbackEnabled::Params> params =
       ipfs::SetGatewayFallbackEnabled::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

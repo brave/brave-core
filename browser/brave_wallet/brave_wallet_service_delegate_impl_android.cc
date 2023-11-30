@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl_android.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -85,11 +86,11 @@ void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
           *type, context_, formed_website));
 }
 
-absl::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
   content::WebContents* contents = GetActiveWebContents(context_);
   auto origin = contents
                     ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                    : absl::optional<url::Origin>();
+                    : std::optional<url::Origin>();
   return origin;
 }
 

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 namespace brave_ads {
@@ -41,13 +43,13 @@ SegmentList GetTopSegments(const SegmentList& segments,
                            max_count);
 }
 
-absl::optional<std::string> GetTopSegment(const SegmentList& segments,
-                                          const bool parent_only) {
+std::optional<std::string> GetTopSegment(const SegmentList& segments,
+                                         const bool parent_only) {
   const SegmentList top_segments =
       FilterTopSegments(parent_only ? GetParentSegments(segments) : segments,
                         /*max_count=*/1);
   if (top_segments.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return top_segments.front();

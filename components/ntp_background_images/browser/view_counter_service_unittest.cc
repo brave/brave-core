@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
+
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -25,7 +28,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
@@ -233,7 +235,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     return features::kInitialCountToBrandedWallpaper.Get();
   }
 
-  absl::optional<base::Value::Dict> TryGetFirstSponsoredImageWallpaper() {
+  std::optional<base::Value::Dict> TryGetFirstSponsoredImageWallpaper() {
     // Loading initial count times.
     for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
       auto wallpaper = view_counter_->GetCurrentWallpaperForDisplay();
@@ -468,7 +470,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
   prefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   EXPECT_CALL(ads_service_mock_, GetPrefetchedNewTabPageAdForDisplay())
-      .WillOnce(Return(absl::nullopt));
+      .WillOnce(Return(std::nullopt));
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd())
       .Times(GetInitialCountToBrandedWallpaper());
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd(_, _)).Times(0);

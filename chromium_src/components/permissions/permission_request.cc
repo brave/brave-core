@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_request.h"
-
+#include <optional>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -121,12 +121,12 @@ bool PermissionRequest::SupportsLifetime() const {
   return !base::Contains(kExcludedTypes, request_type());
 }
 
-void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
+void PermissionRequest::SetLifetime(std::optional<base::TimeDelta> lifetime) {
   DCHECK(SupportsLifetime());
   lifetime_ = std::move(lifetime);
 }
 
-const absl::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
+const std::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   DCHECK(SupportsLifetime());
   return lifetime_;
 }

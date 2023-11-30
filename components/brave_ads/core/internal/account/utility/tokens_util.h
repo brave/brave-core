@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_TOKENS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_TOKENS_UTIL_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,9 +23,9 @@ class Token;
 class UnblindedToken;
 }  // namespace cbr
 
-absl::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);
+std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);
 
-absl::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
+std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
     const base::Value::Dict& dict);
 
 base::expected<std::vector<cbr::UnblindedToken>, std::string>

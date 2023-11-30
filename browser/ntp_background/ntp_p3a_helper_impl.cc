@@ -6,6 +6,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 
 #include <algorithm>
+#include <optional>
 #include <vector>
 
 #include "base/check.h"
@@ -281,7 +282,7 @@ void NTPP3AHelperImpl::UpdateMetricCount(
       creative_instance_dict->EnsureDict(kInflightDictKey);
     }
 
-    const absl::optional<int> current_value =
+    const std::optional<int> current_value =
         creative_instance_dict->FindInt(event_type);
 
     const int count = current_value.value_or(0) + 1;

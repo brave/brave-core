@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -128,7 +130,7 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
                        (IsRightAligned() ? -resize_amount : resize_amount);
 
   if (done_resizing) {
-    starting_width_on_resize_ = absl::nullopt;
+    starting_width_on_resize_ = std::nullopt;
     // Before arriving resizing doen event, user could hide sidebar because
     // resizing done event is arrived a little bit later after user stops
     // resizing. And resizing done event is arrived as a result of

@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/legacy/media/github.h"
+
 #include <cmath>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -14,7 +17,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -44,7 +46,7 @@ std::string GitHub::GetLinkType(const std::string& url) {
 bool GitHub::GetJSONIntValue(const std::string& key,
                              const std::string& json_string,
                              int64_t* result) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -62,7 +64,7 @@ bool GitHub::GetJSONIntValue(const std::string& key,
 bool GitHub::GetJSONStringValue(const std::string& key,
                                 const std::string& json_string,
                                 std::string* result) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -46,7 +47,7 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      absl::nullopt);
+      std::nullopt);
 }
 
 }  // namespace brave_wallet

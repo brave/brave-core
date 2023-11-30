@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -86,13 +87,13 @@ void GetForCreativeInstanceIdCallback(
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
     return std::move(callback).Run(/*success=*/false,
-                                   /*deposit=*/absl::nullopt);
+                                   /*deposit=*/std::nullopt);
   }
 
   CHECK(command_response->result);
 
   if (command_response->result->get_records().empty()) {
-    return std::move(callback).Run(/*success=*/true, /*deposit=*/absl::nullopt);
+    return std::move(callback).Run(/*success=*/true, /*deposit=*/std::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
@@ -169,7 +170,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false,
-                                   /*deposit=*/absl::nullopt);
+                                   /*deposit=*/std::nullopt);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();

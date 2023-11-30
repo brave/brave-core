@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_UTIL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -14,8 +15,6 @@
 #include "base/values.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 using challenge_bypass_ristretto::BlindedToken;
@@ -32,7 +31,7 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& tokens);
 
 std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 
-absl::optional<base::Value::List> ParseStringToBaseList(
+std::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list);
 
 base::expected<std::vector<std::string>, std::string> UnBlindCreds(
@@ -46,7 +45,7 @@ base::Value::List GenerateCredentials(
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body);
 
-absl::optional<base::Value::Dict> GenerateSuggestion(
+std::optional<base::Value::Dict> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
     const std::string& suggestion_encoded);

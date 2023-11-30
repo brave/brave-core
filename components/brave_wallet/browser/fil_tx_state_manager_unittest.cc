@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -95,7 +96,7 @@ TEST_F(FilTxStateManagerUnitTest, GetTxPrefPathPrefix) {
       "filecoin.http://localhost:1234/rpc/v0",
       fil_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
   EXPECT_EQ("filecoin",
-            fil_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
+            fil_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
 }
 
 }  // namespace brave_wallet

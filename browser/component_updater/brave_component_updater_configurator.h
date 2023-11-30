@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_UPDATER_CONFIGURATOR_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "base/time/time.h"
 #include "components/component_updater/configurator_impl.h"
 #include "components/update_client/configurator.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -69,9 +69,9 @@ class BraveConfigurator : public update_client::Configurator {
   bool IsPerUserInstall() const override;
   std::unique_ptr<update_client::ProtocolHandlerFactory>
   GetProtocolHandlerFactory() const override;
-  absl::optional<bool> IsMachineExternallyManaged() const override;
+  std::optional<bool> IsMachineExternallyManaged() const override;
   update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
-  absl::optional<base::FilePath> GetCrxCachePath() const override;
+  std::optional<base::FilePath> GetCrxCachePath() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;

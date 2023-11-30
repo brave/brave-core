@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -20,7 +21,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "net/base/url_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -191,7 +191,7 @@ void PageContentExtractor::BindReceiver(
 
 void PageContentExtractor::OnDistillResult(
     mojom::PageContentExtractor::ExtractPageContentCallback callback,
-    const absl::optional<std::string>& content) {
+    const std::optional<std::string>& content) {
   // Validate
   if (!content.has_value()) {
     VLOG(1) << "null content";
@@ -214,7 +214,7 @@ void PageContentExtractor::OnDistillResult(
 void PageContentExtractor::OnJSTranscriptUrlResult(
     ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback,
     ai_chat::mojom::PageContentType type,
-    absl::optional<base::Value> value,
+    std::optional<base::Value> value,
     base::TimeTicks start_time) {
   DVLOG(2) << "Video transcript Url extraction script completed and took"
            << (base::TimeTicks::Now() - start_time).InMillisecondsF() << "ms"

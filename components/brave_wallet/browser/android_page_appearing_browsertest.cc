@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <string_view>
 
 #include "base/files/scoped_temp_dir.h"
@@ -69,7 +70,7 @@ class ConsoleObserver : public WebContentsObserver {
       const std::u16string& message_contents,
       int32_t line_no,
       const std::u16string& source_id,
-      const absl::optional<std::u16string>& untrusted_stack_trace) override {
+      const std::optional<std::u16string>& untrusted_stack_trace) override {
     WebContentsConsoleObserver::Message message(
         {source_frame, log_level, message_contents, line_no, source_id});
 
@@ -200,7 +201,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
   base::FilePath get_temp_path() const { return temp_dir_.GetPath(); }
   int64_t file_size() const { return file_size_; }
-  absl::optional<std::string> file_digest() const { return file_digest_; }
+  std::optional<std::string> file_digest() const { return file_digest_; }
 
   const std::string GetConsoleMessages(
       const content::ConsoleObserver& console_observer) const {
@@ -342,7 +343,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
   base::ScopedTempDir temp_dir_;
   int64_t file_size_;
-  absl::optional<std::string> file_digest_;
+  std::optional<std::string> file_digest_;
 
   std::unique_ptr<TestWebUIControllerFactory> factory_;
   raw_ptr<brave_wallet::AssetRatioService> asset_ratio_service_;

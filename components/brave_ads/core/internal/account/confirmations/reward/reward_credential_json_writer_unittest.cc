@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_credential_json_writer.h"
 
+#include <optional>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -35,12 +37,12 @@ TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   // Act
-  const absl::optional<std::string> reward_credential =
+  const std::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
           test::BuildReward(*confirmation),
           /*payload=*/"definition: the weight of a payload");

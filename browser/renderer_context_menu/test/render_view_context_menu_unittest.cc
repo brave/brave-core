@@ -5,6 +5,8 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
+#include <optional>
+
 #include "brave/app/brave_command_ids.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -108,7 +110,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForPlainText) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"plain text");
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_FALSE(clean_link_index.has_value());
 }
@@ -117,7 +119,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForSelectedUrl) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"brave.com");
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
@@ -128,7 +130,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
       CreateLinkParams(GURL("https://brave.com"));
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));

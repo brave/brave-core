@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIWE_MESSAGE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIWE_MESSAGE_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -56,7 +56,7 @@ class SIWEMessageParser {
   bool ParseSchemeAndDomain(std::string_view& msg_view, url::Origin& origin);
   bool ParseAddress(std::string_view& msg_view, std::string& address);
   bool ParseStatement(std::string_view& msg_view,
-                      absl::optional<std::string>& statement);
+                      std::optional<std::string>& statement);
   bool ParseURI(std::string_view& msg_view, GURL& uri);
   bool ParseVersion(std::string_view& msg_view, uint32_t& version);
   bool ParseChainId(std::string_view& msg_view, uint64_t& chain_id);
@@ -64,9 +64,9 @@ class SIWEMessageParser {
   bool ParseIssuedAt(std::string_view& msg_view, std::string& issued_at);
   bool ParseOptionalStringField(std::string_view& msg_view,
                                 const std::string& name,
-                                absl::optional<std::string>& value);
+                                std::optional<std::string>& value);
   bool ParseOptionalResources(std::string_view& msg_view,
-                              absl::optional<std::vector<GURL>>& resources);
+                              std::optional<std::vector<GURL>>& resources);
 
   static std::string GetStartingTokenForTesting();
   static std::string GetURITokenForTesting();

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -35,7 +36,7 @@ void FireServedEventCallback(
     const std::string& /*placement_id*/,
     const mojom::NewTabPageAdEventType /*event_type*/) {
   if (!success) {
-    return std::move(callback).Run(/*ad=*/absl::nullopt);
+    return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
   std::move(callback).Run(ad);
@@ -66,12 +67,12 @@ NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   if (!UserHasOptedInToNewTabPageAds()) {
-    return std::move(callback).Run(/*ad=*/absl::nullopt);
+    return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
   if (!ShouldAlwaysTriggerNewTabPageAdEvents() &&
       !UserHasJoinedBraveRewards()) {
-    return std::move(callback).Run(/*ad=*/absl::nullopt);
+    return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
   serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
@@ -121,7 +122,7 @@ void NewTabPageAdHandler::TriggerEvent(
 
 void NewTabPageAdHandler::MaybeServeCallback(
     MaybeServeNewTabPageAdCallback callback,
-    const absl::optional<NewTabPageAdInfo>& ad) {
+    const std::optional<NewTabPageAdInfo>& ad) {
   if (!ad) {
     return std::move(callback).Run(ad);
   }

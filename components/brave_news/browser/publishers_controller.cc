@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -199,7 +200,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
-        absl::optional<Publishers> publisher_list =
+        std::optional<Publishers> publisher_list =
             ParseCombinedPublisherList(api_request_result.value_body());
         if (!publisher_list) {
           return;

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -67,8 +68,8 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        ShowBadge_WhenWalletNotCreated) {
   base::RunLoop run_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -91,8 +92,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   RestoreWallet();
 
   base::RunLoop run_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -113,8 +114,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        HideBadge_WhenWalletButtonClicked) {
   base::RunLoop run_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -143,8 +144,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        HideBadge_WhenWalletCreated) {
   base::RunLoop run_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -189,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         std::move(tx_data),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::FIL,
-                                        absl::nullopt),
+                                        std::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -202,8 +203,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   base::RunLoop idle_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -230,12 +231,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
     auto tx_data = brave_wallet::mojom::TxData::New(
         "0x06", "0x09184e72a000", "0x0974", to_account, "0x016345785d8a0000",
-        std::vector<uint8_t>(), false, absl::nullopt);
+        std::vector<uint8_t>(), false, std::nullopt);
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::ETH,
-                                        absl::nullopt),
+                                        std::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -271,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::SOL,
-                                        absl::nullopt),
+                                        std::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -296,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::CoinType::FIL,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::FIL,
-                                        absl::nullopt),
+                                        std::nullopt),
         first_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -317,7 +318,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::CoinType::ETH,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::ETH,
-                                        absl::nullopt),
+                                        std::nullopt),
         second_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -338,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::CoinType::SOL,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::SOL,
-                                        absl::nullopt),
+                                        std::nullopt),
         third_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -372,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         std::move(tx_data),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::FIL,
-                                        absl::nullopt),
+                                        std::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -385,8 +386,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   base::RunLoop run_loop;
-  absl::optional<bool> show_badge_suggest_result;
-  absl::optional<size_t> count_result;
+  std::optional<bool> show_badge_suggest_result;
+  std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
       browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                 [&show_badge_suggest_result, &count_result](
@@ -416,8 +417,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        EmptyBadgeNotShownAfterRestart_IfClicked) {
   {
     base::RunLoop run_loop;
-    absl::optional<bool> show_badge_suggest_result;
-    absl::optional<size_t> count_result;
+    std::optional<bool> show_badge_suggest_result;
+    std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
         browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                   [&show_badge_suggest_result, &count_result](
@@ -435,8 +436,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
   {
     base::RunLoop run_loop;
-    absl::optional<bool> show_badge_suggest_result;
-    absl::optional<size_t> count_result;
+    std::optional<bool> show_badge_suggest_result;
+    std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
         browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
                                   [&show_badge_suggest_result, &count_result](

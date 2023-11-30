@@ -7,6 +7,7 @@
 
 #include <base/containers/flat_map.h>
 
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -143,7 +144,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     const std::vector<std::string> extra_stop_sequences,
     EngineConsumer::GenerationCompletedCallback data_completed_callback,
     EngineConsumer::GenerationDataCallback data_received_callback,
-    absl::optional<CredentialCacheEntry> credential) {
+    std::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
   base::flat_map<std::string, std::string> headers;
@@ -208,7 +209,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 }
 
 void RemoteCompletionClient::OnQueryCompleted(
-    absl::optional<CredentialCacheEntry> credential,
+    std::optional<CredentialCacheEntry> credential,
     EngineConsumer::GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();

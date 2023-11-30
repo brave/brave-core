@@ -3,10 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "ads_client_ios.h"
-#import "ads_client_bridge.h"
+#import "brave/ios/browser/api/ads/ads_client_ios.h"
+
+#include <optional>
+
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#import "brave/ios/browser/api/ads/ads_client_bridge.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -148,7 +151,7 @@ void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
   [bridge_ setProfilePref:path value:std::move(value)];
 }
 
-absl::optional<base::Value> AdsClientIOS::GetProfilePref(
+std::optional<base::Value> AdsClientIOS::GetProfilePref(
     const std::string& path) {
   return [bridge_ getProfilePref:path];
 }
@@ -166,7 +169,7 @@ void AdsClientIOS::SetLocalStatePref(const std::string& path,
   [bridge_ setLocalStatePref:path value:std::move(value)];
 }
 
-absl::optional<base::Value> AdsClientIOS::GetLocalStatePref(
+std::optional<base::Value> AdsClientIOS::GetLocalStatePref(
     const std::string& path) {
   return [bridge_ getLocalStatePref:path];
 }

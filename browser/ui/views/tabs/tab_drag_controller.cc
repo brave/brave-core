@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/tab_drag_controller.h"
 
+#include <optional>
 #include <set>
 
 #include "brave/browser/ui/tabs/features.h"
@@ -117,7 +118,7 @@ void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
   last_move_attached_context_loc_ = point_in_attached_context.y();
 }
 
-absl::optional<tab_groups::TabGroupId>
+std::optional<tab_groups::TabGroupId>
 TabDragController::GetTabGroupForTargetIndex(const std::vector<int>& selected) {
   auto group_id =
       TabDragControllerChromium::GetTabGroupForTargetIndex(selected);
@@ -132,9 +133,9 @@ TabDragController::GetTabGroupForTargetIndex(const std::vector<int>& selected) {
   const auto previous_tab_index = selected.front() - 1;
 
   const TabStripModel* attached_model = attached_context_->GetTabStripModel();
-  const absl::optional<tab_groups::TabGroupId> former_group =
+  const std::optional<tab_groups::TabGroupId> former_group =
       attached_model->GetTabGroupForTab(previous_tab_index);
-  const absl::optional<tab_groups::TabGroupId> latter_group =
+  const std::optional<tab_groups::TabGroupId> latter_group =
       attached_model->GetTabGroupForTab(selected.back() + 1);
   // We assume that Chromium can handle it when former and latter group are
   // same. So just return here.
@@ -342,7 +343,7 @@ void TabDragController::InitDragData(TabSlotView* view,
   // This seems to be a bug from upstream. If the `view` is a group header,
   // there can't be contents or pinned state which are bound to this `view`.
   if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTabGroupHeader) {
-    absl::optional<tab_groups::TabGroupId> tab_group_id = view->group();
+    std::optional<tab_groups::TabGroupId> tab_group_id = view->group();
     DCHECK(tab_group_id.has_value());
     drag_data->tab_group_data = TabDragData::TabGroupData{
         tab_group_id.value(), *source_context_->GetTabStripModel()

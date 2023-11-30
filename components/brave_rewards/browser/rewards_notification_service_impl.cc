@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
 #include <limits>
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -144,7 +145,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
-  absl::optional<base::Value> parsed = base::JSONReader::Read(json);
+  std::optional<base::Value> parsed = base::JSONReader::Read(json);
 
   // legacy read
   if (!parsed || (!parsed->is_dict() && !parsed->is_list())) {

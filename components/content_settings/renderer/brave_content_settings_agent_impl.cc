@@ -6,6 +6,7 @@
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -195,7 +196,7 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
     return {};
   }
 
-  absl::optional<url::Origin> optional_ephemeral_storage_origin;
+  std::optional<url::Origin> optional_ephemeral_storage_origin;
   GetContentSettingsManager().AllowEphemeralStorageAccess(
       routing_id(), frame_origin, frame->GetDocument().SiteForCookies(),
       top_origin, &optional_ephemeral_storage_origin);

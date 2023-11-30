@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNS_RESOLVER_TASK_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -17,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -25,10 +25,10 @@ using SnsNamehash = std::array<uint8_t, 32>;
 
 SnsNamehash GetHashedName(const std::string& name);
 
-absl::optional<SolanaAddress> GetMintAddress(
+std::optional<SolanaAddress> GetMintAddress(
     const SolanaAddress& domain_address);
-absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
-                                           bool record);
+std::optional<SolanaAddress> GetDomainKey(const std::string& domain,
+                                          bool record);
 
 struct NameRegistryState {
   NameRegistryState();
@@ -38,9 +38,9 @@ struct NameRegistryState {
   NameRegistryState& operator=(NameRegistryState&&);
   ~NameRegistryState();
 
-  static absl::optional<NameRegistryState> FromBytes(
+  static std::optional<NameRegistryState> FromBytes(
       base::span<const uint8_t> data_span);
-  static absl::optional<NameRegistryState> FromBase64(const std::string& str);
+  static std::optional<NameRegistryState> FromBase64(const std::string& str);
 
   SolanaAddress parent_name;
   SolanaAddress owner;
@@ -81,12 +81,12 @@ class SnsResolverTask {
   using APIRequestResult = api_request_helper::APIRequestResult;
   using DoneCallback =
       base::OnceCallback<void(SnsResolverTask* task,
-                              absl::optional<SnsResolverTaskResult> result,
-                              absl::optional<SnsResolverTaskError> error)>;
+                              std::optional<SnsResolverTaskResult> result,
+                              std::optional<SnsResolverTaskError> error)>;
   using RequestIntermediateCallback =
       base::OnceCallback<void(APIRequestResult api_request_result)>;
   using ResponseConversionCallback =
-      base::OnceCallback<absl::optional<std::string>(
+      base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
 
   SnsResolverTask(DoneCallback done_callback,
@@ -102,8 +102,8 @@ class SnsResolverTask {
 
   static base::RepeatingCallback<void(SnsResolverTask* task)>&
   GetWorkOnTaskForTesting();
-  void SetResultForTesting(absl::optional<SnsResolverTaskResult> task_result,
-                           absl::optional<SnsResolverTaskError> task_error);
+  void SetResultForTesting(std::optional<SnsResolverTaskResult> task_result,
+                           std::optional<SnsResolverTaskError> task_error);
 
   void FetchNftSplMint();
   void OnFetchNftSplMint(APIRequestResult api_request_result);
@@ -131,7 +131,7 @@ class SnsResolverTask {
   void SetAddressResult(SolanaAddress address);
   void SetUrlResult(GURL url);
   void SetError(SnsResolverTaskError error);
-  void NftOwnerDone(absl::optional<SolanaAddress> nft_owner);
+  void NftOwnerDone(std::optional<SolanaAddress> nft_owner);
 
   void RequestInternal(
       const std::string& json_payload,
@@ -144,19 +144,19 @@ class SnsResolverTask {
   GURL network_url_;
   bool resolve_address_ = false;
 
-  absl::optional<SolanaAddress> domain_address_;
+  std::optional<SolanaAddress> domain_address_;
 
   bool nft_owner_check_done_ = false;
-  absl::optional<SolanaAddress> nft_mint_address_;
+  std::optional<SolanaAddress> nft_mint_address_;
   bool nft_mint_supply_check_done_ = false;
 
-  absl::optional<NameRegistryState> domain_name_registry_state_;
+  std::optional<NameRegistryState> domain_name_registry_state_;
   SolanaAddress sol_record_address_;
 
   bool url_record_check_done_ = false;
 
-  absl::optional<SnsResolverTaskResult> task_result_;
-  absl::optional<SnsResolverTaskError> task_error_;
+  std::optional<SnsResolverTaskResult> task_result_;
+  std::optional<SnsResolverTaskError> task_error_;
 
   base::WeakPtrFactory<SnsResolverTask> weak_ptr_factory_{this};
 };

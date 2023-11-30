@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
@@ -60,7 +62,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
   // Arrange
 
   // Act
-  const absl::optional<std::vector<cbr::SignedToken>> signed_tokens =
+  const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
       ParseSignedTokens(BuildUrlResponseBody());
 
   // Assert

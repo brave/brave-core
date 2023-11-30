@@ -7,14 +7,15 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_UTILS_H_
 
 #include <wrl/client.h>
+
+#include <optional>
 #include <string>
 
 #include "base/win/windows_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 HRESULT HRESULTFromLastError();
-absl::optional<DWORD> GetWindowsServiceStatus(const std::wstring& service_name);
+std::optional<DWORD> GetWindowsServiceStatus(const std::wstring& service_name);
 bool IsWindowsServiceRunning(const std::wstring& service_name);
 bool SetServiceFailureActions(SC_HANDLE service);
 }  // namespace brave_vpn

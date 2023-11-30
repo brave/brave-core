@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/content_settings/core/common/cookie_settings_base.h"
+#include <optional>
 
 #include "base/auto_reset.h"
 #include "base/compiler_specific.h"
@@ -12,12 +12,12 @@
 #include "base/types/optional_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/cookie_settings_base.h"
 #include "components/content_settings/core/common/features.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/abseil-cpp/absl/base/attributes.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -96,7 +96,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     net::CookieSettingOverrides overrides,
-    const absl::optional<url::Origin>& top_frame_origin) const {
+    const std::optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
@@ -108,7 +108,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
   // Enable ephemeral storage for a first party URL if SESSION_ONLY cookie
   // setting is set and the feature is enabled.
-  absl::optional<CookieSettingWithBraveMetadata> first_party_setting;
+  std::optional<CookieSettingWithBraveMetadata> first_party_setting;
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     first_party_setting = GetCookieSettingWithBraveMetadata(
@@ -137,7 +137,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, overrides,
                                 top_frame_origin)) {
@@ -151,7 +151,7 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides,
     CookieSettingWithMetadata* cookie_settings) const {
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
@@ -161,7 +161,7 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides,
     CookieSettingWithMetadata* cookie_settings) const {
   bool allow = IsChromiumFullCookieAccessAllowed(

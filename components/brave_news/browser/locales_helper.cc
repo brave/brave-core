@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/locales_helper.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -24,7 +25,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
@@ -57,7 +57,7 @@ bool HasAnyLocale(const base::flat_set<std::string>& locales,
                               });
 }
 
-absl::optional<std::string> GetBestMissingLocale(
+std::optional<std::string> GetBestMissingLocale(
     const base::flat_set<std::string>& locales,
     const std::vector<mojom::Publisher*> publishers) {
   base::flat_map<std::string, uint32_t> missing_locale_counts;
@@ -116,7 +116,7 @@ base::flat_set<std::string> GetMinimalLocalesSet(
 
   // While there are publishers which won't be included in the feed, add a new
   // locale and recalculate what's missing.
-  absl::optional<std::string> best_missing_locale;
+  std::optional<std::string> best_missing_locale;
   while ((best_missing_locale =
               GetBestMissingLocale(result, subscribed_publishers))) {
     result.insert(best_missing_locale.value());

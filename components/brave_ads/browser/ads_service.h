@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -97,7 +97,7 @@ class AdsService : public KeyedService {
   virtual void PrefetchNewTabPageAd() = 0;
 
   // Called to get the prefetched new tab page ad for display.
-  virtual absl::optional<NewTabPageAdInfo>
+  virtual std::optional<NewTabPageAdInfo>
   GetPrefetchedNewTabPageAdForDisplay() = 0;
 
   // Called when failing to prefetch a new tab page ad for the specified

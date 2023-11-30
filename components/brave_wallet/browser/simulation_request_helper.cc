@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/simulation_request_helper.h"
+
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -40,10 +42,10 @@ base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
 
 namespace evm {
 
-absl::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::string> EncodeScanTransactionParams(
     const mojom::TransactionInfoPtr& tx_info) {
   if (!tx_info || !tx_info->from_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict tx_object;
@@ -62,10 +64,10 @@ absl::optional<std::string> EncodeScanTransactionParams(
     //
     // Here's an unoptimised implementation for future reference:
     //
-    // absl::optional<std::string> HexToWei(const std::string& value) {
+    // std::optional<std::string> HexToWei(const std::string& value) {
     //   uint256_t uint256_value;
     //   if (!HexValueToUint256(value, &uint256_value)) {
-    //     return absl::nullopt;
+    //     return std::nullopt;
     //   }
     //
     //   std::string result;
@@ -95,7 +97,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
       tx_object.Set("data", ToHex(tx_data->data));
     }
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict params;
@@ -112,10 +114,10 @@ namespace solana {
 
 namespace {
 
-absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
+std::optional<std::string> GetBase64TransactionFromTxDataUnion(
     mojom::TxDataUnionPtr tx_data_union) {
   if (!tx_data_union->is_solana_tx_data()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto tx = SolanaTransaction::FromSolanaTxData(
@@ -123,7 +125,7 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
   auto message_signers_pair = tx->GetSerializedMessage();
   if (!message_signers_pair) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto& message_bytes = message_signers_pair->first;
@@ -133,7 +135,7 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
   // number in the first 8 bits of the message header. We therefore check
   // if the number of signers is a valid unsigned 8-bit integer.
   if (signers.size() > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // transaction_bytes is a compact-array of signatures, followed by the
@@ -151,10 +153,10 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 }  // namespace
 
-absl::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::string> EncodeScanTransactionParams(
     const mojom::SolanaTransactionRequestUnionPtr& request) {
   if (!request) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict params;
@@ -166,7 +168,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     auto serialized_tx = GetBase64TransactionFromTxDataUnion(
         std::move(sign_transaction_request->tx_data));
     if (!serialized_tx) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     base::Value::List transactions;
@@ -183,7 +185,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
       auto serialized_tx =
           GetBase64TransactionFromTxDataUnion(std::move(tx_data));
       if (!serialized_tx) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
       transactions.Append(*serialized_tx);
@@ -197,12 +199,12 @@ absl::optional<std::string> EncodeScanTransactionParams(
   } else if (request->is_transaction_info()) {
     const auto& tx_info = request->get_transaction_info();
     if (!tx_info->from_address) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto serialized_tx =
         GetBase64TransactionFromTxDataUnion(std::move(tx_info->tx_data_union));
     if (!serialized_tx) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     base::Value::List transactions;
@@ -212,7 +214,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     params.Set("metadata", GetMetadata(tx_info->origin_info));
     params.Set("userAccount", *tx_info->from_address);
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return GetJSON(base::Value(std::move(params)));

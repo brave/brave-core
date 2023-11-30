@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_RESULTS_PAGE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_RESULTS_PAGE_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -16,7 +16,7 @@ namespace brave_ads {
 
 bool IsSearchEngineResultsPage(const GURL& url);
 
-absl::optional<std::string> ExtractSearchTermQueryValue(const GURL& url);
+std::optional<std::string> ExtractSearchTermQueryValue(const GURL& url);
 
 }  // namespace brave_ads
 

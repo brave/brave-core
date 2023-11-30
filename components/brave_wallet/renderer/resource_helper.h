@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_RESOURCE_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_RESOURCE_HELPER_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 std::string LoadDataResource(const int id);
-absl::optional<std::string> LoadImageResourceAsDataUrl(const int id);
+std::optional<std::string> LoadImageResourceAsDataUrl(const int id);
 
 }  // namespace brave_wallet
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/ranges/algorithm.h"
@@ -23,14 +24,14 @@ std::string GetFormattedBalanceDate(const base::Time time) {
   return base::StringPrintf("%04d-%02d", exploded.year, exploded.month);
 }
 
-absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
-                                               const base::Time time) {
+std::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
+                                              const base::Time time) {
   const std::string formatted_date = GetFormattedBalanceDate(time);
 
   const auto iter =
       base::ranges::find(payments, formatted_date, &PaymentInfo::month);
   if (iter == payments.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;
@@ -38,14 +39,12 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
 
 }  // namespace
 
-absl::optional<PaymentInfo> GetPaymentForThisMonth(
-    const PaymentList& payments) {
+std::optional<PaymentInfo> GetPaymentForThisMonth(const PaymentList& payments) {
   const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
   return GetPaymentForMonth(payments, time);
 }
 
-absl::optional<PaymentInfo> GetPaymentForLastMonth(
-    const PaymentList& payments) {
+std::optional<PaymentInfo> GetPaymentForLastMonth(const PaymentList& payments) {
   const base::Time time = GetLocalTimeAtBeginningOfLastMonth();
   return GetPaymentForMonth(payments, time);
 }

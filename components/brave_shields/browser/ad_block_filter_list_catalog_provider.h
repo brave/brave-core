@@ -12,7 +12,6 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace component_updater {
 class ComponentUpdateService;

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BLOCKED_DOMAIN_1PES_LIFETIME_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BLOCKED_DOMAIN_1PES_LIFETIME_H_
 
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ephemeral_storage {
@@ -49,7 +49,7 @@ class BlockedDomain1PESLifetime
 
   const Key key_;
   std::vector<base::OnceCallback<void()>> on_ready_;
-  absl::optional<bool> is_1pes_enabled_;
+  std::optional<bool> is_1pes_enabled_;
 };
 
 }  // namespace brave_shields

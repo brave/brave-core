@@ -6,12 +6,13 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 
 #include <libxml/tree.h>
-
 #include <signal.h>
+
 #include <climits>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <sstream>
 #include <string>
@@ -744,7 +745,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
     const blink::PageGraphBlinkReceiverData& receiver_data,
     blink::PageGraphBlinkArgs args,
     const blink::ExceptionState* exception_state,
-    const absl::optional<String>& result) {
+    const std::optional<String>& result) {
   const std::string_view name_piece(name);
   if (base::StartsWith(name_piece, "Document.")) {
     if (name_piece == "Document.cookie.get") {

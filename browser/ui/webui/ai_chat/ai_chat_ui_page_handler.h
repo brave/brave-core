@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -92,7 +93,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnPageHasContent(bool page_contents_is_truncated) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  absl::optional<mojom::SiteInfo> BuildSiteInfo();
+  std::optional<mojom::SiteInfo> BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 

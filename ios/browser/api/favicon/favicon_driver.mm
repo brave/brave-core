@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/favicon/favicon_driver.h"
+
+#include <optional>
+
 #import "base/values.h"
 #import "brave/ios/browser/api/web/web_state/web_state+private.h"
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
@@ -129,7 +132,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
   }
 
   NSURL* ns_url = scriptMessage.frameInfo.request.URL;
-  absl::optional<GURL> url;
+  std::optional<GURL> url;
   if (ns_url) {
     url = net::GURLWithNSURL(ns_url);
   }

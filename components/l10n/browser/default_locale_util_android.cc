@@ -5,11 +5,13 @@
 
 #include "brave/components/l10n/browser/default_locale_util.h"
 
+#include <optional>
+
 #include "base/android/locale_utils.h"
 
 namespace brave_l10n {
 
-absl::optional<std::string> MaybeGetDefaultLocaleString() {
+std::optional<std::string> MaybeGetDefaultLocaleString() {
   return base::android::GetDefaultLocaleString();
 }
 

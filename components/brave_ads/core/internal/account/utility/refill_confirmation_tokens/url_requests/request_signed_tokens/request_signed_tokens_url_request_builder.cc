@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder.h"
 
 #include <cstdint>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -114,7 +115,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     index++;
   }
 
-  const absl::optional<std::string> signature_base64 =
+  const std::optional<std::string> signature_base64 =
       crypto::Sign(concatenated_message, wallet_.secret_key);
   if (!signature_base64) {
     return {};
@@ -129,7 +130,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value::List list;
 
   for (const auto& blinded_token : blinded_tokens_) {
-    if (const absl::optional<std::string> blinded_token_base64 =
+    if (const std::optional<std::string> blinded_token_base64 =
             blinded_token.EncodeBase64()) {
       list.Append(*blinded_token_base64);
     }

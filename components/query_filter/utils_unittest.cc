@@ -6,7 +6,6 @@
 #include "brave/components/query_filter/utils.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 TEST(BraveQueryFilter, FilterQueryTrackers) {

@@ -6,9 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 #define BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/view.h"
 
 // The RoundedSeparator class is a view that shows a line used to visually
@@ -38,7 +38,7 @@ class RoundedSeparator : public views::View {
 
  private:
   int preferred_height_ = kThickness;
-  absl::optional<SkColor> overridden_color_;
+  std::optional<SkColor> overridden_color_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_

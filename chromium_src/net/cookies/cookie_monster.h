@@ -7,6 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
 #define CookieMonster ChromiumCookieMonster
+#include <optional>
+
 #include "src/net/cookies/cookie_monster.h"  // IWYU pragma: export
 #undef CookieMonster
 
@@ -42,8 +44,8 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
       const GURL& source_url,
       const CookieOptions& options,
       SetCookiesCallback callback,
-      absl::optional<CookieAccessResult> cookie_access_result =
-          absl::nullopt) override;
+      std::optional<CookieAccessResult> cookie_access_result =
+          std::nullopt) override;
   void GetCookieListWithOptionsAsync(
       const GURL& url,
       const CookieOptions& options,

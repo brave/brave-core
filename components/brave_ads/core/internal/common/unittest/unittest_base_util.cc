@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -30,7 +31,6 @@
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -158,7 +158,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              return std::move(callback).Run(absl::nullopt);
+              return std::move(callback).Run(std::nullopt);
             }
 
             std::move(callback).Run(value);
@@ -211,7 +211,7 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
 void MockGetProfilePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetProfilePref)
       .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value> {
+          [](const std::string& path) -> std::optional<base::Value> {
             return GetProfilePrefValue(path);
           }));
 }
@@ -232,7 +232,7 @@ void MockHasProfilePrefPath(const AdsClientMock& mock) {
 void MockGetLocalStatePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetLocalStatePref)
       .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value> {
+          [](const std::string& path) -> std::optional<base::Value> {
             return GetLocalStatePrefValue(path);
           }));
 }

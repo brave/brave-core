@@ -6,15 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_SUBDIVISION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_SUBDIVISION_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<std::string> GetSubdivisionCountryCode(
+std::optional<std::string> GetSubdivisionCountryCode(
     const std::string& subdivision);
-absl::optional<std::string> GetSubdivisionCode(const std::string& subdivision);
+std::optional<std::string> GetSubdivisionCode(const std::string& subdivision);
 
 }  // namespace brave_ads
 

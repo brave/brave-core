@@ -6,6 +6,7 @@
 #include "brave/components/speedreader/tts_player.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
@@ -83,14 +84,14 @@ bool TtsPlayer::Controller::IsPlaying() const {
 }
 
 bool TtsPlayer::Controller::IsPlayingRequestedWebContents(
-    absl::optional<int> paragraph_index) const {
+    std::optional<int> paragraph_index) const {
   if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
     return false;
   }
   return playing_web_contents_ == request_web_contents_;
 }
 
-void TtsPlayer::Controller::Play(absl::optional<int> paragraph_index) {
+void TtsPlayer::Controller::Play(std::optional<int> paragraph_index) {
   DCHECK(request_web_contents_);
   if (IsPlayingRequestedWebContents()) {
     Observe(playing_web_contents_);
@@ -290,7 +291,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
 }
 
 void TtsPlayer::Controller::OnContentReady(content::WebContents* web_contents,
-                                           absl::optional<int> paragraph_index,
+                                           std::optional<int> paragraph_index,
                                            base::Value content) {
   if (!content.is_dict() || web_contents != request_web_contents_) {
     return;

@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_MANAGER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/containers/circular_deque.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -29,7 +29,7 @@ class NotificationAdManager final {
 
   static NotificationAdManager& GetInstance();
 
-  absl::optional<NotificationAdInfo> MaybeGetForPlacementId(
+  std::optional<NotificationAdInfo> MaybeGetForPlacementId(
       const std::string& placement_id) const;
 
   void Add(const NotificationAdInfo& ad);

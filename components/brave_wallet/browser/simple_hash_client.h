@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -38,7 +39,7 @@ class SimpleHashClient {
   // For discovering NFTs on Solana and Ethereum
   using FetchNFTsFromSimpleHashCallback =
       base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts,
-                              const absl::optional<std::string>& cursor)>;
+                              const std::optional<std::string>& cursor)>;
 
   using FetchAllNFTsFromSimpleHashCallback =
       base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts)>;
@@ -46,7 +47,7 @@ class SimpleHashClient {
   void FetchNFTsFromSimpleHash(const std::string& account_address,
                                const std::vector<std::string>& chain_ids,
                                mojom::CoinType coin,
-                               const absl::optional<std::string>& cursor,
+                               const std::optional<std::string>& cursor,
                                bool skip_spam,
                                bool only_spam,
                                FetchNFTsFromSimpleHashCallback callback);
@@ -75,10 +76,10 @@ class SimpleHashClient {
       mojom::CoinType coin,
       FetchAllNFTsFromSimpleHashCallback callback,
       std::vector<mojom::BlockchainTokenPtr> nfts,
-      const absl::optional<std::string>& next_cursor);
+      const std::optional<std::string>& next_cursor);
 
-  absl::optional<std::pair<absl::optional<std::string>,
-                           std::vector<mojom::BlockchainTokenPtr>>>
+  std::optional<std::pair<std::optional<std::string>,
+                          std::vector<mojom::BlockchainTokenPtr>>>
   ParseNFTsFromSimpleHash(const base::Value& json_value,
                           mojom::CoinType coin,
                           bool skip_spam,
@@ -87,7 +88,7 @@ class SimpleHashClient {
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,
       const std::vector<std::string>& chain_ids,
-      const absl::optional<std::string>& cursor);
+      const std::optional<std::string>& cursor);
 
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<SimpleHashClient> weak_ptr_factory_;

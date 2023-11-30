@@ -6,6 +6,7 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_set>
 
@@ -154,7 +155,7 @@ void BraveMainDelegate::PreSandboxStartup() {
   }
 }
 
-absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
+std::optional<int> BraveMainDelegate::PostEarlyInitialization(
     ChromeMainDelegate::InvokedIn invoked_in) {
   auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
   if (result.has_value()) {

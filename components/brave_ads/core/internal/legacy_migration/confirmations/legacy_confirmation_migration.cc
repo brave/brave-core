@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -16,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -41,7 +41,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
   Load(kConfirmationStateFilename,
        base::BindOnce(
            [](InitializeCallback callback,
-              const absl::optional<std::string>& json) {
+              const std::optional<std::string>& json) {
              if (!json) {
                // Confirmation state does not exist
                return SuccessfullyMigrated(std::move(callback));

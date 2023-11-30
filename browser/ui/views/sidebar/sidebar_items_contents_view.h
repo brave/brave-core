@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEMS_CONTENTS_VIEW_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -66,8 +67,8 @@ class SidebarItemsContentsView : public views::View,
                    bool user_gesture);
   void OnItemMoved(const sidebar::SidebarItem& item, int from, int to);
   void OnItemRemoved(int index);
-  void OnActiveIndexChanged(absl::optional<size_t> old_index,
-                            absl::optional<size_t> new_index);
+  void OnActiveIndexChanged(std::optional<size_t> old_index,
+                            std::optional<size_t> new_index);
 
   void ShowItemAddedFeedbackBubble(size_t added_item_index);
 
@@ -79,8 +80,8 @@ class SidebarItemsContentsView : public views::View,
   // |source| is drag source view.
   // |position| is in local coordinate space of |source|.
   // Returns drag indicator index.
-  absl::optional<size_t> DrawDragIndicator(views::View* source,
-                                           const gfx::Point& position);
+  std::optional<size_t> DrawDragIndicator(views::View* source,
+                                          const gfx::Point& position);
   void ClearDragIndicator();
 
   bool IsBubbleVisible() const;
@@ -114,8 +115,8 @@ class SidebarItemsContentsView : public views::View,
   // When item count is five, drag indicator is drawn in front of first item.
   // If |index| is 5, it's drawn after the last item.
   // Pass -1 to remove indicator.
-  void DoDrawDragIndicator(absl::optional<size_t> index);
-  absl::optional<size_t> CalculateTargetDragIndicatorIndex(
+  void DoDrawDragIndicator(std::optional<size_t> index);
+  std::optional<size_t> CalculateTargetDragIndicatorIndex(
       const gfx::Point& screen_position);
   SidebarItemView* GetItemViewAt(size_t index);
   void LaunchEditItemDialog();

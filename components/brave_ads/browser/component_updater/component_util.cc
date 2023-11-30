@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
@@ -4171,10 +4172,10 @@ constexpr auto kComponents = base::MakeFixedFlatMapSorted<std::string_view,
 
 }  // namespace
 
-absl::optional<ComponentInfo> GetComponentInfo(const std::string& id) {
+std::optional<ComponentInfo> GetComponentInfo(const std::string& id) {
   const auto* const iter = kComponents.find(id);
   if (iter == kComponents.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return iter->second;

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/post_wallets.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -67,7 +68,7 @@ Result PostWallets::ProcessResponse(const mojom::UrlResponse& response) {
 }
 
 PostWallets::PostWallets(RewardsEngineImpl& engine,
-                         absl::optional<std::string>&& geo_country)
+                         std::optional<std::string>&& geo_country)
     : RequestBuilder(engine), geo_country_(std::move(geo_country)) {}
 
 PostWallets::~PostWallets() = default;
@@ -76,16 +77,16 @@ const char* PostWallets::Path() const {
   return geo_country_ ? "/v4/wallets" : "/v3/wallet/brave";
 }
 
-absl::optional<std::string> PostWallets::Url() const {
+std::optional<std::string> PostWallets::Url() const {
   return endpoint::promotion::GetServerUrl(Path());
 }
 
-absl::optional<std::vector<std::string>> PostWallets::Headers(
+std::optional<std::vector<std::string>> PostWallets::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->recovery_seed.empty());
@@ -96,7 +97,7 @@ absl::optional<std::vector<std::string>> PostWallets::Headers(
       wallet->recovery_seed);
 }
 
-absl::optional<std::string> PostWallets::Content() const {
+std::optional<std::string> PostWallets::Content() const {
   if (!geo_country_) {
     BLOG(1, "geo_country_ is null - creating old wallet.");
     return "";
@@ -104,7 +105,7 @@ absl::optional<std::string> PostWallets::Content() const {
 
   if (geo_country_->empty()) {
     BLOG(0, "geo_country_ is empty!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict content;
@@ -113,7 +114,7 @@ absl::optional<std::string> PostWallets::Content() const {
   std::string json;
   if (!base::JSONWriter::Write(content, &json)) {
     BLOG(0, "Failed to write content to JSON!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return json;

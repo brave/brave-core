@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/base64.h"
@@ -742,14 +743,14 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
 
 TEST_F(AssetDiscoveryTaskUnitTest, DecodeMintAddress) {
   // Invalid (data too short)
-  absl::optional<std::vector<uint8_t>> data_short = base::Base64Decode("YQ==");
+  std::optional<std::vector<uint8_t>> data_short = base::Base64Decode("YQ==");
   ASSERT_TRUE(data_short);
-  absl::optional<SolanaAddress> mint_address =
+  std::optional<SolanaAddress> mint_address =
       asset_discovery_task_->DecodeMintAddress(*data_short);
   ASSERT_FALSE(mint_address);
 
   // Valid
-  absl::optional<std::vector<uint8_t>> data = base::Base64Decode(
+  std::optional<std::vector<uint8_t>> data = base::Base64Decode(
       "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+"
       "lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
       "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

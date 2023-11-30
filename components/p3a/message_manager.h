@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_MESSAGE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -19,7 +20,6 @@
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_message.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -53,7 +53,7 @@ class MessageManager : public MetricLogStore::Delegate {
       base::RepeatingCallback<bool(const std::string& histogram_name)>;
   class Delegate {
    public:
-    virtual absl::optional<MetricLogType> GetDynamicMetricLogType(
+    virtual std::optional<MetricLogType> GetDynamicMetricLogType(
         const std::string& histogram_name) const = 0;
     virtual void OnRotation(MetricLogType log_type, bool is_constellation) = 0;
     // A metric "cycle" is a transmission to the P3A JSON server,
@@ -82,10 +82,10 @@ class MessageManager : public MetricLogStore::Delegate {
   void UpdateMetricValue(
       std::string_view histogram_name,
       size_t bucket,
-      absl::optional<bool> only_update_for_constellation = absl::nullopt);
+      std::optional<bool> only_update_for_constellation = std::nullopt);
   void RemoveMetricValue(
       std::string_view histogram_name,
-      absl::optional<bool> only_update_for_constellation = absl::nullopt);
+      std::optional<bool> only_update_for_constellation = std::nullopt);
 
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);

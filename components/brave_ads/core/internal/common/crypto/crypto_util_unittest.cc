@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 
+#include <optional>
+
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -43,12 +45,12 @@ TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
 
 TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   // Arrange
-  const absl::optional<std::vector<uint8_t>> seed =
+  const std::optional<std::vector<uint8_t>> seed =
       base::Base64Decode("x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=");
   ASSERT_TRUE(seed);
 
   // Act
-  const absl::optional<KeyPairInfo> key_pair =
+  const std::optional<KeyPairInfo> key_pair =
       GenerateSignKeyPairFromSeed(*seed);
   ASSERT_TRUE(key_pair);
 
@@ -82,7 +84,7 @@ TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
   // Act & Assert
-  const absl::optional<std::string> signature = Sign(kMessage, kSecretKey);
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
   EXPECT_TRUE(signature);
   EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
 }

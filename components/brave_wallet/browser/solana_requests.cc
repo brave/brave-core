@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -26,7 +27,7 @@ std::string getTokenAccountBalance(const std::string& pubkey) {
 
 std::string sendTransaction(
     const std::string& signed_tx,
-    absl::optional<SolanaTransaction::SendOptions> options) {
+    std::optional<SolanaTransaction::SendOptions> options) {
   base::Value::List params;
   params.Append(signed_tx);
 
@@ -127,7 +128,7 @@ std::string getTokenAccountsByOwner(const std::string& pubkey,
 }
 
 std::string isBlockhashValid(const std::string& blockhash,
-                             const absl::optional<std::string>& commitment) {
+                             const std::optional<std::string>& commitment) {
   CHECK(!commitment || IsValidCommitmentString(*commitment));
   base::Value::List params;
   params.Append(blockhash);

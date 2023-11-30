@@ -6,18 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_ACCOUNT_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_ACCOUNT_META_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 struct SolanaAccountMeta {
   SolanaAccountMeta(const std::string& pubkey,
-                    absl::optional<uint8_t> address_table_lookup_index,
+                    std::optional<uint8_t> address_table_lookup_index,
                     bool is_signer,
                     bool is_writable);
   ~SolanaAccountMeta();
@@ -31,11 +31,11 @@ struct SolanaAccountMeta {
   static void FromMojomSolanaAccountMetas(
       const std::vector<mojom::SolanaAccountMetaPtr>& mojom_account_metas,
       std::vector<SolanaAccountMeta>* account_metas);
-  static absl::optional<SolanaAccountMeta> FromValue(
+  static std::optional<SolanaAccountMeta> FromValue(
       const base::Value::Dict& value);
 
   std::string pubkey;
-  absl::optional<uint8_t> address_table_lookup_index;
+  std::optional<uint8_t> address_table_lookup_index;
   bool is_signer;
   bool is_writable;
 };

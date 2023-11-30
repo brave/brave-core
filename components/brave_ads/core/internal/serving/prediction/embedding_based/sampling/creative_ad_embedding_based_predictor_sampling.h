@@ -7,16 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_SAMPLING_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_SAMPLING_H_
 
 #include <limits>
+#include <optional>
 #include <vector>
 
 #include "base/numerics/ranges.h"
 #include "base/rand_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 template <typename T>
-absl::optional<T> MaybeSampleCreativeAd(
+std::optional<T> MaybeSampleCreativeAd(
     const std::vector<T>& creative_ads,
     const std::vector<double>& creative_ad_probabilities) {
   const double rand = base::RandDouble();
@@ -32,7 +32,7 @@ absl::optional<T> MaybeSampleCreativeAd(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace brave_ads

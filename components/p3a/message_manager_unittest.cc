@@ -6,6 +6,7 @@
 #include "brave/components/p3a/message_manager.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -53,9 +54,9 @@ class P3AMessageManagerTest : public testing::Test,
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
 
-  absl::optional<MetricLogType> GetDynamicMetricLogType(
+  std::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override {
-    return absl::optional<MetricLogType>();
+    return std::optional<MetricLogType>();
   }
 
   void OnRotation(MetricLogType log_type, bool is_constellation) override {}
@@ -144,7 +145,7 @@ class P3AMessageManagerTest : public testing::Test,
                                       std::string(kTestStarUploadHost))) {
             std::string log_type_str = request.url.path();
             EXPECT_TRUE(base::TrimString(log_type_str, "/", &log_type_str));
-            absl::optional<MetricLogType> log_type =
+            std::optional<MetricLogType> log_type =
                 StringToMetricLogType(log_type_str);
             EXPECT_TRUE(log_type.has_value());
 
@@ -269,7 +270,7 @@ class P3AMessageManagerTest : public testing::Test,
     base::Value::Dict parsed_log = base::test::ParseJsonDict(body);
     std::string* metric_name = parsed_log.FindString("metric_name");
     ASSERT_TRUE(metric_name);
-    absl::optional<int> metric_value = parsed_log.FindInt("metric_value");
+    std::optional<int> metric_value = parsed_log.FindInt("metric_value");
     ASSERT_TRUE(metric_value);
 
     if (is_p2a) {

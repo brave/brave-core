@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -20,7 +20,7 @@ namespace wireguard {
 bool IsBraveVPNWireguardTunnelServiceRunning();
 bool IsWireguardServiceRegistered();
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
-absl::optional<std::string> CreateWireguardConfig(
+std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,

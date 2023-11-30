@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_VPN_DNS_BRAVE_VPN_DNS_OBSERVER_SERVICE_WIN_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -14,7 +15,6 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -61,9 +61,9 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
 
   void OnCheckIfServiceStarted();
 
-  absl::optional<brave_vpn::mojom::ConnectionState> connection_state_;
+  std::optional<brave_vpn::mojom::ConnectionState> connection_state_;
   std::unique_ptr<brave::ServiceWatcher> service_watcher_;
-  absl::optional<bool> dns_helper_live_for_testing_;
+  std::optional<bool> dns_helper_live_for_testing_;
   base::OnceClosure policy_callback_;
   base::RepeatingClosure dialog_callback_;
   bool skip_notification_dialog_for_testing_ = false;

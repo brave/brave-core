@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/get_parameters.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -145,7 +146,7 @@ GetParameters::GetParameters(RewardsEngineImpl& engine)
 
 GetParameters::~GetParameters() = default;
 
-absl::optional<std::string> GetParameters::Url() const {
+std::optional<std::string> GetParameters::Url() const {
   return endpoint::api::GetServerUrl("/v1/parameters");
 }
 

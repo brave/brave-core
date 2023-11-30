@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 
+#include <optional>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -19,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_site_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -76,7 +77,7 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
                 "URL is invalid");
   }
 
-  const absl::optional<PurchaseIntentSignalInfo> signal = ExtractSignal(url);
+  const std::optional<PurchaseIntentSignalInfo> signal = ExtractSignal(url);
   if (!signal || signal->segments.empty()) {
     return BLOG(1, "No purchase intent matches found for visited URL");
   }
@@ -88,15 +89,15 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-absl::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
+std::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
     const GURL& url) const {
-  const absl::optional<std::string> search_query =
+  const std::optional<std::string> search_query =
       ExtractSearchTermQueryValue(url);
   if (search_query) {
-    const absl::optional<SegmentList> segments =
+    const std::optional<SegmentList> segments =
         GetSegmentsForSearchQuery(*search_query);
     if (!segments || segments->empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     PurchaseIntentSignalInfo purchase_intent_signal;
@@ -107,9 +108,9 @@ absl::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
     return purchase_intent_signal;
   }
 
-  const absl::optional<PurchaseIntentSiteInfo> site = GetSite(url);
+  const std::optional<PurchaseIntentSiteInfo> site = GetSite(url);
   if (!site || !site->url_netloc.is_valid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   PurchaseIntentSignalInfo purchase_intent_signal;
@@ -119,11 +120,11 @@ absl::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
   return purchase_intent_signal;
 }
 
-absl::optional<PurchaseIntentSiteInfo> PurchaseIntentProcessor::GetSite(
+std::optional<PurchaseIntentSiteInfo> PurchaseIntentProcessor::GetSite(
     const GURL& url) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
   if (!purchase_intent) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& site : purchase_intent->sites) {
@@ -132,14 +133,14 @@ absl::optional<PurchaseIntentSiteInfo> PurchaseIntentProcessor::GetSite(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
+std::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
     const std::string& search_query) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
   if (!purchase_intent) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
@@ -154,12 +155,12 @@ absl::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
     const std::string& search_query) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
   if (!purchase_intent) {
     return kPurchaseIntentDefaultSignalWeight;
   }
@@ -196,7 +197,7 @@ void PurchaseIntentProcessor::OnTextContentDidChange(
     return;
   }
 
-  const absl::optional<TabInfo> last_visible_tab =
+  const std::optional<TabInfo> last_visible_tab =
       TabManager::GetInstance().GetLastVisible();
   if (!last_visible_tab) {
     return;

@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -77,7 +79,7 @@ TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
   std::string result =
       "0x00000000000000000000000000000000000000000000000166e12cfce39a0000";
   auto args = DecodeEthCallResponse(result, {"uint256"});
-  ASSERT_NE(args, absl::nullopt);
+  ASSERT_NE(args, std::nullopt);
   ASSERT_EQ(args->size(), 1UL);
   ASSERT_EQ(args->at(0), "0x166e12cfce39a0000");
 
@@ -87,15 +89,15 @@ TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000";
   args = DecodeEthCallResponse(result, {"uint256"});
-  ASSERT_NE(args, absl::nullopt);
+  ASSERT_NE(args, std::nullopt);
   ASSERT_EQ(args->size(), 1UL);
   ASSERT_EQ(args->at(0), "0x45d12");
 
   // KO: insufficient length of response
-  ASSERT_EQ(DecodeEthCallResponse("0x0", {"uint256"}), absl::nullopt);
+  ASSERT_EQ(DecodeEthCallResponse("0x0", {"uint256"}), std::nullopt);
 
   // KO: invalid response
-  ASSERT_EQ(DecodeEthCallResponse("foobarbaz", {"uint256"}), absl::nullopt);
+  ASSERT_EQ(DecodeEthCallResponse("foobarbaz", {"uint256"}), std::nullopt);
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetTransactionReceipt) {
@@ -694,7 +696,7 @@ TEST(EthResponseParserUnitTest, ParseStringResult) {
 }
 
 TEST(EthResponseParserUnitTest, DecodeGetERC20TokenBalancesEthCallResponse) {
-  absl::optional<std::vector<absl::optional<std::string>>> result;
+  std::optional<std::vector<std::optional<std::string>>> result;
 
   // Empty string returns null
   result = eth::DecodeGetERC20TokenBalancesEthCallResponse("");

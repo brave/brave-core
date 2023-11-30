@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,18 +23,18 @@ namespace brave_wallet {
 
 namespace {
 
-absl::optional<std::string> GetFinalRecipient(
+std::optional<std::string> GetFinalRecipient(
     const std::string& chain_id,
     const std::string& base_to,
     mojom::TransactionType tx_type,
     const std::vector<std::string>& tx_args) {
   if (tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
     if (tx_args.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     std::vector<uint8_t> bytes;
     if (!PrefixedHexStringToBytes(tx_args.at(0), &bytes)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     std::string fil_chain_id =
         chain_id == mojom::kFilecoinEthereumMainnetChainId
@@ -41,14 +42,14 @@ absl::optional<std::string> GetFinalRecipient(
             : mojom::kFilecoinTestnet;
     auto fil_address = FilAddress::FromBytes(fil_chain_id, bytes);
     if (fil_address.IsEmpty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     return fil_address.EncodeAsString();
   }
 
   if (tx_type == mojom::TransactionType::ERC20Transfer) {
     if (tx_args.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     return tx_args.at(0);
   }
@@ -56,7 +57,7 @@ absl::optional<std::string> GetFinalRecipient(
   if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
       tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
     if (tx_args.size() < 2) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     // (address owner, address to, uint256 tokenId)
     return tx_args.at(1);
@@ -121,7 +122,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   }
 
   auto tx_info = GetTransactionInfoFromData(data);
-  absl::optional<std::string> final_recepient;
+  std::optional<std::string> final_recepient;
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
@@ -129,7 +130,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     final_recepient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
                                         tx_type, tx_args);
   }
-  absl::optional<std::string> signed_transaction;
+  std::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
   }

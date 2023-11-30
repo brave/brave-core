@@ -10,6 +10,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -34,7 +35,6 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
 
 class GURL;
@@ -179,13 +179,13 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
   // tab page ad business logic.
-  void PrefetchNewTabPageAdCallback(absl::optional<base::Value::Dict> dict);
+  void PrefetchNewTabPageAdCallback(std::optional<base::Value::Dict> dict);
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OpenNewTabWithAdCallback(absl::optional<base::Value::Dict> dict);
+  void OpenNewTabWithAdCallback(std::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
   void OpenNewTabWithUrl(const GURL& url);
 
@@ -225,7 +225,7 @@ class AdsServiceImpl : public AdsService,
                                    mojom::InlineContentAdEventType event_type,
                                    TriggerAdEventCallback callback) override;
 
-  absl::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+  std::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
       override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -414,7 +414,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  std::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
   bool is_prefetching_new_tab_page_ad_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;

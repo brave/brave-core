@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -188,14 +189,14 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
   base::UmaHistogramEnumeration(histogram_name, answer);
 }
 
-absl::optional<mojom::OnboardingAction>
+std::optional<mojom::OnboardingAction>
 BraveWalletP3A::GetLastOnboardingAction() {
   if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
     int pref_value =
         local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
     return static_cast<mojom::OnboardingAction>(pref_value);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
@@ -206,7 +207,7 @@ void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
     onboarding_report_timer_.Stop();
     return;
   }
-  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
   if (!last_step.has_value() || *last_step < action) {
     // Only record steps that are ahead of the previous step so we
     // don't record back navigation.
@@ -230,7 +231,7 @@ void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
 }
 
 void BraveWalletP3A::RecordOnboardingHistogram() {
-  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
   if (!last_step.has_value()) {
     return;
   }

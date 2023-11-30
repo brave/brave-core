@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -56,10 +57,10 @@ void TxManager::GetTransactionInfo(const std::string& chain_id,
 }
 
 std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::AccountIdPtr>& from) {
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::AccountIdPtr>& from) {
   auto metas =
-      tx_state_manager_->GetTransactionsByStatus(chain_id, absl::nullopt, from);
+      tx_state_manager_->GetTransactionsByStatus(chain_id, std::nullopt, from);
 
   // Convert vector of TxMeta to vector of TransactionInfo
   std::vector<mojom::TransactionInfoPtr> tis(metas.size());
@@ -122,7 +123,7 @@ void TxManager::Locked() {
 }
 
 void TxManager::Unlocked() {
-  UpdatePendingTransactions(absl::nullopt);
+  UpdatePendingTransactions(std::nullopt);
 }
 
 void TxManager::WalletReset() {

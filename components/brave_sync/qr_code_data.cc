@@ -6,6 +6,7 @@
 #include "brave/components/brave_sync/qr_code_data.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/json/json_reader.h"
@@ -69,7 +70,7 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
     const std::string& json_string) {
   auto qr_data = std::unique_ptr<QrCodeData>(new QrCodeData());
 
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value) {
     VLOG(1) << "Could not parse string " << json_string;
     return nullptr;

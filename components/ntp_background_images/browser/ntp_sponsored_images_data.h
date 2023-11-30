@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 
@@ -61,7 +61,7 @@ struct SponsoredBackground {
   std::string creative_instance_id;
 
   Logo logo;
-  absl::optional<gfx::Rect> viewbox;
+  std::optional<gfx::Rect> viewbox;
 
   SponsoredBackground();
   // For unit test.
@@ -107,9 +107,9 @@ struct NTPSponsoredImagesData {
   void ParseSRProperties(const base::Value::Dict& value,
                          const base::FilePath& installed_dir);
 
-  absl::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
-                                                    size_t background_index);
-  absl::optional<base::Value::Dict> GetBackgroundByAdInfo(
+  std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
+                                                   size_t background_index);
+  std::optional<base::Value::Dict> GetBackgroundByAdInfo(
       const brave_ads::NewTabPageAdInfo& ad_info);
 
   bool IsSuperReferral() const;

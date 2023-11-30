@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/values_util.h"
@@ -39,7 +40,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   }
   meta->set_id(*id);
 
-  absl::optional<int> status = value.FindInt("status");
+  std::optional<int> status = value.FindInt("status");
   if (!status) {
     return false;
   }
@@ -57,7 +58,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!created_time) {
     return false;
   }
-  absl::optional<base::Time> created_time_from_value =
+  std::optional<base::Time> created_time_from_value =
       base::ValueToTime(created_time);
   if (!created_time_from_value) {
     return false;
@@ -68,7 +69,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!submitted_time) {
     return false;
   }
-  absl::optional<base::Time> submitted_time_from_value =
+  std::optional<base::Time> submitted_time_from_value =
       base::ValueToTime(submitted_time);
   if (!submitted_time_from_value) {
     return false;
@@ -79,7 +80,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!confirmed_time) {
     return false;
   }
-  absl::optional<base::Time> confirmed_time_from_value =
+  std::optional<base::Time> confirmed_time_from_value =
       base::ValueToTime(confirmed_time);
   if (!confirmed_time_from_value) {
     return false;
@@ -187,24 +188,24 @@ bool TxStateManager::WipeTxs() {
   }
   {
     ScopedTxsUpdate update(delegate_);
-    update->RemoveByDottedPath(GetTxPrefPathPrefix(absl::nullopt));
+    update->RemoveByDottedPath(GetTxPrefPathPrefix(std::nullopt));
   }
   return true;
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::TransactionStatus>& status,
     const mojom::AccountIdPtr& from) {
   DCHECK(from);
   return GetTransactionsByStatus(chain_id, status,
-                                 absl::make_optional(from.Clone()));
+                                 std::make_optional(from.Clone()));
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<mojom::AccountIdPtr>& from) {
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::TransactionStatus>& status,
+    const std::optional<mojom::AccountIdPtr>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   if (!delegate_->IsInitialized()) {
     return result;
@@ -249,7 +250,7 @@ void TxStateManager::RetireTxByStatus(const std::string& chain_id,
       status != mojom::TransactionStatus::Rejected) {
     return;
   }
-  auto tx_metas = GetTransactionsByStatus(chain_id, status, absl::nullopt);
+  auto tx_metas = GetTransactionsByStatus(chain_id, status, std::nullopt);
   if (tx_metas.size() > max_num) {
     TxMeta* oldest_meta = nullptr;
     for (const auto& tx_meta : tx_metas) {

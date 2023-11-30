@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -42,7 +43,7 @@ class AIChatCredentialManager {
       ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
 
   void FetchPremiumCredential(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback);
 
   void PutCredentialInCache(CredentialCacheEntry credential);
@@ -58,12 +59,12 @@ class AIChatCredentialManager {
       const std::string& summary_string);
 
   void OnGetPremiumStatus(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
       ai_chat::mojom::PremiumStatus);
 
   void OnPrepareCredentialsPresentation(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
       const std::string& domain,
       const std::string& credential_as_cookie);

@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "v8/include/v8-local-handle.h"
 #include "v8/include/v8-value.h"
 

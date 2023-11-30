@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_ZEBPAY_POST_OAUTH_ZEBPAY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_ZEBPAY_POST_OAUTH_ZEBPAY_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -14,7 +15,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /connect/token
 //
@@ -59,10 +59,10 @@ class PostOAuthZebPay final : public RequestBuilder,
   ~PostOAuthZebPay() override;
 
  private:
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
-  absl::optional<std::string> Content() const override;
+  std::optional<std::string> Content() const override;
   std::string ContentType() const override;
   bool SkipLog() const override;
 

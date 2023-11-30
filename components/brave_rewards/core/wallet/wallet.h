@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
@@ -28,7 +28,7 @@ class Wallet {
   explicit Wallet(RewardsEngineImpl& engine);
   ~Wallet();
 
-  void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
+  void CreateWalletIfNecessary(std::optional<std::string>&& geo_country,
                                CreateRewardsWalletCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);

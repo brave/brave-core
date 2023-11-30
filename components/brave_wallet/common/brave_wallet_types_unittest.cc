@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 #include <limits>
+#include <optional>
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
@@ -28,7 +29,7 @@ TEST(BraveWalletTypesTest, OverflowWorksAsExpected) {
 }
 
 TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
-  absl::optional<base::Value> value = base::JSONReader::Read(R"({
+  std::optional<base::Value> value = base::JSONReader::Read(R"({
     "slot": "18446744073709551615",
     "confirmations": "10",
     "err": "",
@@ -36,7 +37,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
   })");
   ASSERT_TRUE(value);
 
-  absl::optional<SolanaSignatureStatus> status =
+  std::optional<SolanaSignatureStatus> status =
       SolanaSignatureStatus::FromValue(value->GetDict());
   ASSERT_TRUE(status);
   EXPECT_EQ(std::numeric_limits<uint64_t>::max(), status->slot);
@@ -60,7 +61,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
       R"({"slot": "72", "confirmations": "10", "err": ""})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    absl::optional<base::Value> invalid_value =
+    std::optional<base::Value> invalid_value =
         base::JSONReader::Read(invalid_value_string);
     ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
     EXPECT_FALSE(SolanaSignatureStatus::FromValue(invalid_value->GetDict()))
@@ -94,9 +95,9 @@ TEST(BraveWalletTypesTest, ValidSolidityBits) {
   std::vector<size_t> invalid_num_bits = {0, 7, 257};
   for (size_t i : invalid_num_bits) {
     EXPECT_FALSE(ValidSolidityBits(i));
-    EXPECT_EQ(MaxSolidityUint(i), absl::nullopt);
-    EXPECT_EQ(MaxSolidityInt(i), absl::nullopt);
-    EXPECT_EQ(MinSolidityInt(i), absl::nullopt);
+    EXPECT_EQ(MaxSolidityUint(i), std::nullopt);
+    EXPECT_EQ(MaxSolidityInt(i), std::nullopt);
+    EXPECT_EQ(MinSolidityInt(i), std::nullopt);
   }
 }
 

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -46,8 +47,8 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
   MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
   MOCK_METHOD(void,
               OnActiveIndexChanged,
-              (absl::optional<size_t> old_index,
-               absl::optional<size_t> new_index),
+              (std::optional<size_t> old_index,
+               std::optional<size_t> new_index),
               (override));
   MOCK_METHOD(void,
               OnItemUpdated,
@@ -90,7 +91,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   model()->Init(nullptr);
 
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Add one more item to test with 5 items.
   SidebarItem new_item = SidebarItem::Create(
@@ -133,7 +134,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
             service()->items()[2].built_in_item_type);
   EXPECT_EQ(item_data.url, service()->items()[2].url);
   EXPECT_EQ(item_data.title, service()->items()[2].title);
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
   EXPECT_EQ(items_size, service()->items().size());
 
   model()->SetActiveIndex(1);

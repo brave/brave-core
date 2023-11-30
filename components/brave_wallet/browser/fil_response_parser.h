@@ -6,21 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
-// TODO(apaymyshev): refactor utility methods to return absl::optional instead
+// TODO(apaymyshev): refactor utility methods to return std::optional instead
 // of bool + out-parameter.
 
 namespace brave_wallet {
 
 // Returns the balance of the account of given address.
-absl::optional<std::string> ParseFilGetBalance(const base::Value& json_value);
+std::optional<std::string> ParseFilGetBalance(const base::Value& json_value);
 // Returns the transaction count of given address.
-absl::optional<uint64_t> ParseFilGetTransactionCount(
+std::optional<uint64_t> ParseFilGetTransactionCount(
     const base::Value& json_value);
 // Returns Gas estimation values.
 bool ParseFilEstimateGas(const base::Value& json_value,

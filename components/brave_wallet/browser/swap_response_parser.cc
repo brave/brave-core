@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -24,7 +25,7 @@ constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
 
-absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
+std::optional<double> ParsePriceImpactPct(const base::Value& value) {
   // null value is considered as 0 price impact.
   if (value.is_none()) {
     return 0.0;
@@ -33,13 +34,13 @@ absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
   double result;
   if (value.is_string()) {
     if (!base::StringToDouble(value.GetString(), &result)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return result;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
@@ -402,11 +403,11 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
 // Function to convert all numbers in JSON string to strings.
 //
 // For sample JSON response, refer to ParseJupiterQuote.
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json =
       std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;

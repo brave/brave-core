@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <optional>
 #include <sstream>
 #include <unordered_set>
 #include <utility>
@@ -41,7 +42,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
@@ -1248,90 +1248,90 @@ base::Value::Dict TransactionReceiptToValue(
   return dict;
 }
 
-absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+std::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value) {
   TransactionReceipt tx_receipt;
   const std::string* transaction_hash = value.FindString("transaction_hash");
   if (!transaction_hash) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.transaction_hash = *transaction_hash;
 
   const std::string* transaction_index = value.FindString("transaction_index");
   if (!transaction_index) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint256_t transaction_index_uint;
   if (!HexValueToUint256(*transaction_index, &transaction_index_uint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.transaction_index = transaction_index_uint;
 
   const std::string* block_hash = value.FindString("block_hash");
   if (!block_hash) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.block_hash = *block_hash;
 
   const std::string* block_number = value.FindString("block_number");
   if (!block_number) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint256_t block_number_uint;
   if (!HexValueToUint256(*block_number, &block_number_uint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.block_number = block_number_uint;
 
   const std::string* from = value.FindString("from");
   if (!from) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.from = *from;
 
   const std::string* to = value.FindString("to");
   if (!to) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.to = *to;
 
   const std::string* cumulative_gas_used =
       value.FindString("cumulative_gas_used");
   if (!cumulative_gas_used) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint256_t cumulative_gas_used_uint;
   if (!HexValueToUint256(*cumulative_gas_used, &cumulative_gas_used_uint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.cumulative_gas_used = cumulative_gas_used_uint;
 
   const std::string* gas_used = value.FindString("gas_used");
   if (!gas_used) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint256_t gas_used_uint;
   if (!HexValueToUint256(*gas_used, &gas_used_uint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.gas_used = gas_used_uint;
 
   const std::string* contract_address = value.FindString("contract_address");
   if (!contract_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.contract_address = *contract_address;
 
   // TODO(darkdh): logs
   const std::string* logs_bloom = value.FindString("logs_bloom");
   if (!logs_bloom) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.logs_bloom = *logs_bloom;
 
-  absl::optional<bool> status = value.FindBool("status");
+  std::optional<bool> status = value.FindBool("status");
   if (!status) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx_receipt.status = *status;
 
@@ -1585,9 +1585,9 @@ std::string GetNetworkId(PrefService* prefs,
   return base::ToLowerASCII(id);
 }
 
-absl::optional<std::string> GetChainId(PrefService* prefs,
-                                       const mojom::CoinType& coin,
-                                       const std::string& network_id) {
+std::optional<std::string> GetChainId(PrefService* prefs,
+                                      const mojom::CoinType& coin,
+                                      const std::string& network_id) {
   std::vector<mojom::NetworkInfoPtr> networks = GetAllChains(prefs, coin);
   for (const auto& network : networks) {
     std::string id = GetKnownNetworkId(coin, network->chain_id);
@@ -1595,22 +1595,22 @@ absl::optional<std::string> GetChainId(PrefService* prefs,
       return network->chain_id;
     }
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::string> GetChainIdByNetworkId(
+std::optional<std::string> GetChainIdByNetworkId(
     PrefService* prefs,
     const mojom::CoinType& coin,
     const std::string& network_id) {
   if (network_id.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   for (const auto& network : GetAllChains(prefs, coin)) {
     if (network_id == GetNetworkId(prefs, coin, network->chain_id)) {
       return network->chain_id;
     }
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
@@ -1806,7 +1806,7 @@ void RemoveHiddenNetwork(PrefService* prefs,
 
 std::string GetCurrentChainId(PrefService* prefs,
                               mojom::CoinType coin,
-                              const absl::optional<url::Origin>& origin) {
+                              const std::optional<url::Origin>& origin) {
   if (!origin) {
     return GetCurrentChainId(prefs, coin);
   }
@@ -1827,7 +1827,7 @@ std::string GetCurrentChainId(PrefService* prefs,
 
 bool SetCurrentChainId(PrefService* prefs,
                        mojom::CoinType coin,
-                       const absl::optional<url::Origin>& origin,
+                       const std::optional<url::Origin>& origin,
                        const std::string& chain_id) {
   // We cannot switch to an unknown chain_id
   if (!KnownChainExists(chain_id, coin) &&
@@ -1872,7 +1872,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   return "";
 }
 
-absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
+std::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
   if (key == kEthereumPrefKey) {
     return mojom::CoinType::ETH;
   } else if (key == kFilecoinPrefKey) {
@@ -1885,7 +1885,7 @@ absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
     return mojom::CoinType::ZEC;
   }
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 std::string eTLDPlusOne(const url::Origin& origin) {

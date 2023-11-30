@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
+#include <optional>
 #include <vector>
 
 #include "base/command_line.h"
@@ -28,7 +29,7 @@ bool ReadBoolFlag(const std::string& value) {
 }
 
 template <typename F>
-absl::optional<int> ReadInt(const std::string& value, F fn) {
+std::optional<int> ReadInt(const std::string& value, F fn) {
   int int_value;
   if (base::StringToInt(value, &int_value) && fn(int_value)) {
     return int_value;
@@ -36,7 +37,7 @@ absl::optional<int> ReadInt(const std::string& value, F fn) {
   return {};
 }
 
-absl::optional<int> ReadPositiveInt(const std::string& value) {
+std::optional<int> ReadPositiveInt(const std::string& value) {
   return ReadInt(value, [](int v) { return v > 0; });
 }
 
@@ -101,7 +102,7 @@ const std::string& RewardsFlags::GetCommandLineSwitchASCII() {
 }
 
 const RewardsFlags& RewardsFlags::ForCurrentProcess() {
-  static absl::optional<RewardsFlags> parsed_flags;
+  static std::optional<RewardsFlags> parsed_flags;
 
   if (parsed_flags && !g_force_parsing_for_testing) {
     return *parsed_flags;

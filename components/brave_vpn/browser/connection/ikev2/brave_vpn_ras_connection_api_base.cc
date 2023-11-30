@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -307,8 +308,7 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : received profile credential";
 
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(profile_credential);
+  std::optional<base::Value> value = base::JSONReader::Read(profile_credential);
   if (value && value->is_dict()) {
     constexpr char kUsernameKey[] = "eap-username";
     constexpr char kPasswordKey[] = "eap-password";

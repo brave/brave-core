@@ -5,6 +5,8 @@
 
 #include "brave/browser/notifications/ads_notification_handler.h"
 
+#include <optional>
+
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "url/gurl.h"
 
@@ -41,13 +43,12 @@ void AdsNotificationHandler::OnClose(Profile* profile,
   ads_service->OnNotificationAdClosed(id, by_user);
 }
 
-void AdsNotificationHandler::OnClick(
-    Profile* profile,
-    const GURL& origin,
-    const std::string& id,
-    const absl::optional<int>& action_index,
-    const absl::optional<std::u16string>& reply,
-    base::OnceClosure completed_closure) {
+void AdsNotificationHandler::OnClick(Profile* profile,
+                                     const GURL& origin,
+                                     const std::string& id,
+                                     const std::optional<int>& action_index,
+                                     const std::optional<std::u16string>& reply,
+                                     base::OnceClosure completed_closure) {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;

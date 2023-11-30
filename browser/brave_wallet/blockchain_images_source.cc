@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -21,10 +22,10 @@ namespace brave_wallet {
 
 namespace {
 
-absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
+std::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return absl::optional<std::string>();
+    return std::optional<std::string>();
   }
   return contents;
 }
@@ -48,7 +49,7 @@ void BlockchainImagesSource::StartDataRequest(
 
   const std::string path = URLDataSource::URLToRequestPath(url);
 
-  absl::optional<base::Version> version =
+  std::optional<base::Version> version =
       brave_wallet::GetLastInstalledWalletVersion();
   if (!version) {
     scoped_refptr<base::RefCountedMemory> bytes;
@@ -68,7 +69,7 @@ void BlockchainImagesSource::StartDataRequest(
 }
 
 void BlockchainImagesSource::OnGotImageFile(GotDataCallback callback,
-                                            absl::optional<std::string> input) {
+                                            std::optional<std::string> input) {
   scoped_refptr<base::RefCountedMemory> bytes;
   if (!input) {
     std::move(callback).Run(std::move(bytes));

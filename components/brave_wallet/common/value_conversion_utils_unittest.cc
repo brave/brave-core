@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -420,8 +421,8 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   std::string* type = caveats0.FindString("type");
   ASSERT_NE(type, nullptr);
   EXPECT_EQ(*type, "limitResponseLength");
-  absl::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
-  ASSERT_NE(primary_accounts_only_value, absl::nullopt);
+  std::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
+  ASSERT_NE(primary_accounts_only_value, std::nullopt);
   EXPECT_EQ(*primary_accounts_only_value, 1);
 
   auto& caveats1 = (*caveats)[1].GetDict();
@@ -442,8 +443,8 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   ASSERT_EQ(context->size(), 1UL);
   EXPECT_EQ((*context)[0], base::Value("https://github.com/MetaMask/rpc-cap"));
 
-  absl::optional<double> date = param0.FindDouble("date");
-  ASSERT_NE(date, absl::nullopt);
+  std::optional<double> date = param0.FindDouble("date");
+  ASSERT_NE(date, std::nullopt);
 
   std::string* id = param0.FindString("id");
   ASSERT_NE(id, nullptr);

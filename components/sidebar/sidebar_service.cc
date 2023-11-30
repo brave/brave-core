@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <codecvt>
 #include <iterator>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -32,7 +33,6 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
@@ -431,7 +431,7 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
   return static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
 }
 
-absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
+std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   // A list of preferred item types
   // Use this order for picking active panel when panel is opened as
   // we don't cache previous active panel.
@@ -441,7 +441,7 @@ absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
       SidebarItem::BuiltInItemType::kPlaylist,
       SidebarItem::BuiltInItemType::kChatUI};
 
-  absl::optional<SidebarItem> default_item;
+  std::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
     auto found_item_iter =
         base::ranges::find(items_, type, &SidebarItem::built_in_item_type);

@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/greaselion_api.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/values.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
@@ -25,7 +26,7 @@ GreaselionIsGreaselionExtensionFunction::Run() {
     return RespondNow(WithArguments(false));
   }
 
-  absl::optional<greaselion::IsGreaselionExtension::Params> params =
+  std::optional<greaselion::IsGreaselionExtension::Params> params =
       greaselion::IsGreaselionExtension::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

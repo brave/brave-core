@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_KEYRING_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,14 +23,14 @@ class BitcoinKeyring : public HDKeyring {
   BitcoinKeyring(const BitcoinKeyring&) = delete;
   BitcoinKeyring& operator=(const BitcoinKeyring&) = delete;
 
-  absl::optional<std::string> GetAddress(uint32_t account,
-                                         const mojom::BitcoinKeyId& key_id);
+  std::optional<std::string> GetAddress(uint32_t account,
+                                        const mojom::BitcoinKeyId& key_id);
 
-  absl::optional<std::vector<uint8_t>> GetPubkey(
+  std::optional<std::vector<uint8_t>> GetPubkey(
       uint32_t account,
       const mojom::BitcoinKeyId& key_id);
 
-  absl::optional<std::vector<uint8_t>> SignMessage(
+  std::optional<std::vector<uint8_t>> SignMessage(
       uint32_t account,
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);

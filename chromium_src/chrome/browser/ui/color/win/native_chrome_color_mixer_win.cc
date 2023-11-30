@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/callback_list.h"
 #include "base/no_destructor.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/color/win/accent_color_observer.h"
 
@@ -27,11 +28,9 @@ class FakeAccentColorObserver {
     return callbacks_.Add(std::move(callback));
   }
 
-  absl::optional<SkColor> accent_color() const { return absl::nullopt; }
-  absl::optional<SkColor> accent_color_inactive() const {
-    return absl::nullopt;
-  }
-  absl::optional<SkColor> accent_border_color() const { return absl::nullopt; }
+  std::optional<SkColor> accent_color() const { return std::nullopt; }
+  std::optional<SkColor> accent_color_inactive() const { return std::nullopt; }
+  std::optional<SkColor> accent_border_color() const { return std::nullopt; }
   bool use_dwm_frame_color() const { return false; }
 
  private:

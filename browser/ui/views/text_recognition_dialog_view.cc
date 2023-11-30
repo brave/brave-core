@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/text_recognition_dialog_view.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -56,7 +57,7 @@ class TargetLanguageComboboxModel : public ui::ComboboxModel {
     return base::UTF8ToUTF16(languages_[index]);
   }
 
-  absl::optional<size_t> GetDefaultIndex() const override { return 0; }
+  std::optional<size_t> GetDefaultIndex() const override { return 0; }
 
  private:
   const std::vector<std::string> languages_;
@@ -151,7 +152,7 @@ void TextRecognitionDialogView::StartExtractingText(
     const std::string& language_code) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  result_ = absl::nullopt;
+  result_ = std::nullopt;
   show_result_timer_.Reset();
 
   if (image_.empty()) {

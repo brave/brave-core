@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "content/browser/attribution_reporting/attribution_storage_delegate_impl.h"
 
 #define GetNullAggregatableReports GetNullAggregatableReports_ChromiumImpl
@@ -15,7 +17,7 @@ std::vector<AttributionStorageDelegate::NullAggregatableReport>
 AttributionStorageDelegateImpl::GetNullAggregatableReports(
     const AttributionTrigger& trigger,
     base::Time trigger_time,
-    absl::optional<base::Time> attributed_source_time) const {
+    std::optional<base::Time> attributed_source_time) const {
   return {};
 }
 

@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,6 @@
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -105,7 +105,7 @@ class AdBlockService {
       bool previously_matched_rule,
       bool previously_matched_exception,
       bool previously_matched_important);
-  absl::optional<std::string> GetCspDirectives(
+  std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <set>
 #include <tuple>
 #include <utility>
@@ -140,7 +141,7 @@ void EthTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_eth_tx_data() ||
          tx_data_union->is_eth_tx_data_1559());
@@ -246,7 +247,7 @@ void EthTxManager::OnGetGasPrice(const std::string& chain_id,
 void EthTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     std::unique_ptr<EthTransaction> tx,
     AddUnapprovedTransactionCallback callback,
     bool sign_only,
@@ -393,7 +394,7 @@ void EthTxManager::GetNonceForHardwareTransaction(
       GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   if (!meta->tx()->nonce()) {
@@ -445,12 +446,12 @@ void EthTxManager::OnGetNextNonceForHardware(
     tx_state_manager_->AddOrUpdateTx(*meta);
     VLOG(1) << __FUNCTION__
             << "GetNextNonce failed for tx with meta:" << meta->id();
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   meta->tx()->set_nonce(nonce);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   std::move(callback).Run(Uint256ValueToHex(nonce));
@@ -668,8 +669,7 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
 void EthTxManager::MakeFilForwarderTransferData(
     const FilAddress& fil_address,
     MakeFilForwarderDataCallback callback) {
-  absl::optional<std::vector<uint8_t>> data =
-      filforwarder::Forward(fil_address);
+  std::optional<std::vector<uint8_t>> data = filforwarder::Forward(fil_address);
 
   if (!data) {
     LOG(ERROR) << "Could not make transfer data";
@@ -764,7 +764,7 @@ void EthTxManager::MakeERC721TransferFromData(
   }
 
   const std::string chain_id =
-      json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, absl::nullopt);
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, std::nullopt);
   // Check if safeTransferFrom is supported first.
   json_rpc_service_->GetSupportsInterface(
       contract_address, kERC721InterfaceId, chain_id,
@@ -966,7 +966,7 @@ void EthTxManager::SetNonceForUnapprovedTransaction(
   }
 
   if (nonce.empty()) {
-    tx_meta->tx()->set_nonce(absl::nullopt);
+    tx_meta->tx()->set_nonce(std::nullopt);
   } else {
     uint256_t nonce_uint;
     if (!HexValueToUint256(nonce, &nonce_uint)) {
@@ -995,7 +995,7 @@ void EthTxManager::OnNewBlock(const std::string& chain_id,
 }
 
 void EthTxManager::UpdatePendingTransactions(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   std::set<std::string> pending_chain_ids;
   if (pending_tx_tracker_->UpdatePendingTransactions(chain_id,
                                                      &pending_chain_ids)) {
@@ -1062,7 +1062,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
 void EthTxManager::ContinueSpeedupOrCancelTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     const std::string& gas_limit,
     std::unique_ptr<EthTransaction> tx,
     SpeedupOrCancelTransactionCallback callback,
@@ -1103,7 +1103,7 @@ void EthTxManager::ContinueSpeedupOrCancelTransaction(
 void EthTxManager::ContinueSpeedupOrCancel1559Transaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     const std::string& gas_limit,
     std::unique_ptr<Eip1559Transaction> tx,
     SpeedupOrCancelTransactionCallback callback,

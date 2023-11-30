@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_COMPILED_INSTRUCTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_COMPILED_INSTRUCTION_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -33,11 +33,11 @@ class SolanaCompiledInstruction {
   bool operator==(const SolanaCompiledInstruction& ins) const;
 
   void Serialize(std::vector<uint8_t>* bytes) const;
-  static absl::optional<SolanaCompiledInstruction> Deserialize(
+  static std::optional<SolanaCompiledInstruction> Deserialize(
       const std::vector<uint8_t>& bytes,
       size_t* bytes_index);
 
-  static absl::optional<SolanaCompiledInstruction> FromInstruction(
+  static std::optional<SolanaCompiledInstruction> FromInstruction(
       const SolanaInstruction& instruction,
       const std::vector<SolanaAddress>& static_accounts,
       const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,

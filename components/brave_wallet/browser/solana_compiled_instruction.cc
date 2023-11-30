@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
 
+#include <optional>
+
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -14,22 +16,22 @@ namespace brave_wallet {
 
 namespace {
 
-absl::optional<uint8_t> FindIndexInStaticAccounts(
+std::optional<uint8_t> FindIndexInStaticAccounts(
     const std::vector<SolanaAddress>& keys,
     const std::string& target_key) {
   if (keys.size() > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto it = base::ranges::find_if(keys, [&](const SolanaAddress& key) {
     return key.ToBase58() == target_key;
   });
   if (it == keys.end()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return it - keys.begin();
 }
 
-absl::optional<uint8_t> FindIndexInAddressTableLookups(
+std::optional<uint8_t> FindIndexInAddressTableLookups(
     const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
     const SolanaAccountMeta& account,
     uint8_t num_of_static_accounts,
@@ -55,7 +57,7 @@ absl::optional<uint8_t> FindIndexInAddressTableLookups(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
@@ -81,7 +83,7 @@ bool SolanaCompiledInstruction::operator==(
 }
 
 // static
-absl::optional<SolanaCompiledInstruction>
+std::optional<SolanaCompiledInstruction>
 SolanaCompiledInstruction::FromInstruction(
     const SolanaInstruction& instruction,
     const std::vector<SolanaAddress>& static_accounts,
@@ -92,24 +94,24 @@ SolanaCompiledInstruction::FromInstruction(
   auto program_id_index =
       FindIndexInStaticAccounts(static_accounts, instruction.GetProgramId());
   if (!program_id_index) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> account_indexes;
   for (const auto& account : instruction.GetAccounts()) {
-    absl::optional<uint8_t> account_index;
+    std::optional<uint8_t> account_index;
     if (!account.address_table_lookup_index) {  // static accounts
       account_index =
           FindIndexInStaticAccounts(static_accounts, account.pubkey);
       if (!account_index) {
-        return absl::nullopt;
+        return std::nullopt;
       }
     } else {  // dynamic loaded accounts
       account_index = FindIndexInAddressTableLookups(
           addr_table_lookups, account, static_accounts.size(),
           num_of_total_write_indexes);
       if (!account_index) {
-        return absl::nullopt;
+        return std::nullopt;
       }
     }
     account_indexes.emplace_back(*account_index);
@@ -132,20 +134,20 @@ void SolanaCompiledInstruction::Serialize(std::vector<uint8_t>* bytes) const {
 }
 
 // static
-absl::optional<SolanaCompiledInstruction>
-SolanaCompiledInstruction::Deserialize(const std::vector<uint8_t>& bytes,
-                                       size_t* bytes_index) {
+std::optional<SolanaCompiledInstruction> SolanaCompiledInstruction::Deserialize(
+    const std::vector<uint8_t>& bytes,
+    size_t* bytes_index) {
   DCHECK(bytes_index);
 
   if (*bytes_index >= bytes.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint8_t program_id_index = bytes[(*bytes_index)++];
 
   auto account_indexes = CompactArrayDecode(bytes, bytes_index);
   auto data = CompactArrayDecode(bytes, bytes_index);
   if (!account_indexes || !data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaCompiledInstruction(program_id_index, *account_indexes, *data);

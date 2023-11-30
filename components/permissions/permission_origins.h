@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_ORIGINS_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_ORIGINS_H_
 
+#include <optional>
 #include <string>
 
 #include "components/content_settings/core/common/content_settings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace permissions {
@@ -40,7 +40,7 @@ class PermissionOrigins {
 
  private:
   GURL requesting_origin_;
-  absl::optional<GURL> embedding_origin_;
+  std::optional<GURL> embedding_origin_;
   ContentSetting content_setting_;
 };
 

@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/reward_confirmation_payload_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::json::writer {
 

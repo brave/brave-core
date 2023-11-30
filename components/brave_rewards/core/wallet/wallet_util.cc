@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/functional/overloaded.h"
@@ -52,7 +53,7 @@ std::string WalletTypeToState(const std::string& wallet_type) {
 
 void OnWalletStatusChange(RewardsEngineImpl& engine,
                           const std::string& wallet_type,
-                          absl::optional<mojom::WalletStatus> from,
+                          std::optional<mojom::WalletStatus> from,
                           mojom::WalletStatus to) {
   std::ostringstream oss{};
   if (from) {
@@ -68,7 +69,7 @@ void OnWalletStatusChange(RewardsEngineImpl& engine,
 
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
                                                    std::string wallet_type) {
-  absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
+  std::optional<base::Value> value = base::JSONReader::Read(wallet_string);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of " + wallet_type + " wallet failed");
     return nullptr;
@@ -294,7 +295,7 @@ mojom::ExternalWalletPtr TransitionWallet(
     RewardsEngineImpl& engine,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to) {
-  absl::optional<mojom::WalletStatus> from;
+  std::optional<mojom::WalletStatus> from;
 
   auto wallet = absl::visit(
       base::Overloaded{

@@ -6,14 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_COOKIE_ACCESS_DELEGATE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_COOKIE_ACCESS_DELEGATE_IMPL_H_
 
+#include <optional>
+
 #include "net/cookies/cookie_access_delegate.h"
 
-#define ShouldTreatUrlAsTrustworthy                                        \
-  NotUsed() const override;                                                \
-  bool ShouldUseEphemeralStorage(                                          \
-      const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      net::CookieSettingOverrides overrides,                               \
-      const absl::optional<url::Origin>& top_frame_origin) const override; \
+#define ShouldTreatUrlAsTrustworthy                                       \
+  NotUsed() const override;                                               \
+  bool ShouldUseEphemeralStorage(                                         \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,       \
+      net::CookieSettingOverrides overrides,                              \
+      const std::optional<url::Origin>& top_frame_origin) const override; \
   bool ShouldTreatUrlAsTrustworthy
 
 #include "src/services/network/cookie_access_delegate_impl.h"  // IWYU pragma: export

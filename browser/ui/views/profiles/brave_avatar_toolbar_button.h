@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_H_
 
+#include <optional>
+
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 
 class BrowserView;
@@ -21,7 +23,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
 
   // ToolbarButton:
   void SetHighlight(const std::u16string& highlight_text,
-                    absl::optional<SkColor> highlight_color) override;
+                    std::optional<SkColor> highlight_color) override;
   void UpdateColorsAndInsets() override;
   void OnThemeChanged() override;
 

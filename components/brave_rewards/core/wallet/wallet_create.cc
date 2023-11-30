@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/security_util.h"
@@ -50,7 +51,7 @@ mojom::CreateRewardsWalletResult MapEndpointError(PatchWallets::Error error) {
 
 WalletCreate::WalletCreate(RewardsEngineImpl& engine) : engine_(engine) {}
 
-void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
+void WalletCreate::CreateWallet(std::optional<std::string>&& geo_country,
                                 CreateRewardsWalletCallback callback) {
   bool corrupted = false;
   auto wallet = engine_->wallet()->GetWallet(&corrupted);
@@ -99,7 +100,7 @@ inline constexpr bool dependent_false_v = false;
 
 template <typename Result>
 void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
-                            absl::optional<std::string>&& geo_country,
+                            std::optional<std::string>&& geo_country,
                             Result&& result) {
   if (!result.has_value()) {
     if constexpr (std::is_same_v<Result, PostWallets::Result>) {

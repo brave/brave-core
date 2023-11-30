@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -31,32 +33,32 @@ void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16) {
   }
 }
 
-absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
+std::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
     const std::vector<uint8_t>& bytes,
     size_t start_index) {
   uint32_t val = 0;
   for (size_t i = 0; i + start_index < bytes.size(); ++i) {
     if (i == 3) {  // TooLong error.
-      return absl::nullopt;
+      return std::nullopt;
     }
     uint32_t elem = bytes[i + start_index];
     uint32_t elem_val = elem & 0x7f;
     uint32_t elem_done = (elem & 0x80) == 0;
 
     if (i == 2 && !elem_done) {  // ByteThreeContinues error.
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     // Alias error.
     if (elem == 0 && i != 0) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     val |= (elem_val) << (i * 7);
 
     // Overflow error.
     if (val > UINT16_MAX) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     if (elem_done) {
@@ -64,7 +66,7 @@ absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 bool IsBase58EncodedSolanaPubkey(const std::string& key) {
@@ -96,7 +98,7 @@ bool Uint8ArrayDecode(const std::string& str,
   return true;
 }
 
-absl::optional<std::vector<uint8_t>> CompactArrayDecode(
+std::optional<std::vector<uint8_t>> CompactArrayDecode(
     const std::vector<uint8_t>& bytes,
     size_t* bytes_index) {
   DCHECK(bytes_index);
@@ -104,32 +106,32 @@ absl::optional<std::vector<uint8_t>> CompactArrayDecode(
   // Decode length.
   auto ret = CompactU16Decode(bytes, *bytes_index);
   if (!ret) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const uint16_t array_length = std::get<0>(*ret);
   *bytes_index +=
       std::get<1>(*ret) /* array_length for encoded length */ + array_length;
   if (*bytes_index > bytes.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::vector<uint8_t>(bytes.begin() + *bytes_index - array_length,
                               bytes.begin() + *bytes_index);
 }
 
-absl::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
-                                               const std::string& key) {
+std::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
+                                              const std::string& key) {
   const std::string* string_value = dict.FindString(key);
   if (!string_value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   unsigned val = 0;
   if (!base::StringToUint(*string_value, &val)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (val > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return val;

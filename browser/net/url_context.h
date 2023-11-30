@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_NET_URL_CONTEXT_H_
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 
@@ -15,7 +16,6 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/referrer_policy.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -73,9 +73,9 @@ struct BraveRequestInfo {
   GURL referrer;
   net::ReferrerPolicy referrer_policy =
       net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
-  absl::optional<GURL> new_referrer;
+  std::optional<GURL> new_referrer;
 
-  absl::optional<int> pending_error;
+  std::optional<int> pending_error;
   std::string new_url_spec;
   // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;

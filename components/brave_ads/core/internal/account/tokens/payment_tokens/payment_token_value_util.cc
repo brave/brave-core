@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -28,13 +28,13 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens) {
-    const absl::optional<std::string> unblinded_token_base64 =
+    const std::optional<std::string> unblinded_token_base64 =
         payment_token.unblinded_token.EncodeBase64();
     if (!unblinded_token_base64) {
       continue;
     }
 
-    const absl::optional<std::string> public_key_base64 =
+    const std::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
     if (!public_key_base64) {
       continue;

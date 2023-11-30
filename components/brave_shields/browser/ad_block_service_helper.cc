@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -16,8 +17,8 @@ namespace brave_shields {
 //
 // Distinct policies are merged with comma separators, according to
 // https://www.w3.org/TR/CSP2/#implementation-considerations
-void MergeCspDirectiveInto(absl::optional<std::string> from,
-                           absl::optional<std::string>* into) {
+void MergeCspDirectiveInto(std::optional<std::string> from,
+                           std::optional<std::string>* into) {
   DCHECK(into);
 
   if (!from) {
@@ -32,7 +33,7 @@ void MergeCspDirectiveInto(absl::optional<std::string> from,
   const std::string from_str = *from;
   const std::string into_str = **into;
 
-  *into = absl::optional<std::string>(from_str + ", " + into_str);
+  *into = std::optional<std::string>(from_str + ", " + into_str);
 }
 
 // Merges the contents of the first UrlCosmeticResources Value into the second

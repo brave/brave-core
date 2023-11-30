@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_DNS_RESOLVER_IMPL_H_
 #define BRAVE_BROWSER_IPFS_IPFS_DNS_RESOLVER_IMPL_H_
 
-#include "brave/components/ipfs/ipfs_dns_resolver.h"
-
+#include <optional>
 #include <string>
 
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
+#include "brave/components/ipfs/ipfs_dns_resolver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/mojom/host_resolver.mojom.h"
@@ -33,7 +33,7 @@ class IpfsDnsResolverImpl
   void OnDnsConfigChanged() override;
   void OnDnsConfigChangeManagerConnectionError();
 
-  absl::optional<std::string> GetFirstDnsOverHttpsServer() override;
+  std::optional<std::string> GetFirstDnsOverHttpsServer() override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsDnsResolverImplUnitTest, ReconnectOnMojoError);

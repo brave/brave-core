@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
+
 #include <map>
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
@@ -356,8 +358,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
       .Times(1)
       .WillOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(capabilities.can_receive, absl::nullopt);
-        EXPECT_EQ(capabilities.can_send, absl::nullopt);
+        EXPECT_EQ(capabilities.can_receive, std::nullopt);
+        EXPECT_EQ(capabilities.can_send, std::nullopt);
       });
   get_capabilities_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                             callback.Get());
@@ -379,8 +381,8 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
       .Times(1)
       .WillOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::FAILED);
-        EXPECT_EQ(capabilities.can_receive, absl::nullopt);
-        EXPECT_EQ(capabilities.can_send, absl::nullopt);
+        EXPECT_EQ(capabilities.can_receive, std::nullopt);
+        EXPECT_EQ(capabilities.can_send, std::nullopt);
       });
   get_capabilities_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                             callback.Get());

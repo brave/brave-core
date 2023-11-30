@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
@@ -46,7 +48,7 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->chain_id, meta.chain_id());
-  EXPECT_EQ(ti->from_address, absl::nullopt);
+  EXPECT_EQ(ti->from_address, std::nullopt);
   EXPECT_EQ(ti->from_account_id, btc_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_btc_tx_data());

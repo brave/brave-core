@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_P3A_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -107,7 +109,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
-  absl::optional<mojom::OnboardingAction> GetLastOnboardingAction();
+  std::optional<mojom::OnboardingAction> GetLastOnboardingAction();
   void RecordOnboardingHistogram();
   void MaybeRecordNewUserBalance();
   void ReportNftDiscoverySetting();

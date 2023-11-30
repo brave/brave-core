@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -488,7 +489,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  absl::optional<base::Value::Dict> data =
+  std::optional<base::Value::Dict> data =
       service->GetCurrentWallpaperForDisplay();
 
   if (!data) {

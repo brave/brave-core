@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_URL_RESPONSE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_URL_RESPONSE_UTIL_H_
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
+std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const mojom::UrlRequestInfoPtr& url_request,
     const URLResponseMap& url_responses);
 

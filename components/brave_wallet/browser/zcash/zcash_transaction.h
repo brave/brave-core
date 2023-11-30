@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_H_
 
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -30,7 +30,7 @@ class ZCashTransaction {
     bool operator!=(const Outpoint& other) const;
 
     base::Value::Dict ToValue() const;
-    static absl::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
     std::array<uint8_t, 32> txid;
     uint32_t index = 0;
@@ -48,10 +48,10 @@ class ZCashTransaction {
 
     TxInput Clone() const;
     base::Value::Dict ToValue() const;
-    static absl::optional<TxInput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
-    static absl::optional<TxInput> FromRpcUtxo(const std::string& address,
-                                               const zcash::ZCashUtxo& utxo);
+    static std::optional<TxInput> FromRpcUtxo(const std::string& address,
+                                              const zcash::ZCashUtxo& utxo);
 
     std::string utxo_address;
     Outpoint utxo_outpoint;
@@ -76,7 +76,7 @@ class ZCashTransaction {
 
     TxOutput Clone() const;
     base::Value::Dict ToValue() const;
-    static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
     std::string address;
     std::vector<uint8_t> script_pubkey;
@@ -94,7 +94,7 @@ class ZCashTransaction {
 
   ZCashTransaction Clone() const;
   base::Value::Dict ToValue() const;
-  static absl::optional<ZCashTransaction> FromValue(
+  static std::optional<ZCashTransaction> FromValue(
       const base::Value::Dict& value);
 
   bool IsSigned() const;

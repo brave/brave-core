@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,7 +19,6 @@
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "extensions/common/extension_id.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -73,7 +73,7 @@ class GreaselionServiceImpl : public GreaselionService,
   void SetBrowserVersionForTesting(const base::Version& version) override;
   void CreateAndInstallExtensions();
   void PostConvert(
-      absl::optional<GreaselionConvertedExtension> converted_extension);
+      std::optional<GreaselionConvertedExtension> converted_extension);
   void Install(scoped_refptr<extensions::Extension> extension);
   void MaybeNotifyObservers();
 

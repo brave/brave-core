@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
 #include <cstdint>
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -49,7 +49,7 @@ void InlineContentAdServing::MaybeServeAd(
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   if (!tab) {
     return FailedToServeAd(dimensions, std::move(callback));
   }
@@ -145,7 +145,7 @@ void InlineContentAdServing::FailedToServeAd(
     MaybeServeInlineContentAdCallback callback) const {
   NotifyFailedToServeInlineContentAd();
 
-  std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
+  std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
 }
 
 void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd()

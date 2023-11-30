@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -38,7 +38,7 @@ struct ConversionInfo final {
   std::string advertiser_id;
   std::string segment;
   ConversionActionType action_type = ConversionActionType::kUndefined;
-  absl::optional<VerifiableConversionInfo> verifiable;
+  std::optional<VerifiableConversionInfo> verifiable;
 };
 
 using ConversionList = std::vector<ConversionInfo>;

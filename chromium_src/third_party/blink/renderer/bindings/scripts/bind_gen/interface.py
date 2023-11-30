@@ -220,7 +220,7 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
                             or cg_context.return_type.unwrap().is_void)
                            and not cg_context.does_override_idl_return_type)
     if is_return_type_void or hasattr(cg_context, _IS_OBSERVABLE_ARRAY_SETTER):
-        return_value = "absl::nullopt"
+        return_value = "std::nullopt"
     else:
         return_value = _to_page_graph_blink_arg("return_value")
 

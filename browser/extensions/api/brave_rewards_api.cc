@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -200,7 +201,7 @@ BraveRewardsUpdateMediaDurationFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsUpdateMediaDurationFunction::Run() {
-  absl::optional<brave_rewards::UpdateMediaDuration::Params> params =
+  std::optional<brave_rewards::UpdateMediaDuration::Params> params =
       brave_rewards::UpdateMediaDuration::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -222,7 +223,7 @@ BraveRewardsGetPublisherInfoFunction::~BraveRewardsGetPublisherInfoFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetPublisherInfoFunction::Run() {
-  absl::optional<brave_rewards::GetPublisherInfo::Params> params =
+  std::optional<brave_rewards::GetPublisherInfo::Params> params =
       brave_rewards::GetPublisherInfo::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -343,7 +344,7 @@ BraveRewardsGetPublisherPanelInfoFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetPublisherPanelInfoFunction::Run() {
-  absl::optional<brave_rewards::GetPublisherPanelInfo::Params> params =
+  std::optional<brave_rewards::GetPublisherPanelInfo::Params> params =
       brave_rewards::GetPublisherPanelInfo::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -390,7 +391,7 @@ BraveRewardsSavePublisherInfoFunction::
     ~BraveRewardsSavePublisherInfoFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
-  absl::optional<brave_rewards::SavePublisherInfo::Params> params =
+  std::optional<brave_rewards::SavePublisherInfo::Params> params =
       brave_rewards::SavePublisherInfo::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -425,7 +426,7 @@ void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
-  absl::optional<brave_rewards::TipSite::Params> params =
+  std::optional<brave_rewards::TipSite::Params> params =
       brave_rewards::TipSite::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -450,7 +451,7 @@ BraveRewardsIncludeInAutoContributionFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsIncludeInAutoContributionFunction::Run() {
-  absl::optional<brave_rewards::IncludeInAutoContribution::Params> params =
+  std::optional<brave_rewards::IncludeInAutoContribution::Params> params =
       brave_rewards::IncludeInAutoContribution::Params::Create(args());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -466,7 +467,7 @@ BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
-  absl::optional<brave_rewards::GetPublisherData::Params> params =
+  std::optional<brave_rewards::GetPublisherData::Params> params =
       brave_rewards::GetPublisherData::Params::Create(args());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
@@ -696,7 +697,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
     return RespondNow(Error("Rewards service is not available"));
   }
 
-  absl::optional<brave_rewards::GetBalanceReport::Params> params =
+  std::optional<brave_rewards::GetBalanceReport::Params> params =
       brave_rewards::GetBalanceReport::Params::Create(args());
 
   rewards_service->GetBalanceReport(
@@ -756,7 +757,7 @@ BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
-  absl::optional<brave_rewards::ClaimPromotion::Params> params =
+  std::optional<brave_rewards::ClaimPromotion::Params> params =
       brave_rewards::ClaimPromotion::Params::Create(args());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -791,7 +792,7 @@ BraveRewardsAttestPromotionFunction::~BraveRewardsAttestPromotionFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
-  absl::optional<brave_rewards::AttestPromotion::Params> params =
+  std::optional<brave_rewards::AttestPromotion::Params> params =
       brave_rewards::AttestPromotion::Params::Create(args());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -830,7 +831,7 @@ BraveRewardsSetAutoContributeEnabledFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsSetAutoContributeEnabledFunction::Run() {
-  absl::optional<brave_rewards::SetAutoContributeEnabled::Params> params =
+  std::optional<brave_rewards::SetAutoContributeEnabled::Params> params =
       brave_rewards::SetAutoContributeEnabled::Params::Create(args());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -868,7 +869,7 @@ BraveRewardsSaveRecurringTipFunction::~BraveRewardsSaveRecurringTipFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
-  absl::optional<brave_rewards::SaveRecurringTip::Params> params =
+  std::optional<brave_rewards::SaveRecurringTip::Params> params =
       brave_rewards::SaveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -899,7 +900,7 @@ BraveRewardsRemoveRecurringTipFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsRemoveRecurringTipFunction::Run() {
-  absl::optional<brave_rewards::RemoveRecurringTip::Params> params =
+  std::optional<brave_rewards::RemoveRecurringTip::Params> params =
       brave_rewards::RemoveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -952,7 +953,7 @@ BraveRewardsRefreshPublisherFunction::~BraveRewardsRefreshPublisherFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
-  absl::optional<brave_rewards::RefreshPublisher::Params> params =
+  std::optional<brave_rewards::RefreshPublisher::Params> params =
       brave_rewards::RefreshPublisher::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());

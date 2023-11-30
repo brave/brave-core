@@ -6,6 +6,7 @@
 #include "brave/utility/importer/chrome_importer.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -32,7 +33,6 @@
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
@@ -85,7 +85,7 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  absl::optional<base::Value> local_state =
+  std::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
   if (!local_state || !local_state->is_dict()) {
     return false;
@@ -284,7 +284,7 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  absl::optional<base::Value> bookmarks_json =
+  std::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
   if (!bookmarks_json)
     return;

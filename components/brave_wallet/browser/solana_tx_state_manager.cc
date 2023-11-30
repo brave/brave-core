@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -56,7 +57,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   if (!signature_status_value) {
     return nullptr;
   }
-  absl::optional<SolanaSignatureStatus> signature_status =
+  std::optional<SolanaSignatureStatus> signature_status =
       SolanaSignatureStatus::FromValue(*signature_status_value);
   if (!signature_status) {
     return nullptr;
@@ -67,7 +68,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
 }
 
 std::string SolanaTxStateManager::GetTxPrefPathPrefix(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
     return base::StrCat(
         {kSolanaPrefKey, ".",

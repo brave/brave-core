@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/permission_utils.h"
+
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -370,7 +372,7 @@ TEST(PermissionUtilsUnitTest, SyncingWithCreatePermissionLifetimeOptions) {
   EXPECT_EQ(
       options[static_cast<size_t>(mojom::PermissionLifetimeOption::kForever)]
           .lifetime,
-      absl::nullopt);
+      std::nullopt);
 }
 
 TEST(PermissionUtilsUnitTest, CoinTypeToPermissionType) {

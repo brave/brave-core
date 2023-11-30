@@ -5,26 +5,27 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
+#include <optional>
 #include <utility>
 
 namespace brave_rewards::internal::endpoints {
 
 RequestBuilder::~RequestBuilder() = default;
 
-absl::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
+std::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
   const auto url = Url();
   if (!url) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto content = Content();
   if (!content) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto headers = Headers(*content);
   if (!headers) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return mojom::UrlRequest::New(*url, Method(), std::move(*headers), *content,
@@ -37,12 +38,12 @@ mojom::UrlMethod RequestBuilder::Method() const {
   return mojom::UrlMethod::POST;
 }
 
-absl::optional<std::vector<std::string>> RequestBuilder::Headers(
+std::optional<std::vector<std::string>> RequestBuilder::Headers(
     const std::string&) const {
   return std::vector<std::string>{};
 }
 
-absl::optional<std::string> RequestBuilder::Content() const {
+std::optional<std::string> RequestBuilder::Content() const {
   return "";
 }
 

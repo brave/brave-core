@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check_op.h"
@@ -78,7 +79,7 @@ void Account::RemoveObserver(AccountObserver* observer) {
 
 void Account::SetWallet(const std::string& payment_id,
                         const std::string& recovery_seed) {
-  const absl::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
+  const std::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
   if (!wallet) {
     BLOG(0, "Failed to initialize wallet");
     return NotifyFailedToInitializeWallet();

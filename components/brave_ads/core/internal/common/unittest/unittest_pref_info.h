@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_PREF_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_PREF_INFO_H_
 
+#include <optional>
+
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -24,7 +25,7 @@ struct PrefInfo final {
 
   bool operator==(const PrefInfo&) const = default;
 
-  absl::optional<base::Value> value;
+  std::optional<base::Value> value;
   base::Value default_value;
 };
 

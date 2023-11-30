@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -52,7 +53,7 @@ base::Value::Dict ZCashTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, absl::nullopt, from_.Clone(), tx_hash_,
+      id_, std::nullopt, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewZecTxData(ToZecTxData(*tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

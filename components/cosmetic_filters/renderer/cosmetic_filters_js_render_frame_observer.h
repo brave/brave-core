@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_RENDER_FRAME_OBSERVER_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -14,7 +15,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -42,7 +42,7 @@ class CosmeticFiltersJsRenderFrameObserver
   // RenderFrameObserver implementation.
   void DidStartNavigation(
       const GURL& url,
-      absl::optional<blink::WebNavigationType> navigation_type) override;
+      std::optional<blink::WebNavigationType> navigation_type) override;
   void ReadyToCommitNavigation(
       blink::WebDocumentLoader* document_loader) override;
 

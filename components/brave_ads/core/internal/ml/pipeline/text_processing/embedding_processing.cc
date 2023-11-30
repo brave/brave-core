@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <cstdint>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -43,7 +44,7 @@ EmbeddingProcessing& EmbeddingProcessing::operator=(
 EmbeddingProcessing::~EmbeddingProcessing() = default;
 
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value::Dict dict) {
-  absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
+  std::optional<EmbeddingPipelineInfo> embedding_pipeline =
       EmbeddingPipelineFromValue(dict);
   if (!embedding_pipeline) {
     embedding_pipeline_ = {};

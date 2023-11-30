@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_SIGN_TYPED_DATA_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,7 +15,6 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -34,19 +34,19 @@ class EthSignTypedDataHelper {
   void SetVersion(Version version);
 
   std::vector<uint8_t> GetTypeHash(const std::string primary_type_name) const;
-  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
       const std::string primary_type_name,
       const base::Value::Dict& data) const;
-  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
-  static absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
+  static std::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
       const std::vector<uint8_t>& domain_hash,
       const std::vector<uint8_t>& primary_hash);
-  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
   GetTypedDataPrimaryHash(const std::string& primary_type_name,
                           const base::Value::Dict& message) const;
-  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
   GetTypedDataDomainHash(const base::Value::Dict& domain_separator) const;
 
  private:
@@ -65,7 +65,7 @@ class EthSignTypedDataHelper {
                          const std::string& type_name) const;
   std::string EncodeTypes(const std::string& primary_type_name) const;
 
-  absl::optional<std::vector<uint8_t>> EncodeField(
+  std::optional<std::vector<uint8_t>> EncodeField(
       const std::string& type,
       const base::Value& value) const;
 

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
@@ -178,7 +179,7 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
   raw_ptr<views::View> resize_area_ = nullptr;
-  absl::optional<int> resize_offset_;
+  std::optional<int> resize_offset_;
 
   // A pointer storing the global tab style to be used.
   const raw_ptr<const TabStyle> tab_style_;

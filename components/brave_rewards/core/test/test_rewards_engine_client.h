@@ -9,6 +9,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -23,10 +24,10 @@ namespace brave_rewards::internal {
 
 struct FakeEncryption {
   static std::string EncryptString(const std::string& value);
-  static absl::optional<std::string> DecryptString(const std::string& value);
+  static std::optional<std::string> DecryptString(const std::string& value);
 
   static std::string Base64EncryptString(const std::string& value);
-  static absl::optional<std::string> Base64DecryptString(
+  static std::optional<std::string> Base64DecryptString(
       const std::string& value);
 };
 

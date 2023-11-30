@@ -3,8 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import "brave/ios/browser/api/ads/brave_ads.h"
+
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
+
+#include <optional>
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
@@ -43,7 +47,6 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
-#import "brave/ios/browser/api/ads/brave_ads.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
@@ -1484,7 +1487,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    return std::move(callback).Run(/*value*/ absl::nullopt);
+    return std::move(callback).Run(/*value*/ std::nullopt);
   }
 
   std::move(callback).Run(contents);
@@ -1568,7 +1571,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // federated learning.
 }
 
-- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
+- (std::optional<base::Value>)getProfilePref:(const std::string&)path {
   if (path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday ||
       path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
@@ -1596,7 +1599,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return self.profilePrefService->HasPrefPath(path);
 }
 
-- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+- (std::optional<base::Value>)getLocalStatePref:(const std::string&)path {
   return self.localStatePrefService->GetValue(path).Clone();
 }
 
@@ -1662,7 +1665,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       base::SysNSStringToUTF8(dimensionsArg),
       base::BindOnce(
           ^(const std::string& dimensions,
-            const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
+            const std::optional<brave_ads::InlineContentAdInfo>& ad) {
             if (!ad) {
               completion(base::SysUTF8ToNSString(dimensions), nil);
               return;
@@ -1716,7 +1719,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return nil;
   }
 
-  const absl::optional<brave_ads::NotificationAdInfo> ad =
+  const std::optional<brave_ads::NotificationAdInfo> ad =
       ads->MaybeGetNotificationAd(identifier.UTF8String);
   if (!ad) {
     return nil;

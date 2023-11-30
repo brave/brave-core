@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
@@ -38,7 +40,7 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   EXPECT_EQ(expected_conversion,
             BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                          /*created_at=*/Now()),
-                            /*verifiable_conversion=*/absl::nullopt));
+                            /*verifiable_conversion=*/std::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {

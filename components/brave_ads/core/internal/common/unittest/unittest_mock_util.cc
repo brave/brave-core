@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -14,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -145,7 +145,7 @@ void MockUrlResponses(AdsClientMock& mock,
       .WillByDefault(::testing::Invoke(
           [url_responses](const mojom::UrlRequestInfoPtr& url_request,
                           UrlRequestCallback callback) {
-            const absl::optional<mojom::UrlResponseInfo> url_response =
+            const std::optional<mojom::UrlResponseInfo> url_response =
                 GetNextUrlResponseForRequest(url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.

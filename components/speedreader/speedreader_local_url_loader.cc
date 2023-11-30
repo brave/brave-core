@@ -6,6 +6,7 @@
 #include "brave/components/speedreader/speedreader_local_url_loader.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -99,7 +100,7 @@ void SpeedReaderLocalURLLoader::OnReceiveEarlyHints(
 void SpeedReaderLocalURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head,
     mojo::ScopedDataPipeConsumerHandle body,
-    absl::optional<mojo_base::BigBuffer> cached_metadata) {}
+    std::optional<mojo_base::BigBuffer> cached_metadata) {}
 
 void SpeedReaderLocalURLLoader::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
@@ -125,7 +126,7 @@ void SpeedReaderLocalURLLoader::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const absl::optional<GURL>& new_url) {}
+    const std::optional<GURL>& new_url) {}
 
 void SpeedReaderLocalURLLoader::SetPriority(net::RequestPriority priority,
                                             int32_t intra_priority_value) {}

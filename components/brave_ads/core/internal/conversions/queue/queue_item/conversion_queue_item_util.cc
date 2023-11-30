@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_util.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_util_constants.h"
@@ -13,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<base::TimeDelta>
+std::optional<base::TimeDelta>
     g_scoped_delay_before_processing_conversion_queue_item_for_testing;
 
 base::TimeDelta DelayBeforeProcessingQueueItem(
@@ -62,7 +64,7 @@ ScopedDelayBeforeProcessingConversionQueueItemForTesting::
 ScopedDelayBeforeProcessingConversionQueueItemForTesting::
     ~ScopedDelayBeforeProcessingConversionQueueItemForTesting() {
   g_scoped_delay_before_processing_conversion_queue_item_for_testing =
-      absl::nullopt;
+      std::nullopt;
 }
 
 }  // namespace brave_ads

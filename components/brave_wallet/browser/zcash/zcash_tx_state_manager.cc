@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -39,7 +40,7 @@ std::unique_ptr<ZCashTxMeta> ZCashTxStateManager::ValueToZCashTxMeta(
 }
 
 std::string ZCashTxStateManager::GetTxPrefPathPrefix(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
     return base::StrCat(
         {kZCashPrefKey, ".",
@@ -63,7 +64,7 @@ std::unique_ptr<TxMeta> ZCashTxStateManager::ValueToTxMeta(
   if (!tx) {
     return nullptr;
   }
-  absl::optional<ZCashTransaction> tx_from_value =
+  std::optional<ZCashTransaction> tx_from_value =
       ZCashTransaction::FromValue(*tx);
   if (!tx_from_value) {
     return nullptr;

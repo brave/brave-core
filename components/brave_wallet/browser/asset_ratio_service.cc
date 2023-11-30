@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -98,15 +99,14 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
   return v_lower;
 }
 
-absl::optional<std::string> ChainIdToStripeChainId(
-    const std::string& chain_id) {
+std::optional<std::string> ChainIdToStripeChainId(const std::string& chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       chain_id_lookup(
           {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
            {brave_wallet::mojom::kSolanaMainnet, "solana"},
            {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"}});
   if (!chain_id_lookup->contains(chain_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return chain_id_lookup->at(chain_id);
@@ -248,7 +248,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     ramp_url =
         net::AppendQueryParameter(ramp_url, "fiatCurrency", currency_code);
     ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kRampID);
-    std::move(callback).Run(std::move(ramp_url.spec()), absl::nullopt);
+    std::move(callback).Run(std::move(ramp_url.spec()), std::nullopt);
   } else if (provider == mojom::OnRampProvider::kSardine) {
     auto internal_callback =
         base::BindOnce(&AssetRatioService::OnGetSardineAuthToken,
@@ -293,7 +293,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     transak_url =
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
-    std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
+    std::move(callback).Run(std::move(transak_url.spec()), std::nullopt);
   } else if (provider == mojom::OnRampProvider::kStripe) {
     GetStripeBuyURL(std::move(callback), address, currency_code, amount,
                     chain_id, symbol);
@@ -340,7 +340,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     coinbase_url = net::AppendQueryParameter(coinbase_url, "destinationWallets",
                                              destinationWalletsStr);
 
-    std::move(callback).Run(std::move(coinbase_url.spec()), absl::nullopt);
+    std::move(callback).Run(std::move(coinbase_url.spec()), std::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -371,7 +371,7 @@ void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
         net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
     off_ramp_url =
         net::AppendQueryParameter(off_ramp_url, "hostApiKey", kRampID);
-    std::move(callback).Run(off_ramp_url.spec(), absl::nullopt);
+    std::move(callback).Run(off_ramp_url.spec(), std::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_OFFRAMP_PROVIDER");
   }
@@ -418,7 +418,7 @@ void AssetRatioService::OnGetSardineAuthToken(
 
   GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
                                           currency_code, *auth_token);
-  std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
+  std::move(callback).Run(std::move(sardine_buy_url.spec()), std::nullopt);
 }
 
 void AssetRatioService::GetStripeBuyURL(
@@ -429,7 +429,7 @@ void AssetRatioService::GetStripeBuyURL(
     const std::string& chain_id,
     const std::string& destination_currency) {
   // Convert the frontend supplied chain ID to the chain ID used by Stripe
-  absl::optional<std::string> destination_network =
+  std::optional<std::string> destination_network =
       ChainIdToStripeChainId(chain_id);
   if (!destination_network) {
     std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
@@ -473,7 +473,7 @@ void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
     return;
   }
 
-  std::move(callback).Run(*url, absl::nullopt);
+  std::move(callback).Run(*url, std::nullopt);
 }
 
 void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,

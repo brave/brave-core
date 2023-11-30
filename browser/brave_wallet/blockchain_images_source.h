@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class FilePath;
@@ -43,7 +43,7 @@ class BlockchainImagesSource : public content::URLDataSource {
   bool AllowCaching() override;
 
   void OnGotImageFile(GotDataCallback callback,
-                      absl::optional<std::string> input);
+                      std::optional<std::string> input);
 
   base::FilePath base_path_;
   base::WeakPtrFactory<BlockchainImagesSource> weak_factory_;

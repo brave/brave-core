@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/logging.h"
@@ -57,7 +58,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!tx_receipt) {
     return nullptr;
   }
-  absl::optional<TransactionReceipt> tx_receipt_from_value =
+  std::optional<TransactionReceipt> tx_receipt_from_value =
       ValueToTransactionReceipt(*tx_receipt);
   if (!tx_receipt_from_value) {
     return nullptr;
@@ -69,19 +70,19 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     return nullptr;
   }
 
-  absl::optional<bool> sign_only = value.FindBool("sign_only");
+  std::optional<bool> sign_only = value.FindBool("sign_only");
   if (sign_only) {
     meta->set_sign_only(*sign_only);
   }
 
-  absl::optional<int> type = tx->FindInt("type");
+  std::optional<int> type = tx->FindInt("type");
   if (!type) {
     return nullptr;
   }
 
   switch (static_cast<uint8_t>(*type)) {
     case 0: {
-      absl::optional<EthTransaction> tx_from_value =
+      std::optional<EthTransaction> tx_from_value =
           EthTransaction::FromValue(*tx);
       if (!tx_from_value) {
         return nullptr;
@@ -90,7 +91,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
       break;
     }
     case 1: {
-      absl::optional<Eip2930Transaction> tx_from_value =
+      std::optional<Eip2930Transaction> tx_from_value =
           Eip2930Transaction::FromValue(*tx);
       if (!tx_from_value) {
         return nullptr;
@@ -99,7 +100,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
       break;
     }
     case 2: {
-      absl::optional<Eip1559Transaction> tx_from_value =
+      std::optional<Eip1559Transaction> tx_from_value =
           Eip1559Transaction::FromValue(*tx);
       if (!tx_from_value) {
         return nullptr;
@@ -116,7 +117,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
 }
 
 std::string EthTxStateManager::GetTxPrefPathPrefix(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
     return base::StrCat(
         {kEthereumPrefKey, ".",

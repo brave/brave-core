@@ -15,21 +15,22 @@
   if (GetCustomGraphicYOffset().has_value())      \
     y_offset = GetCustomGraphicYOffset().value();
 
+#include <optional>
+
 #include "src/chrome/browser/ui/extensions/icon_with_badge_image_source.cc"
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_2
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_1
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // Implement default virtual methods
-absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicSize() {
-  return absl::nullopt;
+std::optional<int> IconWithBadgeImageSource::GetCustomGraphicSize() {
+  return std::nullopt;
 }
 
-absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicXOffset() {
-  return absl::nullopt;
+std::optional<int> IconWithBadgeImageSource::GetCustomGraphicXOffset() {
+  return std::nullopt;
 }
 
-absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicYOffset() {
-  return absl::nullopt;
+std::optional<int> IconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return std::nullopt;
 }

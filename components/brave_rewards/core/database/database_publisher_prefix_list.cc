@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -149,13 +150,13 @@ void DatabasePublisherPrefixList::OnInsertNext(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    reader_ = absl::nullopt;
+    reader_ = std::nullopt;
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (iter == reader_->end()) {
-    reader_ = absl::nullopt;
+    reader_ = std::nullopt;
     callback(mojom::Result::OK);
     return;
   }

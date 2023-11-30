@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 
+#include <optional>
+
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -58,7 +59,7 @@ class AIChatMetrics {
   void ReportOmniboxCounts();
 
   bool is_enabled_ = false;
-  absl::optional<AcquisitionSource> acquisition_source_ = absl::nullopt;
+  std::optional<AcquisitionSource> acquisition_source_ = std::nullopt;
 
   WeeklyStorage chat_count_storage_;
   WeeklyStorage prompt_count_storage_;

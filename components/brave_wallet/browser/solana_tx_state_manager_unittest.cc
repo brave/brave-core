@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -70,8 +71,8 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
   auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account,
@@ -110,7 +111,7 @@ TEST_F(SolanaTxStateManagerUnitTest, GetTxPrefPathPrefix) {
       "solana.http://localhost:8899/",
       solana_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
   EXPECT_EQ("solana",
-            solana_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
+            solana_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
 }
 
 }  // namespace brave_wallet

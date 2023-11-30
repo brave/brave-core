@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_HANDLER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -51,7 +51,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
  private:
   void MaybeServeCallback(MaybeServeNewTabPageAdCallback callback,
-                          const absl::optional<NewTabPageAdInfo>& ad);
+                          const std::optional<NewTabPageAdInfo>& ad);
 
   void TriggerServedEventCallback(const std::string& creative_instance_id,
                                   TriggerAdEventCallback callback,

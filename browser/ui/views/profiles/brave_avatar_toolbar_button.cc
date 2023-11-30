@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -25,7 +26,6 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
@@ -53,7 +53,7 @@ class BraveAvatarButtonHighlightPathGenerator
       const BraveAvatarButtonHighlightPathGenerator&) = delete;
   ~BraveAvatarButtonHighlightPathGenerator() override = default;
 
-  absl::optional<gfx::RRectF> GetRoundRect(const gfx::RectF& bounds) override {
+  std::optional<gfx::RRectF> GetRoundRect(const gfx::RectF& bounds) override {
     gfx::Rect rect(avatar_button_->size());
     rect.Inset(GetToolbarInkDropInsets(avatar_button_.get()));
     DCHECK(avatar_button_);
@@ -79,7 +79,7 @@ AvatarToolbarButton::State BraveAvatarToolbarButton::GetAvatarButtonState()
 
 void BraveAvatarToolbarButton::SetHighlight(
     const std::u16string& highlight_text,
-    absl::optional<SkColor> highlight_color) {
+    std::optional<SkColor> highlight_color) {
   std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
     revised_highlight_text = brave_l10n::GetLocalizedResourceUTF16String(

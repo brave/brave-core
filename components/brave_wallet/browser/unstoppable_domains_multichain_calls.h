@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -13,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet::unstoppable_domains {
 
@@ -28,9 +28,9 @@ class MultichainCall {
       void(const ResultType&, mojom::ProviderError, const std::string&)>;
 
   struct Response {
-    absl::optional<ResultType> result;
-    absl::optional<mojom::ProviderError> error;
-    absl::optional<std::string> error_message;
+    std::optional<ResultType> result;
+    std::optional<mojom::ProviderError> error;
+    std::optional<std::string> error_message;
   };
 
   MultichainCall() = default;

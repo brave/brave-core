@@ -3,11 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+
 #include <stdint.h>
 
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -17,7 +20,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
@@ -207,14 +209,14 @@ void Contribution::StartMonthlyContributions(
   monthly_contribution_timer_.Stop();
   monthly_contributions_processing_ = true;
 
-  absl::optional<base::Time> cutoff_time = base::Time::Now();
+  std::optional<base::Time> cutoff_time = base::Time::Now();
 
   // Existing tests expect the ability to trigger all monthly and AC
   // contributions, regardless of their "next contribution dates". If we are
   // triggering all contributions, pass a null cutoff time to the monthly
   // contribution processor so that it will send them all.
   if (options == MonthlyContributionOptions::kSendAllContributions) {
-    cutoff_time = absl::nullopt;
+    cutoff_time = std::nullopt;
   }
 
   BLOG(1, "Starting monthly contributions");
@@ -296,7 +298,7 @@ void Contribution::SetMonthlyContributionTimer() {
 }
 
 void Contribution::OnNextMonthlyContributionTimeRead(
-    absl::optional<base::Time> time) {
+    std::optional<base::Time> time) {
   monthly_contribution_timer_.Stop();
 
   if (!time) {
@@ -329,7 +331,7 @@ void Contribution::SendContribution(const std::string& publisher_id,
 
 void Contribution::OnContributionRequestQueued(
     ContributionRequest request,
-    absl::optional<std::string> queue_id) {
+    std::optional<std::string> queue_id) {
   if (!queue_id) {
     std::move(request.callback).Run(false);
     return;
@@ -421,7 +423,7 @@ void Contribution::OneTimeTip(const std::string& publisher_key,
                               double amount,
                               LegacyResultCallback callback) {
   auto on_added = [](LegacyResultCallback callback,
-                     absl::optional<std::string> queue_id) {
+                     std::optional<std::string> queue_id) {
     callback(mojom::Result::OK);
   };
 

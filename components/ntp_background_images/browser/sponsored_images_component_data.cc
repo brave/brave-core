@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
+
+#include <optional>
+
 #include "base/feature_list.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "build/build_config.h"
@@ -7116,7 +7119,7 @@ constexpr SponsoredImagesComponentData kRegionalData[] = {
 
 }  // namespace
 
-absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
+std::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region) {
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
     return kDemoData;
@@ -7126,7 +7129,7 @@ absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     if (data.region == region)
       return data;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace ntp_background_images

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_GEMINI_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_GEMINI_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
@@ -38,7 +39,7 @@ class PostConnectGemini final : public PostConnect {
   ~PostConnectGemini() override;
 
  private:
-  absl::optional<std::string> Content() const override;
+  std::optional<std::string> Content() const override;
 
   const char* Path() const override;
 

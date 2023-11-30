@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -227,10 +228,10 @@ void IPFSTabHelper::HostResolvedCallback(
     const GURL& current,
     const GURL& target_url,
     bool is_gateway_url,
-    absl::optional<std::string> x_ipfs_path_header,
+    std::optional<std::string> x_ipfs_path_header,
     const bool auto_redirect_blocked,
     const std::string& host,
-    const absl::optional<std::string>& dnslink) {
+    const std::optional<std::string>& dnslink) {
   // Check if user hasn't redirected to another host while dnslink was resolving
   if (current.host() != web_contents()->GetVisibleURL().host() ||
       !current.SchemeIsHTTPOrHTTPS())
@@ -334,7 +335,7 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
 void IPFSTabHelper::CheckDNSLinkRecord(
     const GURL& target,
     bool is_gateway_url,
-    absl::optional<std::string> x_ipfs_path_header,
+    std::optional<std::string> x_ipfs_path_header,
     const bool& auto_redirect_blocked) {
   if (!target.SchemeIsHTTPOrHTTPS())
     return;
@@ -409,7 +410,7 @@ GURL IPFSTabHelper::ResolveXIPFSPathUrl(
   return TranslateXIPFSPath(x_ipfs_path_header_value).value_or(GURL());
 }
 
-absl::optional<GURL> IPFSTabHelper::ResolveIPFSUrlFromGatewayLikeUrl(
+std::optional<GURL> IPFSTabHelper::ResolveIPFSUrlFromGatewayLikeUrl(
     const GURL& gurl) {
   bool api_gateway = IsAPIGateway(gurl, chrome::GetChannel());
   auto base_gateway =
@@ -420,7 +421,7 @@ absl::optional<GURL> IPFSTabHelper::ResolveIPFSUrlFromGatewayLikeUrl(
     return ipfs::ExtractSourceFromGateway(gurl);
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 // For _dnslink we just translate url to ipns:// scheme
@@ -464,14 +465,14 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
   if ((response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
        response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt, auto_redirect_blocked);
+                       std::nullopt, auto_redirect_blocked);
   } else if (headers->GetNormalizedHeader(kIfpsPathHeader,
                                           &normalized_header)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
                        normalized_header, auto_redirect_blocked);
   } else if (possible_redirect) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt, auto_redirect_blocked);
+                       std::nullopt, auto_redirect_blocked);
   }
 }
 

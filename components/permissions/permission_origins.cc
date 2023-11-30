@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/permissions/permission_origins.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+
+#include <optional>
 
 namespace permissions {
 
@@ -20,8 +21,8 @@ PermissionOrigins::PermissionOrigins(const std::string* requesting_origin,
                                      int content_setting)
     : requesting_origin_(GURL(*requesting_origin)),
       embedding_origin_(embedding_origin
-                            ? absl::make_optional<GURL>(*embedding_origin)
-                            : absl::nullopt),
+                            ? std::make_optional<GURL>(*embedding_origin)
+                            : std::nullopt),
       content_setting_(static_cast<ContentSetting>(content_setting)) {}
 
 PermissionOrigins::PermissionOrigins(const PermissionOrigins&) = default;

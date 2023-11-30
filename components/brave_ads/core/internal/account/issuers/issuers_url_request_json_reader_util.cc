@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
 namespace brave_ads::json::reader {
@@ -16,14 +18,14 @@ constexpr char kIssuersKey[] = "issuers";
 
 }  // namespace
 
-absl::optional<int> ParsePing(const base::Value::Dict& dict) {
+std::optional<int> ParsePing(const base::Value::Dict& dict) {
   return dict.FindInt(kPingKey);
 }
 
-absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict) {
+std::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict) {
   const auto* const list = dict.FindList(kIssuersKey);
   if (!list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueToIssuers(*list);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth_uphold.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -53,19 +54,19 @@ PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
 
 PostOAuthUphold::~PostOAuthUphold() = default;
 
-absl::optional<std::string> PostOAuthUphold::Url() const {
+std::optional<std::string> PostOAuthUphold::Url() const {
   return endpoint::uphold::GetServerUrl("/oauth2/token");
 }
 
-absl::optional<std::vector<std::string>> PostOAuthUphold::Headers(
+std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
     const std::string&) const {
   return endpoint::uphold::RequestAuthorization();
 }
 
-absl::optional<std::string> PostOAuthUphold::Content() const {
+std::optional<std::string> PostOAuthUphold::Content() const {
   if (code_.empty()) {
     BLOG(0, "code_ is empty!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return "code=" + code_ + "&grant_type=authorization_code";

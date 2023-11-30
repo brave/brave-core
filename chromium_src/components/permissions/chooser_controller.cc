@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/chooser_controller.h"
+#include <optional>
 
+#include "components/permissions/chooser_controller.h"
 #include "src/components/permissions/chooser_controller.cc"
 
 namespace permissions {
 
-absl::optional<ChooserControllerType> ChooserController::GetType() const {
-  return absl::nullopt;
+std::optional<ChooserControllerType> ChooserController::GetType() const {
+  return std::nullopt;
 }
 
 }  // namespace permissions

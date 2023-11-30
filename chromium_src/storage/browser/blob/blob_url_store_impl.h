@@ -17,6 +17,8 @@ using BlobURLStoreImpl_BraveImpl = BlobURLStoreImpl;
   friend BlobURLStoreImpl_BraveImpl; \
   bool BlobUrlIsValid
 
+#include <optional>
+
 #include "src/storage/browser/blob/blob_url_store_impl.h"  // IWYU pragma: export
 
 #undef BlobUrlIsValid
@@ -35,7 +37,7 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
   void Register(mojo::PendingRemote<blink::mojom::Blob> blob,
                 const GURL& url,
                 const base::UnguessableToken& unsafe_agent_cluster_id,
-                const absl::optional<net::SchemefulSite>& unsafe_top_level_site,
+                const std::optional<net::SchemefulSite>& unsafe_top_level_site,
                 RegisterCallback callback) override;
   void Revoke(const GURL& url) override;
   void Resolve(const GURL& url, ResolveCallback callback) override;

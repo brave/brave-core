@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
+
+#include <optional>
 #include <vector>
 
 #include "base/command_line.h"
@@ -11,7 +14,6 @@
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,7 +31,6 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 
@@ -65,7 +66,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 
   base::RunLoop loop_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
-  absl::optional<std::vector<GURL>> last_feeds_ = absl::nullopt;
+  std::optional<std::vector<GURL>> last_feeds_ = std::nullopt;
 
   base::ScopedObservation<BraveNewsTabHelper,
                           BraveNewsTabHelper::PageFeedsObserver>

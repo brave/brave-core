@@ -10,6 +10,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -90,7 +91,7 @@ class Contribution {
 
   void StartAutoContribute();
 
-  void OnNextMonthlyContributionTimeRead(absl::optional<base::Time> time);
+  void OnNextMonthlyContributionTimeRead(std::optional<base::Time> time);
 
   void OnMonthlyContributionSet(bool success);
 
@@ -112,7 +113,7 @@ class Contribution {
   };
 
   void OnContributionRequestQueued(ContributionRequest request,
-                                   absl::optional<std::string> queue_id);
+                                   std::optional<std::string> queue_id);
 
   void OnContributionRequestCompleted(const std::string& queue_id,
                                       bool success);

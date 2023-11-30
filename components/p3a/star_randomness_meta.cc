@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/star_randomness_meta.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -56,7 +57,7 @@ const int kRndInfoRetryMaxBackoffMinutes = 60;
                "randomness";
     return constellation::get_ppoprf_null_public_key();
   }
-  absl::optional<std::vector<uint8_t>> dec_pk = base::Base64Decode(*pk_base64);
+  std::optional<std::vector<uint8_t>> dec_pk = base::Base64Decode(*pk_base64);
   if (!dec_pk.has_value()) {
     LOG(ERROR) << "StarRandomnessMeta: bad pk base64, will not validate "
                   "randomness";
@@ -108,7 +109,7 @@ StarRandomnessMeta::StarRandomnessMeta(
   if (!approved_cert_fp_str.empty() &&
       approved_cert_fp.FromString(approved_cert_fp_str)) {
     VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
-    approved_cert_fp_ = absl::make_optional(approved_cert_fp);
+    approved_cert_fp_ = std::make_optional(approved_cert_fp);
   }
 }
 
@@ -261,7 +262,7 @@ void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
     return;
   }
   attestation_pending_ = true;
-  approved_cert_fp_ = absl::nullopt;
+  approved_cert_fp_ = std::nullopt;
 
   VLOG(2) << "StarRandomnessMeta: starting attestation";
   GURL attestation_url = GURL(
@@ -290,7 +291,7 @@ void StarRandomnessMeta::HandleAttestationResult(
     }
     return;
   }
-  approved_cert_fp_ = absl::make_optional(
+  approved_cert_fp_ = std::make_optional(
       net::HashValue(approved_cert->CalculateChainFingerprint256()));
   std::string approved_cert_fp_str = approved_cert_fp_->ToString();
   local_state_->SetString(kApprovedCertFPPrefName, approved_cert_fp_str);
@@ -353,7 +354,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     return;
   }
   base::Value::Dict& root = parsed_value->GetDict();
-  absl::optional<int> epoch = root.FindInt("currentEpoch");
+  std::optional<int> epoch = root.FindInt("currentEpoch");
   std::string* next_epoch_time_str = root.FindString("nextEpochTime");
   if (!epoch || !next_epoch_time_str) {
     LOG(ERROR) << "StarRandomnessMeta: failed to parse server info json: "

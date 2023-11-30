@@ -474,7 +474,7 @@ class Generator(generator.Generator):
         if (mojom.IsNullableKind(kind)
                 and not (isinstance(
                     typemap, (StructMojoTypemap, UnionMojoTypemap)))):
-            typestring = "absl::optional<%s>" % typestring
+            typestring = "std::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
         return "const %s&" % typestring
@@ -582,7 +582,7 @@ class Generator(generator.Generator):
                      kind)]["nullable_is_same_type"])
                     or not isinstance(typemap,
                                       (StructMojoTypemap, UnionMojoTypemap))):
-                cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
+                cpp_assign = "%s ? std::make_optional(%s) : std::nullopt" % (
                     accessor, cpp_assign)
             else:
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)

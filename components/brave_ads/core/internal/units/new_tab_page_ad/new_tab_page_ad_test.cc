@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
@@ -17,7 +19,6 @@
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -69,7 +70,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
                                     AdType::kNewTabPageAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Ne(absl::nullopt)));
+  EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -83,7 +84,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -101,7 +102,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -117,7 +118,7 @@ TEST_F(
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -130,7 +131,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -178,7 +179,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -242,7 +243,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 

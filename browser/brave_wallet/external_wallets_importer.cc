@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -398,8 +399,8 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     return;
   }
 
-  absl::optional<std::string> mnemonic = absl::nullopt;
-  absl::optional<int> number_of_accounts = absl::nullopt;
+  std::optional<std::string> mnemonic = std::nullopt;
+  std::optional<int> number_of_accounts = std::nullopt;
   for (const auto& keyring_listed : keyrings->GetList()) {
     DCHECK(keyring_listed.is_dict());
     const auto& keyring = *keyring_listed.GetIfDict();

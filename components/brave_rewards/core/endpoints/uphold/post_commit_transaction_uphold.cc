@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction_uphold.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -63,13 +64,13 @@ Result PostCommitTransactionUphold::ProcessResponse(
   }
 }
 
-absl::optional<std::string> PostCommitTransactionUphold::Url() const {
+std::optional<std::string> PostCommitTransactionUphold::Url() const {
   return endpoint::uphold::GetServerUrl(base::StringPrintf(
       "/v0/me/cards/%s/transactions/%s/commit", address_.c_str(),
       transaction_->transaction_id.c_str()));
 }
 
-absl::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(
+std::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(
     const std::string&) const {
   return endpoint::uphold::RequestAuthorization(token_);
 }

@@ -7,16 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SERVICE_HELPER_H_
 
 #include <stdint.h>
+
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_shields {
 
-void MergeCspDirectiveInto(absl::optional<std::string> from,
-                           absl::optional<std::string>* into);
+void MergeCspDirectiveInto(std::optional<std::string> from,
+                           std::optional<std::string>* into);
 
 void MergeResourcesInto(base::Value::Dict from,
                         base::Value::Dict& into,

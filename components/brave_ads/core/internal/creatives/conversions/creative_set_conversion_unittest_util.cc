@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 
@@ -16,7 +18,7 @@ CreativeSetConversionInfo BuildCreativeSetConversion(
     const base::TimeDelta observation_window) {
   return BuildVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
-      /*verifiable_advertiser_public_key_base64=*/absl::nullopt);
+      /*verifiable_advertiser_public_key_base64=*/std::nullopt);
 }
 
 void BuildAndSaveCreativeSetConversion(
@@ -25,15 +27,14 @@ void BuildAndSaveCreativeSetConversion(
     const base::TimeDelta observation_window) {
   BuildAndSaveVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
-      /*verifiable_advertiser_public_key_base64=*/absl::nullopt);
+      /*verifiable_advertiser_public_key_base64=*/std::nullopt);
 }
 
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
-    const absl::optional<std::string>&
-        verifiable_advertiser_public_key_base64) {
+    const std::optional<std::string>& verifiable_advertiser_public_key_base64) {
   CreativeSetConversionInfo creative_set_conversion;
 
   creative_set_conversion.id = creative_set_id;
@@ -51,8 +52,7 @@ void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
-    const absl::optional<std::string>&
-        verifiable_advertiser_public_key_base64) {
+    const std::optional<std::string>& verifiable_advertiser_public_key_base64) {
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion =

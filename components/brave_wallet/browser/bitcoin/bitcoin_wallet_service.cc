@@ -6,8 +6,10 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <map>
+#include <optional>
 #include <vector>
 
 #include "base/check.h"
@@ -107,7 +109,7 @@ class GetBalanceTask : public base::RefCountedThreadSafe<GetBalanceTask> {
   bool requests_sent_ = false;
 
   std::map<std::string, uint64_t> balances_;
-  absl::optional<std::string> error_;
+  std::optional<std::string> error_;
   mojom::BitcoinBalancePtr result_;
   GetBalanceCallback callback_;
 };
@@ -166,7 +168,7 @@ void GetBalanceTask::WorkOnTask() {
   }
 
   if (result_) {
-    std::move(callback_).Run(std::move(result_), absl::nullopt);
+    std::move(callback_).Run(std::move(result_), std::nullopt);
     return;
   }
 
@@ -223,8 +225,8 @@ class GetUtxosTask : public base::RefCountedThreadSafe<GetUtxosTask> {
   bool requests_sent_ = false;
 
   BitcoinWalletService::UtxoMap utxos_;
-  absl::optional<std::string> error_;
-  absl::optional<BitcoinWalletService::UtxoMap> result_;
+  std::optional<std::string> error_;
+  std::optional<BitcoinWalletService::UtxoMap> result_;
   BitcoinWalletService::GetUtxosCallback callback_;
 };
 
@@ -344,12 +346,12 @@ class CreateTransactionTask {
   mojom::AccountIdPtr account_id_;
   CreateTransactionCallback callback_;
 
-  absl::optional<uint32_t> chain_height_;
+  std::optional<uint32_t> chain_height_;
   BitcoinWalletService::UtxoMap utxo_map_;
   mojom::BitcoinAddressPtr change_address_;
   std::map<uint32_t, double> estimates_;  // target block -> fee rate (sat/byte)
 
-  absl::optional<std::string> error_;
+  std::optional<std::string> error_;
   BitcoinTransaction transaction_;
   bool arrange_for_testing_ = false;
 
@@ -569,7 +571,7 @@ class DiscoverNextUnusedAddressTask
   mojom::BitcoinAddressPtr start_address_;
   mojom::BitcoinAddressPtr current_address_;
   mojom::BitcoinAddressPtr result_;
-  absl::optional<std::string> error_;
+  std::optional<std::string> error_;
   BitcoinWalletService::DiscoverNextUnusedAddressCallback callback_;
 };
 
@@ -694,7 +696,7 @@ class DiscoverAccountTask : public base::RefCounted<DiscoverAccountTask> {
   uint32_t change_addresses_gap_ = 0;
   bool account_is_used_ = false;
 
-  absl::optional<std::string> error_;
+  std::optional<std::string> error_;
   BitcoinWalletService::DiscoverAccountCallback callback_;
 };
 
@@ -887,18 +889,18 @@ void BitcoinWalletService::OnRunDiscoveryDone(
   }
 
   UpdateNextUnusedAddressForAccount(account_id, discovered_address.value());
-  std::move(callback).Run(discovered_address.value().Clone(), absl::nullopt);
+  std::move(callback).Run(discovered_address.value().Clone(), std::nullopt);
 }
 
 void BitcoinWalletService::UpdateNextUnusedAddressForAccount(
     const mojom::AccountIdPtr& account_id,
     const mojom::BitcoinAddressPtr& address) {
-  absl::optional<uint32_t> next_receive_index = address->key_id->change
-                                                    ? absl::optional<uint32_t>()
-                                                    : address->key_id->index;
-  absl::optional<uint32_t> next_change_index = !address->key_id->change
-                                                   ? absl::optional<uint32_t>()
+  std::optional<uint32_t> next_receive_index = address->key_id->change
+                                                   ? std::optional<uint32_t>()
                                                    : address->key_id->index;
+  std::optional<uint32_t> next_change_index = !address->key_id->change
+                                                  ? std::optional<uint32_t>()
+                                                  : address->key_id->index;
   keyring_service()->UpdateNextUnusedAddressForBitcoinAccount(
       account_id, next_receive_index, next_change_index);
 }

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_NON_REWARD_NON_REWARD_CONFIRMATION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_NON_REWARD_NON_REWARD_CONFIRMATION_UTIL_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 namespace brave_ads {
 
@@ -14,7 +14,7 @@ struct ConfirmationInfo;
 struct UserDataInfo;
 struct TransactionInfo;
 
-absl::optional<ConfirmationInfo> BuildNonRewardConfirmation(
+std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
     const UserDataInfo& user_data);
 

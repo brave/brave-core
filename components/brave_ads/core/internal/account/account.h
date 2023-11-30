@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -23,7 +24,6 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -56,7 +56,7 @@ class Account final : public AdsClientNotifierObserver,
 
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed);
-  const absl::optional<WalletInfo>& GetWallet() const { return wallet_; }
+  const std::optional<WalletInfo>& GetWallet() const { return wallet_; }
 
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,
@@ -164,7 +164,7 @@ class Account final : public AdsClientNotifierObserver,
   std::unique_ptr<RefillConfirmationTokens> refill_confirmation_tokens_;
   std::unique_ptr<RedeemPaymentTokens> redeem_payment_tokens_;
 
-  absl::optional<WalletInfo> wallet_;
+  std::optional<WalletInfo> wallet_;
 
   base::WeakPtrFactory<Account> weak_factory_{this};
 };

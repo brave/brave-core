@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -14,7 +17,6 @@
 #include "base/test/bind.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -32,7 +34,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using brave_wallet::mojom::CoinType;
@@ -348,7 +349,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     EXPECT_EQ(data.arg3()->GetBool(), true);
 
     EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              absl::nullopt),
+                                              std::nullopt),
               "chain_id2");
   }
   {
@@ -363,7 +364,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     EXPECT_EQ(data.arg3()->GetBool(), false);
 
     EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              absl::nullopt),
+                                              std::nullopt),
               "chain_id2");
   }
 }

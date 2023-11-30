@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_info.h"
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -34,7 +35,7 @@ base::expected<ConversionResourceInfo, std::string>
 ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   ConversionResourceInfo conversions;
 
-  if (absl::optional<int> version = dict.FindInt("version")) {
+  if (std::optional<int> version = dict.FindInt("version")) {
     if (kConversionResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }

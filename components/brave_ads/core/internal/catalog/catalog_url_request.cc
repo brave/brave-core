@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -96,7 +96,7 @@ void CatalogUrlRequest::FetchCallback(
   }
 
   BLOG(1, "Parsing catalog");
-  const absl::optional<CatalogInfo> catalog =
+  const std::optional<CatalogInfo> catalog =
       json::reader::ReadCatalog(url_response.body);
   if (!catalog) {
     BLOG(1, "Failed to parse catalog");

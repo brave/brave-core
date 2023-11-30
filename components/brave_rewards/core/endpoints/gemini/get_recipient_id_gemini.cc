@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id_gemini.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -68,7 +69,7 @@ GetRecipientIDGemini::GetRecipientIDGemini(RewardsEngineImpl& engine,
 
 GetRecipientIDGemini::~GetRecipientIDGemini() = default;
 
-absl::optional<std::string> GetRecipientIDGemini::Url() const {
+std::optional<std::string> GetRecipientIDGemini::Url() const {
   return endpoint::gemini::GetApiServerUrl("/v1/payments/recipientIds");
 }
 
@@ -76,7 +77,7 @@ mojom::UrlMethod GetRecipientIDGemini::Method() const {
   return mojom::UrlMethod::GET;
 }
 
-absl::optional<std::vector<std::string>> GetRecipientIDGemini::Headers(
+std::optional<std::vector<std::string>> GetRecipientIDGemini::Headers(
     const std::string&) const {
   return endpoint::gemini::RequestAuthorization(token_);
 }

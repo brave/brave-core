@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_TIP_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_TIP_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 
@@ -25,7 +25,7 @@ class ContributionTip {
 
   ~ContributionTip();
 
-  using ProcessCallback = base::OnceCallback<void(absl::optional<std::string>)>;
+  using ProcessCallback = base::OnceCallback<void(std::optional<std::string>)>;
 
   void Process(const std::string& publisher_id,
                double amount,

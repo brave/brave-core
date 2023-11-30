@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_CREDENTIAL_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_CREDENTIAL_BUILDER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
 class UnblindedToken;
 
-absl::optional<base::Value::Dict> BuildCredential(
+std::optional<base::Value::Dict> BuildCredential(
     const UnblindedToken& unblinded_token,
     const std::string& payload);
 

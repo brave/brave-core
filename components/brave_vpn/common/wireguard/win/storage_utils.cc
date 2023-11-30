@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 
+#include <optional>
+
 #include "base/logging.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
@@ -23,14 +25,14 @@ constexpr wchar_t kBraveWireguardActiveKeyName[] = L"WireGuardActive";
 constexpr wchar_t kBraveWireguardConnectionStateName[] = L"ConnectionState";
 constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 3;
 
-absl::optional<base::win::RegKey> GetStorageKey(HKEY root_key, REGSAM access) {
+std::optional<base::win::RegKey> GetStorageKey(HKEY root_key, REGSAM access) {
   base::win::RegKey storage;
   if (storage.Create(
           root_key,
           brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath()
               .c_str(),
           access) != ERROR_SUCCESS) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return storage;
@@ -47,17 +49,17 @@ std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
 
 // Returns last used config path.
 // We keep config file between launches to be able to reuse it outside of Brave.
-absl::optional<base::FilePath> GetLastUsedConfigPath() {
+std::optional<base::FilePath> GetLastUsedConfigPath() {
   auto storage = GetStorageKey(HKEY_LOCAL_MACHINE, KEY_QUERY_VALUE);
   if (!storage.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::wstring value;
   if (storage->ReadValue(kBraveWireguardConfigKeyName, &value) !=
           ERROR_SUCCESS ||
       value.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return base::FilePath(value);
 }
@@ -194,17 +196,17 @@ void WriteConnectionState(int value) {
   }
 }
 
-absl::optional<int32_t> GetConnectionState() {
+std::optional<int32_t> GetConnectionState() {
   auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE);
   if (!storage.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   DWORD value;
   if (storage->ReadValueDW(kBraveWireguardConnectionStateName, &value) ==
       ERROR_SUCCESS) {
     return value;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace brave_vpn

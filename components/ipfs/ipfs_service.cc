@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <utility>
 
@@ -96,7 +97,7 @@ base::flat_map<std::string, std::string> GetHeaders(const GURL& url) {
       {net::HttpRequestHeaders::kOrigin, url::Origin::Create(url).Serialize()}};
 }
 
-absl::optional<std::string> ConvertPlainStringToJsonArray(
+std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
 }
@@ -350,13 +351,13 @@ void IpfsService::Shutdown() {
   ipfs_pid_ = -1;
 }
 
-void IpfsService::OnDnsConfigChanged(absl::optional<std::string> dns_server) {
+void IpfsService::OnDnsConfigChanged(std::optional<std::string> dns_server) {
   RestartDaemon();
 }
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
-absl::optional<std::string> IpfsService::WaitUntilExecutionFinished(
+std::optional<std::string> IpfsService::WaitUntilExecutionFinished(
     base::FilePath data_path,
     base::CommandLine command_line) {
   base::LaunchOptions options;
@@ -389,7 +390,7 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
   ExecuteNodeCommand(
       cmdline, GetDataPath(),
       base::BindOnce(
-          [](BoolCallback callback, absl::optional<std::string> result) {
+          [](BoolCallback callback, std::optional<std::string> result) {
             std::move(callback).Run(result.has_value());
           },
           std::move(callback)));
@@ -410,7 +411,7 @@ void IpfsService::ExportKey(const std::string& key,
   ExecuteNodeCommand(
       cmdline, GetDataPath(),
       base::BindOnce(
-          [](BoolCallback callback, absl::optional<std::string> result) {
+          [](BoolCallback callback, std::optional<std::string> result) {
             std::move(callback).Run(result.has_value());
           },
           std::move(callback)));
@@ -439,7 +440,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
                          bool recursive,
                          AddPinCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -467,7 +468,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
 void IpfsService::RemovePin(const std::vector<std::string>& cids,
                             RemovePinCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -518,7 +519,7 @@ void IpfsService::RemovePinCli(std::set<std::string> cids,
 void IpfsService::LsPinCli(NodeCallback callback) {
   base::FilePath path = GetIpfsExecutablePath();
   if (path.empty()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -533,7 +534,7 @@ void IpfsService::LsPinCli(NodeCallback callback) {
 
 void IpfsService::OnRemovePinCli(BoolCallback callback,
                                  std::set<std::string> cids,
-                                 absl::optional<std::string> result) {
+                                 std::optional<std::string> result) {
   DCHECK(!cids.empty());
   if (!result || cids.empty()) {
     std::move(callback).Run(false);
@@ -549,12 +550,12 @@ void IpfsService::OnRemovePinCli(BoolCallback callback,
   }
 }
 
-void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
+void IpfsService::GetPins(const std::optional<std::vector<std::string>>& cids,
                           const std::string& type,
                           bool quiet,
                           GetPinsCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -702,7 +703,7 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
 #endif
 
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
-                                    absl::optional<int> retries) {
+                                    std::optional<int> retries) {
   if (!IsDaemonLaunched()) {
     if (callback)
       std::move(callback).Run(false, std::vector<std::string>{});
@@ -1066,7 +1067,7 @@ void IpfsService::OnGetPinsResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to get pins, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1074,7 +1075,7 @@ void IpfsService::OnGetPinsResult(
       IPFSJSONParser::GetGetPinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to get pins, wrong format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1090,7 +1091,7 @@ void IpfsService::OnPinAddResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to add pin, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1098,13 +1099,13 @@ void IpfsService::OnPinAddResult(
       IPFSJSONParser::GetAddPinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to add pin service, wrong format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   if (parse_result->pins.size() != cids_count_in_request) {
     VLOG(1) << "Not all CIDs were added";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1124,7 +1125,7 @@ void IpfsService::OnPinRemoveResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to remove pin, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1132,7 +1133,7 @@ void IpfsService::OnPinRemoveResult(
       IPFSJSONParser::GetRemovePinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to remove pin, wrong response format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 

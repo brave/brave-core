@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/no_destructor.h"
@@ -206,7 +207,7 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   return webui_base_url.ReplaceComponents(replacements);
 }
 
-absl::optional<blink::PermissionType> CoinTypeToPermissionType(
+std::optional<blink::PermissionType> CoinTypeToPermissionType(
     mojom::CoinType coin_type) {
   switch (coin_type) {
     case mojom::CoinType::ETH:
@@ -214,11 +215,11 @@ absl::optional<blink::PermissionType> CoinTypeToPermissionType(
     case mojom::CoinType::SOL:
       return blink::PermissionType::BRAVE_SOLANA;
     default:
-      return absl::nullopt;
+      return std::nullopt;
   }
 }
 
-absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
+std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
     mojom::CoinType coin_type) {
   switch (coin_type) {
     case mojom::CoinType::ETH:
@@ -226,7 +227,7 @@ absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
     case mojom::CoinType::SOL:
       return permissions::RequestType::kBraveSolana;
     default:
-      return absl::nullopt;
+      return std::nullopt;
   }
 }
 

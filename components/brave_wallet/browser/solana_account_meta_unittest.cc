@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -23,7 +24,7 @@ constexpr char kAccount2[] = "83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri";
 namespace brave_wallet {
 
 TEST(SolanaAccountMetaUnitTest, ToMojomSolanaAccountMeta) {
-  SolanaAccountMeta meta(kAccount1, absl::nullopt, true, false);
+  SolanaAccountMeta meta(kAccount1, std::nullopt, true, false);
   EXPECT_EQ(meta.ToMojomSolanaAccountMeta(),
             mojom::SolanaAccountMeta::New(kAccount1, nullptr, true, false));
 
@@ -48,7 +49,7 @@ TEST(SolanaAccountMetaUnitTest, FromMojomSolanaAccountMetas) {
                                                  &account_metas);
   EXPECT_EQ(account_metas,
             std::vector<SolanaAccountMeta>(
-                {SolanaAccountMeta(kAccount1, absl::nullopt, true, false),
+                {SolanaAccountMeta(kAccount1, std::nullopt, true, false),
                  SolanaAccountMeta(kAccount2, 2, false, true)}));
 }
 
@@ -58,7 +59,7 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
       "is_signer": true,
       "is_writable": false
   })");
-  EXPECT_EQ(SolanaAccountMeta(kAccount1, absl::nullopt, true, false),
+  EXPECT_EQ(SolanaAccountMeta(kAccount1, std::nullopt, true, false),
             SolanaAccountMeta::FromValue(value.GetDict()));
 
   value.GetDict().Set("address_table_lookup_index", "255");
@@ -91,7 +92,7 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
 }
 
 TEST(SolanaAccountMetaUnitTest, ToValue) {
-  SolanaAccountMeta meta(kAccount1, absl::nullopt, true, false);
+  SolanaAccountMeta meta(kAccount1, std::nullopt, true, false);
   base::Value::Dict value = meta.ToValue();
   EXPECT_EQ(*value.FindString("pubkey"),
             "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");

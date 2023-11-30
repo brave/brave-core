@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util.h"
 
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 #include "base/base64.h"
@@ -35,7 +36,7 @@ std::string GetVerifiableConversionEnvelopeAlgorithm() {
   return kAlgorithm;
 }
 
-absl::optional<VerifiableConversionEnvelopeInfo>
+std::optional<VerifiableConversionEnvelopeInfo>
 SealVerifiableConversionEnvelope(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
@@ -44,11 +45,11 @@ SealVerifiableConversionEnvelope(
 
   if (message.length() < kMinVerifiableConversionEnvelopeMessageLength ||
       message.length() > kMaxVerifiableConversionEnvelopeMessageLength) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!IsConversionIdValid(message)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Protocol requires at least 2 trailing zero-padding bytes.
@@ -56,18 +57,18 @@ SealVerifiableConversionEnvelope(
   plaintext.insert(plaintext.cend(), kCipherTextLength - plaintext.size(), 0);
   CHECK_EQ(kCipherTextLength, plaintext.size());
 
-  const absl::optional<std::vector<uint8_t>> public_key =
+  const std::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
   if (!public_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (public_key->size() != crypto_box_PUBLICKEYBYTES) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const crypto::KeyPairInfo ephemeral_key_pair = crypto::GenerateBoxKeyPair();
   if (!ephemeral_key_pair.IsValid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::vector<uint8_t> nonce = crypto::GenerateRandomNonce();
@@ -88,7 +89,7 @@ SealVerifiableConversionEnvelope(
   envelope.nonce = base::Base64Encode(nonce);
 
   if (!envelope.IsValid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return envelope;

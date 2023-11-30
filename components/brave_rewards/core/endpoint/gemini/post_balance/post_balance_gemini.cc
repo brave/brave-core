@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
 
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -13,7 +14,6 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using std::placeholders::_1;
 
@@ -33,7 +33,7 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
                                      double* available) {
   DCHECK(available);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

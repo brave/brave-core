@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -55,7 +56,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
@@ -69,7 +70,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
 void ZCashTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> zcash_transaction) {
   if (!zcash_transaction.has_value()) {
@@ -198,9 +199,9 @@ mojom::CoinType ZCashTxManager::GetCoinType() const {
 }
 
 void ZCashTxManager::UpdatePendingTransactions(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
     auto pending_chain_id = pending_transaction->chain_id();

@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/state/state.h"
+
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -17,7 +20,6 @@
 #include "brave/components/brave_rewards/core/endpoints/brave/get_parameters_utils.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
@@ -38,7 +40,7 @@ std::string VectorDoubleToString(const std::vector<double>& items) {
 }
 
 std::vector<double> StringToVectorDouble(const std::string& items_string) {
-  absl::optional<base::Value> list = base::JSONReader::Read(items_string);
+  std::optional<base::Value> list = base::JSONReader::Read(items_string);
   if (!list || !list->is_list()) {
     return {};
   }
@@ -381,7 +383,7 @@ uint64_t State::GetPromotionLastFetchStamp() {
   return engine_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }
 
-absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
+std::optional<std::string> State::GetEncryptedString(const std::string& key) {
   std::string value = engine_->GetState<std::string>(key);
 
   // If the state value is empty, then we consider this a successful read of a

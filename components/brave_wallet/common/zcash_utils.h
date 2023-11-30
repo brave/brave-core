@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -30,7 +30,7 @@ bool IsValidZCashAddress(const std::string& address);
 std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
                                        bool testnet);
 
-absl::optional<DecodedZCashAddress> DecodeZCashAddress(
+std::optional<DecodedZCashAddress> DecodeZCashAddress(
     const std::string& address);
 
 std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,

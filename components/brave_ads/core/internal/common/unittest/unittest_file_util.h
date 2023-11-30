@@ -6,18 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<std::string> MaybeReadFileToString(const std::string& name);
+std::optional<std::string> MaybeReadFileToString(const std::string& name);
 
-absl::optional<std::string> MaybeReadFileToStringAndReplaceTags(
+std::optional<std::string> MaybeReadFileToStringAndReplaceTags(
     const std::string& name);
 
-absl::optional<std::string> MaybeReadDataResourceToString(
+std::optional<std::string> MaybeReadDataResourceToString(
     const std::string& name);
 
 }  // namespace brave_ads

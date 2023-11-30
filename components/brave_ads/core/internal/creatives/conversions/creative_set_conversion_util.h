@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_UTIL_H_
 
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -29,7 +29,7 @@ CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
 CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions);
 
-absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+std::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event);
 

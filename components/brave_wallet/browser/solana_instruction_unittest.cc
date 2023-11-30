@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -35,7 +36,7 @@ namespace brave_wallet {
 TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
   SolanaInstruction expected_ins(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kAccount1, absl::nullopt, true, false),
+      {SolanaAccountMeta(kAccount1, std::nullopt, true, false),
        SolanaAccountMeta(kAccount2, 1, false, true),
        SolanaAccountMeta(kAccount4, 3, false, true),
        SolanaAccountMeta(kAccount3, 1, false, false)},
@@ -97,10 +98,10 @@ TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
   // Test all possible is_signer and is_writable values.
   SolanaInstruction expected_ins2(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kAccount1, absl::nullopt, true, true),
-       SolanaAccountMeta(kAccount2, absl::nullopt, true, false),
-       SolanaAccountMeta(kAccount3, absl::nullopt, false, true),
-       SolanaAccountMeta(kAccount4, absl::nullopt, false, false),
+      {SolanaAccountMeta(kAccount1, std::nullopt, true, true),
+       SolanaAccountMeta(kAccount2, std::nullopt, true, false),
+       SolanaAccountMeta(kAccount3, std::nullopt, false, true),
+       SolanaAccountMeta(kAccount4, std::nullopt, false, false),
        SolanaAccountMeta(kAccount5, 2, false, true),
        SolanaAccountMeta(kAccount5, 6, false, false)},
       {});
@@ -146,8 +147,8 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
 
   base::Value::Dict value = instruction.ToValue();
@@ -229,7 +230,7 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
       static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+          mojom::SolanaSystemInstruction::kTransfer, std::nullopt),
       std::move(mojom_params));
 
   const std::string config_program =
@@ -251,14 +252,14 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
   EXPECT_EQ(std::vector<SolanaInstruction>(
                 {SolanaInstruction(
                      mojom::kSolanaSystemProgramId,
-                     {SolanaAccountMeta(pubkey1, absl::nullopt, true, false),
-                      SolanaAccountMeta(pubkey2, absl::nullopt, false, true)},
+                     {SolanaAccountMeta(pubkey1, std::nullopt, true, false),
+                      SolanaAccountMeta(pubkey2, std::nullopt, false, true)},
                      data),
                  SolanaInstruction(
                      config_program,
-                     {SolanaAccountMeta(pubkey2, absl::nullopt, false, true),
-                      SolanaAccountMeta(pubkey1, absl::nullopt, true, false)},
-                     data, absl::nullopt)}),
+                     {SolanaAccountMeta(pubkey2, std::nullopt, false, true),
+                      SolanaAccountMeta(pubkey1, std::nullopt, true, false)},
+                     data, std::nullopt)}),
             instructions);
 }
 
@@ -269,8 +270,8 @@ TEST(SolanaInstructionUnitTest, ToMojomSolanaInstruction) {
 
   SolanaInstruction instruction(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(pubkey1, absl::nullopt, true, false),
-       SolanaAccountMeta(pubkey2, absl::nullopt, false, true)},
+      {SolanaAccountMeta(pubkey1, std::nullopt, true, false),
+       SolanaAccountMeta(pubkey2, std::nullopt, false, true)},
       data);
 
   auto mojom_instruction = instruction.ToMojomSolanaInstruction();
@@ -291,7 +292,7 @@ TEST(SolanaInstructionUnitTest, ToMojomSolanaInstruction) {
       mojom::DecodedSolanaInstructionData::New(
           static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
           solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-              mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+              mojom::SolanaSystemInstruction::kTransfer, std::nullopt),
           std::move(mojom_params)));
 }
 

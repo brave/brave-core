@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -109,13 +111,13 @@ class AssetRatioServiceUnitTest : public testing::Test {
                        const std::string& amount,
                        const std::string& currency_code,
                        const std::string& expected_url,
-                       absl::optional<std::string> expected_error) {
+                       std::optional<std::string> expected_error) {
     base::RunLoop run_loop;
     asset_ratio_service_->GetBuyUrlV1(
         on_ramp_provider, chain_id, address, symbol, amount, currency_code,
         base::BindLambdaForTesting(
             [&](const std::string& url,
-                const absl::optional<std::string>& error) {
+                const std::optional<std::string>& error) {
               EXPECT_EQ(url, expected_url);
               EXPECT_EQ(error, expected_error);
               run_loop.Quit();
@@ -130,13 +132,13 @@ class AssetRatioServiceUnitTest : public testing::Test {
                       const std::string& amount,
                       const std::string& currency_code,
                       const std::string& expected_url,
-                      absl::optional<std::string> expected_error) {
+                      std::optional<std::string> expected_error) {
     base::RunLoop run_loop;
     asset_ratio_service_->GetSellUrl(
         off_ramp_provider, chain_id, address, symbol, amount, currency_code,
         base::BindLambdaForTesting(
             [&](const std::string& url,
-                const absl::optional<std::string>& error) {
+                const std::optional<std::string>& error) {
               EXPECT_EQ(url, expected_url);
               EXPECT_EQ(error, expected_error);
               run_loop.Quit();
@@ -161,7 +163,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
                   "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
                   "&fiatCurrency=USD&hostApiKey="
                   "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
-                  absl::nullopt);
+                  std::nullopt);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
@@ -176,7 +178,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
                   "amount=55000000&fiat_currency=USD&client_token=74618e17-"
                   "a537-4f5d-ab4d-9916739560b1&fixed_asset_type=USDC&fixed_"
                   "network=ethereum",
-                  absl::nullopt);
+                  std::nullopt);
 
   // Timeout yields error
   std::string error = "error";
@@ -199,7 +201,7 @@ TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
                  "&swapAmount=250"
                  "&fiatCurrency=USD&hostApiKey="
                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
-                 absl::nullopt);
+                 std::nullopt);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
@@ -537,7 +539,7 @@ TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
                   "https://crypto.link.com?session_hash=abcdefgh",
-                  absl::nullopt);
+                  std::nullopt);
 
   // Test with unexpected response
   SetInterceptor("mischief managed");
@@ -563,7 +565,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
       "22USDC%22%5D%2C%22blockchains%22%3A%5B%22ethereum%22%2C%22arbitrum%22%"
       "2C%22optimism%22%2C%22polygon%22%2C%22avalanche-c-chain%22%2C%22celo%22%"
       "5D%7D%5D",
-      absl::nullopt);
+      std::nullopt);
 
   // Sol address
   TestGetBuyUrlV1(
@@ -574,7 +576,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
       "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
       "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
       "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
-      absl::nullopt);
+      std::nullopt);
 }
 
 }  // namespace brave_wallet

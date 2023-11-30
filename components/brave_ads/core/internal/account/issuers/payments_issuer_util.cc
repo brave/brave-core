@@ -5,18 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/payments_issuer_util.h"
 
+#include <optional>
+
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 bool IsPaymentsIssuerValid(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo> payments_issuer =
+  const std::optional<IssuerInfo> payments_issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
   if (!payments_issuer) {
     return false;

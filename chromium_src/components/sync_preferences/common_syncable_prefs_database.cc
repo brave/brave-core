@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/sync_preferences/common_syncable_prefs_database.h"
-
+#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "components/sync_preferences/common_syncable_prefs_database.h"
 // "//components/sync_preferences:common_syncable_prefs_database" already
 // depends on "//components/search_engines"
 
@@ -43,7 +43,7 @@ const auto& BraveSyncablePreferences() {
 
 namespace sync_preferences {
 
-absl::optional<SyncablePrefMetadata>
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
     const std::string& pref_name) const {
   const auto* it = BraveSyncablePreferences().find(pref_name);
@@ -53,7 +53,7 @@ CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
   return GetSyncablePrefMetadata_ChromiumOriginalImpl(pref_name);
 }
 
-absl::optional<SyncablePrefMetadata>
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata_ChromiumImpl(
     const std::string& pref_name) const {
   return GetSyncablePrefMetadata(pref_name);

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -135,7 +136,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   std::string chain_id_;
   std::string first_allowed_account_;
   std::string uuid_;
-  absl::optional<std::string> brave_wallet_image_;
+  std::optional<std::string> brave_wallet_image_;
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
 };
 

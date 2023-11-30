@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -45,7 +46,7 @@ void AIChatCredentialManager::GetPremiumStatus(
   const auto& cached_creds_dict =
       prefs_service_->GetDict(ai_chat::prefs::kBraveChatPremiumCredentialCache);
   for (const auto [credential, expires_at_value] : cached_creds_dict) {
-    absl::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
+    std::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
     if (!expires_at) {
       continue;
     }
@@ -89,7 +90,7 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
   if (!records_v || !records_v->is_dict()) {
@@ -120,7 +121,7 @@ void AIChatCredentialManager::OnCredentialSummary(
 }
 
 void AIChatCredentialManager::FetchPremiumCredential(
-    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
         callback) {
   // Loop through credentials looking for a valid credential and remove it. If
   // there is more than one valid credential, use the one that is expiring
@@ -138,7 +139,7 @@ void AIChatCredentialManager::FetchPremiumCredential(
 
   for (auto it = dict.begin(); it != dict.end(); ++it) {
     base::Value& expires_at_value = it->second;
-    absl::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
+    std::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
 
     // Remove expired credentials from the cache.
     if (!expires_at || *expires_at < now) {
@@ -178,11 +179,11 @@ void AIChatCredentialManager::FetchPremiumCredential(
 }
 
 void AIChatCredentialManager::OnGetPremiumStatus(
-    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
         callback,
     ai_chat::mojom::PremiumStatus status) {
   if (status != ai_chat::mojom::PremiumStatus::Active) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   const std::string leo_sku_domain =
@@ -201,7 +202,7 @@ void AIChatCredentialManager::OnGetPremiumStatus(
 }
 
 void AIChatCredentialManager::OnPrepareCredentialsPresentation(
-    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
         callback,
     const std::string& domain,
     const std::string& credential_as_cookie) {
@@ -210,17 +211,17 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   net::ParsedCookie credential_cookie(credential_as_cookie,
                                       /*block_truncated=*/true, &status);
   if (!credential_cookie.IsValid()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   if (!status.IsInclude()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   if (!credential_cookie.HasExpires()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -228,7 +229,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
       net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
   // Early return when it's already expired.
   if (time < base::Time::Now()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -242,7 +243,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
   if (credential.empty()) {
     // Not purchased.
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 

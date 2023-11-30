@@ -16,7 +16,6 @@
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

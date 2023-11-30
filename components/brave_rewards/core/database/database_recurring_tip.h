@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_RECURRING_TIP_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_RECURRING_TIP_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -34,7 +35,7 @@ class DatabaseRecurringTip : public DatabaseTable {
       base::OnceCallback<void(bool)> callback);
 
   void GetNextMonthlyContributionTime(
-      base::OnceCallback<void(absl::optional<base::Time>)> callback);
+      base::OnceCallback<void(std::optional<base::Time>)> callback);
 
   void GetAllRecords(GetRecurringTipsCallback callback);
 

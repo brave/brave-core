@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_util.h"
@@ -75,16 +77,16 @@ TransactionList GetAllUnreconciledTransactions(
   return unreconciled_transactions;
 }
 
-absl::optional<TransactionList>
+std::optional<TransactionList>
 BuildTransactionsForReconciledTransactionsThisMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo> payment = GetPaymentForThisMonth(payments);
+  const std::optional<PaymentInfo> payment = GetPaymentForThisMonth(payments);
   if (!payment) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (payment->balance == 0.0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
@@ -104,12 +106,12 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   return reconciled_transactions;
 }
 
-absl::optional<TransactionInfo>
+std::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo> payment = GetPaymentForLastMonth(payments);
+  const std::optional<PaymentInfo> payment = GetPaymentForLastMonth(payments);
   if (!payment || payment->balance == 0.0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Time time = GetLocalTimeAtBeginningOfLastMonth();

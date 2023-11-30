@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 
+#include <optional>
 #include <string>
 
 #include "brave/browser/brave_browser_process.h"
@@ -18,9 +19,9 @@
 
 namespace brave {
 
-absl::optional<std::string> GetCspDirectivesOnTaskRunner(
+std::optional<std::string> GetCspDirectivesOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
-    absl::optional<std::string> original_csp) {
+    std::optional<std::string> original_csp) {
   std::string source_host;
   if (ctx->initiator_url.is_valid() && !ctx->initiator_url.host().empty()) {
     source_host = ctx->initiator_url.host();
@@ -30,10 +31,10 @@ absl::optional<std::string> GetCspDirectivesOnTaskRunner(
     // use the request URL as the initiator.
     source_host = ctx->request_url.host();
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<std::string> csp_directives =
+  std::optional<std::string> csp_directives =
       g_brave_browser_process->ad_block_service()->GetCspDirectives(
           ctx->request_url, ctx->resource_type, source_host);
 
@@ -45,7 +46,7 @@ void OnReceiveCspDirectives(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx,
     scoped_refptr<net::HttpResponseHeaders> override_response_headers,
-    absl::optional<std::string> csp_directives) {
+    std::optional<std::string> csp_directives) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (csp_directives) {
@@ -79,11 +80,11 @@ int OnHeadersReceived_AdBlockCspWork(
     }
 
     std::string original_csp_string;
-    absl::optional<std::string> original_csp = absl::nullopt;
+    std::optional<std::string> original_csp = std::nullopt;
     if ((*override_response_headers)
             ->GetNormalizedHeader("Content-Security-Policy",
                                   &original_csp_string)) {
-      original_csp = absl::optional<std::string>(original_csp_string);
+      original_csp = std::optional<std::string>(original_csp_string);
     }
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");

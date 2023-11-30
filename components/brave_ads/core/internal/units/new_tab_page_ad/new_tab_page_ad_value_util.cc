@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -114,13 +115,13 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
         continue;
       }
 
-      const absl::optional<int> focal_point_x =
+      const std::optional<int> focal_point_x =
           focal_point_dict->FindInt(kNewTabPageAdFocalPointXKey);
       if (!focal_point_x) {
         continue;
       }
 
-      const absl::optional<int> focal_point_y =
+      const std::optional<int> focal_point_y =
           focal_point_dict->FindInt(kNewTabPageAdFocalPointYKey);
       if (!focal_point_y) {
         continue;

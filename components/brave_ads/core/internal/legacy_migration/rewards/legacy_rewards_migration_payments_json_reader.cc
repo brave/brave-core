@@ -5,17 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h"
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader_util.h"
 
 namespace brave_ads::rewards::json::reader {
 
-absl::optional<PaymentList> ReadPayments(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict =
+std::optional<PaymentList> ReadPayments(const std::string& json) {
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   if (!dict) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ParsePayments(*dict);

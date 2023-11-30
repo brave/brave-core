@@ -11,7 +11,6 @@
 
 #include "base/files/file_util.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
 void ImportStorages(base::FilePath source_profile,

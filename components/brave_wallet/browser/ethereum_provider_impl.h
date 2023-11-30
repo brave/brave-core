@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -63,7 +64,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                           RequestCallback callback,
                           base::Value id);
   void Web3ClientVersion(RequestCallback callback, base::Value id);
-  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  std::optional<std::vector<std::string>> GetAllowedAccounts(
       bool include_accounts_when_locked);
   void AddEthereumChain(const std::string& json_payload,
                         RequestCallback callback,
@@ -85,7 +86,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                       base::Value id);
 
   void EthSubscribe(const std::string& event_type,
-                    absl::optional<base::Value::Dict> filter,
+                    std::optional<base::Value::Dict> filter,
                     RequestCallback callback,
                     base::Value id);
   void EthUnsubscribe(const std::string& subscription_id,
@@ -183,7 +184,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id,
                          mojom::CoinType coin,
-                         const absl::optional<url::Origin>& origin) override;
+                         const std::optional<url::Origin>& origin) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,
@@ -246,7 +247,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                      bool is_eip712,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error);
+                                     const std::optional<std::string>& error);
 
   // KeyringServiceObserverBase:
   void Locked() override;
@@ -268,7 +269,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       const std::string& method,
       const url::Origin& origin,
       RequestPermissionsError error,
-      const absl::optional<std::vector<std::string>>& allowed_accounts);
+      const std::optional<std::vector<std::string>>& allowed_accounts);
   void OnSendRawTransaction(RequestCallback callback,
                             base::Value id,
                             const std::string& tx_hash,

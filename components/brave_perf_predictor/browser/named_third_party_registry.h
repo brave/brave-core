@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -34,8 +35,7 @@ class NamedThirdPartyRegistry : public KeyedService {
   bool LoadMappings(const std::string_view entities, bool discard_irrelevant);
   // Default initialization - asynchronously load from bundled resource
   void InitializeDefault();
-  absl::optional<std::string> GetThirdParty(
-      const std::string_view domain) const;
+  std::optional<std::string> GetThirdParty(const std::string_view domain) const;
 
  private:
   bool IsInitialized() const { return initialized_; }

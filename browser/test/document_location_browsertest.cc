@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -64,7 +65,7 @@ IN_PROC_BROWSER_TEST_F(DocumentLocationBrowserTest,
   content::TestUntrustedDataSourceHeaders headers;
   std::vector<std::string> frame_ancestors({"chrome://web-ui"});
   headers.frame_ancestors =
-      absl::make_optional<std::vector<std::string>>(std::move(frame_ancestors));
+      std::make_optional<std::vector<std::string>>(std::move(frame_ancestors));
   headers.child_src = "child-src *;";
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<ui::TestUntrustedWebUIConfig>("test-host", headers));

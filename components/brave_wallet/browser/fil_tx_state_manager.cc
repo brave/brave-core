@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -14,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -34,7 +34,7 @@ std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(
 }
 
 std::string FilTxStateManager::GetTxPrefPathPrefix(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
     return base::StrCat(
         {kFilecoinPrefKey, ".",
@@ -64,7 +64,7 @@ std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
   if (!tx) {
     return nullptr;
   }
-  absl::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);
+  std::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);
   if (!tx_from_value) {
     return nullptr;
   }

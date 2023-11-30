@@ -8,10 +8,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BITCOIN_UTILS_H_
 
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -43,7 +43,7 @@ struct DecodedBitcoinAddress {
   bool testnet = false;
 };
 
-absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
+std::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
     const std::string& address);
 
 std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
