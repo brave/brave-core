@@ -43,6 +43,7 @@ import {
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery,
+  useRejectTransactionsMutation,
   walletApi
 } from '../slices/api.slice'
 import {
@@ -96,6 +97,9 @@ export const usePendingTransactions = () => {
   const hasFeeEstimatesError = useSafeWalletSelector(
     WalletSelectors.hasFeeEstimatesError
   )
+
+  // mutations
+  const [rejectTransactions] = useRejectTransactionsMutation()
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -399,8 +403,15 @@ export const usePendingTransactions = () => {
   }, [selectedPendingTransactionId, pendingTransactions])
 
   const rejectAllTransactions = React.useCallback(
-    () => dispatch(walletApi.endpoints.rejectAllTransactions.initiate()),
-    []
+    () =>
+      rejectTransactions(
+        pendingTransactions.map((tx) => ({
+          id: tx.id,
+          chainId: tx.chainId,
+          coinType: getCoinFromTxDataUnion(tx.txDataUnion)
+        }))
+      ),
+    [pendingTransactions, rejectTransactions]
   )
 
   const updateUnapprovedTransactionGasFields = React.useCallback(
@@ -419,14 +430,14 @@ export const usePendingTransactions = () => {
       return
     }
 
-    dispatch(
-      walletApi.endpoints.rejectTransaction.initiate({
+    rejectTransactions([
+      {
         chainId: transactionInfo.chainId,
         coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
         id: transactionInfo.id
-      })
-    )
-  }, [transactionInfo])
+      }
+    ])
+  }, [transactionInfo, rejectTransactions])
 
   const onConfirm = React.useCallback(async () => {
     if (!transactionInfo) {
