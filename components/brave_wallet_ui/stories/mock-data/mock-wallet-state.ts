@@ -23,7 +23,6 @@ export const mockWalletState: WalletState = {
     eTldPlusOne: 'uniswap.org'
   },
   addUserAssetError: false,
-  connectedAccounts: [],
   defaultCurrencies: {
     crypto: 'ETH',
     fiat: 'USD'

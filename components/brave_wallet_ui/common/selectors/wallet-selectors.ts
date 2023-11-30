@@ -63,7 +63,6 @@ export const allowNewWalletFilecoinAccount = ({ wallet }: State) =>
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const connectedAccounts = ({ wallet }: State) => wallet.connectedAccounts
 export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates

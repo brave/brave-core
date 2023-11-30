@@ -234,26 +234,6 @@ export function refreshVisibleTokenInfo(
   }
 }
 
-export function refreshSitePermissions() {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { braveWalletService } = apiProxy
-
-    const {
-      allAccounts: { accounts }
-    } = await apiProxy.keyringService.getAllAccounts()
-
-    // Get a list of accounts with permissions of the active origin
-    const { accountsWithPermission } = await braveWalletService.hasPermission(
-      accounts.map((acc) => acc.accountId)
-    )
-
-    dispatch(
-      WalletActions.setSitePermissions({ accounts: accountsWithPermission })
-    )
-  }
-}
-
 export async function sendSolanaSerializedTransaction(
   payload: SolanaSerializedTransactionParams
 ) {

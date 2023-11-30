@@ -214,7 +214,6 @@ export interface WalletState {
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
-  connectedAccounts: BraveWallet.AccountId[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
   selectedNetworkFilter: NetworkFilterType

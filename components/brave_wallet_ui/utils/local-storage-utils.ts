@@ -6,7 +6,8 @@
 import {
   SupportedTestNetworks,
   SupportedCoinTypes,
-  BraveWallet
+  BraveWallet,
+  PanelTypes
 } from '../constants/types'
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
@@ -63,4 +64,28 @@ export const makeInitialFilteredOutNetworkKeys = () => {
       .toString()
   })
   return [...testNetworkKeys, ...localHostNetworkKeys]
+}
+
+export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
+  return (
+    panelType === 'connectWithSite' ||
+    panelType === 'signData' ||
+    panelType === 'addEthereumChain'
+  )
+}
+
+export function storeCurrentAndPreviousPanel(
+  panelType: PanelTypes,
+  previousPanel: PanelTypes | undefined
+) {
+  if (!isPersistanceOfPanelProhibited(panelType)) {
+    window.localStorage.setItem(LOCAL_STORAGE_KEYS.CURRENT_PANEL, panelType)
+  }
+
+  if (previousPanel && !isPersistanceOfPanelProhibited(previousPanel)) {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL,
+      previousPanel
+    )
+  }
 }

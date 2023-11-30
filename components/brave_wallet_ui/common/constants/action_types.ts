@@ -81,14 +81,6 @@ export type DefaultBaseCryptocurrencyChanged = {
   cryptocurrency: string
 }
 
-export type SitePermissionsPayloadType = {
-  accounts: BraveWallet.AccountId[]
-}
-
-export type RemoveSitePermissionPayloadType = {
-  accountId: BraveWallet.AccountId
-}
-
 export type SetTransactionProviderErrorType = {
   transactionId: string
   providerError: TransactionProviderError

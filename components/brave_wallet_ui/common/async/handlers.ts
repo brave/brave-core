@@ -8,7 +8,6 @@ import { mapLimit } from 'async'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
-  RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
   UpdateUsetAssetType
@@ -28,7 +27,6 @@ import {
 // Utils
 import getAPIProxy from './bridge'
 import {
-  refreshSitePermissions,
   refreshVisibleTokenInfo,
   refreshPortfolioFilterOptions,
   getNFTMetadata
@@ -84,7 +82,7 @@ async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
   )
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
-  await store.dispatch(refreshSitePermissions())
+  store.dispatch(walletApi.util.invalidateTags(['ConnectedAccounts']))
 }
 
 handler.on(
@@ -320,15 +318,6 @@ handler.on(
   WalletActions.selectPortfolioTimeline.type,
   async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
     store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-  }
-)
-
-handler.on(
-  WalletActions.removeSitePermission.type,
-  async (store: Store, payload: RemoveSitePermissionPayloadType) => {
-    const braveWalletService = getAPIProxy().braveWalletService
-    await braveWalletService.resetPermission(payload.accountId)
-    await refreshWalletInfo(store)
   }
 )
 

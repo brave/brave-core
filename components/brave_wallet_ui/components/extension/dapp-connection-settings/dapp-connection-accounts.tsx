@@ -9,13 +9,10 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
-// Selectors
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
-
 // Queries
+import {
+  useGetActiveOriginConnectedAccountIdsQuery //
+} from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
   useSelectedAccountQuery
@@ -53,14 +50,11 @@ export const DAppConnectionAccounts = (props: Props) => {
   // Queries
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const { data: connectedAccountsIds = [] } =
+    useGetActiveOriginConnectedAccountIdsQuery()
 
   // Constants
   const selectedCoin = selectedAccount?.accountId.coin
-
-  // Selectors
-  const connectedAccountsIds = useUnsafeWalletSelector(
-    WalletSelectors.connectedAccounts
-  )
 
   // Memos
   const accountByCoinType = React.useMemo(() => {
