@@ -31,7 +31,6 @@ function ConversationList() {
     suggestedQuestions,
     shouldDisableUserInput,
     hasAcceptedAgreement,
-    siteInfo,
     shouldSendPageContents
   } = context
 
@@ -73,7 +72,7 @@ function ConversationList() {
           const isLoading = isLastEntry && isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
-          const showSiteTitle = id === 0 && isHuman && siteInfo?.title && shouldSendPageContents
+          const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
 
           const turnClass = classnames({
             [styles.turn]: true,

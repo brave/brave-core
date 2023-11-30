@@ -295,7 +295,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldShowLongPageWarning,
     shouldShowLongConversationInfo,
     showAgreementModal,
-    shouldSendPageContents,
+    shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     setCurrentModel,
     switchToDefaultModel,
     goPremium,

@@ -685,12 +685,9 @@ void ConversationDriver::SubmitSummarizationRequest() {
 
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
-  if (!article_text_.empty()) {
-    site_info->title = base::UTF16ToUTF8(GetPageTitle());
-  }
+  site_info->title = base::UTF16ToUTF8(GetPageTitle());
   site_info->is_content_truncated = IsPageContentsTruncated();
   site_info->is_content_association_possible = IsContentAssociationPossible();
-
   return site_info;
 }
 
