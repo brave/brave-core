@@ -100,7 +100,20 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
   }
 }
 
+const getBraveVersion = (ignorePatchVersionNumber) => {
+  const braveVersion = packageConfig(['version'])
+  if (!ignorePatchVersionNumber) {
+    return braveVersion
+  }
+
+  const braveVersionParts = braveVersion.split('.')
+  assert(braveVersionParts.length == 3)
+  braveVersionParts[2] = '0'
+  return braveVersionParts.join('.')
+}
+
 const Config = function () {
+  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
@@ -180,7 +193,8 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  this.braveVersion = packageConfig(['version'])
+  this.ignorePatchVersionNumber = !this.isBraveReleaseBuild() && getNPMConfig(['ignore_patch_version_number'], !this.isCI)
+  this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -202,7 +216,6 @@ const Config = function () {
   // Make sure "src/" is a part of RBE "exec_root" to allow "src/" files as inputs.
   this.rbeExecRoot = this.rootDir
   this.realRewrapperDir = process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
-  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
@@ -414,10 +427,6 @@ Config.prototype.buildArgs = function () {
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
-    // Use dummy LASTCHANGE. When the real LASTCHANGE is used, ~2300 targets
-    // are rebuilt with each version bump.
-    args.use_dummy_lastchange = true
-
     // Don't randomize mojom message ids. When randomization is enabled, all
     // Mojo targets are rebuilt (~23000) on each version bump.
     args.enable_mojom_message_id_scrambling = false
@@ -429,6 +438,14 @@ Config.prototype.buildArgs = function () {
       // paths, which makes Goma cache unusable.
       args.enable_dsyms = false
     }
+  }
+
+  if (this.ignorePatchVersionNumber) {
+    assert(!this.isBraveReleaseBuild())
+
+    // Allow dummy LASTCHANGE to be set. When the real LASTCHANGE is used, ~2300
+    // targets are rebuilt with each version bump.
+    args.use_dummy_lastchange = getNPMConfig(['use_dummy_lastchange'], true)
   }
 
   if (this.shouldSign()) {
