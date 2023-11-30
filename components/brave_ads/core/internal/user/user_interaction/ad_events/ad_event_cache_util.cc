@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 

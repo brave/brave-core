@@ -28,9 +28,9 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 

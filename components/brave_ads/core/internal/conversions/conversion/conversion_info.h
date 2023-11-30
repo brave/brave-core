@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 

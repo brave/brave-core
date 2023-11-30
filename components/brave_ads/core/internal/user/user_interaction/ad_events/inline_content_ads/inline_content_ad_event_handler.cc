@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 namespace brave_ads {
 

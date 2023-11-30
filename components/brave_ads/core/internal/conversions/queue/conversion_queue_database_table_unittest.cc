@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
 
 #include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
@@ -14,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 

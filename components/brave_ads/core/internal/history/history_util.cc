@@ -7,8 +7,8 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_info.h"
 
 namespace brave_ads {
 

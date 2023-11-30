@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 

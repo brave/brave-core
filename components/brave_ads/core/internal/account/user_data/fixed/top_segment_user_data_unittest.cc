@@ -9,10 +9,10 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/targeting_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

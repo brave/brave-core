@@ -18,6 +18,23 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/inline_content_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/new_tab_page_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/notification_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/permission_rules/permission_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/prediction/model_based/creative_inline_content_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/contextual/text_embedding/text_embedding_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -26,27 +43,10 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_inline_content_ad_model_based_predictor_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
-#include "brave/components/brave_ads/core/internal/units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
-#include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ad_transfer/ad_transfer_feature.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/public/user/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "components/variations/variations_switches.h"
 
@@ -82,6 +82,7 @@ struct ParamInfo final {
      true},
     {{switches::kEnableFeatures, kAccountStatementFeature.name}, true},
     {{switches::kEnableFeatures, kAccountTokensFeature.name}, true},
+    {{switches::kEnableFeatures, kAdTransferFeature.name}, true},
     {{switches::kEnableFeatures, kAntiTargetingFeature.name}, true},
     {{switches::kEnableFeatures, kCatalogFeature.name}, true},
     {{switches::kEnableFeatures, kConfirmationsFeature.name}, true},
@@ -115,7 +116,6 @@ struct ParamInfo final {
     {{switches::kEnableFeatures, kSubdivisionFeature.name}, true},
     {{switches::kEnableFeatures, kTextClassificationFeature.name}, true},
     {{switches::kEnableFeatures, kTextEmbeddingFeature.name}, true},
-    {{switches::kEnableFeatures, kTransferFeature.name}, true},
     {{switches::kEnableFeatures, kUserActivityFeature.name}, true},
     {{switches::kEnableFeatures, kUserIdleDetectionFeature.name}, true},
 
@@ -129,6 +129,8 @@ struct ParamInfo final {
       kAccountStatementFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kAccountTokensFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, kAdTransferFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kAntiTargetingFeature.name},
      true},
@@ -199,8 +201,6 @@ struct ParamInfo final {
       kTextClassificationFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kTextEmbeddingFeature.name},
-     true},
-    {{variations::switches::kForceFieldTrialParams, kTransferFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kUserActivityFeature.name},
      true},

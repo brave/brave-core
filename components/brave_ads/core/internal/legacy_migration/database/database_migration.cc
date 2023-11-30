@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/ad_targeting/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
@@ -25,7 +26,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 

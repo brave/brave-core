@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/notification_ads/notification_ad_event_factory.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 

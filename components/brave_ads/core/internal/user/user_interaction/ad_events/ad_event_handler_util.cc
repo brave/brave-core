@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_handler_util.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/public/units/ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
 

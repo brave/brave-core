@@ -19,9 +19,9 @@
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
