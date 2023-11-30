@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<grit-part>
-  <if expr="enable_brave_player">
-    <include name="IDR_BRAVE_PLAYER_HTML" file="../brave_player/browser/resources/player.html" type="BINDATA" />
-    <include name="IDR_BRAVE_PLAYER_EMBED_HTML" file="../brave_player/browser/resources/player_embed.html" type="BINDATA" />
-  </if>
-</grit-part>

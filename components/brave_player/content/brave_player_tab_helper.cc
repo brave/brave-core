@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_viewer/browser/content/brave_viewer_tab_helper.h"
+#include "brave/components/brave_player/content/brave_player_tab_helper.h"
 
 #include <string>
 #include <utility>
@@ -11,8 +11,8 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_viewer/browser/core/brave_viewer_service.h"
-#include "brave/components/brave_viewer/common/features.h"
+#include "brave/components/brave_player/core/browser/brave_player_service.h"
+#include "brave/components/brave_player/core/common/features.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -20,31 +20,31 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
-namespace brave_viewer {
+namespace brave_player {
 
 // static
-void BraveViewerTabHelper::MaybeCreateForWebContents(
+void BravePlayerTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
     const int32_t world_id) {
-  if (!base::FeatureList::IsEnabled(brave_viewer::features::kBraveViewer)) {
+  if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
     return;
   }
 
-  brave_viewer::BraveViewerTabHelper::CreateForWebContents(contents, world_id);
+  brave_player::BravePlayerTabHelper::CreateForWebContents(contents, world_id);
 }
 
-BraveViewerTabHelper::BraveViewerTabHelper(content::WebContents* web_contents,
+BravePlayerTabHelper::BravePlayerTabHelper(content::WebContents* web_contents,
                                            const int32_t world_id)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<BraveViewerTabHelper>(*web_contents),
+      content::WebContentsUserData<BravePlayerTabHelper>(*web_contents),
       world_id_(world_id),
-      brave_viewer_service_(BraveViewerService::GetInstance()) {
-  DCHECK(brave_viewer_service_);
+      brave_player_service_(BravePlayerService::GetInstance()) {
+  DCHECK(brave_player_service_);
 }
 
-BraveViewerTabHelper::~BraveViewerTabHelper() = default;
+BravePlayerTabHelper::~BravePlayerTabHelper() = default;
 
-void BraveViewerTabHelper::OnTestScriptResult(
+void BravePlayerTabHelper::OnTestScriptResult(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     base::Value value) {
   if (value.GetIfBool().value_or(false)) {
@@ -52,16 +52,16 @@ void BraveViewerTabHelper::OnTestScriptResult(
   }
 }
 
-void BraveViewerTabHelper::InsertTestScript(
+void BravePlayerTabHelper::InsertTestScript(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     std::string test_script) {
   InsertScriptInPage(
       render_frame_host_id, test_script,
-      base::BindOnce(&BraveViewerTabHelper::OnTestScriptResult,
+      base::BindOnce(&BravePlayerTabHelper::OnTestScriptResult,
                      weak_factory_.GetWeakPtr(), render_frame_host_id));
 }
 
-void BraveViewerTabHelper::InsertScriptInPage(
+void BravePlayerTabHelper::InsertScriptInPage(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     const std::string& script,
     content::RenderFrameHost::JavaScriptResultCallback cb) {
@@ -84,7 +84,7 @@ void BraveViewerTabHelper::InsertScriptInPage(
 }
 
 mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
-BraveViewerTabHelper::GetRemote(content::RenderFrameHost* rfh) {
+BravePlayerTabHelper::GetRemote(content::RenderFrameHost* rfh) {
   if (!script_injector_remote_.is_bound()) {
     rfh->GetRemoteAssociatedInterfaces()->GetInterface(
         &script_injector_remote_);
@@ -92,7 +92,7 @@ BraveViewerTabHelper::GetRemote(content::RenderFrameHost* rfh) {
   return script_injector_remote_;
 }
 
-void BraveViewerTabHelper::DidFinishNavigation(
+void BravePlayerTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() ||
@@ -104,8 +104,8 @@ void BraveViewerTabHelper::DidFinishNavigation(
       navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
 }
 
-void BraveViewerTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  DCHECK(brave_viewer_service_);
+void BravePlayerTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  DCHECK(brave_player_service_);
   // Make sure it gets reset.
   bool should_process = should_process_;
   should_process_ = false;
@@ -124,11 +124,11 @@ void BraveViewerTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
-  brave_viewer_service_->GetTestScript(
-      url, base::BindOnce(&BraveViewerTabHelper::InsertTestScript,
+  brave_player_service_->GetTestScript(
+      url, base::BindOnce(&BravePlayerTabHelper::InsertTestScript,
                           weak_factory_.GetWeakPtr(), render_frame_host_id));
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveViewerTabHelper);
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BravePlayerTabHelper);
 
-}  // namespace brave_viewer
+}  // namespace brave_player

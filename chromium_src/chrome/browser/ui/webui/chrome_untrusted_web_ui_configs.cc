@@ -12,7 +12,7 @@
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
+#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -37,7 +37,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
 #include "brave/browser/ui/webui/brave_player_ui.h"
-#include "brave/components/brave_player/common/features.h"
+#include "brave/components/brave_player/core/common/features.h"
 #endif
 
 #define RegisterChromeUntrustedWebUIConfigs \

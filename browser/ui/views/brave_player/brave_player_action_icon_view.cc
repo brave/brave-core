@@ -10,8 +10,8 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
-#include "brave/components/brave_player/common/url_constants.h"
+#include "brave/components/brave_player/core/common/url_constants.h"
+#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"

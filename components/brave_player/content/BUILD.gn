@@ -3,20 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("content") {
-  output_name = "brave_viewer_browser_content"
+import("//brave/components/brave_player/core/common/buildflags/buildflags.gni")
 
-  defines = [ "IS_BRAVE_VIEWER_BROWSER_CONTENT_IMPL" ]
+assert(enable_brave_player)
+
+component("content") {
+  output_name = "brave_player_content"
 
   sources = [
-    "brave_viewer_tab_helper.cc",
-    "brave_viewer_tab_helper.h",
+    "brave_player_tab_helper.cc",
+    "brave_player_tab_helper.h",
   ]
+
+  defines = [ "IS_BRAVE_PLAYER_CONTENT_IMPL" ]
 
   deps = [
     "//base",
-    "//brave/components/brave_viewer/browser/core",
-    "//brave/components/brave_viewer/common",
+    "//brave/components/brave_player/core/browser/",
+    "//brave/components/brave_player/core/common",
     "//brave/components/script_injector/common/mojom",
     "//components/sessions",
     "//content/public/browser",

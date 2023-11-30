@@ -7,13 +7,13 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "brave_viewer_tab_helper_browsertest.cc" ]
+  sources = [ "brave_player_tab_helper_browsertest.cc" ]
 
   deps = [
     "//base",
+    "//brave/components/brave_player/core/browser/",
+    "//brave/components/brave_player/core/common",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_viewer/browser/core",
-    "//brave/components/brave_viewer/common",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//net:test_support",

@@ -3,22 +3,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("core") {
-  output_name = "brave_viewer_browser_core"
+import("//brave/components/brave_player/core/common/buildflags/buildflags.gni")
 
-  defines = [ "IS_BRAVE_VIEWER_BROWSER_CORE_IMPL" ]
+assert(enable_brave_player)
+
+component("browser") {
+  output_name = "brave_player_core_browser"
 
   sources = [
-    "brave_viewer_component_installer.cc",
-    "brave_viewer_component_installer.h",
-    "brave_viewer_service.cc",
-    "brave_viewer_service.h",
+    "brave_player_component_installer.cc",
+    "brave_player_component_installer.h",
+    "brave_player_service.cc",
+    "brave_player_service.h",
   ]
+
+  defines = [ "IS_BRAVE_PLAYER_CORE_BROWSER_IMPL" ]
 
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_viewer/common",
+    "//brave/components/brave_player/core/common",
     "//components/component_updater",
     "//crypto",
     "//url",

@@ -22,7 +22,7 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_viewer/browser/content/brave_viewer_tab_helper.h"
+#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -93,6 +93,10 @@
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/components/brave_player/content/brave_player_tab_helper.h"
+#endif
+
 namespace brave {
 
 #if defined(TOOLKIT_VIEWS)
@@ -152,8 +156,11 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_ads::SearchResultAdTabHelper::MaybeCreateForWebContents(web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  brave_viewer::BraveViewerTabHelper::MaybeCreateForWebContents(
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+  brave_player::BravePlayerTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+#endif
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif

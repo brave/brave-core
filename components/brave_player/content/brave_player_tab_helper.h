@@ -1,11 +1,10 @@
-
 // Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VIEWER_BROWSER_CONTENT_BRAVE_VIEWER_TAB_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_VIEWER_BROWSER_CONTENT_BRAVE_VIEWER_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_
 
 #include <string>
 
@@ -18,23 +17,24 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
-namespace brave_viewer {
+namespace brave_player {
 
-class BraveViewerService;
+class BravePlayerService;
 
 // Used to inject Brave-Viewer related scripts into supported web pages.
-class COMPONENT_EXPORT(BRAVE_VIEWER_BROWSER_CONTENT) BraveViewerTabHelper
+class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveViewerTabHelper> {
+      public content::WebContentsUserData<BravePlayerTabHelper> {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         const int32_t world_id);
-  ~BraveViewerTabHelper() override;
-  BraveViewerTabHelper(const BraveViewerTabHelper&) = delete;
-  BraveViewerTabHelper& operator=(const BraveViewerTabHelper&) = delete;
+  ~BravePlayerTabHelper() override;
+  BravePlayerTabHelper(const BravePlayerTabHelper&) = delete;
+  BravePlayerTabHelper& operator=(const BravePlayerTabHelper&) = delete;
+
 
  private:
-  BraveViewerTabHelper(content::WebContents*, const int32_t world_id);
+  BravePlayerTabHelper(content::WebContents*, const int32_t world_id);
   // Called to insert Brave Viewer eligibility checks into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
@@ -51,7 +51,7 @@ class COMPONENT_EXPORT(BRAVE_VIEWER_BROWSER_CONTENT) BraveViewerTabHelper
       base::Value value);
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh);
-  friend class content::WebContentsUserData<BraveViewerTabHelper>;
+  friend class content::WebContentsUserData<BravePlayerTabHelper>;
 
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
@@ -59,16 +59,16 @@ class COMPONENT_EXPORT(BRAVE_VIEWER_BROWSER_CONTENT) BraveViewerTabHelper
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
   const int32_t world_id_;
-  const raw_ptr<BraveViewerService> brave_viewer_service_;  // NOT OWNED
+  const raw_ptr<BravePlayerService> brave_player_service_;  // NOT OWNED
   bool should_process_ = false;
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  base::WeakPtrFactory<BraveViewerTabHelper> weak_factory_{this};
+  base::WeakPtrFactory<BravePlayerTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-}  // namespace brave_viewer
+}  // namespace brave_player
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VIEWER_BROWSER_CONTENT_BRAVE_VIEWER_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_

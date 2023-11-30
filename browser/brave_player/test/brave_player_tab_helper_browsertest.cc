@@ -8,8 +8,8 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/components/brave_viewer/browser/core/brave_viewer_service.h"
-#include "brave/components/brave_viewer/common/features.h"
+#include "brave/components/brave_player/core/common/features.h"
+#include "brave/components/brave_player/core/browser/brave_player_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -26,13 +26,13 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
-namespace brave_viewer {
+namespace brave_player {
 
-class BraveViewerTabHelperBrowserTest : public PlatformBrowserTest {
+class BravePlayerTabHelperBrowserTest : public PlatformBrowserTest {
  public:
-  BraveViewerTabHelperBrowserTest()
+  BravePlayerTabHelperBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(brave_viewer::features::kBraveViewer);
+    feature_list_.InitAndEnableFeature(brave_player::features::kBravePlayer);
   }
 
   void SetUpOnMainThread() override {
@@ -44,9 +44,9 @@ class BraveViewerTabHelperBrowserTest : public PlatformBrowserTest {
     content::SetBrowserClientForTesting(&test_content_browser_client_);
 
     // Also called in Disabled test.
-    if (brave_viewer::BraveViewerService::GetInstance()) {
-      brave_viewer::BraveViewerService::GetInstance()->SetComponentPath(
-          test_data_dir.AppendASCII("brave_viewer_component"));
+    if (brave_player::BravePlayerService::GetInstance()) {
+      brave_player::BravePlayerService::GetInstance()->SetComponentPath(
+          test_data_dir.AppendASCII("brave_player_component"));
     }
     https_server_.ServeFilesFromDirectory(test_data_dir);
 
@@ -88,7 +88,7 @@ class BraveViewerTabHelperBrowserTest : public PlatformBrowserTest {
   BraveContentBrowserClient test_content_browser_client_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, YoutubeInjection) {
+IN_PROC_BROWSER_TEST_F(BravePlayerTabHelperBrowserTest, YoutubeInjection) {
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list
   GURL url = https_server_.GetURL("youtube.com", "/simple.html");
 
@@ -100,7 +100,7 @@ IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, YoutubeInjection) {
   // ASSERT_TRUE(DialogIsVisible());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, NotYoutubeNoInjection) {
+IN_PROC_BROWSER_TEST_F(BravePlayerTabHelperBrowserTest, NotYoutubeNoInjection) {
   GURL url = https_server_.GetURL("not-youtube.com", "/simple.html");
 
   std::u16string expected_title(u"OK");
@@ -111,16 +111,16 @@ IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, NotYoutubeNoInjection) {
   ASSERT_TRUE(!DialogIsVisible());
 }
 
-class BraveViewerTabHelperBrowserTestDisabled
-    : public BraveViewerTabHelperBrowserTest {
+class BravePlayerTabHelperBrowserTestDisabled
+    : public BravePlayerTabHelperBrowserTest {
  public:
-  BraveViewerTabHelperBrowserTestDisabled() {
+  BravePlayerTabHelperBrowserTestDisabled() {
     feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(brave_viewer::features::kBraveViewer);
+    feature_list_.InitAndDisableFeature(brave_player::features::kBravePlayer);
   }
 };
 
-IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, NoYoutubeInjection) {
+IN_PROC_BROWSER_TEST_F(BravePlayerTabHelperBrowserTest, NoYoutubeInjection) {
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list
   GURL url = https_server_.GetURL("youtube.com", "/simple.html");
 
@@ -132,4 +132,4 @@ IN_PROC_BROWSER_TEST_F(BraveViewerTabHelperBrowserTest, NoYoutubeInjection) {
   ASSERT_TRUE(!DialogIsVisible());
 }
 
-}  // namespace brave_viewer
+}  // namespace brave_player
