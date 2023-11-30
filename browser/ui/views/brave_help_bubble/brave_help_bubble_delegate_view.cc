@@ -199,9 +199,11 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetAutoColorReadabilityEnabled(false);
   label->SetEnabledColor(SK_ColorWHITE);
 
-  gfx::FontList font_list({"Poppins", "Arial"}, gfx::Font::NORMAL, font_size,
-                          font_weight);
-  label->SetFontList(font_list);
+  const auto& font_list = label->font_list();
+  label->SetFontList(
+      font_list.DeriveWithSizeDelta(font_size - font_list.GetFontSize())
+          .DeriveWithWeight(font_weight));
+
   label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
 
