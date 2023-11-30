@@ -100,6 +100,19 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
   }
 }
 
+const getHostOS = () => {
+  switch (process.platform) {
+    case 'darwin':
+      return 'mac'
+    case 'linux':
+      return 'linux'
+    case 'win32':
+      return 'win'
+    default:
+      assert(false, `Unknown process.platform: ${process.platform}`)
+  }
+}
+
 const Config = function () {
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
@@ -117,6 +130,7 @@ const Config = function () {
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
+  this.hostOS = getHostOS()
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getNPMConfig(['gclient_verbose']) || false
   this.targetArch = getNPMConfig(['target_arch']) || process.arch
@@ -1141,15 +1155,11 @@ Config.prototype.update = function (options) {
   }
 }
 
-Config.prototype.getTargetOS = function() {
-  if (this.targetOS)
+Config.prototype.getTargetOS = function () {
+  if (this.targetOS) {
     return this.targetOS
-  if (process.platform === 'darwin')
-    return 'mac'
-  if (process.platform === 'win32')
-    return 'win'
-  assert(process.platform === 'linux')
-  return 'linux'
+  }
+  return this.hostOS
 }
 
 Config.prototype.getCachePath = function () {
@@ -1284,8 +1294,8 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
-    if (this.targetOS && (this.targetOS === 'android' || this.targetOS === 'ios')) {
-      buildConfigDir = this.targetOS + "_" + buildConfigDir
+    if (this.targetOS && this.targetOS !== this.hostOS) {
+      buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
     if (this.targetEnvironment) {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
