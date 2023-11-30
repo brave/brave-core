@@ -41,7 +41,8 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
         t.Navigate('chrome://settings')
         t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
         t.EvaluateJavaScript(
-            'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
+            'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)',
+            user_gesture=True)
         time.sleep(2)
 
     super(shared_page_state.SharedDesktopPageState, self)._StopBrowser()
