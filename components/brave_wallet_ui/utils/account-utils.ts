@@ -71,10 +71,9 @@ export const getAccountType = (
 }
 
 export const entityIdFromAccountId = (
-  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
 ) => {
-  // TODO(apaymyshev): should use uniqueKey always
-  return accountId.address || accountId.uniqueKey
+  return accountId.uniqueKey
 }
 
 export const findAccountByAddress = (
@@ -93,29 +92,14 @@ export const findAccountByAddress = (
 }
 
 export const findAccountByAccountId = (
-  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>,
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
   if (!accounts) {
     return undefined
   }
 
-  for (const id of accounts.ids) {
-    const entity = accounts.entities[id]
-    if (!entity) {
-      continue
-    }
-    if (
-      entity.accountId.address.toLowerCase() ===
-        accountId.address.toLowerCase() ||
-      entity.accountId.uniqueKey.toLowerCase() ===
-        accountId.uniqueKey.toLowerCase()
-    ) {
-      return entity
-    }
-  }
-
-  return undefined
+  return accounts.entities[entityIdFromAccountId(accountId)]
 }
 
 export const getAddressLabel = (

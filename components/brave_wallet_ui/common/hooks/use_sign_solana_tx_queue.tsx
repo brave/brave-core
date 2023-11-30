@@ -13,15 +13,14 @@ import { BraveWallet } from '../../constants/types'
 
 // utils
 import { PanelSelectors } from '../../panel/selectors'
-import { findAccountByAccountId } from '../../utils/account-utils'
 import { getTxDatasFromQueuedSolSignRequest } from '../../utils/tx-utils'
 
 // hooks
 import { useUnsafePanelSelector } from './use-safe-selector'
 import {
-  useGetAccountInfosRegistryQuery,
   useGetNetworkQuery
 } from '../slices/api.slice'
+import { useAccountQuery } from '../slices/api.slice.extra'
 
 export const useProcessSignSolanaTransaction = (props: {
   signMode: 'signTx' | 'signAllTxs'
@@ -129,13 +128,7 @@ export const useSignSolanaTransactionsQueue = (
 
   // queries
   const { data: network } = useGetNetworkQuery(selectedQueueData ?? skipToken)
-  const { account } = useGetAccountInfosRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      account: selectedQueueData
-        ? findAccountByAccountId(selectedQueueData.fromAccountId, res.data)
-        : undefined
-    })
-  })
+  const { account } = useAccountQuery(selectedQueueData?.fromAccountId)
 
   // memos
   const txDatas = React.useMemo(() => {

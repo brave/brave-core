@@ -23,11 +23,7 @@ import {
 } from './api.slice'
 
 // entities
-import {
-  accountInfoEntityAdaptor,
-  accountInfoEntityAdaptorInitialState,
-  selectAllAccountInfosFromQuery
-} from './entities/account-info.entity'
+import { selectAllAccountInfosFromQuery } from './entities/account-info.entity'
 
 // utils
 import {
@@ -82,7 +78,7 @@ export const useAccountFromAddressQuery = (
       account:
         res.data && !skip
           ? findAccountByAccountId(
-              { address: '', uniqueKey: uniqueKeyOrAddress },
+              { uniqueKey: uniqueKeyOrAddress },
               res.data
             ) || findAccountByAddress(uniqueKeyOrAddress, res.data)
           : undefined
@@ -91,22 +87,14 @@ export const useAccountFromAddressQuery = (
 }
 
 export const useSelectedAccountQuery = () => {
-  const {
-    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isFetching: isLoadingAccounts
-  } = useGetAccountInfosRegistryQuery(undefined)
-
   const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
-    useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
+    useGetSelectedAccountIdQuery()
 
-  const selectedAccount = selectedAccountId
-    ? accountInfosRegistry.entities[
-        accountInfoEntityAdaptor.selectIdByAccountId(selectedAccountId)
-      ]
-    : undefined
+  const { account: selectedAccount, isLoading: isLoadingAccount } =
+    useAccountQuery(selectedAccountId ?? skipToken)
 
   return {
-    isLoading: isLoadingAccounts || isLoadingSelectedAccountId,
+    isLoading: isLoadingSelectedAccountId || isLoadingAccount,
     data: selectedAccount
   }
 }
