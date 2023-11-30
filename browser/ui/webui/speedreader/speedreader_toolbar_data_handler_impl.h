@@ -70,6 +70,9 @@ class SpeedreaderToolbarDataHandlerImpl
   void Stop() override;
   void Forward() override;
 
+  void OnToolbarStateChanged(
+      speedreader::mojom::MainButtonType button) override;
+
  private:
   speedreader::SpeedreaderService* GetSpeedreaderService();
   speedreader::TtsPlayer::Controller* GetTtsController();
@@ -84,10 +87,6 @@ class SpeedreaderToolbarDataHandlerImpl
   // speedreader::TtsPlayer::Observer:
   void OnReadingStart(content::WebContents* web_contents) override;
   void OnReadingStop(content::WebContents* web_contents) override;
-  void OnReadingProgress(content::WebContents* web_contents,
-                         int paragraph_index,
-                         int char_index,
-                         int length) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -106,10 +105,14 @@ class SpeedreaderToolbarDataHandlerImpl
 
   // speedreader::SpeedreaderTabHelper::Observer:
   void OnTuneBubbleClosed() override;
+  void OnContentsReady() override;
 
   raw_ptr<Browser> browser_ = nullptr;
   mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
   mojo::Remote<speedreader::mojom::ToolbarEventsHandler> events_;
+
+  speedreader::mojom::MainButtonType current_button_ =
+      speedreader::mojom::MainButtonType::None;
 
   base::ScopedObservation<speedreader::SpeedreaderService,
                           speedreader::SpeedreaderService::Observer>

@@ -199,6 +199,17 @@ void SpeedreaderToolbarDataHandlerImpl::Forward() {
   }
 }
 
+void SpeedreaderToolbarDataHandlerImpl::OnToolbarStateChanged(
+    speedreader::mojom::MainButtonType button) {
+  current_button_ = button;
+  if (current_button_ != speedreader::mojom::MainButtonType::TextToSpeech) {
+    Pause();
+  }
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
+  }
+}
+
 speedreader::SpeedreaderService*
 SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderService() {
   DCHECK(browser_);
@@ -249,27 +260,6 @@ void SpeedreaderToolbarDataHandlerImpl::OnReadingStop(
   events_->SetPlaybackState(speedreader::mojom::PlaybackState::kStopped);
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnReadingProgress(
-    content::WebContents* web_contents,
-    int paragraph_index,
-    int char_index,
-    int length) {
-  if (!web_contents) {
-    return;
-  }
-
-  constexpr const char16_t kHighlight[] = uR"js( highlightText($1, $2, $3) )js";
-
-  const auto script = base::ReplaceStringPlaceholders(
-      kHighlight,
-      {base::NumberToString16(paragraph_index),
-       base::NumberToString16(char_index), base::NumberToString16(length)},
-      nullptr);
-
-  web_contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-}
-
 void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -281,6 +271,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     if (selection.new_contents) {
       active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
           selection.new_contents);
+      active_tab_helper_->OnToolbarStateChanged(current_button_);
       tab_helper_observation_.Observe(active_tab_helper_);
       events_->SetPlaybackState(GetTabPlaybackState());
     }
@@ -314,6 +305,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
       color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
   colors->button_active =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_active_text =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
   colors->button_border =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
   events_->OnBrowserThemeChanged(std::move(colors));
@@ -334,4 +327,10 @@ void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
 
 void SpeedreaderToolbarDataHandlerImpl::OnTuneBubbleClosed() {
   events_->OnTuneBubbleClosed();
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
+  }
 }
