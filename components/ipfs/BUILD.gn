@@ -20,6 +20,8 @@ static_library("ipfs") {
     "ipfs_json_parser.h",
     "ipfs_network_utils.cc",
     "ipfs_network_utils.h",
+    "ipfs_node_traffic_recognizer.cc",
+    "ipfs_node_traffic_recognizer.h",
     "ipfs_p3a.cc",
     "ipfs_p3a.h",
     "ipfs_ports.cc",
