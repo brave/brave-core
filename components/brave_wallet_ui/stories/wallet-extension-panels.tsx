@@ -22,29 +22,18 @@ import {
   ConfirmTransactionPanel //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
-import { SignPanel } from '../components/extension/sign-panel/index'
-import {
-  AllowAddChangeNetworkPanel //
-} from '../components/extension/allow-add-change-network-panel/index'
-import {
-  ConnectHardwareWalletPanel //
-} from '../components/extension/connect-hardware-wallet-panel/index'
 import {
   AddSuggestedTokenPanel //
 } from '../components/extension/add-suggested-token-panel/index'
 import {
-  DecryptRequestPanel,
-  ProvidePubKeyPanel //
+  DecryptRequestPanel //
 } from '../components/extension/encryption-key-panel/index'
 
-import { CreateAccountTab } from '../components/buy-send-swap/create-account'
 import {
   StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
-  StyledWelcomPanel,
-  StyledCreateAccountPanel
+  StyledWelcomPanel
 } from './style'
-import { mockNetworks } from './mock-data/mock-networks'
 import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
@@ -55,10 +44,7 @@ import {
   mockedErc20ApprovalTransaction
 } from './mock-data/mock-transaction-info'
 import { mockAccounts } from './mock-data/mock-wallet-accounts'
-import {
-  mockEncryptionKeyRequest,
-  mockDecryptRequest
-} from './mock-data/mock-encryption-key-payload'
+import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createMockStore } from '../utils/test-utils'
@@ -468,72 +454,6 @@ _ConfirmErcApproveTransaction.story = {
   name: 'Confirm ERC20 Approval Transaction'
 }
 
-export const _AllowAddChangeNetwork = () => {
-  return (
-    <StyledExtensionWrapperLonger>
-      <AllowAddChangeNetworkPanel
-        originInfo={originInfo}
-        panelType='change'
-        networkPayload={mockNetworks[0]}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_AllowAddChangeNetwork.story = {
-  name: 'Allow Add or Change Network'
-}
-
-export const _SignData = () => {
-  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
-    {
-      id: 0,
-      accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426')
-        .fromAccountId,
-      originInfo: mockOriginInfo,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID,
-      signData: {
-        ethStandardSignData: undefined,
-        ethSignTypedData: {
-          message: 'Sign below to authenticate with CryptoKitties.',
-          domain: '',
-          domainHash: undefined,
-          primaryHash: undefined,
-          meta: undefined
-        },
-        ethSiweData: undefined,
-        solanaSignData: undefined
-      }
-    }
-  ]
-
-  return (
-    <StyledExtensionWrapperLonger>
-      <SignPanel
-        signMessageData={signMessageDataPayload}
-        showWarning={true}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_SignData.story = {
-  name: 'Sign Transaction'
-}
-
-export const _ProvideEncryptionKey = () => {
-  return (
-    <StyledExtensionWrapperLonger>
-      <ProvidePubKeyPanel payload={mockEncryptionKeyRequest} />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_ProvideEncryptionKey.story = {
-  name: 'Provide Encryption Key'
-}
-
 export const _ReadEncryptedMessage = () => {
   return (
     <StyledExtensionWrapperLonger>
@@ -575,21 +495,6 @@ _SetupWallet.story = {
   name: 'Setup New Wallet'
 }
 
-export const _ConnectHardwareWallet = () => {
-  return (
-    <StyledExtensionWrapper>
-      <ConnectHardwareWalletPanel
-        account={{ ...mockAccounts[0], name: 'Ledger 1' }}
-        hardwareWalletCode={undefined}
-      />
-    </StyledExtensionWrapper>
-  )
-}
-
-_ConnectHardwareWallet.story = {
-  name: 'Connect Hardware Wallet'
-}
-
 export const _AddSuggestedToken = () => {
   return (
     <StyledExtensionWrapper>
@@ -602,23 +507,4 @@ export const _AddSuggestedToken = () => {
 
 _AddSuggestedToken.story = {
   name: 'Add Suggested Token'
-}
-
-export const _CreateAccount = () => {
-  return (
-    <Provider
-      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
-    >
-      <StyledCreateAccountPanel>
-        <CreateAccountTab
-          network={mockNetworks[0]}
-          onCancel={() => {}}
-        />
-      </StyledCreateAccountPanel>
-    </Provider>
-  )
-}
-
-_CreateAccount.story = {
-  name: 'Create Account Tab'
 }
