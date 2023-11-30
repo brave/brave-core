@@ -9,4 +9,8 @@ namespace brave_player::features {
 
 BASE_FEATURE(kBravePlayer, "BravePlayer", base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBravePlayerRespondToAntiAdBlock,
+             "BravePlayerRespondToAntiAdBlock",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace brave_player::features

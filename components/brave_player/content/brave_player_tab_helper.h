@@ -26,28 +26,32 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BravePlayerTabHelper> {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents,
+  static void MaybeCreateForWebContents(BravePlayerService& service,
+                                        content::WebContents* contents,
                                         const int32_t world_id);
   ~BravePlayerTabHelper() override;
   BravePlayerTabHelper(const BravePlayerTabHelper&) = delete;
   BravePlayerTabHelper& operator=(const BravePlayerTabHelper&) = delete;
 
-
  private:
-  BravePlayerTabHelper(content::WebContents*, const int32_t world_id);
-  // Called to insert Brave Viewer eligibility checks into the page.
+  BravePlayerTabHelper(content::WebContents* contents,
+                       const int32_t world_id,
+                       BravePlayerService& service);
+  // Called to insert Brave Player eligibility checks into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::string& script,
       content::RenderFrameHost::JavaScriptResultCallback cb);
-  // Used to insert a Brave Viewer eligibility test script into the page. The
-  // result is used to determine whether to show the Brave Viewer dialog in
+  // Used to insert a Brave Player eligibility test script into the page. The
+  // result is used to determine whether to show the Brave Player dialog in
   // |OnTestScriptResult|.
   void InsertTestScript(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
+      const GURL& url,
       std::string test_script);
   void OnTestScriptResult(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
+      const GURL& url,
       base::Value value);
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh);
@@ -59,7 +63,7 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
   const int32_t world_id_;
-  const raw_ptr<BravePlayerService> brave_player_service_;  // NOT OWNED
+  raw_ref<BravePlayerService> brave_player_service_;  // NOT OWNED
   bool should_process_ = false;
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>

@@ -14,36 +14,51 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 class GURL;
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace brave_player {
 
-class COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER) BravePlayerService {
+class COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER) BravePlayerService
+    : public KeyedService {
  public:
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual void ShowAdBlockAdjustmentSuggestion(
+        content::WebContents* contents) = 0;
+  };
+
+  explicit BravePlayerService(std::unique_ptr<Delegate> delegate);
   BravePlayerService(const BravePlayerService&) = delete;
   BravePlayerService& operator=(const BravePlayerService&) = delete;
-  ~BravePlayerService();
+  ~BravePlayerService() override;
+
+  Delegate& delegate() { return *delegate_; }
+
   void GetTestScript(
       const GURL& url,
       base::OnceCallback<void(std::string test_script)> cb) const;
-  static BravePlayerService* GetInstance();  // singleton
   void LoadNewComponentVersion(const base::FilePath& path);
 
  private:
-  BravePlayerService();
-  // Also called by BraveViewerTabHelperBrowserTest.
+  friend class BravePlayerTabHelperBrowserTest;  // Used for testing private
+                                                 // methods.
+
+  // Also called by BravePlayerTabHelperBrowserTest as well.
   void SetComponentPath(const base::FilePath& path);
 
   base::FilePath component_path_;
 
-  base::WeakPtrFactory<BravePlayerService> weak_factory_{this};
+  std::unique_ptr<Delegate> delegate_;
 
-  friend class BraveViewerTabHelperBrowserTest;  // Used for testing private
-                                                 // methods.
-  friend struct base::DefaultSingletonTraits<BravePlayerService>;
+  base::WeakPtrFactory<BravePlayerService> weak_factory_{this};
 };
 
 }  // namespace brave_player

@@ -20,45 +20,60 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
+// TODO(sko) This should be removed once component is ready.
+#define FORCE_TEST_RESULT_TRUE true
+
 namespace brave_player {
 
 // static
 void BravePlayerTabHelper::MaybeCreateForWebContents(
+    BravePlayerService& service,
     content::WebContents* contents,
     const int32_t world_id) {
-  if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
+  if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) ||
+      !base::FeatureList::IsEnabled(
+          brave_player::features::kBravePlayerRespondToAntiAdBlock)) {
     return;
   }
 
-  brave_player::BravePlayerTabHelper::CreateForWebContents(contents, world_id);
+  brave_player::BravePlayerTabHelper::CreateForWebContents(contents, world_id,
+                                                           service);
 }
 
 BravePlayerTabHelper::BravePlayerTabHelper(content::WebContents* web_contents,
-                                           const int32_t world_id)
+                                           const int32_t world_id,
+                                           BravePlayerService& service)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<BravePlayerTabHelper>(*web_contents),
       world_id_(world_id),
-      brave_player_service_(BravePlayerService::GetInstance()) {
-  DCHECK(brave_player_service_);
-}
+      brave_player_service_(service) {}
 
 BravePlayerTabHelper::~BravePlayerTabHelper() = default;
 
 void BravePlayerTabHelper::OnTestScriptResult(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
+    const GURL& url,
     base::Value value) {
-  if (value.GetIfBool().value_or(false)) {
-    // TODO check state and/or trigger Brave Viewer dialog here
+  if (url != web_contents()->GetLastCommittedURL()) {
+    return;
   }
+
+  if (!value.GetIfBool().value_or(FORCE_TEST_RESULT_TRUE)) {
+    return;
+  }
+
+  brave_player_service_.get().delegate().ShowAdBlockAdjustmentSuggestion(
+      web_contents());
 }
 
 void BravePlayerTabHelper::InsertTestScript(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
+    const GURL& url,
     std::string test_script) {
   InsertScriptInPage(
       render_frame_host_id, test_script,
       base::BindOnce(&BravePlayerTabHelper::OnTestScriptResult,
-                     weak_factory_.GetWeakPtr(), render_frame_host_id));
+                     weak_factory_.GetWeakPtr(), render_frame_host_id, url));
 }
 
 void BravePlayerTabHelper::InsertScriptInPage(
@@ -105,14 +120,13 @@ void BravePlayerTabHelper::DidFinishNavigation(
 }
 
 void BravePlayerTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  DCHECK(brave_player_service_);
   // Make sure it gets reset.
-  bool should_process = should_process_;
-  should_process_ = false;
-  if (!should_process) {
+  if (const bool should_process = std::exchange(should_process_, false);
+      !should_process) {
     return;
   }
-  auto url = web_contents()->GetLastCommittedURL();
+
+  const auto url = web_contents()->GetLastCommittedURL();
 
   if (!SameDomainOrHost(
           url,
@@ -125,8 +139,9 @@ void BravePlayerTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
   brave_player_service_->GetTestScript(
-      url, base::BindOnce(&BravePlayerTabHelper::InsertTestScript,
-                          weak_factory_.GetWeakPtr(), render_frame_host_id));
+      url,
+      base::BindOnce(&BravePlayerTabHelper::InsertTestScript,
+                     weak_factory_.GetWeakPtr(), render_frame_host_id, url));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BravePlayerTabHelper);

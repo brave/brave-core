@@ -111,8 +111,12 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
       </if>
 
-      <if expr="enable_brave_player and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
+      <if expr="enable_brave_player">
+        <if expr="not is_android">
+          <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
+        </if>
+        <structure type="chrome_scaled_image" name="IDR_AD_BLOCK_ADJUSTMENT_DIALOG_HEADER_ICON" file="brave/ad_block_adjustment_dialog_icon.png" />
+        <structure type="chrome_scaled_image" name="IDR_AD_BLOCK_ADJUSTMENT_DIALOG_LOCATION_BAR" file="brave/ad_block_adjustment_dialog_location_bar.png" />
       </if>
     </structures>
   </release>

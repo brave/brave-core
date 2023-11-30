@@ -9,8 +9,8 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_player/core/common/url_constants.h"
 #include "brave/components/brave_player/core/browser/resources/grit/brave_player_generated_map.h"
+#include "brave/components/brave_player/core/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"

@@ -1318,6 +1318,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_PLAYER_ACTION_VIEW" desc="A label for a button in the omnibox to open the 'Brave Player Page'">
           Brave Player
         </message>
+        <message name="IDS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_HEADER" desc="A header for a dialog to adjust ad blocker">
+          Seeing an ad-block warning on this site?
+        </message>
+        <message name="IDS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_BODY" desc="A body for a dialog to adjust ad blocker">
+          Some sites have begun blocking the use of ad blockers, which means those sites might not work as expected.
+          
+To address this issue, Brave can adjust your ad block settings for you. Once adjusted, you can try watching this content in Brave Player instead.
+        </message>
+        <message name="IDS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_FOOTER" desc="A footer for a dialog to adjust ad blocker">
+          Brave Player allows you to watch this site's videos without interruptions.
+        </message>
+        <message name="IDS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_OK" desc="Ok button's Text for a dialog to adjust ad blocker">
+          Yes, adjust ad block for me
+        </message>
+        <message name="IDS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust ad blocker">
+          No thanks
+        </message>
       </if> <!-- enable_brave_player -->
       <!--Add new items to the appropriate sections above -->
     </messages>
