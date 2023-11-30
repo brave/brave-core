@@ -197,7 +197,7 @@ export const openWalletRouteTab = (route: WalletRoutes) => {
 
 // Settings tabs
 export function openWalletSettings() {
-  openTab('chrome://settings/wallet')
+  openTab('chrome://settings/web3')
 }
 
 export function openNetworkSettings() {

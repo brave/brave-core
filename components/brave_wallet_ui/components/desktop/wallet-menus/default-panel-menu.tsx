@@ -33,6 +33,7 @@ import { CreateAccountOptions } from '../../../options/nav-options'
 // utils
 import { getLocale } from '../../../../common/locale'
 import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
+import { openWalletSettings } from '../../../utils/routes-utils'
 
 // Styled Components
 import {
@@ -115,11 +116,7 @@ export const DefaultPanelMenu = (props: Props) => {
   }, [onClosePopup])
 
   const onClickSettings = React.useCallback(() => {
-    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
+    openWalletSettings()
     if (onClosePopup) {
       onClosePopup()
     }
