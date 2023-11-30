@@ -73,10 +73,10 @@ private struct TopNewsListView: View {
   private var headerView: some View {
     HStack {
       HStack(spacing: 4) {
-        Image(braveSystemName: "leo.brave.icon-monochrome")
-          .font(.system(size: 12))
-          .imageScale(.large)
-          .foregroundColor(Color(.braveOrange))
+        Image("brave-icon-no-bg")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 16, height: 16)
         Text(Strings.Widgets.braveNews)
           .foregroundColor(Color(.braveLabel))
           .font(.system(size: 14, weight: .bold, design: .rounded))

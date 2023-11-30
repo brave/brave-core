@@ -130,7 +130,7 @@ private struct LockScreenTopNewsView: View {
           .layoutPriority(2)
           .multilineTextAlignment(.leading)
         HStack(spacing: 3) {
-          Image(braveSystemName: "leo.brave.icon-monochrome")
+          Image(braveSystemName: "leo.brave.icon-outline")
             .foregroundColor(.orange)
             .font(.system(size: 12))
             .padding(.trailing, -1)
