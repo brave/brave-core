@@ -36,52 +36,44 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
       delete;
   ~BraveActionsContainerTest() override = default;
 
-  void SetUpOnMainThread() override { Init(browser()); }
-
-  void Init(Browser* browser) {
+  BraveActionsContainer* GetBraveActionsContainer(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    ASSERT_NE(browser_view, nullptr);
     BraveLocationBarView* brave_location_bar_view =
         static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-    ASSERT_NE(brave_location_bar_view, nullptr);
-    brave_actions_ = brave_location_bar_view->brave_actions_;
-    ASSERT_NE(brave_actions_, nullptr);
-    prefs_ = browser->profile()->GetPrefs();
+    CHECK(brave_location_bar_view->brave_actions_);
+    return brave_location_bar_view->brave_actions_;
   }
 
-  void CheckBraveRewardsActionShown(bool expected_shown) {
-    const bool shown = brave_actions_->rewards_action_btn_->GetVisible();
+  void CheckBraveRewardsActionShown(Browser* browser, bool expected_shown) {
+    const bool shown =
+        GetBraveActionsContainer(browser)->rewards_action_btn_->GetVisible();
     ASSERT_EQ(shown, expected_shown);
   }
-
-  void CloseRewardsPanel() {
-    brave_actions_->rewards_action_btn_->ClosePanelForTesting();
-  }
-
- protected:
-  raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
-  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-  CheckBraveRewardsActionShown(true);
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(browser(), true);
 
   // Set to hide.
-  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
-  CheckBraveRewardsActionShown(false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_rewards::prefs::kShowLocationBarButton, false);
+  CheckBraveRewardsActionShown(browser(), false);
 
   // Set to show.
-  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, true);
-  CheckBraveRewardsActionShown(true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_rewards::prefs::kShowLocationBarButton, true);
+  CheckBraveRewardsActionShown(browser(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
   // By default the action should be shown.
-  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-  CheckBraveRewardsActionShown(true);
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(browser(), true);
 
   // Open a Guest window.
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
@@ -103,13 +95,13 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
   // Access the browser with the Guest profile and re-init test for it.
   Browser* browser = chrome::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
-  Init(browser);
-  CheckBraveRewardsActionShown(false);
+  CheckBraveRewardsActionShown(browser, false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
-  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
-  CheckBraveRewardsActionShown(false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_rewards::prefs::kShowLocationBarButton, false);
+  CheckBraveRewardsActionShown(browser(), false);
 
   // Send a request to open the Rewards panel.
   auto* coordinator =
@@ -119,5 +111,5 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
   coordinator->OpenRewardsPanel();
   base::RunLoop().RunUntilIdle();
 
-  CheckBraveRewardsActionShown(false);
+  CheckBraveRewardsActionShown(browser(), false);
 }

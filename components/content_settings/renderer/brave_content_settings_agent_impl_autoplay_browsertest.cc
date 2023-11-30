@@ -63,7 +63,7 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
   MockContentSettingsAgentImpl(const MockContentSettingsAgentImpl&) = delete;
   MockContentSettingsAgentImpl& operator=(const MockContentSettingsAgentImpl&) =
       delete;
-  ~MockContentSettingsAgentImpl() override = default;
+  ~MockContentSettingsAgentImpl() override;
 
   // ContentSettingAgentImpl methods:
   void BindContentSettingsManager(
@@ -76,6 +76,11 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
 
  private:
   MockContentSettingsManagerImpl::Log log_;
+
+  // A reference to the receiver, to allow us to close it when destroying the
+  // mock.
+  mojo::SelfOwnedReceiverRef<mojom::ContentSettingsManager>
+      content_settings_manager_receiver_;
 };
 
 MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
@@ -85,9 +90,17 @@ MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
           false,
           std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
 
+MockContentSettingsAgentImpl::~MockContentSettingsAgentImpl() {
+  if (content_settings_manager_receiver_) {
+    // Closing the receiver, as it has a reference to `log_`, which will be left
+    // dangling if the receiver stays around.
+    content_settings_manager_receiver_->Close();
+  }
+}
+
 void MockContentSettingsAgentImpl::BindContentSettingsManager(
     mojo::Remote<mojom::ContentSettingsManager>* manager) {
-  mojo::MakeSelfOwnedReceiver(
+  content_settings_manager_receiver_ = mojo::MakeSelfOwnedReceiver(
       std::make_unique<MockContentSettingsManagerImpl>(&log_),
       manager->BindNewPipeAndPassReceiver());
 }

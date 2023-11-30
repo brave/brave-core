@@ -192,6 +192,13 @@ class EphemeralStorageTest : public InProcessBrowserTest,
         net::features::kThirdPartyStoragePartitioning);
   }
 
+  void PostRunTestOnMainThread() override {
+    // Clean up current browser before destruction to avoid leaving it dangling.
+    original_tab_ = nullptr;
+    tabs_ = nullptr;
+    InProcessBrowserTest::PostRunTestOnMainThread();
+  }
+
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -403,8 +410,9 @@ class EphemeralStorageTest : public InProcessBrowserTest,
             .ExtractString();
 
     const int previous_tab_count = browser()->tab_strip_model()->count();
-    tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
-                              TabCloseTypes::CLOSE_NONE);
+    tabs_->CloseWebContentsAt(
+        tabs_->GetIndexOfWebContents(original_tab_.ExtractAsDangling()),
+        TabCloseTypes::CLOSE_NONE);
     ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
     EphemeralStorageServiceFactory::GetInstance()

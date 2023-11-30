@@ -84,6 +84,7 @@ void BraveStatsHelper::OnProfileManagerDestroying() {
     current_profile_ = nullptr;
   }
   profile_manager_observer_.Reset();
+  profile_manager_ = nullptr;
 }
 
 void BraveStatsHelper::SetFirstRunTimeForTesting(base::Time time) {

@@ -25,6 +25,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
@@ -324,6 +325,17 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
   DCHECK(!tab_cycling_event_handler_);
+  sidebar_container_view_ = nullptr;
+  unified_side_panel_ = nullptr;
+  vertical_tab_strip_host_view_ = nullptr;
+
+  GetBraveBrowser()->sidebar_controller()->SetSidebar(nullptr);
+
+  GetBrowserViewLayout()->set_contents_background(nullptr);
+  GetBrowserViewLayout()->set_sidebar_container(nullptr);
+  GetBrowserViewLayout()->set_sidebar_separator(nullptr);
+  GetBrowserViewLayout()->set_vertical_tab_strip_host(nullptr);
+  GetBrowserViewLayout()->set_reader_mode_toolbar(nullptr);
 }
 
 sidebar::Sidebar* BraveBrowserView::InitSidebar() {
@@ -580,6 +592,7 @@ void BraveBrowserView::AddedToWidget() {
     vertical_tab_strip_widget_delegate_view_ =
         VerticalTabStripWidgetDelegateView::Create(
             this, vertical_tab_strip_host_view_);
+    vertical_tab_strip_widget_delegate_view_->AddObserver(this);
 
     // By setting this property to the widget for vertical tabs,
     // BrowserView::GetBrowserViewForNativeWindow() will return browser view
@@ -840,6 +853,13 @@ void BraveBrowserView::SetSidePanelOperationByActiveTabChange(bool tab_change) {
   }
 
   sidebar_container_view_->set_operation_from_active_tab_change(tab_change);
+}
+
+void BraveBrowserView::OnViewIsDeleting(View* observed_view) {
+  // At this point, this event should only be called for the vertical tab strip
+  // delegate view.
+  CHECK_EQ(vertical_tab_strip_widget_delegate_view_, observed_view);
+  vertical_tab_strip_widget_delegate_view_ = nullptr;
 }
 
 BEGIN_METADATA(BraveBrowserView)

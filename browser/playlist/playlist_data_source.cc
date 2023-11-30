@@ -17,7 +17,9 @@
 #include "base/strings/escape.h"
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "net/base/filename_util.h"
 #include "url/gurl.h"
@@ -41,10 +43,9 @@ scoped_refptr<base::RefCountedMemory> ReadFileToString(
 
 }  // namespace
 
-PlaylistDataSource::PlaylistDataSource(Profile* profile,
-                                       PlaylistService* service)
+PlaylistDataSource::PlaylistDataSource(Profile* profile)
     : FaviconSource(profile, chrome::FaviconUrlFormat::kFavicon2),
-      service_(service) {}
+      profile_(profile) {}
 
 PlaylistDataSource::~PlaylistDataSource() = default;
 
@@ -56,7 +57,10 @@ void PlaylistDataSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     GotDataCallback got_data_callback) {
-  if (!service_) {
+  PlaylistService* playlist_service =
+      PlaylistServiceFactory::GetForBrowserContext(profile_.get());
+
+  if (!playlist_service) {
     std::move(got_data_callback).Run(nullptr);
     return;
   }
@@ -78,28 +82,28 @@ void PlaylistDataSource::StartDataRequest(
 
   base::FilePath data_path;
   if (type_string == "thumbnail") {
-    if (!service_->GetThumbnailPath(id, &data_path)) {
+    if (!playlist_service->GetThumbnailPath(id, &data_path)) {
       std::move(got_data_callback).Run(nullptr);
       return;
     }
   } else if (type_string == "media") {
-    if (!service_->HasPlaylistItem(id)) {
+    if (!playlist_service->HasPlaylistItem(id)) {
       std::move(got_data_callback).Run(nullptr);
       return;
     }
 
-    auto item = service_->GetPlaylistItem(id);
+    auto item = playlist_service->GetPlaylistItem(id);
     DCHECK(item->cached);
     if (!net::FileURLToFilePath(item->media_path, &data_path)) {
       std::move(got_data_callback).Run(nullptr);
     }
   } else if (type_string == "favicon") {
-    if (!service_->HasPlaylistItem(id)) {
+    if (!playlist_service->HasPlaylistItem(id)) {
       std::move(got_data_callback).Run(nullptr);
       return;
     }
 
-    auto item = service_->GetPlaylistItem(id);
+    auto item = playlist_service->GetPlaylistItem(id);
     GURL favicon_url(
         "chrome://favicon2?allowGoogleServerFallback=0&size=32&pageUrl=" +
         base::EscapeUrlEncodedData(item->page_source.spec(),

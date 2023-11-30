@@ -28,42 +28,40 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   WalletButtonNotificationSourceTest() = default;
 
   void SetUpOnMainThread() override {
-    keyring_service_ =
-        brave_wallet::KeyringServiceFactory::GetServiceForContext(
-            browser()->profile());
-    tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(
-        browser()->profile());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+    WaitForTxStorageDelegateInitialized(
+        GetTxService()->GetDelegateForTesting());
   }
 
   ~WalletButtonNotificationSourceTest() override = default;
 
-  brave_wallet::TxService* tx_service() { return tx_service_; }
+  brave_wallet::TxService* GetTxService() {
+    return brave_wallet::TxServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
 
-  brave_wallet::KeyringService* keyring_service() { return keyring_service_; }
+  brave_wallet::KeyringService* GetKeyringService() {
+    return brave_wallet::KeyringServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
 
   brave_wallet::AccountUtils GetAccountUtils() {
-    return brave_wallet::AccountUtils(keyring_service_);
+    return brave_wallet::AccountUtils(GetKeyringService());
   }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         brave_wallet::kMnemonicDripCaution, brave_wallet::kTestWalletPassword,
         false));
   }
 
   void CreateWallet() {
     base::RunLoop run_loop;
-    keyring_service_->CreateWallet(
+    GetKeyringService()->CreateWallet(
         brave_wallet::kTestWalletPassword,
         base::BindLambdaForTesting(
             [&](const std::string&) { run_loop.Quit(); }));
     run_loop.Run();
   }
-
- private:
-  raw_ptr<brave_wallet::KeyringService> keyring_service_;
-  raw_ptr<brave_wallet::TxService> tx_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
@@ -194,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     EXPECT_EQ(from_account->account_id->unique_key,
               "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
 
-    tx_service()->AddUnapprovedTransaction(
+    GetTxService()->AddUnapprovedTransaction(
         std::move(tx_data), chain_id, from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -236,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     auto tx_data = brave_wallet::mojom::TxData::New(
         "0x06", "0x09184e72a000", "0x0974", to_account, "0x016345785d8a0000",
         std::vector<uint8_t>(), false, std::nullopt);
-    tx_service()->AddUnapprovedTransaction(
+    GetTxService()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::ETH,
@@ -272,7 +270,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         std::vector<brave_wallet::mojom::SolanaMessageAddressTableLookupPtr>(),
         nullptr, nullptr);
 
-    tx_service()->AddUnapprovedTransaction(
+    GetTxService()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::SOL,
@@ -297,7 +295,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   // Reject first transaction
   {
     base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
+    GetTxService()->RejectTransaction(
         brave_wallet::mojom::CoinType::FIL,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::FIL,
@@ -318,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   // Reject second transaction
   {
     base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
+    GetTxService()->RejectTransaction(
         brave_wallet::mojom::CoinType::ETH,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::ETH,
@@ -339,7 +337,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   // Reject third transaction
   {
     base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
+    GetTxService()->RejectTransaction(
         brave_wallet::mojom::CoinType::SOL,
         brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
                                         brave_wallet::mojom::CoinType::SOL,
@@ -377,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         browser()->profile()->GetPrefs(), brave_wallet::mojom::CoinType::FIL,
         std::nullopt);
     EXPECT_EQ(chain_id, "t");
-    tx_service()->AddUnapprovedTransaction(
+    GetTxService()->AddUnapprovedTransaction(
         std::move(tx_data), chain_id, from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -408,7 +406,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(1u, count_result.value());
 
-  tx_service()->Reset();
+  GetTxService()->Reset();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();

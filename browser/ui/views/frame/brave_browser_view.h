@@ -57,7 +57,8 @@ class VerticalTabStripWidgetDelegateView;
 class BraveHelpBubbleHostView;
 
 class BraveBrowserView : public BrowserView,
-                         public commands::AcceleratorService::Observer {
+                         public commands::AcceleratorService::Observer,
+                         public views::ViewObserver {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
@@ -108,6 +109,9 @@ class BraveBrowserView : public BrowserView,
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
+
+  // views::ViewObserver overrides:
+  void OnViewIsDeleting(View* observed_view) override;
 
  private:
   class TabCyclingEventHandler;

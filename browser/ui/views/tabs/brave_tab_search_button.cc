@@ -26,6 +26,7 @@ BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
     Edge flat_edge)
     : TabSearchButton(tab_strip_controller, flat_edge) {
+  tab_search_bubble_host_ = nullptr;
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
       this, tab_strip_controller->GetProfile());
 

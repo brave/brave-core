@@ -43,6 +43,13 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr const char* kMethods[] = {
+    "signMessage",
+    "signMessageViaSend",
+    "signMessageViaSend2",
+    "signMessageViaSendAsync",
+};
+
 bool WaitForWalletBubble(content::WebContents* web_contents) {
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
@@ -95,12 +102,6 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     test_data_dir = test_data_dir.AppendASCII("brave-wallet");
     https_server_.ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server()->Start());
-
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {
@@ -110,7 +111,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
   void UserGrantPermission(bool granted) {
@@ -142,17 +143,19 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
         https_server()->GetURL("a.com", "/sign_message.html").spec().c_str());
   }
 
- protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  std::vector<std::string> methods_{"signMessage", "signMessageViaSend",
-                                    "signMessageViaSend2",
-                                    "signMessageViaSendAsync"};
+  KeyringService* GetKeyringService() const {
+    return KeyringServiceFactory::GetServiceForContext(browser()->profile());
+  }
+
+  BraveWalletService* GetWalletService() const {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
@@ -165,16 +168,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
   CallEthereumEnable();
   UserGrantPermission(true);
   size_t request_index = 0;
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     ASSERT_TRUE(ExecJs(
         web_contents(),
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
-                           method.c_str())));
+                           method)));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
-    brave_wallet_service_->NotifySignMessageRequestProcessed(
+    GetWalletService()->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e"
@@ -193,16 +196,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
   UserGrantPermission(true);
 
   size_t request_index = 0;
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     ASSERT_TRUE(ExecJs(
         web_contents(),
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
-                           method.c_str())));
+                           method)));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
-    brave_wallet_service_->NotifySignMessageRequestProcessed(
+    GetWalletService()->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -217,12 +220,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     ASSERT_TRUE(ExecJs(
         web_contents(),
         base::StringPrintf("%s('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
                            " '0xdeadbeef')",
-                           method.c_str())));
+                           method)));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -241,10 +244,10 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     ASSERT_TRUE(ExecJs(web_contents(), base::StringPrintf("%s(null,"
                                                           " '0xdeadbeef')",
-                                                          method.c_str())));
+                                                          method)));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -263,12 +266,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
 
   CallEthereumEnable();
   UserGrantPermission(false);
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     ASSERT_TRUE(ExecJs(
         web_contents(),
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
-                           method.c_str())));
+                           method)));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -321,21 +324,21 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
       {"0x084DCB94038AF1715963F149079CE011C4B22961",
        "0x084dcb94038af1715963f149079ce011c4b22961"},
   };
-  for (const std::string& method : methods_) {
+  for (const auto* method : kMethods) {
     for (const auto& valid_case : cases) {
       SCOPED_TRACE(testing::Message()
                    << "method:" << method
                    << ", api account:" << valid_case.api_account
                    << ", msg account:" << valid_case.msg_account);
-      ASSERT_TRUE(ExecJs(
-          web_contents(),
-          base::StringPrintf(
-              "%s('%s', '%s')", method.c_str(), valid_case.api_account.c_str(),
-              ToHex(GetSIWEMessage(valid_case.msg_account)).c_str())));
+      ASSERT_TRUE(
+          ExecJs(web_contents(),
+                 base::StringPrintf(
+                     "%s('%s', '%s')", method, valid_case.api_account.c_str(),
+                     ToHex(GetSIWEMessage(valid_case.msg_account)).c_str())));
       // Wait for EthereumProviderImpl::ContinueSignMessage
       base::RunLoop().RunUntilIdle();
       EXPECT_TRUE(WaitForWalletBubble(web_contents()));
-      brave_wallet_service_->NotifySignMessageRequestProcessed(
+      GetWalletService()->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
       // port is dynamic
       EXPECT_TRUE(base::StartsWith(

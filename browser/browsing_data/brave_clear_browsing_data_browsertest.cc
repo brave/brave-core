@@ -96,6 +96,33 @@ class BrowserChangeObserver : public BrowserListObserver {
   base::RunLoop run_loop_;
 };
 
+// Observes a browser instance, running a message loop until it closes.
+class BrowserCloseObserver : public BrowserListObserver {
+ public:
+  explicit BrowserCloseObserver(Browser* browser) : browser_(browser) {
+    BrowserList::AddObserver(this);
+  }
+
+  BrowserCloseObserver(const BrowserCloseObserver&) = delete;
+  BrowserCloseObserver& operator=(const BrowserCloseObserver&) = delete;
+
+  ~BrowserCloseObserver() override { BrowserList::RemoveObserver(this); }
+
+  void Wait() { run_loop_.Run(); }
+
+  // BrowserListObserver implementation.
+  void OnBrowserRemoved(Browser* browser) override {
+    if (browser == browser_) {
+      browser_ = nullptr;
+      run_loop_.Quit();
+    }
+  }
+
+ private:
+  raw_ptr<Browser> browser_;
+  base::RunLoop run_loop_;
+};
+
 }  // namespace
 
 class BraveClearDataOnExitTest
@@ -294,10 +321,9 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Close the provided |browser| window and wait until done.
   void CloseBrowserWindow(Browser* browser) {
-    BrowserChangeObserver bco(browser,
-                              BrowserChangeObserver::ChangeType::kRemoved);
+    BrowserCloseObserver bco(browser);
     chrome::ExecuteCommand(browser, IDC_CLOSE_WINDOW);
-    EXPECT_EQ(bco.Wait(), browser);
+    bco.Wait();
   }
 
   // Enable deletion of browsing history on exit.

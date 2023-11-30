@@ -13,6 +13,7 @@
 #include "brave/components/tor/tor_profile_service_impl.h"
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/net/profile_network_context_service_factory.h"
 #include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -114,7 +115,14 @@ tor::BridgesConfig TorProfileServiceFactory::GetTorBridgesConfig() {
 TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  // TorProfileServiceImpl::CreateProxyConfigService is used a
+  // `ProxyConfigServiceTor` instance, which is returned as a result, and
+  // managed under `ProfileNetworkContextServiceFactory`. However, a reference
+  // to the created object is taken as `proxy_config_service_`, and that
+  // reference has to outlive the actual object returned.
+  DependsOn(ProfileNetworkContextServiceFactory::GetInstance());
+}
 
 TorProfileServiceFactory::~TorProfileServiceFactory() = default;
 

@@ -75,7 +75,7 @@ TtsPlayer::Controller::~Controller() = default;
 
 void TtsPlayer::Controller::SetRequestWebContents(
     content::WebContents* web_contents) {
-  request_web_contents_ = web_contents;
+  request_web_contents_ = web_contents->GetWeakPtr();
 }
 
 bool TtsPlayer::Controller::IsPlaying() const {
@@ -88,13 +88,13 @@ bool TtsPlayer::Controller::IsPlayingRequestedWebContents(
   if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
     return false;
   }
-  return playing_web_contents_ == request_web_contents_;
+  return playing_web_contents_.get() == request_web_contents_.get();
 }
 
 void TtsPlayer::Controller::Play(std::optional<int> paragraph_index) {
-  DCHECK(request_web_contents_);
+  CHECK(request_web_contents_);
   if (IsPlayingRequestedWebContents()) {
-    Observe(playing_web_contents_);
+    Observe(playing_web_contents_.get());
     if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
       paragraph_index_ = paragraph_index.value();
       reading_start_position_ = 0;
@@ -104,9 +104,10 @@ void TtsPlayer::Controller::Play(std::optional<int> paragraph_index) {
   } else {
     Stop();
     TtsPlayer::GetInstance()->delegate_->RequestReadingContent(
-        request_web_contents_,
+        request_web_contents_.get(),
         base::BindOnce(&Controller::OnContentReady, base::Unretained(this),
-                       request_web_contents_, std::move(paragraph_index)));
+                       request_web_contents_.get(),
+                       std::move(paragraph_index)));
   }
 }
 
@@ -136,7 +137,7 @@ void TtsPlayer::Controller::Stop() {
   reading_position_ = 0;
   reading_start_position_ = 0;
   for (auto& o : owner_->observers_) {
-    o.OnReadingProgress(playing_web_contents_, paragraph_index_, 0, 0);
+    o.OnReadingProgress(playing_web_contents_.get(), paragraph_index_, 0, 0);
   }
   playing_web_contents_ = nullptr;
 
@@ -154,7 +155,7 @@ void TtsPlayer::Controller::Forward() {
     Resume(true);
   } else {
     for (auto& o : owner_->observers_) {
-      o.OnReadingProgress(request_web_contents_, paragraph_index_, 0, 0);
+      o.OnReadingProgress(request_web_contents_.get(), paragraph_index_, 0, 0);
     }
   }
 }
@@ -169,7 +170,7 @@ void TtsPlayer::Controller::Rewind() {
     Resume(true);
   } else {
     for (auto& o : owner_->observers_) {
-      o.OnReadingProgress(request_web_contents_, paragraph_index_, 0, 0);
+      o.OnReadingProgress(request_web_contents_.get(), paragraph_index_, 0, 0);
     }
   }
 }
@@ -243,7 +244,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_WORD:
       reading_position_ = char_index;
       for (auto& o : owner_->observers_) {
-        o.OnReadingProgress(playing_web_contents_, paragraph_index_,
+        o.OnReadingProgress(playing_web_contents_.get(), paragraph_index_,
                             reading_start_position_ + char_index, length);
       }
       break;
@@ -253,7 +254,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_PAUSE:
       if (!continue_next_paragraph_) {
         for (auto& o : owner_->observers_) {
-          o.OnReadingStop(playing_web_contents_);
+          o.OnReadingStop(playing_web_contents_.get());
         }
       }
       break;
@@ -269,9 +270,9 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
         paragraph_index_ = -1;
         continue_next_paragraph_ = false;
         for (auto& o : owner_->observers_) {
-          o.OnReadingProgress(playing_web_contents_, paragraph_index_,
+          o.OnReadingProgress(playing_web_contents_.get(), paragraph_index_,
                               char_index, length);
-          o.OnReadingStop(playing_web_contents_);
+          o.OnReadingStop(playing_web_contents_.get());
         }
       }
       break;
@@ -279,7 +280,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_START:
       if (!continue_next_paragraph_) {
         for (auto& o : owner_->observers_) {
-          o.OnReadingStart(playing_web_contents_);
+          o.OnReadingStart(playing_web_contents_.get());
         }
       }
       continue_next_paragraph_ = false;
@@ -293,12 +294,12 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
 void TtsPlayer::Controller::OnContentReady(content::WebContents* web_contents,
                                            std::optional<int> paragraph_index,
                                            base::Value content) {
-  if (!content.is_dict() || web_contents != request_web_contents_) {
+  if (!content.is_dict() || web_contents != request_web_contents_.get()) {
     return;
   }
-  playing_web_contents_ = web_contents;
+  playing_web_contents_ = web_contents->GetWeakPtr();
 
-  Observe(playing_web_contents_);
+  Observe(playing_web_contents_.get());
 
   paragraph_index_ = paragraph_index.value_or(0);
   reading_content_ = std::move(content);

@@ -189,14 +189,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
-    tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
-    json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
+    GetJsonRpcService()->SetSkipEthChainIdValidationForTesting(true);
 
-    tx_service_->AddObserver(observer()->GetReceiver());
+    GetTxService()->AddObserver(observer()->GetReceiver());
 
     StartRPCServer(base::BindRepeating(&HandleRequest));
   }
@@ -226,17 +221,17 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TestTxServiceObserver* observer() { return &observer_; }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
 
     default_account_ =
-        keyring_service_->GetAllAccountsSync()->accounts[0]->Clone();
+        GetKeyringService()->GetAllAccountsSync()->accounts[0]->Clone();
     EXPECT_EQ(base::ToLowerASCII(default_account_->address),
               "0x084dcb94038af1715963f149079ce011c4b22961");
   }
 
   void LockWallet() {
-    keyring_service_->Lock();
+    GetKeyringService()->Lock();
     // Needed so KeyringServiceObserver::Locked handler can be hit
     // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
@@ -244,11 +239,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void UnlockWallet() {
     base::RunLoop run_loop;
-    keyring_service_->Unlock(kTestWalletPassword,
-                             base::BindLambdaForTesting([&](bool success) {
-                               ASSERT_TRUE(success);
-                               run_loop.Quit();
-                             }));
+    GetKeyringService()->Unlock(kTestWalletPassword,
+                                base::BindLambdaForTesting([&](bool success) {
+                                  ASSERT_TRUE(success);
+                                  run_loop.Quit();
+                                }));
     run_loop.Run();
     // Needed so KeyringServiceObserver::Unlocked handler can be hit
     // which the provider object listens to for the accountsChanged event.
@@ -256,13 +251,13 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   mojom::AccountInfoPtr AddAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
+    return GetKeyringService()->AddAccountSync(
         mojom::CoinType::ETH, mojom::kDefaultKeyringId, account_name);
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
-    keyring_service_->SetSelectedAccount(
+    GetKeyringService()->SetSelectedAccount(
         account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
@@ -276,7 +271,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     chain.rpc_endpoints =
         std::vector<GURL>({https_server_for_rpc()->base_url()});
     auto error_message =
-        json_rpc_service_->AddEthereumChainForOrigin(chain.Clone(), origin);
+        GetJsonRpcService()->AddEthereumChainForOrigin(chain.Clone(), origin);
     if (!error_message.empty()) {
       return;
     }
@@ -285,11 +280,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     base::RunLoop run_loop_chain_request_completed;
     auto observer = std::make_unique<TestJsonRpcServiceObserver>(
         run_loop_chain_request_completed.QuitClosure());
-    json_rpc_service_->AddObserver(observer->GetReceiver());
+    GetJsonRpcService()->AddObserver(observer->GetReceiver());
     mojo::PendingRemote<mojom::JsonRpcServiceObserver> receiver;
     mojo::MakeSelfOwnedReceiver(std::move(observer),
                                 receiver.InitWithNewPipeAndPassReceiver());
-    json_rpc_service_->AddEthereumChainRequestCompleted(chain_id, true);
+    GetJsonRpcService()->AddEthereumChainRequestCompleted(chain_id, true);
     run_loop_chain_request_completed.Run();
   }
 
@@ -340,7 +335,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id) {
     base::RunLoop run_loop;
-    tx_service_->ApproveTransaction(
+    GetTxService()->ApproveTransaction(
         mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool success,
                                        mojom::ProviderErrorUnionPtr error_union,
@@ -358,7 +353,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void RejectTransaction(const std::string& chain_id,
                          const std::string& tx_meta_id) {
     base::RunLoop run_loop;
-    tx_service_->RejectTransaction(
+    GetTxService()->RejectTransaction(
         mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
@@ -512,7 +507,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       const std::string& chain_id) {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
-    tx_service_->GetAllTransactionInfo(
+    GetTxService()->GetAllTransactionInfo(
         mojom::CoinType::ETH, chain_id, default_account()->account_id.Clone(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
@@ -552,10 +547,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                             const std::optional<::url::Origin>& origin,
                             bool skip_rpc_url_override = false) {
     mojom::NetworkInfoPtr chain;
-    ASSERT_TRUE(
-        json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
+    ASSERT_TRUE(GetJsonRpcService()->SetNetwork(chain_id, mojom::CoinType::ETH,
+                                                origin));
     base::RunLoop run_loop;
-    json_rpc_service_->GetNetwork(
+    GetJsonRpcService()->GetNetwork(
         mojom::CoinType::ETH, origin,
         base::BindLambdaForTesting([&](mojom::NetworkInfoPtr info) {
           chain = info.Clone();
@@ -567,7 +562,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       browser()->profile()->GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
       chain->rpc_endpoints =
           std::vector<GURL>({https_server_for_rpc()->base_url()});
-      json_rpc_service_->AddChain(
+      GetJsonRpcService()->AddChain(
           std::move(chain),
           base::BindLambdaForTesting([&](const std::string& chain_id_out,
                                          mojom::ProviderError error,
@@ -584,7 +579,19 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   std::string chain_id(const std::optional<::url::Origin>& origin) {
-    return json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, origin);
+    return GetJsonRpcService()->GetChainIdSync(mojom::CoinType::ETH, origin);
+  }
+
+  KeyringService* GetKeyringService() const {
+    return KeyringServiceFactory::GetServiceForContext(browser()->profile());
+  }
+
+  JsonRpcService* GetJsonRpcService() const {
+    return JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
+  }
+
+  TxService* GetTxService() const {
+    return TxServiceFactory::GetServiceForContext(browser()->profile());
   }
 
  protected:
@@ -596,9 +603,6 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,

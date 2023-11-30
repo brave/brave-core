@@ -176,10 +176,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   // local_data_files_service_ should always be first because it needs
   // to be destroyed last
-  std::unique_ptr<brave_component_updater::LocalDataFilesService>
-      local_data_files_service_;
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
+  std::unique_ptr<brave_component_updater::LocalDataFilesService>
+      local_data_files_service_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;

@@ -92,6 +92,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
     BraveWebUIBubbleManager::CustomizeBubbleDialogView(*bubble_view);
     auto bubble_view_weak_ptr = bubble_view->GetWeakPtr();
     bubble_view_ = bubble_view_weak_ptr.get();
+    static_cast<views::View*>(bubble_view_.get())->AddObserver(this);
     views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
 
     brave_observer_ =
@@ -168,6 +169,13 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
 
   content::WebContents* GetWebContentsForTesting() {
     return web_ui_contents_for_testing_;
+  }
+
+  // views::ViewObserver overrides:
+  void OnViewIsDeleting(views::View* observed_view) override {
+    if (observed_view == bubble_view_) {
+      bubble_view_ = nullptr;
+    }
   }
 
  private:

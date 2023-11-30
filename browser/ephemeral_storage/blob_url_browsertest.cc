@@ -66,7 +66,7 @@ constexpr char kFetchBlobViaWorkerScript[] = R"(
 class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
  public:
   struct RenderFrameHostBlobData {
-    raw_ptr<content::RenderFrameHost> rfh;
+    content::RenderFrameHostWrapper rfh;
     GURL blob_url;
   };
   using FramesWithRegisteredBlobs = std::vector<RenderFrameHostBlobData>;
@@ -99,6 +99,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
   static void NavigateToBlob(content::RenderFrameHost* render_frame_host,
                              const GURL& url) {
+    ASSERT_TRUE(render_frame_host);
     std::string script = content::JsReplace("location = $1", url.spec());
     content::TestFrameNavigationObserver observer(render_frame_host);
     EXPECT_TRUE(ExecJs(render_frame_host, script));
@@ -111,11 +112,13 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
       const FramesWithRegisteredBlobs& frames_with_registered_blobs,
       size_t rfh1_idx,
       size_t rfh2_idx) {
+    ASSERT_TRUE(frames_with_registered_blobs[rfh1_idx].rfh);
+    ASSERT_TRUE(frames_with_registered_blobs[rfh2_idx].rfh);
     EXPECT_EQ(std::to_string(rfh2_idx),
-              FetchBlob(frames_with_registered_blobs[rfh1_idx].rfh,
+              FetchBlob(frames_with_registered_blobs[rfh1_idx].rfh.get(),
                         frames_with_registered_blobs[rfh2_idx].blob_url));
     EXPECT_EQ(std::to_string(rfh1_idx),
-              FetchBlob(frames_with_registered_blobs[rfh2_idx].rfh,
+              FetchBlob(frames_with_registered_blobs[rfh2_idx].rfh.get(),
                         frames_with_registered_blobs[rfh1_idx].blob_url));
   }
 
@@ -143,7 +146,8 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
       // Blob should be fetchable from the same frame.
       EXPECT_EQ(std::to_string(idx), FetchBlob(rfh, blob_url));
 
-      frames_with_registered_blobs.push_back({rfh, std::move(blob_url)});
+      frames_with_registered_blobs.emplace_back(
+          content::RenderFrameHostWrapper(rfh), std::move(blob_url));
     }
     return frames_with_registered_blobs;
   }
@@ -204,11 +208,11 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Ensure blobs are navigatable in same iframes.
     for (size_t idx = 1; idx < a_com2_registered_blobs.size(); ++idx) {
-      NavigateToBlob(a_com2_registered_blobs[idx].rfh,
+      NavigateToBlob(a_com2_registered_blobs[idx].rfh.get(),
                      a_com2_registered_blobs[idx].blob_url);
     }
     for (size_t idx = 1; idx < b_com_registered_blobs.size(); ++idx) {
-      NavigateToBlob(b_com_registered_blobs[idx].rfh,
+      NavigateToBlob(b_com_registered_blobs[idx].rfh.get(),
                      b_com_registered_blobs[idx].blob_url);
     }
   }
@@ -283,11 +287,11 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Ensure blobs are navigatable in same iframes.
     for (size_t idx = 1; idx < a_com2_registered_blobs.size(); ++idx) {
-      NavigateToBlob(a_com2_registered_blobs[idx].rfh,
+      NavigateToBlob(a_com2_registered_blobs[idx].rfh.get(),
                      a_com2_registered_blobs[idx].blob_url);
     }
     for (size_t idx = 1; idx < b_com_registered_blobs.size(); ++idx) {
-      NavigateToBlob(b_com_registered_blobs[idx].rfh,
+      NavigateToBlob(b_com_registered_blobs[idx].rfh.get(),
                      b_com_registered_blobs[idx].blob_url);
     }
   }

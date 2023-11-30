@@ -98,6 +98,12 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
         "accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
   }
 
+  void PostRunTestOnMainThread() override {
+    // Clean up current browser before destruction to avoid leaving it dangling.
+    current_browser_ = nullptr;
+    InProcessBrowserTest::PostRunTestOnMainThread();
+  }
+
   content_settings::CookieSettings* cookie_settings() {
     return CookieSettingsFactory::GetForProfile(browser()->profile()).get();
   }

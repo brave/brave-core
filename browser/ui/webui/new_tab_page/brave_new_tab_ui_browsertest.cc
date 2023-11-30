@@ -33,6 +33,7 @@ class ObserverLogger : public RenderProcessHostObserver {
   void RenderProcessExited(RenderProcessHost* host,
                            const ChildProcessTerminationInfo& info) override {
     observed_host_->RemoveObserver(this);
+    observed_host_ = nullptr;
     EXPECT_EQ(info.exit_code, 0);
   }
   raw_ptr<RenderProcessHost> observed_host_ = nullptr;
