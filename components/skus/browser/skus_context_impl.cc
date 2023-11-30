@@ -27,7 +27,8 @@ void OnScheduleWakeup(
 logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
-      // NOTE: since we have release_max_level_debug set this is equivalent to DVLOG(4)
+      // NOTE: since we have release_max_level_debug set this is equivalent to
+      // DVLOG(4)
       return -4;
     case skus::TracingLevel::Debug:
       return -3;
@@ -38,7 +39,8 @@ logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
     case skus::TracingLevel::Error:
       return logging::LOGGING_ERROR;
   }
-  // this should never happen, set to WARNING level in this case so we notice since it is otherwise unused
+  // this should never happen, set to WARNING level in this case so we notice
+  // since it is otherwise unused
   return logging::LOGGING_WARNING;
 }
 
