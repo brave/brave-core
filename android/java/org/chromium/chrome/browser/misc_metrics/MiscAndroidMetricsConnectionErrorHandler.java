@@ -16,7 +16,8 @@ public class MiscAndroidMetricsConnectionErrorHandler implements ConnectionError
      *This is a delegate that is implemented in the object where the connection is created
      */
     public interface MiscAndroidMetricsConnectionErrorHandlerDelegate {
-        default void initMiscAndroidMetrics() {}
+        default void initMiscAndroidMetricsFromAWorkerThread() {}
+
         default void cleanUpMiscAndroidMetrics() {}
     }
 
@@ -31,6 +32,6 @@ public class MiscAndroidMetricsConnectionErrorHandler implements ConnectionError
     @Override
     public void onConnectionError(MojoException e) {
         mDelegate.cleanUpMiscAndroidMetrics();
-        mDelegate.initMiscAndroidMetrics();
+        mDelegate.initMiscAndroidMetricsFromAWorkerThread();
     }
 }
