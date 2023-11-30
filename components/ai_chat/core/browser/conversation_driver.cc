@@ -546,10 +546,11 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
 
+  // Now the conversation is committed, we can remove some unneccessary data if
+  // we're not associated with a page.
   if (!should_send_page_contents_) {
     article_text_.clear();
     suggestions_.clear();
-    OnPageHasContentChanged(BuildSiteInfo());
     OnSuggestedQuestionsChanged();
   }
 
@@ -637,10 +638,9 @@ void ConversationDriver::OnSuggestedQuestionsChanged() {
   }
 }
 
-void ConversationDriver::OnPageHasContentChanged(
-    const mojom::SiteInfo& site_info) {
+void ConversationDriver::OnPageHasContentChanged(mojom::SiteInfoPtr site_info) {
   for (auto& obs : observers_) {
-    obs.OnPageHasContent(site_info);
+    obs.OnPageHasContent(std::move(site_info));
   }
 }
 
@@ -652,6 +652,10 @@ void ConversationDriver::SetAPIError(const mojom::APIError& error) {
   }
 }
 
+bool ConversationDriver::HasPendingConversationEntry() {
+  return pending_conversation_entry_ != nullptr;
+}
+
 bool ConversationDriver::IsPageContentsTruncated() {
   if (article_text_.empty()) {
     return false;
@@ -660,8 +664,28 @@ bool ConversationDriver::IsPageContentsTruncated() {
           GetCurrentModel().max_page_content_length);
 }
 
-bool ConversationDriver::HasPendingConversationEntry() {
-  return pending_conversation_entry_ != nullptr;
+void ConversationDriver::SubmitSummarizationRequest() {
+  DCHECK(IsContentAssociationPossible())
+      << "This conversation request is not associated with content\n";
+  DCHECK(should_send_page_contents_)
+      << "This conversation request should send page contents\n";
+
+  mojom::ConversationTurn turn = {
+      CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
+  pending_message_needs_page_content_ = true;
+}
+
+mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
+  mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
+  if (!article_text_.empty()) {
+    site_info->title = base::UTF16ToUTF8(GetPageTitle());
+  }
+  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->is_content_association_possible = IsContentAssociationPossible();
+
+  return site_info;
 }
 
 bool ConversationDriver::IsContentAssociationPossible() {
@@ -672,28 +696,6 @@ bool ConversationDriver::IsContentAssociationPossible() {
   }
 
   return true;
-}
-
-void ConversationDriver::SubmitSummarizationRequest() {
-  DCHECK(IsContentAssociationPossible())
-      << "This conversation request is not associated with content\n";
-
-  mojom::ConversationTurn turn = {
-      CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
-  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
-  pending_message_needs_page_content_ = true;
-}
-
-mojom::SiteInfo ConversationDriver::BuildSiteInfo() {
-  mojom::SiteInfo site_info;
-  if (!article_text_.empty()) {
-    site_info.title = base::UTF16ToUTF8(GetPageTitle());
-  }
-  site_info.is_content_truncated = IsPageContentsTruncated();
-  site_info.is_content_association_possible = IsContentAssociationPossible();
-
-  return site_info;
 }
 
 void ConversationDriver::GetPremiumStatus(

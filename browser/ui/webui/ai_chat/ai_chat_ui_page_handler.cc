@@ -410,9 +410,9 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent(const mojom::SiteInfo& site_info) {
+void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   if (page_.is_bound()) {
-    page_->OnSiteInfoChanged(site_info.Clone());
+    page_->OnSiteInfoChanged(std::move(site_info));
   }
 }
 

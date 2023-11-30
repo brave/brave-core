@@ -242,6 +242,6 @@
     Use page context for response
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
-    Toggle on to ask about this page. It's content will be sent to Brave Leo along with your messages.
+    Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
   </message>
 </grit-part>

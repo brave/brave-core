@@ -39,7 +39,7 @@ class ConversationDriver {
         std::vector<std::string> questions,
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent(const mojom::SiteInfo& site_info) {}
+    virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
     virtual void OnConversationEntryPending() {}
   };
 
@@ -81,10 +81,9 @@ class ConversationDriver {
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool IsPageContentsTruncated();
-  bool HasPendingConversationEntry();
-  bool IsContentAssociationPossible();
   void SubmitSummarizationRequest();
-  mojom::SiteInfo BuildSiteInfo();
+  mojom::SiteInfoPtr BuildSiteInfo();
+  bool HasPendingConversationEntry();
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -122,13 +121,14 @@ class ConversationDriver {
   void OnSuggestedQuestionsResponse(int64_t navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged(const mojom::SiteInfo& site_info);
+  void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);
   void OnConversationEntryPending();
 
   void SetAPIError(const mojom::APIError& error);
+  bool IsContentAssociationPossible();
 
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;

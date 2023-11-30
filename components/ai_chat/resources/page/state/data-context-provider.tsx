@@ -183,7 +183,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     // TODO(nullhook): make this more accurately based on the actual page content length
     let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
-    if (!siteInfo.isContentAssociationPossible) totalCharLimit += currentModel?.maxPageContentLength
+    if (shouldSendPageContents) totalCharLimit += currentModel?.maxPageContentLength
 
     if (
       !hasDismissedLongConversationInfo &&
@@ -262,7 +262,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
 
     getPageHandlerInstance().callbackRouter.onConversationEntryPending.addListener(() => {
-      setShowAgreementModal(true)
+      if (!hasAcceptedAgreement) {
+        setShowAgreementModal(true)
+      }
     })
 
     // Since there is no server-side event for premium status changing,

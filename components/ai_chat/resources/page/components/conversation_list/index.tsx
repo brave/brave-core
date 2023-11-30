@@ -41,7 +41,7 @@ function ConversationList() {
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus)
 
-  if (hasAcceptedAgreement) {
+  if (!hasAcceptedAgreement) {
     showSuggestions = false
   }
 
