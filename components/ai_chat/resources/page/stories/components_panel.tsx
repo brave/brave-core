@@ -103,7 +103,6 @@ export default {
     hasConversation: true,
     hasSuggestedQuestions: true,
     hasSiteInfo: true,
-    showModelIntro: true,
     canShowPremiumPrompt: false,
     hasAcceptedAgreement: true,
     isPremiumModel: false,
@@ -134,7 +133,6 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
         currentModel: MODELS.find(m => m.name === options.args.model),
         conversationHistory: options.args.hasConversation ? HISTORY : [],

@@ -9,7 +9,6 @@ import * as mojom from '../api/page_handler'
 export interface AIChatContext {
   allModels: mojom.Model[]
   currentModel?: mojom.Model
-  showModelIntro: boolean
   conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
@@ -44,7 +43,6 @@ export interface AIChatContext {
 
 export const defaultContext: AIChatContext = {
   allModels: [],
-  showModelIntro: false,
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,

@@ -28,7 +28,6 @@ interface DataContextProviderProps {
 function DataContextProvider (props: DataContextProviderProps) {
   const [currentModelKey, setCurrentModelKey] = React.useState<string>();
   const [allModels, setAllModels] = React.useState<mojom.Model[]>([])
-  const [hasChangedModel, setHasChangedModel] = React.useState(false)
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
@@ -52,7 +51,6 @@ function DataContextProvider (props: DataContextProviderProps) {
   // so that we can track when the user has changed a model in
   // order to provide more information about the model.
   const setCurrentModel = (model: mojom.Model) => {
-    setHasChangedModel(true)
     setCurrentModelKey(model.key)
     getPageHandlerInstance().pageHandler.changeModel(model.key)
   }
@@ -73,10 +71,6 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
-
-  // Wait to show model intro until we've received SiteInfo information
-  // (valid or null) to avoid flash of content.
-  const showModelIntro = hasAcceptedAgreement && (hasChangedModel || siteInfo?.isContentAssociationPossible)
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -284,7 +278,6 @@ function DataContextProvider (props: DataContextProviderProps) {
   const store: AIChatContext = {
     allModels,
     currentModel,
-    showModelIntro,
     conversationHistory,
     isGenerating,
     suggestedQuestions,

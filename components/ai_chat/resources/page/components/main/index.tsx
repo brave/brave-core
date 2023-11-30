@@ -119,7 +119,7 @@ function Main() {
         [styles.flushBottom]: !hasAcceptedAgreement
       })}>
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {context.showModelIntro && <ModelIntro />}
+        {context.hasAcceptedAgreement && <ModelIntro />}
         <ConversationList />
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
