@@ -11,7 +11,7 @@ import override_utils
 # echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
 class BraveExtensions:
     BRAVE_SHIELDS = "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"  # mnojpmjdmbbfmejpflffifhffcmidifd
-    ETHEREUM_REMOTE_CLIENT = "21070F3D60711361C1210B870439BE49B5D995F4"
+    ETHEREUM_REMOTE_CLIENT = "21070F3D60711361C1210B870439BE49B5D995F4"  # odbfpeeihdkbihmopkbjmoonfanlbfcl
     IPFS_COMPANION = "780BF954C0F7C586EA9662D4F967771F49CC2114"  # nibjojkomfdiaoajekhjakgkdhaomnch
     IPFS_COMPANION_BETA = "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"  # hjoieblefckbooibpepigmacodalfndh
     WEB_TORRENT = "3D9518A72EB02667A773B69DBA9E72E0F4A37423"  # lgjmpdmojkpocjcopdikifhejkkjglho
