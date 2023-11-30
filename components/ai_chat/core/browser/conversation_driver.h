@@ -62,7 +62,8 @@ class ConversationDriver {
   void AddToConversationHistory(mojom::ConversationTurn turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
   void MakeAPIRequestWithConversationHistoryUpdate(
-      mojom::ConversationTurn turn);
+      mojom::ConversationTurn turn,
+      bool needs_page_content = false);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);

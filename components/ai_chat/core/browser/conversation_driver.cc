@@ -491,12 +491,18 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
 }
 
 void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
-    mojom::ConversationTurn turn) {
+    mojom::ConversationTurn turn,
+    bool needs_page_content) {
   if (!is_conversation_active_ || !HasUserOptedIn()) {
     // This function should not be presented in the UI if the user has not
     // opted-in yet.
     pending_conversation_entry_ =
         std::make_unique<mojom::ConversationTurn>(std::move(turn));
+
+    if (article_text_.empty() && needs_page_content) {
+      pending_message_needs_page_content_ = true;
+    }
+
     // Invoking this before the creation of the page handler means the pending
     // request will not be reported.
     OnConversationEntryPending();
@@ -673,8 +679,8 @@ void ConversationDriver::SubmitSummarizationRequest() {
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
-  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
-  pending_message_needs_page_content_ = true;
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn),
+                                              /*needs_page_content=*/true);
 }
 
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
