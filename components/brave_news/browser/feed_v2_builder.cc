@@ -71,8 +71,9 @@ using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
 /* publisher_or_channel_id, is_channel */
-using GroupSample = std::pair<std::string, bool>;
+using ContentGroup = std::pair<std::string, bool>;
 constexpr char kAllContentGroup[] = "all";
+constexpr float kSampleContentGroupAllRatio = 0.2f;
 
 std::string GetFeedHash(const Channels& channels,
                         const Publishers& publishers,
@@ -145,7 +146,8 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 
   auto& publish_time = article->publish_time;
 
-  double popularity = std::min(article->pop_score, 100.0)/100.0 + features::kBraveNewsPopScoreFallback.Get();
+  double popularity = std::min(article->pop_score, 100.0) / 100.0 +
+                      features::kBraveNewsPopScoreMin.Get();
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -182,7 +184,8 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
   };
 }
 
-std::string PickRandom(const std::vector<std::string>& items) {
+template <typename T>
+T PickRandom(const std::vector<T>& items) {
   CHECK(!items.empty());
   // Note: RandInt is inclusive, hence the minus 1
   return items[base::RandInt(0, items.size() - 1)];
@@ -232,17 +235,11 @@ ArticleInfos GetArticleInfos(const std::string& locale,
   return articles;
 }
 
-std::vector<std::string> GetChannelsForArticle(
-    const mojom::FeedItemMetadataPtr& article,
+std::vector<std::string> GetChannelsForPublisher(
     const std::string& locale,
-    const Publishers& publishers) {
+    const mojom::PublisherPtr& publisher) {
   std::vector<std::string> result;
-  auto publisher_it = publishers.find(article->publisher_id);
-  if (publisher_it == publishers.end()) {
-    return result;
-  }
-
-  for (const auto& locale_info : publisher_it->second->locales) {
+  for (const auto& locale_info : publisher->locales) {
     if (locale_info->locale != locale) {
       continue;
     }
@@ -297,55 +294,51 @@ using GetWeighting = double(const mojom::FeedItemMetadataPtr& article,
 // distribution closer to a uniform distribution (more randomness).
 // Low temperature brings the distribution closer to a delta function (less
 // randomness).
-void SoftmaxWithTemperature(std::vector<double>& weights, double temperature) {
-  if (temperature == 0)
+void SoftmaxWithTemperature(
+    std::vector<double>& weights,
+    double temperature = features::kBraveNewsTemperature.Get()) {
+  if (temperature == 0) {
     return;
+  }
 
   double max = *base::ranges::max_element(weights.begin(), weights.end());
   base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
-                 [temperature, max](double weight) {
-                    return std::exp((weight - max) / temperature);
-                 });
+                          [temperature, max](double weight) {
+                            return std::exp((weight - max) / temperature);
+                          });
   double sum = std::accumulate(weights.begin(), weights.end(), 0.0);
   base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
-                 [sum](double weight) { return weight / sum; });
+                          [sum](double weight) { return weight / sum; });
 }
 
 // Sample across subscribed channels (direct and native) and publishers.
-std::vector<GroupSample> SampleSubscribedGroups(
-    const Channels& channels,
-    const std::vector<std::string>& eligible_content_groups) {
-  std::vector<GroupSample> subscribed_groups_sample;
-
+ContentGroup SampleContentGroup(
+    const std::vector<ContentGroup>& eligible_content_groups) {
+  ContentGroup sampled_content_group;
   if (eligible_content_groups.empty()) {
-    return subscribed_groups_sample;
+    return sampled_content_group;
   }
 
-  for (int i=0; i < features::kBraveNewsMaxBlockCards.Get() + 1; i++) {
-    if (base::RandDouble() < 0.2) {
-      subscribed_groups_sample.push_back(std::make_pair(kAllContentGroup, true));
-      continue;
-    }
-    std::string content_group = PickRandom(eligible_content_groups);
-    bool is_channel = channels.contains(content_group);
-    subscribed_groups_sample.push_back(std::make_pair(content_group, is_channel));
+  if (base::RandDouble() < kSampleContentGroupAllRatio) {
+    return std::make_pair(kAllContentGroup, true);
   }
-
-  return subscribed_groups_sample;
+  return PickRandom<ContentGroup>(eligible_content_groups);
 }
 
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    GetWeighting get_weighting = [](const auto& metadata, const auto& weight) {
-      return weight.weighting != 0 ? weight.weighting : 0.01;
-    },
+    GetWeighting get_weighting =
+        [](const auto& metadata, const auto& weight) {
+          return weight.weighting;
+        },
     bool use_softmax = false) {
   std::vector<double> weights;
-  for (const auto& [article, weight] : articles) {
-    // copy the weight not weights vector
-    weights.push_back(get_weighting(article, weight));
-  }
+  base::ranges::transform(articles, std::back_inserter(weights),
+                          [get_weighting](const auto& article_info) {
+                            return get_weighting(std::get<0>(article_info),
+                                                 std::get<1>(article_info));
+                          });
 
   // None of the items are eligible to be picked.
   if (std::accumulate(weights.begin(), weights.end(), 0.0) == 0) {
@@ -353,16 +346,15 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   }
 
   if (use_softmax) {
-    SoftmaxWithTemperature(weights, features::kBraveNewsTemperature.Get());
+    SoftmaxWithTemperature(weights);
   }
 
-  double weights_cum = std::accumulate(weights.begin(), weights.end(), 0.0);
-  double picked_value = base::RandDouble() * weights_cum;
+  double total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
+  double picked_value = base::RandDouble() * total_weight;
   double current_weight = 0;
 
-  // TODO(): if all elements are 0 this will exit on an index out of bounds
   uint64_t i;
-  for (i = 0; i < articles.size(); ++i) {
+  for (i = 0; i < weights.size(); ++i) {
     current_weight += weights[i];
     if (current_weight > picked_value) {
       break;
@@ -381,12 +373,13 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles, [](const auto& metadata, const auto& weight) {
-    if (weight.subscribed || weight.visited) {
-      return 0.1;
-    }
-    return weight.pop_recency;
-  });
+  return PickRouletteAndRemove(articles,
+                               [](const auto& metadata, const auto& weight) {
+                                 if (weight.subscribed) {
+                                   return 0.0;
+                                 }
+                                 return weight.pop_recency;
+                               });
 }
 
 // Generates a standard block:
@@ -399,8 +392,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     // of a roulette card.
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
     double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get(),
-    std::vector<GroupSample> force_content_group = {}) {
+        features::kBraveNewsInlineDiscoveryRatio.Get()) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -432,30 +424,112 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     if (is_discover) {
       generated = PickDiscoveryArticleAndRemove(articles);
     } else {
-      if (force_content_group.empty() || force_content_group[0].first == kAllContentGroup) {
-        generated = PickRouletteAndRemove(articles);
-      } else {
-        // If we're forcing a content group, pick articles from that group.
-        GroupSample& group_sample = force_content_group[i+1];
-
-        if (group_sample.first == kAllContentGroup) {
-          generated = PickRouletteAndRemove(articles);
-        } else {
-          generated = PickRouletteAndRemove(articles, [group_sample](const auto& metadata, const auto& weight) {
-            if (/*is_channel*/group_sample.second) {
-              return base::Contains(metadata->channels, group_sample.first) ? weight.weighting : 0;
-            } else {
-              return metadata->publisher_id == group_sample.first ? weight.weighting : 0;
-            }
-
-            return weight.weighting;
-          });
-        }
-      }
+      generated = PickRouletteAndRemove(articles);
     }
 
     if (!generated) {
-      DVLOG(1) << "Failed to generate article" << std::endl;
+      DVLOG(1) << "Failed to generate article (is_discover=" << is_discover
+               << ")";
+      continue;
+    }
+    result.push_back(mojom::FeedItemV2::NewArticle(
+        mojom::Article::New(std::move(generated), is_discover)));
+  }
+
+  return result;
+}
+
+// Generates a block from sampled content groups:
+// 1. Hero Article
+// 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
+std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
+    ArticleInfos& articles,
+    const std::string& locale,
+    const Publishers& publishers,
+    const std::vector<ContentGroup>& eligible_content_groups,
+    // Ratio of inline articles to discovery articles.
+    // discover ratio % of the time, we should do a discover card here instead
+    // of a roulette card.
+    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+  DVLOG(1) << __FUNCTION__;
+  std::vector<mojom::FeedItemV2Ptr> result;
+  if (articles.empty() || eligible_content_groups.empty()) {
+    return result;
+  }
+
+  base::flat_map<std::string, std::vector<std::string>>
+      publisher_id_to_channels;
+  for (const auto& [publisher_id, publisher] : publishers) {
+    publisher_id_to_channels[publisher_id] =
+        GetChannelsForPublisher(locale, publisher);
+  }
+
+  mojom::FeedItemMetadataPtr hero_article;
+  auto content_group = SampleContentGroup(eligible_content_groups);
+  const auto get_weighting = [content_group, &publisher_id_to_channels, locale](
+                                 const auto& metadata, const auto& weight) {
+    if (/*is_channel*/ content_group.second &&
+        content_group.first != kAllContentGroup) {
+      auto channels = publisher_id_to_channels.find(metadata->publisher_id);
+      if (base::Contains(channels->second, content_group.first)) {
+        return weight.weighting;
+      }
+
+      return 0.0;
+    } else if (/*is_channel*/ !content_group.second) {
+      return metadata->publisher_id == content_group.first ? weight.weighting
+                                                           : 0.0;
+    }
+
+    return weight.weighting;
+  };
+  hero_article = PickRouletteAndRemove(articles, get_weighting);
+
+  if (!hero_article) {
+    DVLOG(1) << "Failed to generate hero";
+    return result;
+  }
+
+  result.push_back(mojom::FeedItemV2::NewHero(
+      mojom::HeroArticle::New(std::move(hero_article))));
+
+  const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
+  const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
+  auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
+  for (auto i = 0; i < follow_count; ++i) {
+    bool is_discover = base::RandDouble() < inline_discovery_ratio;
+    mojom::FeedItemMetadataPtr generated;
+
+    if (is_discover) {
+      generated = PickDiscoveryArticleAndRemove(articles);
+    } else {
+      content_group = SampleContentGroup(eligible_content_groups);
+      const auto get_weighting_2 = [content_group, &publisher_id_to_channels,
+                                    locale](const auto& metadata,
+                                            const auto& weight) {
+        if (/*is_channel*/ content_group.second &&
+            content_group.first != kAllContentGroup) {
+          auto channels = publisher_id_to_channels.find(metadata->publisher_id);
+          if (base::Contains(channels->second, content_group.first)) {
+            return weight.weighting;
+          }
+
+          return 0.0;
+        } else if (/*is_channel*/ !content_group.second) {
+          return metadata->publisher_id == content_group.first
+                     ? weight.weighting
+                     : 0.0;
+        }
+
+        return weight.weighting;
+      };
+      generated = PickRouletteAndRemove(articles, get_weighting_2);
+    }
+
+    if (!generated) {
+      DVLOG(1) << "Failed to generate article";
       continue;
     }
     result.push_back(mojom::FeedItemV2::NewArticle(
@@ -895,19 +969,6 @@ void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
   raw_feed_items_ = std::move(items);
-
-  const auto& publishers = publishers_controller_->GetLastPublishers();
-  const auto& locale = publishers_controller_->GetLastLocale();
-
-  // Add channels field to articles metadata.
-  for (const auto& item : raw_feed_items_) {
-    if (!item->is_article()) {
-      continue;
-    }
-
-    item->get_article()->data->channels = GetChannelsForArticle(item->get_article()->data, locale, publishers);
-  }
-
   feed_etags_ = std::move(tags);
 
   CalculateSignals();
@@ -1087,14 +1148,6 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
 
-  std::vector<std::string> subscribed_publishers;
-  for (const auto& [id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
-      subscribed_publishers.push_back(id);
-      DVLOG(1) << "Subscribed to: " << id << std::endl;
-    }
-  }
-
   // Get a list of the subscribed channels - we'll use these when determining
   // what channel cards to show.
   Channels channels =
@@ -1104,7 +1157,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
   for (const auto& [id, channel] : channels) {
     if (base::Contains(channel->subscribed_locales, locale)) {
       subscribed_channels.push_back(id);
-      DVLOG(1) << "Subscribed to: " << id << std::endl;
+      DVLOG(1) << "Subscribed to channel: " << id;
     }
   }
 
@@ -1120,24 +1173,22 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
     base::ranges::move(items, std::back_inserter(feed->items));
   };
 
-  std::vector<std::string> eligible_content_groups;
+  std::vector<ContentGroup> eligible_content_groups;
   for (const auto& channel_id : subscribed_channels) {
-    eligible_content_groups.push_back(channel_id);
+    eligible_content_groups.push_back(std::make_pair(channel_id, true));
   }
-  // TODO(LorenzoMnto, fallaciousreasoning): What about direct feeds?
-  for (const auto& publisher_id : subscribed_publishers) {
-    eligible_content_groups.push_back(publisher_id);
+  for (const auto& [publisher_id, publisher] : publishers) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+      eligible_content_groups.push_back(std::make_pair(publisher_id, false));
+      DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
+    }
   }
 
   // Step 1: Generate a block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
-  std::vector<mojom::FeedItemV2Ptr> initial_block;
-  auto initial_content_groups = SampleSubscribedGroups(channels, eligible_content_groups);
-  if (!initial_content_groups.empty()) {
-    initial_block = GenerateBlock(articles, features::kBraveNewsInlineDiscoveryRatio.Get(), initial_content_groups);
-  } else {
-    initial_block = GenerateBlock(articles);
-  }
+  std::vector<mojom::FeedItemV2Ptr> initial_block =
+      GenerateBlockFromContentGroups(articles, locale, publishers,
+                                     eligible_content_groups);
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
@@ -1167,24 +1218,16 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
       DVLOG(1) << "Step 4: Standard Block";
-      auto content_groups = SampleSubscribedGroups(channels, eligible_content_groups);
-      if (!content_groups.empty()) {
-        items = GenerateBlock(articles, features::kBraveNewsInlineDiscoveryRatio.Get(), content_groups);
-      } else {
-        items = GenerateBlock(articles);
-      }
+      items = GenerateBlockFromContentGroups(articles, locale, publishers,
+                                             eligible_content_groups);
     } else if (iteration_type == 1) {
       // Step 5: Block or Cluster Generation
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
         DVLOG(1) << "Step 5: Standard Block";
-        auto content_groups = SampleSubscribedGroups(channels, eligible_content_groups);
-        if (!content_groups.empty()) {
-          items = GenerateBlock(articles, features::kBraveNewsInlineDiscoveryRatio.Get(), content_groups);
-        } else {
-          items = GenerateBlock(articles);
-        }
+        items = GenerateBlockFromContentGroups(articles, locale, publishers,
+                                               eligible_content_groups);
       } else {
         items = GenerateClusterBlock(locale, publishers, subscribed_channels,
                                      topics, articles);
