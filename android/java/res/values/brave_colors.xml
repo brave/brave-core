@@ -374,4 +374,5 @@
     <color name="vpn_timer_bg_color">#F6F7F8</color>
     <color name="vpn_timer_text_color">#0D0F14</color>
     <color name="vpn_timer_icon_color">#687485</color>
+    <color name="vpn_icon_color">#687485</color>
 </resources>
