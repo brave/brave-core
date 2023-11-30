@@ -20,6 +20,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  width: 100%;
 
   font: var(--leo-font-primary-small-regular);
   color: var(--leo-color-text-tertiary);
@@ -45,4 +46,9 @@
 .tooltipSiteTitle {
   border-top: 1px solid var(--leo-color-divider-subtle);
   padding: var(--leo-spacing-m);
+}
+
+.toggle {
+  width: 100%;
+  --leo-toggle-label-flex-direction: row-reverse;
 }

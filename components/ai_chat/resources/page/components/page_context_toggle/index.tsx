@@ -23,37 +23,39 @@ function PageContextToggle() {
 
   return (
     <div className={styles.box}>
-      <div className={styles.label}>
-        <span>{getLocale('contextToggleLabel')}</span>
-        <Tooltip visible={showTooltip}>
-          <div
-            slot='content'
-            className={styles.tooltipContainer}
-          >
-            <div className={styles.tooltipInfo}>
-              {getLocale('contextToggleTooltipInfo')}
-            </div>
-            <div className={styles.tooltipSiteTitle}>
-              <SiteTitle size='small' />
-            </div>
-          </div>
-          <div
-            onMouseOver={() => setShowTooltip(true)}
-            onMouseOut={() => setShowTooltip(false)}
-            onTouchStart={() => setShowTooltip(true)}
-            onTouchEnd={() => setShowTooltip(false)}
-            onFocus={() => setShowTooltip(true)}
-            onBlur={() => setShowTooltip(false)}
-          >
-            <Icon name='info-outline' />
-          </div>
-        </Tooltip>
-      </div>
       <Toggle
         size='small'
         onChange={handleToggleChange}
         checked={context.shouldSendPageContents}
-      />
+        className={styles.toggle}
+      >
+        <div className={styles.label}>
+          <span>{getLocale('contextToggleLabel')}</span>
+          <Tooltip visible={showTooltip}>
+            <div
+              slot='content'
+              className={styles.tooltipContainer}
+            >
+              <div className={styles.tooltipInfo}>
+                {getLocale('contextToggleTooltipInfo')}
+              </div>
+              <div className={styles.tooltipSiteTitle}>
+                <SiteTitle size='small' />
+              </div>
+            </div>
+            <div
+              onMouseOver={() => setShowTooltip(true)}
+              onMouseOut={() => setShowTooltip(false)}
+              onTouchStart={() => setShowTooltip(true)}
+              onTouchEnd={() => setShowTooltip(false)}
+              onFocus={() => setShowTooltip(true)}
+              onBlur={() => setShowTooltip(false)}
+            >
+              <Icon name='info-outline' />
+            </div>
+          </Tooltip>
+        </div>
+      </Toggle>
     </div>
   )
 }
