@@ -19,7 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
-import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -79,8 +79,11 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final MenuButton mMenuButton;
     private ThemeColorProvider mThemeColorProvider;
 
-    BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
-            OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
+    BrowsingModeBottomToolbarCoordinator(
+            View root,
+            ActivityTabProvider tabProvider,
+            OnClickListener homeButtonListener,
+            OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
@@ -121,19 +124,20 @@ public class BrowsingModeBottomToolbarCoordinator {
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
-            OnClickListener bookmarkClickHandler = v -> {
-                TabImpl tab = (TabImpl) mTabProvider.get();
-                try {
-                    BraveActivity activity = BraveActivity.getBraveActivity();
-                    if (tab == null || activity == null) {
-                        assert false;
-                        return;
-                    }
-                    activity.addOrEditBookmark(tab);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "BookmarkButton click " + e);
-                }
-            };
+            OnClickListener bookmarkClickHandler =
+                    v -> {
+                        Tab tab = mTabProvider.get();
+                        try {
+                            BraveActivity activity = BraveActivity.getBraveActivity();
+                            if (tab == null || activity == null) {
+                                assert false;
+                                return;
+                            }
+                            activity.addOrEditBookmark(tab);
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "BookmarkButton click " + e);
+                        }
+                    };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }
 
