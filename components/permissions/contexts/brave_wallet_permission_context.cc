@@ -121,7 +121,9 @@ void BraveWalletPermissionContext::AcceptOrCancel(
     content::WebContents* web_contents) {
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return;
+  }
 
   std::vector<PermissionRequest*> allowed_requests;
   std::vector<PermissionRequest*> cancelled_requests;
@@ -143,7 +145,9 @@ void BraveWalletPermissionContext::AcceptOrCancel(
 void BraveWalletPermissionContext::Cancel(content::WebContents* web_contents) {
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return;
+  }
 
   // Dismiss all requests.
   manager->Dismiss();
@@ -156,7 +160,9 @@ bool BraveWalletPermissionContext::HasRequestsInProgress(
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return false;
+  }
 
   // Only check the first entry because it will not be grouped with other types
   return !manager->Requests().empty() &&

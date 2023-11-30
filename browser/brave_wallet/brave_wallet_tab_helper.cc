@@ -84,8 +84,12 @@ void BraveWalletTabHelper::ShowBubble() {
     is_showing_bubble_for_testing_ = true;
     return;
   }
+  auto bubble_url = GetBubbleURL();
+  if (!bubble_url.is_valid()) {
+    return;
+  }
   wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::Create(&GetWebContents(), GetBubbleURL());
+      WalletBubbleManagerDelegate::Create(&GetWebContents(), bubble_url);
   wallet_bubble_manager_delegate_->ShowBubble();
   if (show_bubble_callback_for_testing_) {
     std::move(show_bubble_callback_for_testing_).Run();
@@ -130,7 +134,9 @@ bool BraveWalletTabHelper::IsBubbleClosedForTesting() {
 GURL BraveWalletTabHelper::GetBubbleURL() {
   auto* manager =
       permissions::PermissionRequestManager::FromWebContents(&GetWebContents());
-  DCHECK(manager);
+  if (!manager) {
+    return GURL();
+  }
 
   GURL webui_url = GURL(kBraveUIWalletPanelURL);
 
