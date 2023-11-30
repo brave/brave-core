@@ -32,6 +32,8 @@ struct VPNMenuButton: View {
   @State private var isVPNStatusChanging: Bool = BraveVPN.reconnectPending
   @State private var isVPNEnabled = BraveVPN.isConnected
   @State private var isErrorShowing: Bool = false
+  
+  @ScaledMetric private var iconSize: CGFloat = 32.0
 
   private var isVPNEnabledBinding: Binding<Bool> {
     Binding(
@@ -126,7 +128,7 @@ struct VPNMenuButton: View {
     HStack(spacing: 14) {
       Image(braveSystemName: retryStateActive ? "leo.warning.triangle-filled" : "leo.product.vpn")
         .font(.body)
-        .frame(width: 32, height: 32)
+        .frame(width: iconSize, height: iconSize)
         .foregroundColor(retryStateActive ? Color(.braveErrorLabel) : Color(.braveLabel))
         .background(
           RoundedRectangle(cornerRadius: 8, style: .continuous)
