@@ -11,7 +11,9 @@ import {
   mockSolDappSignTransactionRequest
 } from '../../../common/constants/mocks'
 import { PanelWrapper } from '../../../panel/style'
-import { mockSolanaMainnetNetwork } from '../../../stories/mock-data/mock-networks'
+import {
+  mockSolanaMainnetNetwork //
+} from '../../../stories/mock-data/mock-networks'
 import { LongWrapper } from '../../../stories/style'
 
 import {

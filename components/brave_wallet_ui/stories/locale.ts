@@ -596,7 +596,9 @@ provideStrings({
   braveWalletApproveTransaction: 'Approve transaction',
   braveWalletRiskOfLossAction: 'Unsafe action with risk of loss',
   braveWalletUntrustedRequestWarning:
-    'This request appears unstable or malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.',
+    'This request appears unstable or malicious, ' +
+    'and may leave you vulnerable to theft. ' +
+    'Do not continue unless you trust the app.',
 
   // Sign in with Ethereum
   braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
