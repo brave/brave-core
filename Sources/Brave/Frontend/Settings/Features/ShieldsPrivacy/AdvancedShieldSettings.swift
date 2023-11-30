@@ -52,7 +52,7 @@ import os
     }
   }
   
-  typealias ClearDataCallback = @MainActor (Bool) -> Void
+  typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
   
   private var subscriptions: [AnyCancellable] = []
@@ -106,12 +106,12 @@ import os
   }
   
   func clearPrivateData(_ clearables: [Clearable]) async {
-    clearDataCallback(true)
-    await clearPrivateDataInternal(clearables)
-    clearDataCallback(false)
+    clearDataCallback(true, false)
+    let isHistoryCleared = await clearPrivateDataInternal(clearables)
+    clearDataCallback(false, isHistoryCleared)
   }
   
-  private func clearPrivateDataInternal(_ clearables: [Clearable]) async {
+  private func clearPrivateDataInternal(_ clearables: [Clearable]) async -> Bool {
     @Sendable func _clear(_ clearables: [Clearable], secondAttempt: Bool = false) async {
       await withThrowingTaskGroup(of: Void.self) { group in
         for clearable in clearables {
@@ -176,6 +176,8 @@ import os
     }
     
     _toggleFolderAccessForBlockCookies(locked: true)
+    
+    return historyCleared
   }
   
   private func registerSubscriptions() {

@@ -245,7 +245,7 @@ class SettingsViewController: TableViewController {
               feedDataSource: self.feedDataSource,
               historyAPI: self.historyAPI,
               p3aUtilities: self.p3aUtilities,
-              clearDataCallback: { [weak self] isLoading in
+              clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                 guard let view = self?.navigationController?.view, view.window != nil else {
                   assertionFailure()
                   return
@@ -258,6 +258,13 @@ class SettingsViewController: TableViewController {
                 } else {
                   spinner?.dismiss()
                   spinner = nil
+                }
+                
+                if isHistoryCleared {
+                  // Donate Clear Browser History for suggestions
+                  let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
+                  self?.userActivity = clearBrowserHistoryActivity
+                  clearBrowserHistoryActivity.becomeCurrent()
                 }
               }
             ))

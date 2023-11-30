@@ -206,6 +206,11 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             
             // Clearing History should clear Recently Closed
             RecentlyClosed.removeAll()
+            
+            // Donate Clear Browser History for suggestions
+            let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
+            self.userActivity = clearBrowserHistoryActivity
+            clearBrowserHistoryActivity.becomeCurrent()
           }
           
           // Asking Sync Engine To Remove Visits

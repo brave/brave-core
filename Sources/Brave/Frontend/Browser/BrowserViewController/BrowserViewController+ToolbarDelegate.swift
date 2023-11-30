@@ -402,7 +402,7 @@ extension BrowserViewController: TopToolbarDelegate {
           feedDataSource: self.feedDataSource,
           historyAPI: self.braveCore.historyAPI,
           p3aUtilities: self.braveCore.p3aUtils,
-          clearDataCallback: { [weak self] isLoading in
+          clearDataCallback: { [weak self] isLoading, isHistoryCleared in
             guard let view = self?.navigationController?.view, view.window != nil else {
               assertionFailure()
               return
@@ -415,6 +415,13 @@ extension BrowserViewController: TopToolbarDelegate {
             } else {
               spinner?.dismiss()
               spinner = nil
+            }
+            
+            if isHistoryCleared {
+              // Donate Clear Browser History for suggestions
+              let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
+              self?.userActivity = clearBrowserHistoryActivity
+              clearBrowserHistoryActivity.becomeCurrent()
             }
           }
         ))
