@@ -27,7 +27,6 @@ def main():
     current_rev = subprocess.check_output(['git', 'rev-parse', 'HEAD'],
                                           cwd=FFMPEG_DIR,
                                           universal_newlines=True).rstrip()
-    print(current_rev)
 
     if current_rev == STABLE_REVISION:
         return 0
