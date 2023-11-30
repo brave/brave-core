@@ -6,7 +6,7 @@ pipeline {
         timestamps()
     }
     parameters {
-        choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
+        choice(name: 'CHANNEL', choices: ['nightly', 'beta', 'release'])
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
         booleanParam(name: 'USE_GOMA', defaultValue: true)
@@ -57,7 +57,7 @@ pipeline {
                         pipelineJob('${PIPELINE_NAME}') {
                             // this list has to match the parameters in the Jenkinsfile from devops repo
                             parameters {
-                                choiceParam('CHANNEL', ['nightly', 'dev', 'beta', 'release', 'development'])
+                                choiceParam('CHANNEL', ['nightly', 'beta', 'release'])
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
                                 booleanParam('USE_GOMA', true)
