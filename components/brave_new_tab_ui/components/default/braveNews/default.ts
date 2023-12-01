@@ -26,7 +26,6 @@ export const Section = styled('section')`
   flex-direction: column;
   transition: margin-top 2s ease-out;
   max-width: calc(max(min(680px, 80vw - 380px), 380px));
-  
   & > div {
     max-width: 100%;
   }
