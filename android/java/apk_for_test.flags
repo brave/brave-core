@@ -646,6 +646,7 @@
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
     public <init>(...);
+    *** getSharingAccountInfo(...);
 }
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveManageAccountDevicesLinkView {

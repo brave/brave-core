@@ -131,6 +131,7 @@ import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
+import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -564,6 +565,13 @@ public class BytecodeTest {
                         "calculateButtonData",
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/share/"
+                                + "send_tab_to_self/ManageAccountDevicesLinkView",
+                        "getSharingAccountInfo",
+                        true,
+                        AccountInfo.class));
     }
 
     @Test
