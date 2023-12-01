@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_targeting/geographical/subdivision/subdivision_targeting_util.h"
 
-#include <string_view>
-
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/public/ad_targeting/geographical/subdivision/supported_subdivisions.h"
 

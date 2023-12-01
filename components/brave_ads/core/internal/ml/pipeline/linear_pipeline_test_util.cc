@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
 
-#include <memory>
-#include <utility>
-
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_transformation_generated.h"
 

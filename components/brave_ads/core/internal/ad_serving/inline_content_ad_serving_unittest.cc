@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_serving/inline_content_ad_serving.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/test/mock_callback.h"

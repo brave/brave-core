@@ -10,7 +10,6 @@
 #include <openssl/sha.h>
 
 #include <iterator>
-#include <optional>
 
 #include "base/base64.h"
 #include "base/ranges/algorithm.h"

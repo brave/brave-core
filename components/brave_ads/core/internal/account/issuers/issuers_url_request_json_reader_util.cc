@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader_util.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
 namespace brave_ads::json::reader {

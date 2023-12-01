@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_serving/prediction/model_based/sampling/creative_ad_model_based_predictor_sampling.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"

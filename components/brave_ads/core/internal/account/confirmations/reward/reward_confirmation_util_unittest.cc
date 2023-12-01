@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
-#include <optional>
-
 #include "base/strings/string_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"

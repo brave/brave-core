@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"

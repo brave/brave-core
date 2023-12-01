@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"

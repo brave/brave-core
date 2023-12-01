@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
-#include <optional>
-
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"

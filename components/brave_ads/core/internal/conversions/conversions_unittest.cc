@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
 #include <memory>
-#include <optional>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"

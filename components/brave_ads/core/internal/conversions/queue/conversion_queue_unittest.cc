@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"

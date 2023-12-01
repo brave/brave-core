@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
 
-#include <optional>
 #include <string>
 #include <vector>
 

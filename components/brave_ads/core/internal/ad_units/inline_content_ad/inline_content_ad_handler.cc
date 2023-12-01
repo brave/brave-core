@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"

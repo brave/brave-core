@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 
-#include <optional>
-
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
 #include <iterator>
-#include <optional>
 #include <set>
 
 #include "base/containers/contains.h"

@@ -28,7 +28,6 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorTest, PredictCreativeAd) {
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
-
   const UserModelInfo user_model{
       IntentUserModelInfo{}, LatentInterestUserModelInfo{},
       InterestUserModelInfo{/*segments=*/{}, TextEmbeddingHtmlEventList{

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 
-#include <optional>
 #include <string>
 
 #include "base/json/json_writer.h"

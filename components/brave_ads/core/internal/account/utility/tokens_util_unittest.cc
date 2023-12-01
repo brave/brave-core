@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
-#include <optional>
-
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"

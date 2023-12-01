@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check_op.h"

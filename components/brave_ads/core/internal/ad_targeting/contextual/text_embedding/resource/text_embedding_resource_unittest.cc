@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ad_targeting/contextual/text_embedding/resource/text_embedding_resource.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/files/file.h"

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
-#include <optional>
 #include <vector>
 
 #include "base/base64url.h"

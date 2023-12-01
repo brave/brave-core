@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check.h"

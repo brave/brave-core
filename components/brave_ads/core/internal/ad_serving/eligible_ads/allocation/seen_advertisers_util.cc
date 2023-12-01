@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_serving/eligible_ads/allocation/seen_advertisers_util.h"
 
-#include <optional>
-
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"

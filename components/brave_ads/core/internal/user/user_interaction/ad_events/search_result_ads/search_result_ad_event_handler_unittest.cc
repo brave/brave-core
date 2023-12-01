@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>

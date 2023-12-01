@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
 
-#include <optional>
 #include <string>
 #include <utility>
 

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"

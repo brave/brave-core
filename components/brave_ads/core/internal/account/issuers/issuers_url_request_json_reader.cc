@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader.h"
 
-#include <optional>
-
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"

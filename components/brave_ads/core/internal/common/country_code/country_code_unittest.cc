@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"

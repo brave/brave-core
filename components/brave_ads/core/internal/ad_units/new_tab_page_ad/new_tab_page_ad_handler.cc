@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"

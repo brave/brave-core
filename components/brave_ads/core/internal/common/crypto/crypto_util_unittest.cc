@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 
-#include <optional>
-
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

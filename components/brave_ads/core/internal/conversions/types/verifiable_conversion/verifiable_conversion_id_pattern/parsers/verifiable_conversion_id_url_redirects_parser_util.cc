@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
 
-#include <optional>
 #include <string_view>
 
 #include "base/ranges/algorithm.h"

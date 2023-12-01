@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_value_util.h"
 
-#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>

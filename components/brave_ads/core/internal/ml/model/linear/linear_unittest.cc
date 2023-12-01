@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
 #include <map>
-#include <optional>
 #include <string>
 #include <vector>
 

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_serving/new_tab_page_ad_serving.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"

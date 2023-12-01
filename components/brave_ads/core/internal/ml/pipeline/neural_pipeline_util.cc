@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 

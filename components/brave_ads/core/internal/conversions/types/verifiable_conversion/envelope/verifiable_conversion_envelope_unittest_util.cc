@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_unittest_util.h"
 
 #include <cstdint>
-#include <optional>
 #include <vector>
 
 #include "base/base64.h"

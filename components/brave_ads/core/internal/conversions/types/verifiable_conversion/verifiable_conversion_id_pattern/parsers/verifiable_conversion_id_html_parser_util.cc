@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_parser_util.h"
 
-#include <optional>
 #include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

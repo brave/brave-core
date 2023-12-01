@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 
-#include <optional>
 #include <string>
 
 #include "base/ranges/algorithm.h"

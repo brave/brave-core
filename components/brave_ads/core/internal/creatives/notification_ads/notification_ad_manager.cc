@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"

@@ -6,8 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <algorithm>
-#include <memory>
-#include <optional>
 #include <utility>
 
 #include "base/files/file.h"
