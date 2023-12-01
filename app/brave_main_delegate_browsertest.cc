@@ -15,7 +15,7 @@
 #include "chrome/browser/signin/signin_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
-#include "chrome/common/companion/visual_search/features.h"
+#include "chrome/common/companion/visual_query/features.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
           kCompanionEnabledByObservingExpsNavigations,
       &companion::features::internal::kSidePanelCompanion,
       &companion::features::internal::kSidePanelCompanion2,
-      &companion::visual_search::features::kVisualSearchSuggestions,
+      &companion::visual_query::features::kVisualQuerySuggestions,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
       &enterprise_connectors::kLocalContentAnalysisEnabled,
