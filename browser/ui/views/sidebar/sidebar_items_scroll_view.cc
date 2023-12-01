@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include <optional>
 #include <string>
 
 #include "base/functional/bind.h"
@@ -200,7 +201,7 @@ void SidebarItemsScrollView::OnBoundsAnimatorDone(
     CHECK(lastly_added_item_index_.has_value());
     contents_view_->ShowItemAddedFeedbackBubble(*lastly_added_item_index_);
     UpdateArrowViewsEnabledState();
-    lastly_added_item_index_ = absl::nullopt;
+    lastly_added_item_index_ = std::nullopt;
   }
 }
 
@@ -239,8 +240,8 @@ void SidebarItemsScrollView::OnItemRemoved(size_t index) {
 }
 
 void SidebarItemsScrollView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 
@@ -476,7 +477,7 @@ void SidebarItemsScrollView::OnDragExited() {
 
 void SidebarItemsScrollView::ClearDragIndicator() {
   contents_view_->ClearDragIndicator();
-  drag_context_->set_drag_indicator_index(absl::nullopt);
+  drag_context_->set_drag_indicator_index(std::nullopt);
 }
 
 int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
@@ -553,7 +554,7 @@ bool SidebarItemsScrollView::CanStartDragForView(views::View* sender,
 }
 
 bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
-  return drag_context_->source_index() != absl::nullopt;
+  return drag_context_->source_index() != std::nullopt;
 }
 
 bool SidebarItemsScrollView::IsBubbleVisible() const {

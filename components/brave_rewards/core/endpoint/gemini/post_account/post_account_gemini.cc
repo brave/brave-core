@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_account/post_account_gemini.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -13,7 +14,6 @@
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
@@ -33,7 +33,7 @@ mojom::Result PostAccount::ParseBody(const std::string& body,
   DCHECK(user_name);
   DCHECK(country_id);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

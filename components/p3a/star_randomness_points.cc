@@ -6,6 +6,7 @@
 #include "brave/components/p3a/star_randomness_points.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -40,7 +41,7 @@ std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
       return nullptr;
     }
     constellation::VecU8 entry_dec_vec;
-    absl::optional<std::vector<uint8_t>> entry_dec =
+    std::optional<std::vector<uint8_t>> entry_dec =
         base::Base64Decode(*entry_str);
     if (!entry_dec.has_value()) {
       LOG(ERROR) << "StarRandomnessPoints: failed to decode base64 value";

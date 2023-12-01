@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -22,7 +23,6 @@
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -83,7 +83,7 @@ struct APIRequestOptions {
   bool auto_retry_on_network_change = false;
   bool enable_cache = false;
   size_t max_body_size = -1u;
-  absl::optional<base::TimeDelta> timeout;
+  std::optional<base::TimeDelta> timeout;
 };
 
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
@@ -96,7 +96,7 @@ class APIRequestHelper {
       data_decoder::DataDecoder::ValueOrError result)>;
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseConversionCallback =
-      base::OnceCallback<absl::optional<std::string>(
+      base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
 
   class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {

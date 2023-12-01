@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
 
 #include <memory>
+#include <optional>
 
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
 
@@ -16,9 +17,9 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   ~BraveSidePanelCoordinator() override;
 
   // SidePanelCoodinator overrides:
-  void Show(absl::optional<SidePanelEntry::Id> entry_id = absl::nullopt,
-            absl::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger =
-                absl::nullopt) override;
+  void Show(std::optional<SidePanelEntry::Id> entry_id = std::nullopt,
+            std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger =
+                std::nullopt) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,

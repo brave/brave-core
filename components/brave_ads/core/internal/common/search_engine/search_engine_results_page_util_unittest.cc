@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -34,7 +36,7 @@ TEST(BraveAdsSearchEngineResultsPageUtilTest,
 TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Act & Assert
   for (const auto& url : GetSearchEngineResultsPageUrls()) {
-    const absl::optional<std::string> search_term_query_value =
+    const std::optional<std::string> search_term_query_value =
         ExtractSearchTermQueryValue(url);
     if (search_term_query_value) {
       EXPECT_EQ("foobar", search_term_query_value);

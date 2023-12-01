@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/test/mock_callback.h"
@@ -21,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -58,7 +58,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   EXPECT_CALL(delegate_mock_, OnDidServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Ne(absl::nullopt)));
+  EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 
@@ -96,7 +96,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 
@@ -125,7 +125,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 

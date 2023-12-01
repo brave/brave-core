@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CAPABILITIES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CAPABILITIES_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 namespace brave_rewards::internal {
 namespace uphold {
 
 struct Capabilities {
-  absl::optional<bool> can_receive;
-  absl::optional<bool> can_send;
+  std::optional<bool> can_receive;
+  std::optional<bool> can_send;
 };
 
 }  // namespace uphold

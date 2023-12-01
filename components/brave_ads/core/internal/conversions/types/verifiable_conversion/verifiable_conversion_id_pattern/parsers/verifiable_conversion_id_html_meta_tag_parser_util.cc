@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_meta_tag_parser_util.h"
 
+#include <optional>
 #include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -13,7 +14,7 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> MaybeParseVerifableConversionIdFromHtmlMetaTag(
+std::optional<std::string> MaybeParseVerifableConversionIdFromHtmlMetaTag(
     const std::string& html) {
   const std::string id_pattern = kHtmlMetaTagConversionIdPattern.Get();
 
@@ -24,7 +25,7 @@ absl::optional<std::string> MaybeParseVerifableConversionIdFromHtmlMetaTag(
   if (!RE2::FindAndConsume(&html_string_piece, r, &verifiable_conversion_id)) {
     BLOG(1, "Failed to parse verifiable conversion id for " << id_pattern
                                                             << " id pattern");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return verifiable_conversion_id;

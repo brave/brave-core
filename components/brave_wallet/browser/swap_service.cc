@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/swap_service.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -67,7 +68,7 @@ bool HasRFQTLiquidity(const std::string& chain_id) {
           chain_id == brave_wallet::mojom::kPolygonMainnetChainId);
 }
 
-absl::optional<double> GetFeePercentage(const std::string& chain_id) {
+std::optional<double> GetFeePercentage(const std::string& chain_id) {
   if (IsEVMNetworkSupported(chain_id)) {
     return brave_wallet::k0xBuyTokenFeePercentage;
   }
@@ -76,7 +77,7 @@ absl::optional<double> GetFeePercentage(const std::string& chain_id) {
     return brave_wallet::kSolanaBuyTokenFeePercentage;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 std::string GetAffiliateAddress(const std::string& chain_id) {

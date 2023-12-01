@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
 #include "brave/components/brave_wallet/common/mem_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -67,8 +67,7 @@ class HDKey : public HDKeyBase {
   std::string GetZCashTransparentAddress(bool testnet);
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
-  absl::optional<std::vector<uint8_t>>
-  DecryptCipherFromX25519_XSalsa20_Poly1305(
+  std::optional<std::vector<uint8_t>> DecryptCipherFromX25519_XSalsa20_Poly1305(
       const std::string& version,
       const std::vector<uint8_t>& nonce,
       const std::vector<uint8_t>& ephemeral_public_key,
@@ -93,7 +92,7 @@ class HDKey : public HDKeyBase {
   std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg, int* recid);
 
   // Sign the message using private key and return it in DER format.
-  absl::optional<std::vector<uint8_t>> SignDer(
+  std::optional<std::vector<uint8_t>> SignDer(
       base::span<const uint8_t, 32> msg);
 
   // Verify the ECDSA signature using public key. The msg has to be exactly 32

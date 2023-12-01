@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -82,30 +83,30 @@ base::Value::Dict SolanaSignatureStatus::ToValue() const {
 }
 
 // static
-absl::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
+std::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
     const base::Value::Dict& value) {
   SolanaSignatureStatus status;
   const std::string* slot_string = value.FindString("slot");
   if (!slot_string || !base::StringToUint64(*slot_string, &status.slot)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* confirmations_string = value.FindString("confirmations");
   if (!confirmations_string ||
       !base::StringToUint64(*confirmations_string, &status.confirmations)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* err = value.FindString("err");
   if (!err) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   status.err = *err;
 
   const std::string* confirmation_status =
       value.FindString("confirmation_status");
   if (!confirmation_status) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   status.confirmation_status = *confirmation_status;
 
@@ -126,9 +127,9 @@ bool ValidSolidityBits(size_t bits) {
   return bits != 0 && bits % 8 == 0 && bits <= 256;
 }
 
-absl::optional<uint256_t> MaxSolidityUint(size_t bits) {
+std::optional<uint256_t> MaxSolidityUint(size_t bits) {
   if (!ValidSolidityBits(bits)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Max hex for intN value is 0x[ff]... for num bytes
   uint256_t value = 0;
@@ -140,9 +141,9 @@ absl::optional<uint256_t> MaxSolidityUint(size_t bits) {
   return value;
 }
 
-absl::optional<int256_t> MaxSolidityInt(size_t bits) {
+std::optional<int256_t> MaxSolidityInt(size_t bits) {
   if (!ValidSolidityBits(bits)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Max hex for intN value is 0x7f[ff]... for num bytes - 1
   int256_t value = 0x7f;
@@ -154,9 +155,9 @@ absl::optional<int256_t> MaxSolidityInt(size_t bits) {
   return value;
 }
 
-absl::optional<int256_t> MinSolidityInt(size_t bits) {
+std::optional<int256_t> MinSolidityInt(size_t bits) {
   if (!ValidSolidityBits(bits)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Min hex for intN value is 0x80[00]... for num bytes - 1
   // A simple bit shift doesn't work quite right because of

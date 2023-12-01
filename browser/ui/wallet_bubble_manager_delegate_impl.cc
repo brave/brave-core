@@ -6,6 +6,7 @@
 #include "brave/browser/ui/wallet_bubble_manager_delegate_impl.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -36,7 +37,7 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
   WalletWebUIBubbleDialogView(
       views::View* anchor_view,
       BubbleContentsWrapper* contents_wrapper,
-      const absl::optional<gfx::Rect>& anchor_rect = absl::nullopt,
+      const std::optional<gfx::Rect>& anchor_rect = std::nullopt,
       views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
       : WebUIBubbleDialogView(anchor_view,
                               contents_wrapper,
@@ -73,7 +74,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
         anchor_view_(anchor_view) {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
+      const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     // This is prevent duplicate logic of cached_contents_wrapper creation
     // so we close WebUIBubbleDialogView and re-create bubble with

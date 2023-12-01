@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -156,8 +156,7 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   std::vector<FilterListCatalogEntry> catalog =
       std::vector<FilterListCatalogEntry>();
 
-  absl::optional<base::Value> parsed_json =
-      base::JSONReader::Read(catalog_json);
+  std::optional<base::Value> parsed_json = base::JSONReader::Read(catalog_json);
   if (!parsed_json || !parsed_json->is_list()) {
     LOG(ERROR) << "Could not load regional adblock catalog";
     return catalog;

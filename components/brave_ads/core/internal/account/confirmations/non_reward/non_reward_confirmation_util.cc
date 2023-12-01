@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -16,7 +18,7 @@
 
 namespace brave_ads {
 
-absl::optional<ConfirmationInfo> BuildNonRewardConfirmation(
+std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
     const UserDataInfo& user_data) {
   CHECK(transaction.IsValid());

@@ -6,6 +6,8 @@
 #ifndef BRAVE_APP_BRAVE_MAIN_DELEGATE_H_
 #define BRAVE_APP_BRAVE_MAIN_DELEGATE_H_
 
+#include <optional>
+
 #include "build/build_config.h"
 #include "chrome/app/chrome_main_delegate.h"
 
@@ -27,7 +29,7 @@ class BraveMainDelegate : public ChromeMainDelegate {
   content::ContentRendererClient* CreateContentRendererClient() override;
   content::ContentUtilityClient* CreateContentUtilityClient() override;
   void PreSandboxStartup() override;
-  absl::optional<int> PostEarlyInitialization(
+  std::optional<int> PostEarlyInitialization(
       ChromeMainDelegate::InvokedIn invoked_in) override;
 };
 

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/version_info/channel.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -85,7 +85,7 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
-  absl::optional<SidebarItem> GetDefaultPanelItem() const;
+  std::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
   SidebarService(const SidebarService&) = delete;

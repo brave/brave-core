@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 
@@ -14,7 +16,7 @@ VerificationKey::VerificationKey(
     const challenge_bypass_ristretto::VerificationKey& verification_key)
     : verification_key_(verification_key) {}
 
-absl::optional<VerificationSignature> VerificationKey::Sign(
+std::optional<VerificationSignature> VerificationKey::Sign(
     const std::string& message) {
   return ValueOrLogError<challenge_bypass_ristretto::VerificationSignature,
                          VerificationSignature>(

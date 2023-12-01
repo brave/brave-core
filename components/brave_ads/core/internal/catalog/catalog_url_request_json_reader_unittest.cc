@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_daypart_info.h"
@@ -431,7 +433,7 @@ class BraveAdsCatalogUrlRequestJsonReaderTest : public UnitTestBase {};
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
-  const absl::optional<std::string> contents =
+  const std::optional<std::string> contents =
       MaybeReadFileToStringAndReplaceTags(kCatalogWithSingleCampaignFilename);
   ASSERT_TRUE(contents);
 
@@ -447,7 +449,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
-  const absl::optional<std::string> contents =
+  const std::optional<std::string> contents =
       MaybeReadFileToStringAndReplaceTags(
           kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(contents);
@@ -464,7 +466,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
-  const absl::optional<std::string> contents =
+  const std::optional<std::string> contents =
       MaybeReadFileToStringAndReplaceTags(kEmptyCatalogFilename);
   ASSERT_TRUE(contents);
 

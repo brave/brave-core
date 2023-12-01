@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -127,7 +128,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
       !previously_matched_exception);
 }
 
-absl::optional<std::string> AdBlockEngine::GetCspDirectives(
+std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
@@ -144,9 +145,9 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
       is_third_party);
 
   if (result.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   } else {
-    return absl::optional<std::string>(std::string(result));
+    return std::optional<std::string>(std::string(result));
   }
 }
 
@@ -212,7 +213,7 @@ base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto result = ad_block_client_->url_cosmetic_resources(url);
 
-  absl::optional<base::Value> parsed_result =
+  std::optional<base::Value> parsed_result =
       base::JSONReader::Read(result.c_str());
 
   if (!parsed_result) {

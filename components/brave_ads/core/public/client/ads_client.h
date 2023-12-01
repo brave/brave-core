@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/export.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -137,7 +137,7 @@ class ADS_EXPORT AdsClient {
 
   // Get the value from the specified profile preference `path`. Returns the
   // default value if the path does not exist.
-  virtual absl::optional<base::Value> GetProfilePref(
+  virtual std::optional<base::Value> GetProfilePref(
       const std::string& path) = 0;
 
   // Update the value for the specified profile preference `path`.
@@ -152,7 +152,7 @@ class ADS_EXPORT AdsClient {
 
   // Get the value from the specified local state preference `path`. Returns the
   // default value if the path does not exist.
-  virtual absl::optional<base::Value> GetLocalStatePref(
+  virtual std::optional<base::Value> GetLocalStatePref(
       const std::string& path) = 0;
 
   // Update the value for the specified local state preference `path`.

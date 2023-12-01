@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -291,7 +292,7 @@ void AIChatUIPageHandler::RateMessage(bool is_liked,
           std::move(callback).Run(id);
           return;
         }
-        std::move(callback).Run(absl::nullopt);
+        std::move(callback).Run(std::nullopt);
       },
       std::move(callback));
 
@@ -315,7 +316,7 @@ void AIChatUIPageHandler::RateMessage(bool is_liked,
     }
   }
 
-  std::move(callback).Run(absl::nullopt);
+  std::move(callback).Run(std::nullopt);
 }
 
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
@@ -379,7 +380,7 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   if (page_.is_bound()) {
     auto on_favicon_data =
         [](base::SafeRef<AIChatUIPageHandler> page_handler,
-           const absl::optional<std::vector<uint8_t>>& bytes) {
+           const std::optional<std::vector<uint8_t>>& bytes) {
           if (bytes.has_value()) {
             page_handler->page_->OnFaviconImageDataChanged(bytes.value());
           }
@@ -412,7 +413,7 @@ void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -425,7 +426,7 @@ void AIChatUIPageHandler::GetFaviconImageData(
       [](GetFaviconImageDataCallback callback,
          const favicon_base::FaviconRawBitmapResult& result) {
         if (!result.is_valid()) {
-          std::move(callback).Run(absl::nullopt);
+          std::move(callback).Run(std::nullopt);
           return;
         }
 
@@ -441,7 +442,7 @@ void AIChatUIPageHandler::GetFaviconImageData(
       &favicon_task_tracker_);
 }
 
-absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
+std::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
   if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent() ==
                                      PageContentAssociation::HAS_CONTENT) {
     mojom::SiteInfo site_info;
@@ -453,7 +454,7 @@ absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
     return site_info;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {

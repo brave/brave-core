@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
@@ -40,15 +42,14 @@ NotificationAdManager& NotificationAdManager::GetInstance() {
   return GlobalState::GetInstance()->GetNotificationAdManager();
 }
 
-absl::optional<NotificationAdInfo>
-NotificationAdManager::MaybeGetForPlacementId(
+std::optional<NotificationAdInfo> NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
   CHECK(!placement_id.empty());
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;
@@ -112,7 +113,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
-  const absl::optional<base::Value::List> list =
+  const std::optional<base::Value::List> list =
       GetProfileListPref(prefs::kNotificationAds);
   if (!list) {
     return;

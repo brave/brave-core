@@ -5,16 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::PublicKey> Create(
+std::optional<challenge_bypass_ristretto::PublicKey> Create(
     const std::string& public_key_base64) {
   if (public_key_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
@@ -53,9 +55,9 @@ PublicKey PublicKey::DecodeBase64(const std::string& public_key_base64) {
   return PublicKey(public_key_base64);
 }
 
-absl::optional<std::string> PublicKey::EncodeBase64() const {
+std::optional<std::string> PublicKey::EncodeBase64() const {
   if (!public_key_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(public_key_->encode_base64());

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_value_util.h"
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -74,7 +75,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   };
 
   // Act
-  absl::optional<EmbeddingPipelineInfo> pipeline =
+  std::optional<EmbeddingPipelineInfo> pipeline =
       EmbeddingPipelineFromValue(dict);
   ASSERT_TRUE(pipeline);
   EmbeddingPipelineInfo embedding_pipeline = std::move(pipeline).value();

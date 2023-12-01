@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "net/cookies/cookie_monster.h"
-
 #include <memory>
+#include <optional>
+
 #include "net/base/url_util.h"
+#include "net/cookies/cookie_monster.h"
 
 #define CookieMonster ChromiumCookieMonster
 #include "src/net/cookies/cookie_monster.cc"
@@ -99,7 +100,7 @@ void CookieMonster::SetCanonicalCookieAsync(
     const GURL& source_url,
     const CookieOptions& options,
     SetCookiesCallback callback,
-    absl::optional<CookieAccessResult> cookie_access_result) {
+    std::optional<CookieAccessResult> cookie_access_result) {
   if (options.should_use_ephemeral_storage()) {
     if (!options.top_frame_origin()) {
       // Shouldn't happen, but don't do anything in this case.

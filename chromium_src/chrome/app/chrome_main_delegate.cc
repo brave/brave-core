@@ -5,6 +5,8 @@
 
 // This chromium_src override allows us to skip a lot of patching to
 // chrome/BUILD.gn
+#include <optional>
+
 #include "brave/app/brave_command_line_helper.cc"
 #include "brave/app/brave_main_delegate.cc"
 #include "brave/components/brave_sync/buildflags.h"
@@ -53,7 +55,7 @@ void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
 // Because of that, upstream tests won't get BraveMainDelegate instantiated and
 // therefore we won't get any of the features below disabled/enabled when
 // running those browser tests, which is not what we want.
-absl::optional<int> ChromeMainDelegate::BasicStartupComplete() {
+std::optional<int> ChromeMainDelegate::BasicStartupComplete() {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);

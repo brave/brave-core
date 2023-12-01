@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -42,7 +43,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ShowWalletOnboarding() override;
   void ShowAccountCreation(mojom::CoinType type) override;
   url::Origin GetOrigin() const override;
-  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  std::optional<std::vector<std::string>> GetAllowedAccounts(
       mojom::CoinType type,
       const std::vector<std::string>& accounts) override;
   void RequestPermissions(mojom::CoinType type,

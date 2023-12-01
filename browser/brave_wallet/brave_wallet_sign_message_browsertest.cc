@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
@@ -173,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
-        true, request_index++, nullptr, absl::nullopt);
+        true, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e"
               "2a6a345a"
@@ -201,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
-        false, request_index++, nullptr, absl::nullopt);
+        false, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   }
@@ -334,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
       base::RunLoop().RunUntilIdle();
       EXPECT_TRUE(WaitForWalletBubble(web_contents()));
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          true, request_index++, nullptr, absl::nullopt);
+          true, request_index++, nullptr, std::nullopt);
       // port is dynamic
       EXPECT_TRUE(base::StartsWith(
           EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),

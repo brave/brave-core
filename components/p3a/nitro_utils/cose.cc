@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/nitro_utils/cose.h"
 
+#include <optional>
 #include <set>
 #include <string_view>
 
@@ -94,7 +95,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
   cbor::Reader::Config cbor_config;
   cbor_config.allow_and_canonicalize_out_of_order_keys = true;
 
-  absl::optional<cbor::Value> decoded_val =
+  std::optional<cbor::Value> decoded_val =
       cbor::Reader::Read(data, cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
@@ -120,7 +121,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
 
-  absl::optional<cbor::Value> protected_decoded_val =
+  std::optional<cbor::Value> protected_decoded_val =
       cbor::Reader::Read(protected_encoded_.GetBytestring(), cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
@@ -166,7 +167,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
 
-  absl::optional<cbor::Value> payload_dec_val =
+  std::optional<cbor::Value> payload_dec_val =
       cbor::Reader::Read(payload_encoded_.GetBytestring(), cbor_config);
   if (!payload_dec_val.has_value() ||
       (cbor_config.error_code_out != nullptr &&
@@ -215,7 +216,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
   sig_data_vec.push_back(payload_encoded_.Clone());
   cbor::Value sig_data(sig_data_vec);
 
-  absl::optional<std::vector<uint8_t>> encoded_sig_data =
+  std::optional<std::vector<uint8_t>> encoded_sig_data =
       cbor::Writer::Write(sig_data);
   CHECK(encoded_sig_data.has_value());
 

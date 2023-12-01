@@ -18,7 +18,6 @@
 #include "components/version_info/channel.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class IpfsUtilsUnitTest : public testing::Test {

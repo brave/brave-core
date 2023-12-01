@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -27,7 +28,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -145,8 +145,8 @@ class FeedV2Builder {
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
 
-  absl::optional<UpdateRequest> current_update_;
-  absl::optional<UpdateRequest> next_update_;
+  std::optional<UpdateRequest> current_update_;
+  std::optional<UpdateRequest> next_update_;
 
   mojo::RemoteSet<mojom::FeedListener> listeners_;
 

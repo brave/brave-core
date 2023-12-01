@@ -6,6 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
 #include <algorithm>
+#include <optional>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -33,7 +34,6 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -69,7 +69,7 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->OnPurchasedStateChanged(target_state, absl::nullopt);
+        ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -123,7 +123,7 @@ void CheckCommandsAreInOrderInMenuModel(
     const std::vector<int>& commands_in_order) {
   std::vector<size_t> commands_index;
   for (int id : commands_in_order) {
-    absl::optional<size_t> index = model->GetIndexOfCommandId(id);
+    std::optional<size_t> index = model->GetIndexOfCommandId(id);
     EXPECT_TRUE(index.has_value());
     commands_index.push_back(index.value());
   }

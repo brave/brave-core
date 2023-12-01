@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_INSTRUCTION_DECODED_DATA_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_INSTRUCTION_DECODED_DATA_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -24,8 +24,8 @@ using InsParamTuple = std::tuple<std::string,
                                  std::string,
                                  mojom::SolanaInstructionParamType>;
 using InsTypeAndParamTuple =
-    std::tuple<absl::optional<mojom::SolanaSystemInstruction>,
-               absl::optional<mojom::SolanaTokenInstruction>,
+    std::tuple<std::optional<mojom::SolanaSystemInstruction>,
+               std::optional<mojom::SolanaTokenInstruction>,
                std::vector<InsParamTuple>,  // Instruction params in data.
                std::vector<InsParamPair>>;  // Account params.
 
@@ -39,20 +39,20 @@ struct SolanaInstructionDecodedData {
 
   bool operator==(const SolanaInstructionDecodedData&) const;
 
-  static absl::optional<SolanaInstructionDecodedData> FromMojom(
+  static std::optional<SolanaInstructionDecodedData> FromMojom(
       const std::string& program_id,
       const mojom::DecodedSolanaInstructionDataPtr& mojom_decoded_data);
   mojom::DecodedSolanaInstructionDataPtr ToMojom() const;
 
-  static absl::optional<SolanaInstructionDecodedData> FromValue(
+  static std::optional<SolanaInstructionDecodedData> FromValue(
       const base::Value::Dict& value);
-  absl::optional<base::Value::Dict> ToValue() const;
+  std::optional<base::Value::Dict> ToValue() const;
 
   // There should be only one type that has value.
   bool IsValid() const { return !sys_ins_type != !token_ins_type; }
 
-  absl::optional<mojom::SolanaSystemInstruction> sys_ins_type;
-  absl::optional<mojom::SolanaTokenInstruction> token_ins_type;
+  std::optional<mojom::SolanaSystemInstruction> sys_ins_type;
+  std::optional<mojom::SolanaTokenInstruction> token_ins_type;
   std::vector<InsParamTuple> params;
   std::vector<InsParamPair> account_params;
 };

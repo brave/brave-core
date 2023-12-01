@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -127,10 +128,10 @@ std::string URLMethodToRequestType(mojom::UrlRequestMethodType method) {
   }
 }
 
-absl::optional<std::string> LoadOnFileTaskRunner(const base::FilePath& path) {
+std::optional<std::string> LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string value;
   if (!base::ReadFileToString(path, &value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return value;
@@ -912,7 +913,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAdCallback(
-    absl::optional<base::Value::Dict> dict) {
+    std::optional<base::Value::Dict> dict) {
   CHECK(!prefetched_new_tab_page_ad_);
   CHECK(is_prefetching_new_tab_page_ad_);
 
@@ -955,7 +956,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::OpenNewTabWithAdCallback(
-    absl::optional<base::Value::Dict> dict) {
+    std::optional<base::Value::Dict> dict) {
   if (!dict) {
     return VLOG(1) << "Failed to get notification ad";
   }
@@ -1148,7 +1149,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*diagnostics*/ absl::nullopt);
+    return std::move(callback).Run(/*diagnostics*/ std::nullopt);
   }
 
   bat_ads_associated_remote_->GetDiagnostics(std::move(callback));
@@ -1168,7 +1169,7 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
     MaybeServeInlineContentAdAsDictCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(dimensions,
-                                   /*inline_content_ad*/ absl::nullopt);
+                                   /*inline_content_ad*/ std::nullopt);
   }
 
   bat_ads_associated_remote_->MaybeServeInlineContentAd(dimensions,
@@ -1203,13 +1204,13 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   }
 }
 
-absl::optional<NewTabPageAdInfo>
+std::optional<NewTabPageAdInfo>
 AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
   if (!bat_ads_associated_remote_.is_bound()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<NewTabPageAdInfo> ad;
+  std::optional<NewTabPageAdInfo> ad;
   if (prefetched_new_tab_page_ad_ && prefetched_new_tab_page_ad_->IsValid()) {
     ad = prefetched_new_tab_page_ad_;
     prefetched_new_tab_page_ad_.reset();
@@ -1619,7 +1620,7 @@ void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
       FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(
-          [](LoadCallback callback, const absl::optional<std::string>& value) {
+          [](LoadCallback callback, const std::optional<std::string>& value) {
             std::move(callback).Run(value);
           },
           std::move(callback)));
@@ -1629,7 +1630,7 @@ void AdsServiceImpl::LoadComponentResource(
     const std::string& id,
     const int version,
     LoadComponentResourceCallback callback) {
-  absl::optional<base::FilePath> file_path =
+  std::optional<base::FilePath> file_path =
       g_brave_browser_process->resource_component()->GetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});

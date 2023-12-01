@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 
+#include <optional>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_constants.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
@@ -17,9 +17,9 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
+std::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
   if (!url.is_valid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const GURL url_with_empty_path = url.GetWithEmptyPath();
@@ -31,7 +31,7 @@ absl::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace

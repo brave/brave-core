@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/page_transition_util.h"
 
+#include <optional>
+
 namespace brave_ads {
 
 namespace {
@@ -41,7 +43,7 @@ bool DidTransitionFromExternalApplication(const PageTransitionType type) {
   return PageTransitionGetQualifier(type) == kPageTransitionFromAPI;
 }
 
-absl::optional<UserActivityEventType> ToUserActivityEventType(
+std::optional<UserActivityEventType> ToUserActivityEventType(
     const PageTransitionType type) {
   const PageTransitionType core_value = PageTransitionGetCoreValue(type);
 
@@ -79,7 +81,7 @@ absl::optional<UserActivityEventType> ToUserActivityEventType(
     }
 
     default: {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 }

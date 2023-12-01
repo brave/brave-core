@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/message_manager.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/functional/bind.h"
@@ -124,7 +125,7 @@ void MessageManager::Init(
 void MessageManager::UpdateMetricValue(
     std::string_view histogram_name,
     size_t bucket,
-    absl::optional<bool> only_update_for_constellation) {
+    std::optional<bool> only_update_for_constellation) {
   bool update_for_all = !only_update_for_constellation.has_value();
   MetricLogType log_type = GetLogTypeForHistogram(histogram_name);
   if (features::IsConstellationEnabled() &&
@@ -140,7 +141,7 @@ void MessageManager::UpdateMetricValue(
 
 void MessageManager::RemoveMetricValue(
     std::string_view histogram_name,
-    absl::optional<bool> only_update_for_constellation) {
+    std::optional<bool> only_update_for_constellation) {
   bool update_for_all = !only_update_for_constellation.has_value();
   for (MetricLogType log_type : kAllMetricLogTypes) {
     auto* json_log_store = json_log_stores_[log_type].get();

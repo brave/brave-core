@@ -9,8 +9,10 @@
 #include <stdint.h>
 
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
+
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
@@ -268,7 +270,7 @@ class Database {
       base::OnceCallback<void(bool)> callback);
 
   void GetNextMonthlyContributionTime(
-      base::OnceCallback<void(absl::optional<base::Time>)> callback);
+      base::OnceCallback<void(std::optional<base::Time>)> callback);
 
   void GetRecurringTips(GetRecurringTipsCallback callback);
 

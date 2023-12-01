@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -474,7 +475,7 @@ void ClientStateManager::SaveState() {
 }
 
 void ClientStateManager::LoadCallback(InitializeCallback callback,
-                                      const absl::optional<std::string>& json) {
+                                      const std::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 

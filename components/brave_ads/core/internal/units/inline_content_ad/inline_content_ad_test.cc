@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -16,7 +18,6 @@
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -77,7 +78,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
                   AdType::kInlineContentAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, ::testing::Ne(absl::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, ::testing::Ne(std::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 
@@ -87,7 +88,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 
@@ -102,7 +103,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 
@@ -113,7 +114,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([=](const std::string& dimensions,
-                    const absl::optional<InlineContentAdInfo>& ad) {
+                    const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
@@ -134,7 +135,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([=](const std::string& dimensions,
-                    const absl::optional<InlineContentAdInfo>& ad) {
+                    const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
@@ -160,7 +161,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([=](const std::string& dimensions,
-                    const absl::optional<InlineContentAdInfo>& ad) {
+                    const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());

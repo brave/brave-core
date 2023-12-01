@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 
 #include "base/feature_list.h"
@@ -20,7 +21,6 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using content::BrowserContext;
 using content::NavigationHandle;
@@ -122,11 +122,11 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       storage_partition, session_partition_id,
       // clone the namespace if there is an opener
       // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
-      opener_rfh ? absl::make_optional<std::string>(StringToSessionStorageId(
+      opener_rfh ? std::make_optional<std::string>(StringToSessionStorageId(
                        content::GetSessionStorageNamespaceId(
                            WebContents::FromRenderFrameHost(opener_rfh)),
                        kSessionStorageSuffix))
-                 : absl::nullopt);
+                 : std::nullopt);
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       browser_context, new_domain, site_instance->GetStoragePartitionConfig());

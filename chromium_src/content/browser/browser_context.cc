@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "content/public/browser/browser_context.h"
-
+#include <optional>
 #include <string>
 
 #include "base/memory/ref_counted.h"
@@ -14,11 +13,11 @@
 #include "content/browser/renderer_host/navigation_controller_impl.h"
 #include "content/browser/renderer_host/render_view_host_delegate.h"
 #include "content/browser/site_instance_impl.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 
@@ -30,7 +29,7 @@ GetRemoteBlobStorageContextFor(BrowserContext* browser_context) {
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
-    absl::optional<std::string> clone_from_namespace_id) {
+    std::optional<std::string> clone_from_namespace_id) {
   content::DOMStorageContextWrapper* context_wrapper =
       static_cast<content::DOMStorageContextWrapper*>(
           partition->GetDOMStorageContext());

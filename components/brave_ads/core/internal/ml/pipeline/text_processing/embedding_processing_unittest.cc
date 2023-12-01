@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <vector>
 
@@ -47,8 +48,8 @@ TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
       {"this 54 is simple", {0.85F, 0.2F, 1.0F}},
       {{}, {}}};
 
-  const absl::optional<ml::pipeline::EmbeddingProcessing>&
-      embedding_processing = resource_->get();
+  const std::optional<ml::pipeline::EmbeddingProcessing>& embedding_processing =
+      resource_->get();
   ASSERT_TRUE(embedding_processing);
 
   for (const auto& [text, expected_embedding] : k_samples) {

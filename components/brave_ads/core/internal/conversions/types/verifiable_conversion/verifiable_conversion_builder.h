@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_TYPES_VERIFIABLE_CONVERSION_VERIFIABLE_CONVERSION_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_TYPES_VERIFIABLE_CONVERSION_VERIFIABLE_CONVERSION_BUILDER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -21,7 +21,7 @@ namespace brave_ads {
 struct CreativeSetConversionInfo;
 struct VerifiableConversionInfo;
 
-absl::optional<VerifiableConversionInfo> MaybeBuildVerifiableConversion(
+std::optional<VerifiableConversionInfo> MaybeBuildVerifiableConversion(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionResourceIdPatternMap& resource_id_patterns,

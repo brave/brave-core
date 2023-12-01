@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/post_order/post_order.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -73,7 +74,7 @@ mojom::Result PostOrder::ParseBody(
     mojom::SKUOrder* order) {
   DCHECK(order);
 
-  absl::optional<base::Value> dictionary = base::JSONReader::Read(body);
+  std::optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

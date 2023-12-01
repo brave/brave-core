@@ -6,6 +6,7 @@
 #include "brave/browser/net/resource_context_data.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -64,7 +65,7 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<std::string>& user_agent,
+    const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::BrowserContext* browser_context,

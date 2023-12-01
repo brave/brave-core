@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIMULATION_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIMULATION_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -26,7 +27,7 @@ mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
 
 }  // namespace solana
 
-absl::optional<std::string> ParseSimulationErrorResponse(
+std::optional<std::string> ParseSimulationErrorResponse(
     const base::Value& json_value);
 
 }  // namespace brave_wallet

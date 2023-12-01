@@ -8,13 +8,13 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ref.h"
 #include "base/time/clock.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // WeeklyStorage variant holding a list of events over the past week.
 //
@@ -43,7 +43,7 @@ class WeeklyEventStorage {
   // Add a new event code.
   void Add(int value);
   // Return the most recent event, if any.
-  absl::optional<int> GetLatest();
+  std::optional<int> GetLatest();
   // Check if any events are in the record.
   bool HasEvent();
 

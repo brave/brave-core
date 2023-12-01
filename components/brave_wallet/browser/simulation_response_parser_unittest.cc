@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/simulation_response_parser.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/strings/stringprintf.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -1132,7 +1134,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
     EXPECT_EQ(state_change_raw_info->asset->address,
               "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     EXPECT_EQ(state_change_raw_info->asset->decimals, 18);
-    EXPECT_EQ(state_change_raw_info->asset->image_url, absl::nullopt);
+    EXPECT_EQ(state_change_raw_info->asset->image_url, std::nullopt);
     EXPECT_EQ(state_change_raw_info->asset->name, "Binance Coin");
     EXPECT_FALSE(state_change_raw_info->asset->price);
     EXPECT_EQ(state_change_raw_info->asset->symbol, "BNB");
@@ -1150,7 +1152,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
     const auto& state_change_raw_info =
         state_change->raw_info->data->get_native_asset_transfer_data();
 
-    EXPECT_EQ(state_change_raw_info->asset->image_url, absl::nullopt);
+    EXPECT_EQ(state_change_raw_info->asset->image_url, std::nullopt);
   }
 
   {

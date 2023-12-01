@@ -6,13 +6,12 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_NTP_P3A_HELPER_IMPL_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_NTP_P3A_HELPER_IMPL_H_
 
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
-
+#include <optional>
 #include <string>
 
 #include "base/callback_list.h"
 #include "base/timer/timer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -72,7 +71,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
   raw_ptr<p3a::P3AService> p3a_service_;
   raw_ptr<PrefService> prefs_;
 
-  absl::optional<std::string> last_tab_hostname_;
+  std::optional<std::string> last_tab_hostname_;
 
   base::OneShotTimer landing_check_timer_;
 

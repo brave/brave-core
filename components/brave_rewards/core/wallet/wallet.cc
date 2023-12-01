@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
-
 #include "wally_bip39.h"  // NOLINT
 
 namespace brave_rewards::internal {
@@ -32,7 +32,7 @@ Wallet::Wallet(RewardsEngineImpl& engine)
 
 Wallet::~Wallet() = default;
 
-void Wallet::CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
+void Wallet::CreateWalletIfNecessary(std::optional<std::string>&& geo_country,
                                      CreateRewardsWalletCallback callback) {
   create_.CreateWallet(std::move(geo_country), std::move(callback));
 }
@@ -51,7 +51,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(json);
+  std::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
     *corrupted = true;

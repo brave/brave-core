@@ -4,12 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
+
 #include <stddef.h>
 
 #include <algorithm>
 #include <iterator>
 #include <locale>
 #include <numeric>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -40,7 +42,6 @@
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -859,7 +860,7 @@ void FeedV2Builder::NotifyUpdateCompleted() {
 
   // If we have a |next_update_| then request an update with that data.
   current_update_ = std::move(next_update_);
-  next_update_ = absl::nullopt;
+  next_update_ = std::nullopt;
 
   if (current_update_) {
     UpdateData(current_update_->settings);

@@ -5,16 +5,17 @@
 
 #include "brave/components/brave_vpn/browser/api/vpn_response_parser.h"
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 std::string ParseSubscriberCredentialFromJson(const std::string& json,
                                               std::string* error) {
-  absl::optional<base::Value> records_v =
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {

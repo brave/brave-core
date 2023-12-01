@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,7 +17,6 @@
 #include "base/json/json_value_converter.h"
 #include "base/values.h"
 #include "extensions/common/url_pattern_set.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -57,7 +57,7 @@ class PsstRule {
       base::JSONValueConverter<PsstRule>* converter);
 
   // Parse the psst.json file contents into a vector of PsstRule.
-  static absl::optional<std::vector<PsstRule>> ParseRules(
+  static std::optional<std::vector<PsstRule>> ParseRules(
       const std::string& contents);
   // Check if this rule matches the given URL.
   bool ShouldInsertScript(const GURL& url) const;

@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "net/http/transport_security_state.h"
+#include <optional>
 
 #include "build/build_config.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "net/http/transport_security_state.h"
 #include "url/gurl.h"
 #include "url/url_util.h"
 
@@ -94,10 +95,10 @@ TransportSecurityState::HashedHost GetHSTSPartitionHash(
 // HSTS state storage. Check top frame site for equality with site for cookies,
 // don't store HSTS if it differs. IsolationInfo is not available everywhere,
 // that's why we're using it only when parsing new HSTS state.
-absl::optional<TransportSecurityState::HashedHost>
-GetPartitionHashForAddingHSTS(const IsolationInfo& isolation_info) {
+std::optional<TransportSecurityState::HashedHost> GetPartitionHashForAddingHSTS(
+    const IsolationInfo& isolation_info) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // If the top frame scheme is secure and SiteForCookies doesn't match
@@ -114,10 +115,10 @@ GetPartitionHashForAddingHSTS(const IsolationInfo& isolation_info) {
 }
 
 // Use NetworkIsolationKey to create PartitionHash for accessing/storing data.
-absl::optional<TransportSecurityState::HashedHost> GetPartitionHashForHSTS(
+std::optional<TransportSecurityState::HashedHost> GetPartitionHashForHSTS(
     const NetworkAnonymizationKey& network_anonymization_key) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return GetHSTSPartitionHash(network_anonymization_key);
 }
@@ -125,10 +126,10 @@ absl::optional<TransportSecurityState::HashedHost> GetPartitionHashForHSTS(
 // Use host-bound NetworkIsolationKey in cases when no NetworkIsolationKey is
 // available. Such cases may include net-internals page, PasswordManager.
 // All network::NetworkContext HSTS-related public methods will use this.
-absl::optional<TransportSecurityState::HashedHost>
+std::optional<TransportSecurityState::HashedHost>
 GetHostBoundPartitionHashForHSTS(const std::string& host) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   SchemefulSite schemeful_site(url::Origin::Create(GURL("https://" + host)));
   auto network_anonymization_key =

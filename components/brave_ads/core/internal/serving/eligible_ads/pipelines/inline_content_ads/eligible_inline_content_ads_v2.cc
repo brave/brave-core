@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v2.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -21,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -106,7 +106,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  const absl::optional<CreativeInlineContentAdInfo> creative_ad =
+  const std::optional<CreativeInlineContentAdInfo> creative_ad =
       MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events);
   if (!creative_ad) {
     BLOG(1, "No eligible ads");

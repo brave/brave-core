@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_util.h"
 
+#include <optional>
 #include <string_view>
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -20,7 +21,7 @@ constexpr char kPlacementIdQueryKey[] = "placement_id";
 
 }  // namespace
 
-absl::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
+std::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
     const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
       url.path_piece() != kSearchResultAdClickedPath || !url.has_query() ||

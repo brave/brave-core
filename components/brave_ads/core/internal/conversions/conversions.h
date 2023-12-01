@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -75,10 +75,10 @@ class Conversions final : public ConversionQueueDelegate,
       const AdEventList& ad_events);
   void Convert(
       const AdEventInfo& ad_event,
-      const absl::optional<VerifiableConversionInfo>& verifiable_conversion);
+      const std::optional<VerifiableConversionInfo>& verifiable_conversion);
   void ConvertCallback(
       const AdEventInfo& ad_event,
-      const absl::optional<VerifiableConversionInfo>& verifiable_conversion,
+      const std::optional<VerifiableConversionInfo>& verifiable_conversion,
       bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion) const;

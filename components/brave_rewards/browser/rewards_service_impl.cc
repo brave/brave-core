@@ -6,9 +6,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -1131,7 +1133,7 @@ void ParseCaptchaResponse(
     std::string* image,
     std::string* id,
     std::string* hint) {
-  absl::optional<base::Value> value = base::JSONReader::Read(response);
+  std::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return;
   }
@@ -2604,7 +2606,7 @@ void RewardsServiceImpl::EncryptString(const std::string& value,
     return std::move(callback).Run(std::move(encrypted));
   }
 
-  std::move(callback).Run(absl::nullopt);
+  std::move(callback).Run(std::nullopt);
 }
 
 void RewardsServiceImpl::DecryptString(const std::string& value,
@@ -2614,7 +2616,7 @@ void RewardsServiceImpl::DecryptString(const std::string& value,
     return std::move(callback).Run(std::move(decrypted));
   }
 
-  std::move(callback).Run(absl::nullopt);
+  std::move(callback).Run(std::nullopt);
 }
 
 void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {

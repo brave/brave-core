@@ -6,6 +6,7 @@
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 
 #include <memory>
+#include <optional>
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_default_js_handler.h"
@@ -55,7 +56,7 @@ void BraveSearchRenderFrameObserver::DidCreateScriptContext(
 
 void BraveSearchRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    absl::optional<blink::WebNavigationType> navigation_type) {
+    std::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/top_segment_user_data.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -36,7 +37,7 @@ base::Value::Dict BuildTopSegmentUserData(const TransactionInfo& transaction) {
 
   base::Value::List list;
 
-  if (const absl::optional<std::string> top_segment =
+  if (const std::optional<std::string> top_segment =
           GetTopSegment(BuildInterestSegments(), /*parent_only=*/false)) {
     list.Append(base::Value::Dict().Set(kInterestSegmentKey, *top_segment));
   }

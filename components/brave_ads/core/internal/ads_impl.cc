@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -100,7 +101,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   std::move(callback).Run(/*success=*/true);
 }
 
-absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
+std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id) {
   return NotificationAdManager::GetInstance().MaybeGetForPlacementId(
       placement_id);
@@ -120,7 +121,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad=*/absl::nullopt);
+    return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
   ad_handler_.MaybeServeNewTabPageAd(std::move(callback));
@@ -156,7 +157,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
 
   ad_handler_.MaybeServeInlineContentAd(dimensions, std::move(callback));
@@ -232,7 +233,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*diagnostics=*/absl::nullopt);
+    return std::move(callback).Run(/*diagnostics=*/std::nullopt);
   }
 
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
@@ -369,7 +370,7 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  absl::optional<WalletInfo> new_wallet;
+  std::optional<WalletInfo> new_wallet;
   if (wallet) {
     new_wallet = ToWallet(wallet->payment_id, wallet->recovery_seed);
     if (!new_wallet) {

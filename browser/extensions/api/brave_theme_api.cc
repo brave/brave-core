@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/brave_theme_api.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/json/json_writer.h"
@@ -30,7 +31,7 @@ ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
-  absl::optional<brave_theme::SetBraveThemeType::Params> params =
+  std::optional<brave_theme::SetBraveThemeType::Params> params =
       brave_theme::SetBraveThemeType::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

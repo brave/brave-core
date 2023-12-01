@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TX_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/scoped_observation.h"
@@ -49,7 +50,7 @@ class BitcoinTxManager : public TxManager,
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
-                                const absl::optional<url::Origin>& origin,
+                                const std::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -69,12 +70,12 @@ class BitcoinTxManager : public TxManager,
                         RetryTransactionCallback callback) override;
   mojom::CoinType GetCoinType() const override;
   void UpdatePendingTransactions(
-      const absl::optional<std::string>& chain_id) override;
+      const std::optional<std::string>& chain_id) override;
 
   void ContinueAddUnapprovedTransaction(
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback callback,
       base::expected<BitcoinTransaction, std::string> bitcoin_transaction);
 

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ENS_RESOLVER_TASK_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,7 +19,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -47,9 +47,9 @@ struct OffchainLookupData {
   OffchainLookupData& operator=(OffchainLookupData&&);
   ~OffchainLookupData();
 
-  static absl::optional<OffchainLookupData> ExtractFromJson(
+  static std::optional<OffchainLookupData> ExtractFromJson(
       const base::Value& json_value);
-  static absl::optional<OffchainLookupData> ExtractFromEthAbiPayload(
+  static std::optional<OffchainLookupData> ExtractFromEthAbiPayload(
       eth_abi::Span bytes);
 
   EthAddress sender;
@@ -92,8 +92,8 @@ class EnsResolverTask {
   using APIRequestResult = api_request_helper::APIRequestResult;
   using DoneCallback =
       base::OnceCallback<void(EnsResolverTask* task,
-                              absl::optional<EnsResolverTaskResult> result,
-                              absl::optional<EnsResolverTaskError> error)>;
+                              std::optional<EnsResolverTaskResult> result,
+                              std::optional<EnsResolverTaskError> error)>;
   using RequestIntermediateCallback =
       base::OnceCallback<void(APIRequestResult api_request_result)>;
 
@@ -103,18 +103,18 @@ class EnsResolverTask {
                   std::vector<uint8_t> ens_call,
                   const std::string& domain,
                   const GURL& network_url,
-                  absl::optional<bool> allow_offchain);
+                  std::optional<bool> allow_offchain);
   EnsResolverTask(const EnsResolverTask&) = delete;
   EnsResolverTask& operator=(const EnsResolverTask&) = delete;
   ~EnsResolverTask();
 
   const std::string& domain() const { return domain_; }
-  const absl::optional<bool>& allow_offchain() const { return allow_offchain_; }
+  const std::optional<bool>& allow_offchain() const { return allow_offchain_; }
 
   static base::RepeatingCallback<void(EnsResolverTask* task)>&
   GetWorkOnTaskForTesting();
-  void SetResultForTesting(absl::optional<EnsResolverTaskResult> task_result,
-                           absl::optional<EnsResolverTaskError> task_error);
+  void SetResultForTesting(std::optional<EnsResolverTaskResult> task_result,
+                           std::optional<EnsResolverTaskError> task_error);
 
  private:
   template <typename T>
@@ -148,19 +148,19 @@ class EnsResolverTask {
   std::vector<uint8_t> ens_call_;
   std::string domain_;
   std::string resolver_domain_;
-  absl::optional<std::vector<uint8_t>> dns_encoded_name_;
+  std::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
-  absl::optional<bool> allow_offchain_;
+  std::optional<bool> allow_offchain_;
   int offchain_lookup_attemps_left_ = 4;
 
-  absl::optional<EnsResolverTaskResult> task_result_;
-  absl::optional<EnsResolverTaskError> task_error_;
+  std::optional<EnsResolverTaskResult> task_result_;
+  std::optional<EnsResolverTaskError> task_error_;
 
   EthAddress resolver_address_;
-  absl::optional<bool> supports_ensip_10_;
+  std::optional<bool> supports_ensip_10_;
 
-  absl::optional<std::vector<uint8_t>> offchain_callback_call_;
-  absl::optional<OffchainLookupData> offchain_lookup_data_;
+  std::optional<std::vector<uint8_t>> offchain_callback_call_;
+  std::optional<OffchainLookupData> offchain_lookup_data_;
 
   base::WeakPtrFactory<EnsResolverTask> weak_ptr_factory_{this};
 };

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "src/components/update_client/update_checker.cc"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
@@ -110,7 +112,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
     std::string fake_architecture,
 #endif
-    const absl::optional<ProtocolParser::Results>& results,
+    const std::optional<ProtocolParser::Results>& results,
     ErrorCategory error_category,
     int error,
     int retry_after_sec) {
@@ -159,8 +161,8 @@ void SequentialUpdateChecker::UpdateResultAvailable(
         FROM_HERE,
         base::BindOnce(
             std::move(update_check_callback_),
-            error ? absl::nullopt
-                  : absl::make_optional<ProtocolParser::Results>(results_),
+            error ? std::nullopt
+                  : std::make_optional<ProtocolParser::Results>(results_),
             error_category, error, retry_after_sec));
 
     remaining_ids_.clear();

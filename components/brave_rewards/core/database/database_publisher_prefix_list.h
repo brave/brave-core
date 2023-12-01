@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -38,7 +38,7 @@ class DatabasePublisherPrefixList : public DatabaseTable {
                     publisher::PrefixIterator iter,
                     mojom::DBCommandResponsePtr response);
 
-  absl::optional<publisher::PrefixListReader> reader_;
+  std::optional<publisher::PrefixListReader> reader_;
 };
 
 }  // namespace database

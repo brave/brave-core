@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -31,7 +31,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   // complexity.
   PurchaseIntentInfo purchase_intent;
 
-  if (absl::optional<int> version = dict.FindInt("version")) {
+  if (std::optional<int> version = dict.FindInt("version")) {
     if (kPurchaseIntentResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }

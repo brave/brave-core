@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_handler.h"
 
 #include <iterator>
+#include <optional>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
@@ -18,7 +19,6 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -75,7 +75,7 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     return;
   }
 
-  const absl::optional<std::string> placement_id =
+  const std::optional<std::string> placement_id =
       GetPlacementIdFromSearchResultAdClickedUrl(navigation_url);
   if (!placement_id || placement_id->empty()) {
     return;

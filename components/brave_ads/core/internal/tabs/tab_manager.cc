@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/hash/hash.h"
@@ -47,29 +49,29 @@ bool TabManager::IsVisible(const int32_t tab_id) const {
 }
 
 bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
-  const absl::optional<TabInfo> tab = MaybeGetForId(tab_id);
+  const std::optional<TabInfo> tab = MaybeGetForId(tab_id);
   return tab ? tab->is_playing_media : false;
 }
 
-absl::optional<TabInfo> TabManager::GetVisible() const {
+std::optional<TabInfo> TabManager::GetVisible() const {
   if (!visible_tab_id_) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return MaybeGetForId(*visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::GetLastVisible() const {
+std::optional<TabInfo> TabManager::GetLastVisible() const {
   if (!last_visible_tab_id_) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return MaybeGetForId(*last_visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
+std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
   if (!base::Contains(tabs_, tab_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return tabs_.at(tab_id);

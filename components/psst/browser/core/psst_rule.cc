@@ -6,6 +6,7 @@
 #include "brave/components/psst/browser/core/psst_rule.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -14,7 +15,6 @@
 #include "base/types/expected.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -80,15 +80,15 @@ void PsstRule::RegisterJSONConverter(
 }
 
 // static
-absl::optional<std::vector<PsstRule>> PsstRule::ParseRules(
+std::optional<std::vector<PsstRule>> PsstRule::ParseRules(
     const std::string& contents) {
   if (contents.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     VLOG(1) << "PsstRule::ParseRules: invalid JSON";
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<PsstRule> rules;
   base::JSONValueConverter<PsstRule> converter;

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/command_line.h"
@@ -404,7 +405,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     return;
   }
 
-  absl::optional<base::Value> mapping_table_value =
+  std::optional<base::Value> mapping_table_value =
       base::JSONReader::Read(json_string);
 
   if (!mapping_table_value) {

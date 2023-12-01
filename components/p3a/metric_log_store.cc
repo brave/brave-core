@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/metric_log_store.h"
 
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -227,9 +228,9 @@ const std::string& MetricLogStore::staged_log_signature() const {
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
+std::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void MetricLogStore::StageNextLog() {

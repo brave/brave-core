@@ -13,7 +13,6 @@
 #include "content/public/browser/network_service_instance.h"
 #include "net/dns/public/dns_over_https_config.h"
 #include "services/network/public/mojom/network_service.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"

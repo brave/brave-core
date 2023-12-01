@@ -9,6 +9,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -88,7 +89,7 @@ class ZCashWalletService : public KeyedService,
   friend class CreateTransparentTransactionTask;
   friend class ZCashTxManager;
 
-  absl::optional<std::string> GetUnusedChangeAddress(
+  std::optional<std::string> GetUnusedChangeAddress(
       const mojom::AccountId& account_id);
 
   bool SignTransactionInternal(ZCashTransaction& tx,

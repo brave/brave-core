@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -123,7 +124,7 @@ void NewTabPageAdServing::FailedToServeAd(
     MaybeServeNewTabPageAdCallback callback) const {
   NotifyFailedToServeNewTabPageAd();
 
-  std::move(callback).Run(/*ad=*/absl::nullopt);
+  std::move(callback).Run(/*ad=*/std::nullopt);
 }
 
 void NewTabPageAdServing::NotifyOpportunityAroseToServeNewTabPageAd() const {

@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/sidebar/sidebar_service.h"
+
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -18,7 +21,6 @@
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_p3a.h"
-#include "brave/components/sidebar/sidebar_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -171,7 +173,7 @@ constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
       })";
 
 base::Value::Dict ParseTestJson(const std::string_view json) {
-  absl::optional<base::Value> potential_response_dict_val =
+  std::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   return std::move(potential_response_dict_val.value().GetDict());

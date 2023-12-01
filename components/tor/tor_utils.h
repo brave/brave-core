@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -43,8 +44,8 @@ struct BridgesConfig {
 
   const std::vector<std::string>& GetBuiltinBridges() const;
 
-  static absl::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
-  static absl::optional<BridgesConfig> FromValue(const base::Value* v);
+  static std::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
+  static std::optional<BridgesConfig> FromValue(const base::Value* v);
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;
 

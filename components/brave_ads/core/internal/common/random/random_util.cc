@@ -5,14 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave_base/random.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 namespace {
-absl::optional<base::TimeDelta> g_rand_time_delta_for_testing;
+std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
 }  // namespace
 
 base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
@@ -29,7 +30,7 @@ ScopedRandTimeDeltaSetterForTesting::ScopedRandTimeDeltaSetterForTesting(
 }
 
 ScopedRandTimeDeltaSetterForTesting::~ScopedRandTimeDeltaSetterForTesting() {
-  g_rand_time_delta_for_testing = absl::nullopt;
+  g_rand_time_delta_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads

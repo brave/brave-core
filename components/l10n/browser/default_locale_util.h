@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_L10N_BROWSER_DEFAULT_LOCALE_UTIL_H_
 #define BRAVE_COMPONENTS_L10N_BROWSER_DEFAULT_LOCALE_UTIL_H_
 
+#include <optional>
 #include <string>
 
 #include "absl/types/optional.h"
@@ -15,7 +16,7 @@ namespace brave_l10n {
 // Returns the current default locale of the device. When the locale should
 // match the application locale or an eligible string pack for localization use
 // the canonicalized l10n_util::GetApplicationLocale.
-absl::optional<std::string> MaybeGetDefaultLocaleString();
+std::optional<std::string> MaybeGetDefaultLocaleString();
 
 }  // namespace brave_l10n
 

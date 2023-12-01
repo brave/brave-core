@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 
 #include <algorithm>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -129,21 +130,21 @@ base::Value::Dict BitcoinTransaction::Outpoint::ToValue() const {
 }
 
 // static
-absl::optional<BitcoinTransaction::Outpoint>
+std::optional<BitcoinTransaction::Outpoint>
 BitcoinTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
   Outpoint result;
 
   auto* txid_hex = value.FindString("txid");
   if (!txid_hex) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!base::HexStringToSpan(*txid_hex, result.txid)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto index_value = value.FindInt("index");
   if (!index_value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   result.index = *index_value;
 
@@ -186,35 +187,35 @@ base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
 }
 
 // static
-absl::optional<BitcoinTransaction::TxInput>
+std::optional<BitcoinTransaction::TxInput>
 BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
   BitcoinTransaction::TxInput result;
 
   if (!ReadStringTo(value, "utxo_address", result.utxo_address)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadDictTo(value, "utxo_outpoint", result.utxo_outpoint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "utxo_value", result.utxo_value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadHexByteArrayTo(value, "script_sig", result.script_sig)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadHexByteArrayTo(value, "witness", result.witness)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;
 }
 
 // static
-absl::optional<BitcoinTransaction::TxInput>
+std::optional<BitcoinTransaction::TxInput>
 BitcoinTransaction::TxInput::FromRpcUtxo(
     const std::string& address,
     const bitcoin_rpc::UnspentOutput& utxo) {
@@ -222,13 +223,13 @@ BitcoinTransaction::TxInput::FromRpcUtxo(
   result.utxo_address = address;
 
   if (!base::HexStringToSpan(utxo.txid, result.utxo_outpoint.txid)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!base::StringToUint(utxo.vout, &result.utxo_outpoint.index)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!base::StringToUint64(utxo.value, &result.utxo_value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;
@@ -304,28 +305,28 @@ base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
 }
 
 // static
-absl::optional<BitcoinTransaction::TxOutput>
+std::optional<BitcoinTransaction::TxOutput>
 BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   BitcoinTransaction::TxOutput result;
 
   std::string type_string;
   if (!ReadStringTo(value, "type", type_string) &&
       type_string != kChangeOuputType && type_string != kTargetOutputType) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
                                                  : TxOutputType::kChange;
 
   if (!ReadStringTo(value, "address", result.address)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadHexByteArrayTo(value, "script_pubkey", result.script_pubkey)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "amount", result.amount)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;
@@ -364,50 +365,50 @@ base::Value::Dict BitcoinTransaction::ToValue() const {
 }
 
 // static
-absl::optional<BitcoinTransaction> BitcoinTransaction::FromValue(
+std::optional<BitcoinTransaction> BitcoinTransaction::FromValue(
     const base::Value::Dict& value) {
   BitcoinTransaction result;
 
   auto* inputs_list = value.FindList("inputs");
   if (!inputs_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   for (auto& item : *inputs_list) {
     if (!item.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto input_opt = BitcoinTransaction::TxInput::FromValue(item.GetDict());
     if (!input_opt) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.inputs_.push_back(std::move(*input_opt));
   }
 
   auto* outputs_list = value.FindList("outputs");
   if (!outputs_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   for (auto& item : *outputs_list) {
     if (!item.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto output_opt = BitcoinTransaction::TxOutput::FromValue(item.GetDict());
     if (!output_opt) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.outputs_.push_back(std::move(*output_opt));
   }
 
   if (!ReadUint32StringTo(value, "locktime", result.locktime_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadStringTo(value, "to", result.to_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "amount", result.amount_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_
 
 #include <memory>
+#include <optional>
 
 #include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 
@@ -51,8 +52,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   void OnThemeChanged() override;
   void PaintChildren(const views::PaintInfo& info) override;
   void ChildPreferredSizeChanged(views::View* child) override;
-  void SetActiveTab(absl::optional<size_t> prev_active_index,
-                    absl::optional<size_t> new_active_index) override;
+  void SetActiveTab(std::optional<size_t> prev_active_index,
+                    std::optional<size_t> new_active_index) override;
 
   // BrowserRootView::DropTarget
   BrowserRootView::DropTarget* GetDropTarget(

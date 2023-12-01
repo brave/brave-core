@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+
+#include <optional>
 #include <tuple>
 
 #include "base/files/file_util.h"
@@ -13,7 +16,6 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
@@ -41,7 +43,6 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_constants.h"
 
 using content::BraveClearBrowsingData;
@@ -201,8 +202,8 @@ class BraveClearDataOnExitTest
   unsigned int browsers_count_ = 1u;
   int remove_data_call_count_ = 0;
   int expected_remove_data_call_count_ = 0;
-  absl::optional<uint64_t> expected_remove_mask_;
-  absl::optional<uint64_t> expected_origin_mask_;
+  std::optional<uint64_t> expected_remove_mask_;
+  std::optional<uint64_t> expected_origin_mask_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, NoPrefsSet) {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -284,7 +285,7 @@ void BraveAppMenuModel::BuildBrowserSection() {
   // Bookmarks
   // Downloads
   // Extensions
-  absl::optional<size_t> bookmark_item_index =
+  std::optional<size_t> bookmark_item_index =
       GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
 
   // If bookmark is not used, we don't need to adjust download item.
@@ -449,7 +450,7 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
     if (ipfs_command == -1)
       return;
     auto* submenu = ipns_keys_submenu_models_[ipfs_command].get();
-    absl::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
+    std::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
     if (!command_index.has_value())
       return;
     auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index.value()));
@@ -534,7 +535,7 @@ void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
 
 int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
   for (const auto& it : ipns_keys_submenu_models_) {
-    absl::optional<size_t> index = it.second->GetIndexOfCommandId(id);
+    std::optional<size_t> index = it.second->GetIndexOfCommandId(id);
     if (!index.has_value())
       continue;
     return it.first;
@@ -591,12 +592,12 @@ size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
   return last_index_of_second_section + 1;
 }
 
-absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
+std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     std::vector<int> commands_to_check,
     bool insert_next) const {
   const size_t commands_size = commands_to_check.size();
   for (size_t i = 0; i < commands_size; i++) {
-    absl::optional<size_t> item_index =
+    std::optional<size_t> item_index =
         GetIndexOfCommandId(commands_to_check[i]);
     if (item_index.has_value())
       return insert_next ? item_index.value() + 1 : item_index;
@@ -604,5 +605,5 @@ absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
 
   NOTREACHED() << "At least, a menu item for this command should exist: "
                << commands_to_check[commands_size - 1];
-  return absl::nullopt;
+  return std::nullopt;
 }

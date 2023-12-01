@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -179,7 +180,7 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   prefs->SetBoolean(prefs::kEnabled, bypassed);
 }
 
-absl::optional<std::string> EncryptPrefString(
+std::optional<std::string> EncryptPrefString(
     RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);
@@ -194,7 +195,7 @@ absl::optional<std::string> EncryptPrefString(
   return encoded;
 }
 
-absl::optional<std::string> DecryptPrefString(
+std::optional<std::string> DecryptPrefString(
     RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);

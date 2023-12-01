@@ -4,9 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
-#include <memory>
-#include <unordered_map>
 
+#include <memory>
+#include <optional>
+#include <unordered_map>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
@@ -32,7 +33,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -132,7 +132,7 @@ class FilTxManagerUnitTest : public testing::Test {
   void GetTransactionMessageToSign(
       const std::string& chain_id,
       const std::string& tx_meta_id,
-      absl::optional<std::string> expected_message) {
+      std::optional<std::string> expected_message) {
     base::RunLoop run_loop;
     fil_tx_manager()->GetTransactionMessageToSign(
         chain_id, tx_meta_id,
@@ -140,8 +140,7 @@ class FilTxManagerUnitTest : public testing::Test {
           EXPECT_EQ(!!message, expected_message.has_value());
           if (expected_message.has_value()) {
             ASSERT_TRUE(message->is_message_str());
-            absl::optional<std::string> message_str =
-                message->get_message_str();
+            std::optional<std::string> message_str = message->get_message_str();
             EqualJSONs(*message_str, *expected_message);
             EXPECT_EQ(message_str.has_value(), expected_message.has_value());
           }
@@ -161,7 +160,7 @@ class FilTxManagerUnitTest : public testing::Test {
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::FilTxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
-                                const absl::optional<url::Origin>& origin,
+                                const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
     auto tx_data_union = mojom::TxDataUnion::NewFilTxData(std::move(tx_data));
 
@@ -254,7 +253,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
@@ -269,7 +268,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id2;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id2);
+                           from_account, std::nullopt, &meta_id2);
   auto tx_meta2 =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id2);
   ASSERT_TRUE(tx_meta2);
@@ -327,7 +326,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
@@ -379,7 +378,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
@@ -438,7 +437,7 @@ TEST_F(FilTxManagerUnitTest, WalletOrigin) {
                                        "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
+                           from_account, std::nullopt, &meta_id);
 
   auto tx_meta =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
@@ -479,7 +478,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                             from_account, absl::nullopt, &meta_id);
+                             from_account, std::nullopt, &meta_id);
     auto tx_meta =
         fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
     ASSERT_TRUE(tx_meta);
@@ -512,7 +511,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                             from_account, absl::nullopt, &meta_id);
+                             from_account, std::nullopt, &meta_id);
     auto tx_meta =
         fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
     ASSERT_TRUE(tx_meta);
@@ -536,8 +535,8 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   }
 
   GetTransactionMessageToSign(mojom::kLocalhostChainId, "unknown id",
-                              absl::nullopt);
-  GetTransactionMessageToSign(mojom::kLocalhostChainId, "", absl::nullopt);
+                              std::nullopt);
+  GetTransactionMessageToSign(mojom::kLocalhostChainId, "", std::nullopt);
 }
 
 TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
@@ -549,7 +548,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
+                           from_account, std::nullopt, &meta_id);
   auto tx_meta =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
   ASSERT_TRUE(tx_meta);
@@ -618,7 +617,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
+                           from_account, std::nullopt, &meta_id);
   auto tx_meta =
       fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
   ASSERT_TRUE(tx_meta);

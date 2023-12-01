@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -61,9 +62,9 @@ bool BraveWalletServiceDelegate::IsPermissionDenied(mojom::CoinType coin,
   return false;
 }
 
-absl::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {
+std::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {
   NOTIMPLEMENTED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void BraveWalletServiceDelegate::ClearWalletUIStoragePartition() {}

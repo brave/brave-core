@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -667,8 +668,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_->OnGetImportInfo(
         new_password,
         base::BindLambdaForTesting(
-            [&](bool success,
-                const absl::optional<std::string>& error_message) {
+            [&](bool success, const std::optional<std::string>& error_message) {
               *success_out = success;
               if (error_message) {
                 *error_message_out = *error_message;
@@ -765,7 +765,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
     if (run_switch_network) {
       json_rpc_service_->SetNetwork(mojom::kGoerliChainId, mojom::CoinType::ETH,
-                                    absl::nullopt);
+                                    std::nullopt);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -805,15 +805,15 @@ class BraveWalletServiceUnitTest : public testing::Test {
       const std::string& account_address,
       const std::vector<std::string>& chain_ids,
       mojom::CoinType coin,
-      absl::optional<std::string> cursor,
+      std::optional<std::string> cursor,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
-      absl::optional<std::string> expected_cursor) {
+      std::optional<std::string> expected_cursor) {
     base::RunLoop run_loop;
     service_->GetSimpleHashSpamNFTs(
         account_address, chain_ids, coin, cursor,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts,
-                const absl::optional<std::string>& returned_cursor) {
+                const std::optional<std::string>& returned_cursor) {
               ASSERT_EQ(nfts.size(), expected_nfts.size());
               EXPECT_EQ(returned_cursor, expected_cursor);
               EXPECT_EQ(nfts, expected_nfts);
@@ -1391,7 +1391,7 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
-  absl::optional<std::string> addr = service_->GetChecksumAddress(
+  std::optional<std::string> addr = service_->GetChecksumAddress(
       "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
   EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
 
@@ -2426,7 +2426,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       std::move(request1),
       base::BindLambdaForTesting([&](bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error) {
+                                     const std::optional<std::string>& error) {
         ASSERT_TRUE(approved);
         ASSERT_TRUE(signature->is_str());
         EXPECT_EQ(signature->get_str(), expected_signature);
@@ -2436,12 +2436,12 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
       true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
-      absl::nullopt);
+      std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   service_->NotifySignMessageRequestProcessed(
       true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
-      absl::nullopt);
+      std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
@@ -2454,7 +2454,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       std::move(request2),
       base::BindLambdaForTesting([&](bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error) {
+                                     const std::optional<std::string>& error) {
         ASSERT_FALSE(approved);
         ASSERT_TRUE(signature->is_str());
         EXPECT_EQ(signature->get_str(), expected_signature);
@@ -2489,17 +2489,17 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
       std::move(request1),
       base::BindLambdaForTesting([&](bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error) {
+                                     const std::optional<std::string>& error) {
         ASSERT_TRUE(approved);
         EXPECT_FALSE(signature);
         EXPECT_FALSE(error);
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, absl::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, absl::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
@@ -2512,14 +2512,14 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
       std::move(request2),
       base::BindLambdaForTesting([&](bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error) {
+                                     const std::optional<std::string>& error) {
         ASSERT_FALSE(approved);
         EXPECT_FALSE(signature);
         EXPECT_FALSE(error);
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(false, 2, nullptr, absl::nullopt);
+  service_->NotifySignMessageRequestProcessed(false, 2, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2528,8 +2528,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
                                         mojom::kGoerliChainId};
   for (const std::string& chain_id : chain_ids) {
-    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH,
-                                  absl::nullopt);
+    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, std::nullopt);
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
@@ -2729,7 +2728,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting([](bool, mojom::ByteArrayStringUnionPtr,
-                                    const absl::optional<std::string>&) {}));
+                                    const std::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
       false, false, false, "COLOR", 18, true, "", "", "0x1",
@@ -2820,13 +2819,13 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
   EXPECT_EQ(BraveWalletService::GetUserAssetAddress("not_base58_encoded_string",
                                                     mojom::CoinType::SOL,
                                                     mojom::kSolanaMainnet),
-            absl::nullopt);
+            std::nullopt);
 
   // FIL
   EXPECT_EQ(BraveWalletService::GetUserAssetAddress(
                 "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
                 mojom::CoinType::FIL, "f"),
-            absl::nullopt);
+            std::nullopt);
 }
 
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
@@ -3016,7 +3015,7 @@ TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
   // no NFTs should be discovered
   GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
                         {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                        absl::nullopt, expected_nfts, absl::nullopt);
+                        std::nullopt, expected_nfts, std::nullopt);
 
   // Enable NFT discovery then try again, only the spam NFT should be discovered
   SetInterceptors(responses);
@@ -3034,7 +3033,7 @@ TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
   expected_nfts.push_back(std::move(nft1));
   GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
                         {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                        absl::nullopt, expected_nfts, absl::nullopt);
+                        std::nullopt, expected_nfts, std::nullopt);
 }
 
 TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
@@ -3154,8 +3153,8 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
     base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
         callback;
 
-    auto expected_address = absl::optional<std::string>(acc->address);
-    EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()))
+    auto expected_address = std::optional<std::string>(acc->address);
+    EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()))
         .Times(2);
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
@@ -3172,19 +3171,19 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
       callback;
 
-  absl::optional<std::string> expected_address =
+  std::optional<std::string> expected_address =
       keyring_service_
           ->GetBitcoinAddress(btc_account->account_id,
                               mojom::BitcoinKeyId::New(0, 1))
           ->address_string;
 
-  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -3197,7 +3196,7 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
                          ->GetBitcoinAddress(btc_account->account_id,
                                              mojom::BitcoinKeyId::New(0, 2))
                          ->address_string;
-  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
   base::RunLoop().RunUntilIdle();

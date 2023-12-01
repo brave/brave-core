@@ -7,10 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
 
 #include <memory>
-
-#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
+#include <optional>
 
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 
 class BraveTabContainer : public TabContainerImpl {
@@ -36,7 +36,7 @@ class BraveTabContainer : public TabContainerImpl {
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
                                          int former_model_index) const override;
-  void EnterTabClosingMode(absl::optional<int> override_width,
+  void EnterTabClosingMode(std::optional<int> override_width,
                            CloseTabSource source) override;
   bool ShouldTabBeVisible(const Tab* tab) const override;
   void StartInsertTabAnimation(int model_index) override;
@@ -49,7 +49,7 @@ class BraveTabContainer : public TabContainerImpl {
   BrowserRootView::DropIndex GetDropIndex(
       const ui::DropTargetEvent& event) override;
   void HandleDragUpdate(
-      const absl::optional<BrowserRootView::DropIndex>& index) override;
+      const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
 
  private:
@@ -101,7 +101,7 @@ class BraveTabContainer : public TabContainerImpl {
 
   void OnUnlockLayout();
 
-  void SetDropArrow(const absl::optional<BrowserRootView::DropIndex>& index);
+  void SetDropArrow(const std::optional<BrowserRootView::DropIndex>& index);
   gfx::Rect GetDropBounds(int drop_index,
                           bool drop_before,
                           bool drop_in_group,

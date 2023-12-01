@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -14,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -47,7 +47,7 @@ void BuildConversionUserData(const std::string& creative_instance_id,
                 BuildConversionActionTypeUserData(conversion_queue_item));
 
             // Verifiable conversion.
-            absl::optional<base::Value::Dict> verifiable_conversion_user_data =
+            std::optional<base::Value::Dict> verifiable_conversion_user_data =
                 MaybeBuildVerifiableConversionUserData(conversion_queue_item);
             if (verifiable_conversion_user_data) {
               list.Append(std::move(*verifiable_conversion_user_data));

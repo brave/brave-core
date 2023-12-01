@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 
+#include <optional>
 #include <utility>
 
 namespace {
@@ -20,7 +21,7 @@ namespace brave_wallet {
 
 SolanaAccountMeta::SolanaAccountMeta(
     const std::string& pubkey,
-    absl::optional<uint8_t> address_table_lookup_index,
+    std::optional<uint8_t> address_table_lookup_index,
     bool is_signer,
     bool is_writable)
     : pubkey(pubkey),
@@ -61,31 +62,31 @@ base::Value::Dict SolanaAccountMeta::ToValue() const {
 }
 
 // static
-absl::optional<SolanaAccountMeta> SolanaAccountMeta::FromValue(
+std::optional<SolanaAccountMeta> SolanaAccountMeta::FromValue(
     const base::Value::Dict& value) {
   const std::string* pubkey = value.FindString(kPubkey);
   if (!pubkey) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<bool> is_signer = value.FindBool(kIsSigner);
+  std::optional<bool> is_signer = value.FindBool(kIsSigner);
   if (!is_signer) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<bool> is_writable = value.FindBool(kIsWritable);
+  std::optional<bool> is_writable = value.FindBool(kIsWritable);
   if (!is_writable) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<uint8_t> address_table_lookup_index;
+  std::optional<uint8_t> address_table_lookup_index;
   const std::string* address_table_lookup_index_string =
       value.FindString(kAddressTableLookupIndex);
   if (address_table_lookup_index_string) {
     unsigned val = 0;
     if (!base::StringToUint(*address_table_lookup_index_string, &val)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     if (val > UINT8_MAX) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     address_table_lookup_index = static_cast<uint8_t>(val);
   }
@@ -103,7 +104,7 @@ void SolanaAccountMeta::FromMojomSolanaAccountMetas(
   }
   account_metas->clear();
   for (const auto& mojom_account_meta : mojom_account_metas) {
-    absl::optional<uint8_t> addr_table_lookup_index = absl::nullopt;
+    std::optional<uint8_t> addr_table_lookup_index = std::nullopt;
     if (mojom_account_meta->addr_table_lookup_index) {
       addr_table_lookup_index =
           mojom_account_meta->addr_table_lookup_index->val;

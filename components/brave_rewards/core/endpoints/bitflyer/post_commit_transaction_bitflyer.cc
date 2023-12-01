@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/bitflyer/post_commit_transaction_bitflyer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -56,17 +57,17 @@ Result PostCommitTransactionBitFlyer::ProcessResponse(
   }
 }
 
-absl::optional<std::string> PostCommitTransactionBitFlyer::Url() const {
+std::optional<std::string> PostCommitTransactionBitFlyer::Url() const {
   return endpoint::bitflyer::GetServerUrl(
       "/api/link/v1/coin/withdraw-to-deposit-id/request");
 }
 
-absl::optional<std::vector<std::string>> PostCommitTransactionBitFlyer::Headers(
+std::optional<std::vector<std::string>> PostCommitTransactionBitFlyer::Headers(
     const std::string&) const {
   return endpoint::bitflyer::RequestAuthorization(token_);
 }
 
-absl::optional<std::string> PostCommitTransactionBitFlyer::Content() const {
+std::optional<std::string> PostCommitTransactionBitFlyer::Content() const {
   base::Value::Dict payload;
   payload.Set("currency_code", "BAT");
   payload.Set("amount", transaction_->amount);
@@ -76,7 +77,7 @@ absl::optional<std::string> PostCommitTransactionBitFlyer::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(payload, &json)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return json;

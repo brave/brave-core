@@ -5,6 +5,7 @@
 
 #include "brave/components/query_filter/utils.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -127,8 +128,8 @@ static constexpr auto kScopedQueryStringTrackers =
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-absl::optional<std::string> StripQueryParameter(const std::string_view query,
-                                                const std::string& spec) {
+std::optional<std::string> StripQueryParameter(const std::string_view query,
+                                               const std::string& spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
   // for more information on why this approach was selected.
@@ -159,15 +160,15 @@ absl::optional<std::string> StripQueryParameter(const std::string_view query,
   if (disallowed_count > 0) {
     return base::JoinString(output_kv_strings, "&");
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
+std::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   const auto& query = original_url.query_piece();
   const std::string& spec = original_url.spec();
   const auto clean_query_value = StripQueryParameter(query, spec);
   if (!clean_query_value.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   const auto& clean_query = clean_query_value.value();
   if (clean_query.length() < query.length()) {
@@ -179,10 +180,10 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
     }
     return original_url.ReplaceComponents(replacements);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<GURL> MaybeApplyQueryStringFilter(
+std::optional<GURL> MaybeApplyQueryStringFilter(
     const GURL& initiator_url,
     const GURL& redirect_source_url,
     const GURL& request_url,
@@ -191,23 +192,23 @@ absl::optional<GURL> MaybeApplyQueryStringFilter(
   if (!request_url.has_query()) {
     // Optimization:
     // If there are no query params then we have nothing to strip.
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (request_method != "GET") {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (redirect_source_url.is_valid()) {
     if (internal_redirect) {
       // Ignore internal redirects since we trigger them.
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     if (net::registry_controlled_domains::SameDomainOrHost(
             redirect_source_url, request_url,
             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
       // Same-site redirects are exempted.
-      return absl::nullopt;
+      return std::nullopt;
     }
   } else if (initiator_url.is_valid() &&
              net::registry_controlled_domains::SameDomainOrHost(
@@ -215,7 +216,7 @@ absl::optional<GURL> MaybeApplyQueryStringFilter(
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ApplyQueryFilter(request_url);

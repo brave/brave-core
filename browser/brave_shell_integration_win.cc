@@ -6,6 +6,7 @@
 #include "brave/browser/brave_shell_integration_win.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -28,7 +29,6 @@
 #include "chrome/installer/util/shell_util.h"
 #include "chrome/installer/util/taskbar_util.h"
 #include "content/public/browser/browser_thread.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -92,15 +92,15 @@ bool CreateShortcut(const ShellUtil::ShortcutProperties& properties,
       base::win::ShortcutOperation::kCreateAlways);
 }
 
-absl::optional<ScopedShortcutFile> GetShortcutPath(
+std::optional<ScopedShortcutFile> GetShortcutPath(
     const std::wstring& shortcut_name) {
   base::FilePath shortcut_path;
   if (!base::PathService::Get(base::DIR_TEMP, &shortcut_path) ||
       shortcut_path.empty())
-    return absl::nullopt;
+    return std::nullopt;
 
   shortcut_path = shortcut_path.Append(shortcut_name);
-  return absl::optional<ScopedShortcutFile>(shortcut_path);
+  return std::optional<ScopedShortcutFile>(shortcut_path);
 }
 
 // All args could be empty when we want to pin default profile's shortcut.
@@ -129,7 +129,7 @@ bool PinToTaskbarImpl(const base::FilePath& profile_path,
   }
 
   // Generate shortcut file to use for pin to taskbar.
-  absl::optional<ScopedShortcutFile> shortcut_path =
+  std::optional<ScopedShortcutFile> shortcut_path =
       GetShortcutPath(ExtractShortcutNameFromProperties(properties));
   if (!shortcut_path) {
     LOG(ERROR) << __func__ << " failed to get shortcut path";

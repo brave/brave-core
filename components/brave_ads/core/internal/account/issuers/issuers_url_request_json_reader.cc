@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader.h"
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
@@ -13,21 +15,21 @@
 
 namespace brave_ads::json::reader {
 
-absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict =
+std::optional<IssuersInfo> ReadIssuers(const std::string& json) {
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   if (!dict) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<int> ping = ParsePing(*dict);
+  const std::optional<int> ping = ParsePing(*dict);
   if (!ping) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<IssuerList> issuers = ParseIssuers(*dict);
+  const std::optional<IssuerList> issuers = ParseIssuers(*dict);
   if (!issuers) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   IssuersInfo new_issuers;

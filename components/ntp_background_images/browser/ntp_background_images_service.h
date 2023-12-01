@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -156,7 +157,7 @@ class NTPBackgroundImagesService {
   bool test_data_used_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
       nullptr;
-  absl::optional<std::string> sponsored_images_component_id_;
+  std::optional<std::string> sponsored_images_component_id_;
   raw_ptr<PrefService> local_pref_ = nullptr;
   base::FilePath bi_installed_dir_;
   std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;
@@ -177,7 +178,7 @@ class NTPBackgroundImagesService {
   // is done is important for super referral. If this is SR install, we should
   // not show SI images until user chooses Brave default images. So, we should
   // know the exact timing whether SR assets is ready to use or not.
-  absl::optional<base::Value::Dict> initial_sr_component_info_;
+  std::optional<base::Value::Dict> initial_sr_component_info_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

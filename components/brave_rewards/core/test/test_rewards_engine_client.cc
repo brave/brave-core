@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -30,7 +31,7 @@ std::string FakeEncryption::EncryptString(const std::string& value) {
   return "ENCRYPTED:" + value;
 }
 
-absl::optional<std::string> FakeEncryption::DecryptString(
+std::optional<std::string> FakeEncryption::DecryptString(
     const std::string& value) {
   size_t pos = value.find("ENCRYPTED:");
   if (pos == 0) {
@@ -47,7 +48,7 @@ std::string FakeEncryption::Base64EncryptString(const std::string& value) {
   return encoded;
 }
 
-absl::optional<std::string> FakeEncryption::Base64DecryptString(
+std::optional<std::string> FakeEncryption::Base64DecryptString(
     const std::string& value) {
   std::string decoded;
   if (!base::Base64Decode(value, &decoded)) {

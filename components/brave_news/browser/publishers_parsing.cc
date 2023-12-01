@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,16 +15,14 @@
 #include "brave/components/brave_news/api/publisher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
 
-absl::optional<Publishers> ParseCombinedPublisherList(
-    const base::Value& value) {
+std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
   if (!value.is_list()) {
     LOG(ERROR) << "Publisher data expected to be a list";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Publishers result;
@@ -33,7 +32,7 @@ absl::optional<Publishers> ParseCombinedPublisherList(
     if (!parsed_publisher.has_value()) {
       LOG(ERROR) << "Invalid Brave Publisher data. error="
                  << parsed_publisher.error();
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto& entry = *parsed_publisher;
 

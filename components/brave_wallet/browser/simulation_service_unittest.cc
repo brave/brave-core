@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/simulation_service.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/memory/ref_counted.h"
@@ -18,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
-#include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -83,7 +85,7 @@ class SimulationServiceUnitTest : public testing::Test {
     auto base_tx_data = mojom::TxData::New(
         "0x09", "0x4a817c800", "0x5208",
         "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-        std::vector<uint8_t>(), false, absl::nullopt);
+        std::vector<uint8_t>(), false, std::nullopt);
 
     if (eip1559) {
       std::unique_ptr<Eip1559Transaction> tx =
@@ -103,7 +105,7 @@ class SimulationServiceUnitTest : public testing::Test {
   }
 
   mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
-      absl::optional<std::string> origin,
+      std::optional<std::string> origin,
       const std::string& chain_id) {
     std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
     auto sol_account =
@@ -121,8 +123,8 @@ class SimulationServiceUnitTest : public testing::Test {
         // Program ID
         mojom::kSolanaSystemProgramId,
         // Accounts
-        {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-         SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+        {SolanaAccountMeta(from_account, std::nullopt, true, true),
+         SolanaAccountMeta(to_account, std::nullopt, false, true)},
         data);
 
     auto msg = SolanaMessage::CreateLegacyMessage(
@@ -480,8 +482,8 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
   )");
 
   base::RunLoop run_loop;
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
-                                                      mojom::kSolanaMainnet);
+  auto tx_info =
+      GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
@@ -537,7 +539,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt,
                                                       mojom::kLocalhostChainId);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
@@ -557,7 +559,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt, "");
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt, "");
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
@@ -583,8 +585,8 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
   )";
   SetErrorInterceptor(error);
 
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
-                                                      mojom::kSolanaMainnet);
+  auto tx_info =
+      GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
@@ -605,8 +607,8 @@ TEST_F(SimulationServiceUnitTest,
   std::string error = "Woot";
   SetErrorInterceptor(error);
 
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
-                                                      mojom::kSolanaMainnet);
+  auto tx_info =
+      GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 

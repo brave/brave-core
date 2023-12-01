@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_auto_pin_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -44,30 +45,30 @@ class MockBraveWalletPinService : public BraveWalletPinService {
   MOCK_METHOD0(Restore, void());
   MOCK_METHOD3(AddPin,
                void(mojom::BlockchainTokenPtr,
-                    const absl::optional<std::string>&,
+                    const std::optional<std::string>&,
                     BraveWalletPinService::AddPinCallback callback));
   MOCK_METHOD3(RemovePin,
                void(mojom::BlockchainTokenPtr,
-                    const absl::optional<std::string>&,
+                    const std::optional<std::string>&,
                     BraveWalletPinService::RemovePinCallback callback));
   MOCK_METHOD3(Validate,
                void(mojom::BlockchainTokenPtr,
-                    const absl::optional<std::string>&,
+                    const std::optional<std::string>&,
                     BraveWalletPinService::ValidateCallback));
   MOCK_METHOD1(GetTokens,
-               std::set<std::string>(const absl::optional<std::string>&));
+               std::set<std::string>(const std::optional<std::string>&));
   MOCK_METHOD2(GetTokenStatus,
-               mojom::TokenPinStatusPtr(const absl::optional<std::string>&,
+               mojom::TokenPinStatusPtr(const std::optional<std::string>&,
                                         const mojom::BlockchainTokenPtr&));
   MOCK_METHOD2(GetLastValidateTime,
-               absl::optional<base::Time>(const absl::optional<std::string>&,
-                                          const mojom::BlockchainTokenPtr&));
+               std::optional<base::Time>(const std::optional<std::string>&,
+                                         const mojom::BlockchainTokenPtr&));
   MOCK_METHOD2(MarkAsPendingForPinning,
                void(const mojom::BlockchainTokenPtr&,
-                    const absl::optional<std::string>&));
+                    const std::optional<std::string>&));
   MOCK_METHOD2(MarkAsPendingForUnpinning,
                void(const mojom::BlockchainTokenPtr&,
-                    const absl::optional<std::string>&));
+                    const std::optional<std::string>&));
   MOCK_METHOD1(Reset, void(base::OnceCallback<void(bool)> callback));
 };
 
@@ -133,7 +134,7 @@ TEST_F(BraveWalletAutoPinServiceTest, Autopin_WhenTokenAdded) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(
           ::testing::Invoke([](BlockchainTokenPtr token,
-                               const absl::optional<std::string>& service,
+                               const std::optional<std::string>& service,
                                BraveWalletPinService::AddPinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -165,7 +166,7 @@ TEST_F(BraveWalletAutoPinServiceTest, TokenRemoved) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(
           ::testing::Invoke([](BlockchainTokenPtr token,
-                               const absl::optional<std::string>& service,
+                               const std::optional<std::string>& service,
                                BraveWalletPinService::AddPinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -182,9 +183,9 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinUnknownTokens_WhenRestore) {
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3");
 
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -209,7 +210,7 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinUnknownTokens_WhenRestore) {
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
-                        testing::Eq(absl::nullopt), _))
+                        testing::Eq(std::nullopt), _))
       .Times(1);
 
   BraveWalletAutoPinService auto_pin_service(
@@ -228,9 +229,9 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
   known_tokens.insert(
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4");
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -268,7 +269,7 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
   ON_CALL(*GetBraveWalletPinService(), Validate(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](BlockchainTokenPtr token,
-             const absl::optional<std::string>& service,
+             const std::optional<std::string>& service,
              BraveWalletPinService::ValidateCallback callback) {
             std::move(callback).Run(
                 mojom::TokenValidationResult::kValidationPassed);
@@ -278,25 +279,25 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
               Validate(TokenPathMatches(
                            "nft.local.60.0x1."
                            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
-                       testing::Eq(absl::nullopt), _))
+                       testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               Validate(TokenPathMatches(
                            "nft.local.60.0x1."
                            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"),
-                       testing::Eq(absl::nullopt), _))
+                       testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               Validate(TokenPathMatches(
                            "nft.local.60.0x1."
                            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
-                       testing::Eq(absl::nullopt), _))
+                       testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               Validate(TokenPathMatches(
                            "nft.local.60.0x1."
                            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
-                       testing::Eq(absl::nullopt), _))
+                       testing::Eq(std::nullopt), _))
       .Times(0);
 
   BraveWalletAutoPinService auto_pin_service(
@@ -314,9 +315,9 @@ TEST_F(BraveWalletAutoPinServiceTest, PinContinue_WhenRestore) {
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3");
 
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -357,7 +358,7 @@ TEST_F(BraveWalletAutoPinServiceTest, PinContinue_WhenRestore) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(
           ::testing::Invoke([](BlockchainTokenPtr token,
-                               const absl::optional<std::string>& service,
+                               const std::optional<std::string>& service,
                                BraveWalletPinService::AddPinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -366,31 +367,31 @@ TEST_F(BraveWalletAutoPinServiceTest, PinContinue_WhenRestore) {
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
 
   BraveWalletAutoPinService auto_pin_service(
@@ -410,9 +411,9 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4");
 
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -444,7 +445,7 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
   ON_CALL(*GetBraveWalletPinService(), RemovePin(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](BlockchainTokenPtr token,
-             const absl::optional<std::string>& service,
+             const std::optional<std::string>& service,
              BraveWalletPinService::RemovePinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -452,7 +453,7 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](BlockchainTokenPtr token,
-             const absl::optional<std::string>& service,
+             const std::optional<std::string>& service,
              BraveWalletPinService::RemovePinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -461,25 +462,25 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
-                        testing::Eq(absl::nullopt), _))
+                        testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"),
-                        testing::Eq(absl::nullopt), _))
+                        testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
-                        testing::Eq(absl::nullopt), _))
+                        testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(*GetBraveWalletPinService(),
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
-                        testing::Eq(absl::nullopt), _))
+                        testing::Eq(std::nullopt), _))
       .Times(0);
 
   BraveWalletAutoPinService auto_pin_service(
@@ -492,7 +493,7 @@ TEST_F(BraveWalletAutoPinServiceTest, DoNotAutoPin_WhenAutoPinDisabled) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(
           ::testing::Invoke([](BlockchainTokenPtr token,
-                               const absl::optional<std::string>& service,
+                               const std::optional<std::string>& service,
                                BraveWalletPinService::AddPinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -514,9 +515,9 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2");
 
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -543,7 +544,7 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
   ON_CALL(*GetBraveWalletPinService(), AddPin(_, _, _))
       .WillByDefault(
           ::testing::Invoke([](BlockchainTokenPtr token,
-                               const absl::optional<std::string>& service,
+                               const std::optional<std::string>& service,
                                BraveWalletPinService::AddPinCallback callback) {
             std::move(callback).Run(true, nullptr);
           }));
@@ -552,13 +553,13 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
   EXPECT_CALL(
       *GetBraveWalletPinService(),
       AddPin(TokenPathMatches("nft.local.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"),
-             testing::Eq(absl::nullopt), _))
+             testing::Eq(std::nullopt), _))
       .Times(1);
 
   BraveWalletAutoPinService auto_pin_service(
@@ -615,7 +616,7 @@ TEST_F(BraveWalletAutoPinServiceTest, RemoveQueuedTokens) {
       std::make_unique<BraveWalletAutoPinService::IntentData>(
           GetErc721Token("nft.local.60.0x1."
                          "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
-          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+          BraveWalletAutoPinService::Operation::kDelete, std::nullopt)));
   auto_pin_service.OnTokenRemoved(GetErc721Token(
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
 
@@ -625,7 +626,7 @@ TEST_F(BraveWalletAutoPinServiceTest, RemoveQueuedTokens) {
       std::make_unique<BraveWalletAutoPinService::IntentData>(
           GetErc721Token("nft.local.60.0x1."
                          "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
-          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+          BraveWalletAutoPinService::Operation::kDelete, std::nullopt)));
 }
 
 TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
@@ -641,9 +642,9 @@ TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4");
 
   ON_CALL(*GetBraveWalletPinService(),
-          GetTokenStatus(testing::Eq(absl::nullopt), _))
+          GetTokenStatus(testing::Eq(std::nullopt), _))
       .WillByDefault(
-          ::testing::Invoke([](absl::optional<std::string> service,
+          ::testing::Invoke([](std::optional<std::string> service,
                                const mojom::BlockchainTokenPtr& token)
                                 -> mojom::TokenPinStatusPtr {
             mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
@@ -685,7 +686,7 @@ TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
       std::make_unique<BraveWalletAutoPinService::IntentData>(
           GetErc721Token("nft.local.60.0x1."
                          "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
-          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+          BraveWalletAutoPinService::Operation::kDelete, std::nullopt)));
 
   auto_pin_service.OnTokenAdded(GetErc721Token(
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"));
@@ -695,7 +696,7 @@ TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
                                       BraveWalletAutoPinService::IntentData>(
       GetErc721Token(
           "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
-      BraveWalletAutoPinService::Operation::kAdd, absl::nullopt));
+      BraveWalletAutoPinService::Operation::kAdd, std::nullopt));
 
   auto_pin_service.OnTokenAdded(GetErc721Token(
       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5"));
@@ -706,7 +707,7 @@ TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
       std::make_unique<BraveWalletAutoPinService::IntentData>(
           GetErc721Token("nft.local.60.0x1."
                          "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5"),
-          BraveWalletAutoPinService::Operation::kAdd, absl::nullopt)));
+          BraveWalletAutoPinService::Operation::kAdd, std::nullopt)));
 }
 
 TEST_F(BraveWalletAutoPinServiceTest, RestoreNotCalled_WhenAutoPinDisabled) {

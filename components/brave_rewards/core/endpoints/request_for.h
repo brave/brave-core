@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_FOR_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_FOR_H_
 
+#include <optional>
 #include <type_traits>
 #include <utility>
 
@@ -15,7 +16,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -66,7 +66,7 @@ class RequestFor {
 
  private:
   const raw_ref<RewardsEngineImpl> engine_;
-  absl::optional<mojom::UrlRequestPtr> request_;
+  std::optional<mojom::UrlRequestPtr> request_;
 };
 
 }  // namespace brave_rewards::internal::endpoints

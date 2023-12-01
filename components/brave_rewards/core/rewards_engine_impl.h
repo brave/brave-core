@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
 
 #include <map>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -332,9 +333,9 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   mojom::ClientInfoPtr GetClientInfo();
 
-  absl::optional<std::string> EncryptString(const std::string& value);
+  std::optional<std::string> EncryptString(const std::string& value);
 
-  absl::optional<std::string> DecryptString(const std::string& value);
+  std::optional<std::string> DecryptString(const std::string& value);
   // mojom::RewardsEngineClient helpers end
 
   mojom::RewardsEngineClient* client();

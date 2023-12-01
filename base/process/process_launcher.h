@@ -6,11 +6,11 @@
 #ifndef BRAVE_BASE_PROCESS_PROCESS_LAUNCHER_H_
 #define BRAVE_BASE_PROCESS_PROCESS_LAUNCHER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/process/launch.h"
 #include "base/process/process.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
 class ProcessLauncher {
@@ -22,9 +22,9 @@ class ProcessLauncher {
    * Launches process in this thread and reads the output.
    * This works like GetAppOutput, but respects provided LaunchOptions.
    */
-  static absl::optional<std::string> ReadAppOutput(base::CommandLine cmdline,
-                                                   base::LaunchOptions options,
-                                                   int timeout_sec);
+  static std::optional<std::string> ReadAppOutput(base::CommandLine cmdline,
+                                                  base::LaunchOptions options,
+                                                  int timeout_sec);
 };
 
 }  // namespace brave

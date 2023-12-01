@@ -6,11 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_BLUETOOTH_SCANNING_PROMPT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_BLUETOOTH_SCANNING_PROMPT_CONTROLLER_H_
 
+#include <optional>
+
 #include "components/permissions/chooser_controller.h"
 
 #define GetThrobberLabelAndTooltip(...)                   \
   GetThrobberLabelAndTooltip(__VA_ARGS__) const override; \
-  absl::optional<ChooserControllerType> GetType()
+  std::optional<ChooserControllerType> GetType()
 
 #include "src/components/permissions/bluetooth_scanning_prompt_controller.h"  // IWYU pragma: export
 

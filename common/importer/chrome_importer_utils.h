@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMMON_IMPORTER_CHROME_IMPORTER_UTILS_H_
 #define BRAVE_COMMON_IMPORTER_CHROME_IMPORTER_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -43,7 +44,7 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-absl::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
+std::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
     const base::FilePath& profile_path);
 #endif
 

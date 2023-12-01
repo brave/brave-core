@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -20,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -59,7 +59,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
  private:
   void MaybeServeCallback(MaybeServeInlineContentAdCallback callback,
                           const std::string& dimensions,
-                          const absl::optional<InlineContentAdInfo>& ad);
+                          const std::optional<InlineContentAdInfo>& ad);
 
   void CacheAdPlacement(int32_t tab_id, const InlineContentAdInfo& ad);
   void PurgeOrphanedCachedAdPlacements(int32_t tab_id);

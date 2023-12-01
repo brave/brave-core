@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_functions.h"
@@ -96,7 +97,7 @@ class BubbleManager : public WebUIBubbleManagerT<CookieListOptInUI> {
 
   // WebUIBubbleManagerT<CookieListOptInUI>:
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
+      const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     auto dialog_view =
         WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor,

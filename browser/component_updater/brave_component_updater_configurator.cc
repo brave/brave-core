@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -193,8 +194,8 @@ BraveConfigurator::GetProtocolHandlerFactory() const {
   return configurator_impl_.GetProtocolHandlerFactory();
 }
 
-absl::optional<bool> BraveConfigurator::IsMachineExternallyManaged() const {
-  return absl::nullopt;
+std::optional<bool> BraveConfigurator::IsMachineExternallyManaged() const {
+  return std::nullopt;
 }
 
 update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
@@ -205,12 +206,12 @@ update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
   return configurator_impl_.GetUpdaterStateProvider();
 }
 
-absl::optional<base::FilePath> BraveConfigurator::GetCrxCachePath() const {
+std::optional<base::FilePath> BraveConfigurator::GetCrxCachePath() const {
   base::FilePath path;
   bool result = base::PathService::Get(chrome::DIR_USER_DATA, &path);
-  return result ? absl::optional<base::FilePath>(
+  return result ? std::optional<base::FilePath>(
                       path.AppendASCII("component_crx_cache"))
-                : absl::nullopt;
+                : std::nullopt;
 }
 
 }  // namespace component_updater

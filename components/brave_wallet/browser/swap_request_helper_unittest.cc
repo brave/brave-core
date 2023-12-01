@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/swap_request_helper.h"
+
+#include <optional>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/swap_request_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -110,7 +112,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
 
   // OK: Jupiter transaction params with feeAccount
   auto expected_params_value = ParseJson(expected_params);
-  ASSERT_NE(encoded_params, absl::nullopt);
+  ASSERT_NE(encoded_params, std::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
 
   // OK: Jupiter transaction params WITHOUT feeAccount
@@ -152,7 +154,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
       "userPublicKey": "mockPubKey"
     })";
   expected_params_value = ParseJson(expected_params);
-  ASSERT_NE(encoded_params, absl::nullopt);
+  ASSERT_NE(encoded_params, std::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
 
   // KO: empty params
@@ -162,8 +164,8 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   // KO: invalid output mint
   params.output_mint = "invalid output mint";
   encoded_params = EncodeJupiterTransactionParams(params.Clone(), true);
-  ASSERT_EQ(encoded_params, absl::nullopt);
+  ASSERT_EQ(encoded_params, std::nullopt);
   encoded_params = EncodeJupiterTransactionParams(params.Clone(), false);
-  ASSERT_EQ(encoded_params, absl::nullopt);
+  ASSERT_EQ(encoded_params, std::nullopt);
 }
 }  // namespace brave_wallet

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
@@ -13,7 +15,7 @@ namespace brave_ads {
 
 ConversionInfo BuildConversion(
     const AdEventInfo& ad_event,
-    const absl::optional<VerifiableConversionInfo>& verifiable_conversion) {
+    const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   ConversionInfo conversion;
 
   conversion.ad_type = ad_event.type;

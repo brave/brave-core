@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -67,7 +68,7 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
   DCHECK(address);
   DCHECK(linking_info);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

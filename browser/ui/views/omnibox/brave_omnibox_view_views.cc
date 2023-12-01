@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/app/brave_command_ids.h"
@@ -20,7 +21,7 @@ namespace {
 void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
   if (!url.SchemeIsHTTPOrHTTPS())
     return;
-  absl::optional<size_t> copy_position =
+  std::optional<size_t> copy_position =
       menu_contents->GetIndexOfCommandId(views::Textfield::kCopy);
   if (!copy_position)
     return;
@@ -31,14 +32,14 @@ void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
 
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
-absl::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
+std::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
   GURL url;
   bool write_url = false;
   std::u16string selected_text = GetSelectedText();
   model()->AdjustTextForCopy(GetSelectedRange().GetMin(), &selected_text, &url,
                              &write_url);
   if (!write_url) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return url;
 }

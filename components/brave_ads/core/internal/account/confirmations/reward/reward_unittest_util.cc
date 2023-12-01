@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_unittest_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check.h"
@@ -33,7 +34,7 @@ RewardInfo BuildReward(const ConfirmationInfo& confirmation) {
   reward.signature =
       R"(+yxJmIDobOZ5DBncIVuzjQEZfIa0+UPrSQhzA5pwEAL9qC4UW7A1H35nKAhVLehJlXnnfMVKV02StVO3fBU5CQ==)";
 
-  const absl::optional<std::string> reward_credential_base64url =
+  const std::optional<std::string> reward_credential_base64url =
       BuildRewardCredential(confirmation);
   CHECK(reward_credential_base64url);
   reward.credential_base64url = *reward_credential_base64url;

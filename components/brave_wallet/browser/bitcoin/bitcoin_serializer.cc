@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/sys_byteorder.h"
@@ -312,19 +313,19 @@ std::vector<uint8_t> BitcoinSerializer::AddressToScriptPubkey(
 }
 
 // static
-absl::optional<SHA256HashArray> BitcoinSerializer::SerializeInputForSign(
+std::optional<SHA256HashArray> BitcoinSerializer::SerializeInputForSign(
     const BitcoinTransaction& tx,
     size_t input_index) {
   CHECK_LT(input_index, tx.inputs().size());
   auto& input = tx.inputs()[input_index];
   auto decoded_address = DecodeBitcoinAddress(input.utxo_address);
   if (!decoded_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // TODO(apaymyshev): support other account types.
   if (decoded_address->address_type !=
       BitcoinAddressType::kWitnessV0PubkeyHash) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> data;

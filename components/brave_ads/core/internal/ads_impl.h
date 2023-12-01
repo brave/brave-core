@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -76,7 +76,7 @@ class AdsImpl final : public Ads {
                                 mojom::NewTabPageAdEventType event_type,
                                 TriggerAdEventCallback callback) override;
 
-  absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+  std::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) override;
   void TriggerNotificationAdEvent(const std::string& placement_id,
                                   mojom::NotificationAdEventType event_type,

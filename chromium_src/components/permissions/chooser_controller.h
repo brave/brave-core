@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CHOOSER_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CHOOSER_CONTROLLER_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 namespace permissions {
 
@@ -18,7 +18,7 @@ enum class ChooserControllerType {
 
 #define GetSelectAllCheckboxLabel(...)          \
   GetSelectAllCheckboxLabel(__VA_ARGS__) const; \
-  virtual absl::optional<ChooserControllerType> GetType()
+  virtual std::optional<ChooserControllerType> GetType()
 
 #include "src/components/permissions/chooser_controller.h"  // IWYU pragma: export
 

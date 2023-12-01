@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -152,7 +154,7 @@ void Conversions::CheckForConversions(
     }
 
     const auto& [_, creative_set_conversion_bucket] = *iter;
-    const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
+    const std::optional<CreativeSetConversionInfo> creative_set_conversion =
         FindNonExpiredCreativeSetConversion(creative_set_conversion_bucket,
                                             ad_event);
     if (!creative_set_conversion) {
@@ -182,7 +184,7 @@ void Conversions::CheckForConversions(
 
 void Conversions::Convert(
     const AdEventInfo& ad_event,
-    const absl::optional<VerifiableConversionInfo>& verifiable_conversion) {
+    const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   BLOG(1, "Conversion for " << ad_event.type << " with creative instance id "
                             << ad_event.creative_instance_id
                             << ", creative set id " << ad_event.creative_set_id
@@ -198,7 +200,7 @@ void Conversions::Convert(
 
 void Conversions::ConvertCallback(
     const AdEventInfo& ad_event,
-    const absl::optional<VerifiableConversionInfo>& verifiable_conversion,
+    const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
     BLOG(1, "Failed to log conversion event");

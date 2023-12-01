@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/scoped_observation.h"
@@ -106,7 +107,7 @@ TEST_F(BitcoinBlockTrackerUnitTest, GetLatestHeight) {
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), UINT32_MAX);
   EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), UINT32_MAX);
-  EXPECT_EQ(tracker_->GetLatestHeight("skynet"), absl::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight("skynet"), std::nullopt);
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   response_height_ = 1;
@@ -144,8 +145,8 @@ TEST_F(BitcoinBlockTrackerUnitTest, GetLatestHeightInvalidResponseJSON) {
   tracker_->Start(mojom::kBitcoinTestnet, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), absl::nullopt);
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), absl::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), std::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), std::nullopt);
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
@@ -164,8 +165,8 @@ TEST_F(BitcoinBlockTrackerUnitTest, GetLatestHeightInternalError) {
   tracker_->Start(mojom::kBitcoinTestnet, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), absl::nullopt);
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), absl::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), std::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), std::nullopt);
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
@@ -184,8 +185,8 @@ TEST_F(BitcoinBlockTrackerUnitTest, GetLatestHeightRequestTimeout) {
   tracker_->Start(mojom::kBitcoinTestnet, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), absl::nullopt);
-  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), absl::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinMainnet), std::nullopt);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kBitcoinTestnet), std::nullopt);
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 

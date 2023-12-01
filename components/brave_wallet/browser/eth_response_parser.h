@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -13,7 +14,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
-// TODO(apaymyshev): refactor utility methods to return absl::optional instead
+// TODO(apaymyshev): refactor utility methods to return std::optional instead
 // of bool + out-parameter.
 
 namespace brave_wallet {
@@ -36,22 +37,22 @@ bool ParseEthGetTransactionCount(const base::Value& json_value,
                                  uint256_t* count);
 bool ParseEthGetTransactionReceipt(const base::Value& json_value,
                                    TransactionReceipt* receipt);
-absl::optional<std::string> ParseEthSendRawTransaction(
+std::optional<std::string> ParseEthSendRawTransaction(
     const base::Value& json_value);
-absl::optional<std::string> ParseEthCall(const base::Value& json_value);
-absl::optional<std::vector<std::string>> DecodeEthCallResponse(
+std::optional<std::string> ParseEthCall(const base::Value& json_value);
+std::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::string& data,
     const std::vector<std::string>& abi_types);
-absl::optional<std::vector<absl::optional<std::string>>>
+std::optional<std::vector<std::optional<std::string>>>
 DecodeGetERC20TokenBalancesEthCallResponse(const std::string& data);
-absl::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);
-absl::optional<std::string> ParseEthGasPrice(const base::Value& json_value);
+std::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);
+std::optional<std::string> ParseEthGasPrice(const base::Value& json_value);
 bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs);
 
-absl::optional<std::vector<std::string>>
+std::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value);
 
-absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
+std::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
     const base::Value& json_value);
 
 // Get the JSON included in a data URI with a mime type application/json

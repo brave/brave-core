@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/uphold/get_transaction_status_uphold.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -60,12 +61,12 @@ Result GetTransactionStatusUphold::ProcessResponse(
   }
 }
 
-absl::optional<std::string> GetTransactionStatusUphold::Url() const {
+std::optional<std::string> GetTransactionStatusUphold::Url() const {
   return endpoint::uphold::GetServerUrl(
       base::StringPrintf("/v0/me/transactions/%s", transaction_id_.c_str()));
 }
 
-absl::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(
+std::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(
     const std::string&) const {
   return endpoint::uphold::RequestAuthorization(token_);
 }

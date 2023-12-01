@@ -5,6 +5,7 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -338,8 +339,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
 
 bool CosmeticFiltersJSHandler::ProcessURL(
     const GURL& url,
-    absl::optional<base::OnceClosure> callback) {
-  resources_dict_ = absl::nullopt;
+    std::optional<base::OnceClosure> callback) {
+  resources_dict_ = std::nullopt;
   url_ = url;
   enabled_1st_party_cf_ = false;
 

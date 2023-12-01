@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -13,7 +14,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -28,10 +28,10 @@ constexpr char kUndefinedName[] = "";
 constexpr char kConfirmationsName[] = "confirmations";
 constexpr char kPaymentsName[] = "payments";
 
-absl::optional<std::string> GetNameForIssuerType(const IssuerType type) {
+std::optional<std::string> GetNameForIssuerType(const IssuerType type) {
   switch (type) {
     case IssuerType::kUndefined: {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     case IssuerType::kConfirmations: {
@@ -47,10 +47,10 @@ absl::optional<std::string> GetNameForIssuerType(const IssuerType type) {
                         << static_cast<int>(type);
 }
 
-absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
+std::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
   const std::string* const name = dict.FindString(kNameKey);
   if (!name) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (*name == kUndefinedName) {
@@ -65,31 +65,31 @@ absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
     return IssuerType::kPayments;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& dict) {
+std::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& dict) {
   const auto* const public_keys_list = dict.FindList(kPublicKeysKey);
   if (!public_keys_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   PublicKeyMap public_keys;
   for (const auto& item : *public_keys_list) {
     const auto* const item_dict = item.GetIfDict();
     if (!item_dict) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const std::string* const public_key = item_dict->FindString(kPublicKeyKey);
     if (!public_key) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const std::string* const associated_value =
         item_dict->FindString(kAssociatedValueKey);
     if (!associated_value) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     double associated_value_as_double;
     if (!base::StringToDouble(*associated_value, &associated_value_as_double)) {
@@ -112,7 +112,7 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
   base::Value::List list;
 
   for (const auto& issuer : issuers) {
-    const absl::optional<std::string> name = GetNameForIssuerType(issuer.type);
+    const std::optional<std::string> name = GetNameForIssuerType(issuer.type);
     if (!name) {
       continue;
     }
@@ -133,7 +133,7 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
   return list;
 }
 
-absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
+std::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
   IssuerList issuers;
 
   for (const auto& item : list) {
@@ -142,16 +142,15 @@ absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
       continue;
     }
 
-    const absl::optional<IssuerType> issuer_type = ParseIssuerType(*item_dict);
+    const std::optional<IssuerType> issuer_type = ParseIssuerType(*item_dict);
     if (!issuer_type) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     CHECK_NE(IssuerType::kUndefined, *issuer_type);
 
-    const absl::optional<PublicKeyMap> public_keys =
-        ParsePublicKeys(*item_dict);
+    const std::optional<PublicKeyMap> public_keys = ParsePublicKeys(*item_dict);
     if (!public_keys) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     IssuerInfo issuer;

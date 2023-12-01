@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -25,43 +26,43 @@
 
 namespace {
 
-absl::optional<base::Value::List> GetParamsList(const std::string& json) {
+std::optional<base::Value::List> GetParamsList(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto& value = json_value->GetDict();
   auto* params = value.FindListByDottedPath(brave_wallet::kParams);
   if (!params) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(*params);
 }
 
-absl::optional<base::Value::Dict> GetObjectFromParamsList(
+std::optional<base::Value::Dict> GetObjectFromParamsList(
     const std::string& json) {
   auto list = GetParamsList(json);
   if (!list || list->size() != 1 || !(*list)[0].is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move((*list)[0]).TakeDict();
 }
 
-absl::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
+std::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* value = json_value->GetDict().FindDict(brave_wallet::kParams);
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(*value);
@@ -229,7 +230,7 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
                            std::string* params) {
-  absl::optional<base::Value> records_v =
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -273,7 +274,7 @@ bool GetEthJsonRequestInfo(const std::string& json,
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json) {
   CHECK(output_json);
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -653,7 +654,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   *error_message = "";
 
   // Might be a list from legacy send method.
-  absl::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
+  std::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
   if (!params) {
     params = GetParamsDict(json);
   }

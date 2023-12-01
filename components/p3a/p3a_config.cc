@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/p3a_config.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -44,15 +45,15 @@ base::TimeDelta MaybeOverrideTimeDeltaFromCommandLine(
   return default_config_value;
 }
 
-absl::optional<uint8_t> MaybeSetUint8FromCommandLine(base::CommandLine* cmdline,
-                                                     const char* switch_name) {
+std::optional<uint8_t> MaybeSetUint8FromCommandLine(base::CommandLine* cmdline,
+                                                    const char* switch_name) {
   if (cmdline->HasSwitch(switch_name)) {
     unsigned value;
     if (base::StringToUint(cmdline->GetSwitchValueASCII(switch_name), &value)) {
       return value;
     }
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 std::string MaybeOverrideStringFromCommandLine(
@@ -118,7 +119,7 @@ P3AConfig::P3AConfig()
   CheckURL(p2a_json_upload_url);
   CheckURL(GURL(star_randomness_host));
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    fake_star_epochs[log_type] = absl::nullopt;
+    fake_star_epochs[log_type] = std::nullopt;
   }
 }
 

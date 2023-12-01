@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
-
+#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
 
 namespace browser_sync {
 namespace {
@@ -147,7 +147,7 @@ const auto& BraveSyncablePreferences() {
 
 namespace browser_sync {
 
-absl::optional<sync_preferences::SyncablePrefMetadata>
+std::optional<sync_preferences::SyncablePrefMetadata>
 ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata(
     const std::string& pref_name) const {
   const auto* it = BraveSyncablePreferences().find(pref_name);

@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
@@ -76,11 +78,11 @@ std::string GetBlindedCredsJSON(
   return json;
 }
 
-absl::optional<base::Value::List> ParseStringToBaseList(
+std::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list) {
-  absl::optional<base::Value> value = base::JSONReader::Read(string_list);
+  std::optional<base::Value> value = base::JSONReader::Read(string_list);
   if (!value || !value->is_list()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return value->GetList().Clone();
@@ -196,7 +198,7 @@ base::Value::List GenerateCredentials(
     const std::string& body) {
   base::Value::List credentials;
   for (auto& item : token_list) {
-    absl::optional<base::Value::Dict> token;
+    std::optional<base::Value::Dict> token;
     if (is_testing) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
@@ -212,30 +214,30 @@ base::Value::List GenerateCredentials(
   return credentials;
 }
 
-absl::optional<base::Value::Dict> GenerateSuggestion(
+std::optional<base::Value::Dict> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
     const std::string& body) {
   if (token_value.empty() || public_key.empty() || body.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto unblinded = UnblindedToken::decode_base64(token_value);
   if (!unblinded.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   VerificationKey verification_key = unblinded->derive_verification_key();
   auto signature = verification_key.sign(body);
   if (!signature.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto pre_image = unblinded->preimage().encode_base64();
   auto enconded_signature = signature->encode_base64();
 
   if (!pre_image.has_value() || !enconded_signature.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict dict;

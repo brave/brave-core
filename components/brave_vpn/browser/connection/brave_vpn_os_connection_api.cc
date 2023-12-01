@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
+#include <optional>
 #include <vector>
 
 #include "base/check_is_test.h"
@@ -208,7 +209,7 @@ void BraveVPNOSConnectionAPI::OnFetchHostnames(const std::string& region,
 
   ResetAPIRequestInstance();
 
-  absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
+  std::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
     ParseAndCacheHostnames(region, value->GetList());
     return;

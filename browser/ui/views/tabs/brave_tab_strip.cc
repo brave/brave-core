@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/browser/profiles/profile_util.h"
@@ -203,7 +204,7 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
                    : SkColorSetRGB(0xBE, 0xBF, 0xBF);
 }
 
-absl::optional<int> BraveTabStrip::GetCustomBackgroundId(
+std::optional<int> BraveTabStrip::GetCustomBackgroundId(
     BrowserFrameActiveState active_state) const {
   if (!ShouldShowVerticalTabs()) {
     return TabStrip::GetCustomBackgroundId(active_state);

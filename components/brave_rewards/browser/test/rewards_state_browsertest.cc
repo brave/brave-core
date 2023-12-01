@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 #include <set>
 
 #include "base/base64.h"
@@ -34,7 +35,6 @@
 #include "content/public/test/browser_test.h"
 #include "crypto/sha2.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest*
 
@@ -358,7 +358,7 @@ class V10 : public RewardsStateBrowserTest,
   static std::string from_json(const std::string& json) {
     std::string suffix = "";
 
-    absl::optional<base::Value> value = base::JSONReader::Read(json);
+    std::optional<base::Value> value = base::JSONReader::Read(json);
     if (value && value->is_dict()) {
       const auto& dict = value->GetDict();
       suffix += to_string(dict.FindInt("status").value_or(-1));

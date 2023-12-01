@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_STORAGE_DELEGATE_IMPL_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
@@ -53,7 +54,7 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
 
   // Read all txs from db
   void Initialize();
-  void OnTxsRead(absl::optional<base::Value> txs);
+  void OnTxsRead(std::optional<base::Value> txs);
 
   bool MigrateTransactionsFromPrefsToDB(PrefService* prefs);
 

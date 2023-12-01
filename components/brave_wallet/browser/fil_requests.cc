@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/fil_requests.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -100,11 +101,11 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
   return result;
 }
 
-absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
+std::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   base::Value::List params;
   auto signed_tx_value = FilTransaction::DeserializeSignedTx(signed_tx);
   if (!signed_tx_value || !signed_tx_value->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   params.Append(std::move(signed_tx_value.value()));
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -54,14 +55,14 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
-  absl::optional<base::Value> json_value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
   if (!json_value || !json_value->is_dict()) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
   base::Value::Dict& root = json_value->GetDict();
 
-  absl::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
+  std::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
   const bool schemaVersionIsValid = incomingSchemaVersion &&
       *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {

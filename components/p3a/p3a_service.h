@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_P3A_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -20,7 +21,6 @@
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -99,7 +99,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void OnRotation(MetricLogType log_type, bool is_constellation) override;
   void OnMetricCycled(const std::string& histogram_name,
                       bool is_constellation) override;
-  absl::optional<MetricLogType> GetDynamicMetricLogType(
+  std::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override;
 
   void DisableStarAttestationForTesting();
@@ -120,7 +120,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void HandleHistogramChange(
       std::string_view histogram_name,
       size_t bucket,
-      absl::optional<bool> only_update_for_constellation = absl::nullopt);
+      std::optional<bool> only_update_for_constellation = std::nullopt);
 
   // General prefs:
   bool initialized_ = false;

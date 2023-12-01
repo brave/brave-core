@@ -6,6 +6,7 @@
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/base_paths.h"
@@ -262,7 +263,7 @@ void GreaselionDownloadService::OnDATFileDataReady(
     LOG(ERROR) << "Could not obtain Greaselion configuration";
     return;
   }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root || !root->is_list()) {
     LOG(ERROR) << "Failed to parse Greaselion configuration";
     return;

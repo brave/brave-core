@@ -3,13 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_news/browser/publishers_parsing.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -45,7 +47,7 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
       }
     ]
   )");
-  absl::optional<Publishers> publisher_list =
+  std::optional<Publishers> publisher_list =
       ParseCombinedPublisherList(base::test::ParseJson(json));
   ASSERT_TRUE(publisher_list);
   ASSERT_EQ(publisher_list->size(), 3UL);
@@ -95,7 +97,7 @@ TEST(BraveNewsPublisherParsing, PublisherListWithNoneValuesInOptionalFields) {
       }
     ]
   )");
-  absl::optional<Publishers> publisher_list =
+  std::optional<Publishers> publisher_list =
       ParseCombinedPublisherList(base::test::ParseJson(json));
   ASSERT_TRUE(publisher_list);
   ASSERT_EQ(publisher_list->size(), 3UL);

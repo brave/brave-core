@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -24,10 +25,10 @@ namespace ntp_background_images {
 
 namespace {
 
-absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
+std::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents))
-    return absl::optional<std::string>();
+    return std::optional<std::string>();
   return contents;
 }
 
@@ -80,7 +81,7 @@ void NTPBackgroundImagesSource::GetImageFile(
 
 void NTPBackgroundImagesSource::OnGotImageFile(
     GotDataCallback callback,
-    absl::optional<std::string> input) {
+    std::optional<std::string> input) {
   if (!input)
     return;
 

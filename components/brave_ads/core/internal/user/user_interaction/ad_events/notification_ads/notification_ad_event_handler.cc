@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/notification_ads/notification_ad_event_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -12,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/notification_ads/notification_ad_event_factory.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -29,7 +29,7 @@ void NotificationAdEventHandler::FireEvent(
   CHECK(!placement_id.empty());
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  const absl::optional<NotificationAdInfo> ad =
+  const std::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
   if (!ad) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "

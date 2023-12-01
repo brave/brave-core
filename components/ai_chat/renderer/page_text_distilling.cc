@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 
+#include <optional>
 #include <queue>
 #include <string>
 #include <utility>
@@ -16,7 +17,6 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/accessibility/ax_node.h"
@@ -115,7 +115,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
 void DistillPageText(
     content::RenderFrame* render_frame,
     int32_t isolated_world_id,
-    base::OnceCallback<void(const absl::optional<std::string>&)> callback) {
+    base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   auto snapshotter = render_frame->CreateAXTreeSnapshotter(
       ui::AXMode::kWebContents | ui::AXMode::kHTML | ui::AXMode::kScreenReader);
   ui::AXTreeUpdate snapshot;
@@ -144,9 +144,8 @@ void DistillPageText(
         blink::WebString::FromASCII("document.body.innerText"));
 
     auto on_script_executed =
-        [](base::OnceCallback<void(const absl::optional<std::string>&)>
-               callback,
-           absl::optional<base::Value> value, base::TimeTicks start_time) {
+        [](base::OnceCallback<void(const std::optional<std::string>&)> callback,
+           std::optional<base::Value> value, base::TimeTicks start_time) {
           if (value->is_string()) {
             std::move(callback).Run(value->GetString());
             return;

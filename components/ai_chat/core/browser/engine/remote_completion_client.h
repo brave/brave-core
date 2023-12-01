@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -54,7 +55,7 @@ class RemoteCompletionClient {
  private:
   void OnQueryDataReceived(EngineConsumer::GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
-  void OnQueryCompleted(absl::optional<CredentialCacheEntry> credential,
+  void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
                         EngineConsumer::GenerationCompletedCallback callback,
                         APIRequestResult result);
 
@@ -63,7 +64,7 @@ class RemoteCompletionClient {
       const std::vector<std::string> extra_stop_sequences,
       EngineConsumer::GenerationCompletedCallback data_completed_callback,
       EngineConsumer::GenerationDataCallback data_received_callback,
-      absl::optional<CredentialCacheEntry> credential);
+      std::optional<CredentialCacheEntry> credential);
 
   const std::string model_name_;
   const base::flat_set<std::string_view> stop_sequences_;

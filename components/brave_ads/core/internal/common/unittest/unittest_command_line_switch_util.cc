@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
@@ -44,8 +46,8 @@ void ShutdownCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 
-absl::optional<bool>& DidAppendCommandLineSwitches() {
-  static absl::optional<bool> command_line;
+std::optional<bool>& DidAppendCommandLineSwitches() {
+  static std::optional<bool> command_line;
   return command_line;
 }
 

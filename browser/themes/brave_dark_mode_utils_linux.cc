@@ -5,13 +5,15 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 
+#include <optional>
+
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace dark_mode {
 
 namespace {
-absl::optional<bool> g_system_dark_mode_prefs;
+std::optional<bool> g_system_dark_mode_prefs;
 }  // namespace
 
 void CacheSystemDarkModePrefs(bool prefer_dark_theme) {

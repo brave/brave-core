@@ -23,7 +23,7 @@ OBJC_EXPORT
 /// specifies where we are navigating to. `request_method` indicates the HTTP
 /// method of the request. `internal_redirect` indicates wether or not this is
 /// an internal redirect or not. This function returns the url we should
-/// redirect to or a `absl::nullopt` value if nothing is changed.
+/// redirect to or a `std::nullopt` value if nothing is changed.
 - (nullable NSURL*)
     brave_applyingQueryStringFilterWithInitiatorURL:
         (nullable NSURL*)initiatorURL

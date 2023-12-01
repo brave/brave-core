@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
+#include <optional>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_constants.h"
@@ -18,9 +19,9 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
+std::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
   if (!url.is_valid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const GURL url_with_empty_query = GetUrlWithEmptyQuery(url);
@@ -32,13 +33,13 @@ absl::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
 
 bool IsSearchEngineResultsPage(const GURL& url) {
-  const absl::optional<SearchEngineInfo> search_engine =
+  const std::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
   if (!search_engine) {
     return false;
@@ -55,17 +56,17 @@ bool IsSearchEngineResultsPage(const GURL& url) {
                                     &search_term_query_value);
 }
 
-absl::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {
-  const absl::optional<SearchEngineInfo> search_engine =
+std::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {
+  const std::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
   if (!search_engine) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string search_term_query_value;
   if (!net::GetValueForKeyInQuery(url, search_engine->search_term_query_key,
                                   &search_term_query_value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return search_term_query_value;

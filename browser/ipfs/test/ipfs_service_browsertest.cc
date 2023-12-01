@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/base64.h"
@@ -728,7 +729,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {
   ipfs_service()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersSuccess,
                      base::Unretained(this)),
-      absl::nullopt);
+      std::nullopt);
   WaitForRequest();
 }
 
@@ -739,7 +740,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersServerError) {
   ipfs_service()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersFail,
                      base::Unretained(this)),
-      absl::nullopt);
+      std::nullopt);
   WaitForRequest();
 }
 
@@ -1696,7 +1697,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, DNSResolversConfig) {
     }
     ASSERT_EQ(
         fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
-        absl::nullopt);
+        std::nullopt);
   }
 }
 

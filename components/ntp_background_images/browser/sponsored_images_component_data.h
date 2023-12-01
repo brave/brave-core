@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_IMAGES_COMPONENT_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_IMAGES_COMPONENT_DATA_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ntp_background_images {
 
@@ -19,7 +19,7 @@ struct SponsoredImagesComponentData {
   std::string_view component_id;
 };
 
-absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
+std::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region);
 
 }  // namespace ntp_background_images

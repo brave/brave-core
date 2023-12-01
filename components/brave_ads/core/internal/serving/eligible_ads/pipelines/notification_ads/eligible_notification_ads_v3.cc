@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -21,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -103,7 +103,7 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
+  const std::optional<CreativeNotificationAdInfo> creative_ad =
       user_model.interest.text_embedding_html_events.empty()
           ? MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events)
           : MaybePredictCreativeAd(eligible_creative_ads, user_model);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
+#include <optional>
 #include <vector>
 
 #include "base/time/time.h"
@@ -29,7 +30,6 @@
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -233,7 +233,7 @@ bool HasMediaPermission() {
   if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
     return true;
   }
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   if (!tab) {
     return true;
   }

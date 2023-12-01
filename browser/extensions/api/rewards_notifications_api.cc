@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "brave/browser/extensions/api/rewards_notifications_api.h"
 
+#include <memory>
+#include <optional>
+
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/extensions/api/rewards_notifications.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 
 using brave_rewards::RewardsNotificationService;
@@ -24,7 +25,7 @@ RewardsNotificationsAddNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsAddNotificationFunction::Run() {
-  absl::optional<rewards_notifications::AddNotification::Params> params =
+  std::optional<rewards_notifications::AddNotification::Params> params =
       rewards_notifications::AddNotification::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -44,7 +45,7 @@ RewardsNotificationsDeleteNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsDeleteNotificationFunction::Run() {
-  absl::optional<rewards_notifications::DeleteNotification::Params> params =
+  std::optional<rewards_notifications::DeleteNotification::Params> params =
       rewards_notifications::DeleteNotification::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -75,7 +76,7 @@ RewardsNotificationsGetNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsGetNotificationFunction::Run() {
-  absl::optional<rewards_notifications::GetNotification::Params> params =
+  std::optional<rewards_notifications::GetNotification::Params> params =
       rewards_notifications::GetNotification::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());

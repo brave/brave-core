@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_UNITS_SEARCH_RESULT_AD_SEARCH_RESULT_AD_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 class GURL;
@@ -63,8 +63,8 @@ class SearchResultAdHandler final {
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
   bool should_trigger_viewed_event_ = true;
 
-  absl::optional<base::flat_map</*placement_id*/ std::string,
-                                mojom::SearchResultAdInfoPtr>>
+  std::optional<base::flat_map</*placement_id*/ std::string,
+                               mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};

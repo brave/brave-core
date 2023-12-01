@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -144,7 +145,7 @@ void SearchResultAdEventHandler::SaveCreativeSetConversion(
   CHECK(ad_mojom);
 
   CreativeSetConversionList creative_set_conversions;
-  if (const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
+  if (const std::optional<CreativeSetConversionInfo> creative_set_conversion =
           BuildCreativeSetConversion(ad_mojom)) {
     if (creative_set_conversion->IsValid()) {
       creative_set_conversions.push_back(*creative_set_conversion);

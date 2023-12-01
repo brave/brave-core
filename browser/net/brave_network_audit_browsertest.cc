@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/base_paths.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -93,7 +95,7 @@ bool PerformNetworkAuditProcess(base::Value::List* events) {
     base::Value::Dict* event_dict = event_value.GetIfDict();
     EXPECT_TRUE(event_dict);
 
-    absl::optional<int> event_type = event_dict->FindInt("type");
+    std::optional<int> event_type = event_dict->FindInt("type");
     EXPECT_TRUE(event_type.has_value());
 
     // Showing these helps determine which URL requests which don't
@@ -107,7 +109,7 @@ bool PerformNetworkAuditProcess(base::Value::List* events) {
     EXPECT_TRUE(source_dict);
 
     // Consider URL requests only.
-    absl::optional<int> source_type = source_dict->FindInt("type");
+    std::optional<int> source_type = source_dict->FindInt("type");
     EXPECT_TRUE(source_type.has_value());
 
     if (static_cast<net::NetLogSourceType>(source_type.value()) !=

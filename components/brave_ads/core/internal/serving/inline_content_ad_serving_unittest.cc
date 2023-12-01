@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/test/mock_callback.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
-                            /*ad=*/::testing::Eq(absl::nullopt)));
+                            /*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd("200x100", callback.Get());
 }
 
@@ -83,7 +83,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*dimensions=*/"200x100", ::testing::Ne(absl::nullopt)));
+              Run(/*dimensions=*/"200x100", ::testing::Ne(std::nullopt)));
   MaybeServeAd("200x100", callback.Get());
 }
 
@@ -103,7 +103,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*dimensions=*/"?x?", /*ad=*/::testing::Eq(absl::nullopt)));
+              Run(/*dimensions=*/"?x?", /*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd("?x?", callback.Get());
 }
 
@@ -119,7 +119,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
-                            /*ad=*/::testing::Eq(absl::nullopt)));
+                            /*ad=*/::testing::Eq(std::nullopt)));
   MaybeServeAd("200x100", callback.Get());
 }
 

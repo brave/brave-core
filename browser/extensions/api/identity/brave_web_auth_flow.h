@@ -50,7 +50,7 @@ class BraveWebAuthFlow : public WebAuthFlow::Delegate {
       bool user_gesture);
 
  private:
-  static absl::optional<std::string> token_for_testing_;
+  static std::optional<std::string> token_for_testing_;
 
   raw_ptr<Profile> profile_;
   ExtensionTokenKey token_key_{/*extension_id=*/"",

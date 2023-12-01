@@ -6,6 +6,7 @@
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -15,7 +16,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
@@ -32,7 +32,7 @@ namespace ipfs {
 bool UpdateConfigJSON(const std::string& source,
                       const ipfs::mojom::IpfsConfig* config,
                       std::string* result) {
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       source, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {

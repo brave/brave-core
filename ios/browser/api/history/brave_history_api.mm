@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
@@ -181,15 +183,15 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*url*/ net::GURLWithNSURL(history.url),
       /*time*/ base::Time::FromNSDate(history.dateAdded),
       /*context_id=*/0,
-      /*nav_entry_id=*/0, /*local_navigation_id=*/absl::nullopt,
+      /*nav_entry_id=*/0, /*local_navigation_id=*/std::nullopt,
       /*referrer=*/GURL(),
       /*redirect_list*/ history::RedirectList(),
       /*transition*/ ui::PAGE_TRANSITION_TYPED,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
       /*title*/ base::SysNSStringToUTF16(history.title),
-      /*opener*/ absl::nullopt,
-      /*bookmark_id*/ absl::nullopt);
+      /*opener*/ std::nullopt,
+      /*bookmark_id*/ std::nullopt);
 
   history_service_->AddPage(args);
 }

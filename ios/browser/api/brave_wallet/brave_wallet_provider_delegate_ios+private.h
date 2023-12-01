@@ -6,6 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
 #define BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -36,7 +37,7 @@ class BraveWalletProviderDelegateBridge
                           RequestPermissionsCallback) override;
   bool IsAccountAllowed(mojom::CoinType type,
                         const std::string& account) override;
-  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  std::optional<std::vector<std::string>> GetAllowedAccounts(
       mojom::CoinType type,
       const std::vector<std::string>& accounts) override;
   bool IsPermissionDenied(mojom::CoinType type) override;

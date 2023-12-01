@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
+#include <optional>
+
 #include "base/strings/string_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
@@ -52,7 +54,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -75,7 +77,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
-    const absl::optional<ConfirmationInfo> confirmation =
+    const std::optional<ConfirmationInfo> confirmation =
         BuildRewardConfirmation(&token_generator_mock_, transaction, user_data);
     ASSERT_TRUE(confirmation);
 

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -1071,7 +1072,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
   dest_width = std::clamp(dest_width, tab_style_->GetPinnedWidth() * 3,
                           tab_style_->GetStandardWidth() * 2);
   if (done_resizing) {
-    resize_offset_ = absl::nullopt;
+    resize_offset_ = std::nullopt;
   }
 
   if (*expanded_width_ == dest_width) {

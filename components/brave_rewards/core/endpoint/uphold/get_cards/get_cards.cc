@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_cards/get_cards.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -42,7 +43,7 @@ mojom::Result GetCards::ParseBody(const std::string& body,
                                   std::string* id) const {
   DCHECK(id);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

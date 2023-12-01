@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 
+#include <optional>
 #include <vector>
 
 #include "base/base64.h"
@@ -23,7 +24,7 @@ std::string LoadDataResource(const int id) {
   return std::string(resource_bundle.GetRawDataResource(id));
 }
 
-absl::optional<std::string> LoadImageResourceAsDataUrl(const int id) {
+std::optional<std::string> LoadImageResourceAsDataUrl(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
     return resource_bundle.LoadDataResourceString(id);
@@ -31,14 +32,14 @@ absl::optional<std::string> LoadImageResourceAsDataUrl(const int id) {
 
   auto image = resource_bundle.GetImageNamed(id);
   if (image.IsEmpty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> data;
   if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
                                          /*discard_transparency=*/false,
                                          &data)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return "data:image/png;base64," + base::Base64Encode(data);

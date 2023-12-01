@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -34,15 +35,15 @@ using RampTokenListMaps = std::pair<OnRampTokensListMap, OffRampTokensListMap>;
 bool ParseTokenList(const std::string& json,
                     TokenListMap* token_list,
                     mojom::CoinType coin);
-absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
+std::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json);
-absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
+std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json);
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 bool ParseChainList(const std::string& json, ChainList* chain_list);
-absl::optional<DappListMap> ParseDappLists(const std::string& json);
-absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json);
-absl::optional<std::vector<std::string>> ParseOfacAddressesList(
+std::optional<DappListMap> ParseDappLists(const std::string& json);
+std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json);
+std::optional<std::vector<std::string>> ParseOfacAddressesList(
     const std::string& json);
 }  // namespace brave_wallet
 

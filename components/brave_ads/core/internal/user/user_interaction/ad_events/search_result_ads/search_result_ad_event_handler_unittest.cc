@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,7 +37,7 @@ void ExpectDepositExistsForCreativeInstanceId(
     const std::string& creative_instance_id) {
   base::MockCallback<database::table::GetDepositsCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success=*/true, /*deposit=*/::testing::Ne(absl::nullopt)));
+              Run(/*success=*/true, /*deposit=*/::testing::Ne(std::nullopt)));
   const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(creative_instance_id, callback.Get());
 }

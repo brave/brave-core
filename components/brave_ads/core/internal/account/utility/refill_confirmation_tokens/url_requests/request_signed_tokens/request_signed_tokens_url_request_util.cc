@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_util.h"
 
+#include <optional>
+
 namespace brave_ads {
 
 namespace {
@@ -14,14 +16,14 @@ constexpr char kNonceKey[] = "nonce";
 
 }  // namespace
 
-absl::optional<bool> ParseIsEligible(const base::Value::Dict& dict) {
+std::optional<bool> ParseIsEligible(const base::Value::Dict& dict) {
   return dict.FindBool(kIsEligibleKey);
 }
 
-absl::optional<std::string> ParseNonce(const base::Value::Dict& dict) {
+std::optional<std::string> ParseNonce(const base::Value::Dict& dict) {
   const std::string* const nonce = dict.FindString(kNonceKey);
   if (!nonce || nonce->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *nonce;

@@ -5,6 +5,7 @@
 
 #include "brave/components/tor/tor_utils.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,7 +17,6 @@
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";
@@ -101,7 +101,7 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 // clang-format on
 
 // static
-absl::optional<BridgesConfig> BridgesConfig::FromDict(
+std::optional<BridgesConfig> BridgesConfig::FromDict(
     const base::Value::Dict& dict) {
   BridgesConfig result;
   result.use_bridges =
@@ -129,9 +129,9 @@ absl::optional<BridgesConfig> BridgesConfig::FromDict(
 }
 
 // static
-absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
+std::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   if (!v || !v->is_dict())
-    return absl::nullopt;
+    return std::nullopt;
   return FromDict(v->GetDict());
 }
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/strings/string_number_conversions.h"
@@ -118,7 +119,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   expected_balance->total_balance = expected_balance->balances[address_0] +
                                     expected_balance->balances[address_6];
   EXPECT_CALL(callback,
-              Run(EqualsMojo(expected_balance), absl::optional<std::string>()));
+              Run(EqualsMojo(expected_balance), std::optional<std::string>()));
   bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -192,7 +193,7 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
   auto expected_receive_address = keyring_service_->GetBitcoinAddress(
       account_id(), mojom::BitcoinKeyId::New(0, 10));
   EXPECT_CALL(callback, Run(Eq(std::ref(expected_receive_address)),
-                            absl::optional<std::string>()));
+                            std::optional<std::string>()));
   bitcoin_wallet_service_->RunDiscovery(account_id(), false, callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -207,7 +208,7 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
   auto expected_change_address = keyring_service_->GetBitcoinAddress(
       account_id(), mojom::BitcoinKeyId::New(1, 8));
   EXPECT_CALL(callback, Run(Eq(std::ref(expected_change_address)),
-                            absl::optional<std::string>()));
+                            std::optional<std::string>()));
   bitcoin_wallet_service_->RunDiscovery(account_id(), true, callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

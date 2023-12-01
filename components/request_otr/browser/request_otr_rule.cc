@@ -6,6 +6,7 @@
 #include "brave/components/request_otr/browser/request_otr_rule.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -89,7 +90,7 @@ RequestOTRRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain request_otr configuration");
   }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     return base::unexpected("Failed to parse request_otr configuration");
   }

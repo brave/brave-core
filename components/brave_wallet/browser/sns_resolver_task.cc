@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -37,10 +38,10 @@ namespace brave_wallet {
 namespace {
 
 template <class T>
-absl::optional<T> FromBase64(const std::string& str) {
+std::optional<T> FromBase64(const std::string& str) {
   auto data = base::Base64Decode(str);
   if (!data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return T::FromBytes(*data);
@@ -76,7 +77,7 @@ SnsResolverTaskError MakeInvalidParamsError() {
 
 // Parse SOL record data and verify signature.
 // https://bonfida.github.io/solana-name-service-guide/domain-name/records.html#the-sol-record
-absl::optional<SolanaAddress> ParseAndVerifySolRecordData(
+std::optional<SolanaAddress> ParseAndVerifySolRecordData(
     base::span<const uint8_t> sol_record_payload,
     const SolanaAddress& sol_record_address,
     const SolanaAddress& domain_owner) {
@@ -88,14 +89,14 @@ absl::optional<SolanaAddress> ParseAndVerifySolRecordData(
   // No strict equality check here as `sol_record_payload` usually comes as 2K
   // bytes vector. We need only first 96 bytes of it.
   if (sol_record_payload.size() < kSolRecordDataSize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Extract 32 bytes of address followed by 64 bytes of signature.
   auto sol_record_payload_address = SolanaAddress::FromBytes(
       sol_record_payload.subspan(0, kSolanaPubkeySize));
   if (!sol_record_payload_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto sol_record_payload_signature =
       sol_record_payload.subspan(kSolanaPubkeySize, kSolRecordDataSignature);
@@ -114,7 +115,7 @@ absl::optional<SolanaAddress> ParseAndVerifySolRecordData(
   if (!ED25519_verify(reinterpret_cast<const uint8_t*>(hex_message.data()),
                       hex_message.size(), sol_record_payload_signature.data(),
                       domain_owner.bytes().data())) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return sol_record_payload_address;
@@ -125,11 +126,11 @@ struct SplMintData {
   // Only interested in supply.
   uint64_t supply = 0;
 
-  static absl::optional<SplMintData> FromBytes(
+  static std::optional<SplMintData> FromBytes(
       base::span<const uint8_t> data_span) {
     // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L37
     const size_t kSplMintDataSize = 82;
-    absl::optional<SplMintData> result;
+    std::optional<SplMintData> result;
 
     if (data_span.size() != kSplMintDataSize) {
       return result;
@@ -149,11 +150,11 @@ struct SplAccountData {
   // Only interested in owner.
   SolanaAddress owner;
 
-  static absl::optional<SplAccountData> FromBytes(
+  static std::optional<SplAccountData> FromBytes(
       base::span<const uint8_t> data_span) {
     // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L129
     const size_t kSplAccountDataSize = 165;
-    absl::optional<SplAccountData> result;
+    std::optional<SplAccountData> result;
 
     if (data_span.size() != kSplAccountDataSize) {
       return result;
@@ -165,7 +166,7 @@ struct SplAccountData {
     auto address = SolanaAddress::FromBytes(
         data_span.subspan(owner_offset, kSolanaPubkeySize));
     if (!address) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result->owner = *address;
     return result;
@@ -210,52 +211,52 @@ std::string getProgramAccounts(const SolanaAddress& mint_token) {
 // https://docs.solana.com/developing/clients/jsonrpc-api#example-34
 // Parsing result of getProgramAccounts call. Exepected to find 1 token account
 // for mint. If parsing fails first element of pair is `false`.
-std::pair<bool, absl::optional<SolanaAddress>>
+std::pair<bool, std::optional<SolanaAddress>>
 GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
   auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
   if (!response || !response->result) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
 
   auto* result = response->result->GetIfList();
   if (!result) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
 
   if (result->size() != 1) {
-    return {true, absl::nullopt};
+    return {true, std::nullopt};
   }
 
   auto* item = result->front().GetIfDict();
   if (!item) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
   auto* account = item->FindDict("account");
   if (!account) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfoPayload(*account, &account_info)) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
 
   DCHECK(account_info);
 
   auto account_data = FromBase64<SplAccountData>(account_info->data);
   if (!account_data) {
-    return {false, absl::nullopt};
+    return {false, std::nullopt};
   }
 
   return {true, account_data->owner};
 }
 
 // https://github.com/Bonfida/solana-program-library/blob/6e3be3eedad3a7f4a83c1b7cd5f17f89231e0bca/name-service/js/src/utils.ts#L25
-absl::optional<SolanaAddress> GetNameAccountKey(
+std::optional<SolanaAddress> GetNameAccountKey(
     const SnsNamehash& hashed_name,
-    const absl::optional<SolanaAddress>& parent) {
+    const std::optional<SolanaAddress>& parent) {
   if (!parent) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<std::vector<uint8_t>> seeds;
@@ -270,7 +271,7 @@ absl::optional<SolanaAddress> GetNameAccountKey(
   auto address =
       SolanaKeyring::FindProgramDerivedAddress(seeds, kNameProgramId);
   if (!address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaAddress::FromBase58(*address);
@@ -287,7 +288,7 @@ SnsNamehash GetHashedName(const std::string& name) {
 }
 
 // https://github.com/Bonfida/name-tokenizer#mint
-absl::optional<SolanaAddress> GetMintAddress(
+std::optional<SolanaAddress> GetMintAddress(
     const SolanaAddress& domain_address) {
   const std::string kMintPrefix = "tokenized_name";
   auto mint_prefix_bytes = base::make_span(kMintPrefix);
@@ -303,15 +304,15 @@ absl::optional<SolanaAddress> GetMintAddress(
   auto address =
       SolanaKeyring::FindProgramDerivedAddress(seeds, kNameTokenizerId);
   if (!address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaAddress::FromBase58(*address);
 }
 
 // https://github.com/Bonfida/solana-program-library/blob/6e3be3eedad3a7f4a83c1b7cd5f17f89231e0bca/name-service/js/src/utils.ts#L158
-absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
-                                           bool record) {
+std::optional<SolanaAddress> GetDomainKey(const std::string& domain,
+                                          bool record) {
   // https://github.com/Bonfida/solana-program-library/blob/6e3be3eedad3a7f4a83c1b7cd5f17f89231e0bca/name-service/js/src/constants.ts#L19
   if (domain == "sol") {
     return SolanaAddress::FromBase58(
@@ -321,7 +322,7 @@ absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
   auto dot_pos = domain.find('.');
   if (dot_pos == std::string::npos) {
     DCHECK(false);
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto name = domain.substr(0, dot_pos);
@@ -347,11 +348,11 @@ NameRegistryState& NameRegistryState::operator=(NameRegistryState&&) = default;
 NameRegistryState::~NameRegistryState() = default;
 
 // static
-absl::optional<NameRegistryState> NameRegistryState::FromBytes(
+std::optional<NameRegistryState> NameRegistryState::FromBytes(
     base::span<const uint8_t> data_span) {
   // https://bonfida.github.io/solana-name-service-guide/registry.html
   const size_t kNameRegistryStateHeaderLength = 96;
-  absl::optional<NameRegistryState> result;
+  std::optional<NameRegistryState> result;
   if (data_span.size() < kNameRegistryStateHeaderLength) {
     return result;
   }
@@ -406,8 +407,8 @@ SnsResolverTask::GetWorkOnTaskForTesting() {
 }
 
 void SnsResolverTask::SetResultForTesting(
-    absl::optional<SnsResolverTaskResult> task_result,
-    absl::optional<SnsResolverTaskError> task_error) {
+    std::optional<SnsResolverTaskResult> task_result,
+    std::optional<SnsResolverTaskError> task_error) {
   task_result_ = std::move(task_result);
   task_error_ = std::move(task_error);
 }
@@ -424,12 +425,12 @@ void SnsResolverTask::WorkOnTask() {
   }
 
   if (task_result_) {
-    std::move(done_callback_).Run(this, std::move(task_result_), absl::nullopt);
+    std::move(done_callback_).Run(this, std::move(task_result_), std::nullopt);
     // `this` is not valid here
     return;
   }
   if (task_error_) {
-    std::move(done_callback_).Run(this, absl::nullopt, std::move(task_error_));
+    std::move(done_callback_).Run(this, std::nullopt, std::move(task_error_));
     // `this` is not valid here.
     return;
   }
@@ -456,7 +457,7 @@ void SnsResolverTask::WorkOnWalletAddressTask() {
     if (!nft_mint_address_) {
       nft_mint_address_ = GetMintAddress(*domain_address_);
       if (!nft_mint_address_) {
-        NftOwnerDone(absl::nullopt);
+        NftOwnerDone(std::nullopt);
         ScheduleWorkOnTask();
         return;
       }
@@ -506,7 +507,7 @@ void SnsResolverTask::SetError(SnsResolverTaskError error) {
   task_error_.emplace(std::move(error));
 }
 
-void SnsResolverTask::NftOwnerDone(absl::optional<SolanaAddress> nft_owner) {
+void SnsResolverTask::NftOwnerDone(std::optional<SolanaAddress> nft_owner) {
   nft_owner_check_done_ = true;
   if (nft_owner) {
     task_result_.emplace(*nft_owner);
@@ -533,7 +534,7 @@ void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
     return;
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
                                    &account_info)) {
     SetError(ParseErrorResult(api_request_result.value_body()));
@@ -541,13 +542,13 @@ void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
   }
 
   if (!account_info) {
-    NftOwnerDone(absl::nullopt);
+    NftOwnerDone(std::nullopt);
     return;
   }
 
   auto nft_mint = FromBase64<SplMintData>(account_info->data);
   if (!nft_mint || nft_mint->supply != 1) {
-    NftOwnerDone(absl::nullopt);
+    NftOwnerDone(std::nullopt);
     return;
   }
 
@@ -603,7 +604,7 @@ void SnsResolverTask::OnFetchDomainRegistryState(
     return;
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
                                    &account_info)) {
     SetError(ParseErrorResult(api_request_result.value_body()));
@@ -652,7 +653,7 @@ void SnsResolverTask::OnFetchSolRecordRegistryState(
     return;
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
                                    &account_info)) {
     SetError(ParseErrorResult(api_request_result.value_body()));
@@ -707,7 +708,7 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
     return;
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
                                    &account_info)) {
     SetError(ParseErrorResult(api_request_result.value_body()));
@@ -768,7 +769,7 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
     return;
   }
 
-  absl::optional<SolanaAccountInfo> account_info;
+  std::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
                                    &account_info)) {
     SetError(ParseErrorResult(api_request_result.value_body()));

@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include <optional>
 
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "chrome/browser/external_protocol/external_protocol_handler.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
@@ -24,7 +25,7 @@ void ExternalProtocolHandler::LaunchUrl(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     bool is_in_fenced_frame_tree,
-    const absl::optional<url::Origin>& initiating_origin,
+    const std::optional<url::Origin>& initiating_origin,
     content::WeakDocumentPtr initiator_document
 #if BUILDFLAG(IS_ANDROID)
     ,

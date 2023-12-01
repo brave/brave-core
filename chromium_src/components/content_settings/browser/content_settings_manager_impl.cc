@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/content_settings/browser/content_settings_manager_impl.h"
+#include <optional>
 
+#include "components/content_settings/browser/content_settings_manager_impl.h"
 #include "src/components/content_settings/browser/content_settings_manager_impl.cc"
 
 namespace content_settings {
@@ -20,8 +21,8 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
       origin, site_for_cookies, top_frame_origin, net::CookieSettingOverrides(),
       storage_origin);
   std::move(callback).Run(should_use
-                              ? absl::make_optional<url::Origin>(storage_origin)
-                              : absl::nullopt);
+                              ? std::make_optional<url::Origin>(storage_origin)
+                              : std::nullopt);
 }
 
 }  // namespace content_settings

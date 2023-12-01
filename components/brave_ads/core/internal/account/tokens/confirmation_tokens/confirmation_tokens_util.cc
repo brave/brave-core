@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
@@ -18,9 +20,9 @@ bool HasConfirmationTokens() {
 
 }  // namespace
 
-absl::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
+std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
   if (!HasConfirmationTokens()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConfirmationStateManager::GetInstance()

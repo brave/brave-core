@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -56,7 +58,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
 
-  const absl::optional<std::string> rotating_hash_before =
+  const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   EXPECT_TRUE(rotating_hash_before);
 
@@ -77,7 +79,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
 
-  const absl::optional<std::string> rotating_hash_before =
+  const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   EXPECT_TRUE(rotating_hash_before);
 
@@ -96,7 +98,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 
-  const absl::optional<std::string> rotating_hash_before =
+  const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   EXPECT_TRUE(rotating_hash_before);
 

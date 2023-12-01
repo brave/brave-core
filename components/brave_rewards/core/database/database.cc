@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database.h"
+
+#include <optional>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -403,7 +405,7 @@ void Database::AdvanceMonthlyContributionDates(
 }
 
 void Database::GetNextMonthlyContributionTime(
-    base::OnceCallback<void(absl::optional<base::Time>)> callback) {
+    base::OnceCallback<void(std::optional<base::Time>)> callback) {
   recurring_tip_.GetNextMonthlyContributionTime(std::move(callback));
 }
 

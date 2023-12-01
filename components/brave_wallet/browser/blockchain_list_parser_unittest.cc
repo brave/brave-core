@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -415,7 +417,7 @@ TEST(BlockchainListParseUnitTest, ParseDappLists) {
   })";
 
   // Parse the dapp list
-  absl::optional<DappListMap> dapp_list_map = ParseDappLists(dapp_list);
+  std::optional<DappListMap> dapp_list_map = ParseDappLists(dapp_list);
   ASSERT_TRUE(dapp_list_map);
 
   // There should be eight lists, for Ethereum, Solana, Polygon, Binance Smart
@@ -491,7 +493,7 @@ TEST(BlockchainListParseUnitTest, ParseDappLists) {
 
 TEST(BlockchainListParseUnitTest, ParseOnRampTokensListMap) {
   // Invalid JSON is not parsed
-  absl::optional<RampTokenListMaps> supported_tokens_list_map =
+  std::optional<RampTokenListMaps> supported_tokens_list_map =
       ParseRampTokenListMaps(R"({)");
   ASSERT_FALSE(supported_tokens_list_map);
 
@@ -700,7 +702,7 @@ TEST(BlockchainListParseUnitTest, ParseOffRampTokensListMap) {
     ]
   })";
 
-  absl::optional<RampTokenListMaps> supported_tokens_list_map =
+  std::optional<RampTokenListMaps> supported_tokens_list_map =
       ParseRampTokenListMaps(supported_tokens_list);
   ASSERT_TRUE(supported_tokens_list_map);
   EXPECT_EQ((*supported_tokens_list_map).second.size(), 1UL);
@@ -727,8 +729,8 @@ TEST(BlockchainListParseUnitTest, ParseOffRampTokensListMap) {
 
 TEST(ParseOnRampCurrencyListTest, ParseOnRampCurrencyLists) {
   // Invalid JSON is not parsed
-  absl::optional<std::vector<mojom::OnRampCurrency>>
-      supported_currencies_lists = ParseOnRampCurrencyLists(R"({)");
+  std::optional<std::vector<mojom::OnRampCurrency>> supported_currencies_lists =
+      ParseOnRampCurrencyLists(R"({)");
   ASSERT_FALSE(supported_currencies_lists);
 
   const std::string supported_currencies_lists_json = R"({
@@ -788,8 +790,7 @@ TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
     }
   })";
 
-  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
-      ParseCoingeckoIdsMap(json);
+  std::optional<CoingeckoIdsMap> coingecko_ids_map = ParseCoingeckoIdsMap(json);
 
   ASSERT_TRUE(coingecko_ids_map);
 
@@ -822,7 +823,7 @@ TEST(BlockchainListParseUnitTest, ParseOfacAddressesList) {
     ]
   })";
 
-  absl::optional<std::vector<std::string>> ofac_addresses_list =
+  std::optional<std::vector<std::string>> ofac_addresses_list =
       ParseOfacAddressesList(json);
   ASSERT_TRUE(ofac_addresses_list);
 

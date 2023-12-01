@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TX_STATE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -46,7 +47,7 @@ class BitcoinTxStateManager : public TxStateManager {
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
   std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) override;
+      const std::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

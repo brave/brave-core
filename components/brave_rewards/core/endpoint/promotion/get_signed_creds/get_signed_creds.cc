@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -61,7 +62,7 @@ mojom::Result GetSignedCreds::ParseBody(const std::string& body,
                                         mojom::CredsBatch* batch) {
   DCHECK(batch);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

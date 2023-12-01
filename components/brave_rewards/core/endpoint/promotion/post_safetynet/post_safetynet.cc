@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_safetynet/post_safetynet.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -68,7 +69,7 @@ mojom::Result PostSafetynet::ParseBody(const std::string& body,
                                        std::string* nonce) {
   DCHECK(nonce);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

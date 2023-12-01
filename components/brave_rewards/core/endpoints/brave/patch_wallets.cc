@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -89,11 +90,11 @@ const char* PatchWallets::Path() const {
   return "/v4/wallets/%s";
 }
 
-absl::optional<std::string> PatchWallets::Url() const {
+std::optional<std::string> PatchWallets::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
@@ -106,12 +107,12 @@ mojom::UrlMethod PatchWallets::Method() const {
   return mojom::UrlMethod::PATCH;
 }
 
-absl::optional<std::vector<std::string>> PatchWallets::Headers(
+std::optional<std::vector<std::string>> PatchWallets::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
@@ -122,10 +123,10 @@ absl::optional<std::vector<std::string>> PatchWallets::Headers(
       content, wallet->payment_id, wallet->recovery_seed);
 }
 
-absl::optional<std::string> PatchWallets::Content() const {
+std::optional<std::string> PatchWallets::Content() const {
   if (geo_country_.empty()) {
     BLOG(0, "geo_country_ is empty!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict content;
@@ -134,7 +135,7 @@ absl::optional<std::string> PatchWallets::Content() const {
   std::string json;
   if (!base::JSONWriter::Write(content, &json)) {
     BLOG(0, "Failed to write content to JSON!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return json;

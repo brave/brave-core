@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
@@ -35,12 +36,12 @@ class TxStorageDelegateImplUnitTest : public testing::Test {
     factory_ = GetTestValueStoreFactory(temp_dir_);
   }
 
-  absl::optional<base::Value> GetTxsFromDB(TxStorageDelegateImpl* delegate) {
+  std::optional<base::Value> GetTxsFromDB(TxStorageDelegateImpl* delegate) {
     base::RunLoop run_loop;
-    absl::optional<base::Value> value_out;
+    std::optional<base::Value> value_out;
     delegate->store_->Get(
         "transactions",
-        base::BindLambdaForTesting([&](absl::optional<base::Value> value) {
+        base::BindLambdaForTesting([&](std::optional<base::Value> value) {
           value_out = std::move(value);
           run_loop.Quit();
         }));

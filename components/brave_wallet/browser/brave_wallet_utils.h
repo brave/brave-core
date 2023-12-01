@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 namespace base {
@@ -59,7 +59,7 @@ bool HasCreatedWallets(PrefService* prefs);
 
 base::Value::Dict TransactionReceiptToValue(
     const TransactionReceipt& tx_receipt);
-absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+std::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value);
 
 std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
@@ -156,27 +156,26 @@ void RemoveHiddenNetwork(PrefService* prefs,
 // kBraveWalletSelectedNetworks.
 std::string GetCurrentChainId(PrefService* prefs,
                               mojom::CoinType coin,
-                              const absl::optional<url::Origin>& origin);
+                              const std::optional<url::Origin>& origin);
 bool SetCurrentChainId(PrefService* prefs,
                        mojom::CoinType coin,
-                       const absl::optional<url::Origin>& origin,
+                       const std::optional<url::Origin>& origin,
                        const std::string& chain_id);
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
 // Converts string representation of CoinType to enum.
-absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
+std::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
 
 // Resolves chain_id from network_id.
-absl::optional<std::string> GetChainId(PrefService* prefs,
-                                       const mojom::CoinType& coin,
-                                       const std::string& network_id);
+std::optional<std::string> GetChainId(PrefService* prefs,
+                                      const mojom::CoinType& coin,
+                                      const std::string& network_id);
 
 // Resolves chain_id from network_id (including custom networks).
-absl::optional<std::string> GetChainIdByNetworkId(
-    PrefService* prefs,
-    const mojom::CoinType& coin,
-    const std::string& network_id);
+std::optional<std::string> GetChainIdByNetworkId(PrefService* prefs,
+                                                 const mojom::CoinType& coin,
+                                                 const std::string& network_id);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium

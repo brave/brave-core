@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
+#include <optional>
+
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -41,19 +43,19 @@ std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
   return Base58EncodeWithCheck(result);
 }
 
-absl::optional<DecodedZCashAddress> DecodeZCashAddress(
+std::optional<DecodedZCashAddress> DecodeZCashAddress(
     const std::string& address) {
   std::vector<uint8_t> decode_result;
   if (!DecodeBase58Check(address, decode_result,
                          kPubKeyHashSize + kPrefixSize)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   bool is_testnet = decode_result[0] == 0x1d && decode_result[1] == 0x25;
   bool is_mainnet = decode_result[0] == 0x1c && decode_result[1] == 0xb8;
 
   if (!is_testnet && !is_mainnet) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> body(decode_result.begin() + kPrefixSize,

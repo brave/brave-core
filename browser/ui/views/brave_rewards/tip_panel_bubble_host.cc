@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/browser/brave_rewards/rewards_util.h"
@@ -40,7 +41,7 @@ class TipPanelBubbleManager : public BraveWebUIBubbleManager<TipPanelUI> {
   void MaybeInitPersistentRenderer() override {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
+      const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     set_cached_contents_wrapper(nullptr);
     return BraveWebUIBubbleManager::CreateWebUIBubbleDialog(anchor, arrow);

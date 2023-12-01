@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,7 +19,6 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class NavigationHandle;
@@ -136,7 +136,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
                                const bool& auto_redirect_blocked);
   void UpdateDnsLinkButtonState();
-  absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
+  std::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
   GURL ResolveDNSLinkUrl(const GURL& url);
   GURL ResolveXIPFSPathUrl(const std::string& x_ipfs_path_header_value);
@@ -150,15 +150,15 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header,
+                          std::optional<std::string> x_ipfs_path_header,
                           const bool& auto_redirect_blocked);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
-                            absl::optional<std::string> x_ipfs_path_header,
+                            std::optional<std::string> x_ipfs_path_header,
                             const bool auto_redirect_blocked,
                             const std::string& host,
-                            const absl::optional<std::string>& dnslink);
+                            const std::optional<std::string>& dnslink);
 
   void LoadUrl(const GURL& gurl);
 

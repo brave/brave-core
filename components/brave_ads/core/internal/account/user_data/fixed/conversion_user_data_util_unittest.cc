@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/json/json_writer.h"
@@ -43,7 +44,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
                                /*process_at=*/Now());
 
   // Act
-  const absl::optional<base::Value::Dict> user_data =
+  const std::optional<base::Value::Dict> user_data =
       MaybeBuildVerifiableConversionUserData(conversion_queue_item);
   ASSERT_TRUE(user_data);
 
@@ -63,7 +64,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now());
@@ -79,7 +80,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
-                      /*verifiable_conversion=*/absl::nullopt);
+                      /*verifiable_conversion=*/std::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now());

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -33,7 +34,6 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
@@ -196,7 +196,7 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
   return result;
 }
 
-absl::optional<std::string> AdBlockService::GetCspDirectives(
+std::optional<std::string> AdBlockService::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {

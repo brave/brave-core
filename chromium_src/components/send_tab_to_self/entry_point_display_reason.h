@@ -7,6 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEND_TAB_TO_SELF_ENTRY_POINT_DISPLAY_REASON_H_
 
 #define GetEntryPointDisplayReason GetEntryPointDisplayReason_ChromiumImpl
+#include <optional>
+
 #include "src/components/send_tab_to_self/entry_point_display_reason.h"  // IWYU pragma: export
 #undef GetEntryPointDisplayReason
 
@@ -14,7 +16,7 @@ namespace send_tab_to_self {
 
 namespace internal {
 
-absl::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
+std::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
     const GURL& url_to_share,
     syncer::SyncService* sync_service,
     SendTabToSelfModel* send_tab_to_self_model,

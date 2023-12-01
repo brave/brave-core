@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check.h"
@@ -15,7 +16,6 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "base/environment.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -56,7 +56,7 @@ class ScopedLibcTZ {
   static constexpr char kTZ[] = "TZ";
 
   bool success_ = true;
-  absl::optional<std::string> old_timezone_;
+  std::optional<std::string> old_timezone_;
 };
 
 constexpr char ScopedLibcTZ::kTZ[];

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace query_filter {
-absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
+std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 
 // This function will return a new url stripping known tracking query params.
 // If nothing is to be stripped, a null value is returned.
@@ -24,8 +24,8 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 // specifies where we are navigating to. `request_method` indicates the HTTP
 // method of the request. `internal_redirect` indicates wether or not this is an
 // internal redirect or not. This function returns the url we should redirect to
-// or a `absl::nullopt` value if nothing is changed.
-absl::optional<GURL> MaybeApplyQueryStringFilter(
+// or a `std::nullopt` value if nothing is changed.
+std::optional<GURL> MaybeApplyQueryStringFilter(
     const GURL& initiator_url,
     const GURL& redirect_source_url,
     const GURL& request_url,

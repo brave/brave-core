@@ -6,6 +6,8 @@
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
 #include <stdint.h>
+
+#include <optional>
 #include <vector>
 
 #include "base/base64.h"
@@ -48,14 +50,14 @@ constexpr char kWireguardConfigTemplate[] = R"(
 
 }  // namespace
 
-absl::optional<std::string> CreateWireguardConfig(
+std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,
     const std::string& mapped_ipv4_address) {
   if (client_private_key.empty() || server_public_key.empty() ||
       vpn_server_hostname.empty() || mapped_ipv4_address.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::string config = kWireguardConfigTemplate;
   base::ReplaceSubstringsAfterOffset(&config, 0, "{client_private_key}",

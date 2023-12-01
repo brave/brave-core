@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -51,7 +53,7 @@ void BuildAndSaveConversionQueue(AdType ad_type,
                                  const int count) {
   const AdInfo ad = BuildAd(ad_type, should_use_random_uuids);
 
-  absl::optional<VerifiableConversionInfo> verifiable_conversion;
+  std::optional<VerifiableConversionInfo> verifiable_conversion;
   if (is_verifiable) {
     verifiable_conversion = VerifiableConversionInfo{
         kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};

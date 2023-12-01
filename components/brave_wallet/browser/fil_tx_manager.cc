@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -52,7 +53,7 @@ FilTxManager::~FilTxManager() {
 
 void FilTxManager::GetEstimatedGas(const std::string& chain_id,
                                    const mojom::AccountIdPtr& from,
-                                   const absl::optional<url::Origin>& origin,
+                                   const std::optional<url::Origin>& origin,
                                    std::unique_ptr<FilTransaction> tx,
                                    AddUnapprovedTransactionCallback callback) {
   const std::string gas_premium = tx->gas_premium();
@@ -73,7 +74,7 @@ void FilTxManager::GetEstimatedGas(const std::string& chain_id,
 void FilTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     std::unique_ptr<FilTransaction> tx,
     AddUnapprovedTransactionCallback callback,
     const std::string& gas_premium,
@@ -109,7 +110,7 @@ void FilTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
@@ -358,9 +359,9 @@ FilTxStateManager* FilTxManager::GetFilTxStateManager() {
 }
 
 void FilTxManager::UpdatePendingTransactions(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
     auto cid = pending_transaction->tx_hash();

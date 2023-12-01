@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
 #include <map>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -347,7 +348,7 @@ void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
   // Convert each account address to SolanaAddress and check validity
   std::vector<SolanaAddress> solana_addresses;
   for (const auto& address : account_addresses) {
-    absl::optional<SolanaAddress> solana_address =
+    std::optional<SolanaAddress> solana_address =
         SolanaAddress::FromBase58(address);
     if (!solana_address.has_value()) {
       continue;
@@ -391,11 +392,11 @@ void AssetDiscoveryTask::OnGetSolanaTokenAccountsByOwner(
   std::vector<SolanaAddress> discovered_mint_addresses;
   for (const auto& token_account : token_accounts) {
     // Decode Base64
-    const absl::optional<std::vector<uint8_t>> data =
+    const std::optional<std::vector<uint8_t>> data =
         base::Base64Decode(token_account.data);
     if (data.has_value()) {
       // Decode the address
-      const absl::optional<SolanaAddress> mint_address =
+      const std::optional<SolanaAddress> mint_address =
           DecodeMintAddress(data.value());
       if (mint_address.has_value()) {
         // Add the contract address to the list
@@ -520,10 +521,10 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 // Parses the Account object for the `mint` field which is a 32 byte public key.
 // See
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86-L105
-absl::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
+std::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
     const std::vector<uint8_t>& data) {
   if (data.size() < 32) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> pub_key_bytes(data.begin(), data.begin() + 32);

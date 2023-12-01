@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_RAS_CONNECTION_API_SIM_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_RAS_CONNECTION_API_SIM_H_
 
+#include <optional>
 #include <string>
 
 #include "base/gtest_prod_util.h"
@@ -69,7 +70,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   bool connection_created_ = false;
   bool check_connection_called_ = false;
 
-  absl::optional<bool> network_available_;
+  std::optional<bool> network_available_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPISim> weak_factory_{this};
 };
 

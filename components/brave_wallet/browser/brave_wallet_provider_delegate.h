@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -20,7 +20,7 @@ class BraveWalletProviderDelegate {
  public:
   using RequestPermissionsCallback = base::OnceCallback<void(
       mojom::RequestPermissionsError error,
-      const absl::optional<std::vector<std::string>>& allowed_accounts)>;
+      const std::optional<std::vector<std::string>>& allowed_accounts)>;
 
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
@@ -39,7 +39,7 @@ class BraveWalletProviderDelegate {
                                   RequestPermissionsCallback) = 0;
   virtual bool IsAccountAllowed(mojom::CoinType type,
                                 const std::string& account) = 0;
-  virtual absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  virtual std::optional<std::vector<std::string>> GetAllowedAccounts(
       mojom::CoinType type,
       const std::vector<std::string>& accounts) = 0;
   virtual bool IsPermissionDenied(mojom::CoinType type) = 0;

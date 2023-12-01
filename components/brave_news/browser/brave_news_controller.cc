@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -50,7 +51,6 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
@@ -307,7 +307,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
   // Verify the url points at a valid feed
   VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
   if (!feed_url.is_valid()) {
-    std::move(callback).Run(false, false, absl::nullopt);
+    std::move(callback).Run(false, false, std::nullopt);
     return;
   }
   direct_feed_controller_.VerifyFeedUrl(
@@ -319,13 +319,13 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             VLOG(1) << "Is new feed valid? " << is_valid
                     << " Title: " << feed_title;
             if (!is_valid) {
-              std::move(callback).Run(false, false, absl::nullopt);
+              std::move(callback).Run(false, false, std::nullopt);
               return;
             }
 
             if (!controller->direct_feed_controller_.AddDirectFeedPref(
                     feed_url, feed_title)) {
-              std::move(callback).Run(true, true, absl::nullopt);
+              std::move(callback).Run(true, true, std::nullopt);
               return;
             }
 
@@ -354,7 +354,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                        Publishers publishers) {
                       std::move(callback).Run(
                           true, false,
-                          absl::optional<Publishers>(std::move(publishers)));
+                          std::optional<Publishers>(std::move(publishers)));
                     },
                     std::move(callback)),
                 true);
@@ -386,7 +386,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   // Validate
   VLOG(2) << "getimagedata " << padded_image_url.spec();
   if (!padded_image_url.is_valid()) {
-    absl::optional<std::vector<uint8_t>> args;
+    std::optional<std::vector<uint8_t>> args;
     std::move(callback).Run(std::move(args));
     return;
   }
@@ -397,7 +397,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   const std::string ending = ".pad";
   if (file_name.length() >= file_name.max_size() - 1 ||
       file_name.length() <= ending.length()) {
-    absl::optional<std::vector<uint8_t>> args;
+    std::optional<std::vector<uint8_t>> args;
     std::move(callback).Run(std::move(args));
     return;
   }
@@ -420,7 +420,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
                  !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
                      &body_payload))) {
               // Byte padding removal failed
-              std::move(callback).Run(absl::nullopt);
+              std::move(callback).Run(std::nullopt);
               return;
             }
             // Download (and optional unpadding) was successful,
@@ -440,7 +440,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
         // If the publisher doesn't exist, there's nothing we can do.
         const auto& it = publishers.find(publisher_id);
         if (it == publishers.end()) {
-          std::move(callback).Run(absl::nullopt);
+          std::move(callback).Run(std::nullopt);
           return;
         }
 
@@ -464,7 +464,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
                 [](GetFavIconDataCallback callback,
                    const favicon_base::FaviconRawBitmapResult& result) {
                   if (!result.is_valid()) {
-                    std::move(callback).Run(absl::nullopt);
+                    std::move(callback).Run(std::nullopt);
                     return;
                   }
 
@@ -566,7 +566,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   }
   auto on_ad_received = base::BindOnce(
       [](GetDisplayAdCallback callback, const std::string& dimensions,
-         absl::optional<base::Value::Dict> ad_data) {
+         std::optional<base::Value::Dict> ad_data) {
         if (!ad_data) {
           VLOG(1) << "GetDisplayAd: no ad";
           std::move(callback).Run(nullptr);

@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/services/ipfs/ipfs_service_utils.h"
+
 #include <memory>
+#include <optional>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-
-#include "brave/components/services/ipfs/ipfs_service_utils.h"
-
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -22,7 +22,7 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
   std::string updated;
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize", absl::nullopt);
+      "APIPort", "SwarmPort", "StorageSize", std::nullopt);
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
@@ -104,7 +104,7 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
 
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize", absl::nullopt);
+      "APIPort", "SwarmPort", "StorageSize", std::nullopt);
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","

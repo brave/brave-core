@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_CONVERSION_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_CONVERSION_BUILDER_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 namespace brave_ads {
 
@@ -16,7 +16,7 @@ struct VerifiableConversionInfo;
 
 ConversionInfo BuildConversion(
     const AdEventInfo& ad_event,
-    const absl::optional<VerifiableConversionInfo>& verifiable_conversion);
+    const std::optional<VerifiableConversionInfo>& verifiable_conversion);
 
 }  // namespace brave_ads
 

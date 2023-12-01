@@ -6,6 +6,7 @@
 #include "brave/components/p3a/star_randomness_test_util.h"
 
 #include <algorithm>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -34,7 +35,7 @@ MetricLogType ValidateURLAndGetMetricLogType(const GURL& url,
       url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
   EXPECT_EQ(path_segments.size(), 4U);
 
-  absl::optional<MetricLogType> log_type =
+  std::optional<MetricLogType> log_type =
       StringToMetricLogType(path_segments[2]);
   EXPECT_TRUE(log_type.has_value());
 

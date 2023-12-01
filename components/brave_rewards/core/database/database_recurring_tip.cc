@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
+
 #include <map>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/constants.h"
-#include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
@@ -145,7 +147,7 @@ void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
 }
 
 void DatabaseRecurringTip::GetNextMonthlyContributionTime(
-    base::OnceCallback<void(absl::optional<base::Time>)> callback) {
+    base::OnceCallback<void(std::optional<base::Time>)> callback) {
   auto transaction = mojom::DBTransaction::New();
 
   auto command = mojom::DBCommand::New();
@@ -165,7 +167,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
   transaction->commands.push_back(std::move(command));
 
   auto on_completed =
-      [](base::OnceCallback<void(absl::optional<base::Time>)> callback,
+      [](base::OnceCallback<void(std::optional<base::Time>)> callback,
          mojom::DBCommandResponsePtr response) {
         base::Time time;
         if (response &&
@@ -183,7 +185,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
             return;
           }
         }
-        std::move(callback).Run(absl::nullopt);
+        std::move(callback).Run(std::nullopt);
       };
 
   engine_->client()->RunDBTransaction(

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -78,11 +79,11 @@ std::string GetWallet::Path() const {
   return "/v4/wallets/";
 }
 
-absl::optional<std::string> GetWallet::Url() const {
+std::optional<std::string> GetWallet::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return endpoint::promotion::GetServerUrl(Path() + wallet->payment_id);
@@ -92,12 +93,12 @@ mojom::UrlMethod GetWallet::Method() const {
   return mojom::UrlMethod::GET;
 }
 
-absl::optional<std::vector<std::string>> GetWallet::Headers(
+std::optional<std::vector<std::string>> GetWallet::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/verifiable_conversion_id_pattern_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_meta_tag_parser_util.h"
@@ -16,12 +18,12 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<ConversionResourceIdPatternInfo>
+std::optional<ConversionResourceIdPatternInfo>
 FindMatchingConversionResourceIdPattern(
     const ConversionResourceIdPatternMap& resource_id_patterns,
     const std::vector<GURL>& redirect_chain) {
   if (resource_id_patterns.empty() || redirect_chain.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& [url_pattern, resource_id_pattern] : resource_id_patterns) {
@@ -30,10 +32,10 @@ FindMatchingConversionResourceIdPattern(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::string>
+std::optional<std::string>
 MaybeParseResourceIdPatternSearchInTypeVerifiableConversionId(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
@@ -49,30 +51,30 @@ MaybeParseResourceIdPatternSearchInTypeVerifiableConversionId(
     }
 
     default: {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 }
 
-absl::optional<std::string> MaybeParseDefaultVerifiableConversionId(
+std::optional<std::string> MaybeParseDefaultVerifiableConversionId(
     const std::string& html) {
   return MaybeParseVerifableConversionIdFromHtmlMetaTag(html);
 }
 
 }  // namespace
 
-absl::optional<std::string> MaybeParseVerifiableConversionId(
+std::optional<std::string> MaybeParseVerifiableConversionId(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionResourceIdPatternMap& resource_id_patterns) {
-  const absl::optional<ConversionResourceIdPatternInfo> resource_id_pattern =
+  const std::optional<ConversionResourceIdPatternInfo> resource_id_pattern =
       FindMatchingConversionResourceIdPattern(resource_id_patterns,
                                               redirect_chain);
   if (!resource_id_pattern) {
     return MaybeParseDefaultVerifiableConversionId(html);
   }
 
-  if (absl::optional<std::string> verifiable_conversion_id =
+  if (std::optional<std::string> verifiable_conversion_id =
           MaybeParseResourceIdPatternSearchInTypeVerifiableConversionId(
               redirect_chain, html, *resource_id_pattern)) {
     return verifiable_conversion_id;

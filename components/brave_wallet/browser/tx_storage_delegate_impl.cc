@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -63,7 +64,7 @@ void TxStorageDelegateImpl::Initialize() {
                              weak_factory_.GetWeakPtr()));
 }
 
-void TxStorageDelegateImpl::OnTxsRead(absl::optional<base::Value> txs) {
+void TxStorageDelegateImpl::OnTxsRead(std::optional<base::Value> txs) {
   if (txs) {
     txs_ = std::move(txs->GetDict());
   }

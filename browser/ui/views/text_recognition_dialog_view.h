@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TEXT_RECOGNITION_DIALOG_VIEW_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -19,7 +20,6 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -70,7 +70,7 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> header_container_ = nullptr;
   SkBitmap image_;
-  absl::optional<std::vector<std::string>> result_;
+  std::optional<std::vector<std::string>> result_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

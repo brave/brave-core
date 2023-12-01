@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util_constants.h"
@@ -23,7 +25,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
       kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
+  const std::optional<VerifiableConversionEnvelopeInfo>
       verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(verifiable_conversion);
   ASSERT_TRUE(verifiable_conversion_envelope);

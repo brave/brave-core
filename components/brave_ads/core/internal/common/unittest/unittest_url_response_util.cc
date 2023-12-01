@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check_op.h"
@@ -41,7 +42,7 @@ URLResponseList GetUrlResponsesForRequestPath(
   return iter->second;
 }
 
-absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
+std::optional<URLResponsePair> GetNextUrlResponseForUrl(
     const GURL& url,
     const URLResponseMap& url_responses) {
   CHECK(url.is_valid()) << "Invalid URL: " << url;
@@ -53,7 +54,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
       GetUrlResponsesForRequestPath(url_responses, request_path);
   if (url_responses_for_request_path.empty()) {
     // URL responses not found for the given request path.
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   size_t index = 0;
@@ -88,13 +89,13 @@ std::string ParseFilenameFromResponseBody(const std::string& response_body) {
 
 }  // namespace
 
-absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
+std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const mojom::UrlRequestInfoPtr& url_request,
     const URLResponseMap& url_responses) {
-  const absl::optional<URLResponsePair> url_response =
+  const std::optional<URLResponsePair> url_response =
       GetNextUrlResponseForUrl(url_request->url, url_responses);
   if (!url_response) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string response_body = url_response->second;

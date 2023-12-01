@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data.h"
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -26,7 +26,7 @@ base::Value::Dict BuildRotatingHashUserData(
     return user_data;
   }
 
-  const absl::optional<std::string> rotating_hash =
+  const std::optional<std::string> rotating_hash =
       BuildRotatingHash(transaction);
   if (rotating_hash) {
     user_data.Set(kRotatingHashKey, *rotating_hash);

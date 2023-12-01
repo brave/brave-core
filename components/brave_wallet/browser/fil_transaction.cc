@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -34,7 +35,7 @@ bool IsNumericString(const std::string& value) {
 FilTransaction::FilTransaction() = default;
 
 FilTransaction::FilTransaction(const FilTransaction&) = default;
-FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,
+FilTransaction::FilTransaction(std::optional<uint64_t> nonce,
                                const std::string& gas_premium,
                                const std::string& gas_fee_cap,
                                int64_t gas_limit,
@@ -66,7 +67,7 @@ bool FilTransaction::operator!=(const FilTransaction& other) const {
 }
 
 // static
-absl::optional<FilTransaction> FilTransaction::FromTxData(
+std::optional<FilTransaction> FilTransaction::FromTxData(
     bool is_mainnet,
     const mojom::FilTxDataPtr& tx_data) {
   FilTransaction tx;
@@ -79,35 +80,35 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
   if (address.IsEmpty()) {
     address = FilAddress::FromFEVMAddress(is_mainnet, tx_data->to);
     if (address.IsEmpty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
   tx.to_ = address;
 
   if (tx_data->value.empty() || !IsNumericString(tx_data->value)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.set_value(tx_data->value);
 
   if (!IsNumericString(tx_data->gas_fee_cap)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.set_fee_cap(tx_data->gas_fee_cap);
 
   if (!IsNumericString(tx_data->gas_premium)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.set_gas_premium(tx_data->gas_premium);
 
   if (!IsNumericString(tx_data->max_fee)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.set_max_fee(tx_data->max_fee);
 
   int64_t gas_limit = 0;
   if (!tx_data->gas_limit.empty()) {
     if (!base::StringToInt64(tx_data->gas_limit, &gas_limit)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
   tx.set_gas_limit(gas_limit);
@@ -128,54 +129,54 @@ base::Value::Dict FilTransaction::ToValue() const {
 }
 
 // static
-absl::optional<FilTransaction> FilTransaction::FromValue(
+std::optional<FilTransaction> FilTransaction::FromValue(
     const base::Value::Dict& value) {
   FilTransaction tx;
   const std::string* nonce_value = value.FindString("Nonce");
   if (!nonce_value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!nonce_value->empty()) {
     uint64_t nonce = 0;
     if (!base::StringToUint64(*nonce_value, &nonce)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     tx.nonce_ = nonce;
   }
 
   const std::string* gas_premium = value.FindString("GasPremium");
   if (!gas_premium) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.gas_premium_ = *gas_premium;
 
   const std::string* gas_fee_cap = value.FindString("GasFeeCap");
   if (!gas_fee_cap) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.gas_fee_cap_ = *gas_fee_cap;
 
   const std::string* max_fee = value.FindString("MaxFee");
   if (!max_fee) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.max_fee_ = *max_fee;
 
   const std::string* gas_limit = value.FindString("GasLimit");
   if (!gas_limit || !base::StringToInt64(*gas_limit, &tx.gas_limit_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* to = value.FindString("To");
   if (!to) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.to_ = FilAddress::FromAddress(*to);
 
   const std::string* tx_value = value.FindString("Value");
   if (!tx_value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   tx.value_ = *tx_value;
   return tx;
@@ -204,18 +205,18 @@ base::Value FilTransaction::GetMessageToSign(const FilAddress& from) const {
   return base::Value(std::move(value));
 }
 
-absl::optional<std::string> FilTransaction::GetMessageToSignJson(
+std::optional<std::string> FilTransaction::GetMessageToSignJson(
     const FilAddress& from) const {
   std::string json;
   if (!base::JSONWriter::Write(GetMessageToSign(from), &json)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConvertMesssageStringFieldsToInt64("", json);
 }
 
 // static
-absl::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
+std::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
   std::string converted_json =
@@ -228,20 +229,20 @@ absl::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
                        path + "/Method", converted_json.c_str(), true)
                        .c_str();
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return converted_json;
 }
 
 // static
-absl::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
+std::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
   return ConvertMesssageStringFieldsToInt64(path + "/Message", json);
 }
 
 // static
-absl::optional<base::Value> FilTransaction::DeserializeSignedTx(
+std::optional<base::Value> FilTransaction::DeserializeSignedTx(
     const std::string& signed_tx) {
   std::string json =
       json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true)
@@ -254,7 +255,7 @@ absl::optional<base::Value> FilTransaction::DeserializeSignedTx(
 }
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
-absl::optional<std::string> FilTransaction::GetSignedTransaction(
+std::optional<std::string> FilTransaction::GetSignedTransaction(
     const FilAddress& from,
     const std::vector<uint8_t>& private_key) const {
   DCHECK(!from.IsEmpty());
@@ -262,7 +263,7 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   auto message = GetMessageToSign(from);
   auto message_json = GetMessageToSignJson(from);
   if (!message_json) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   base::Value::Dict signature;
   {
@@ -270,7 +271,7 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
         from.network() == mojom::kFilecoinMainnet, *message_json,
         rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
     if (data.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     signature.Set("Data", data);
   }
@@ -285,7 +286,7 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   dict.Set("Signature", std::move(signature));
   std::string json;
   if (!base::JSONWriter::Write(dict, &json)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return ConvertMesssageStringFieldsToInt64("/Message", json);
 }

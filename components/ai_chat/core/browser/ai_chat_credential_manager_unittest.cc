@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+
 #include <memory>
+#include <optional>
 
 #include "base/json/values_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -68,11 +70,11 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
   }
 
   void TestFetchPremiumCredential(
-      absl::optional<CredentialCacheEntry> expected_credential) {
+      std::optional<CredentialCacheEntry> expected_credential) {
     base::RunLoop run_loop;
     ai_chat_credential_manager_->FetchPremiumCredential(
         base::BindLambdaForTesting(
-            [&](absl::optional<CredentialCacheEntry> credential) {
+            [&](std::optional<CredentialCacheEntry> credential) {
               ASSERT_EQ(credential.has_value(),
                         expected_credential.has_value());
               if (credential && expected_credential) {
@@ -135,7 +137,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatus) {
 
 TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
   // If cache is empty, it should return nullopt.
-  TestFetchPremiumCredential(absl::nullopt);
+  TestFetchPremiumCredential(std::nullopt);
 
   // Add an invalid credential to the cache. FetchPremiumCredential should
   // not return it and should remove the invalid value from the cache.
@@ -146,7 +148,7 @@ TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
   const auto& cached_creds_dict =
       prefs_service_.GetDict(ai_chat::prefs::kBraveChatPremiumCredentialCache);
   EXPECT_EQ(cached_creds_dict.size(), 1u);
-  TestFetchPremiumCredential(absl::nullopt);
+  TestFetchPremiumCredential(std::nullopt);
   const auto& cached_creds_list2 =
       prefs_service_.GetDict(ai_chat::prefs::kBraveChatPremiumCredentialCache);
   EXPECT_EQ(cached_creds_list2.size(), 0u);

@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -55,9 +56,9 @@ bool HasSubscriberCredential(PrefService* local_prefs) {
   return !sub_cred_dict.empty();
 }
 
-absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
+std::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
   if (!HasValidSubscriberCredential(local_prefs))
-    return absl::nullopt;
+    return std::nullopt;
 
   const base::Value::Dict& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
@@ -66,7 +67,7 @@ absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs) {
       sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
 
   if (!expiration_time_value)
-    return absl::nullopt;
+    return std::nullopt;
 
   return base::ValueToTime(expiration_time_value);
 }

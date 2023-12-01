@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
+#include <optional>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -79,7 +80,7 @@ void BraveTab::ActiveStateChanged() {
   UpdateShadowForActiveTab();
 }
 
-absl::optional<SkColor> BraveTab::GetGroupColor() const {
+std::optional<SkColor> BraveTab::GetGroupColor() const {
   // Hide tab border with group color as it doesn't go well with vertical tabs.
   if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     return {};

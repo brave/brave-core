@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_
 #define BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace p3a {
 
@@ -27,7 +27,7 @@ inline constexpr MetricLogType kAllMetricLogTypes[] = {
     MetricLogType::kSlow, MetricLogType::kTypical, MetricLogType::kExpress};
 
 const char* MetricLogTypeToString(MetricLogType log_type);
-absl::optional<MetricLogType> StringToMetricLogType(
+std::optional<MetricLogType> StringToMetricLogType(
     const std::string& log_type_str);
 
 }  // namespace p3a

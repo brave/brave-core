@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -17,7 +18,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -42,7 +42,7 @@ class DirectFeedController {
   // true otherwise.
   bool AddDirectFeedPref(const GURL& feed_url,
                          const std::string& title,
-                         const absl::optional<std::string>& id = absl::nullopt);
+                         const std::optional<std::string>& id = std::nullopt);
 
   // Removes a direct feed pref
   void RemoveDirectFeedPref(const std::string& publisher_id);

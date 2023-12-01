@@ -9,7 +9,6 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 

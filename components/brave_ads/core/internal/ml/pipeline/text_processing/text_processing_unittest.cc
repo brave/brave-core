@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -23,7 +24,6 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -102,7 +102,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
 
   const std::vector<float> data_4 = {1.0, 0.0, 0.0};
   const VectorData data_point_3(data_4);
-  const absl::optional<PredictionMap> data_point_3_predictions =
+  const std::optional<PredictionMap> data_point_3_predictions =
       linear_model.Predict(data_point_3);
   ASSERT_TRUE(data_point_3_predictions);
   ASSERT_EQ(3U, data_point_3_predictions->size());
@@ -111,7 +111,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       std::move(transformations), std::move(linear_model));
 
   // Act
-  const absl::optional<PredictionMap> predictions =
+  const std::optional<PredictionMap> predictions =
       pipeline.GetTopPredictions(kTestString);
   ASSERT_TRUE(predictions);
   ASSERT_TRUE(!predictions->empty());
@@ -146,7 +146,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   for (size_t i = 0; i < train_texts.size(); ++i) {
     std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
-    const absl::optional<PredictionMap> prediction_map =
+    const std::optional<PredictionMap> prediction_map =
         text_processing_pipeline.Apply(std::move(text_data));
     ASSERT_TRUE(prediction_map);
     prediction_maps[i] = *prediction_map;
@@ -202,7 +202,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
-  const absl::optional<PredictionMap> prediction_map =
+  const std::optional<PredictionMap> prediction_map =
       text_processing_pipeline.Apply(std::move(text_data));
 
   // Assert
@@ -223,7 +223,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
-  const absl::optional<PredictionMap> prediction_map =
+  const std::optional<PredictionMap> prediction_map =
       text_processing_pipeline.Apply(std::move(text_data));
 
   // Assert
@@ -248,7 +248,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
   // Act & Assert
   for (const auto& text : input_texts) {
     std::unique_ptr<Data> text_data = std::make_unique<TextData>(text);
-    const absl::optional<PredictionMap> prediction_map =
+    const std::optional<PredictionMap> prediction_map =
         text_processing_pipeline.Apply(std::move(text_data));
     EXPECT_FALSE(prediction_map);
   }
@@ -328,7 +328,7 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act
-  const absl::optional<PredictionMap> predictions =
+  const std::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
   ASSERT_TRUE(predictions);
 
@@ -354,12 +354,12 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   pipeline::TextProcessing text_processing_pipeline;
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
-  const absl::optional<std::string> contents =
+  const std::optional<std::string> contents =
       MaybeReadFileToString(kTextCMCCrash);
   ASSERT_TRUE(contents);
 
   // Act
-  const absl::optional<PredictionMap> predictions =
+  const std::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(*contents);
   ASSERT_TRUE(predictions);
 

@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#import "brave_rewards_api.h"
+#import "brave/ios/browser/api/brave_rewards/brave_rewards_api.h"
+
 #import <UIKit/UIKit.h>
+
+#include <optional>
 
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
@@ -1400,10 +1403,10 @@ static const auto kOneDay =
                  callback {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(encrypted_value));
+  std::move(callback).Run(std::make_optional(encrypted_value));
 }
 
 - (void)
@@ -1413,10 +1416,10 @@ static const auto kOneDay =
                  callback {
   std::string decrypted_value;
   if (!OSCrypt::DecryptString(value, &decrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(decrypted_value));
+  std::move(callback).Run(std::make_optional(decrypted_value));
 }
 
 - (void)externalWalletConnected {

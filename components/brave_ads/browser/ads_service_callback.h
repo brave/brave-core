@@ -6,24 +6,24 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_CALLBACK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_CALLBACK_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
+    base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 using MaybeServeInlineContentAdAsDictCallback =
     base::OnceCallback<void(const std::string& dimensions,
-                            absl::optional<base::Value::Dict> ads)>;
+                            std::optional<base::Value::Dict> ads)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;

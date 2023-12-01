@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_TAB_SEARCH_BUBBLE_HOST_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_TAB_SEARCH_BUBBLE_HOST_H_
 
+#include <optional>
+
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 
 class BraveTabSearchBubbleHost : public TabSearchBubbleHost {
@@ -20,7 +22,7 @@ class BraveTabSearchBubbleHost : public TabSearchBubbleHost {
       bool triggered_by_keyboard_shortcut = false) override;
 
  private:
-  absl::optional<views::BubbleBorder::Arrow> arrow_;
+  std::optional<views::BubbleBorder::Arrow> arrow_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_TAB_SEARCH_BUBBLE_HOST_H_

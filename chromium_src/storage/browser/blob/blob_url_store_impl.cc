@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "storage/browser/blob/blob_url_store_impl.h"
+#include <optional>
 
 #include "base/strings/strcat.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
+#include "storage/browser/blob/blob_url_store_impl.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -67,7 +68,7 @@ void BlobURLStoreImpl::Register(
     mojo::PendingRemote<blink::mojom::Blob> blob,
     const GURL& url,
     const base::UnguessableToken& unsafe_agent_cluster_id,
-    const absl::optional<net::SchemefulSite>& unsafe_top_level_site,
+    const std::optional<net::SchemefulSite>& unsafe_top_level_site,
     RegisterCallback callback) {
   BlobURLStoreImpl_ChromiumImpl::Register(
       std::move(blob), GetPartitionedOrOriginalUrl(url),
@@ -89,7 +90,7 @@ void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
     ResolveAsURLLoaderFactoryCallback callback) {
   if (!registry_) {
     BlobURLLoaderFactory::Create(mojo::NullRemote(), url, std::move(receiver));
-    std::move(callback).Run(absl::nullopt, absl::nullopt);
+    std::move(callback).Run(std::nullopt, std::nullopt);
     return;
   }
 
@@ -107,7 +108,7 @@ void BlobURLStoreImpl::ResolveForNavigation(
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
     ResolveForNavigationCallback callback) {
   if (!registry_) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -117,7 +118,7 @@ void BlobURLStoreImpl::ResolveForNavigation(
   mojo::PendingRemote<blink::mojom::Blob> blob =
       registry_->GetBlobFromUrl(ephemeral_url);
   if (!blob) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   new BlobURLTokenImpl(registry_, url, std::move(blob), std::move(token));

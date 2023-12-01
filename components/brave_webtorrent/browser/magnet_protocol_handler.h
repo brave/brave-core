@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_MAGNET_PROTOCOL_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_MAGNET_PROTOCOL_HANDLER_H_
 
+#include <optional>
+
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
@@ -36,7 +38,7 @@ bool HandleMagnetProtocol(const GURL& url,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
                           bool is_in_fenced_frame_tree,
-                          const absl::optional<url::Origin>& initiating_origin,
+                          const std::optional<url::Origin>& initiating_origin,
                           content::WeakDocumentPtr initiator_document);
 
 }  // namespace webtorrent

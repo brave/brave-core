@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_COOKIE_SETTINGS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_COOKIE_SETTINGS_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -19,7 +20,7 @@
   ShutdownOnUIThread_ChromiumImpl();                                          \
   bool ShouldUseEphemeralStorage(                                             \
       const url::Origin& origin, const net::SiteForCookies& site_for_cookies, \
-      const absl::optional<url::Origin>& top_frame_origin,                    \
+      const std::optional<url::Origin>& top_frame_origin,                     \
       net::CookieSettingOverrides overrides, url::Origin& storage_origin);    \
   std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(                 \
       const std::string& ephemeral_storage_domain);                           \

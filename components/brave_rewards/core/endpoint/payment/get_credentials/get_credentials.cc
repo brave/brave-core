@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/get_credentials/get_credentials.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -61,7 +62,7 @@ mojom::Result GetCredentials::CheckStatusCode(const int status_code) {
 mojom::Result GetCredentials::ParseBody(const std::string& body,
                                         mojom::CredsBatch* batch) {
   DCHECK(batch);
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::RETRY;

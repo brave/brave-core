@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
+
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -12,7 +15,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
-#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=*WalletTest*
@@ -36,7 +38,7 @@ class WalletTest : public RewardsEngineTest {
     base::RunLoop run_loop;
     mojom::CreateRewardsWalletResult result;
     engine->wallet()->CreateWalletIfNecessary(
-        absl::nullopt,
+        std::nullopt,
         base::BindLambdaForTesting(
             [&result, &run_loop](mojom::CreateRewardsWalletResult r) {
               result = r;

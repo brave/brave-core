@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -13,7 +14,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
@@ -29,7 +29,7 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
                                          std::string* recipient_id) {
   DCHECK(recipient_id);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::FAILED;

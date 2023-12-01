@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
 #include <cstdint>
+#include <optional>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
@@ -21,7 +22,7 @@ namespace brave_ads::json::reader {
 
 // TODO(https://github.com/brave/brave-browser/issues/25987): Reduce cognitive
 // complexity.
-absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
+std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -30,7 +31,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   if (!helper::json::Validate(&document, json_schema)) {
     BLOG(1, helper::json::GetLastError(&document));
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   CatalogInfo catalog;

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -523,7 +524,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveBrowserCommandController::OnPurchasedStateChanged(
     brave_vpn::mojom::PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   UpdateCommandForBraveVPN();
 }
 #endif

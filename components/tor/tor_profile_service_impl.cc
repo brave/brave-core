@@ -6,6 +6,7 @@
 #include "brave/components/tor/tor_profile_service_impl.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -89,16 +90,16 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   GetProxyLookupClient() {
     mojo::PendingRemote<network::mojom::ProxyLookupClient> pending_remote =
         receiver_.BindNewPipeAndPassRemote();
-    receiver_.set_disconnect_handler(base::BindOnce(
-        &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
-        net::ERR_ABORTED, absl::nullopt));
+    receiver_.set_disconnect_handler(
+        base::BindOnce(&TorProxyLookupClient::OnProxyLookupComplete,
+                       base::Unretained(this), net::ERR_ABORTED, std::nullopt));
     return pending_remote;
   }
 
   // network::mojom::ProxyLookupClient:
   void OnProxyLookupComplete(
       int32_t net_error,
-      const absl::optional<net::ProxyInfo>& proxy_info) override {
+      const std::optional<net::ProxyInfo>& proxy_info) override {
     std::move(callback_).Run(proxy_info);
     delete this;
   }
@@ -108,7 +109,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 };
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
-                     const absl::optional<net::ProxyInfo>& proxy_info) {
+                     const std::optional<net::ProxyInfo>& proxy_info) {
   tracker->NewIdentityLoaded(proxy_info.has_value() &&
                              !proxy_info->is_direct());
 }

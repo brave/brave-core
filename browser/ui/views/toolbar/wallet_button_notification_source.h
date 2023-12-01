@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -14,7 +16,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
 
@@ -70,7 +71,7 @@ class WalletButtonNotificationSource
 
   WalletButtonNotificationSourceCallback callback_;
 
-  absl::optional<bool> wallet_created_;
+  std::optional<bool> wallet_created_;
   uint32_t pending_tx_count_ = 0;
 
   base::WeakPtrFactory<WalletButtonNotificationSource> weak_ptr_factory_{this};

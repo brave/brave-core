@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 

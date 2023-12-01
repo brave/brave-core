@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_BLOCK_TRACKER_H_
 
 #include <map>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -15,7 +16,6 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -38,7 +38,7 @@ class ZCashBlockTracker : public BlockTracker {
   void RemoveObserver(Observer* observer);
 
   void Start(const std::string& chain_id, base::TimeDelta interval) override;
-  absl::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
+  std::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
 
  private:
   void GetBlockHeight(const std::string& chain_id);

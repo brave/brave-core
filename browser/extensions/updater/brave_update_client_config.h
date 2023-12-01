@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_UPDATER_BRAVE_UPDATE_CLIENT_CONFIG_H_
 #define BRAVE_BROWSER_EXTENSIONS_UPDATER_BRAVE_UPDATE_CLIENT_CONFIG_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/extensions/updater/chrome_update_client_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -34,7 +34,7 @@ class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
 
   static scoped_refptr<ChromeUpdateClientConfig> Create(
       content::BrowserContext* context,
-      absl::optional<GURL> url_override);
+      std::optional<GURL> url_override);
 
   using ChromeUpdateClientConfig::ChromeUpdateClientConfig;
 

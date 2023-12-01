@@ -6,14 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_STORAGE_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_STORAGE_UTILS_H_
 
+#include <optional>
+
 #include "base/files/file_path.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
 std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
-absl::optional<base::FilePath> GetLastUsedConfigPath();
+std::optional<base::FilePath> GetLastUsedConfigPath();
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
 void RemoveStorageKey();
 }  // namespace wireguard
@@ -29,7 +30,7 @@ void IncrementWireguardTunnelUsageFlag();
 void ResetWireguardTunnelUsageFlag();
 
 void WriteConnectionState(int state);
-absl::optional<int32_t> GetConnectionState();
+std::optional<int32_t> GetConnectionState();
 
 }  // namespace brave_vpn
 

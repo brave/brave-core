@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
@@ -220,7 +222,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   void VerifyTargetDragIndicatorIndexCalc(const gfx::Point& screen_position) {
     auto sidebar_items_contents_view = GetSidebarItemsContentsView(
         static_cast<BraveBrowser*>(browser())->sidebar_controller());
-    EXPECT_NE(absl::nullopt,
+    EXPECT_NE(std::nullopt,
               sidebar_items_contents_view->CalculateTargetDragIndicatorIndex(
                   screen_position));
   }
@@ -252,7 +254,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Initially, active index is not set.
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
@@ -261,13 +263,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   // Check active index is non-null.
-  EXPECT_THAT(model()->active_index(), Ne(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   // Check active index is null.
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
@@ -284,9 +286,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   controller()->ActivateItemAt(1);
   EXPECT_THAT(model()->active_index(), Optional(2u));
 
-  // Setting absl::nullopt means deactivate current active tab.
-  controller()->ActivateItemAt(absl::nullopt);
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  // Setting std::nullopt means deactivate current active tab.
+  controller()->ActivateItemAt(std::nullopt);
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   controller()->ActivateItemAt(2);
 

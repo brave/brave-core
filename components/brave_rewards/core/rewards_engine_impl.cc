@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
@@ -67,8 +68,8 @@ void RewardsEngineImpl::CreateRewardsWallet(
     CreateRewardsWalletCallback callback) {
   WhenReady([this, country, callback = std::move(callback)]() mutable {
     wallet()->CreateWalletIfNecessary(
-        country.empty() ? absl::nullopt
-                        : absl::optional<std::string>(std::move(country)),
+        country.empty() ? std::nullopt
+                        : std::optional<std::string>(std::move(country)),
         std::move(callback));
   });
 }
@@ -753,16 +754,16 @@ mojom::ClientInfoPtr RewardsEngineImpl::GetClientInfo() {
   return info;
 }
 
-absl::optional<std::string> RewardsEngineImpl::EncryptString(
+std::optional<std::string> RewardsEngineImpl::EncryptString(
     const std::string& value) {
-  absl::optional<std::string> result;
+  std::optional<std::string> result;
   client_->EncryptString(value, &result);
   return result;
 }
 
-absl::optional<std::string> RewardsEngineImpl::DecryptString(
+std::optional<std::string> RewardsEngineImpl::DecryptString(
     const std::string& value) {
-  absl::optional<std::string> result;
+  std::optional<std::string> result;
   client_->DecryptString(value, &result);
   return result;
 }

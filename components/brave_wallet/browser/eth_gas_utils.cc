@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <optional>
 
 #include "base/check.h"
 #include "base/logging.h"
@@ -27,16 +28,16 @@ namespace eth {
 // Note that base fee is not part of the RLP. Any excees base fee is refunded,
 // so the user will not be charged more than the base fee of the block that
 // includes the transaction.
-absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value) {
+std::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value) {
   uint256_t value_uint256;
   if (!HexValueToUint256(value, &value_uint256)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // We use "double" math and this is unlikely to get hit, so return
-  // absl::nullopt if the value is too big.
+  // std::nullopt if the value is too big.
   if (value_uint256 > kMaxSafeIntegerUint64) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Compiler crashes without these 2 casts :(

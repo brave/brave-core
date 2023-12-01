@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
+
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
@@ -20,7 +22,7 @@ AttestationIOS::AttestationIOS(RewardsEngineImpl& engine)
 AttestationIOS::~AttestationIOS() = default;
 
 std::string AttestationIOS::ParseStartPayload(const std::string& response) {
-  absl::optional<base::Value> value = base::JSONReader::Read(response);
+  std::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return "";
   }
@@ -39,7 +41,7 @@ mojom::Result AttestationIOS::ParseClaimSolution(const std::string& response,
                                                  std::string* nonce,
                                                  std::string* blob,
                                                  std::string* signature) {
-  absl::optional<base::Value> value = base::JSONReader::Read(response);
+  std::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return mojom::Result::FAILED;
   }

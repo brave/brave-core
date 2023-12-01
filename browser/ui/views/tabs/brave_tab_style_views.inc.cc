@@ -282,7 +282,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     // as this can cause crashes due to the vertical tabstrip living in a
     // different widget hierarchy.
     PaintTabBackground(canvas, GetSelectionState(), IsHoverAnimationActive(),
-                       absl::nullopt, 0);
+                       std::nullopt, 0);
   } else {
     BraveGM2TabStyle::PaintTab(canvas);
   }

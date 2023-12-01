@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/metrics/field_trial_params.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -18,7 +20,6 @@
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // Simplified version of the upstream tests modified to reflect the change in
 // the HatsService chromium_src override.
@@ -78,7 +79,7 @@ class HatsServiceBrowserTestBase : public InProcessBrowserTest {
   }
 
  private:
-  absl::optional<ScopedSetMetricsConsent> scoped_metrics_consent_;
+  std::optional<ScopedSetMetricsConsent> scoped_metrics_consent_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

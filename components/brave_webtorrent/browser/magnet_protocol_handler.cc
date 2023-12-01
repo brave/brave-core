@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -37,7 +38,7 @@ void LoadMagnetURL(const GURL& url,
                    ui::PageTransition page_transition,
                    bool has_user_gesture,
                    bool is_in_fenced_frame_tree,
-                   const absl::optional<url::Origin>& initiating_origin,
+                   const std::optional<url::Origin>& initiating_origin,
                    content::WeakDocumentPtr initiator_document) {
   content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents) {
@@ -127,7 +128,7 @@ bool HandleMagnetProtocol(const GURL& url,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
                           bool is_in_fenced_frame_tree,
-                          const absl::optional<url::Origin>& initiating_origin,
+                          const std::optional<url::Origin>& initiating_origin,
                           content::WeakDocumentPtr initiator_document) {
   if (!IsMagnetProtocol(url)) {
     return false;

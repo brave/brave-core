@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/zebpay/get_balance_zebpay.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -56,7 +57,7 @@ GetBalanceZebPay::GetBalanceZebPay(RewardsEngineImpl& engine,
 
 GetBalanceZebPay::~GetBalanceZebPay() = default;
 
-absl::optional<std::string> GetBalanceZebPay::Url() const {
+std::optional<std::string> GetBalanceZebPay::Url() const {
   return endpoint::zebpay::GetApiServerUrl("/api/balance");
 }
 
@@ -64,7 +65,7 @@ mojom::UrlMethod GetBalanceZebPay::Method() const {
   return mojom::UrlMethod::GET;
 }
 
-absl::optional<std::vector<std::string>> GetBalanceZebPay::Headers(
+std::optional<std::vector<std::string>> GetBalanceZebPay::Headers(
     const std::string&) const {
   return endpoint::zebpay::RequestAuthorization(token_);
 }

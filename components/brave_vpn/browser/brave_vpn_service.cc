@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -33,7 +34,6 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
 
@@ -409,8 +409,8 @@ void BraveVpnService::AddObserver(
 }
 
 mojom::PurchasedInfo BraveVpnService::GetPurchasedInfoSync() const {
-  return purchased_state_.value_or(mojom::PurchasedInfo(
-      mojom::PurchasedState::NOT_PURCHASED, absl::nullopt));
+  return purchased_state_.value_or(
+      mojom::PurchasedInfo(mojom::PurchasedState::NOT_PURCHASED, std::nullopt));
 }
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
@@ -497,7 +497,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
@@ -761,7 +761,7 @@ void BraveVpnService::OnP3AInterval() {
 void BraveVpnService::SetPurchasedState(
     const std::string& env,
     PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (GetPurchasedInfoSync().state == state || env != GetCurrentEnvironment()) {
     return;

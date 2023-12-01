@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/units/inline_content_ad/inline_content_ad_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -36,7 +37,7 @@ void FireServedEventCallback(
     const std::string& /*placement_id*/,
     const mojom::InlineContentAdEventType /*event_type*/) {
   if (!success) {
-    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
 
   std::move(callback).Run(dimensions, ad);
@@ -72,7 +73,7 @@ void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!UserHasOptedInToBraveNewsAds()) {
-    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
 
   serving_.MaybeServeAd(
@@ -109,7 +110,7 @@ void InlineContentAdHandler::TriggerEvent(
 void InlineContentAdHandler::MaybeServeCallback(
     MaybeServeInlineContentAdCallback callback,
     const std::string& dimensions,
-    const absl::optional<InlineContentAdInfo>& ad) {
+    const std::optional<InlineContentAdInfo>& ad) {
   if (!ad) {
     return std::move(callback).Run(dimensions, ad);
   }

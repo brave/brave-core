@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/containers/span.h"
@@ -57,7 +58,7 @@ bool IsNTPPromotionEnabled(Profile* profile) {
     return false;
 
   // Only show promotion if current wallpaper is not sponsored images.
-  absl::optional<base::Value::Dict> data =
+  std::optional<base::Value::Dict> data =
       service->GetCurrentWallpaperForDisplay();
   if (data) {
     if (const auto is_background =

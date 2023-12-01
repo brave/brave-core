@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 
 #include "base/path_service.h"
 #include "base/test/bind.h"
@@ -128,7 +129,7 @@ class TestJsonRpcServiceObserver
 
   void ChainChangedEvent(const std::string& chain_id,
                          brave_wallet::mojom::CoinType coin,
-                         const absl::optional<::url::Origin>& origin) override {
+                         const std::optional<::url::Origin>& origin) override {
     chain_changed_called_ = true;
     EXPECT_EQ(chain_id, expected_chain_id_);
     EXPECT_EQ(coin, expected_coin_);

@@ -6,15 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_UNITS_SEARCH_RESULT_AD_SEARCH_RESULT_AD_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_UNITS_SEARCH_RESULT_AD_SEARCH_RESULT_AD_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
 namespace brave_ads {
 
-absl::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
+std::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
     const GURL& url);
 
 }  // namespace brave_ads

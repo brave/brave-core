@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -386,8 +387,8 @@ void BraveCompoundTabContainer::ChildPreferredSizeChanged(views::View* child) {
 }
 
 void BraveCompoundTabContainer::SetActiveTab(
-    absl::optional<size_t> prev_active_index,
-    absl::optional<size_t> new_active_index) {
+    std::optional<size_t> prev_active_index,
+    std::optional<size_t> new_active_index) {
   CompoundTabContainer::SetActiveTab(prev_active_index, new_active_index);
   if (new_active_index.has_value()) {
     ScrollTabToBeVisible(*new_active_index);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -33,7 +34,7 @@ ConfirmationTokenInfo BuildConfirmationToken(
   confirmation_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
 
-  const absl::optional<std::string> signature =
+  const std::optional<std::string> signature =
       crypto::Sign(unblinded_token_base64, wallet.secret_key);
   CHECK(signature);
   confirmation_token.signature = *signature;

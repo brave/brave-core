@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#include <optional>
 
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
@@ -15,6 +15,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
@@ -65,11 +66,11 @@ GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
   return GetAutocompleteMatchForText(profile, text).destination_url;
 }
 
-absl::optional<GURL> GetSelectedURL(Profile* profile,
-                                    const std::u16string& text) {
+std::optional<GURL> GetSelectedURL(Profile* profile,
+                                   const std::u16string& text) {
   auto match = GetAutocompleteMatchForText(profile, text);
   if (match.type != AutocompleteMatchType::URL_WHAT_YOU_TYPED) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return match.destination_url;
 }
@@ -375,7 +376,7 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
   if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return;
-  absl::optional<size_t> index =
+  std::optional<size_t> index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
   if (!index.has_value())
     return;
@@ -435,7 +436,7 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
-  absl::optional<size_t> index = menu_model_.GetIndexOfCommandId(
+  std::optional<size_t> index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
   if (index.has_value()) {
     menu_model_.InsertItemWithStringIdAt(index.value() + 1,
@@ -474,7 +475,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   }
 #endif
   if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
-    absl::optional<size_t> link_index =
+    std::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
     if (link_index.has_value()) {
       menu_model_.InsertItemWithStringIdAt(
@@ -482,7 +483,7 @@ void BraveRenderViewContextMenu::InitMenu() {
     }
   }
   if (GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
-    absl::optional<size_t> copy_index =
+    std::optional<size_t> copy_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPY);
     if (copy_index.has_value() &&
         !menu_model_.GetIndexOfCommandId(IDC_COPY_CLEAN_LINK).has_value()) {

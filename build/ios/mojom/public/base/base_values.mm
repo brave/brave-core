@@ -5,6 +5,8 @@
 
 #include "brave/build/ios/mojom/public/base/base_values.h"
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
@@ -268,7 +270,7 @@
 
 - (nullable instancetype)initWithJSONString:(NSString*)json {
   auto string = base::SysNSStringToUTF8(json);
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  std::optional<base::Value> response = base::JSONReader::Read(
       string, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
   if (response) {

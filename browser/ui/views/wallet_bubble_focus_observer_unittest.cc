@@ -5,9 +5,10 @@
 
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 
+#include <optional>
+
 #include "chrome/browser/ui/views/bubble/webui_bubble_dialog_view.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view_observer.h"
 
@@ -51,7 +52,7 @@ TEST(WalletBubbleFocusObserverUnitTest, FocusOutFromWindowAndBackToPanel) {
   TestWalletBubbleFocusObserver observer(nullptr, nullptr);
   ASSERT_TRUE(observer.subscribed());
   ASSERT_FALSE(observer.IsBubbleLocked());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
   ASSERT_TRUE(observer.bubble_deactivation_state());
   // Focus out of view.
   observer.OnViewBlurred(nullptr);
@@ -61,7 +62,7 @@ TEST(WalletBubbleFocusObserverUnitTest, FocusOutFromWindowAndBackToPanel) {
   // Focus returned back to bubble view.
   observer.OnViewFocused(nullptr);
   ASSERT_TRUE(observer.bubble_deactivation_state());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
 }
 
 TEST(WalletBubbleFocusObserverUnitTest,
@@ -69,7 +70,7 @@ TEST(WalletBubbleFocusObserverUnitTest,
   TestWalletBubbleFocusObserver observer(nullptr, nullptr);
   ASSERT_TRUE(observer.subscribed());
   ASSERT_FALSE(observer.IsBubbleLocked());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
   ASSERT_TRUE(observer.bubble_deactivation_state());
   ASSERT_FALSE(observer.close_buble_called());
   // Focus out of view.
@@ -81,7 +82,7 @@ TEST(WalletBubbleFocusObserverUnitTest,
   views::View view;
   observer.OnWillChangeFocus(nullptr, &view);
   ASSERT_TRUE(observer.bubble_deactivation_state());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
   ASSERT_TRUE(observer.close_buble_called());
 }
 
@@ -89,7 +90,7 @@ TEST(WalletBubbleFocusObserverUnitTest, UpdatePanelStateWhenUnfocused) {
   TestWalletBubbleFocusObserver observer(nullptr, nullptr);
   ASSERT_TRUE(observer.subscribed());
   ASSERT_FALSE(observer.IsBubbleLocked());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
   ASSERT_TRUE(observer.bubble_deactivation_state());
   ASSERT_FALSE(observer.close_buble_called());
   // Focus out of view.
@@ -106,12 +107,12 @@ TEST(WalletBubbleFocusObserverUnitTest, UpdatePanelStateWhenUnfocused) {
   views::View view;
   observer.OnWillChangeFocus(nullptr, &view);
   ASSERT_FALSE(observer.bubble_deactivation_state());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
   // We should not close the bubble if user interacts with the browser window
   ASSERT_FALSE(observer.close_buble_called());
 
   // Focus returned back to bubble view.
   observer.OnViewFocused(nullptr);
   ASSERT_FALSE(observer.bubble_deactivation_state());
-  EXPECT_EQ(observer.close_on_deactivate(), absl::nullopt);
+  EXPECT_EQ(observer.close_on_deactivate(), std::nullopt);
 }

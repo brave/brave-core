@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 
+#include <optional>
+
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
@@ -12,24 +14,24 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> MaybeReadFileToString(const std::string& name) {
+std::optional<std::string> MaybeReadFileToString(const std::string& name) {
   const base::FilePath path = TestDataPath().AppendASCII(name);
 
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return contents;
 }
 
-absl::optional<std::string> MaybeReadFileToStringAndReplaceTags(
+std::optional<std::string> MaybeReadFileToStringAndReplaceTags(
     const std::string& name) {
   const base::FilePath path = TestDataPath().AppendASCII(name);
 
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   ParseAndReplaceTags(contents);
@@ -37,13 +39,13 @@ absl::optional<std::string> MaybeReadFileToStringAndReplaceTags(
   return contents;
 }
 
-absl::optional<std::string> MaybeReadDataResourceToString(
+std::optional<std::string> MaybeReadDataResourceToString(
     const std::string& name) {
   const base::FilePath path = DataResourcesPath().AppendASCII(name);
 
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return contents;

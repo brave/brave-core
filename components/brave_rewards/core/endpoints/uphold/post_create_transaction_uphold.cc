@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_create_transaction_uphold.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -53,17 +54,17 @@ Result PostCreateTransactionUphold::ProcessResponse(
   }
 }
 
-absl::optional<std::string> PostCreateTransactionUphold::Url() const {
+std::optional<std::string> PostCreateTransactionUphold::Url() const {
   return endpoint::uphold::GetServerUrl(
       base::StringPrintf("/v0/me/cards/%s/transactions", address_.c_str()));
 }
 
-absl::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(
+std::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(
     const std::string&) const {
   return endpoint::uphold::RequestAuthorization(token_);
 }
 
-absl::optional<std::string> PostCreateTransactionUphold::Content() const {
+std::optional<std::string> PostCreateTransactionUphold::Content() const {
   base::Value::Dict denomination;
   denomination.Set("amount", transaction_->amount);
   denomination.Set("currency", "BAT");
@@ -77,7 +78,7 @@ absl::optional<std::string> PostCreateTransactionUphold::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(payload, &json)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return json;

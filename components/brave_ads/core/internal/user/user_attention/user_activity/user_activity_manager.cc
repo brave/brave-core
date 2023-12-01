@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
 
+#include <optional>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -20,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -118,7 +119,7 @@ void UserActivityManager::RecordEventForPageTransition(
     RecordEvent(UserActivityEventType::kOpenedLinkFromExternalApplication);
   }
 
-  const absl::optional<UserActivityEventType> event_type =
+  const std::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(type);
   if (!event_type) {
     return;

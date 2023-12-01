@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
+
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -12,7 +15,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
@@ -24,7 +26,7 @@ ContributionMonthly::ContributionMonthly(RewardsEngineImpl& engine)
 
 ContributionMonthly::~ContributionMonthly() = default;
 
-void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
+void ContributionMonthly::Process(std::optional<base::Time> cutoff_time,
                                   LegacyResultCallback callback) {
   engine_->contribution()->GetRecurringTips(
       [this, cutoff_time,
@@ -34,7 +36,7 @@ void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
 }
 
 void ContributionMonthly::AdvanceContributionDates(
-    absl::optional<base::Time> cutoff_time,
+    std::optional<base::Time> cutoff_time,
     LegacyResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> publishers) {
   // Remove any contributions whose next contribution date is in the future.

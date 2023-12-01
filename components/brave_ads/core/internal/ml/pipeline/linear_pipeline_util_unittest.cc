@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -25,7 +26,7 @@ class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
   // Arrange
-  const absl::optional<std::string> contents =
+  const std::optional<std::string> contents =
       MaybeReadFileToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(contents);
 

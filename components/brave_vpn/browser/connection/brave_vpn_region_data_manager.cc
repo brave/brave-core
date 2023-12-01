@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/check_is_test.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -275,7 +275,7 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
   }
   api_request_.reset();
 
-  absl::optional<base::Value> value = base::JSONReader::Read(region_list);
+  std::optional<base::Value> value = base::JSONReader::Read(region_list);
   if (value && value->is_list() &&
       ParseAndCacheRegionList(value->GetList(), true)) {
     VLOG(2) << "Got valid region list";
@@ -318,7 +318,7 @@ void BraveVPNRegionDataManager::OnFetchTimezones(
     bool success) {
   api_request_.reset();
 
-  absl::optional<base::Value> value = base::JSONReader::Read(timezones_list);
+  std::optional<base::Value> value = base::JSONReader::Read(timezones_list);
   if (success && value && value->is_list()) {
     VLOG(2) << "Got valid timezones list";
     SetDeviceRegionWithTimezone(value->GetList());

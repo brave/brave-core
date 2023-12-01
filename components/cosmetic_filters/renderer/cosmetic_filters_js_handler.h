@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
@@ -38,7 +38,7 @@ class CosmeticFiltersJSHandler {
   // Fetches an initial set of resources to inject into the page if cosmetic
   // filtering is enabled, and returns whether or not to proceed with cosmetic
   // filtering.
-  bool ProcessURL(const GURL& url, absl::optional<base::OnceClosure> callback);
+  bool ProcessURL(const GURL& url, std::optional<base::OnceClosure> callback);
   void ApplyRules(bool de_amp_enabled);
 
  private:
@@ -81,7 +81,7 @@ class CosmeticFiltersJSHandler {
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;
   GURL url_;
-  absl::optional<base::Value::Dict> resources_dict_;
+  std::optional<base::Value::Dict> resources_dict_;
 
   // True if the content_cosmetic.bundle.js has injected in the current frame.
   bool bundle_injected_ = false;

@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -21,7 +24,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/component_updater/mock_component_updater_service.h"
@@ -159,7 +161,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
         mojom::ExternalWalletType::MetaMask, kTestWalletPassword,
         kTestWalletPassword,
         base::BindLambdaForTesting(
-            [&run_loop](bool success, const absl::optional<std::string>& err) {
+            [&run_loop](bool success, const std::optional<std::string>& err) {
               ASSERT_TRUE(success);
               ASSERT_FALSE(err);
               run_loop.Quit();

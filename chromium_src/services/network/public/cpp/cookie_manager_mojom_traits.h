@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_PUBLIC_CPP_COOKIE_MANAGER_MOJOM_TRAITS_H_
 #define BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_PUBLIC_CPP_COOKIE_MANAGER_MOJOM_TRAITS_H_
 
+#include <optional>
+
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_access_result.h"
 #include "net/cookies/cookie_change_dispatcher.h"
@@ -29,7 +31,7 @@ struct StructTraits<network::mojom::CookieOptionsDataView, net::CookieOptions>
       const net::CookieOptions& o) {
     return o.site_for_cookies();
   }
-  static const absl::optional<url::Origin>& top_frame_origin(
+  static const std::optional<url::Origin>& top_frame_origin(
       const net::CookieOptions& o) {
     return o.top_frame_origin();
   }

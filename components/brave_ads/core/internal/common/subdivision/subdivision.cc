@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
@@ -12,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -94,9 +95,9 @@ void Subdivision::OnNotifyPrefDidChange(const std::string& path) {
 
 void Subdivision::OnDidFetchSubdivision(const std::string& subdivision) {
   CHECK(!subdivision.empty());
-  const absl::optional<std::string> country_code =
+  const std::optional<std::string> country_code =
       GetSubdivisionCountryCode(subdivision);
-  const absl::optional<std::string> subdivision_code =
+  const std::optional<std::string> subdivision_code =
       GetSubdivisionCode(subdivision);
 
   if (!country_code || !subdivision_code) {

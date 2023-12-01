@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -27,7 +28,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
-
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -53,8 +53,8 @@ std::string BuildLlama2InstructionPrompt(const std::string& instruction) {
 std::string BuildLlama2FirstSequence(
     const std::string& system_message,
     const std::string& user_message,
-    absl::optional<std::string> assistant_response,
-    absl::optional<std::string> assistant_response_seed) {
+    std::optional<std::string> assistant_response,
+    std::optional<std::string> assistant_response_seed) {
   // Generates a partial sequence if there is no assistant_response:
 
   // <s> [INST] <<SYS>>
@@ -111,8 +111,8 @@ std::string BuildLlama2FirstSequence(
 
 std::string BuildLlama2SubsequentSequence(
     std::string user_message,
-    absl::optional<std::string> assistant_response,
-    absl::optional<std::string> assistant_response_seed) {
+    std::optional<std::string> assistant_response,
+    std::optional<std::string> assistant_response_seed) {
   // Builds a prompt segment that looks like this:
   // <s> [INST] Give me the first few numbers in the fibonacci sequence [/INST]
 
@@ -153,7 +153,7 @@ std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
   return BuildLlama2FirstSequence(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS),
-      user_message, absl::nullopt,
+      user_message, std::nullopt,
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED));
 }
@@ -205,7 +205,7 @@ std::string BuildLlama2Prompt(
   // first sequence.
   if (conversation_history.empty() || conversation_history.size() <= 1) {
     return BuildLlama2FirstSequence(
-        today_system_message, first_user_message, absl::nullopt,
+        today_system_message, first_user_message, std::nullopt,
         l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
   }
 
@@ -213,7 +213,7 @@ std::string BuildLlama2Prompt(
   // which includes the system prompt.
   std::string prompt =
       BuildLlama2FirstSequence(today_system_message, first_user_message,
-                               conversation_history[1].text, absl::nullopt);
+                               conversation_history[1].text, std::nullopt);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences.
@@ -221,12 +221,12 @@ std::string BuildLlama2Prompt(
     const std::string& prev_user_message = conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
     prompt += BuildLlama2SubsequentSequence(prev_user_message,
-                                            assistant_message, absl::nullopt);
+                                            assistant_message, std::nullopt);
   }
 
   // Build the final subsequent exchange using the current turn.
   prompt += BuildLlama2SubsequentSequence(
-      user_message, absl::nullopt,
+      user_message, std::nullopt,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
 
   // Trimming recommended by Meta

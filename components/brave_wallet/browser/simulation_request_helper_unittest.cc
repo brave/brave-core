@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/simulation_request_helper.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -12,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -29,12 +31,12 @@ namespace {
 mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
     bool eip1559,
     bool is_eth_send,
-    absl::optional<std::string> origin) {
+    std::optional<std::string> origin) {
   auto base_tx_data = mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0xde0b6b3a7640000",
       is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>({10u}), false,
-      absl::nullopt);
+      std::nullopt);
 
   auto tx =
       eip1559
@@ -58,7 +60,7 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
 }
 
 mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
-    absl::optional<std::string> origin) {
+    std::optional<std::string> origin) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   auto sol_account =
       MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
@@ -72,8 +74,8 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
 
   auto msg = SolanaMessage::CreateLegacyMessage(
@@ -149,7 +151,7 @@ TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0DefaultOrigin) {
   // OK: Params for legacy (type-0) EVM native asset transfer is encoded
   // correctly.
-  auto tx_info = GetCannedScanEVMTransactionParams(false, true, absl::nullopt);
+  auto tx_info = GetCannedScanEVMTransactionParams(false, true, std::nullopt);
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
@@ -170,7 +172,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for legacy (type-0) EVM contract interaction is encoded
   // properly.
-  tx_info = GetCannedScanEVMTransactionParams(false, false, absl::nullopt);
+  tx_info = GetCannedScanEVMTransactionParams(false, false, std::nullopt);
   encoded_params = evm::EncodeScanTransactionParams(tx_info);
   expected_params = R"(
     {
@@ -193,7 +195,7 @@ TEST(SimulationRequestHelperUnitTest,
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType2DefaultOrigin) {
   // OK: Params for EIP-1559 (type-2) EVM ETH transfer is encoded correctly.
-  auto tx_info = GetCannedScanEVMTransactionParams(true, true, absl::nullopt);
+  auto tx_info = GetCannedScanEVMTransactionParams(true, true, std::nullopt);
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
@@ -214,7 +216,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for EIP-1559 (type-2) EVM contract interaction is encoded
   // correctly.
-  tx_info = GetCannedScanEVMTransactionParams(true, false, absl::nullopt);
+  tx_info = GetCannedScanEVMTransactionParams(true, false, std::nullopt);
   encoded_params = evm::EncodeScanTransactionParams(tx_info);
   expected_params = R"(
     {
@@ -330,7 +332,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMInvalidTxData) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
 
   // KO: Invalid tx data is not encoded.
@@ -339,12 +341,12 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMNullParams) {
-  EXPECT_EQ(evm::EncodeScanTransactionParams(nullptr), absl::nullopt);
+  EXPECT_EQ(evm::EncodeScanTransactionParams(nullptr), std::nullopt);
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoDefaultOrigin) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
   auto encoded_params = solana::EncodeScanTransactionParams(request);
@@ -392,7 +394,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaSignTransactionRequestDefaultOrigin) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
 
   auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
   auto request =
@@ -446,7 +448,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaSignAllTransactionsRequestDefaultOrigin) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
+  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
 
   auto parsed = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
   auto request =
@@ -500,7 +502,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaInvalidTxData) {
-  auto tx_info = GetCannedScanEVMTransactionParams(false, true, absl::nullopt);
+  auto tx_info = GetCannedScanEVMTransactionParams(false, true, std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
   auto encoded_params = solana::EncodeScanTransactionParams(request);
@@ -511,7 +513,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaNullParams) {
-  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), absl::nullopt);
+  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), std::nullopt);
 }
 
 }  // namespace brave_wallet

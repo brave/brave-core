@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util.h"
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -18,21 +20,21 @@ constexpr char kRegionKey[] = "region";
 
 }  // namespace
 
-absl::optional<std::string> ParseSubdivision(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict =
+std::optional<std::string> ParseSubdivision(const std::string& json) {
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   if (!dict) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* const country = dict->FindString(kCountryKey);
   if (!country || country->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* const region = dict->FindString(kRegionKey);
   if (!region || region->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return base::ReplaceStringPlaceholders("$1-$2", {*country, *region}, nullptr);

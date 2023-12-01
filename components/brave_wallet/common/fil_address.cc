@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/fil_address.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/logging.h"
@@ -28,22 +29,22 @@ constexpr size_t kAddressSizeBLS = 86;
 constexpr size_t kAddressSizeDelegatedF410 = 44;
 constexpr size_t kPayloadSizeDelegatedF410 = 20;
 
-absl::optional<std::vector<uint8_t>> BlakeHash(
+std::optional<std::vector<uint8_t>> BlakeHash(
     const std::vector<uint8_t>& payload,
     size_t length) {
   blake2b_state blakeState;
   if (blake2b_init(&blakeState, length) != 0) {
     VLOG(0) << __func__ << ": blake2b_init failed";
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (blake2b_update(&blakeState, payload.data(), payload.size()) != 0) {
     VLOG(0) << __func__ << ": blake2b_update failed";
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<uint8_t> result(length, 0);
   if (blake2b_final(&blakeState, result.data(), length) != 0) {
     VLOG(0) << __func__ << ": blake2b_final failed";
-    return absl::nullopt;
+    return std::nullopt;
   }
   return result;
 }
@@ -53,7 +54,7 @@ bool IsValidNetwork(const std::string& network) {
          network == mojom::kFilecoinMainnet;
 }
 
-absl::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
+std::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
   if ((input - '0') == static_cast<int>(mojom::FilecoinAddressProtocol::BLS)) {
     return mojom::FilecoinAddressProtocol::BLS;
   } else if ((input - '0') ==
@@ -63,7 +64,7 @@ absl::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
              static_cast<int>(mojom::FilecoinAddressProtocol::DELEGATED)) {
     return mojom::FilecoinAddressProtocol::DELEGATED;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace

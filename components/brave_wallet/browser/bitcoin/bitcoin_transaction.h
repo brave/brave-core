@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -30,7 +30,7 @@ class BitcoinTransaction {
     bool operator<(const Outpoint& other) const;
 
     base::Value::Dict ToValue() const;
-    static absl::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
     SHA256HashArray txid;
     uint32_t index = 0;
@@ -48,9 +48,9 @@ class BitcoinTransaction {
     bool operator!=(const TxInput& other) const;
 
     base::Value::Dict ToValue() const;
-    static absl::optional<TxInput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
-    static absl::optional<TxInput> FromRpcUtxo(
+    static std::optional<TxInput> FromRpcUtxo(
         const std::string& address,
         const bitcoin_rpc::UnspentOutput& utxo);
 
@@ -104,7 +104,7 @@ class BitcoinTransaction {
     bool operator!=(const TxOutput& other) const;
 
     base::Value::Dict ToValue() const;
-    static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
     TxOutputType type = TxOutputType::kTarget;
     std::string address;
@@ -123,7 +123,7 @@ class BitcoinTransaction {
 
   BitcoinTransaction Clone() const;
   base::Value::Dict ToValue() const;
-  static absl::optional<BitcoinTransaction> FromValue(
+  static std::optional<BitcoinTransaction> FromValue(
       const base::Value::Dict& value);
 
   // All inputs are signed.

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 
+#include <optional>
+
 #include "base/big_endian.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -177,21 +179,21 @@ std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
 }
 
 // Resolves serialized protobuf from length-prefixed string
-absl::optional<std::string> ResolveSerializedMessage(
+std::optional<std::string> ResolveSerializedMessage(
     const std::string& grpc_response_body) {
   if (grpc_response_body.size() < 5) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (grpc_response_body[0] != 0) {
     // Compression is not supported yet
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint32_t size = 0;
   base::ReadBigEndian(
       reinterpret_cast<const uint8_t*>(&(grpc_response_body[1])), &size);
 
   if (grpc_response_body.size() != size + 5) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return grpc_response_body.substr(5);

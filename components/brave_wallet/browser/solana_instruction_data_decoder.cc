@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -606,39 +607,39 @@ GetTokenInstructionAccountParams() {
   return *params;
 }
 
-absl::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
-                                    size_t& offset) {
+std::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
+                                   size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   offset += sizeof(uint8_t);
   return input[offset - sizeof(uint8_t)];
 }
 
-absl::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
-                                              size_t& offset) {
+std::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
+                                             size_t& offset) {
   auto ret = DecodeUint8(input, offset);
   if (!ret) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return base::NumberToString(*ret);
 }
 
-absl::optional<std::string> DecodeAuthorityTypeString(
+std::optional<std::string> DecodeAuthorityTypeString(
     const std::vector<uint8_t>& input,
     size_t& offset) {
   auto ret = DecodeUint8(input, offset);
   if (ret && *ret <= kAuthorityTypeMax) {
     return base::NumberToString(*ret);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
-                                      size_t& offset) {
+std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+                                     size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Read bytes in little endian order.
@@ -655,20 +656,19 @@ absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
 #endif
 }
 
-absl::optional<std::string> DecodeUint32String(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
+std::optional<std::string> DecodeUint32String(const std::vector<uint8_t>& input,
+                                              size_t& offset) {
   auto ret = DecodeUint32(input, offset);
   if (!ret) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return base::NumberToString(*ret);
 }
 
-absl::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
-                                      size_t& offset) {
+std::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
+                                     size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint64_t)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Read bytes in little endian order.
@@ -685,20 +685,19 @@ absl::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
 #endif
 }
 
-absl::optional<std::string> DecodeUint64String(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
+std::optional<std::string> DecodeUint64String(const std::vector<uint8_t>& input,
+                                              size_t& offset) {
   auto ret = DecodeUint64(input, offset);
   if (!ret) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return base::NumberToString(*ret);
 }
 
-absl::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
-                                            size_t& offset) {
+std::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
+                                           size_t& offset) {
   if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   offset += kSolanaPubkeySize;
@@ -706,11 +705,11 @@ absl::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
       input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
 }
 
-absl::optional<std::string> DecodeOptionalPublicKey(
+std::optional<std::string> DecodeOptionalPublicKey(
     const std::vector<uint8_t>& input,
     size_t& offset) {
   if (offset == input.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // First byte is 0 or 1 to indicate if public key is passed.
@@ -722,7 +721,7 @@ absl::optional<std::string> DecodeOptionalPublicKey(
     offset++;
     return DecodePublicKey(input, offset);
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 }
 
@@ -733,19 +732,19 @@ absl::optional<std::string> DecodeOptionalPublicKey(
 // We currently cap the length here to be the max size of std::string
 // on 32 bit systems, it's safe to do so because currently we don't expect any
 // valid cases would have strings larger than it.
-absl::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
-                                         size_t& offset) {
+std::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
+                                        size_t& offset) {
   auto len_lower = DecodeUint32(input, offset);
   if (!len_lower || *len_lower > kMaxStringSize32Bit) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto len_upper = DecodeUint32(input, offset);
   if (!len_upper || *len_upper != 0) {  // Non-zero means len exceeds u32 max.
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (offset + *len_lower > input.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   offset += *len_lower;
@@ -757,7 +756,7 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
                      const std::vector<std::uint8_t> data,
                      size_t& offset,
                      std::vector<InsParamTuple>& ins_param_tuple) {
-  absl::optional<std::string> value;
+  std::optional<std::string> value;
 
   switch (std::get<2>(name_type_tuple)) {
     case mojom::SolanaInstructionParamType::kUint8:
@@ -804,24 +803,24 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
   return true;
 }
 
-absl::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
+std::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
     const std::vector<uint8_t>& data,
     size_t& offset) {
   auto ins_type = DecodeUint32(data, offset);
   if (!ins_type || *ins_type > static_cast<uint32_t>(
                                    mojom::SolanaSystemInstruction::kMaxValue)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return static_cast<mojom::SolanaSystemInstruction>(*ins_type);
 }
 
-absl::optional<mojom::SolanaTokenInstruction> DecodeTokenInstructionType(
+std::optional<mojom::SolanaTokenInstruction> DecodeTokenInstructionType(
     const std::vector<uint8_t>& data,
     size_t& offset) {
   auto ins_type = DecodeUint8(data, offset);
   if (!ins_type || *ins_type > static_cast<uint8_t>(
                                    mojom::SolanaTokenInstruction::kMaxValue)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return static_cast<mojom::SolanaTokenInstruction>(*ins_type);
 }
@@ -854,12 +853,12 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
 
 }  // namespace
 
-absl::optional<SolanaInstructionDecodedData> Decode(
+std::optional<SolanaInstructionDecodedData> Decode(
     const std::vector<uint8_t>& data,
     const std::string& program_id) {
   if (program_id != mojom::kSolanaSystemProgramId &&
       program_id != mojom::kSolanaTokenProgramId) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   SolanaInstructionDecodedData decoded_data;
@@ -868,12 +867,12 @@ absl::optional<SolanaInstructionDecodedData> Decode(
   const std::vector<ParamNameTypeTuple>* param_tuples =
       DecodeInstructionType(program_id, data, offset, decoded_data);
   if (!param_tuples) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& param_tuple : *param_tuples) {
     if (!DecodeParamType(param_tuple, data, offset, decoded_data.params)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -881,8 +880,8 @@ absl::optional<SolanaInstructionDecodedData> Decode(
 }
 
 std::vector<InsParamPair> GetAccountParamsForTesting(
-    absl::optional<mojom::SolanaSystemInstruction> sys_ins_type,
-    absl::optional<mojom::SolanaTokenInstruction> token_ins_type) {
+    std::optional<mojom::SolanaSystemInstruction> sys_ins_type,
+    std::optional<mojom::SolanaTokenInstruction> token_ins_type) {
   if (sys_ins_type) {
     return GetSystemInstructionAccountParams().at(*sys_ins_type);
   }
@@ -897,8 +896,8 @@ std::vector<InsParamPair> GetAccountParamsForTesting(
 
 std::vector<mojom::SolanaInstructionAccountParamPtr>
 GetMojomAccountParamsForTesting(
-    absl::optional<mojom::SolanaSystemInstruction> sys_ins_type,
-    absl::optional<mojom::SolanaTokenInstruction> token_ins_type) {
+    std::optional<mojom::SolanaSystemInstruction> sys_ins_type,
+    std::optional<mojom::SolanaTokenInstruction> token_ins_type) {
   std::vector<mojom::SolanaInstructionAccountParamPtr> mojom_params;
   for (const auto& param :
        GetAccountParamsForTesting(sys_ins_type, token_ins_type)) {

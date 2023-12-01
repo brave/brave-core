@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,6 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -190,7 +190,7 @@ class BraveVpnService :
   void SetPurchasedState(
       const std::string& env,
       mojom::PurchasedState state,
-      const absl::optional<std::string>& description = absl::nullopt);
+      const std::optional<std::string>& description = std::nullopt);
   void SetCurrentEnvironment(const std::string& env);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
@@ -227,7 +227,7 @@ class BraveVpnService :
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
-  absl::optional<mojom::PurchasedInfo> purchased_state_;
+  std::optional<mojom::PurchasedInfo> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
   base::RepeatingTimer p3a_timer_;

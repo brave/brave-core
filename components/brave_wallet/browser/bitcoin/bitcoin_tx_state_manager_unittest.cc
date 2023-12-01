@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -98,7 +99,7 @@ TEST_F(BitcoinTxStateManagerUnitTest, GetTxPrefPathPrefix) {
   EXPECT_EQ("bitcoin.testnet", bitcoin_tx_state_manager_->GetTxPrefPathPrefix(
                                    mojom::kBitcoinTestnet));
   EXPECT_EQ("bitcoin",
-            bitcoin_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
+            bitcoin_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
 }
 
 }  // namespace brave_wallet

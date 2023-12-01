@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
 #include <iterator>
+#include <optional>
 #include <set>
 
 #include "base/containers/contains.h"
@@ -72,7 +73,7 @@ CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
   return buckets;
 }
 
-absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+std::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event) {
   const auto iter = base::ranges::find_if(
@@ -83,7 +84,7 @@ absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
       });
 
   if (iter == creative_set_conversions.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;
