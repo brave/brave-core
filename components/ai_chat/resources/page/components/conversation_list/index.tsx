@@ -36,13 +36,10 @@ function ConversationList() {
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
-  let showSuggestions: boolean =
+  const showSuggestions: boolean =
+    hasAcceptedAgreement && context.shouldSendPageContents && (
     suggestedQuestions.length > 0 ||
-    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus)
-
-  if (!hasAcceptedAgreement) {
-    showSuggestions = false
-  }
+    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
