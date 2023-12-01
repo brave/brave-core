@@ -43,8 +43,7 @@ class BraveAdsDidOverrideCommandLineSwitchesUtilTest
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();
-    feature_list->InitializeFromCommandLine(param.command_line_switch.value,
-                                            {});
+    feature_list->InitFromCommandLine(param.command_line_switch.value, {});
     scoped_feature_list_.InitWithFeatureList(std::move(feature_list));
   }
 
