@@ -6,16 +6,13 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_NODE_TRAFFIC_RECOGNIZER_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_NODE_TRAFFIC_RECOGNIZER_H_
 
-#include "components/version_info/channel.h"
 #include "url/gurl.h"
 
 namespace ipfs {
 
 class IpfsNodeTrafficRecognizer {
  public:
-  static bool IsKuboRelatedPort(const GURL& request_url,
-                                const version_info::Channel& channel);
-  static bool IsKuboRelatedDomain(const GURL& request_url);
+  static bool IsKuboRelatedUrl(const GURL& request_url);
 };
 
 }  // namespace ipfs

@@ -8,7 +8,6 @@
 #include <string_view>
 
 #include "brave/components/ipfs/ipfs_node_traffic_recognizer.h"
-#include "chrome/common/channel_info.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"
@@ -30,9 +29,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;  // protected URL
   }
 
-  if (ipfs::IpfsNodeTrafficRecognizer::IsKuboRelatedPort(
-          request.url, chrome::GetChannel()) &&
-      ipfs::IpfsNodeTrafficRecognizer::IsKuboRelatedDomain(request.url)) {
+  if (ipfs::IpfsNodeTrafficRecognizer::IsKuboRelatedUrl(request.url)) {
     return true;
   }
 
