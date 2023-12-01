@@ -32,18 +32,21 @@ import { TransactionDetailBox } from '../transaction-box/index'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
-import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { Footer } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
-import { BitcoinTransactionInfo } from './bitcoin-transaction-info'
-import { ZCashTransactionInfo } from './zcash_transaction_info'
 import {
   SolanaTransactionDetailBox //
 } from '../transaction-box/solana-transaction-detail-box'
+import {
+  BitcoinTransactionDetailBox //
+} from '../transaction-box/bitcoin-transaction-detail-box'
+import {
+  ZCashTransactionDetailBox //
+} from '../transaction-box/zcash_transaction_detail_box'
 
 // Styled Components
 import {
@@ -80,7 +83,6 @@ import {
   URLText
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
-import { BitcoinTransactionDetailBox } from '../transaction-box/bitcoin-transaction-detail-box'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -134,7 +136,9 @@ export const ConfirmTransactionPanel = () => {
     transactionsQueueLength,
     isSolanaTransaction,
     isBitcoinTransaction,
-    isZCashTransaction
+    isZCashTransaction,
+    hasFeeEstimatesError,
+    isLoadingGasFee
   } = usePendingTransactions()
 
   // queries
@@ -404,31 +408,27 @@ export const ConfirmTransactionPanel = () => {
 
       <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
-          <>
-            {isERC20Approve ? (
-              <Erc20ApproveTransactionInfo
-                onToggleEditGas={onToggleEditGas}
-                isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
-                currentTokenAllowance={currentTokenAllowance}
-                transactionDetails={transactionDetails}
-                transactionsNetwork={transactionsNetwork}
-                gasFee={gasFee}
-                insufficientFundsError={insufficientFundsError}
-                insufficientFundsForGasError={insufficientFundsForGasError}
-              />
-            ) : isZCashTransaction ? (
-              <ZCashTransactionInfo />
-            ) : isBitcoinTransaction ? (
-              <BitcoinTransactionInfo />
-            ) : (
-              // ETH, FIL, SOL
-              <TransactionInfo
-                onToggleEditGas={
-                  isSolanaTransaction ? undefined : onToggleEditGas
-                }
-              />
-            )}
-          </>
+          <TransactionInfo
+            onToggleEditGas={
+              isSolanaTransaction || isBitcoinTransaction
+                ? undefined
+                : onToggleEditGas
+            }
+            isZCashTransaction={isZCashTransaction}
+            isBitcoinTransaction={isBitcoinTransaction}
+            transactionDetails={transactionDetails}
+            isERC721SafeTransferFrom={isERC721SafeTransferFrom}
+            isERC721TransferFrom={isERC721TransferFrom}
+            transactionsNetwork={transactionsNetwork}
+            hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
+            isLoadingGasFee={isLoadingGasFee}
+            gasFee={gasFee}
+            insufficientFundsError={insufficientFundsError}
+            insufficientFundsForGasError={insufficientFundsForGasError}
+            isERC20Approve={isERC20Approve}
+            currentTokenAllowance={currentTokenAllowance}
+            isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+          />
         ) : isSolanaTransaction ? (
           <SolanaTransactionDetailBox
             data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
@@ -440,7 +440,9 @@ export const ConfirmTransactionPanel = () => {
             data={selectedPendingTransaction?.txDataUnion?.btcTxData}
           />
         ) : isZCashTransaction ? (
-          <ZCashTransactionInfo />
+          <ZCashTransactionDetailBox
+            data={selectedPendingTransaction?.txDataUnion?.zecTxData}
+          />
         ) : (
           // EVM of FIL
           <TransactionDetailBox transactionInfo={selectedPendingTransaction} />
