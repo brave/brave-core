@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Pārvaldīt reklāmas</translation>
 <translation id="7630214457764713113">Kopēt tikai saiti</translation>
 <translation id="885805571521218129">Tas atspoguļo paredzamos Brave reklāmu ieņēmumus šomēnes.</translation>
-<translation id="818003031290137834">Tagad, kad esat izveidojis savienojumu ar ZebPay, jūsu iepriekšējais atlikums tiks iemaksāts jūsu ZebPay kontā kā daļa no jūsu nākamās ieņēmumu izmaksas. Tiklīdz tas tiks saņemts, jūsu BAT tiks atspoguļots jūsu atlīdzību bilancē.</translation>
 <translation id="3478449063771497234">Paziņojumi ir atspējoti</translation>
 <translation id="2862978891748913252">Atlasīt valsti</translation>
 <translation id="3970520675790340955">Atlasiet savu valsti, lai mēs varētu parādīt jūsu reģionam atbilstošas iespējas un reklāmas.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Jūs varat nosūtīt ne vairāk par <ph name="AMOUNT"/> BAT no savas Brave balvu bilances.</translation>
 <translation id="5012991400231464322">Ikmēneša ieguldījums</translation>
 <translation id="5907051927340164207">Jūs jau sūtāt ikmēneša iemaksas šim satura veidotājam</translation>
-<translation id="307555373157330047">Jūs tik un tā varat nosūtīt ziedojumu tagad, un jūs varat atcelt ikmēneša ziedojumus šim satura veidotājam, noņemot viņu no <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Jūs joprojām varat nosūtīt iemaksu tagad, un jūs varat atcelt ikmēneša iemaksu šim satura veidotājam, noņemot viņu no <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Iemaksa nosūtīta!</translation>
 <translation id="1041398280582063935">Dalieties ar savu atbalstu</translation>
 <translation id="8855543392451028706">Laipni lūdzam! Lietotāji var atbalstīt šo satura veidotāju, nosūtot iemaksas. Tas ir veids, kā pateikties viņiem par lielisku saturu.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Pierakstīties <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Paldies, ka atbalstāt savus iecienītākos satura veidotājus</translation>
 <translation id="3796032246917966749">Šķiet, ka jūs izrakstījāties no <ph name="CUSTODIAN"/> Brave balvām. Pierakstieties vēlreiz, lai turpinātu.</translation>
-<translation id="594652923071049606">Šis satura veidotājs vēl nav verificēts Brave satura veidotājs. Jūs varēsiet nosūtīt viņam ziedojumus, kad viņš tiks verificēts. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Šis satura veidotājs vēl nav verificēts Brave satura veidotājs. Jūs varēsiet nosūtīt viņam iemaksas, kad viņš tiks verificēts. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Sūtīt iemaksu</translation>
 <translation id="1899434873745933492">Iemaksu nav iespējams nosūtīt</translation>
 <translation id="1794046983410841192">Izmantot Brave balvas</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Pielāgota</translation>
 <translation id="4827581232860040208">Radās problēma, nosūtot jūsu iemaksu</translation>
 <translation id="3259723213051400722">Lūdzu, mēģiniet vēlreiz.</translation>
-<translation id="8899147737996487517">Šis satura veidotājs ir reģistrējies Brave un var saņemt ziedojumus no Brave balvu lietotājiem. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Šis satura veidotājs ir reģistrējies Brave un var saņemt iemaksas no Brave balvu lietotājiem. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Kamēr ir atspējoti paziņojumi, Brave balvas var nedarboties.</translation>
 <translation id="4259212006412783790">IESLĒGT</translation>
 <translation id="6112331814131703370">Bloķēt paziņojumus 'Pārslēgties uz lietotni'</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Importēt grāmatzīmes</translation>
 <translation id="1008186147501209563">Grāmatzīmju eksportēšana</translation>
 <translation id="6680516947641001448">Atlasīt failu, lai importētu grāmatzīmes</translation>
+<translation id="2353910600995338714">Eksportēšana izdevās</translation>
+<translation id="229319993704311844">Grāmatzīmes eksportētas uz <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Eksportēšana neizdevās</translation>
+<translation id="1166543535974380311">Grāmatzīmju eksportēšana neizdevās. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="6154243540085290880">Importēšana izdevās</translation>
 <translation id="7028125942261647795">Grāmatzīmes importētas veiksmīgi.</translation>
-<translation id="444953779119381206">Grāmatzīmju importēšana neizdevās.</translation>
-<translation id="6606836200439368332">Grāmatzīmju eksportēšana neizdevās.</translation>
-<translation id="1395297034387418032">Grāmatzīmes eksportētas veiksmīgi.</translation>
+<translation id="4803910478683254032">Importēšana neizdevās</translation>
+<translation id="8325139248201792113">Grāmatzīmju importēšana neizdevās. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="2803313416453193357">Atvērt mapi</translation>
 <translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
 <translation id="7473245612074035141">Sākt iestatīšanu</translation>
 <translation id="8985635554450124959">Sinhronizācijas iestatīšana neizdevās</translation>
@@ -392,6 +396,10 @@ Vai tiešām vēlaties to darīt?</translation>
  Lūdzu, pārbaudiet, vai šos atslēgvārdus ģenerēja ierīce, kas pieder jums.
 Vai tiešām vēlaties to darīt?</translation>
 <translation id="4550208292810542331">Kameras atļauja netika piešķirta</translation>
+<translation id="6470233139461745039">Lai iespējotu paroļu sinhronizēšanu, vispirms iestatiet ierīces ekrāna bloķēšanu</translation>
+<translation id="3063783274005996079">Atbloķējiet, lai iespējotu paroļu sinhronizēšanu</translation>
+<translation id="7551563084530025179">Pirms paroļu sinhronizēšanas jums būs jāautentificējas ierīcē ar biometriju/paroli. Šīs papildu drošības prasības palīdz sargāt jūsu paroļu drošību.</translation>
+<translation id="6925081665778864449">Lai sinhronizētu paroles, savā Android ierīcē, lūdzu, iespējojiet autentificēšanos ar biometriju/paroli. Šīs papildu drošības prasības palīdz sargāt jūsu paroļu drošību.</translation>
 <translation id="597993392929850353">Brave licence</translation>
 <translation id="6336451774241870485">Jauna inkognito cilne</translation>
 <translation id="6199596294742117349">Šī ir inkognito cilne</translation>
@@ -428,7 +436,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="9096003370755878766">Izņemt BAT, ko jūs varētu iepriekš būt pievienojis savam Brave atlīdzību makam</translation>
 <translation id="1554282356558968486">Mūsu maka pakalpojumu sniedz</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Atkarībā no pieprasītajiem pakalpojumiem Uphold var lūgt jums apliecināt savu identitāti.</translation>
@@ -1202,4 +1210,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6759710362319508545">Resursi</translation>
 <translation id="2471230424465522689">Ne pirms</translation>
 <translation id="4841860051609590575">Pieprasījuma ID</translation>
+<translation id="1179407411385015942">Leo ir mākslīgā intelekta nodrošināts viedais asistents, kas iestrādāts tieši pārlūkā</translation>
+<translation id="1250335737108905610">Atiestatīt un notīrīt Leo datus</translation>
+<translation id="6165101586663336913">Lai atiestatītu asistentu Leo, jums jāpiekrīt turpmāk izmantot Leo, un tiks notīrīta jūsu tērzēšanas vēsture. Notīrot tērzēšanas vēsturi, tiks izdzēstas visas jūsu iepriekšējās sarunas ar Leo. Šo darbību nevar atsaukt.</translation>
 </translationbundle>

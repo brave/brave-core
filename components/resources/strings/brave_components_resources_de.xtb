@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">Abonnement beenden</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
-<translation id="8265244536487014968">Hinweis: Der an Brave-Server gesendete Bericht wird die Website-Adresse, die Brave-Versionsnummer, die Schutzeinstellungen, den VPN-Status und die Spracheinstellungen enthalten. Die IP-Adresse wird übertragen, aber nicht gespeichert.</translation>
+<translation id="6387106423577201267">Hinweis: Der an Brave-Server gesendete Bericht wird die Website-Adresse, die Brave-Versionsnummer, die Schutzeinstellungen, den VPN-Status und die Spracheinstellungen enthalten.</translation>
 <translation id="6476216365964140603">Zusätzliche Details (optional)</translation>
 <translation id="6145852496180774737">Kontaktieren Sie mich unter: (optional)</translation>
 <translation id="7616645803364270729">E-Mail, Twitter usw.</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">Bei der Überprüfung der Anfrage Ihres Browsers, Ihre Brave Belohnungen mit Ihrem <ph name="PROVIDER"/>-Konto zu verbinden, ist ein Problem aufgetreten. Sie können <ph name="BEGIN_LINK"/>sich an den Support wenden<ph name="END_LINK"/>, um weitere Hilfe zu erhalten.</translation>
 <translation id="1316066811927496401">Fehler: Anfrage konnte nicht validiert werden</translation>
 <translation id="8167256685618982116">Durch Aktivieren von <ph name="TITLE"/> akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
-<translation id="4123948149985772126">Wählen Sie einen Kontoanbieter</translation>
-<translation id="896953639186217388">Depotkontoanbieter sind verpflichtet, Ihre Identität zu überprüfen, wozu auch die Übermittlung eines Lichtbildausweises gehören kann. Siehe die <ph name="BEGIN_LINK1"/>Datenschutzrichtlinie für Brave-Belohnungen<ph name="END_LINK1"/>. <ph name="BEGIN_LINK2"/>Hier können Sie mehr über BAT erfahren<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">Ihre BAT-Einnahmen speichern, verwalten und abheben können</translation>
-<translation id="5155452078869279096">Ihr Konto mit gekauften BAT aufladen können</translation>
-<translation id="2662540985634906665">Einmalige Beiträge an Ihre Lieblings-Websites und -ersteller senden</translation>
+<translation id="8817096698141999876">Depotkonten (ID-Verifizierung erforderlich)</translation>
+<translation id="1539433155512862005">Depotkonten werden von vertrauenswürdigen Drittanbietern bereitgestellt, die Ihre BAT für Sie halten.</translation>
+<translation id="6751803821780922506">Wählen Sie, wo Sie Ihre BAT empfangen möchten</translation>
 <translation id="1233129511866436960">Mehr über über Regionen und Unterstützung erfahren</translation>
 <translation id="7329170127335794328">Derzeit nicht in Ihrer Region verfügbar</translation>
-<translation id="8304979233901023264">I hab die <ph name="TOS_LINK_BEGIN"/>Nutzungsbedingungen<ph name="TOS_LINK_END"/> und die <ph name="PP_LINK_BEGIN"/>Datenschutzerklärung<ph name="PP_LINK_END"/> von Brave gelesen und stimme diesen zu.</translation>
+<translation id="966956302643313970">Um BAT-Belohnungen (Basic Attention Token) zu verdienen, verbinden Sie ein Konto. Die von Ihnen verdienten BAT werden automatisch jeden Monat auf Ihr Konto transferiert.</translation>
 <translation id="1892970806832316900">Ausstehend bis <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Hoppla! Ihr Browser kann Private Anzeigen von Brave nicht empfangen.</translation>
 <translation id="5177429570315095022">Sie müssen Ihren Browser aktualisieren, um weiterhin Anzeigen sehen zu können.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Bereit, mit dem Verdienen zu beginnen?<ph name="BOLD_END"/> Verknüpfen Sie Ihr Konto oder erstellen Sie ein neues bei einem unserer Partner.</translation>
 <translation id="1772961321862399863">Um BAT zu verdienen, müssen Benutzer ein Depotkonto mit Brave-Belohnungen verknüpfen. Leider gibt es in Ihrer Region keine Depotbank, so dass Sie keine BAT verdienen können. Wenn Sie Brave-Belohnungen aktivieren, werden automatisch Ersteller unterstützt.</translation>
 <translation id="902298128239575729">Senden Sie Beiträge mit Brave-Belohnungen</translation>
-<translation id="8413791505518414158">Nachdem Sie Ihr Depotkonto verknüpft haben, können Sie über das Guthaben aus Ihren Brave-Belohnungen einmalige Beiträge an Ihre Lieblingsersteller senden.</translation>
+<translation id="6276721355724491595">Nachdem Sie Ihr Depotkonto verknüpft haben, können Sie über das Guthaben aus Ihren Brave-Belohnungen einmalige Beiträge an Ihre Lieblingsersteller senden.</translation>
 <translation id="1149481926056509086">Um einmalige Beiträge zu senden, müssen Benutzer ein Depotkonto mit Brave-Belohnungen verknüpfen. Leider gibt es in Ihrer Region keine Depotbank, sodass Sie keine Beiträge senden können. Sie unterstützen dennoch automatisch Ersteller.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Diesen Monat haben Sie # Ersteller besucht, der von Brave-Belohnungen unterstützt wird}
@@ -628,13 +626,12 @@
 <translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
 <translation id="3717922248131893262">Um weiterhin Brave-Belohnungen zu nutzen, wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können. <ph name="LINK_BEGIN"/>Datenschutzrichtlinie<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Beginnen Sie, Rewards zu nutzen</translation>
-<translation id="818003031290137834">Da Sie nun mit ZebPay verbunden sind, wird Ihr früheres Guthaben mit der nächsten Verdienstauszahlung auf Ihr ZebPay-Konto überwiesen. Sobald die Auszahlung erfolgt ist, wird Ihr BAT-Guthaben in Ihrem Belohnungen-Konto angezeigt.</translation>
 <translation id="2221902203895354376">Kostenlose Token sind verfügbar!</translation>
 <translation id="2956070106555335453">Zusammenfassung</translation>
 <translation id="2369994359029526515">Unverifizierter Urheber</translation>
-<translation id="1010940411509546886">Dieser Ersteller hat sich noch nicht als Brave-Ersteller verifiziert. Sie können ihm erst Beiträge senden, wenn er verifiziert ist.</translation>
+<translation id="3984338085370091436">Dieser Ersteller hat sich noch nicht als Brave-Ersteller verifiziert. Sie können ihm erst Beiträge senden, wenn er verifiziert ist.</translation>
 <translation id="6020176662032623904">Verifizierter Urheber</translation>
-<translation id="215037911651623564">Überprüfungsstatus des Erstellers aktualisieren</translation>
+<translation id="8635423276837443905">Verifizierungsstatus des Erstellers aktualisieren</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> auf <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">Beitrag senden</translation>
 <translation id="7335371657242627509">Automatisch unterstützen</translation>
@@ -694,11 +691,11 @@
 <translation id="1483493594462132177">Senden</translation>
 <translation id="6632987674051304487">Mit <ph name="PROVIDER"/> schicken</translation>
 <translation id="4319632089378796037">Web3-Wallet nutzen</translation>
-<translation id="5399596220743521546">Dieser Creator hat sich bei Brave registriert und kann Beiträge von Benutzern von Brave-Belohnungen empfangen.</translation>
+<translation id="4530198836725543997">Dieser Ersteller hat sich bei Brave registriert und kann Beiträge von Nutzern von Brave-Belohnungen empfangen.</translation>
 <translation id="4529874892536380156">Machen Sie einen monatlich wiederkehrenden Beitrag daraus. Sie können ihn jederzeit beenden.</translation>
 <translation id="1177863135347784049">Benutzerdefiniert</translation>
 <translation id="5907051927340164207">Sie senden diesem Ersteller bereits monatliche Beiträge</translation>
-<translation id="2840845521251717054">Sie können ihm trotzdem jetzt einen Beitrag senden und Ihre monatlichen Beiträge für diesen Ersteller beenden, indem Sie ihn aus den <ph name="LINK_BEGIN"/>monatlichen Beiträgen<ph name="LINK_END"/> entfernen.</translation>
+<translation id="4357685964329620278">Sie können ihm trotzdem jetzt einen Beitrag senden und Ihre monatlichen Beiträge für diesen Ersteller beenden, indem Sie ihn aus den <ph name="LINK_BEGIN"/>monatlichen Beiträgen<ph name="LINK_END"/> entfernen.</translation>
 <translation id="1899434873745933492">Ihr Beitrag kann nicht gesendet werden</translation>
 <translation id="8598111278506452136">Dieser Ersteller kann keine Beiträge von <ph name="PROVIDER"/> erhalten.</translation>
 <translation id="8379442066667303579">Mit Ihrer Web3-Wallet können Sie diesem Ersteller trotzdem Krypto-Beiträge senden.</translation>
@@ -724,6 +721,7 @@
 <translation id="1288078776976153868">Netzwerk</translation>
 <translation id="1148827340205946630">Der Nutzer hat die Anfrage abgelehnt.</translation>
 <translation id="2403819048476450281">Ungültige Parameter.</translation>
+<translation id="3849003816301348130">Zieladresse befindet sich auf der SDN-Liste des OFAC.</translation>
 <translation id="3955144560853195652">Kette <ph name="VALUE"/> wurde nicht hinzugefügt</translation>
 <translation id="1875861420974447980">Diese Ketten-ID ist momentan in Verwendung.</translation>
 <translation id="167698752210114155">Es ist ein interner Fehler aufgetreten</translation>
@@ -909,6 +907,7 @@
 <translation id="6577166808959668729">Unterstützt SLP-kompatible Assets auf der Solana-Blockchain</translation>
 <translation id="4541295941776129088">FIL-Asset speichern</translation>
 <translation id="29759539656432505">BTC-Assets speichern</translation>
+<translation id="8749751940551938347">ZEC-Assets speichern</translation>
 <translation id="8500387257977999003">Privater Schlüssel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">importieren</translation>
 <translation id="232925166623833246">Import aus Hardware-Wallet</translation>
@@ -1085,7 +1084,7 @@
 <translation id="5867988533873716616">Block-Explorer-URL ist nicht verfügbar.</translation>
 <translation id="4255623233927788178">Im Block-Explorer anzeigen</translation>
 <translation id="563386395023152633">Transaktionshash kopieren</translation>
-<translation id="7148658188569580292">Transaktion beschleunigen</translation>
+<translation id="881317738916264532">Beschleunigen</translation>
 <translation id="1198263951134066686">Transaktion stornieren</translation>
 <translation id="3562548974839822204">Transaktion erneut versuchen</translation>
 <translation id="6383204195803840504">Transaktionen werden hier angezeigt</translation>
@@ -1099,6 +1098,7 @@
 <translation id="1165039591588034296">Fehler</translation>
 <translation id="8373210463207847451">Abgewählt</translation>
 <translation id="8214232307424031138">Unterschrieben</translation>
+<translation id="5916664084637901428">An</translation>
 <translation id="9065572743819293042">Aktuelle Transaktionen</translation>
 <translation id="4235538284468006757">Transaktionsdetails</translation>
 <translation id="7488671812634887146">Beschleunigen</translation>
@@ -1159,6 +1159,7 @@
 <translation id="471055802670233033">Sie geben aus</translation>
 <translation id="7916618590403748182">Sie erhalten</translation>
 <translation id="8328657208304368165">Bestellung bestätigen</translation>
+<translation id="8220255674527598378">Solana-Tausch</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Wallet muss zuerst entsperrt werden</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ist keine gültige Adresse</translation>
@@ -1253,8 +1254,6 @@
 <translation id="1257387162647804035">Primäre Netzwerke</translation>
 <translation id="8323674164587854512">Ethereum + EVM-Ketten</translation>
 <translation id="1398414935371867469">Solana + SVM-Ketten</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">Netzwerklogo</translation>
 <translation id="4378208228955237306">Netzwerklogo auf NFTs anzeigen</translation>
 <translation id="5472199803712163015">Spam-NFTs</translation>
@@ -1282,7 +1281,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> senden</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> in <ph name="TAKER"/> tauschen</translation>
 <translation id="8613144770663526433">Mit Brave Wallet anmelden</translation>
-<translation id="3696514931437952995">Sie melden sich bei <ph name="ORIGIN"/> an. Brave Wallet teilt Ihre Wallet-Adresse mit <ph name="ORIGIN"/>.</translation>
+<translation id="8813165409788097898">Sie melden sich bei <ph name="ORIGIN"/> an. Die Brave-Wallet teilt Ihre Wallet-Adresse mit <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Detaillierte Informationen anzeigen</translation>
 <translation id="3950820424414687140">Anmelden</translation>
 <translation id="4530494379350999373">Ursprung</translation>
@@ -1593,6 +1592,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>Aktualisieren<ph name="REFRESH_END"/> oder <ph name="IMPORT"/>Manuell importieren<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Neu laden</translation>
 <translation id="4608324163534970318">Netzwerkgebühren</translation>
+<translation id="6213230117190778270">Erhalten</translation>
+<translation id="6748108480210050150">Von</translation>
+<translation id="4875290286426670462">Unbegrenzte <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">Dieses Token wurde nicht verifiziert.</translation>
+<translation id="8549067157732633185">Dieses Token wurde verifiziert.</translation>
+<translation id="2130170065617939165">Dieses Token wurde auf <ph name="NUMBER_OF_LISTS"/> Listen verifiziert.</translation>
+<translation id="1554316484739382186">Ausgabeadresse: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">ZebPay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/>-Konto</translation>
+<translation id="5360752485622434494">Brave-Belohnungs-BAT bei <ph name="PROVIDER"/></translation>
+<translation id="429061011725027672">Sie wurden von <ph name="PROVIDER"/> abgemeldet. Bitte melden Sie sich an, um Ihr Guthaben anzuzeigen.</translation>
+<translation id="4611292653554630842">Anmelden</translation>
+<translation id="1132794822159463424">Bei <ph name="PROVIDER"/> anzeigen</translation>
+<translation id="7875005109025196005">Plattformen</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -1852,6 +1865,8 @@
 <translation id="8960352557529001690">Legasthenie</translation>
 <translation id="8189819085033738728">Schriftgröße verkleinern</translation>
 <translation id="1952725803106139986">Schriftgröße vergrößern</translation>
+<translation id="6338177649973309262">Schmale Inhaltsspalte</translation>
+<translation id="6500600749984466451">Breite Inhaltsspalte</translation>
 <translation id="7239710518122372020">Sprachausgabe</translation>
 <translation id="4330722796577425585">Zurückspulen</translation>
 <translation id="1199355487114804640">Abspielen / Pause</translation>

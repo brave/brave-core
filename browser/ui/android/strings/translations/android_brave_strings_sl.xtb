@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Upravljanje oglasov</translation>
 <translation id="7630214457764713113">Kopirajte čisto povezavo</translation>
 <translation id="885805571521218129">To odraža vaš predvideni razpon zaslužka za Brave Oglase ta mesec.</translation>
-<translation id="818003031290137834">Zdaj ko ste povezani z ZebPay, bo vsako prejšnje stanje, ki ste ga imeli, položeno na vaš račun ZebPay kot del vašega naslednjega izplačila zaslužka. Ko prispe, boste videli vaš BAT prikazan v vašem stanju nagrad.</translation>
 <translation id="3478449063771497234">Obvestila so izključena</translation>
 <translation id="2862978891748913252">Izberite svojo državo</translation>
 <translation id="3970520675790340955">Izberite svojo državo, da vam lahko pokažemo prave možnosti in oglase za vašo regijo.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Z dobroimetjem Brave Nagrade lahko pošljete samo do <ph name="AMOUNT"/> BAT.</translation>
 <translation id="5012991400231464322">Mesečni prispevki</translation>
 <translation id="5907051927340164207">Temu ustvarjalcu že pošiljate mesečne prispevke</translation>
-<translation id="307555373157330047">Še vedno lahko pošljete prispevek in lahko prekličete svoje mesečne prispevke temu ustvarjalcu tako, da jih odstranite iz <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Še vedno lahko pošljete prispevek in lahko prekličete svoje mesečne prispevke temu ustvarjalcu tako, da jih odstranite iz <ph name="MONTHLY_CONTRIBUTION"/></translation>
 <translation id="5379685283876547860">Prispevek je poslan!</translation>
 <translation id="1041398280582063935">Delite svojo podporo</translation>
 <translation id="8855543392451028706">Dobrodošli! Uporabniki lahko podprejo tega ustvarjalca vsebin tako, da mu pošljejo prispevke. To je način zahvale za ustvarjanje odlične vsebine.</translation>
@@ -32,7 +31,8 @@
 <translation id="9038728316393235637">Prijavite se v <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Hvala, ker podpirate svoje najljubše ustvarjalce</translation>
 <translation id="3796032246917966749">Videti je, da ste odjavljeni iz <ph name="CUSTODIAN"/> za Brave Nagrade. Če želite nadaljevati, se ponovno prijavite.</translation>
-<translation id="594652923071049606">Ta ustvarjalec še ni preverjen pri Brave Ustvarjalcih. Ko bo preverjen, mu boste lahko poslali prispevke. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Ta ustvarjalec še ni preverjen pri Brave Ustvarjalcih. Ko bodo preverjeni, jim boste lahko poslali prispevke.
+<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Pošlji prispevek</translation>
 <translation id="1899434873745933492">Vašega prispevka ni mogoče poslati</translation>
 <translation id="1794046983410841192">Uporabite Brave Nagrade</translation>
@@ -42,7 +42,7 @@
 <translation id="1177863135347784049">Po meri</translation>
 <translation id="4827581232860040208">Pri pošiljanju vašega prispevka je prišlo do težave</translation>
 <translation id="3259723213051400722">Poskusite znova.</translation>
-<translation id="8899147737996487517">Ta ustvarjalec se je registriral pri Brave in lahko prejema prispevke uporabnikov Brave Nagrad. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Ta ustvarjalec se je registriral pri Brave in lahko prejema prispevke uporabnikov Brave Nagrad. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Ko so obvestila izključena, storitev nagrad Brave morda ne bo delovala.</translation>
 <translation id="4259212006412783790">VKLOP</translation>
 <translation id="6112331814131703370">Onemogočite obvestila 'Prehod na aplikacijo'</translation>
@@ -369,10 +369,15 @@ Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno
 <translation id="8457451314607652708">Uvozi zaznamke</translation>
 <translation id="1008186147501209563">Izvoz zaznamkov</translation>
 <translation id="6680516947641001448">Izberite datoteko za uvoz zaznamkov</translation>
+<translation id="2353910600995338714">Izvoz uspel</translation>
+<translation id="229319993704311844">Zaznamki izvoženi v<ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Izvoz ni uspel</translation>
+<translation id="1166543535974380311">Izvoz zaznamkov ni uspel. Prosim poskusite ponovno.</translation>
+<translation id="6154243540085290880">Uvoz uspešen</translation>
 <translation id="7028125942261647795">Zaznamki so uspešno uvoženi.</translation>
-<translation id="444953779119381206">Uvoz zaznamkov ni uspel.</translation>
-<translation id="6606836200439368332">Izvoz zaznamka ni uspel.</translation>
-<translation id="1395297034387418032">Zaznamki so uspešno izvoženi.</translation>
+<translation id="4803910478683254032">Uvoz ni uspel</translation>
+<translation id="8325139248201792113">Uvoz zaznamkov ni uspel. Prosim poskusite ponovno</translation>
+<translation id="2803313416453193357">Odprite mapo</translation>
 <translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
 <translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="8985635554450124959">Sinhronizacije ni bilo mogoče nastaviti</translation>
@@ -393,6 +398,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 Še enkrat preverite, ali je te kodne besede ustvarila naprava, ki je v vaši lasti.
 Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4550208292810542331">Uporaba kamere ni bila dovoljena</translation>
+<translation id="6470233139461745039">Če želite omogočiti sinhronizacijo gesel, najprej nastavite zaklepanje zaslona v napravi</translation>
+<translation id="3063783274005996079">Odklenite, da omogočite sinhronizacijo gesel</translation>
+<translation id="7551563084530025179">Preden lahko sinhronizirate gesla, se morate potrditi z biometričnimi podatki/geslom vaše naprave. Ta dodatni varnostni ukrep pomaga varovati vaša gesla.</translation>
+<translation id="6925081665778864449">Če želite sinhronizirati gesla, omogočite biometrijo/preverjanje pristnosti z geslom v napravi Android. Ta dodatni varnostni ukrep pomaga varovati vaša gesla.</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Novi zavihek brez beleženja zgodovine</translation>
 <translation id="6199596294742117349">To je zavihek brez beleženja zgodovine</translation>
@@ -429,7 +438,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="9096003370755878766">Umaknite BAT, ki ste ga morda že dodali v svojo denarnico Brave Rewards</translation>
 <translation id="1554282356558968486">Našo denarno storitev zagotovi</translation>
 <translation id="6569877533335686968">Podpri</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
@@ -1208,4 +1217,7 @@ je v teku.
 <translation id="6759710362319508545">Viri</translation>
 <translation id="2471230424465522689">Ne pred</translation>
 <translation id="4841860051609590575">ID zahteve</translation>
+<translation id="1179407411385015942">Leo je pametni pomočnik, ki ga poganja AI, vgrajen neposredno v brskalnik</translation>
+<translation id="1250335737108905610">Ponastavite in počistite Leo podatke</translation>
+<translation id="6165101586663336913">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Lea v prihodnosti, počistili pa boste tudi svojo zgodovino klepetov. Če izbrišete zgodovino klepeta, boste izbrisali vse prejšnje pogovore z Leom. Tega dejanja ni mogoče razveljaviti.</translation>
 </translationbundle>
