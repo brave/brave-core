@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_transfer/ad_transfer_feature.h"
 #include "url/gurl.h"

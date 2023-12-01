@@ -11,10 +11,10 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/ad_serving/new_tab_page_ad_serving.h"
-#include "brave/components/brave_ads/core/internal/ad_serving/new_tab_page_ad_serving_delegate.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving.h"
+#include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 

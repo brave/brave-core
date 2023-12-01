@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/ad_serving/targeting/segments/top_segments.h"
-#include "brave/components/brave_ads/core/internal/ad_serving/targeting/user_model/interest/interest_segments.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_segments.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
