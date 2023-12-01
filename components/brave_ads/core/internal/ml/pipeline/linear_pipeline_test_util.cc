@@ -66,7 +66,7 @@ LinearPipelineBufferBuilder::AddLowercaseTransformation() {
 LinearPipelineBufferBuilder&
 LinearPipelineBufferBuilder::AddHashedNGramsTransformation(
     const int bucket_count,
-    std::vector<uint32_t> subgrams) {
+    const std::vector<uint32_t>& subgrams) {
   const auto ngrams_range = builder_.CreateVector(subgrams);
   auto hashed_ngram_transformation =
       linear_text_classification::flat::CreateHashedNGramsTransformation(

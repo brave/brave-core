@@ -20,7 +20,7 @@
 namespace brave_ads {
 
 using ClassifyPageCallback =
-    base::OnceCallback<void(std::optional<ml::PredictionMap>)>;
+    base::OnceCallback<void(const std::optional<ml::PredictionMap>&)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:

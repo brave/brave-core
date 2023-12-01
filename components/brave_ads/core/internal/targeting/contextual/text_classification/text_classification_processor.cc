@@ -55,7 +55,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
 }
 
 void TextClassificationProcessor::ClassifyPageCallback(
-    const std::optional<TextClassificationProbabilityMap> probabilities) {
+    const std::optional<TextClassificationProbabilityMap>& probabilities) {
   if (!probabilities) {
     return BLOG(0, "Text classification failed due to an invalid model");
   }
