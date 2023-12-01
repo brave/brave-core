@@ -8,6 +8,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_player/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -44,6 +45,7 @@
     &net::features::kBraveHttpsByDefault,                               \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
+    &brave_player::features::kBravePlayer,                              \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
     &brave_shields::features::kBraveLocalhostAccessPermission
 

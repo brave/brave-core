@@ -29,6 +29,7 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_FORGET_FIRST_PARTY_STORAGE = "BraveForgetFirstPartyStorage";
     public static final String BRAVE_REQUEST_OTR_TAB = "BraveRequestOTRTab";
     public static final String AI_CHAT = "AIChat";
+    public static final String BRAVE_PLAYER = "BravePlayer";
     public static final String BRAVE_SHOW_STRICT_FINGERPRINTING_MODE =
             "BraveShowStrictFingerprintingMode";
 }
