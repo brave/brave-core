@@ -110,7 +110,7 @@ source_set("test") {
     "//brave/components/brave_rewards/common/mojom:core",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:publishers_proto",
-    "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
+    "//brave/components/challenge_bypass_ristretto",
     "//brave/third_party/rapidjson",
     "//net:net",
     "//sql:sql",

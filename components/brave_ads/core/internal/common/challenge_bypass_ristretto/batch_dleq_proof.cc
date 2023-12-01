@@ -43,8 +43,8 @@ std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::BatchDLEQProof::decode_base64(
-          base::as_bytes(base::make_span(batch_dleq_proof_base64))));
+      challenge_bypass_ristretto::BatchDLEQProof::DecodeBase64(
+          batch_dleq_proof_base64));
 }
 
 std::vector<UnblindedToken> ToUnblindedTokens(
@@ -100,7 +100,7 @@ std::optional<std::string> BatchDLEQProof::EncodeBase64() const {
     return std::nullopt;
   }
 
-  return ValueOrLogError(batch_dleq_proof_->encode_base64());
+  return batch_dleq_proof_->EncodeBase64();
 }
 
 bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
@@ -115,7 +115,7 @@ bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
   }
 
   return ValueOrLogError(
-             batch_dleq_proof_->verify(ToRawBlindedTokens(blinded_tokens),
+             batch_dleq_proof_->Verify(ToRawBlindedTokens(blinded_tokens),
                                        ToRawSignedTokens(signed_tokens),
                                        public_key.get()))
       .value_or(false);
@@ -132,7 +132,7 @@ std::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
   }
 
   auto raw_unblinded_tokens =
-      ValueOrLogError(batch_dleq_proof_->verify_and_unblind(
+      ValueOrLogError(batch_dleq_proof_->VerifyAndUnblind(
           ToRawTokens(tokens), ToRawBlindedTokens(blinded_tokens),
           ToRawSignedTokens(signed_tokens), public_key.get()));
   if (!raw_unblinded_tokens || tokens.size() != raw_unblinded_tokens->size()) {

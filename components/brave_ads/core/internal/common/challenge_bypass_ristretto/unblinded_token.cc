@@ -21,8 +21,8 @@ std::optional<challenge_bypass_ristretto::UnblindedToken> Create(
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::UnblindedToken::decode_base64(
-          base::as_bytes(base::make_span(unblinded_token_base64))));
+      challenge_bypass_ristretto::UnblindedToken::DecodeBase64(
+          unblinded_token_base64));
 }
 
 }  // namespace
@@ -66,7 +66,7 @@ std::optional<std::string> UnblindedToken::EncodeBase64() const {
     return std::nullopt;
   }
 
-  return ValueOrLogError(unblinded_token_->encode_base64());
+  return unblinded_token_->EncodeBase64();
 }
 
 std::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
@@ -74,7 +74,7 @@ std::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
     return std::nullopt;
   }
 
-  return VerificationKey(unblinded_token_->derive_verification_key());
+  return VerificationKey(unblinded_token_->DeriveVerificationKey());
 }
 
 std::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
@@ -82,7 +82,7 @@ std::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
     return std::nullopt;
   }
 
-  return TokenPreimage(unblinded_token_->preimage());
+  return TokenPreimage(unblinded_token_->Preimage());
 }
 
 std::ostream& operator<<(std::ostream& os,

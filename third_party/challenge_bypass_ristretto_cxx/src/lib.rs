@@ -11,7 +11,6 @@ use derive_more::From;
 use hmac::Hmac;
 use lazy_static::lazy_static;
 use rand::rngs::OsRng;
-use ref_cast::RefCast;
 use sha2::Sha512;
 
 type HmacSha512 = Hmac<Sha512>;
@@ -51,7 +50,8 @@ macro_rules! impl_decode_base64 {
     };
 }
 
-#[cxx::bridge(namespace =  challenge_bypass_ristretto)]
+#[allow(unsafe_op_in_unsafe_fn)]
+#[cxx::bridge(namespace = cbr_cxx)]
 pub mod ffi {
     #[derive(Debug)]
     struct Error {
@@ -141,7 +141,7 @@ pub mod ffi {
 
         fn encode_base64(self: &UnblindedToken) -> String;
         fn derive_verification_key(self: &UnblindedToken) -> Box<VerificationKey>;
-        fn preimage(self: &UnblindedToken) -> &TokenPreimage;
+        fn preimage(self: &UnblindedToken) -> Box<TokenPreimage>;
 
         fn decode_base64_unblinded_token(s: &str) -> Box<UnblindedTokenResult>;
         fn error(self: &UnblindedTokenResult) -> &Error;
@@ -228,8 +228,7 @@ pub mod ffi {
 
 use ffi::*;
 
-#[derive(From, RefCast)]
-#[repr(transparent)]
+#[derive(From)]
 pub struct TokenPreimage(voprf::TokenPreimage);
 #[derive(From)]
 pub struct Token(voprf::Token);
@@ -264,28 +263,19 @@ impl Error {
     }
 
     fn none() -> Self {
-        Error {
-            code: TokenError::None,
-            msg: "".to_string(),
-        }
+        Error { code: TokenError::None, msg: "".to_string() }
     }
 }
 
 impl From<TokenError> for Error {
     fn from(error: TokenError) -> Self {
-        Error {
-            msg: "fixme".to_string(),
-            code: error.into(),
-        }
+        Error { msg: "fixme".to_string(), code: error.into() }
     }
 }
 
 impl From<errors::TokenError> for Error {
     fn from(error: errors::TokenError) -> Self {
-        Error {
-            msg: error.to_string(),
-            code: error.into(),
-        }
+        Error { msg: error.to_string(), code: error.into() }
     }
 }
 
@@ -319,11 +309,7 @@ impl TokenPreimage {
 #[derive(From)]
 struct TokenPreimageResult(Result<TokenPreimage, Error>);
 
-impl_decode_base64!(
-    decode_base64_token_preimage,
-    TokenPreimage,
-    TokenPreimageResult
-);
+impl_decode_base64!(decode_base64_token_preimage, TokenPreimage, TokenPreimageResult);
 impl_result!(TokenPreimage, TokenPreimageResult);
 
 fn generate_token() -> Box<Token> {
@@ -356,11 +342,7 @@ impl BlindedToken {
 #[derive(From)]
 struct BlindedTokenResult(Result<BlindedToken, Error>);
 
-impl_decode_base64!(
-    decode_base64_blinded_token,
-    BlindedToken,
-    BlindedTokenResult
-);
+impl_decode_base64!(decode_base64_blinded_token, BlindedToken, BlindedTokenResult);
 impl_result!(BlindedToken, BlindedTokenResult);
 
 impl SignedToken {
@@ -384,19 +366,15 @@ impl UnblindedToken {
         Box::new(self.0.derive_verification_key::<Sha512>().into())
     }
 
-    fn preimage(self: &UnblindedToken) -> &TokenPreimage {
-        TokenPreimage::ref_cast(&self.0.t)
+    fn preimage(self: &UnblindedToken) -> Box<TokenPreimage> {
+        Box::new(self.0.t.into())
     }
 }
 
 #[derive(From)]
 struct UnblindedTokenResult(Result<UnblindedToken, Error>);
 
-impl_decode_base64!(
-    decode_base64_unblinded_token,
-    UnblindedToken,
-    UnblindedTokenResult
-);
+impl_decode_base64!(decode_base64_unblinded_token, UnblindedToken, UnblindedTokenResult);
 impl_result!(UnblindedToken, UnblindedTokenResult);
 
 fn generate_signing_key() -> Box<SigningKey> {
@@ -580,10 +558,7 @@ impl BatchDLEQProof {
         signed_tokens: &SignedTokens,
         public_key: &PublicKey,
     ) -> Error {
-        match self
-            .0
-            .verify::<Sha512>(&blinded_tokens.0, &signed_tokens.0, &public_key.0)
-        {
+        match self.0.verify::<Sha512>(&blinded_tokens.0, &signed_tokens.0, &public_key.0) {
             Ok(_) => Error::none(),
             Err(e) => e.into(),
         }
@@ -619,9 +594,5 @@ impl BatchDLEQProof {
 #[derive(From)]
 struct BatchDLEQProofResult(Result<BatchDLEQProof, Error>);
 
-impl_decode_base64!(
-    decode_base64_batch_dleq_proof,
-    BatchDLEQProof,
-    BatchDLEQProofResult
-);
+impl_decode_base64!(decode_base64_batch_dleq_proof, BatchDLEQProof, BatchDLEQProofResult);
 impl_result!(BatchDLEQProof, BatchDLEQProofResult);

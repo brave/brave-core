@@ -1,0 +1,54 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("challenge_bypass_ristretto") {
+  output_name = "challenge_bypass_ristretto"
+  defines = [ "IS_CHALLENGE_BYPASS_RISTRETTO_IMPL" ]
+
+  sources = [
+    "batch_dleq_proof.cc",
+    "batch_dleq_proof.h",
+    "blinded_token.cc",
+    "blinded_token.h",
+    "public_key.cc",
+    "public_key.h",
+    "signed_token.cc",
+    "signed_token.h",
+    "signing_key.cc",
+    "signing_key.h",
+    "token.cc",
+    "token.h",
+    "token_preimage.cc",
+    "token_preimage.h",
+    "unblinded_token.cc",
+    "unblinded_token.h",
+    "value_or_result_box.h",
+    "verification_key.cc",
+    "verification_key.h",
+    "verification_signature.cc",
+    "verification_signature.h",
+  ]
+
+  deps = [
+    "//base",
+    "//build/rust:cxx_cppdeps",
+  ]
+
+  public_deps =
+      [ "//brave/third_party/challenge_bypass_ristretto_cxx:rust_lib" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "challenge_bypass_ristretto_test.cc",
+  ]
+
+  deps = [
+    ":challenge_bypass_ristretto",
+    "//base/test:test_support",
+  ]
+}

@@ -19,8 +19,8 @@ std::optional<challenge_bypass_ristretto::VerificationSignature> Create(
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::VerificationSignature::decode_base64(
-          base::as_bytes(base::make_span(verification_signature_base64))));
+      challenge_bypass_ristretto::VerificationSignature::DecodeBase64(
+          verification_signature_base64));
 }
 
 }  // namespace
@@ -70,7 +70,7 @@ std::optional<std::string> VerificationSignature::EncodeBase64() const {
     return std::nullopt;
   }
 
-  return ValueOrLogError(verification_signature_->encode_base64());
+  return verification_signature_->EncodeBase64();
 }
 
 std::ostream& operator<<(std::ostream& os,
