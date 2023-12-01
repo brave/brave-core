@@ -13,7 +13,6 @@ import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
-import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_site_settings/brave_site_data_details_subpage.js'
@@ -270,22 +269,6 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
-      let sectionRewards = undefined
-      if (isBraveRewardsSupported) {
-        sectionRewards = document.createElement('template')
-        sectionRewards.setAttribute('is', 'dom-if')
-        sectionRewards.setAttribute('restamp', true)
-        sectionRewards.setAttribute('if', '[[showPage_(pageVisibility.rewards)]]')
-        sectionRewards.content.appendChild(createSectionElement(
-          'rewards',
-          'braveRewards',
-          'settings-brave-rewards-page',
-          {
-            prefs: '{{prefs}}'
-          }
-        ))
-      }
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', true)
@@ -382,11 +365,7 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionShields)
       // Insert nested Social Blocking under shields
       last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
-      // Insert Rewards
-      if (sectionRewards) {
-        last = last.insertAdjacentElement('afterend', sectionRewards)
-      }
-      // Move privacy section to after rewards
+      // Move privacy section to after shields
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync

@@ -66,6 +66,10 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     return homepageValue || this.i18n('customWebAddress');
   }
 
+  private isBraveRewardsSupported_() {
+    return loadTimeData.getBoolean('isBraveRewardsSupported')
+  }
+
   private showBraveVPNOption_() {
     return loadTimeData.getBoolean('isBraveVPNEnabled')
   }

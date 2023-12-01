@@ -421,7 +421,7 @@
     Open full Brave Rewards settings
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
+    Show Brave Rewards button
   </message>
 
   <!-- Settings / Social media blocking -->
