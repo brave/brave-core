@@ -76,11 +76,11 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
       ti->origin_info,
       MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
-  EXPECT_EQ(meta.created_time().ToJavaTime(),
+  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().ToJavaTime(),
+  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
             ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
+  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
             ti->confirmed_time.InMilliseconds());
 
   EXPECT_EQ(meta.tx()->tx_type(), ti->tx_type);

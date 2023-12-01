@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index 5d0b30ab58c344e5a1c4220ea5b5de6b08104933..cf4bd77edf5cba3ff5e9a069c04c805053210414 100644
+index 7d9c7aff0cd32985debe147ad63d202df7a29663..ebddd470f1d81116b9304eed0380edc6eb875c3b 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -371,7 +371,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
-     if (candidate == scheme) {
-       base::UmaHistogramEnumeration(kBlockStateMetric,
-                                     BlockStateMetric::kAllowedDefaultMail);
--      return DONT_BLOCK;
-+      return UNKNOWN;
-     }
+@@ -349,7 +349,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+   if (scheme == "mailto") {
+     base::UmaHistogramEnumeration(kBlockStateMetric,
+                                   BlockStateMetric::kAllowedDefaultMail);
+-    return DONT_BLOCK;
++    return UNKNOWN;
    }
-   for (const auto* candidate : kNewsSchemes) {
+ 
+   PrefService* profile_prefs = profile->GetPrefs();

@@ -73,7 +73,7 @@ content::WebContents* WebContentsFromBrowserContext(
 RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  auto* browser = chrome::FindBrowserWithTab(web_contents);
   return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
 }
 
@@ -94,7 +94,7 @@ TipPanelCoordinator* GetTipPanelCoordinator(
     return nullptr;
   }
 
-  auto* browser = chrome::FindBrowserWithWebContents(contents);
+  auto* browser = chrome::FindBrowserWithTab(contents);
   if (!browser) {
     return nullptr;
   }
@@ -667,8 +667,9 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
   data.Set("walletProviderRegions", std::move(provider_regions));
 
   if (!parameters->vbat_deadline.is_null()) {
-    data.Set("vbatDeadline", floor(parameters->vbat_deadline.ToDoubleT() *
-                                   base::Time::kMillisecondsPerSecond));
+    data.Set("vbatDeadline",
+             floor(parameters->vbat_deadline.InSecondsFSinceUnixEpoch() *
+                   base::Time::kMillisecondsPerSecond));
   }
   data.Set("vbatExpired", parameters->vbat_expired);
 
@@ -1271,7 +1272,7 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
   } else {
     base::Value::Dict dict;
     dict.Set("nextPaymentDate",
-             statement->next_payment_date.ToDoubleT() * 1000);
+             statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
     dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
     dict.Set("minEarningsThisMonth", statement->min_earnings_this_month);
     dict.Set("maxEarningsThisMonth", statement->max_earnings_this_month);

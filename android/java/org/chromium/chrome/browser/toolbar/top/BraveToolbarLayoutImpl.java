@@ -93,7 +93,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.Playlist
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -111,10 +111,10 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.theme.ThemeUtils;
-import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
+import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
@@ -422,120 +422,134 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // to proactively update the shields button state here, otherwise shields
         // might sometimes show as disabled while it is actually enabled.
         updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
-        mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
-            @Override
-            protected void onTabRegistered(Tab tab) {
-                super.onTabRegistered(tab);
-                if (tab.isIncognito()) {
-                    showWalletIcon(false);
-                }
-            }
-
-            @Override
-            public void onShown(Tab tab, @TabSelectionType int type) {
-                // Update shields button state when visible tab is changed.
-                updateBraveShieldsButtonState(tab);
-                // case when window.open is triggered from dapps site and new tab is in focus
-                if (type != TabSelectionType.FROM_USER) {
-                    dismissWalletPanelOrDialog();
-                }
-                findMediaFiles(tab);
-            }
-
-            @Override
-            public void onHidden(Tab tab, @TabHidingType int reason) {
-                hidePlaylistButton();
-            }
-
-            @Override
-            public void onPageLoadStarted(Tab tab, GURL url) {
-                showWalletIcon(false, tab);
-                if (getToolbarDataProvider().getTab() == tab) {
-                    updateBraveShieldsButtonState(tab);
-                }
-                mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
-                dismissShieldsTooltip();
-                hidePlaylistButton();
-            }
-
-            @Override
-            public void onPageLoadFinished(final Tab tab, GURL url) {
-                if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateUrlSpec(url.getSpec());
-                    updateBraveShieldsButtonState(tab);
-
-                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
-                        checkForTooltip(tab);
-                    }
-                }
-
-                if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                        && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                        && url.getSpec().contains("rewards")
-                        && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
-                                || BraveNotificationWarningDialog.shouldShowRewardWarningDialog(
-                                        getContext()))) {
-                    showNotificationNotEarningDialog();
-                }
-
-                String countryCode = Locale.getDefault().getCountry();
-                if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                        && url.domainIs(YOUTUBE_DOMAIN)
-                        && SharedPreferencesManager.getInstance().readBoolean(
-                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
-                    SharedPreferencesManager.getInstance().writeBoolean(
-                            BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
-                }
-            }
-
-            private void showNotificationNotEarningDialog() {
-                try {
-                    RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
-                            RewardsYouAreNotEarningDialog.newInstance();
-                    rewardsYouAreNotEarningDialog.setCancelable(false);
-                    rewardsYouAreNotEarningDialog.show(
-                            BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                            RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
-
-                } catch (BraveActivity.BraveActivityNotFoundException | IllegalStateException e) {
-                    Log.e(TAG, "showNotificationNotEarningDialog " + e);
-                }
-            }
-
-            @Override
-            public void onDidFinishNavigationInPrimaryMainFrame(
-                    Tab tab, NavigationHandle navigation) {
-                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
-                        && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrl().getSpec());
-                }
-                if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
-                        && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
-                        && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                        && mBraveRewardsNativeWorker != null
-                        && !mBraveRewardsNativeWorker.isRewardsEnabled()
-                        && mBraveRewardsNativeWorker.IsSupported()) {
-                    showOnBoarding();
-                }
-                findMediaFiles(tab);
-            }
-
-            @Override
-            public void onDestroyed(Tab tab) {
-                // Remove references for the ads from the Database. Tab is destroyed, they are not
-                // needed anymore.
-                new Thread() {
+        mTabModelSelectorTabObserver =
+                new TabModelSelectorTabObserver(selector) {
                     @Override
-                    public void run() {
-                        mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                    protected void onTabRegistered(Tab tab) {
+                        super.onTabRegistered(tab);
+                        if (tab.isIncognito()) {
+                            showWalletIcon(false);
+                        }
                     }
-                }.start();
-                mBraveShieldsHandler.removeStat(tab.getId());
-                mTabsWithWalletIcon.remove(tab.getId());
-            }
-        };
+
+                    @Override
+                    public void onShown(Tab tab, @TabSelectionType int type) {
+                        // Update shields button state when visible tab is changed.
+                        updateBraveShieldsButtonState(tab);
+                        // case when window.open is triggered from dapps site and new tab is in
+                        // focus
+                        if (type != TabSelectionType.FROM_USER) {
+                            dismissWalletPanelOrDialog();
+                        }
+                        findMediaFiles(tab);
+                    }
+
+                    @Override
+                    public void onHidden(Tab tab, @TabHidingType int reason) {
+                        hidePlaylistButton();
+                    }
+
+                    @Override
+                    public void onPageLoadStarted(Tab tab, GURL url) {
+                        showWalletIcon(false, tab);
+                        if (getToolbarDataProvider().getTab() == tab) {
+                            updateBraveShieldsButtonState(tab);
+                        }
+                        mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+                        dismissShieldsTooltip();
+                        hidePlaylistButton();
+                    }
+
+                    @Override
+                    public void onPageLoadFinished(final Tab tab, GURL url) {
+                        if (getToolbarDataProvider().getTab() == tab) {
+                            mBraveShieldsHandler.updateUrlSpec(url.getSpec());
+                            updateBraveShieldsButtonState(tab);
+
+                            if (mBraveShieldsButton != null
+                                    && mBraveShieldsButton.isShown()
+                                    && mBraveShieldsHandler != null
+                                    && !mBraveShieldsHandler.isShowing()) {
+                                checkForTooltip(tab);
+                            }
+                        }
+
+                        if (mBraveShieldsButton != null
+                                && mBraveShieldsButton.isShown()
+                                && mBraveShieldsHandler != null
+                                && !mBraveShieldsHandler.isShowing()
+                                && url.getSpec().contains("rewards")
+                                && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
+                                        || BraveNotificationWarningDialog
+                                                .shouldShowRewardWarningDialog(getContext()))) {
+                            showNotificationNotEarningDialog();
+                        }
+
+                        String countryCode = Locale.getDefault().getCountry();
+                        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
+                                && url.domainIs(YOUTUBE_DOMAIN)
+                                && ChromeSharedPreferences.getInstance()
+                                        .readBoolean(
+                                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG,
+                                                true)) {
+                            ChromeSharedPreferences.getInstance()
+                                    .writeBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
+                        }
+                    }
+
+                    private void showNotificationNotEarningDialog() {
+                        try {
+                            RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
+                                    RewardsYouAreNotEarningDialog.newInstance();
+                            rewardsYouAreNotEarningDialog.setCancelable(false);
+                            rewardsYouAreNotEarningDialog.show(
+                                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                                    RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
+
+                        } catch (BraveActivity.BraveActivityNotFoundException
+                                | IllegalStateException e) {
+                            Log.e(TAG, "showNotificationNotEarningDialog " + e);
+                        }
+                    }
+
+                    @Override
+                    public void onDidFinishNavigationInPrimaryMainFrame(
+                            Tab tab, NavigationHandle navigation) {
+                        if (getToolbarDataProvider().getTab() == tab
+                                && mBraveRewardsNativeWorker != null
+                                && !tab.isIncognito()) {
+                            mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
+                                    tab.getId(), tab.getUrl().getSpec());
+                        }
+                        if (PackageUtils.isFirstInstall(getContext())
+                                && tab.getUrl().getSpec() != null
+                                && (tab.getUrl()
+                                        .getSpec()
+                                        .equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                                && mBraveRewardsNativeWorker != null
+                                && !mBraveRewardsNativeWorker.isRewardsEnabled()
+                                && mBraveRewardsNativeWorker.IsSupported()) {
+                            showOnBoarding();
+                        }
+                        findMediaFiles(tab);
+                    }
+
+                    @Override
+                    public void onDestroyed(Tab tab) {
+                        // Remove references for the ads from the Database. Tab is destroyed, they
+                        // are not
+                        // needed anymore.
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                            }
+                        }.start();
+                        mBraveShieldsHandler.removeStat(tab.getId());
+                        mTabsWithWalletIcon.remove(tab.getId());
+                    }
+                };
 
         mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
             @Override
@@ -571,8 +585,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private static boolean isPlaylistEnabledByPrefsAndFlags() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true);
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true);
     }
 
     private void hidePlaylistButton() {
@@ -615,60 +629,72 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
 
-            PlaylistOptionsListener playlistOptionsListener = new PlaylistOptionsListener() {
-                @Override
-                public void onOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
-                    try {
-                        if (playlistOptionsModel.getOptionType() == PlaylistOptions.ADD_MEDIA) {
-                            int mediaCount = SharedPreferencesManager.getInstance().readInt(
-                                    PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-                            if (mediaCount == 2) {
-                                PlaylistWarningDialogListener playlistWarningDialogListener =
-                                        new PlaylistWarningDialogListener() {
-                                            @Override
-                                            public void onActionClicked() {
-                                                addMediaToPlaylist(items);
-                                            }
+            PlaylistOptionsListener playlistOptionsListener =
+                    new PlaylistOptionsListener() {
+                        @Override
+                        public void onOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
+                            try {
+                                if (playlistOptionsModel.getOptionType()
+                                        == PlaylistOptions.ADD_MEDIA) {
+                                    int mediaCount =
+                                            ChromeSharedPreferences.getInstance()
+                                                    .readInt(
+                                                            PlaylistPreferenceUtils
+                                                                    .ADD_MEDIA_COUNT);
+                                    if (mediaCount == 2) {
+                                        PlaylistWarningDialogListener
+                                                playlistWarningDialogListener =
+                                                        new PlaylistWarningDialogListener() {
+                                                            @Override
+                                                            public void onActionClicked() {
+                                                                addMediaToPlaylist(items);
+                                                            }
 
-                                            @Override
-                                            public void onSettingsClicked() {
-                                                try {
-                                                    BraveActivity.getBraveActivity()
-                                                            .openBravePlaylistSettings();
-                                                } catch (
-                                                        BraveActivity
-                                                                .BraveActivityNotFoundException e) {
-                                                    Log.e(TAG,
-                                                            "showPlaylistButton"
-                                                                    + " onOptionClicked"
-                                                                    + " onSettingsClicked" + e);
-                                                }
-                                            }
-                                        };
-                                BraveActivity.getBraveActivity().showPlaylistWarningDialog(
-                                        playlistWarningDialogListener);
+                                                            @Override
+                                                            public void onSettingsClicked() {
+                                                                try {
+                                                                    BraveActivity.getBraveActivity()
+                                                                            .openBravePlaylistSettings();
+                                                                } catch (
+                                                                        BraveActivity
+                                                                                        .BraveActivityNotFoundException
+                                                                                e) {
+                                                                    Log.e(
+                                                                            TAG,
+                                                                            "showPlaylistButton"
+                                                                                + " onOptionClicked"
+                                                                                + " onSettingsClicked"
+                                                                                    + e);
+                                                                }
+                                                            }
+                                                        };
+                                        BraveActivity.getBraveActivity()
+                                                .showPlaylistWarningDialog(
+                                                        playlistWarningDialogListener);
 
-                            } else {
-                                addMediaToPlaylist(items);
+                                    } else {
+                                        addMediaToPlaylist(items);
+                                    }
+                                } else if (playlistOptionsModel.getOptionType()
+                                        == PlaylistOptions.OPEN_PLAYLIST) {
+                                    BraveActivity.getBraveActivity()
+                                            .openPlaylistActivity(
+                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                                } else if (playlistOptionsModel.getOptionType()
+                                        == PlaylistOptions.PLAYLIST_SETTINGS) {
+                                    BraveActivity.getBraveActivity().openBravePlaylistSettings();
+                                }
+                            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
                             }
-                        } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptions.OPEN_PLAYLIST) {
-                            BraveActivity.getBraveActivity().openPlaylistActivity(
-                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
-                        } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptions.PLAYLIST_SETTINGS) {
-                            BraveActivity.getBraveActivity().openBravePlaylistSettings();
                         }
-                    } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
-                    }
-                }
-            };
+                    };
             if (!isPlaylistButtonVisible()) {
                 PlaylistViewUtils.showPlaylistButton(
                         BraveActivity.getBraveActivity(), viewGroup, playlistOptionsListener);
-                if (SharedPreferencesManager.getInstance().readBoolean(
-                            PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                if (ChromeSharedPreferences.getInstance()
+                        .readBoolean(
+                                PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
                     View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
                     if (playlistButton != null) {
                         playlistButton.post(new Runnable() {
@@ -692,8 +718,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             }
                         });
                     }
-                    SharedPreferencesManager.getInstance().writeBoolean(
-                            PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+                    ChromeSharedPreferences.getInstance()
+                            .writeBoolean(
+                                    PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
                 }
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -707,11 +734,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         mPlaylistService.addMediaFiles(items, ConstantUtils.DEFAULT_PLAYLIST,
                 shouldCacheMediaFilesForPlaylist(), addedItems -> {});
-        int mediaCount = SharedPreferencesManager.getInstance().readInt(
-                PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
+        int mediaCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
         if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
-            SharedPreferencesManager.getInstance().writeInt(
-                    PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
         }
     }
 
@@ -755,15 +783,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private boolean shouldCacheMediaFilesForPlaylist() {
         boolean shouldCacheOnlyOnWifi =
-                (SharedPreferencesManager.getInstance().readInt(
-                         BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
+                (ChromeSharedPreferences.getInstance()
+                                        .readInt(
+                                                BravePlaylistPreferences
+                                                        .PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
+                                                0)
                                 == 2
                         && ConnectionUtils.isWifiAvailable(getContext()));
 
-        boolean shouldCache = SharedPreferencesManager.getInstance().readInt(
-                                      BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
-                        == 0
-                || shouldCacheOnlyOnWifi;
+        boolean shouldCache =
+                ChromeSharedPreferences.getInstance()
+                                        .readInt(
+                                                BravePlaylistPreferences
+                                                        .PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
+                                                0)
+                                == 0
+                        || shouldCacheOnlyOnWifi;
         return shouldCache;
     }
 

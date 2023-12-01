@@ -65,7 +65,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
@@ -248,9 +248,9 @@ public class AssetDetailActivity
             auroraDialogBuilder.setView(dialogView);
             AlertDialog auroraDialog = auroraDialogBuilder.create();
 
-            SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance();
-            mShouldShowDialog = preferencesManager.readBoolean(
-                    WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, true);
+            mShouldShowDialog =
+                    ChromeSharedPreferences.getInstance()
+                            .readBoolean(WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, true);
 
             TextView message = dialogView.findViewById(R.id.dialog_aurora_desc);
             TextView title = dialogView.findViewById(R.id.dialog_aurora_tv_title);
@@ -265,11 +265,13 @@ public class AssetDetailActivity
                     getString(R.string.brave_wallet_rainbow_bridge)));
             CheckBox checkBox = dialogView.findViewById(R.id.dialog_aurora_cb_dont_show);
             checkBox.setChecked(!mShouldShowDialog);
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                preferencesManager.writeBoolean(
-                        WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, !isChecked);
-                mShouldShowDialog = !isChecked;
-            });
+            checkBox.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> {
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(
+                                        WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, !isChecked);
+                        mShouldShowDialog = !isChecked;
+                    });
 
             message.setMovementMethod(LinkMovementMethod.getInstance());
             message.setText(getString(R.string.brave_wallet_aurora_modal_description,

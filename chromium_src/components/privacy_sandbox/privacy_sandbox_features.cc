@@ -17,8 +17,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivacySandboxProactiveTopicsBlocking, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings3, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kTrackingProtectionOnboardingForceEligibility,
-     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace privacy_sandbox

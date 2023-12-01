@@ -11,7 +11,7 @@
 // Create brave specific commands set instead of appending to
 // DownloadCommands::Command to avoid many upstream changes.
 enum class BraveDownloadCommands {
-  REMOVE_FROM_LIST = DownloadCommands::Command::MAX + 1
+  REMOVE_FROM_LIST = DownloadCommands::Command::kMaxValue + 1
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_

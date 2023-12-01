@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/incognito/BUILD.gn b/chrome/browser/incognito/BUILD.gn
-index 88c3a379d99774a96d5305d6b3b3e50fbdbf8bea..4c599c070c1f0c8c7865bc164099bb0529120cc4 100644
+index db6f43dd004950205508643a9096fe17393919c2..ee9aadf6669ceecb684c4624c17590ca096afa77 100644
 --- a/chrome/browser/incognito/BUILD.gn
 +++ b/chrome/browser/incognito/BUILD.gn
 @@ -64,6 +64,7 @@ android_library("java") {

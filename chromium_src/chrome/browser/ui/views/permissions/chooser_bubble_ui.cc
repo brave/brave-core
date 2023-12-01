@@ -71,7 +71,7 @@ namespace chrome {
 Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
     content::WebContents* contents) {
   if (!IsBravePanel(contents))
-    return chrome::FindBrowserWithWebContents(contents);
+    return chrome::FindBrowserWithTab(contents);
 
   Browser* browser = chrome::FindBrowserWithProfile(
       Profile::FromBrowserContext(contents->GetBrowserContext()));
@@ -86,7 +86,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 
 }  // namespace chrome
 
-#define FindBrowserWithWebContents FindBrowserAndAdjustBubbleForBraveWalletPanel
+#define FindBrowserWithTab FindBrowserAndAdjustBubbleForBraveWalletPanel
 #define GetActiveWebContents                           \
   GetActiveWebContents() && !IsBravePanel(contents) && \
       browser->tab_strip_model()->GetActiveWebContents
@@ -102,4 +102,4 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 #undef SetExtraView
 #undef BubbleDialogDelegateView
 #undef GetActiveWebContents
-#undef FindBrowserWithWebContents
+#undef FindBrowserWithTab

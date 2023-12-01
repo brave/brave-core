@@ -35,7 +35,6 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/test_navigation_observer.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -327,7 +326,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
+  EXPECT_TRUE(content::ExecJs(contents, "clickMagnetLink();"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
@@ -342,9 +344,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  content::TestNavigationObserver observer(web_contents);
   ui_test_utils::SendToOmniboxAndSubmit(browser(), magnet_url().spec());
-  observer.Wait();
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
   EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }
 
@@ -377,7 +381,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
-  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(false);"));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(false);"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_EQ(contents->GetLastCommittedURL(), magnet_url());
@@ -388,8 +395,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
-  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(false);",
-                                  content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(false);",
+                              content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
@@ -400,7 +410,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
-  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(true);"));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(true);"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
@@ -488,7 +501,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
+  EXPECT_TRUE(content::ExecJs(contents, "clickMagnetLink();"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),

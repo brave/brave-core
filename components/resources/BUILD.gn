@@ -27,6 +27,10 @@ brave_grit("static_resources") {
   deps = [
     ":strings",
     "//brave/components/brave_rewards/resources",
+    "//brave/components/brave_shields/resources:bundle_js",
+    "//brave/components/decentralized_dns/content/resources:bundle_js",
+    "//brave/components/ipfs/resources:bundle_js",
+    "//brave/components/request_otr/resources:bundle_js",
   ]
 
   if (enable_extensions) {

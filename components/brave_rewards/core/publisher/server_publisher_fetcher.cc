@@ -94,7 +94,8 @@ bool ServerPublisherFetcher::IsExpired(
     return true;
   }
 
-  auto last_update_time = base::Time::FromDoubleT(server_info->updated_at);
+  auto last_update_time =
+      base::Time::FromSecondsSinceUnixEpoch(server_info->updated_at);
   auto age = base::Time::Now() - last_update_time;
 
   if (age.InSeconds() < 0) {

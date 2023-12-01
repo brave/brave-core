@@ -150,7 +150,7 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   if (parameters_) {
     if (!parameters_->vbat_deadline.is_null()) {
-      return floor(parameters_->vbat_deadline.ToDoubleT() *
+      return floor(parameters_->vbat_deadline.InSecondsFSinceUnixEpoch() *
                    base::Time::kMillisecondsPerSecond);
     }
   }
@@ -448,7 +448,8 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
 
   Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
       env, weak_java_brave_rewards_native_worker_.get(env),
-      /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
+      /* success */ true,
+      statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000,
       statement->ads_received_this_month, statement->min_earnings_this_month,
       statement->max_earnings_this_month, statement->min_earnings_last_month,
       statement->max_earnings_last_month);

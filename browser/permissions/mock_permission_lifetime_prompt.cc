@@ -42,4 +42,8 @@ absl::optional<gfx::Rect> MockPermissionLifetimePrompt::GetViewBoundsInScreen()
   return absl::nullopt;
 }
 
+bool MockPermissionLifetimePrompt::ShouldFinalizeRequestAfterDecided() const {
+  return true;
+}
+
 }  // namespace permissions

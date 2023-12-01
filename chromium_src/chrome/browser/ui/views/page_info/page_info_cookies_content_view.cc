@@ -5,6 +5,9 @@
 
 #include "chrome/browser/ui/views/page_info/page_info_cookies_content_view.h"
 
+#include "base/check_is_test.h"
+#include "chrome/browser/ui/views/page_info/page_info_main_view.h"
+
 #define SetCookieInfo SetCookieInfo_ChromiumImpl
 #include "src/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc"
 #undef SetCookieInfo
@@ -15,6 +18,20 @@ void PageInfoCookiesContentView::SetCookieInfo(
 
   // Remove cookies text and link to settings.
   RemoveChildView(children()[0]);
+
+  // Remove separator.
+  // cookies_buttons_container_view_'s children are:
+  // [0]: blocking_third_party_cookies_row_, which we set to invisible below
+  // [1]: separator
+  // [3]: on-site data button row, which we want to keep.
+  if (cookies_buttons_container_view_) {
+    if (cookies_buttons_container_view_->children().size() == 3u) {
+      cookies_buttons_container_view_->RemoveChildView(
+          cookies_buttons_container_view_->children()[1]);
+    } else {
+      CHECK_IS_TEST();
+    }
+  }
 
   // Hide 3P cookies toggle if shown.
   if (blocking_third_party_cookies_row_) {

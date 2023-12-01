@@ -11,9 +11,14 @@
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
+-All/CookieControlsBubbleViewController3pcdBubbleTitleTest.AlwaysDisplaysTrackingProtectionTitle/*
+-All/CookieControlsBubbleViewController3pcdEnforcementTest.*
+-All/CookieControlsBubbleViewController3pcdStatusesTest.*
+-All/CookieControlsBubbleViewControllerPre3pcdTest.*
 -All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesAllowedPermanent/*
 -All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesAllowedTemporary/*
 -All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesBlocked/*
+-All/CookieControlsIconViewUnitTest.*
 -All/CookieControlsUserBypassTest.*
 -All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
@@ -34,14 +39,17 @@
 -BatterySaverButtonTest.*
 -BookmarkBubbleViewShoppingCollectionTest.*
 -BookmarkBubbleViewTest.*
+-BrowserCommandControllerWithBookmarksTest.BookmarkAllTabsUpdatesOnTabStripChanges
 -BrowserFeaturePromoControllerViewsTest.*
 -BrowserFinderTest.ScheduledForDeletion
 -BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
+-ChromeComposeClientTest.*
 -ChromeTailoredSecurityServiceRetryForSyncUsersDisabledTest.*
 -ChromeTailoredSecurityServiceTest.*
 -CookieControlsBubbleCoordinatorTest.ShowBubbleTest
+-CookieControlsBubbleViewControllerTest.*
 -CookieControlsBubbleViewImplTest.BubbleWidth
 -CookieControlsContentViewUnitTest.FeedbackSection
 -CookieControlsContentViewUnitTest.ToggleButton_Initial
@@ -49,8 +57,10 @@
 -CookieControlsIconViewUnitTest.*
 -CookieControlsUserBypassTest.SiteCounts
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
+-CustomCursorSuppressorTest.*
 -CustomizeChromeFeaturePromoHelperTest.*
 -DeleteAddressProfileDialogControllerImplTest.*
+-DiceWebSigninInterceptorTestWithUnoEnabled.InterceptShouldShowChromeSigninBubbleOnAccountSigninAndChromeSignOut
 -DoesFirstPartyPrecedeThirdPartyTest.*
 -DownloadBubbleRowListViewTest.AddRow
 -DownloadBubbleRowListViewTest.RemoveRow
@@ -83,6 +93,7 @@
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
+-NewTabPageFeaturePromoHelperTest.*
 -OverscrollPrefManagerTest.PrefChange
 -PageLiveStateDecoratorHelperTabsTest.IsActiveTab
 -PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
@@ -91,6 +102,7 @@
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
 -PeopleHandlerSignoutTest.SignoutWithSyncOff
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
+-PinnedToolbarActionsContainerTest.*
 -ProfileManagementNavigationThrottleRedirectTest.*
 -ProfileManagementNavigationThrottleTest.*
 -ProfileTokenNavigationThrottleTest.*
@@ -108,6 +120,23 @@
 -TabHoverCardPreviewsEnabledPrefTest.DefaultState
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithNavigation
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
+
+# These tests crash due to unregistered pref
+# brave.default_search_provider_by_extension
+-SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/Default
+-SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/WithSearchEngineChoiceEnabled
+-SearchEnginesHandlerParametrizedTest.SettingTheDefaultSearchEngineRecordsHistogram/Default
+-SearchEnginesHandlerParametrizedTest.SettingTheDefaultSearchEngineRecordsHistogram/WithSearchEngineChoiceEnabled
+-SearchEnginesHandlerTestWithSearchEngineChoiceEnabled.ModifyingSearchEngineSetsSearchEngineChoiceTimestamp
+-SearchEnginesHandlerTestWithSearchEngineChoiceEnabled.RecordingSearchEngineShouldBeDoneAfterSettingDefault
+
+# This test crashes because we have kOptimizationHints feature disabled, which
+# causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
+-WallpaperSearchHandlerTest.*
+
+# These tests fail because we disable kFirstPartySets.
+-RelatedWebsiteSetsSourceTest.RWS
+-RelatedWebsiteSetsSourceTest.RWS_Empty
 
 # These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
 # having NOTREACHED which causes an immediate crash
@@ -275,6 +304,7 @@
 -SavedTabGroupKeyedServiceUnitTest.*
 -TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 -TabOrganizationServiceTest.*
+-TabOrganizationTriggerObserverTest.TriggersOnTabStripModelChange
 
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
@@ -313,6 +343,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
 -SignoutAllowed/SigninManagerTest.*
@@ -356,7 +387,9 @@
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/0
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/1
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/2
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/3
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/5
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/7
@@ -366,6 +399,12 @@
 -NotificationMetricsLoggerTest.PersistentNotificationSize
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
+
+# This test fails because we disable kIOSPromoPasswordBubble.
+-IOSPasswordPromoOnDesktopTest.IsDirectVariantIOSPasswordPromoTestFalseFeatureInactive
+
+# This test fails because we disable kNtpHistoryClustersModule.
+-NewTabPageModulesTest.MakeModuleIdNames_SingleModuleEnabled
 
 # These fail because we have journeys/history clusters disabled.
 -HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
@@ -435,6 +474,14 @@
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedDefaultValue
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToTrue
+
+# These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
+# or TrackingProtectionOnboardingFactory.
+-All/CookieDeprecationLabelAllowedTest.OnboardingStatusChecked/1
+-All/CookieDeprecationLabelAllowedTest.IsClientEligibleChecked/1
+-EligibilityServiceDisable3PCsTest.Onboarded_NotifyManager
+-EligibilityServiceTest.VersionChange_OnboardingPrefsReset
+-ThirdPartyCookiesBlockedByCookieDeprecationExperiment/ThirdPartyCookiesBlockedByCookieDeprecationExperimentTest.AreThirdPartyCookiesBlockedByExperiment/*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

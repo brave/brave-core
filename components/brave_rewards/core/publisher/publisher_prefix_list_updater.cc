@@ -127,8 +127,8 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = engine_->state()->GetServerPublisherListStamp();
 
   auto now = base::Time::Now();
-  auto fetch_time =
-      base::Time::FromDoubleT(static_cast<double>(last_fetch_sec));
+  auto fetch_time = base::Time::FromSecondsSinceUnixEpoch(
+      static_cast<double>(last_fetch_sec));
 
   if (fetch_time > now) {
     fetch_time = now;

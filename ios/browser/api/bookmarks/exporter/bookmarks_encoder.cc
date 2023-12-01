@@ -22,7 +22,6 @@ base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
   return encoder->Encode(
       bookmark_bar_node, other_folder_node, mobile_folder_node,
       /*model_meta_info_map*/ nullptr,
-      /*model_mmodel_unsynced_meta_info_mapeta_info_map*/ nullptr,
       /*sync_metadata_str*/ std::string());
 }
 }  // namespace bookmarks_encoder

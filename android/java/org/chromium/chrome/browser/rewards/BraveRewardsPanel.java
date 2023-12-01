@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.rewards;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -85,7 +86,6 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.text.SimpleDateFormat;
@@ -990,8 +990,9 @@ public class BraveRewardsPanel
     private void requestNotificationPermission() {
         if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
                 || mActivity.shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)
-                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+                        Manifest.permission.POST_NOTIFICATIONS)
+                || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                        || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
             // dialog, then enable through setting, this done through this dialog
@@ -999,7 +1000,7 @@ public class BraveRewardsPanel
         } else {
             // 1st time request permission
             ActivityCompat.requestPermissions(
-                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+                    mActivity, new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
     }
 

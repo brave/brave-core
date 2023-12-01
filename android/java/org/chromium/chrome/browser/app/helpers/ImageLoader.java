@@ -39,8 +39,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.WebContentsFactory;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.content.WebContentsFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.profiles.Profile;

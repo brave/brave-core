@@ -294,7 +294,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
   std::string coin_key = base::NumberToString(static_cast<int>(coin));
 
   base::Time now = base::Time::Now();
-  base::Time last_sent_time = base::Time::FromDoubleT(
+  base::Time last_sent_time = base::Time::FromSecondsSinceUnixEpoch(
       last_sent_time_dict.FindDouble(coin_key).value_or(0.0));
 
   if (!new_send && last_sent_time.is_null()) {
@@ -306,7 +306,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     answer = 1;
   }
   if (new_send) {
-    last_sent_time_dict.Set(coin_key, now.ToDoubleT());
+    last_sent_time_dict.Set(coin_key, now.InSecondsFSinceUnixEpoch());
   }
 
   base::UmaHistogramExactLinear(histogram_name, answer, 2);

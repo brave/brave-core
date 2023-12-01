@@ -22,6 +22,7 @@
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_rewards::internal {
 
@@ -64,8 +65,8 @@ TestNetworkResult::TestNetworkResult(const std::string& url,
 TestNetworkResult::~TestNetworkResult() = default;
 
 base::FilePath GetTestDataPath() {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+  base::FilePath path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
   path = path.AppendASCII("brave");
   path = path.AppendASCII("components");
   path = path.AppendASCII("brave_rewards");

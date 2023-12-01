@@ -5,9 +5,10 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.CalledByNative;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
     static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
-    static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
+    public static final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES =
+            "httpUpgradableResources";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
     static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";

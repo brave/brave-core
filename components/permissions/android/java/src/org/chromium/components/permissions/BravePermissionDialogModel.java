@@ -43,16 +43,20 @@ class BravePermissionDialogModel {
     private static final String URL_WIDEVINE_LEARN_MORE =
             "https://support.brave.com/hc/en-us/articles/17428756610061";
 
-    public static PropertyModel getModel(ModalDialogProperties.Controller controller,
-            PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+    public static PropertyModel getModel(
+            ModalDialogProperties.Controller controller,
+            PermissionDialogDelegate delegate,
+            View customView,
+            Runnable touchFilteredCallback) {
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
         PropertyModel model = null;
         if (braveDelegate.getIsWidevinePermissionRequest()) {
             model = createModelForWidevineRequest(controller, delegate, touchFilteredCallback);
         } else {
-            model = PermissionDialogModel.getModel(controller, delegate, touchFilteredCallback);
-            View customView = (View) model.get(ModalDialogProperties.CUSTOM_VIEW);
+            model =
+                    PermissionDialogModelFactory.getModel(
+                            controller, delegate, customView, touchFilteredCallback);
             addLifetimeOptions(customView, delegate);
         }
         assert model != null;

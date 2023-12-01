@@ -2,13 +2,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="theme-color" content="#fff">
+  <meta http-equiv="Content-Security-Policy"
+    content="require-trusted-types-for 'script'; trusted-types;">
   <title>$i18n{tabTitle}</title>
   <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
   <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
   <link rel="stylesheet" href="domain_block_interstitial.css">
-  <script src="../../../../ui/webui/resources/js/util_deprecated.js"></script>
-  <script src="../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
-  <script src="domain_block_interstitial.js"></script>
+  <script src="%ROOT_GEN_DIR%/brave/components/brave_shields/resources/domain_block_interstitial/domain_block_interstitial.rollup.js"></script>
 </head>
 <body id="body" class="domainblock">
   <div class="interstitial-wrapper">

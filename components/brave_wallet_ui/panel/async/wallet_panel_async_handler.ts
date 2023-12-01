@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {assert} from 'chrome://resources/js/assert_ts.js';
+import { assert } from 'chrome://resources/js/assert.js'
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'

@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index afb346fc7191e9ccd6a14f04dc7dacbeadc7aca7..11df3b6cd1a4aa82e89774ce905cec15cacccd47 100644
+index 9eeaefd598ac2b2e70d0b78434f612c20f3ea3d0..a22a8aacd414bbf41968dd99bdcc7afd30e0934d 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -311,6 +311,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(

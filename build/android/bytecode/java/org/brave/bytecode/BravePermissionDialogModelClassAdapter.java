@@ -9,7 +9,7 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BravePermissionDialogModelClassAdapter extends BraveClassVisitor {
     static String sPermissionDialogModelClassName =
-            "org/chromium/components/permissions/PermissionDialogModel";
+            "org/chromium/components/permissions/PermissionDialogModelFactory";
 
     static String sBravePermissionDialogModelClassName =
             "org/chromium/components/permissions/BravePermissionDialogModel";

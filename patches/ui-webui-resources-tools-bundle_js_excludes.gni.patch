@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/tools/bundle_js_excludes.gni b/ui/webui/resources/tools/bundle_js_excludes.gni
+index 2f9276480640dffdd5e73474ccab7d0e01259419..83e9c2547aa1946195d3165368e28f0193dff27e 100644
+--- a/ui/webui/resources/tools/bundle_js_excludes.gni
++++ b/ui/webui/resources/tools/bundle_js_excludes.gni
+@@ -13,6 +13,7 @@ foreach(excluded_file,
+           "resources/js/load_time_data.js",
+           "resources/ash/common/load_time_data.m.js",
+           "resources/mwc/lit/index.js",
++          "resources/brave/leo.bundle.js",
+         ]) {
+   # Exclude both the chrome://resources form and the scheme-relative form.
+   BUNDLE_JS_EXCLUDES += [

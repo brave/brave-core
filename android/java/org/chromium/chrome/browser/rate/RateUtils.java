@@ -14,7 +14,7 @@ import android.net.Uri;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -132,8 +132,9 @@ public class RateUtils {
     }
 
     private boolean mainCriteria() {
-        int appOpenCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
+        int appOpenCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
 
         return (System.currentTimeMillis() > getPrefNextRateDate() && appOpenCount >= APP_OPEN_5
                 && getPrefRateEnabled() && is4DaysUsedLast7Days());

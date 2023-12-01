@@ -145,11 +145,11 @@ mojom::Result GetAvailable::ParseBody(
       promotion->status = mojom::PromotionStatus::OVER;
     }
 
-    promotion->created_at = base::Time::Now().ToDoubleT();
+    promotion->created_at = base::Time::Now().InSecondsFSinceUnixEpoch();
     if (auto* created_at = item->FindString("createdAt")) {
       base::Time time;
       if (base::Time::FromUTCString(created_at->c_str(), &time)) {
-        promotion->created_at = time.ToDoubleT();
+        promotion->created_at = time.InSecondsFSinceUnixEpoch();
       }
     }
 
@@ -163,7 +163,7 @@ mojom::Result GetAvailable::ParseBody(
     bool success =
         base::Time::FromUTCString((*expires_at).c_str(), &expires_at_time);
     if (success) {
-      promotion->expires_at = expires_at_time.ToDoubleT();
+      promotion->expires_at = expires_at_time.InSecondsFSinceUnixEpoch();
     }
 
     auto* claimable_until = item->FindString("claimableUntil");
@@ -171,7 +171,8 @@ mojom::Result GetAvailable::ParseBody(
       base::Time claimable_until_time;
       if (base::Time::FromUTCString(claimable_until->c_str(),
                                     &claimable_until_time)) {
-        promotion->claimable_until = claimable_until_time.ToDoubleT();
+        promotion->claimable_until =
+            claimable_until_time.InSecondsFSinceUnixEpoch();
       }
     }
 

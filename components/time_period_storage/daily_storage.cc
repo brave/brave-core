@@ -72,7 +72,7 @@ void DailyStorage::Load() {
       continue;
     }
     // Disregard if old value
-    auto time = base::Time::FromDoubleT(*day);
+    auto time = base::Time::FromSecondsSinceUnixEpoch(*day);
     if (time <= min) {
       continue;
     }
@@ -85,7 +85,7 @@ void DailyStorage::Save() {
   base::Value::List list;
   for (const auto& u : daily_values_) {
     base::Value::Dict value;
-    value.Set("day", u.time.ToDoubleT());
+    value.Set("day", u.time.InSecondsFSinceUnixEpoch());
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }

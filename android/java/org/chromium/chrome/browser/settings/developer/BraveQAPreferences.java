@@ -23,10 +23,11 @@ import android.widget.EditText;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
 import org.chromium.base.Log;
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -156,14 +157,16 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     private void setRewardsDbClickListeners() {
         if (mImportRewardsDb != null) {
-            mImportRewardsDb.setOnPreferenceClickListener( preference -> {
-                Intent intent = new Intent()
-                .setType("*/*")
-                .setAction(Intent.ACTION_GET_CONTENT);
+            mImportRewardsDb.setOnPreferenceClickListener(
+                    preference -> {
+                        Intent intent =
+                                new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(intent, "Select a file"), CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE);
-                return true;
-            });
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Select a file"),
+                                CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE);
+                        return true;
+                    });
         }
 
         if (mExportRewardsDb != null) {
@@ -448,7 +451,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
         AlertDialog.Builder alertDialog =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
                         .setMessage(
-                                "This operation requires restart. Would you like to restart application and start operation?")
+                                "This operation requires restart. Would you like to restart"
+                                        + " application and start operation?")
                         .setPositiveButton(R.string.ok, onClickListener)
                         .setNegativeButton(R.string.cancel, onClickListener);
         Dialog dialog = alertDialog.create();

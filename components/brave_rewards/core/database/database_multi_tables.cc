@@ -47,7 +47,8 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
       continue;
     }
 
-    base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
+    base::Time time =
+        base::Time::FromSecondsSinceUnixEpoch(promotion.second->claimed_at);
     base::Time::Exploded exploded;
     time.LocalExplode(&exploded);
     if (exploded.year != year || exploded.month != converted_month) {

@@ -1,8 +1,8 @@
 diff --git a/components/bookmarks/browser/bookmark_model.h b/components/bookmarks/browser/bookmark_model.h
-index 0a444438372d5393189867aec0aef447e9f6683a..e4549d79af38fa0d663bad17e4785cd8f24c1db1 100644
+index 6ff1c76ff0b1c70e7b16a33755a96730f3583830..5ad22809e16ae9d8a9582407b46c3fea5869bd26 100644
 --- a/components/bookmarks/browser/bookmark_model.h
 +++ b/components/bookmarks/browser/bookmark_model.h
-@@ -390,6 +390,7 @@ class BookmarkModel final : public BookmarkUndoProvider,
+@@ -370,6 +370,7 @@ class BookmarkModel final : public BookmarkUndoProvider,
    // this is a no-op. Deletion is done asynchronously on a background thread.
    static void WipeAccountStorageForRollback(const base::FilePath& profile_path);
  
