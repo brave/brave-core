@@ -118,7 +118,9 @@ TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
 
   proxy_config_service.SetNewTorCircuit(site_url);
   proxy_config_service.GetLatestProxyConfig(&config);
-  auto single_proxy = config.value().proxy_rules().single_proxies.Get();
+  auto single_proxy =
+      config.value().proxy_rules().single_proxies.First().GetProxyServer(
+          /*chain_index=*/0);
   EXPECT_TRUE(!single_proxy.host_port_pair().password().empty());
   EXPECT_TRUE(single_proxy.scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(single_proxy.host_port_pair().username(), anonymization_key);
