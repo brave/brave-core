@@ -20,13 +20,33 @@ export const Section = styled('section')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-  margin: 100px 30px;
+  margin: 100px 30px 100px calc(max(50vw - 360px, 190px));
   display: flex;
   align-items: center;
   flex-direction: column;
-  transition: margin 2s ease-out;
+  transition: margin-top 2s ease-out;
+  max-width: calc(max(min(680px, 80vw - 380px), 380px));
+  
+  & > div {
+    max-width: 100%;
+  }
+
   [data-show-news-prompt] & {
     margin-top: -100px;
+  }
+
+
+  @media screen and (max-width: 980px) {
+    margin-left: calc(max(50vw - 200px, 15px));
+    [data-show-news-prompt] & {
+      margin-top: -16px;
+    }
+  }
+
+  @media screen and (max-width: 650px) {
+    [data-show-news-prompt] & {
+      margin-top: -6px;
+    }
   }
 `
 

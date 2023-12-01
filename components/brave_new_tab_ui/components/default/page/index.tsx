@@ -276,6 +276,20 @@ export const GridItemNavigationBraveNews = styled('div') <{}>`
   [data-show-news-prompt] & {
     bottom: 120px;
   }
+
+  @media screen and (max-width: 980px) {
+    [data-show-news-prompt] & {
+      bottom: 50px;
+    }
+  }
+  @media screen and (max-width: 650px) {
+    [data-show-news-prompt] & {
+      bottom: -22px;
+    }
+    & > div {
+      font-size: 13px;
+    }
+  }
 `
 
 export const Footer = styled('footer') <{}>`
