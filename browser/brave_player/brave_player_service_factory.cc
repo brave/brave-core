@@ -39,8 +39,8 @@ KeyedService* BravePlayerServiceFactory::BuildServiceInstanceFor(
       std::make_unique<BravePlayerServiceDelegateImpl>());
 }
 
-content::BrowserContext* BravePlayerServiceFactory::GetBrowserContextToUse()
-    const {
+content::BrowserContext* BravePlayerServiceFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
   // The service should exist in incognito mode, as Brave Player is enabled on
   // the profile too.
   return chrome::GetBrowserContextOwnInstanceInIncognito(context);
