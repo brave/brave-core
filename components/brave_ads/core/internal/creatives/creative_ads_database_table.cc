@@ -26,7 +26,7 @@
 namespace brave_ads::database::table {
 
 using CreativeAdMap =
-    std::map</*creative_ad_uuid=*/std::string, CreativeAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeAdInfo>;
 
 namespace {
 

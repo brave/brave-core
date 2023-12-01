@@ -23,7 +23,7 @@ struct ConversionResourceIdPatternInfo final {
 };
 
 using ConversionResourceIdPatternMap =
-    std::map</*resource_url_pattern=*/std::string,
+    std::map</*resource_url_pattern*/ std::string,
              ConversionResourceIdPatternInfo>;
 
 }  // namespace brave_ads

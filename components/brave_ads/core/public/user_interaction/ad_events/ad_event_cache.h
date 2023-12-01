@@ -42,8 +42,8 @@ class ADS_EXPORT AdEventCache final {
 
  private:
   base::flat_map<
-      /*id=*/std::string,
-      base::flat_map</*type_id=*/std::string, std::vector<base::Time>>>
+      /*id*/ std::string,
+      base::flat_map</*type_id*/ std::string, std::vector<base::Time>>>
       ad_event_cache_;
 };
 

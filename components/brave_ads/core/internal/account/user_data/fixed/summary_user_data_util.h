@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 using ConfirmationTypeBucketMap =
-    base::flat_map<ConfirmationType, /*count=*/int>;
+    base::flat_map<ConfirmationType, /*count*/ int>;
 using AdTypeBucketMap = base::flat_map<AdType, ConfirmationTypeBucketMap>;
 
 AdTypeBucketMap BuildAdTypeBuckets(const PaymentTokenList& payment_tokens);

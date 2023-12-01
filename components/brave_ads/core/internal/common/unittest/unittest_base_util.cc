@@ -37,8 +37,8 @@ namespace brave_ads {
 namespace {
 
 using AdEventHistoryMap =
-    base::flat_map</*type_id=*/std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map</*uuid=*/std::string, AdEventHistoryMap>;
+    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
+using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
 
 AdEventMap& AdEventCache() {
   static base::NoDestructor<AdEventMap> ad_events;
