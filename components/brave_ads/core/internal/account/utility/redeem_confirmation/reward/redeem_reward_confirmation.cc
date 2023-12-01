@@ -150,7 +150,6 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   const auto add_payment_token_result = MaybeAddPaymentToken(payment_token);
   if (!add_payment_token_result.has_value()) {
     BLOG(1, add_payment_token_result.error());
-
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation, /*should_retry=*/false);
   }

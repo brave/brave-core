@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 
+#include <optional>
+
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"

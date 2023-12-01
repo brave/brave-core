@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
@@ -299,6 +300,8 @@ void UnitTestBase::SetUpUnitTest() {
       }));
 
   task_environment_.FastForwardUntilNoTasksRemain();
+
+  NotifyPendingAdsClientObservers();
 }
 
 }  // namespace brave_ads

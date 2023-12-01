@@ -31,7 +31,7 @@ T PrioritizeCreativeAds(const T& creative_ads) {
     bucket_number++;
   }
 
-  const auto& [priority, bucket] = GetHighestPriorityBucket(buckets);
+  const auto& [_, bucket] = GetHighestPriorityBucket(buckets);
   return bucket;
 }
 

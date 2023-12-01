@@ -97,9 +97,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_,
-              OnCaptchaRequiredToRefillConfirmationTokens(/*captcha_id=*/
-                                                          "daf85dc8-164e-4eb9-"
-                                                          "a4d4-1836055004b3"));
+              OnCaptchaRequiredToRefillConfirmationTokens(
+                  /*captcha_id=*/"daf85dc8-164e-4eb9-a4d4-1836055004b3"));
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
   EXPECT_EQ(0, ConfirmationTokenCount());

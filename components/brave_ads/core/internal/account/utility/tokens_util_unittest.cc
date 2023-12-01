@@ -38,11 +38,7 @@ base::Value::Dict BuildUrlResponseBody() {
 class BraveAdsSignedTokensUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSignedTokensUtilTest, ParsePublicKey) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(cbr::PublicKey(cbr::kPublicKeyBase64),
             ParsePublicKey(BuildUrlResponseBody()));
 }
@@ -52,9 +48,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Set("publicKey", cbr::kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParsePublicKey(dict));
 }
 
@@ -76,9 +70,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Remove("signedTokens");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
 }
 
@@ -87,9 +79,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidSignedTokens) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Set("signedTokens", cbr::kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
 }
 
