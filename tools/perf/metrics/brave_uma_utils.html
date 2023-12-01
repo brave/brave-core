@@ -19,22 +19,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
    * event arguments contain the histogram name and the value.
    */
   tr.exportTo('tr.metrics', function () {
-    const REGULAR_SUMMARY_OPTIONS = {
+    const SUMMARY_OPTIONS = {
       avg: false,
       count: false,
       max: false,
       min: false,
       std: false,
       sum: false,
-    };
-
-    const SUM_AND_COUNT_SUMMARY_OPTIONS = {
-      avg: false,
-      count: true,
-      max: false,
-      min: false,
-      std: false,
-      sum: true,
     };
 
     function braveExtendedUmaMetrics(histograms, model, attrs) {
@@ -45,12 +36,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         rules.push(rule)
       };
       attrs.regularHistograms && attrs.regularHistograms.forEach(name => {
-        addRule(name, { summaryOptions: REGULAR_SUMMARY_OPTIONS });
+        addRule(name, { suffix: '', process: v => v });
       });
 
       attrs.sumAndCountHistograms && attrs.sumAndCountHistograms.forEach(
         name => {
-          addRule(name, { summaryOptions: SUM_AND_COUNT_SUMMARY_OPTIONS });
+          addRule(name, {
+            suffix: '#sum',
+            process: (list) => [list.reduce((a, b) => a + b, 0)]
+          });
+          addRule(name, {
+            suffix: '#count',
+            boundaries: tr.v.HistogramBinBoundaries.createLinear(0, 100, 101),
+            unit: tr.b.Unit.byName.count_smallerIsBetter,
+            process: (list) => [list.length]
+          });
         }
       );
 
@@ -79,18 +79,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
           'Enable disabled-by-default-histogram_samples category to fix it.')
       }
 
-      for (const [name, values] of umaMap) {
+      for (const [name, rawValues] of umaMap) {
         for (const rule of umaProcessingRules.get(name)) {
           const boundaries =
             (attrs.getHistogramBoundaries &&
               attrs.getHistogramBoundaries(name)) ||
+            rule.boundaries ||
             tr.v.HistogramBinBoundaries.createExponential(1e-3, 1e3, 50);
           const unit =
             (attrs.getHistogramUnit && attrs.getHistogramUnit(name)) ||
+            rule.unit ||
             tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
-          histograms.createHistogram(name, unit, values, {
+          const values = rule.process(rawValues);
+          histograms.createHistogram(name + rule.suffix, unit, values, {
             binBoundaries: boundaries,
-            summaryOptions: rule.summaryOptions,
+            summaryOptions: SUMMARY_OPTIONS,
           });
         }
       }
