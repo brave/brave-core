@@ -1,0 +1,26 @@
+diff --git a/components/search_engines/generated_marketing_snippets.cc b/components/search_engines/generated_marketing_snippets.cc
+index c08eb99eeadeb4bf54a1f2c898722c58177119ac..49ebd74438680d165310c7e8281265928dec3e00 100644
+--- a/components/search_engines/generated_marketing_snippets.cc
++++ b/components/search_engines/generated_marketing_snippets.cc
+@@ -21,10 +21,6 @@ int GetMarketingSnippetResourceId(const std::u16string& engine_keyword) {
+       base::WideToUTF16(TemplateURLPrepopulateData::brave.keyword)) {
+     return IDS_BRAVE_SEARCH_DESCRIPTION;
+   }
+-  if (engine_keyword ==
+-      base::WideToUTF16(TemplateURLPrepopulateData::duckduckgo.keyword)) {
+-    return IDS_DUCKDUCKGO_SEARCH_DESCRIPTION;
+-  }
+   if (engine_keyword ==
+       base::WideToUTF16(TemplateURLPrepopulateData::ecosia.keyword)) {
+     return IDS_ECOSIA_SEARCH_DESCRIPTION;
+@@ -73,10 +69,6 @@ int GetMarketingSnippetResourceId(const std::u16string& engine_keyword) {
+       base::WideToUTF16(TemplateURLPrepopulateData::quendu.keyword)) {
+     return IDS_QUENDU_SEARCH_DESCRIPTION;
+   }
+-  if (engine_keyword ==
+-      base::WideToUTF16(TemplateURLPrepopulateData::qwant.keyword)) {
+-    return IDS_QWANT_SEARCH_DESCRIPTION;
+-  }
+   if (engine_keyword ==
+       base::WideToUTF16(TemplateURLPrepopulateData::seznam_cz.keyword)) {
+     return IDS_SEZNAM_SEARCH_DESCRIPTION;
