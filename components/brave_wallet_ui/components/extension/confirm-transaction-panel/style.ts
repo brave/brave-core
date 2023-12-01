@@ -141,10 +141,9 @@ export const TransactionTypeText = styled.span`
 `
 
 export const ArrowIcon = styled(ArrowRightIcon)`
-  width: auto;
+  display: inline-block;
+  width: 16px;
   height: 16px;
-  margin-right: 6px;
-  margin-left: 6px;
   color: ${(p) => p.theme.color.text03};
 `
 

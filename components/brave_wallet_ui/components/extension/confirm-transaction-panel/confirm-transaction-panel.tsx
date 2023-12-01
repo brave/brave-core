@@ -283,20 +283,17 @@ export const ConfirmTransactionPanel = () => {
           <Row
             marginBottom={8}
             maxWidth={isContract ? '90%' : 'unset'}
-            width={'unset'}
+            width={'100%'}
+            gap={'8px'}
+            wrap
           >
-            <Row
-              maxWidth={isContract ? '70px' : 'unset'}
-              width={'unset'}
+            <Tooltip
+              text={fromAccount.address}
+              isAddress={true}
+              position={'left'}
             >
-              <Tooltip
-                text={fromAccount.address}
-                isAddress={true}
-                position={'left'}
-              >
-                <AccountNameText>{fromAccount.name}</AccountNameText>
-              </Tooltip>
-            </Row>
+              <AccountNameText>{fromAccount.name}</AccountNameText>
+            </Tooltip>
 
             {transactionDetails.recipient &&
               transactionDetails.recipient !== fromAccount.address && (
