@@ -8,9 +8,11 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_player/brave_player_service_factory.h"
 #include "brave/components/brave_player/core/browser/brave_player_service.h"
 #include "brave/components/brave_player/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/common/content_client.h"
@@ -21,8 +23,10 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
@@ -32,7 +36,10 @@ class BravePlayerTabHelperBrowserTest : public PlatformBrowserTest {
  public:
   BravePlayerTabHelperBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(brave_player::features::kBravePlayer);
+    feature_list_.InitWithFeatures(
+        {brave_player::features::kBravePlayer,
+         brave_player::features::kBravePlayerRespondToAntiAdBlock},
+        {});
   }
 
   void SetUpOnMainThread() override {
@@ -43,11 +50,18 @@ class BravePlayerTabHelperBrowserTest : public PlatformBrowserTest {
 
     content::SetBrowserClientForTesting(&test_content_browser_client_);
 
+#if defined(IS_ANDROID)
+    Profile* profile = TabModelList::models()[0]->GetProfile();
+#else
+    Profile* profile = browser()->profile();
+#endif
+
+    ASSERT_TRUE(profile);
+
     // Also called in Disabled test.
-    if (brave_player::BravePlayerService::GetInstance()) {
-      brave_player::BravePlayerService::GetInstance()->SetComponentPath(
-          test_data_dir.AppendASCII("brave_player_component"));
-    }
+    brave_player::BravePlayerServiceFactory::GetForBrowserContext(profile)
+        .SetComponentPath(test_data_dir.AppendASCII("brave_player_component"));
+
     https_server_.ServeFilesFromDirectory(test_data_dir);
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);

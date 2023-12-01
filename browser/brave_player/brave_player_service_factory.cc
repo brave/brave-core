@@ -8,6 +8,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_player/brave_player_service_delegate_impl.h"
 #include "brave/components/brave_player/core/browser/brave_player_service.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_player {
@@ -36,6 +37,13 @@ KeyedService* BravePlayerServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new BravePlayerService(
       std::make_unique<BravePlayerServiceDelegateImpl>());
+}
+
+content::BrowserContext* BravePlayerServiceFactory::GetBrowserContextToUse()
+    const {
+  // The service should exist in incognito mode, as Brave Player is enabled on
+  // the profile too.
+  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 }  // namespace brave_player
