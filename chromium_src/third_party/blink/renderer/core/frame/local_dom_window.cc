@@ -95,13 +95,16 @@ int LocalDOMWindow::screenY() const {
              : screenY_ChromiumImpl();
 }
 
-void LocalDOMWindow::resizeTo(int width, int height) const {
+void LocalDOMWindow::resizeTo(int width,
+                              int height,
+                              ExceptionState& exception_state) const {
   ExecutionContext* context = GetExecutionContext();
   if (BlockScreenFingerprinting(context)) {
     resizeTo_ChromiumImpl(width + outerWidth_ChromiumImpl() - outerWidth(),
-                          height + outerHeight_ChromiumImpl() - outerHeight());
+                          height + outerHeight_ChromiumImpl() - outerHeight(),
+                          exception_state);
   } else {
-    resizeTo_ChromiumImpl(width, height);
+    resizeTo_ChromiumImpl(width, height, exception_state);
   }
 }
 
