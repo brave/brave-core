@@ -25,12 +25,6 @@ class PrefService;
 namespace ai_chat {
 class AIChatMetrics;
 
-enum PageContentAssociation {
-  HAS_CONTENT,
-  NO_CONTENT,
-  FETCHING_CONTENT,
-};
-
 class ConversationDriver {
  public:
   class Observer : public base::CheckedObserver {
@@ -45,7 +39,8 @@ class ConversationDriver {
         std::vector<std::string> questions,
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent(bool page_contents_is_truncated) {}
+    virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
+    virtual void OnConversationEntryPending() {}
   };
 
   ConversationDriver(raw_ptr<PrefService> pref_service,
@@ -67,7 +62,8 @@ class ConversationDriver {
   void AddToConversationHistory(mojom::ConversationTurn turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
   void MakeAPIRequestWithConversationHistoryUpdate(
-      mojom::ConversationTurn turn);
+      mojom::ConversationTurn turn,
+      bool needs_page_content = false);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -78,16 +74,21 @@ class ConversationDriver {
   void GenerateQuestions();
   std::vector<std::string> GetSuggestedQuestions(
       mojom::SuggestionGenerationStatus& suggestion_status);
-  PageContentAssociation HasPageContent();
   void DisconnectPageContents();
+  void SetShouldSendPageContents(bool should_send);
+  bool GetShouldSendPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool IsPageContentsTruncated();
+  void SubmitSummarizationRequest();
+  mojom::SiteInfoPtr BuildSiteInfo();
+  bool HasPendingConversationEntry();
 
  protected:
   virtual GURL GetPageURL() const = 0;
+  virtual std::u16string GetPageTitle() const = 0;
   virtual void GetPageContent(
       base::OnceCallback<void(std::string, bool is_video)> callback) const = 0;
   virtual bool HasPrimaryMainFrame() const = 0;
@@ -121,12 +122,14 @@ class ConversationDriver {
   void OnSuggestedQuestionsResponse(int64_t navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged(bool page_contents_is_truncated);
+  void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);
+  void OnConversationEntryPending();
 
   void SetAPIError(const mojom::APIError& error);
+  bool IsContentAssociationPossible();
 
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
@@ -152,7 +155,7 @@ class ConversationDriver {
   mojom::SuggestionGenerationStatus suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::None;
   bool is_video_ = false;
-  bool should_page_content_be_disconnected_ = false;
+  bool should_send_page_contents_ = true;
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
@@ -160,7 +163,8 @@ class ConversationDriver {
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
 
-  std::unique_ptr<mojom::ConversationTurn> pending_request_;
+  std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
+  bool pending_message_needs_page_content_ = false;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

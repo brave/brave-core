@@ -7,12 +7,12 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
@@ -23,6 +23,8 @@ import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import WarningLongPage from '../alerts/warning_long_page'
 import InfoLongConversation from '../alerts/info_long_conversation'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
+import WelcomeGuide from '../welcome_guide'
+import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 
 function Main() {
@@ -55,18 +57,11 @@ function Main() {
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
-  let conversationListElement = <PrivacyMessage />
-  let siteTitleElement = null
   let currentErrorElement = null
 
   if (hasAcceptedAgreement) {
-    conversationListElement = <ConversationList />
-
-    if (siteInfo) {
-      siteTitleElement = <SiteTitle />
-    }
-
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
@@ -92,6 +87,7 @@ function Main() {
 
   return (
     <main className={styles.main}>
+      {context.showAgreementModal && <PrivacyMessage />}
       <div className={styles.header}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
@@ -118,13 +114,13 @@ function Main() {
           )}
         </div>
       </div>
-      <div className={styles.scroller}>
+      <div className={classnames({
+        [styles.scroller]: true,
+        [styles.flushBottom]: !hasAcceptedAgreement
+      })}>
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {siteTitleElement && (
-          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
-        )}
-        {context.showModelIntro && <ModelIntro />}
-        {conversationListElement}
+        {context.hasAcceptedAgreement && <ModelIntro />}
+        <ConversationList />
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
@@ -177,8 +173,14 @@ function Main() {
         <div className={styles.promptContainer}>
             <InfoLongConversation />
         </div>}
+        {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
       <div className={styles.inputBox}>
+        {showContextToggle && (
+          <div className={styles.toggleContainer}>
+            <PageContextToggle />
+          </div>
+        )}
         <InputBox />
       </div>
     </main>

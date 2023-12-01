@@ -17,7 +17,6 @@
   flex-direction: column;
   width: 100%;
   padding: 16px;
-  border-top: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
 }
 
@@ -25,6 +24,13 @@
   overflow: auto;
   height: 100%;
   padding-bottom: 16px;
+}
+
+.flushBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0;
 }
 
 .header {
@@ -64,10 +70,6 @@
   }
 }
 
-.siteTitleBox {
-  padding: 16px 16px 0 16px;
-}
-
 .promptContainer {
   margin: 24px;
 }
@@ -89,4 +91,8 @@
   left: 0;
   z-index: 5;
   width: 100%;
+}
+
+.toggleContainer {
+  margin-bottom: var(--leo-spacing-m);
 }

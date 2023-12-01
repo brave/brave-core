@@ -214,4 +214,34 @@
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
     Leo settings
   </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_TITLE" desc="A title for welcome guide component presented for first time users">
+    Hi, I'm Leo!
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users">
+    An AI-powered intelligent assistant, built right into Brave.
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE" desc="This is the title for a user prompt card designed to offer assistance with website-related tasks.">
+    Need help with a website?
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_DESC" desc="This description informs the user that the chatbot is capable of assisting with various website-related tasks such as summarizing articles and elaborating on website content. There is no specific call to action in this message.">
+    I can help you summarizing articles, expanding on a site's content and much more.
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION" desc="This description provides similar information to the previous message but concludes with a specific call to action or suggestion for the user to get started with assistance.">
+    I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE" desc="Title for the chat card option.">
+    Just want to chat?
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC" desc="Description prompting the user to engage in a casual conversation with the chatbot.">
+    Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
+  </message>
+  <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
+    Privacy agreement
+  </message>
+  <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
+    Use page context for response
+  </message>
+  <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
+    Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
+  </message>
 </grit-part>
