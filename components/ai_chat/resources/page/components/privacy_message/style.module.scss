@@ -3,17 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.box {
-  height: 100%;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.dialog {
+  --leo-dialog-width: 80vw;
+}
 
-  b {
-    margin-bottom: 8px;
-  }
-
+.content {
   p {
     margin-top: 0;
     margin-bottom: 24px;
@@ -24,12 +18,6 @@
     font: var(--leo-font-primary-default-semibold);
     color: var(--leo-color-text-interactive);
     text-decoration: none;
-  }
-
-  figure {
-    width: 128px;
-    height: auto;
-    margin: 0 auto 20px auto;
   }
 }
 

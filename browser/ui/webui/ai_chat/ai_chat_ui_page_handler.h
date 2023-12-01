@@ -55,6 +55,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitSummarizationRequest() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
@@ -62,7 +63,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
-  void DisconnectPageContents() override;
+  void SetShouldSendPageContents(bool should_send) override;
+  void GetShouldSendPageContents(
+      GetShouldSendPageContentsCallback callback) override;
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
@@ -90,10 +93,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       std::vector<std::string> questions,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent(bool page_contents_is_truncated) override;
+  void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
+  void OnConversationEntryPending() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  std::optional<mojom::SiteInfo> BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
