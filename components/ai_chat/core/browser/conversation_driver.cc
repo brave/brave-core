@@ -492,8 +492,13 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
 
 void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
     mojom::ConversationTurn turn,
-    bool needs_page_content) {
-  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    bool needs_page_content /* = false */) {
+  // Decide if this entry needs to wait for one of:
+  // - user to be opted-in
+  // - conversation to be active
+  // - content to be retrieved
+  if (!is_conversation_active_ || !HasUserOptedIn() ||
+      (article_text_.empty() && needs_page_content)) {
     // This function should not be presented in the UI if the user has not
     // opted-in yet.
     pending_conversation_entry_ =
