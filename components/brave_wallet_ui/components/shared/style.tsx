@@ -140,7 +140,6 @@ export const Row = styled.div<
 export const Column = styled.div<
   FlexProps & {
     width?: string
-    maxWidth?: string
     height?: string
     fullWidth?: boolean
     fullHeight?: boolean
@@ -152,7 +151,6 @@ export const Column = styled.div<
   font-family: 'Poppins';
   height: ${(p) => (p.fullHeight ? '100%' : p?.height || 'unset')};
   width: ${(p) => (p.fullWidth ? '100%' : p?.width || 'unset')};
-  max-width: ${(p) => p.maxWidth || 'unset'};
   flex: ${(p) => p.flex ?? 'unset'};
   display: flex;
   flex-direction: column;
