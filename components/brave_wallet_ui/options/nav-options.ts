@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Utils
+import { isPersistanceOfPanelProhibited } from '../utils/local-storage-utils'
+
 // Types
 import {
   NavOption,
@@ -42,7 +45,10 @@ const PANEL_TYPES: PanelTypes[] = [
 export const isValidPanelNavigationOption = (
   panelName: string
 ): panelName is PanelTypes => {
-  return PANEL_TYPES.includes(panelName as PanelTypes)
+  return (
+    PANEL_TYPES.includes(panelName as PanelTypes) &&
+    !isPersistanceOfPanelProhibited(panelName as PanelTypes)
+  )
 }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
