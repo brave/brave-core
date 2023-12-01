@@ -87,7 +87,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   issuers_url_request_->PeriodicallyFetch();
   FastForwardClockToNextPendingTask();
 
-  EXPECT_TRUE(GetIssuers());
+  EXPECT_TRUE(HasIssuers());
 }
 
 }  // namespace brave_ads

@@ -67,7 +67,7 @@ TEST_F(BraveAdsUserRewardsUtilTest, UpdateIssuers) {
   UpdateIssuers(issuers);
 
   // Assert
-  EXPECT_TRUE(GetIssuers());
+  EXPECT_TRUE(HasIssuers());
 }
 
 TEST_F(BraveAdsUserRewardsUtilTest, DoNotUpdateIfIssuersHasNotChanged) {
@@ -84,7 +84,7 @@ TEST_F(BraveAdsUserRewardsUtilTest, DoNotUpdateIfIssuersHasNotChanged) {
   UpdateIssuers(test::BuildIssuers());
 
   // Assert
-  EXPECT_TRUE(GetIssuers());
+  EXPECT_TRUE(HasIssuers());
 }
 
 }  // namespace brave_ads
