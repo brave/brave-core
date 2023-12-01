@@ -103,7 +103,7 @@ source_set("browser_tests") {
       "//chrome/browser/ui",
       "//chrome/common:chrome_features",
       "//chrome/common:non_code_constants",
-      "//chrome/common/companion/visual_search:flags",
+      "//chrome/common/companion/visual_query:flags",
       "//chrome/test",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
