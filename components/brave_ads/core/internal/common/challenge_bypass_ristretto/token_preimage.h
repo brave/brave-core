@@ -11,7 +11,7 @@
 #include <string>
 
 #include "base/check.h"
-#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
+#include "brave/components/challenge_bypass_ristretto/token_preimage.h"
 
 namespace brave_ads::cbr {
 

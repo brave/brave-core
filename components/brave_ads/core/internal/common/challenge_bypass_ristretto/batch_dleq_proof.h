@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/check.h"
-#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
+#include "brave/components/challenge_bypass_ristretto/batch_dleq_proof.h"
 
 namespace brave_ads::cbr {
 

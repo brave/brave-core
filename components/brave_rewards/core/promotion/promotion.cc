@@ -25,15 +25,7 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
-#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-
 using std::placeholders::_1;
-
-using challenge_bypass_ristretto::BatchDLEQProof;
-using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::PublicKey;
-using challenge_bypass_ristretto::SignedToken;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace brave_rewards::internal {
 namespace promotion {

@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
@@ -48,21 +47,19 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   const std::optional<PublicKey> public_key = signing_key.GetPublicKey();
   EXPECT_TRUE(public_key);
 
-  // Server signs a DLEQ (Discrete Log Equivalence) proof.
-  DLEQProof dleq_proof(*blinded_token, *signed_token, signing_key);
-  EXPECT_TRUE(dleq_proof.has_value());
-
-  // Server verifies the DLEQ proof using the public key.
-  EXPECT_TRUE(dleq_proof.Verify(*blinded_token, *signed_token, *public_key));
-
-  // Server returns a batch DLEQ proof.
+  // Server signs and returns a batch DLEQ (Discrete Log Equivalence) proof.
   const std::vector<BlindedToken> blinded_tokens = {*blinded_token};
   const std::vector<SignedToken> signed_tokens = {*signed_token};
   BatchDLEQProof batch_dleq_proof(blinded_tokens, signed_tokens, signing_key);
   EXPECT_TRUE(batch_dleq_proof.has_value());
 
-  // Client verifies the batch DLEQ proof and uses the blinding scalar to
-  // unblind the returned signed tokens.
+  // Client verifies the batch DLEQ proof received from the server using the
+  // received public key.
+  EXPECT_TRUE(
+      batch_dleq_proof.Verify(blinded_tokens, signed_tokens, *public_key));
+
+  // Client verifies the batch DLEQ proof received from the server and uses the
+  // blinding scalar to unblind the returned signed tokens.
   const std::vector<Token> tokens = {token};
   const std::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, signed_tokens,
