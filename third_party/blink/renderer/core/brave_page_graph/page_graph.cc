@@ -441,6 +441,7 @@ void PageGraph::WillSendNavigationRequest(uint64_t identifier,
 }
 
 void PageGraph::WillSendRequest(
+    blink::ExecutionContext* execution_context,
     blink::DocumentLoader* loader,
     const blink::KURL& fetch_context_url,
     const blink::ResourceRequest& request,
@@ -453,9 +454,6 @@ void PageGraph::WillSendRequest(
     LOG(INFO) << "Skip request redirect";
     return;
   }
-
-  blink::ExecutionContext* execution_context =
-      loader->GetFrame()->GetDocument()->GetExecutionContext();
 
   const String page_graph_resource_type = blink::Resource::ResourceTypeToString(
       resource_type, options.initiator_info.name);
