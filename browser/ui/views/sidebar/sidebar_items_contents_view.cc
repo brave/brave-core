@@ -396,10 +396,11 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
-  item_view->SetImage(
+  item_view->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::ImageSkiaOperations::CreateResizedImage(
-          image, skia::ImageOperations::RESIZE_BEST, kIconSize));
+      ui::ImageModel::FromImageSkia(
+          gfx::ImageSkiaOperations::CreateResizedImage(
+              image, skia::ImageOperations::RESIZE_BEST, kIconSize)));
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {

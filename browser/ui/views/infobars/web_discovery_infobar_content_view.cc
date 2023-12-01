@@ -461,9 +461,9 @@ std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetOkButton(
 std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetCloseButton() {
   auto close_button = std::make_unique<views::ImageButton>(base::BindRepeating(
       &WebDiscoveryInfoBarContentView::CloseInfoBar, base::Unretained(this)));
-  close_button->SetImage(
+  close_button->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(
+      ui::ImageModel::FromVectorIcon(
           kWebDiscoveryInfobarCloseButtonIcon,
           GetColorProvider()->GetColor(kColorWebDiscoveryInfoBarClose)));
   close_button->SetProperty(
