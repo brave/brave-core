@@ -10,10 +10,25 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import org.chromium.components.signin.base.AccountCapabilities;
+import org.chromium.components.signin.base.AccountInfo;
+import org.chromium.components.signin.base.CoreAccountId;
+
 public class BraveManageAccountDevicesLinkView extends LinearLayout {
     public BraveManageAccountDevicesLinkView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setVisibility(View.GONE);
+    }
+
+    public static AccountInfo getSharingAccountInfo() {
+        return new AccountInfo(
+                new CoreAccountId(""),
+                "",
+                "",
+                null,
+                null,
+                null,
+                new AccountCapabilities(new String[0], new boolean[0]));
     }
 }
