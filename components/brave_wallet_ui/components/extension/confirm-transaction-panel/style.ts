@@ -140,15 +140,6 @@ export const TransactionTypeText = styled.span`
   text-align: left;
 `
 
-export const FromToRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 8px;
-`
-
 export const ArrowIcon = styled(ArrowRightIcon)`
   width: auto;
   height: 16px;

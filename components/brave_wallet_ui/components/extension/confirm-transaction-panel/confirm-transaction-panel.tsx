@@ -38,15 +38,6 @@ import { Footer } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
-import {
-  SolanaTransactionDetailBox //
-} from '../transaction-box/solana-transaction-detail-box'
-import {
-  BitcoinTransactionDetailBox //
-} from '../transaction-box/bitcoin-transaction-detail-box'
-import {
-  ZCashTransactionDetailBox //
-} from '../transaction-box/zcash_transaction_detail_box'
 
 // Styled Components
 import {
@@ -289,7 +280,6 @@ export const ConfirmTransactionPanel = () => {
             />
           </URLText>
 
-          {/* TODO: Compare with FromToRow */}
           <Row
             marginBottom={8}
             maxWidth={isContract ? '90%' : 'unset'}
@@ -429,23 +419,11 @@ export const ConfirmTransactionPanel = () => {
             currentTokenAllowance={currentTokenAllowance}
             isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
           />
-        ) : isSolanaTransaction ? (
-          <SolanaTransactionDetailBox
-            data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
-            instructions={transactionDetails.instructions}
-            txType={selectedPendingTransaction.txType}
-          />
-        ) : isBitcoinTransaction ? (
-          <BitcoinTransactionDetailBox
-            data={selectedPendingTransaction?.txDataUnion?.btcTxData}
-          />
-        ) : isZCashTransaction ? (
-          <ZCashTransactionDetailBox
-            data={selectedPendingTransaction?.txDataUnion?.zecTxData}
-          />
         ) : (
-          // EVM of FIL
-          <TransactionDetailBox transactionInfo={selectedPendingTransaction} />
+          <TransactionDetailBox
+            transactionInfo={selectedPendingTransaction}
+            instructions={transactionDetails.instructions}
+          />
         )}
       </MessageBox>
 
