@@ -34,13 +34,13 @@ public class BraveVpnPlanPagerAdapter extends PagerAdapter {
         TextView planText2 = view.findViewById(R.id.plan_text_2);
         TextView planText3 = view.findViewById(R.id.plan_text_3);
         if (position == 0) {
-            planText1.setText(context.getResources().getString(R.string.block_ads));
-            planText2.setText(context.getResources().getString(R.string.across_all_apps));
-            planText3.setText(context.getResources().getString(R.string.keep_your_ip_address));
+            planText1.setText(context.getResources().getString(R.string.plan_text_1));
+            planText2.setText(context.getResources().getString(R.string.plan_text_2));
+            planText3.setText(context.getResources().getString(R.string.plan_text_3));
         } else {
-            planText1.setText(context.getResources().getString(R.string.supports_speed));
-            planText2.setText(context.getResources().getString(R.string.use_wireguard));
-            planText3.setText(context.getResources().getString(R.string.never_share_info));
+            planText1.setText(context.getResources().getString(R.string.plan_text_4));
+            planText2.setText(context.getResources().getString(R.string.plan_text_5));
+            planText3.setText(context.getResources().getString(R.string.plan_text_6));
         }
         collection.addView(view);
         return view;
