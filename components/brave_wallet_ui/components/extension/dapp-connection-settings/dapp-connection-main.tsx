@@ -105,9 +105,9 @@ export const DAppConnectionMain = (props: Props) => {
     }
   }, [selectedAccount, requestSitePermission])
 
-  const onClickDisconnect = React.useCallback(() => {
+  const onClickDisconnect = React.useCallback(async () => {
     if (selectedAccount) {
-      removeSitePermission(selectedAccount.accountId)
+      await removeSitePermission(selectedAccount.accountId)
     }
   }, [selectedAccount, removeSitePermission])
 
