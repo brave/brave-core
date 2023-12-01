@@ -27,7 +27,9 @@ import {
   isSolanaTransaction,
   parseTransactionWithPrices,
   findTransactionToken,
-  isEthereumTransaction
+  isEthereumTransaction,
+  isZCashTransaction,
+  isBitcoinTransaction
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -654,6 +656,8 @@ export const usePendingTransactions = () => {
     onConfirm,
     onReject,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    isZCashTransaction: isZCashTransaction(transactionInfo),
+    isBitcoinTransaction: isBitcoinTransaction(transactionInfo)
   }
 }

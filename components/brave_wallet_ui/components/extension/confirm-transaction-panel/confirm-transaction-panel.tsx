@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -38,6 +39,11 @@ import { Footer } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
+import { BitcoinTransactionInfo } from './bitcoin-transaction-info'
+import { ZCashTransactionInfo } from './zcash_transaction_info'
+import {
+  SolanaTransactionDetailBox //
+} from '../transaction-box/solana-transaction-detail-box'
 
 // Styled Components
 import {
@@ -67,13 +73,14 @@ import {
   AccountCircle,
   AddressAndOrb,
   AddressText,
-  URLText,
   WarningBox,
   WarningTitle,
   LearnMoreButton,
-  WarningBoxTitleRow
+  WarningBoxTitleRow,
+  URLText
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
+import { BitcoinTransactionDetailBox } from '../transaction-box/bitcoin-transaction-detail-box'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -124,17 +131,21 @@ export const ConfirmTransactionPanel = () => {
     insufficientFundsForGasError,
     queueNextTransaction,
     transactionQueueNumber,
-    transactionsQueueLength
+    transactionsQueueLength,
+    isSolanaTransaction,
+    isBitcoinTransaction,
+    isZCashTransaction
   } = usePendingTransactions()
 
   // queries
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
-    {
-      address: transactionDetails?.recipient ?? '',
-      coin: transactionDetails?.coinType ?? -1,
-      chainId: transactionDetails?.chainId ?? ''
-    },
-    { skip: !transactionDetails }
+    transactionDetails && isEthereumTransaction
+      ? {
+          address: transactionDetails?.recipient ?? '',
+          coin: transactionDetails?.coinType ?? -1,
+          chainId: transactionDetails?.chainId ?? ''
+        }
+      : skipToken
   )
 
   // computed
@@ -273,6 +284,8 @@ export const ConfirmTransactionPanel = () => {
               eTldPlusOne={originInfo.eTldPlusOne}
             />
           </URLText>
+
+          {/* TODO: Compare with FromToRow */}
           <Row
             marginBottom={8}
             maxWidth={isContract ? '90%' : 'unset'}
@@ -290,35 +303,42 @@ export const ConfirmTransactionPanel = () => {
                 <AccountNameText>{fromAccount.name}</AccountNameText>
               </Tooltip>
             </Row>
-            <ArrowIcon />
-            {isContract ? (
-              <Column
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-              >
-                <NetworkText>
-                  {getLocale('braveWalletNFTDetailContractAddress')}
-                </NetworkText>
-                <ContractButton
-                  onClick={onClickViewOnBlockExplorer(
-                    'contract',
-                    `${transactionDetails.recipient}`
+
+            {transactionDetails.recipient &&
+              transactionDetails.recipient !== fromAccount.address && (
+                <>
+                  <ArrowIcon />
+                  {isContract ? (
+                    <Column
+                      alignItems={'flex-start'}
+                      justifyContent={'flex-start'}
+                    >
+                      <NetworkText>
+                        {getLocale('braveWalletNFTDetailContractAddress')}
+                      </NetworkText>
+                      <ContractButton
+                        onClick={onClickViewOnBlockExplorer(
+                          'contract',
+                          `${transactionDetails.recipient}`
+                        )}
+                      >
+                        {reduceAddress(transactionDetails.recipient)}{' '}
+                        <ExplorerIcon />
+                      </ContractButton>
+                    </Column>
+                  ) : (
+                    <Tooltip
+                      text={transactionDetails.recipient}
+                      isAddress={true}
+                      position='right'
+                    >
+                      <AccountNameText>
+                        {reduceAddress(transactionDetails.recipient)}
+                      </AccountNameText>
+                    </Tooltip>
                   )}
-                >
-                  {reduceAddress(transactionDetails.recipient)} <ExplorerIcon />
-                </ContractButton>
-              </Column>
-            ) : (
-              <Tooltip
-                text={transactionDetails.recipient}
-                isAddress={true}
-                position='right'
-              >
-                <AccountNameText>
-                  {reduceAddress(transactionDetails.recipient)}
-                </AccountNameText>
-              </Tooltip>
-            )}
+                </>
+              )}
           </Row>
 
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
@@ -348,6 +368,7 @@ export const ConfirmTransactionPanel = () => {
               )}
             </TransactionFiatAmountBig>
           )}
+
           {isAssociatedTokenAccountCreation && (
             <WarningBox warningType={'warning'}>
               <WarningBoxTitleRow>
@@ -384,7 +405,7 @@ export const ConfirmTransactionPanel = () => {
       <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <>
-            {isERC20Approve && (
+            {isERC20Approve ? (
               <Erc20ApproveTransactionInfo
                 onToggleEditGas={onToggleEditGas}
                 isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
@@ -395,12 +416,33 @@ export const ConfirmTransactionPanel = () => {
                 insufficientFundsError={insufficientFundsError}
                 insufficientFundsForGasError={insufficientFundsForGasError}
               />
-            )}
-            {!isERC20Approve && (
-              <TransactionInfo onToggleEditGas={onToggleEditGas} />
+            ) : isZCashTransaction ? (
+              <ZCashTransactionInfo />
+            ) : isBitcoinTransaction ? (
+              <BitcoinTransactionInfo />
+            ) : (
+              // ETH, FIL, SOL
+              <TransactionInfo
+                onToggleEditGas={
+                  isSolanaTransaction ? undefined : onToggleEditGas
+                }
+              />
             )}
           </>
+        ) : isSolanaTransaction ? (
+          <SolanaTransactionDetailBox
+            data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
+            instructions={transactionDetails.instructions}
+            txType={selectedPendingTransaction.txType}
+          />
+        ) : isBitcoinTransaction ? (
+          <BitcoinTransactionDetailBox
+            data={selectedPendingTransaction?.txDataUnion?.btcTxData}
+          />
+        ) : isZCashTransaction ? (
+          <ZCashTransactionInfo />
         ) : (
+          // EVM of FIL
           <TransactionDetailBox transactionInfo={selectedPendingTransaction} />
         )}
       </MessageBox>
