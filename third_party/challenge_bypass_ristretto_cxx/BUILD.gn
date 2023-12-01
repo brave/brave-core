@@ -1,0 +1,23 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  crate_name = "challenge_bypass_ristretto_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [ "src/lib.rs" ]
+  cxx_bindings = [ "src/lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
+    "//brave/third_party/rust/derive_more/v0_99:lib",
+    "//brave/third_party/rust/hmac/v0_10:lib",
+    "//brave/third_party/rust/rand/v0_7:lib",
+    "//brave/third_party/rust/sha2/v0_9:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+  ]
+}

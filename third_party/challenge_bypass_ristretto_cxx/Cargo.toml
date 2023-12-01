@@ -1,0 +1,21 @@
+[package]
+name = "challenge-bypass-ristretto-cxx"
+version = "0.1.0"
+authors = ["eV <ev@7pr.xyz>"]
+edition = "2018"
+
+[lib]
+crate-type = [
+    "rlib",
+]
+name = "challenge_bypass_ristretto"
+
+[dependencies]
+challenge-bypass-ristretto = { version = "1.0.1", features = ["base64"] }
+cxx = { version = "1.0", features = [ "alloc", "std" ] }
+derive_more = "0.99"
+hmac = "0.10"
+lazy_static = "1.4.0"
+rand = "0.7"
+ref-cast = "1.0"
+sha2 = "0.9"
