@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {

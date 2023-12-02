@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"
+#include "brave/components/brave_ads/core/public/user_interaction/site_visit/site_visit_feature.h"
 
 namespace brave_ads {
 

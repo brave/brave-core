@@ -15,12 +15,12 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 

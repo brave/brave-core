@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer_mock.h"
 
 namespace brave_ads {
 
-BASE_FEATURE(kSiteVisitFeature,
-             "SiteVisitFeature",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+SiteVisitObserverMock::SiteVisitObserverMock() = default;
+
+SiteVisitObserverMock::~SiteVisitObserverMock() = default;
 
 }  // namespace brave_ads

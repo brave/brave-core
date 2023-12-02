@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"
+#include "brave/components/brave_ads/core/public/user_interaction/site_visit/site_visit_feature.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

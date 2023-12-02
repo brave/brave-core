@@ -17,8 +17,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource.h"
@@ -31,6 +29,8 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversions_observer.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_H_
 
 #include <cstdint>
 #include <optional>
@@ -13,8 +13,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace base {
@@ -79,4 +79,4 @@ class SiteVisit final : public TabManagerObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_H_

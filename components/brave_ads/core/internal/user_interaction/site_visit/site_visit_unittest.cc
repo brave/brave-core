@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
 
 #include <memory>
 
@@ -11,8 +11,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer_mock.h"
-#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer_mock.h"
+#include "brave/components/brave_ads/core/public/user_interaction/site_visit/site_visit_feature.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

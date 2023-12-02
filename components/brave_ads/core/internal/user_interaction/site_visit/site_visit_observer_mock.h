@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
 
 #include <cstdint>
 
-#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -40,4 +40,4 @@ class SiteVisitObserverMock : public SiteVisitObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
