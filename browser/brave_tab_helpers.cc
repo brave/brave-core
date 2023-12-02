@@ -96,6 +96,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
 #include "brave/browser/brave_player/brave_player_service_factory.h"
 #include "brave/components/brave_player/content/brave_player_tab_helper.h"
+#include "brave/components/brave_player/core/common/features.h"
 #endif
 
 namespace brave {
@@ -159,10 +160,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-  brave_player::BravePlayerTabHelper::MaybeCreateForWebContents(
-      brave_player::BravePlayerServiceFactory::GetForBrowserContext(
-          web_contents->GetBrowserContext()),
-      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
+    brave_player::BravePlayerTabHelper::MaybeCreateForWebContents(
+        brave_player::BravePlayerServiceFactory::GetForBrowserContext(
+            web_contents->GetBrowserContext()),
+        web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
