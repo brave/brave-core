@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"

@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

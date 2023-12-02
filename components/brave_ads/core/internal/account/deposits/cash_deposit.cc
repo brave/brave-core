@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 

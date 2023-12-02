@@ -9,7 +9,6 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"

@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"

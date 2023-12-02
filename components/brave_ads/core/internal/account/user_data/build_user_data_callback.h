@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_BUILD_USER_DATA_CALLBACK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_BUILD_USER_DATA_CALLBACK_H_
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "base/values.h"
 
 namespace brave_ads {

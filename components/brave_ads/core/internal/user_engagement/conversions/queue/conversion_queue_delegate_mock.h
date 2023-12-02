@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DELEGATE_MOCK_H_
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

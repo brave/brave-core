@@ -22,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"

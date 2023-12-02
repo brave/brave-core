@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"

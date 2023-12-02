@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_builder.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
@@ -25,7 +24,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_factory.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
 

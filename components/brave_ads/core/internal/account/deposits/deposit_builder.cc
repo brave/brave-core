@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

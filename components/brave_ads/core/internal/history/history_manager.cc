@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"

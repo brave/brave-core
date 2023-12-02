@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_notifier_observer_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

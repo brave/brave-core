@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_validation_util.h"

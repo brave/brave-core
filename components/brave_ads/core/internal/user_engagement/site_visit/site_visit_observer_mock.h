@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

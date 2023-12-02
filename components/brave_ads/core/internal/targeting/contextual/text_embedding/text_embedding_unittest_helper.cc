@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_unittest_helper.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/resource/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor.h"
 
 namespace brave_ads::test {

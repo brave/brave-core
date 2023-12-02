@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"

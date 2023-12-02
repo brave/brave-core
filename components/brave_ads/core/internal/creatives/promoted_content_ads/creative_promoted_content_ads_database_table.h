@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"

@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace base {

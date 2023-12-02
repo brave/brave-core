@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep

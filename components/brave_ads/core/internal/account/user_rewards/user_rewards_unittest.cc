@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
