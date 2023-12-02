@@ -26,7 +26,7 @@ std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
     return std::nullopt;
   }
 
-  const cbr::PublicKey public_key(*public_key_base64);
+  cbr::PublicKey public_key(*public_key_base64);
   if (!public_key.has_value()) {
     return std::nullopt;
   }
