@@ -201,7 +201,7 @@ void Conversions::ConvertCallback(
     const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
-    BLOG(1, "Failed to log conversion event");
+    BLOG(1, "Failed to record conversion event");
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 
