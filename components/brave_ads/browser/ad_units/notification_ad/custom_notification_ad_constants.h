@@ -13,43 +13,43 @@ namespace brave_ads {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 // Default ad notification fade animation duration in milliseconds
-constexpr int kDefaultNotificationAdFadeDuration = 200;
+inline constexpr int kDefaultNotificationAdFadeDuration = 200;
 
 // Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
 inline constexpr char kDefaultNotificationAdDarkModeBackgroundColor[] =
     "202327";
 
 // Do not support multiple displays by default
-constexpr bool kDefaultShouldSupportMultipleDisplays = true;
+inline constexpr bool kDefaultShouldSupportMultipleDisplays = true;
 
 // Use the same z-order as the browser window by default
-constexpr bool kDefaultUseSameZOrderAsBrowserWindow = true;
+inline constexpr bool kDefaultUseSameZOrderAsBrowserWindow = true;
 
 // Default ad notification margin within the display's work area
 #if BUILDFLAG(IS_WIN)
-constexpr int kDefaultNotificationAdMargin = 12;
+inline constexpr int kDefaultNotificationAdMargin = 12;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kDefaultNotificationAdMargin = 16;
+inline constexpr int kDefaultNotificationAdMargin = 16;
 #elif BUILDFLAG(IS_LINUX)
-constexpr int kDefaultNotificationAdMargin = 12;
+inline constexpr int kDefaultNotificationAdMargin = 12;
 #endif
 
 // Default ad notification normalized display x coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateX = 1.0;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedCoordinateX = 0.5;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateX = 0.5;
 #endif
 
 // Default ad notification normalized display y coordinate
 #if BUILDFLAG(IS_WIN)
-constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.05;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.05;
 #elif BUILDFLAG(IS_MAC)
-constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.2;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.2;
 #elif BUILDFLAG(IS_LINUX)
-constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.0;
+inline constexpr double kDefaultNotificationAdNormalizedCoordinateY = 0.0;
 #endif
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

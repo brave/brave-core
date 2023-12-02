@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-constexpr size_t kMinVerifiableConversionEnvelopeMessageLength = 1;
-constexpr size_t kMaxVerifiableConversionEnvelopeMessageLength = 30;
+inline constexpr size_t kMinVerifiableConversionEnvelopeMessageLength = 1;
+inline constexpr size_t kMaxVerifiableConversionEnvelopeMessageLength = 30;
 
 }  // namespace brave_ads
 

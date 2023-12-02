@@ -25,20 +25,20 @@ inline constexpr char kNotificationAdTargetUrlKey[] = "target_url";
 
 // Brave Ads per hour are user configurable within the brave://rewards ads UI.
 #if !BUILDFLAG(IS_IOS)
-constexpr int64_t kDefaultBraveRewardsNotificationAdsPerHour = 10;
+inline constexpr int64_t kDefaultBraveRewardsNotificationAdsPerHour = 10;
 #else
-constexpr int64_t kDefaultBraveRewardsNotificationAdsPerHour = 2;
+inline constexpr int64_t kDefaultBraveRewardsNotificationAdsPerHour = 2;
 #endif  // !BUILDFLAG(IS_IOS)
 
 // Default ad notification timeout in seconds.
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-constexpr int kDefaultNotificationAdTimeout = 120;
+inline constexpr int kDefaultNotificationAdTimeout = 120;
 #else
-constexpr int kDefaultNotificationAdTimeout = 30;
+inline constexpr int kDefaultNotificationAdTimeout = 30;
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 // Do not fallback to custom notification ad by default
-constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
+inline constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
 
 }  // namespace brave_ads
 
