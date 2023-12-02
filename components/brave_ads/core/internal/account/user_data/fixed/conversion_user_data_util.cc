@@ -8,12 +8,12 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/actions/conversion_action_types.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/actions/conversion_action_types_util.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/queue/queue_item/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 
 namespace brave_ads {
 

@@ -9,9 +9,9 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/queue/conversion_queue_database_table.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

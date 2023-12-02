@@ -37,7 +37,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
-#include "brave/components/brave_ads/browser/user_interaction/ad_events/ad_event_cache_helper.h"
+#include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"

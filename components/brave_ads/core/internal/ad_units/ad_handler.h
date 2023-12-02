@@ -27,10 +27,10 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/resource/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversions.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/site_visit/site_visit_observer.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
