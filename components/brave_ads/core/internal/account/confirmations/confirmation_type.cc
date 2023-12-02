@@ -20,7 +20,7 @@ constexpr char kClickedType[] = "click";
 constexpr char kDismissedType[] = "dismiss";
 constexpr char kViewedType[] = "view";
 constexpr char kServedType[] = "served";
-constexpr char kTransferredType[] = "landed";
+constexpr char kLandedType[] = "landed";
 constexpr char kSavedType[] = "bookmark";
 constexpr char kFlaggedType[] = "flag";
 constexpr char kUpvotedType[] = "upvote";
@@ -33,36 +33,47 @@ ConfirmationType ParseConfirmationType(std::string_view value) {
   if (value == kUndefinedType) {
     return ConfirmationType::kUndefined;
   }
+
   if (value == kClickedType) {
     return ConfirmationType::kClicked;
   }
+
   if (value == kDismissedType) {
     return ConfirmationType::kDismissed;
   }
+
   if (value == kViewedType) {
     return ConfirmationType::kViewed;
   }
+
   if (value == kServedType) {
     return ConfirmationType::kServed;
   }
-  if (value == kTransferredType) {
-    return ConfirmationType::kTransferred;
+
+  if (value == kLandedType) {
+    return ConfirmationType::kLanded;
   }
+
   if (value == kSavedType) {
     return ConfirmationType::kSaved;
   }
+
   if (value == kFlaggedType) {
     return ConfirmationType::kFlagged;
   }
+
   if (value == kUpvotedType) {
     return ConfirmationType::kUpvoted;
   }
+
   if (value == kDownvotedType) {
     return ConfirmationType::kDownvoted;
   }
+
   if (value == kConversionType) {
     return ConfirmationType::kConversion;
   }
+
   SCOPED_CRASH_KEY_STRING32("ConfirmationType", "value", value);
   NOTREACHED() << "Unexpected value for ConfirmationType: " << value;
   return ConfirmationType::kUndefined;
@@ -73,33 +84,43 @@ const char* ToString(ConfirmationType type) {
     case ConfirmationType::kUndefined: {
       return kUndefinedType;
     }
+
     case ConfirmationType::kClicked: {
       return kClickedType;
     }
+
     case ConfirmationType::kDismissed: {
       return kDismissedType;
     }
+
     case ConfirmationType::kViewed: {
       return kViewedType;
     }
+
     case ConfirmationType::kServed: {
       return kServedType;
     }
-    case ConfirmationType::kTransferred: {
-      return kTransferredType;
+
+    case ConfirmationType::kLanded: {
+      return kLandedType;
     }
+
     case ConfirmationType::kSaved: {
       return kSavedType;
     }
+
     case ConfirmationType::kFlagged: {
       return kFlaggedType;
     }
+
     case ConfirmationType::kUpvoted: {
       return kUpvotedType;
     }
+
     case ConfirmationType::kDownvoted: {
       return kDownvotedType;
     }
+
     case ConfirmationType::kConversion: {
       return kConversionType;
     }

@@ -10,12 +10,12 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -53,11 +53,11 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 InlineContentAdHandler::InlineContentAdHandler(
     Account& account,
-    Transfer& transfer,
+    SiteVisit& site_visit,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
-      transfer_(transfer),
+      site_visit_(site_visit),
       serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
   serving_.SetDelegate(this);
@@ -211,7 +211,7 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 

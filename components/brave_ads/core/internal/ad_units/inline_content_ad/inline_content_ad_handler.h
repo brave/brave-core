@@ -27,7 +27,7 @@ namespace brave_ads {
 class Account;
 class AntiTargetingResource;
 class SubdivisionTargeting;
-class Transfer;
+class SiteVisit;
 struct InlineContentAdInfo;
 struct TabInfo;
 
@@ -36,7 +36,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
                                      public TabManagerObserver {
  public:
   InlineContentAdHandler(Account& account,
-                         Transfer& transfer,
+                         SiteVisit& site_visit,
                          const SubdivisionTargeting& subdivision_targeting,
                          const AntiTargetingResource& anti_targeting_resource);
 
@@ -84,7 +84,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   InlineContentAdEventHandler event_handler_;
 
   const raw_ref<Account> account_;
-  const raw_ref<Transfer> transfer_;
+  const raw_ref<SiteVisit> site_visit_;
 
   InlineContentAdServing serving_;
 

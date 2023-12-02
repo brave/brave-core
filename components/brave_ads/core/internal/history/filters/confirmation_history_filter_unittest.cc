@@ -81,7 +81,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   ad1.ad_content.placement_id = "54ee85b3-b84e-4e80-a6db-8954b554f466";
   ad1.ad_content.type = AdType::kNotificationAd;
   ad1.ad_content.creative_instance_id = "69b684d7-d893-4f4e-b156-859919a0fcc9";
-  ad1.ad_content.confirmation_type = ConfirmationType::kTransferred;
+  ad1.ad_content.confirmation_type = ConfirmationType::kLanded;
 
   HistoryItemInfo ad2;  // Unsupported
   ad2.ad_content.placement_id = "f067d4a9-0b92-4d3b-8cc5-e9baf89081c1";

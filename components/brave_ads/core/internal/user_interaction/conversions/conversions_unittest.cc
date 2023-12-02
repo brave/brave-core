@@ -596,7 +596,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kTransferred, ConfirmationType::kFlagged,
+           ConfirmationType::kLanded, ConfirmationType::kFlagged,
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 
@@ -616,7 +616,7 @@ TEST_F(BraveAdsConversionsTest,
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kTransferred, ConfirmationType::kFlagged,
+           ConfirmationType::kLanded, ConfirmationType::kFlagged,
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 
@@ -635,7 +635,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kTransferred, ConfirmationType::kFlagged,
+           ConfirmationType::kLanded, ConfirmationType::kFlagged,
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 

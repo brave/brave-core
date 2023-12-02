@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_transfer/ad_transfer_feature.h"
+#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"
 
 namespace brave_ads {
 
@@ -21,24 +21,23 @@ namespace {
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
   return DoesRespectCampaignCap(
-      creative_ad, ad_events, ConfirmationType::kTransferred,
-      kShouldExcludeAdIfTransferredWithinTimeWindow.Get(),
-      kTransferAdCap.Get());
+      creative_ad, ad_events, ConfirmationType::kLanded,
+      kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get(), kPageLandCap.Get());
 }
 
 }  // namespace
 
-TransferredExclusionRule::TransferredExclusionRule(AdEventList ad_events)
+SiteVisitExclusionRule::SiteVisitExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
-TransferredExclusionRule::~TransferredExclusionRule() = default;
+SiteVisitExclusionRule::~SiteVisitExclusionRule() = default;
 
-std::string TransferredExclusionRule::GetUuid(
+std::string SiteVisitExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.campaign_id;
 }
 
-base::expected<void, std::string> TransferredExclusionRule::ShouldInclude(
+base::expected<void, std::string> SiteVisitExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
     return base::unexpected(base::ReplaceStringPlaceholders(

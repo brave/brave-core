@@ -3,58 +3,58 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 
 #include <memory>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/public/ad_transfer/ad_transfer_feature.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer_mock.h"
+#include "brave/components/brave_ads/core/public/site_visit/site_visit_feature.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsAdTransferTest : public UnitTestBase {
+class BraveAdsSiteVisitTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    transfer_ = std::make_unique<Transfer>();
-    transfer_->AddObserver(&observer_mock_);
+    site_visit_ = std::make_unique<SiteVisit>();
+    site_visit_->AddObserver(&observer_mock_);
   }
 
   void TearDown() override {
-    transfer_->RemoveObserver(&observer_mock_);
+    site_visit_->RemoveObserver(&observer_mock_);
 
     UnitTestBase::TearDown();
   }
 
-  std::unique_ptr<Transfer> transfer_;
-  ::testing::StrictMock<TransferObserverMock> observer_mock_;
+  std::unique_ptr<SiteVisit> site_visit_;
+  ::testing::StrictMock<SiteVisitObserverMock> observer_mock_;
 
   ::testing::InSequence s_;
 };
 
-TEST_F(BraveAdsAdTransferTest, DoNotTransferInvalidAd) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfInvalidAd) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_visible=*/true);
 
   const AdInfo ad;
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   // Act & Assert
-  FastForwardClockBy(kTransferAdAfter.Get());
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest,
-       DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotLandOnPageIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
@@ -62,16 +62,15 @@ TEST_F(BraveAdsAdTransferTest,
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
-  transfer_->MaybeTransferAd(/*tab_id=*/1,
-                             {GURL("https://basicattentiontoken.org")});
+  site_visit_->SetLastClickedAd(ad);
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1,
+                               {GURL("https://basicattentiontoken.org")});
 
   // Act & Assert
-  FastForwardClockBy(kTransferAdAfter.Get());
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest,
-       DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameAdIsAlreadyLanding) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
@@ -79,18 +78,18 @@ TEST_F(BraveAdsAdTransferTest,
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
   EXPECT_CALL(observer_mock_,
-              OnWillTransferAd(ad, Now() + kTransferAdAfter.Get()));
-  EXPECT_CALL(observer_mock_, OnDidTransferAd(ad));
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
+              OnMaybeLandOnPage(ad, Now() + kPageLandAfter.Get()));
+  EXPECT_CALL(observer_mock_, OnDidLandOnPage(ad));
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
 
   // Act & Assert
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
-  FastForwardClockBy(kTransferAdAfter.Get());
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
+TEST_F(BraveAdsSiteVisitTest, LandOnPageIfAnotherAdIsAlreadyLanded) {
   // Arrange
   {
     NotifyTabDidChange(
@@ -99,10 +98,10 @@ TEST_F(BraveAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 
     const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                       /*should_use_random_uuids=*/true);
-    transfer_->SetLastClickedAd(ad_1);
+    site_visit_->SetLastClickedAd(ad_1);
     EXPECT_CALL(observer_mock_,
-                OnWillTransferAd(ad_1, Now() + kTransferAdAfter.Get()));
-    transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
+                OnMaybeLandOnPage(ad_1, Now() + kPageLandAfter.Get()));
+    site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
   }
 
   {
@@ -112,19 +111,19 @@ TEST_F(BraveAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 
     const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
                                       /*should_use_random_uuids=*/true);
-    transfer_->SetLastClickedAd(ad_2);
+    site_visit_->SetLastClickedAd(ad_2);
     EXPECT_CALL(observer_mock_,
-                OnWillTransferAd(ad_2, Now() + kTransferAdAfter.Get()));
-    EXPECT_CALL(observer_mock_, OnDidTransferAd(ad_2));
-    transfer_->MaybeTransferAd(/*tab_id=*/2, {GURL("https://brave.com")});
+                OnMaybeLandOnPage(ad_2, Now() + kPageLandAfter.Get()));
+    EXPECT_CALL(observer_mock_, OnDidLandOnPage(ad_2));
+    site_visit_->MaybeLandOnPage(/*tab_id=*/2, {GURL("https://brave.com")});
   }
 
   // Act & Assert
-  FastForwardClockBy(kTransferAdAfter.Get());
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest,
-       TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
+TEST_F(BraveAdsSiteVisitTest,
+       LandOnPageIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
@@ -132,17 +131,17 @@ TEST_F(BraveAdsAdTransferTest,
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_,
-              OnWillTransferAd(ad, Now() + kTransferAdAfter.Get()));
-  EXPECT_CALL(observer_mock_, OnDidTransferAd(ad));
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
-  FastForwardClockBy(kTransferAdAfter.Get());
+              OnMaybeLandOnPage(ad, Now() + kPageLandAfter.Get()));
+  EXPECT_CALL(observer_mock_, OnDidLandOnPage(ad));
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest, FailToTransferAdIfNotVisible) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfNotVisible) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/new_tab")},
@@ -150,18 +149,18 @@ TEST_F(BraveAdsAdTransferTest, FailToTransferAdIfNotVisible) {
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_,
-              OnWillTransferAd(ad, Now() + kTransferAdAfter.Get()));
-  EXPECT_CALL(observer_mock_, OnFailedToTransferAd(ad));
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
-  FastForwardClockBy(kTransferAdAfter.Get());
+              OnMaybeLandOnPage(ad, Now() + kPageLandAfter.Get()));
+  EXPECT_CALL(observer_mock_, OnDidNotLandOnPage(ad));
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest,
-       FailToTransferAdIfTheVisibleTabUrlIsNotTheSameAsTheDomainOrHost) {
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotLandOnPageIfTheVisibleTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1,
@@ -170,17 +169,17 @@ TEST_F(BraveAdsAdTransferTest,
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_,
-              OnWillTransferAd(ad, Now() + kTransferAdAfter.Get()));
-  EXPECT_CALL(observer_mock_, OnFailedToTransferAd(ad));
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
-  FastForwardClockBy(kTransferAdAfter.Get());
+              OnMaybeLandOnPage(ad, Now() + kPageLandAfter.Get()));
+  EXPECT_CALL(observer_mock_, OnDidNotLandOnPage(ad));
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
+  FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsAdTransferTest, CancelTransferAdIfTheTabIsClosed) {
+TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
@@ -188,13 +187,13 @@ TEST_F(BraveAdsAdTransferTest, CancelTransferAdIfTheTabIsClosed) {
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_,
-              OnWillTransferAd(ad, Now() + kTransferAdAfter.Get()));
-  EXPECT_CALL(observer_mock_, OnCanceledTransfer(ad, /*tab_id=*/1));
-  transfer_->MaybeTransferAd(/*tab_id=*/1, {GURL("https://brave.com")});
+              OnMaybeLandOnPage(ad, Now() + kPageLandAfter.Get()));
+  EXPECT_CALL(observer_mock_, OnCanceledPageLand(ad, /*tab_id=*/1));
+  site_visit_->MaybeLandOnPage(/*tab_id=*/1, {GURL("https://brave.com")});
   NotifyDidCloseTab(/*tab_id=*/1);
 }
 

@@ -9,11 +9,11 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
@@ -30,7 +30,7 @@ void FireEventCallback(TriggerAdEventCallback callback,
 }  // namespace
 
 PromotedContentAdHandler::PromotedContentAdHandler(Account& account,
-                                                   Transfer& transfer)
+                                                   SiteVisit& transfer)
     : account_(account), transfer_(transfer) {
   event_handler_.SetDelegate(this);
 }

@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
@@ -131,11 +133,33 @@ void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
                     conversion.ad_type, ConfirmationType::kConversion);
 }
 
-void AdHandler::OnDidTransferAd(const AdInfo& ad) {
+void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) {
   CHECK(ad.IsValid());
 
+  BLOG(1, "Maybe land page for " << ad.target_url << " "
+                                 << FriendlyDateAndTime(maybe_at));
+}
+
+void AdHandler::OnDidLandOnPage(const AdInfo& ad) {
+  CHECK(ad.IsValid());
+
+  BLOG(1, "Landed on page for " << ad.target_url);
+
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kTransferred);
+                    ConfirmationType::kLanded);
+}
+
+void AdHandler::OnDidNotLandOnPage(const AdInfo& ad) {
+  CHECK(ad.IsValid());
+
+  BLOG(1, "Did not land on page for " << ad.target_url);
+}
+
+void AdHandler::OnCanceledPageLand(const AdInfo& ad, int32_t tab_id) {
+  CHECK(ad.IsValid());
+
+  BLOG(1, "Canceled page land for creative instance id "
+              << ad.creative_instance_id << " with tab id " << tab_id);
 }
 
 }  // namespace brave_ads

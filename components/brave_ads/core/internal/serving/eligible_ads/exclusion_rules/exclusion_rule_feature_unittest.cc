@@ -80,33 +80,34 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     ShouldExcludeAdIfTransferredWithinTimeWindow) {
+     ShouldExcludeAdIfLandedOnPageWithinTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kExclusionRulesFeature,
-      {{"should_exclude_ad_if_transferred_within_time_window", "1d"}});
+      {{"should_exclude_ad_if_landed_on_page_within_time_window", "1d"}});
 
   // Act & Assert
-  EXPECT_EQ(base::Days(1), kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
+  EXPECT_EQ(base::Days(1),
+            kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultShouldExcludeAdIfTransferredWithinTimeWindow) {
+     DefaultShouldExcludeAdIfLandedOnPageWithinTimeWindow) {
   // Act & Assert
   EXPECT_EQ(base::Hours(0),
-            kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
+            kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultShouldExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
+     DefaultShouldExcludeAdIfLandedOnPageWithinTimeWindowWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act & Assert
   EXPECT_EQ(base::Hours(0),
-            kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
+            kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,

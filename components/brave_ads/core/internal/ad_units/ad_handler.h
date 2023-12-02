@@ -9,8 +9,6 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer_observer.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
@@ -19,6 +17,8 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource.h"
@@ -36,11 +36,11 @@
 namespace brave_ads {
 
 class Account;
-class Transfer;
+class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
 
-class AdHandler final : public ConversionsObserver, AdTransferObserver {
+class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:
   explicit AdHandler(Account& account);
 
@@ -83,8 +83,11 @@ class AdHandler final : public ConversionsObserver, AdTransferObserver {
   // ConversionsObserver:
   void OnDidConvertAd(const ConversionInfo& conversion) override;
 
-  // AdTransferObserver:
-  void OnDidTransferAd(const AdInfo& ad) override;
+  // SiteVisitObserver:
+  void OnMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) override;
+  void OnDidLandOnPage(const AdInfo& ad) override;
+  void OnDidNotLandOnPage(const AdInfo& ad) override;
+  void OnCanceledPageLand(const AdInfo& ad, int32_t tab_id) override;
 
   const raw_ref<Account> account_;
 
@@ -92,7 +95,7 @@ class AdHandler final : public ConversionsObserver, AdTransferObserver {
 
   Conversions conversions_;
 
-  Transfer transfer_;
+  SiteVisit transfer_;
 
   CountryCode country_code_;
   SubdivisionTargeting subdivision_targeting_;

@@ -6,7 +6,6 @@
 source_set("headers") {
   sources = [
     "account/confirmations/confirmation_type.h",
-    "ad_transfer/ad_transfer_feature.h",
     "ad_units/ad_info.h",
     "ad_units/ad_type.h",
     "ad_units/inline_content_ad/inline_content_ad_constants.h",
@@ -46,6 +45,7 @@ source_set("headers") {
     "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
     "prefs/pref_registry.h",
+    "site_visit/site_visit_feature.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/user_activity/page_transition_types.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",

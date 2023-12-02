@@ -18,13 +18,13 @@
 namespace brave_ads {
 
 class Account;
-class Transfer;
+class SiteVisit;
 struct PromotedContentAdInfo;
 
 class PromotedContentAdHandler final
     : public PromotedContentAdEventHandlerDelegate {
  public:
-  PromotedContentAdHandler(Account& account, Transfer& transfer);
+  PromotedContentAdHandler(Account& account, SiteVisit& transfer);
 
   PromotedContentAdHandler(const PromotedContentAdHandler&) = delete;
   PromotedContentAdHandler& operator=(const PromotedContentAdHandler&) = delete;
@@ -56,7 +56,7 @@ class PromotedContentAdHandler final
       const PromotedContentAdInfo& ad) override;
 
   const raw_ref<Account> account_;
-  const raw_ref<Transfer> transfer_;
+  const raw_ref<SiteVisit> transfer_;
 
   PromotedContentAdEventHandler event_handler_;
 

@@ -15,19 +15,18 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-class TransferredExclusionRule final
+class SiteVisitExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit TransferredExclusionRule(AdEventList ad_events);
+  explicit SiteVisitExclusionRule(AdEventList ad_events);
 
-  TransferredExclusionRule(const TransferredExclusionRule&) = delete;
-  TransferredExclusionRule& operator=(const TransferredExclusionRule&) = delete;
+  SiteVisitExclusionRule(const SiteVisitExclusionRule&) = delete;
+  SiteVisitExclusionRule& operator=(const SiteVisitExclusionRule&) = delete;
 
-  TransferredExclusionRule(TransferredExclusionRule&&) noexcept = delete;
-  TransferredExclusionRule& operator=(TransferredExclusionRule&&) noexcept =
-      delete;
+  SiteVisitExclusionRule(SiteVisitExclusionRule&&) noexcept = delete;
+  SiteVisitExclusionRule& operator=(SiteVisitExclusionRule&&) noexcept = delete;
 
-  ~TransferredExclusionRule() override;
+  ~SiteVisitExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

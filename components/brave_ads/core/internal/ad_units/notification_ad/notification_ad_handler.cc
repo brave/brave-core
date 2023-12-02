@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
@@ -23,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
@@ -54,12 +54,12 @@ void MaybeCloseAllNotifications() {
 
 NotificationAdHandler::NotificationAdHandler(
     Account& account,
-    Transfer& transfer,
+    SiteVisit& site_visit,
     EpsilonGreedyBanditProcessor& epsilon_greedy_bandit_processor,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
-      transfer_(transfer),
+      site_visit_(site_visit),
       epsilon_greedy_bandit_processor_(epsilon_greedy_bandit_processor),
       serving_(subdivision_targeting, anti_targeting_resource) {
   AddAdsClientNotifierObserver(this);
@@ -221,7 +221,7 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/true);
 
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 

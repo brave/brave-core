@@ -11,11 +11,11 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ad_transfer/ad_transfer.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -38,7 +38,7 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 }  // namespace
 
-SearchResultAd::SearchResultAd(Account& account, Transfer& transfer)
+SearchResultAd::SearchResultAd(Account& account, SiteVisit& transfer)
     : account_(account), transfer_(transfer) {
   event_handler_.SetDelegate(this);
 }

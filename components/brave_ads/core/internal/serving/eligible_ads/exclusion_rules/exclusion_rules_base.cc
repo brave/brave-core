@@ -85,9 +85,9 @@ ExclusionRulesBase::ExclusionRulesBase(
       std::make_unique<TotalMaxExclusionRule>(ad_events);
   exclusion_rules_.push_back(std::move(total_max_exclusion_rule));
 
-  auto transferred_exclusion_rule =
-      std::make_unique<TransferredExclusionRule>(ad_events);
-  exclusion_rules_.push_back(std::move(transferred_exclusion_rule));
+  auto site_visit_exclusion_rule =
+      std::make_unique<SiteVisitExclusionRule>(ad_events);
+  exclusion_rules_.push_back(std::move(site_visit_exclusion_rule));
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;

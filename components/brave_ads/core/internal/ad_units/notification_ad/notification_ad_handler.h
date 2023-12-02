@@ -29,7 +29,7 @@ class Account;
 class AntiTargetingResource;
 class EpsilonGreedyBanditProcessor;
 class SubdivisionTargeting;
-class Transfer;
+class SiteVisit;
 struct NotificationAdInfo;
 
 class NotificationAdHandler final : public AdsClientNotifierObserver,
@@ -39,7 +39,7 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
  public:
   NotificationAdHandler(
       Account& account,
-      Transfer& transfer,
+      SiteVisit& site_visit,
       EpsilonGreedyBanditProcessor& epsilon_greedy_bandit_processor,
       const SubdivisionTargeting& subdivision_targeting,
       const AntiTargetingResource& anti_targeting_resource);
@@ -92,7 +92,7 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
       const NotificationAdInfo& ad) override;
 
   const raw_ref<Account> account_;
-  const raw_ref<Transfer> transfer_;
+  const raw_ref<SiteVisit> site_visit_;
   const raw_ref<EpsilonGreedyBanditProcessor> epsilon_greedy_bandit_processor_;
 
   NotificationAdEventHandler event_handler_;
