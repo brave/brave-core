@@ -66,13 +66,6 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
         ? `1px solid ${p.theme.color.interactive08}`
         : 'none'};
 
-    margin-right: ${(p) =>
-      p.buttonType === 'primary' ||
-      p.buttonType === 'confirm' ||
-      p.buttonType === 'sign'
-        ? '0px'
-        : '8px'};
-
     pointer-events: ${(p) => (p.disabled ? 'none' : 'auto')};
 
     text-decoration: none;

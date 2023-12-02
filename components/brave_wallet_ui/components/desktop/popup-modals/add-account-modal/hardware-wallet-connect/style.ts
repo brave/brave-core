@@ -181,9 +181,7 @@ export const AddressBalanceWrapper = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  button:first-child {
-    margin-right: 10px;
-  }
+  gap: 10px;
 `
 
 export const DisclaimerWrapper = styled(DisclaimerWrapperBase)`

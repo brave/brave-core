@@ -62,6 +62,7 @@ import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 import {
   coinMarketMockData //
 } from '../../../stories/mock-data/mock-coin-market-data'
+import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -398,6 +399,11 @@ export class MockedWalletApiProxy {
 
       return {
         success: !!net
+      }
+    },
+    getPendingAddSuggestTokenRequests: async () => {
+      return {
+        requests: [{ origin: mockOriginInfo, token: mockBasicAttentionToken }]
       }
     }
   }
@@ -803,6 +809,27 @@ export class MockedWalletApiProxy {
         address: `0x${token?.chainId}abcd${domain}`,
         error: 0,
         errorMessage: ''
+      }
+    },
+
+    getEthTokenSymbol: async (contractAddress, chainId) => {
+      return {
+        error: 0,
+        errorMessage: '',
+        symbol:
+          mockErc20TokensList.find((t) => t.contractAddress === contractAddress)
+            ?.symbol || '???'
+      }
+    },
+
+    getEthTokenDecimals: async (contractAddress, chainId) => {
+      return {
+        error: 0,
+        errorMessage: '',
+        decimals:
+          mockErc20TokensList
+            .find((t) => t.contractAddress === contractAddress)
+            ?.decimals.toString() || '18'
       }
     }
   }

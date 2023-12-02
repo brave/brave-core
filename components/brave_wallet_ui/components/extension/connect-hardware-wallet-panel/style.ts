@@ -69,7 +69,7 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  padding-left: 8px;
+  gap: 8px;
 `
 
 export const Indicator = styled.div<StyleProps>`
