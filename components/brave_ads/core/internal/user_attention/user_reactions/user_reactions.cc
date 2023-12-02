@@ -24,23 +24,23 @@ UserReactions::~UserReactions() {
 
 void UserReactions::OnDidLikeAd(const AdContentInfo& ad_content) {
   account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
-                    ad_content.type, ConfirmationType::kUpvoted);
+                    ad_content.type, ConfirmationType::kLikedAd);
 }
 
 void UserReactions::OnDidDislikeAd(const AdContentInfo& ad_content) {
   account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
-                    ad_content.type, ConfirmationType::kDownvoted);
+                    ad_content.type, ConfirmationType::kDislikedAd);
 }
 
 void UserReactions::OnDidMarkAdAsInappropriate(
     const AdContentInfo& ad_content) {
   account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
-                    ad_content.type, ConfirmationType::kFlagged);
+                    ad_content.type, ConfirmationType::kMarkAdAsInappropriate);
 }
 
 void UserReactions::OnDidSaveAd(const AdContentInfo& ad_content) {
   account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
-                    ad_content.type, ConfirmationType::kSaved);
+                    ad_content.type, ConfirmationType::kSavedAd);
 }
 
 }  // namespace brave_ads

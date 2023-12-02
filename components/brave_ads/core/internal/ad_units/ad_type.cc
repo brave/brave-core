@@ -30,18 +30,23 @@ AdType ParseAdType(std::string_view value) {
   if (value == kUndefinedType) {
     return AdType::kUndefined;
   }
+
   if (value == kNotificationAdType) {
     return AdType::kNotificationAd;
   }
+
   if (value == kNewTabPageAdType) {
     return AdType::kNewTabPageAd;
   }
+
   if (value == kPromotedContentAdType) {
     return AdType::kPromotedContentAd;
   }
+
   if (value == kInlineContentAdType) {
     return AdType::kInlineContentAd;
   }
+
   if (value == kSearchResultAdType) {
     return AdType::kSearchResultAd;
   }
@@ -58,18 +63,23 @@ AdType FromMojomTypeToAdType(const mojom::AdType value) {
     case mojom::AdType::kUndefined: {
       return AdType::kUndefined;
     }
+
     case mojom::AdType::kNotificationAd: {
       return AdType::kNotificationAd;
     }
+
     case mojom::AdType::kNewTabPageAd: {
       return AdType::kNewTabPageAd;
     }
+
     case mojom::AdType::kPromotedContentAd: {
       return AdType::kPromotedContentAd;
     }
+
     case mojom::AdType::kInlineContentAd: {
       return AdType::kInlineContentAd;
     }
+
     case mojom::AdType::kSearchResultAd: {
       return AdType::kSearchResultAd;
     }
@@ -81,24 +91,29 @@ const char* ToString(AdType type) {
     case AdType::kUndefined: {
       return kUndefinedType;
     }
+
     case AdType::kNotificationAd: {
       return kNotificationAdType;
     }
+
     case AdType::kNewTabPageAd: {
       return kNewTabPageAdType;
     }
+
     case AdType::kPromotedContentAd: {
       return kPromotedContentAdType;
     }
+
     case AdType::kInlineContentAd: {
       return kInlineContentAdType;
     }
+
     case AdType::kSearchResultAd: {
       return kSearchResultAdType;
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for Value: "
+  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
                         << base::to_underlying(type);
 }
 

@@ -14,17 +14,17 @@ namespace brave_ads {
 namespace {
 
 // Do not change the following string values as they are used for persisting and
-// restoring state
+// restoring state.
 constexpr char kUndefinedType[] = "";
 constexpr char kClickedType[] = "click";
 constexpr char kDismissedType[] = "dismiss";
 constexpr char kViewedType[] = "view";
 constexpr char kServedType[] = "served";
 constexpr char kLandedType[] = "landed";
-constexpr char kSavedType[] = "bookmark";
-constexpr char kFlaggedType[] = "flag";
-constexpr char kUpvotedType[] = "upvote";
-constexpr char kDownvotedType[] = "downvote";
+constexpr char kSavedAdType[] = "bookmark";
+constexpr char kMarkAdAsInappropriateType[] = "flag";
+constexpr char kLikedAdType[] = "upvote";
+constexpr char kDislikedAdType[] = "downvote";
 constexpr char kConversionType[] = "conversion";
 
 }  // namespace
@@ -54,20 +54,20 @@ ConfirmationType ParseConfirmationType(std::string_view value) {
     return ConfirmationType::kLanded;
   }
 
-  if (value == kSavedType) {
-    return ConfirmationType::kSaved;
+  if (value == kSavedAdType) {
+    return ConfirmationType::kSavedAd;
   }
 
-  if (value == kFlaggedType) {
-    return ConfirmationType::kFlagged;
+  if (value == kMarkAdAsInappropriateType) {
+    return ConfirmationType::kMarkAdAsInappropriate;
   }
 
-  if (value == kUpvotedType) {
-    return ConfirmationType::kUpvoted;
+  if (value == kLikedAdType) {
+    return ConfirmationType::kLikedAd;
   }
 
-  if (value == kDownvotedType) {
-    return ConfirmationType::kDownvoted;
+  if (value == kDislikedAdType) {
+    return ConfirmationType::kDislikedAd;
   }
 
   if (value == kConversionType) {
@@ -105,20 +105,20 @@ const char* ToString(ConfirmationType type) {
       return kLandedType;
     }
 
-    case ConfirmationType::kSaved: {
-      return kSavedType;
+    case ConfirmationType::kSavedAd: {
+      return kSavedAdType;
     }
 
-    case ConfirmationType::kFlagged: {
-      return kFlaggedType;
+    case ConfirmationType::kMarkAdAsInappropriate: {
+      return kMarkAdAsInappropriateType;
     }
 
-    case ConfirmationType::kUpvoted: {
-      return kUpvotedType;
+    case ConfirmationType::kLikedAd: {
+      return kLikedAdType;
     }
 
-    case ConfirmationType::kDownvoted: {
-      return kDownvotedType;
+    case ConfirmationType::kDislikedAd: {
+      return kDislikedAdType;
     }
 
     case ConfirmationType::kConversion: {
@@ -126,7 +126,7 @@ const char* ToString(ConfirmationType type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for Value: "
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
                         << base::to_underlying(type);
 }
 

@@ -596,9 +596,9 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kLanded, ConfirmationType::kFlagged,
-           ConfirmationType::kSaved, ConfirmationType::kUpvoted,
-           ConfirmationType::kDownvoted, ConfirmationType::kConversion});
+           ConfirmationType::kLanded, ConfirmationType::kMarkAdAsInappropriate,
+           ConfirmationType::kSavedAd, ConfirmationType::kLikedAd,
+           ConfirmationType::kDislikedAd, ConfirmationType::kConversion});
 
   // Act & Assert
   MaybeConvert(/*redirect_chain=*/{}, kHtml);
@@ -616,9 +616,9 @@ TEST_F(BraveAdsConversionsTest,
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kLanded, ConfirmationType::kFlagged,
-           ConfirmationType::kSaved, ConfirmationType::kUpvoted,
-           ConfirmationType::kDownvoted, ConfirmationType::kConversion});
+           ConfirmationType::kLanded, ConfirmationType::kMarkAdAsInappropriate,
+           ConfirmationType::kSavedAd, ConfirmationType::kLikedAd,
+           ConfirmationType::kDislikedAd, ConfirmationType::kConversion});
 
   // Act & Assert
   MaybeConvert(/*redirect_chain=*/{GURL("foo.bar")}, kHtml);
@@ -635,9 +635,9 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kLanded, ConfirmationType::kFlagged,
-           ConfirmationType::kSaved, ConfirmationType::kUpvoted,
-           ConfirmationType::kDownvoted, ConfirmationType::kConversion});
+           ConfirmationType::kLanded, ConfirmationType::kMarkAdAsInappropriate,
+           ConfirmationType::kSavedAd, ConfirmationType::kLikedAd,
+           ConfirmationType::kDislikedAd, ConfirmationType::kConversion});
 
   // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
