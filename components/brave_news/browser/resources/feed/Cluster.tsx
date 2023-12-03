@@ -23,7 +23,7 @@ const Container = styled(Card)`
 `
 
 export default function Cluster({ info }: Props) {
-  const groupName = info.type == ClusterType.CHANNEL
+  const groupName = info.type === ClusterType.CHANNEL
     ? getTranslatedChannelName(info.id)
     : info.id
   return <Container>
