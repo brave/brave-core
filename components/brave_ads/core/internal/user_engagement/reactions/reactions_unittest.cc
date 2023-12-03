@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
 #include <memory>
 
@@ -26,7 +26,7 @@
 
 namespace brave_ads {
 
-class BraveAdsUserReactionsTest : public UnitTestBase {
+class BraveAdsReactionsTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -36,7 +36,7 @@ class BraveAdsUserReactionsTest : public UnitTestBase {
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(&observer_mock_);
 
-    user_reactions_ = std::make_unique<UserReactions>(*account_);
+    reactions_ = std::make_unique<Reactions>(*account_);
 
     test::ForcePermissionRules();
   }
@@ -52,10 +52,10 @@ class BraveAdsUserReactionsTest : public UnitTestBase {
   std::unique_ptr<Account> account_;
   AccountObserverMock observer_mock_;
 
-  std::unique_ptr<UserReactions> user_reactions_;
+  std::unique_ptr<Reactions> reactions_;
 };
 
-TEST_F(BraveAdsUserReactionsTest, LikeAd) {
+TEST_F(BraveAdsReactionsTest, LikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
@@ -72,7 +72,7 @@ TEST_F(BraveAdsUserReactionsTest, LikeAd) {
   HistoryManager::GetInstance().LikeAd(ad_content);
 }
 
-TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
+TEST_F(BraveAdsReactionsTest, DislikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
@@ -89,7 +89,7 @@ TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
   HistoryManager::GetInstance().DislikeAd(ad_content);
 }
 
-TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
+TEST_F(BraveAdsReactionsTest, MarkAdAsInappropriate) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
@@ -106,7 +106,7 @@ TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
   HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 }
 
-TEST_F(BraveAdsUserReactionsTest, SaveAd) {
+TEST_F(BraveAdsReactionsTest, SaveAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);

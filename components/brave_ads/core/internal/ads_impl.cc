@@ -48,7 +48,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
     : global_state_(ads_client),
       account_(&token_generator_),
       ad_handler_(account_),
-      user_reactions_(account_) {}
+      reactions_(account_) {}
 
 AdsImpl::~AdsImpl() = default;
 
