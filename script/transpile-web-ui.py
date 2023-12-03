@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -106,19 +106,24 @@ def transpile_web_uis(options):
         args.append("--mode=development")
 
     if options['public_asset_path'] is not None:
-        args.append("--output-public-path=" + options['public_asset_path'])
+        args.append("--env=output_public_path=" + options['public_asset_path'])
 
     # web pack aliases
-    for alias in options['webpack_aliases']:
-        args.append("--webpack_alias=" + alias)
+    if options['webpack_aliases']:
+        args.append("--env=webpack_aliases=" +
+                    ",".join(options['webpack_aliases']))
 
     # extra module locations
-    for module_path in options['extra_modules']:
-        args.append("--extra_modules=" + module_path)
+    if options['extra_modules']:
+        args.append("--env=extra_modules=" + ",".join(options['extra_modules']))
 
-    # entrypoints
-    for entry in options['entry_points']:
-        args.append(entry)
+    # In webpack.config.js there is a custom parser to support named entry
+    # points. As webpack-cli no longer supports named entries, we provide them
+    # via in a custom variable, comma-separated and with
+    # "[name]=[path]" syntax.
+    args.append("--env=brave_entries=" + ",".join(options['entry_points']))
+
+    # We should use webpack-cli env param to not pollute environment
     env["ROOT_GEN_DIR"] = options['root_gen_dir']
     env["TARGET_GEN_DIR"] = options['target_gen_dir']
     env["DEPFILE_PATH"] = options['depfile_path']
