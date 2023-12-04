@@ -3,14 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-let instance: PluralStringProxyImpl | null = null
+/** @type {PluralStringProxyImpl | null} */
+let instance = null
 
 export class PluralStringProxyImpl {
   static getInstance() {
     return instance || (instance = new PluralStringProxyImpl())
   }
 
-  getPluralString(key: string, count: number): Promise<string> {
+  /**
+   * 
+   * @param {string} key 
+   * @param {number} count 
+   * @returns {Promise<string>}
+   */
+  getPluralString(key, count) {
     return Promise.resolve(`${key}(${count})`)
   }
 }
