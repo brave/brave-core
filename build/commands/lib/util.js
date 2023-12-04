@@ -803,6 +803,8 @@ const util = {
       }
       args += val ? arg + '=' + val + ' ' : arg + ' '
     }
+    // "D:\" should be escaped as \"D:\\\\\".
+    args = args.replace(/(\\+)(")/g,'$1$1$1$1$2')
     return args.replace(/"/g,'\\"')
   },
 
