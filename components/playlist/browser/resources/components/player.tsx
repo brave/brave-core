@@ -42,7 +42,7 @@ const TimeContainer = styled.div`
   justify-content: space-between;
 
   color: ${color.white};
-  font: ${font.primary.xSmall.regular};
+  font: ${font.xSmall.regular};
 `
 
 const VideoContainer = styled.div`
@@ -213,7 +213,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
   color: var(--title-color);
-  font: ${font.primary.large.semibold};
+  font: ${font.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
