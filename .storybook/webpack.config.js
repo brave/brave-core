@@ -20,7 +20,7 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
 
 process.env.ROOT_GEN_DIR = getBuildOuptutPathList('gen')
   .filter(a => fs.existsSync(a))
-  .sort((a, b) => fs.statSync(a).mtime - fs.statSync(b).mtime)[0]
+  .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
 if (!process.env.ROOT_GEN_DIR) {
   throw new Error("Failed to find build output folder!")
 }
