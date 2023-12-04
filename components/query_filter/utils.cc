@@ -102,9 +102,6 @@ static constexpr auto kSimpleQueryStringTrackers =
         "wickedid",
         // https://github.com/brave/brave-browser/issues/11578
         "yclid",
-        // https://github.com/brave/brave-browser/issues/33216
-        "ymclid",
-        "ysclid",
     });
 
 static constexpr auto kConditionalQueryStringTrackers =
