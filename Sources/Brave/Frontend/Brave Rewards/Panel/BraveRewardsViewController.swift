@@ -95,14 +95,18 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       rewardsView.publisherView.hostLabel.text = tab.url?.baseDomain
     }
   }
+  
+  private let rewardsServiceStartGroup = DispatchGroup()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     rewardsView.rewardsToggle.isOn = rewards.isEnabled
 
+    rewardsServiceStartGroup.enter()
     rewards.startRewardsService { [weak self] in
       guard let self = self else { return }
+      defer { self.rewardsServiceStartGroup.leave() }
       if let rewardsAPI = self.rewards.rewardsAPI {
         let observer = RewardsObserver(rewardsAPI: rewardsAPI)
         rewardsAPI.add(observer)
@@ -139,22 +143,24 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   private var isCreatingWallet: Bool = false
   @objc private func rewardsToggleValueChanged() {
-    rewardsView.rewardsToggle.isUserInteractionEnabled = false
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-      self?.rewardsView.rewardsToggle.isUserInteractionEnabled = true
-    }
-    let isOn = rewardsView.rewardsToggle.isOn
-    rewards.isEnabled = isOn
-    rewardsView.subtitleLabel.text = isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
-    if rewardsView.rewardsToggle.isOn {
-      rewardsView.statusView.setVisibleStatus(status: supportedListCount > 0 ? .rewardsOn : .rewardsOnNoCount)
-    } else {
-      rewardsView.statusView.setVisibleStatus(status: .rewardsOff)
-    }
-    if publisher != nil {
-      UIView.animate(withDuration: 0.15) {
-        self.rewardsView.publisherView.isHidden = !self.rewardsView.rewardsToggle.isOn
-        self.rewardsView.publisherView.alpha = self.rewardsView.rewardsToggle.isOn ? 1.0 : 0.0
+    rewardsServiceStartGroup.notify(queue: .main) { [self] in
+      rewardsView.rewardsToggle.isUserInteractionEnabled = false
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+        self?.rewardsView.rewardsToggle.isUserInteractionEnabled = true
+      }
+      let isOn = rewardsView.rewardsToggle.isOn
+      rewards.isEnabled = isOn
+      rewardsView.subtitleLabel.text = isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
+      if rewardsView.rewardsToggle.isOn {
+        rewardsView.statusView.setVisibleStatus(status: supportedListCount > 0 ? .rewardsOn : .rewardsOnNoCount)
+      } else {
+        rewardsView.statusView.setVisibleStatus(status: .rewardsOff)
+      }
+      if publisher != nil {
+        UIView.animate(withDuration: 0.15) {
+          self.rewardsView.publisherView.isHidden = !self.rewardsView.rewardsToggle.isOn
+          self.rewardsView.publisherView.alpha = self.rewardsView.rewardsToggle.isOn ? 1.0 : 0.0
+        }
       }
     }
   }

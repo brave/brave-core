@@ -26,7 +26,7 @@ extension BrowserViewController {
       return
     }
     self.topToolbar.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
-    self.topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
+    self.topToolbar.rewardsButton.iconState = rewards.isEnabled || rewards.isTurningOnRewards ? .enabled : (Preferences.Rewards.rewardsToggledOnce.value ? .disabled : .initial)
   }
 
   func showBraveRewardsPanel() {
@@ -44,7 +44,7 @@ extension BrowserViewController {
 
       Preferences.FullScreenCallout.rewardsCalloutCompleted.value = true
       present(controller, animated: true)
-      topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
+      topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isTurningOnRewards ? .enabled : .disabled) : .initial
       return
     }
 

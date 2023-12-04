@@ -85,12 +85,14 @@ public class BraveRewards: NSObject {
         if let toggleAds {
           self.ads.isEnabled = toggleAds
         }
+        self.isTurningOnRewards = false
         return
       }
       self.ads.initialize(walletInfo: walletInfo) { success in
         if success, let toggleAds {
           self.ads.isEnabled = toggleAds
         }
+        self.isTurningOnRewards = false
       }
     }
   }
@@ -118,10 +120,9 @@ public class BraveRewards: NSObject {
       ads.isEnabled
     }
     set {
-      willChangeValue(for: \.isEnabled)
-      Preferences.Rewards.rewardsToggledOnce.value = true
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
+        Preferences.Rewards.rewardsToggledOnce.value = true
         self.rewardsAPI?.setAutoContributeEnabled(newValue)
         let wasEnabled = self.ads.isEnabled
         if !wasEnabled && newValue {
@@ -132,25 +133,25 @@ public class BraveRewards: NSObject {
         if !newValue {
           self.ads.isEnabled = newValue
           self.proposeAdsShutdown()
+          self.isTurningOnRewards = false
         } else {
           self.fetchWalletAndInitializeAds(toggleAds: true)
         }
-        self.didChangeValue(for: \.isEnabled)
       }
     }
   }
 
-  private(set) var isCreatingWallet: Bool = false
+  private(set) var isTurningOnRewards: Bool = false
+  
   private func createWalletIfNeeded(_ completion: (() -> Void)? = nil) {
-    if isCreatingWallet {
+    if isTurningOnRewards {
       // completion block will be hit by previous call
       return
     }
-    isCreatingWallet = true
+    isTurningOnRewards = true
     startRewardsService {
       guard let rewardsAPI = self.rewardsAPI else { return }
-      rewardsAPI.createWalletAndFetchDetails { [weak self] success in
-        self?.isCreatingWallet = false
+      rewardsAPI.createWalletAndFetchDetails { success in
         completion?()
       }
     }
