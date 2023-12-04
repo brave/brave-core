@@ -24,11 +24,9 @@ import com.brave.playlist.playback_service.VideoPlaybackService;
 import com.brave.playlist.util.MediaUtils;
 import com.brave.playlist.util.PlaylistUtils;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -59,9 +57,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     @Override
     public void onCreate() {
         super.onCreate();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            initPlaylistService();
-        }
+        initPlaylistService();
     }
 
     @Override
@@ -199,8 +195,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
 
     @Override
     public void onConnectionError(MojoException e) {
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && SharedPreferencesManager.getInstance()
+        if (SharedPreferencesManager.getInstance()
                         .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();

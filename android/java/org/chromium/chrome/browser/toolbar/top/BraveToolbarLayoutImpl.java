@@ -47,7 +47,6 @@ import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
 import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistViewUtils;
 
 import org.chromium.base.ApiCompatibilityUtils;
@@ -85,7 +84,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -637,45 +635,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             try {
                                 if (playlistOptionsModel.getOptionType()
                                         == PlaylistOptionsEnum.ADD_MEDIA) {
-                                    int mediaCount =
-                                            SharedPreferencesManager.getInstance()
-                                                    .readInt(
-                                                            PlaylistPreferenceUtils
-                                                                    .ADD_MEDIA_COUNT);
-                                    if (mediaCount == 2) {
-                                        PlaylistWarningDialogListener
-                                                playlistWarningDialogListener =
-                                                        new PlaylistWarningDialogListener() {
-                                                            @Override
-                                                            public void onActionClicked() {
-                                                                addMediaToPlaylist(items);
-                                                            }
-
-                                                            @Override
-                                                            public void onSettingsClicked() {
-                                                                try {
-                                                                    BraveActivity.getBraveActivity()
-                                                                            .openBravePlaylistSettings();
-                                                                } catch (
-                                                                        BraveActivity
-                                                                                        .BraveActivityNotFoundException
-                                                                                e) {
-                                                                    Log.e(
-                                                                            TAG,
-                                                                            "showPlaylistButton"
-                                                                                + " onOptionClicked"
-                                                                                + " onSettingsClicked"
-                                                                                    + e);
-                                                                }
-                                                            }
-                                                        };
-                                        BraveActivity.getBraveActivity()
-                                                .showPlaylistWarningDialog(
-                                                        playlistWarningDialogListener);
-
-                                    } else {
-                                        addMediaToPlaylist(items);
-                                    }
+                                    addMediaToPlaylist(items);
                                 } else if (playlistOptionsModel.getOptionType()
                                         == PlaylistOptionsEnum.OPEN_PLAYLIST) {
                                     BraveActivity.getBraveActivity()
@@ -734,15 +694,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 ConstantUtils.DEFAULT_PLAYLIST,
                                 true,
                                 addedItems -> {});
-                        int mediaCount =
-                                SharedPreferencesManager.getInstance()
-                                        .readInt(PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-                        if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
-                            SharedPreferencesManager.getInstance()
-                                    .writeInt(
-                                            PlaylistPreferenceUtils.ADD_MEDIA_COUNT,
-                                            mediaCount + 1);
-                        }
                     } else {
                         showAlreadyAddedToPlaylistSnackBar();
                     }

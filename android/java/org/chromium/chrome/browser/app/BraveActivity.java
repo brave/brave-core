@@ -134,8 +134,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
-import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
-import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -1313,17 +1311,6 @@ public abstract class BraveActivity extends ChromeActivity
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         playlistActivityIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
-    }
-
-    public void showPlaylistWarningDialog(
-            PlaylistWarningDialogListener playlistWarningDialogListener) {
-        PlaylistWarningDialogFragment playlistWarningDialogFragment =
-                new PlaylistWarningDialogFragment();
-        playlistWarningDialogFragment.setCancelable(false);
-        playlistWarningDialogFragment.setPlaylistWarningDialogListener(
-                playlistWarningDialogListener);
-        playlistWarningDialogFragment.show(
-                getSupportFragmentManager(), "PlaylistWarningDialogFragment");
     }
 
     private void showVpnCalloutDialog() {
