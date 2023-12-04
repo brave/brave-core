@@ -9,7 +9,6 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { WalletActions } from '../../../../common/actions'
 import {
   AccountsTabState,
   AccountsTabActions
@@ -39,7 +38,10 @@ import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
-import { useGenerateReceiveAddressMutation } from '../../../../common/slices/api.slice'
+import {
+  useGenerateReceiveAddressMutation,
+  useUpdateAccountNameMutation
+} from '../../../../common/slices/api.slice'
 
 // style
 import {
@@ -132,6 +134,9 @@ export const AccountSettingsModal = () => {
   const [isCorrectPassword, setIsCorrectPassword] =
     React.useState<boolean>(true)
 
+  // mutations
+  const [updateAccountName] = useUpdateAccountNameMutation()
+
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
 
@@ -165,18 +170,20 @@ export const AccountSettingsModal = () => {
     dispatch(AccountsTabActions.setAccountModalType('deposit'))
   }
 
-  const onSubmitUpdateName = React.useCallback(() => {
+  const onSubmitUpdateName = React.useCallback(async () => {
     if (!selectedAccount || !accountName) {
       return
     }
 
-    const result = dispatch(
-      WalletActions.updateAccountName({
+    try {
+      await updateAccountName({
         accountId: selectedAccount.accountId,
         name: accountName
-      })
-    )
-    return result ? onClose() : setUpdateError(true)
+      }).unwrap()
+      onClose()
+    } catch (error) {
+      setUpdateError(true)
+    }
   }, [selectedAccount, accountName, dispatch, onClose])
 
   const onShowPrivateKey = async () => {

@@ -13,7 +13,6 @@ import {
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
-  ImportAccountFromJsonPayloadType,
   UpdateSelectedAssetType
 } from '../constants/action_types'
 
@@ -36,9 +35,6 @@ const defaultState: PageState = {
 export const WalletPageAsyncActions = {
   addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>(
     'addHardwareAccounts'
-  ),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
-    'importAccountFromJson'
   ),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
 }

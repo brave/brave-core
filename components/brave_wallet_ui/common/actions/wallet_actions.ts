@@ -59,10 +59,5 @@ export const {
   setHidePortfolioSmallBalances,
   setShowNetworkLogoOnNfts,
   setIsRefreshingNetworksAndTokens,
-  updateAccountName,
-  removeAccount,
-  importAccount,
-  setImportAccountError,
-  importAccountFromJson,
   setAllowNewWalletFilecoinAccount
 } = WalletActions
