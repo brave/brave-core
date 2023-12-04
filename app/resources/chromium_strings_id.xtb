@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
+<translation id="1581411377110837276">Buka setelan versi Brave</translation>
 <translation id="1026101648481255140">Lanjutkan Penginstalan</translation>
 <translation id="7099479769133613710">Luncurkan kembali untuk mengupdate &amp;ChromeOS</translation>
 <translation id="2479110114759182442">Brave merekomendasikan Anda untuk meninjau ekstensi ini</translation>
@@ -21,12 +22,14 @@
 <translation id="108284536240904209">Hapus juga data dari Brave (<ph name="URL"/>)</translation>
 <translation id="8132634101975074716">Anda sudah masuk ke Brave!</translation>
 <translation id="1586284627848250203">Dapatkan bantuan untuk Brave for Testing</translation>
+<translation id="1497802159252041924">Error saat penginstalan: <ph name="INSTALL_ERROR"/></translation>
 <translation id="5147525139567260139">Bagikan tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan izin untuk mengakses kamera guna membuat peta 3D untuk area di sekeliling Anda.</translation>
 <translation id="6570689355868013775">Alat keamanan Brave</translation>
 <translation id="4449148723378534338">Meninjau kontrol privasi dan keamanan utama di Brave</translation>
 <translation id="1640672724030957280">Mengunduh...</translation>
 <translation id="5616153642055197778">Tersedia versi Brave yang baru dan lebih aman.</translation>
+<translation id="2913217021115517297">Untuk membantu meningkatkan fitur ini, Brave mengirim interaksi Anda dengan fitur tersebut ke Brave. Data ini dapat dibaca, diproses, dan dianotasi oleh petugas peninjau.</translation>
 <translation id="5846727201643228411">Anda dapat melihat dan menghapus topik terkait minat yang digunakan situs untuk menampilkan iklan kepada Anda. Brave memperkirakan minat Anda berdasarkan histori penjelajahan terbaru Anda.</translation>
 <translation id="8004287232784878841">Brave akan segera menghapus data penjelajahan</translation>
 <translation id="9048361966237194186">Brave akan dimulai ulang dalam <ph name="REMAINING_TIME"/></translation>
@@ -48,10 +51,13 @@
 <translation id="2472891440303445472">Brave memblokir download ini karena file tersebut menipu dan dapat menyebabkan perubahan tidak terduga di perangkat Anda</translation>
 <translation id="849607431499549468">Informasi tentang cara Brave mengelola root certificate-nya</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisasi akan otomatis menghapus data penjelajahan jika Brave tidak digunakan selama 1 menit. Data ini dapat mencakup histori, isi otomatis, dan download. Tab Anda akan tetap terbuka.}other{Organisasi akan otomatis menghapus data penjelajahan jika Brave tidak digunakan selama # menit. Data ini dapat mencakup histori, isi otomatis, dan download. Tab Anda akan tetap terbuka.}}</translation>
+<translation id="2126108037660393668">Verifikasi file yang didownload gagal.</translation>
+<translation id="2130870084309816036">Tidak dapat terhubung ke internet. Jika Anda menggunakan firewall, tambahkan <ph name="PRODUCT_EXE_NAME"/> ke daftar yang diizinkan.</translation>
 <translation id="5789330946301045610">Brave memblokir download ini karena situs tidak menggunakan koneksi yang aman dan file mungkin telah dimodifikasi</translation>
 <translation id="142389341645668510">Sesuaikan Brave</translation>
 <translation id="2174917724755363426">Penginstalan tidak selesai. Yakin ingin membatalkan?</translation>
 <translation id="8745514854244955877">Brave - Login Jaringan - <ph name="PAGE_TITLE"/></translation>
+<translation id="2190166659037789668">Error pemeriksaan update: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="5659384504794665581">Jika Anda berbagi komputer, teman dan keluarga bisa menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya.</translation>
 <translation id="7810992039564280750">Memeriksa kesesuaian URL dengan daftar situs tidak aman yang disimpan di Brave. Jika situs berusaha mencuri sandi Anda, atau jika Anda mendownload file berbahaya, Brave mungkin juga mengirim URL, termasuk bit konten halaman, ke Safe Browsing.</translation>
 <translation id="7682239218279776307">Saat diaktifkan, Brave akan melakukan pramuat halaman yang membuat penjelajahan dan penelusuran menjadi lebih cepat.</translation>
@@ -72,11 +78,13 @@
 <translation id="8447483940522230788">Pembantu Brave</translation>
 <translation id="7291143854620707672">Data Brave yang dibuat selama penggunaan profil ini (seperti pembuatan bookmark, histori, sandi, dan setelan lain) dapat dihapus oleh administrator profil kerja. <ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">Terus gunakan Brave</translation>
+<translation id="259935314519650377">Gagal menyimpan cache penginstal yang didownload. Error: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="7387051847644272380">Terjadi error pada sistem operasi saat pemasangan berlangsung. Download Brave lagi.</translation>
 <translation id="2648689842065142443">Jika Anda berbagi perangkat, teman dan keluarga dapat menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya</translation>
 <translation id="6384359666082467439">Selamat Datang di Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keamanan tambahan, Brave akan mengenkripsi data Anda.</translation>
+<translation id="2738871930057338499">Tidak dapat terhubung ke internet. HTTP 403 Terlarang. Periksa konfigurasi proxy Anda.</translation>
 <translation id="2770231113462710648">Ubah browser default ke:</translation>
 <translation id="1187986649024576560">Ekstensi ini berisi malware dan tidak aman. Hapus dari Brave agar ekstensi ini tidak dapat lagi melihat dan mengubah data Anda di situs yang Anda kunjungi, termasuk info pribadi Anda.</translation>
 <translation id="2799223571221894425">Luncurkan Ulang</translation>
@@ -121,6 +129,7 @@
 <translation id="1073077513148817424">Akun lain sudah login. Agar penjelajahan Anda tetap terpisah, Brave dapat membuat profil tersendiri untuk Anda.</translation>
 <translation id="4250277591581952830">Untuk mendapatkan update Brave berikutnya, Anda perlu macOS 10.15 atau yang lebih baru. Komputer ini menggunakan macOS 10.13.</translation>
 <translation id="7029305463989165490">Untuk mengirimkan nomor dari <ph name="ORIGIN"/> ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
+<translation id="3667616615096815454">Tidak dapat menginstal, aplikasi tidak dikenali oleh server.</translation>
 <translation id="4304059894777924102">Brave tidak dapat memeriksa sandi Anda. Coba periksa koneksi internet Anda.</translation>
 <translation id="2100587595569959771">Pelajari lebih lanjut personalisasi iklan di Brave</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
@@ -137,12 +146,13 @@
 <translation id="7130675370997202556">Klik nama Anda untuk membuka Brave dan mulai menjelajah.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> telah login ke profil Brave ini. Agar penjelajahan Anda tetap terpisah, Brave dapat membuat profil tersendiri untuk Anda.</translation>
 <translation id="2337217774418822704">Akun Anda dikelola oleh <ph name="MANAGER_NAME"/>. Administrator dapat melihat dan mengedit profil browser Brave ini beserta datanya seperti bookmark, histori, dan sandi.</translation>
+<translation id="4561646469134805137">Saat Anda mengetik, Brave akan mengirimkan konten kolom URL atau kotak penelusuran ke mesin telusur default Anda</translation>
 <translation id="8090497651549769448">Brave mencoba menyalin sandi. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
-<translation id="7133557675784723900">Brave merekomendasikan pemindaian file ini karena file mungkin berbahaya</translation>
 <translation id="4194619960643453552">Pelajari cara Brave menjaga keamanan Anda</translation>
 <translation id="1311808042904310985">Tentang &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Tentang ChromeOS</translation>
 <translation id="3703994572283698466">ChromeOS terwujud karena adanya <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> tambahan, seperti <ph name="BEGIN_LINK_LINUX_OSS"/>lingkungan pengembangan Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="238935410828556037">Jika dinonaktifkan, Anda akan tetap melihat saran yang disediakan Brave secara lokal</translation>
 <translation id="6056473803837713617">Bantu Brave jadi lebih baik dengan melaporkan <ph name="BEGIN_LINK"/>setelan saat ini<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">Peningkatan keamanan dan fitur baru yang penting tersedia di versi terbaru.</translation>
 <translation id="4055805654398742145">Pengelola S&amp;andi</translation>
@@ -165,6 +175,7 @@
 <translation id="8148611988012584308">Menyesuaikan dan mengontrol Brave</translation>
 <translation id="4427306783828095590">Perlindungan yang ditingkatkan akan memblokir phishing dan malware dengan lebih optimal</translation>
 <translation id="6786534271003695094">Tentang Brave for Testing</translation>
+<translation id="4501471624619070934">Penginstalan gagal karena akses dibatasi untuk negara ini.</translation>
 <translation id="7084397798469173252">Selamat datang di Brave; jendela browser baru terbuka</translation>
 <translation id="2633397153656205379">Brave tidak dapat diupdate, terjadi error. <ph name="BEGIN_LINK"/>Perbaiki masalah update Brave dan update yang gagal.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Lanjutkan di profil Brave baru?</translation>
@@ -183,6 +194,7 @@
 <translation id="5857638389580847844">Anda dapat mengubahnya kapan saja di setelan Brave. Uji coba berlangsung bersamaan dengan penayangan iklan saat ini, jadi Anda tidak akan langsung melihat perubahan.</translation>
 <translation id="4823369970559443694">Brave tidak dapat memeriksa sandi Anda. Coba lagi setelah 24 jam atau <ph name="BEGIN_LINK"/>periksa sandi di Akun Brave Anda<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Tindakan ini akan menggunakan pemeriksa ejaan yang sama dengan yang digunakan di penelusuran Brave. Teks yang Anda ketikkan di browser dikirim ke Brave. Anda dapat mengubah perilaku ini di setelan.</translation>
+<translation id="2899369907387169108">Gunakan Brave tanpa akun</translation>
 <translation id="1912973375560256099">Inbound rule untuk Brave guna mengizinkan lalu lintas mDNS.</translation>
 <translation id="711601904575862069">Luncurkan kembali untuk Mengupdate &amp;Brave</translation>
 <translation id="8797356639448065696">Brave berjalan di mode latar belakang.</translation>
@@ -207,12 +219,15 @@
 <translation id="1744365871163268756">Harap tunggu selagi Brave memasang pembaruan sistem terkini.</translation>
 <translation id="3861679447659630159">Brave mencoba mengedit sandi. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
 <translation id="232381795826373334">Buka PDF di Brave</translation>
+<translation id="8002038450967080568">Login untuk mendapatkan semua data Brave Anda di seluruh perangkat</translation>
 <translation id="5381032481466106256">Jika aktif, Anda juga akan logout dari Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
 <translation id="1023472437588692618">Selalu menghapus data situs dari perangkat saat Anda menutup Brave</translation>
 <translation id="5646769069113654257">Mulai ulang Brave sekarang</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Tampilkan Brave dalam bahasa ini</translation>
+<translation id="569897634095159764">Tidak dapat terhubung ke internet. Server proxy memerlukan autentikasi.</translation>
+<translation id="5809516625706423866">Tidak dapat terhubung ke internet. HTTP 401 Tidak Sah. Periksa konfigurasi proxy Anda.</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="8054200348483755053">Brave menemukan bahwa item berikut berisi malware:</translation>
 <translation id="3955583201925082436">Brave memeriksa secara berkala untuk memastikan browser memiliki setelan yang paling aman. Kami akan memberi tahu Anda jika ada yang perlu ditinjau.</translation>
@@ -227,6 +242,7 @@
 <translation id="6003112304606738118">Mendownload... <ph name="HOURS"/> jam lagi</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="505042220086416644">Tersedia Brave versi baru, dan versi ini lebih cepat dari sebelumnya.</translation>
+<translation id="700488072601322385">Untuk melindungi data Anda, izinkan Brave menghapus izin dari situs yang tidak Anda kunjungi baru-baru ini. Tindakan ini tidak menghentikan notifikasi.</translation>
 <translation id="9071554113102421877">&amp;Buka di Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> telah ditambahkan ke Brave</translation>
 <translation id="3693188491491843187">Buat Brave Lebih Cepat</translation>
@@ -283,6 +299,7 @@
 <translation id="6676384891291319759">Akses Internet</translation>
 <translation id="1363996462118479832">ChromeOS tidak dapat menyinkronkan data Anda karena terjadi error saat login.</translation>
 <translation id="1257247502847251159">Brave memerlukan izin mikrofon untuk situs ini</translation>
+<translation id="6712881677154121168">Error download: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Profil Anda tidak dapat digunakan karena berasal dari Brave versi yang lebih baru.
 
 Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda atau gunakan versi Brave yang lebih baru.</translation>
@@ -305,6 +322,7 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="7164968566146897003">Jika diaktifkan, Brave akan membebaskan memori dari tab yang tidak aktif. Tindakan ini akan memberikan lebih banyak resource komputer untuk tab aktif dan aplikasi lainnya, serta menjaga Brave tetap cepat. Tab yang tidak aktif akan otomatis menjadi aktif lagi saat Anda kembali ke tab tersebut.</translation>
 <translation id="3453763134178591239">Persyaratan ChromeOS</translation>
 <translation id="3335606533094650083">Brave memerlukan izin akses ke mikrofon untuk situs ini</translation>
+<translation id="7024536598735240744">Error ekstrak: <ph name="UNPACK_ERROR"/>.</translation>
 <translation id="7025789849649390912">Penginstalan Terhenti.</translation>
 <translation id="1705567146636171298">Perbarui Brave</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave.</translation>
@@ -340,6 +358,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="8678991866891573053">Brave sedang menjelajahi fitur baru yang memungkinkan situs memberikan pengalaman penjelajahan yang sama dengan menggunakan lebih sedikit data Anda</translation>
 <translation id="3343095737966473035">Brave bukan browser default</translation>
 <translation id="5477319665405831211">Menyinkronkan dan mempersonalisasi Brave di perangkat Anda</translation>
+<translation id="2339273275658335597">Update Brave</translation>
 <translation id="4784414698887946907">Tindakan ini akan menghapus data browsing dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Pemasang tidak dapat membuat direktori sementara. Periksa kapasitas kosong pada disk dan izin untuk memasang software.</translation>
 <translation id="1978509466033734608">Buat Brave lebih cepat</translation>
@@ -351,6 +370,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara Anda dapat mengelola data Anda:<ph name="END_BOLD"/> Untuk melindungi privasi Anda, kami otomatis menghapus minat yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
+<translation id="6614332522102257453">Dapatkan manfaat optimal dari Brave</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
 <translation id="80471789339884597">Terima kasih telah menginstal. Anda harus memulai ulang semua browser sebelum menggunakan <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave memerlukan izin akses lokasi untuk situs ini</translation>
@@ -376,6 +396,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="2097604701283463988">Brave Terlalu Lawas</translation>
 <translation id="871233388178581868">Brave dapat memeriksa sandi jika Anda menyimpannya</translation>
 <translation id="8550334526674375523">Profil kerja ini sama sekali terpisah dari profil pribadi Anda.</translation>
+<translation id="8555465886620020932">Error layanan: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave dapat memeriksa sandi saat Anda login dengan Akun Brave</translation>
 <translation id="8121009781989288430">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Semua hak dilindungi undang-undang.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Cara kami menggunakan data ini:<ph name="END_BOLD"/> Situs dapat menyimpan informasi tentang minat Anda ke Brave. Misalnya, jika Anda mengunjungi suatu situs untuk membeli sepatu maraton, situs tersebut dapat menetapkan minat Anda sebagai lari maraton. Kemudian, jika Anda mengunjungi situs lain untuk mendaftar lomba lari, situs tersebut dapat menampilkan iklan sepatu lari berdasarkan minat Anda.</translation>

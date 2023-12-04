@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Hallitse mainoksia</translation>
 <translation id="7630214457764713113">Kopioi puhdas linkki</translation>
 <translation id="885805571521218129">Tämä kuvastaa Brave-mainosten arvioituja tulojasi tässä kuussa.</translation>
-<translation id="818003031290137834">Nyt kun olet yhteydessä ZebPayhin, kaikki aikaisemmat saldot talletetaan ZebPay-tilillesi osana seuraavaa ansioiden maksua. Kun se saapuu, näet BATisi palkkiosaldossasi.</translation>
 <translation id="3478449063771497234">Ilmoitukset on poistettu käytöstä</translation>
 <translation id="2862978891748913252">Valitse maa</translation>
 <translation id="3970520675790340955">Valitse maasi, jotta voimme näyttää alueesi mukaisia vaihtoehtoja ja mainoksia.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Voit lähettää enintään <ph name="AMOUNT"/> BATia käyttämällä Brave-palkintojesi saldoa.</translation>
 <translation id="5012991400231464322">Kuukausittaiset avustukset</translation>
 <translation id="5907051927340164207">Olet jo lähettämässä kuukausittaisia lahjoituksia tälle luojalle</translation>
-<translation id="307555373157330047">Voit edelleen lähettää lahjoituksen nyt, ja voit peruuttaa kuukausittaiset lahjoituksesi tälle luojalle poistamalla ne kuukausittaisista lahjoituksista <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Voit edelleen lähettää lahjoituksen nyt, ja voit peruuttaa kuukausittaiset lahjoituksesi tälle luojalle poistamalla ne kuukausittaisista lahjoituksista <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Lahjoitus lähetetty!</translation>
 <translation id="1041398280582063935">Jaa tukesi</translation>
 <translation id="8855543392451028706">Tervetuloa! Voit tukea tätä sisällönluojaa lähettämällä hänelle lahjoituksia. Se on tapa kiittää häntä hienon sisällön luomisesta.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Kirjaudu sisään valvojaan <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Kiitos, että tuet suosikkiluojiasi</translation>
 <translation id="3796032246917966749">Näyttää siltä, että olet kirjautunut ulos valvojasta <ph name="CUSTODIAN"/> Brave-palkinnoille. Kirjaudu uudelleen sisään jatkaaksesi.</translation>
-<translation id="594652923071049606">Tätä luojaa ei ole vielä vahvistettu Brave-luojissa. Voit lähettää hänelle lahjoituksia, kun hän on vahvistettu. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Tätä luojaa ei ole vielä vahvistettu Brave-luojissa. Voit lähettää hänelle lahjoituksia, kun hänet on vahvistettu. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Lähetä lahjoitus</translation>
 <translation id="1899434873745933492">Lahjoitustasi ei voi lähettää</translation>
 <translation id="1794046983410841192">Käytä Brave-palkintoja</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Muokattu</translation>
 <translation id="4827581232860040208">Lahjoituksesi lähettämisessä oli ongelmia</translation>
 <translation id="3259723213051400722">Yritä uudelleen.</translation>
-<translation id="8899147737996487517">Tämä luoja on rekisteröitynyt Braveen ja voi vastaanottaa lahjoituksia Brave-palkintojen käyttäjiltä. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Tämä luoja on rekisteröitynyt Braveen ja voi vastaanottaa lahjoituksia Brave-palkintojen käyttäjiltä. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave-palkinnot eivät välttämättä toimi, kun ilmoitukset on poistettu käytöstä.</translation>
 <translation id="4259212006412783790">OTA KÄYTTÖÖN</translation>
 <translation id="6112331814131703370">Estä 'Vaihda sovellukseen' -ilmoitukset</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Tuo kirjanmerkkejä</translation>
 <translation id="1008186147501209563">Vie kirjanmerkkejä</translation>
 <translation id="6680516947641001448">Valitse tiedosto tuodaksesi kirjanmerkkejä</translation>
+<translation id="2353910600995338714">Vienti onnistui</translation>
+<translation id="229319993704311844">Kirjanmerkki viety kohteeseen <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Vienti epäonnistui</translation>
+<translation id="1166543535974380311">Kirjanmerkin vienti epäonnistui. Yritä uudestaan.</translation>
+<translation id="6154243540085290880">Tuonti onnistui</translation>
 <translation id="7028125942261647795">Kirjanmerkkien tuonti onnistui.</translation>
-<translation id="444953779119381206">Kirjanmerkkien tuonti epäonnistui.</translation>
-<translation id="6606836200439368332">Kirjanmerkkien vienti epäonnistui.</translation>
-<translation id="1395297034387418032">Kirjanmerkkien vienti onnistui.</translation>
+<translation id="4803910478683254032">Tuonti epäonnistui</translation>
+<translation id="8325139248201792113">Kirjanmerkin tuonti epäonnistui. Yritä uudestaan.</translation>
+<translation id="2803313416453193357">Avaa kansio</translation>
 <translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
 <translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="8985635554450124959">Synkronoinnin valmisteleminen epäonnistui</translation>
@@ -392,6 +396,10 @@ Haluatko varmasti tehdä tämän?</translation>
 Tarkista uudelleen, että nämä koodisanat on luotu omistamallasi laitteella.
 Haluatko varmasti tehdä tämän?</translation>
 <translation id="4550208292810542331">Kameran käyttöoikeutta ei myönnetty</translation>
+<translation id="6470233139461745039">Ota salasanojen synkronointi käyttöön määrittämällä ensin laitteesi näytön lukitus</translation>
+<translation id="3063783274005996079">Avaa lukitus ottaaksesi salasanojen synkronoinnin käyttöön</translation>
+<translation id="7551563084530025179">Ennen kuin voit synkronoida salasanoja, sinun täytyy todentaa itsesi laitteesi biometrisilla tiedoilla/salasanalla. Tämä ylimääräinen turvatoimi auttaa suojaamaan salasanoja.</translation>
+<translation id="6925081665778864449">Jos haluat synkronoida salasanat, ota biometriikka/salasanatodennus käyttöön Android-laitteellasi. Tämä ylimääräinen turvatoimi auttaa suojaamaan salasanoja.</translation>
 <translation id="597993392929850353">Brave License</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="6199596294742117349">Tämä on yksityinen välilehti</translation>
@@ -428,7 +436,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="9096003370755878766">Nosta BATit, jotka olet saattanut lisätä Brave Rewards -lompakkoosi</translation>
 <translation id="1554282356558968486">Verkkokukkaropalvelumme tarjoaa</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
@@ -1202,4 +1210,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6759710362319508545">Resurssit</translation>
 <translation id="2471230424465522689">Ei ennen</translation>
 <translation id="4841860051609590575">Pyynnön tunnus</translation>
+<translation id="1179407411385015942">Leo on tekoälyllä toimiva älykäs avustaja, joka on rakennettu suoraan selaimeen</translation>
+<translation id="1250335737108905610">Nollaa ja tyhjennä Leon tiedot</translation>
+<translation id="6165101586663336913">Leo-assistentin nollaus edellyttää, että otat Leon käyttöön tulevaisuudessa, ja se tyhjentää myös chat-historiasi. Chat-historian tyhjentäminen poistaa kaikki aiemmat keskustelusi Leon kanssa. Tätä toimintoa ei voi perua.</translation>
 </translationbundle>

@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">إدارة الإعلانات</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
 <translation id="885805571521218129">يعكس هذا نطاق أرباحك المقدرة لإعلانات موقع Brave لهذا الشهر.</translation>
-<translation id="818003031290137834">والآن بعد أن أصبحت متصلاً بـ ZebPay، سيتم إيداع أي رصيد سابق لديك في حسابك على ZebPay كجزء من أرباحك التالية. وبمجرد تلقيها، سترى BAT الخاص بك ينعكس في رصيد المكافآت الخاص بك.</translation>
 <translation id="3478449063771497234">تم تعطيل الإشعارات</translation>
 <translation id="2862978891748913252">حدّد بلدك</translation>
 <translation id="3970520675790340955">اختر بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">يمكنك فقط إرسال ما يصل إلى <ph name="AMOUNT"/>عملة BAT رقمية باستخدام رصيد Brave Rewards.</translation>
 <translation id="5012991400231464322">المساهمات الشهرية</translation>
 <translation id="5907051927340164207">أنت ترسلُ بالفعل مساهمات شهرية إلى منشئ المحتوى هذا</translation>
-<translation id="307555373157330047">بإمكانك إرسال مساهمة الآن، وكذلك إلغاء مساهماتك الشهرية إلى منشئ المحتوى هذا بإزالتها من<ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">لا يزال بإمكانك إرسال مساهمة الآن، ويمكنك إلغاء مساهماتك الشهرية لهذا المنشئ عن طريق إزالتها من <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">تم إرسال المساهمة!</translation>
 <translation id="1041398280582063935">شارك دعمك</translation>
 <translation id="8855543392451028706">مرحبًا! يمكن للمستخدمين دعم منشئ المحتوى هذا عن طريق إرسال مساهمات إليهم. إنها طريقة لتوجيه الشكر لهم على إنشاء محتوى رائع.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">تسجيل الدخول إلى<ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">نشكرك جزيل الشكر على دعم منشئي المحتوى المفضلين لديك</translation>
 <translation id="3796032246917966749">يبدو أنك قمت بتسجيل الخروج من <ph name="CUSTODIAN"/>للوصول إلى Brave Rewards. ولذا، سجل الدخول مرة أخرى للمتابعة.</translation>
-<translation id="594652923071049606">لم يتم التحقق من منشئ المحتوى هذا على Brave Creators، وفور التحقق منه، يمكنك إرسال مساهماتك.<ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">لم يتم التحقق من هذا المنشئ بعد مع Brave Creators. ستتمكن من إرسال المساهمات إليهم بمجرد التحقق منها. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">إرسال المساهمة</translation>
 <translation id="1899434873745933492">يتعذّر إرسال مساهمتك</translation>
 <translation id="1794046983410841192">استخدام Brave Rewards</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">مخصص</translation>
 <translation id="4827581232860040208">حدثت مشكلة أثناء إرسال مساهمتك</translation>
 <translation id="3259723213051400722">يُرجى إعادة المحاولة.</translation>
-<translation id="8899147737996487517">تم تسجيل منشئ المحتوى هذا لدى Brave، ومن ثم يمكنه الآن تلقي مساهمات من مستخدمي Brave Rewards.<ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">قام هذا المنشئ بالتسجيل في Brave ويمكنه تلقي مساهمات من مستخدمي Brave Rewards. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">قد لا تعمل Brave Rewards أثناء تعطيل الإشعارات.</translation>
 <translation id="4259212006412783790">تشغيل</translation>
 <translation id="6112331814131703370">حظر إشعارات "التبديل إلى التطبيق"</translation>
@@ -369,10 +368,15 @@
 <translation id="8457451314607652708">استيراد الإشارات المرجعية</translation>
 <translation id="1008186147501209563">تصدير الإشارات المرجعية</translation>
 <translation id="6680516947641001448">تحديد ملف لاستيراد الإشارات المرجعية</translation>
+<translation id="2353910600995338714">تم التصدير بنجاح</translation>
+<translation id="229319993704311844">تم تصدير الإشارات المرجعية إلى <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">فشل التصدير</translation>
+<translation id="1166543535974380311">فشل تصدير الإشارات المرجعية. يُرجى المحاولة مرة اخرى.</translation>
+<translation id="6154243540085290880">تم الاستيراد بنجاح</translation>
 <translation id="7028125942261647795">تم استيراد الإشارات المرجعية بنجاح.</translation>
-<translation id="444953779119381206">فشل استيراد الإشارات المرجعية.</translation>
-<translation id="6606836200439368332">فشل تصدير الإشارات المرجعية.</translation>
-<translation id="1395297034387418032">تم تصدير الإشارات المرجعية بنجاح.</translation>
+<translation id="4803910478683254032">فشل الاستيراد</translation>
+<translation id="8325139248201792113">فشل استيراد الإشارة المرجعية. يُرجى المحاولة مرة اخرى.</translation>
+<translation id="2803313416453193357">فتح المجلد</translation>
 <translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
 <translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="8985635554450124959">لا يمكن إعداد المزامنة</translation>
@@ -389,6 +393,10 @@
 <translation id="7811264919113243207">سيؤدي هذا إلى مشاركة بيانات Brave الخاصة بك، بما في ذلك كلمات مرورك المحتملة، مع الجهاز الذي أنشأ رمز الاستجابة السريعة هذا. يرجى التحقق مرة أخرى من أن رمز الاستجابة السريعة هذا قد تم إنشاؤه بواسطة جهاز تملكه. هل أنت متأكد من أنك تريد القيام بذلك؟</translation>
 <translation id="3097089005389027085">سيؤدي هذا إلى مشاركة بيانات Brave الخاصة بك، بما في ذلك كلمات مرورك المحتملة، مع الجهاز الذي أنشأ كلمات الشفرة هذه. يرجى التحقق مرة أخرى من أن هذه الكلمات المشفرة قد تم إنشاؤها بواسطة جهاز تملكه. هل أنت متأكد من أنك تريد القيام بذلك؟</translation>
 <translation id="4550208292810542331">لم يُمنح الإذن باستخدام الكاميرا</translation>
+<translation id="6470233139461745039">لتمكين مزامنة كلمات المرور، قم أولاً بتعيين قفل الشاشة على جهازك</translation>
+<translation id="3063783274005996079">فتح القفل لتمكين مزامنة كلمات المرور</translation>
+<translation id="7551563084530025179">قبل أن تتمكن من مزامنة كلمات المرور، يتعيّن عليك المصادقة باستخدام المقاييس الحيوية/رمز المرور الخاص بجهازك. يساعد هذا الإجراء الأمني ​​الإضافي في الحفاظ على أمان كلمات المرور الخاصة بك.</translation>
+<translation id="6925081665778864449">لمزامنة كلمات المرور، يُرجى تمكين المقاييس الحيوية/مصادقة رمز المرور على جهاز يعمل بنظام تشغيل Android لديك. يساعد هذا الإجراء الأمني ​​الإضافي في الحفاظ على أمان كلمات المرور الخاصة بك.</translation>
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
@@ -425,7 +433,7 @@
 <translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
 <translation id="1554282356558968486">تتوفر خدمتنا للمحافظ من قبل</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">شركة Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
@@ -1199,4 +1207,7 @@
 <translation id="6759710362319508545">المصادر</translation>
 <translation id="2471230424465522689">ليس قبل</translation>
 <translation id="4841860051609590575">طلب الرقم التعريفي</translation>
+<translation id="1179407411385015942">Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، وهو مدمج في المتصفح مباشرةً</translation>
+<translation id="1250335737108905610">إعادة تعيين بيانات Leo وحذفها</translation>
+<translation id="6165101586663336913">ستتطلب إعادة تعيين مساعد Leo الاشتراك في استخدام Leo في المستقبل وستؤدي أيضًا إلى حذف سجل الدردشة الخاص بك. سيؤدي حذف سجل الدردشة إلى حذف جميع محادثاتك السابقة مع Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
 </translationbundle>

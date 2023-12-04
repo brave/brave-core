@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Pamahalaan ang mga ad</translation>
 <translation id="7630214457764713113">Kopyahin ang clean link</translation>
 <translation id="885805571521218129">Ipinapakita nito ang iyong mga tinatayang range ng nakuha para sa Brave Ads ngayong buwan.</translation>
-<translation id="818003031290137834">Ngayong konektado ka na sa ZebPay, ang anumang dati mong balanse ay ide-deposit sa iyong your ZebPay account bilang bahagi ng susunod mong payout ng kita. Kapag dumating na ito, makikita mo ang iyong BAT sa iyong balanse ng Mga Reward.</translation>
 <translation id="3478449063771497234">Naka-disable ang mga notification</translation>
 <translation id="2862978891748913252">Piliin ang iyong bansa</translation>
 <translation id="3970520675790340955">Piliin ang iyong bansa para maipakita namin sa iyo ang mga tamang opsyon at ad para sa iyong rehiyon.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Maaari ka lang magpadala ng hanggang <ph name="AMOUNT"/> (na) BAT gamit ang iyong balanse ng Mga Reward ng Brave.</translation>
 <translation id="5012991400231464322">Mga Buwanang Kontribusyon</translation>
 <translation id="5907051927340164207">Nagpapadala ka na ng mga buwanang kontribusyon sa creator na ito</translation>
-<translation id="307555373157330047">Maaari ka pa ring magpadala ng kontribusyon ngayon, at maaari mong kanselahin ang iyong mga buwanang kontribusyon sa Creator na ito sa pamamagitan ng pag-aalis sa kanila sa <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Maaari mo pa ring ipadala ang kontribusyon ngayon, at maaari mong kanselahin ang mga buwanang kontribusyon mo sa Creator na ito sa pamamagitan ng pag-aalis sa kanila sa <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Naipadala ang kontribusyon!</translation>
 <translation id="1041398280582063935">Ibahagi ang iyong suporta</translation>
 <translation id="8855543392451028706">Welcome! Masusuportahan ng mga user ang content creator na ito sa pamamagitan ng pagpapadala sa kanila ng mga kontribusyon. Isa itong paraan ng pasasalamat sa kanila sa paggawa ng magandang content.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Mag-log in sa <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Salamat sa pagsuporta as iyong mga paboritong creator</translation>
 <translation id="3796032246917966749">Mukhang naka-log out ka sa <ph name="CUSTODIAN"/> para sa Mga Reward ng Brave. Mag-log in ulit para magpatuloy.</translation>
-<translation id="594652923071049606">Hindi pa nave-verify ang Creator na ito sa Mga Creator ng Brave. Mapapadalhan mo sila ng mga kontribusyon kapag na-verify na sila. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Hindi pa nave-verify ang Creator na ito sa Mga Creator ng Brave. Mapapadalhan mo sila ng mga kontribusyon kapag na-verify na sila. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Magpadala ng Kontribusyon</translation>
 <translation id="1899434873745933492">Hindi makapagpadala ng kontribusyon</translation>
 <translation id="1794046983410841192">Gumamit ng Mga Reward ng Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Custom</translation>
 <translation id="4827581232860040208">Nagkaproblema sa pagpapadala ng iyong kontribusyon</translation>
 <translation id="3259723213051400722">Pakisubukang muli.</translation>
-<translation id="8899147737996487517">Nagparehistro ang Creator na ito sa Brave at makakatanggap ito ng mga kontribusyon mula sa mga user ng Mga Reward ng Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Narehistro ang Creator na ito sa Brave at makakatanggap ito ng mga kontribusyon mula sa mga user ng Mga Reward ng Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Posibleng hindi gumana ang Mga Reward ng Brave habang naka-disable ang mga notification.</translation>
 <translation id="4259212006412783790">I-ON</translation>
 <translation id="6112331814131703370">I-block ang Mga Abisong 'Lumipat sa App'</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Mag-import ng mga bookmark</translation>
 <translation id="1008186147501209563">Mag-export ng mga bookmark</translation>
 <translation id="6680516947641001448">Pumili ng File para Mag-import ng mga bookmark</translation>
+<translation id="2353910600995338714">Matagumpay ang pag-export</translation>
+<translation id="229319993704311844">Na-export ang mga bookmark sa <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Nabigo ang pag-export</translation>
+<translation id="1166543535974380311">Nabigo ang pag-export ng mga bookmark. Pakisubukan ulit.</translation>
+<translation id="6154243540085290880">Matagumpay ang pag-import</translation>
 <translation id="7028125942261647795">Matagumpay na na-import ang mga bookmark.</translation>
-<translation id="444953779119381206">Hindi na-import ang bookmark.</translation>
-<translation id="6606836200439368332">Hindi na-export ang bookmark.</translation>
-<translation id="1395297034387418032">Na-export ang mga bookmark.</translation>
+<translation id="4803910478683254032">Nabigo ang pag-import</translation>
+<translation id="8325139248201792113">Nabigo ang pag-import ng bookmark. Pakisubukan ulit.</translation>
+<translation id="2803313416453193357">Buksan ang folder</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="8985635554450124959">Hindi ma-set up ang Sync</translation>
@@ -392,6 +396,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 Paki-double check kung na-generate ang QR code ng device na pagmamay-ari mo.
 Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="4550208292810542331">Hindi nabigyan ng pahintulot sa camera</translation>
+<translation id="6470233139461745039">Para paganahin ang pag-sync ng mga password, itakda muna ang lock ng screen lock sa device mo</translation>
+<translation id="3063783274005996079">I-unlock para paganahin ang pag-sync ng mga password</translation>
+<translation id="7551563084530025179">Bago mo ma-sync ang mga password, kakailanganin mong i-authenticate gamit ang mga biometric/passcode ng device mo. Makakatulong ang karagdagang hakbang ng seguridad na ito na panatilihing ligtas ang mga password mo.</translation>
+<translation id="6925081665778864449">Para i-sync ang mga password, mangyaring paganahin ang pag-authenticate gamit ang mga biometric/passcode sa Android na device mo. Makakatulong ang karagdagang hakbang ng seguridad na ito na panatilihing ligtas ang mga password mo.</translation>
 <translation id="597993392929850353">Lisensya ng Brave</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
@@ -428,7 +436,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="9096003370755878766">Mag-withdraw ng BAT na puwedeng dati mong naidagdag sa iyong Brave Rewards wallet</translation>
 <translation id="1554282356558968486">Ang aming serbisyo ng wallet ay mula sa</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
@@ -1202,4 +1210,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6759710362319508545">Mga Resource</translation>
 <translation id="2471230424465522689">Hindi bago</translation>
 <translation id="4841860051609590575">Humiling ng ID</translation>
+<translation id="1179407411385015942">AI-powered smart assistant si Leo, kasama na mismo sa browser</translation>
+<translation id="1250335737108905610">I-reset at i-clear ang data ni Leo</translation>
+<translation id="6165101586663336913">Kakailangan mong mag-opt-in para sa pag-reset ng Leo assistant para magamit si Leo sa hinaharap at iki-clear rin nito ang chat history mo. Ide-delete ng pag-clear ng chat history ang lahat ng nakaraan mong pag-uusap gamit si Leo. Hindi na maaaring bawiin ang pagkilos na ito.</translation>
 </translationbundle>

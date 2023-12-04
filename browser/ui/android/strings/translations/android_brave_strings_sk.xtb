@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Spravovať reklamy</translation>
 <translation id="7630214457764713113">Kopírovať čisté prepojenie</translation>
 <translation id="885805571521218129">Toto odráža váš odhadovaný rozsah zárobkov za Brave Ads tento mesiac.</translation>
-<translation id="818003031290137834">Keď ste teraz pripojení k službe ZebPay, všetky vaše predchádzajúce zostatky sa pripíšu na váš účet ZebPay ako súčasť ďalšej výplaty zárobkov. Po doručení uvidíte, že sa BAT premietnu v zostatku odmien.</translation>
 <translation id="3478449063771497234">Upozornenia sú zakázané</translation>
 <translation id="2862978891748913252">Vyberte krajinu</translation>
 <translation id="3970520675790340955">Vyberte svoju krajinu, aby sme vám mohli zobraziť správne možnosti a reklamy pre váš región.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Pomocou vášho zostatku v službe Odmeny Brave môžete poslať maximálne <ph name="AMOUNT"/> BAT.</translation>
 <translation id="5012991400231464322">Mesačné príspevky</translation>
 <translation id="5907051927340164207">Tomuto tvorcovi už posielate mesačné príspevky</translation>
-<translation id="307555373157330047">Príspevok môžete poslať už teraz a svoje mesačné príspevky tomuto tvorcovi môžete zrušiť ich odstránením z položky <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Príspevok môžete poslať už teraz a svoje mesačné príspevky tomuto tvorcovi môžete zrušiť ich odstránením z položky <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Príspevok poslaný!</translation>
 <translation id="1041398280582063935">Zdieľať podporu</translation>
 <translation id="8855543392451028706">Vitajte! Používatelia môžu podporiť tohto tvorcu obsahu zasielaním príspevkov. Je to spôsob, ako mu poďakovať za tvorbu skvelého obsahu.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Prihlásiť sa do <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Ďakujeme za podporu vašich obľúbených tvorcov</translation>
 <translation id="3796032246917966749">Zdá sa, že ste odhlásení z <ph name="CUSTODIAN"/> pre Odmeny Brave. Ak chcete pokračovať, znova sa prihláste.</translation>
-<translation id="594652923071049606">Tento tvorca ešte nie je overený v službe Tvorcovia Brave. Príspevky mu budete môcť posielať, keď bude overený. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Tento tvorca ešte nie je overený v službe Tvorcovia Brave. Príspevky mu budete môcť posielať, keď bude overený. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Poslať príspevok</translation>
 <translation id="1899434873745933492">Príspevok nie je možné poslať</translation>
 <translation id="1794046983410841192">Použiť Odmeny Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Vlastné</translation>
 <translation id="4827581232860040208">Pri odosielaní vášho príspevku vznikol problém</translation>
 <translation id="3259723213051400722">Skúste to znova.</translation>
-<translation id="8899147737996487517">Tento tvorca sa zaregistroval v službe Brave a môže prijímať príspevky od používateľov služby Odmeny Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Tento tvorca sa zaregistroval v službe Brave a môže prijímať príspevky od používateľov služby Odmeny Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Odmeny nemusia fungovať, ak sú upozornenia zakázané.</translation>
 <translation id="4259212006412783790">ZAPNÚŤ</translation>
 <translation id="6112331814131703370">Blokovať upozornenia ‚Prejsť na aplikáciu‘</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Import záložiek</translation>
 <translation id="1008186147501209563">Exportovať záložky</translation>
 <translation id="6680516947641001448">Vyberte súbor na importovanie záložiek</translation>
+<translation id="2353910600995338714">Export bol úspešný</translation>
+<translation id="229319993704311844">Záložky exportované do <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Export bol neúspešný</translation>
+<translation id="1166543535974380311">Export záložiek zlyhal. Skúste to znova.</translation>
+<translation id="6154243540085290880">Import bol úspešný</translation>
 <translation id="7028125942261647795">Záložky boli úspešne importované.</translation>
-<translation id="444953779119381206">Import záložiek zlyhal.</translation>
-<translation id="6606836200439368332">Export záložiek zlyhal.</translation>
-<translation id="1395297034387418032">Záložky boli úspešne exportované.</translation>
+<translation id="4803910478683254032">Import bol neúspešný</translation>
+<translation id="8325139248201792113">Import záložiek zlyhal. Skúste to znova.</translation>
+<translation id="2803313416453193357">Otvoriť zložku</translation>
 <translation id="3396347744975515056">Synchronizácia aplikácie Brave bola vylepšená a potrebuje inštaláciu</translation>
 <translation id="7473245612074035141">Začať inštaláciu</translation>
 <translation id="8985635554450124959">Synchronizáciu nebolo možné nastaviť</translation>
@@ -392,6 +396,10 @@ Naozaj chcete pokračovať?</translation>
 Preverte si, že tieto kódové slová vygenerovalo zariadenie, ktoré vlastníte.
 Naozaj chcete pokračovať?</translation>
 <translation id="4550208292810542331">Neposkytlo sa povolenie pre kameru</translation>
+<translation id="6470233139461745039">Ak chcete povoliť synchronizáciu hesiel, najprv v zariadení nastavte zámok obrazovky.</translation>
+<translation id="3063783274005996079">Odomknite, aby ste povolili synchronizáciu hesiel</translation>
+<translation id="7551563084530025179">Pred synchronizáciou hesiel sa musíte autorizovať pomocou biometrických údajov zariadenia/hesla. Toto dodatočné bezpečnostné opatrenie pomáha udržať vaše heslá v bezpečí.</translation>
+<translation id="6925081665778864449">Ak chcete synchronizovať heslá, zapnite v zariadení so systémom Android overovanie pomocou biometrických údajov/hesiel. Toto dodatočné bezpečnostné opatrenie pomáha udržať vaše heslá v bezpečí.</translation>
 <translation id="597993392929850353">Licencia Brave</translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6199596294742117349">Toto je súkromná karta</translation>
@@ -428,7 +436,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="9096003370755878766">Stiahnuť BATy, ktoré ste si predtým mohli pridať do peňaženky Brave Rewards</translation>
 <translation id="1554282356558968486">Službu peňaženka pre nás zabezpečuje</translation>
 <translation id="6569877533335686968">Podporovať</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Ak požiadate o nejaké služby, Uphold vás môže požiadať o potvrdenie identity.</translation>
@@ -1202,4 +1210,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6759710362319508545">Zdroje</translation>
 <translation id="2471230424465522689">Nie pred</translation>
 <translation id="4841860051609590575">ID žiadosti</translation>
+<translation id="1179407411385015942">Leo je inteligentný asistent s umelou inteligenciou zabudovaný priamo v prehliadači</translation>
+<translation id="1250335737108905610">Resetovať a vymazať údaje asistenta Leo</translation>
+<translation id="6165101586663336913">Reštart asistenta Leo bude vyžadovať, aby ste sa v budúcnosti prihlásili na používanie Leo a tiež vymaže vašu históriu chatu. Vymazaním histórie chatu sa vymažú všetky vaše predchádzajúce konverzácie s asistentom Leo. Túto akciu nie je možné vrátiť späť.</translation>
 </translationbundle>

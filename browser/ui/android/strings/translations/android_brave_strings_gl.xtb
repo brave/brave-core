@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Xestionar anuncios</translation>
 <translation id="7630214457764713113">Copiar ligazón limpa</translation>
 <translation id="885805571521218129">Esta é unha estimación dos ingresos que obtiveches con Anuncios de Brave este mes.</translation>
-<translation id="818003031290137834">Agora que está conectado a ZebPay, os saldos anteriores que tiña depositaranse na súa conta de ZebPay como parte do pago das súas próximas ganancias. En canto chegue, verá o BAT reflectido no seu saldo de Recompensas.</translation>
 <translation id="3478449063771497234">As notificacións están desactivadas</translation>
 <translation id="2862978891748913252">Selecciona o teu país</translation>
 <translation id="3970520675790340955">Selecciona o teu país para que poidamos mostrarche as opcións e anuncios adecuados para a túa rexión.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Só podes enviar un máximo de <ph name="AMOUNT"/> BAT empregando o teu saldo de Recompensas de Brave.</translation>
 <translation id="5012991400231464322">Contribucións mensuais</translation>
 <translation id="5907051927340164207">Xa estás enviando contribucións mensuais a este creador</translation>
-<translation id="307555373157330047">Aínda podes enviar unha contribución. Ademais, podes cancelar as túas contribucións mensuais a este creador eliminándoas de <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Aínda podes enviar unha contribución. Ademais, podes cancelar as túas contribucións mensuais a este creador eliminándoas de <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Contribución enviada.</translation>
 <translation id="1041398280582063935">Comparte o teu apoio</translation>
 <translation id="8855543392451028706">Dámosche a benvida. Os usuarios poden apoiar este creador de contido enviándolle contribucións. É unha forma de mostrarlle agradecemento polo gran contido que crea.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Iniciar sesión en <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Grazas por apoiar os teus creadores favoritos</translation>
 <translation id="3796032246917966749">Semella que se pechou a túa sesión de <ph name="CUSTODIAN"/> en Recompensas de Brave. Volve iniciar sesión para continuar.</translation>
-<translation id="594652923071049606">Este creador aínda non se verificou con Creadores de Brave. Poderás enviarlle contribucións cando o faga. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Este creador aínda non se verificou con Creadores de Brave. Poderás enviarlle contribucións cando o faga. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Enviar contribución</translation>
 <translation id="1899434873745933492">Non se pode enviar a túa contribución</translation>
 <translation id="1794046983410841192">Usar Recompensas de Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Personalizado</translation>
 <translation id="4827581232860040208">Produciuse un problema ao enviar a túa contribución</translation>
 <translation id="3259723213051400722">Téntao de novo.</translation>
-<translation id="8899147737996487517">Este creador rexistrouse con Brave e pode recibir contribucións de usuarios de Recompensas de Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Este creador rexistrouse con Brave e pode recibir contribucións de usuarios de Recompensas de Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">É posible que Recompensas de Brave non funcione coas notificacións desactivadas.</translation>
 <translation id="4259212006412783790">ACTIVAR</translation>
 <translation id="6112331814131703370">Bloquear avisos de "Cambiar á aplicación"</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Importar marcadores</translation>
 <translation id="1008186147501209563">Exportar marcadores</translation>
 <translation id="6680516947641001448">Selecciona un ficheiro para importar os marcadores</translation>
+<translation id="2353910600995338714">Exportación correcta</translation>
+<translation id="229319993704311844">Exportáronse os marcadores a <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Erro na exportación</translation>
+<translation id="1166543535974380311">Error ao exportar os marcadores. Téntao de novo.</translation>
+<translation id="6154243540085290880">Importación correcta</translation>
 <translation id="7028125942261647795">Os marcadores importáronse correctamente.</translation>
-<translation id="444953779119381206">Produciuse un erro na importación dos marcadores.</translation>
-<translation id="6606836200439368332">Produciuse un erro na exportación dos marcadores.</translation>
-<translation id="1395297034387418032">Os marcadores exportáronse correctamente.</translation>
+<translation id="4803910478683254032">Erro na importación</translation>
+<translation id="8325139248201792113">Erro ao importar os marcadores. Téntao de novo.</translation>
+<translation id="2803313416453193357">Abrir cartafol</translation>
 <translation id="3396347744975515056">A sincronización de Brave foi actualizado e require configuración</translation>
 <translation id="7473245612074035141">Comece a configurar</translation>
 <translation id="8985635554450124959">Non se puido establecer a sincronización</translation>
@@ -392,6 +396,10 @@ Seguro que queres facelo?</translation>
 Comproba de novo que estas palabras clave se xeren nun dispositivo da túa propiedade.
 Seguro que queres facelo?</translation>
 <translation id="4550208292810542331">Non se permitiu o acceso á cámara</translation>
+<translation id="6470233139461745039">Para activar a sincronización de contrasinais, configura un bloqueo de pantalla no teu dispositivo</translation>
+<translation id="3063783274005996079">Desbloquea para activar a sincronización de contrasinais</translation>
+<translation id="7551563084530025179">Antes de sincronizar os contrasinais, terás que autenticarte coa biometría ou o código de acceso do teu dispositivo. Esta medida de seguridade adicional permite manter os teus contrasinais protexidos.</translation>
+<translation id="6925081665778864449">Para sincronizar os contrasinais, activa a autenticación mediante biometría ou código de acceso no teu dispositivo Android. Esta medida de seguridade adicional permite manter os teus contrasinais protexidos.</translation>
 <translation id="597993392929850353">Licenza de Brave</translation>
 <translation id="6336451774241870485">Pestana nova de incógnito</translation>
 <translation id="6199596294742117349">Esta é unha lapela privada</translation>
@@ -428,7 +436,7 @@ Seguro que queres facelo?</translation>
 <translation id="9096003370755878766">Retira a BAT que engadiu anteriormente á carteira de recompensas de Brave</translation>
 <translation id="1554282356558968486">O noso servizo de carteira é proporcionado por</translation>
 <translation id="6569877533335686968">Defensa</translation>
-<translation id="734105583050813665">bitFlyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold requeriría verificar a súa identidade baseada nos servizos solicitados.</translation>
@@ -1202,4 +1210,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6759710362319508545">Recursos</translation>
 <translation id="2471230424465522689">Non antes de</translation>
 <translation id="4841860051609590575">ID da solicitude</translation>
+<translation id="1179407411385015942">Leo é un asistente intelixente de IA que se integra no navegador</translation>
+<translation id="1250335737108905610">Restablecer e borrar os datos de Leo</translation>
+<translation id="6165101586663336913">Para restablecer o asistente Leo, deberás optar por utilizar Leo no futuro, e isto borrará o teu historial de chats. Ao borrar o teu historial de chats, eliminaranse todas as túas conversas anteriores con Leo. Esta acción non se pode desfacer.</translation>
 </translationbundle>
