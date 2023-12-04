@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Upravljanje reklamama</translation>
 <translation id="7630214457764713113">Kopirati čist link</translation>
 <translation id="885805571521218129">Ovo odražava vaš procenjeni raspon zarade za Brave Ads ovog meseca.</translation>
-<translation id="818003031290137834">Sada kada ste povezani na ZebPay, bilo koje ranije stanje koje ste imali biće deponovano na vaš ZebPay nalog kao deo sledeće isplate vaše zarade. Kada stigne, videćete svoj BAT prikazan na vašem stanju za nagrade.</translation>
 <translation id="3478449063771497234">Obaveštenja su onemogućena</translation>
 <translation id="2862978891748913252">Izaberite svoju zemlju</translation>
 <translation id="3970520675790340955">Izaberite svoju zemlju da bismo vam mogli pokazati prave opcije i oglase za vaš region.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Možete poslati samo do <ph name="AMOUNT"/> BAT koristeći saldo Brave nagrada.</translation>
 <translation id="5012991400231464322">Mesečni doprinosi</translation>
 <translation id="5907051927340164207">Već šaljete mesečne doprinose ovom kreatoru</translation>
-<translation id="307555373157330047">I dalje možete poslati doprinos sada i možete otkazati vaše mesečne doprinose ovom kreatoru tako što ćete ih ukloniti iz<ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Još uvek možete da šaljete prilog sada i možete da otkažete svoje mesečne priloge ovom autoru tako što ćete ih ukloniti iz <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Doprinos poslat!</translation>
 <translation id="1041398280582063935">Podelite svoju podršku</translation>
 <translation id="8855543392451028706">Dobro došli! Korisnici mogu podržati ovog kreatora sadržaja slanjem doprinosa. Na ovaj način im se zahvaljujemo što su napravili odličan sadržaj.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Prijaviti se na <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Hvala vam što podržavate svoje omiljene kreatore</translation>
 <translation id="3796032246917966749">Izgleda da ste se odjavili sa  <ph name="CUSTODIAN"/> za Brave nagrade. Prijavite se ponovo da biste nastavili.</translation>
-<translation id="594652923071049606">Ovaj kreator još nije potvrđen kao Brave kreator. Moći ćete da im šaljete doprinose kada budu potvrđeni.<ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Ovaj kreator još uvek nije verifikovan od strane Brave Creators. Moći ćete da im šaljete priloge kada budu verifikovani. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Pošalji doprinos</translation>
 <translation id="1899434873745933492">Nije moguće poslati vaš doprinos</translation>
 <translation id="1794046983410841192">Koristiti Brave nagrade</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Прилагођено</translation>
 <translation id="4827581232860040208">Došlo je do problema tokom slanja vašeg doprinosa</translation>
 <translation id="3259723213051400722">Pokušajte ponovo.</translation>
-<translation id="8899147737996487517">Ovaj kreator se registrovao na Brave i može da prima doprinose od korisnika Brave nagrada. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Ovaj kreator se registrovao na Brave i može da prima doprinose od korisnika Brave Rewards. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave nagrade možda neće raditi dok su obaveštenja onemogućena.</translation>
 <translation id="4259212006412783790">UKLJUČITI</translation>
 <translation id="6112331814131703370">Blokirati obaveštenja „preći na aplikaciju“</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Увези обележиваче</translation>
 <translation id="1008186147501209563">Извези обележиваче</translation>
 <translation id="6680516947641001448">Izabrati datoteku za uvoz obeleživača</translation>
+<translation id="2353910600995338714">Izvoz je uspeo</translation>
+<translation id="229319993704311844">Obeleživači su izvezeni u <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Izvoz nije uspeo</translation>
+<translation id="1166543535974380311">Izvoz obeleživača nije uspeo. Pokušajte ponovo.</translation>
+<translation id="6154243540085290880">Uvoz je uspeo</translation>
 <translation id="7028125942261647795">Obeleživači su uspešno uvezeni.</translation>
-<translation id="444953779119381206">Neuspešan uvoz obeleživača.</translation>
-<translation id="6606836200439368332">Neuspešan izvoz obeleživača.</translation>
-<translation id="1395297034387418032">Obeleživači su uspešno izvezeni.</translation>
+<translation id="4803910478683254032">Izvoz nije uspeo</translation>
+<translation id="8325139248201792113">Uvoz obeleživača nije uspeo. Pokušajte ponovo.</translation>
+<translation id="2803313416453193357">Otvori fasciklu</translation>
 <translation id="3396347744975515056">Brave sinhronizacija je nadograđena i zahteva podešavanje</translation>
 <translation id="7473245612074035141">Počni podešavanje</translation>
 <translation id="8985635554450124959">Nije moguće podesiti sinhronizaciju</translation>
@@ -392,6 +396,10 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 Molimo vas da dobro proverite da li je ovaj kod generisao uređaj koji vi posedujete.
 Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="4550208292810542331">Nije dato ovlašćenje za kameru</translation>
+<translation id="6470233139461745039">Da biste omogućili sinhronizaciju lozinki, prvo podesite zaključavanje ekrana na svom uređaju</translation>
+<translation id="3063783274005996079">Otključajte da biste omogućili sinhronizaciju lozinki</translation>
+<translation id="7551563084530025179">Pre nego što budete mogli da sinhronizujete lozinke, moraćete da potvrdite identitet pomoću biometrijskih podataka/lozinke uređaja. Ova dodatna bezbednosna mera pomaže da vaše lozinke budu bezbedne.</translation>
+<translation id="6925081665778864449">Da biste sinhronizovali lozinke, omogućite biometrijsku / potvrdu identiteta pristupnim kodom na svom Android uređaju. Ova dodatna bezbednosna mera pomaže da vaše lozinke budu bezbedne.</translation>
 <translation id="597993392929850353">Brave licenca</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6199596294742117349">Ovo je privatna kartica</translation>
@@ -428,7 +436,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="9096003370755878766">Povucite BAT koji ste možda prethodno dodali u svoj novčanik „Brave Rewards”</translation>
 <translation id="1554282356558968486">Našu uslugu novčanika pruža</translation>
 <translation id="6569877533335686968">Podržavati</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">„Uphold” će možda zahtevati da potvrdite svoj identitet na osnovu traženih usluga.</translation>
@@ -1202,4 +1210,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6759710362319508545">Resursi</translation>
 <translation id="2471230424465522689">Ne pre</translation>
 <translation id="4841860051609590575">ID zahteva</translation>
+<translation id="1179407411385015942">Leo je pametni asistent veštačke inteligencije, ugrađen direktno u pretraživač</translation>
+<translation id="1250335737108905610">Resetujte i obrišite Leove podatke</translation>
+<translation id="6165101586663336913">Resetovanje asistenta Lea će zahtevati od vas da se odlučite za korišćenje Lea u budućnosti i takođe će obrisati istoriju ćaskanja. Brisanjem istorije ćaskanja izbrisaćete sve vaše prethodne razgovore sa Leom. Ova radnja se ne može opozvati.</translation>
 </translationbundle>

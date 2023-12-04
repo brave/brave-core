@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">広告を管理</translation>
 <translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="885805571521218129">これは、今月のBrave広告の推定収益範囲を反映しています。</translation>
-<translation id="818003031290137834">ZebPayに接続すると、次回の支払い時に以前の残高がZebPayアカウントに振り込まれます。入金されると、リワード残高にBATが反映されます。</translation>
 <translation id="3478449063771497234">通知は無効です</translation>
 <translation id="2862978891748913252">国を選択</translation>
 <translation id="3970520675790340955">お住まいの国を選択すると、その地域に合ったオプションや広告が表示されます。</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Braveリワードの残高を使用して送信できるのは<ph name="AMOUNT"/>BATまでです。</translation>
 <translation id="5012991400231464322">毎月の寄付額</translation>
 <translation id="5907051927340164207">このクリエイターにはすでに毎月支援を送信しています</translation>
-<translation id="307555373157330047">今からでも支援を送信できます。「<ph name="MONTHLY_CONTRIBUTION"/>」から削除することで、このクリエイターへの毎月の支援をキャンセルすることができます。</translation>
+<translation id="4848906651275579475">今すぐ寄付を送ることができ、<ph name="MONTHLY_CONTRIBUTION"/>からこのクリエイターを削除することで月間寄付をキャンセルできます。</translation>
 <translation id="5379685283876547860">支援を送信しました！</translation>
 <translation id="1041398280582063935">サポートの内容を共有する</translation>
 <translation id="8855543392451028706">ようこそ！支援を送信することで、このコンテンツクリエイターをサポートすることができます。素晴らしいコンテンツの作成に対する謝意を示すひとつの方法です。</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/>にログイン</translation>
 <translation id="7063168612616047608">お気に入りのクリエイターをサポートしていただきありがとうございます</translation>
 <translation id="3796032246917966749">Braveリワードの<ph name="CUSTODIAN"/>からログアウトしています。続行するには再度ログインしてください。</translation>
-<translation id="594652923071049606">このクリエイターは、まだBraveクリエイターで認証されていません。認証されると、支援を送ることができるようになります。<ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">このクリエイターはまだBrave Creatorsで認証されていません。認証完了後、寄付を送れるようになります。<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">支援を送る</translation>
 <translation id="1899434873745933492">支援を送信できません</translation>
 <translation id="1794046983410841192">Braveリワードを使用</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">カスタム</translation>
 <translation id="4827581232860040208">支援の送信中に問題が発生しました</translation>
 <translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="8899147737996487517">このクリエイターはBraveに登録済みで、Braveリワードユーザーからの支援を受け取ることができます。<ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">このクリエイターはBraveに登録しており、Brave Rewardsユーザーから寄付を受け取れます。<ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">通知が無効な状態では、Brave Rewardsが機能しない場合があります。</translation>
 <translation id="4259212006412783790">有効にする</translation>
 <translation id="6112331814131703370">「アプリに切り替える」通知をブロック</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">ブックマークをインポート</translation>
 <translation id="1008186147501209563">ブックマークをエクスポート</translation>
 <translation id="6680516947641001448">ファイルを選択してブックマークをインポート</translation>
+<translation id="2353910600995338714">エクスポート成功</translation>
+<translation id="229319993704311844">ブックマークは<ph name="EXPORT_FILE_PATH"/>にエクスポートされました。</translation>
+<translation id="8050098462121217351">エクスポート失敗</translation>
+<translation id="1166543535974380311">ブックマークのエクスポートに失敗しました。再試行してください。</translation>
+<translation id="6154243540085290880">インポート成功</translation>
 <translation id="7028125942261647795">ブックマークをインポートしました。</translation>
-<translation id="444953779119381206">ブックマークのインポートに失敗しました。</translation>
-<translation id="6606836200439368332">ブックマークのエクスポートに失敗しました。</translation>
-<translation id="1395297034387418032">ブックマークをエクスポートしました。</translation>
+<translation id="4803910478683254032">インポート失敗</translation>
+<translation id="8325139248201792113">ブックマークのインポートに失敗しました。再試行してください。</translation>
+<translation id="2803313416453193357">フォルダを開く</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="8985635554450124959">同期を設定できませんでした</translation>
@@ -392,6 +396,10 @@
 これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。
 続行してよろしいですか？</translation>
 <translation id="4550208292810542331">カメラの使用が許可されませんでした</translation>
+<translation id="6470233139461745039">デバイスの画面ロックを設定してからパスワードの同期を有効にしてください</translation>
+<translation id="3063783274005996079">ロックを解除してパスワードの同期を有効にします</translation>
+<translation id="7551563084530025179">パスワードを同期するには、デバイスの生体認証/パスコードで認証する必要があります。これはパスワードを安全に保つための追加のセキュリティ対策です。</translation>
+<translation id="6925081665778864449">パスワードを同期するには、Androidデバイスで生体認証/パスコード認証を有効にしてください。これはパスワードを安全に保つための追加のセキュリティ対策です。</translation>
 <translation id="597993392929850353">Braveライセンス</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="6199596294742117349">これはプライベートタブです</translation>
@@ -428,7 +436,7 @@
 <translation id="9096003370755878766">過去にBrave Rewardsウォレットに追加した可能性のあるBATを引き出す</translation>
 <translation id="1554282356558968486">Braveのウォレットサービスは以下の企業のご協力を得てご提供しています</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を必要とする場合があります。</translation>
@@ -1202,4 +1210,7 @@
 <translation id="6759710362319508545">リソース</translation>
 <translation id="2471230424465522689">利用開始日時</translation>
 <translation id="4841860051609590575">リクエストID</translation>
+<translation id="1179407411385015942">Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです</translation>
+<translation id="1250335737108905610">Leoデータのリセットとクリア</translation>
+<translation id="6165101586663336913">Leoアシスタントのリセットは、将来的にLeoを使用するためのオプトインが必要になり、チャット履歴も消去されます。チャット履歴の消去は以前のLeoとの会話をすべて削除します。この操作は取り消せません。</translation>
 </translationbundle>

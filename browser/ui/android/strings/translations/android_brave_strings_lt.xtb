@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Tvarkyti reklamas</translation>
 <translation id="7630214457764713113">Kopijuoti švarią nuorodą</translation>
 <translation id="885805571521218129">Tai jūsų numatomas uždarbio intervalas už „Brave“ reklamas šį mėnesį.</translation>
-<translation id="818003031290137834">Dabar, kai esate prisijungę prie „ZebPay“, bet koks prieš tai turėtas likutis bus pervestas į jūsų „ZebPay“ sąskaitą kaip kito uždarbio išmokėjimo dalis. Kai ji bus gauta, matysite, kad jūsų BAT atsispindi atlygio balanse.</translation>
 <translation id="3478449063771497234">Pranešimai išjungti</translation>
 <translation id="2862978891748913252">Pasirinkite savo šalį</translation>
 <translation id="3970520675790340955">Pasirinkite savo šalį, kad galėtume rodyti jūsų regionui tinkamas parinktis ir reklamas.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Galite siųsti iki <ph name="AMOUNT"/> BAT, naudodami savo „Brave“ atlygio likutį.</translation>
 <translation id="5012991400231464322">Mėnesiniai indėliai</translation>
 <translation id="5907051927340164207">Jūs jau siunčiame kasmėnesinius įnašus šiam kūrėjui</translation>
-<translation id="307555373157330047">Vis dar galite nusiųsti įnašus dabar, bet nutraukti kasmėnesinį įnašų siuntimą šiam kūrėjui, pašalindami jį iš <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Vis dar galite nusiųsti įnašą dabar, bet nutraukti kasmėnesinį įnašų siuntimą šiam kūrėjui, pašalindami jį iš <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Įnašas nusiųstas!</translation>
 <translation id="1041398280582063935">Pasidalinkite savo parama</translation>
 <translation id="8855543392451028706">Sveiki atvykę! Vartotojai gali paremti turinio kūrėją išsiųsdami jiems įnašų. Tai yra padėkos būdas už kuriamą puikų turinį.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Prisijunkite prie <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Ačiū, kad remiate savo mėgstamus kūrėjus</translation>
 <translation id="3796032246917966749">Atrodo, kad, norėdami gauti „Brave Rewards“ atlygį, jūs esate atsijungę nuo <ph name="CUSTODIAN"/>. Norėdami tęsti, dar kartą prisijunkite.</translation>
-<translation id="594652923071049606">Šis kūrėjas dar nepatvirtintas „Brave“ kūrėjas. Kai jis bus patvirtintas, galėsite siųsti jam įnašus. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Šis kūrėjas dar nepatvirtintas kaip „Brave“ kūrėjas. Kai jis bus patvirtintas, galėsite siųsti jam įnašų. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Siųsti įnašą</translation>
 <translation id="1899434873745933492">Negalime nusiųsti jūsų įnašo</translation>
 <translation id="1794046983410841192">Naudoti „Brave Rewards“</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Priskirtas</translation>
 <translation id="4827581232860040208">Siunčiant jūsų įnašą iškilo problema</translation>
 <translation id="3259723213051400722">Bandykite dar kartą.</translation>
-<translation id="8899147737996487517">Šis kūrėjas yra užsiregistravęs „Brave“ ir gali gauti įnašus iš „Brave Rewards“ naudotojų.<ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Šis kūrėjas yra užsiregistravęs „Brave“ ir gali gauti įnašų iš „Brave“ atlygio naudotojų.<ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Esant išjungtiems pranešimams „Brave Rewards“ gali būti nepasiekiami.</translation>
 <translation id="4259212006412783790">ĮJUNGTI</translation>
 <translation id="6112331814131703370">Neberodyti pranešimo „Atidaryti programėlę“</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Importuoti žymes</translation>
 <translation id="1008186147501209563">Žymių eksportavimas</translation>
 <translation id="6680516947641001448">Pasirinkite failą, į kurį norite importuoti žymes</translation>
+<translation id="2353910600995338714">Eksportuota sėkmingai</translation>
+<translation id="229319993704311844">Žymės eksportuotos į <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Eksportuoti nepavyko</translation>
+<translation id="1166543535974380311">Žymių eksportuoti nepavyko. Bandykite dar kartą.</translation>
+<translation id="6154243540085290880">Importuota sėkmingai</translation>
 <translation id="7028125942261647795">Žymės importuotos sėkmingai.</translation>
-<translation id="444953779119381206">Žymės importavimas nepavyko.</translation>
-<translation id="6606836200439368332">Žymės eksportavimas nepavyko.</translation>
-<translation id="1395297034387418032">Žymės sėkmingai eksportuotos.</translation>
+<translation id="4803910478683254032">Importuoti nepavyko</translation>
+<translation id="8325139248201792113">Žymės importuoti nepavyko. Bandykite dar kartą.</translation>
+<translation id="2803313416453193357">Atidaryti aplanką</translation>
 <translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
 <translation id="7473245612074035141">Pradėti sąranką</translation>
 <translation id="8985635554450124959">Sinchronizavimo nustatyti nepavyko</translation>
@@ -396,6 +400,10 @@ Ar tikrai norite tai padaryti?</translation>
 
 Ar tikrai norite tai padaryti?</translation>
 <translation id="4550208292810542331">Leidimas naudoti kamerą nesuteiktas</translation>
+<translation id="6470233139461745039">Jei norite įjungti slaptažodžių sinchronizavimą, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
+<translation id="3063783274005996079">Atrakinkite, jei norite įjungti slaptažodžių sinchronizavimą</translation>
+<translation id="7551563084530025179">Prieš sinchronizuodami slaptažodžius turėsite patvirtinti savo tapatybę per įrenginį, naudodami biometrinius duomenis ar slaptažodį. Ši papildoma saugumo priemonė padeda apsaugoti jūsų slaptažodžius.</translation>
+<translation id="6925081665778864449">Norėdami sinchronizuoti slaptažodžius, savo „Android“ įrenginyje įjunkite tapatybės patvirtinimą naudojant biometrinius duomenis ar slaptažodį. Ši papildoma saugumo priemonė padeda apsaugoti jūsų slaptažodžius.</translation>
 <translation id="597993392929850353">„Brave“ licencija</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6199596294742117349">Tai inkognito skirtukas</translation>
@@ -432,7 +440,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="9096003370755878766">Išmokėti BAT, kuriuos anksčiau pridėjote į savo „Brave Rewards“ piniginę</translation>
 <translation id="1554282356558968486">Mūsų piniginės paslaugą teikia</translation>
 <translation id="6569877533335686968">„Uphold“</translation>
-<translation id="734105583050813665">„Bitflyer“</translation>
+<translation id="3439853736976204026">„bitFlyer“</translation>
 <translation id="8533411848724153701">„Gemini“</translation>
 <translation id="6011108706830742093">„ZebPay“</translation>
 <translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
@@ -1206,4 +1214,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6759710362319508545">Resursai</translation>
 <translation id="2471230424465522689">Ne anksčiau nei</translation>
 <translation id="4841860051609590575">Užklausos ID</translation>
+<translation id="1179407411385015942">„Leo“ yra dirbtinio intelekto pagrindu veikiantis išmanusis asistentas, integruotas tiesiai naršyklėje</translation>
+<translation id="1250335737108905610">Atkurti ir išvalyti „Leo“ duomenis</translation>
+<translation id="6165101586663336913">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite pasirinkti, kad norite naudoti „Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Išvalius jūsų pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Leo“. Šio veiksmo atšaukti negalima.</translation>
 </translationbundle>

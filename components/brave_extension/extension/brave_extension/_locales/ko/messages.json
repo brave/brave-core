@@ -1,7 +1,7 @@
 {
   "appName": {
     "message": "Brave 확장 프로그램",
-    "description": "The name of the the extension."
+    "description": "The name of the extension."
   },
   "shields": {
     "message": "보호",

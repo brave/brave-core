@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Kelola iklan</translation>
 <translation id="7630214457764713113">Salin tautan yang bersih</translation>
 <translation id="885805571521218129">Ini menggambarkan perkiraan rentang pendapatan Anda untuk Iklan Brave bulan ini.</translation>
-<translation id="818003031290137834">Kini, setelah Anda terhubung dengan ZebPay, setiap saldo yang sebelumnya telah Anda setorkan ke akun ZebPay Anda sebagai bagian dari pembayaran pendapatan Anda yang berikutnya. Setelah pembayaran itu diterima, Anda akan melihat BAT Anda yang terefleksikan di saldo Imbalan Anda.</translation>
 <translation id="3478449063771497234">Notifikasi dinonaktifkan</translation>
 <translation id="2862978891748913252">Pilih negara Anda</translation>
 <translation id="3970520675790340955">Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Anda hanya dapat mengirim maksimal <ph name="AMOUNT"/> BAT dengan menggunakan saldo Imbalan Brave Anda.</translation>
 <translation id="5012991400231464322">Kontribusi Bulanan</translation>
 <translation id="5907051927340164207">Anda sudah mengirim kontribusi bulanan untuk kreator ini</translation>
-<translation id="307555373157330047">Anda dapat tetap mengirimkan kontribusi saat ini, dan Anda dapat membatalkan kontribusi bulanan Anda untuk Kreator ini dengan menghapus mereka dari <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Anda dapat tetap mengirimkan kontribusi saat ini, dan Anda dapat membatalkan kontribusi bulanan Anda untuk Kreator ini dengan menghapus mereka dari <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Kontribusi telah dikirim!</translation>
 <translation id="1041398280582063935">Bagikan dukungan Anda</translation>
 <translation id="8855543392451028706">Selamat datang! Pengguna dapat mendukung kreator konten ini dengan mengirimi mereka kontribusi. Ini merupakan cara sangat baik untuk berterima kasih kepada mereka karena telah membuat konten yang bagus.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Masuk ke <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Terima kasih karena telah mendukung kreator favorit Anda</translation>
 <translation id="3796032246917966749">Sepertinya Anda telah keluar dari <ph name="CUSTODIAN"/> untuk Imbalan Brave. Masuklah lagi untuk melanjutkan.</translation>
-<translation id="594652923071049606">Kreator ini belum terverifikasi sebagai Kreator Brave. Anda akan dapat mengirimkan kontribusi kepada mereka setelah mereka terverifikasi. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Kreator ini belum terverifikasi sebagai Kreator Brave. Anda akan dapat mengirimkan kontribusi kepada mereka setelah mereka terverifikasi. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Kirim Kontribusi</translation>
 <translation id="1899434873745933492">Tidak dapat mengirimkan kontribusi Anda</translation>
 <translation id="1794046983410841192">Gunakan Imbalan Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Sesuaikan</translation>
 <translation id="4827581232860040208">Terjadi masalah saat mengirimkan kontribusi Anda</translation>
 <translation id="3259723213051400722">Coba lagi.</translation>
-<translation id="8899147737996487517">Kreator ini telah didaftarkan di Brave dan dapat menerima kontribusi dari pengguna Imbalan Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Kreator ini telah didaftarkan di Brave dan dapat menerima kontribusi dari pengguna Imbalan Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Imbalan Brave mungkin tidak berfungsi ketika notifikasi dinonaktifkan.</translation>
 <translation id="4259212006412783790">AKTIFKAN</translation>
 <translation id="6112331814131703370">Pemberitahuan Blokir 'Beralih ke Aplikasi'</translation>
@@ -368,10 +367,15 @@ Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika A
 <translation id="8457451314607652708">Impor bookmark</translation>
 <translation id="1008186147501209563">Ekspor bookmark</translation>
 <translation id="6680516947641001448">Pilih Berkas untuk Mengimpor markah</translation>
+<translation id="2353910600995338714">Ekspor berhasil</translation>
+<translation id="229319993704311844">Markah diekspor ke <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Ekspor gagal</translation>
+<translation id="1166543535974380311">Ekspor markah gagal. Silakan coba lagi.</translation>
+<translation id="6154243540085290880">Impor berhasil</translation>
 <translation id="7028125942261647795">Markah telah berhasil diimpor.</translation>
-<translation id="444953779119381206">Markah gagal diimpor.</translation>
-<translation id="6606836200439368332">Markah gagal diekspor.</translation>
-<translation id="1395297034387418032">Markah telah berhasil diekspor.</translation>
+<translation id="4803910478683254032">Impor gagal</translation>
+<translation id="8325139248201792113">Impor markah gagal. Silakan coba lagi.</translation>
+<translation id="2803313416453193357">Buka folder</translation>
 <translation id="3396347744975515056">Brave Sync telah ditingkatkan dan memerlukan penataan</translation>
 <translation id="7473245612074035141">Mulai Tata</translation>
 <translation id="8985635554450124959">Sinkronisasi tidak dapat diatur</translation>
@@ -392,6 +396,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 Harap lakukan pemeriksaan ulang bahwa kata kode ini dihasilkan oleh perangkat yang Anda miliki.
 Anda yakin ingin melakukan hal ini?</translation>
 <translation id="4550208292810542331">Izin kamera tidak diberikan</translation>
+<translation id="6470233139461745039">Untuk mengaktifkan sinkronisasi kata sandi, terlebih dahulu aturlah kunci layar di perangkat Anda.</translation>
+<translation id="3063783274005996079">Buka kunci untuk mengaktifkan sinkronisasi kata sandi</translation>
+<translation id="7551563084530025179">Sebelum Anda menyinkronkan kata sandi, Anda perlu mengautentikasinya dengan biometrik/kode sandi perangkat Anda. Langkah keamanan tambahan ini membantu menjaga agar kata sandi Anda tetap aman.</translation>
+<translation id="6925081665778864449">Untuk menyinkronkan kata sandi, harap aktifkan autentikasi biometrik/kode sandi pada perangkat Android Anda. Langkah keamanan tambahan ini membantu menjaga agar kata sandi Anda tetap aman.</translation>
 <translation id="597993392929850353">Lisensi Brave</translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
 <translation id="6199596294742117349">Ini adalah Tab Pribadi</translation>
@@ -428,7 +436,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="9096003370755878766">Tarik BAT yang mungkin sudah pernah Anda masukkan ke dompet Imbalan Brave Anda</translation>
 <translation id="1554282356558968486">Layanan dompet kami disediakan oleh</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
@@ -1202,4 +1210,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6759710362319508545">Referensi</translation>
 <translation id="2471230424465522689">Tidak berlaku sebelum</translation>
 <translation id="4841860051609590575">ID Permintaan</translation>
+<translation id="1179407411385015942">Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban</translation>
+<translation id="1250335737108905610">Atur ulang dan hapus data Leo</translation>
+<translation id="6165101586663336913">Mengatur ulang asisten Leo akan mensyaratkan Anda untuk menyetujui penggunaan Leo untuk selanjutnya dan juga akan menghapus riwayat obrolan Anda. Menghapus
+riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo. Tindakan ini tidak dapat dibatalkan.</translation>
 </translationbundle>
