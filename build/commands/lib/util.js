@@ -549,11 +549,30 @@ const util = {
   // So, this copying in every build doesn't affect compile performance.
   updateMidlFiles: () => {
     Log.progressScope('update midl files', () => {
-      for (const source of ["google_update", "brave", "chrome"]) {
-        fs.copySync(
-          path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
-          path.join(config.srcDir,
-                    'third_party', 'win_build_output', 'midl', source))
+      const files = fs.readdirSync(path.join(
+          config.braveCoreDir,
+          'win_build_output', 'midl'))
+      for (const file of files) {
+        const srcFile = path.join(config.braveCoreDir,
+            'win_build_output',
+            'midl', file)
+        const dstFile = path.join(config.srcDir,
+            'third_party',
+            'win_build_output', 'midl', file)
+        try {
+          const stat = fs.lstatSync(srcFile);
+          // only copy the directories here
+          // they each have a structure with x86/x64/arm64 versions of the files
+          if (stat.isDirectory()) {
+            fs.copySync(srcFile, dstFile)
+          }
+        } catch (e) {
+          throw new Error('error copying file \"' +
+              srcFile + "\"  to \"" +
+              dstFile + "\"", {
+                cause: e
+              })
+        }
       }
     })
   },
