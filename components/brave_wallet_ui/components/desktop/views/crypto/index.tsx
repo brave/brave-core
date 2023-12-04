@@ -22,6 +22,9 @@ import {
 import { WalletSelectors, UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
+  useGetDefaultEthereumWalletQuery,
+  useGetDefaultSolanaWalletQuery,
+  useGetIsMetaMaskInstalledQuery,
   useGetIsWalletBackedUpQuery //
 } from '../../../../common/slices/api.slice'
 
@@ -66,15 +69,6 @@ export interface Props {
 
 export const CryptoView = ({ sessionRoute }: Props) => {
   // redux
-  const defaultEthereumWallet = useSafeWalletSelector(
-    WalletSelectors.defaultEthereumWallet
-  )
-  const defaultSolanaWallet = useSafeWalletSelector(
-    WalletSelectors.defaultSolanaWallet
-  )
-  const isMetaMaskInstalled = useSafeWalletSelector(
-    WalletSelectors.isMetaMaskInstalled
-  )
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
   )
@@ -85,6 +79,9 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   )
 
   // queries
+  const { data: isMetaMaskInstalled } = useGetIsMetaMaskInstalledQuery()
+  const { data: defaultEthereumWallet } = useGetDefaultEthereumWalletQuery()
+  const { data: defaultSolanaWallet } = useGetDefaultSolanaWalletQuery()
   const {
     data: isWalletBackedUp = false,
     isLoading: isCheckingWalletBackupStatus
@@ -156,7 +153,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       (defaultEthereumWallet ===
         BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
         isMetaMaskInstalled)) &&
-    isDefaultWalletBannerDismissed
+    !isDefaultWalletBannerDismissed
 
   // memos
   const banners = React.useMemo(

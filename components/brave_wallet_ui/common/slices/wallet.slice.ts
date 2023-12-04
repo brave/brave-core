@@ -16,8 +16,6 @@ import {
 import {
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
-  DefaultEthereumWalletChanged,
-  DefaultSolanaWalletChanged,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
   UpdateUsetAssetType
@@ -63,14 +61,11 @@ const defaultState: WalletState = {
         )
       : BraveWallet.AssetPriceTimeframe.OneDay,
   addUserAssetError: false,
-  defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
-  defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
     eTldPlusOne: '',
     originSpec: ''
   },
   gasEstimates: undefined,
-  isMetaMaskInstalled: false,
   selectedNetworkFilter: parseJSONFromLocalStorage(
     'PORTFOLIO_NETWORK_FILTER_OPTION',
     AllNetworksOptionDefault
@@ -159,12 +154,6 @@ export const WalletAsyncActions = {
   selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
     'selectPortfolioTimeline'
   ),
-  defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>(
-    'defaultEthereumWalletChanged'
-  ), // refreshWalletInfo
-  defaultSolanaWalletChanged: createAction<DefaultSolanaWalletChanged>(
-    'defaultSolanaWalletChanged'
-  ), // refreshWalletInfo
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged'
   ), // refreshWalletInfo
@@ -212,20 +201,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.addUserAssetError = payload
-      },
-
-      defaultEthereumWalletUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.DefaultWallet>
-      ) {
-        state.defaultEthereumWallet = payload
-      },
-
-      defaultSolanaWalletUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.DefaultWallet>
-      ) {
-        state.defaultSolanaWallet = payload
       },
 
       hasIncorrectPassword(
@@ -284,13 +259,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) {
         state.hasFeeEstimatesError = false
         state.gasEstimates = payload
-      },
-
-      setMetaMaskInstalled(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.isMetaMaskInstalled = payload
       },
 
       setPasswordAttempts(

@@ -9,17 +9,11 @@ type State = Omit<WalletPageState, 'page'>
 
 // safe selectors (primitive return types only)
 export const addUserAssetError = ({ wallet }: State) => wallet.addUserAssetError
-export const defaultEthereumWallet = ({ wallet }: State) =>
-  wallet.defaultEthereumWallet
-export const defaultSolanaWallet = ({ wallet }: State) =>
-  wallet.defaultSolanaWallet
 export const hasIncorrectPassword = ({ wallet }: State) =>
   wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
-export const isMetaMaskInstalled = ({ wallet }: State) =>
-  wallet.isMetaMaskInstalled
 export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
 export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts

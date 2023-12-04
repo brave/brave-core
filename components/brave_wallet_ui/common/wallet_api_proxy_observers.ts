@@ -178,13 +178,14 @@ export function makeBraveWalletServiceObserver(store: Store) {
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(
-          WalletActions.defaultEthereumWalletChanged({ defaultWallet })
+          walletApi.util.invalidateTags([
+            'DefaultEthWallet',
+            'IsMetaMaskInstalled'
+          ])
         )
       },
       onDefaultSolanaWalletChanged: function (defaultWallet) {
-        store.dispatch(
-          WalletActions.defaultSolanaWalletChanged({ defaultWallet })
-        )
+        store.dispatch(walletApi.util.invalidateTags(['DefaultSolWallet']))
       },
       onDefaultBaseCurrencyChanged: function (currency) {
         store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))
