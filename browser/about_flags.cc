@@ -382,6 +382,13 @@
           "Updates the look and feel or horizontal tabs",                 \
           kOsWin | kOsMac | kOsLinux,                                     \
           FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate), \
+      },                                                                  \
+      {                                                                   \
+          "brave-vertical-tab-scroll-bar",                                \
+          "Show scroll bar on vertical tab strip",                        \
+          "Shows scroll bar on vertical tab strip when it overflows",     \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES

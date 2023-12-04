@@ -13,6 +13,7 @@
 
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -23,6 +24,10 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_utils.h"
+
+#if !BUILDFLAG(IS_MAC)
+#include "ui/views/controls/scrollbar/scroll_bar_views.h"
+#endif  // !BUILDFLAG(IS_MAC)
 
 namespace {
 class ContentsView : public views::View {
@@ -58,11 +63,22 @@ class CustomScrollView : public views::ScrollView {
   CustomScrollView()
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
     SetDrawOverflowIndicator(false);
-    SetVerticalScrollBarMode(
-        views::ScrollView::ScrollBarMode::kHiddenButEnabled);
     SetHorizontalScrollBarMode(views::ScrollView::ScrollBarMode::kDisabled);
-    SetVerticalScrollBar(
-        std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
+
+    if (base::FeatureList::IsEnabled(
+            tabs::features::kBraveVerticalTabScrollBar)) {
+      SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
+      // We can't use ScrollBarViews on Mac
+#if !BUILDFLAG(IS_MAC)
+      SetVerticalScrollBar(
+          std::make_unique<views::ScrollBarViews>(/* horizontal= */ false));
+#endif
+    } else {
+      SetVerticalScrollBarMode(
+          views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+      SetVerticalScrollBar(
+          std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
+    }
   }
   ~CustomScrollView() override = default;
 
@@ -97,8 +113,15 @@ void BraveCompoundTabContainer::SetAvailableWidthCallback(
       available_width_callback) {
     pinned_tab_container_->SetAvailableWidthCallback(
         base::BindRepeating(&views::View::width, base::Unretained(this)));
-    unpinned_tab_container_->SetAvailableWidthCallback(
-        base::BindRepeating(&views::View::width, base::Unretained(this)));
+    if (base::FeatureList::IsEnabled(
+            tabs::features::kBraveVerticalTabScrollBar)) {
+      unpinned_tab_container_->SetAvailableWidthCallback(base::BindRepeating(
+          &BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar,
+          base::Unretained(this)));
+    } else {
+      unpinned_tab_container_->SetAvailableWidthCallback(
+          base::BindRepeating(&views::View::width, base::Unretained(this)));
+    }
     return;
   }
 
@@ -395,6 +418,22 @@ void BraveCompoundTabContainer::SetActiveTab(
   }
 }
 
+views::View* BraveCompoundTabContainer::TargetForRect(views::View* root,
+                                                      const gfx::Rect& rect) {
+  if (base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabScrollBar) &&
+      scroll_view_) {
+    auto* scroll_bar = scroll_view_->vertical_scroll_bar();
+    const gfx::Rect rect_in_scroll_bar =
+        views::View::ConvertRectToTarget(root, scroll_bar, rect);
+    if (scroll_bar->GetLocalBounds().Contains(rect_in_scroll_bar)) {
+      return scroll_bar->GetEventHandlerForRect(rect_in_scroll_bar);
+    }
+  }
+
+  return CompoundTabContainer::TargetForRect(root, rect);
+}
+
 TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
     gfx::Point point_in_local_coords) const {
   if (!ShouldShowVerticalTabs()) {
@@ -486,6 +525,18 @@ void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
                                 tab_bounds_in_contents_view.bottom() +
                                 tabs::kMarginForVerticalTabContainers))});
   }
+}
+
+int BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar() {
+  CHECK(
+      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabScrollBar));
+  if (scroll_view_) {
+    auto* scroll_bar = scroll_view_->vertical_scroll_bar();
+    if (scroll_bar->GetVisible()) {
+      return width() - scroll_view_->GetScrollBarLayoutWidth();
+    }
+  }
+  return width();
 }
 
 BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)
