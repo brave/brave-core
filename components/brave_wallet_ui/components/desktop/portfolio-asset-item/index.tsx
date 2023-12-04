@@ -4,11 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Options
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import Amount from '../../../utils/amount'
@@ -25,7 +24,10 @@ import {
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Hooks
-import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery
+} from '../../../common/slices/api.slice'
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
@@ -83,12 +85,8 @@ export const PortfolioAssetItem = ({
   spotPrice,
   account
 }: Props) => {
-  // redux
-  const defaultCurrencies = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies
-  )
-
   // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // state
@@ -122,9 +120,7 @@ export const PortfolioAssetItem = ({
       .times(spotPrice)
   }, [spotPrice, assetBalance, token.chainId])
 
-  const formattedFiatBalance = React.useMemo(() => {
-    return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
-  }, [fiatBalance, defaultCurrencies.fiat])
+  const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
   const isLoading = formattedAssetBalance === '' && !isNonFungibleToken
 

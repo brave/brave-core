@@ -367,7 +367,6 @@ const transactionList = [
 ]
 
 const mockCustomStoreState: Partial<WalletState> = {
-  defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo
 }
@@ -421,7 +420,6 @@ export const _ConfirmErcApproveTransaction = () => {
         store={createMockStore(
           {
             walletStateOverride: {
-              defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
               fullTokenList: mockNewAssetOptions
             },
             uiStateOverride: {

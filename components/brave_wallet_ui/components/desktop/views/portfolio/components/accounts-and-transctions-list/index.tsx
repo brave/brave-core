@@ -55,13 +55,13 @@ import {
 
 // Hooks
 import {
-  useUnsafeWalletSelector,
-  useSafeWalletSelector
+  useSafeWalletSelector //
 } from '../../../../../../common/hooks/use-safe-selector'
 import {
   useMultiChainSellAssets //
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetRewardsBalanceQuery,
   useGetSelectedChainQuery
@@ -112,14 +112,12 @@ export const AccountsAndTransactionsList = ({
   const dispatch = useDispatch()
 
   // unsafe selectors
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
   const hidePortfolioBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioBalances
   )
 
   // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
@@ -274,7 +272,7 @@ export const AccountsAndTransactionsList = ({
                             >
                               {'(' +
                                 fullAssetFiatBalance.formatAsFiat(
-                                  defaultCurrencies.fiat
+                                  defaultFiatCurrency
                                 ) +
                                 ')'}
                             </Text>
@@ -303,7 +301,6 @@ export const AccountsAndTransactionsList = ({
                     <PortfolioAccountItem
                       key={account.accountId.uniqueKey}
                       asset={selectedAsset}
-                      defaultCurrencies={defaultCurrencies}
                       account={account}
                       assetBalance={
                         isRewardsToken && rewardsBalance

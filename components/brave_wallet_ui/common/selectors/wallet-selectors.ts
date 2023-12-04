@@ -13,10 +13,6 @@ export const defaultEthereumWallet = ({ wallet }: State) =>
   wallet.defaultEthereumWallet
 export const defaultSolanaWallet = ({ wallet }: State) =>
   wallet.defaultSolanaWallet
-export const defaultCryptocurrency = ({ wallet }: State) =>
-  wallet.defaultCurrencies.crypto
-export const defaultFiatCurrency = ({ wallet }: State) =>
-  wallet.defaultCurrencies.fiat
 export const hasIncorrectPassword = ({ wallet }: State) =>
   wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
@@ -63,7 +59,6 @@ export const allowNewWalletFilecoinAccount = ({ wallet }: State) =>
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const selectedAssetFilter = ({ wallet }: State) =>

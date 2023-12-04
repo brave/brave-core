@@ -34,6 +34,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 
 // hooks
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetOnRampAssetsQuery,
   useGetOnRampFiatCurrenciesQuery,
@@ -149,14 +150,13 @@ function AssetSelection({ isAndroid }: Props) {
   // redux
   const dispatch = useDispatch()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const defaultCurrencies = useSelector(WalletSelectors.defaultCurrencies)
   const selectedOnRampAssetId = useSelector(
     WalletSelectors.selectedOnRampAssetId
   )
 
   // state
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(
-    currencyCode || defaultCurrencies.fiat.toUpperCase() || 'USD'
+    currencyCode || 'USD'
   )
   const [searchValue, setSearchValue] = React.useState<string>(
     searchParam ?? ''
@@ -175,6 +175,14 @@ function AssetSelection({ isAndroid }: Props) {
     )
 
   // queries
+  const { data: defaultFiatCurrency = 'USD' } = useGetDefaultFiatCurrencyQuery(
+    undefined,
+    {
+      selectFromResult: (res) => ({
+        data: res.data?.toUpperCase()
+      })
+    }
+  )
   const { data: buyAssetNetworks = [] } = useGetOnRampNetworksQuery()
   const { data: selectedNetworkFromFilter = AllNetworksOption } =
     useGetNetworkQuery(
@@ -321,6 +329,13 @@ function AssetSelection({ isAndroid }: Props) {
     }
   }, [selectedOnRampAssetId, getRefsMap, scrollIntoView])
 
+  React.useEffect(() => {
+    // initialize selected currency
+    if (defaultFiatCurrency) {
+      setSelectedCurrency(defaultFiatCurrency)
+    }
+  }, [defaultFiatCurrency])
+
   // render
   if (showFiatSelection) {
     return (
@@ -366,7 +381,6 @@ function AssetSelection({ isAndroid }: Props) {
         <SelectAssetWrapper>
           <Row marginBottom={8}>
             <SwapInputComponent
-              defaultCurrencies={defaultCurrencies}
               componentType='buyAmount'
               onInputChange={setBuyAmount}
               selectedAssetInputAmount={buyAmount}

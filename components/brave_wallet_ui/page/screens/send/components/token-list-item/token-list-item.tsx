@@ -6,10 +6,6 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-// Selectors
-import { WalletSelectors } from '../../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
-
 // Types
 import { BraveWallet } from '../../../../../constants/types'
 
@@ -18,7 +14,10 @@ import { getLocale } from '../../../../../../common/locale'
 import Amount from '../../../../../utils/amount'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
-import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery
+} from '../../../../../common/slices/api.slice'
 
 // Components
 import {
@@ -55,13 +54,9 @@ const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 export const TokenListItem = (props: Props) => {
   const { onClick, token, balance, spotPrice } = props
 
-  // Wallet Selectors
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
-
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   const fiatBalance = React.useMemo(() => {
     return new Amount(balance).divideByDecimals(token.decimals).times(spotPrice)
@@ -74,9 +69,7 @@ export const TokenListItem = (props: Props) => {
     token.chainId
   ])
 
-  const formattedFiatBalance = React.useMemo(() => {
-    return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
-  }, [fiatBalance, defaultCurrencies.fiat])
+  const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
   const networkDescription = React.useMemo(() => {
     if (tokensNetwork) {

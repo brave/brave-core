@@ -16,6 +16,9 @@ import {
   useSafeWalletSelector //
 } from '../../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../../common/selectors'
+import {
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // style
 import { Column } from '../../../../../shared/style'
@@ -35,9 +38,9 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
   const hidePortfolioBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioBalances
   )
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
+
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // memos
   const encodedPriceData = React.useMemo(() => {

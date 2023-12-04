@@ -14,10 +14,12 @@ import { WalletSelectors } from '../../../common/selectors'
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useExplorer } from '../../../common/hooks/explorer'
-import { useGetAddressByteCodeQuery } from '../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useGetAddressByteCodeQuery,
+  useGetDefaultFiatCurrencyQuery
+} from '../../../common/slices/api.slice'
+import {
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
 // Components
@@ -92,9 +94,9 @@ const onClickLearnMore = () => {
 export const ConfirmTransactionPanel = () => {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
+
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // custom hooks
   const {

@@ -186,14 +186,7 @@ handler.on(
       }
     )
     const braveWalletService = getAPIProxy().braveWalletService
-    const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
-    const defaultCrypto =
-      await braveWalletService.getDefaultBaseCryptocurrency()
-    const defaultCurrencies = {
-      fiat: defaultFiat.currency,
-      crypto: defaultCrypto.cryptocurrency
-    }
-    store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
+    store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
     // Fetch Balances and Prices
     if (!state.isWalletLocked && state.isWalletCreated) {
       // refresh networks registry & selected network

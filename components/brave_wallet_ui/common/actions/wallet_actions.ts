@@ -14,7 +14,6 @@ export const {
   backedUp,
   defaultBaseCryptocurrencyChanged,
   defaultBaseCurrencyChanged,
-  defaultCurrenciesUpdated,
   defaultEthereumWalletChanged,
   defaultEthereumWalletUpdated,
   defaultSolanaWalletChanged,

@@ -25,7 +25,6 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 // constants
 import {
   BraveWallet,
-  DefaultCurrencies,
   MarketAssetFilterOption,
   MarketGridColumnTypes,
   SortOrder
@@ -85,8 +84,7 @@ const App = () => {
   const [depositableAssets, setDepositableAssets] = React.useState<
     BraveWallet.BlockchainToken[]
   >([])
-  const [defaultCurrencies, setDefaultCurrencies] =
-    React.useState<DefaultCurrencies>()
+  const [defaultFiatCurrency, setDefaultFiatCurrency] = React.useState<string>()
 
   // Constants
   const origin =
@@ -178,7 +176,7 @@ const App = () => {
           case MarketUiCommand.UpdateCoinMarkets: {
             const { payload } = message as UpdateCoinMarketMessage
             setCoinMarkets(payload.coins)
-            setDefaultCurrencies(payload.defaultCurrencies)
+            setDefaultFiatCurrency(payload.defaultFiatCurrency)
             break
           }
 
@@ -255,7 +253,7 @@ const App = () => {
             headers={marketGridHeaders}
             coinMarketData={visibleCoinMarkets}
             showEmptyState={visibleCoinMarkets.length === 0}
-            fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
+            fiatCurrency={defaultFiatCurrency || 'USD'}
             sortedBy={sortByColumnId}
             sortOrder={sortOrder}
             onSelectCoinMarket={onSelectCoinMarket}

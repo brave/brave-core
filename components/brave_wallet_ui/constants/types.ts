@@ -176,11 +176,6 @@ export interface ImportWalletError {
   errorMessage?: string
 }
 
-export interface DefaultCurrencies {
-  fiat: string
-  crypto: string
-}
-
 export interface SolFeeEstimates {
   fee: bigint
 }
@@ -215,7 +210,6 @@ export interface WalletState {
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
   isMetaMaskInstalled: boolean
-  defaultCurrencies: DefaultCurrencies
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string

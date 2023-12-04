@@ -7,7 +7,6 @@ import {
   BraveWallet,
   WalletState,
   WalletInitializedPayload,
-  DefaultCurrencies,
   SolFeeEstimates,
   NetworkFilterType,
   RefreshOpts,
@@ -72,10 +71,6 @@ const defaultState: WalletState = {
   },
   gasEstimates: undefined,
   isMetaMaskInstalled: false,
-  defaultCurrencies: {
-    fiat: '',
-    crypto: ''
-  },
   selectedNetworkFilter: parseJSONFromLocalStorage(
     'PORTFOLIO_NETWORK_FILTER_OPTION',
     AllNetworksOptionDefault
@@ -217,13 +212,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.addUserAssetError = payload
-      },
-
-      defaultCurrenciesUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<DefaultCurrencies>
-      ) {
-        state.defaultCurrencies = payload
       },
 
       defaultEthereumWalletUpdated(

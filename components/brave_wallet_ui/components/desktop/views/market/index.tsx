@@ -59,16 +59,12 @@ export const MarketView = () => {
   const fullTokenList = useSelector(
     ({ wallet }: { wallet: WalletState }) => wallet.fullTokenList
   )
-  const defaultCurrencies = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies
-  )
 
   // Hooks
   const history = useHistory()
 
   // Queries
-  const { data: defaultFiatCurrency = defaultCurrency } =
-    useGetDefaultFiatCurrencyQuery()
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
     selectFromResult: (res) => ({
@@ -154,7 +150,7 @@ export const MarketView = () => {
       command: MarketUiCommand.UpdateCoinMarkets,
       payload: {
         coins: allCoins,
-        defaultCurrencies
+        defaultFiatCurrency
       }
     }
     sendMessageToMarketUiFrame(
@@ -194,7 +190,7 @@ export const MarketView = () => {
     allCoins,
     buyAssets,
     fullTokenList,
-    defaultCurrencies
+    defaultCurrency
   ])
 
   React.useEffect(() => {

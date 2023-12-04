@@ -8,8 +8,9 @@ import * as React from 'react'
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import {
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../common/slices/api.slice'
 
 // types
 import type { ParsedTransaction } from '../../../utils/tx-utils'
@@ -46,10 +47,8 @@ export const Erc20ApproveTransactionInfo = ({
   insufficientFundsError,
   insufficientFundsForGasError
 }: Erc20TransactionInfoProps) => {
-  // redux
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // exit early if no details
   if (!transactionDetails) {
