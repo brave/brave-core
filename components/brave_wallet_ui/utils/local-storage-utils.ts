@@ -70,6 +70,8 @@ export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
   return (
     panelType === 'connectWithSite' ||
     panelType === 'signData' ||
+    panelType === 'signAllTransactions' ||
+    panelType === 'signTransaction' ||
     panelType === 'addEthereumChain'
   )
 }
