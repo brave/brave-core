@@ -11,6 +11,7 @@ import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
 import ButtonReact from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale';
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
@@ -76,6 +77,8 @@ export default function FeedV2() {
       <FeedNavigation />
     </SidebarContainer>
     <Feed feed={feedV2} />
-    <CustomizeButton kind='outline' onClick={() => setCustomizePage('news')}>Customize</CustomizeButton>
+    <CustomizeButton kind='outline' onClick={() => setCustomizePage('news')}>
+      {getLocale('braveNewsCustomizeFeed')}
+    </CustomizeButton>
   </Root>
 }

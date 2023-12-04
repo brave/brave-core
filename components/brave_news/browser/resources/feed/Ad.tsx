@@ -14,6 +14,7 @@ import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title } from './Card';
+import { getLocale } from '$web-common/locale';
 
 interface Props {
   info: FeedV2Ad
@@ -107,7 +108,7 @@ export default function Advert(props: Props) {
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
     <LargeImage src={imageUrl} />
     <MetaInfoContainer>
-      <BatAdLabel onClick={e => e.stopPropagation()} href="brave://rewards">Ad</BatAdLabel>
+      <BatAdLabel onClick={e => e.stopPropagation()} href="brave://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
       •
       {' ' + advert.description}
     </MetaInfoContainer>

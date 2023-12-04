@@ -13,6 +13,7 @@ import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
 import Variables from './Variables';
+import { getLocale } from '$web-common/locale'
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -107,7 +108,7 @@ export default function Peek() {
   return <Container>
     <NewsButton onClick={scrollToNews}>
       <Icon name='news-default' />
-      News
+      {getLocale('braveNewsNewsPeek')}
       <Icon name='carat-down' />
     </NewsButton>
     <PeekingCard onClick={scrollToNews}>
