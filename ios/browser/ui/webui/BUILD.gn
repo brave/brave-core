@@ -1,0 +1,36 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("webui") {
+  sources = [
+    "brave_web_ui_controller_factory.h",
+    "brave_web_ui_controller_factory.mm",
+    "brave_webui_source.h",
+    "brave_webui_source.mm",
+  ]
+
+  deps = [
+    "//brave/components/constants",
+    "//brave/components/webui",
+    "//components/prefs",
+    "//components/profile_metrics",
+    "//components/resources",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/ui/webui",
+    "//ios/chrome/browser/ui/webui:webui_internal",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public/webui",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+  ]
+}

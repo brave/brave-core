@@ -43,6 +43,7 @@
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
@@ -220,7 +221,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebUI (Sync Internals and other WebViews)
     web::WebUIIOSControllerFactory::RegisterFactory(
-        ChromeWebUIIOSControllerFactory::GetInstance());
+        BraveWebUIControllerFactory::GetInstance());
 
     // Setup Component Updater
     component_updater::ComponentUpdateService* cus =
@@ -470,9 +471,8 @@ static bool CustomLogHandler(int severity,
 - (BraveP3AUtils*)p3aUtils {
   if (!_p3aUtils) {
     _p3aUtils = [[BraveP3AUtils alloc]
-        initWithBrowserState:_mainBrowserState
-                  localState:GetApplicationContext()->GetLocalState()
-                  p3aService:_p3a_service];
+        initWithLocalState:GetApplicationContext()->GetLocalState()
+                p3aService:_p3a_service];
   }
   return _p3aUtils;
 }

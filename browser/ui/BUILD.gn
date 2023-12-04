@@ -564,6 +564,7 @@ source_set("ui") {
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
     "//brave/components/vector_icons",
+    "//brave/components/webui",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",

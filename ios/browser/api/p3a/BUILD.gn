@@ -5,9 +5,6 @@
 
 source_set("p3a") {
   sources = [
-    "brave_histograms_controller+private.h",
-    "brave_histograms_controller.h",
-    "brave_histograms_controller.mm",
     "brave_p3a_utils+private.h",
     "brave_p3a_utils.h",
     "brave_p3a_utils.mm",
