@@ -1,72 +1,96 @@
 const path = require('path')
 const webpack = require('webpack')
 const fs = require('fs')
-const { fallback, provideNodeGlobals } = require('../components/webpack/polyfill')
+const {
+  fallback,
+  provideNodeGlobals
+} = require('../components/webpack/polyfill')
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
-function getBuildOuptutPathList(buildOutputRelativePath) {
-  return buildConfigs.flatMap((config) => [
-    path.resolve(__dirname, `../../out/${config}/${buildOutputRelativePath}`),
-    ...extraArchitectures.map((arch) =>
-      path.resolve(
-        __dirname,
-        `../../out/${config}_${arch}/${buildOutputRelativePath}`
-      )
-    )
-  ])
+// Choose which build path to use
+function getActiveBuildPath() {
+  /**
+   * @typedef PathWithStat
+   * @type {object}
+   * @property {string} path
+   * @property {fs.Stats} stat
+   */
+  /**
+   * @type {PathWithStat}
+   */
+  let latestExisting
+  function checkPath(path) {
+    const stat = fs.statSync(path, {throwIfNoEntry: false})
+    if (stat?.isDirectory) {
+      if (
+        !latestExisting ||
+        stat.mtime.getTime() > latestExisting.stat.mtime.getTime()
+      ) {
+        latestExisting = { path, stat }
+      }
+    }
+  }
+  for (const config of buildConfigs) {
+    const base = path.resolve(__dirname, '..', '..', 'out')
+    checkPath(path.join(base, config))
+    for (const arch of extraArchitectures) {
+      checkPath(path.join(base, `${config}_${arch}`))
+    }
+  }
+  return latestExisting?.path
 }
 
-// Mock ROOT_GEN_DIR as 'gen' - it will be replaced with an array from
-// getBuildOutputPathList.
-process.env.ROOT_GEN_DIR = 'gen'
-const basePathMap = require('../components/webpack/path-map')
-
-// Override the path map we use in the browser with some additional mock
-// directories, so that we can replace things in Storybook.
-const pathMap = {
-  ...basePathMap,
-  gen: [
-    // Mock chromium code where possible
-    path.resolve(__dirname, 'gen-mock'),
-    ...getBuildOuptutPathList(process.env.ROOT_GEN_DIR)
-  ],
-  ...Object.keys(basePathMap).filter(k => k.startsWith('chrome://')).reduce((prev, next) => ({
-    ...prev,
-    [next]: getBuildOuptutPathList(basePathMap[next])
-  }))
+const buildPath = getActiveBuildPath()
+if (!buildPath) {
+  throw new Error('Could not establish active build path')
 }
+console.log('Using build path at: ', buildPath)
+process.env.ROOT_GEN_DIR = path.join(buildPath, 'gen')
+const pathMap = require('../components/webpack/path-map')
 
 // As we mock some chrome://resources, insert our mock directory as the first
 // place to look.
-pathMap['chrome://resources'].unshift(path.resolve(__dirname, 'chrome-resources-mock'))
+pathMap['gen'] = [
+  path.resolve(__dirname, 'gen-mock'),
+  pathMap['gen']
+]
+pathMap['chrome://resources'] = [
+  path.resolve(__dirname, 'chrome-resources-mock'),
+  pathMap['chrome://resources']
+]
 
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
  * support for scheme prefixes (like chrome://)
- * 
+ *
  * Note: This prefixReplacer is slightly different from the one we use in proper
  * builds, as it takes the first match from any build folder, rather than
  * specifying one - we don't know what the user built last, so we just see what
  * we can find.
- * 
+ *
  * This isn't perfect, and in future it'd be good to pass the build folder in
  * via an environment variable. For now though, this works well.
  * @param {string} prefix The prefix
- * @param {string[]} replacements The real path options
+ * @param {string[]} replacement The real path
  */
-const prefixReplacer = (prefix, replacements) => {
+const prefixReplacer = (prefix, replacement) => {
   const regex = new RegExp(`^${prefix}/(.*)`)
-  return new webpack.NormalModuleReplacementPlugin(regex, resource => {
+  return new webpack.NormalModuleReplacementPlugin(regex, (resource) => {
     resource.request = resource.request.replace(regex, (_, subpath) => {
       if (!subpath) {
-        throw new Error("Subpath is undefined")
+        throw new Error('Subpath is undefined')
+      }
+      let match = replacement
+      if (Array.isArray(replacement)) {
+        match = replacement.find((r) => fs.existsSync(require.resolve(path.join(r, subpath))))
+        if (!match) {
+          throw new Error('Could not find path that exists with first entry', replacement[0])
+        }
       }
 
-      const match = replacements.find((r) => fs.existsSync(require.resolve(path.join(r, subpath)))) ?? replacements[0]
-      const result = path.join(match, subpath)
-      return result
+      return path.join(match, subpath)
     })
   })
 }
@@ -124,11 +148,13 @@ module.exports = async ({ config, mode }) => {
 
   config.resolve.alias = pathMap
   config.resolve.fallback = fallback
-
-  config.plugins.push(provideNodeGlobals,
+  config.plugins.push(
+    provideNodeGlobals,
     ...Object.keys(pathMap)
       .filter(prefix => prefix.startsWith('chrome://'))
-      .map(prefix => prefixReplacer(prefix, getBuildOuptutPathList(basePathMap[prefix]))))
+      .map((prefix) =>
+        prefixReplacer(prefix, pathMap[prefix]))
+  )
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }
