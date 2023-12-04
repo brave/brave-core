@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Urus iklan</translation>
 <translation id="7630214457764713113">Salin pautan bersih</translation>
 <translation id="885805571521218129">Ini menggambarkan anggaran julat pendapatan anda untuk Iklan Brave bulan ini.</translation>
-<translation id="818003031290137834">Memandangkan anda bersambung dengan ZebPay, sebarang baki terdahulu yang anda miliki akan dimasukkan dalam akaun ZebPay anda sebagai sebahagian daripada pembayaran pendapatan anda yang seterusnya. Sebaik sahaja ia tiba, anda akan dapat lihat BAT anda ditunjukkan dalam baki Ganjaran anda.</translation>
 <translation id="3478449063771497234">Pemberitahuan dinyahdayakan</translation>
 <translation id="2862978891748913252">Pilih negara anda</translation>
 <translation id="3970520675790340955">Pilih negara anda supaya kami boleh menunjukkan pilihan dan iklan yang sesuai untuk rantau anda.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Anda hanya boleh menghantar hingga <ph name="AMOUNT"/> BAT menggunakan baki Ganjaran Brave anda.</translation>
 <translation id="5012991400231464322">Sumbangan Bulanan</translation>
 <translation id="5907051927340164207">Anda telah menghantar sumbangan bulanan kepada pencipta ini</translation>
-<translation id="307555373157330047">Anda masih boleh menghantar sumbangan sekarang, dan anda boleh membatalkan sumbangan bulanan anda kepada Pencipta ini dengan mengalih keluar mereka daripada <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Anda masih boleh menghantar sumbangan sekarang dan anda boleh membatalkan sumbangan bulanan anda kepada pencipta ini dengan mengalih keluar pencipta daripada <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Sumbangan dihantar!</translation>
 <translation id="1041398280582063935">Kongsikan sokongan anda</translation>
 <translation id="8855543392451028706">Selamat datang! Pengguna boleh menyokong pencipta kandungan ini dengan menghantar sumbangan. Itu merupakan cara untuk menghargai mereka atas penghasilan kandungan yang hebat.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Log masuk ke <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Terima kasih kerana menyokong pencipta kegemaran anda</translation>
 <translation id="3796032246917966749">Nampaknya anda telah log keluar daripada <ph name="CUSTODIAN"/> untuk Ganjaran Brave. Log masuk sekali lagi untuk teruskan.</translation>
-<translation id="594652923071049606">Pencipta ini belum ditentusahkan oleh Pencipta Brave. Anda boleh menghantar sumbangan kepada mereka sebaik sahaja mereka ditentusahkan. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Pencipta ini belum lagi disahkan dengan Pencipta Brave. Anda akan dapat menghantar sumbangan kepada mereka setelah mereka disahkan. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Hantar Sumbangan</translation>
 <translation id="1899434873745933492">Tidak boleh menghantar sumbangan anda</translation>
 <translation id="1794046983410841192">Gunakan Ganjaran Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Tersuai</translation>
 <translation id="4827581232860040208">Terdapat beberapa masalah dalam menghantar sumbangan anda</translation>
 <translation id="3259723213051400722">Sila cuba lagi.</translation>
-<translation id="8899147737996487517">Pencipta ini telah berdaftar dengan Brave dan boleh menerima sumbangan daripada pengguna Ganjaran Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Pencipta ini telah mendaftar dengan Brave dan boleh menerima sumbangan daripada pengguna Brave Rewards. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Ganjaran Brave mungkin tidak berfungsi semasa pemberitahuan dinyahdayakan.</translation>
 <translation id="4259212006412783790">HIDUPKAN</translation>
 <translation id="6112331814131703370">Sekat Notis 'Tukar kepada Aplikasi'</translation>
@@ -368,10 +367,15 @@ Pemadaman ini bersifat kekal dan tiada cara untuk memulihkan data tersebut. Seki
 <translation id="8457451314607652708">Import penanda halaman</translation>
 <translation id="1008186147501209563">Eksport penanda halaman</translation>
 <translation id="6680516947641001448">Pilih Fail untuk mengimport penanda halaman</translation>
+<translation id="2353910600995338714">Eksport berjaya</translation>
+<translation id="229319993704311844">Penanda buku dieksport ke <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Eksport gagal</translation>
+<translation id="1166543535974380311">Eksport penanda buku gagal. Sila cuba lagi.</translation>
+<translation id="6154243540085290880">Import berjaya</translation>
 <translation id="7028125942261647795">Penanda halaman berjaya diimport.</translation>
-<translation id="444953779119381206">Penanda halaman gagal diimport.</translation>
-<translation id="6606836200439368332">Penanda halaman gagal dieksport.</translation>
-<translation id="1395297034387418032">Penanda halaman berjaya dieksport.</translation>
+<translation id="4803910478683254032">Import gagal</translation>
+<translation id="8325139248201792113">Import penanda buku gagal. Sila cuba lagi.</translation>
+<translation id="2803313416453193357">Buka folder</translation>
 <translation id="3396347744975515056">Segerakan Brave telah dinaik taraf dan memerlukan penetapan</translation>
 <translation id="7473245612074035141">Mulakan Tetapan</translation>
 <translation id="8985635554450124959">Penyegerakan tidak dapat disetkan</translation>
@@ -392,6 +396,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 Sila semak sekali lagi bahawa perkataan kod ini dihasilkan oleh peranti yang anda miliki.
 Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="4550208292810542331">Keizinan kamera tidak diberikan</translation>
+<translation id="6470233139461745039">Untuk membolehkan penyegerakan kata laluan, tetapkan kunci skrin pada peranti anda terlebih dahulu</translation>
+<translation id="3063783274005996079">Buka kunci untuk membolehkan penyegerakan kata laluan</translation>
+<translation id="7551563084530025179">Sebelum anda boleh menyegerakkan kata laluan, anda perlu mengesahkan dengan biometrik/kod laluan peranti anda. Langkah keselamatan tambahan ini membantu dalam memastikan kata laluan anda selamat.</translation>
+<translation id="6925081665778864449">Untuk menyegerakkan kata laluan, sila dayakan pengesahan biometrik/kod laluan pada peranti Android anda. Langkah keselamatan tambahan ini membantu dalam memastikan kata laluan anda selamat.</translation>
 <translation id="597993392929850353">Lesen Brave</translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="6199596294742117349">Ini Tab Persendirian</translation>
@@ -428,7 +436,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="9096003370755878766">Keluarkan BAT yang anda mungkin telah tambah ke dalam dompet Ganjaran Brave anda sebelum ini</translation>
 <translation id="1554282356558968486">Perkhidmatan dompet kami disediakan oleh</translation>
 <translation id="6569877533335686968">Dukung</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan anda untuk mengesahkan identiti anda berdasarkan perkhidmatan yang diminta.</translation>
@@ -1202,4 +1210,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6759710362319508545">Sumber</translation>
 <translation id="2471230424465522689">Bukan sebelum</translation>
 <translation id="4841860051609590575">ID Permintaan</translation>
+<translation id="1179407411385015942">Leo ialah pembantu pintar yang dikuasakan oleh AI, dibina terus dalam penyemak imbas</translation>
+<translation id="1250335737108905610">Tetapkan semula dan kosongkan data Leo</translation>
+<translation id="6165101586663336913">Tindakan menetapkan semula pembantu Leo akan memerlukan anda memilih untuk menggunakan Leo pada masa hadapan dan juga akan mengosongkan sejarah sembang anda. Tindakan mengosongkan sejarah sembang anda akan memadamkan semua perbualan anda sebelum ini dengan Leo. Tindakan ini tidak boleh dibuat asal.</translation>
 </translationbundle>

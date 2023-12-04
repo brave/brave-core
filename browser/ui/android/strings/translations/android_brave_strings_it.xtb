@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Gestisci gli annunci</translation>
 <translation id="7630214457764713113">Copia link pulito</translation>
 <translation id="885805571521218129">Questo intervallo riflette una stima dei tuoi guadagni del mese per gli Annunci Brave.</translation>
-<translation id="818003031290137834">Ora che sei collegato a ZebPay, qualsiasi saldo precedente verrà depositato nel tuo account ZebPay durante il prossimo pagamento dei tuoi guadagni. Una volta ricevuto, vedrai il tuo BAT mostrato nel saldo delle Ricompense.</translation>
 <translation id="3478449063771497234">Le notifiche sono disattivate</translation>
 <translation id="2862978891748913252">Seleziona il tuo Paese</translation>
 <translation id="3970520675790340955">Seleziona il tuo Paese così potremo mostrarti le opzioni e gli annunci giusti per la tua area geografica.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Non puoi inviare più di <ph name="AMOUNT"/> BAT prelevandoli dal saldo a tua disposizione su Ricompense Brave.</translation>
 <translation id="5012991400231464322">Contributi mensili</translation>
 <translation id="5907051927340164207">Stai già inviando dei contributi mensili a questo autore</translation>
-<translation id="307555373157330047">Puoi comunque inviare un contributo adesso e annullare i tuoi contributi mensili a questo autore eliminandoli dai <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Puoi comunque inviare un contributo adesso e annullare i tuoi contributi mensili a questo autore cancellandoli dalla sezione <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Contributo inviato!</translation>
 <translation id="1041398280582063935">Condividi il tuo sostegno</translation>
 <translation id="8855543392451028706">Ciao! Gli utenti possono sostenere questo autore con dei contributi economici: in questo modo puoi ringraziarlo per gli splendidi contenuti che crea.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Accedi a <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Grazie di aver sostenuto i tuoi autori preferiti</translation>
 <translation id="3796032246917966749"><ph name="CUSTODIAN"/> risulta disconnesso per Ricompense Brave. Accedi di nuovo per continuare.</translation>
-<translation id="594652923071049606">Questo autore non è ancora stato verificato dal programma Autori Brave. Potrai inviargli dei contributi quando verrà verificato. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Questo autore non è ancora stato verificato dal programma Autori Brave. Potrai inviare dei contributi all’autore quando sarà verificato. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Invia un contributo</translation>
 <translation id="1899434873745933492">Impossibile inviare il tuo contributo</translation>
 <translation id="1794046983410841192">Usa le Ricompense di Brave</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Personalizzati</translation>
 <translation id="4827581232860040208">Si è verificato un problema nell’invio del tuo contributo</translation>
 <translation id="3259723213051400722">Riprova.</translation>
-<translation id="8899147737996487517">Questo autore ha effettuato la registrazione con Brave e può ricevere dei contributi dagli utenti di Ricompense Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Questo autore ha effettuato la registrazione con Brave e può ricevere dei contributi dagli utenti di Ricompense Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Se le notifiche sono disattivate, Ricompense Brave potrebbe non funzionare.</translation>
 <translation id="4259212006412783790">ATTIVA</translation>
 <translation id="6112331814131703370">Blocca gli avvisi “Passa all’app”</translation>
@@ -368,10 +367,15 @@ L’eliminazione è definitiva e non c’è alcun modo di recuperare i dati. Qua
 <translation id="8457451314607652708">Importa Preferiti</translation>
 <translation id="1008186147501209563">Esporta preferiti</translation>
 <translation id="6680516947641001448">Seleziona un file per importare i segnalibri</translation>
+<translation id="2353910600995338714">Esportazione riuscita</translation>
+<translation id="229319993704311844">Segnalibri esportati in <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Esportazione non riuscita</translation>
+<translation id="1166543535974380311">Esportazione dei segnalibri non riuscita. Riprova.</translation>
+<translation id="6154243540085290880">Importazione riuscita</translation>
 <translation id="7028125942261647795">Segnalibri importati correttamente.</translation>
-<translation id="444953779119381206">Importazione dei segnalibri non riuscita.</translation>
-<translation id="6606836200439368332">Esportazione dei segnalibri non riuscita.</translation>
-<translation id="1395297034387418032">Segnalibri esportati correttamente.</translation>
+<translation id="4803910478683254032">Importazione non riuscita</translation>
+<translation id="8325139248201792113">Importazione dei segnalibri non riuscita. Riprova.</translation>
+<translation id="2803313416453193357">Apri cartella</translation>
 <translation id="3396347744975515056">Brave Sync è stato aggiornato e deve essere configurato</translation>
 <translation id="7473245612074035141">Inizia configurazione</translation>
 <translation id="8985635554450124959">Non è stato possibile impostare la sincronizzazione</translation>
@@ -392,6 +396,10 @@ Confermi di voler procedere?</translation>
 Controlla che le parole d'ordine siano state generate da un tuo dispositivo.
 Confermi di voler procedere?</translation>
 <translation id="4550208292810542331">Non è stata concessa l’autorizzazione all’uso della fotocamera</translation>
+<translation id="6470233139461745039">Per abilitare la sincronizzazione delle password, per prima cosa imposta una schermata di blocco sul tuo dispositivo</translation>
+<translation id="3063783274005996079">Sblocca per abilitare la sincronizzazione delle password</translation>
+<translation id="7551563084530025179">Per poter sincronizzare le password, dovrai prima eseguire l’autenticazione biometrica o con passcode del tuo dispositivo. Questa misura di sicurezza aggiuntiva permette di tenere al sicuro le password.</translation>
+<translation id="6925081665778864449">Per sincronizzare le password, abilita l’autenticazione biometrica o con passcode del tuo dispositivo. Questa misura di sicurezza aggiuntiva permette di tenere al sicuro le password.</translation>
 <translation id="597993392929850353">Licenza di Brave</translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="6199596294742117349">Questa è una scheda privata</translation>
@@ -428,7 +436,7 @@ Confermi di voler procedere?</translation>
 <translation id="9096003370755878766">Preleva BAT che potresti aver aggiunto in precedenza al tuo portafoglio Ricompense di Brave</translation>
 <translation id="1554282356558968486">Il nostro servizio di portafoglio è fornito da</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
@@ -1202,4 +1210,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6759710362319508545">Risorse</translation>
 <translation id="2471230424465522689">Non prima</translation>
 <translation id="4841860051609590575">ID richiesta</translation>
+<translation id="1179407411385015942">Leo è un assistente smart costruito con l’intelligenza artificiale e integrato direttamente nel browser</translation>
+<translation id="1250335737108905610">Reimposta e cancella i dati di Leo</translation>
+<translation id="6165101586663336913">Per ripristinare l’assistente Leo, dovrai autorizzare il futuro utilizzo di Leo. La cronologia delle chat inoltre sarà cancellata. Cancellando la cronologia delle chat, eliminerai tutte le tue precedenti conversazioni con Leo. Questa azione non può essere annullata.</translation>
 </translationbundle>

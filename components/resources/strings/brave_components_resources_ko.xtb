@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">구독 취소</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
-<translation id="8265244536487014968">참고: Brave 서버로 전송된 보고서에는 사이트 주소, Brave 버전 번호, Shields 설정, VPN 상태, 언어 설정이 포함됩니다. IP 주소는 전송되지만 저장되지는 않습니다.</translation>
+<translation id="6387106423577201267">참고: Brave 서버로 전송된 보고서에는 사이트 주소, Brave 버전 번호, Shields 설정, VPN 상태, 언어 설정이 포함됩니다.</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
 <translation id="6145852496180774737">연락 방법:(선택사항)</translation>
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">브라우저가 Brave Rewards를 <ph name="PROVIDER"/> 계정에 연결하는 요청을 보냈으나 유효성 검증에 문제가 있습니다. <ph name="BEGIN_LINK"/>지원팀에 문의<ph name="END_LINK"/>하여 도움을 받으세요.</translation>
 <translation id="1316066811927496401">오류: 요청의 유효성을 검증할 수 없습니다.</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
-<translation id="4123948149985772126">계정 제공자 선택</translation>
-<translation id="896953639186217388">신원 확인에 보호관리 계정 제공자가 필요하며, 이 과정에서 사진 부착 신분증을 제출해야 합니다. <ph name="BEGIN_LINK1"/>Brave Rewards 개인정보 보호정책<ph name="END_LINK1"/>을 참조하세요. <ph name="BEGIN_LINK2"/>BAT에 대해 자세히 알아보세요<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">BAT 적립액 저장, 관리, 인출</translation>
-<translation id="5155452078869279096">BAT를 구입하여 계정에 충전</translation>
-<translation id="2662540985634906665">마음에 드는 사이트 및 제작자에게 온디맨드 후원금 보내기</translation>
+<translation id="8817096698141999876">보호관리 계정(ID 검증 필요)</translation>
+<translation id="1539433155512862005">보호관리 계정이란 귀하의 BAT를 믿고 맡겨 두는 타사 서비스 계정입니다.</translation>
+<translation id="6751803821780922506">BAT를 받을 곳 선택</translation>
 <translation id="1233129511866436960">지역 및 지원에 대해 자세히 알아보기</translation>
 <translation id="7329170127335794328">현재 귀하의 지역에서 사용할 수 없음</translation>
-<translation id="8304979233901023264">Brave <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>을 읽었으며 이에 동의합니다.</translation>
+<translation id="966956302643313970">베이직 어텐션 토큰(BAT) 보상을 적립하려면 계정을 연결하세요. 적립된 BAT가 매달 귀하의 계정으로 자동 송금됩니다.</translation>
 <translation id="1892970806832316900"><ph name="DATE"/>까지 보류 중</translation>
 <translation id="7849926087559412554">사용하고 계신 브라우저가 Brave 프라이빗 광고를 수신할 수 없습니다.</translation>
 <translation id="5177429570315095022">광고를 보려면 브라우저를 업데이트해야 합니다.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>적립을 시작할 준비가 되셨습니까?<ph name="BOLD_END"/> 파트너 중 한 곳에 계정을 만들어 연결하세요.</translation>
 <translation id="1772961321862399863">BAT를 적립받으려면, 보호관리 계정을 Brave Rewards에 연결해야 합니다. 안타깝지만 현재 거주하고 계신 지역에 가능한 보호관리 서비스가 없어 적립이 불가능합니다. 지금은 Brave Rewards를 켜면 제작자를 자동으로 지원합니다.</translation>
 <translation id="902298128239575729">Brave Rewards로 후원금 보내기</translation>
-<translation id="8413791505518414158">보호관리 계정을 연결하면 Brave Rewards 잔액으로 마음에 드는 제작자에게 온디맨드 후원금을 보낼 수 있습니다.</translation>
+<translation id="6276721355724491595">보호관리 계정을 연결하면 Brave Rewards 잔액으로 마음에 드는 제작자에게 온디맨드 후원금을 보낼 수 있습니다.</translation>
 <translation id="1149481926056509086">온디맨드 후원금을 보내려면 보호관리 계정을 Brave Rewards에 연결해야 합니다. 안타깝지만 현재 거주하고 계신 지역에 가능한 보호관리 서비스가 없어 보내기가 불가능합니다. 현재 제작자 자동 지원은 가능합니다.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
@@ -628,13 +626,12 @@
 <translation id="2862978891748913252">국가 선택</translation>
 <translation id="3717922248131893262">Brave Rewards를 계속 사용하려면 국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. <ph name="LINK_BEGIN"/>개인정보 보호정책<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">리워드 사용 시작</translation>
-<translation id="818003031290137834">ZebPay에 연결되셔서 다음 적립금 지급 과정의 일환으로 기존에 보유한 잔액이 ZebPay 계정으로 예치됩니다. 예치가 완료되면 보유한 BAT가 Rewards 잔액 내에 반영됩니다.</translation>
 <translation id="2221902203895354376">토큰 보조금을 받을 수 있습니다!</translation>
 <translation id="2956070106555335453">요약</translation>
 <translation id="2369994359029526515">미인증 제작자</translation>
-<translation id="1010940411509546886">Brave 제작자로 인증받지 않은 제작자입니다. 인증되고 나면 후원금을 보내실 수 있습니다.</translation>
+<translation id="3984338085370091436">Brave 제작자로 인증받지 않은 제작자입니다. 인증되고 나면 후원금을 보내실 수 있습니다.</translation>
 <translation id="6020176662032623904">인증된 제작자</translation>
-<translation id="215037911651623564">제작자 검증 상태 새로고침</translation>
+<translation id="8635423276837443905">제작자 검증 상태 새로고침</translation>
 <translation id="6633436087937398390"><ph name="NAME"/>, 플랫폼: <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">후원금 보내기</translation>
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
@@ -694,11 +691,11 @@
 <translation id="1483493594462132177">전송</translation>
 <translation id="6632987674051304487"><ph name="PROVIDER"/>(으)로 보내기</translation>
 <translation id="4319632089378796037">Web3 월렛 사용</translation>
-<translation id="5399596220743521546">이 제작자는 Brave에 등록되어 Brave Rewards 사용자로부터 후원금을 받을 수 있습니다.</translation>
+<translation id="4530198836725543997">이 제작자는 Brave에 등록되어 Brave Rewards 사용자로부터 후원금을 받을 수 있습니다.</translation>
 <translation id="4529874892536380156">이것을 월 정기 후원금으로 설정합니다. 언제든 취소할 수 있습니다.</translation>
 <translation id="1177863135347784049">맞춤</translation>
 <translation id="5907051927340164207">이 제작자에게 이미 월 후원금을 보내고 있음</translation>
-<translation id="2840845521251717054">이제 상시적으로 후원금을 보낼 수 있으며, <ph name="LINK_BEGIN"/>월 후원금<ph name="LINK_END"/>에서 이 제작자를 제거하면 월 후원금을 취소하실 수 있습니다.</translation>
+<translation id="4357685964329620278">이제 상시적으로 후원금을 보낼 수 있으며, <ph name="LINK_BEGIN"/>월 후원금<ph name="LINK_END"/>에서 이 제작자를 제거하면 월 후원금을 취소하실 수 있습니다.</translation>
 <translation id="1899434873745933492">후원금을 보낼 수 없음</translation>
 <translation id="8598111278506452136">이 제작자는 <ph name="PROVIDER"/>에서 보낸 후원금을 받을 수 없습니다.</translation>
 <translation id="8379442066667303579">Web3 월렛을 사용하여 이 제작자에게 암호화폐 후원금을 보낼 수 있습니다.</translation>
@@ -724,6 +721,7 @@
 <translation id="1288078776976153868">네트워크</translation>
 <translation id="1148827340205946630">사용자가 요청을 거절했습니다.</translation>
 <translation id="2403819048476450281">잘못된 매개변수입니다.</translation>
+<translation id="3849003816301348130">목적지 주소가 OFAC SDN 목록상에 있습니다.</translation>
 <translation id="3955144560853195652">체인 <ph name="VALUE"/> 추가되지 않음</translation>
 <translation id="1875861420974447980">현재 사용 중인 체인 ID</translation>
 <translation id="167698752210114155">내부 오류 발생</translation>
@@ -909,6 +907,7 @@
 <translation id="6577166808959668729">솔라나 블록체인에 SPL 호환 자산 지원</translation>
 <translation id="4541295941776129088">FIL 자산 저장</translation>
 <translation id="29759539656432505">BTC 자산 저장</translation>
+<translation id="8749751940551938347">ZEC 자산 저장</translation>
 <translation id="8500387257977999003">비공개 키 <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="232925166623833246">하드웨어 월렛에서 가져오기</translation>
@@ -1085,7 +1084,7 @@
 <translation id="5867988533873716616">블록 탐색기 URL을 이용할 수 없습니다.</translation>
 <translation id="4255623233927788178">블록 탐색기에서 보기</translation>
 <translation id="563386395023152633">트랜잭션 해시 복사</translation>
-<translation id="7148658188569580292">트랜잭션 속도 높이기</translation>
+<translation id="881317738916264532">속도 높이기</translation>
 <translation id="1198263951134066686">트랜잭션 취소</translation>
 <translation id="3562548974839822204">트랜잭션 재시도</translation>
 <translation id="6383204195803840504">트랜잭션이 여기에 표시됩니다.</translation>
@@ -1099,6 +1098,7 @@
 <translation id="1165039591588034296">오류</translation>
 <translation id="8373210463207847451">중단됨</translation>
 <translation id="8214232307424031138">서명됨</translation>
+<translation id="5916664084637901428">사용</translation>
 <translation id="9065572743819293042">최근 트랜잭션</translation>
 <translation id="4235538284468006757">트랜잭션 세부정보</translation>
 <translation id="7488671812634887146">속도 높이기</translation>
@@ -1159,6 +1159,7 @@
 <translation id="471055802670233033">지출액</translation>
 <translation id="7916618590403748182">수신액</translation>
 <translation id="8328657208304368165">주문 확인</translation>
+<translation id="8220255674527598378">Solana 스왑</translation>
 <translation id="5071303414930953888">계정 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">먼저 월렛을 잠금 해제해야 합니다.</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/>, 유효한 주소 아님</translation>
@@ -1253,8 +1254,6 @@
 <translation id="1257387162647804035">주사용 네트워크</translation>
 <translation id="8323674164587854512">이더리움 + EVM 체인</translation>
 <translation id="1398414935371867469">Solana + SVM 체인</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">비트코인</translation>
 <translation id="7058248670699639973">네트워크 로고</translation>
 <translation id="4378208228955237306">NFT상에 네트워크 로고 표시</translation>
 <translation id="5472199803712163015">스팸 NFT</translation>
@@ -1282,7 +1281,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> 보내기</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/>에서 <ph name="TAKER"/>(으)로 스왑</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
-<translation id="3696514931437952995"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
+<translation id="8813165409788097898"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
 <translation id="1028781062521375153">세부정보 보기</translation>
 <translation id="3950820424414687140">로그인</translation>
 <translation id="4530494379350999373">오리진</translation>
@@ -1593,6 +1592,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>새로고침<ph name="REFRESH_END"/> 또는 <ph name="IMPORT"/>수동으로 가져오기<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">새로고치는 중</translation>
 <translation id="4608324163534970318">네트워크 수수료</translation>
+<translation id="6213230117190778270">받기</translation>
+<translation id="6748108480210050150">보내는 이</translation>
+<translation id="4875290286426670462">무제한 <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">검증되지 않은 토큰</translation>
+<translation id="8549067157732633185">검증된 토큰</translation>
+<translation id="2130170065617939165"><ph name="NUMBER_OF_LISTS"/> 목록상에서 검증된 토큰</translation>
+<translation id="1554316484739382186">출금 주소: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/> 계정</translation>
+<translation id="5360752485622434494"><ph name="PROVIDER"/>상의 Brave Rewards BAT</translation>
+<translation id="429061011725027672">현재 <ph name="PROVIDER"/>에서 로그아웃된 상태입니다. 잔액을 보려면 로그인하세요.</translation>
+<translation id="4611292653554630842">로그인</translation>
+<translation id="1132794822159463424"><ph name="PROVIDER"/>에서 보기</translation>
+<translation id="7875005109025196005">플랫폼</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1852,6 +1865,8 @@
 <translation id="8960352557529001690">가독성 향상</translation>
 <translation id="8189819085033738728">글꼴 크기 작게</translation>
 <translation id="1952725803106139986">글꼴 크기 크게</translation>
+<translation id="6338177649973309262">좁은 콘텐츠 열</translation>
+<translation id="6500600749984466451">넓은 콘텐츠 열</translation>
 <translation id="7239710518122372020">텍스트 음성 변환</translation>
 <translation id="4330722796577425585">되감기</translation>
 <translation id="1199355487114804640">재생/일시중지</translation>

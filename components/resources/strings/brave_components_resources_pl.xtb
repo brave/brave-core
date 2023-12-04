@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">Cofnij subskrypcję</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
 <translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
-<translation id="8265244536487014968">Uwaga: Raport wysyłany na serwery Brave będzie zawierał adres strony, numer wersji Brave, ustawienia tarcz, status VPN oraz ustawienia językowe. Adres IP zostanie przekazany, ale nie będzie przechowywany.</translation>
+<translation id="6387106423577201267">Uwaga: raport wysłany do serwerów Brave będzie zawierał adres witryny, numer wersji Brave, ustawienia tarcz, status VPN oraz ustawienia językowe.</translation>
 <translation id="6476216365964140603">Dodatkowe szczegóły (opcjonalne)</translation>
 <translation id="6145852496180774737">Skontaktuj się ze mną poprzez: (opcjonalne)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, itp.</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">Wystąpił problem podczas potwierdzania żądania przeglądarki w celu połączenia nagród Brave z kontem <ph name="PROVIDER"/> Możesz <ph name="BEGIN_LINK"/>skontaktować się z pomocą techniczną <ph name="END_LINK"/>, aby uzyskać pomoc.</translation>
 <translation id="1316066811927496401">Błąd: nie można potwierdzić żądania</translation>
 <translation id="8167256685618982116">Włączając <ph name="TITLE"/>, zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
-<translation id="4123948149985772126">Wybierz dostawcę konta</translation>
-<translation id="896953639186217388">Dostawcy kont powierniczych są zobowiązani do zweryfikowania Twojej tożsamości, co może wiązać się z koniecznością przedstawienia dokumentu tożsamości ze zdjęciem. Zobacz <ph name="BEGIN_LINK1"/>Politykę prywatności Nagród Brave<ph name="END_LINK1"/>. Przejdź tutaj, <ph name="BEGIN_LINK2"/>aby dowiedzieć się więcej o BAT<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">przechowywania, zarządzania i wypłacania zdobytych BAT</translation>
-<translation id="5155452078869279096">zasilenia swojego konta kupionymi BAT</translation>
-<translation id="2662540985634906665">Wysyłaj datki na życzenie swoim ulubionym stronom internetowym i twórcom</translation>
+<translation id="8817096698141999876">Konta powiernicze (wymaga weryfikacji tożsamości)</translation>
+<translation id="1539433155512862005">Konta powiernicze to konta w zaufanych usługach zewnętrznych, które przechowują BAT dla użytkownika.</translation>
+<translation id="6751803821780922506">Wybierz, gdzie chcesz otrzymywać BAT</translation>
 <translation id="1233129511866436960">Dowiedz się więcej o regionach i wsparciu</translation>
 <translation id="7329170127335794328">Obecnie nie jest dostępne w Twoim regionie</translation>
-<translation id="8304979233901023264">Przeczytałem i akceptuję warunki korzystania z usług Brave: <ph name="TOS_LINK_BEGIN"/>Warunki korzystania<ph name="TOS_LINK_END"/> i <ph name="PP_LINK_BEGIN"/>Polityka prywatności<ph name="PP_LINK_END"/>.</translation>
+<translation id="966956302643313970">Aby zacząć zdobywać nagrody w postaci Basic Attention Token (BAT), podłącz konto. Zarobione BAT będą automatycznie przelewane na Twoje konto co miesiąc.</translation>
 <translation id="1892970806832316900">Oczekujący do <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Twoja przeglądarka nie może otrzymywać Prywatnych reklam Brave.</translation>
 <translation id="5177429570315095022">Należy zaktualizować przeglądarkę, żeby dalej wyświetlać reklamy.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Chcesz zacząć zarabiać?<ph name="BOLD_END"/> Podłącz lub utwórz konto u jednego z naszych partnerów.</translation>
 <translation id="1772961321862399863">Żeby zacząć zarabiać BAT, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz zdobywać tokenów. W tej chwili włączenie Nagród Brave automatycznie wspomoże twórców.</translation>
 <translation id="902298128239575729">Wysyłaj datki za pomocą Nagród Brave</translation>
-<translation id="8413791505518414158">Kiedy już podłączysz konto powiernicze, będziesz w stanie wysyłać datki na życzenie swoim ulubiony twórcom za pomocom swojego salda Nagród Brave.</translation>
+<translation id="6276721355724491595">Kiedy już podłączysz konto powiernicze, będziesz w stanie wysyłać datki na życzenie swoim ulubiony twórcom za pomocom swojego salda Nagród Brave.</translation>
 <translation id="1149481926056509086">Aby zacząć wysyłać datki na życzenie, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz wysyłać datków. Obecnie wciąż automatycznie wspierasz twórców.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {W tym miesiącu odwiedzono # twórcę, który jest wspierany przez Nagrody Brave}
@@ -630,13 +628,12 @@
 <translation id="2862978891748913252">Wybierz kraj</translation>
 <translation id="3717922248131893262">Aby nadal korzystać z Nagród Brave, wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu. <ph name="LINK_BEGIN"/>Polityka prywatności<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Rozpocznij korzystanie z Nagród</translation>
-<translation id="818003031290137834">Kiedy już połączysz się z ZebPay, Twoje poprzednie saldo będzie przelane na konto ZebPay w ramach Twojej następnej wypłaty zarobków. Gdy do Ciebie dotrze, zobaczysz swoje BAT odzwierciedlone w saldzie nagród.</translation>
 <translation id="2221902203895354376">Przyznano token!</translation>
 <translation id="2956070106555335453">Podsumowanie</translation>
 <translation id="2369994359029526515">Niezweryfikowany twórca</translation>
-<translation id="1010940411509546886">Ten twórca nie jest jeszcze zweryfikowany przez Twórców Brave. Będziesz w stanie wysyłać mu datki, gdy tylko zostanie zweryfikowany.</translation>
+<translation id="3984338085370091436">Ten twórca nie jest jeszcze zweryfikowany przez Twórców Brave. Będziesz w stanie wysyłać mu datki, gdy tylko zostanie zweryfikowany.</translation>
 <translation id="6020176662032623904">Zweryfikowany twórca</translation>
-<translation id="215037911651623564">Odśwież stan weryfikacji twórcy</translation>
+<translation id="8635423276837443905">Odśwież stan weryfikacji twórcy</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> na portalu <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">Wyślij datek</translation>
 <translation id="7335371657242627509">Wysyłaj automatycznie darowizny</translation>
@@ -696,11 +693,11 @@
 <translation id="1483493594462132177">Wyślij</translation>
 <translation id="6632987674051304487">Wyślij za pomocą <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Użyj Portfela Web3</translation>
-<translation id="5399596220743521546">Ten twórca zarejestrował się w Brave i może otrzymywać datki od użytkowników Nagród Brave.</translation>
+<translation id="4530198836725543997">Ten twórca zarejestrował się w Brave i może otrzymywać datki od użytkowników Nagród Brave.</translation>
 <translation id="4529874892536380156">Ustaw jako comiesięczny cykliczny datek. Możesz go anulować w każdej chwili.</translation>
 <translation id="1177863135347784049">Niestandardowe</translation>
 <translation id="5907051927340164207">Już wysyłasz comiesięczne datki temu twórcy</translation>
-<translation id="2840845521251717054">Nadal możesz wysłać datek teraz i anulować swój comiesięczny datek dla tego twórcy, usuwając go z <ph name="LINK_BEGIN"/>Comiesięcznych datków<ph name="LINK_END"/>.</translation>
+<translation id="4357685964329620278">Nadal możesz wysłać datek teraz i anulować swój comiesięczny datek dla tego twórcy, usuwając go z <ph name="LINK_BEGIN"/>Comiesięcznych datków<ph name="LINK_END"/>.</translation>
 <translation id="1899434873745933492">Nie możemy wysłać Twojego datku</translation>
 <translation id="8598111278506452136">Ten twórca nie może otrzymywać datków od <ph name="PROVIDER"/>.</translation>
 <translation id="8379442066667303579">Nadal możesz wysłać datki w kryptowalucie do tego twórcy, używając swojego portfela Web3.</translation>
@@ -726,6 +723,7 @@
 <translation id="1288078776976153868">sieć</translation>
 <translation id="1148827340205946630">Użytkownik odrzucił żądanie.</translation>
 <translation id="2403819048476450281">Nieprawidłowe parametry</translation>
+<translation id="3849003816301348130">Adres docelowy znajduje się na liście SDN OFAC.</translation>
 <translation id="3955144560853195652">Łańcuch <ph name="VALUE"/> nie został dodany</translation>
 <translation id="1875861420974447980">Ten identyfikator łańcucha jest już używany</translation>
 <translation id="167698752210114155">Wystąpił błąd wewnętrzny</translation>
@@ -911,6 +909,7 @@
 <translation id="6577166808959668729">Obsługuje kompatybilne aktywa w blockchainie Solana</translation>
 <translation id="4541295941776129088">Przechowuj zasób FIL</translation>
 <translation id="29759539656432505">Przechowuj zasoby BTC</translation>
+<translation id="8749751940551938347">Przechowuj aktywa ZEC</translation>
 <translation id="8500387257977999003">Klucz prywatny <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Importuj z portfela sprzętowego</translation>
@@ -1087,7 +1086,7 @@
 <translation id="5867988533873716616">Adres URL eksploratora bloków jest niedostępny.</translation>
 <translation id="4255623233927788178">Wyświetl w eksploratorze bloków</translation>
 <translation id="563386395023152633">Kopiuj skrót transakcji</translation>
-<translation id="7148658188569580292">Przyspiesz transakcję</translation>
+<translation id="881317738916264532">Przyśpiesz</translation>
 <translation id="1198263951134066686">Anuluj transakcję</translation>
 <translation id="3562548974839822204">Ponów próbę wykonania transakcji</translation>
 <translation id="6383204195803840504">Tutaj będą pojawiać się transakcje</translation>
@@ -1101,6 +1100,7 @@
 <translation id="1165039591588034296">Błąd</translation>
 <translation id="8373210463207847451">Odrzucone</translation>
 <translation id="8214232307424031138">Podpisano</translation>
+<translation id="5916664084637901428">Włączone</translation>
 <translation id="9065572743819293042">Niedawne transakcje</translation>
 <translation id="4235538284468006757">Dane transakcji</translation>
 <translation id="7488671812634887146">Przyspiesz</translation>
@@ -1161,6 +1161,7 @@
 <translation id="471055802670233033">Wydajesz</translation>
 <translation id="7916618590403748182">Otrzymasz</translation>
 <translation id="8328657208304368165">Potwierdź zamówienie</translation>
+<translation id="8220255674527598378">Wymiana Solana</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Portfel musi zostać najpierw odblokowany</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nie jest prawidłowym adresem.</translation>
@@ -1255,8 +1256,6 @@
 <translation id="1257387162647804035">Sieci główne</translation>
 <translation id="8323674164587854512">Ethereum i łańcuchy EVM</translation>
 <translation id="1398414935371867469">Solana i łańcuchy SVM</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">Logo sieci</translation>
 <translation id="4378208228955237306">Pokaż logo sieci w NFT</translation>
 <translation id="5472199803712163015">Spamowe NFT</translation>
@@ -1284,7 +1283,7 @@
 <translation id="9104177294757104789">Wyślij <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zmień <ph name="MAKER"/> na <ph name="TAKER"/></translation>
 <translation id="8613144770663526433">Zaloguj się za pomocą portfela Brave</translation>
-<translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
+<translation id="8813165409788097898">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobacz szczegóły</translation>
 <translation id="3950820424414687140">Zaloguj się</translation>
 <translation id="4530494379350999373">Pochodzenie</translation>
@@ -1595,6 +1594,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>Odśwież<ph name="REFRESH_END"/> lub<ph name="IMPORT"/>zaimportuj ręcznie<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Odświeżanie</translation>
 <translation id="4608324163534970318">Opłaty sieciowe</translation>
+<translation id="6213230117190778270">Otrzymaj</translation>
+<translation id="6748108480210050150">Od</translation>
+<translation id="4875290286426670462">Nielimitowane <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">Ten token jest niezweryfikowany</translation>
+<translation id="8549067157732633185">Ten token jest zweryfikowany</translation>
+<translation id="2130170065617939165">Token zweryfikowany na listach <ph name="NUMBER_OF_LISTS"/></translation>
+<translation id="1554316484739382186">Wydający: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291">Konto <ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">Nagrody Brave BAT w <ph name="PROVIDER"/></translation>
+<translation id="429061011725027672">Obecnie wylogowano Cię z <ph name="PROVIDER"/>.  Zaloguj się, aby wyświetlić saldo.</translation>
+<translation id="4611292653554630842">Zaloguj się</translation>
+<translation id="1132794822159463424">Wyświetl w <ph name="PROVIDER"/></translation>
+<translation id="7875005109025196005">Platformy</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -1856,6 +1869,8 @@
 <translation id="8960352557529001690">Dla dyslektyków</translation>
 <translation id="8189819085033738728">Zmniejsz wielkość czcionki</translation>
 <translation id="1952725803106139986">Zwiększ wielkość czcionki</translation>
+<translation id="6338177649973309262">Wąska kolumna treści</translation>
+<translation id="6500600749984466451">Szeroka kolumna treści</translation>
 <translation id="7239710518122372020">Zamiana tekstu na mowę</translation>
 <translation id="4330722796577425585">Przewiń</translation>
 <translation id="1199355487114804640">Odtwórz/wstrzymaj</translation>

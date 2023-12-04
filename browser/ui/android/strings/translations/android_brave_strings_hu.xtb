@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Hirdetések kezelése</translation>
 <translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
 <translation id="885805571521218129">Megmutatja a becsült bevételek tartományát a Brave hirdetéseknél.</translation>
-<translation id="818003031290137834">Most, hogy ZebPay-en keresztül kapcsolódik, korábbi egyenlege a ZebPay-számlájáa lesz kifizetve a bevételek következő kifizetésének alkalmával. Miután ez megérkezett, a BAT-jait a Jutalmak egyenlegén láthatja majd.</translation>
 <translation id="3478449063771497234">Az értesítések le vannak tiltva</translation>
 <translation id="2862978891748913252">Válassza ki az országot</translation>
 <translation id="3970520675790340955">Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Brave jutalmak-egyenlege használatával legfeljebb <ph name="AMOUNT"/> BAT-tokent küldhet.</translation>
 <translation id="5012991400231464322">Havi hozzájárulások</translation>
 <translation id="5907051927340164207">Ön már küld havi hozzájárulásokat ennek az alkotónak</translation>
-<translation id="307555373157330047">Küldhet most is hozzájárulást, illetve megszüntetheti az ennek az alkotónak küldött havi hozzájárulásokat, ha eltávolítja őt a <ph name="MONTHLY_CONTRIBUTION"/> listájáról.</translation>
+<translation id="4848906651275579475">Küldhet most is hozzájárulást, illetve megszüntetheti az ennek az alkotónak küldött havi hozzájárulásokat, ha eltávolítja őt a(z) <ph name="MONTHLY_CONTRIBUTION"/> listájáról.</translation>
 <translation id="5379685283876547860">Hozzájárulás elküldve!</translation>
 <translation id="1041398280582063935">Támogatás megosztása</translation>
 <translation id="8855543392451028706">Üdvözöljük! A felhasználók hozzájárulások küldésével támogathatják ezt a alkotót, ezzel mondva köszönetet az általa készített nagyszerű tartalmakért.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Bejelentkezés a következőbe: <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Köszönjük, hogy támogatja a kedvenc alkotóit</translation>
 <translation id="3796032246917966749">Úgy tűnik, kijelentkezett a(z) <ph name="CUSTODIAN"/> letétkezelőből a Brave jutalmakban. A folytatáshoz jelentkezzen be újra.</translation>
-<translation id="594652923071049606">Ez az alkotó még nem tartozik az ellenőrzött Brave-alkotók közé. Az ellenőrzés megtörténte után fog tudni neki küldeni hozzájárulásokat. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Ez az alkotó még nem tartozik az ellenőrzött Brave-alkotók közé. Az ellenőrzés megtörténte után fog tudni neki küldeni hozzájárulásokat. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Hozzájárulás elküldése</translation>
 <translation id="1899434873745933492">Nem sikerült elküldeni a hozzájárulását</translation>
 <translation id="1794046983410841192">Brave jutalmak használata</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Egyéni</translation>
 <translation id="4827581232860040208">Hiba történt a hozzájárulása elküldése során</translation>
 <translation id="3259723213051400722">Kérjük, próbálja újra!</translation>
-<translation id="8899147737996487517">Ez az alkotó regisztrált a Brave-nél, és fogadhat hozzájárulásokat a Brave jutalmak felhasználóitól. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Ez az alkotó regisztrált a Brave-nél, és fogadhat hozzájárulásokat a Brave jutalmak felhasználóitól. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">A Brave jutalmak működését megakadályozhatja az értesítések kikapcsolása.</translation>
 <translation id="4259212006412783790">BEKAPCSOLÁS</translation>
 <translation id="6112331814131703370">Az 'Alkalmazásra váltás' értesítések letiltása</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Könyvjelzők importálása</translation>
 <translation id="1008186147501209563">Könyvjelzők exportálása</translation>
 <translation id="6680516947641001448">Fájl kiválasztása könyvjelzők importálásához</translation>
+<translation id="2353910600995338714">Sikeres exportálás</translation>
+<translation id="229319993704311844">Könyvjelzők exportálva ide: <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Sikertelen exportálás</translation>
+<translation id="1166543535974380311">A könyvjelzők exportálása sikertelen. Próbálja újra.</translation>
+<translation id="6154243540085290880">Sikeres importálás</translation>
 <translation id="7028125942261647795">Könyvjelzők sikeresen importálva.</translation>
-<translation id="444953779119381206">A könyvjelző importálása sikertelen volt.</translation>
-<translation id="6606836200439368332">A könyvjelző exportálása sikertelen volt.</translation>
-<translation id="1395297034387418032">A könyvjelzők sikeresen exportálva.</translation>
+<translation id="4803910478683254032">Sikertelen importálás</translation>
+<translation id="8325139248201792113">A könyvjelző importálása sikertelen. Próbálja újra.</translation>
+<translation id="2803313416453193357">Mappa megnyitása</translation>
 <translation id="3396347744975515056">A Brave Sync frissült, és be kell állítani</translation>
 <translation id="7473245612074035141">Beállítás indítása</translation>
 <translation id="8985635554450124959">A szinkronizálást nem lehetett beállítani</translation>
@@ -392,6 +396,10 @@ Biztosan végrehajtja a műveletet?</translation>
 Ellenőrizze, hogy ezeket a kódszavakat egy az Ön tulajdonában lévő eszköz generálta.
 Biztosan végrehajtja a műveletet?</translation>
 <translation id="4550208292810542331">A kameraengedély nem lett megadva</translation>
+<translation id="6470233139461745039">A jelszavak szinkronizálásának engedélyezéséhez először állítson be képernyőzárat az eszközén</translation>
+<translation id="3063783274005996079">Oldja fel a jelszavak szinkronizálásának engedélyezéséhez</translation>
+<translation id="7551563084530025179">Mielőtt szinkronizálhatná a jelszavakat, hitelesítenie kell magát az eszközön beállított biometrikus adataival/jelkódjával. Ez az extra biztonsági intézkedés a jelszavak biztonságát szolgálja.</translation>
+<translation id="6925081665778864449">A jelszavak szinkronizálásához engedélyezze a biometrikus/jelkód-hitelesítést az Android-eszközén. Ez az extra biztonsági intézkedés a jelszavak biztonságát szolgálja.</translation>
 <translation id="597993392929850353">Brave engedély</translation>
 <translation id="6336451774241870485">Új privát ablak</translation>
 <translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
@@ -428,7 +436,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="9096003370755878766">Vegye fel a Brave Rewards pénztárcájához korábban esetleg már hozzáadott BAT-ot</translation>
 <translation id="1554282356558968486">Pénztárca-szolgáltatásunk biztosítója a(z)</translation>
 <translation id="6569877533335686968">Megerősítés</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
@@ -1202,4 +1210,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6759710362319508545">Erőforrások</translation>
 <translation id="2471230424465522689">Nem korábban, mint:</translation>
 <translation id="4841860051609590575">Kérelemazonosító</translation>
+<translation id="1179407411385015942">A Leo egy mesterséges intelligencián alapuló, intelligens asszisztens, közvetlenül a böngészőbe építve</translation>
+<translation id="1250335737108905610">Leo visszaállítása és Leo-adatok törlése</translation>
+<translation id="6165101586663336913">A Leo asszisztens-visszaállításához a jövőre nézve engedélyeznie kell a Leo használatát, és ez a művelet törli a csevegési előzményeket is. A csevegési előzmények törlésével törli a Leóval folytatott összes korábbi beszélgetését. Ezt a művelet nem vonható vissza.</translation>
 </translationbundle>

@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">管理广告</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="885805571521218129">这反映了你对本月Brave 广告的预期收益范围。</translation>
-<translation id="818003031290137834">现在您已连接到 ZebPay，之前的余额将存入您的 ZebPay 账户，作为下一次收入支付的一部分。到账后，您就可以在奖励余额中看到您的 BAT。</translation>
 <translation id="3478449063771497234">通知被禁用</translation>
 <translation id="2862978891748913252">选择国家/地点</translation>
 <translation id="3970520675790340955">请选择您所在的国家/地区，以便我们为您提供适合您所在地区的正确选项和广告。</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">您最多只能使用您的 Brave 奖励余额发送 <ph name="AMOUNT"/> BAT 。</translation>
 <translation id="5012991400231464322">每月捐款</translation>
 <translation id="5907051927340164207">您每个月都在给这位创作者捐款</translation>
-<translation id="307555373157330047">您现在仍然可以发送捐款，并且您可以通过从<ph name="MONTHLY_CONTRIBUTION"/>中删除来取消对该创作者的每月捐款</translation>
+<translation id="4848906651275579475">您现在仍然可以捐款，如要取消每月捐款给这位创作者，只要将创作者从<ph name="MONTHLY_CONTRIBUTION"/>移除即可。</translation>
 <translation id="5379685283876547860">捐款已发送！</translation>
 <translation id="1041398280582063935">分享您的支持</translation>
 <translation id="8855543392451028706">欢迎你！用户可以通过向他们捐款来支持这个内容创作者。 这是一种感谢他们制作精彩内容的方式。</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">登录至 <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">感谢您支持您最喜爱的创作者</translation>
 <translation id="3796032246917966749">您似乎已注销了 Brave 奖励帐户<ph name="CUSTODIAN"/>。 再次登录以继续。</translation>
-<translation id="594652923071049606">该创作者尚未通过 Brave 的创作者进行验证。验证后，您就可以向他们发送捐款。 <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">这位创作者尚未通过 Brave Creators 的验证。创作者完成验证后，您就能捐款给对方。<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">发送捐款</translation>
 <translation id="1899434873745933492">无法发送捐款</translation>
 <translation id="1794046983410841192">使用 Brave 奖励</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">自定义</translation>
 <translation id="4827581232860040208">在发送您的捐款时出了问题</translation>
 <translation id="3259723213051400722">请重试。</translation>
-<translation id="8899147737996487517">该创作者已在 Brave 注册，并可以接收 Brave 奖励用户的捐款。 <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">这位创作者已注册 Brave，能接收 Brave Rewards 用户的捐款。<ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">当通知被禁用时，Brave 奖励可能无法运行。</translation>
 <translation id="4259212006412783790">打开</translation>
 <translation id="6112331814131703370">封鎖「切換至應用程式」通知</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">导入书签</translation>
 <translation id="1008186147501209563">导出书签</translation>
 <translation id="6680516947641001448">选择要导入书签的文件</translation>
+<translation id="2353910600995338714">导出成功</translation>
+<translation id="229319993704311844">书签已导出至<ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">导出失败</translation>
+<translation id="1166543535974380311">书签导出失败，请重试。</translation>
+<translation id="6154243540085290880">导入成功</translation>
 <translation id="7028125942261647795">书签导入成功。</translation>
-<translation id="444953779119381206">书签导入失败。</translation>
-<translation id="6606836200439368332">书签导出失败。</translation>
-<translation id="1395297034387418032">书签导出成功。</translation>
+<translation id="4803910478683254032">导入失败</translation>
+<translation id="8325139248201792113">书签导出失败。请重试。</translation>
+<translation id="2803313416453193357">打开文件夹</translation>
 <translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
 <translation id="7473245612074035141">开始设置</translation>
 <translation id="8985635554450124959">无法设置同步</translation>
@@ -392,6 +396,10 @@
 请再次确认这些单词由您所拥有的设备生成。
 确定要这么做吗？</translation>
 <translation id="4550208292810542331">未获摄影许可</translation>
+<translation id="6470233139461745039">要启用密码同步，请先在设备上设置屏幕锁</translation>
+<translation id="3063783274005996079">解锁以启用密码同步</translation>
+<translation id="7551563084530025179">同步密码前，您必须先使用装置的生物辨识功能/密码完成验证。采用这项额外的安全措施有助于确保密码安全。</translation>
+<translation id="6925081665778864449">如需同步密码，请先在您的 Android 设备上启用生物辨识功能/密码。采用这项额外的安全措施有助于确保密码安全。</translation>
 <translation id="597993392929850353">Brave 执照</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="6199596294742117349">这是一个私人标签页</translation>
@@ -428,7 +436,7 @@
 <translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
 <translation id="1554282356558968486">我们的钱包服务提供商：</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
@@ -1202,4 +1210,7 @@
 <translation id="6759710362319508545">资源</translation>
 <translation id="2471230424465522689">以前没有</translation>
 <translation id="4841860051609590575">申请 ID</translation>
+<translation id="1179407411385015942">Leo 是采用 AI 技术的智慧助理，内置于浏览器中。</translation>
+<translation id="1250335737108905610">重置并清除 Leo 数据</translation>
+<translation id="6165101586663336913">如果重置 Leo 助理，日后必须重新选择加入才能再次使用，您的聊天记录也会一并清除。清除聊天记录会删除您先前与 Leo 的对话。此动作无法还原。</translation>
 </translationbundle>

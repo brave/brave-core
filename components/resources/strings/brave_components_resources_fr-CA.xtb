@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">Se désinscrire</translation>
 <translation id="1209739344687072997">Signaler un site qui ne fonctionne pas</translation>
 <translation id="8510478288840333677">Indiquez aux développeurs de Brave que ce site ne fonctionne pas correctement avec Shields :</translation>
-<translation id="8265244536487014968">Remarque : le rapport envoyé aux serveurs Brave comprendra l'adresse du site, le numéro de version de Brave, les paramètres des boucliers, l'état du VPN et les paramètres linguistiques. L'adresse IP est transmise mais n'est pas enregistrée.</translation>
+<translation id="6387106423577201267">Remarque : le rapport envoyé aux serveurs Brave comprendra l'adresse du site, le numéro de version de Brave, les paramètres des boucliers, le statut du VPN et les paramètres linguistiques.</translation>
 <translation id="6476216365964140603">Plus de détails (facultatif)</translation>
 <translation id="6145852496180774737">Communiquez avec moi : (facultatif)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">Impossible de valider la demande de connexion de vos récompenses Brave à votre compte <ph name="PROVIDER"/> par votre navigateur. <ph name="BEGIN_LINK"/>Communiquez avec l'assistance<ph name="END_LINK"/> pour obtenir de l'aide.</translation>
 <translation id="1316066811927496401">Erreur : la demande n'a pas pu être validée</translation>
 <translation id="8167256685618982116">En activant <ph name="TITLE"/>, vous acceptez les <ph name="BEGIN_LINK1"/>conditions d'utilisation<ph name="END_LINK1"/> et la <ph name="BEGIN_LINK2"/>politique de confidentialité<ph name="END_LINK2"/>.</translation>
-<translation id="4123948149985772126">Choisir un fournisseur de compte</translation>
-<translation id="896953639186217388">Les fournisseurs de comptes de dépôt sont tenus de vérifier votre identité, ce qui peut comprendre la présentation d'une pièce d'identité avec photo. Consultez la <ph name="BEGIN_LINK1"/>Politique de confidentialité relative aux récompenses Brave<ph name="END_LINK1"/>. Cliquez ici pour <ph name="BEGIN_LINK2"/>en savoir plus sur les BAT<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">stocker, gérer et retirer vos BAT gagnés;</translation>
-<translation id="5155452078869279096">recharger votre compte avec les BAT que vous achetez;</translation>
-<translation id="2662540985634906665">Envoyer des contributions sur demande à vos sites &amp; créateurs préférés</translation>
+<translation id="8817096698141999876">Comptes de garde (vérification d'identifiant requis)</translation>
+<translation id="1539433155512862005">Les comptes de garde sont des comptes avec des services tiers de confiance qui contiennent vos BAT pour vous.</translation>
+<translation id="6751803821780922506">Choisissez où vous souhaitez recevoir les BAT</translation>
 <translation id="1233129511866436960">En savoir plus sur les régions et l'assistance</translation>
 <translation id="7329170127335794328">Cette fonction n'est pas encore disponible dans votre région</translation>
-<translation id="8304979233901023264">J'ai lu et j'accepte les <ph name="TOS_LINK_BEGIN"/>Conditions d'utilisation<ph name="TOS_LINK_END"/> et la <ph name="PP_LINK_BEGIN"/>Politique de confidentialité<ph name="PP_LINK_END"/> de Brave.</translation>
+<translation id="966956302643313970">Pour commencer à obtenir des jetons d'attention de base (BAT), connectez un compte. Les BAT que vous obtiendrez seront automatiquement transférés sur votre compte chaque mois.</translation>
 <translation id="1892970806832316900">En attente jusqu'au <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Oups! Votre navigateur ne peut pas recevoir les publicités privées Brave.</translation>
 <translation id="5177429570315095022">Vous devez mettre à jour votre navigateur pour continuer à voir les publicités.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Envie de gagner de l'argent?<ph name="BOLD_END"/> Connectez un compte ou créez-en un auprès de l'un de nos partenaires.</translation>
 <translation id="1772961321862399863">Pour gagner des BAT, les utilisateurs doivent connecter un compte de dépôt à Récompenses Brave. Malheureusement, vous ne pouvez pas en gagner, car votre région ne compte aucun partenaire de compte de dépôt. Pour le moment, l'activation de Récompenses Brave soutiendra automatiquement des créateurs.</translation>
 <translation id="902298128239575729">Envoyer des contributions avec le programme de récompenses Brave</translation>
-<translation id="8413791505518414158">Une fois que vous aurez connecté un compte de dépôt, vous pourrez envoyer des contributions sur demande à vos créateurs préférés en utilisant votre solde associé au programme de récompenses Brave.</translation>
+<translation id="6276721355724491595">Une fois que vous aurez connecté un compte de dépôt, vous pourrez envoyer des contributions sur demande à vos créateurs préférés en utilisant votre solde associé au programme de récompenses Brave.</translation>
 <translation id="1149481926056509086">Pour pouvoir envoyer des contributions sur demande, les utilisateurs doivent connecter un compte de dépôt au programme de récompenses Brave. Malheureusement, vous ne pouvez pas en envoyer, car votre région ne compte aucun partenaire de compte de dépôt. En attendant, vous continuez de soutenir automatiquement les créateurs.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Ce mois-ci, vous avez visité # créateur soutenu par Récompenses Brave}
@@ -628,13 +626,12 @@
 <translation id="2862978891748913252">Sélectionnez votre pays</translation>
 <translation id="3717922248131893262">Pour continuer à utiliser les récompenses Brave, sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région. <ph name="LINK_BEGIN"/>Politique de confidentialité<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Commencer à utiliser Récompenses</translation>
-<translation id="818003031290137834">Maintenant que vous êtes connecté à ZebPay, tout solde en votre possession sera déposé sur votre compte ZebPay dans le cadre de votre prochain paiement de gains. Dès qu'il arrivera, vous verrez votre BAT apparaître dans votre solde de récompenses.</translation>
 <translation id="2221902203895354376">Un don de jeton est disponible!</translation>
 <translation id="2956070106555335453">Résumé</translation>
 <translation id="2369994359029526515">Créateur non vérifié</translation>
-<translation id="1010940411509546886">Ce créateur ne fait pas partie des créateurs Brave, car il n'a pas encore été validé. Une fois qu'il sera validé, vous pourrez lui envoyer des contributions.</translation>
+<translation id="3984338085370091436">Ce créateur ne fait pas partie des créateurs Brave, car il n'a pas encore été validé. Une fois qu'il sera validé, vous pourrez lui envoyer des contributions.</translation>
 <translation id="6020176662032623904">Créateur vérifié</translation>
-<translation id="215037911651623564">Actualiser le statut de vérification du créateur</translation>
+<translation id="8635423276837443905">Actualiser le statut de vérification du créateur</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> sur <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">Envoyer une contribution</translation>
 <translation id="7335371657242627509">Inclure dans l'auto-contribution</translation>
@@ -694,11 +691,11 @@
 <translation id="1483493594462132177">Envoi</translation>
 <translation id="6632987674051304487">Envoyer avec <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Utiliser un portefeuille Web3</translation>
-<translation id="5399596220743521546">Ce créateur est inscrit auprès de Brave et peut recevoir des contributions des utilisateurs du programme de récompenses Brave.</translation>
+<translation id="4530198836725543997">Ce créateur est inscrit auprès de Brave et peut recevoir des contributions des utilisateurs du programme de récompenses Brave.</translation>
 <translation id="4529874892536380156">Choisissez d'en faire une contribution mensuelle récurrente. Vous pouvez l'annuler à tout moment.</translation>
 <translation id="1177863135347784049">Personnalisé</translation>
 <translation id="5907051927340164207">Vous envoyez déjà des contributions mensuelles à ce créateur</translation>
-<translation id="2840845521251717054">Vous pouvez tout de même envoyer une contribution maintenant. Si vous le souhaitez, vous pouvez également annuler les contributions mensuelles que vous envoyez à ce créateur en le supprimant des <ph name="LINK_BEGIN"/>contributions mensuelles<ph name="LINK_END"/>.</translation>
+<translation id="4357685964329620278">Vous pouvez tout de même envoyer une contribution maintenant. Si vous le souhaitez, vous pouvez également annuler les contributions mensuelles que vous envoyez à ce créateur en le supprimant des <ph name="LINK_BEGIN"/>contributions mensuelles<ph name="LINK_END"/>.</translation>
 <translation id="1899434873745933492">Impossible d'envoyer votre contribution</translation>
 <translation id="8598111278506452136">Ce créateur n'est pas en mesure de recevoir les contributions provenant de <ph name="PROVIDER"/>.</translation>
 <translation id="8379442066667303579">Toutefois, vous pouvez le soutenir en lui envoyant de la cryptomonnaie à l'aide de votre portefeuille Web3.</translation>
@@ -724,6 +721,7 @@
 <translation id="1288078776976153868">réseau</translation>
 <translation id="1148827340205946630">L'utilisateur a rejeté la demande.</translation>
 <translation id="2403819048476450281">Paramètres non valides.</translation>
+<translation id="3849003816301348130">L'adresse de destination est sur la liste OFAC SDN.</translation>
 <translation id="3955144560853195652">La chaîne <ph name="VALUE"/> n'a pas été ajoutée</translation>
 <translation id="1875861420974447980">Cet ID de chaîne est déjà utilisé</translation>
 <translation id="167698752210114155">Une erreur interne s'est produite</translation>
@@ -909,6 +907,7 @@
 <translation id="6577166808959668729">Prend en charge les actifs compatibles avec SPL sur la chaîne de blocs Solana</translation>
 <translation id="4541295941776129088">Stocker l'actif FIL</translation>
 <translation id="29759539656432505">Stocker les actifs BTC</translation>
+<translation id="8749751940551938347">Stocker des actifs ZEC</translation>
 <translation id="8500387257977999003">Clé privée <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="232925166623833246">Importer à partir d'un portefeuille matériel</translation>
@@ -1085,7 +1084,7 @@
 <translation id="5867988533873716616">L'URL de l'explorateur de bloc n'est pas disponible.</translation>
 <translation id="4255623233927788178">Afficher sur l'explorateur de bloc</translation>
 <translation id="563386395023152633">Copier le hachage de la transaction</translation>
-<translation id="7148658188569580292">Accélérer la transaction</translation>
+<translation id="881317738916264532">Accélérer</translation>
 <translation id="1198263951134066686">Annuler la transaction</translation>
 <translation id="3562548974839822204">Réessayer la transaction</translation>
 <translation id="6383204195803840504">Les transactions s'afficheront ici</translation>
@@ -1099,6 +1098,7 @@
 <translation id="1165039591588034296">Erreur</translation>
 <translation id="8373210463207847451">Abandonné</translation>
 <translation id="8214232307424031138">Signé</translation>
+<translation id="5916664084637901428">Activé</translation>
 <translation id="9065572743819293042">Transactions récentes</translation>
 <translation id="4235538284468006757">Détails des transactions</translation>
 <translation id="7488671812634887146">Accélérer</translation>
@@ -1159,6 +1159,7 @@
 <translation id="471055802670233033">Vous dépensez</translation>
 <translation id="7916618590403748182">Vous recevrez</translation>
 <translation id="8328657208304368165">Confirmer la commande</translation>
+<translation id="8220255674527598378">Échange Solana</translation>
 <translation id="5071303414930953888">Compte <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Le portefeuille doit d'abord être déverrouillé</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> n'est pas une adresse valide</translation>
@@ -1253,8 +1254,6 @@
 <translation id="1257387162647804035">Réseaux principaux</translation>
 <translation id="8323674164587854512">Chaînes Ethereum + EVM</translation>
 <translation id="1398414935371867469">Chaînes Solana + SVM</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">Logo du réseau</translation>
 <translation id="4378208228955237306">Afficher le logo du réseau sur les NFT</translation>
 <translation id="5472199803712163015">NFT de pourriel</translation>
@@ -1282,7 +1281,7 @@
 <translation id="9104177294757104789">Envoyer <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Échanger <ph name="MAKER"/> contre <ph name="TAKER"/></translation>
 <translation id="8613144770663526433">Se connecter au portefeuille Brave</translation>
-<translation id="3696514931437952995">Vous vous connectez à <ph name="ORIGIN"/>. Le portefeuille Brave partagera l'adresse de votre portefeuille avec <ph name="ORIGIN"/>.</translation>
+<translation id="8813165409788097898">Vous vous connectez à <ph name="ORIGIN"/>. Le portefeuille Brave partagera l'adresse de votre portefeuille avec <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Voir les détails</translation>
 <translation id="3950820424414687140">Connexion</translation>
 <translation id="4530494379350999373">Origine</translation>
@@ -1593,6 +1592,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>Actualiser<ph name="REFRESH_END"/> ou <ph name="IMPORT"/>importer manuellement<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Actualisation en cours</translation>
 <translation id="4608324163534970318">Frais de réseau</translation>
+<translation id="6213230117190778270">Recevoir</translation>
+<translation id="6748108480210050150">De</translation>
+<translation id="4875290286426670462"><ph name="ASSET_SYMBOL"/> illimités</translation>
+<translation id="6018568069962140636">Ce jeton n'est pas vérifié</translation>
+<translation id="8549067157732633185">Ce jeton est vérifié</translation>
+<translation id="2130170065617939165">Ce jeton est vérifié sur <ph name="NUMBER_OF_LISTS"/> listes</translation>
+<translation id="1554316484739382186">Compte de dépense : <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291">Compte <ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">BAT des récompenses Brave sur <ph name="PROVIDER"/></translation>
+<translation id="429061011725027672">Vous êtes actuellement déconnecté de <ph name="PROVIDER"/>. Veuillez vous connecter pour consulter votre solde.</translation>
+<translation id="4611292653554630842">Se connecter</translation>
+<translation id="1132794822159463424">Afficher sur <ph name="PROVIDER"/></translation>
+<translation id="7875005109025196005">Plateformes</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="3745016858329272300">Informations générales</translation>
 <translation id="4045404575593562245">Événements relatifs au contrôle de Tor</translation>
@@ -1852,6 +1865,8 @@
 <translation id="8960352557529001690">Dyslexique</translation>
 <translation id="8189819085033738728">Réduire la taille de la police</translation>
 <translation id="1952725803106139986">Augmenter la taille de la police</translation>
+<translation id="6338177649973309262">Colonne de contenu étroite</translation>
+<translation id="6500600749984466451">Colonne de contenu large</translation>
 <translation id="7239710518122372020">Synthèse vocale</translation>
 <translation id="4330722796577425585">Rembobiner</translation>
 <translation id="1199355487114804640">Lecture/Pause</translation>

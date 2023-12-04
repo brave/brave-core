@@ -81,6 +81,7 @@
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
 <translation id="3229091547987707389">导入并分享目录</translation>
+<translation id="2545072023356206691">从 2023 年 12 月 1 日开始，Brave Dev 频道将不再接收浏览器更新。建议用户改用 Brave Nightly、测试版或正式版。</translation>
 <translation id="474217410105706308">将此标签页静音</translation>
 <translation id="2804710924397009224">隐藏 Brave 奖励图标</translation>
 <translation id="5029193871181468990">隐藏 Brave 奖励图标</translation>
@@ -288,6 +289,15 @@
 <translation id="5181358966317519720">从播放列表中移除</translation>
 <translation id="2377705456080309463">查看原始页面</translation>
 <translation id="158894735649719362">当您有东西可播放时，乐趣就开始了。添加您喜爱的媒体，随时随地播放。甚至离线播放。</translation>
+<translation id="8422349592890097194">创建新文件夹</translation>
+<translation id="2818704116581303039">打开播放列表设置</translation>
+<translation id="6790428901817661496">播放</translation>
+<translation id="1178581264944972037">暂停</translation>
+<translation id="4477350412780666475">下一曲</translation>
+<translation id="3962859241508114581">上一曲</translation>
+<translation id="7544853251252956727">随机播放</translation>
+<translation id="4330722796577425585">倒带</translation>
+<translation id="7481312909269577407">前进</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
