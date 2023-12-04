@@ -11,8 +11,7 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   SwapValidationErrorType,
-  AmountPresetTypes,
-  DefaultCurrencies
+  AmountPresetTypes
 } from '../../../constants/types'
 
 // Options
@@ -85,7 +84,6 @@ export interface Props {
   orderExpiration?: ExpirationPresetObjectType
   validationError?: SwapValidationErrorType | undefined
   customSlippageTolerance?: string
-  defaultCurrencies?: DefaultCurrencies
   selectedPreset?: AmountPresetTypes | undefined
   isV2?: boolean
   onCustomSlippageToleranceChange?: (value: string) => void
@@ -93,7 +91,6 @@ export interface Props {
   onSelectPresetAmount?: (percent: number) => void
   onSelectSlippageTolerance?: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration?: (expiration: ExpirationPresetObjectType) => void
-  onToggleOrderType?: () => void
   onShowSelection?: () => void
   onRefresh?: () => void
   onPaste?: () => void

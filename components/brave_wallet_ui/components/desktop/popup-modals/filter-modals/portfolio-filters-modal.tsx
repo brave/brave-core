@@ -38,6 +38,9 @@ import {
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
+import {
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../../common/slices/api.slice'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -74,6 +77,9 @@ export const PortfolioFiltersModal = (props: Props) => {
   // Redux
   const dispatch = useDispatch()
 
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+
   // Selectors
   const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
     WalletSelectors.filteredOutPortfolioNetworkKeys
@@ -89,9 +95,6 @@ export const PortfolioFiltersModal = (props: Props) => {
   )
   const hidePortfolioSmallBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioSmallBalances
-  )
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
   )
   const selectedPortfolioTimeline = useSafeWalletSelector(
     WalletSelectors.selectedPortfolioTimeline
@@ -182,13 +185,13 @@ export const PortfolioFiltersModal = (props: Props) => {
 
   const hideSmallBalancesDescription = React.useMemo(() => {
     const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
-      .formatAsFiat(defaultCurrencies.fiat)
+      .formatAsFiat(defaultFiatCurrency)
       .split('.')[0]
     return getLocale('braveWalletHideSmallBalancesDescription').replace(
       '$1',
       minAmount
     )
-  }, [defaultCurrencies.fiat])
+  }, [defaultFiatCurrency])
 
   const showNftFilters = React.useMemo(() => {
     return currentRoute === WalletRoutes.PortfolioNFTs

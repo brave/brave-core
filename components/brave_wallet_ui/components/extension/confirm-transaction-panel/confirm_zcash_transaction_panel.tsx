@@ -14,6 +14,9 @@ import { usePendingTransactions } from '../../../common/hooks/use-pending-transa
 import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
+import {
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../common/slices/api.slice'
 
 // Components
 import Tooltip from '../../shared/tooltip/index'
@@ -48,9 +51,9 @@ type confirmPanelTabs = 'transaction' | 'details'
 export const ConfirmZCashTransactionPanel = () => {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
+
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // custom hooks
   const {
@@ -153,7 +156,7 @@ export const ConfirmZCashTransactionPanel = () => {
       </TransactionAmountBig>
       <TransactionFiatAmountBig>
         {new Amount(transactionDetails.fiatValue).formatAsFiat(
-          defaultCurrencies.fiat
+          defaultFiatCurrency
         )}
       </TransactionFiatAmountBig>
 

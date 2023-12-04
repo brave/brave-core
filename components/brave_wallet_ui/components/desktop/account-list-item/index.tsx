@@ -32,7 +32,6 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { UISelectors, WalletSelectors } from '../../../common/selectors'
 import {
   useSafeUISelector,
-  useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 
@@ -41,6 +40,7 @@ import {
   TokenBalancesRegistry //
 } from '../../../common/slices/entities/token-balance.entity'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetExternalRewardsWalletQuery,
   useGetRewardsBalanceQuery
 } from '../../../common/slices/api.slice'
@@ -122,12 +122,10 @@ export const AccountListItem = ({
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: rewardsBalance } = useGetRewardsBalanceQuery()
   const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
 

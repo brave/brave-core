@@ -23,10 +23,6 @@ export const mockWalletState: WalletState = {
     eTldPlusOne: 'uniswap.org'
   },
   addUserAssetError: false,
-  defaultCurrencies: {
-    crypto: 'ETH',
-    fiat: 'USD'
-  },
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   fullTokenList: mockErc20TokensList,
