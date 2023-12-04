@@ -18,15 +18,12 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
   ])
 }
 
-// Mock ROOT_GEN_DIR as 'gen' - it will be replaced with an array from
-// getBuildOutputPathList.
-const potentialGenFolders = getBuildOuptutPathList('gen')
-process.env.ROOT_GEN_DIR = potentialGenFolders
+process.env.ROOT_GEN_DIR = getBuildOuptutPathList('gen')
   .filter(a => fs.existsSync(a))
   .sort((a, b) => fs.statSync(a).mtime - fs.statSync(b).mtime)[0]
-
-  // Fallback to the first folder in the list, so we get sensible errors.
-  ?? potentialGenFolders[0]
+if (!process.env.ROOT_GEN_DIR) {
+  throw new Error("Failed to find build output folder!")
+}
 
 const basePathMap = require('../components/webpack/path-map')
 
