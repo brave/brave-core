@@ -3,7 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_p3a_public_headers = [
-  "//brave/ios/browser/api/p3a/brave_histograms_controller.h",
-  "//brave/ios/browser/api/p3a/brave_p3a_utils.h",
-]
+brave_p3a_public_headers = [ "//brave/ios/browser/api/p3a/brave_p3a_utils.h" ]

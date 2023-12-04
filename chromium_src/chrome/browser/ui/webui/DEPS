@@ -1,3 +1,4 @@
 include_rules = [
+  "+brave/components/webui/about_ui.h",
   "+third_party/re2",
 ]

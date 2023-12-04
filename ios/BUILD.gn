@@ -20,6 +20,7 @@ import("//brave/ios/browser/api/session_restore/headers.gni")
 import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
+import("//brave/ios/browser/api/web/ui/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
 import("//build/config/compiler/compiler.gni")
@@ -61,7 +62,6 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/password/brave_password_api.h",
   "//brave/ios/browser/api/password/brave_password_observer.h",
   "//brave/ios/browser/api/sync/brave_sync_api.h",
-  "//brave/ios/browser/api/sync/brave_sync_internals.h",
   "//brave/ios/browser/api/sync/driver/brave_sync_profile_service.h",
   "//brave/ios/browser/api/web_image/web_image.h",
   "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
@@ -87,6 +87,7 @@ brave_core_public_headers += brave_p3a_public_headers
 brave_core_public_headers += browser_api_web_webstate_public_headers
 brave_core_public_headers += ipfs_public_headers
 brave_core_public_headers += ntp_background_images_public_headers
+brave_core_public_headers += browser_api_web_ui_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
