@@ -71,12 +71,16 @@ import {
   useGetEthAddressChecksumQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useSendSPLTransferMutation,
-  useSendTransactionMutation,
   useSendERC20TransferMutation,
   useSendERC721TransferFromMutation,
   useSendETHFilForwarderTransferMutation,
   useGetAddressFromNameServiceUrlQuery,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
+  useSendEvmTransactionMutation,
+  useSendSolTransactionMutation,
+  useSendFilTransactionMutation,
+  useSendBtcTransactionMutation,
+  useSendZecTransactionMutation
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery,
@@ -181,7 +185,11 @@ export const SendScreen = React.memo((props: Props) => {
   // Mutations
   const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
   const [sendSPLTransfer] = useSendSPLTransferMutation()
-  const [sendTransaction] = useSendTransactionMutation()
+  const [sendEvmTransaction] = useSendEvmTransactionMutation()
+  const [sendSolTransaction] = useSendSolTransactionMutation()
+  const [sendFilTransaction] = useSendFilTransactionMutation()
+  const [sendBtcTransaction] = useSendBtcTransactionMutation()
+  const [sendZecTransaction] = useSendZecTransactionMutation()
   const [sendERC20Transfer] = useSendERC20TransferMutation()
   const [sendERC721TransferFrom] = useSendERC721TransferFromMutation()
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
@@ -545,98 +553,133 @@ export const SendScreen = React.memo((props: Props) => {
       ? resolvedDomainAddress
       : toAddressOrUrl
 
-    tokenFromParams.isErc20 &&
-      (await sendERC20Transfer({
-        network: networkFromParams,
-        fromAccount,
-        to: toAddress,
-        value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-        contractAddress: tokenFromParams.contractAddress
-      }))
+    switch (fromAccount.accountId.coin) {
+      case BraveWallet.CoinType.BTC: {
+        await sendBtcTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex()
+        })
+        resetSendFields()
+        return
+      }
 
-    tokenFromParams.isErc721 &&
-      (await sendERC721TransferFrom({
-        network: networkFromParams,
-        fromAccount,
-        to: toAddress,
-        value: '',
-        contractAddress: tokenFromParams.contractAddress,
-        tokenId: tokenFromParams.tokenId ?? ''
-      }))
+      case BraveWallet.CoinType.ETH: {
+        if (tokenFromParams.isErc20) {
+          await sendERC20Transfer({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
+            contractAddress: tokenFromParams.contractAddress
+          })
+          resetSendFields()
+          return
+        }
 
-    if (
-      accountFromParams.accountId.coin === BraveWallet.CoinType.SOL &&
-      tokenFromParams.contractAddress !== '' &&
-      !tokenFromParams.isErc20 &&
-      !tokenFromParams.isErc721
-    ) {
-      await sendSPLTransfer({
-        network: networkFromParams,
-        fromAccount,
-        to: toAddress,
-        value: !tokenFromParams.isNft
-          ? new Amount(sendAmount)
-              .multiplyByDecimals(tokenFromParams.decimals)
-              .toHex()
-          : new Amount(sendAmount).toHex(),
-        splTokenMintAddress: tokenFromParams.contractAddress
-      })
-      resetSendFields()
-      return
+        if (tokenFromParams.isErc721) {
+          await sendERC721TransferFrom({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            value: '',
+            contractAddress: tokenFromParams.contractAddress,
+            tokenId: tokenFromParams.tokenId ?? ''
+          })
+          resetSendFields()
+          return
+        }
+
+        if (
+          (tokenFromParams.chainId ===
+            BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+            tokenFromParams.chainId ===
+              BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+          isValidFilAddress(toAddress)
+        ) {
+          await sendETHFilForwarderTransfer({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
+            contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
+          })
+          resetSendFields()
+          return
+        }
+
+        await sendEvmTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex()
+        })
+        resetSendFields()
+        return
+      }
+
+      case BraveWallet.CoinType.FIL: {
+        await sendFilTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .format()
+        })
+        resetSendFields()
+        return
+      }
+
+      case BraveWallet.CoinType.SOL: {
+        if (
+          tokenFromParams.contractAddress !== '' &&
+          !tokenFromParams.isErc20 &&
+          !tokenFromParams.isErc721
+        ) {
+          await sendSPLTransfer({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            value: !tokenFromParams.isNft
+              ? new Amount(sendAmount)
+                  .multiplyByDecimals(tokenFromParams.decimals)
+                  .toHex()
+              : new Amount(sendAmount).toHex(),
+            splTokenMintAddress: tokenFromParams.contractAddress
+          })
+          resetSendFields()
+          return
+        }
+
+        await sendSolTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex()
+        })
+        resetSendFields()
+      }
+
+      case BraveWallet.CoinType.ZEC: {
+        await sendZecTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex()
+        })
+        resetSendFields()
+      }
     }
-
-    if (accountFromParams.accountId.coin === BraveWallet.CoinType.FIL) {
-      await sendTransaction({
-        network: networkFromParams,
-        fromAccount,
-        to: toAddress,
-        value: new Amount(sendAmount)
-          .multiplyByDecimals(tokenFromParams.decimals)
-          .format()
-      })
-      resetSendFields()
-      return
-    }
-
-    if (tokenFromParams.isErc721 || tokenFromParams.isErc20) {
-      resetSendFields()
-      return
-    }
-
-    if (
-      accountFromParams.accountId.coin === BraveWallet.CoinType.ETH &&
-      (tokenFromParams.chainId ===
-        BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
-        tokenFromParams.chainId ===
-          BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
-      isValidFilAddress(toAddress)
-    ) {
-      await sendETHFilForwarderTransfer({
-        network: networkFromParams,
-        fromAccount,
-        to: toAddress,
-        value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-        contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
-      })
-      resetSendFields()
-      return
-    }
-
-    await sendTransaction({
-      network: networkFromParams,
-      fromAccount,
-      to: toAddress,
-      value:
-        accountFromParams.accountId.coin === BraveWallet.CoinType.FIL
-          ? new Amount(sendAmount)
-              .multiplyByDecimals(tokenFromParams.decimals)
-              .toString()
-          : new Amount(sendAmount)
-              .multiplyByDecimals(tokenFromParams.decimals)
-              .toHex()
-    })
-
-    resetSendFields()
   }, [
     tokenFromParams,
     accountFromParams,

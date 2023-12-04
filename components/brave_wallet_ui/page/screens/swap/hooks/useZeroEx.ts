@@ -22,7 +22,7 @@ import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
   useApproveERC20AllowanceMutation,
   useGetDefaultFiatCurrencyQuery,
-  useSendEthTransactionMutation
+  useSendEvmTransactionMutation
 } from '../../../../common/slices/api.slice'
 import { useLib } from '../../../../common/hooks/useLib'
 
@@ -54,9 +54,9 @@ export function useZeroEx(params: SwapParams) {
   >(undefined)
 
   // Custom hooks
-  // FIXME(josheleonard): use slices API
-  const [sendEthTransaction] = useSendEthTransactionMutation()
+  const [sendEvmTransaction] = useSendEvmTransactionMutation()
   const [approveERC20Allowance] = useApproveERC20AllowanceMutation()
+  // FIXME(josheleonard): use slices API
   const { getERC20Allowance, getSwapService } = useLib()
   const swapService = getSwapService()
 
@@ -330,7 +330,7 @@ export function useZeroEx(params: SwapParams) {
         transactionPayloadResponse.response
 
       try {
-        await sendEthTransaction({
+        await sendEvmTransaction({
           fromAccount: selectedAccount,
           to,
           value: new Amount(value).toHex(),
@@ -351,7 +351,7 @@ export function useZeroEx(params: SwapParams) {
       selectedNetwork,
       selectedAccount,
       swapService,
-      sendEthTransaction,
+      sendEvmTransaction,
       reset
     ]
   )
