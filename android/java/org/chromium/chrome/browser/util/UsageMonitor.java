@@ -12,12 +12,26 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class UsageMonitor {
+    private static final Object sLock = new Object();
     private static final long REPORT_INTERVAL_MS = 15000;
 
     private MiscAndroidMetrics mMiscAndroidMetrics;
     private Timer mTimer;
+    private static UsageMonitor sInstance;
 
-    public UsageMonitor(MiscAndroidMetrics miscAndroidMetrics) {
+    public static UsageMonitor getInstance(MiscAndroidMetrics miscAndroidMetrics) {
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new UsageMonitor();
+            }
+            sInstance.setMiscAndroidMetrics(miscAndroidMetrics);
+        }
+        return sInstance;
+    }
+
+    private UsageMonitor() {}
+
+    private void setMiscAndroidMetrics(MiscAndroidMetrics miscAndroidMetrics) {
         mMiscAndroidMetrics = miscAndroidMetrics;
     }
 
@@ -30,9 +44,14 @@ public class UsageMonitor {
                 new TimerTask() {
                     @Override
                     public void run() {
-                        TimeDelta duration = new TimeDelta();
-                        duration.microseconds = REPORT_INTERVAL_MS * 1000;
-                        mMiscAndroidMetrics.recordBrowserUsageDuration(duration);
+                        try {
+                            TimeDelta duration = new TimeDelta();
+                            duration.microseconds = REPORT_INTERVAL_MS * 1000;
+                            mMiscAndroidMetrics.recordBrowserUsageDuration(duration);
+                        } catch (Exception exc) {
+                            assert false : "UsageMonitor exception" + exc.getMessage();
+                            // Ignore any kind of exception as it's fine if some pings fail
+                        }
                     }
                 },
                 REPORT_INTERVAL_MS,
@@ -40,6 +59,9 @@ public class UsageMonitor {
     }
 
     public void stop() {
+        if (mTimer == null) {
+            return;
+        }
         mTimer.cancel();
         mTimer = null;
     }
