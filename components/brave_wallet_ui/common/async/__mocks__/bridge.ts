@@ -831,6 +831,29 @@ export class MockedWalletApiProxy {
             .find((t) => t.contractAddress === contractAddress)
             ?.decimals.toString() || '18'
       }
+    },
+    getEthTokenInfo: async (contractAddress, chainId) => {
+      return {
+        token: {
+          contractAddress,
+          chainId,
+          coin: BraveWallet.CoinType.ETH,
+          name: 'Mocked Token',
+          symbol: 'MTK',
+          decimals: 18,
+          coingeckoId: 'mocked-token',
+          isErc20: true,
+          isErc721: false,
+          isErc1155: false,
+          isNft: false,
+          tokenId: '',
+          logo: '',
+          isSpam: false,
+          visible: false
+        },
+        error: 0,
+        errorMessage: ''
+      }
     }
   }
 

@@ -16,7 +16,7 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 
 // hooks
 import useAssetManagement from '../../../common/hooks/assets-management'
-import useGetTokenInfo from '../../../common/hooks/token'
+import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
@@ -119,8 +119,7 @@ export const AddCustomTokenForm = (props: Props) => {
         coingeckoId,
         logo: iconURL,
         tokenId: '',
-        isErc20:
-          customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
+        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
         isErc1155: false,
         isNft: false,

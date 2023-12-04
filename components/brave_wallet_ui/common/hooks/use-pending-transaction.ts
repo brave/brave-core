@@ -31,7 +31,7 @@ import {
 import { makeNetworkAsset } from '../../options/asset-options'
 
 // Custom Hooks
-import useGetTokenInfo from './token'
+import useGetTokenInfo from './use-get-token-info'
 import { useLib } from './useLib'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector, useSafeWalletSelector } from './use-safe-selector'

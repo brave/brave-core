@@ -8,8 +8,8 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import { BraveWallet } from '../../constants/types'
 
-import { useGetTokenInfoQuery } from '../../common/slices/api.slice'
-import { useGetCombinedTokensListQuery } from '../../common/slices/api.slice.extra'
+import { useGetTokenInfoQuery } from '../slices/api.slice'
+import { useGetCombinedTokensListQuery } from '../slices/api.slice.extra'
 
 interface Arg {
   contractOrMintAddress: string

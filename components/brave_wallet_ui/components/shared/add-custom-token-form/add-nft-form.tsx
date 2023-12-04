@@ -20,7 +20,7 @@ import {
 
 // hooks
 import useAssetManagement from '../../../common/hooks/assets-management'
-import useGetTokenInfo from '../../../common/hooks/token'
+import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import { useGetNetworksRegistryQuery } from '../../../common/slices/api.slice'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
