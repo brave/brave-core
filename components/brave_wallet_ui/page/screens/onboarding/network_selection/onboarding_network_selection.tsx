@@ -164,25 +164,14 @@ export const OnboardingNetworkSelection = () => {
   // state
   const [searchText, setSearchText] = React.useState('')
   const [showTestNets, setShowTestNets] = React.useState(false)
-  const [selectedChainsForContext, setSelectedChains] = React.useState<
-    EntityId[]
-  >([EthMainnetId, SolMainnetId, FilMainnetId])
-
-  /** Always include test networks */
-  const selectedChainsContext = React.useMemo(
-    () => [selectedChainsForContext, setSelectedChains] as const,
-    [selectedChainsForContext, setSelectedChains]
-  )
-
-  // filter out test networks if needed
-  const selectedChains = showTestNets
-    ? selectedChainsForContext
-    : selectedChainsForContext.filter(
-        (id) => !SupportedTestNetworkEntityIds.includes(id)
-      )
+  const [selectedChainIds, setSelectedChainIds] = React.useState<EntityId[]>([
+    EthMainnetId,
+    SolMainnetId,
+    FilMainnetId
+  ])
 
   // queries
-  const { data: networks, isLoading: isLoadingNetworks } =
+  const { data: networks = [], isLoading: isLoadingNetworks } =
     useGetAllKnownNetworksQuery()
 
   // mutations
@@ -190,6 +179,31 @@ export const OnboardingNetworkSelection = () => {
   const [restoreNetworks] = useRestoreNetworksMutation()
 
   // memos
+  const networkIds = React.useMemo(() => {
+    return networks.map(getNetworkId)
+  }, [networks])
+
+  /** Always include test networks */
+  const selectedChainsContext = React.useMemo(
+    () => [selectedChainIds, setSelectedChainIds] as const,
+    [selectedChainIds, setSelectedChainIds]
+  )
+
+  const mainnetChainIds = React.useMemo(
+    () =>
+      networkIds.filter((id) => !SupportedTestNetworkEntityIds.includes(id)),
+    [networkIds]
+  )
+
+  // filter out test networks if needed
+  const visibleSelectedChainIds = React.useMemo(() => {
+    return showTestNets
+      ? selectedChainIds
+      : selectedChainIds.filter(
+          (id) => !SupportedTestNetworkEntityIds.includes(id)
+        )
+  }, [showTestNets, selectedChainIds])
+
   const { featuredNetworks, popularNetworks } = React.useMemo(() => {
     if (!networks) {
       return {
@@ -253,7 +267,7 @@ export const OnboardingNetworkSelection = () => {
       []
 
     for (const net of networks) {
-      if (selectedChains.includes(getNetworkId(net))) {
+      if (visibleSelectedChainIds.includes(getNetworkId(net))) {
         selectedNetworks.push({ chainId: net.chainId, coin: net.coin })
       } else {
         hiddenNets.push({ chainId: net.chainId, coin: net.coin })
@@ -281,22 +295,22 @@ export const OnboardingNetworkSelection = () => {
         ? WalletRoutes.OnboardingImportOrRestore
         : WalletRoutes.OnboardingNewWalletCreatePassword
     )
-  }, [onboardingType, selectedChains, networks])
+  }, [onboardingType, visibleSelectedChainIds, networks])
 
   // effects
   React.useEffect(() => {
-    if (!networks) {
+    if (!mainnetChainIds.length) {
       return
     }
 
     // pre-populate selected chains (no testnets)
-    setSelectedChains(
-      networks.map(getNetworkId).filter((netId) => {
-        // pre-select non-testnets
-        return !SupportedTestNetworkEntityIds.includes(netId)
-      })
-    )
-  }, [networks])
+    setSelectedChainIds(mainnetChainIds)
+  }, [mainnetChainIds])
+
+  // computed
+  const areAllChainsSelected =
+    visibleSelectedChainIds.length ===
+    featuredNetworks.length + popularNetworks.length
 
   // render
   return (
@@ -376,21 +390,18 @@ export const OnboardingNetworkSelection = () => {
                       {networks && (
                         <SelectAllText
                           onClick={() => {
-                            setSelectedChains(
-                              showTestNets
-                                ? networks.map(getNetworkId)
-                                : networks
-                                    .map(getNetworkId)
-                                    .filter(
-                                      (id) =>
-                                        !SupportedTestNetworkEntityIds.includes(
-                                          id
-                                        )
-                                    )
-                            )
+                            areAllChainsSelected
+                              ? setSelectedChainIds([])
+                              : setSelectedChainIds(
+                                  showTestNets ? networkIds : mainnetChainIds
+                                )
                           }}
                         >
-                          {getLocale('braveWalletSelectAll')}
+                          {getLocale(
+                            areAllChainsSelected
+                              ? 'braveWalletDeselectAll'
+                              : 'braveWalletSelectAll'
+                          )}
                         </SelectAllText>
                       )}
                     </Row>
@@ -412,15 +423,15 @@ export const OnboardingNetworkSelection = () => {
             <NavButton
               buttonType='primary'
               text={
-                selectedChains.length
+                visibleSelectedChainIds.length
                   ? getLocale('braveWalletContinueWithXItems')
                       .replace(
                         '$1', // Number of items
-                        selectedChains.length.toString()
+                        visibleSelectedChainIds.length.toString()
                       )
                       .replace(
                         '$2', // Item name (maybe plural)
-                        selectedChains.length > 1
+                        visibleSelectedChainIds.length > 1
                           ? getLocale('braveWalletNetworks')
                           : getLocale(
                               'braveWalletAllowAddNetworkNetworkPanelTitle'
@@ -429,7 +440,7 @@ export const OnboardingNetworkSelection = () => {
                   : getLocale('braveWalletButtonContinue')
               }
               onSubmit={onSubmit}
-              disabled={selectedChains.length === 0}
+              disabled={visibleSelectedChainIds.length === 0}
             />
           </NextButtonRow>
           <MutedLinkText onClick={openNetworkSettings}>
