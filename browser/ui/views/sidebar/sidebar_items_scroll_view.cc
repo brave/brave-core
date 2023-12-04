@@ -96,12 +96,11 @@ END_METADATA
 SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
     : browser_(browser),
       drag_context_(std::make_unique<SidebarItemDragContext>()),
-      scroll_animator_for_new_item_(
-          std::make_unique<views::BoundsAnimator>(this)),
+      scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
   model_observed_.Observe(browser->sidebar_controller()->model());
-  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
@@ -197,12 +196,12 @@ void SidebarItemsScrollView::OnBoundsAnimatorProgressed(
 
 void SidebarItemsScrollView::OnBoundsAnimatorDone(
     views::BoundsAnimator* animator) {
-  if (scroll_animator_for_new_item_.get() == animator) {
-    CHECK(lastly_added_item_index_.has_value());
+  if (scroll_animator_for_item_.get() == animator &&
+      lastly_added_item_index_.has_value()) {
     contents_view_->ShowItemAddedFeedbackBubble(*lastly_added_item_index_);
-    UpdateArrowViewsEnabledState();
     lastly_added_item_index_ = std::nullopt;
   }
+  UpdateArrowViewsEnabledState();
 }
 
 void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
@@ -221,7 +220,7 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
     // to make it visible.
     if (NeedScrollForItemAt(index)) {
       lastly_added_item_index_ = index;
-      scroll_animator_for_new_item_->AnimateViewTo(
+      scroll_animator_for_item_->AnimateViewTo(
           contents_view_, GetTargetScrollContentsViewRectForItemAt(index));
     } else {
       contents_view_->ShowItemAddedFeedbackBubble(index);
@@ -242,6 +241,11 @@ void SidebarItemsScrollView::OnItemRemoved(size_t index) {
 void SidebarItemsScrollView::OnActiveIndexChanged(
     std::optional<size_t> old_index,
     std::optional<size_t> new_index) {
+  // If activated item is not visible, scroll to show it.
+  if (new_index && NeedScrollForItemAt(*new_index)) {
+    scroll_animator_for_item_->AnimateViewTo(
+        contents_view_, GetTargetScrollContentsViewRectForItemAt(*new_index));
+  }
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 

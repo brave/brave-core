@@ -135,7 +135,7 @@ class SidebarItemsScrollView : public views::View,
   raw_ptr<views::ImageButton> down_arrow_ = nullptr;
   raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
   std::unique_ptr<SidebarItemDragContext> drag_context_;
-  std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
+  std::unique_ptr<views::BoundsAnimator> scroll_animator_for_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>

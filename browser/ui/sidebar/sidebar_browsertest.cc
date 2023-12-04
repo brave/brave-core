@@ -544,6 +544,39 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
             sidebar_items_contents_view->children()[lastly_added_item_index]);
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
+  // To prevent item added bubble launching.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* scroll_view = GetSidebarItemsScrollView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+
+  // Move bookmark item at zero index to make it hidden.
+  sidebar_service->MoveItem(*bookmark_item_index, 0);
+  bookmark_item_index = 0;
+  AddItemsTillScrollable(scroll_view, sidebar_service);
+
+  // Check bookmarks item is hidden.
+  EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
+
+  // Open bookmark panel.
+  SidePanelUI::GetSidePanelUIForBrowser(browser())->Show(
+      SidePanelEntryId::kBookmarks);
+
+  // Wait till bookmarks item is visible.
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !NeedScrollForItemAt(*bookmark_item_index, scroll_view);
+  }));
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   // To prevent item added bubble launching.
   auto* prefs = browser()->profile()->GetPrefs();
