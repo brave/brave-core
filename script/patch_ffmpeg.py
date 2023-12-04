@@ -20,6 +20,7 @@ from lib.config import SOURCE_ROOT
 
 FFMPEG_DIR = os.path.join(SOURCE_ROOT, '..', 'third_party', 'ffmpeg')
 STABLE_REVISION = 'acb78dc0f416f6ef009192d94dc07c05effabfda'
+BAD_REVISION = 'e1ca3f06adec15150a171bc38f550058b4bbb23b'
 
 
 def main():
@@ -29,6 +30,10 @@ def main():
 
     if current_rev == STABLE_REVISION:
         return 0
+
+    # FFMpeg is updated. The perf bug is probably fixed.
+    # Consider removing this file.
+    assert current_rev == BAD_REVISION
 
     subprocess.check_call(['git', 'checkout', '--force', STABLE_REVISION],
                           cwd=FFMPEG_DIR)
