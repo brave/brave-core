@@ -23,14 +23,14 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
   ])
 }
 
-process.env.ROOT_GEN_DIR = getBuildOuptutPathList('gen')
+const genFolder = getBuildOuptutPathList('gen')
   .filter(a => fs.existsSync(a))
   .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
-if (!process.env.ROOT_GEN_DIR) {
+if (!genFolder) {
   throw new Error("Failed to find build output folder!")
 }
 
-const basePathMap = require('../components/webpack/path-map')
+const basePathMap = require('../components/webpack/path-map')(genFolder)
 
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
