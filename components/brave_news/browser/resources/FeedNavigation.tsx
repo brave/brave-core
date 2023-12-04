@@ -11,6 +11,7 @@ import Card from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 import { FeedView } from './shared/useFeedV2';
+import { getLocale } from '$web-common/locale';
 
 const DEFAULT_SHOW_COUNT = 4;
 
@@ -143,32 +144,42 @@ export default function Sidebar() {
     .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
-    <Heading>My Feed</Heading>
-    <Item id='all' name="For You" />
-    <Item id='following' name="Following" />
+    <Heading>{getLocale('braveNewsMyFeedHeading')}</Heading>
+    <Item id='all' name={getLocale('braveNewsForYouFeed')} />
+    <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
     <Section open>
       <summary>
         {Marker}
-        Channels
+        {getLocale('braveNewsChannelsHeader')}
         <CustomButton faint onClick={() => setCustomizePage('news')}>
           <Icon name='plus-add' />
-          Add
+          {getLocale('braveNewsAddChannelsOrPublishers')}
         </CustomButton>
       </summary>
       {slicedChannelIds.map(c => <Item key={c} id={`channels/${c}`} name={c} />)}
-      {subscribedChannels.length > DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>{showingMoreChannels ? 'Show less' : 'Show all'}</CustomButton>}
+      {subscribedChannels.length > DEFAULT_SHOW_COUNT
+        && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>
+          {showingMoreChannels
+            ? getLocale('braveNewsShowLess')
+            : getLocale('braveNewsShowAll')}
+        </CustomButton>}
     </Section>
     <Section open>
       <summary>
         {Marker}
-        Publishers
-        <CustomButton faint onClick={() => setCustomizePage('news')}>
+        {getLocale('braveNewsPublishersHeading')}
+        <CustomButton faint onClick={() => setCustomizePage('popular')}>
           <Icon name='plus-add' />
-          Add
+          {getLocale('braveNewsAddChannelsOrPublishers')}
         </CustomButton>
       </summary>
       {slicedPublisherIds.map(p => <Item key={p} id={`publishers/${p}`} name={publishers[p]?.publisherName} />)}
-      {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>{showingMorePublishers ? 'Show less' : 'Show all'}</CustomButton>}
+      {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT
+        && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>
+          {showingMorePublishers
+            ? getLocale('braveNewsShowLess')
+            : getLocale('braveNewsShowAll')}
+        </CustomButton>}
     </Section>
   </Container>
 }
