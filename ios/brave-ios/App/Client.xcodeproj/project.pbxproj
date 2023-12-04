@@ -844,6 +844,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F84B21DD1A090F8100AAB793 /* Build configuration list for PBXNativeTarget "Client" */;
 			buildPhases = (
+				27E2007E2B1A8ED900B26454 /* Build BraveCore */,
 				2779B7052159297D0044A102 /* Run SwiftLint */,
 				0A43293F21B1CB810041625B /* Headers */,
 				F84B21BA1A090F8100AAB793 /* Sources */,
@@ -1073,6 +1074,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${SRCROOT}/..\"\nsh swiftlint.sh\n\n";
+		};
+		27E2007E2B1A8ED900B26454 /* Build BraveCore */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build BraveCore";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ../BraveCore/build_in_core.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
