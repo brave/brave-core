@@ -1005,4 +1005,12 @@
   <message name="IDS_BRAVE_WALLET_FEATURED" desc="Grouping label/heading for featured options">Featured</message>
   <message name="IDS_BRAVE_WALLET_POPULAR" desc="Grouping label/heading for popular options">Popular</message>
   <message name="IDS_BRAVE_WALLET_TEST_NETWORK_ACCOUNT" desc="Partial account name suggestion for test network account">Test Network Account</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_ENHANCED_TRANSACTION_DETAILS_TITLE" desc="Heading text for Transaction Simulations Opt-in modal">Enable Enhanced Transaction Details to:</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_SEE_ESTIMATES" desc="Bullet point for transaction-simulation feature (view balance changes)">See estimated balance change</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_MALICIOUS" desc="Bullet point for transaction-simulation feature (detect malicious transactions)">Identify potentially malicious transactions</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_PHISHING" desc="Bullet point for transaction-simulation feature (detect phishing attempts)">Help detect phishing attempts</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_NO_THANKS" desc="Button text for declining an action">No thanks</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">Brave works with a partner to provide this service. By enabling, you agree to share unsigned transactions and their DApp URLs with our partner.</message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_ANYTIME_IN_SETTINGS" desc="Explains that something can be changed from within settings">Change anytime in <ph name="TAG_BEFORE">$1</ph>Settings<ph name="TAG_AFTER">$2</ph>.</message>
 </grit-part>

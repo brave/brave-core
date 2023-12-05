@@ -97,7 +97,7 @@ export const ButtonText = styled.span<{
     p.buttonType === 'secondary' ||
     p.buttonType === 'reject' ||
     p.buttonType === 'cancel'
-      ? p.theme.color.interactive07
+      ? leo.color.text.secondary
       : p.theme.palette.white};
 `
 
