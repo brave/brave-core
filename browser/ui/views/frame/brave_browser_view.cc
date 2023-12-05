@@ -439,6 +439,10 @@ void BraveBrowserView::ShowReaderModeToolbar() {
           gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
     }
     AddChildView(reader_mode_toolbar_view_.get());
+
+    // See the comment of same code in ctor.
+    // TODO(simonhong): Find more better way instead of calling multiple times.
+    ReorderChildView(find_bar_host_view_, -1);
     GetBrowserViewLayout()->set_reader_mode_toolbar(
         reader_mode_toolbar_view_.get());
   } else {
