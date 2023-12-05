@@ -23,8 +23,8 @@ cargo_crate("lib") {
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  edition = "2018"
-  cargo_pkg_version = "0.2.0"
+  edition = "2021"
+  cargo_pkg_version = "0.2.3"
   cargo_pkg_authors = "Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "star-constellation"
   cargo_pkg_description =
@@ -35,8 +35,8 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/bincode/v1:lib",
-    "//brave/third_party/rust/ppoprf/v0_2:lib",
-    "//brave/third_party/rust/sta_rs/v0_2:lib",
+    "//brave/third_party/rust/ppoprf/v0_3:lib",
+    "//brave/third_party/rust/sta_rs/v0_3:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/rand/v0_8:lib",
     "//third_party/rust/rand_core/v0_6:lib",
