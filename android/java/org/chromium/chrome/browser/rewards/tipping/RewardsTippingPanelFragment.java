@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -186,9 +187,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         proceedTextView.setMovementMethod(LinkMovementMethod.getInstance());
         String termsOfServiceText = String.format(res.getString(R.string.brave_rewards_tos_text),
                 res.getString(R.string.terms_of_service), res.getString(R.string.privacy_policy));
+        int termsOfServiceTextColor =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? R.color.terms_of_service_text_color_night
+                        : R.color.terms_of_service_text_color;
 
-        SpannableString spannableString = BraveRewardsHelper.tosSpannableString(
-                termsOfServiceText, R.color.terms_of_service_text_color);
+        SpannableString spannableString =
+                BraveRewardsHelper.tosSpannableString(termsOfServiceText, termsOfServiceTextColor);
         proceedTextView.setText(spannableString);
     }
 
