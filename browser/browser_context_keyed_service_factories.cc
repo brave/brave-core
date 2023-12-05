@@ -37,7 +37,6 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
-#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -111,11 +110,6 @@
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/browser/brave_player/brave_player_service_factory.h"
-#include "brave/components/brave_player/core/common/features.h"
 #endif
 
 namespace brave {
@@ -235,12 +229,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if !BUILDFLAG(IS_ANDROID)
   BraveGlobalInfobarServiceFactory::GetInstance();
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-  if (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
-    brave_player::BravePlayerServiceFactory::GetInstance();
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_PLAYER)
 }
 
 }  // namespace brave

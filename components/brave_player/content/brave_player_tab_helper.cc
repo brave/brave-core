@@ -27,7 +27,7 @@ namespace brave_player {
 
 // static
 void BravePlayerTabHelper::MaybeCreateForWebContents(
-    BravePlayerService& service,
+    std::unique_ptr<Delegate> delegate,
     content::WebContents* contents,
     const int32_t world_id) {
   if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) ||
@@ -36,17 +36,21 @@ void BravePlayerTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  brave_player::BravePlayerTabHelper::CreateForWebContents(contents, world_id,
-                                                           service);
+  brave_player::BravePlayerTabHelper::CreateForWebContents(
+      contents, std::move(delegate), world_id);
 }
 
 BravePlayerTabHelper::BravePlayerTabHelper(content::WebContents* web_contents,
-                                           const int32_t world_id,
-                                           BravePlayerService& service)
+                                           std::unique_ptr<Delegate> delegate,
+                                           const int32_t world_id)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<BravePlayerTabHelper>(*web_contents),
+      delegate_(std::move(delegate)),
       world_id_(world_id),
-      brave_player_service_(service) {}
+      brave_player_service_(BravePlayerService::GetInstance()) {
+  CHECK(brave_player_service_);
+  CHECK(delegate_);
+}
 
 BravePlayerTabHelper::~BravePlayerTabHelper() = default;
 
@@ -62,8 +66,7 @@ void BravePlayerTabHelper::OnTestScriptResult(
     return;
   }
 
-  brave_player_service_.get().delegate().ShowAdBlockAdjustmentSuggestion(
-      web_contents());
+  delegate_->ShowAdBlockAdjustmentSuggestion(web_contents());
 }
 
 void BravePlayerTabHelper::InsertTestScript(

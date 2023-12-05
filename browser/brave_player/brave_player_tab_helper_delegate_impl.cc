@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_player/brave_player_service_delegate_impl.h"
+#include "brave/browser/brave_player/brave_player_tab_helper_delegate_impl.h"
 
-BravePlayerServiceDelegateImpl::BravePlayerServiceDelegateImpl() = default;
+BravePlayerTabHelperDelegateImpl::BravePlayerTabHelperDelegateImpl() = default;
 
-BravePlayerServiceDelegateImpl::~BravePlayerServiceDelegateImpl() = default;
+BravePlayerTabHelperDelegateImpl::~BravePlayerTabHelperDelegateImpl() = default;
 
 #if !defined(TOOLKIT_VIEWS)
-void BravePlayerServiceDelegateImpl::ShowAdBlockAdjustmentSuggestion(
+void BravePlayerTabHelperDelegateImpl::ShowAdBlockAdjustmentSuggestion(
     content::WebContents* contents) {
   NOTIMPLEMENTED();
 }

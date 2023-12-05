@@ -38,13 +38,22 @@ std::string ReadFile(const base::FilePath& file_path) {
 
 }  // namespace
 
-BravePlayerService::BravePlayerService(std::unique_ptr<Delegate> delegate)
-    : delegate_(std::move(delegate)) {
+// static
+BravePlayerService* BravePlayerService::GetInstance() {
+  // Check if feature flag is enabled.
+  if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
+    return nullptr;
+  }
+
+  return base::Singleton<BravePlayerService>::get();
+}
+
+BravePlayerService::BravePlayerService() {
   CHECK(base::FeatureList::IsEnabled(brave_player::features::kBravePlayer))
       << "This object should be created only when the flag is on.";
 
   // TODO - Register component updater, with on_ready
-  // callback(LoadComponentVersion).
+  // callback - BravePlayerService::LoadNewComponentVersion.
 }
 
 BravePlayerService::~BravePlayerService() = default;

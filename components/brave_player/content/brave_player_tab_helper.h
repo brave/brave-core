@@ -26,7 +26,19 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BravePlayerTabHelper> {
  public:
-  static void MaybeCreateForWebContents(BravePlayerService& service,
+  // TODO(sko) Figure out if this doesn't have to be delegated to the `//brave`
+  // layer. At the moment, requirements are not finalized so we can't tell what
+  // will be needed. If we can handle requirements within
+  // `//components/brave_player` try moving AdBlockAdjustment dialog to this
+  // layer too.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual void ShowAdBlockAdjustmentSuggestion(
+        content::WebContents* contents) = 0;
+  };
+
+  static void MaybeCreateForWebContents(std::unique_ptr<Delegate> delegate,
                                         content::WebContents* contents,
                                         const int32_t world_id);
   ~BravePlayerTabHelper() override;
@@ -35,8 +47,8 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
 
  private:
   BravePlayerTabHelper(content::WebContents* contents,
-                       const int32_t world_id,
-                       BravePlayerService& service);
+                       std::unique_ptr<Delegate> delegate,
+                       const int32_t world_id);
   // Called to insert Brave Player eligibility checks into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
@@ -62,8 +74,9 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
+  std::unique_ptr<Delegate> delegate_;
   const int32_t world_id_;
-  raw_ref<BravePlayerService> brave_player_service_;  // NOT OWNED
+  raw_ptr<BravePlayerService> brave_player_service_;  // NOT OWNED
   bool should_process_ = false;
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>

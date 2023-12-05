@@ -1114,7 +1114,7 @@ source_set("ui") {
         "views/brave_player/ad_block_adjustment_dialog.h",
         "views/brave_player/brave_player_action_icon_view.cc",
         "views/brave_player/brave_player_action_icon_view.h",
-        "views/brave_player/brave_player_service_delegate_impl_views.cc",
+        "views/brave_player/brave_player_tab_helper_delegate_impl_views.cc",
       ]
     }
     deps += [

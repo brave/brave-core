@@ -14,33 +14,19 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
-#include "components/keyed_service/core/keyed_service.h"
 
 class GURL;
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace brave_player {
 
-class COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER) BravePlayerService
-    : public KeyedService {
+class COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER) BravePlayerService {
  public:
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-    virtual void ShowAdBlockAdjustmentSuggestion(
-        content::WebContents* contents) = 0;
-  };
-
-  explicit BravePlayerService(std::unique_ptr<Delegate> delegate);
+  static BravePlayerService* GetInstance();  // singleton
   BravePlayerService(const BravePlayerService&) = delete;
   BravePlayerService& operator=(const BravePlayerService&) = delete;
-  ~BravePlayerService() override;
-
-  Delegate& delegate() { return *delegate_; }
+  ~BravePlayerService();
 
   void GetTestScript(
       const GURL& url,
@@ -50,13 +36,14 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER) BravePlayerService
  private:
   friend class BravePlayerTabHelperBrowserTest;  // Used for testing private
                                                  // methods.
+  friend struct base::DefaultSingletonTraits<BravePlayerService>;
+
+  BravePlayerService();
 
   // Also called by BravePlayerTabHelperBrowserTest as well.
   void SetComponentPath(const base::FilePath& path);
 
   base::FilePath component_path_;
-
-  std::unique_ptr<Delegate> delegate_;
 
   base::WeakPtrFactory<BravePlayerService> weak_factory_{this};
 };

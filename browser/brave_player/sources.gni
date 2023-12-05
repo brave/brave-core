@@ -10,16 +10,13 @@ brave_browser_brave_player_deps = []
 
 if (enable_brave_player) {
   brave_browser_brave_player_sources += [
-    "//brave/browser/brave_player/brave_player_service_delegate_impl.cc",
-    "//brave/browser/brave_player/brave_player_service_delegate_impl.h",
-    "//brave/browser/brave_player/brave_player_service_factory.cc",
-    "//brave/browser/brave_player/brave_player_service_factory.h",
+    "//brave/browser/brave_player/brave_player_tab_helper_delegate_impl.cc",
+    "//brave/browser/brave_player/brave_player_tab_helper_delegate_impl.h",
   ]
 
   brave_browser_brave_player_deps += [
     "//brave/components/brave_player/content",
     "//brave/components/brave_player/core/browser",
     "//brave/components/brave_player/core/common",
-    "//components/keyed_service/content",
   ]
 }

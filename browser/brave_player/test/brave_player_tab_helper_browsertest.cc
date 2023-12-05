@@ -8,7 +8,6 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/brave_player/brave_player_service_factory.h"
 #include "brave/components/brave_player/core/browser/brave_player_service.h"
 #include "brave/components/brave_player/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -50,17 +49,11 @@ class BravePlayerTabHelperBrowserTest : public PlatformBrowserTest {
 
     content::SetBrowserClientForTesting(&test_content_browser_client_);
 
-#if defined(IS_ANDROID)
-    Profile* profile = TabModelList::models()[0]->GetProfile();
-#else
-    Profile* profile = browser()->profile();
-#endif
-
-    ASSERT_TRUE(profile);
-
     // Also called in Disabled test.
-    brave_player::BravePlayerServiceFactory::GetForBrowserContext(profile)
-        .SetComponentPath(test_data_dir.AppendASCII("brave_player_component"));
+    if (brave_player::BravePlayerService::GetInstance()) {
+      brave_player::BravePlayerService::GetInstance()->SetComponentPath(
+          test_data_dir.AppendASCII("brave_player_component"));
+    }
 
     https_server_.ServeFilesFromDirectory(test_data_dir);
 
