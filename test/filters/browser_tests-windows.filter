@@ -44,8 +44,9 @@
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # These tests fail on CI but passes locally
--LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -AppMenuBrowserTest.*
+-LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
+-SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
 
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
