@@ -35,7 +35,7 @@ class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
   bool is_message_found() { return tx_found_; }
 
  private:
-  bool ProcessMessage(const std::string& message) override {
+  bool ProcessMessage(std::string_view message) override {
     tx_found_ = true;
     return false;
   }
@@ -507,8 +507,7 @@ void ZCashRpc::OnGetAddressTxResponse(
   url_loaders_list_.erase(it);
   stream_handlers_list_.erase(handler_it);
 
-  if (!result.has_value() ||
-      (current_loader->CompletionStatus() && current_loader->NetError())) {
+  if (!result.has_value()) {
     std::move(callback).Run(base::unexpected("Network error"));
     return;
   }

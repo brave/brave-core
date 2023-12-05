@@ -105,12 +105,12 @@ void ZCashWalletService::OnRunDiscoveryDone(
 void ZCashWalletService::UpdateNextUnusedAddressForAccount(
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashAddressPtr& address) {
-  absl::optional<uint32_t> next_receive_index = address->key_id->change
-                                                    ? absl::optional<uint32_t>()
-                                                    : address->key_id->index;
-  absl::optional<uint32_t> next_change_index = !address->key_id->change
-                                                   ? absl::optional<uint32_t>()
+  std::optional<uint32_t> next_receive_index = address->key_id->change
+                                                   ? std::optional<uint32_t>()
                                                    : address->key_id->index;
+  std::optional<uint32_t> next_change_index = !address->key_id->change
+                                                  ? std::optional<uint32_t>()
+                                                  : address->key_id->index;
   keyring_service_->UpdateNextUnusedAddressForZCashAccount(
       account_id, next_receive_index, next_change_index);
 }
@@ -123,6 +123,7 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
 
   auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
   if (!account_info) {
+    LOG(ERROR) << "XXXZZZ 1";
     return std::move(callback).Run(base::unexpected("Invalid account id"));
   }
   auto start_address =

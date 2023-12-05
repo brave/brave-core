@@ -65,8 +65,6 @@ class DiscoverNextUnusedZCashAddressTask
   std::optional<uint64_t> block_end_;
   std::optional<std::string> error_;
   ZCashWalletService::DiscoverNextUnusedAddressCallback callback_;
-  base::WeakPtrFactory<DiscoverNextUnusedZCashAddressTask> weak_ptr_factory_{
-      this};
 };
 
 class CreateTransparentTransactionTask {

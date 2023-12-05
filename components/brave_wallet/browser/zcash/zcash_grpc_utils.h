@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GRPC_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GRPC_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 // Resolves serialized protobuf from length-prefixed string
-absl::optional<std::string> ResolveSerializedMessage(
+std::optional<std::string> ResolveSerializedMessage(
     const std::string& grpc_response_body);
 
 // Prefixes provided serialized protobuf with compression byte and 4 bytes of
@@ -35,9 +35,9 @@ class GRrpcMessageStreamHandler
   void OnRetry(base::OnceClosure start_retry) override;
 
  private:
-  virtual bool ProcessMessage(const std::string& message) = 0;
+  virtual bool ProcessMessage(std::string_view message) = 0;
 
-  absl::optional<size_t> data_to_read_;
+  std::optional<size_t> data_to_read_;
   std::string data_;
   size_t retry_counter_ = 0;
 };

@@ -2606,8 +2606,8 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
 
 void KeyringService::UpdateNextUnusedAddressForZCashAccount(
     const mojom::AccountIdPtr& account_id,
-    absl::optional<uint32_t> next_receive_index,
-    absl::optional<uint32_t> next_change_index) {
+    std::optional<uint32_t> next_receive_index,
+    std::optional<uint32_t> next_change_index) {
   CHECK(account_id);
   CHECK(IsZCashAccount(*account_id));
   CHECK(next_receive_index || next_change_index);

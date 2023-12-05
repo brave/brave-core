@@ -61,8 +61,8 @@ DiscoverNextUnusedZCashAddressTask::~DiscoverNextUnusedZCashAddressTask() =
 
 void DiscoverNextUnusedZCashAddressTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&DiscoverNextUnusedZCashAddressTask::WorkOnTask,
-                                weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE,
+      base::BindOnce(&DiscoverNextUnusedZCashAddressTask::WorkOnTask, this));
 }
 
 mojom::ZCashAddressPtr DiscoverNextUnusedZCashAddressTask::GetNextAddress(
@@ -112,7 +112,7 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
     zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
         GetNetworkForZCashKeyring(account_id_->keyring_id),
         base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
-                       weak_ptr_factory_.GetWeakPtr()));
+                       this));
     return;
   }
 
@@ -120,7 +120,7 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
       GetNetworkForZCashKeyring(account_id_->keyring_id),
       current_address_->address_string, 1, block_end_.value(),
       base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetIsKnownAddress,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     this));
 }
 
 void DiscoverNextUnusedZCashAddressTask::OnGetLastBlock(

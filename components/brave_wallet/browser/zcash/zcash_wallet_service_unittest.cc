@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -259,7 +260,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
   {
     bool callback_called = false;
     auto discovery_callback = base::BindLambdaForTesting(
-        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+        [&](mojom::ZCashAddressPtr addr, const std::optional<std::string>&) {
           EXPECT_EQ(addr->address_string,
                     "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL");
           callback_called = true;
@@ -295,7 +296,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
   {
     bool callback_called = false;
     auto discovery_callback = base::BindLambdaForTesting(
-        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+        [&](mojom::ZCashAddressPtr addr, const std::optional<std::string>&) {
           EXPECT_EQ(addr->address_string,
                     "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m");
           callback_called = true;
@@ -346,7 +347,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_Change) {
   {
     bool callback_called = false;
     auto discovery_callback = base::BindLambdaForTesting(
-        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+        [&](mojom::ZCashAddressPtr addr, const std::optional<std::string>&) {
           EXPECT_EQ(addr->address_string,
                     "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj");
           callback_called = true;
@@ -382,7 +383,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_Change) {
   {
     bool callback_called = false;
     auto discovery_callback = base::BindLambdaForTesting(
-        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+        [&](mojom::ZCashAddressPtr addr, const std::optional<std::string>&) {
           EXPECT_EQ(addr->address_string,
                     "t1gKxueg76TtvVmMQ6swDmvHxtmLTSQv6KP");
           callback_called = true;
@@ -431,13 +432,13 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
                                          mojom::KeyringId::kZCashMainnet,
                                          mojom::AccountKind::kDerived, 0);
     keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2,
-                                                             absl::nullopt);
+                                                             std::nullopt);
   }
 
   {
     bool callback_called = false;
     auto discovery_callback = base::BindLambdaForTesting(
-        [&](mojom::ZCashAddressPtr addr, const absl::optional<std::string>&) {
+        [&](mojom::ZCashAddressPtr addr, const std::optional<std::string>&) {
           EXPECT_EQ(addr->address_string,
                     "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m");
           callback_called = true;
