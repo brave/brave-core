@@ -78,7 +78,8 @@ public abstract class BraveVpnParentActivity
         mBraveVpnPrefModel = new BraveVpnPrefModel();
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
-        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+        InAppPurchaseWrapper.getInstance()
+                .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
         LiveDataUtil.observeOnce(
                 activePurchases, activePurchaseModel -> {
                     if (activePurchaseModel != null) {

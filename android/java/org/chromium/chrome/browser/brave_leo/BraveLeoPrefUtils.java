@@ -14,7 +14,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveLeoPrefUtils {
     private static final String TAG = "BraveLeoPrefUtils";
 
-    public static void setIsSubscriptionActive(boolean value) {
+    private static Profile getProfile() {
         Profile profile = null;
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
@@ -23,9 +23,19 @@ public class BraveLeoPrefUtils {
             Log.e(TAG, "get BraveActivity exception", e);
         }
         if (profile == null) {
-            Log.e(TAG, "setIsSubscriptionActive profile is null");
-            return;
+            Log.e(TAG, "BraveLeoPrefUtils.getProfile profile is null");
         }
-        UserPrefs.get(profile).setBoolean(BravePref.BRAVE_CHAT_SUBSCRIPTION_ACTIVE_ANDROID, value);
+
+        return profile;
+    }
+
+    public static void setIsSubscriptionActive(boolean value) {
+        UserPrefs.get(BraveLeoPrefUtils.getProfile())
+                .setBoolean(BravePref.BRAVE_CHAT_SUBSCRIPTION_ACTIVE_ANDROID, value);
+    }
+
+    public static boolean getIsSubscriptionActive(Profile profile) {
+        return UserPrefs.get(profile == null ? BraveLeoPrefUtils.getProfile() : profile)
+                .getBoolean(BravePref.BRAVE_CHAT_SUBSCRIPTION_ACTIVE_ANDROID);
     }
 }

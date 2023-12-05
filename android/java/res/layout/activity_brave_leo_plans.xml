@@ -30,7 +30,7 @@
         android:layout_marginTop="14dp"
         android:baselineAligned="false"
         android:padding="16dp"
-        android:background="@drawable/monthly_selector"
+        android:background="@drawable/vpn_plan_bg"
         android:orientation="horizontal">
 
         <LinearLayout

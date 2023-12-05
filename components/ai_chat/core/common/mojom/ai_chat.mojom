@@ -160,6 +160,7 @@ interface ChatUIPage {
   OnConversationEntryPending();
 };
 
+[EnableIf=is_android]
 interface CredentialManagerHelper {
   GetPremiumStatus() => (PremiumStatus result);
 };

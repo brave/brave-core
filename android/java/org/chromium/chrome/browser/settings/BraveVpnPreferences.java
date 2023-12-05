@@ -381,7 +381,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private void verifyPurchase(boolean isVerification) {
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
-        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+        InAppPurchaseWrapper.getInstance()
+                .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
         LiveDataUtil.observeOnce(
                 activePurchases, activePurchaseModel -> {
                     mBraveVpnPrefModel = new BraveVpnPrefModel();

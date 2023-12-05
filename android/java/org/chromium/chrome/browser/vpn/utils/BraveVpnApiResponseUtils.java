@@ -41,7 +41,9 @@ public class BraveVpnApiResponseUtils {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                 MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
                 LiveData<PurchaseModel> activePurchases = _activePurchases;
-                InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+                InAppPurchaseWrapper.getInstance()
+                        .queryPurchases(
+                                _activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
                 LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
                     InAppPurchaseWrapper.getInstance().processPurchases(
                             activity, activePurchaseModel.getPurchase());

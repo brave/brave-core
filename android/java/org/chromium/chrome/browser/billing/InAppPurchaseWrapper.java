@@ -235,7 +235,8 @@ public class InAppPurchaseWrapper {
         });
     }
 
-    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases) {
+    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases,
+                               SubscriptionProduct type) {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
@@ -254,7 +255,14 @@ public class InAppPurchaseWrapper {
                                     == BillingClient.BillingResponseCode.OK) {
                                 for (Purchase purchase : purchases) {
                                     if (purchase.getPurchaseState()
-                                            == Purchase.PurchaseState.PURCHASED) {
+                                            != Purchase.PurchaseState.PURCHASED) {
+                                        continue;
+                                    }
+                                    List<String> productIds = purchase.getProducts();
+                                    boolean isVPNProduct = isVPNProduct(productIds);
+                                    boolean isLeoProduct = isLeoProduct(productIds);
+                                    if (isVPNProduct && type.equals(SubscriptionProduct.VPN) ||
+                                            isLeoProduct && type.equals(SubscriptionProduct.LEO)) {
                                         activePurchaseModel = new PurchaseModel(
                                                 purchase.getPurchaseToken(),
                                                 purchase.getProducts().get(0).toString(), purchase);
