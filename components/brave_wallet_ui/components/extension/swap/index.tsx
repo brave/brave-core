@@ -139,7 +139,7 @@ export function SwapBase(props: Props) {
 
   const { data: sellTokenInfo } = useGetTokenInfoQuery(
     sellToken &&
-      sellToken.coingeckoId !== UNKNOWN_TOKEN_COINGECKO_ID &&
+      sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
       !isNativeToken(sellToken)
       ? {
           contractAddress: sellToken.contractAddress,
@@ -151,7 +151,7 @@ export function SwapBase(props: Props) {
 
   const { data: buyTokenInfo } = useGetTokenInfoQuery(
     buyToken &&
-      buyToken.coingeckoId !== UNKNOWN_TOKEN_COINGECKO_ID &&
+      buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
       !isNativeToken(buyToken)
       ? {
           contractAddress: buyToken.contractAddress,
