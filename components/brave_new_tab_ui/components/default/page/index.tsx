@@ -67,7 +67,8 @@ const StyledPage = styled('div') <PageProps>`
 
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  position: relative;
+  position: fixed;
+  top: 0;
   z-index: 6;
   width: 100%;
   display: grid;
@@ -82,23 +83,23 @@ const StyledPage = styled('div') <PageProps>`
   min-height: 100vh;
   align-items: flex-start;
 
-  /* Fix the main NTP content so, when Brave News is in-view,
-  NTP items remain in the same place, and still allows NTP
-  Page to scroll to the bottom before that starts happening. */
-  z-index: 3;
-  position: fixed;
-  bottom: 0;
-  /* Blur out the content when Brave News is interacted
-    with. We need the opacity to fade out our background image.
-    We need the background image to overcome the bug
-    where a backdrop-filter element's ancestor which has
-    a filter must also have a background. When this bug is
-    fixed then this element won't need the background.
-  */
-  opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
-  filter: blur(var(--blur-amount));
-  background: var(--default-bg-color);
-  ${getPageBackground}
+  .${CLASSNAME_PAGE_STUCK} & {
+    /* Fix the main NTP content so, when Brave News is in-view,
+    NTP items remain in the same place, and still allows NTP
+    Page to scroll to the bottom before that starts happening. */
+    z-index: 3;
+    /* Blur out the content when Brave News is interacted
+      with. We need the opacity to fade out our background image.
+      We need the background image to overcome the bug
+      where a backdrop-filter element's ancestor which has
+      a filter must also have a background. When this bug is
+      fixed then this element won't need the background.
+    */
+    opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
+    filter: blur(var(--blur-amount));
+    background: var(--default-bg-color);
+    ${getPageBackground}
+  }
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     display: flex;
