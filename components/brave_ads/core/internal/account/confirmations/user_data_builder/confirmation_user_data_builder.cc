@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/dynamic/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"

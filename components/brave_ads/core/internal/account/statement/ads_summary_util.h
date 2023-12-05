@@ -18,7 +18,7 @@ class Time;
 
 namespace brave_ads {
 
-base::flat_map</*ad_type=*/std::string, /*count=*/int32_t>
+base::flat_map</*ad_type*/ std::string, /*count*/ int32_t>
 GetAdsSummaryForDateRange(const TransactionList& transactions,
                           base::Time from_time,
                           base::Time to_time);

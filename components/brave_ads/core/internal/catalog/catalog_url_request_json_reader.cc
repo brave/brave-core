@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
 #include <cstdint>
-#include <optional>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"

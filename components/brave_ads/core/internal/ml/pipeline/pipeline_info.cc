@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
-#include <optional>
 #include <utility>
 
 namespace brave_ads::ml::pipeline {

@@ -7,7 +7,6 @@
 
 #include <cinttypes>
 #include <cstdint>
-#include <optional>
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"

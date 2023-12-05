@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 
-#include <optional>
 #include <vector>
 
 #include "base/strings/string_split.h"

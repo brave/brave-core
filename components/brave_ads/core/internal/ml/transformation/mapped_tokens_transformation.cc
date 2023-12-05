@@ -5,10 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
-#include <map>
-#include <optional>
-#include <utility>
-
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_transformation_generated.h"

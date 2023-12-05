@@ -13,11 +13,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
-#include "brave/components/brave_ads/core/internal/units/ad_handler.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_idle_detection/user_idle_detection.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_reactions/user_reactions.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -151,7 +151,8 @@ class AdsImpl final : public Ads {
   AdHandler ad_handler_;
 
   UserIdleDetection user_idle_detection_;
-  UserReactions user_reactions_;
+
+  Reactions reactions_;
 
   Reminder reminder_;
 

@@ -15,9 +15,9 @@ Exclusion rules frequency cap the number of times a user can see an inline conte
 | per day  | Exclude the ad if it exceeds the per-day cap for the creative set  |
 | per month  | Exclude the ad if it exceeds the per-month cap for the creative set  |
 | per week  | Exclude the ad if it exceeds the per-week cap for the creative set  |
+| site visit  | Exclude the ad if the user previously landed on a page within the specified time window for the same campaign  |
 | split test  | Exclude the ad if not part of the split test group  |
 | subdivision targeting  | Exclude the ad if it does not match the user's geographic subdivision. See https://en.wikipedia.org/wiki/ISO_3166-2  |
 | total max  | Exclude the ad if it exceeds the total max for the creative set  |
-| transferred  | Exclude the ad if the user previously transferred to a landing page within the specified time window for the same campaign  |
 
 Please add to it!

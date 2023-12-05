@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"

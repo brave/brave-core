@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
 #include <cstddef>
-#include <optional>
 #include <string>
 #include <vector>
 

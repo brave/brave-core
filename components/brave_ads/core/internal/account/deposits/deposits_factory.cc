@@ -26,11 +26,11 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     case ConfirmationType::kClicked:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kServed:
-    case ConfirmationType::kTransferred:
-    case ConfirmationType::kSaved:
-    case ConfirmationType::kFlagged:
-    case ConfirmationType::kUpvoted:
-    case ConfirmationType::kDownvoted:
+    case ConfirmationType::kLanded:
+    case ConfirmationType::kSavedAd:
+    case ConfirmationType::kMarkAdAsInappropriate:
+    case ConfirmationType::kLikedAd:
+    case ConfirmationType::kDislikedAd:
     case ConfirmationType::kConversion: {
       return std::make_unique<NonCashDeposit>();
     }

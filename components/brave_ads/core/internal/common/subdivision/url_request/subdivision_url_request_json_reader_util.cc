@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util.h"
 
-#include <optional>
-
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"

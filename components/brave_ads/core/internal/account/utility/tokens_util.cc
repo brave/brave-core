@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
@@ -28,7 +26,7 @@ std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
     return std::nullopt;
   }
 
-  const cbr::PublicKey public_key(*public_key_base64);
+  cbr::PublicKey public_key(*public_key_base64);
   if (!public_key.has_value()) {
     return std::nullopt;
   }

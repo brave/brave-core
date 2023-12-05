@@ -11,7 +11,6 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -31,7 +30,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNewTabPageAdMap =
-    std::map</*creative_ad_uuid=*/std::string, CreativeNewTabPageAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeNewTabPageAdInfo>;
 
 namespace {
 

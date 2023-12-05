@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
 #include <optional>
-#include <string>
 
 #include "base/check.h"
 #include "base/time/time.h"

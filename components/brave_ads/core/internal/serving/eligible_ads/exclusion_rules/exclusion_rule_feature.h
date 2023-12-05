@@ -26,9 +26,10 @@ inline constexpr base::FeatureParam<base::TimeDelta>
         "should_exclude_ad_if_dismissed_within_time_window", base::Hours(0)};
 
 inline constexpr base::FeatureParam<base::TimeDelta>
-    kShouldExcludeAdIfTransferredWithinTimeWindow{
+    kShouldExcludeAdIfLandedOnPageWithinTimeWindow{
         &kExclusionRulesFeature,
-        "should_exclude_ad_if_transferred_within_time_window", base::Hours(0)};
+        "should_exclude_ad_if_landed_on_page_within_time_window",
+        base::Hours(0)};
 
 inline constexpr base::FeatureParam<int>
     kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{

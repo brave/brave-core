@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_html_parser_util.h"
 
-#include <string>
 #include <tuple>
 #include <vector>
 

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"

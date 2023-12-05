@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "base/functional/callback.h"
-
 namespace brave_ads {
 
 void NonCashDeposit::GetValue(const std::string& /*creative_instance_id*/,

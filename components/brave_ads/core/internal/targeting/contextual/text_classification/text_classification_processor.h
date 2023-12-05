@@ -40,7 +40,7 @@ class TextClassificationProcessor final : public TabManagerObserver {
 
  private:
   void ClassifyPageCallback(
-      std::optional<TextClassificationProbabilityMap> probabilities);
+      const std::optional<TextClassificationProbabilityMap>& probabilities);
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

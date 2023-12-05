@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/model/epsilon_greedy_bandit_model.h"
 
-#include <iterator>
 #include <string>
 
 #include "base/test/scoped_feature_list.h"

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_credential_json_writer.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"

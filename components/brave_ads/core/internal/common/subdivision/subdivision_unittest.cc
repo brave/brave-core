@@ -131,7 +131,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidResetBraveRewards) {
   EXPECT_FALSE(HasPendingTasks());
 }
 
-TEST_F(BraveAdsSubdivisionTest, OnDidOptoutBraveNews) {
+TEST_F(BraveAdsSubdivisionTest, OnDidOptOutBraveNews) {
   // Arrange
   test::DisableBraveRewards();
 

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/hash/hash.h"

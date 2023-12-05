@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
 
-#include <memory>
-#include <utility>
-
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_transformation_generated.h"
 
@@ -69,7 +66,7 @@ LinearPipelineBufferBuilder::AddLowercaseTransformation() {
 LinearPipelineBufferBuilder&
 LinearPipelineBufferBuilder::AddHashedNGramsTransformation(
     const int bucket_count,
-    std::vector<uint32_t> subgrams) {
+    const std::vector<uint32_t>& subgrams) {
   const auto ngrams_range = builder_.CreateVector(subgrams);
   auto hashed_ngram_transformation =
       linear_text_classification::flat::CreateHashedNGramsTransformation(

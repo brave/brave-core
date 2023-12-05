@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/files/file.h"

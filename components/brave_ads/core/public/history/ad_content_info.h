@@ -10,8 +10,8 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

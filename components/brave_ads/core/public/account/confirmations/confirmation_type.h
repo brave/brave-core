@@ -19,11 +19,11 @@ enum class ConfirmationType {
   kDismissed,
   kViewed,
   kServed,
-  kTransferred,
-  kFlagged,
-  kSaved,
-  kUpvoted,
-  kDownvoted,
+  kLanded,
+  kMarkAdAsInappropriate,
+  kSavedAd,
+  kLikedAd,
+  kDislikedAd,
   kConversion
 };
 

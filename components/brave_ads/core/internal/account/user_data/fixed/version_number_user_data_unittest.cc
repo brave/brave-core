@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
-#include <string>
-
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"

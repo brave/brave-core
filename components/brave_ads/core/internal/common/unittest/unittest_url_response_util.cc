@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 
-#include <optional>
 #include <string>
 
 #include "base/check_op.h"

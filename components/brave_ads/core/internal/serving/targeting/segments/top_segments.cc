@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 namespace brave_ads {

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-#include <map>
-
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

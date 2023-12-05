@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
@@ -57,7 +55,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
 }
 
 void TextClassificationProcessor::ClassifyPageCallback(
-    const std::optional<TextClassificationProbabilityMap> probabilities) {
+    const std::optional<TextClassificationProbabilityMap>& probabilities) {
   if (!probabilities) {
     return BLOG(0, "Text classification failed due to an invalid model");
   }

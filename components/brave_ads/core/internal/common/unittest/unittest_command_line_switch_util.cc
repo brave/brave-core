@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 
-#include <optional>
-
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/strings/strcat.h"

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"

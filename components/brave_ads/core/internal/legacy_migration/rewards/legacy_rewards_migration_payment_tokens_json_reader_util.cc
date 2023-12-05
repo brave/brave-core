@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payment_tokens_json_reader_util.h"
 
-#include <optional>
 #include <string>
 
 #include "base/values.h"

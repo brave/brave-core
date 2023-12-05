@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 
-#include <string>
-#include <utility>
-
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"

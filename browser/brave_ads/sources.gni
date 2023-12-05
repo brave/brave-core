@@ -4,6 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_brave_ads_sources = [
+  "//brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h",
+  "//brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.cc",
+  "//brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h",
   "//brave/browser/brave_ads/ads_service_factory.cc",
   "//brave/browser/brave_ads/ads_service_factory.h",
   "//brave/browser/brave_ads/analytics/p3a/brave_stats_helper.cc",
@@ -18,9 +21,6 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h",
   "//brave/browser/brave_ads/tabs/ads_tab_helper.cc",
   "//brave/browser/brave_ads/tabs/ads_tab_helper.h",
-  "//brave/browser/brave_ads/units/notification_ad/notification_ad_platform_bridge.h",
-  "//brave/browser/brave_ads/units/search_result_ad/search_result_ad_tab_helper.cc",
-  "//brave/browser/brave_ads/units/search_result_ad/search_result_ad_tab_helper.h",
 ]
 
 brave_browser_brave_ads_deps = [
@@ -46,18 +46,18 @@ brave_browser_brave_ads_deps = [
 ]
 
 if (!is_android) {
-  brave_browser_brave_ads_sources += [ "//brave/browser/brave_ads/units/notification_ad/notification_ad_platform_bridge.cc" ]
+  brave_browser_brave_ads_sources += [ "//brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.cc" ]
 }
 
 if (is_android) {
   brave_browser_brave_ads_sources += [
+    "//brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge_android.cc",
     "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
     "//brave/browser/brave_ads/application_state/background_helper/background_helper_android.cc",
     "//brave/browser/brave_ads/application_state/background_helper/background_helper_android.h",
     "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_android.cc",
     "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_android.h",
-    "//brave/browser/brave_ads/units/notification_ad/notification_ad_platform_bridge_android.cc",
   ]
 
   brave_browser_brave_ads_deps += [

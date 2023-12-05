@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
-#include <optional>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_constants.h"

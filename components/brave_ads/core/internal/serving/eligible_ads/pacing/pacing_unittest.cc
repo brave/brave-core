@@ -19,7 +19,7 @@ namespace brave_ads {
 namespace {
 
 std::vector<double> GetPacingRandomNumbers() {
-  return std::vector<double>{0.0, 0.5, 0.99};
+  return {0.0, 0.5, 0.99};
 }
 
 }  // namespace

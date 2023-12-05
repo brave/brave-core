@@ -6,14 +6,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
 #include <iterator>
-#include <optional>
 #include <set>
 
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "url/gurl.h"
 

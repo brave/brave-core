@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 
-#include <optional>
 #include <vector>
 
 #include "base/base64.h"

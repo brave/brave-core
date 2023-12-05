@@ -24,11 +24,11 @@ bool ShouldFilterConfirmationType(ConfirmationType confirmation_type) {
     }
 
     case ConfirmationType::kServed:
-    case ConfirmationType::kTransferred:
-    case ConfirmationType::kSaved:
-    case ConfirmationType::kFlagged:
-    case ConfirmationType::kUpvoted:
-    case ConfirmationType::kDownvoted:
+    case ConfirmationType::kLanded:
+    case ConfirmationType::kSavedAd:
+    case ConfirmationType::kMarkAdAsInappropriate:
+    case ConfirmationType::kLikedAd:
+    case ConfirmationType::kDislikedAd:
     case ConfirmationType::kConversion: {
       return true;
     }

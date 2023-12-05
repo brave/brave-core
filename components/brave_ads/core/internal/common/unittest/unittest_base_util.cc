@@ -28,17 +28,17 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 
 namespace {
 
 using AdEventHistoryMap =
-    base::flat_map</*type_id=*/std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map</*uuid=*/std::string, AdEventHistoryMap>;
+    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
+using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
 
 AdEventMap& AdEventCache() {
   static base::NoDestructor<AdEventMap> ad_events;
