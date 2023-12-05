@@ -144,10 +144,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   }, [selectedQueueData, signMode])
 
   const onSign = React.useCallback(() => {
-    if (!selectedQueueData) {
-      return
-    }
-    if (!account) {
+    if (!selectedQueueData || !account) {
       return
     }
 
@@ -183,7 +180,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         id: selectedQueueData.id
       }))
     }
-  }, [selectedQueueData, signMode])
+  }, [selectedQueueData, signMode, account])
 
   const onContinueSigning = React.useCallback(() => {
     setSignStep(SignDataSteps.SignData)
