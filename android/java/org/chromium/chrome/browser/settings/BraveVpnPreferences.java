@@ -326,6 +326,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                     .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
                             findPreference(PREF_SPLIT_TUNNELING)
                                     .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
+                            findPreference(PREF_SUPPORT_TECHNICAL)
+                                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
                         }
                     });
                 }
