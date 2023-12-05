@@ -82,7 +82,7 @@ class BravePlayerTabHelperBrowserTest : public PlatformBrowserTest {
   }
 
   bool DialogIsVisible() {
-    // TODO - requires dialog implementation.
+    // TODO(antonok-edm): requires dialog implementation.
     return false;
   }
 

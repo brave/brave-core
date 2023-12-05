@@ -52,7 +52,7 @@ BravePlayerService::BravePlayerService() {
   CHECK(base::FeatureList::IsEnabled(brave_player::features::kBravePlayer))
       << "This object should be created only when the flag is on.";
 
-  // TODO - Register component updater, with on_ready
+  // TODO(sko) - Register component updater, with on_ready
   // callback - BravePlayerService::LoadNewComponentVersion.
 }
 
@@ -70,7 +70,7 @@ void BravePlayerService::GetTestScript(
 
 void BravePlayerService::LoadNewComponentVersion(const base::FilePath& path) {
   SetComponentPath(path);
-  // TODO - keep rules loaded in memory, or load async as needed?
+  // TODO(antonok-edm) keep rules loaded in memory, or load async as needed?
 }
 
 void BravePlayerService::SetComponentPath(const base::FilePath& path) {

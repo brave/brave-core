@@ -8,7 +8,7 @@
 
 #include "ui/views/window/dialog_delegate.h"
 
-// TODO: We may want this to be a bubble.
+// TODO(sko): We may want this to be a bubble.
 class AdBlockAdjustmentDialog : public views::DialogDelegateView {
  public:
   explicit AdBlockAdjustmentDialog(const GURL& url);

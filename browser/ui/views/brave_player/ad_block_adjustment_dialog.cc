@@ -104,7 +104,7 @@ gfx::Size AdBlockAdjustmentDialog::CalculatePreferredSize() const {
 void AdBlockAdjustmentDialog::WindowClosing() {
   DialogDelegateView::WindowClosing();
 
-  // TODO: We may want to remember we've showed this dialog for this site.
+  // TODO(sko): We may want to remember we've showed this dialog for this site.
 }
 
 void AdBlockAdjustmentDialog::DisableAdBlockForSite() {
