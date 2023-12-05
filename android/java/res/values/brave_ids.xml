@@ -16,6 +16,7 @@
     <item name="request_brave_vpn_row_menu_id" type="id"/>
     <item name="request_brave_vpn_id" type="id"/>
     <item name="request_brave_vpn_check_id" type="id"/>
+    <item name="vpn_location_id" type="id" />
     <item name="brave_vpn_id" type="id"/>
 
     <!-- App menu item custom tags -->

@@ -54,7 +54,7 @@ public class BraveVpnServerSelectionPreferences
         if (BraveVpnPrefUtils.getServerRegion().equals(
                     BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
             automaticText.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.ic_server_selection_check, 0);
+                    0, 0, R.drawable.ic_checkbox_checked, 0);
         } else {
             automaticText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }

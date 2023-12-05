@@ -44,7 +44,7 @@ public class BraveVpnServerSelectionAdapter
             holder.serverText.setText(vpnServerRegion.getNamePretty());
             if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.ic_server_selection_check, 0);
+                        0, 0, R.drawable.ic_checkbox_checked, 0);
             } else {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }

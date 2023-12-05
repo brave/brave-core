@@ -11,7 +11,6 @@
             android:id="@+id/server_selection_list_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:orientation="vertical">
 
             <include
@@ -30,8 +29,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/server_selection_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_filled_bg_radius_12"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
