@@ -42,7 +42,7 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/block_buffer/v0_9:lib",
+    "//brave/third_party/rust/block_buffer/v0_10:lib",
     "//brave/third_party/rust/digest/v0_9:lib",
     "//brave/third_party/rust/opaque_debug/v0_3:lib",
     "//third_party/rust/cfg_if/v1:lib",

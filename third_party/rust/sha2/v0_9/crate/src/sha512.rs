@@ -1,6 +1,7 @@
 //! SHA-512
 use crate::consts::{H384, H512, H512_TRUNC_224, H512_TRUNC_256, STATE_LEN};
 use block_buffer::BlockBuffer;
+use block_buffer::Eager;
 use core::slice::from_ref;
 use digest::consts::{U128, U28, U32, U48, U64};
 use digest::generic_array::GenericArray;
@@ -13,7 +14,7 @@ type BlockSize = U128;
 #[derive(Clone)]
 struct Engine512 {
     len: u128,
-    buffer: BlockBuffer<BlockSize>,
+    buffer: BlockBuffer<BlockSize, Eager>,
     state: [u64; 8],
 }
 
@@ -29,7 +30,7 @@ impl Engine512 {
     fn update(&mut self, input: &[u8]) {
         self.len += (input.len() as u128) << 3;
         let s = &mut self.state;
-        self.buffer.input_blocks(input, |b| compress512(s, b));
+        self.buffer.digest_blocks(input, |b| compress512(s, b));
     }
 
     fn finish(&mut self) {

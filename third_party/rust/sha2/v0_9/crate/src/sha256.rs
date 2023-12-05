@@ -1,6 +1,7 @@
 //! SHA-256
 use crate::consts::{H224, H256, STATE_LEN};
 use block_buffer::BlockBuffer;
+use block_buffer::Eager;
 use core::slice::from_ref;
 use digest::consts::{U28, U32, U64};
 use digest::generic_array::GenericArray;
@@ -13,7 +14,7 @@ type BlockSize = U64;
 #[derive(Clone)]
 struct Engine256 {
     len: u64,
-    buffer: BlockBuffer<BlockSize>,
+    buffer: BlockBuffer<BlockSize, Eager>,
     state: [u32; 8],
 }
 
@@ -30,7 +31,7 @@ impl Engine256 {
         // Assumes that input.len() can be converted to u64 without overflow
         self.len += (input.len() as u64) << 3;
         let s = &mut self.state;
-        self.buffer.input_blocks(input, |b| compress256(s, b));
+        self.buffer.digest_blocks(input, |b| compress256(s, b));
     }
 
     fn finish(&mut self) {
