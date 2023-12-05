@@ -119,7 +119,7 @@ bool BraveHelpBubbleHostView::Show() {
   UpdatePosition();
   SetVisible(true);
 
-  if (!gfx::Animation::ShouldRenderRichAnimation()) {
+  if (gfx::Animation::ShouldRenderRichAnimation()) {
     SchedulePulsingAnimation(layer());
   }
 
