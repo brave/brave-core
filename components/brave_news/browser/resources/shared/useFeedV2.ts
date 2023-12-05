@@ -18,7 +18,7 @@ const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
 }
 
 const FEED_KEY = 'feedV2'
-const localCache: {[feedView: string]: FeedV2} = {}
+const localCache: { [feedView: string]: FeedV2 } = {}
 const saveFeed = (feed?: FeedV2) => {
   if (!feed) return
 
@@ -26,8 +26,8 @@ const saveFeed = (feed?: FeedV2) => {
 
   // Note: We have to provide a replacer, because BigInt can't be serialized to JSON
   const data = JSON.stringify(feed, (_, value) => typeof value === "bigint"
-  ? value.toString()
-  : value);
+    ? value.toString()
+    : value);
   sessionStorage.setItem(FEED_KEY, data)
   localStorage.setItem(FEED_KEY, data)
 }
@@ -41,8 +41,12 @@ const maybeLoadFeed = (view?: FeedView) => {
 
   // Prefer data from our current session, but fall back to whats in localStorage.
   let fromLocalStorage = false
-  const data = sessionStorage.getItem(FEED_KEY)
-    ?? ((fromLocalStorage = true) && localStorage.getItem(FEED_KEY))
+  let data = sessionStorage.getItem(FEED_KEY)
+  if (!data) {
+    fromLocalStorage = true
+    data = localStorage.getItem(FEED_KEY)
+  }
+
   if (!data) return
 
   const feed: FeedV2 = JSON.parse(data)
@@ -50,7 +54,7 @@ const maybeLoadFeed = (view?: FeedView) => {
   // If we loaded the feed from localStorage, and it's too old remove it from
   // storage and return undefined.
   if (fromLocalStorage
-      && BigInt(feed.constructTime.internalValue) + BigInt(MAX_AGE_FOR_LOCAL_STORAGE_FEED) < Date.now()) {
+    && BigInt(feed.constructTime.internalValue) + BigInt(MAX_AGE_FOR_LOCAL_STORAGE_FEED) < Date.now()) {
     localStorage.removeItem(FEED_KEY)
     return undefined
   }

@@ -700,8 +700,7 @@ void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
 }
 
 void FeedV2Builder::EnsureFeedIsUpdating() {
-  UpdateData({
-              .signals = true,
+  UpdateData({.signals = true,
               .suggested_publishers = true,
               .feed = true,
               .topics = true},
