@@ -5,12 +5,20 @@
 
 import { BraveWallet } from '../constants/types'
 
-import { mockAccount } from '../common/constants/mocks'
+import {
+  mockAccount,
+  mockBitcoinAccount,
+  mockBitcoinTestnetAccount,
+  mockEthAccountInfo,
+  mockFilecoinAccount,
+  mockSolanaAccount
+} from '../common/constants/mocks'
 
 import {
   isHardwareAccount,
   findAccountByAddress,
-  getAccountTypeDescription
+  getAccountTypeDescription,
+  findAccountByAccountId
 } from './account-utils'
 
 import {
@@ -49,17 +57,12 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 ]
 
 const mockAccounts: AccountInfoEntity[] = [
-  {
-    ...mockAccount
-  },
-  {
-    ...mockAccount,
-    accountId: {
-      ...mockAccount.accountId,
-      address: 'mockAccount2'
-    },
-    address: 'mockAccount2'
-  }
+  mockAccount,
+  mockEthAccountInfo,
+  mockSolanaAccount,
+  mockFilecoinAccount,
+  mockBitcoinAccount,
+  mockBitcoinTestnetAccount
 ]
 
 const mockAccountsRegistry = accountInfoEntityAdaptor.setAll(
@@ -80,8 +83,20 @@ describe('Account Utils', () => {
     it.each(mockAccounts)(
       'should return true if accounts have deviceId and address matches',
       (account) => {
+        if (account.address) {
+          expect(
+            findAccountByAddress(account.address, mockAccountsRegistry)
+          ).toBe(account)
+        }
+      }
+    )
+  })
+  describe('findAccountByAccountId', () => {
+    it.each(mockAccounts)(
+      'should return true if accounts have accountId matches',
+      (account) => {
         expect(
-          findAccountByAddress(account.address, mockAccountsRegistry)
+          findAccountByAccountId(account.accountId, mockAccountsRegistry)
         ).toBe(account)
       }
     )
