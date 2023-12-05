@@ -130,6 +130,8 @@ static constexpr auto kScopedQueryStringTrackers =
         // https://github.com/brave/brave-browser/issues/26966
         {"ref_src", "twitter.com,x.com"},
         {"ref_url", "twitter.com,x.com"},
+        // https://github.com/brave/brave-browser/issues/34719
+        {"si", "youtube.com,youtu.be"},
     });
 
 bool IsScopedTracker(const std::string_view param_name,
