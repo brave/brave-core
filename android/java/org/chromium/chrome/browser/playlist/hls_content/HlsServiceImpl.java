@@ -29,7 +29,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
@@ -195,7 +195,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
 
     @Override
     public void onConnectionError(MojoException e) {
-        if (SharedPreferencesManager.getInstance()
+        if (ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();
