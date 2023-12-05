@@ -21,13 +21,10 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/controls/scrollbar/overlay_scroll_bar.h"
+#include "ui/views/controls/scrollbar/scroll_bar_views.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_utils.h"
-
-#if !BUILDFLAG(IS_MAC)
-#include "ui/views/controls/scrollbar/scroll_bar_views.h"
-#endif  // !BUILDFLAG(IS_MAC)
 
 namespace {
 class ContentsView : public views::View {
