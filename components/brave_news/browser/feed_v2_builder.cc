@@ -872,8 +872,7 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   next_update_ = std::nullopt;
 
   for (const auto& listener : listeners_) {
-    // TODO: Actually send the hash
-    listener->OnUpdateAvailable("foo");
+    listener->OnUpdateAvailable(hash_);
   }
 
   if (current_update_) {
@@ -902,18 +901,18 @@ void FeedV2Builder::GenerateFeed(
             auto channels =
                 builder->channels_controller_->GetChannelsFromPublishers(
                     publishers, &*builder->prefs_);
-            auto source_hash =
+            builder->hash_ =
                 GetFeedHash(channels, publishers, builder->feed_etags_);
 
             auto feed = std::move(build_feed).Run();
             feed->construct_time = base::Time::Now();
             feed->type = std::move(type);
-            feed->source_hash = source_hash;
+            feed->source_hash = builder->hash_;
 
             std::move(callback).Run(feed->Clone());
 
             for (const auto& listener : builder->listeners_) {
-              listener->OnUpdateAvailable(source_hash);
+              listener->OnUpdateAvailable(builder->hash_);
             }
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
