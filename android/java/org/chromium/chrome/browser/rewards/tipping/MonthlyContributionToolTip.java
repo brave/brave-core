@@ -19,9 +19,9 @@ import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import org.chromium.ui.base.DeviceFormFactor;
 
 import org.chromium.chrome.R;
+import org.chromium.ui.base.DeviceFormFactor;
 
 public class MonthlyContributionToolTip {
     private PopupWindow mPopupWindow;
@@ -58,12 +58,17 @@ public class MonthlyContributionToolTip {
 
     public void show(@NonNull View anchorView) {
         if (mIsTablet) {
-            anchorView.post(new Runnable() {
-            @Override
-            public void run() {
-                mPopupWindow.showAtLocation(anchorView,Gravity.TOP, (int)anchorView.getX() ,(int)anchorView.getY());
-            }
-        });
+            anchorView.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mPopupWindow.showAtLocation(
+                                    anchorView,
+                                    Gravity.TOP,
+                                    (int) anchorView.getX(),
+                                    (int) anchorView.getY());
+                        }
+                    });
         } else {
             int[] location = new int[2];
             anchorView.getLocationInWindow(location);
