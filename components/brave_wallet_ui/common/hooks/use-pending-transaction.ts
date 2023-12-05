@@ -603,7 +603,7 @@ export const usePendingTransactions = () => {
       txCoinType &&
       transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
       ? {
-          contractOrMintAddress: transactionDetails.recipient,
+          contractAddress: transactionDetails.recipient,
           network: {
             chainId: transactionDetails.chainId,
             coin: txCoinType

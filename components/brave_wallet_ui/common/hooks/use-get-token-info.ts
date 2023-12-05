@@ -12,7 +12,7 @@ import { useGetTokenInfoQuery } from '../slices/api.slice'
 import { useGetCombinedTokensListQuery } from '../slices/api.slice.extra'
 
 interface Arg {
-  contractOrMintAddress: string
+  contractAddress: string
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
 }
 
@@ -26,8 +26,7 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
 
     return combinedTokensList.find(
       (t) =>
-        t.contractAddress.toLowerCase() ===
-          arg.contractOrMintAddress.toLowerCase() &&
+        t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase() &&
         t.chainId === arg.network.chainId &&
         t.coin === arg.network.coin
     )
@@ -36,12 +35,12 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
   const { data: tokenInfoFromRpc, isFetching } = useGetTokenInfoQuery(
     arg !== skipToken &&
       arg.network &&
-      arg.contractOrMintAddress &&
+      arg.contractAddress &&
       !tokenInfoFromTokensList
       ? {
           coin: arg.network.coin,
           chainId: arg.network.chainId,
-          contractAddress: arg.contractOrMintAddress
+          contractAddress: arg.contractAddress
         }
       : skipToken
   )

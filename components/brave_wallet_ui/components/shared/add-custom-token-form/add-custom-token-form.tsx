@@ -87,7 +87,7 @@ export const AddCustomTokenForm = (props: Props) => {
   } = useGetTokenInfo(
     customAssetsNetwork && tokenContractAddress
       ? {
-          contractOrMintAddress: tokenContractAddress,
+          contractAddress: tokenContractAddress,
           network: {
             chainId: customAssetsNetwork.chainId,
             coin: customAssetsNetwork.coin

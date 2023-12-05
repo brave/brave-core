@@ -33,7 +33,7 @@ describe('useGetTokenInfo hook', () => {
     const { result, ...hook } = renderHook(
       () =>
         useGetTokenInfo({
-          contractOrMintAddress: mockErc20TokensList[0].contractAddress,
+          contractAddress: mockErc20TokensList[0].contractAddress,
           network: mockNetwork
         }),
       renderOptions
@@ -65,7 +65,7 @@ describe('useGetTokenInfo hook', () => {
     const { result, ...hook } = renderHook(
       () =>
         useGetTokenInfo({
-          contractOrMintAddress: '0xdeadbeef',
+          contractAddress: '0xdeadbeef',
           network: mockNetwork
         }),
       renderOptions
