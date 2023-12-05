@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">ಅನ್‌ಸಬ್‌ಸ್ಕ್ರೈಬ್ ಮಾಡಿ</translation>
 <translation id="1209739344687072997">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="8510478288840333677">ಶೀಲ್ಡ್ ನೊಂದಿಗೆ ಈ ಸೈಟ್ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲ ಎಂದು Brave ನ ಡೆವಲಪರ್ಗಳಿಗೆ ತಿಳಿಸಿ:</translation>
-<translation id="8265244536487014968">ಗಮನಿಸಿ: Brave ಸರ್ವರ್‌ಗಳಿಗೆ ಕಳುಹಿಸಲಾದ ವರದಿಯು ಸೈಟ್ ವಿಳಾಸ, Brave ಆವೃತ್ತಿ ಸಂಖ್ಯೆ, ಶೀಲ್ಡ್‌ಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳು VPN ಸ್ಥಿತಿ ಮತ್ತು ಭಾಷೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ. IP ವಿಳಾಸವನ್ನು ರವಾನಿಸಲಾಗುತ್ತದೆ ಆದರೆ ಸಂಗ್ರಹಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
+<translation id="6387106423577201267">ಗಮನಿಸಿ: Brave ಸರ್ವರ್‍‌ಗಳಿಗೆ ಕಳುಹಿಸಲಾದ ವರದಿಯು ಸೈಟ್ ವಿಳಾಸ, Brave ಆವೃತ್ತಿ ಸಂಖ್ಯೆ, ಶೀಲ್ಡ್ಸ್ ಸೆಟ್ಟಿಂಗ್ಸ್, VPN ಸ್ಥಿತಿ ಮತ್ತು ಭಾಷೆಯ ಸೆಟ್ಟಿಂಗ್‍ಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ.</translation>
 <translation id="6476216365964140603">ಹೆಚ್ಚುವರಿ ವಿವರಗಳು (ಐಚ್ಛಿಕ)</translation>
 <translation id="6145852496180774737">ಇಲ್ಲಿ ನನ್ನೊಂದಿಗೆ ಸಂಪರ್ಕಗೊಳ್ಳಿ: (ಐಚ್ಛಿಕ)</translation>
 <translation id="7616645803364270729">ಇಮೇಲ್, Twitter, ಇತ್ಯಾದಿ.</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">Brave ರಿವಾರ್ಡ್‌ಗಳ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನಿಮ್ಮ<ph name="PROVIDER"/> ಖಾತೆಗೆ ಸಂಪರ್ಕಿಸುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನ ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸುವಾಗ ಸಮಸ್ಯೆ ಇತ್ತು. ಹೆಚ್ಚಿನ ಸಹಾಯಕ್ಕಾಗಿ ನೀವು <ph name="BEGIN_LINK"/>ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">ದೋಷ: ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
-<translation id="4123948149985772126">ಖಾತೆ ಪೂರೈಕೆದಾರರನ್ನು ಆರಿಸಿ</translation>
-<translation id="896953639186217388">ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆ ಒದಗಿಸುವವರು ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಬೇಕಾಗುತ್ತದೆ, ಇದು ಫೋಟೋ ID ಸಲ್ಲಿಸುವುದನ್ನು ಒಳಗೊಂಡಿರಬಹುದು. <ph name="BEGIN_LINK1"/>Brave Rewards ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK1"/> ನೋಡಿ. <ph name="BEGIN_LINK2"/>BAT ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು<ph name="END_LINK2"/> ಇಲ್ಲಿ ನೋಡಿ.</translation>
-<translation id="5785531043735482053">ನಿಮ್ಮ BAT ಗಳಿಕೆಗಳನ್ನು ಸಂಗ್ರಹಿಸುವುದು, ನಿರ್ವಹಿಸುವುದು ಮತ್ತು ಹಿಂಪಡೆಯುವುದು</translation>
-<translation id="5155452078869279096">ನೀವು ಖರೀದಿಸಿದ BAT ಮೂಲಕ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಟಾಪ್ ಅಪ್ ಮಾಡಿ</translation>
-<translation id="2662540985634906665">ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಸೈಟ್‌ಗಳು ಮತ್ತು ಕ್ರಿಯೇಟರ್‌ಗಳಿಗೆ ಬೇಡಿಕೆಯ-ಮೇರೆಗಿನ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
+<translation id="8817096698141999876">ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಗಳು (ID ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ)</translation>
+<translation id="1539433155512862005">ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಗಳು ನಿಮ್ಮ BAT ಅನ್ನು ನಿಮಗಾಗಿ ಹಿಡಿದಿಡಲಾದ ನಂಬಿಕಾರ್ಹ ಮೂರನೇ-ವ್ಯಕ್ತಿ ಸೇವೆಗಳನ್ನು ಒಳಗೊಂಡ ಖಾತೆಗಳಾಗಿವೆ.</translation>
+<translation id="6751803821780922506">ನೀವು BAT ಅನ್ನು ಎಲ್ಲಿ ಸ್ವೀಕರಿಸಬೇಕೆಂದು ಬಯಸುತ್ತೀರೆಂದು ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="1233129511866436960">ಪ್ರದೇಶಗಳು ಮತ್ತು ಬೆಂಬಲದ ಕುರಿತಂತೆ ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
 <translation id="7329170127335794328">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಪ್ರಸ್ತುತ ಲಭ್ಯವಿಲ್ಲ</translation>
-<translation id="8304979233901023264">ನಾನು Brave <ph name="TOS_LINK_BEGIN"/>ಸೇವಾ ನಿಬಂಧನೆಗಳು<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>ಗೌಪ್ಯತೆ ನೀತಿಯನ್ನು<ph name="PP_LINK_END"/> ಓದಿದ್ದೇನೆ ಮತ್ತು ಒಪ್ಪಿಕೊಂಡಿದ್ದೇನೆ.</translation>
+<translation id="966956302643313970">ಬೇಸಿಕ್ ಅಟೆನ್ಶನ್ ಟೋಕನ್ (BAT) ಗಳಿಸಲು ಪ್ರಾರಂಭಿಸಲು ಖಾತೆಯೊಂದನ್ನು ಸಂಪರ್ಕಿಸಿ. ನೀವು ಗಳಿಸಿರುವ BAT ಅನ್ನು ಪ್ರತಿ ತಿಂಗಳು ನಿಮ್ಮ ಖಾತೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವರ್ಗಾಯಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="1892970806832316900"><ph name="DATE"/> ವರೆಗೆ ಬಾಕಿ ಇದೆ</translation>
 <translation id="7849926087559412554">ಓಹ್! Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
 <translation id="5177429570315095022">ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವುದನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>ಗಳಿಸುವುದನ್ನು ಆರಂಭಿಸಲು ಸಿದ್ಧವೇ?<ph name="BOLD_END"/> ನಮ್ಮ ಪಾಲುದಾರರೊಬ್ಬರೊಂದಿಗೆ ಖಾತೆಯೊಂದನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ರಚಿಸಿ.</translation>
 <translation id="1772961321862399863">BAT ಗಳಿಸಲು, ಬಳಕೆದಾರರು ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಯನ್ನು Brave ರಿವಾರ್ಡ್ಸ್‌ಗೆ ಸಂಪರ್ಕಿಸಬೇಕು. ದುರದೃಷ್ಟವಶಾತ್, ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಯಾವುದೇ ಕಸ್ಟೋಡಿಯನ್ ಲಭ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ಗಳಿಕೆಯು ಲಭ್ಯವಿಲ್ಲ. ಸದ್ಯಕ್ಕೆ, Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಆನ್ ಮಾಡುವುದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
 <translation id="902298128239575729">Brave Rewards ಮೂಲಕ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
-<translation id="8413791505518414158">ಒಮ್ಮೆ ನೀವು ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆ ಸಂಪರ್ಕಗೊಂಡಾಗ ನಿಮ್ಮ Brave Rewards ಮೂಲಕ ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಕ್ರಿಯೇಟರ್‌ಗಳಿಗೆ ಬೇಡಿಕೆಯ ಮೇರೆಗಿನ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
+<translation id="6276721355724491595">ಒಮ್ಮೆ ನೀವು ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಗೆ ಸಂಪರ್ಕಗೊಂಡಿರುವಾಗ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಬ್ಯಾಲೆನ್ಸ್ ಮೂಲಕ ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಕ್ರಿಯೇಟರ್‌ಗಳಿಗೆ ಬೇಡಿಕೆಯ ಮೇರೆಗಿನ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
 <translation id="1149481926056509086">ಬೇಡಿಕೆಯ ಮೇರೆಗಿನ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಲು, ಬಳಕೆದಾರರು ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಯನ್ನು Brave Rewards ಗೆ ಸಂಪರ್ಕಿಸಬೇಕು. ದುರದೃಷ್ಟವಶಾತ್, ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಯಾವುದೇ ಕಸ್ಟೋಡಿಯನ್ ಲಭ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ಕಳುಹಿಸುವಿಕೆಯು ಲಭ್ಯವಿಲ್ಲ. ಈ ಮಧ್ಯೆ, ನೀವು ಇನ್ನೂ ಸಹ ಕ್ರಿಯೇಟರ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸುತ್ತಿರುವಿರಿ.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {ಈ ತಿಂಗಳು, ನೀವು Brave ರಿವಾರ್ಡ್ಸ್ ಬೆಂಬಲಿಸಿದ # ರಚನೆಕಾರರಿಗೆ ನೀವು ಭೇಟಿ ನೀಡಿದ್ದೀರಿ}
@@ -628,13 +626,12 @@
 <translation id="2862978891748913252">ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</translation>
 <translation id="3717922248131893262">Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಸುವುದನ್ನು ಮುಂದುವರೆಸಲು, ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಇದರಿಂದ ನಾವು ನಿಮಗೆ ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕೆ ಸೂಕ್ತವಾದ ಆಯ್ಕೆಗಳು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸಬಹುದು. <ph name="LINK_BEGIN"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">ರಿವಾರ್ಡ್ಸ್ ಬಳಸುವುದನ್ನು ಆರಂಭಿಸಿ</translation>
-<translation id="818003031290137834">ನೀವು ಇದೀಗ ZebPay ಗೆ ಸಂಪರ್ಕಗೊಂಡಿರುವ ಕಾರಣದಿಂದ, ನೀವು ಹೊಂದಿದ್ದ ಯಾವುದೇ ಹಿಂದಿನ ಬ್ಯಾಲೆನ್ಸ್ ಅನ್ನು ನಿಮ್ಮ ಮುಂದಿನ ಗಳಿಕೆಗಳ ಪೇಔಟ್ ಭಾಗವಾಗಿ ನಿಮ್ಮ ZebPay ಖಾತೆಗೆ ಡೆಪಾಸಿಟ್ ಮಾಡಲಾಗುತ್ತದೆ. ಒಮ್ಮೆ ಅದು ಆಗಮಿಸಿದಾಗ, ನಿಮ್ಮ ರಿವಾರ್ಡ್‌ಗಳ ಬ್ಯಾಲೆನ್ಸ್‌ನಲ್ಲಿ ನಿಮ್ಮ BAT ಪ್ರತಿಬಿಂಬಿಸುವುದನ್ನು ನೋಡುತ್ತೀರಿ.</translation>
 <translation id="2221902203895354376">ಟೋಕನ್ ಅನುದಾನ ಲಭ್ಯವಿದೆ!</translation>
 <translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
 <translation id="2369994359029526515">ಪರಿಶೀಲಿಸದೇ ಇರುವ ರಚನೆಕಾರ</translation>
-<translation id="1010940411509546886">ಈ ಕ್ರಿಯೇಟರ್ ಅನ್ನು Brave ಕ್ರಿಯೇಟರ್‌ಗಳ ಮೂಲಕ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ. ಒಮ್ಮೆ ಅವರನ್ನು ಪರಿಶೀಲಿಸಿದಾಗ ಅವರಿಗೆ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
+<translation id="3984338085370091436">ಈ ಕ್ರಿಯೇಟರ್ ಅನ್ನು ಇನ್ನೂ Brave ಕ್ರಿಯೇಟರ್‌ಗಳ ಮೂಲಕ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ. ಒಮ್ಮೆ ಅವರನ್ನು ಪರಿಶೀಲಿಸಿದಾಗ ಅವರಿಗೆ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
 <translation id="6020176662032623904">ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ರಚನೆಕಾರ</translation>
-<translation id="215037911651623564">ರಚನೆಕಾರ ಪರಿಶೀಲನೆ ಸ್ಥಿತಿಯನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
+<translation id="8635423276837443905">ಕ್ರಿಯೇಟರ್ ಪರಿಶೀಲನೆ ಸ್ಥಿತಿಯನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/> ನಲ್ಲಿ <ph name="NAME"/></translation>
 <translation id="3733094367889291358">ಕೊಡುಗೆಯನ್ನು ಕಳುಹಿಸಿ</translation>
 <translation id="7335371657242627509">ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ</translation>
@@ -694,11 +691,11 @@
 <translation id="1483493594462132177">ಕಳುಹಿಸು</translation>
 <translation id="6632987674051304487"><ph name="PROVIDER"/> ಮೂಲಕ ಕಳುಹಿಸಿ</translation>
 <translation id="4319632089378796037">Web3 ವ್ಯಾಲೆಟ್ ಬಳಸಿ</translation>
-<translation id="5399596220743521546">ಈ ಕ್ರಿಯೇಟರ್ Brave ಜೊತೆಗೆ ನೋಂದಾಯಿತವಾಗಿದ್ದಾರೆ ಮತ್ತು Brave Rewards ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಬಹುದು.</translation>
+<translation id="4530198836725543997">ಈ ಕ್ರಿಯೇಟರ್ Brave ಜೊತೆಗೆ ನೋಂದಾಯಿತವಾಗಿದ್ದಾರೆ ಮತ್ತು Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಬಹುದು.</translation>
 <translation id="4529874892536380156">ಇದನ್ನು ಮಾಸಿಕ ಪುನರಾವರ್ತಿತ ಕೊಡುಗೆಯಾಗಿ ಮಾಡಿ. ನೀವು ಅದನ್ನು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ರದ್ದುಮಾಡಿ.</translation>
 <translation id="1177863135347784049">ಕಸ್ಟಮ್</translation>
 <translation id="5907051927340164207">ನೀವು ಈ ಕ್ರಿಯೇಟರ್‌ಗೆ ಈಗಾಗಲೇ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಕಳುಹಿಸುತ್ತಿರುವಿರಿ</translation>
-<translation id="2840845521251717054">ನೀವು ಇನ್ನೂ ಸಹ ಇದೀಗ ಕೊಡುಗೆಯನ್ನು ಕಳುಹಿಸಬಹುದು ಮತ್ತು ಈ ಕ್ರಿಯೇಟರ್‌ಗೆ ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ನೀವು <ph name="LINK_BEGIN"/> ಮಾಸಿಕ ಕೊಡುಗೆಗಳು<ph name="LINK_END"/>ಎಂಬಲ್ಲಿಂದ ತೆಗೆದುಹಾಕುವ ಮೂಲಕ ಅವುಗಳನ್ನು ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
+<translation id="4357685964329620278">ನೀವು ಇನ್ನೂ ಸಹ ಇದೀಗ ಕೊಡುಗೆಯನ್ನು ಕಳುಹಿಸಬಹುದು ಮತ್ತು <ph name="LINK_BEGIN"/>ಮಾಸಿಕ ಕೊಡುಗೆಗಳಿಂದ<ph name="LINK_END"/> ಈ ಕ್ರಿಯೇಟರ್ ಅನ್ನು ತೆಗೆದುಹಾಕುವ ಮೂಲಕ ಅವರಿಗೆ ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
 <translation id="1899434873745933492">ನಿಮ್ಮ ಕೊಡುಗೆಯನ್ನು ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ</translation>
 <translation id="8598111278506452136"><ph name="PROVIDER"/>ನಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಕ್ರಿಯೇಟರ್‌ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
 <translation id="8379442066667303579">ನಿಮ್ಮ Web3 ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬಳಸಿಕೊಂಡು ಈ ಕ್ರಿಯೇಟರ್‌ಗೆ ಕ್ರಿಪ್ಟೋ ಕೊಡುಗೆಗಳನ್ನು ನೀವು ಇನ್ನೂ ಕಳುಹಿಸಬಹುದು.</translation>
@@ -724,6 +721,7 @@
 <translation id="1288078776976153868">ನೆಟ್‌ವರ್ಕ್</translation>
 <translation id="1148827340205946630">ಬಳಕೆದಾರರು ವಿನಂತಿಯನ್ನು ತಿರಸ್ಕರಿಸಿದ್ದಾರೆ.</translation>
 <translation id="2403819048476450281">ಅಮಾನ್ಯ ಪ್ಯಾರಾಮೀಟರ್‌ಗಳು.</translation>
+<translation id="3849003816301348130">ಗಮ್ಯಸ್ಥಾನದ ವಿಳಾಸವು, OFAC SDN ಪಟ್ಟಿಯಲ್ಲಿದೆ.</translation>
 <translation id="3955144560853195652"><ph name="VALUE"/> ಚೈನ್ ಅನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ</translation>
 <translation id="1875861420974447980">ಈ ಚೈನ್ ID ಅನ್ನು ಪ್ರಸ್ತುತ ಬಳಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="167698752210114155">ಒಂದು ಆಂತರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
@@ -909,6 +907,7 @@
 <translation id="6577166808959668729">Solana ಬ್ಲಾಕ್‌ಚೈನ್‌ನಲ್ಲಿ SPL ಹೊಂದಾಣಿಕೆಯ ಅಸೆಟ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ</translation>
 <translation id="4541295941776129088">FIL ಅಸೆಟ್ ಸಂಗ್ರಹಿಸಿ</translation>
 <translation id="29759539656432505">BTC ಅಸೆಟ್‌ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ</translation>
+<translation id="8749751940551938347">ZEC ಅಸೆಟ್‌ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ</translation>
 <translation id="8500387257977999003">ಖಾಸಗಿ ಕೀ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">ಆಮದು</translation>
 <translation id="232925166623833246">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಆಮದು ಮಾಡಿ</translation>
@@ -1085,7 +1084,7 @@
 <translation id="5867988533873716616">ನಿರ್ಬಂಧ ಎಕ್ಸ್‌ಪ್ಲೋರರ್ URL ಲಭ್ಯವಿಲ್ಲ.</translation>
 <translation id="4255623233927788178">ನಿರ್ಬಂಧ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="563386395023152633">ವಹಿವಾಟು ಹ್ಯಾಶ್ ನಕಲಿಸಿ</translation>
-<translation id="7148658188569580292">ವಹಿವಾಟನ್ನು ತ್ವರಿತಗೊಳಿಸಿ</translation>
+<translation id="881317738916264532">ತ್ವರಿತಗೊಳಿಸಿ</translation>
 <translation id="1198263951134066686">ವಹಿವಾಟು ರದ್ದುಗೊಳಿಸಿ</translation>
 <translation id="3562548974839822204">ವಹಿವಾಟನ್ನು ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="6383204195803840504">ವಹಿವಾಟುಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ</translation>
@@ -1099,6 +1098,7 @@
 <translation id="1165039591588034296">ದೋಷ</translation>
 <translation id="8373210463207847451">ಕೈಬಿಡಲಾಗಿದೆ</translation>
 <translation id="8214232307424031138">ಸಹಿ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="5916664084637901428">ಆನ್‌</translation>
 <translation id="9065572743819293042">ಇತ್ತೀಚಿನ ವಹಿವಾಟುಗಳು</translation>
 <translation id="4235538284468006757">ವಹಿವಾಟು ವಿವರಗಳು</translation>
 <translation id="7488671812634887146">ತ್ವರಿತಗೊಳಿಸಿ</translation>
@@ -1159,6 +1159,7 @@
 <translation id="471055802670233033">ನೀವು ಖರ್ಚುಮಾಡಿರುವುದು</translation>
 <translation id="7916618590403748182">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
 <translation id="8328657208304368165">ಆರ್ಡರ್ ದೃಢೀಕರಿಸಿ</translation>
+<translation id="8220255674527598378">Solana ಸ್ವ್ಯಾಪ್</translation>
 <translation id="5071303414930953888">ಖಾತೆ <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">ಮೊದಲು ವ್ಯಾಲೆಟ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ಮಾನ್ಯವಾದ ವಿಳಾಸವಲ್ಲ</translation>
@@ -1253,8 +1254,6 @@
 <translation id="1257387162647804035">ಖಾಸಗಿ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="8323674164587854512">Ethereum + EVM ಸರಪಳಿಗಳು</translation>
 <translation id="1398414935371867469">Solana + SVM ಸರಪಳಿಗಳು</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">ನೆಟ್‌ವರ್ಕ್ ಲೋಗೋ</translation>
 <translation id="4378208228955237306">NFT ಗಳಲ್ಲಿ ನೆಟ್‌ವರ್ಕ್ ಲೋಗೋ ತೋರಿಸಿ</translation>
 <translation id="5472199803712163015">ಸ್ಪ್ಯಾಮ್ NFT ಗಳು</translation>
@@ -1282,7 +1281,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> ಕಳುಹಿಸಿ</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> ಅನ್ನು <ph name="TAKER"/> ಗೆ ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="8613144770663526433">Brave ವ್ಯಾಲೆಟ್‍ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
-<translation id="3696514931437952995">ನೀವು <ph name="ORIGIN"/> ಗೆ ಸೈನ್ ಇನ್ ಆಗುತ್ತಿರುವಿರಿ. <ph name="ORIGIN"/> ನೊಂದಿಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಿಳಾಸವನ್ನು Brave ವ್ಯಾಲೆಟ್ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>
+<translation id="8813165409788097898">ನೀವು <ph name="ORIGIN"/> ಗೆ ಸೈನ್ ಇನ್ ಆಗುತ್ತಿರುವಿರಿ. <ph name="ORIGIN"/> ನೊಂದಿಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಿಳಾಸವನ್ನು Brave ವ್ಯಾಲೆಟ್ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>
 <translation id="1028781062521375153">ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="3950820424414687140">ಸೈನ್ ಇನ್</translation>
 <translation id="4530494379350999373">ಮೂಲ</translation>
@@ -1593,6 +1592,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>ರಿಫ್ರೆಶ್ ಮಾಡಿ<ph name="REFRESH_END"/> ಅಥವಾ <ph name="IMPORT"/>ಹಸ್ತಚಾಲಿತವಾಗಿ ಇಂಪೋರ್ಟ್ ಮಾಡಿ<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">ರಿಫ್ರೆಶಿಂಗ್</translation>
 <translation id="4608324163534970318">ನೆಟ್ ವರ್ಕ್ ಶುಲ್ಕಗಳು</translation>
+<translation id="6213230117190778270">ಸ್ವೀಕರಿಸಿ</translation>
+<translation id="6748108480210050150">ನಿಂದ</translation>
+<translation id="4875290286426670462">ಅನಿಯಮಿತ <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">ಈ ಟೋಕನ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ</translation>
+<translation id="8549067157732633185">ಈ ಟೋಕನ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
+<translation id="2130170065617939165">ಈ ಟೋಕನ್ ಅನ್ನು <ph name="NUMBER_OF_LISTS"/> ಪಟ್ಟಿಗಳಲ್ಲಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
+<translation id="1554316484739382186">ಸ್ಪೆಂಡರ್: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/> ಖಾತೆ</translation>
+<translation id="5360752485622434494"><ph name="PROVIDER"/> ನಲ್ಲಿ Brave ರಿವಾರ್ಡ್ಸ್‌ನ BAT</translation>
+<translation id="429061011725027672">ನೀವು <ph name="PROVIDER"/> ನಿಂತ ಪ್ರಸ್ತುತ ಲಾಗ್ ಔಟ್ ಆಗಿದ್ದೀರಿ. ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ಲಾಗ್ ಇನ್ ಮಾಡಿ.</translation>
+<translation id="4611292653554630842">ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
+<translation id="1132794822159463424"><ph name="PROVIDER"/> ಇಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
+<translation id="7875005109025196005">ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳು</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -1852,6 +1865,8 @@
 <translation id="8960352557529001690">ಡೈಸ್ಲೆಕ್ಸಿಕ್</translation>
 <translation id="8189819085033738728">ಫಾಂಟ್ ಗಾತ್ರ ಕಡಿಮೆಗೊಳಿಸಿ</translation>
 <translation id="1952725803106139986">ಫಾಂಟ್ ಗಾತ್ರ ಹೆಚ್ಚಿಸಿ</translation>
+<translation id="6338177649973309262">ಸಂಕುಚಿತ ವಿಷಯ ಕಾಲಮ್</translation>
+<translation id="6500600749984466451">ವ್ಯಾಪಕ ವಿಷಯ ಕಾಲಮ್</translation>
 <translation id="7239710518122372020">ಪಠ್ಯದಿಂದ ಮಾತು</translation>
 <translation id="4330722796577425585">ರಿವೈಂಡ್</translation>
 <translation id="1199355487114804640">ಪ್ಲೇ ಮಾಡಿ/ವಿರಾಮಗೊಳಿಸಿ</translation>

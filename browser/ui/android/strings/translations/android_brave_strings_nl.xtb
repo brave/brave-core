@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Advertenties beheren</translation>
 <translation id="7630214457764713113">Clean link kopiëren</translation>
 <translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
-<translation id="818003031290137834">Nu u bent gekoppeld aan ZebPay, wordt uw bestaande saldo overgeboekt naar uw ZebPay-account, samen met de volgende uitbetaling van uw verdiensten. Na ontvangst staat uw BAT in uw Beloningen-saldo.</translation>
 <translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
 <translation id="2862978891748913252">Uw land selecteren</translation>
 <translation id="3970520675790340955">Selecteer uw land, zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">U kunt met het saldo van uw Brave Beloningen tot <ph name="AMOUNT"/> BAT versturen.</translation>
 <translation id="5012991400231464322">Maandelijkse bijdragen</translation>
 <translation id="5907051927340164207">U stuurt deze maker al maandelijkse bijdragen</translation>
-<translation id="307555373157330047">U kunt nu een bijdrage sturen en uw maandelijkse bijdrage aan deze maker annuleren door hem/haar te verwijderen uit <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">U kunt nu een bijdrage sturen en uw maandelijkse bijdrage aan deze maker annuleren door deze te verwijderen uit <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Bijdrage verstuurd!</translation>
 <translation id="1041398280582063935">Uw steun delen</translation>
 <translation id="8855543392451028706">Welkom! Gebruikers kunnen deze contentmaker steunen door hem of haar een bijdrage te sturen. Dit is een blijk van waardering voor het maken van goede content.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Inloggen bij <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Bedankt dat u uw favoriete makers steunt</translation>
 <translation id="3796032246917966749">Het lijkt erop dat u voor Brave Beloningen bent uitgelogd bij <ph name="CUSTODIAN"/>. Log opnieuw in om door te gaan.</translation>
-<translation id="594652923071049606">Deze maker is nog niet geverifieerd als Brave Maker. U kunt deze maker bijdragen sturen zodra hij/zij geverifieerd is. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Deze maker is nog niet geverifieerd als Brave Maker. U kunt deze maker bijdragen sturen zodra deze is geverifieerd. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Bijdrage verzenden</translation>
 <translation id="1899434873745933492">Uw bijdragen kon niet verzonden worden</translation>
 <translation id="1794046983410841192">Brave Beloningen gebruiken</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Aangepast</translation>
 <translation id="4827581232860040208">Er is een probleem opgetreden bij het versturen van uw bijdrage</translation>
 <translation id="3259723213051400722">Probeer het opnieuw.</translation>
-<translation id="8899147737996487517">Deze maker is geregistreerd bij Brave en kan bijdragen ontvangen van Brave Beloningen-gebruikers. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Deze maker is geregistreerd bij Brave en kan bijdragen ontvangen van gebruikers van Brave Beloningen-gebruikers. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Rewards kunnen mogelijk niet werken als meldingen zijn uitgeschakeld.</translation>
 <translation id="4259212006412783790">INSCHAKELEN</translation>
 <translation id="6112331814131703370">Blokkeer "Naar app overschakelen"-meldingen</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Bladwijzers importeren</translation>
 <translation id="1008186147501209563">Bladwijzers exporteren</translation>
 <translation id="6680516947641001448">Selecteer een bestand om bladwijzers te importeren</translation>
+<translation id="2353910600995338714">Exporteren gelukt</translation>
+<translation id="229319993704311844">Bladwijzers zijn geëxporteerd naar <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Exporteren mislukt</translation>
+<translation id="1166543535974380311">Bladwijzers exporteren is mislukt. Probeer het opnieuw.</translation>
+<translation id="6154243540085290880">Importeren gelukt</translation>
 <translation id="7028125942261647795">Importeren van bladwijzers is gelukt.</translation>
-<translation id="444953779119381206">Importeren van bladwijzers is mislukt.</translation>
-<translation id="6606836200439368332">Exporteren van bladwijzers is mislukt.</translation>
-<translation id="1395297034387418032">Exporteren van bladwijzers is gelukt.</translation>
+<translation id="4803910478683254032">Importeren mislukt</translation>
+<translation id="8325139248201792113">Bladwijzer importeren is mislukt. Probeer het opnieuw.</translation>
+<translation id="2803313416453193357">Map openen</translation>
 <translation id="3396347744975515056">Brave Sync is ge-update and vereist configuratie</translation>
 <translation id="7473245612074035141">Begin met de Configuratie</translation>
 <translation id="8985635554450124959">Synchronisatie kon niet worden opgezet</translation>
@@ -392,6 +396,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 Controleer of deze codewoorden zijn gegenereerd door een apparaat dat jouw eigendom is.
 Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4550208292810542331">Er is geen toegang tot de camera gegeven</translation>
+<translation id="6470233139461745039">Om de synchronisatie van wachtwoorden in te schakelen, moet u eerst schermvergrendeling op uw apparaat instellen</translation>
+<translation id="3063783274005996079">Ontgrendel om wachtwoorden synchronisatie in te schakelen</translation>
+<translation id="7551563084530025179">Voordat u wachtwoorden kunt synchroniseren, moet u uw biometrische gegevens/wachtwoord verifiëren. Deze extra beveiligingsmaatregel helpt u uw wachtwoorden veilig te houden.</translation>
+<translation id="6925081665778864449">Voor de synchronisatie van wachtwoorden, moet u biometrische gegevens/wachtwoorden op uw Android-apparaat inschakelen. Met deze extra beveiligingsmaatregel kunt u uw wachtwoorden veilig bewaren.</translation>
 <translation id="597993392929850353">Brave Licentie</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="6199596294742117349">Dit is een privaat tabblad</translation>
@@ -428,7 +436,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
 <translation id="1554282356558968486">Onze wallet-dienst wordt geleverd door</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
@@ -1202,4 +1210,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6759710362319508545">Resources</translation>
 <translation id="2471230424465522689">Niet voor</translation>
 <translation id="4841860051609590575">Aanvraag-ID</translation>
+<translation id="1179407411385015942">Leo is een slimme assistent op basis van AI, die in de browser is ingebouwd</translation>
+<translation id="1250335737108905610">Opnieuw instellen en gegevens wissen van Leo</translation>
+<translation id="6165101586663336913">Als u Leo (assistent) opnieuw instelt, moet u zich in de toekomst aanmelden om Leo te kunnen gebruiken. Ook wordt uw chatgeschiedenis gewist. Als u uw chatgeschiedenis wist, worden al uw eerdere gesprekken met Leo verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
 </translationbundle>

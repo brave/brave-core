@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Reklamları yönet</translation>
 <translation id="7630214457764713113">Temiz bağlantıyı kopyala</translation>
 <translation id="885805571521218129">Bu, bu ay Brave Ads için tahmini kazanç aralığınızı yansıtır.</translation>
-<translation id="818003031290137834">Artık ZebPay'e bağlı olduğunuza göre, daha önce sahip olduğunuz tüm bakiyeleriniz, bir sonraki kazanç ödemenizin bir parçası olarak ZebPay hesabınıza yatırılacaktır. Ödemeniz geldiğinde, BAT'lerinizin Ödüller bakiyenize yansıtıldığını göreceksiniz.</translation>
 <translation id="3478449063771497234">Bildirimler devre dışı bırakıldı</translation>
 <translation id="2862978891748913252">Ülkenizi seçin</translation>
 <translation id="3970520675790340955">Size bölgeniz için doğru seçenekleri ve reklamları gösterebilmemiz için ülkenizi seçin.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Brave Ödülleri bakiyenizi kullanarak en fazla <ph name="AMOUNT"/> BAT gönderebilirsiniz.</translation>
 <translation id="5012991400231464322">Aylık Katkılar</translation>
 <translation id="5907051927340164207">Bu oluşturucuya zaten aylık katkıda bulunuyorsunuz</translation>
-<translation id="307555373157330047">Yine de şimdi katkıda bulunabilirsiniz ve bu Oluşturucuyu <ph name="MONTHLY_CONTRIBUTION"/> bölümünden çıkararak aylık bağışınızı iptal edebilirsiniz.</translation>
+<translation id="4848906651275579475">Yine de şimdi katkıda bulunabilirsiniz ve bu oluşturucuyu <ph name="MONTHLY_CONTRIBUTION"/> bölümünden çıkararak aylık bağışınızı iptal edebilirsiniz.</translation>
 <translation id="5379685283876547860">Katkı gönderildi!</translation>
 <translation id="1041398280582063935">Desteğinizi paylaşın</translation>
 <translation id="8855543392451028706">Hoş geldiniz! Kullanıcılar, katkıda bulunarak bu içerik oluşturucusunu destekleyebilir. Bu, harika içerikler için onlara teşekkür etmenin bir yoludur.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/> oturumu açın</translation>
 <translation id="7063168612616047608">En sevdiğiniz oluşturucuları desteklediğiniz için teşekkürler</translation>
 <translation id="3796032246917966749">Görünüşe göre Brave Ödülleri için <ph name="CUSTODIAN"/> oturumunuz kapatılmış. Devam etmek için yeniden giriş yapın.</translation>
-<translation id="594652923071049606">Bu Oluşturucu, Brave Oluşturucusu tarafından daha doğrulanmadı. Doğrulandıktan sonra katkıda bulunabileceksiniz. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Bu oluşturucu, Brave Oluşturucusu tarafından daha doğrulanmadı. Doğrulandıktan sonra katkıda bulunabileceksiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Katkıda Bulun</translation>
 <translation id="1899434873745933492">Katkıda bulunma başarısız</translation>
 <translation id="1794046983410841192">Brave Ödüllerini kullan</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Özel</translation>
 <translation id="4827581232860040208">Katkıda bulunurken bir sorun oluştu</translation>
 <translation id="3259723213051400722">Lütfen tekrar deneyin.</translation>
-<translation id="8899147737996487517">Bu Oluşturucu, Brave'e kayıtlıdır ve Brave Ödülleri kullanıcılarından katkı alabilir. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Bu Oluşturucu, Brave'e kayıtlıdır ve Brave Ödülleri kullanıcılarından katkı alabilir. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Bildirimler devre dışıyken Brave Ödülleri çalışmayabilir.</translation>
 <translation id="4259212006412783790">AÇ</translation>
 <translation id="6112331814131703370">"Uygulamaya Git" Bildirimlerini engelle</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Yer işaretlerini içe aktar</translation>
 <translation id="1008186147501209563">Yer işaretlerini dışa aktar</translation>
 <translation id="6680516947641001448">Yer işaretlerini içe aktarmak için bir dosya seçin</translation>
+<translation id="2353910600995338714">Dışa aktarma başarılı oldu</translation>
+<translation id="229319993704311844">Yer işaretleri, <ph name="EXPORT_FILE_PATH"/> dosya yoluna dışa aktarıldı</translation>
+<translation id="8050098462121217351">Dışa aktarma başarısız oldu</translation>
+<translation id="1166543535974380311">Yer işaretlerinin dışa aktarılması başarısız oldu. Lütfen tekrar deneyin.</translation>
+<translation id="6154243540085290880">İçe aktarma başarılı oldu</translation>
 <translation id="7028125942261647795">Yer işaretleri başarıyla içe aktarıldı.</translation>
-<translation id="444953779119381206">Yer işareti içe aktarma başarısız.</translation>
-<translation id="6606836200439368332">Yer işareti dışa aktarma başarısız.</translation>
-<translation id="1395297034387418032">Yer işaretleri başarıyla dışa aktarıldı.</translation>
+<translation id="4803910478683254032">İçe aktarma başarısız oldu</translation>
+<translation id="8325139248201792113">Yer işaretlerinin içe aktarılması başarısız oldu. Lütfen tekrar deneyin.</translation>
+<translation id="2803313416453193357">Klasörü aç</translation>
 <translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
 <translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="8985635554450124959">Eşitleme ayarlanamadı</translation>
@@ -393,6 +397,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 Lütfen bu kod kelimelerinin size ait bir cihaz tarafından üretildiğinden emin olun.
 Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="4550208292810542331">Kamera izni verilmedi</translation>
+<translation id="6470233139461745039">Şifrelerin senkronize edilmesini etkinleştirmek için öncelikle cihazınızda bir ekran kilidi oluşturmanız gerekmektedir.</translation>
+<translation id="3063783274005996079">Şifrelerin senkronize edilmesini etkinleştirmek için kilidi açın</translation>
+<translation id="7551563084530025179">Şifreleri senkronize edebilmeniz için cihazınızın biyometriği/parolasıyla doğrulamanız gerekmektedir. Bu ilave güvenlik önlemi, şifrelerinizin güvende kalmasını sağlar.</translation>
+<translation id="6925081665778864449">Şifreleri senkronize etmek için lütfen Android cihazınızın biyometrik/parola doğrulamasını etkinleştirin. Bu ilave güvenlik önlemi, şifrelerinizin güvende kalmasını sağlar.</translation>
 <translation id="597993392929850353">Brave Lisans</translation>
 <translation id="6336451774241870485">Yeni gizli sekmesi</translation>
 <translation id="6199596294742117349">Bu bir Gizli Sekme</translation>
@@ -429,7 +437,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="9096003370755878766">Brave Rewards cüzdanınıza daha önce eklemiş olabileceğiniz BAT'ı geri çekin</translation>
 <translation id="1554282356558968486">Cüzdan hizmetimizi sağlayan:</translation>
 <translation id="6569877533335686968">Onayla</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
@@ -1203,4 +1211,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6759710362319508545">Kaynaklar</translation>
 <translation id="2471230424465522689">En erken</translation>
 <translation id="4841860051609590575">Talep kimliği</translation>
+<translation id="1179407411385015942">Leo, doğrudan tarayıcınıza dâhil edilmiş, gücünü yapay zekâdan alan bir akıllı asistandır</translation>
+<translation id="1250335737108905610">Sıfırlayın ve Leo verilerini temizleyin</translation>
+<translation id="6165101586663336913">Leo asistanının sıfırlanması; ileride Leo'yu kullanmak istediğinizde asistanı kendiniz açmanızı gerektirecektir ve aynı zamanda sohbet geçmişinizi de temizleyecektir. Sohbet geçmişinin temizlenmesi, Leo ile yaptığınız önceki tüm görüşmeleri silecektir. Bu işlem geri alınamaz.</translation>
 </translationbundle>

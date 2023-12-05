@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Administrer reklamer</translation>
 <translation id="7630214457764713113">Kopier ren link</translation>
 <translation id="885805571521218129">Dette gjenspeiler den beregnede inntjeningen for Brave-annonser denne måneden.</translation>
-<translation id="818003031290137834">Nå som du er koblet til ZebPay, vil alle tidligere saldoer du har hatt settes inn på ZebPay-kontoen din som en del av den neste inntektsutbetalingen din. Når den kommer, ser du BAT-en din reflektert i Rewards-saldoen din.</translation>
 <translation id="3478449063771497234">Varslinger er deaktivert</translation>
 <translation id="2862978891748913252">Velg landet ditt</translation>
 <translation id="3970520675790340955">Velg landet du er i, slik at vi kan vise de riktige valgmulighetene og annonsene for din region.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Du kan bare sende opptil <ph name="AMOUNT"/> BAT med Brave Rewards-saldoen din.</translation>
 <translation id="5012991400231464322">Månedlige bidrag</translation>
 <translation id="5907051927340164207">Du sender allerede månedlige bidrag til denne innholdsskaperen</translation>
-<translation id="307555373157330047">Du kan fortsatt sende et bidrag nå, og du kan kansellere det månedlige bidraget til denne innholdsskaperen ved å fjerne dem fra <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Du kan fortsatt sende inn et bidrag nå, og du kan avbryte de månedlige bidragene dine til denne skaperen ved å fjerne dem fra <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Bidrag sendt!</translation>
 <translation id="1041398280582063935">Gi støtte</translation>
 <translation id="8855543392451028706">Velkommen! Brukere kan støtte denne innholdsskaperen ved å sende bidrag. Det er en måte å takke dem på for at de lager bra innhold.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Logg på <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Takk for at du støtter favoritt-innholdsskaperne dine</translation>
 <translation id="3796032246917966749">Du ser ut til å være logget ut av <ph name="CUSTODIAN"/> for Brave Rewards. Logg på igjen for å fortsette.</translation>
-<translation id="594652923071049606">Denne innholdsskaperen er ikke bekreftet i Brave Creators ennå. Du kan sende dem bidrag når de har blitt bekreftet. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Denne skaperen er ikke verifisert av Brave-skapere ennå. Du vil kunne sende bidrag til skaperen når vedkommende har blitt verifisert. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Send bidrag</translation>
 <translation id="1899434873745933492">Kan ikke sende bidraget</translation>
 <translation id="1794046983410841192">Bruk Brave Rewards</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Tilpasset</translation>
 <translation id="4827581232860040208">Det oppstod et problem ved sending av bidraget ditt.</translation>
 <translation id="3259723213051400722">Prøv på nytt.</translation>
-<translation id="8899147737996487517">Denne innholdsskaperen er registrert hos Brave og kan motta bidrag fra Brave Rewards-brukere. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Denne skaperen har registrert seg hos Brave og kan motta bidrag fra Brave Rewards-brukere. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Rewards fungerer kanskje ikke mens varslinger er deaktivert.</translation>
 <translation id="4259212006412783790">SLÅ PÅ</translation>
 <translation id="6112331814131703370">Blokk varslinger om å bytte til appen</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">Importér bokmerker</translation>
 <translation id="1008186147501209563">Eksportér bokmerker</translation>
 <translation id="6680516947641001448">Velg en fil for å importere bokmerker</translation>
+<translation id="2353910600995338714">Eksport fullført</translation>
+<translation id="229319993704311844">Bokmerker eksportert til <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Eksport mislykket</translation>
+<translation id="1166543535974380311">Eksporten av bokmerker mislyktes. Prøv igjen.</translation>
+<translation id="6154243540085290880">Import fullført</translation>
 <translation id="7028125942261647795">Bokmerkene er importert.</translation>
-<translation id="444953779119381206">Kunne ikke importere bokmerkene.</translation>
-<translation id="6606836200439368332">Kunne ikke eksportere bokmerkene.</translation>
-<translation id="1395297034387418032">Bokmerkene er eksportert.</translation>
+<translation id="4803910478683254032">Import mislyktes</translation>
+<translation id="8325139248201792113">Import av bokmerker mislyktes. Prøv igjen.</translation>
+<translation id="2803313416453193357">Åpne mappe</translation>
 <translation id="3396347744975515056">Brave Sync er oppgradert og må konfigureres</translation>
 <translation id="7473245612074035141">Begynn konfigurering</translation>
 <translation id="8985635554450124959">Synkronisering kunne ikke konfigureres</translation>
@@ -392,6 +396,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 Dobbeltsjekk at disse kodeordene ble generert av en enhet du eier.
 Er du sikker på at du vil gjøre dette?</translation>
 <translation id="4550208292810542331">Kameratillatelse ble ikke gitt</translation>
+<translation id="6470233139461745039">For å aktivere synkronisering av passord, må du først angi en skjermlås på enheten din</translation>
+<translation id="3063783274005996079">Lås opp for å aktivere synkronisering av passord</translation>
+<translation id="7551563084530025179">Før du kan synkronisere passord, må du autentisere deg med enhetens biometri/passord. Dette ekstra sikkerhetstiltaket bidrar til å holde passordene dine trygge.</translation>
+<translation id="6925081665778864449">For å synkronisere passord må du aktivere autentisering via biometri/passord på Android-enheten din. Dette ekstra sikkerhetstiltaket bidrar til å holde passordene dine trygge.</translation>
 <translation id="597993392929850353">Brave-lisens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6199596294742117349">Dette er en privat fane</translation>
@@ -428,7 +436,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
 <translation id="1554282356558968486">Lommeboktjenesten vår leveres av</translation>
 <translation id="6569877533335686968">Oppretthold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
@@ -1202,4 +1210,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6759710362319508545">Ressurser</translation>
 <translation id="2471230424465522689">Ikke før</translation>
 <translation id="4841860051609590575">Forespørsels-ID</translation>
+<translation id="1179407411385015942">Leo er en smartassistent drevet av kunstig intelligens, bygget inn direkte i nettleseren</translation>
+<translation id="1250335737108905610">Tilbakestill og fjern Leo-data</translation>
+<translation id="6165101586663336913">Tilbakestilling av Leo-assistenten vil kreve at du velger å bruke Leo i fremtiden, og vil også slette chatloggen din. Sletting av chatloggen vil slette alle tidligere samtaler med Leo. Denne handlingen kan ikke angres.</translation>
 </translationbundle>

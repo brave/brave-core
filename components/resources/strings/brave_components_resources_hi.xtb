@@ -166,7 +166,7 @@
 <translation id="4720556299488643018">अनसब्स्क्राइब</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
-<translation id="8265244536487014968">ध्यान दें : Brave सर्वर को भेजे जाने वाली रिपोर्ट में साइट का पता, Brave का वर्ज़न नंबर, शील्ड्स की सेटिंग, VPN स्टेटस और भाषा की सेटिंग से जुड़ी जानकारियाँ होती हैं. IP का पता ट्रांसमिट किया जाता है, लेकिन स्टोर नहीं किया जाता.</translation>
+<translation id="6387106423577201267">ध्यान दें : Brave सर्वर को भेजी जाने वाली रिपोर्ट में वेबसाइट का एड्रेस, Brave का वर्ज़न नंबर, शील्ड की सेटिंग्स, VPN स्टेटस और भाषा की सेटिंग्स की जानकारी होंगी.</translation>
 <translation id="6476216365964140603">अधिक जानकारी (वैकल्पिक)</translation>
 <translation id="6145852496180774737">मुझसे संपर्क करें: (वैकल्पिक)</translation>
 <translation id="7616645803364270729">ईमेल, Twitter, वगैरह.</translation>
@@ -259,14 +259,12 @@
 <translation id="3274650021044762770">आपके Brave Rewards को आपके <ph name="PROVIDER"/>अकाउंट से जोड़ने के आपके ब्राउज़र के अनुरोध को सत्यापित करने में समस्या हुई. अधिक सहायता के लिए आप <ph name="BEGIN_LINK"/> सहायता केंद्र <ph name="END_LINK"/> से संपर्क कर सकते हैं.</translation>
 <translation id="1316066811927496401">एरर: अनुरोध सत्यापित नहीं किया जा सका</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
-<translation id="4123948149985772126">कोई अकाउंट प्रोवाइडर चुनें</translation>
-<translation id="896953639186217388">कस्टोडियल अकाउंट प्रोवाइडर के लिए आपकी पहचान वेरिफ़ाई करना ज़रूरी होता है, जिसमें फ़ोटो ID सबमिट करना भी शामिल हो सकता है. <ph name="BEGIN_LINK1"/>Brave रिवॉर्ड गोपनीयता नीति<ph name="END_LINK1"/> देखें. <ph name="BEGIN_LINK2"/>BAT के बारे में और जानकारी<ph name="END_LINK2"/> यहाँ पाएँ.</translation>
-<translation id="5785531043735482053">अपने कमाए BAT को स्टोर करें, मैनेज करें और निकालें</translation>
-<translation id="5155452078869279096">अपने खरीदे हुए BAT से अकाउंट टॉप अप करें</translation>
-<translation id="2662540985634906665">अपनी पसंदीदा साइट और क्रिएटर को ऑन-डिमांड आर्थिक योगदान भेजें.</translation>
+<translation id="8817096698141999876">कस्टोडियल अकाउंट (ID वेरिफ़ाई करना ज़रूरी है)</translation>
+<translation id="1539433155512862005">कस्टोडियल अकाउंट ऐसे भरोसेमंद थर्ड पार्टी अकाउंट हैं, जो आपके BAT अपने पास रखते हैं.</translation>
+<translation id="6751803821780922506">यह चुनें कि आप अपने BAT कहाँ लेना चाहेंगे</translation>
 <translation id="1233129511866436960">क्षेत्र और सपोर्ट के बारे में और जानें</translation>
 <translation id="7329170127335794328">फ़िलहाल आपके क्षेत्र में उपलब्ध नहीं है</translation>
-<translation id="8304979233901023264">मैंने Brave ’s <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/>.पढ़ ली है और इससे सहमत हूं</translation>
+<translation id="966956302643313970">बेसिक अटेंशन टोकन (BAT) रिवॉर्ड कमाना शुरू करने के लिए कोई अकाउंट कनेक्ट करें. आप जो भी BAT कमाएँगे, वे अपने-आप हर महीने आपके अकाउंट में ट्रांसफ़र हो जाएँगे.</translation>
 <translation id="1892970806832316900"><ph name="DATE"/> तक पेंडिंग है</translation>
 <translation id="7849926087559412554">ओह! आपके ब्राउज़र पर Brave प्राइवेसी विज्ञापन नहीं आ सकते हैं</translation>
 <translation id="5177429570315095022">विज्ञापन देखना जारी रखने के लिए आपको अपना ब्राउज़र अपडेट करना होगा</translation>
@@ -608,7 +606,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>कमाई शुरू करने के लिए तैयार हैं?<ph name="BOLD_END"/> अपना अकाउंट कनेक्ट करें या हमारे किसी पार्टनर के साथ नया अकाउंट बनाएँ.</translation>
 <translation id="1772961321862399863">BAT कमाने के लिए यूज़र को एक कस्टोडियल अकाउंट Brave रिवॉर्ड से कनेक्ट करना होगा. बदकिस्मती से आपके क्षेत्र में कोई कस्टोडियन उपलब्ध नहीं है, इसलिए कमाई करना मुमकिन नहीं है. अभी के लिए सिर्फ़ Brave रिवॉर्ड चालू कर देने से क्रिएटर को अपने-आप सपोर्ट मिलेगा.</translation>
 <translation id="902298128239575729">अपना आर्थिक योगदान Brave रिवॉर्ड के ज़रिए भेजें</translation>
-<translation id="8413791505518414158">जब आपका कस्टोडियल अकाउंट कनेक्ट हो जाएगा, तो आप अपने Brave रिवॉर्ड बैलेंस से अपने पसंदीदा क्रिएटर को ऑन-डिमांड आर्थिक योगदान भेज पाएँगे.</translation>
+<translation id="6276721355724491595">जब आपका कस्टोडियल अकाउंट कनेक्ट हो जाएगा, तो आप अपने Brave रिवॉर्ड बैलेंस से अपने पसंदीदा क्रिएटर को ऑन-डिमांड योगदान भेज पाएँगे.</translation>
 <translation id="1149481926056509086">ऑन-डिमांड आर्थिक योगदान भेजने के लिए ज़रूरी है कि यूज़र अपने कस्टोडियल अकाउंट को Brave रिवॉर्ड से कनेक्ट करें. अफ़सोस. आपके क्षेत्र में कोई कस्टोडियन मौजूद नहीं है, इसलिए भेजने की सुविधा उपलब्ध नहीं है. फ़िलहाल आप क्रिएटर को ऑटोमैटिक योगदान दे रहे हैं.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {इस महीने आपने Brave रिवॉर्ड द्वारा सपोर्ट किए जाने वाले # क्रिएटर को देखा है}
@@ -629,13 +627,12 @@
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3717922248131893262">Brave रिवॉर्ड का इस्तेमाल करते रहने के लिए अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें. <ph name="LINK_BEGIN"/>निजता नीति<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">पुरस्कारों का उपयोग करना शुरू करें</translation>
-<translation id="818003031290137834">क्योंकि अब आपने ZebPay से कनेक्ट कर लिया है, इसलिए आपका जो भी पिछला बैलेंस था वह अगले भुगतान के लिए आपके ZebPay अकाउंट में जमा कर दिया जाएगा. यह जमा होने के बाद आप अपने रिवॉर्ड बैलेंस में यह BAT देख पाएँगे.</translation>
 <translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
 <translation id="2956070106555335453">सारांश</translation>
 <translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
-<translation id="1010940411509546886">ये क्रिएटर Brave क्रिएटर के तौर पर वेरिफ़ाई नहीं हैं. जब वो वेरिफ़ाई हो जाएँगे, उसके बाद आप उन्हें आर्थिक योगदान भेज पाएँगे.</translation>
+<translation id="3984338085370091436">ये क्रिएटर अभी Brave क्रिएटर्स द्वारा वेरिफ़ाई नहीं किए गए हैं. जब उनका वेरिफ़िकेशन हो जाएगा, तो उसके बाद आप उन्हें अपना योगदान भेज पाएँगे.</translation>
 <translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
-<translation id="215037911651623564">क्रिएटर वेरिफ़िकेशन स्टेटस को रीफ़्रेश करें</translation>
+<translation id="8635423276837443905">क्रिएटर का वेरिफ़िकेशन स्टेटस रिफ़्रेश करें</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/> पर <ph name="NAME"/></translation>
 <translation id="3733094367889291358">आर्थिक योगदान भेजें</translation>
 <translation id="7335371657242627509">ऑटो-योगदान में शामिल करें</translation>
@@ -695,11 +692,11 @@
 <translation id="1483493594462132177">भेजें</translation>
 <translation id="6632987674051304487"><ph name="PROVIDER"/> से भेजें</translation>
 <translation id="4319632089378796037">Web3 वॉलेट का इस्तेमाल करें</translation>
-<translation id="5399596220743521546">ये क्रिएटर Brave पर रजिस्टर कर चुके हैं और Brave रिवॉर्ड यूज़र से आर्थिक योगदान पा सकते हैं.</translation>
+<translation id="4530198836725543997">इन क्रिएटर ने Brave पर रजिस्टर किया है और Brave रिवॉर्ड यूज़र से योगदान ले सकते हैं.</translation>
 <translation id="4529874892536380156">इसे हर महीने किए जाने वाले आर्थिक योगदान के तौर पर सेट करें. इसे आप कभी भी कैंसिल कर सकते हैं.</translation>
 <translation id="1177863135347784049">कस्टम</translation>
 <translation id="5907051927340164207">आप इन क्रिएटर को पहले से हर महीने आर्थिक योगदान भेज रहे हैं</translation>
-<translation id="2840845521251717054">आप अभी भी इन क्रिएटर को अपना आर्थिक योगदान भेज सकते हैं और <ph name="LINK_BEGIN"/>मासिक योगदान<ph name="LINK_END"/> में से उन्हें हटाकर अपना मासिक योगदान कैंसिल कर सकते हैं.</translation>
+<translation id="4357685964329620278">आप अब भी अपना योगदान भेज सकते हैं, और इन क्रिएटर को<ph name="LINK_BEGIN"/>मासिक योगदान<ph name="LINK_END"/> से हटाकर आप उन्हें दिया जाने वाले मासिक योगदान कभी भी बंद कर सकते हैं.</translation>
 <translation id="1899434873745933492">आपका आर्थिक योगदान नहीं भेजा जा सकता</translation>
 <translation id="8598111278506452136">ये क्रिएटर <ph name="PROVIDER"/> से आर्थिक योगदान नहीं ले पा रहे हैं.</translation>
 <translation id="8379442066667303579">अपने Web3 वॉलेट का इस्तेमाल करके आप इन क्रिएटर को अभी भी क्रिप्टो योगदान भेज सकते हैं.</translation>
@@ -725,6 +722,7 @@
 <translation id="1288078776976153868">नेटवर्क</translation>
 <translation id="1148827340205946630">उपयोगकर्ता ने अनुरोध को अस्वीकार किया है</translation>
 <translation id="2403819048476450281">अमान्य पैरामीटर.</translation>
+<translation id="3849003816301348130">डेस्टिनेशन का पता OFAC SDN लिस्ट में है.</translation>
 <translation id="3955144560853195652"><ph name="VALUE"/> चेन नहीं जोड़ी गई है</translation>
 <translation id="1875861420974447980">इस समय इस Chain ID का इस्तेमाल किया जा रहा है</translation>
 <translation id="167698752210114155">एक अंदरूनी गड़बड़ी हुई</translation>
@@ -910,6 +908,7 @@
 <translation id="6577166808959668729">Solana ब्लॉकचेन पर SLP कम्पैटिबल असेट को सपोर्ट करता</translation>
 <translation id="4541295941776129088">FIL असेट स्टोर करें</translation>
 <translation id="29759539656432505">BTC एसेट स्टोर करें</translation>
+<translation id="8749751940551938347">स्टोर ZEC एसेट</translation>
 <translation id="8500387257977999003">प्राइवेट की: <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="232925166623833246">हार्डवेयर वॉलेट से इम्पोर्ट करें</translation>
@@ -1086,7 +1085,7 @@
 <translation id="5867988533873716616">ब्लॉक एक्सप्लोरर URL उपलब्ध नहीं है.</translation>
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोरर पर देखें</translation>
 <translation id="563386395023152633">लेन-देन हैश कॉपी करें</translation>
-<translation id="7148658188569580292">लेन-देन की गति बढ़ाएँ</translation>
+<translation id="881317738916264532">स्पीड बढ़ाएँ</translation>
 <translation id="1198263951134066686">लेन-देन कैंसल करें</translation>
 <translation id="3562548974839822204">दोबारा लेनदेन करें</translation>
 <translation id="6383204195803840504">लेन-देन यहां दिखाई देंगे</translation>
@@ -1100,6 +1099,7 @@
 <translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="8373210463207847451">गिर गया</translation>
 <translation id="8214232307424031138">साइन किया गया</translation>
+<translation id="5916664084637901428">चालू</translation>
 <translation id="9065572743819293042">हाल के लेनदेन</translation>
 <translation id="4235538284468006757">लेनदेन की जानकारी</translation>
 <translation id="7488671812634887146">स्पीड अप</translation>
@@ -1160,6 +1160,7 @@
 <translation id="471055802670233033">आपने खर्च किए</translation>
 <translation id="7916618590403748182">आप पाएँगे</translation>
 <translation id="8328657208304368165">ऑर्डर कन्फ़र्म करें</translation>
+<translation id="8220255674527598378">Solana स्वैप</translation>
 <translation id="5071303414930953888">अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">पहले वॉलेट को अनलॉक करना होगा</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> कोई मान्य पता नहीं है</translation>
@@ -1254,8 +1255,6 @@
 <translation id="1257387162647804035">प्राइमरी नेटवर्क</translation>
 <translation id="8323674164587854512">Ethereum + EVM Chains</translation>
 <translation id="1398414935371867469">Solana + SVM Chains</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">नेटवर्क लोगो</translation>
 <translation id="4378208228955237306">NFT पर नेटवर्क लोगो दिखाएँ</translation>
 <translation id="5472199803712163015">स्पैम NFT</translation>
@@ -1283,7 +1282,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> भेजें</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> को <ph name="TAKER"/> से बदलें</translation>
 <translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
-<translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
+<translation id="8813165409788097898">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
 <translation id="1028781062521375153">विवरण देखें</translation>
 <translation id="3950820424414687140">प्रवेश करें</translation>
 <translation id="4530494379350999373">मूल</translation>
@@ -1594,6 +1593,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>रीफ़्रेश करें<ph name="REFRESH_END"/> या <ph name="IMPORT"/>खुद से इंपोर्ट करें<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">रीफ़्रेश हो रहा है</translation>
 <translation id="4608324163534970318">नेटवर्क फ़ीस</translation>
+<translation id="6213230117190778270">प्राप्त करें</translation>
+<translation id="6748108480210050150">से\n\n</translation>
+<translation id="4875290286426670462">अनलिमिटेड <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">यह टोकन वेरिफ़ाई नहीं किया गया है</translation>
+<translation id="8549067157732633185">यह टोकन वेरिफ़ाई हो गया है</translation>
+<translation id="2130170065617939165">यह टोकन <ph name="NUMBER_OF_LISTS"/> लिस्ट में वेरिफ़ाई हो गया है</translation>
+<translation id="1554316484739382186">खर्च करने वाले : <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/> अकाउंट</translation>
+<translation id="5360752485622434494"><ph name="PROVIDER"/> पर Brave रिवॉर्ड BAT</translation>
+<translation id="429061011725027672">आप अभी <ph name="PROVIDER"/> से लॉग आउट हैं. अपना बैलेंस देखने के लिए कृपया लॉग इन करें.</translation>
+<translation id="4611292653554630842">लॉग इन करें</translation>
+<translation id="1132794822159463424"><ph name="PROVIDER"/> पर देखें</translation>
+<translation id="7875005109025196005">प्लेटफ़ॉर्म</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1853,6 +1866,8 @@
 <translation id="8960352557529001690">Dyslexic</translation>
 <translation id="8189819085033738728">फ़ॉन्ट का आकार घटाएँ</translation>
 <translation id="1952725803106139986">फ़ॉन्ट का आकार बढ़ाएँ</translation>
+<translation id="6338177649973309262">संकरा कंटेंट कॉलम</translation>
+<translation id="6500600749984466451">चौड़ा कंटेंट कॉलम</translation>
 <translation id="7239710518122372020">टेक्स्ट-टू-स्पीच</translation>
 <translation id="4330722796577425585">रिवाइंड करें</translation>
 <translation id="1199355487114804640">चलाएँ/रोकें</translation>

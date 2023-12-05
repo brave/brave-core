@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">Avslutt abonnement</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
-<translation id="8265244536487014968">Merk: Rapporten som sendes til Brave-serverne inkluderer nettstedsadressen, Brave-versjonsnummeret, Shield-innstillingene, VPN-statusen og språkinnstillingene. IP-adressen overføres, men lagres ikke.</translation>
+<translation id="6387106423577201267">Merk: Rapporten som sendes til Brave-servere vil omfatte nettstedets adresse, Brave-versjonsnummeret, Shields-innstillinger, VPN-status og språkinnstillinger.</translation>
 <translation id="6476216365964140603">Ytterligere informasjon (valgfritt)</translation>
 <translation id="6145852496180774737">Kontakt meg på: (valgfritt)</translation>
 <translation id="7616645803364270729">E-post, Twitter osv.</translation>
@@ -258,14 +258,12 @@
 <translation id="3274650021044762770">Det oppstod et problem ved bekreftelse av nettleserforespørselen for å koble Brave Rewards til <ph name="PROVIDER"/>-kontoen din. Du kan <ph name="BEGIN_LINK"/>kontakte brukerstøtten<ph name="END_LINK"/> for mer hjelp.</translation>
 <translation id="1316066811927496401">Feil: Forespørselen kunne ikke valideres</translation>
 <translation id="8167256685618982116">Ved å skru på <ph name="TITLE"/>, samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
-<translation id="4123948149985772126">Velg en kontotilbyder</translation>
-<translation id="896953639186217388">Leverandører av partnerkontoer må verifisere identiteten din. Det kan innebære at du må sende inn en kopi av ID med bilde. Les mer i <ph name="BEGIN_LINK1"/>Brave Rewards-personvernerklæringen<ph name="END_LINK1"/>. Se her for å <ph name="BEGIN_LINK2"/>lede mer om BAT<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">lagre, administrere og ta ut BAT-inntekten din</translation>
-<translation id="5155452078869279096">fylle på kontoen med BAT du har kjøpt</translation>
-<translation id="2662540985634906665">Send bidrag til favorittsidene og innholdsskaperne dine</translation>
+<translation id="8817096698141999876">Oppbevaringskontoer (krever ID-verifisering)</translation>
+<translation id="1539433155512862005">Oppbevaringskontoer er kontoer med betrodde tredjepartstjenester som oppbevarer dine BAT for deg.</translation>
+<translation id="6751803821780922506">Velg hvor du vil motta BAT</translation>
 <translation id="1233129511866436960">Finn ut mer om regioner og support</translation>
 <translation id="7329170127335794328">Ikke tilgjengelig i din region ennå</translation>
-<translation id="8304979233901023264">Jeg har lest og samtykker til Brave’ sine <ph name="TOS_LINK_BEGIN"/>bruksvilkår<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>retningslinjene for personvern<ph name="PP_LINK_END"/>.</translation>
+<translation id="966956302643313970">For å begynne å tjene belønninger i form av Basic Attention Token (BAT), må du koble til en konto. BAT du tjener opp, overføres automatisk til kontoen din hver måned.</translation>
 <translation id="1892970806832316900">Venter frem til <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Au da! Nettleseren din kan ikke motta Brave Private Ads.</translation>
 <translation id="5177429570315095022">Du må oppdatere nettleseren for å fortsette å se annonser.</translation>
@@ -607,7 +605,7 @@
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Er du klar til å begynne å tjene penger?<ph name="BOLD_END"/> Koble til en konto eller opprett en hos en av partnerne våre.</translation>
 <translation id="1772961321862399863">For å tjene opp BAT må brukerne tilknytte en partnerkonto til Brave Rewards. Dessverre er det ingen partnere tilgjengelige i din region, så opptjening er ikke mulig. Per nå vil det å slå på Brave rewards automatisk støtte innholdsskapere.</translation>
 <translation id="902298128239575729">Send bidrag med Brave Rewards</translation>
-<translation id="8413791505518414158">Du vil kunne sende on demand-bidrag til innholdsskapere du liker, med Brave Rewards-saldoen din når du har en tilkoblet partnerkonto.</translation>
+<translation id="6276721355724491595">Du vil kunne sende bidrag på forespørsel til favorittskaperne dine med Brave Rewards-saldoen din når du har en oppbevaringskonto tilkoblet.</translation>
 <translation id="1149481926056509086">For å sende on demand-bidrag må brukerne tilknytte en partnerkonto til Brave Rewards. Dessverre er det ingen partnere tilgjengelige i din region, så sending er ikke mulig. I mellomtiden støtter du fortsatt innholdsskapere automatisk.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Denne måneden har du besøkt # innholdsskaper støttet av Brave Rewards}
@@ -628,13 +626,12 @@
 <translation id="2862978891748913252">Velg land</translation>
 <translation id="3717922248131893262">For å fortsette å bruke Brave Rewards må du velge landet ditt, så vi kan vise deg de riktige alternativene og annonsene for din region. <ph name="LINK_BEGIN"/>Personvernerklæring<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Begynn å bruke Rewards</translation>
-<translation id="818003031290137834">Nå som du er koblet til ZebPay, vil alle tidligere saldoer du har hatt settes inn på ZebPay-kontoen din som en del av den neste inntektsutbetalingen din. Når den kommer, ser du BAT-en din reflektert i Rewards-saldoen din.</translation>
 <translation id="2221902203895354376">En ny tokenopptjening er tilgjengelig!</translation>
 <translation id="2956070106555335453">Sammendrag</translation>
 <translation id="2369994359029526515">Uverifisert Skaper</translation>
-<translation id="1010940411509546886">Denne innholdsskaperen er ikke bekreftet i Brave Creators ennå. Du kan sende dem bidrag når de har blitt bekreftet.</translation>
+<translation id="3984338085370091436">Denne skaperen er ikke verifisert av Brave Creators ennå. Du vil kunne sende dem bidrag når de har blitt verifisert.</translation>
 <translation id="6020176662032623904">Verifisert Skaper</translation>
-<translation id="215037911651623564">Oppdater bekreftelsesstatusen som innholdsskaper</translation>
+<translation id="8635423276837443905">Oppdater skaperens verifiseringsstatus</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> på <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">Send bidrag</translation>
 <translation id="7335371657242627509">Inkluder i Auto-bidrag</translation>
@@ -694,11 +691,11 @@
 <translation id="1483493594462132177">Send</translation>
 <translation id="6632987674051304487">Send med <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Bruk Web3 Wallet</translation>
-<translation id="5399596220743521546">Denne innholdsskaperen er registrert hos Brave og kan motta bidrag fra Brave Rewards-brukere.</translation>
+<translation id="4530198836725543997">Denne skaperen har registrert seg hos Brave og kan motta bidrag fra Brave Rewards-brukere.</translation>
 <translation id="4529874892536380156">Gjør dette til et fast månedlig bidrag. Du kan kansellere det når som helst.</translation>
 <translation id="1177863135347784049">Tilpasset</translation>
 <translation id="5907051927340164207">Du sender allerede månedlige bidrag til denne innholdsskaperen</translation>
-<translation id="2840845521251717054">Du kan fortsatt sende et bidrag nå, og du kan kansellere det månedlige bidraget til denne innholdsskaperen ved å fjerne dem fra<ph name="LINK_BEGIN"/>Månedlige bidrag<ph name="LINK_END"/>.</translation>
+<translation id="4357685964329620278">Du kan fortsatt sende inn et bidrag nå, og du kan avbryte de månedlige bidragene dine til denne skaperen ved å fjerne dem fra <ph name="LINK_BEGIN"/>Månedlige bidrag<ph name="LINK_END"/>.</translation>
 <translation id="1899434873745933492">Kan ikke sende bidraget</translation>
 <translation id="8598111278506452136">Denne innholdsskaperen kan ikke motta bidrag fra <ph name="PROVIDER"/>.</translation>
 <translation id="8379442066667303579">Du kan fortsatt sende kryptobidrag til denne innholdsskaperen ved å bruke Web3-lommeboken din.</translation>
@@ -724,6 +721,7 @@
 <translation id="1288078776976153868">nettverk</translation>
 <translation id="1148827340205946630">Brukeren avslo forespørselen</translation>
 <translation id="2403819048476450281">Ugyldige parametere.</translation>
+<translation id="3849003816301348130">Destinasjonsadressen står på OFAC SDN-listen.</translation>
 <translation id="3955144560853195652">Kjeden <ph name="VALUE"/> har ikke blitt lagt til</translation>
 <translation id="1875861420974447980">Denne blokkjeden er allerede i bruk</translation>
 <translation id="167698752210114155">Det har oppstått en intern feil</translation>
@@ -909,6 +907,7 @@
 <translation id="6577166808959668729">Støtter SPL-kompatible verdier på Solana-blockchainen</translation>
 <translation id="4541295941776129088">Lagre FIL-ressurs</translation>
 <translation id="29759539656432505">Lagre BTC-eiendeler</translation>
+<translation id="8749751940551938347">Oppbevar ZEC-ressurser</translation>
 <translation id="8500387257977999003">Privat nøkkel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="232925166623833246">Importer fra hardware-lommebok</translation>
@@ -1085,7 +1084,7 @@
 <translation id="5867988533873716616">Block Explorer-nettadressen er ikke tilgjengelig.</translation>
 <translation id="4255623233927788178">Vis i Block Explorer</translation>
 <translation id="563386395023152633">Kopier transaksjons-hash</translation>
-<translation id="7148658188569580292">Fremskynd transaksjonen</translation>
+<translation id="881317738916264532">Øk farten</translation>
 <translation id="1198263951134066686">Avbryt transaksjonen</translation>
 <translation id="3562548974839822204">Prøv transaksjonen på nytt</translation>
 <translation id="6383204195803840504">Transaksjoner vises her</translation>
@@ -1099,6 +1098,7 @@
 <translation id="1165039591588034296">Feil</translation>
 <translation id="8373210463207847451">Droppet</translation>
 <translation id="8214232307424031138">Signert</translation>
+<translation id="5916664084637901428">På</translation>
 <translation id="9065572743819293042">Nylige transaksjoner</translation>
 <translation id="4235538284468006757">Transaksjonsinfo</translation>
 <translation id="7488671812634887146">Speedup</translation>
@@ -1159,6 +1159,7 @@
 <translation id="471055802670233033">Du betaler</translation>
 <translation id="7916618590403748182">Du mottar</translation>
 <translation id="8328657208304368165">Bekreft ordre</translation>
+<translation id="8220255674527598378">Solana Swap</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Lommeboken må låses opp først</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/>er ikke en gyldig adresse</translation>
@@ -1253,8 +1254,6 @@
 <translation id="1257387162647804035">Primære nettverk</translation>
 <translation id="8323674164587854512">Ethereum + EVM-kjeder</translation>
 <translation id="1398414935371867469">Solana + SVM-kjeder</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">Nettverkslogo</translation>
 <translation id="4378208228955237306">Vis nettverkslogo på NFT-er</translation>
 <translation id="5472199803712163015">Spam-NFT-er</translation>
@@ -1282,7 +1281,7 @@
 <translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Bytt <ph name="MAKER"/> til <ph name="TAKER"/></translation>
 <translation id="8613144770663526433">Logg på med Brave-lommeboken</translation>
-<translation id="3696514931437952995">Du logger på <ph name="ORIGIN"/>. Brave-lommeboken deler lommebok-adressen din med <ph name="ORIGIN"/>.</translation>
+<translation id="8813165409788097898">Du logger deg på <ph name="ORIGIN"/>. Brave Wallet kommer til å dele lommebokadressen din med <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vis detaljer</translation>
 <translation id="3950820424414687140">Logg på</translation>
 <translation id="4530494379350999373">Opprinnelse</translation>
@@ -1593,6 +1592,20 @@
 <translation id="7756624047234151641"><ph name="REFRESH"/>Oppdater<ph name="REFRESH_END"/> eller <ph name="IMPORT"/>importer manuelt<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Oppdaterer</translation>
 <translation id="4608324163534970318">Nettverksavgifter</translation>
+<translation id="6213230117190778270">Motta</translation>
+<translation id="6748108480210050150">Fra</translation>
+<translation id="4875290286426670462">Ubegrenset <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">Dette tokenet er ikke verifisert</translation>
+<translation id="8549067157732633185">Dette tokenet er verifisert</translation>
+<translation id="2130170065617939165">Dette tokenet er verifisert i <ph name="NUMBER_OF_LISTS"/> lister</translation>
+<translation id="1554316484739382186">Forbruker: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/>-konto</translation>
+<translation id="5360752485622434494">Brave Rewards i BAT på <ph name="PROVIDER"/></translation>
+<translation id="429061011725027672">Du er for øyeblikket logget av <ph name="PROVIDER"/>. Logg på for å se saldoen din.</translation>
+<translation id="4611292653554630842">Logg på</translation>
+<translation id="1132794822159463424">Vis på <ph name="PROVIDER"/></translation>
+<translation id="7875005109025196005">Plattformer</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1852,6 +1865,8 @@
 <translation id="8960352557529001690">Dyslektisk</translation>
 <translation id="8189819085033738728">Reduser skriftstørrelsen</translation>
 <translation id="1952725803106139986">Øk skriftstørrelsen</translation>
+<translation id="6338177649973309262">Kolonne for smalt innhold</translation>
+<translation id="6500600749984466451">Kolonne for bredt innhold</translation>
 <translation id="7239710518122372020">Tekst-til-tale</translation>
 <translation id="4330722796577425585">Spol tilbake</translation>
 <translation id="1199355487114804640">Spill av/sett på pause</translation>

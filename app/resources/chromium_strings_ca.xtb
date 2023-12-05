@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
+<translation id="1581411377110837276">Ves a la configuració de la versió de Brave</translation>
 <translation id="1026101648481255140">Reprèn la instal·lació</translation>
 <translation id="7099479769133613710">Reinicia per actualitzar &amp;Chrome OS</translation>
 <translation id="2479110114759182442">Brave et recomana que revisis aquesta extensió</translation>
@@ -21,12 +22,14 @@
 <translation id="108284536240904209">Suprimeix també les dades de Brave (<ph name="URL"/>)</translation>
 <translation id="8132634101975074716">Teniu la sessió iniciada a Brave.</translation>
 <translation id="1586284627848250203">Obtén ajuda amb Brave for Testing</translation>
+<translation id="1497802159252041924">Error d'instal·lació: <ph name="INSTALL_ERROR"/></translation>
 <translation id="5147525139567260139">Comparteix una pestanya de Brave</translation>
 <translation id="1530633922026945685">Brave necessita permís per accedir a la càmera i poder crear un mapa 3D del teu entorn</translation>
 <translation id="6570689355868013775">Eines de seguretat de Brave</translation>
 <translation id="4449148723378534338">Revisa els controls principals de privadesa i seguretat a Brave</translation>
 <translation id="1640672724030957280">S'està baixant...</translation>
 <translation id="5616153642055197778">Hi ha disponible una versió nova més segura de Brave.</translation>
+<translation id="2913217021115517297">Per ajudar a millorar aquestes funcions, Brave envia a Brave les interaccions que hi mantinguis. És possible que revisors humans llegeixin, tractin i anotin aquestes dades.</translation>
 <translation id="5846727201643228411">Pots veure i suprimir els temes d'interès que els llocs web utilitzen per mostrar-te anuncis. Brave estima els teus interessos basant-se en l'historial de navegació recent.</translation>
 <translation id="8004287232784878841">Brave suprimirà les dades de navegació aviat</translation>
 <translation id="9048361966237194186">Brave es reiniciarà d'aquí a <ph name="REMAINING_TIME"/></translation>
@@ -48,10 +51,13 @@
 <translation id="2472891440303445472">Brave ha bloquejat aquesta baixada perquè el fitxer és enganyós i és possible que faci canvis inesperats al dispositiu</translation>
 <translation id="849607431499549468">Informació sobre com gestiona Brave els seus certificats arrel</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{La teva organització suprimeix automàticament les dades de navegació quan Brave no s'utilitza durant 1 minut. Això pot incloure l'historial, les dades d'Emplenament automàtic i les baixades. Les pestanyes continuaran obertes.}other{La teva organització suprimeix automàticament les dades de navegació quan Brave no s'utilitza durant # minuts. Això pot incloure l'historial, les dades d'Emplenament automàtic i les baixades. Les pestanyes continuaran obertes.}}</translation>
+<translation id="2126108037660393668">La verificació del fitxer baixat ha fallat.</translation>
+<translation id="2130870084309816036">No es pot connectar a Internet. Si fas servir un tallafoc, afegeix <ph name="PRODUCT_EXE_NAME"/> a la llista d'accés permès.</translation>
 <translation id="5789330946301045610">Brave ha bloquejat aquesta baixada perquè el lloc web no utilitza una connexió segura i és possible que el fitxer s'hagi manipulat</translation>
 <translation id="142389341645668510">Personalitza Brave</translation>
 <translation id="2174917724755363426">La instal·lació no s'ha completat. Confirmes que vols cancel·lar-la?</translation>
 <translation id="8745514854244955877">Brave - Inici de sessió a la xarxa - <ph name="PAGE_TITLE"/></translation>
+<translation id="2190166659037789668">Error de comprovació d'actualització: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="5659384504794665581">Si compartiu un ordinador, els amics i els familiars poden navegar de manera independent i configurar Brave com vulguin.</translation>
 <translation id="7810992039564280750">Compara els URL amb una llista de llocs web no segurs emmagatzemada a Brave. Si un lloc web prova de robar-te la contrasenya o si baixes un fitxer maliciós, és possible que Brave també n'enviï els URL, inclosos fragments de contingut de les pàgines, a Navegació segura.</translation>
 <translation id="7682239218279776307">Quan aquesta opció està activada, Brave precarrega les pàgines perquè la navegació i la cerca siguin més ràpides.</translation>
@@ -72,11 +78,13 @@
 <translation id="8447483940522230788">Aplicació d'ajuda de Brave</translation>
 <translation id="7291143854620707672">L'administrador del perfil de treball pot suprimir qualsevol dada de Brave que es generi durant l'ús d'aquest perfil, com ara les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració. <ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">Continua utilitzant Brave</translation>
+<translation id="259935314519650377">No s'ha pogut desar l'instal·lador baixat a la memòria cau. Error: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="7387051847644272380">S'ha produït un error en el sistema operatiu durant la instal·lació. Torneu a baixar Brave.</translation>
 <translation id="2648689842065142443">Si comparteixes un dispositiu, els amics i els familiars poden navegar per separat i configurar Brave com vulguin</translation>
 <translation id="6384359666082467439"><ph name="ACCOUNT_FIRST_NAME"/>, et donem la benvinguda a Brave</translation>
 <translation id="6791166902140255175">Pestanya de Brave</translation>
 <translation id="8372880274820509128">Per a més seguretat, Brave encriptarà les teves dades.</translation>
+<translation id="2738871930057338499">No es pot connectar a Internet. Error d'HTTP "403 Forbidden". Comprova la configuració del servidor intermediari.</translation>
 <translation id="2770231113462710648">Canvia el navegador predeterminat a:</translation>
 <translation id="1187986649024576560">Aquesta extensió conté programari maliciós i no és segura. Suprimeix-la de Brave perquè ja no pugui veure ni canviar les teves dades als llocs web que visitis, inclosa la teva informació personal.</translation>
 <translation id="2799223571221894425">Reinicia</translation>
@@ -121,6 +129,7 @@
 <translation id="1073077513148817424">Ja s'ha iniciat la sessió amb un altre compte. Per continuar amb la teva navegació per separat, Brave et pot crear un perfil propi.</translation>
 <translation id="4250277591581952830">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.15 o una versió posterior. Aquest ordinador utilitza macOS 10.13.</translation>
 <translation id="7029305463989165490">Per enviar un número del dispositiu <ph name="ORIGIN"/> al teu telèfon Android, inicia la sessió a Brave en tots dos dispositius.</translation>
+<translation id="3667616615096815454">No es pot instal·lar; el servidor no coneix l'aplicació.</translation>
 <translation id="4304059894777924102">Brave no pot comprovar les teves contrasenyes. Comprova la connexió a Internet.</translation>
 <translation id="2100587595569959771">Més informació sobre la personalització d'anuncis a Brave</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
@@ -137,12 +146,13 @@
 <translation id="7130675370997202556">Feu clic al vostre nom per obrir Brave i començar a navegar.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> ja té la sessió iniciada en aquest perfil de Brave. Per continuar amb la teva navegació per separat, Brave et pot crear un perfil propi.</translation>
 <translation id="2337217774418822704"><ph name="MANAGER_NAME"/> gestiona el teu compte. L'administrador pot veure i editar aquest perfil del navegador Brave i les dades associades, com ara les adreces d'interès, l'historial i les contrasenyes.</translation>
+<translation id="4561646469134805137">A mesura que escrius, Brave envia el contingut de la barra d'adreces o del quadre de cerca al teu motor de cerca predeterminat</translation>
 <translation id="8090497651549769448">Brave està provant de copiar les contrasenyes. Escriu la teva contrasenya de Windows per permetre-ho.</translation>
-<translation id="7133557675784723900">Brave et recomana que analitzis el fitxer perquè pot ser perillós</translation>
 <translation id="4194619960643453552">Informació sobre com et protegeix Brave</translation>
 <translation id="1311808042904310985">Sobre &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Sobre Chrome OS</translation>
 <translation id="3703994572283698466">Chrome OS és possible gràcies a <ph name="BEGIN_LINK_CROS_OSS"/>programari lliure<ph name="END_LINK_CROS_OSS"/> addicional, igual que l‘<ph name="BEGIN_LINK_LINUX_OSS"/>entorn de desenvolupament de Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="238935410828556037">Encara que aquesta opció estigui desactivada, continuaràs veient els suggeriments que Brave proporciona localment</translation>
 <translation id="6056473803837713617">Informa de la <ph name="BEGIN_LINK"/>configuració actual<ph name="END_LINK"/> per ajudar-nos a millorar Brave</translation>
 <translation id="4050175100176540509">La versió més recent incorpora millores de seguretat i funcions noves importants.</translation>
 <translation id="4055805654398742145">G&amp;estor de contrasenyes</translation>
@@ -165,6 +175,7 @@
 <translation id="8148611988012584308">Personalitza i controla Brave</translation>
 <translation id="4427306783828095590">La protecció millorada és més efiçaç a l'hora de bloquejar la pesca de credencials i el programari maliciós</translation>
 <translation id="6786534271003695094">Sobre Brave for Testing</translation>
+<translation id="4501471624619070934">La instal·lació ha fallat perquè l'accés està restringit en aquest país.</translation>
 <translation id="7084397798469173252">Et donem la benvinguda a Brave; s'ha obert una altra finestra del navegador</translation>
 <translation id="2633397153656205379">No s'ha actualitzat Brave. S'ha produït un error. <ph name="BEGIN_LINK"/>Soluciona els problemes i errors d'actualització de Brave<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Vols continuar en un perfil de Brave nou?</translation>
@@ -183,6 +194,7 @@
 <translation id="5857638389580847844">Si canvies d'opinió, pots modificar la configuració de Brave en qualsevol moment. Com que les proves s'executen en paral·lel a la manera actual de difondre els anuncis, no veuràs els canvis de seguida.</translation>
 <translation id="4823369970559443694">Brave no pot comprovar les teves contrasenyes. Torna-ho a provar al cap de 24 hores o <ph name="BEGIN_LINK"/>comprova les contrasenyes desades al teu Compte de Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Fa servir el mateix corrector ortogràfic que s'utilitza a la Cerca de Brave. El text que escrius al navegador s'envia a Brave. Pots canviar aquest comportament sempre que vulguis a la configuració.</translation>
+<translation id="2899369907387169108">Fes servir Brave sense cap compte</translation>
 <translation id="1912973375560256099">Regla d'entrada de Brave per permetre el trànsit de mDNS.</translation>
 <translation id="711601904575862069">Reinicia per actualitzar &amp;Brave</translation>
 <translation id="8797356639448065696">Brave està en mode de segon pla.</translation>
@@ -207,12 +219,15 @@
 <translation id="1744365871163268756">Espereu mentre Brave instal·la les darreres actualitzacions del sistema.</translation>
 <translation id="3861679447659630159">Brave està provant d'editar les contrasenyes. Escriu la teva contrasenya de Windows per permetre-ho.</translation>
 <translation id="232381795826373334">Obre els fitxers PDF a Brave</translation>
+<translation id="8002038450967080568">Inicia la sessió per accedir a les teves coses de Brave en tots els dispositius</translation>
 <translation id="5381032481466106256">Si aquesta opció està activada, també se't tancarà la sessió de Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Hi ha una actualització de Brave disponible}=1{Hi ha una actualització de Brave disponible}other{Fa # dies que hi ha una actualització de Brave disponible}}</translation>
 <translation id="1023472437588692618">Suprimeix sempre les dades dels llocs web del dispositiu quan tanquis Brave</translation>
 <translation id="5646769069113654257">Reinicia Brave ara</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Mostra Brave en aquest idioma</translation>
+<translation id="569897634095159764">No es pot connectar a Internet. El servidor intermediari necessita autenticació.</translation>
+<translation id="5809516625706423866">No es pot connectar a Internet. Error d'HTTP "401 Unauthorized". Comprova la configuració del servidor intermediari.</translation>
 <translation id="7207456302801184289">Us donem la benvinguda a Brave</translation>
 <translation id="8054200348483755053">Brave ha detectat que aquests elements contenen programari maliciós:</translation>
 <translation id="3955583201925082436">Brave comprova regularment que el navegador tingui la configuració més segura. T'avisarem si hi ha res que hagis de revisar.</translation>
@@ -227,6 +242,7 @@
 <translation id="6003112304606738118">S'està baixant… Queden <ph name="HOURS"/> hores</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="505042220086416644">Hi ha disponible una versió nova de Brave, i és més ràpida que mai.</translation>
+<translation id="700488072601322385">Per protegir les teves dades, permet que Brave suprimeixi els permisos dels llocs web que no has visitat recentment. En continuaràs rebent notificacions.</translation>
 <translation id="9071554113102421877">&amp;Obre a Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> s'ha afegit a Brave</translation>
 <translation id="3693188491491843187">Fes que Brave sigui més ràpid</translation>
@@ -283,6 +299,7 @@
 <translation id="6676384891291319759">Accedeix a Internet</translation>
 <translation id="1363996462118479832">Chrome OS no ha pogut sincronitzar les teves dades a causa d'un error en iniciar la sessió.</translation>
 <translation id="1257247502847251159">Brave necessita permís d'accés al micròfon per a aquest lloc web</translation>
+<translation id="6712881677154121168">Error de baixada: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">El vostre perfil no es pot utilitzar perquè es va crear amb una versió més recent de Brave.
 
 És possible que algunes funcions no estiguin disponibles. Especifiqueu un altre directori de perfil o utilitzeu una versió més nova de Brave.</translation>
@@ -305,6 +322,7 @@
 <translation id="7164968566146897003">Quan aquesta opció està activada, Brave allibera memòria de les pestanyes inactives. Així, les pestanyes actives i altres aplicacions disposen de més recursos de l'ordinador i es manté l'agilitat de Brave. Les pestanyes inactives s'activen de nou automàticament quan hi tornes.</translation>
 <translation id="3453763134178591239">Condicions de Chrome OS</translation>
 <translation id="3335606533094650083">Per visitar aquest lloc web, Brave necessita permís per accedir al micròfon</translation>
+<translation id="7024536598735240744">Error de descompressió: <ph name="UNPACK_ERROR"/></translation>
 <translation id="7025789849649390912">La instal·lació s'ha aturat.</translation>
 <translation id="1705567146636171298">Actualitza Brave</translation>
 <translation id="5499063270485366718">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave.</translation>
@@ -340,6 +358,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8678991866891573053">Brave està explorant noves funcions que permetin als llocs web oferir la mateixa experiència de navegació utilitzant menys dades</translation>
 <translation id="3343095737966473035">Brave no és el navegador predeterminat</translation>
 <translation id="5477319665405831211">Sincronitza i personalitza Brave en tots els teus dispositius</translation>
+<translation id="2339273275658335597">Actualització de Brave</translation>
 <translation id="4784414698887946907">Amb aquesta acció, se suprimiran les teves dades de navegació d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">L'instal·lador no ha pogut crear un directori temporal. Comprova que hi ha espai lliure al disc i que tens permís per instal·lar el programari.</translation>
 <translation id="1978509466033734608">Fes que Brave sigui més ràpid</translation>
@@ -351,6 +370,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Com pots gestionar les teves dades<ph name="END_BOLD"/>: amb la finalitat de protegir la teva privadesa, suprimim automàticament els interessos que tenen més de 4 setmanes. A mesura que continuïs navegant, és possible que torni a aparèixer un interès a la llista. També pots suprimir els interessos que no vulguis que Brave tingui en compte.</translation>
 <translation id="2925193881330501265">Teníeu la sessió iniciada a Brave com a <ph name="USER_EMAIL_ADDRESS"/>. Utilitzeu el mateix compte per tornar a iniciar-hi la sessió.</translation>
 <translation id="6915252145142862992">Aquesta és una instal·lació secundària de Brave i no pot definir-se com a navegador predeterminat.</translation>
+<translation id="6614332522102257453">Treu el màxim profit de Brave</translation>
 <translation id="7685904775439037072">Un cop Brave tingui accés, els llocs web et podran demanar accés.</translation>
 <translation id="80471789339884597">T'agraïm la instal·lació. Has de reiniciar tots els navegadors abans d'utilitzar <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave necessita permís d'accés a la ubicació per a aquest lloc web</translation>
@@ -376,6 +396,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="2097604701283463988">Brave no està actualitzat</translation>
 <translation id="871233388178581868">Brave pot comprovar les teves contrasenyes quan les deses</translation>
 <translation id="8550334526674375523">Aquest perfil de treball és completament independent del teu perfil personal.</translation>
+<translation id="8555465886620020932">Error de servei: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave pot comprovar les teves contrasenyes quan inicies la sessió amb el Compte de Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Els autors de Brave. Tots els drets reservats.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Com utilitzem aquestes dades<ph name="END_BOLD"/>: els llocs web poden emmagatzemar informació a Brave sobre els teus interessos. Per exemple, si visites un lloc web per comprar sabatilles per a una marató, és possible que el lloc web defineixi que t'interessa córrer maratons. Més endavant, si visites un altre lloc web per inscriure't a una cursa, aquest altre lloc web et pot mostrar un anunci de sabatilles de curses basant-se en els teus interessos.</translation>

@@ -82,6 +82,7 @@
 <translation id="2638041073279639246">Открыть ссылку в приватном окне с Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в приватном окне Brave с Tor</translation>
 <translation id="3229091547987707389">Импортировать папку и открыть общий доступ</translation>
+<translation id="2545072023356206691">С 1 декабря 2023 года мы перестанем выпускать обновления для Brave Dev. Рекомендуем перейти на Brave Nightly или Beta либо использовать основную версию браузера.</translation>
 <translation id="474217410105706308">Отключить звук на вкладке</translation>
 <translation id="2804710924397009224">Скрыть иконку Brave Rewards</translation>
 <translation id="5029193871181468990">Скрыть значок Brave Наград</translation>
@@ -289,6 +290,15 @@
 <translation id="5181358966317519720">Удалить из плейлиста</translation>
 <translation id="2377705456080309463">Посмотреть исходную страницу</translation>
 <translation id="158894735649719362">Пополняйте плейлист интересным контентом и воспроизводите медиафайлы в любое время, где бы вы ни были. Даже офлайн.</translation>
+<translation id="8422349592890097194">Создать папку</translation>
+<translation id="2818704116581303039">Открыть настройки Brave Плейлиста</translation>
+<translation id="6790428901817661496">Воспроизвести</translation>
+<translation id="1178581264944972037">Пауза</translation>
+<translation id="4477350412780666475">Следующий трек</translation>
+<translation id="3962859241508114581">Предыдущий трек</translation>
+<translation id="7544853251252956727">Перемешать</translation>
+<translation id="4330722796577425585">Воспроизвести заново</translation>
+<translation id="7481312909269577407">Вперед</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>

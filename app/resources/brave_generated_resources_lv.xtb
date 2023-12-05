@@ -81,6 +81,7 @@
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
 <translation id="3229091547987707389">Importēt un kopīgot direktoriju</translation>
+<translation id="2545072023356206691">No 2023. gada 1. decembra Brave Dev kanāls vairs nesaņems pārlūkprogrammas atjauninājumus. Mēs iesakām lietotājiem pāriet uz Brave Nightly, Beta vai Release versiju.</translation>
 <translation id="474217410105706308">Izslēgt cilnes skaņu</translation>
 <translation id="2804710924397009224">Paslēpt Brave Rewards ikonu</translation>
 <translation id="5029193871181468990">Paslēpt Brave Rewards ikonu</translation>
@@ -288,6 +289,15 @@
 <translation id="5181358966317519720">Noņemt no atskaņošanas saraksta</translation>
 <translation id="2377705456080309463">Skatīt oriģinālo lapu</translation>
 <translation id="158894735649719362">Jautrība sākas tad, kad jums ir kaut kas, ko atskaņot. Pievienojiet savus iecienītākos medijus un atskaņojiet jebkurā laikā un vietā. Pat bezsaistē.</translation>
+<translation id="8422349592890097194">Izveidot jaunu mapi</translation>
+<translation id="2818704116581303039">Atvērt atskaņošanas iestatījumus</translation>
+<translation id="6790428901817661496">Atskaņot</translation>
+<translation id="1178581264944972037">Pauzēt</translation>
+<translation id="4477350412780666475">Nākamais ieraksts</translation>
+<translation id="3962859241508114581">Iepriekšējais ieraksts</translation>
+<translation id="7544853251252956727">Sajaukt</translation>
+<translation id="4330722796577425585">Attīt atpakaļ</translation>
+<translation id="7481312909269577407">Pārsūtīt</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>

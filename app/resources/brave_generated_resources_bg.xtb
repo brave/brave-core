@@ -82,6 +82,7 @@
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
 <translation id="3229091547987707389">Импортиране и споделяне на директория</translation>
+<translation id="2545072023356206691">От 1 декември 2023 г. каналът Brave Dev вече няма да получава актуализации на браузъра. Препоръчваме на потребителите да мигрират към версиите Nightly, Beta или Release на Brave.</translation>
 <translation id="474217410105706308">Спиране на звука на раздела</translation>
 <translation id="2804710924397009224">Скриване на иконата Brave Rewards</translation>
 <translation id="5029193871181468990">Скриване на иконата за награди в Brave</translation>
@@ -289,6 +290,15 @@
 <translation id="5181358966317519720">Премахване от плейлист</translation>
 <translation id="2377705456080309463">Преглед на оригиналната страница</translation>
 <translation id="158894735649719362">Забавлението започва, когато имате какво да играете. Добавете любимите си мултимедийни файлове и ги възпроизвеждайте по всяко време и навсякъде. Дори офлайн.</translation>
+<translation id="8422349592890097194">Създаване на нова папка</translation>
+<translation id="2818704116581303039">Отваряне на настройките на плейлиста</translation>
+<translation id="6790428901817661496">Пускане</translation>
+<translation id="1178581264944972037">Пауза</translation>
+<translation id="4477350412780666475">Следващ запис</translation>
+<translation id="3962859241508114581">Предишен запис</translation>
+<translation id="7544853251252956727">Разбъркване</translation>
+<translation id="4330722796577425585">Превъртане назад</translation>
+<translation id="7481312909269577407">Препращане</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>
