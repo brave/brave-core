@@ -208,11 +208,19 @@ impl Order {
         self.status == "paid"
     }
 
+    pub fn is_cancelled(&self) -> bool {
+        self.status == "canceled" || self.status == "cancelled"
+    }
+
     pub fn has_expired(&self, now: NaiveDateTime) -> bool {
         if let Some(expires_at) = self.expires_at {
             return expires_at <= now;
         }
         false
+    }
+
+    pub fn can_submit_credentials(&self, now: NaiveDateTime) -> bool {
+        return self.is_paid() || (self.is_cancelled() && !self.has_expired(now));
     }
 }
 
