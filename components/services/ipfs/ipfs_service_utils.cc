@@ -44,6 +44,15 @@ bool UpdateConfigJSON(const std::string& source,
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;
   }
+  if (config->blessed_extension_list &&
+      !config->blessed_extension_list->empty()) {
+    base::Value::List origins;
+    for (const auto& blessed_item : config->blessed_extension_list.value()) {
+      origins.Append(blessed_item);
+    }
+    dict->SetByDottedPath("API.HTTPHeaders.Access-Control-Allow-Origin",
+                          std::move(origins));
+  }
   dict->SetByDottedPath(
       "Addresses.API", base::StrCat({"/ip4/127.0.0.1/tcp/", config->api_port}));
   dict->SetByDottedPath(

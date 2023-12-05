@@ -28,15 +28,12 @@ namespace ipfs {
 bool IpfsNodeTrafficRecognizer::IsKuboRelatedUrl(const GURL& request_url) {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   const url::Origin origin = url::Origin::Create(request_url);
-  if (origin.DomainIs(ipfs::kLocalhostDomain) ||
-      origin.DomainIs(ipfs::kLocalhostIP)) {
-    return true;
-  }
-
+  const std::string_view port = request_url.port_piece();
   for (const auto& channel : kChannelsToEnumerate) {
-    const std::string_view port = request_url.port_piece();
-    if (port == ipfs::GetAPIPort(channel) ||
-        port == base::NumberToString(kDefaultKuboAPIPort)) {
+    if ((origin.DomainIs(ipfs::kLocalhostDomain) ||
+         origin.DomainIs(ipfs::kLocalhostIP)) &&
+        (port == ipfs::GetAPIPort(channel) ||
+         port == base::NumberToString(kDefaultKuboAPIPort))) {
       return true;
     }
   }
