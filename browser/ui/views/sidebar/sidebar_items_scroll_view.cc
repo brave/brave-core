@@ -29,6 +29,7 @@
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/compositor/layer_tree_owner.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -116,6 +117,11 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), down_arrow_));
+
+  // To prevent drawing each item's inkdrop layer.
+  SetPaintToLayer();
+  layer()->SetMasksToBounds(true);
+  layer()->SetFillsBoundsOpaquely(false);
 }
 
 SidebarItemsScrollView::~SidebarItemsScrollView() = default;
