@@ -25,10 +25,14 @@ class SharedURLLoaderFactory;
 
 namespace playlist {
 
+// This class is key interface for HLS streaming on android playlist.
+// Playlist stream request is started by calling
+// RequestStreamingQuery from client.
+// Different callbacks would notify client the status.
 class PlaylistStreaming {
  public:
   explicit PlaylistStreaming(content::BrowserContext* context);
-  virtual ~PlaylistStreaming();
+  ~PlaylistStreaming();
   PlaylistStreaming(const PlaylistStreaming&) = delete;
   PlaylistStreaming& operator=(const PlaylistStreaming&) = delete;
 

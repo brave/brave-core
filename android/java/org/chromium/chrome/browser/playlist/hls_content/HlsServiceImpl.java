@@ -196,7 +196,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     @Override
     public void onConnectionError(MojoException e) {
         if (SharedPreferencesManager.getInstance()
-                        .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();
         }
