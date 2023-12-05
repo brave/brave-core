@@ -52,6 +52,7 @@
         android:fontFamily="sans-serif"
         android:paddingEnd="32dp"
         android:scrollbars="vertical"
+        android:text="@string/rewards_tip_default_creator_description"
         android:textColor="@color/tipping_details_description_text_color"
         android:textSize="14sp"
         app:layout_constrainedHeight="true"
@@ -59,14 +60,6 @@
         app:layout_constraintHeight_max="262dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tipping_publisher_name" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="@drawable/transparent_shadow_background"
-        app:layout_constraintBottom_toBottomOf="@id/tipping_details_description"
-        app:layout_constraintEnd_toEndOf="@+id/tipping_details_description"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/align_other_social"
