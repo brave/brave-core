@@ -31,7 +31,7 @@ GetExecutingScriptsImpl(Isolate* isolate, bool all, bool include_position) {
       }
 
       int script_position = 0;
-      if (include_position && !isolate->has_pending_exception()) {
+      if (include_position && !isolate->has_exception()) {
         Handle<SharedFunctionInfo> shared_handle(shared, isolate);
         SharedFunctionInfo::EnsureSourcePositionsAvailable(isolate,
                                                            shared_handle);
