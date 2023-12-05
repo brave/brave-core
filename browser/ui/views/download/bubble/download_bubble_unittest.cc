@@ -133,7 +133,6 @@ TEST_F(DownloadBubbleTest, ContextMenuCancelledItemTest) {
 class DownloadBubbleFeatureDisabledTest : public DownloadBubbleTest {
  public:
   DownloadBubbleFeatureDisabledTest() {
-    feature_list_.InitAndDisableFeature(safe_browsing::kDownloadBubble);
   }
 
   base::test::ScopedFeatureList feature_list_;

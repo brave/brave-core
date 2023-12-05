@@ -325,7 +325,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-    &safe_browsing::kDownloadBubble,
     &sharing_hub::kDesktopScreenshots,
 #endif
     &media::kEnableTabMuting,
