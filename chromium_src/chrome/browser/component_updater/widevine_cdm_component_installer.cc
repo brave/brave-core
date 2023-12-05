@@ -32,6 +32,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/sequence_checker.h"
 #include "base/synchronization/waitable_event.h"
@@ -152,7 +153,7 @@ class WidevineArm64DllInstaller
   bool ExtractArm64Dll(base::FilePath zip_path);
   bool AddArm64ArchToManifest();
 
-  const base::FilePath& install_dir_;
+  const raw_ref<const base::FilePath> install_dir_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   base::WaitableEvent installed_;
   CrxInstaller::Result result_;
@@ -253,7 +254,7 @@ void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
 bool WidevineArm64DllInstaller::ExtractArm64Dll(base::FilePath zip_path) {
   VLOG(2) << "Extracting Arm64 DLL.";
   base::FilePath arm64_directory =
-      media::GetPlatformSpecificDirectory(install_dir_);
+      media::GetPlatformSpecificDirectory(*install_dir_);
   base::File::Error error;
   if (base::CreateDirectoryAndGetError(arm64_directory, &error)) {
     if (!zip::Unzip(zip_path, arm64_directory)) {
@@ -276,7 +277,7 @@ bool WidevineArm64DllInstaller::ExtractArm64Dll(base::FilePath zip_path) {
 // we need to add "arm64" to the list of supported architectures.
 bool WidevineArm64DllInstaller::AddArm64ArchToManifest() {
   VLOG(2) << "Adding Arm64 to manifest.json.";
-  base::FilePath manifest_path = install_dir_.AppendASCII("manifest.json");
+  base::FilePath manifest_path = install_dir_->AppendASCII("manifest.json");
 
   std::string json_content;
   if (!base::ReadFileToString(manifest_path, &json_content)) {

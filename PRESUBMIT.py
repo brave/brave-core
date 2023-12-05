@@ -286,7 +286,7 @@ chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
 
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
-        r'/\bStringPiece',
+        r'/\b(Basic|W)?StringPiece(16)?\b',
         ('Use std::string_view instead', ),
         True,
         [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
