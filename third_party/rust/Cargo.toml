@@ -216,9 +216,9 @@ package = "addchain"
 path = "adler/v1/crate"
 package = "adler"
 
-[patch.crates-io.adss-rs_v0_2]
-path = "adss_rs/v0_2/crate"
-package = "adss-rs"
+[patch.crates-io.adss_v0_2]
+path = "adss/v0_2/crate"
+package = "adss"
 
 [patch.crates-io.ahash_v0_7]
 path = "ahash/v0_7/crate"
@@ -412,7 +412,15 @@ package = "cssparser"
 path = "cssparser/v0_28/crate"
 package = "cssparser"
 
+[patch.crates-io.curve25519-dalek-derive_v0_1]
+path = "curve25519_dalek_derive/v0_1/crate"
+package = "curve25519-dalek-derive"
+
 [patch.crates-io.curve25519-dalek_v3]
+path = "curve25519_dalek/v3/crate"
+package = "curve25519-dalek"
+
+[patch.crates-io.curve25519-dalek_v4]
 path = "curve25519_dalek/v3/crate"
 package = "curve25519-dalek"
 
@@ -888,8 +896,12 @@ package = "pin-project"
 path = "pin_utils/v0_1/crate"
 package = "pin-utils"
 
-[patch.crates-io.ppoprf_v0_2]
-path = "ppoprf/v0_2/crate"
+[patch.crates-io.platforms_v3]
+path = "platforms/v3/crate"
+package = "platforms"
+
+[patch.crates-io.ppoprf_v0_3]
+path = "ppoprf/v0_3/crate"
 package = "ppoprf"
 
 [patch.crates-io.ppv-lite86_v0_2]
@@ -1104,10 +1116,6 @@ package = "sha3"
 path = "sharded_slab/v0_1/crate"
 package = "sharded-slab"
 
-[patch.crates-io.sharks_v0_5]
-path = "sharks/v0_5/crate"
-package = "sharks"
-
 [patch.crates-io.signature_v1]
 path = "signature/v1/crate"
 package = "signature"
@@ -1132,8 +1140,8 @@ package = "small_ctor"
 path = "smallvec/v1/crate"
 package = "smallvec"
 
-[patch.crates-io.sta-rs_v0_2]
-path = "sta_rs/v0_2/crate"
+[patch.crates-io.sta-rs_v0_3]
+path = "sta_rs/v0_3/crate"
 package = "sta-rs"
 
 [patch.crates-io.stable_deref_trait_v1]
@@ -1143,6 +1151,10 @@ package = "stable_deref_trait"
 [patch.crates-io.star-constellation_v0_2]
 path = "star_constellation/v0_2/crate"
 package = "star-constellation"
+
+[patch.crates-io.star-sharks_v0_6]
+path = "star_sharks/v0_6/crate"
+package = "star-sharks"
 
 [patch.crates-io.static_assertions_v1]
 path = "../../../third_party/rust/static_assertions/v1/crate"

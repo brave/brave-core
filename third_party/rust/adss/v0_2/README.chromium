@@ -1,0 +1,9 @@
+Name: adss
+URL: https://crates.io/crates/adss
+Description: Adept Secret Sharing framework
+Version: 0.2.2
+Security Critical: yes
+Shipped: yes
+License: MPL-2.0
+License File: 
+Revision: 1d8e088e9042d1183309d795d3259c99551e0cfa
