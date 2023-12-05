@@ -27,6 +27,8 @@ import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 
+const SCROLL_BOTTOM_THRESHOLD = 10.0
+
 function Main() {
   const context = React.useContext(DataContext)
   const {
@@ -40,6 +42,9 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+  const scrollPos = React.useRef({ isAtBottom: true })
+  const [isUpdating, setIsUpdating] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
@@ -85,6 +90,25 @@ function Main() {
     }
   }
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget
+    scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
+  }
+
+  React.useEffect(() => {
+    if (!context.conversationHistory.length && !context.isGenerating) {
+      return
+    }
+
+    if (!scrollContainerRef.current) {
+      return
+    }
+
+    if (scrollPos.current.isAtBottom) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight - scrollContainerRef.current.clientHeight
+    }
+  }, [context.isGenerating, context.conversationHistory.length, isUpdating])
+
   return (
     <main className={styles.main}>
       {context.showAgreementModal && <PrivacyMessage />}
@@ -117,10 +141,15 @@ function Main() {
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !hasAcceptedAgreement
-      })}>
+      })}
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+      >
         <AlertCenter position='top-left' className={styles.alertCenter} />
         {context.hasAcceptedAgreement && <ModelIntro />}
-        <ConversationList />
+        <ConversationList
+          onLastElementUpdating={() => setIsUpdating(prev => !prev)}
+        />
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}

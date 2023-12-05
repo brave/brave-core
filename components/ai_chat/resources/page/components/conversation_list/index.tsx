@@ -20,7 +20,11 @@ const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.IsGenerating
 ]
 
-function ConversationList() {
+interface ConversationListProps {
+  onLastElementUpdating: () => void
+}
+
+function ConversationList(props: ConversationListProps) {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
 
@@ -36,26 +40,14 @@ function ConversationList() {
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
-  const showSuggestions: boolean =
+  let showSuggestions: boolean =
     hasAcceptedAgreement && context.shouldSendPageContents && (
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   React.useEffect(() => {
-    if (!conversationHistory.length && !isGenerating) {
-      return
-    }
-
-    if (!lastConversationEntryElementRef.current) {
-      console.error('Conversation entry element did not exist when expected')
-    } else {
-      lastConversationEntryElementRef.current.scrollIntoView(false)
-    }
-  }, [
-    conversationHistory.length,
-    isGenerating,
-    lastConversationEntryElementRef.current?.clientHeight
-  ])
+    props.onLastElementUpdating()
+  }, [lastConversationEntryElementRef.current?.clientHeight])
 
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
