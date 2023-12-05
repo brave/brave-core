@@ -812,36 +812,20 @@ export class MockedWalletApiProxy {
       }
     },
 
-    getEthTokenSymbol: async (contractAddress, chainId) => {
-      return {
-        error: 0,
-        errorMessage: '',
-        symbol:
-          mockErc20TokensList.find((t) => t.contractAddress === contractAddress)
-            ?.symbol || '???'
-      }
-    },
-
-    getEthTokenDecimals: async (contractAddress, chainId) => {
-      return {
-        error: 0,
-        errorMessage: '',
-        decimals:
-          mockErc20TokensList
-            .find((t) => t.contractAddress === contractAddress)
-            ?.decimals.toString() || '18'
-      }
-    },
     getEthTokenInfo: async (contractAddress, chainId) => {
+      const foundToken = mockErc20TokensList.find(
+        (t) => t.contractAddress === contractAddress
+      )
+
       return {
         token: {
           contractAddress,
           chainId,
           coin: BraveWallet.CoinType.ETH,
-          name: 'Mocked Token',
-          symbol: 'MTK',
-          decimals: 18,
-          coingeckoId: 'mocked-token',
+          name: foundToken?.name || 'Mocked Token',
+          symbol: foundToken?.symbol || 'MTK',
+          decimals: foundToken?.decimals || 18,
+          coingeckoId: foundToken?.coingeckoId || 'mocked-token',
           isErc20: true,
           isErc721: false,
           isErc1155: false,

@@ -1317,24 +1317,6 @@ interface JsonRpcService {
   // Obtains the quantity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
-  // Fetches symbol of an ERC20 or ERC721 token.
-  GetEthTokenSymbol(string contract_address,
-                    string chain_id) => (string symbol,
-                                         ProviderError error,
-                                         string error_message);
-
-  // Fetches decimals of an ERC20 or ERC721 token.
-  GetEthTokenDecimals(string contract_address,
-                      string chain_id) => (string decimals,
-                                           ProviderError error,
-                                           string error_message);
-
-  // Fetches name of an ERC20 or ERC721 token.
-  GetEthTokenName(string contract_address,
-                  string chain_id) => (string name,
-                                       ProviderError error,
-                                       string error_message);
-
   // Fetches token info by contract address and chain ID. The returned token
   // has the following fields populated:
   //   - contract_address

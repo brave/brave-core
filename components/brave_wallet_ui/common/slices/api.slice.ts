@@ -83,84 +83,6 @@ export function createWalletApi() {
                   )
                 }
               }
-            }),
-
-            getEthTokenDecimals: query<
-              number,
-              Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
-            >({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const { jsonRpcService } = baseQuery(undefined).data
-                  const { errorMessage, decimals } =
-                    await jsonRpcService.getEthTokenDecimals(
-                      arg.contractAddress,
-                      arg.chainId
-                    )
-
-                  if (errorMessage) {
-                    throw new Error(errorMessage)
-                  }
-
-                  return {
-                    data: Number(decimals)
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to fetch token decimals for ${arg.contractAddress}`,
-                    error
-                  )
-                }
-              },
-              providesTags: (res, err, arg) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [
-                      {
-                        type: 'EthTokenDecimals',
-                        id: [arg.chainId, arg.contractAddress].join('-')
-                      }
-                    ]
-            }),
-
-            getEthTokenSymbol: query<
-              string,
-              Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
-            >({
-              queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-                try {
-                  const { jsonRpcService } = baseQuery(undefined).data
-                  const { errorMessage, symbol } =
-                    await jsonRpcService.getEthTokenSymbol(
-                      arg.contractAddress,
-                      arg.chainId
-                    )
-
-                  if (errorMessage) {
-                    throw new Error(errorMessage)
-                  }
-
-                  return {
-                    data: symbol
-                  }
-                } catch (error) {
-                  return handleEndpointError(
-                    endpoint,
-                    `Unable to fetch token symbol for ${arg.contractAddress}`,
-                    error
-                  )
-                }
-              },
-              providesTags: (res, err, arg) =>
-                err
-                  ? ['UNKNOWN_ERROR']
-                  : [
-                      {
-                        type: 'EthTokenSymbol',
-                        id: [arg.chainId, arg.contractAddress].join('-')
-                      }
-                    ]
             })
           }
         }
@@ -265,8 +187,6 @@ export const {
   useGetDefaultSolanaWalletQuery,
   useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,
-  useGetEthTokenDecimalsQuery,
-  useGetEthTokenSymbolQuery,
   useGetTokenInfoQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,

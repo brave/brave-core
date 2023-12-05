@@ -2580,9 +2580,10 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
   return true;
 }
 
-void JsonRpcService::GetEthTokenSymbol(const std::string& contract_address,
-                                       const std::string& chain_id,
-                                       GetEthTokenSymbolCallback callback) {
+void JsonRpcService::GetEthTokenSymbol(
+    const std::string& contract_address,
+    const std::string& chain_id,
+    GetEthTokenStringResultCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -2598,8 +2599,9 @@ void JsonRpcService::GetEthTokenSymbol(const std::string& contract_address,
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
-                                         APIRequestResult api_request_result) {
+void JsonRpcService::OnGetEthTokenSymbol(
+    GetEthTokenStringResultCallback callback,
+    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -2619,9 +2621,10 @@ void JsonRpcService::OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
   std::move(callback).Run(symbol, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetEthTokenDecimals(const std::string& contract_address,
-                                         const std::string& chain_id,
-                                         GetEthTokenDecimalsCallback callback) {
+void JsonRpcService::GetEthTokenDecimals(
+    const std::string& contract_address,
+    const std::string& chain_id,
+    GetEthTokenStringResultCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -2638,7 +2641,7 @@ void JsonRpcService::GetEthTokenDecimals(const std::string& contract_address,
 }
 
 void JsonRpcService::OnGetEthTokenDecimals(
-    GetEthTokenDecimalsCallback callback,
+    GetEthTokenStringResultCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
@@ -2669,7 +2672,7 @@ void JsonRpcService::OnGetEthTokenDecimals(
 
 void JsonRpcService::GetEthTokenName(const std::string& contract_address,
                                      const std::string& chain_id,
-                                     GetEthTokenNameCallback callback) {
+                                     GetEthTokenStringResultCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -2685,7 +2688,7 @@ void JsonRpcService::GetEthTokenName(const std::string& contract_address,
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetEthTokenName(GetEthTokenNameCallback callback,
+void JsonRpcService::OnGetEthTokenName(GetEthTokenStringResultCallback callback,
                                        APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(

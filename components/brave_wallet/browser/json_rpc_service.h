@@ -419,17 +419,21 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            mojom::ProviderError error,
                            const std::string& error_message);
 
+  using GetEthTokenStringResultCallback =
+      base::OnceCallback<void(const std::string& result,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
   void GetEthTokenSymbol(const std::string& contract_address,
                          const std::string& chain_id,
-                         GetEthTokenSymbolCallback callback) override;
+                         GetEthTokenStringResultCallback callback);
 
   void GetEthTokenDecimals(const std::string& contract_address,
                            const std::string& chain_id,
-                           GetEthTokenDecimalsCallback callback) override;
+                           GetEthTokenStringResultCallback callback);
 
   void GetEthTokenName(const std::string& contract_address,
                        const std::string& chain_id,
-                       GetEthTokenNameCallback callback) override;
+                       GetEthTokenStringResultCallback callback);
 
   void GetEthTokenInfo(const std::string& contract_address,
                        const std::string& chain_id,
@@ -646,13 +650,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);
 
-  void OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
+  void OnGetEthTokenSymbol(GetEthTokenStringResultCallback callback,
                            APIRequestResult api_request_result);
 
-  void OnGetEthTokenDecimals(GetEthTokenDecimalsCallback callback,
+  void OnGetEthTokenDecimals(GetEthTokenStringResultCallback callback,
                              APIRequestResult api_request_result);
 
-  void OnGetEthTokenName(GetEthTokenNameCallback callback,
+  void OnGetEthTokenName(GetEthTokenStringResultCallback callback,
                          APIRequestResult api_request_result);
 
   void OnGetEthTokenSymbolForInfo(const std::string& contract_address,
