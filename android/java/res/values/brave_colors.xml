@@ -347,6 +347,7 @@
     <color name="go_back_text_color">#666D89</color>
     <color name="monthly_contributions_text_color">#423EEE</color>
     <color name="terms_of_service_text_color">#1C1E26</color>
+    <color name="terms_of_service_text_color_night">#EDEEF1</color>
     <color name="terms_of_service_text_color_default">#666D89</color>
     <color name="tipping_warning_default_background">#F0F7FC</color>
     <color name="tipping_logout_warning_background_color">#FFF4D8</color>
