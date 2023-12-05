@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BRAVE_PLAYER_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BRAVE_PLAYER_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/component_export.h"
@@ -88,4 +89,4 @@ class COMPONENT_EXPORT(BRAVE_PLAYER_CONTENT) BravePlayerTabHelper
 
 }  // namespace brave_player
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BROWSER_BRAVE_PLAYER_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PLAYER_CONTENT_BRAVE_PLAYER_TAB_HELPER_H_

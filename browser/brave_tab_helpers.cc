@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include <memory>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
