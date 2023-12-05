@@ -8,7 +8,6 @@
 #include <bit>
 #include <cmath>
 
-#include <bit>
 #include "base/bits.h"
 #include "crypto/random.h"
 
