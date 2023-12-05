@@ -221,6 +221,14 @@ void BraveNewsController::GetPublisherFeed(const std::string& publisher_id,
   feed_v2_builder_->BuildPublisherFeed(publisher_id, std::move(callback));
 }
 
+void BraveNewsController::EnsureFeedV2IsUpdating() {
+  if (!MaybeInitFeedV2()) {
+    return;
+  }
+
+  feed_v2_builder_->EnsureFeedIsUpdating();
+}
+
 void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
   if (!MaybeInitFeedV2()) {
     std::move(callback).Run(mojom::FeedV2::New());
@@ -697,6 +705,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
     return;
   }
   feed_controller_.UpdateIfRemoteChanged();
+  EnsureFeedV2IsUpdating();
 }
 
 void BraveNewsController::Prefetch() {

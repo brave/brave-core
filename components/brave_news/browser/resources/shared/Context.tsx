@@ -21,6 +21,7 @@ interface BraveNewsContext {
   locale: string
   feedView: FeedView,
   feedV2?: FeedV2,
+  refreshFeedV2: () => void,
   setFeedView: (feedType: FeedView) => void,
   customizePage: NewsPage
   setCustomizePage: (page: NewsPage) => void
@@ -44,6 +45,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   locale: '',
   feedView: 'all',
   feedV2: undefined,
+  refreshFeedV2: () => {},
   setFeedView: () => { },
   customizePage: null,
   setCustomizePage: () => { },
@@ -68,7 +70,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
 
   // Note: It's okay to fetch the FeedV2 even when the feature isn't enabled
   // because the controller will just return an empty feed.
-  const { feedV2, feedView, setFeedView } = useFeedV2()
+  const { feedV2, feedView, setFeedView, refresh: refreshFeed } = useFeedV2()
 
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
@@ -134,6 +136,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     feedView,
     setFeedView,
     feedV2: feedV2,
+    refreshFeedV2: refreshFeed,
     customizePage,
     setCustomizePage,
     channels,
