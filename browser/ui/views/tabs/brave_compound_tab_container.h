@@ -54,6 +54,7 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   void ChildPreferredSizeChanged(views::View* child) override;
   void SetActiveTab(std::optional<size_t> prev_active_index,
                     std::optional<size_t> new_active_index) override;
+  views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
 
   // BrowserRootView::DropTarget
   BrowserRootView::DropTarget* GetDropTarget(
@@ -66,6 +67,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
 
   void UpdateUnpinnedContainerSize();
   void ScrollTabToBeVisible(int model_index);
+
+  int GetAvailableWidthConsideringScrollBar();
 
   base::raw_ref<TabSlotController> tab_slot_controller_;
 
