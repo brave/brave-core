@@ -43,8 +43,8 @@ bool OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun() {
 }
 
 // static
-absl::optional<base::Time> OnboardingTabHelper::s_time_now_for_testing_;
-absl::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
+std::optional<base::Time> OnboardingTabHelper::s_time_now_for_testing_;
+std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
 
 // static
 void OnboardingTabHelper::MaybeCreateForWebContents(

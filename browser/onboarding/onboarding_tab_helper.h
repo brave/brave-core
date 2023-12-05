@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_ONBOARDING_ONBOARDING_TAB_HELPER_H_
 #define BRAVE_BROWSER_ONBOARDING_ONBOARDING_TAB_HELPER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 
@@ -46,8 +46,8 @@ class OnboardingTabHelper
 
   static bool IsSevenDaysPassedSinceFirstRun();
 
-  static absl::optional<base::Time> s_time_now_for_testing_;
-  static absl::optional<base::Time> s_sentinel_time_for_testing_;
+  static std::optional<base::Time> s_time_now_for_testing_;
+  static std::optional<base::Time> s_sentinel_time_for_testing_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
