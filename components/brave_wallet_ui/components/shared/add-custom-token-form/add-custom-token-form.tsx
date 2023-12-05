@@ -245,8 +245,7 @@ export const AddCustomTokenForm = (props: Props) => {
     isTokenInfoLoading ||
     tokenInfo?.isErc721 ||
     tokenInfo?.isErc1155 ||
-    tokenInfo?.isNft ||
-    false
+    tokenInfo?.isNft
   const tokenNameError = !tokenInfo?.name
   const tokenSymbolError = !tokenInfo?.symbol
   const tokenDecimalsError = decimals === '' || Number(decimals) === 0
