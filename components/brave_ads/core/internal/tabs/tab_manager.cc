@@ -59,14 +59,6 @@ std::optional<TabInfo> TabManager::GetVisible() const {
   return MaybeGetForId(*visible_tab_id_);
 }
 
-std::optional<TabInfo> TabManager::GetLastVisible() const {
-  if (!last_visible_tab_id_) {
-    return std::nullopt;
-  }
-
-  return MaybeGetForId(*last_visible_tab_id_);
-}
-
 std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
   if (!base::Contains(tabs_, tab_id)) {
     return std::nullopt;
@@ -223,8 +215,6 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   }
 
   BLOG(2, "Tab id " << tab_id << " is visible");
-
-  last_visible_tab_id_ = visible_tab_id_;
 
   visible_tab_id_ = tab_id;
 

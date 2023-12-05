@@ -195,20 +195,6 @@ void PurchaseIntentProcessor::OnTextContentDidChange(
     return;
   }
 
-  const std::optional<TabInfo> last_visible_tab =
-      TabManager::GetInstance().GetLastVisible();
-  if (!last_visible_tab) {
-    return;
-  }
-
-  if (last_visible_tab->redirect_chain.empty()) {
-    return;
-  }
-
-  if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
-    return;
-  }
-
   Process(url);
 }
 

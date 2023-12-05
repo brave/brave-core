@@ -43,7 +43,6 @@ class TabManager final : public AdsClientNotifierObserver {
   bool IsPlayingMedia(int32_t tab_id) const;
 
   std::optional<TabInfo> GetVisible() const;
-  std::optional<TabInfo> GetLastVisible() const;
 
   std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
 
@@ -84,7 +83,6 @@ class TabManager final : public AdsClientNotifierObserver {
   uint32_t last_html_content_hash_ = 0;
 
   std::optional<int32_t> visible_tab_id_;
-  std::optional<int32_t> last_visible_tab_id_;
 
   std::map</*tab_id*/ int32_t, TabInfo> tabs_;
 };
