@@ -294,14 +294,17 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   SkPath GetBorderPath(const gfx::Point& origin,
                        bool extend_to_top) const override {
     auto contents_bounds = GetContentsBounds();
-    float scale = GetWidget()->GetCompositor()->device_scale_factor();
-    const float radius = GetCornerRadius() * scale;
     SkPath path;
-    const gfx::Rect path_rect(origin.x(), origin.y(),
-                              contents_bounds.width() * scale,
-                              contents_bounds.height() * scale);
-    path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-    path.close();
+    const auto* widget = GetWidget();
+    if (widget) {
+      float scale = widget->GetCompositor()->device_scale_factor();
+      const float radius = GetCornerRadius() * scale;
+      const gfx::Rect path_rect(origin.x(), origin.y(),
+                                contents_bounds.width() * scale,
+                                contents_bounds.height() * scale);
+      path.addRoundRect(RectToSkRect(path_rect), radius, radius);
+      path.close();
+    }
     return path;
   }
 
