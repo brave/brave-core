@@ -1,3 +1,8 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const webpack = require('webpack')
 const fs = require('fs')
@@ -18,29 +23,26 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
   ])
 }
 
-// Mock ROOT_GEN_DIR as 'gen' - it will be replaced with an array from
-// getBuildOutputPathList.
-process.env.ROOT_GEN_DIR = 'gen'
-const basePathMap = require('../components/webpack/path-map')
+const genFolder = getBuildOuptutPathList('gen')
+  .filter(a => fs.existsSync(a))
+  .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
+if (!genFolder) {
+  throw new Error("Failed to find build output folder!")
+}
+
+const basePathMap = require('../components/webpack/path-map')(genFolder)
 
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
 const pathMap = {
   ...basePathMap,
-  gen: [
-    // Mock chromium code where possible
-    path.resolve(__dirname, 'gen-mock'),
-    ...getBuildOuptutPathList(process.env.ROOT_GEN_DIR)
-  ],
-  ...Object.keys(basePathMap).filter(k => k.startsWith('chrome://')).reduce((prev, next) => ({
-    ...prev,
-    [next]: getBuildOuptutPathList(basePathMap[next])
-  }))
+  'chrome://resources': [
+    // As we mock some chrome://resources, insert our mock directory as the first
+    // place to look.
+    path.resolve(__dirname, 'chrome-resources-mock'),
+    basePathMap['chrome://resources']
+  ]
 }
-
-// As we mock some chrome://resources, insert our mock directory as the first
-// place to look.
-pathMap['chrome://resources'].unshift(path.resolve(__dirname, 'chrome-resources-mock'))
 
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
@@ -54,9 +56,11 @@ pathMap['chrome://resources'].unshift(path.resolve(__dirname, 'chrome-resources-
  * This isn't perfect, and in future it'd be good to pass the build folder in
  * via an environment variable. For now though, this works well.
  * @param {string} prefix The prefix
- * @param {string[]} replacements The real path options
+ * @param {string[] | string} replacements The real path options
  */
 const prefixReplacer = (prefix, replacements) => {
+  if (!Array.isArray(replacements)) replacements = [replacements]
+
   const regex = new RegExp(`^${prefix}/(.*)`)
   return new webpack.NormalModuleReplacementPlugin(regex, resource => {
     resource.request = resource.request.replace(regex, (_, subpath) => {
@@ -64,7 +68,7 @@ const prefixReplacer = (prefix, replacements) => {
         throw new Error("Subpath is undefined")
       }
 
-      const match = replacements.find((r) => fs.existsSync(require.resolve(path.join(r, subpath)))) ?? replacements[0]
+      const match = replacements.find((dir) => fs.existsSync(path.join(dir, subpath))) ?? replacements[0]
       const result = path.join(match, subpath)
       return result
     })
@@ -128,7 +132,7 @@ module.exports = async ({ config, mode }) => {
   config.plugins.push(provideNodeGlobals,
     ...Object.keys(pathMap)
       .filter(prefix => prefix.startsWith('chrome://'))
-      .map(prefix => prefixReplacer(prefix, getBuildOuptutPathList(basePathMap[prefix]))))
+      .map(prefix => prefixReplacer(prefix, pathMap[prefix])))
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }
