@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">ማስታወቂያዎችን ያቀናብሩ</translation>
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
 <translation id="885805571521218129">ይህ በዚህ ወር ለ Brave Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
-<translation id="818003031290137834">አሁን ከZebPay ጋር ስለተገናኙ፣ የነበረዎት ማንኛውም ቀሪ ሂሳብ እንደ ቀጣዩ የገቢዎ ክፍያ አካል ወደ ZebPay መለያዎ ገቢ ይሆናል። አንዴ ከደረሰ፣ የእርስዎ BAT በሽልማት ሒሳብዎ ውስጥ ሲንፀባረቅ ያያሉ።</translation>
 <translation id="3478449063771497234">ማሳወቂያዎች ተሰናክለዋል</translation>
 <translation id="2862978891748913252">ሀገርዎን ይምረጡ</translation>
 <translation id="3970520675790340955">ለክልልዎ ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎ አገርዎን ይምረጡ።</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">የBrave Rewards ቀሪ ሒሳቦን በመጠቀም እስከ 1<ph name="AMOUNT"/> BAT ድረስ መላክ ይችላሉ።</translation>
 <translation id="5012991400231464322">ወርሐዊ መዋጮዎች</translation>
 <translation id="5907051927340164207">እርስዎ ቀድሞውኑ ወርሃዊ መዋጮዎችን ለዚህ ፈጣሪ እየላኩ ነው</translation>
-<translation id="307555373157330047">አሁንም አስተዋጽዖ መላክ ትችላለህ እና ለፈጣሪ የምታደርገውን ወርሃዊ አስተዋጽዖ ከ 1<ph name="MONTHLY_CONTRIBUTION"/> በማስወገድ መሰረዝ ትችላለህ</translation>
+<translation id="4848906651275579475">አሁንም አስተዋጽዖን አሁን መላክ ይችላሉ እና ለእዚህ ፈጣሪ የሚያደርጉትን ወርሃዊ አስተዋጽኦዎችን ከ<ph name="MONTHLY_CONTRIBUTION"/> በማስወገድ መሰረዝ ይችላሉ።</translation>
 <translation id="5379685283876547860">መዋጮ ተልኳል!</translation>
 <translation id="1041398280582063935">ድጋፍዎን ያጋሩ</translation>
 <translation id="8855543392451028706">እንኳን በደህና መጡ! ተጠቃሚዎች መዋጮዎችን በመላክ ይህንን ፈጣሪ መደገፍ ይችላሉ። ምርጥ ይዘት ስለሰሩ የማመስገኛ መንገድ ነው።</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">ወደ <ph name="CUSTODIAN"/> ግባ</translation>
 <translation id="7063168612616047608">የእርስዎን ተወዳጅ ፈጣሪዎች ስለደገፉ እናመሰግናለን</translation>
 <translation id="3796032246917966749">ለBrave ሽልማቶች ከ<ph name="CUSTODIAN"/> የወጡ ይመስላል። ለመቀጠል እንደገና ይግቡ።</translation>
-<translation id="594652923071049606">ይህ ፈጣሪ ገና በBrave  ፈጣሪዎች አልተረጋገጠም። አንዴ ከተረጋገጡ መዋጮዎችን መላክ ይችላሉ። <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">ይህ ፈጣሪ በBrave ፈጣሪዎች ገና አልተረጋገጠም። አንዴ ከተረጋገጡ በኋላ መዋጮዎችን ለእነሱ መላክ ይችላሉ።<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">መዋጮ ይላኩ</translation>
 <translation id="1899434873745933492">የእርስዎን መዋጮ መላክ አይቻልም</translation>
 <translation id="1794046983410841192">Brave Rewards ይጠቀሙ</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">ብጁ</translation>
 <translation id="4827581232860040208">የእርስዎን መዋጮ ለመላክ ችግር ነበር</translation>
 <translation id="3259723213051400722">እባክዎ ከእንደገና ይሞክሩ</translation>
-<translation id="8899147737996487517">ይህ ፈጣሪ በBrave ተመዝግቧል እና ከBrave Rewards ተጠቃሚዎች አስተዋጾ መቀበል ይችላል። <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">ይህ ፈጣሪ በBrave ተመዝግቧል እና ከBrave Rewards ተጠቃሚዎች አስተዋጾኦዎችን መቀበል ይችላል። <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Rewards ማሳወቂያዎች ተሰናክለው ላይሰሩ ይችላሉ።</translation>
 <translation id="4259212006412783790">አብራ</translation>
 <translation id="6112331814131703370">'ወደ መተግበሪያው ቀይር' ማስታወቂያዎችን አግድ</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">ዕልባቶችን አስመጣ</translation>
 <translation id="1008186147501209563">ዕልባቶችን ወደ ውጭ ላክ</translation>
 <translation id="6680516947641001448">ዕልባቶችን ለማስመጣት ፋይል ይምረጡ</translation>
+<translation id="2353910600995338714">ወደ ውጭ መላክ ተሳክቷል</translation>
+<translation id="229319993704311844">ዕልባቶች ወደ <ph name="EXPORT_FILE_PATH"/>ውጭ ተልከዋል</translation>
+<translation id="8050098462121217351">ወደ ውጭ መላክ አልተሳካም</translation>
+<translation id="1166543535974380311">ዕልባቶችን ወደ ውጭ መላክ አልተሳካም። እባክዎ ዳግም ይሞክሩ።</translation>
+<translation id="6154243540085290880">ማስመጣት ተሳክቷል</translation>
 <translation id="7028125942261647795">ዕልባቶች በተሳካ ሁኔታ መጥተዋል።</translation>
-<translation id="444953779119381206">የዕልባት ማስመጣት አልተሳካም።</translation>
-<translation id="6606836200439368332">ዕልባት ወደ ውጭ መላክ አልተሳካም።</translation>
-<translation id="1395297034387418032">ዕልባቶች በተሳካ ሁኔታ ወደ ውጭ ተልከዋል።</translation>
+<translation id="4803910478683254032">ማስመጣት አልተሳካም</translation>
+<translation id="8325139248201792113">የዕልባት ማስመጣት አልተሳካም። እባክዎ ዳግም ይሞክሩ።</translation>
+<translation id="2803313416453193357">አቃፊውን ክፈት</translation>
 <translation id="3396347744975515056">Brave አስምር የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="8985635554450124959">ማመሳሰል ሊዘጋጅ አልቻለም</translation>
@@ -392,6 +396,10 @@
 እባክዎ ይህ የቃላት ኮድ እርስዎ በያዙት መሳሪያ መፈጠሩን ድጋሚ ያረጋግጡ።
 እርግጠኛ ነዎት ይህን ማድረግ ይፈልጋሉ?</translation>
 <translation id="4550208292810542331">የካሜራ ፍቃድ አልተሰጠም።</translation>
+<translation id="6470233139461745039">የይለፍ ቃላት ማመሳሰልን ለማንቃት መጀመሪያ በመሳሪያዎ ላይ የማያ ገጽ መቆለፊያ ያቀናብሩ</translation>
+<translation id="3063783274005996079">የይለፍ ቃላት ማመሳሰልን ለማንቃት ይክፈቱ</translation>
+<translation id="7551563084530025179">የይለፍ ቃላትን ከማመሳሰልዎ በፊት በመሳሪያዎ ባዮሜትሪክስ/የይለፍ ኮድ ማረጋገጥ ያስፈልግዎታል። ይህ ተጨማሪ የደህንነት እርምጃ የይለፍ ቃላትዎን ደህንነት ለመጠበቅ ያግዛል።</translation>
+<translation id="6925081665778864449">የይለፍ ቃላትን ለማመሳሰል እባክዎ በአንድሮይድ መሳሪያዎ ላይ የባዮሜትሪክ/የይለፍ ኮድ ማረጋገጫን ያንቁ። ይህ ተጨማሪ የደህንነት እርምጃ የይለፍ ቃላትዎን ደህንነት ለመጠበቅ ያግዛል።</translation>
 <translation id="597993392929850353">የ Brave ፈቃድ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6199596294742117349">ይህ የግል ትር ነው</translation>
@@ -428,7 +436,7 @@
 <translation id="9096003370755878766">ከዚህ ቀደም ወደ Brave Reward wallet ጨምረውት የነበረ BAT ወጪ ያድርጉ</translation>
 <translation id="1554282356558968486">የዋሌት አገልግሎታችን የተዘጋጀው በ</translation>
 <translation id="6569877533335686968">አቆይ</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">በተጠየቁ አገልግሎቶች ላይ ተመስርተው ማንነትዎን እንዲያረጋግጡ ድጋፍ ሊጠይቅዎ ይችላል፡፡</translation>
@@ -1206,4 +1214,7 @@
 <translation id="6759710362319508545">ሃብቶች</translation>
 <translation id="2471230424465522689">እስከዚህ ጊዜ አይደለም</translation>
 <translation id="4841860051609590575">መታወቂያ ጠይቅ</translation>
+<translation id="1179407411385015942">Leo በAI የተጎላበተ ስማርት ረዳት ነው፣ በአሳሹ ውስጥ በትክክል የተሰራ</translation>
+<translation id="1250335737108905610">የLeo ውሂብን ዳግም ያስጀምሩ እና ያጽዱ</translation>
+<translation id="6165101586663336913">የLeo ረዳትን ዳግም ማስጀመር ለወደፊቱ Leo ለመጠቀም መርጠው እንዲገቡ ይጠይቃል እና የውይይት ታሪክዎን ያጸዳል። የውይይት ታሪክዎን ማጽዳት ከLeo ጋር ያደረጉትን ሁሉንም ንግግሮች ይሰርዛል። ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
 </translationbundle>

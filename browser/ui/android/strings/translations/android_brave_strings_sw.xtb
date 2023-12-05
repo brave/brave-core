@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">Dhibiti matangazo</translation>
 <translation id="7630214457764713113">Nakili kiungo safi</translation>
 <translation id="885805571521218129">Hii inaonyesha makadirio ya mapato yako kutokana na Matangazo kwenye Brave mwezi huu.</translation>
-<translation id="818003031290137834">Kwa kuwa sasa umeunganishwa kwenye ZebPay, salio lolote la awali ulilokuwa nalo litawekwa kwenye akaunti yako ya ZebPay kama sehemu ya malipo yako yajayo ya mapato. Likifika, utaona BAT yako ikionyeshwa kwenye salio lako la Zawadi.</translation>
 <translation id="3478449063771497234">Taarifa zimelemazwa</translation>
 <translation id="2862978891748913252">Chagua nchi yako</translation>
 <translation id="3970520675790340955">Chagua nchi yako ili tuweze kukuonyesha chaguo na matangazo yanayofaa kwa eneo lako.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Unaweza kutuma hadi kiasi cha BAT <ph name="AMOUNT"/> ukitumia salio lako la Brave Rewards.</translation>
 <translation id="5012991400231464322">Michango ya kila Mwezi</translation>
 <translation id="5907051927340164207">Tayari unatuma michango ya kila mwezi kwa mtayarishi huyu</translation>
-<translation id="307555373157330047">Bado unaweza kutuma mchango sasa, na unaweza kughairi mchango wako wa kila mwezi kwa huyu Mtayarishi kwa kumwondoa kutoka <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="4848906651275579475">Bado unaweza kutuma mchango sasa, na unaweza kughairi mchango wako wa kila mwezi kwa mtayarishi huyu kwa kumwondoa katika <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
 <translation id="5379685283876547860">Mchango umetumwa!</translation>
 <translation id="1041398280582063935">Shiriki usaidizi wako</translation>
 <translation id="8855543392451028706">Karibu! Sasa watumiaji wanaweza kumsaidia mtayarishi huyu wa maudhui kwa kumtumia michango. Ni njia ya kumshukuru kwa kubuni maudhui mazuri.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">Ingia kwenye <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Asante kwa kuwasaidia watayarishi uwapendao</translation>
 <translation id="3796032246917966749">Inaonekana kwamba hujaingia katika akaunti ya <ph name="CUSTODIAN"/> kwa ajili ya Brave Rewards. Ingia kwenye akaunti tena ili kuendelea.</translation>
-<translation id="594652923071049606">Mtayarishi huyu bado hajathibitishwa kwenye Brave Creators. Utaweza kumtumia mchango baada ya kuthibitishwa. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Mtayarishi huyu bado hajathibitishwa kwenye huduma ya Watayarishi wa Brave. Utaweza kumtumia mchango baada ya kuthibitishwa. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Tuma Mchango</translation>
 <translation id="1899434873745933492">Imeshindwa kutuma mchango wako</translation>
 <translation id="1794046983410841192">Tumia Brave Rewards</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">Maalum</translation>
 <translation id="4827581232860040208">Tatizo limetokea wakati wa kutuma mchango wako</translation>
 <translation id="3259723213051400722">Tafadhali jaribu tena.</translation>
-<translation id="8899147737996487517">Mtayarishi amejisajili kwenye Brave na anaweza kupokea mchango kutoka watumiaji wa Brave Rewards. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">Mtayarishi huyu amejisajili kwenye Brave na anaweza kupokea michango kutoka kwa watumiaji wa mpango wa Zawadi za Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Zawadi za Brave zinaweza kutofanya kazi wakati taarifa zimelemazwa.</translation>
 <translation id="4259212006412783790">WASHA</translation>
 <translation id="6112331814131703370">Zuia Notisi za 'Badilisha Utumie Programu'</translation>
@@ -368,10 +367,15 @@ Ufutaji huu ni wa kudumu na hakuna njia ya kurejesha data. Ukiamua kuanza kutumi
 <translation id="8457451314607652708">Leta alamisho</translation>
 <translation id="1008186147501209563">Hamisha alamisho</translation>
 <translation id="6680516947641001448">Chagua Faili ya Kuingiza alamisho</translation>
+<translation id="2353910600995338714">Uhamishaji umefanikiwa</translation>
+<translation id="229319993704311844">Maalamisho yamehamishwa hadi <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">Uhamishaji haujafaulu</translation>
+<translation id="1166543535974380311">Uhamishaji wa maalamisho haujafaulu. Tafadhali jaribu tena.</translation>
+<translation id="6154243540085290880">Uhamishaji umefanikiwa</translation>
 <translation id="7028125942261647795">Imefanikiwa kuingiza alamisho.</translation>
-<translation id="444953779119381206">Imeshindwa kuingiza alamisho.</translation>
-<translation id="6606836200439368332">Imeshindwa kuhamisha alamisho</translation>
-<translation id="1395297034387418032">Imefaulu kuhamisha alamisho.</translation>
+<translation id="4803910478683254032">Uhamishaji haujafaulu</translation>
+<translation id="8325139248201792113">Uhamishaji wa alamisho haujafaulu. Tafadhali jaribu tena.</translation>
+<translation id="2803313416453193357">Fungua folda</translation>
 <translation id="3396347744975515056">Kipengele cha Usawazishaji wa Brave kimesasishwa na kinahitaji kuwekewa mipangilio</translation>
 <translation id="7473245612074035141">Anza Kuweka Mipangilio</translation>
 <translation id="8985635554450124959">Usawazishaji haukuwekwa</translation>
@@ -392,6 +396,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 Tafadhali hakikisha kuwa maneno haya ya msimbo yalizaliwa na kifaa chako.
 Je, una uhakika unataka kufanya hili?</translation>
 <translation id="4550208292810542331">Ruhusa ya kamera haikutolewa</translation>
+<translation id="6470233139461745039">Ili kuwezesha usawazishaji wa manenosiri, weka ufungaji wa skrini kwenye kifaa chako kwanza</translation>
+<translation id="3063783274005996079">Fungua ili kuwezesha usawazishaji wa manenosiri</translation>
+<translation id="7551563084530025179">Kabla ya kusawazisha manenosiri, utahitaji kuthibitisha kwa kutumia bayometriki/msimbo wa siri wa kifaa chako. Hatua hii ya ziada ya usalama husaidia kufanya manenosiri yako kuwa salama.</translation>
+<translation id="6925081665778864449">Ili kusawazisha manenosiri, tafadhali wezesha uthibitishaji wa bayometriki/msimbo wa siri kwenye kifaa chako cha Android. Hatua hii ya ziada ya usalama husaidia kufanya manenosiri yako kuwa salama.</translation>
 <translation id="597993392929850353">Leseni ya Brave</translation>
 <translation id="6336451774241870485">Kichupo kipya cha faragha</translation>
 <translation id="6199596294742117349">Hiki ni Kichupo cha Faragha</translation>
@@ -428,7 +436,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="9096003370755878766">Toa BAT ambayo huenda uliongeza awali kwenye waleti yako ya Brave Rewards</translation>
 <translation id="1554282356558968486">Huduma yetu ya waleti inatolewa na</translation>
 <translation id="6569877533335686968">Dumisha</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Huenda Uphold ikakuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
@@ -1202,4 +1210,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6759710362319508545">Nyenzo</translation>
 <translation id="2471230424465522689">Si kabla ya</translation>
 <translation id="4841860051609590575">Kitambulisho cha Ombi</translation>
+<translation id="1179407411385015942">Leo ni msaidizi mahiri anayetumia AI ambaye amejengwa ndani ya kivinjari</translation>
+<translation id="1250335737108905610">Weka upya na ufute data ya Leo</translation>
+<translation id="6165101586663336913">Kuweka upya msaidizi wa Leo kutakuhitaji ujisajili kutumia Leo siku zijazo na pia kutafuta historia yako ya gumzo. Kufuta historia yako ya gumzo kutafuta mazungumzo yako yote ya awali na Leo. Kitendo hiki hakiwezi kutenduliwa.</translation>
 </translationbundle>

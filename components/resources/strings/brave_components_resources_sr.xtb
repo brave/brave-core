@@ -165,7 +165,7 @@
 <translation id="4720556299488643018">Odjavi se</translation>
 <translation id="1209739344687072997">Prijavite raskinutu vezu sa sajtom</translation>
 <translation id="8510478288840333677">Obavestite programere aplikacije Brave da ovaj sajt ne funkcioniše ispravno sa Shields-om:</translation>
-<translation id="8265244536487014968">Napomena: Izveštaj koji se šalje Brave serverima sadrži adresu ovog sajta, broj verzije aplikacije Brave, podešavanja zaštite, VPN status i podešavanja jezika. IP adresa će biti preneta ali neće biti sačuvana.</translation>
+<translation id="6387106423577201267">Napomena: Izveštaj poslat Brave serverima će sadržati adresu lokacije, broj Brave verzije, Shields podešavanja, status VPN-a i podešavanja jezika.</translation>
 <translation id="6476216365964140603">Dodatni detalji (opciono)</translation>
 <translation id="6145852496180774737">Kontaktirajte sa mnom na: (opciono)</translation>
 <translation id="7616645803364270729">Imejl, Twitter itd.</translation>
@@ -259,14 +259,12 @@
 <translation id="3274650021044762770">Došlo je do problema pri potvrđivanju zahteva pretraživača za povezivanje vaših Brave nagrada sa vašim <ph name="PROVIDER"/> nalogom. Možete <ph name="BEGIN_LINK"/>kontaktirati sa podrškom<ph name="END_LINK"/> radi dodatne pomoći.</translation>
 <translation id="1316066811927496401">Greška: Zahtev nije mogao biti potvrđen</translation>
 <translation id="8167256685618982116">Uključivanjem <ph name="TITLE"/>, slažete se sa <ph name="BEGIN_LINK1"/>Uslovima korišćenja<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politikom privatnosti<ph name="END_LINK2"/>.</translation>
-<translation id="4123948149985772126">Izaberite dobavljača naloga</translation>
-<translation id="896953639186217388">Od dobavljača naloga za starateljstvo se traži da verifikuju vaš identitet, što može da uključuje i podnošenje lične karte sa fotografijom. Pogledajte <ph name="BEGIN_LINK1"/>Brave politiku privatnosti za nagrade<ph name="END_LINK1"/>. Pogledajte ovo da <ph name="BEGIN_LINK2"/>biste saznali više o BAT<ph name="END_LINK2"/>.</translation>
-<translation id="5785531043735482053">Čuvajte, upravljajte i povlačite svoju BAT zaradu</translation>
-<translation id="5155452078869279096">Dopunite svoj račun sa BAT-om koji ste kupili</translation>
-<translation id="2662540985634906665">Šaljite doprinose po narudžbi vašim omiljenim kreatorima &amp; veb lokacija</translation>
+<translation id="8817096698141999876">Nadzorni nalozi (zahteva potvrdu lične karte)</translation>
+<translation id="1539433155512862005">Nadzorni nalozi su nalozi sa pouzdanim uslugama trećih strana koje čuvaju vaš BAT umesto vas.</translation>
+<translation id="6751803821780922506">Izaberite gde želite da primate BAT</translation>
 <translation id="1233129511866436960">Saznajte više o regionima i podršci</translation>
 <translation id="7329170127335794328">Trenutno nije dostupno u vašem regionu</translation>
-<translation id="8304979233901023264">Pročitao sam i saglasan sam sa Brave’s <ph name="TOS_LINK_BEGIN"/>Uslovima korišćenja usluge<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>Politikom privatnosti<ph name="PP_LINK_END"/>.</translation>
+<translation id="966956302643313970">Da biste počeli da zarađujete Basic Attention Token (BAT) nagrade, povežite nalog. BAT koji zaradite biće automatski prebačen na vaš nalog svakog meseca.</translation>
 <translation id="1892970806832316900">Na čekanju do <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Ups! Vaš pregledač ne može da primi Brave privatne oglase.</translation>
 <translation id="5177429570315095022">Da biste mogli da vidite oglase, neophodno je da ažurirate svoj pregledač.</translation>
@@ -612,7 +610,7 @@ pravila o privatnosti
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Da li ste spremni da počnete zarađivati?<ph name="BOLD_END"/> Povežite se ili napravite nalog kod jednog od naših partnera.</translation>
 <translation id="1772961321862399863">Da bi zaradili BAT, korisnici moraju da povežu nadzorni nalog sa Brave nagradama. Nažalost, u vašem regionu nije dostupan nadzornik, tako da zarada nije dostupna. Za sada, uključivanje Brave nagrada automatski podržava kreatore.</translation>
 <translation id="902298128239575729">Pošaljite doprinose uz Brave nagrade</translation>
-<translation id="8413791505518414158">Moći ćete da šaljete doprinose na zahtev vašim omiljenim kreatorima uz vaš Brave saldo za nagrade kada povežete skrbnički nalog.</translation>
+<translation id="6276721355724491595">Moći ćete da šaljete doprinose na zahtev svojim omiljenim kreatorima sa svojim stanjem Brave Rewards kada povežete nadzorni nalog.</translation>
 <translation id="1149481926056509086">Da bi slali doprinose na zahtev, korisnici moraju povezati skrbnički nalog sa Brave nagradama. Nažalost, u vašem regionu nema dostupnog skrbnika, pa slanje nije dostupno. U međuvremenu, i dalje automatski podržavate kreatore.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Ovog meseca ste posetili # kreatora kog podržavaju Brave nagrade}
@@ -633,13 +631,12 @@ pravila o privatnosti
 <translation id="2862978891748913252">Izaberite svoju zemlju</translation>
 <translation id="3717922248131893262">Da biste i dalje koristili Brave nagrade, izaberite svoju zemlju tako da vam možemo prikazati odgovarajuće opcije i oglase za vaš region. <ph name="LINK_BEGIN"/>Politika privatnosti<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Počnite da koristite Nagrade</translation>
-<translation id="818003031290137834">Sada kada ste povezani na ZebPay, bilo koje ranije stanje koje ste imali biće deponovano na vaš ZebPay nalog kao deo sledeće isplate vaše zarade. Kada stigne, videćete svoj BAT prikazan na vašem stanju za nagrade.</translation>
 <translation id="2221902203895354376">Dodela tokena je dostupna!</translation>
 <translation id="2956070106555335453">Rezime</translation>
 <translation id="2369994359029526515">Neverifikovan autor</translation>
-<translation id="1010940411509546886">Ovaj kreator još uvek nije verifikovan kod Brave kreatora. Moći ćete da im šaljete doprinose kada budu verifikovani.</translation>
+<translation id="3984338085370091436">Ovaj kreator još uvek nije verifikovan od strane Brave Creators. Moći ćete da im šaljete doprinose kada budu verifikovani.</translation>
 <translation id="6020176662032623904">Verifikovan autor</translation>
-<translation id="215037911651623564">Osveži status provere kreatora</translation>
+<translation id="8635423276837443905">Osvežite status verifikacije kreatora</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> na <ph name="PLATFORM"/></translation>
 <translation id="3733094367889291358">Pošalji doprinos</translation>
 <translation id="7335371657242627509">Uključite u automatski doprinos</translation>
@@ -699,11 +696,11 @@ pravila o privatnosti
 <translation id="1483493594462132177">Пошаљи</translation>
 <translation id="6632987674051304487">Pošalji sa <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Koristite Web3 novčanik</translation>
-<translation id="5399596220743521546">Ovaj kreator se registrovao na Brave i može da prima doprinose od korisnika Brave nagrada.</translation>
+<translation id="4530198836725543997">Ovaj kreator se registrovao na Brave i može da prima priloge od korisnika Brave Rewards.</translation>
 <translation id="4529874892536380156">Učini ovo mesečnim ponavljajućim doprinosem. Možete ga otkazati u bilo kom trenutku.</translation>
 <translation id="1177863135347784049">Прилагођено</translation>
 <translation id="5907051927340164207">Već šaljete mesečne doprinose ovom kreatoru</translation>
-<translation id="2840845521251717054">Još uvek možete da šaljete doprinose i možete da otkažete vaše mesečne doprinose ovom kreatoru tako što ćete ih ukloniti iz from <ph name="LINK_BEGIN"/>Mesečnih doprinosa<ph name="LINK_END"/>.</translation>
+<translation id="4357685964329620278">Još uvek možete da šaljete prilog sada i možete da otkažete svoje mesečne priloge ovom autoru tako što ćete ih ukloniti iz <ph name="LINK_BEGIN"/>Mesečnih priloga<ph name="LINK_END"/>.</translation>
 <translation id="1899434873745933492">Nije moguće poslati vaš doprinos</translation>
 <translation id="8598111278506452136">Ovaj kreator ne može da prima doprinose od <ph name="PROVIDER"/>.</translation>
 <translation id="8379442066667303579">Još uvek možete da šaljete kripto doprinose ovom kreatoru pomoću svog Web3 novčanika.</translation>
@@ -729,6 +726,7 @@ pravila o privatnosti
 <translation id="1288078776976153868">mreža</translation>
 <translation id="1148827340205946630">Korisnik je odbio zahtev.</translation>
 <translation id="2403819048476450281">Nevažeći parametri.</translation>
+<translation id="3849003816301348130">Adresa odredišta je na OFAC SDN listi.</translation>
 <translation id="3955144560853195652">Lanac <ph name="VALUE"/> nije dodat</translation>
 <translation id="1875861420974447980">Ovaj ID lanca se trenutno koristi</translation>
 <translation id="167698752210114155">Došlo je do unutrašnje greške</translation>
@@ -914,6 +912,7 @@ pravila o privatnosti
 <translation id="6577166808959668729">Podržava SPL kompatibilna sredstva na Solana lancu blokova</translation>
 <translation id="4541295941776129088">Čuvanje FIL sredstava</translation>
 <translation id="29759539656432505">Uskladišti BTC sredstva</translation>
+<translation id="8749751940551938347">Čuvajte ZEC sredstva</translation>
 <translation id="8500387257977999003">Privatni ključ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="232925166623833246">Uvoz iz hardverskog novčanika</translation>
@@ -1090,7 +1089,7 @@ pravila o privatnosti
 <translation id="5867988533873716616">URL adresa za Block Explorer nije dostupna.</translation>
 <translation id="4255623233927788178">Prikaži na pregledaču Block Explorer</translation>
 <translation id="563386395023152633">Kopirati heš transakcije</translation>
-<translation id="7148658188569580292">Ubrzaj transakciju</translation>
+<translation id="881317738916264532">Ubrzaj</translation>
 <translation id="1198263951134066686">Otkaži transakciju</translation>
 <translation id="3562548974839822204">Pokušaj ponovo transakciju</translation>
 <translation id="6383204195803840504">Transakcije se prikazuju ovde</translation>
@@ -1104,6 +1103,7 @@ pravila o privatnosti
 <translation id="1165039591588034296">Грешка</translation>
 <translation id="8373210463207847451">Ispušteno</translation>
 <translation id="8214232307424031138">Potpisan</translation>
+<translation id="5916664084637901428">Укључено</translation>
 <translation id="9065572743819293042">Nedavne transakcije</translation>
 <translation id="4235538284468006757">Detalji o transakciji</translation>
 <translation id="7488671812634887146">Ubrzaj</translation>
@@ -1164,6 +1164,7 @@ pravila o privatnosti
 <translation id="471055802670233033">Potrošili ste</translation>
 <translation id="7916618590403748182">Dobićete</translation>
 <translation id="8328657208304368165">Potvrdite narudžbu</translation>
+<translation id="8220255674527598378">Solana razmena</translation>
 <translation id="5071303414930953888">Nalog <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Novčanik najpre mora biti odblokiran</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nije važeća adresa</translation>
@@ -1258,8 +1259,6 @@ pravila o privatnosti
 <translation id="1257387162647804035">Primarne mreže</translation>
 <translation id="8323674164587854512">Ethereum + EVM lanci</translation>
 <translation id="1398414935371867469">Solana + SVM lanci</translation>
-<translation id="2588471487641583523">Filecoin</translation>
-<translation id="5774718649402782121">Bitcoin</translation>
 <translation id="7058248670699639973">Mrežni logotip</translation>
 <translation id="4378208228955237306">Prikaži mrežni logotip na NFT-ovima</translation>
 <translation id="5472199803712163015">Neželjeni NFT-ovi</translation>
@@ -1287,7 +1286,7 @@ pravila o privatnosti
 <translation id="9104177294757104789">Pošalji <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Razmeni <ph name="MAKER"/> u <ph name="TAKER"/></translation>
 <translation id="8613144770663526433">Prijavite se sa Brave novčanikom</translation>
-<translation id="3696514931437952995">Prijavljujete se na <ph name="ORIGIN"/>. Brave novčanik će podeliti vašu adresu novčanika sa <ph name="ORIGIN"/>.</translation>
+<translation id="8813165409788097898">Prijavljujete se na <ph name="ORIGIN"/>. Brave Wallet će podekiti vašu adresu novčanika sa <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Pogledaj detalje</translation>
 <translation id="3950820424414687140">Пријави ме</translation>
 <translation id="4530494379350999373">Извор</translation>
@@ -1600,6 +1599,20 @@ pravila o privatnosti
 <translation id="7756624047234151641"><ph name="REFRESH"/>Osvežiti<ph name="REFRESH_END"/> ili <ph name="IMPORT"/>ručno uvesti<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Osvežavanje</translation>
 <translation id="4608324163534970318">Mrežne naknade</translation>
+<translation id="6213230117190778270">Primanje</translation>
+<translation id="6748108480210050150">Od</translation>
+<translation id="4875290286426670462">Neograničeno <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">Token nije verifikovan</translation>
+<translation id="8549067157732633185">Token je verifikovan</translation>
+<translation id="2130170065617939165">Ovaj token je verifikovan na <ph name="NUMBER_OF_LISTS"/> listama</translation>
+<translation id="1554316484739382186">Trošilac: <ph name="ADDRESS"/></translation>
+<translation id="4265415116535094892">Zebpay</translation>
+<translation id="3026353765778463291"><ph name="PROVIDER"/> nalog</translation>
+<translation id="5360752485622434494">Brave Rewards BAT na <ph name="PROVIDER"/></translation>
+<translation id="429061011725027672">Trenutno ste odjavljeni iz <ph name="PROVIDER"/>. Prijavite se da vidite svoje stanje.</translation>
+<translation id="4611292653554630842">Prijavi se</translation>
+<translation id="1132794822159463424">Prikaži na <ph name="PROVIDER"/></translation>
+<translation id="7875005109025196005">Platforme</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="3745016858329272300">Opšte informacije</translation>
 <translation id="4045404575593562245">Tor kontrolni događaji</translation>
@@ -1859,6 +1872,8 @@ pravila o privatnosti
 <translation id="8960352557529001690">Disleksija</translation>
 <translation id="8189819085033738728">Smanjenje veličine slova</translation>
 <translation id="1952725803106139986">Povećanje veličine slova</translation>
+<translation id="6338177649973309262">Uska kolona sadržaja</translation>
+<translation id="6500600749984466451">Široka kolona sadržaja</translation>
 <translation id="7239710518122372020">Tekst u govor</translation>
 <translation id="4330722796577425585">Premotaj</translation>
 <translation id="1199355487114804640">Reprodukuj/Pauziraj</translation>

@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">광고 관리</translation>
 <translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="885805571521218129">이번 달 Brave Ads로 적립되는 예상액 범위입니다.</translation>
-<translation id="818003031290137834">ZebPay에 연결되셔서 다음 적립금 지급 과정의 일환으로 기존에 보유한 잔액이 ZebPay 계정으로 예치됩니다. 예치가 완료되면 보유한 BAT가 Rewards 잔액 내에 반영됩니다.</translation>
 <translation id="3478449063771497234">알림 비활성화됨</translation>
 <translation id="2862978891748913252">국가 선택</translation>
 <translation id="3970520675790340955">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다.</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Brave Rewards 잔액을 사용하여 최대 <ph name="AMOUNT"/> BAT만 보낼 수 있습니다.</translation>
 <translation id="5012991400231464322">매월 기부금</translation>
 <translation id="5907051927340164207">이 제작자에게 이미 월 후원금을 보내고 있음</translation>
-<translation id="307555373157330047">이제 상시적으로 후원금을 보낼 수 있으며, <ph name="MONTHLY_CONTRIBUTION"/>에서 이 제작자를 제거하면 월 후원금을 취소하실 수 있습니다.</translation>
+<translation id="4848906651275579475">이제 상시적으로 후원금을 보낼 수 있으며, <ph name="MONTHLY_CONTRIBUTION"/>에서 이 제작자를 제거하면 월 후원금을 취소하실 수 있습니다.</translation>
 <translation id="5379685283876547860">후원금을 보냈습니다!</translation>
 <translation id="1041398280582063935">지지하는 마음 공유하기</translation>
 <translation id="8855543392451028706">환영합니다! 후원금을 보내서 이 콘텐츠 제작자를 지원할 수 있습니다. 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하세요.</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/>에 로그인</translation>
 <translation id="7063168612616047608">마음에 두는 제작자를 지원해주셔서 감사합니다.</translation>
 <translation id="3796032246917966749"><ph name="CUSTODIAN"/>에서 로그아웃하여 Brave Rewards 연결이 끊겼습니다. 계속하려면 다시 로그인하세요.</translation>
-<translation id="594652923071049606">Brave 제작자로 인증받지 않은 제작자입니다. 인증되고 나면 후원금을 보내실 수 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">Brave 제작자로 인증받지 않은 제작자입니다. 인증되고 나면 후원금을 보내실 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">후원금 보내기</translation>
 <translation id="1899434873745933492">후원금을 보낼 수 없음</translation>
 <translation id="1794046983410841192">Brave Rewards 사용</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">맞춤</translation>
 <translation id="4827581232860040208">후원금을 보내는 중 문제 발생</translation>
 <translation id="3259723213051400722">다시 시도해 주세요.</translation>
-<translation id="8899147737996487517">이 제작자는 Brave에 등록되어 Brave Rewards 사용자로부터 후원금을 받을 수 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">이 제작자는 Brave에 등록되어 Brave Rewards 사용자로부터 후원금을 받을 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">알림이 비활성화된 중에는 Brave Rewards가 동작하지 않을 수 있습니다.</translation>
 <translation id="4259212006412783790">켜기</translation>
 <translation id="6112331814131703370">'앱으로 전환' 요청 차단</translation>
@@ -368,10 +367,15 @@
 <translation id="8457451314607652708">북마크 가져오기</translation>
 <translation id="1008186147501209563">북마크 내보내기</translation>
 <translation id="6680516947641001448">북마크를 가져올 파일 선택</translation>
+<translation id="2353910600995338714">내보내기 성공</translation>
+<translation id="229319993704311844">북마크를 <ph name="EXPORT_FILE_PATH"/>에 내보냄</translation>
+<translation id="8050098462121217351">내보내기 실패</translation>
+<translation id="1166543535974380311">북마크 내보내기 실패. 다시 시도하세요.</translation>
+<translation id="6154243540085290880">가져오기 성공</translation>
 <translation id="7028125942261647795">북마크를 성공적으로 가져왔습니다.</translation>
-<translation id="444953779119381206">북마크 가져오기에 실패했습니다.</translation>
-<translation id="6606836200439368332">북마크 내보내기에 실패했습니다.</translation>
-<translation id="1395297034387418032">북마크를 성공적으로 내보냈습니다.</translation>
+<translation id="4803910478683254032">가져오기 실패</translation>
+<translation id="8325139248201792113">북마크 가져오기 실패. 다시 시도하세요.</translation>
+<translation id="2803313416453193357">폴더 열기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되었고 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
 <translation id="8985635554450124959">동기화 설정할 수 없음</translation>
@@ -392,6 +396,10 @@
 본인이 소유한 디바이스에서 생성된 코드 단어인지 주의하여 확인하시기 바랍니다.
 계속하시겠습니까?</translation>
 <translation id="4550208292810542331">카메라 권한이 부여되지 않음</translation>
+<translation id="6470233139461745039">비밀번호 동기화를 활성화하려면 먼저 기기에서 화면 잠금을 설정해야 합니다.</translation>
+<translation id="3063783274005996079">비밀번호 동기화를 활성화하려면 잠금 해제하세요.</translation>
+<translation id="7551563084530025179">기기 생체인식/패스코드로 인증해야 비밀번호를 동기화할 수 있습니다. 이 추가 보안 수단이 비밀번호를 안전하게 보호해줍니다.</translation>
+<translation id="6925081665778864449">비밀번호를 동기화하려면 Android 기기에서 생체인식/패스코드 인증을 활성화해야 합니다. 이 추가 보안 수단이 비밀번호를 안전하게 보호해줍니다.</translation>
 <translation id="597993392929850353">Brave 라이선스</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
@@ -428,7 +436,7 @@
 <translation id="9096003370755878766">이전에 Brave Rewards 월렛에 추가했을 수 있는 BAT를 중단하세요</translation>
 <translation id="1554282356558968486">월렛 서비스 기능 제공사:</translation>
 <translation id="6569877533335686968">유지</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">제미니</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
@@ -1202,4 +1210,7 @@
 <translation id="6759710362319508545">리소스</translation>
 <translation id="2471230424465522689">시작 날짜 미도래</translation>
 <translation id="4841860051609590575">요청 ID</translation>
+<translation id="1179407411385015942">브라우저에 바로 통합된 AI 기반 스마트 어시스턴트, 레오</translation>
+<translation id="1250335737108905610">레오 데이터 초기화 및 지우기</translation>
+<translation id="6165101586663336913">레오 어시스턴트를 초기화하면 나중에 Brave 레오 사용에 다시 동의해야 하며 채팅 기록이 지워집니다. 채팅 내역이 지워지면 Brave 레오와 나눴던 모든 대화가 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
 </translationbundle>
