@@ -132,6 +132,7 @@
 
 # These tests are disabled because sharedStorage is not enabled in Brave
 -All/BrowsingDataModelBrowserTest.SharedStorageAccessReportedCorrectly/*
+-All/BrowsingDataModelBrowserTest.SharedStorageHandledCorrectly/*
 
 # This test fails because kPrerender2 feature is disabled. Javascript in the
 # test expects `document.prerendering === false` whereas we have
