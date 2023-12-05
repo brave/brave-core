@@ -10,7 +10,7 @@ import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigat
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
-import ButtonReact from '@brave/leo/react/button'
+import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale';
 
 const Root = styled(Variables)`
@@ -33,7 +33,7 @@ const SidebarContainer = styled.div`
   }
 `
 
-const CustomizeButton = styled(ButtonReact)`
+const ButtonsContainer = styled.div`
   visibility: hidden;
 
   position: fixed;
@@ -45,10 +45,13 @@ const CustomizeButton = styled(ButtonReact)`
   .${CLASSNAME_PAGE_STUCK} & {
     visibility: visible;
   }
+
+  display: flex;
+  gap: ${spacing.m};
 `
 
 export default function FeedV2() {
-  const { feedV2, setCustomizePage } = useBraveNews()
+  const { feedV2, setCustomizePage, refreshFeedV2 } = useBraveNews()
 
   const ref = React.useRef<HTMLDivElement>()
 
@@ -77,8 +80,13 @@ export default function FeedV2() {
       <FeedNavigation />
     </SidebarContainer>
     <Feed feed={feedV2} />
-    <CustomizeButton kind='outline' onClick={() => setCustomizePage('news')}>
-      {getLocale('braveNewsCustomizeFeed')}
-    </CustomizeButton>
+    <ButtonsContainer>
+      <Button kind='outline' onClick={() => setCustomizePage('news')}>
+        {getLocale('braveNewsCustomizeFeed')}
+      </Button>
+      <Button isLoading={!feedV2} kind='outline' onClick={() => {
+        refreshFeedV2()
+      }}>{getLocale('braveNewsRefreshFeed')}</Button>
+    </ButtonsContainer>
   </Root>
 }

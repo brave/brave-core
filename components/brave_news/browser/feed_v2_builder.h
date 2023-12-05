@@ -54,6 +54,7 @@ class FeedV2Builder {
   void BuildPublisherFeed(const std::string& publisher_id,
                           BuildFeedCallback callback);
   void BuildAllFeed(BuildFeedCallback callback);
+  void EnsureFeedIsUpdating();
 
   void GetSignals(GetSignalsCallback callback);
 
@@ -140,6 +141,7 @@ class FeedV2Builder {
 
   FeedItems raw_feed_items_;
   ETags feed_etags_;
+  std::string hash_;
 
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;

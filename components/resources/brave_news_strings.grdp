@@ -219,4 +219,7 @@
   <message name="IDS_BRAVE_NEWS_CUSTOMIZE_FEED" desc="Text of button for opening the customize dialog">
     Customize
   </message>
+  <message name="IDS_BRAVE_NEWS_REFRESH_FEED" desc="Text of button for refreshing the feed">
+    Refresh
+  </message>
 </grit-part>
