@@ -9,7 +9,10 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // hooks
-import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
+import {
+  useGetSwapSupportedNetworksQuery,
+  useGetVisibleNetworksQuery
+} from '../../../common/slices/api.slice'
 
 // components
 import { SelectNetworkItem } from '../select-network-item/index'
@@ -18,15 +21,28 @@ interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   selectedNetwork: BraveWallet.NetworkInfo | undefined | null
   customNetwork?: BraveWallet.NetworkInfo
+  useSwapNetworks?: boolean
 }
 
 export function SelectNetwork({
   onSelectCustomNetwork,
   selectedNetwork,
-  customNetwork
+  customNetwork,
+  useSwapNetworks
 }: Props) {
   // queries
-  const { data: networks = [] } = useGetVisibleNetworksQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery(undefined, {
+    skip: useSwapNetworks
+  })
+  const { data: swapNetworks = [] } = useGetSwapSupportedNetworksQuery(
+    undefined,
+    {
+      skip: !useSwapNetworks
+    }
+  )
+
+  // Computed
+  const networks = useSwapNetworks ? swapNetworks : visibleNetworks
 
   // memos
   const networksList = React.useMemo(() => {

@@ -52,88 +52,91 @@ interface Props {
   selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
-export const SwapSettingsModal = (props: Props) => {
-  const {
-    selectedGasFeeOption,
-    setSelectedGasFeeOption,
-    setSlippageTolerance,
-    // setUseDirectRoute,
-    slippageTolerance,
-    // useDirectRoute,
-    gasEstimates,
-    onClose,
-    selectedNetwork
-  } = props
+export const SwapSettingsModal = React.forwardRef<HTMLDivElement, Props>(
+  (props: Props, forwardedRef) => {
+    const {
+      selectedGasFeeOption,
+      setSelectedGasFeeOption,
+      setSlippageTolerance,
+      // setUseDirectRoute,
+      slippageTolerance,
+      // useDirectRoute,
+      gasEstimates,
+      onClose,
+      selectedNetwork
+    } = props
 
-  // State
-  const [showExchanges, setShowExchanges] = React.useState<boolean>(false)
+    // State
+    const [showExchanges, setShowExchanges] = React.useState<boolean>(false)
 
-  // Methods
-  // const handleCheckExchange = React.useCallback(
-  //   (id: string, checked: boolean) => {
-  //     const exchange = exchanges.find(e => e.id === id)
-  //     if (checked && exchange !== undefined) {
-  //       const addedList = [exchange, ...userSelectedExchanges]
-  //       dispatch({ type: 'updateUserSelectedExchanges', payload: addedList })
-  //       return
-  //     }
-  //     const removedList = userSelectedExchanges.filter(e => e.id !== id)
-  //     dispatch({ type: 'updateUserSelectedExchanges', payload: removedList })
-  //   },
-  //   [userSelectedExchanges, exchanges, dispatch]
-  // )
+    // Methods
+    // const handleCheckExchange = React.useCallback(
+    //   (id: string, checked: boolean) => {
+    //     const exchange = exchanges.find((e) => e.id === id)
+    //     if (checked && exchange !== undefined) {
+    //       const addedList = [exchange, ...userSelectedExchanges]
+    //     dispatch({ type: 'updateUserSelectedExchanges', payload: addedList })
+    //       return
+    //     }
+    //     const removedList = userSelectedExchanges.filter((e) => e.id !== id)
+    //   dispatch({ type: 'updateUserSelectedExchanges', payload: removedList })
+    //   },
+    //   [userSelectedExchanges, exchanges, dispatch]
+    // )
 
-  // Memos
-  const customSlippageInputValue: string = React.useMemo(() => {
-    return slippagePresets.includes(slippageTolerance) ? '' : slippageTolerance
-  }, [slippageTolerance])
+    // Memos
+    const customSlippageInputValue: string = React.useMemo(() => {
+      return slippagePresets.includes(slippageTolerance)
+        ? ''
+        : slippageTolerance
+    }, [slippageTolerance])
 
-  const modalTitle: string = React.useMemo(() => {
-    return showExchanges
-      ? getLocale('braveSwapExchanges')
-      : getLocale('braveSwapSettings')
-  }, [getLocale, showExchanges])
+    const modalTitle: string = React.useMemo(() => {
+      return showExchanges
+        ? getLocale('braveSwapExchanges')
+        : getLocale('braveSwapSettings')
+    }, [getLocale, showExchanges])
 
-  // render
-  return (
-    <Modal>
-      {/* Modal Header */}
-      <Row
-        rowWidth='full'
-        marginBottom={2}
-      >
-        <Text
-          textColor='text01'
-          textSize='16px'
-          isBold={true}
+    // render
+    return (
+      <Modal ref={forwardedRef}>
+        {/* Modal Header */}
+        <Row
+          rowWidth='full'
+          marginBottom={2}
         >
-          {modalTitle}
-        </Text>
-        {showExchanges && (
-          <IconButton onClick={() => setShowExchanges(false)}>
-            <Icon
-              name='close'
-              size={26}
-            />
-          </IconButton>
-        )}
-        {!showExchanges && (
-          <ShownResponsiveRow maxWidth={570}>
-            <IconButton onClick={onClose}>
+          <Text
+            textColor='text01'
+            textSize='16px'
+            isBold={true}
+          >
+            {modalTitle}
+          </Text>
+          {showExchanges && (
+            <IconButton onClick={() => setShowExchanges(false)}>
               <Icon
                 name='close'
-                size={24}
+                size={26}
               />
             </IconButton>
-          </ShownResponsiveRow>
-        )}
-      </Row>
+          )}
+          {!showExchanges && (
+            <ShownResponsiveRow maxWidth={570}>
+              <IconButton onClick={onClose}>
+                <Icon
+                  name='close'
+                  size={24}
+                />
+              </IconButton>
+            </ShownResponsiveRow>
+          )}
+        </Row>
 
-      <ShownResponsiveRow maxWidth={570}>
-        <VerticalSpacer size={18} />
-      </ShownResponsiveRow>
+        <ShownResponsiveRow maxWidth={570}>
+          <VerticalSpacer size={18} />
+        </ShownResponsiveRow>
 
-      {/* {showExchanges && (
+        {/* {showExchanges && (
         <>
           <VerticalSpacer size={24} />
           <ExchangesColumn>
@@ -153,94 +156,95 @@ export const SwapSettingsModal = (props: Props) => {
         </>
       )} */}
 
-      {/* Settings */}
-      {!showExchanges && (
-        <>
-          {/* Slippage Tolerance */}
-          <ExpandSection
-            label={getLocale('braveSwapSlippageTolerance')}
-            value={`${slippageTolerance}%`}
-          >
-            <Row
-              marginBottom={22}
-              rowWidth='full'
+        {/* Settings */}
+        {!showExchanges && (
+          <>
+            {/* Slippage Tolerance */}
+            <ExpandSection
+              label={getLocale('braveSwapSlippageTolerance')}
+              value={`${slippageTolerance}%`}
             >
-              <Row horizontalAlign='flex-start'>
-                {slippagePresets.map((preset) => (
-                  <StandardButton
-                    onClick={() => setSlippageTolerance(preset)}
-                    buttonType='secondary'
-                    buttonSize='small'
-                    buttonWidth={64}
-                    isSelected={slippageTolerance === preset}
-                    marginRight={8}
-                    key={preset}
-                  >
-                    {preset}%
-                  </StandardButton>
-                ))}
+              <Row
+                marginBottom={22}
+                rowWidth='full'
+              >
+                <Row horizontalAlign='flex-start'>
+                  {slippagePresets.map((preset) => (
+                    <StandardButton
+                      onClick={() => setSlippageTolerance(preset)}
+                      buttonType='secondary'
+                      buttonSize='small'
+                      buttonWidth={64}
+                      isSelected={slippageTolerance === preset}
+                      marginRight={8}
+                      key={preset}
+                    >
+                      {preset}%
+                    </StandardButton>
+                  ))}
+                </Row>
+                <SlippageInput
+                  onChange={setSlippageTolerance}
+                  value={customSlippageInputValue}
+                />
               </Row>
-              <SlippageInput
-                onChange={setSlippageTolerance}
-                value={customSlippageInputValue}
-              />
-            </Row>
-          </ExpandSection>
+            </ExpandSection>
 
-          <HiddenResponsiveRow maxWidth={570}>
-            <VerticalDivider />
-          </HiddenResponsiveRow>
+            <HiddenResponsiveRow maxWidth={570}>
+              <VerticalDivider />
+            </HiddenResponsiveRow>
 
-          {/* Ethereum Only Settings */}
-          {selectedNetwork?.coin === BraveWallet.CoinType.ETH && (
-            <>
-              {/* Exchanges disabled until supported */}
-              {/* <ExpandSection
+            {/* Ethereum Only Settings */}
+            {selectedNetwork?.coin === BraveWallet.CoinType.ETH && (
+              <>
+                {/* Exchanges disabled until supported */}
+                {/* <ExpandSection
                 label={getLocale('braveSwapExchanges')}
                 value={userSelectedExchanges.length.toString()}
                 onExpandOut={() => setShowExchanges(true)}
               />
               <VerticalDivider /> */}
 
-              {/* Network Fee */}
-              <ExpandSection
-                label={getLocale('braveSwapNetworkFee')}
-                value={`$${gasEstimates.gasFeeFiat}`}
-                secondaryValue={`${gasEstimates.gasFee} ${
-                  selectedNetwork?.symbol ?? ''
-                }`}
-              >
-                <Column columnWidth='full'>
-                  {gasFeeOptions.map((option) => (
-                    <GasPresetButton
-                      option={option}
-                      isSelected={selectedGasFeeOption === option}
-                      onClick={() => setSelectedGasFeeOption(option)}
-                      gasEstimates={gasEstimates}
-                      key={option.id}
-                      selectedNetwork={selectedNetwork}
-                    />
-                  ))}
-                </Column>
-              </ExpandSection>
-            </>
-          )}
+                {/* Network Fee */}
+                <ExpandSection
+                  label={getLocale('braveSwapNetworkFee')}
+                  value={`$${gasEstimates.gasFeeFiat}`}
+                  secondaryValue={`${gasEstimates.gasFee} ${
+                    selectedNetwork?.symbol ?? ''
+                  }`}
+                >
+                  <Column columnWidth='full'>
+                    {gasFeeOptions.map((option) => (
+                      <GasPresetButton
+                        option={option}
+                        isSelected={selectedGasFeeOption === option}
+                        onClick={() => setSelectedGasFeeOption(option)}
+                        gasEstimates={gasEstimates}
+                        key={option.id}
+                        selectedNetwork={selectedNetwork}
+                      />
+                    ))}
+                  </Column>
+                </ExpandSection>
+              </>
+            )}
 
-          {/* Solana Only Settings */}
-          {selectedNetwork?.coin === BraveWallet.CoinType.SOL && (
-            <>
-              {/* Direct Route Toggle is disabled until supported */}
-              {/* <ToggleSection
+            {/* Solana Only Settings */}
+            {selectedNetwork?.coin === BraveWallet.CoinType.SOL && (
+              <>
+                {/* Direct Route Toggle is disabled until supported */}
+                {/* <ToggleSection
                 label={getLocale('braveSwapDirectRouteTitle')}
                 description={getLocale('braveSwapDirectRouteDescription')}
                 isChecked={useDirectRoute}
                 setIsChecked={setUseDirectRoute}
               />
               <VerticalDivider /> */}
-            </>
-          )}
-        </>
-      )}
-    </Modal>
-  )
-}
+              </>
+            )}
+          </>
+        )}
+      </Modal>
+    )
+  }
+)

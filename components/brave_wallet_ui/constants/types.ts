@@ -684,6 +684,8 @@ export enum WalletRoutes {
   // send
   Send = '/send',
 
+  Bridge = '/bridge',
+
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',
 
@@ -964,6 +966,7 @@ export type NavIDTypes =
   | 'transactions'
   | 'my_assets'
   | 'available_assets'
+  | 'bridge'
 
 export type AccountPageTabs =
   (typeof AccountPageTabs)[keyof typeof AccountPageTabs]
