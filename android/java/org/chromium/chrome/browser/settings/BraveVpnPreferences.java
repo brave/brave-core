@@ -319,15 +319,25 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             @Override
             public void run() {
                 if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            findPreference(PREF_SERVER_CHANGE_LOCATION)
-                                    .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
-                            findPreference(PREF_SPLIT_TUNNELING)
-                                    .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
-                        }
-                    });
+                    getActivity()
+                            .runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            findPreference(PREF_SERVER_CHANGE_LOCATION)
+                                                    .setEnabled(
+                                                            WireguardConfigUtils.isConfigExist(
+                                                                    getActivity()));
+                                            findPreference(PREF_SPLIT_TUNNELING)
+                                                    .setEnabled(
+                                                            WireguardConfigUtils.isConfigExist(
+                                                                    getActivity()));
+                                            findPreference(PREF_SUPPORT_TECHNICAL)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                        }
+                                    });
                 }
             }
         }.start();
