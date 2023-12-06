@@ -468,33 +468,40 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
         GetChannelsForPublisher(locale, publisher);
   }
 
-  mojom::FeedItemMetadataPtr hero_article;
-  auto content_group = SampleContentGroup(eligible_content_groups);
-  auto get_weighting = base::BindRepeating(
-      [](const ContentGroup& content_group,
-         const base::flat_map<std::string, std::vector<std::string>>&
-             publisher_id_to_channels,
-         const std::string& locale, const mojom::FeedItemMetadataPtr& metadata,
-         const ArticleWeight& weight) {
-        if (/*is_channel*/ content_group.second &&
-            content_group.first != kAllContentGroup) {
-          auto channels = publisher_id_to_channels.find(metadata->publisher_id);
-          if (base::Contains(channels->second, content_group.first)) {
-            return weight.weighting;
+  // Generates a GetWeighting function tied to a specific content group. Each
+  // invocation of |get_weighting| will generate a new |GetWeighting| tied to a
+  // (freshly sampled) content_group.
+  auto get_weighting = [&eligible_content_groups, &publisher_id_to_channels,
+                        &locale]() {
+    return base::BindRepeating(
+        [](const ContentGroup& content_group,
+           const base::flat_map<std::string, std::vector<std::string>>&
+               publisher_id_to_channels,
+           const std::string& locale,
+           const mojom::FeedItemMetadataPtr& metadata,
+           const ArticleWeight& weight) {
+          if (/*is_channel*/ content_group.second &&
+              content_group.first != kAllContentGroup) {
+            auto channels =
+                publisher_id_to_channels.find(metadata->publisher_id);
+            if (base::Contains(channels->second, content_group.first)) {
+              return weight.weighting;
+            }
+
+            return 0.0;
+          } else if (/*is_channel*/ !content_group.second) {
+            return metadata->publisher_id == content_group.first
+                       ? weight.weighting
+                       : 0.0;
           }
 
-          return 0.0;
-        } else if (/*is_channel*/ !content_group.second) {
-          return metadata->publisher_id == content_group.first
-                     ? weight.weighting
-                     : 0.0;
-        }
+          return weight.weighting;
+        },
+        SampleContentGroup(eligible_content_groups), publisher_id_to_channels,
+        locale);
+  };
 
-        return weight.weighting;
-      },
-      content_group, publisher_id_to_channels, locale);
-  hero_article = PickRouletteAndRemove(articles, get_weighting);
-
+  auto hero_article = PickRouletteAndRemove(articles, get_weighting());
   if (!hero_article) {
     DVLOG(1) << "Failed to generate hero";
     return result;
@@ -508,40 +515,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
     bool is_discover = base::RandDouble() < inline_discovery_ratio;
-    mojom::FeedItemMetadataPtr generated;
-
-    if (is_discover) {
-      generated = PickDiscoveryArticleAndRemove(articles);
-    } else {
-      content_group = SampleContentGroup(eligible_content_groups);
-      auto get_weighting_2 = base::BindRepeating(
-          [](const ContentGroup& content_group,
-             const base::flat_map<std::string, std::vector<std::string>>&
-                 publisher_id_to_channels,
-             const std::string& locale,
-             const mojom::FeedItemMetadataPtr& metadata,
-             const ArticleWeight& weight) {
-            if (/*is_channel*/ content_group.second &&
-                content_group.first != kAllContentGroup) {
-              auto channels =
-                  publisher_id_to_channels.find(metadata->publisher_id);
-              if (base::Contains(channels->second, content_group.first)) {
-                return weight.weighting;
-              }
-
-              return 0.0;
-            } else if (/*is_channel*/ !content_group.second) {
-              return metadata->publisher_id == content_group.first
-                         ? weight.weighting
-                         : 0.0;
-            }
-
-            return weight.weighting;
-          },
-          content_group, publisher_id_to_channels, locale);
-      generated = PickRouletteAndRemove(articles, get_weighting_2);
-    }
-
+    auto generated = is_discover
+                         ? PickDiscoveryArticleAndRemove(articles)
+                         : PickRouletteAndRemove(articles, get_weighting());
     if (!generated) {
       DVLOG(1) << "Failed to generate article";
       continue;
