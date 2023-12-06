@@ -5,12 +5,20 @@
 
 #include "brave/browser/brave_player/brave_player_tab_helper_delegate_impl.h"
 
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/views/brave_player/ad_block_adjustment_dialog.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "content/public/browser/web_contents.h"
 
 void BravePlayerTabHelperDelegateImpl::ShowAdBlockAdjustmentSuggestion(
     content::WebContents* contents) {
+  auto* shield_data_controller =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  CHECK(shield_data_controller);
+  if (shield_data_controller->GetAdBlockMode() == AdBlockMode::ALLOW) {
+    return;
+  }
+
   constrained_window::ShowWebModalDialogViews(
-      new AdBlockAdjustmentDialog(contents->GetLastCommittedURL()), contents);
+      new AdBlockAdjustmentDialog(contents), contents);
 }

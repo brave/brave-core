@@ -8,6 +8,7 @@
 #include <limits>
 #include <memory>
 
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -17,7 +18,10 @@
 #include "ui/views/metadata/view_factory.h"
 #include "ui/views/view_class_properties.h"
 
-AdBlockAdjustmentDialog::AdBlockAdjustmentDialog(const GURL& url) : url_(url) {
+AdBlockAdjustmentDialog::AdBlockAdjustmentDialog(content::WebContents* contents)
+    : contents_(contents) {
+  CHECK(contents_);
+
   set_margins(gfx::Insets(40));
   SetModalType(ui::MODAL_TYPE_CHILD);
   SetShowCloseButton(false);
@@ -108,5 +112,8 @@ void AdBlockAdjustmentDialog::WindowClosing() {
 }
 
 void AdBlockAdjustmentDialog::DisableAdBlockForSite() {
-  NOTIMPLEMENTED() << url_.spec();
+  auto* shield_data_controller =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents_);
+  CHECK(shield_data_controller);
+  shield_data_controller->SetAdBlockMode(AdBlockMode::ALLOW);
 }

@@ -8,10 +8,14 @@
 
 #include "ui/views/window/dialog_delegate.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 // TODO(sko): We may want this to be a bubble.
 class AdBlockAdjustmentDialog : public views::DialogDelegateView {
  public:
-  explicit AdBlockAdjustmentDialog(const GURL& url);
+  explicit AdBlockAdjustmentDialog(content::WebContents* contents);
   ~AdBlockAdjustmentDialog() override;
 
   // views::DialogDelegateView:
@@ -21,7 +25,7 @@ class AdBlockAdjustmentDialog : public views::DialogDelegateView {
  private:
   void DisableAdBlockForSite();
 
-  const GURL url_;
+  raw_ptr<content::WebContents> contents_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_H_
