@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/types/expected.h"
 
 extern "C" {
@@ -44,7 +45,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT TokenPreimage {
   TokenPreimage(const TokenPreimage&);
   ~TokenPreimage();
   static base::expected<TokenPreimage, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const TokenPreimage& rhs) const;
@@ -67,7 +68,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT BlindedToken {
   BlindedToken& operator=(BlindedToken&& other);
   ~BlindedToken();
   static base::expected<BlindedToken, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const BlindedToken& rhs) const;
@@ -87,7 +88,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT SignedToken {
   SignedToken(const SignedToken&);
   ~SignedToken();
   static base::expected<SignedToken, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const SignedToken& rhs) const;
@@ -105,7 +106,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT VerificationSignature {
   VerificationSignature(const VerificationSignature&);
   ~VerificationSignature();
   static base::expected<VerificationSignature, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
  private:
@@ -117,9 +118,10 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT VerificationKey {
   explicit VerificationKey(std::shared_ptr<C_VerificationKey>);
   VerificationKey(const VerificationKey&);
   ~VerificationKey();
-  base::expected<VerificationSignature, std::string> sign(const std::string);
+  base::expected<VerificationSignature, std::string> sign(
+      base::span<const uint8_t>);
   base::expected<bool, std::string> verify(VerificationSignature,
-                                           const std::string);
+                                           base::span<const uint8_t>);
 
  private:
   std::shared_ptr<C_VerificationKey> raw;
@@ -133,7 +135,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT UnblindedToken {
   VerificationKey derive_verification_key() const;
   TokenPreimage preimage() const;
   static base::expected<UnblindedToken, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const UnblindedToken& rhs) const;
@@ -152,7 +154,8 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT Token {
   ~Token();
   static base::expected<Token, std::string> random();
   base::expected<BlindedToken, std::string> blind();
-  static base::expected<Token, std::string> decode_base64(const std::string);
+  static base::expected<Token, std::string> decode_base64(
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const Token& rhs) const;
@@ -171,7 +174,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT PublicKey {
   PublicKey(const PublicKey&);
   ~PublicKey();
   static base::expected<PublicKey, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const PublicKey& rhs) const;
@@ -194,7 +197,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT SigningKey {
   UnblindedToken rederive_unblinded_token(TokenPreimage);
   PublicKey public_key();
   static base::expected<SigningKey, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const SigningKey& rhs) const;
@@ -213,7 +216,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT DLEQProof {
                                            SignedToken,
                                            PublicKey);
   static base::expected<DLEQProof, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
 
   bool operator==(const DLEQProof& rhs) const;
@@ -241,7 +244,7 @@ class CHALLENGE_BYPASS_RISTRETTO_EXPORT BatchDLEQProof {
       std::vector<SignedToken>,
       PublicKey);
   static base::expected<BatchDLEQProof, std::string> decode_base64(
-      const std::string);
+      base::span<const uint8_t>);
   base::expected<std::string, std::string> encode_base64() const;
   static base::expected<BatchDLEQProof, std::string> Create(
       std::vector<BlindedToken> blinded_tokens,

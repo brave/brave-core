@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
@@ -19,7 +20,7 @@ std::optional<challenge_bypass_ristretto::BlindedToken> Create(
 
   return ValueOrLogError(
       challenge_bypass_ristretto::BlindedToken::decode_base64(
-          blinded_token_base64));
+          base::as_bytes(base::make_span(blinded_token_base64))));
 }
 
 }  // namespace

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
@@ -21,7 +22,7 @@ std::optional<challenge_bypass_ristretto::UnblindedToken> Create(
 
   return ValueOrLogError(
       challenge_bypass_ristretto::UnblindedToken::decode_base64(
-          unblinded_token_base64));
+          base::as_bytes(base::make_span(unblinded_token_base64))));
 }
 
 }  // namespace

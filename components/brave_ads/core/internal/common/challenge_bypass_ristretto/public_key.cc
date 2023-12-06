@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
@@ -17,8 +18,8 @@ std::optional<challenge_bypass_ristretto::PublicKey> Create(
     return std::nullopt;
   }
 
-  return ValueOrLogError(
-      challenge_bypass_ristretto::PublicKey::decode_base64(public_key_base64));
+  return ValueOrLogError(challenge_bypass_ristretto::PublicKey::decode_base64(
+      base::as_bytes(base::make_span(public_key_base64))));
 }
 
 }  // namespace

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/dleq_proof.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
@@ -34,8 +35,8 @@ std::optional<challenge_bypass_ristretto::DLEQProof> Create(
     return std::nullopt;
   }
 
-  return ValueOrLogError(
-      challenge_bypass_ristretto::DLEQProof::decode_base64(dleq_proof_base64));
+  return ValueOrLogError(challenge_bypass_ristretto::DLEQProof::decode_base64(
+      base::as_bytes(base::make_span(dleq_proof_base64))));
 }
 
 }  // namespace

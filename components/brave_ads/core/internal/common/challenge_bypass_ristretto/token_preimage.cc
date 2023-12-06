@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
@@ -19,7 +20,7 @@ std::optional<challenge_bypass_ristretto::TokenPreimage> Create(
 
   return ValueOrLogError(
       challenge_bypass_ristretto::TokenPreimage::decode_base64(
-          token_preimage_base64));
+          base::as_bytes(base::make_span(token_preimage_base64))));
 }
 
 }  // namespace
