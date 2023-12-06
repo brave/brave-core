@@ -30,8 +30,8 @@ void FireEventCallback(TriggerAdEventCallback callback,
 }  // namespace
 
 PromotedContentAdHandler::PromotedContentAdHandler(Account& account,
-                                                   SiteVisit& transfer)
-    : account_(account), transfer_(transfer) {
+                                                   SiteVisit& site_visit)
+    : account_(account), site_visit_(site_visit) {
   event_handler_.SetDelegate(this);
 }
 
@@ -112,7 +112,7 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 

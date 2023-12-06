@@ -25,29 +25,29 @@ AdHandler::AdHandler(Account& account)
       text_classification_processor_(text_classification_resource_),
       text_embedding_processor_(text_embedding_resource_),
       inline_content_ad_handler_(account,
-                                 transfer_,
+                                 site_visit_,
                                  subdivision_targeting_,
                                  anti_targeting_resource_),
       new_tab_page_ad_handler_(account,
-                               transfer_,
+                               site_visit_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
       notification_ad_handler_(account,
-                               transfer_,
+                               site_visit_,
                                epsilon_greedy_bandit_processor_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
-      promoted_content_ad_handler_(account, transfer_),
-      search_result_ad_handler_(account, transfer_) {
+      promoted_content_ad_handler_(account, site_visit_),
+      search_result_ad_handler_(account, site_visit_) {
   conversions_.AddObserver(this);
-  transfer_.AddObserver(this);
+  site_visit_.AddObserver(this);
   subdivision_.AddObserver(&country_code_);
   subdivision_.AddObserver(&subdivision_targeting_);
 }
 
 AdHandler::~AdHandler() {
   conversions_.RemoveObserver(this);
-  transfer_.RemoveObserver(this);
+  site_visit_.RemoveObserver(this);
   subdivision_.RemoveObserver(&country_code_);
   subdivision_.RemoveObserver(&subdivision_targeting_);
 }

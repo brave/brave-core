@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_TRANSFERRED_EXCLUSION_RULE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_TRANSFERRED_EXCLUSION_RULE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_PAGE_LAND_EXCLUSION_RULE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_PAGE_LAND_EXCLUSION_RULE_H_
 
 #include <string>
 
@@ -15,18 +15,18 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-class SiteVisitExclusionRule final
+class PageLandExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit SiteVisitExclusionRule(AdEventList ad_events);
+  explicit PageLandExclusionRule(AdEventList ad_events);
 
-  SiteVisitExclusionRule(const SiteVisitExclusionRule&) = delete;
-  SiteVisitExclusionRule& operator=(const SiteVisitExclusionRule&) = delete;
+  PageLandExclusionRule(const PageLandExclusionRule&) = delete;
+  PageLandExclusionRule& operator=(const PageLandExclusionRule&) = delete;
 
-  SiteVisitExclusionRule(SiteVisitExclusionRule&&) noexcept = delete;
-  SiteVisitExclusionRule& operator=(SiteVisitExclusionRule&&) noexcept = delete;
+  PageLandExclusionRule(PageLandExclusionRule&&) noexcept = delete;
+  PageLandExclusionRule& operator=(PageLandExclusionRule&&) noexcept = delete;
 
-  ~SiteVisitExclusionRule() override;
+  ~PageLandExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
@@ -39,4 +39,4 @@ class SiteVisitExclusionRule final
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_TRANSFERRED_EXCLUSION_RULE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_PAGE_LAND_EXCLUSION_RULE_H_

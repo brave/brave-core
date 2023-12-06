@@ -25,7 +25,7 @@ struct SearchResultAdInfo;
 
 class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
  public:
-  SearchResultAd(Account& account, SiteVisit& transfer);
+  SearchResultAd(Account& account, SiteVisit& site_visit);
 
   SearchResultAd(const SearchResultAd&) = delete;
   SearchResultAd& operator=(const SearchResultAd&) = delete;
@@ -64,7 +64,8 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
       const SearchResultAdInfo& ad) override;
 
   const raw_ref<Account> account_;
-  const raw_ref<SiteVisit> transfer_;
+
+  const raw_ref<SiteVisit> site_visit_;
 
   SearchResultAdEventHandler event_handler_;
 

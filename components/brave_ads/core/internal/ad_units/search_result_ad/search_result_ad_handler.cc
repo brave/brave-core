@@ -38,8 +38,8 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 }  // namespace
 
-SearchResultAd::SearchResultAd(Account& account, SiteVisit& transfer)
-    : account_(account), transfer_(transfer) {
+SearchResultAd::SearchResultAd(Account& account, SiteVisit& site_visit)
+    : account_(account), site_visit_(site_visit) {
   event_handler_.SetDelegate(this);
 }
 
@@ -169,7 +169,7 @@ void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  transfer_->SetLastClickedAd(ad);
+  site_visit_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 

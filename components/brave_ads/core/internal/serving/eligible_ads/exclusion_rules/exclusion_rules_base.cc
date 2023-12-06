@@ -17,13 +17,13 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/page_land_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -61,6 +61,10 @@ ExclusionRulesBase::ExclusionRulesBase(
       std::make_unique<MarkedAsInappropriateExclusionRule>();
   exclusion_rules_.push_back(std::move(marked_as_inappropriate_exclusion_rule));
 
+  auto page_land_exclusion_rule =
+      std::make_unique<PageLandExclusionRule>(ad_events);
+  exclusion_rules_.push_back(std::move(page_land_exclusion_rule));
+
   auto per_day_exclusion_rule =
       std::make_unique<PerDayExclusionRule>(ad_events);
   exclusion_rules_.push_back(std::move(per_day_exclusion_rule));
@@ -84,10 +88,6 @@ ExclusionRulesBase::ExclusionRulesBase(
   auto total_max_exclusion_rule =
       std::make_unique<TotalMaxExclusionRule>(ad_events);
   exclusion_rules_.push_back(std::move(total_max_exclusion_rule));
-
-  auto site_visit_exclusion_rule =
-      std::make_unique<SiteVisitExclusionRule>(ad_events);
-  exclusion_rules_.push_back(std::move(site_visit_exclusion_rule));
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
