@@ -243,6 +243,8 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
+#else
+    item_count -= 1;    
 #endif
     return item_count;
   }
