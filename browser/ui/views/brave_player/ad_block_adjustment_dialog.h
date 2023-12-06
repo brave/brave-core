@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_H_
 
+#include "base/memory/weak_ptr.h"
 #include "ui/views/window/dialog_delegate.h"
 
 namespace content {
@@ -25,7 +26,7 @@ class AdBlockAdjustmentDialog : public views::DialogDelegateView {
  private:
   void DisableAdBlockForSite();
 
-  raw_ptr<content::WebContents> contents_ = nullptr;
+  base::WeakPtr<content::WebContents> contents_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_PLAYER_AD_BLOCK_ADJUSTMENT_DIALOG_H_

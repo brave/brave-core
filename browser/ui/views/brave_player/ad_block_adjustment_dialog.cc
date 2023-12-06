@@ -25,7 +25,7 @@
 #include "ui/views/view_class_properties.h"
 
 AdBlockAdjustmentDialog::AdBlockAdjustmentDialog(content::WebContents* contents)
-    : contents_(contents) {
+    : contents_(contents->GetWeakPtr()) {
   CHECK(contents_);
 
   set_margins(gfx::Insets(40));
@@ -114,15 +114,22 @@ gfx::Size AdBlockAdjustmentDialog::CalculatePreferredSize() const {
 void AdBlockAdjustmentDialog::WindowClosing() {
   DialogDelegateView::WindowClosing();
 
+  // When this dialog is closed after a tab is closed, |contents_| could be
+  // null.
+  if (!contents_) {
+    return;
+  }
+
   auto* shield_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents_);
+      brave_shields::BraveShieldsDataController::FromWebContents(
+          contents_.get());
   CHECK(shield_data_controller);
 
   // brave_shield's setting works per host.
   const auto& host = shield_data_controller->GetCurrentSiteURL().host();
   CHECK(!host.empty());
 
-  Browser* browser = chrome::FindBrowserWithTab(contents_);
+  Browser* browser = chrome::FindBrowserWithTab(contents_.get());
   CHECK(browser);
   auto* prefs = browser->profile()->GetPrefs();
 
@@ -133,7 +140,8 @@ void AdBlockAdjustmentDialog::WindowClosing() {
 
 void AdBlockAdjustmentDialog::DisableAdBlockForSite() {
   auto* shield_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents_);
+      brave_shields::BraveShieldsDataController::FromWebContents(
+          contents_.get());
   CHECK(shield_data_controller);
   shield_data_controller->SetAdBlockMode(AdBlockMode::ALLOW);
 }
