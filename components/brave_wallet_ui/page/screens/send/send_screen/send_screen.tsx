@@ -48,6 +48,7 @@ import {
   supportedUDExtensions
 } from '../../../../common/constants/domain-extensions'
 import {
+  isValidBtcAddress,
   isValidEVMAddress,
   isValidFilAddress,
   isValidZecAddress
@@ -163,6 +164,7 @@ export const SendScreen = React.memo((props: Props) => {
 
   // State
   const [sendAmount, setSendAmount] = React.useState<string>('')
+  const [sendingMaxAmount, setSendingMaxAmount] = React.useState<boolean>(false)
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const trimmedToAddressOrUrl = toAddressOrUrl.trim()
   const [isOffChainEnsWarningDismissed, dismissOffchainEnsWarning] =
@@ -501,6 +503,7 @@ export const SendScreen = React.memo((props: Props) => {
           network: networkFromParams,
           fromAccount,
           to: toAddress,
+          sendingMaxValue: sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex()
@@ -628,6 +631,7 @@ export const SendScreen = React.memo((props: Props) => {
     accountFromParams,
     networkFromParams,
     sendAmount,
+    sendingMaxAmount,
     toAddressOrUrl,
     showResolvedDomain,
     resolvedDomainAddress,
@@ -639,6 +643,14 @@ export const SendScreen = React.memo((props: Props) => {
       setToAddressOrUrl(event.target.value)
     },
     [setToAddressOrUrl, addressWidthRef]
+  )
+
+  const handleFromAssetValueChange = React.useCallback(
+    (value: string, maxValue: boolean) => {
+      setSendAmount(value)
+      setSendingMaxAmount(maxValue)
+    },
+    []
   )
 
   const onSelectSendOption = React.useCallback(
@@ -697,7 +709,7 @@ export const SendScreen = React.memo((props: Props) => {
       >
         <>
           <FromAsset
-            onInputChange={setSendAmount}
+            onInputChange={handleFromAssetValueChange}
             onClickSelectToken={openSelectTokenModal}
             hasInputError={insufficientFundsError}
             inputValue={sendAmount}
@@ -1041,11 +1053,11 @@ const processSolanaAddress = (
   return undefined
 }
 
-const processBitcoinAddress = (addressOrUrl: string) => {
-  // Check if value is the same as the sending address
-  // TODO(apaymyshev): should prohibit self transfers?
+const processBitcoinAddress = (addressOrUrl: string, testnet: boolean) => {
+  if (!isValidBtcAddress(addressOrUrl, testnet)) {
+    return 'braveWalletInvalidRecipientAddress'
+  }
 
-  // TODO(apaymyshev): validate address format.
   return undefined
 }
 
@@ -1080,7 +1092,10 @@ function processAddressOrUrl({
       return processSolanaAddress(addressOrUrl, isBase58)
     }
     case BraveWallet.CoinType.BTC: {
-      return processBitcoinAddress(addressOrUrl)
+      return processBitcoinAddress(
+        addressOrUrl,
+        token?.chainId === BraveWallet.BITCOIN_TESTNET
+      )
     }
     case BraveWallet.CoinType.ZEC: {
       return processZCashAddress(addressOrUrl)

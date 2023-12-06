@@ -11,6 +11,7 @@
 #include "base/rand_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
 namespace brave_wallet {
 
@@ -30,13 +31,6 @@ KnapsackSolver::KnapsackSolver(
       longterm_fee_rate_(longterm_fee_rate),
       input_groups_(input_groups) {}
 KnapsackSolver::~KnapsackSolver() = default;
-
-// static
-uint64_t KnapsackSolver::ApplyFeeRate(double fee_rate, uint32_t vbytes) {
-  // Bitcoin core does ceiling here.
-  // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/feerate.cpp#L29
-  return static_cast<uint64_t>(std::ceil(fee_rate * vbytes));
-}
 
 // static
 uint64_t KnapsackSolver::GetCostOfChangeOutput(
@@ -70,7 +64,7 @@ void KnapsackSolver::SolveForTransaction(
 
   for (int i = 0; i < kKnapsackSolverIterations; ++i) {
     std::vector<bool> picked_groups(input_groups_.size(), false);
-    BitcoinTransaction cur_transaction = transaction.Clone();
+    BitcoinTransaction cur_transaction = transaction;
     bool has_valid_transaction_for_iteration = false;
 
     // First pass: Go through input groups(sorted desc) and randomly pick
@@ -95,7 +89,7 @@ void KnapsackSolver::SolveForTransaction(
         // TODO(apaymyshev): avoid copying transaction. Just keep track of
         // current vbytes of transaction and optimize by cost of adding an
         // input.
-        BitcoinTransaction next_transaction = cur_transaction.Clone();
+        BitcoinTransaction next_transaction = cur_transaction;
         next_transaction.AddInputs(input_groups_[group_index].inputs());
 
         // Minimum fee required for this transaction to be accepted.
@@ -119,7 +113,7 @@ void KnapsackSolver::SolveForTransaction(
           // TODO(apaymyshev): Should we also add cost of spending change output
           // in the future?
           solutions.emplace(next_transaction.EffectiveFeeAmount(),
-                            next_transaction.Clone());
+                            next_transaction);
 
           // Keep some best ones(less fee) in the container. Might be useful for
           // logging later.
@@ -139,6 +133,7 @@ base::expected<BitcoinTransaction, std::string> KnapsackSolver::Solve() {
   DCHECK_EQ(base_transaction_.inputs().size(), 0u);
   DCHECK(base_transaction_.TargetOutput());
   DCHECK(base_transaction_.ChangeOutput());
+  DCHECK(!base_transaction_.sending_max_amount());
 
   // TODO(apaymyshev): avoid dust inputs?
   std::sort(input_groups_.begin(), input_groups_.end(), [](auto& g1, auto& g2) {
@@ -154,7 +149,7 @@ base::expected<BitcoinTransaction, std::string> KnapsackSolver::Solve() {
   // Drop the change output from the transaction and try to find the best
   // transaction again. Might find a transaction with a slightly higher fee but
   // still less than the cost of having a change output.
-  auto no_change_transaction = base_transaction_.Clone();
+  auto no_change_transaction = base_transaction_;
   no_change_transaction.ClearChangeOutput();
   SolveForTransaction(no_change_transaction, solutions);
 

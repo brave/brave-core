@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <map>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
@@ -20,6 +21,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_knapsack_solver.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_max_send_solver.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -319,6 +321,7 @@ class CreateTransactionTask {
                         const mojom::AccountIdPtr& account_id,
                         const std::string& address_to,
                         uint64_t amount,
+                        bool sending_max_amount,
                         CreateTransactionCallback callback);
 
   void ScheduleWorkOnTask();
@@ -332,8 +335,9 @@ class CreateTransactionTask {
 
   double GetFeeRate();
   double GetLongtermFeeRate();
-  bool PickInputs();
-  base::expected<void, std::string> PrepareOutputs();
+
+  BitcoinTransaction::TxOutput CreateTargetOutput();
+  BitcoinTransaction::TxOutput CreateChangeOutput();
 
   void OnGetChainHeight(base::expected<uint32_t, std::string> chain_height);
   void OnGetFeeEstimates(
@@ -363,12 +367,14 @@ CreateTransactionTask::CreateTransactionTask(
     const mojom::AccountIdPtr& account_id,
     const std::string& address_to,
     uint64_t amount,
+    bool sending_max_amount,
     CreateTransactionCallback callback)
     : bitcoin_wallet_service_(bitcoin_wallet_service),
       account_id_(account_id.Clone()),
       callback_(std::move(callback)) {
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
+  transaction_.set_sending_max_amount(sending_max_amount);
 }
 
 void CreateTransactionTask::ScheduleWorkOnTask() {
@@ -381,6 +387,33 @@ void CreateTransactionTask::SetArrangeTransactionForTesting() {
   arrange_for_testing_ = true;
 }
 
+BitcoinTransaction::TxOutput CreateTransactionTask::CreateTargetOutput() {
+  // TODO(apaymyshev): should fail if target output would be dust.
+
+  BitcoinTransaction::TxOutput target_output;
+  target_output.type = BitcoinTransaction::TxOutputType::kTarget;
+  target_output.amount =
+      transaction_.sending_max_amount() ? 0 : transaction_.amount();
+  target_output.address = transaction_.to();
+  target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      target_output.address, IsTestnet());
+  CHECK(target_output.script_pubkey.size());
+
+  return target_output;
+}
+
+BitcoinTransaction::TxOutput CreateTransactionTask::CreateChangeOutput() {
+  BitcoinTransaction::TxOutput change_output;
+  change_output.type = BitcoinTransaction::TxOutputType::kChange;
+  change_output.amount = 0;
+  change_output.address = change_address_->address_string;
+  change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      change_output.address, IsTestnet());
+  CHECK(change_output.script_pubkey.size());
+
+  return change_output;
+}
+
 void CreateTransactionTask::WorkOnTask() {
   if (!callback_) {
     return;
@@ -389,6 +422,13 @@ void CreateTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(*error_));
     bitcoin_wallet_service_->CreateTransactionTaskDone(this);
+    return;
+  }
+
+  if (BitcoinSerializer::AddressToScriptPubkey(transaction_.to(), IsTestnet())
+          .empty()) {
+    SetError("Invalid send address");
+    ScheduleWorkOnTask();
     return;
   }
 
@@ -430,35 +470,21 @@ void CreateTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  BitcoinTransaction::TxOutput target_output;
-  target_output.type = BitcoinTransaction::TxOutputType::kTarget;
-  // TODO(apaymyshev): should fail if target output would be dust.
-  target_output.amount = transaction_.amount();
-  target_output.address = transaction_.to();
-  target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-      target_output.address, IsTestnet());
-  if (target_output.script_pubkey.empty()) {
-    SetError("Invalid send address");
-    ScheduleWorkOnTask();
-    return;
+  base::expected<BitcoinTransaction, std::string> solved_transaction;
+  if (transaction_.sending_max_amount()) {
+    transaction_.AddOutput(CreateTargetOutput());
+    BitcoinMaxSendSolver solver(transaction_, GetFeeRate(),
+                                TxInputGroupsFromUtxoMap(utxo_map_));
+    solved_transaction = solver.Solve();
+  } else {
+    transaction_.AddOutput(CreateTargetOutput());
+    transaction_.AddOutput(CreateChangeOutput());
+
+    // TODO(apaymyshev): consider moving this calculation to separate thread.
+    KnapsackSolver solver(transaction_, GetFeeRate(), GetLongtermFeeRate(),
+                          TxInputGroupsFromUtxoMap(utxo_map_));
+    solved_transaction = solver.Solve();
   }
-  transaction_.AddOutput(std::move(target_output));
-
-  BitcoinTransaction::TxOutput change_output;
-  change_output.type = BitcoinTransaction::TxOutputType::kChange;
-  change_output.amount = 0;
-  change_output.address = change_address_->address_string;
-  change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-      change_output.address, IsTestnet());
-  CHECK(change_output.script_pubkey.size());
-  transaction_.AddOutput(std::move(change_output));
-
-  // TODO(apaymyshev): consider moving this calulation to separate thread.
-  KnapsackSolver solver(transaction_.Clone(), GetFeeRate(),
-                        GetLongtermFeeRate(),
-                        TxInputGroupsFromUtxoMap(utxo_map_));
-
-  auto solved_transaction = solver.Solve();
 
   if (!solved_transaction.has_value()) {
     SetError(solved_transaction.error());
@@ -926,12 +952,14 @@ void BitcoinWalletService::CreateTransaction(
     mojom::AccountIdPtr account_id,
     const std::string& address_to,
     uint64_t amount,
+    bool sending_max_amount,
     CreateTransactionCallback callback) {
   CHECK(IsBitcoinAccount(*account_id));
 
   auto& task = create_transaction_tasks_.emplace_back(
       std::make_unique<CreateTransactionTask>(this, account_id, address_to,
-                                              amount, std::move(callback)));
+                                              amount, sending_max_amount,
+                                              std::move(callback)));
   if (arrange_transactions_for_testing_) {
     task->SetArrangeTransactionForTesting();  // IN-TEST
   }
@@ -952,7 +980,7 @@ void BitcoinWalletService::SignAndPostTransaction(
 
   if (!SignTransactionInternal(bitcoin_transaction, account_id)) {
     std::move(callback).Run("", std::move(bitcoin_transaction),
-                            "Couldn't sign transaciton");
+                            "Couldn't sign transaction");
     return;
   }
 

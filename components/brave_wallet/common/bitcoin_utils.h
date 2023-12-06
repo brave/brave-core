@@ -49,6 +49,8 @@ std::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
 std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
                                   bool testnet);
 
+uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BITCOIN_UTILS_H_

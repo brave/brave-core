@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   padding-top: 32px;
 `
@@ -48,32 +48,6 @@ const Balance = styled.div`
   font-family: monospace;
 `
 
-const defaultKeyringId = BraveWallet.KeyringId.kBitcoin84Testnet
-
-interface CreateAccountSectionProps {
-  setAccountId: (accountId: BraveWallet.AccountId | undefined) => void
-}
-
-const CreateAccountSection = (props: CreateAccountSectionProps) => {
-  const createBtcAccount = async () => {
-    const { accountInfo } = await getAPIProxy().keyringService.addAccount(
-      BraveWallet.CoinType.BTC,
-      BraveWallet.KeyringId.kBitcoin84Testnet,
-      'BTC Account'
-    )
-
-    if (accountInfo) {
-      props.setAccountId(accountInfo.accountId)
-    }
-  }
-
-  return (
-    <StyledWrapper>
-      <button onClick={createBtcAccount}>Create Account</button>
-    </StyledWrapper>
-  )
-}
-
 interface GetBalanceSectionProps {
   accountId: BraveWallet.AccountId
 }
@@ -99,7 +73,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
 
   return (
     <BalanceSection>
-      <h1>getBalance</h1>
+      <h2>getBalance</h2>
       {loading ? (
         <LoadingSkeleton
           useLightTheme={true}
@@ -109,7 +83,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
       ) : (
         <>
           <button onClick={fetchBalance}>Reload</button>
-          <h2>balance: {balance?.totalBalance.toString()}</h2>
+          <h3>balance: {balance?.totalBalance.toString()}</h3>
           <ul>
             {balance?.balances &&
               Object.entries(balance.balances as { [key: string]: BigInt }).map(
@@ -169,7 +143,7 @@ const GetBitcoinAccountInfoSection: React.FC<
 
   return (
     <BitcoinAccountInfoSection>
-      <h1>getBitcoinAccountInfo</h1>
+      <h2>getBitcoinAccountInfo</h2>
       {loading ? (
         <LoadingSkeleton
           useLightTheme={true}
@@ -185,7 +159,7 @@ const GetBitcoinAccountInfoSection: React.FC<
               {bitcoinAccountInfo?.nextReceiveAddress.addressString || '-'}
             </code>
             <button onClick={() => onRunDiscoverClick(false)}>
-              Run disovery
+              Run discovery
             </button>
           </div>
           <div>
@@ -195,7 +169,7 @@ const GetBitcoinAccountInfoSection: React.FC<
               {bitcoinAccountInfo?.nextChangeAddress.addressString || '-'}
             </code>
             <button onClick={() => onRunDiscoverClick(true)}>
-              Run disovery
+              Run discovery
             </button>
           </div>
         </>
@@ -205,42 +179,49 @@ const GetBitcoinAccountInfoSection: React.FC<
 }
 
 interface AccountSectionProps {
-  accountId: BraveWallet.AccountId
+  accountInfo: BraveWallet.AccountInfo
 }
 
 const AccountSection = (props: AccountSectionProps) => {
   return (
     <StyledWrapper>
+      <h1>{props.accountInfo.name}</h1>
       <GetBitcoinAccountInfoSection
-        accountId={props.accountId}
+        accountId={props.accountInfo.accountId}
       ></GetBitcoinAccountInfoSection>
-      <GetBalanceSection accountId={props.accountId}></GetBalanceSection>
+      <GetBalanceSection
+        accountId={props.accountInfo.accountId}
+      ></GetBalanceSection>
     </StyledWrapper>
   )
 }
 
 export const DevBitcoin = () => {
-  const [accountId, setAccountId] = useState<
-    BraveWallet.AccountId | undefined
-  >()
+  const [accounts, setAccounts] = useState<BraveWallet.AccountInfo[]>([])
 
   React.useEffect(() => {
     const fetchBitcoinAccount = async () => {
-      const { accounts } = (await getAPIProxy().keyringService.getAllAccounts())
+      const allAccounts = (await getAPIProxy().keyringService.getAllAccounts())
         .allAccounts
-      const bitcoinAccount = accounts.find(
-        (acc) => acc.accountId.keyringId === defaultKeyringId
+      setAccounts(
+        allAccounts.accounts.filter(
+          (acc) => acc.accountId.coin === BraveWallet.CoinType.BTC
+        )
       )
-      setAccountId(bitcoinAccount?.accountId)
     }
 
     fetchBitcoinAccount()
   }, [])
 
-  return accountId ? (
-    <AccountSection accountId={accountId} />
-  ) : (
-    <CreateAccountSection setAccountId={setAccountId} />
+  return (
+    <div>
+      {accounts.map((account) => (
+        <div key={account.accountId.uniqueKey}>
+          <AccountSection accountInfo={account} />
+          <hr />
+        </div>
+      ))}
+    </div>
   )
 }
 

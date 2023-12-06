@@ -1473,6 +1473,8 @@ struct FilTxData {
 
 struct BtcTxInput {
   string address;
+  string outpoint_txid;
+  uint32 outpoint_index;
   uint64 value;
 };
 
@@ -1484,6 +1486,7 @@ struct BtcTxOutput {
 struct BtcTxData {
   string to;
   uint64 amount;
+  bool sending_max_amount;
   uint64 fee;
   array<BtcTxInput> inputs;
   array<BtcTxOutput> outputs;

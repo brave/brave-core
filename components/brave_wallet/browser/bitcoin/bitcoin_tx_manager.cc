@@ -67,6 +67,7 @@ void BitcoinTxManager::AddUnapprovedTransaction(
 
   bitcoin_wallet_service_->CreateTransaction(
       from->Clone(), btc_tx_data->to, btc_tx_data->amount,
+      btc_tx_data->sending_max_amount,
       base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
                      std::move(callback)));

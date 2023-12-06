@@ -57,6 +57,16 @@ export const DetailColumn = styled(DetailRow)`
   gap: 8px;
 `
 
+export const BitcoinDetailColumn = styled(DetailRow)`
+  flex-direction: column;
+  gap: 8px;
+`
+
+export const BitcoinDetailLine = styled.code`
+  overflow-wrap: anywhere;
+  display: block;
+`
+
 export const DetailText = styled.span`
   font-family: Poppins;
   font-size: 11px;

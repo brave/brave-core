@@ -10,8 +10,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
@@ -74,6 +72,7 @@ class BitcoinWalletService : public KeyedService,
   void CreateTransaction(mojom::AccountIdPtr account_id,
                          const std::string& address_to,
                          uint64_t amount,
+                         bool sending_max_amount,
                          CreateTransactionCallback callback);
 
   using SignAndPostTransactionCallback =

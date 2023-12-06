@@ -31,7 +31,6 @@ class KnapsackSolver {
       const std::vector<BitcoinTransaction::TxInputGroup>& input_groups);
   ~KnapsackSolver();
 
-  static uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes);
   static uint64_t GetCostOfChangeOutput(
       const BitcoinTransaction::TxOutput& output,
       double fee_rate,

@@ -58,7 +58,7 @@ import {
 
 interface Props {
   onClickSelectToken: () => void
-  onInputChange: (value: string) => void
+  onInputChange: (value: string, maxValue: boolean) => void
   inputValue: string
   hasInputError: boolean
   token: BraveWallet.BlockchainToken | undefined
@@ -107,7 +107,8 @@ export const FromAsset = (props: Props) => {
           account.accountId,
           percent,
           tokenBalancesRegistry
-        )
+        ),
+        percent === 1
       )
     },
     [token, account, tokenBalancesRegistry, onChange]
@@ -115,7 +116,7 @@ export const FromAsset = (props: Props) => {
 
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(event.target.value)
+      onChange(event.target.value, false)
     },
     [onChange]
   )

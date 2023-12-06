@@ -261,4 +261,9 @@ TEST(BitcoinUtilsUnitTest, PubkeyToSegwitAddress) {
             PubkeyToSegwitAddress(pubkey, true));
 }
 
+TEST(BitcoinUtilsUnitTest, ApplyFeeRate) {
+  EXPECT_EQ(0u, ApplyFeeRate(0, 0));
+  EXPECT_EQ(3261u, ApplyFeeRate(23.123, 141));
+}
+
 }  // namespace brave_wallet

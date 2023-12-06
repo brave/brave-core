@@ -17,16 +17,17 @@ namespace {
 mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
   std::vector<mojom::BtcTxInputPtr> mojom_inputs;
   for (auto& input : tx.inputs()) {
-    mojom_inputs.push_back(
-        mojom::BtcTxInput::New(input.utxo_address, input.utxo_value));
+    mojom_inputs.push_back(mojom::BtcTxInput::New(
+        input.utxo_address, base::HexEncode(input.utxo_outpoint.txid),
+        input.utxo_outpoint.index, input.utxo_value));
   }
   std::vector<mojom::BtcTxOutputPtr> mojom_outputs;
   for (auto& output : tx.outputs()) {
     mojom_outputs.push_back(
         mojom::BtcTxOutput::New(output.address, output.amount));
   }
-  return mojom::BtcTxData::New(tx.to(), tx.amount(), tx.EffectiveFeeAmount(),
-                               std::move(mojom_inputs),
+  return mojom::BtcTxData::New(tx.to(), tx.amount(), tx.sending_max_amount(),
+                               tx.EffectiveFeeAmount(), std::move(mojom_inputs),
                                std::move(mojom_outputs));
 }
 }  // namespace

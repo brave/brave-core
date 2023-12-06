@@ -9,11 +9,6 @@ import { Route, Switch } from 'react-router'
 // constants
 import { WalletRoutes } from '../../constants/types'
 
-// hooks
-import { useSafeWalletSelector } from '../../common/hooks/use-safe-selector'
-
-import { WalletSelectors } from '../../common/selectors'
-
 // components
 import { CryptoView } from '../../components/desktop/views/crypto'
 import { WalletPageLayout } from '../../components/desktop/wallet-page-layout'
@@ -23,27 +18,18 @@ import {
 import {
   BackupWalletRoutes //
 } from '../screens/backup-wallet/backup-wallet.routes'
-import { DevBitcoin } from '../screens/dev-bitcoin/dev-bitcoin'
 import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
 import { FundWalletScreen } from '../screens/fund-wallet/fund-wallet'
 import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess //
 } from '../screens/onboarding/onboarding-success/onboarding-success'
-import {
-  ProtectedRoute //
-} from '../../components/shared/protected-routing/protected-route'
 
 export const UnlockedWalletRoutes = ({
   sessionRoute
 }: {
   sessionRoute: WalletRoutes | undefined
 }) => {
-  // redux
-  const isBitcoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinEnabled
-  )
-
   // render
   return (
     <Switch>
@@ -75,15 +61,6 @@ export const UnlockedWalletRoutes = ({
       <Route path={WalletRoutes.DepositFundsPageStart}>
         <DepositFundsScreen />
       </Route>
-
-      <ProtectedRoute
-        path={WalletRoutes.DevBitcoin}
-        exact={true}
-        requirement={isBitcoinEnabled}
-        redirectRoute={WalletRoutes.PortfolioAssets}
-      >
-        <DevBitcoin />
-      </ProtectedRoute>
 
       <Route path={WalletRoutes.CryptoPage}>
         <CryptoView sessionRoute={sessionRoute} />

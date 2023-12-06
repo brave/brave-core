@@ -392,7 +392,9 @@ export interface SendETHFilForwardTransactionParams
   contractAddress: string
 }
 
-export interface SendBtcTransactionParams extends BaseTransactionParams {}
+export interface SendBtcTransactionParams extends BaseTransactionParams {
+  sendingMaxValue: boolean
+}
 
 export interface SendZecTransactionParams extends BaseTransactionParams {}
 
