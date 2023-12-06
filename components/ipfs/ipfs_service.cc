@@ -107,11 +107,7 @@ std::optional<std::string> ConvertPlainStringToJsonArray(
 // Contains blessed extension IDs for all channels
 inline constexpr const char* kBlessedExtensionIds_Stable[] = {
     // WebRecorder
-    "chrome-extension://fpeoodllldobpkbkabpblcfaogecpndd",
-    // ipfs-companion
-    "chrome-extension://nibjojkomfdiaoajekhjakgkdhaomnch",
-    // ipfs-companion-beta
-    "chrome-extension://hjoieblefckbooibpepigmacodalfndh"};
+    "chrome-extension://fpeoodllldobpkbkabpblcfaogecpndd"};
 
 // Contains blessed extension IDs for nigtly channel and previous ones
 inline constexpr const char* kBlessedExtensionIds_Nightly[] = {

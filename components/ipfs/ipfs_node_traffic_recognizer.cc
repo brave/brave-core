@@ -20,6 +20,11 @@ inline constexpr version_info::Channel kChannelsToEnumerate[] = {
     version_info::Channel::UNKNOWN, version_info::Channel::CANARY,
     version_info::Channel::DEV, version_info::Channel::BETA,
     version_info::Channel::STABLE};
+
+bool IsKuboDomain(const url::Origin& origin) {
+  return origin.DomainIs(ipfs::kLocalhostDomain) ||
+         origin.DomainIs(ipfs::kLocalhostIP);
+}
 }  // namespace
 #endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
@@ -29,11 +34,16 @@ bool IpfsNodeTrafficRecognizer::IsKuboRelatedUrl(const GURL& request_url) {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   const url::Origin origin = url::Origin::Create(request_url);
   const std::string_view port = request_url.port_piece();
+
+  if (IsKuboDomain(origin) &&
+      port == base::NumberToString(kDefaultKuboAPIPort)) {
+    return true;
+  }
+
   for (const auto& channel : kChannelsToEnumerate) {
-    if ((origin.DomainIs(ipfs::kLocalhostDomain) ||
-         origin.DomainIs(ipfs::kLocalhostIP)) &&
-        (port == ipfs::GetAPIPort(channel) ||
-         port == base::NumberToString(kDefaultKuboAPIPort))) {
+    if (IsKuboDomain(origin) && (port == ipfs::GetAPIPort(channel) ||
+                                 port == ipfs::GetSwarmPort(channel) ||
+                                 port == ipfs::GetGatewayPort(channel))) {
       return true;
     }
   }
