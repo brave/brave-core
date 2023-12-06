@@ -42,7 +42,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
+#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
@@ -154,8 +154,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
-    new brave_vpn::VpnRenderFrameObserver(render_frame,
-                                          content::ISOLATED_WORLD_ID_GLOBAL);
+    new brave_subscription::SubscriptionRenderFrameObserver(
+        render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 #endif
 

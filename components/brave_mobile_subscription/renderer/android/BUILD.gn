@@ -1,17 +1,18 @@
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-assert(enable_brave_vpn)
+assert(enable_brave_vpn || enable_ai_chat)
 assert(is_android)
 
 source_set("android") {
   sources = [
-    "vpn_render_frame_observer.cc",
-    "vpn_render_frame_observer.h",
+    "subscription_render_frame_observer.cc",
+    "subscription_render_frame_observer.h",
   ]
 
   deps = [
@@ -33,13 +34,14 @@ source_set("android") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "vpn_render_frame_observer_browsertest.cc" ]
+  sources = [ "subscription_render_frame_observer_browsertest.cc" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/renderer/android",
+    "//brave/components/brave_vpn/common/buildflags:buildflags",
+    "//brave/components/brave_mobile_subscription/renderer/android",
     "//brave/components/skus/common",
     "//chrome/common",
     "//content/public/common",
@@ -51,11 +53,11 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "vpn_render_frame_observer_unittest.cc" ]
+  sources = [ "subscription_render_frame_observer_unittest.cc" ]
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn/renderer/android",
+    "//brave/components/brave_mobile_subscription/renderer/android",
     "//content/public/renderer",
     "//testing/gtest",
     "//v8",

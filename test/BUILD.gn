@@ -499,8 +499,8 @@ test("brave_unit_tests") {
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
-    if (enable_brave_vpn) {
-      deps += [ "//brave/components/brave_vpn/renderer/android:unit_tests" ]
+    if (enable_brave_vpn || enable_ai_chat) {
+      deps += [ "//brave/components/brave_mobile_subscription/renderer/android:unit_tests" ]
     }
     if (use_v8_context_snapshot) {
       deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
@@ -1005,10 +1005,9 @@ test("brave_browser_tests") {
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
     ]
-
-    if (is_android) {
-      deps += [ "//brave/components/brave_vpn/renderer/android:browser_tests" ]
-    }
+  }
+  if (is_android && (enable_brave_vpn || enable_ai_chat)) {
+    deps += [ "//brave/components/brave_mobile_subscription/renderer/android:browser_tests" ]
   }
 
   if (enable_crash_dialog) {

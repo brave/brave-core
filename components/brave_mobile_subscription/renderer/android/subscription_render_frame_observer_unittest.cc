@@ -1,16 +1,16 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
+#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace brave_vpn {
+namespace brave_subscription {
 
-TEST(VpnRenderFrameObserverTest, ExtractParam) {
-  VpnRenderFrameObserver observer(nullptr, 0);
+TEST(SubscriptionRenderFrameObserverTest, ExtractParam) {
+  SubscriptionRenderFrameObserver observer(nullptr, 0);
   EXPECT_EQ(
       observer.ExtractParam(
           GURL("https://account.brave.com/?intent=connect-receipt&product=vpn"),
@@ -43,8 +43,8 @@ TEST(VpnRenderFrameObserverTest, ExtractParam) {
   EXPECT_TRUE(observer.ExtractParam(GURL(""), "intent").empty());
 }
 
-TEST(VpnRenderFrameObserverTest, IsValueAllowed) {
-  VpnRenderFrameObserver observer(nullptr, 0);
+TEST(SubscriptionRenderFrameObserverTest, IsValueAllowed) {
+  SubscriptionRenderFrameObserver observer(nullptr, 0);
 
   EXPECT_FALSE(observer.IsValueAllowed(""));
   EXPECT_FALSE(observer.IsValueAllowed("alert(\"whoops\")"));
@@ -55,4 +55,4 @@ TEST(VpnRenderFrameObserverTest, IsValueAllowed) {
       "z15JhIXt5QYcIExIxe5H5ifbhAsHILlUXlE"));
 }
 
-}  // namespace brave_vpn
+}  // namespace brave_subscription

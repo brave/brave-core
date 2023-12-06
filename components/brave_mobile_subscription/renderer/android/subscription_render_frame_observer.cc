@@ -1,9 +1,9 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
+#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
 
 #include <string>
 #include <string_view>
@@ -13,8 +13,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
@@ -23,7 +21,11 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_util.h"
 
-namespace brave_vpn {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
+namespace brave_subscription {
 
 namespace {
 
@@ -35,22 +37,26 @@ char kProductParamValue[] = "vpn";
 
 }  // namespace
 
-VpnRenderFrameObserver::VpnRenderFrameObserver(
+SubscriptionRenderFrameObserver::SubscriptionRenderFrameObserver(
     content::RenderFrame* render_frame,
     int32_t world_id)
     : RenderFrameObserver(render_frame), world_id_(world_id) {}
 
-VpnRenderFrameObserver::~VpnRenderFrameObserver() = default;
+SubscriptionRenderFrameObserver::~SubscriptionRenderFrameObserver() = default;
 
-bool VpnRenderFrameObserver::EnsureConnected() {
+bool SubscriptionRenderFrameObserver::EnsureConnected() {
+  bool bound = false;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (!vpn_service_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker()->GetInterface(
         vpn_service_.BindNewPipeAndPassReceiver());
   }
-  return vpn_service_.is_bound();
+  bound = vpn_service_.is_bound();
+#endif
+  return bound;
 }
 
-void VpnRenderFrameObserver::DidCreateScriptContext(
+void SubscriptionRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
   if (!render_frame()->IsMainFrame() || world_id_ != world_id) {
@@ -67,13 +73,14 @@ void VpnRenderFrameObserver::DidCreateScriptContext(
     return;
   }
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   vpn_service_->GetPurchaseToken(base::BindOnce(
-      &VpnRenderFrameObserver::OnGetPurchaseToken, weak_factory_.GetWeakPtr()));
+      &SubscriptionRenderFrameObserver::OnGetPurchaseToken,
+      weak_factory_.GetWeakPtr()));
 #endif
 }
 
-void VpnRenderFrameObserver::OnGetPurchaseToken(
+void SubscriptionRenderFrameObserver::OnGetPurchaseToken(
     const std::string& purchase_token) {
   if (!IsAllowed()) {
     return;
@@ -81,15 +88,17 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
   auto* frame = render_frame();
   if (frame) {
     if (IsValueAllowed(purchase_token)) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
       std::u16string set_local_storage =
           base::StrCat({u"window.localStorage.setItem(\"braveVpn.receipt\", \"",
                         base::UTF8ToUTF16(purchase_token), u"\");"});
+#endif
       frame->ExecuteJavaScript(set_local_storage);
     }
   }
 }
 
-std::string VpnRenderFrameObserver::ExtractParam(
+std::string SubscriptionRenderFrameObserver::ExtractParam(
     const GURL& url,
     const std::string& name) const {
   url::Component query(0, static_cast<int>(url.query_piece().length())), key,
@@ -106,7 +115,7 @@ std::string VpnRenderFrameObserver::ExtractParam(
   return std::string();
 }
 
-bool VpnRenderFrameObserver::IsValueAllowed(
+bool SubscriptionRenderFrameObserver::IsValueAllowed(
     const std::string& purchase_token) const {
   if (purchase_token.length() > 0) {
     // Don't allow " in purchase token.
@@ -119,8 +128,10 @@ bool VpnRenderFrameObserver::IsValueAllowed(
   return false;
 }
 
-bool VpnRenderFrameObserver::IsAllowed() {
+bool SubscriptionRenderFrameObserver::IsAllowed() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   DCHECK(brave_vpn::IsBraveVPNFeatureEnabled());
+#endif
 
   if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin())) {
     return false;
@@ -135,8 +146,8 @@ bool VpnRenderFrameObserver::IsAllowed() {
          product == kProductParamValue;
 }
 
-void VpnRenderFrameObserver::OnDestruct() {
+void SubscriptionRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-}  // namespace brave_vpn
+}  // namespace brave_subscription
