@@ -39,7 +39,7 @@ constexpr base::TimeDelta kPostRotationUploadDelay = base::Seconds(30);
 MessageManager::MessageManager(PrefService& local_state,
                                const P3AConfig* config,
                                Delegate& delegate,
-                               std::string channel,
+                               version_info::Channel channel,
                                std::string week_of_install)
     : local_state_(local_state), config_(config), delegate_(delegate) {
   message_meta_.Init(&local_state, channel, week_of_install);

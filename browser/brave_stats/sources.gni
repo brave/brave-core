@@ -23,6 +23,7 @@ brave_browser_brave_stats_updater_deps = [
   "//brave/components/brave_stats/browser",
   "//brave/components/brave_wallet/browser",
   "//brave/components/constants",
+  "//brave/components/deprecated_channel_name",
   "//brave/components/rpill/common",
   "//brave/components/version_info",
   "//chrome/browser:browser_process",

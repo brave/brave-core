@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "sparkle_glue.mm": [
+    "+brave/components/deprecated_channel_name",
+  ]
+}
+

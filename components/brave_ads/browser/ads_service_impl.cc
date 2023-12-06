@@ -29,7 +29,6 @@
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
@@ -53,6 +52,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
+#include "brave/components/deprecated_channel_name/channel_name.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
@@ -209,6 +209,7 @@ void OnUrlLoaderResponseStartedCallback(
 AdsServiceImpl::AdsServiceImpl(
     Profile* profile,
     PrefService* local_state,
+    version_info::Channel channel,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -216,7 +217,8 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service)
-    : profile_(profile),
+    : channel_(channel),
+      profile_(profile),
       local_state_(local_state),
       history_service_(history_service),
       adaptive_captcha_service_(adaptive_captcha_service),
@@ -536,7 +538,7 @@ void AdsServiceImpl::SetBuildChannel() {
   }
 
   mojom::BuildChannelInfoPtr build_channel = mojom::BuildChannelInfo::New();
-  build_channel->name = brave::GetChannelName();
+  build_channel->name = deprecated_channel_name::GetChannelName(channel_);
   build_channel->is_release = build_channel->name == "release";
 
   bat_ads_associated_remote_->SetBuildChannel(std::move(build_channel));

@@ -42,6 +42,7 @@ static_library("browser") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/deprecated_channel_name",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",

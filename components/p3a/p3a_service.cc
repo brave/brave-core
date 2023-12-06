@@ -75,7 +75,7 @@ inline void DCheckCurrentlyOnUIThread() {
 }  // namespace
 
 P3AService::P3AService(PrefService& local_state,
-                       std::string channel,
+                       version_info::Channel channel,
                        std::string week_of_install,
                        P3AConfig config)
     : local_state_(local_state), config_(std::move(config)) {

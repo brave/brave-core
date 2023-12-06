@@ -22,7 +22,6 @@
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -55,6 +54,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
 #include "net/base/features.h"
@@ -412,7 +412,7 @@ p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
     return p3a_service_.get();
   }
   p3a_service_ = base::MakeRefCounted<p3a::P3AService>(
-      *local_state(), brave::GetChannelName(),
+      *local_state(), chrome::GetChannel(),
       local_state()->GetString(kWeekOfInstallation),
       p3a::P3AConfig::LoadFromCommandLine());
   p3a_service()->InitCallbacks();

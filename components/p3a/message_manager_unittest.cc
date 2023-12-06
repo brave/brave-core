@@ -17,6 +17,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/version_info/channel.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
@@ -159,7 +160,8 @@ class P3AMessageManagerTest : public testing::Test,
         }));
 
     message_manager_ = std::make_unique<MessageManager>(
-        *local_state_, &p3a_config_, *this, "release", "2099-01-01");
+        *local_state_, &p3a_config_, *this, version_info::Channel::STABLE,
+        "2099-01-01");
 
     message_manager_->Init(shared_url_loader_factory_);
 

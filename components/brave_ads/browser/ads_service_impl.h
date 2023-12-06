@@ -75,6 +75,7 @@ class AdsServiceImpl : public AdsService,
   explicit AdsServiceImpl(
       Profile* profile,
       PrefService* local_state,
+      version_info::Channel channel,
       brave_adaptive_captcha::BraveAdaptiveCaptchaService*
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -387,6 +388,8 @@ class AdsServiceImpl : public AdsService,
   void OnRewardsWalletCreated() override;
   void OnExternalWalletConnected() override;
   void OnCompleteReset(bool success) override;
+
+  version_info::Channel channel_;
 
   bool is_bat_ads_initialized_ = false;
 

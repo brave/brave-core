@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/deprecated_channel_name",
   "+brave/components/version_info",
   "+content/public/browser",
   "+ios/web/public/thread",

@@ -18,6 +18,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/deprecated_channel_name/channel_name.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/p3a/uploader.h"
@@ -178,11 +179,11 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
 }
 
 void MessageMetainfo::Init(PrefService* local_state,
-                           std::string brave_channel,
+                           version_info::Channel browser_channel,
                            std::string week_of_install) {
   local_state_ = local_state;
   platform = brave_stats::GetPlatformIdentifier();
-  channel = brave_channel;
+  channel = deprecated_channel_name::GetChannelName(browser_channel);
   InitVersion();
   InitRef();
 

@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "webcompat_reporter_ui.cc": [
+    "+brave/components/deprecated_channel_name",
+  ]
+}

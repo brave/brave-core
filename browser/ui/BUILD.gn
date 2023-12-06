@@ -69,6 +69,7 @@ source_set("ui") {
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
+    deps += [ "//brave/components/deprecated_channel_name" ]
   }
 
   if (enable_ipfs_internals_webui) {
