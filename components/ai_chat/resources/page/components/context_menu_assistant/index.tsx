@@ -15,6 +15,7 @@ import { showAlert } from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance from '../../api/page_handler'
 import styles from './style.module.scss'
 import FeedbackForm from '../feedback_form'
+import DataContext from '../../state/context'
 
 interface ContextMenuAssistantProps {
   turnText: string
@@ -36,6 +37,7 @@ function ContextMenuAssistant_(
   const [isFormVisible, setIsFormVisible] = React.useState(false)
   const [currentRatingStatus, setCurrentRatingStatus] =
     React.useState<RatingStatus>(RatingStatus.None)
+  const context = React.useContext(DataContext)
 
   const formContainerElement = ref.current?.get(props.turnId)
 
@@ -49,7 +51,7 @@ function ContextMenuAssistant_(
     if (hasSentRating) return
 
     getPageHandlerInstance()
-      .pageHandler.rateMessage(true, props.turnId)
+      .pageHandler.rateMessage(true, props.turnId, context.isPremiumUser)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
@@ -76,7 +78,7 @@ function ContextMenuAssistant_(
     if (hasSentRating) return
 
     getPageHandlerInstance()
-      .pageHandler.rateMessage(false, props.turnId)
+      .pageHandler.rateMessage(false, props.turnId, context.isPremiumUser)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({

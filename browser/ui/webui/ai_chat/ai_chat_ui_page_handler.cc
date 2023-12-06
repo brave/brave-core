@@ -269,8 +269,10 @@ void AIChatUIPageHandler::DismissPremiumPrompt() {
 
 void AIChatUIPageHandler::RateMessage(bool is_liked,
                                       uint32_t turn_id,
+                                      bool is_premium,
                                       RateMessageCallback callback) {
-  active_chat_tab_helper_->RateMessage(is_liked, turn_id, std::move(callback));
+  active_chat_tab_helper_->RateMessage(is_liked, turn_id, is_premium,
+                                       std::move(callback));
 }
 
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
