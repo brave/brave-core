@@ -21,7 +21,7 @@ const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
 ]
 
 interface ConversationListProps {
-  onLastElementUpdating: () => void
+  onLastElementHeightChange: () => void
 }
 
 function ConversationList(props: ConversationListProps) {
@@ -40,13 +40,13 @@ function ConversationList(props: ConversationListProps) {
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
-  let showSuggestions: boolean =
+  const showSuggestions: boolean =
     hasAcceptedAgreement && context.shouldSendPageContents && (
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   React.useEffect(() => {
-    props.onLastElementUpdating()
+    props.onLastElementHeightChange()
   }, [lastConversationEntryElementRef.current?.clientHeight])
 
   const handleQuestionSubmit = (question: string) => {

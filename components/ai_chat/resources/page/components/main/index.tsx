@@ -42,10 +42,6 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
-  const scrollPos = React.useRef({ isAtBottom: true })
-  const [isUpdating, setIsUpdating] = React.useState(false)
-
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
@@ -65,6 +61,9 @@ function Main() {
   const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
   let currentErrorElement = null
+
+  let scrollerElement: HTMLDivElement | null = null
+  const scrollPos = React.useRef({ isAtBottom: true })
 
   if (hasAcceptedAgreement) {
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
@@ -95,19 +94,19 @@ function Main() {
     scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
   }
 
-  React.useEffect(() => {
+  const handleLastElementHeightChange = () => {
+    if (!scrollerElement) {
+      return
+    }
+
     if (!context.conversationHistory.length && !context.isGenerating) {
       return
     }
 
-    if (!scrollContainerRef.current) {
-      return
-    }
-
     if (scrollPos.current.isAtBottom) {
-      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight - scrollContainerRef.current.clientHeight
+      scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
     }
-  }, [context.isGenerating, context.conversationHistory.length, isUpdating])
+  }
 
   return (
     <main className={styles.main}>
@@ -142,13 +141,13 @@ function Main() {
         [styles.scroller]: true,
         [styles.flushBottom]: !hasAcceptedAgreement
       })}
-        ref={scrollContainerRef}
+        ref={node => scrollerElement = node}
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
         {context.hasAcceptedAgreement && <ModelIntro />}
         <ConversationList
-          onLastElementUpdating={() => setIsUpdating(prev => !prev)}
+          onLastElementHeightChange={handleLastElementHeightChange}
         />
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
