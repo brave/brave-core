@@ -28,7 +28,6 @@ namespace brave_player {
 COMPONENT_EXPORT(BRAVE_PLAYER_CORE_BROWSER)
 void RegisterBravePlayerComponent(
     component_updater::ComponentUpdateService* cus,
-    base::OnceCallback<void(const base::FilePath&)> on_ready,
     base::OnceCallback<void(const std::string&)> on_registered);
 
 }  // namespace brave_player

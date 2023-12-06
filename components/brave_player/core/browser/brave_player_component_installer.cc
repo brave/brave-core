@@ -41,9 +41,7 @@ const char kBravePlayerComponentBase64PublicKey[] =
 class BraveViewerComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit BraveViewerComponentInstallerPolicy(
-      base::OnceCallback<void(const base::FilePath&)> on_ready);
-
+  BraveViewerComponentInstallerPolicy();
   BraveViewerComponentInstallerPolicy(
       const BraveViewerComponentInstallerPolicy&) = delete;
   BraveViewerComponentInstallerPolicy& operator=(
@@ -67,17 +65,13 @@ class BraveViewerComponentInstallerPolicy
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
  private:
-  base::OnceCallback<void(const base::FilePath&)> on_ready_;
-
   const std::string component_id_;
   const std::string component_name_;
   uint8_t component_hash_[kHashSize];
 };
 
-BraveViewerComponentInstallerPolicy::BraveViewerComponentInstallerPolicy(
-    base::OnceCallback<void(const base::FilePath&)> on_ready)
-    : on_ready_(std::move(on_ready)),
-      component_id_(kBravePlayerComponentId),
+BraveViewerComponentInstallerPolicy::BraveViewerComponentInstallerPolicy()
+    : component_id_(kBravePlayerComponentId),
       component_name_(kBravePlayerComponentName) {
   // Generate Player from public key.
   std::string decoded_public_key;
@@ -107,7 +101,7 @@ void BraveViewerComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  std::move(on_ready_).Run(path);
+  BravePlayerService::GetInstance()->LoadNewComponentVersion(path);
 }
 
 bool BraveViewerComponentInstallerPolicy::VerifyInstallation(
@@ -137,7 +131,6 @@ BraveViewerComponentInstallerPolicy::GetInstallerAttributes() const {
 
 void RegisterBraveViewerComponent(
     component_updater::ComponentUpdateService* cus,
-    base::OnceCallback<void(const base::FilePath&)> on_ready,
     base::OnceCallback<void(const std::string&)> on_registered) {
   if (!base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) ||
       !cus) {
@@ -146,8 +139,7 @@ void RegisterBraveViewerComponent(
   }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<BraveViewerComponentInstallerPolicy>(
-          std::move(on_ready)));
+      std::make_unique<BraveViewerComponentInstallerPolicy>());
   installer->Register(
       cus, base::BindOnce(std::move(on_registered), kBravePlayerComponentId));
 }
