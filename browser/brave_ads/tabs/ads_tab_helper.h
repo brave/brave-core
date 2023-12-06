@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"

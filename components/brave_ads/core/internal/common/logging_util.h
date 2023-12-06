@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_LOGGING_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_LOGGING_UTIL_H_
 
-#include <sstream>
+#include <sstream>  // IWYU pragma: keep
 
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"  // IWYU pragma: keep
 

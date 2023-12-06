@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/functional/callback.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
