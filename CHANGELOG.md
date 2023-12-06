@@ -1,5 +1,57 @@
 # Changelog
 
+## [1.58](https://github.com/brave/brave-ios/releases/tag/v1.58)
+
+### Web3
+
+- Added Coinbase Pay as an On-ramp provider. ([#7880](https://github.com/brave/brave-ios/issues/7880))
+- Added Stripe as an On-ramp provider. ([#7794](https://github.com/brave/brave-ios/issues/7794))
+- Added Filecoin support in Brave Wallet. ([#7809](https://github.com/brave/brave-ios/issues/7809))
+- Added ability to choose Solana account when connecting to Solana DApp. ([#7637](https://github.com/brave/brave-ios/issues/7637))
+- Removed placeholder value in "Buy" screen and updated default currency to USD. ([#7709](https://github.com/brave/brave-ios/issues/7709))
+- Fixed wallet backup flow when initiated from "Accounts" tab. ([#8120](https://github.com/brave/brave-ios/issues/8120))
+- Fixed Solana DApps to disconnect when permission is revoked. ([#7688](https://github.com/brave/brave-ios/issues/7688))
+
+### General 
+
+- Implemented “Copy clean URL” feature. ([#6179](https://github.com/brave/brave-ios/issues/6179))
+- Added support for Apple Screentime. ([#3939](https://github.com/brave/brave-ios/issues/3939))
+- Added Brave News support for "Germany", "France", "India" & "Austria". ([#7932](https://github.com/brave/brave-ios/issues/7932))
+- Added support for Playlist on https://www.bitchute.com. ([#7916](https://github.com/brave/brave-ios/issues/7916))
+- Added support for Playlist on https://www.x.com. ([#7896](https://github.com/brave/brave-ios/issues/7896))
+- Added “Suppress” button to “Allow link to switch apps?” pop-up as reported on HackerOne by amit5533. ([#7835](https://github.com/brave/brave-ios/issues/7835))
+- Added logic for device limitations when joining existing sync chain. ([#7887](https://github.com/brave/brave-ios/issues/7887))
+- Added throttling when compiling filter lists in parallel to reduce crash rates. ([#8191](https://github.com/brave/brave-ios/issues/8191))
+- Improved performance of compiling engines for cosmetic filtering. ([#7955](https://github.com/brave/brave-ios/issues/7955))
+- Removed bookmark count for bookmark folders. ([#8041](https://github.com/brave/brave-ios/issues/8041))
+- Updated button text in the Privacy Preserving Product Analytics (P3A) onboarding screen. ([#8056](https://github.com/brave/brave-ios/issues/8056))
+- Updated logic and strings for “Set Brave as your default browser” notification. ([#8045](https://github.com/brave/brave-ios/issues/8045))
+- Updated VPN icon in all locations within the app. ([#7995](https://github.com/brave/brave-ios/issues/7995))
+- Updated User Agent to version iOS 16.6. ([#7987](https://github.com/brave/brave-ios/issues/7987))
+- Updated “Storage almost full” message to be shown once per day when adding to Playlist. ([#7869](https://github.com/brave/brave-ios/issues/7869))
+- Updated Jitsi SDK to version 8.3.1-lite. ([#7940](https://github.com/brave/brave-ios/issues/7940))
+- Fixed ads being shown on YouTube in certain cases. ([#8239](https://github.com/brave/brave-ios/issues/8239))
+- Fixed a crash when upgrading app with all filter lists enabled. ([#8277](https://github.com/brave/brave-ios/issues/8277))
+- Fixed an intermittent crash caused by taking screenshots of tabs. ([#8268](https://github.com/brave/brave-ios/issues/8268))
+- Fixed crash when changing VPN regions after switching to IKEv2 protocol. ([#8235](https://github.com/brave/brave-ios/issues/8235))
+- Fixed crash on launch when using a language unsupported by Chromium. ([#8213](https://github.com/brave/brave-ios/issues/8213))
+- Fixed tab view not switching on iPad when using the plus sign button in Private Mode. ([#8241](https://github.com/brave/brave-ios/issues/8241))
+- Fixed content leaking in Private windows when switching windows (iPad). ([#8228](https://github.com/brave/brave-ios/issues/8228))
+- Fixed unwanted removal of content blockers during browser launch. ([#8219](https://github.com/brave/brave-ios/issues/8219))
+- Fixed issue with not applying aggressive only regional filter lists. ([#8218](https://github.com/brave/brave-ios/issues/8218))
+- Fixed hamburger menu not opening when using Split View (iPad). ([#8183](https://github.com/brave/brave-ios/issues/8183))
+- Fixed “Set Brave as your default browser” notification still being shown after opening external link. ([#8163](https://github.com/brave/brave-ios/issues/8163))
+- Fixed problem with the “Bookmarks” switch in sync "Settings" being disabled when enabling other switches. ([#8148](https://github.com/brave/brave-ios/issues/8148))
+- Fixed “Switch to App” notices being shown on https://www.linkedin.com and https://www.instagram.com. ([#8066](https://github.com/brave/brave-ios/issues/8066))
+- Fixed tab order being lost for normal tabs after toggling Private Mode. ([#7996](https://github.com/brave/brave-ios/issues/7996))
+- Fixed “Reopen Last Closed Tab”  from being shown when no tabs have been closed. ([#7897](https://github.com/brave/brave-ios/issues/7897))
+- Fixed spinner on VPN purchase screen when using "restore" button. ([#7875](https://github.com/brave/brave-ios/issues/7875))
+- Fixed YouTube videos from continuing to play after closing tab. ([#7871](https://github.com/brave/brave-ios/issues/7871))
+- Fixed tab being selected in Tabs bar after loading website. ([#7851](https://github.com/brave/brave-ios/issues/7851))
+- Fixed Reader Mode bar background color to match the selected app UI theme.  ([#7717](https://github.com/brave/brave-ios/issues/7717))
+- Fixed intermittent crash when reordering tabs. ([#7645](https://github.com/brave/brave-ios/issues/7645))
+- Fixed Private tab to show as blank page when using the app switcher. ([#6577](https://github.com/brave/brave-ios/issues/6577))
+
 ## [1.57.2](https://github.com/brave/brave-ios/releases/tag/v1.57.2)
 
 - Improved performance when closing all tabs opened due to "Block Popups" being disabled on certain websites. ([#8060](https://github.com/brave/brave-ios/issues/8060))
