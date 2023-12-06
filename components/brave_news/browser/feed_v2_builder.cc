@@ -286,8 +286,9 @@ int GetNormal(int min, int max) {
   return min + floor((max - min) * GetNormal());
 }
 
-using GetWeighting = double(const mojom::FeedItemMetadataPtr& article,
-                            const ArticleWeight& weight);
+using GetWeighting =
+    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& metadata,
+                                   const ArticleWeight& weight)>;
 
 // Returns a probability distribution (sum to 1) of the weights. Temperature
 // controls how "smooth" the distribution is. High temperature brings the
@@ -328,16 +329,15 @@ ContentGroup SampleContentGroup(
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    GetWeighting get_weighting =
-        [](const auto& metadata, const auto& weight) {
-          return weight.weighting;
-        },
+    GetWeighting get_weighting = base::BindRepeating(
+        [](const mojom::FeedItemMetadataPtr& metadata,
+           const ArticleWeight& weight) { return weight.weighting; }),
     bool use_softmax = false) {
   std::vector<double> weights;
   base::ranges::transform(articles, std::back_inserter(weights),
-                          [get_weighting](const auto& article_info) {
-                            return get_weighting(std::get<0>(article_info),
-                                                 std::get<1>(article_info));
+                          [&get_weighting](const auto& article_info) {
+                            return get_weighting.Run(std::get<0>(article_info),
+                                                     std::get<1>(article_info));
                           });
 
   // None of the items are eligible to be picked.
@@ -373,13 +373,15 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles,
-                               [](const auto& metadata, const auto& weight) {
-                                 if (weight.subscribed) {
-                                   return 0.0;
-                                 }
-                                 return weight.pop_recency;
-                               });
+  return PickRouletteAndRemove(
+      articles,
+      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                             const ArticleWeight& weight) {
+        if (weight.subscribed) {
+          return 0.0;
+        }
+        return weight.pop_recency;
+      }));
 }
 
 // Generates a standard block:
@@ -468,23 +470,29 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
   mojom::FeedItemMetadataPtr hero_article;
   auto content_group = SampleContentGroup(eligible_content_groups);
-  const auto get_weighting = [content_group, &publisher_id_to_channels, locale](
-                                 const auto& metadata, const auto& weight) {
-    if (/*is_channel*/ content_group.second &&
-        content_group.first != kAllContentGroup) {
-      auto channels = publisher_id_to_channels.find(metadata->publisher_id);
-      if (base::Contains(channels->second, content_group.first)) {
+  auto get_weighting = base::BindRepeating(
+      [](const ContentGroup& content_group,
+         const base::flat_map<std::string, std::vector<std::string>>&
+             publisher_id_to_channels,
+         const std::string& locale, const mojom::FeedItemMetadataPtr& metadata,
+         const ArticleWeight& weight) {
+        if (/*is_channel*/ content_group.second &&
+            content_group.first != kAllContentGroup) {
+          auto channels = publisher_id_to_channels.find(metadata->publisher_id);
+          if (base::Contains(channels->second, content_group.first)) {
+            return weight.weighting;
+          }
+
+          return 0.0;
+        } else if (/*is_channel*/ !content_group.second) {
+          return metadata->publisher_id == content_group.first
+                     ? weight.weighting
+                     : 0.0;
+        }
+
         return weight.weighting;
-      }
-
-      return 0.0;
-    } else if (/*is_channel*/ !content_group.second) {
-      return metadata->publisher_id == content_group.first ? weight.weighting
-                                                           : 0.0;
-    }
-
-    return weight.weighting;
-  };
+      },
+      content_group, publisher_id_to_channels, locale);
   hero_article = PickRouletteAndRemove(articles, get_weighting);
 
   if (!hero_article) {
@@ -506,25 +514,31 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
       generated = PickDiscoveryArticleAndRemove(articles);
     } else {
       content_group = SampleContentGroup(eligible_content_groups);
-      const auto get_weighting_2 = [content_group, &publisher_id_to_channels,
-                                    locale](const auto& metadata,
-                                            const auto& weight) {
-        if (/*is_channel*/ content_group.second &&
-            content_group.first != kAllContentGroup) {
-          auto channels = publisher_id_to_channels.find(metadata->publisher_id);
-          if (base::Contains(channels->second, content_group.first)) {
+      auto get_weighting_2 = base::BindRepeating(
+          [](const ContentGroup& content_group,
+             const base::flat_map<std::string, std::vector<std::string>>&
+                 publisher_id_to_channels,
+             const std::string& locale,
+             const mojom::FeedItemMetadataPtr& metadata,
+             const ArticleWeight& weight) {
+            if (/*is_channel*/ content_group.second &&
+                content_group.first != kAllContentGroup) {
+              auto channels =
+                  publisher_id_to_channels.find(metadata->publisher_id);
+              if (base::Contains(channels->second, content_group.first)) {
+                return weight.weighting;
+              }
+
+              return 0.0;
+            } else if (/*is_channel*/ !content_group.second) {
+              return metadata->publisher_id == content_group.first
+                         ? weight.weighting
+                         : 0.0;
+            }
+
             return weight.weighting;
-          }
-
-          return 0.0;
-        } else if (/*is_channel*/ !content_group.second) {
-          return metadata->publisher_id == content_group.first
-                     ? weight.weighting
-                     : 0.0;
-        }
-
-        return weight.weighting;
-      };
+          },
+          content_group, publisher_id_to_channels, locale);
       generated = PickRouletteAndRemove(articles, get_weighting_2);
     }
 
