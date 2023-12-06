@@ -382,7 +382,7 @@ bool LogOutWallet(RewardsEngineImpl& engine,
     engine.client()->ShowNotification(notification.empty()
                                           ? notifications::kWalletDisconnected
                                           : notification,
-                                      {}, base::DoNothing());
+                                      {wallet_type}, base::DoNothing());
   }
 
   return true;
