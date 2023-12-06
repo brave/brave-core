@@ -244,7 +244,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
       item_count -= 1;
     }
 #else
-    item_count -= 1;    
+    item_count -= 1;
 #endif
     return item_count;
   }
