@@ -24,8 +24,8 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/aura/window.h"
 #include "ui/aura/window_tree_host.h"
+#include "ui/gfx/x/atom_cache.h"
 #include "ui/gfx/x/connection.h"
-#include "ui/gfx/x/x11_atom_cache.h"
 
 namespace brave_ads {
 
