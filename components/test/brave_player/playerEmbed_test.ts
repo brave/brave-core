@@ -6,7 +6,7 @@
 import {
   EmbedURL,
   getFrameSrc
-} from '../../brave_player/browser/resources/playerEmbed'
+} from '../../brave_player/core/browser/resources/playerEmbed'
 
 describe('playerEmbedTest', () => {
   describe('getFrameSrc', () => {
