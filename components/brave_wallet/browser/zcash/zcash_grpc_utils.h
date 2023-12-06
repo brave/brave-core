@@ -37,7 +37,6 @@ class GRrpcMessageStreamHandler
  private:
   virtual bool ProcessMessage(std::string_view message) = 0;
 
-  std::optional<size_t> data_to_read_;
   std::string data_;
   size_t retry_counter_ = 0;
 };

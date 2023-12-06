@@ -9,22 +9,19 @@
 
 #include "base/big_endian.h"
 #include "base/functional/callback.h"
-#include "base/logging.h"
 
 namespace brave_wallet {
 
 namespace {
 constexpr size_t kMaxMessageSizeBytes = 10000;
 constexpr size_t kGrpcHeaderSize = 5;
+constexpr char kNoCompression = 0;
 }  // namespace
 
 std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
-  char compression = 0;  // 0 means no compression
-  char buff[4];          // big-endian 4 bytes of message size
-  base::WriteBigEndian<uint32_t>(buff, serialized_proto.size());
-  std::string result;
-  result.append(&compression, 1);
-  result.append(buff, 4);
+  std::string result(kGrpcHeaderSize, 0);
+  result[0] = kNoCompression;
+  base::WriteBigEndian<uint32_t>(&result[1], serialized_proto.size());
   result.append(serialized_proto);
   return result;
 }
@@ -35,7 +32,7 @@ std::optional<std::string> ResolveSerializedMessage(
   if (grpc_response_body.size() < kGrpcHeaderSize) {
     return std::nullopt;
   }
-  if (grpc_response_body[0] != 0) {
+  if (grpc_response_body[0] != kNoCompression) {
     // Compression is not supported yet
     return std::nullopt;
   }
@@ -56,40 +53,41 @@ GRrpcMessageStreamHandler::~GRrpcMessageStreamHandler() = default;
 void GRrpcMessageStreamHandler::OnDataReceived(std::string_view string_piece,
                                                base::OnceClosure resume) {
   data_.append(string_piece);
-  std::string_view data(data_);
-  size_t pos = 0;
+  std::string_view data_view(data_);
 
   bool should_resume = false;
   while (!should_resume) {
-    if (!data_to_read_ && data.size() > kGrpcHeaderSize) {
-      if (data[0] != 0) {
+    std::optional<size_t> message_body_size;
+    if (data_view.size() > kGrpcHeaderSize) {
+      if (data_view[0] != kNoCompression) {
         OnComplete(false);
         return;
       }
       uint32_t size = 0;
-      base::ReadBigEndian(reinterpret_cast<const uint8_t*>(&(data[1])), &size);
-      data_to_read_ = size;
-      if (*data_to_read_ > kMaxMessageSizeBytes) {
+      base::ReadBigEndian(reinterpret_cast<const uint8_t*>(&(data_view[1])),
+                          &size);
+      message_body_size = size;
+      if (*message_body_size > kMaxMessageSizeBytes) {
         // Too large message
         OnComplete(false);
         return;
       }
     }
 
-    if (data_to_read_ && data.size() >= (kGrpcHeaderSize + *data_to_read_)) {
-      if (!ProcessMessage(data.substr(0, kGrpcHeaderSize + *data_to_read_))) {
+    if (message_body_size &&
+        data_view.size() >= (kGrpcHeaderSize + *message_body_size)) {
+      if (!ProcessMessage(
+              data_view.substr(0, kGrpcHeaderSize + *message_body_size))) {
         OnComplete(true);
         return;
       }
 
-      data = data.substr(kGrpcHeaderSize + *data_to_read_);
-      pos += kGrpcHeaderSize + *data_to_read_;
-      data_to_read_.reset();
+      data_view = data_view.substr(kGrpcHeaderSize + *message_body_size);
     } else {
       should_resume = true;
     }
   }
-  data_ = data_.substr(pos);
+  data_ = std::string(data_view);
   std::move(resume).Run();
 }
 
