@@ -130,7 +130,7 @@ def _GetGitHash(revision: str) -> Optional[str]:
 
 
 def _GetRevisionNumber(revision: str) -> str:
-  """Returns the number "primary" commits from the begging to `revision`.
+  """Returns the number of "primary" commits from the begging to `revision`.
   Use this to get the commit from a revision number:
   git rev-list --topo-order --first-parent --reverse origin/master
   | head -n <rev_num> | tail -n 1 | git log -n 1 --stdin

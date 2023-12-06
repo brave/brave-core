@@ -44,6 +44,15 @@ class RunnerConfig:
 
 
 def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
+  """
+  Parse the version and location from the passed string `target`.
+  target = [<version>:][<location>]
+  <version> could be:
+  1. Brave tag (i.e. v1.62.1);
+  2. Git hash;
+  3. empty (for comparing builds when you don't need it).
+  """
+
   m = re.match(r'^(v\d+\.\d+\.\d+|\w+)(?::(.+)|$)', target)
   if not m:
     return None, target
