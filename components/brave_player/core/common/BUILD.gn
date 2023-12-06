@@ -13,11 +13,14 @@ component("common") {
     "features.h",
     "url_constants.cc",
     "url_constants.h",
+    "prefs.cc",
+    "prefs.h",
   ]
 
   defines = [ "IS_BRAVE_PLAYER_COMMON_IMPL" ]
 
   public_deps = [ "//brave/components/brave_player/core/common/buildflags" ]
 
-  deps = [ "//base" ]
+  deps = [ "//base",
+           "//components/pref_registry" ]
 }

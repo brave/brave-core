@@ -8,9 +8,15 @@
 #include <limits>
 #include <memory>
 
+#include "base/json/values_util.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/components/brave_player/core/common/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/views/layout/box_layout_view.h"
@@ -108,7 +114,21 @@ gfx::Size AdBlockAdjustmentDialog::CalculatePreferredSize() const {
 void AdBlockAdjustmentDialog::WindowClosing() {
   DialogDelegateView::WindowClosing();
 
-  // TODO(sko): We may want to remember we've showed this dialog for this site.
+  auto* shield_data_controller =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents_);
+  CHECK(shield_data_controller);
+
+  // brave_shield's setting works per host.
+  const auto& host = shield_data_controller->GetCurrentSiteURL().host();
+  CHECK(!host.empty());
+
+  Browser* browser = chrome::FindBrowserWithTab(contents_);
+  CHECK(browser);
+  auto* prefs = browser->profile()->GetPrefs();
+
+  ScopedDictPrefUpdate dict_update(
+      prefs, brave_player::kBravePlayerAdBlockAdjustmentDisplayedSites);
+  dict_update->Set(host, base::TimeToValue(base::Time::Now()));
 }
 
 void AdBlockAdjustmentDialog::DisableAdBlockForSite() {

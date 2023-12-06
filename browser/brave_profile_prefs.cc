@@ -7,21 +7,22 @@
 
 #include <string>
 
-#include "brave/browser/new_tab/new_tab_shows_options.h"
-
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -66,8 +67,6 @@
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
-
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -137,6 +136,10 @@ using extensions::FeatureSwitch;
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/components/brave_player/core/common/prefs.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_PLAYER)
 
 namespace brave {
 
@@ -553,6 +556,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRService::RegisterProfilePrefs(registry);
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+  brave_player::RegisterProfilePrefs(registry);
+#endif  // BUILDFLAG(ENABLE_BRAVE_PLAYER)
 }
 
 }  // namespace brave
