@@ -25,9 +25,6 @@ interface ConversationListProps {
 }
 
 function ConversationList(props: ConversationListProps) {
-  // Scroll the last conversation item in to view when entries are added.
-  const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
-
   const context = React.useContext(DataContext)
   const {
     isGenerating,
@@ -45,13 +42,16 @@ function ConversationList(props: ConversationListProps) {
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
-  React.useEffect(() => {
-    props.onLastElementHeightChange()
-  }, [lastConversationEntryElementRef.current?.clientHeight])
-
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
+
+  const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!lastEntryElementRef.current) return
+    props.onLastElementHeightChange()
+  }, [lastEntryElementRef.current?.clientHeight])
 
   return (
     <>
@@ -76,7 +76,7 @@ function ConversationList(props: ConversationListProps) {
           return (
             <div
               key={id}
-              ref={isLastEntry ? lastConversationEntryElementRef : null}
+              ref={isLastEntry ? lastEntryElementRef : null}
             >
               <div className={turnClass}>
                 {isAIAssistant && (

@@ -99,10 +99,6 @@ function Main() {
       return
     }
 
-    if (!context.conversationHistory.length && !context.isGenerating) {
-      return
-    }
-
     if (scrollPos.current.isAtBottom) {
       scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
     }
@@ -141,7 +137,7 @@ function Main() {
         [styles.scroller]: true,
         [styles.flushBottom]: !hasAcceptedAgreement
       })}
-        ref={node => scrollerElement = node}
+        ref={node => (scrollerElement = node)}
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
