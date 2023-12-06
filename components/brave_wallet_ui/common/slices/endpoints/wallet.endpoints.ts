@@ -52,6 +52,71 @@ export const walletEndpoints = ({
       providesTags: ['IsWalletBackedUp']
     }),
 
+    getDefaultEthereumWallet: query<number, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const { defaultWallet } =
+            await braveWalletService.getDefaultEthereumWallet()
+          return {
+            data: defaultWallet
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to fetch default Ethereum wallet',
+            error
+          )
+        }
+      },
+      providesTags: ['DefaultEthWallet']
+    }),
+
+    getDefaultSolanaWallet: query<number, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const { defaultWallet } =
+            await braveWalletService.getDefaultSolanaWallet()
+          return {
+            data: defaultWallet
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to fetch default Solana wallet',
+            error
+          )
+        }
+      },
+      providesTags: ['DefaultSolWallet']
+    }),
+
+    getIsMetaMaskInstalled: query<boolean, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const { installed } =
+            await braveWalletService.isExternalWalletInstalled(
+              BraveWallet.ExternalWalletType.MetaMask
+            )
+          return {
+            data: installed
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to check if MetaMask is installed',
+            error
+          )
+        }
+      },
+      providesTags: ['IsMetaMaskInstalled']
+    }),
+
     createWallet: mutation<true, { password: string }>({
       queryFn: async (
         arg,

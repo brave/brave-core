@@ -64,25 +64,14 @@ async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
   // Populate tokens from blockchain registry.
   store.dispatch(WalletActions.getAllTokensList())
 
-  const braveWalletService = apiProxy.braveWalletService
-  const defaultEthereumResult =
-    await braveWalletService.getDefaultEthereumWallet()
   store.dispatch(
-    WalletActions.defaultEthereumWalletUpdated(
-      defaultEthereumResult.defaultWallet
-    )
+    walletApi.util.invalidateTags([
+      'ConnectedAccounts',
+      'DefaultEthWallet',
+      'DefaultSolWallet',
+      'IsMetaMaskInstalled'
+    ])
   )
-  const defaultSolanaResult = await braveWalletService.getDefaultSolanaWallet()
-  store.dispatch(
-    WalletActions.defaultSolanaWalletUpdated(defaultSolanaResult.defaultWallet)
-  )
-
-  const mmResult = await braveWalletService.isExternalWalletInstalled(
-    BraveWallet.ExternalWalletType.MetaMask
-  )
-  store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
-
-  store.dispatch(walletApi.util.invalidateTags(['ConnectedAccounts']))
 }
 
 handler.on(
@@ -134,14 +123,6 @@ handler.on(WalletActions.unlocked.type, async (store) => {
 })
 
 handler.on(WalletActions.backedUp.type, async (store) => {
-  await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.defaultEthereumWalletChanged.type, async (store) => {
-  await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.defaultSolanaWalletChanged.type, async (store) => {
   await refreshWalletInfo(store)
 })
 

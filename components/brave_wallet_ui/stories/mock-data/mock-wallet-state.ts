@@ -23,13 +23,10 @@ export const mockWalletState: WalletState = {
     eTldPlusOne: 'uniswap.org'
   },
   addUserAssetError: false,
-  defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
-  defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   fullTokenList: mockErc20TokensList,
   gasEstimates: undefined,
   hasIncorrectPassword: false,
   hasInitialized: true,
-  isMetaMaskInstalled: false,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isAnkrBalancesFeatureEnabled: false,

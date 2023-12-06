@@ -203,13 +203,10 @@ export interface WalletState {
   fullTokenList: BraveWallet.BlockchainToken[]
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   addUserAssetError: boolean
-  defaultEthereumWallet: BraveWallet.DefaultWallet
-  defaultSolanaWallet: BraveWallet.DefaultWallet
   activeOrigin: BraveWallet.OriginInfo
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
-  isMetaMaskInstalled: boolean
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string

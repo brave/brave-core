@@ -57,7 +57,10 @@ export function createWalletApiBase() {
       'EnsOffchainLookupEnabled',
       'NameServiceAddress',
       'IsWalletBackedUp',
-      'ConnectedAccounts'
+      'ConnectedAccounts',
+      'DefaultEthWallet',
+      'DefaultSolWallet',
+      'IsMetaMaskInstalled'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
