@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 3d538b3370caa50151cb14de7df277c61fc8aa05..ac77486f57bba7cbfbbd788f9a41e1c7556b939d 100644
+index b5acd3b6eb7122aaf4284ce62212f415325a7394..7d5e25b3af27251dbdb26a6620941fe6aaccab44 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4469,6 +4469,7 @@ if (is_android) {
+@@ -4454,6 +4454,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/ThreadPoolTaskExecutor.java",
        "android/java/src/org/chromium/base/task/UiThreadTaskExecutor.java",
      ]
@@ -10,11 +10,11 @@ index 3d538b3370caa50151cb14de7df277c61fc8aa05..ac77486f57bba7cbfbbd788f9a41e1c7
  
      if (use_clang_profiling) {
        sources += [
-@@ -4507,6 +4508,7 @@ if (is_android) {
+@@ -4492,6 +4493,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]
 +    sources += brave_base_shared_preferences_java_sources
    }
  
-   android_aidl("process_launcher_aidl") {
+   android_library("base_cached_flags_java") {

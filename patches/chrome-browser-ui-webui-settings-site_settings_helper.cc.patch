@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 984a7384410497caf176efb1d73dbadd00e6bbcd..e86f71f8b0b873c13bc16e8669a1a4acad0c8e47 100644
+index 75160b2327180931a517e1e9245d3624d8cb818c..107c01aa41f32a7540d443704ca549d9b003b32c 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -205,6 +205,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION, nullptr},
-     {ContentSettingsType::TPCD_HEURISTICS_GRANTS, nullptr},
-     {ContentSettingsType::FILE_SYSTEM_ACCESS_RESTORE_PERMISSION, nullptr},
+@@ -211,6 +211,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+     {ContentSettingsType::SMART_CARD_GUARD, nullptr},
+     {ContentSettingsType::SMART_CARD_DATA, nullptr},
+     {ContentSettingsType::TOP_LEVEL_TPCD_TRIAL, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -466,6 +467,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -472,6 +473,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

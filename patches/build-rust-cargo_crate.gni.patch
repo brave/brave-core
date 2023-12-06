@@ -1,21 +1,12 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 61ecfe28695cb09c5fa8944f3e8edb3fe561808a..f76cd8bd4fce6de9f24c10a421e9cb724046775c 100644
+index cf16a68aef272299d19895311d0f78efdec2f189..4f1ccc46dc7733ca7f0a693a5872af2d17c129b5 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -153,6 +153,7 @@ template("cargo_crate") {
-     manifest_dir = rebase_path(build_gn_dir + "/crate", "")
+     manifest_dir = rebase_path(build_gn_dir + "/crate", root_build_dir)
    }
    _rustenv += [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
 +  _rustenv -= [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
  
    # cargo_crate() should set library_configs, executable_configs,
    # proc_macro_configs. Not configs.
-@@ -214,7 +215,7 @@ template("cargo_crate") {
-                                  "rustenv",
-                                  "dev_deps",
-                                ])
--    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
-+    forward_variables_from(invoker, [ "testonly" ])
-     if (defined(crate_type) && crate_type == "cdylib") {
-       # See comments above about cdylib.
-       crate_type = "rlib"

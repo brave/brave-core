@@ -1,12 +1,12 @@
 diff --git a/components/version_info/BUILD.gn b/components/version_info/BUILD.gn
-index 950fdf765b964c71704642588f5b827c3c2ab05f..52e1386f35e5141cc35c00560dcbf8f022f0c7b3 100644
+index 786766d86d533a4b178ca66d0e0ed0854ec45614..b35ffe7f7f8dd64947121aa2c146635dc92c66d6 100644
 --- a/components/version_info/BUILD.gn
 +++ b/components/version_info/BUILD.gn
-@@ -27,6 +27,7 @@ static_library("version_info") {
-     ":generate_version_info",
+@@ -17,6 +17,7 @@ source_set("version_info") {
      "//base",
+     "//base/version_info",
    ]
 +  configs += [ "//brave/build:version" ] deps += [ "//brave/components/version_info" ]
  }
  
- # Isolate the //ui/base dependency in this target.
+ # Facade for "//base/version_info:version_string"

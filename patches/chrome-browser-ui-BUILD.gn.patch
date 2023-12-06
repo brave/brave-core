@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 085d8472a7e0ea68af55173a4857258701841a9d..04bcf6354b8c8fc32568d6e3ea877e523139ead8 100644
+index b0146268b3384ed643c813c2e50f8c3e774b6496..0440a49f1ce538f6153dce878c9cd464eedd7e21 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -707,6 +707,7 @@ static_library("ui") {
-     "//chrome/browser/safe_browsing",
-     "//chrome/browser/profiling_host",
+@@ -726,6 +726,7 @@ static_library("ui") {
+ 
+     "//chrome/browser/permissions",
    ]
 +  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4571,10 +4572,13 @@ static_library("ui") {
+@@ -4567,10 +4568,13 @@ static_library("ui") {
        ]
-       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl_idl" ]
+       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
 -      sources += [
 -        "webui/help/version_updater_basic.cc",
