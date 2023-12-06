@@ -21,10 +21,46 @@ import logging
 import shutil
 import sys
 import os
+import tempfile
 
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
+import components.path_util as path_util
+
+with path_util.SysPath(path_util.GetPyJson5Dir()):
+  # pylint: disable=import-error # pytype: disable=import-error
+  import json5
+  # pylint: enable=import-error # pytype: enable=import-error
+
+
+def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
+  if config.startswith('https://'):  # URL to download the config
+    _, config_path = tempfile.mkstemp(dir=options.working_directory,
+                                      prefix='config-')
+    perf_test_utils.DownloadFile(config, config_path)
+
+  elif os.path.isfile(config):  # Full config path
+    config_path = config
+  elif config == 'auto':  # Select the config by machine_id and chromium
+    if options.machine_id is None:
+      raise RuntimeError('Set --machine-id to use config=auto')
+
+    prefix = 'chromium' if options.chromium else 'brave'
+    config = (f'{prefix}-{options.target_os}-' +
+              f'{options.target_arch}-{options.machine_id}.json5')
+    logging.info('Using %s as config=auto', config)
+    config_path = os.path.join(path_util.GetBravePerfConfigDir(), 'ci', config)
+
+    if not os.path.isfile(config_path):
+      raise RuntimeError(f'No config file {config_path}')
+  else:  # config is a relative path
+    config_path = os.path.join(path_util.GetBravePerfConfigDir(), config)
+    if not os.path.isfile(config_path):
+      raise RuntimeError(f'Can\'t find matching config {config}')
+
+  with open(config_path, 'r', encoding='utf-8') as config_file:
+    return json5.load(config_file)
 
 
 def main():
@@ -59,8 +95,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
 
   if not os.path.exists(options.working_directory):
     os.mkdir(options.working_directory)
-  json_config = perf_test_utils.LoadJsonConfig(args.config,
-                                               options.working_directory)
+  json_config = load_config(args.config, options)
   config = perf_config.PerfConfig(json_config)
 
   if options.compare:  # compare mode

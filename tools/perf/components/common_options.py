@@ -25,9 +25,12 @@ with path_util.SysPath(path_util.GetTelemetryDir()):
 class CommonOptions:
   verbose: bool = False
   ci_mode: bool = False
+  chromium: bool = False
+  machine_id: Optional[str] = None
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
   target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
+  target_arch: str = ''
 
   do_run_tests: bool = True
   do_report: bool = False
@@ -42,12 +45,14 @@ class CommonOptions:
     parser.add_argument(
         'config',
         type=str,
-        help='The path/URL to a config. See configs/**/.json for examples.')
+        help='The path/URL to a config. See configs/**/.json for examples.'
+        'Also could be set to "auto" to select the config by '
+        'machine-id + chromium')
     parser.add_argument(
         'targets',
         type=str,
         nargs='?',
-        help='Format: tag1[:<path_or_url1>],..,tagN[:<path_or_urlN>].'
+        help='Format: version1[:<path_or_url1>],..,versionN[:<path_or_urlN>].'
         'Empty value enables the compare mode (see --compare).')
     parser.add_argument(
         '--working-directory',
@@ -61,9 +66,11 @@ class CommonOptions:
         '--variations-repo-dir',
         type=str,
         help='A path to brave-variation repository to use Griffin in tests')
-    parser.add_argument('--target_os',
+    parser.add_argument('--target-os',
+                        '--target_os',
                         type=str,
-                        choices=['windows', 'macos', 'linux', 'android'])
+                        choices=['windows', 'mac', 'linux', 'android'])
+    parser.add_argument('--target-arch', type=str, choices=['x64', 'arm64'])
     parser.add_argument(
         '--local-run',
         action='store_true',
@@ -76,6 +83,14 @@ class CommonOptions:
     parser.add_argument('--ci-mode',
                         action='store_true',
                         help='Used for CI (brave-browser-test-perf-* builds).')
+    parser.add_argument('--chromium',
+                        action='store_true',
+                        help='(with config=auto) Run chromium (reference) build'
+                        'Used select the config by machine-id + chromium')
+    parser.add_argument('--machine-id',
+                        type=str,
+                        help='(with config=auto) The name of machine on CI.'
+                        'Used select the config by machine-id + chromium')
     parser.add_argument('--no-report',
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
@@ -105,10 +120,18 @@ class CommonOptions:
 
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
+    options.chromium = args.chromium
+    options.machine_id = args.machine_id
+
     if args.variations_repo_dir is not None:
       options.variations_repo_dir = os.path.expanduser(args.variations_repo_dir)
     if args.target_os is not None:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
+
+    if args.target_arch is not None:
+      options.target_arch = args.target_arch
+    else:
+      options.target_arch = 'arm64' if options.target_os == 'android' else 'x64'
 
     options.report_on_failure = args.report_on_failure
     compare = args.targets is None or args.targets == '' or args.compare

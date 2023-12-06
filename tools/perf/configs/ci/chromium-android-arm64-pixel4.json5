@@ -1,7 +1,7 @@
 {
   "configurations": [{
-    "dashboard-bot-name": "test-agent-android",
-    "browser-type": "brave",
+    "dashboard-bot-name": "pixel4",
+    "browser-type": "chromium",
     "profile": "clean",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
@@ -9,7 +9,7 @@
   "benchmarks": [
     {
       "name": "speedometer2",
-      "pageset-repeat": 1
+      "pageset-repeat": 5
     }
   ]
 }
