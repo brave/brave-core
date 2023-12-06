@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service_tasks.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "brave/components/brave_wallet/common/common_utils.h"
