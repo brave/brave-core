@@ -130,6 +130,11 @@ hooks = [
                '--source-dir', '.',
                '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
+  {
+    'name': 'patch_ffmpeg',
+    'pattern': '.',
+    'action': ['vpython3', 'script/patch_ffmpeg.py'],
+  },
 ]
 
 include_rules = [
