@@ -25,8 +25,6 @@ export const hidePortfolioBalances = ({ wallet }: State) =>
   wallet.hidePortfolioBalances
 export const hidePortfolioNFTsTab = ({ wallet }: State) =>
   wallet.hidePortfolioNFTsTab
-export const removedNonFungibleTokens = ({ wallet }: State) =>
-  wallet.removedNonFungibleTokens
 export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
   wallet.filteredOutPortfolioNetworkKeys
 export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
@@ -53,11 +51,5 @@ export const userVisibleTokensInfo = ({ wallet }: State) =>
   wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) =>
   wallet.selectedAccountFilter
-export const removedFungibleTokenIds = ({ wallet }: State) =>
-  wallet.removedFungibleTokenIds
-export const removedNonFungibleTokenIds = ({ wallet }: State) =>
-  wallet.removedNonFungibleTokenIds
-export const deletedNonFungibleTokenIds = ({ wallet }: State) =>
-  wallet.deletedNonFungibleTokenIds
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens

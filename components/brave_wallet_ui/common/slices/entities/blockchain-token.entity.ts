@@ -559,3 +559,14 @@ export const selectAllVisibleUserAssetsFromQueryResult =
   createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
     getEntitiesListFromEntityState(assets, assets.visibleTokenIds)
   )
+
+/**
+ * Used to select only hidden NFTs from useGetUserTokensRegistryQuery
+ */
+export const selectHiddenNftsFromQueryResult = createDraftSafeSelector(
+  [selectTokensRegistryFromQueryResult],
+  (assets) =>
+    getEntitiesListFromEntityState(assets, assets.hiddenTokenIds).filter(
+      (t) => t.isErc1155 || t.isErc721 || t.isNft
+    )
+)

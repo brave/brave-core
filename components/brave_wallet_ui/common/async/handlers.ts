@@ -21,6 +21,8 @@ import {
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
+import { getAssetIdKey, getDeletedTokenIds } from '../../utils/asset-utils'
+import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 
 const handler = new AsyncActionHandler()
 
@@ -164,6 +166,14 @@ handler.on(
     }
 
     const result = await braveWalletService.addUserAsset(payload)
+
+    // token may have previously been deleted
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.USER_DELETED_TOKEN_IDS,
+      JSON.stringify(
+        getDeletedTokenIds().filter((id) => id !== getAssetIdKey(payload))
+      )
+    )
 
     // Refresh balances here for adding ERC721 tokens if result is successful
     if ((payload.isErc721 || payload.isNft) && result.success) {

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { eachLimit } from 'async'
 
 // Selectors
 import { useUnsafeWalletSelector } from './use-safe-selector'
@@ -16,8 +17,12 @@ import { BraveWallet } from '../../constants/types'
 // Utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 import { WalletActions } from '../actions'
-import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
-import { getAssetIdKey } from '../../utils/asset-utils'
+import { getAssetIdKey, isTokenIdRemoved } from '../../utils/asset-utils'
+import {
+  useGetUserTokensRegistryQuery,
+  useHideOrDeleteTokenMutation,
+  useRestoreHiddenTokenMutation
+} from '../slices/api.slice'
 
 const onlyInLeft = (
   left: BraveWallet.BlockchainToken[],
@@ -54,93 +59,35 @@ export function useAssetManagement() {
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
-  const removedFungibleTokenIds = useUnsafeWalletSelector(
-    WalletSelectors.removedFungibleTokenIds
-  )
-  const removedNonFungibleTokenIds = useUnsafeWalletSelector(
-    WalletSelectors.removedNonFungibleTokenIds
-  )
-  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(
-    WalletSelectors.deletedNonFungibleTokenIds
-  )
 
   // redux
   const dispatch = useDispatch()
 
-  const tokenIsSetAsRemovedInLocalStorage = React.useCallback(
-    (token: BraveWallet.BlockchainToken) => {
-      const assetId = getAssetIdKey(token)
-      return token.isNft || token.isErc1155 || token.isErc721
-        ? removedNonFungibleTokenIds.includes(assetId)
-        : removedFungibleTokenIds.includes(assetId)
-    },
-    [removedNonFungibleTokenIds, removedFungibleTokenIds]
-  )
+  // queries
+  const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
 
-  const addOrRemoveTokenInLocalStorage = React.useCallback(
-    (token: BraveWallet.BlockchainToken, addOrRemove: 'add' | 'remove') => {
-      if (token.contractAddress === '') {
-        // prevent permanently removing native tokens
-        return
-      }
-
-      const assetId = getAssetIdKey(token)
-      const isNFT = token.isNft || token.isErc1155 || token.isErc721
-      const removedList = isNFT
-        ? removedNonFungibleTokenIds
-        : removedFungibleTokenIds
-      const localStorageKey = isNFT
-        ? LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
-        : LOCAL_STORAGE_KEYS.USER_REMOVED_FUNGIBLE_TOKEN_IDS
-
-      // add assetId if it is not in the array
-      if (addOrRemove === 'remove') {
-        const newList = [...removedList, assetId]
-        // update state
-        if (isNFT) {
-          dispatch(WalletActions.setRemovedNonFungibleTokenIds(newList))
-        } else {
-          dispatch(WalletActions.setRemovedFungibleTokenIds(newList))
-        }
-        // persist array
-        localStorage.setItem(localStorageKey, JSON.stringify(newList))
-      }
-
-      // add assetId if it is not in the array
-      if (addOrRemove === 'add') {
-        const newList = removedList.filter((id) => id !== assetId)
-        // update state
-        if (isNFT) {
-          dispatch(WalletActions.setRemovedNonFungibleTokenIds(newList))
-        } else {
-          dispatch(WalletActions.setRemovedFungibleTokenIds(newList))
-        }
-        // persist array
-        localStorage.setItem(localStorageKey, JSON.stringify(newList))
-      }
-    },
-    [removedNonFungibleTokenIds, removedFungibleTokenIds]
-  )
+  // mutations
+  const [hideOrDeleteToken] = useHideOrDeleteTokenMutation()
+  const [restoreHiddenToken] = useRestoreHiddenTokenMutation()
 
   const addNftToDeletedNftsList = React.useCallback(
-    (token: BraveWallet.BlockchainToken) => {
-      const assetId = getAssetIdKey(token)
-      const newList = [...deletedNonFungibleTokenIds, assetId]
-      // update state
-      dispatch(WalletActions.setDeletedNonFungibleTokenIds(newList))
-      // persist array
-      localStorage.setItem(
-        LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS,
-        JSON.stringify(newList)
-      )
+    async (token: BraveWallet.BlockchainToken) => {
+      await hideOrDeleteToken({
+        mode: 'delete',
+        tokenId: getAssetIdKey(token)
+      })
     },
-    [deletedNonFungibleTokenIds]
+    [hideOrDeleteToken]
   )
 
   const onAddUserAsset = React.useCallback(
-    (token: BraveWallet.BlockchainToken) => {
-      if (tokenIsSetAsRemovedInLocalStorage(token)) {
-        addOrRemoveTokenInLocalStorage(token, 'add')
+    async (token: BraveWallet.BlockchainToken) => {
+      const assetId = getAssetIdKey(token)
+      if (
+        userTokensRegistry &&
+        isTokenIdRemoved(assetId, userTokensRegistry.hiddenTokenIds)
+      ) {
+        await restoreHiddenToken(assetId)
       } else {
         dispatch(
           WalletActions.addUserAsset({
@@ -150,12 +97,12 @@ export function useAssetManagement() {
         )
       }
     },
-    [addOrRemoveTokenInLocalStorage, tokenIsSetAsRemovedInLocalStorage]
+    [restoreHiddenToken, userTokensRegistry]
   )
 
   const onAddCustomAsset = React.useCallback(
-    (token: BraveWallet.BlockchainToken) => {
-      onAddUserAsset(token)
+    async (token: BraveWallet.BlockchainToken) => {
+      await onAddUserAsset(token)
 
       // We handle refreshing balances for ERC721 tokens in the
       // addUserAsset handler.
@@ -167,42 +114,58 @@ export function useAssetManagement() {
   )
 
   const onUpdateVisibleAssets = React.useCallback(
-    (updatedTokensList: BraveWallet.BlockchainToken[]) => {
+    async (updatedTokensList: BraveWallet.BlockchainToken[]) => {
       // Gets a list of all added tokens and adds them to the
       // userVisibleTokensInfo list
-      onlyInLeft(updatedTokensList, userVisibleTokensInfo).forEach((token) =>
-        onAddUserAsset(token)
+      await eachLimit(
+        onlyInLeft(updatedTokensList, userVisibleTokensInfo),
+        10,
+        onAddUserAsset
       )
 
       // Gets a list of all removed tokens and removes them from the
       // userVisibleTokensInfo list
-      onlyInLeft(userVisibleTokensInfo, updatedTokensList).forEach((token) => {
-        dispatch(WalletActions.removeUserAsset(token))
-        if (!tokenIsSetAsRemovedInLocalStorage(token)) {
-          addOrRemoveTokenInLocalStorage(token, 'remove')
+      await eachLimit(
+        onlyInLeft(userVisibleTokensInfo, updatedTokensList),
+        10,
+        async (token) => {
+          dispatch(WalletActions.removeUserAsset(token))
+          const tokenId = getAssetIdKey(token)
+          if (
+            userTokensRegistry &&
+            !isTokenIdRemoved(tokenId, userTokensRegistry.hiddenTokenIds)
+          ) {
+            await hideOrDeleteToken({ mode: 'hide', tokenId })
+          }
         }
-      })
+      )
 
       // Gets a list of custom tokens and native assets returned from
       // updatedTokensList payload then compares against userVisibleTokensInfo
       // list and updates the tokens visibility if it has changed.
-      findTokensWithMismatchedVisibility(
-        updatedTokensList,
-        userVisibleTokensInfo
-      ).forEach((token) =>
-        dispatch(
-          WalletActions.setUserAssetVisible({ token, isVisible: token.visible })
-        )
+      await eachLimit(
+        findTokensWithMismatchedVisibility(
+          updatedTokensList,
+          userVisibleTokensInfo
+        ),
+        10,
+        async (token) =>
+          await dispatch(
+            WalletActions.setUserAssetVisible({
+              token,
+              isVisible: token.visible
+            })
+          )
       )
 
       // Refresh Balances, Prices and Price History when done.
       dispatch(WalletActions.refreshBalancesAndPriceHistory())
     },
-    [userVisibleTokensInfo, addOrRemoveTokenInLocalStorage]
+    [userVisibleTokensInfo, userTokensRegistry, hideOrDeleteToken]
   )
 
   const makeTokenVisible = React.useCallback(
-    (token: BraveWallet.BlockchainToken) => {
+    async (token: BraveWallet.BlockchainToken) => {
       const foundTokenIdx = userVisibleTokensInfo.findIndex(
         (t) =>
           t.contractAddress.toLowerCase() ===
@@ -213,7 +176,8 @@ export function useAssetManagement() {
 
       // If token is not part of user-visible tokens, add it.
       if (foundTokenIdx === -1) {
-        return onUpdateVisibleAssets([...updatedTokensList, token])
+        await onUpdateVisibleAssets([...updatedTokensList, token])
+        return
       }
 
       if (userVisibleTokensInfo[foundTokenIdx].visible) {
@@ -224,7 +188,7 @@ export function useAssetManagement() {
       //   - toggle visibility for custom tokens
       //   - do nothing for non-custom tokens
       updatedTokensList.splice(foundTokenIdx, 1, { ...token, visible: true })
-      onUpdateVisibleAssets(updatedTokensList)
+      await onUpdateVisibleAssets(updatedTokensList)
     },
     [userVisibleTokensInfo, onUpdateVisibleAssets]
   )
@@ -233,7 +197,6 @@ export function useAssetManagement() {
     onUpdateVisibleAssets,
     onAddCustomAsset,
     makeTokenVisible,
-    addOrRemoveTokenInLocalStorage,
     addNftToDeletedNftsList
   }
 }

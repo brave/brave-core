@@ -16,8 +16,10 @@ import {
 } from '../../../../../../common/hooks/assets-management'
 import {
   useGetIpfsGatewayTranslatedNftUrlQuery,
-  useRemoveUserTokenMutation, //
-  useUpdateNftSpamStatusMutation
+  useRestoreHiddenTokenMutation,
+  useRemoveUserTokenMutation,
+  useUpdateNftSpamStatusMutation,
+  useHideOrDeleteTokenMutation
 } from '../../../../../../common/slices/api.slice'
 
 // actions
@@ -30,6 +32,7 @@ import { WalletSelectors } from '../../../../../../common/selectors'
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import { getLocale } from '../../../../../../../common/locale'
+import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 // components
 import { DecoratedNftIcon } from '../../../../../shared/nft-icon/decorated-nft-icon'
@@ -80,12 +83,13 @@ export const NFTGridViewItem = (props: Props) => {
 
   // hooks
   const dispatch = useDispatch()
-  const { addOrRemoveTokenInLocalStorage, addNftToDeletedNftsList } =
-    useAssetManagement()
+  const { addNftToDeletedNftsList } = useAssetManagement()
 
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
   const [removeUserToken] = useRemoveUserTokenMutation()
+  const [hideOrDeleteToken] = useHideOrDeleteTokenMutation()
+  const [restoreHiddenToken] = useRestoreHiddenTokenMutation()
 
   // methods
   const onToggleShowMore = React.useCallback(
@@ -105,17 +109,20 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
   }, [])
 
-  const onHideNft = React.useCallback(() => {
+  const onHideNft = React.useCallback(async () => {
     setShowMore(false)
-    addOrRemoveTokenInLocalStorage(token, 'remove')
+    await hideOrDeleteToken({
+      mode: 'hide',
+      tokenId: getAssetIdKey(token)
+    })
     dispatch(
       WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
     )
-  }, [token, addOrRemoveTokenInLocalStorage])
+  }, [token, hideOrDeleteToken])
 
   const onUnHideNft = React.useCallback(async () => {
     setShowMore(false)
-    addOrRemoveTokenInLocalStorage(token, 'add')
+    await restoreHiddenToken(getAssetIdKey(token))
     if (isTokenSpam) {
       // remove from spam
       await updateNftSpamStatus({ token, status: false })
@@ -123,7 +130,7 @@ export const NFTGridViewItem = (props: Props) => {
     dispatch(
       WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
     )
-  }, [token, addOrRemoveTokenInLocalStorage, isTokenSpam])
+  }, [token, restoreHiddenToken, isTokenSpam])
 
   const onUnSpam = async () => {
     setShowMore(false)
