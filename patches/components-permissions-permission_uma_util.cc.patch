@@ -1,10 +1,10 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index e37f24428bcf75e51ed9648c5b6c22ac170fa855..7ff78449217c78b4ceffbf093bd6f2f1dec20e70 100644
+index d7ec2d6ced9789b93667d6b63f8996662fe997b5..868becc7d3615a3d4b89ad387699a3c5e0e62c76 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -130,6 +130,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
-     case RequestType::kFileSystemAccess:
-       return RequestTypeForUma::PERMISSION_FILE_SYSTEM_ACCESS;
+@@ -132,6 +132,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+     case RequestType::kCapturedSurfaceControl:
+       return RequestTypeForUma::CAPTURED_SURFACE_CONTROL;
  #endif
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }

@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 2f70778543a7dac8816db047860f7ffe7f231137..e4216c938653e12ec84e238a188df9ee3658ce81 100644
+index 97015187c0251c20eff8361e33f9e05e89a0246f..2a1de61762efecc877dd12a19eae443534df7afb 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -371,6 +371,24 @@ enum class ContentSettingsType : int32_t {
-   // shown to the user, for a given origin.
-   FILE_SYSTEM_ACCESS_RESTORE_PERMISSION,
+@@ -384,6 +384,24 @@ enum class ContentSettingsType : int32_t {
+   // Content settings for access to printers for the Web Printing API.
+   WEB_PRINTING,
  
 +  // Note: This enum is annotated with GENERATED_JAVA_ENUM_PACKAGE, and cannot
 +  // be extended with an override.

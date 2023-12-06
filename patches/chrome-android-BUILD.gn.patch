@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d26824fc67 100644
+index 5cb0741b263dcf394bd1e1e4cc8f62a9e4528eaa..17e6edcfe01ccb9a773baedb5a2335db5a679f41 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -171,6 +171,7 @@ if (current_toolchain == default_toolchain) {
+@@ -164,6 +164,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,7 +10,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -245,6 +246,7 @@ if (current_toolchain == default_toolchain) {
+@@ -239,6 +240,7 @@ if (current_toolchain == default_toolchain) {
      } else {
        deps += [ "//components/plus_addresses/android:java_resources" ]
      }
@@ -18,7 +18,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
    }
  
    android_library("app_hooks_java") {
-@@ -671,6 +673,7 @@ if (current_toolchain == default_toolchain) {
+@@ -665,6 +667,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -689,6 +692,7 @@ if (current_toolchain == default_toolchain) {
+@@ -683,6 +686,7 @@ if (current_toolchain == default_toolchain) {
        "//components/supervised_user/core/common:supervised_user_utils_enum_javagen",
        "//net:effective_connection_type_java",
      ]
@@ -34,7 +34,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
  
      # From java_sources.gni.
      sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -832,6 +836,7 @@ if (current_toolchain == default_toolchain) {
+@@ -820,6 +824,7 @@ if (current_toolchain == default_toolchain) {
        "//components/messages/android/internal:java",
        "//components/segmentation_platform/internal:internal_java",
      ]
@@ -42,7 +42,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2191,6 +2196,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2127,6 +2132,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2403,6 +2409,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2339,6 +2345,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
        }
-@@ -2667,6 +2674,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2602,6 +2609,7 @@ if (current_toolchain == default_toolchain) {
        "//components/payments/content/android:service_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -66,11 +66,11 @@ index 271d8ffbb5b7b6e98ef01eee91985d0073e834fb..8a7b2a818458e3bf95d2c03e8ffe28d2
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -3698,6 +3706,7 @@ generate_jni("chrome_jni_headers") {
+@@ -3664,6 +3672,7 @@ generate_jni("chrome_jni_headers") {
      "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
      "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
    ]
 +  sources += brave_jni_headers_sources
  
-   if (enable_vr) {
-     sources += [ "features/vr/java/src/org/chromium/chrome/browser/vr/VrModuleProvider.java" ]
+   # Used for testing only, should not be shipped to end users.
+   if (enable_offline_pages_harness) {
