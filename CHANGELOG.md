@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.58.1](https://github.com/brave/brave-ios/releases/tag/v1.58.1)
+
+- Fixed Adblock initialization crash ([#8334](https://github.com/brave/brave-ios/issues/8334))
+
 ## [1.58](https://github.com/brave/brave-ios/releases/tag/v1.58)
 
 ### Web3
