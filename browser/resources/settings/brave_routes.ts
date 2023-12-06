@@ -27,9 +27,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
   r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/filters')
-  if (loadTimeData.getBoolean('isBraveRewardsSupported')) {
-    r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
-  }
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
