@@ -131,7 +131,7 @@ class AddBubble : public PlaylistActionBubbleView {
 Row::Row(const std::u16string& text,
          const ui::ImageModel& icon,
          views::Button::PressedCallback callback)
-    : LabelButton(callback, text) {
+    : LabelButton(std::move(callback), text) {
   SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_RIGHT);
   SetImageModel(views::Button::STATE_NORMAL, icon);
   label()->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);

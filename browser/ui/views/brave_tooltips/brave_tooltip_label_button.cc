@@ -12,7 +12,7 @@ namespace brave_tooltips {
 BraveTooltipLabelButton::BraveTooltipLabelButton(PressedCallback callback,
                                                  const std::u16string& text,
                                                  int button_context)
-    : LabelButton(callback, text, button_context) {}
+    : LabelButton(std::move(callback), text, button_context) {}
 
 BraveTooltipLabelButton::~BraveTooltipLabelButton() = default;
 

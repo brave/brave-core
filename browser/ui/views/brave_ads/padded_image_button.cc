@@ -30,7 +30,7 @@ constexpr float kVisibleOpacity = 0.12f;
 }  // namespace
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)
-    : views::ImageButton(callback) {
+    : views::ImageButton(std::move(callback)) {
   auto* ink_drop = views::InkDrop::Get(this);
   views::InkDrop::UseInkDropForSquareRipple(ink_drop,
                                             /*highlight_on_hover=*/false,
