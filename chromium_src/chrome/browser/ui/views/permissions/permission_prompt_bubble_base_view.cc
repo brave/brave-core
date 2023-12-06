@@ -17,6 +17,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
@@ -231,8 +232,9 @@ void AddFootnoteViewIfNeeded(
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
       brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE)};
-  const std::vector<GURL> urls{GURL(chrome::kChromeUIContentSettingsURL),
-                               GURL(kPermissionPromptLearnMoreUrl)};
+  const std::vector<GURL> urls{
+      chrome::GetSettingsUrl(chrome::kContentSettingsSubPage),
+      GURL(kPermissionPromptLearnMoreUrl)};
 
   dialog_delegate_view->SetFootnoteView(
       views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
