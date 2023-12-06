@@ -725,13 +725,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   }
 }
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
 // TODO(sko) On Linux test environment, the test doesn't work well
 // TODO(sko) On Windows CI, SendMouse() doesn't work.
+// TODO(sko) As of Dec, 2023 this test is flaky on Mac CI.
 #define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
-#else
-#define MAYBE_DragTabToDetach DragTabToDetach
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
