@@ -14,7 +14,7 @@
 #include "url/origin.h"
 
 namespace {
-const int kDefaultKuboAPIPort = 5001;
+inline constexpr int kDefaultKuboApiPort = 5001;
 
 inline constexpr version_info::Channel kChannelsToEnumerate[] = {
     version_info::Channel::UNKNOWN, version_info::Channel::CANARY,
@@ -36,14 +36,12 @@ bool IpfsNodeTrafficRecognizer::IsKuboRelatedUrl(const GURL& request_url) {
   const std::string_view port = request_url.port_piece();
 
   if (IsKuboDomain(origin) &&
-      port == base::NumberToString(kDefaultKuboAPIPort)) {
+      port == base::NumberToString(kDefaultKuboApiPort)) {
     return true;
   }
 
   for (const auto& channel : kChannelsToEnumerate) {
-    if (IsKuboDomain(origin) && (port == ipfs::GetAPIPort(channel) ||
-                                 port == ipfs::GetSwarmPort(channel) ||
-                                 port == ipfs::GetGatewayPort(channel))) {
+    if (IsKuboDomain(origin) && port == ipfs::GetAPIPort(channel)) {
       return true;
     }
   }

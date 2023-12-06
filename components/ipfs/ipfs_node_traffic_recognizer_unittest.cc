@@ -27,11 +27,12 @@ std::string ConstructTestUrl(const std::string& host, const std::string& port) {
 
 TEST(IPFSNodeTrafficRecognizerTest, RecognizeKuboRpcRequests) {
   ipfs::IpfsNodeTrafficRecognizer recognizer;
-  GURL request_url_ip_def_port(ConstructTestUrl(ipfs::kLocalhostIP, "5001"));
-  ASSERT_TRUE(recognizer.IsKuboRelatedUrl(request_url_ip_def_port));
-  GURL request_url_lh_def_port(
+  GURL request_url_ip_def_api_port(
+      ConstructTestUrl(ipfs::kLocalhostIP, "5001"));
+  ASSERT_TRUE(recognizer.IsKuboRelatedUrl(request_url_ip_def_api_port));
+  GURL request_url_lh_def_api_port(
       ConstructTestUrl(ipfs::kLocalhostDomain, "5001"));
-  ASSERT_TRUE(recognizer.IsKuboRelatedUrl(request_url_lh_def_port));
+  ASSERT_TRUE(recognizer.IsKuboRelatedUrl(request_url_lh_def_api_port));
   GURL non_kubo_port_request_url_ip(
       ConstructTestUrl(ipfs::kLocalhostIP, "7788"));
   ASSERT_FALSE(recognizer.IsKuboRelatedUrl(non_kubo_port_request_url_ip));
