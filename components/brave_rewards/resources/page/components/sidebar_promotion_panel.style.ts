@@ -37,15 +37,15 @@ export const promotion = styled.div`
   background-repeat: no-repeat;
 
   &.promotion-brave-creators {
-    background-image: url(/${getBackgroundImage('brave-creators')});
+    background-image: url(${getBackgroundImage('brave-creators')});
   }
 
   &.promotion-tap-network {
-    background-image: url(/${getBackgroundImage('tap-network')});
+    background-image: url(${getBackgroundImage('tap-network')});
   }
 
   &.promotion-uphold-card {
-    background-image: url(/${getBackgroundImage('uphold-card')});
+    background-image: url(${getBackgroundImage('uphold-card')});
   }
 `
 
