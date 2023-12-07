@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
@@ -23,7 +24,7 @@ std::optional<challenge_bypass_ristretto::SigningKey> Create(
   }
 
   return ValueOrLogError(challenge_bypass_ristretto::SigningKey::decode_base64(
-      signing_key_base64));
+      base::as_bytes(base::make_span(signing_key_base64))));
 }
 
 }  // namespace

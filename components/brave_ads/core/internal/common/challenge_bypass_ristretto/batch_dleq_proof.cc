@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
@@ -43,7 +44,7 @@ std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
 
   return ValueOrLogError(
       challenge_bypass_ristretto::BatchDLEQProof::decode_base64(
-          batch_dleq_proof_base64));
+          base::as_bytes(base::make_span(batch_dleq_proof_base64))));
 }
 
 std::vector<UnblindedToken> ToUnblindedTokens(
