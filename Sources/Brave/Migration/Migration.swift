@@ -55,10 +55,16 @@ public class Migration {
   
   public static func migrateLostTabsActiveWindow() {
     if UIApplication.shared.supportsMultipleScenes { return }
-    if Preferences.Migration.lostTabsWindowIDMigrationOne.value { return }
+    if Preferences.Migration.lostTabsWindowIDMigration.value { return }
     
-    let sessionWindows = SessionWindow.all()
-    guard let activeWindow = sessionWindows.first(where: { $0.isSelected }) else {
+    var sessionWindows = SessionWindow.all()
+    var activeWindow = sessionWindows.first(where: { $0.isSelected })
+    if activeWindow == nil {
+      activeWindow = sessionWindows.removeFirst()
+    }
+    
+    guard let activeWindow = activeWindow else {
+      Preferences.Migration.lostTabsWindowIDMigration.value = true
       return
     }
     
@@ -93,7 +99,7 @@ public class Migration {
       }
     }
     
-    Preferences.Migration.lostTabsWindowIDMigrationOne.value = true
+    Preferences.Migration.lostTabsWindowIDMigration.value = true
   }
 
   public static func postCoreDataInitMigrations() {
@@ -158,8 +164,8 @@ fileprivate extension Preferences {
       key: "migration.ad-block-and-tracking-protection-shield-level-completed", default: false
     )
     
-    static let lostTabsWindowIDMigrationOne = Option<Bool>(
-      key: "migration.lost-tabs-window-id-one",
+    static let lostTabsWindowIDMigration = Option<Bool>(
+      key: "migration.lost-tabs-window-id-two",
       default: !UIApplication.shared.supportsMultipleScenes
     )
   }
