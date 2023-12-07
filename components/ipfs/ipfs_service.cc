@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <set>
@@ -101,6 +102,35 @@ std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
 }
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+// Contains blessed extension IDs for all channels
+inline constexpr const char* kBlessedExtensionIds_Stable[] = {
+    // WebRecorder
+    "chrome-extension://fpeoodllldobpkbkabpblcfaogecpndd"};
+
+// Contains blessed extension IDs for nigtly channel and previous ones
+inline constexpr const char* kBlessedExtensionIds_Nightly[] = {
+    // markdown-publish
+    "chrome-extension://ioajeblglaafjfaepefmbohjlncbaaof",
+    // link-list
+    "chrome-extension://beppdjjojnaodnioccaagpgngahdejnk"};
+
+std::vector<std::string> GetBlessedExtensionListForChannel(
+    version_info::Channel channel) {
+  std::vector<std::string> blessed_extensions_list(
+      std::begin(kBlessedExtensionIds_Stable),
+      std::end(kBlessedExtensionIds_Stable));
+
+  if (channel <= version_info::Channel::CANARY) {
+    blessed_extensions_list.insert(blessed_extensions_list.end(),
+                                   std::begin(kBlessedExtensionIds_Nightly),
+                                   std::end(kBlessedExtensionIds_Nightly));
+  }
+
+  return blessed_extensions_list;
+}
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
 }  // namespace
 
@@ -257,7 +287,8 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   auto config = mojom::IpfsConfig::New(
       executable_path, GetConfigFilePath(), GetDataPath(),
       GetGatewayPort(channel_), GetAPIPort(channel_), GetSwarmPort(channel_),
-      GetStorageSize(), ipfs_dns_resolver_->GetFirstDnsOverHttpsServer());
+      GetStorageSize(), ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
+      GetBlessedExtensionListForChannel(channel_));
 
   ipfs_service_->Launch(
       std::move(config),
