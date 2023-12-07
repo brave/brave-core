@@ -4103,6 +4103,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ANTI_ADBLOCK_DIALOG_NEGATIVE_BUTTON_TEXT" desc="anti adblock dialog negative button text">
       No Thanks
     </message>
+    <message name="IDS_BRAVE_PLAYER_WARNING_DIALOG_TITLE" desc="Brave player warning dialog title">
+      Watch in Brave Player instead
+    </message>
+    <message name="IDS_BRAVE_PLAYER_WARNING_DIALOG_TEXT" desc="Brave player warning dialog text">
+      Brave Player allows you to watch videos without interruptions.
+    </message>
+    <message name="IDS_BRAVE_PLAYER_WARNING_DIALOG_TOGGLE_TEXT" desc="Brave player warning dialog toggle text">
+      Always open videos from this site in Brave Player
+    </message>
+    <message name="IDS_BRAVE_PLAYER_WARNING_DIALOG_POSITIVE_BUTTON_TEXT" desc="Brave player warning positive button text">
+      Try it out
+    </message>
   </messages>
   </release>
 </grit>

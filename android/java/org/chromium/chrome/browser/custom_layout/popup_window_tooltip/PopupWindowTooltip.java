@@ -274,6 +274,12 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         // noinspection unchecked
         return (T) mContentLayout.findViewById(id);
     }
+    public void hideArrowView() {
+        if (mArrowView != null) {
+            mArrowView.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onDismiss() {
         dismissed = true;
@@ -298,7 +304,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     if (popup == null || dismissed) return;
                     if (mMaxWidth > 0 && mContentView.getWidth() > mMaxWidth) {
                         PopupWindowTooltipUtils.setWidth(mContentView, mMaxWidth);
-                        popup.update(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        popup.update(ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         return;
                     }

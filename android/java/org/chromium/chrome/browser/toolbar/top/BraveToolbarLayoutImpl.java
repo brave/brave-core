@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -204,6 +205,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
+    private PopupWindowTooltip mBravePlayerPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -947,6 +949,68 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    private void showBravePlayerTooltip() {
+        try {
+            float padding = (float) dpToPx(BraveActivity.getBraveActivity(), 0);
+            int deviceWidth = ConfigurationUtils.getDisplayMetrics(BraveActivity.getBraveActivity()).get("width");
+            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext());
+            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
+            mBravePlayerPopupWindowTooltip =
+                    new PopupWindowTooltip.Builder(getContext())
+                            .anchorView(mBravePlayerButton)
+                            .arrowColor(ContextCompat.getColor(
+                                    getContext(), android.R.color.transparent))
+                            .gravity(Gravity.BOTTOM)
+                            .dismissOnOutsideTouch(true)
+                            .dismissOnInsideTouch(false)
+                            .backgroundDimDisabled(false)
+                            .padding(padding)
+                            // .setWidth(deviceWidth)
+                            .parentPaddingHorizontal(dpToPx(getContext(), 10))
+                            .modal(true)
+                            .contentView(R.layout.brave_player_tooltip_layout)
+                            .build();
+            Button btnPositiveAction = mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_positive_action);
+            btnPositiveAction.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openBravePlayer();
+                    dismissBravePlayerTooltip();
+                }
+            }));
+
+            TextView btnNotNow = mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_not_now);
+            btnNotNow.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissBravePlayerTooltip();
+                }
+            }));
+
+            mBravePlayerPopupWindowTooltip.hideArrowView();
+
+            if (mBravePlayerButton != null && mBravePlayerButton.isShown()) {
+                mBravePlayerPopupWindowTooltip.show();
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "showBravePlayerTooltip " + e);
+        }
+    }
+
+    public void dismissBravePlayerTooltip() {
+        if (mBravePlayerPopupWindowTooltip != null && mBravePlayerPopupWindowTooltip.isShowing()) {
+            mBravePlayerPopupWindowTooltip.dismiss();
+            mBravePlayerPopupWindowTooltip = null;
+        }
+    }
+
+    public void reopenBravePlayerTooltip() {
+        if (mBravePlayerPopupWindowTooltip != null && mBravePlayerPopupWindowTooltip.isShowing()) {
+            mBravePlayerPopupWindowTooltip.dismiss();
+            showBravePlayerTooltip();
+        }
+    }
+
     public void reopenShieldsPanel() {
         if (mBraveShieldsHandler != null && mBraveShieldsHandler.isShowing()) {
             mBraveShieldsHandler.hideBraveShieldsMenu();
@@ -959,6 +1023,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         super.onConfigurationChanged(newConfig);
         dismissShieldsTooltip();
         reopenShieldsPanel();
+        reopenBravePlayerTooltip();
         // TODO: show wallet panel
     }
 
@@ -1213,26 +1278,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         showWalletPanelInternal(this);
     }
 
-    public void openBravePlayerOrWarning() {
-        try {
+    private void openBravePlayerOrWarning() {
             if (ChromeSharedPreferences.getInstance()
                     .readBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, true)) {
-                // TODO(AlexeyBarabash): replace toast with an actual popup warning
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                Toast.makeText(activity, "Show BravePlayer warning", Toast.LENGTH_SHORT).show();
+                showBravePlayerTooltip();
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, false);
             } else {
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null || TextUtils.isEmpty(currentTab.getUrl().getSpec())) {
-                    return;
-                }
-                String videoId = getVideoId(currentTab.getUrl().getSpec());
-                TabUtils.openUrlInNewTab(false, "brave://player/youtube/" + videoId);
+                openBravePlayer();
             }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showYTBravePlayer " + e);
+    }
+
+    private void openBravePlayer() {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (currentTab == null || TextUtils.isEmpty(currentTab.getUrl().getSpec())) {
+            return;
         }
+        String videoId = getVideoId(currentTab.getUrl().getSpec());
+        TabUtils.openUrlInNewTab(false, "brave://player/youtube/" + videoId);
     }
 
     private void processPageLoadForBravePlayerButton(String url) {

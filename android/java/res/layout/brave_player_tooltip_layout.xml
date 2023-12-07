@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/brave_player_warning_dialog_bg">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textSize="16sp"
+		android:textStyle="bold"
+		android:layout_marginVertical="24dp"
+		android:layout_marginHorizontal="24dp"
+		android:text="@string/brave_player_warning_dialog_title"
+		android:textColor="@color/shield_text_color"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/brave_player_warning_dialog_text"
+		android:textSize="14sp"
+		android:layout_marginHorizontal="24dp"
+		android:layout_marginBottom="12dp"
+		android:textColor="@color/shield_text_color"/>
+
+	<androidx.appcompat.widget.SwitchCompat
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/brave_player_warning_dialog_toggle_text"
+		android:textSize="14sp"
+		android:layout_marginBottom="24dp"
+		android:layout_marginHorizontal="16dp"
+		android:padding="16dp"
+		android:switchPadding="8dp"
+		android:background="@drawable/brave_player_warning_dialog_bg"
+		android:theme="@style/BraveRewardsSwitchTheme"
+		android:textColor="@color/shield_text_color"/>
+
+	<LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="24dp"
+		android:layout_marginBottom="24dp"
+		android:layout_gravity="end"
+		android:gravity="end"
+          android:orientation="horizontal">
+
+          <androidx.appcompat.widget.AppCompatTextView
+              android:id="@+id/btn_not_now"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:text="@string/not_now"
+              android:textSize="12sp"
+              android:paddingVertical="10dp"
+              android:paddingHorizontal="8dp"
+              android:layout_marginEnd="8dp"
+              android:textColor="@color/shield_text_color" />
+
+          <androidx.appcompat.widget.AppCompatButton
+              android:id="@+id/btn_positive_action"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/crypto_wallet_blue_button"
+              android:text="@string/brave_player_warning_dialog_positive_button_text"
+              android:textAllCaps="false"
+              android:textSize="12sp"
+              android:layout_gravity="end"
+              android:paddingHorizontal="12dp"
+              android:paddingVertical="10dp"
+              android:textColor="@android:color/white"
+              style="?android:attr/borderlessButtonStyle"/>
+
+      </LinearLayout>
+</LinearLayout>
