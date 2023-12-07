@@ -48,6 +48,9 @@
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
 
+# These tests fail upstream when DCHECKs are enabled.
+-PenIdBrowserTest.*
+
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*

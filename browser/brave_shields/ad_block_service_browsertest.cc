@@ -823,7 +823,9 @@ class TestAdBlockSubscriptionServiceManagerObserver
 // Make sure a list added as a custom subscription works correctly
 // The download in this test fails intermittently with a network error code,
 // although it doesn't seem to occur in real usage.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
+// TODO(https://github.com/brave/brave-browser/issues/33506)
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       DISABLED_SubscribeToCustomSubscription) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
