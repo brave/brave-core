@@ -9,11 +9,9 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
-import { VBATNotice, shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
@@ -159,19 +157,6 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const canConnectAccount = () => {
-    const {
-      currentCountryCode,
-      externalWalletProviderList,
-      parameters
-    } = rewardsData
-
-    return externalWalletProviderList.some((provider) => {
-      const regionInfo = parameters.walletProviderRegions[provider] || null
-      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
-    })
-  }
-
   const onManageClick = () => { actions.onModalResetOpen() }
 
   function renderUnsupportedRegionNotice () {
@@ -200,26 +185,6 @@ export function Settings () {
       <style.onboarding>
         <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} />
       </style.onboarding>
-    )
-  }
-
-  function renderVBATNotice () {
-    const { vbatDeadline } = rewardsData.parameters
-    if (!shouldShowVBATNotice(rewardsData.userType, vbatDeadline)) {
-      return null
-    }
-
-    const onConnect = () => { actions.onModalConnectOpen() }
-
-    return (
-      <style.vbatNotice>
-        <VBATNotice
-          vbatDeadline={vbatDeadline}
-          canConnectAccount={canConnectAccount()}
-          declaredCountry={rewardsData.currentCountryCode}
-          onConnectAccount={onConnect}
-        />
-      </style.vbatNotice>
     )
   }
 
@@ -254,7 +219,6 @@ export function Settings () {
               </button>
             </style.manageAction>
           </style.header>
-          {renderVBATNotice()}
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>

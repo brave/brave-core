@@ -26,7 +26,6 @@ import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { UnsupportedRegionCard } from './unsupported_region_card'
-import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
 
@@ -82,7 +81,6 @@ export function RewardsCard (props: Props) {
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
   const [publisherCountText, setPublisherCountText] = React.useState('')
-  const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
 
   React.useEffect(() => {
     let active = true
@@ -303,25 +301,6 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderVBATNotice () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
-    const onClose = () => { setHideVBATNotice(true) }
-    return (
-      <style.root>
-        <RewardsCardHeader />
-        <style.vbatNotice>
-          <VBATNotice
-            vbatDeadline={props.vbatDeadline}
-            canConnectAccount={props.canConnectAccount}
-            declaredCountry={props.declaredCountry}
-            onConnectAccount={onConnect}
-            onClose={onClose}
-          />
-        </style.vbatNotice>
-      </style.root>
-    )
-  }
-
   function renderLimited () {
     const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
 
@@ -378,12 +357,6 @@ export function RewardsCard (props: Props) {
 
   if (!props.declaredCountry) {
     return renderCountrySelect()
-  }
-
-  if (!hideVBATNotice) {
-    if (shouldShowVBATNotice(props.userType, props.vbatDeadline)) {
-      return renderVBATNotice()
-    }
   }
 
   if (props.userType === 'unconnected') {

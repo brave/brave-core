@@ -7,10 +7,8 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { Modal } from '../../shared/components/modal'
-import { VBATNotice } from '../../shared/components/vbat_notice'
 
 import * as derivedState from '../lib/derived_state'
-import * as style from './vbat_notice_modal.style'
 
 interface Props {
   onClose: () => void

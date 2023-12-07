@@ -1010,11 +1010,11 @@ public class BraveRewardsPanel
             int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
             double minEarningsLastMonth, double maxEarningsLastMonth) {
         TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
-            String minValue = BraveRewardsHelper.getFormattedAmount(minEarningsThisMonth);
-            String maxValue = BraveRewardsHelper.getFormattedAmount(maxEarningsThisMonth);
+        String minValue = BraveRewardsHelper.getFormattedAmount(minEarningsThisMonth);
+        String maxValue = BraveRewardsHelper.getFormattedAmount(maxEarningsThisMonth);
 
-            if (maxEarningsThisMonth == 0.0) { // don't show range just show 0.000
-                estimatedRange.setText(maxValue);
+        if (maxEarningsThisMonth == 0.0) { // don't show range just show 0.000
+            estimatedRange.setText(maxValue);
             } else {
                 final String estimatedValue = minValue + " - " + maxValue;
                 estimatedRange.setText(estimatedValue);
@@ -1219,13 +1219,12 @@ public class BraveRewardsPanel
     }
 
     // Generic UI changes
-    OnCheckedChangeListener autoContributeSwitchListener =
-            new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mBraveRewardsNativeWorker.IncludeInAutoContribution(mCurrentTabId, !isChecked);
-                }
-            };
+    OnCheckedChangeListener autoContributeSwitchListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mBraveRewardsNativeWorker.IncludeInAutoContribution(mCurrentTabId, !isChecked);
+        }
+    };
 
     View.OnClickListener braveRewardsOnboardingClickListener = new View.OnClickListener() {
         @Override
@@ -1814,30 +1813,29 @@ public class BraveRewardsPanel
     }
 
     private void setVerifyWalletButtonClickEvent(View btnVerifyWallet, final int status) {
-        btnVerifyWallet.setOnClickListener(
-                (new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BraveRewardsBalance walletBalanceObject =
-                                mBraveRewardsNativeWorker.GetWalletBalance();
-                        double walletBalance = 0;
-                        if (walletBalanceObject != null) {
-                            walletBalance = walletBalanceObject.getTotal();
-                        }
+        btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BraveRewardsBalance walletBalanceObject =
+                        mBraveRewardsNativeWorker.GetWalletBalance();
+                double walletBalance = 0;
+                if (walletBalanceObject != null) {
+                    walletBalance = walletBalanceObject.getTotal();
+                }
 
-                        switch (status) {
-                            case WalletStatus.CONNECTED:
-                                openUserWalletActivity(status);
-                                break;
-                            case WalletStatus.LOGGED_OUT:
-                                openUserWalletActivity(status);
-                                break;
-                            default:
-                                Log.e(TAG, "Unexpected external wallet status");
-                                return;
-                        }
-                    }
-                }));
+                switch (status) {
+                    case WalletStatus.CONNECTED:
+                        openUserWalletActivity(status);
+                        break;
+                    case WalletStatus.LOGGED_OUT:
+                        openUserWalletActivity(status);
+                        break;
+                    default:
+                        Log.e(TAG, "Unexpected external wallet status");
+                        return;
+                }
+            }
+        }));
     }
 
     private void openUserWalletActivity(int walletStatus) {
