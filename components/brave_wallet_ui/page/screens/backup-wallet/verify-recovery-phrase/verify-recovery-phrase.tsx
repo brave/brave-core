@@ -48,7 +48,7 @@ import { StepsNavigation } from '../../../../components/desktop/steps-navigation
 
 export const VerifyRecoveryPhrase = () => {
   // custom hooks
-  const { braveWalletP3A } = useApiProxy()
+  const { braveWalletP3A, keyringService } = useApiProxy()
 
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
@@ -91,6 +91,7 @@ export const VerifyRecoveryPhrase = () => {
       )
       dispatch(WalletPageActions.walletSetupComplete(true))
     }
+    keyringService.notifyWalletBackupComplete()
     dispatch(WalletPageActions.walletBackupComplete())
     history.push(
       isOnboarding
