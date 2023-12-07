@@ -57,13 +57,13 @@ export default function FeedV2() {
 
   // Note: Whenever the feed is updated, if we're viewing the feed, scroll to
   // the top.
-  React.useEffect(() => {
-    const root = document.querySelector<HTMLElement>('#root:not(.bn-scroll-restored)')
+  React.useLayoutEffect(() => {
+    const root = document.querySelector<HTMLElement>('#root')
     if (!root?.classList.contains(CLASSNAME_PAGE_STUCK)) {
       return
     }
 
-    // ref.current?.scrollIntoView()
+    ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
   // For some reason |createGlobalStyle| doesn't seem to work in Brave Core
