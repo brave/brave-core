@@ -892,12 +892,8 @@ extension BrowserViewController {
           }
         }
         popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary) { [weak tab] () -> PopupViewDismissType in
-          if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:]) { didOpen in
-              openedURLCompletionHandler(!didOpen)
-            }
-          } else {
-            openedURLCompletionHandler(true)
+          UIApplication.shared.open(url, options: [:]) { didOpen in
+            openedURLCompletionHandler(!didOpen)
           }
           removeTabIfEmpty()
           tab?.isExternalAppAlertPresented = false
