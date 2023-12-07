@@ -6,39 +6,70 @@
 import SwiftUI
 import BraveCore
 
+struct ContainerShape: InsettableShape {
+  enum Shape {
+    case circle, rectangle
+  }
+  let shape: Shape
+  var inset: CGFloat = 0
+  
+  func inset(by amount: CGFloat) -> some InsettableShape {
+    ContainerShape(shape: shape, inset: amount)
+  }
+  
+  func path(in rect: CGRect) -> Path {
+    let rect = rect.insetBy(dx: inset, dy: inset)
+    switch shape {
+    case .circle:
+      return Circle().path(in: rect)
+    case .rectangle:
+      return RoundedRectangle(cornerRadius: 4).path(in: rect)
+    }
+  }
+}
+
 struct MultipleCircleIconView<IconView: View, Model>: View {
   let models: [Model]
+  var shape: ContainerShape.Shape = .circle
   let maxIcons = 3
   @ScaledMetric var iconSize = 16.0
   var maxIconSize: CGFloat = 32
   @ScaledMetric var iconDotSize = 2.0
-
+  
   @ViewBuilder var iconView: (Model) -> IconView
-
+  
   var body: some View {
     HStack(spacing: -(min(iconSize, maxIconSize) / 2)) {
       let numberOfIcons = min(maxIcons, models.count)
       ForEach(0..<numberOfIcons, id: \.self) { index in
         iconView(models[index])
           .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
-          .overlay(Circle().stroke(Color(.secondaryBraveGroupedBackground), lineWidth: 1))
+          .clipShape(ContainerRelativeShape())
+          .overlay(ContainerRelativeShape().stroke(Color(.secondaryBraveGroupedBackground), lineWidth: 1))
+          .containerShape(ContainerShape(shape: shape))
           .zIndex(Double(numberOfIcons - index))
       }
       if models.count > maxIcons {
-        Circle()
-          .foregroundColor(Color(.braveBlurpleTint))
-          .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
-          .overlay(
-            HStack(spacing: 1) {
-              Circle()
-                .frame(width: iconDotSize, height: iconDotSize)
-              Circle()
-                .frame(width: iconDotSize, height: iconDotSize)
-              Circle()
-                .frame(width: iconDotSize, height: iconDotSize)
-            }
-              .foregroundColor(.white)
-          )
+        Group {
+          if shape == .circle {
+            Circle()
+          } else {
+            RoundedRectangle(cornerRadius: 4)
+          }
+        }
+        .foregroundColor(Color(.braveBlurpleTint))
+        .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
+        .overlay(
+          HStack(spacing: 1) {
+            ContainerRelativeShape()
+              .frame(width: iconDotSize, height: iconDotSize)
+            ContainerRelativeShape()
+              .frame(width: iconDotSize, height: iconDotSize)
+            ContainerRelativeShape()
+              .frame(width: iconDotSize, height: iconDotSize)
+          }
+            .foregroundColor(.white)
+        )
       }
     }
   }

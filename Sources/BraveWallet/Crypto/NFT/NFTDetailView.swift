@@ -82,7 +82,7 @@ struct NFTDetailView: View {
             .overlay(alignment: .bottomTrailing) {
               ZStack {
                 if let owner = nftDetailStore.owner {
-                  Blockie(address: owner.address, shape: .rectangle)
+                  Blockie(address: owner.address)
                     .overlay(
                       RoundedRectangle(cornerRadius: 4)
                         .stroke(lineWidth: 2)

@@ -26,9 +26,8 @@ private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
 class Blockies {
   private var generator: XorshiftRandomNumberGenerator
   private let colors: [Int] = [
-    0x5B5C63, 0x151E9A, 0x2197F9, 0x1FC3DC, 0x086582,
-    0x67D4B4, 0xAFCE57, 0xF0CB44, 0xF28A29, 0xFC798F,
-    0xC1226E, 0xFAB5EE, 0x9677EE, 0x5433B0,
+    0x423EEE, 0xE2E2FC, 0xFE5907, 0xFEDED6, 0x5F5CF1,
+    0x171553, 0x1C1E26, 0xE1E2E8,
   ]
 
   init(seed: String) {
@@ -53,13 +52,17 @@ class Blockies {
     let normalized = Double(generator.next()) / Double(Int32.max)
     return UIColor(rgb: colors[Int(floor(normalized * 100)) % colors.count])
   }
+  
+  func rand() -> Double {
+    Double(generator.next()) / Double(Int32.max)
+  }
 
   func image(length: Int, scale: CGFloat) -> UIImage {
     let color = makeColor()
     let backgroundColor = makeColor()
     let spotColor = makeColor()
-
-    func data() -> [[Double]] {
+    
+    func data() -> [Double] {
       let dataLength = Int(ceil(Double(length) / 2.0))
       var data: [[Double]] = []
       for _ in 0..<length {
@@ -72,31 +75,43 @@ class Blockies {
         let mirrorCopy = row.reversed()
         data.append(row + mirrorCopy)
       }
-      return data
+      return data.flatMap { $0 }
     }
-
+    
     let size = CGSize(width: CGFloat(length) * scale, height: CGFloat(length) * scale)
     let renderer = UIGraphicsImageRenderer(size: size)
     let data = data()
+    let width = sqrt(Double(data.count))
+  
     let image = renderer.image { context in
       backgroundColor.setFill()
       context.fill(.init(origin: .zero, size: size))
       spotColor.setFill()
-      for (y, row) in data.enumerated() {
-        for (x, value) in row.enumerated() {
-          let rect = CGRect(x: x, y: y, width: 1, height: 1)
-            .applying(CGAffineTransform(scaleX: scale, y: scale))
-          if value > 0 {
-            if value == 1 {
-              color.setFill()
-            } else {
-              spotColor.setFill()
-            }
-            context.fill(rect)
-          }
+      for (i, value) in data.enumerated() where value > 0 {
+        let row = floor(Double(i) / width)
+        let col = i % Int(width)
+        let fillColor = value == 1 ? color : spotColor
+        let shapeType = floor(rand() * 3)
+        
+        switch shapeType {
+        case 0:
+          let rectSizeMultiplier = rand() * 2
+          let rect = CGRect(x: Int(col) * Int(scale), y: Int(row) * Int(scale), width: Int(scale * rectSizeMultiplier), height: Int(scale * rectSizeMultiplier))
+          fillColor.setFill()
+          context.fill(rect)
+        case 1:
+          let rectSizeMultiplier = rand()
+          let x = Int(col) * Int(scale) + Int(scale) / 2 - Int(scale * rectSizeMultiplier / 2)
+          let y = Int(row) * Int(scale) + Int(scale) / 2 - Int(scale * rectSizeMultiplier / 2)
+          let rect = CGRect(x: x, y: y, width: Int(scale * rectSizeMultiplier), height: Int(scale * rectSizeMultiplier))
+          fillColor.setFill()
+          context.cgContext.fillEllipse(in: rect)
+        default:
+          break
         }
       }
     }
+    
     return image
   }
 }
@@ -108,12 +123,11 @@ struct Blockie: View {
   }
   
   var address: String
-  var shape: Shape = .circle
+  var shape: Shape = .rectangle
   
   private var base: some View {
-    Image(uiImage: Blockies(seed: address.lowercased()).image(length: 8, scale: 16))
+    Image(uiImage: Blockies(seed: address.lowercased()).image(length: 4, scale: 25))
       .resizable()
-      .blur(radius: 8, opaque: true)
   }
 
   var body: some View {
@@ -122,7 +136,7 @@ struct Blockie: View {
         .clipShape(Circle())
     } else {
       base
-        .clipShape(Rectangle())
+        .clipShape(RoundedRectangle(cornerRadius: 4))
     }
   }
 }

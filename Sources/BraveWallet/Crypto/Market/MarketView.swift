@@ -65,7 +65,9 @@ struct MarketView: View {
     WebImage(url: URL(string: coinMarket.image))
       .resizable()
       .placeholder {
-        Blockie(address: coinMarket.id)
+        BlockieMaterial(address: coinMarket.id)
+          .blur(radius: 8, opaque: true)
+          .clipShape(Circle())
           .overlay(
             Text(coinMarket.symbol.first?.uppercased() ?? "")
               .font(.system(size: coinLength / 2, weight: .bold, design: .rounded))

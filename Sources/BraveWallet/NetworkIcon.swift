@@ -40,7 +40,7 @@ struct NetworkIcon: View {
   }
   
   private var networkIconMonogram: some View {
-    Blockie(address: network.chainName)
+    Blockie(address: network.chainName, shape: .circle)
       .overlay(
         Text(network.chainName.first?.uppercased() ?? "")
           .font(.system(size: length / 2, weight: .bold, design: .rounded))

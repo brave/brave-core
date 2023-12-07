@@ -28,7 +28,9 @@ struct AssetIconView: View {
   var maxNetworkSymbolLength: CGFloat?
 
   private var fallbackMonogram: some View {
-    Blockie(address: token.contractAddress)
+    BlockieMaterial(address: token.contractAddress)
+      .blur(radius: 8, opaque: true)
+      .clipShape(Circle())
       .overlay(
         Text(token.symbol.first?.uppercased() ?? "")
           .font(.system(size: length / 2, weight: .bold, design: .rounded))

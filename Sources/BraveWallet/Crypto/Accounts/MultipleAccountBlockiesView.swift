@@ -16,6 +16,7 @@ struct MultipleAccountBlockiesView: View {
   var body: some View {
     MultipleCircleIconView(
       models: accountAddresses,
+      shape: .rectangle,
       iconSize: blockieSize,
       maxIconSize: maxBlockieSize,
       iconDotSize: blockieDotSize,
