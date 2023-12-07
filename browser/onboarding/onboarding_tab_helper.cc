@@ -178,7 +178,6 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
     return std::string();
   }
 
-  std::vector<std::string> replacements;
   auto [company_names, total_companies_blocked] =
       onboarding::GetCompanyNamesAndCountFromAdsList(
           shields_data_controller->GetBlockedAdsList());
@@ -186,19 +185,14 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   const int others_blocked =
       shields_data_controller->GetTotalBlockedCount() - total_companies_blocked;
 
-  std::string label_text = l10n_util::GetStringUTF8(
+  std::vector<std::string> replacements;
+  std::string label_text = l10n_util::GetPluralStringFUTF8(
       company_names.empty()
           ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES
-      : others_blocked == 0
-          ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_ONLY_COMPANIES
-          : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES);
-
+          : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES,
+      others_blocked);
   if (!company_names.empty()) {
     replacements.push_back(company_names);
-  }
-
-  if (others_blocked != 0) {
-    replacements.push_back(base::NumberToString(others_blocked));
   }
   replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 

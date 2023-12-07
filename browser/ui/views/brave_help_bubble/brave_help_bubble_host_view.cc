@@ -98,9 +98,6 @@ bool BraveHelpBubbleHostView::Show() {
   tracked_view_observation_.Observe(tracked_element_);
   host_widget_observation_.Observe(GetWidget());
 
-  // To locate help bubble at more higher than other normal widget.
-  help_bubble_->SetZOrderLevel(ui::ZOrderLevel::kFloatingUIElement);
-
   ui::ElementIdentifier id =
       tracked_element_->GetProperty(views::kElementIdentifierKey);
   CHECK(id);
