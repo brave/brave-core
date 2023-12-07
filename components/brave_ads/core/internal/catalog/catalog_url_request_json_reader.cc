@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -39,7 +37,7 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   catalog.version = document["version"].GetInt();
 
-  const int64_t ping = document["ping"].GetInt64();
+  const int ping = document["ping"].GetInt();
   catalog.ping = base::Milliseconds(ping);
 
   // Campaigns

@@ -99,8 +99,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
         rederived_unblinded_token->DeriveVerificationKey();
     EXPECT_TRUE(shared_verification_key);
 
-    // Server proves and verifies the message using the shared verification
-    // signature.
+    // Server proves and verifies the message using the verification signature.
     EXPECT_TRUE(
         shared_verification_key->Verify(*verification_signature, kMessage));
   }

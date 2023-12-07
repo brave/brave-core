@@ -26,7 +26,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr size_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
+constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,
@@ -139,7 +139,7 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
   client_.purchase_intent_signal_history.at(segment).push_back(history);
 
   if (client_.purchase_intent_signal_history.at(segment).size() >
-      kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory) {
+      kMaximumPurchaseIntentSignalHistoryEntriesPerSegment) {
     client_.purchase_intent_signal_history.at(segment).pop_back();
   }
 

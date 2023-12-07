@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events.h"
 #include "testing/gtest/include/gtest/gtest.h"
