@@ -37,12 +37,7 @@ import 'emptykit.css'
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-function App() {
-  const [initialThemeType, setInitialThemeType] =
-    React.useState<chrome.braveTheme.ThemeType>()
-  React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-  }, [])
+function App () {
 
   React.useEffect(() => {
     /** Sets FAVICON for Wallet Pages */
@@ -62,19 +57,16 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {initialThemeType && (
-          <BraveCoreThemeProvider
-            initialThemeType={initialThemeType}
-            dark={walletDarkTheme}
-            light={walletLightTheme}
-          >
-            <ApiProxyContext.Provider value={walletPageApiProxy}>
-              <LibContext.Provider value={Lib}>
-                <Container />
-              </LibContext.Provider>
-            </ApiProxyContext.Provider>
-          </BraveCoreThemeProvider>
-        )}
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <ApiProxyContext.Provider value={walletPageApiProxy}>
+            <LibContext.Provider value={Lib}>
+              <Container />
+            </LibContext.Provider>
+          </ApiProxyContext.Provider>
+        </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
   )

@@ -100,6 +100,8 @@ public class BraveWalletPanel implements DialogInterface {
     private final Context mContext;
     private final Observer<AllAccountsInfo> mAllAccountsInfoObserver;
 
+    private final boolean mShowExpandButton;
+
     private final Observer<NetworkInfo> mDefaultNetworkObserver;
 
     public interface BraveWalletPanelServices {
@@ -109,9 +111,11 @@ public class BraveWalletPanel implements DialogInterface {
         JsonRpcService getJsonRpcService();
     }
 
-    public BraveWalletPanel(@NonNull final View anchorViewHost,
+    public BraveWalletPanel(
+            @NonNull final View anchorViewHost,
             @NonNull final OnDismissListener onDismissListener,
-            @NonNull final BraveWalletPanelServices braveWalletPanelServices) {
+            @NonNull final BraveWalletPanelServices braveWalletPanelServices,
+            final boolean showExpandButton) {
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
             // Update network model to use network per origin
@@ -120,6 +124,7 @@ public class BraveWalletPanel implements DialogInterface {
             Log.e(TAG, "BraveWalletPanel Constructor", e);
         }
 
+        mShowExpandButton = showExpandButton;
         mAccountsWithPermissions = new HashSet<>();
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
@@ -423,15 +428,19 @@ public class BraveWalletPanel implements DialogInterface {
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mExpandWalletImage = mPopupView.findViewById(R.id.iv_dapp_panel_expand);
-        mExpandWalletImage.setOnClickListener(v -> {
-            dismiss();
-            try {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                activity.openBraveWallet(false, false, false);
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "setUpViews ExpandWalletImage click " + e);
-            }
-        });
+        if (mShowExpandButton) {
+            mExpandWalletImage.setVisibility(View.VISIBLE);
+            mExpandWalletImage.setOnClickListener(
+                    v -> {
+                        dismiss();
+                        try {
+                            BraveActivity activity = BraveActivity.getBraveActivity();
+                            activity.openBraveWallet(false, false, false);
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "ExpandWalletImage", e);
+                        }
+                    });
+        }
         mOptionsImage = mPopupView.findViewById(R.id.iv_dapp_panel_menu);
         mOptionsImage.setOnClickListener(v -> { showPopupMenu(); });
 

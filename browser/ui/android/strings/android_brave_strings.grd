@@ -4084,7 +4084,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
-    </message>
+    </message>  
     <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
       ...
     </message>
