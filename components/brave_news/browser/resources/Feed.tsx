@@ -86,7 +86,7 @@ export default function Component({ feed }: Props) {
       const scroll = scrollData.innerHeight === window.innerHeight && scrollData.innerWidth === window.innerWidth
         ? () => document.scrollingElement?.scrollTo({ top: scrollData.scrollPos })
         : () => document.querySelector(`[data-id="${scrollData.itemId}"]`)?.scrollIntoView()
-      setTimeout(scroll)
+      scroll()
     }
   }, [])
 
