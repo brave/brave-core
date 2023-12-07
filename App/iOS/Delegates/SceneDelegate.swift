@@ -533,12 +533,15 @@ extension SceneDelegate {
     let activeWindow = SessionWindow.getActiveWindow(context: DataController.swiftUIContext)
     let activeSession = UIApplication.shared.openSessions
       .compactMap({ BrowserState.getWindowInfo(from: $0) })
-      .first(where: { $0.windowId == activeWindow?.windowId.uuidString })
+      .first(where: { $0.windowId != nil && $0.windowId == activeWindow?.windowId.uuidString })
       
     if activeSession != nil {
       if !UIApplication.shared.supportsMultipleScenes {
         // iPhones should not create new windows
-        return (activeWindow!.windowId, false, nil)
+        if let activeWindow = activeWindow {
+          // If there's no active window, fall through and create one
+          return (activeWindow.windowId, false, nil)
+        }
       }
       
       // An existing window is already active on screen
