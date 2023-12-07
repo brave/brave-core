@@ -7,11 +7,11 @@ import Flex from '$web-common/Flex'
 import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
-import getBraveNewsController from '../../../../../brave_news/browser/resources/shared/api'
-import { useLazyUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
-import FollowButton from './FollowButton'
-import { getCardColor } from './colors'
+import { usePublisher, usePublisherFollowed } from './Context'
+import getBraveNewsController from './api'
+import { useLazyUnpaddedImageUrl } from './useUnpaddedImageUrl'
+import FollowButton from '../../../../brave_new_tab_ui/components/default/braveNews/customize/FollowButton'
+import { getCardColor } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/colors'
 
 interface CardProps {
   backgroundColor?: string
@@ -63,7 +63,7 @@ const Name = styled.span`
   font-weight: 600;
 `
 
-export default function FeedCard (props: {
+export default function PublisherCard (props: {
   publisherId: string
 }) {
   const publisher = usePublisher(props.publisherId)
@@ -87,7 +87,7 @@ export default function FeedCard (props: {
   </Flex>
 }
 
-export function DirectFeedCard (props: {
+export function DirectPublisherCard (props: {
   feedUrl: string
   title: string
 }) {

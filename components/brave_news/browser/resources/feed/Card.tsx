@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
+import * as React from 'react';
 import styled from "styled-components";
 import SecureLink, { SecureLinkProps, validateScheme } from '$web-common/SecureLink';
 import * as React from 'react';
@@ -27,14 +28,23 @@ export const Title = styled.h3`
   margin: 0;
 
   text-align: start;
-  font: ${font.primary.default.regular};
+  font: ${font.primary.default.semibold};
   color: var(--bn-glass-100);
 
 
   &> a { all: unset; }
 `
 
-export const SmallImage = styled.img`
+const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+  const handleError = React.useCallback((e) => {
+    e.target.style.opacity = 0
+    onError?.(e)
+  }, [onError])
+
+  return <img {...rest} onError={handleError} />
+}
+
+export const SmallImage = styled(HidableImage)`
   &:not([src]) { opacity: 0; }
 
   min-width: 96px;
@@ -48,7 +58,7 @@ export const SmallImage = styled.img`
   border-radius: 6px;
 `
 
-export const LargeImage = styled.img`
+export const LargeImage = styled(HidableImage)`
   &:not([src]) { opacity: 0; }
 
   width: 100%;
@@ -65,7 +75,7 @@ export default styled.div`
   background: var(--bn-glass-container);
   border-radius: ${radius.xl};
   color: var(--bn-glass-100);
-  padding: ${spacing["2Xl"]};
+  padding: ${spacing.xl};
 
   &:has(${Title} a:focus-visible) {
     box-shadow: ${effect.focusState};

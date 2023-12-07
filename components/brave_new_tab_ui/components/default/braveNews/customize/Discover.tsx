@@ -13,7 +13,7 @@ import styled from 'styled-components'
 import { useBraveNews, useChannels } from '../../../../../brave_news/browser/resources/shared/Context'
 import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
-import FeedCard, { DirectFeedCard } from './FeedCard'
+import PublisherCard, { DirectPublisherCard } from '../../../../../brave_news/browser/resources/shared/PublisherCard'
 import { PopularCarousel } from './Popular'
 import { SuggestionsCarousel } from './Suggestions'
 import useSearch from './useSearch'
@@ -89,7 +89,7 @@ function SearchResults (props: SearchResultsProps) {
       }
       <DiscoverSection name={getLocale('braveNewsAllSourcesHeader')}>
         {search.filteredSources.publisherIds.map(publisherId =>
-          <FeedCard key={publisherId} publisherId={publisherId} />
+          <PublisherCard key={publisherId} publisherId={publisherId} />
         )}
         {showFetchPermissionButton &&
           <div>
@@ -99,7 +99,7 @@ function SearchResults (props: SearchResultsProps) {
           </div>
         }
         {search.filteredSources.direct.map(r =>
-          <DirectFeedCard key={r.feedUrl.url} feedUrl={r.feedUrl.url} title={r.feedTitle} />)}
+          <DirectPublisherCard key={r.feedUrl.url} feedUrl={r.feedUrl.url} title={r.feedTitle} />)}
         {!search.canQueryFilterSources &&
           getLocale('braveNewsSearchQueryTooShort')
         }

@@ -211,10 +211,13 @@
     Hide content from <ph name="PUBLISHER_NAME">$1<ex>The Verge</ex></ph>
   </message>
   <message name="IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION" desc="Text recommending publishers">
-    Sources you'll enjoy
+    You might also like
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_ARTICLES" desc="Message displayed when there are no articles available">
-    Feed is empty
+  <message name="IDS_BRAVE_NEWS_NO_ARTICLES_TITLE" desc="Title of no articles message">
+    This feed is empty
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE" desc="Message displayed when there are no articles available">
+    There don't seem to be any articles in this feed at this moment. Try coming back later or refreshing the feed.
   </message>
   <message name="IDS_BRAVE_NEWS_CUSTOMIZE_FEED" desc="Text of button for opening the customize dialog">
     Customize
@@ -230,5 +233,8 @@
   </message>
   <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB" desc="Indicates the user would like to open articles in the current tab">
     Current tab
+  </message>
+  <message name="IDS_BRAVE_NEWS_CAUGHT_UP" desc="Text for when the user reaches the end of the feed">
+    You're all caught up
   </message>
 </grit-part>
