@@ -19,6 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences.OnServerRegionSelection;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,11 @@ public class BraveVpnServerSelectionAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
         if (vpnServerRegion != null) {
-            holder.serverText.setText(vpnServerRegion.getNamePretty());
+            String locationText =
+                    BraveVpnUtils.countryCodeToEmoji(vpnServerRegion.getCountryIsoCode())
+                            + " "
+                            + vpnServerRegion.getNamePretty();
+            holder.serverText.setText(locationText);
             if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
                         0, 0, R.drawable.ic_checkbox_checked, 0);

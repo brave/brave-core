@@ -206,8 +206,11 @@ public class BraveVpnUtils {
             for (int i = 0; i < servers.length(); i++) {
                 JSONObject server = servers.getJSONObject(i);
                 BraveVpnServerRegion vpnServerRegion =
-                        new BraveVpnServerRegion(server.getString("continent"),
-                                server.getString("name"), server.getString("name-pretty"));
+                        new BraveVpnServerRegion(
+                                server.getString("continent"),
+                                server.getString("country-iso-code"),
+                                server.getString("name"),
+                                server.getString("name-pretty"));
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {
@@ -282,5 +285,12 @@ public class BraveVpnUtils {
     public static boolean isVpnFeatureSupported(Context context) {
         return isRegionSupported()
                 && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
+    }
+
+    public static String countryCodeToEmoji(String countryCode) {
+        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+        return new String(Character.toChars(firstLetter))
+                + new String(Character.toChars(secondLetter));
     }
 }

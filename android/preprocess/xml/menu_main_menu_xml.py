@@ -84,17 +84,6 @@ def _ProcessXML(root):
     vpn_idx = list(parent).index(vpn_child)
     parent.insert(vpn_idx + 1, vpn_node)
 
-    vpn_location_node_str = '<item xmlns:android='\
-    '"http://schemas.android.com/apk/res/android" '\
-      'android:id="@+id/vpn_location_id" ' \
-      'android:title="@string/change_location" />'
-    vpn_location_node = ET.fromstring(vpn_location_node_str,
-                             parser=ET.XMLParser(encoding="utf-8"))
-    vpn_location_child = parent.find('item/[@android:id="@+id/request_brave_vpn_row_menu_id"]',
-                            namespaces=ns)
-    vpn_location_idx = list(parent).index(vpn_location_child)
-    parent.insert(vpn_location_idx + 1, vpn_location_node)
-
     speedreader_node_str = '<item xmlns:android='\
             '"http://schemas.android.com/apk/res/android" '\
             'android:id="@+id/brave_speedreader_id" '\

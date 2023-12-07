@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.features.start_surface.StartSurface;
@@ -103,8 +104,23 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveVpnCheckedSubMenuItem.setChecked(
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
+
+            if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
+                String serverLocation =
+                        BraveVpnUtils.countryCodeToEmoji(BraveVpnPrefUtils.getServerRegion())
+                                + " "
+                                + mContext.getString(R.string.vpn_location);
+                MenuItem vpnServerLocation =
+                        menu.add(Menu.NONE, R.id.vpn_location_id, 0, R.string.vpn_location);
+                vpnServerLocation.setTitle(serverLocation);
+                if (shouldShowIconBeforeItem()) {
+                    vpnServerLocation.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_vpn));
+                }
+            }
         } else {
             menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
+            menu.findItem(R.id.vpn_location_id).setVisible(false);
         }
 
         // Brave's items are only visible for page menu.
@@ -259,6 +275,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
         mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
+        mMenu.removeItem(R.id.vpn_location_id);
     }
 
     @Override
