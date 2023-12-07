@@ -666,6 +666,7 @@ export const SendScreen = React.memo((props: Props) => {
             .toHex()
         })
         resetSendFields()
+        return
       }
 
       case BraveWallet.CoinType.ZEC: {
