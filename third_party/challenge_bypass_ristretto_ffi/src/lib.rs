@@ -648,9 +648,52 @@ pub unsafe extern "C" fn batch_dleq_proof_invalid_or_unblind(
     -1
 }
 
+#[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
+pub unsafe extern "C" fn _test_rust_no_ffi() {
+    let mut rng = OsRng;
+    let signing_key = SigningKey::random(&mut rng);
+
+    let mut rng = OsRng;
+    let token = Token::random::<Sha512, OsRng>(&mut rng);
+    let blinded_token = token.blind();
+
+    let signed_token = signing_key.sign(&blinded_token).unwrap();
+
+    let blinded_tokens = vec![blinded_token];
+    let signed_tokens = vec![signed_token];
+
+    let batch_proof = BatchDLEQProof::new::<Sha512, OsRng>(
+        &mut rng,
+        &blinded_tokens,
+        &signed_tokens,
+        &signing_key,
+    )
+    .unwrap();
+
+    let tokens = vec![token];
+    let unblinded_tokens = batch_proof
+        .verify_and_unblind::<Sha512, _>(
+            &tokens,
+            &blinded_tokens,
+            &signed_tokens,
+            &signing_key.public_key,
+        )
+        .unwrap();
+
+    let v_key = unblinded_tokens[0].derive_verification_key::<Sha512>();
+    let c_msg1 = "\0hello";
+    v_key.sign::<HmacSha512>(c_msg1.as_bytes());
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_rust_no_ffi() {
+        unsafe { _test_rust_no_ffi() }
+    }
 
     #[test]
     fn test_embedded_null() {
