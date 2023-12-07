@@ -136,7 +136,7 @@ export default function Component({ feed }: Props) {
     })
   }, [cardCount, feed?.items])
 
-  return <FeedContainer className={NEWS_FEED_CLASS} ref={setLastCardRef}>
+  return <FeedContainer className={NEWS_FEED_CLASS}>
     {feed
       ? !feed.items.length ? <NoArticles /> : cards
       : <LoadingCard />}
