@@ -42,7 +42,6 @@ struct NFTImageView<Placeholder: View>: View {
             WebImage(url: url)
               .resizable()
               .placeholder { placeholder() }
-              .indicator(.activity)
               .aspectRatio(contentMode: .fit)
           } else {
             WebImageReader(url: url) { image in
@@ -77,6 +76,7 @@ struct LoadingNFTView: View {
         Image(braveSystemName: "leo.nft")
           .foregroundColor(Color(braveSystemName: .containerBackground))
           .font(.system(size: floor(viewSize.width / 3)))
+          .aspectRatio(contentMode: .fit)
       }
       .background(
         GeometryReader { geometryProxy in
@@ -84,7 +84,7 @@ struct LoadingNFTView: View {
             .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
         }
       )
-      .frame(minHeight: viewSize.width, maxHeight: 172)
+      .frame(height: viewSize.width)
       .onPreferenceChange(SizePreferenceKey.self) { newSize in
         viewSize = newSize
       }

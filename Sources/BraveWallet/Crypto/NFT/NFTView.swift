@@ -455,7 +455,7 @@ struct SkeletonLoadingNFTView: View {
   
   var body: some View {
     LazyVGrid(columns: nftGrids) {
-      ForEach(0..<6) { _ in
+      ForEach(0..<8) { _ in
         VStack(alignment: .leading, spacing: 6) {
           LoadingNFTView()
             .frame(height: 176)
