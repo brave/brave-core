@@ -55,11 +55,11 @@ BraveVpnHandler::~BraveVpnHandler() = default;
 void BraveVpnHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "registerWireguardService",
-      base::BindRepeating(&BraveVpnHandler::HandleRegisterWireguardService,
+      base::BindRepeating(&BraveVpnHandler::HandleInstallWireguardService,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "isWireguardServiceRegistered",
-      base::BindRepeating(&BraveVpnHandler::HandleIsWireguardServiceRegistered,
+      "isWireguardServiceInstalled",
+      base::BindRepeating(&BraveVpnHandler::HandleIsWireguardServiceInstalled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "isBraveVpnConnected",
@@ -73,31 +73,31 @@ void BraveVpnHandler::OnProtocolChanged() {
   brave_vpn::SetWireguardActive(enabled);
 }
 
-void BraveVpnHandler::HandleRegisterWireguardService(
+void BraveVpnHandler::HandleInstallWireguardService(
     const base::Value::List& args) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&ElevatedRegisterBraveVPNService),
-      base::BindOnce(&BraveVpnHandler::OnWireguardServiceRegistered,
+      base::BindOnce(&BraveVpnHandler::OnWireguardServiceInstalled,
                      weak_factory_.GetWeakPtr(), args[0].GetString()));
 }
 
-void BraveVpnHandler::OnWireguardServiceRegistered(
+void BraveVpnHandler::OnWireguardServiceInstalled(
     const std::string& callback_id,
     bool success) {
   AllowJavascript();
   ResolveJavascriptCallback(callback_id, base::Value(success));
 }
 
-void BraveVpnHandler::HandleIsWireguardServiceRegistered(
+void BraveVpnHandler::HandleIsWireguardServiceInstalled(
     const base::Value::List& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(
       args[0],
-      base::Value(brave_vpn::wireguard::IsWireguardServiceRegistered()));
+      base::Value(brave_vpn::wireguard::IsWireguardServiceInstalled()));
 }
 
 void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {

@@ -35,7 +35,7 @@ std::optional<bool> g_wireguard_service_registered_for_testing;
 
 namespace wireguard {
 
-bool IsWireguardServiceRegistered() {
+bool IsWireguardServiceInstalled() {
   if (g_wireguard_service_registered_for_testing.has_value()) {
     return g_wireguard_service_registered_for_testing.value();
   }

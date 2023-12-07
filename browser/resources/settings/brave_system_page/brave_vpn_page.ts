@@ -96,7 +96,7 @@ export class SettingsBraveVpnPageElement
       this.initialProtocolValue_)
   }
 
-  private isWireguardServiceRegistered(success: boolean) {
+  private isWireguardServiceInstalled(success: boolean) {
     if (success)
       return;
     // Try to register it.
@@ -116,8 +116,8 @@ export class SettingsBraveVpnPageElement
       return
     // <if expr="is_win">
     // If user enabled Wireguard service we have to check if it was registered.
-    this.vpnBrowserProxy_.isWireguardServiceRegistered().then(
-      this.isWireguardServiceRegistered.bind(this))
+    this.vpnBrowserProxy_.isWireguardServiceInstalled().then(
+      this.isWireguardServiceInstalled.bind(this))
     // </if>
   }
 

@@ -23,7 +23,7 @@ HRESULT Elevator::InstallVPNServices() {
     }
   }
 
-  if (!brave_vpn::wireguard::IsWireguardServiceRegistered()) {
+  if (!brave_vpn::wireguard::IsWireguardServiceInstalled()) {
     HRESULT hr = brave_vpn::InstallBraveWireGuardServiceImpersonated();
     if (FAILED(hr)) {
       return hr;
