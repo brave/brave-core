@@ -75,6 +75,8 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
   private struct LineChartShape: Shape {
     /// The points, plotted relatively in a [0, 1] coordinate space
     var points: [CGPoint]
+    /// To close shape for the background colour
+    var closed = false
 
     var animatableData: LineChartAnimatableData {
       get { .init(points: points.map(\.animatableData)) }
@@ -102,8 +104,12 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
           }
           previousPoint = scaledPoint
         }
+        if closed {
+          path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+          path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+          path.closeSubpath()
+        }
       }
-      .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
   }
 
@@ -135,41 +141,6 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
   }
 
   @State private var animationScale: CGFloat = 0
-
-  var finalDotView: some View {
-    let size: CGFloat = 14.0
-    return GeometryReader { proxy in
-      if numberOfColumns != points.count,
-        let scaledPoint = point(for: points.endIndex - 1, in: proxy.size) {
-        Circle()
-          .frame(width: size, height: size)
-          .background(
-            Circle()
-              .opacity((1.0 - Double(animationScale)) * 0.6)
-              // Can't scale effect to 0, causes bugs
-              .scaleEffect(max(animationScale, 0.1) * 2.5)
-              .animation(Animation.linear(duration: 2).repeatForever(autoreverses: false), value: animationScale)
-          )
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .offset(x: scaledPoint.x - (size / 2.0), y: scaledPoint.y - (size / 2.0))
-          .transition(
-            .asymmetric(
-              insertion: AnyTransition.opacity.animation(Animation.linear(duration: 0.1).delay(0.2)),
-              removal: AnyTransition.opacity.animation(.linear(duration: 0.1))
-            )
-          )
-          .onAppear {
-            animationScale = 1
-          }
-          .onDisappear {
-            withAnimation(.none) {
-              animationScale = 0.0
-            }
-          }
-      }
-    }
-  }
-
   @State private var dragValueSize: CGSize = .zero
 
   private let dateFormatter = DateFormatter().then {
@@ -202,49 +173,51 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
         self.dragValueSize = $0
       }
       .font(.footnote)
-      fill
-        .mask(
-          LineChartShape(points: points)
-            .padding(.vertical, 14)
-            .drawingGroup()  // Drawing group clips anything above it, so we need additional padding
-            .overlay(
-              finalDotView
-                .padding(.vertical, 14)  // But drag calculations need to use the correct coordinates without padding)
-            )
-        )
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, -14)  // But drag calculations need to use the correct coordinates without padding
-        .overlay(
-          Group {
-            if let dragContext = dragContext {
+      ZStack {
+        fill
+          .clipShape(LineChartShape(points: points, closed: true))
+        LineChartShape(points: points)
+          .stroke(Color(.braveBlurpleTint), lineWidth: 2)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .overlay(
+        Group {
+          if let dragContext = dragContext {
+            ZStack {
               Rectangle()
-                .fill(Color(.secondaryButtonTint))
+                .fill(Color(.braveBlurpleTint))
                 .frame(width: 2)
                 .frame(maxHeight: .infinity)
                 .padding(.vertical, -10)
                 .position(x: dragContext.location.x, y: dragContext.size.height / 2)
+              Circle()
+                .strokeBorder(Color(.braveBlurpleTint), style: .init(lineWidth: 2))
+                .frame(width: 12, height: 12)
+                .background(Color(.braveBackground).clipShape(Circle()))
+                .position(x: dragContext.location.x, y: dragContext.location.y)
             }
           }
-        )
-        .overlay(
-          GeometryReader { proxy in
-            Color.clear
-              .contentShape(Rectangle())
-              .gesture(
-                DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                  .onChanged({ value in
-                    dragContext = makeDragContext(
-                      from: value.location.x,
-                      in: proxy.size
-                    )
-                    selectedDataPoint = dragContext?.dataPoint
-                  })
-                  .onEnded({ _ in
-                    dragContext = nil
-                    selectedDataPoint = nil
-                  })
-              )
-          })
+        }
+      )
+      .overlay(
+        GeometryReader { proxy in
+          Color.clear
+            .contentShape(Rectangle())
+            .gesture(
+              DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                .onChanged({ value in
+                  dragContext = makeDragContext(
+                    from: value.location.x,
+                    in: proxy.size
+                  )
+                  selectedDataPoint = dragContext?.dataPoint
+                })
+                .onEnded({ _ in
+                  dragContext = nil
+                  selectedDataPoint = nil
+                })
+            )
+        })
     }
     .padding(.bottom, 16)
     .padding(.top, 4)
