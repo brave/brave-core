@@ -391,7 +391,7 @@ export const OnboardingNetworkSelection = () => {
                         <SelectAllText
                           onClick={() => {
                             areAllChainsSelected
-                              ? setSelectedChainIds([])
+                              ? setSelectedChainIds(mandatoryChainIds)
                               : setSelectedChainIds(
                                   showTestNets ? networkIds : mainnetChainIds
                                 )
