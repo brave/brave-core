@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/brave_player/core/common/buildflags/buildflags.gni")
+
 # Tests that do not run on Android
 android_test_exception_sources = [
   "//brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_browsertest.cc",
@@ -126,6 +128,11 @@ android_test_exception_deps = [
   "//extensions/common:test_support",
   "//ui/views",
 ]
+
+if (enable_brave_player) {
+  android_test_exception_sources +=
+      [ "//brave/browser/brave_player/test:browser_tests" ]
+}
 
 # Tests that run only on Android
 android_only_test_sources = [

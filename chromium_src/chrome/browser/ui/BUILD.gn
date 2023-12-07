@@ -9,7 +9,7 @@ import("//build/config/ui.gni")
 
 group("ui") {
   deps = [
-    "//brave/components/brave_player/common/buildflags",
+    "//brave/components/brave_player/core/common/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
   ]
 

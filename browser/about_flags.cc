@@ -20,7 +20,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
+#include "brave/components/brave_player/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -84,7 +84,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/components/brave_player/common/features.h"
+#include "brave/components/brave_player/core/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -427,14 +427,24 @@
   })
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
-  IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
-               EXPAND_FEATURE_ENTRIES({                                      \
-                   "brave-player",                                           \
-                   "Brave Player",                                           \
-                   "Enables Brave Player",                                   \
-                   kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
-                   FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
-               }))
+  IF_BUILDFLAG(                                                              \
+      ENABLE_BRAVE_PLAYER,                                                   \
+      EXPAND_FEATURE_ENTRIES(                                                \
+          {                                                                  \
+              "brave-player",                                                \
+              "Brave Player",                                                \
+              "Enables Brave Player",                                        \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                       \
+              FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer),      \
+          },                                                                 \
+          {                                                                  \
+              "brave-player-respond-to-anti-adblock",                        \
+              "Brave Player - respond to anti ad block",                     \
+              "Shows AdBlockAdjustmentDialogs",                              \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                       \
+              FEATURE_VALUE_TYPE(                                            \
+                  brave_player::features::kBravePlayerRespondToAntiAdBlock), \
+          }))
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
