@@ -8,7 +8,7 @@
 
 #include <limits>
 #include <optional>
-#include <ostream>
+#include <ostream>  // IWYU pragma: keep
 
 #include "base/notreached.h"
 #include "base/numerics/ranges.h"

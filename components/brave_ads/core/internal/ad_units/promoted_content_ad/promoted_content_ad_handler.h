@@ -24,7 +24,7 @@ struct PromotedContentAdInfo;
 class PromotedContentAdHandler final
     : public PromotedContentAdEventHandlerDelegate {
  public:
-  PromotedContentAdHandler(Account& account, SiteVisit& transfer);
+  PromotedContentAdHandler(Account& account, SiteVisit& site_visit);
 
   PromotedContentAdHandler(const PromotedContentAdHandler&) = delete;
   PromotedContentAdHandler& operator=(const PromotedContentAdHandler&) = delete;
@@ -56,7 +56,8 @@ class PromotedContentAdHandler final
       const PromotedContentAdInfo& ad) override;
 
   const raw_ref<Account> account_;
-  const raw_ref<SiteVisit> transfer_;
+
+  const raw_ref<SiteVisit> site_visit_;
 
   PromotedContentAdEventHandler event_handler_;
 

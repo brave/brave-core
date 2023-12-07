@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/page_land_exclusion_rule.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
@@ -24,21 +24,21 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 }  // namespace
 
-class BraveAdsSiteVisitExclusionRuleTest : public UnitTestBase {};
+class BraveAdsPageLandExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
+TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
-  const SiteVisitExclusionRule exclusion_rule(/*ad_events=*/{});
+  const PageLandExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -59,7 +59,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kLanded, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
@@ -67,7 +67,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleAdTypes) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -105,7 +105,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
@@ -113,7 +113,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -131,7 +131,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
@@ -139,7 +139,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin0Seconds) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -157,7 +157,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
@@ -165,7 +165,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -183,7 +183,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2));
 
@@ -191,7 +191,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSiteVisitExclusionRuleTest,
+TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -213,7 +213,7 @@ TEST_F(BraveAdsSiteVisitExclusionRuleTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  const SiteVisitExclusionRule exclusion_rule(ad_events);
+  const PageLandExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2));
 

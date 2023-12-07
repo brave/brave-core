@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/page_land_exclusion_rule.h"
 
 #include <utility>
 
@@ -27,21 +27,21 @@ bool DoesRespectCap(const AdEventList& ad_events,
 
 }  // namespace
 
-SiteVisitExclusionRule::SiteVisitExclusionRule(AdEventList ad_events)
+PageLandExclusionRule::PageLandExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
-SiteVisitExclusionRule::~SiteVisitExclusionRule() = default;
+PageLandExclusionRule::~PageLandExclusionRule() = default;
 
-std::string SiteVisitExclusionRule::GetUuid(
+std::string PageLandExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.campaign_id;
 }
 
-base::expected<void, std::string> SiteVisitExclusionRule::ShouldInclude(
+base::expected<void, std::string> PageLandExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
-        "campaignId $1 has exceeded the transferred frequency cap",
+        "campaignId $1 has exceeded the page land frequency cap",
         {creative_ad.campaign_id}, nullptr));
   }
 

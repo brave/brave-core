@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

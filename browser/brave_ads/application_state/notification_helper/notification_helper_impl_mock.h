@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_MOCK_H_
 
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
@@ -25,11 +25,13 @@ class NotificationHelperImplMock : public NotificationHelperImpl {
 
   ~NotificationHelperImplMock() override;
 
-  MOCK_METHOD0(CanShowNotifications, bool());
-  MOCK_CONST_METHOD0(CanShowSystemNotificationsWhileBrowserIsBackgrounded,
-                     bool());
+  MOCK_METHOD(bool, CanShowNotifications, ());
+  MOCK_METHOD(bool,
+              CanShowSystemNotificationsWhileBrowserIsBackgrounded,
+              (),
+              (const));
 
-  MOCK_METHOD0(ShowOnboardingNotification, bool());
+  MOCK_METHOD(bool, ShowOnboardingNotification, ());
 };
 
 }  // namespace brave_ads

@@ -95,7 +95,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   Conversions conversions_;
 
-  SiteVisit transfer_;
+  SiteVisit site_visit_;
 
   CountryCode country_code_;
   SubdivisionTargeting subdivision_targeting_;
