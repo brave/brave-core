@@ -13,9 +13,15 @@ import CardLoading from './cards/cardLoading'
 import CardOptIn from './cards/cardOptIn'
 import * as BraveNewsElement from './default'
 
-import FeedV2 from './FeedV2'
 const Content = React.lazy(() => import('./content'))
-// const FeedV2 = React.lazy(() => import('./FeedV2'))
+const FeedV2 = React.lazy(() => import('./FeedV2'))
+
+// When FeedV2 is enabled, immediately start loading the Brave News chunk,
+// rather than waiting for the parent component to render.
+if (defaultState.featureFlagBraveNewsFeedV2Enabled) {
+  import('./FeedV2')
+}
+
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
 export type OnPromotedItemViewed = (args: TodayActions.PromotedItemViewedPayload) => any
