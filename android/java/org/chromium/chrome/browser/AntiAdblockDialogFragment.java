@@ -15,7 +15,9 @@ import android.widget.Button;
 
 import org.chromium.chrome.R;
 
-public class AntiAdblockDialogFragment extends BraveDialogFragment implements View.OnClickListener {
+public class AntiAdblockDialogFragment extends BraveDialogFragment {
+    private View.OnClickListener mOnClickListener;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,17 +31,13 @@ public class AntiAdblockDialogFragment extends BraveDialogFragment implements Vi
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Button mPositiveButton = view.findViewById(R.id.btn_positive);
-        mPositiveButton.setOnClickListener(this);
+        mPositiveButton.setOnClickListener(mOnClickListener);
 
         Button mNegativeButton = view.findViewById(R.id.btn_negative);
-        mNegativeButton.setOnClickListener(this);
+        mNegativeButton.setOnClickListener(mOnClickListener);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_positive) {
-        } else {
-            dismiss();
-        }
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
     }
 }

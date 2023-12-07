@@ -32,9 +32,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -510,6 +510,25 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         try {
                             AntiAdblockDialogFragment mAntiAdblockDialogFragment =
                                     new AntiAdblockDialogFragment();
+                            mAntiAdblockDialogFragment.setOnClickListener(
+                                    (new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (view.getId() == R.id.btn_positive) {
+                                                Tab currentTab = getToolbarDataProvider().getTab();
+                                                if (currentTab != null) {
+                                                    BraveShieldsContentSettings.setShieldsAdsValue(
+                                                            Profile.fromWebContents(
+                                                                    ((TabImpl) currentTab)
+                                                                            .getWebContents()),
+                                                            currentTab.getUrl().getSpec(),
+                                                            BraveShieldsContentSettings
+                                                                    .ALLOW_RESOURCE);
+                                                }
+                                            }
+                                            mAntiAdblockDialogFragment.dismiss();
+                                        }
+                                    }));
                             mAntiAdblockDialogFragment.show(
                                     BraveActivity.getBraveActivity().getSupportFragmentManager(),
                                     "AntiAdblockDialogFragment");
@@ -950,50 +969,45 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showBravePlayerTooltip() {
-        try {
-            float padding = (float) dpToPx(BraveActivity.getBraveActivity(), 0);
-            int deviceWidth = ConfigurationUtils.getDisplayMetrics(BraveActivity.getBraveActivity()).get("width");
-            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext());
-            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
-            mBravePlayerPopupWindowTooltip =
-                    new PopupWindowTooltip.Builder(getContext())
-                            .anchorView(mBravePlayerButton)
-                            .arrowColor(ContextCompat.getColor(
-                                    getContext(), android.R.color.transparent))
-                            .gravity(Gravity.BOTTOM)
-                            .dismissOnOutsideTouch(true)
-                            .dismissOnInsideTouch(false)
-                            .backgroundDimDisabled(false)
-                            .padding(padding)
-                            // .setWidth(deviceWidth)
-                            .parentPaddingHorizontal(dpToPx(getContext(), 10))
-                            .modal(true)
-                            .contentView(R.layout.brave_player_tooltip_layout)
-                            .build();
-            Button btnPositiveAction = mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_positive_action);
-            btnPositiveAction.setOnClickListener((new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openBravePlayer();
-                    dismissBravePlayerTooltip();
-                }
-            }));
+        float padding = (float) dpToPx(getContext(), 0);
+        mBravePlayerPopupWindowTooltip =
+                new PopupWindowTooltip.Builder(getContext())
+                        .anchorView(mBravePlayerButton)
+                        .arrowColor(
+                                ContextCompat.getColor(getContext(), android.R.color.transparent))
+                        .gravity(Gravity.BOTTOM)
+                        .dismissOnOutsideTouch(true)
+                        .dismissOnInsideTouch(false)
+                        .backgroundDimDisabled(false)
+                        .padding(padding)
+                        .parentPaddingHorizontal(dpToPx(getContext(), 10))
+                        .modal(true)
+                        .contentView(R.layout.brave_player_tooltip_layout)
+                        .build();
+        Button btnPositiveAction =
+                mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_positive_action);
+        btnPositiveAction.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openBravePlayer();
+                        dismissBravePlayerTooltip();
+                    }
+                }));
 
-            TextView btnNotNow = mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_not_now);
-            btnNotNow.setOnClickListener((new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismissBravePlayerTooltip();
-                }
-            }));
+        TextView btnNotNow = mBravePlayerPopupWindowTooltip.findViewById(R.id.btn_not_now);
+        btnNotNow.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismissBravePlayerTooltip();
+                    }
+                }));
 
-            mBravePlayerPopupWindowTooltip.hideArrowView();
+        mBravePlayerPopupWindowTooltip.hideArrowView();
 
-            if (mBravePlayerButton != null && mBravePlayerButton.isShown()) {
-                mBravePlayerPopupWindowTooltip.show();
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showBravePlayerTooltip " + e);
+        if (mBravePlayerButton != null && mBravePlayerButton.isShown()) {
+            mBravePlayerPopupWindowTooltip.show();
         }
     }
 
@@ -1279,14 +1293,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void openBravePlayerOrWarning() {
-            if (ChromeSharedPreferences.getInstance()
-                    .readBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, true)) {
-                showBravePlayerTooltip();
-                ChromeSharedPreferences.getInstance()
-                        .writeBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, false);
-            } else {
-                openBravePlayer();
-            }
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, true)) {
+            showBravePlayerTooltip();
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, false);
+        } else {
+            openBravePlayer();
+        }
     }
 
     private void openBravePlayer() {

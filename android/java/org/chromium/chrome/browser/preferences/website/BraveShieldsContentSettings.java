@@ -113,6 +113,14 @@ public class BraveShieldsContentSettings {
         }
     }
 
+    public static void setShieldsAdsValue(Profile profile, String host, String settingOption) {
+        BraveShieldsContentSettingsJni.get()
+                .setAdControlType(
+                        BLOCK_THIRDPARTY_RESOURCE.equals(settingOption) ? DEFAULT : settingOption,
+                        host,
+                        profile);
+    }
+
     public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
         String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {

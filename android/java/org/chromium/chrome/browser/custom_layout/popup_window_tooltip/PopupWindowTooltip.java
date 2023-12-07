@@ -274,6 +274,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         // noinspection unchecked
         return (T) mContentLayout.findViewById(id);
     }
+
     public void hideArrowView() {
         if (mArrowView != null) {
             mArrowView.setVisibility(View.INVISIBLE);
@@ -296,6 +297,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                 mAutoDismissLayoutListener);
         mPopupWindow = null;
     }
+
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener =
             new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -304,16 +306,21 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     if (popup == null || dismissed) return;
                     if (mMaxWidth > 0 && mContentView.getWidth() > mMaxWidth) {
                         PopupWindowTooltipUtils.setWidth(mContentView, mMaxWidth);
-                        popup.update(ViewGroup.LayoutParams.MATCH_PARENT,
+                        popup.update(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         return;
                     }
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
-                            mArrowLayoutListener);
+                    popup.getContentView()
+                            .getViewTreeObserver()
+                            .addOnGlobalLayoutListener(mArrowLayoutListener);
                     PointF location = calculePopupLocation();
                     popup.setClippingEnabled(true);
-                    popup.update((int) location.x, (int) location.y, popup.getWidth(),
+                    popup.update(
+                            (int) location.x,
+                            (int) location.y,
+                            popup.getWidth(),
                             popup.getHeight());
                     popup.getContentView().requestLayout();
                 }
