@@ -10,6 +10,8 @@ import LocalAuthentication
 
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
+  // Used to dismiss all of Wallet
+  let dismissAction: () -> Void
 
   @State private var password: String = ""
   @FocusState private var isPasswordFieldFocused: Bool
@@ -80,8 +82,9 @@ struct UnlockWalletView: View {
             .disabled(!isPasswordValid)
             
             NavigationLink(
-              destination: RestoreWalletContainerView(
-                keyringStore: keyringStore
+              destination: RestoreWalletView(
+                keyringStore: keyringStore,
+                dismissAction: dismissAction
               )
             ) {
               Text(Strings.Wallet.restoreWalletButtonTitle)
@@ -161,7 +164,8 @@ struct UnlockWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       UnlockWalletView(
-        keyringStore: .previewStoreWithWalletCreated
+        keyringStore: .previewStoreWithWalletCreated,
+        dismissAction: {}
       )
     }
     .previewColorSchemes()

@@ -856,6 +856,13 @@ extension Strings {
       value: "Strong",
       comment: "A label will be displayed beside input password when it is considered as a strong password"
     )
+    public static let creatingWallet = NSLocalizedString(
+      "wallet.creatingWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Creating Wallet...",
+      comment: "The title of the creating wallet screen, shown after user enters their password while the wallet is being set up."
+    )
     public static let biometricsSetupErrorTitle = NSLocalizedString(
       "wallet.biometricsSetupErrorTitle",
       tableName: "BraveWallet",

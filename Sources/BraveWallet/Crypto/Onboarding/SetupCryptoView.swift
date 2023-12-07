@@ -9,10 +9,17 @@ import Introspect
 import DesignSystem
 import Strings
 
+enum OnboardingSetupOption {
+  case new
+  case restore
+}
+
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
+  // Used to dismiss all of Wallet
+  let dismissAction: () -> Void
   
-  @State private var setupOption: LegalView.SetupOption?
+  @State private var setupOption: OnboardingSetupOption?
   
   var body: some View {
     ScrollView {
@@ -117,7 +124,11 @@ struct SetupCryptoView: View {
         ),
         destination: {
           if let option = setupOption {
-            LegalView(keyringStore: keyringStore, setupOption: option)
+            LegalView(
+              keyringStore: keyringStore,
+              setupOption: option,
+              dismissAction: dismissAction
+            )
           }
         },
         label: {
@@ -134,7 +145,10 @@ struct SetupCryptoView: View {
 struct SetupCryptoView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      SetupCryptoView(keyringStore: .previewStore)
+      SetupCryptoView(
+        keyringStore: .previewStore,
+        dismissAction: {}
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()

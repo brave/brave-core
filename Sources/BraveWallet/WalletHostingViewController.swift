@@ -95,7 +95,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         // As a workaround to this issue, we can just watch keyring's `isLocked` value from here
         // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
         // while the wallet is locked.
-        if /*#unavailable(iOS 16.4),*/
+        if #unavailable(iOS 16.4),
            let self = self,
            isLocked,
            let presentedViewController = self.presentedViewController,

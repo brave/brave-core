@@ -213,6 +213,14 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   
   public func setupObservers() {
     guard !isObserving else { return }
+    Task { @MainActor in
+      // For case where Wallet is dismissed while wallet is being created.
+      // Ex. User creates wallet, dismisses & re-opens Wallet before
+      // create wallet completion callback. Callback is held with
+      // strong ref which keeps `KeyringStore` alive.
+      let isWalletCreated = await keyringService.isWalletCreated()
+      self.isOnboardingVisible = !isWalletCreated
+    }
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _walletReset: { [weak self] in
@@ -270,6 +278,19 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
   
   public func tearDown() {
+    Task { @MainActor in
+      // For case where Wallet is dismissed while wallet is being created.
+      // Ex. User creates wallet, dismisses & re-opens Wallet before
+      // create wallet completion callback. Callback is held with
+      // strong ref which keeps `KeyringStore` alive.
+      let isWalletCreated = await keyringService.isWalletCreated()
+      self.isOnboardingVisible = !isWalletCreated
+      if isRestoringWallet && isWalletCreated {
+        // user dismissed wallet while restoring, but after wallet was created in core.
+        keyringService.notifyWalletBackupComplete()
+        self.isWalletBackedUp = await keyringService.isWalletBackedUp()
+      }
+    }
     keyringServiceObserver = nil
     rpcServiceObserver = nil
   }
@@ -383,13 +404,24 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
     isOnboarding = true
     isCreatingWallet = true
-    keyringService.createWallet(password) { [weak self] mnemonic in
-      self?.isCreatingWallet = false
-      self?.updateInfo()
-      if !mnemonic.isEmpty {
-        self?.passwordToSaveInBiometric = password
+    keyringService.isWalletCreated { [weak self] isWalletCreated in
+      guard let self else { return }
+      guard !isWalletCreated else {
+        // Wallet was created already (possible with multi-window) #8425
+        self.isOnboarding = false
+        self.isCreatingWallet = false
+        // Dismiss onboarding if wallet is already setup
+        self.isOnboardingVisible = false
+        return
       }
-      completion?(mnemonic)
+      keyringService.createWallet(password) { mnemonic in
+        self.isCreatingWallet = false
+        self.updateInfo()
+        if !mnemonic.isEmpty {
+          self.passwordToSaveInBiometric = password
+        }
+        completion?(mnemonic)
+      }
     }
   }
 

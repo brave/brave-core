@@ -236,7 +236,7 @@ public struct CryptoView: View {
         }
       case .unlock:
         UIKitNavigationView {
-          UnlockWalletView(keyringStore: keyringStore)
+          UnlockWalletView(keyringStore: keyringStore, dismissAction: dismissAction)
             .toolbar {
               dismissButtonToolbarContents
             }
@@ -252,7 +252,7 @@ public struct CryptoView: View {
           .zIndex(2)  // Needed or the dismiss animation messes up
         } else {
           UIKitNavigationView {
-            SetupCryptoView(keyringStore: keyringStore)
+            SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
               .toolbar {
                 ToolbarItemGroup(placement: .destructiveAction) {
                   Button(action: {

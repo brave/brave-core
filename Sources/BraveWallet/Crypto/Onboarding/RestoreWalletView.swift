@@ -10,24 +10,12 @@ import Strings
 import struct Shared.AppConstants
 import Preferences
 
-struct RestoreWalletContainerView: View {
+struct RestoreWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
-
-  var body: some View {
-    ScrollView(.vertical) {
-      RestoreWalletView(keyringStore: keyringStore)
-        .background(Color(.braveBackground))
-    }
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .transparentUnlessScrolledNavigationAppearance()
-  }
-}
-
-private struct RestoreWalletView: View {
-  @ObservedObject var keyringStore: KeyringStore
+  // Used to dismiss all of Wallet
+  let dismissAction: () -> Void
   
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.dismiss) private var dismiss
   
   @State private var isBraveLegacyWallet: Bool = false
   @State private var isRevealRecoveryWords: Bool = true
@@ -47,6 +35,10 @@ private struct RestoreWalletView: View {
   
   private var isContinueDisabled: Bool {
     !recoveryWords.allSatisfy({ !$0.isEmpty }) || keyringStore.isRestoringWallet
+  }
+  
+  private var isShowingCreatingWallet: Bool {
+    keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
   }
   
   private var errorLabel: some View {
@@ -96,7 +88,6 @@ private struct RestoreWalletView: View {
         resignFirstResponder()
       }
     }
-    
   }
 
   var body: some View {
@@ -188,26 +179,34 @@ private struct RestoreWalletView: View {
     .onChange(of: recoveryWords) { [recoveryWords] newValue in
       handleRecoveryWordsChanged(oldValue: recoveryWords, newValue: newValue)
     }
+    .navigationBarBackButtonHidden(isShowingCreatingWallet)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .overlay {
+      if isShowingCreatingWallet {
+        CreatingWalletView()
+          .ignoresSafeArea()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+      }
+    }
+    .toolbar(content: {
+      ToolbarItem(placement: .navigationBarLeading) {
+        if isShowingCreatingWallet {
+          Button(action: dismissAction) { // dismiss all of wallet
+            Image("wallet-dismiss", bundle: .module)
+              .renderingMode(.template)
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+        }
+      }
+    })
     .sheet(isPresented: $isShowingCreateNewPassword) {
       NavigationView {
-        CreateWalletContainerView(
+        CreateWalletView(
           keyringStore: keyringStore,
-          restorePackage: RestorePackage(
-            recoveryWords: recoveryWords,
-            onRestoreCompleted: { success, password in
-              if success {
-                isShowingPhraseError = false
-                keyringStore.resetKeychainStoredPassword()
-                if keyringStore.isOnboardingVisible {
-                  Preferences.Wallet.isOnboardingCompleted.value = true
-                }
-              } else {
-                newPassword = password
-                isShowingPhraseError = true
-              }
-              isShowingCreateNewPassword = false
-            }
-          )
+          setupOption: .restore,
+          onValidPasswordEntered: restoreWallet,
+          dismissAction: dismissAction
         )
         .toolbar {
           ToolbarItemGroup(placement: .destructiveAction) {
@@ -218,10 +217,32 @@ private struct RestoreWalletView: View {
         }
       }
     }
+    .transparentUnlessScrolledNavigationAppearance()
   }
   
   private func resignFirstResponder() {
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+  }
+  
+  private func restoreWallet(_ password: String) {
+    newPassword = password
+    isShowingCreateNewPassword = false
+    keyringStore.restoreWallet(
+      words: recoveryWords,
+      password: password,
+      isLegacyBraveWallet: recoveryWords.count == .legacyWalletRecoveryPhraseNumber
+    ) { success in
+      if success {
+        isShowingPhraseError = false
+        keyringStore.resetKeychainStoredPassword()
+        if keyringStore.isOnboardingVisible {
+          Preferences.Wallet.isOnboardingCompleted.value = true
+        }
+      } else {
+        newPassword = password
+        isShowingPhraseError = true
+      }
+    }
   }
 }
 
@@ -229,7 +250,10 @@ private struct RestoreWalletView: View {
 struct RestoreWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      RestoreWalletContainerView(keyringStore: .previewStore)
+      RestoreWalletView(
+        keyringStore: .previewStore,
+        dismissAction: {}
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()

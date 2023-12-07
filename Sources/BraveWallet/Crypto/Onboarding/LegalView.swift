@@ -8,17 +8,14 @@ import DesignSystem
 
 struct LegalView: View {
   @ObservedObject var keyringStore: KeyringStore
-  var setupOption: SetupOption
+  let setupOption: OnboardingSetupOption
+  // Used to dismiss all of Wallet
+  let dismissAction: () -> Void
   
   @State private var isResponsibilityCheckboxChecked: Bool = false
   @State private var isTermsCheckboxChecked: Bool = false
   @State private var isShowingCreateNewWallet: Bool = false
   @State private var isShowingRestoreExistedWallet: Bool = false
-  
-  enum SetupOption {
-    case new
-    case restore
-  }
   
   private var isContinueDisabled: Bool {
     !isResponsibilityCheckboxChecked || !isTermsCheckboxChecked
@@ -79,7 +76,11 @@ struct LegalView: View {
     .padding()
     .background(
       NavigationLink(
-        destination: CreateWalletContainerView(keyringStore: keyringStore),
+        destination: CreateWalletView(
+          keyringStore: keyringStore,
+          setupOption: setupOption,
+          dismissAction: dismissAction
+        ),
         isActive: $isShowingCreateNewWallet,
         label: {
           EmptyView()
@@ -88,7 +89,10 @@ struct LegalView: View {
     )
     .background(
       NavigationLink(
-        destination: RestoreWalletContainerView(keyringStore: keyringStore),
+        destination: RestoreWalletView(
+          keyringStore: keyringStore,
+          dismissAction: dismissAction
+        ),
         isActive: $isShowingRestoreExistedWallet,
         label: {
           EmptyView()
@@ -118,7 +122,11 @@ struct LegalCheckbox: View {
 #if DEBUG
 struct LegalView_Previews: PreviewProvider {
   static var previews: some View {
-    LegalView(keyringStore: .previewStore, setupOption: .new)
+    LegalView(
+      keyringStore: .previewStore,
+      setupOption: .new,
+      dismissAction: {}
+    )
   }
 }
 #endif
