@@ -27,6 +27,7 @@ import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background/sources.gni")
+import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
@@ -353,6 +354,9 @@ if (is_android) {
 }
 
 if (toolkit_views) {
+  brave_chrome_browser_sources += brave_browser_onboarding_sources
+
+  brave_chrome_browser_deps += brave_browser_onboarding_deps
   brave_chrome_browser_deps += [
     "//brave/browser/ui/sidebar",
     "//brave/components/sidebar",

@@ -28,6 +28,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -567,6 +568,7 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
+  // we must call all new views once BraveBrowserView is added to widget
 
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
@@ -592,6 +594,27 @@ void BraveBrowserView::AddedToWidget() {
   }
 }
 
+bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
+  auto* shields_action_view =
+      static_cast<BraveLocationBarView*>(GetLocationBarView())
+          ->brave_actions_contatiner_view()
+          ->GetShieldsActionView();
+  if (!shields_action_view || !shields_action_view->GetVisible()) {
+    return false;
+  }
+
+  // When help bubble is closed, this host view gets hidden.
+  // For now, this help bubble host view is only used for shield icon, but it
+  // could be re-used for other icons or views in the future.
+  if (!brave_help_bubble_host_view_) {
+    brave_help_bubble_host_view_ =
+        AddChildView(std::make_unique<BraveHelpBubbleHostView>());
+  }
+  brave_help_bubble_host_view_->set_text(text);
+  brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
+  return brave_help_bubble_host_view_->Show();
+}
+
 void BraveBrowserView::LoadAccelerators() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     auto* accelerator_service =
@@ -614,6 +637,11 @@ void BraveBrowserView::OnTabStripModelChanged(
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
+  }
+
+  if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
+      brave_help_bubble_host_view_->GetVisible()) {
+    brave_help_bubble_host_view_->Hide();
   }
 }
 

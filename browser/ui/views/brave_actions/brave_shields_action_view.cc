@@ -38,10 +38,10 @@
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view.h"
+#include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
 
 namespace {
-
 constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
 class BraveShieldsActionViewHighlightPathGenerator
     : public views::HighlightPathGenerator {
@@ -59,6 +59,9 @@ class BraveShieldsActionViewHighlightPathGenerator
 };
 }  // namespace
 
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(BraveShieldsActionView,
+                                      kShieldsActionIcon);
+
 BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
                                                TabStripModel& tab_strip_model)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
@@ -75,6 +78,7 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
   SetAccessibleName(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
+  SetProperty(views::kElementIdentifierKey, kShieldsActionIcon);
   tab_strip_model_->AddObserver(this);
 
   // The MenuButtonController makes sure the panel closes when clicked if the
