@@ -47,7 +47,8 @@ KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  RequestOTRService* service = new RequestOTRService();
+  RequestOTRService* service =
+      new RequestOTRService(Profile::FromBrowserContext(context)->GetPrefs());
   request_otr::RequestOTRComponentInstallerPolicy* component_installer =
       nullptr;
   // Brave browser process may be null if we are being created within a unit
