@@ -32,6 +32,7 @@
 #include "components/update_client/crx_downloader_factory.h"
 #include "components/update_client/net/network_chromium.h"
 #include "components/update_client/patch/patch_impl.h"
+#include "components/update_client/persisted_data.h"
 #include "components/update_client/protocol_handler.h"
 #include "components/update_client/unzip/unzip_impl.h"
 #include "components/update_client/unzipper.h"
@@ -56,6 +57,8 @@ BraveConfigurator::BraveConfigurator(
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
                          false),
       pref_service_(raw_ref<PrefService>::from_ptr(pref_service)),
+      persisted_data_(
+          update_client::CreatePersistedData(pref_service, nullptr)),
       url_loader_factory_(std::move(url_loader_factory)) {}
 
 BraveConfigurator::~BraveConfigurator() = default;
@@ -180,9 +183,8 @@ PrefService* BraveConfigurator::GetPrefService() const {
   return std::to_address(pref_service_);
 }
 
-update_client::ActivityDataService* BraveConfigurator::GetActivityDataService()
-    const {
-  return nullptr;
+update_client::PersistedData* BraveConfigurator::GetPersistedData() const {
+  return persisted_data_.get();
 }
 
 bool BraveConfigurator::IsPerUserInstall() const {
