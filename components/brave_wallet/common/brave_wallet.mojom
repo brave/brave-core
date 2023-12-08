@@ -1388,8 +1388,15 @@ struct BitcoinAddress {
 };
 
 struct BitcoinBalance {
+  // Total balance. Either all available now or will be available soon.
   uint64 total_balance;
-  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
+  // Balance which can be spent now.
+  uint64 available_balance;
+  // Not yet confirmed balance change.
+  int64 pending_balance;
+  // address -> balance of that address(sum of all related utxos).
+  // Now needed for debugging purposes.
+  map<string, uint64> balances;
 };
 
 struct BitcoinAccountInfo {
