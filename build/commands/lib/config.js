@@ -312,7 +312,6 @@ Config.prototype.buildArgs = function () {
     enable_rust: true,
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
-    disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     brave_services_key: this.braveServicesKey,
     root_extra_deps: ["//brave"],
