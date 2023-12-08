@@ -1,0 +1,37 @@
+[package]
+name = "ppoprf"
+version = "0.3.0"
+authors = ["Alex Davidson <coela@alxdavids.xyz>", "Ralph Ankele <rankele@brave.com>"]
+description = "Puncturable Partially-Oblivious Pseudo-Random Function"
+documentation = "https://docs.rs/ppoprf"
+repository = "https://github.com/brave/sta-rs"
+keywords = ["crypto", "oprf", "protocol"]
+categories = ["cryptography"]
+license = "MPL-2.0"
+edition = "2021"
+
+[dependencies]
+rand = { version = "0.8.5", features = [ "getrandom" ] }
+bitvec = "1.0.1"
+curve25519-dalek =  { version = "4.0.0", features = [ "rand_core", "serde" ] }
+serde = "1.0.147"
+strobe-rs = "0.8.1"
+base64 = "0.13.0"
+bincode = "1.3.3"
+derive_more = "0.99"
+zeroize = { version = "1.5.5", features = [ "derive" ] }
+rand_core = "0.6.4"
+
+[dev-dependencies]
+criterion = "0.5.1"
+env_logger = "0.10.0"
+log = "0.4.17"
+reqwest = { version = "0.11.18", features = [ "blocking", "json" ] }
+dotenvy = "0.15.7"
+insta = "1.31.0"
+tokio = { version = "1.29.1", features = ["macros", "rt-multi-thread", "time"] }
+warp = "0.3.5"
+
+[[bench]]
+name = "bench"
+harness = false
