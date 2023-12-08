@@ -117,6 +117,10 @@ static constexpr auto kConditionalQueryStringTrackers =
         {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
     });
 
+// The domain comparison will also match on subdomains. So if the
+// parameter is scoped to example.com below, it will be removed from
+// https://example.com/index.php and from http://www.example.com/ for
+// example.
 static constexpr auto kScopedQueryStringTrackers =
     base::MakeFixedFlatMapSorted<std::string_view, std::string_view>({
         // https://github.com/brave/brave-browser/issues/11580
