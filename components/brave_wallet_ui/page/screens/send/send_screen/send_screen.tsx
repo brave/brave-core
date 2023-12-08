@@ -255,7 +255,8 @@ export const SendScreen = React.memo((props: Props) => {
     toAddressHasValidExtension
       ? {
           tokenId: selectedSendAssetId,
-          url: toAddressOrUrl
+          // preventing additional lookups for address casing changes
+          url: toAddressOrUrl.toLowerCase()
         }
       : skipToken
   )
