@@ -474,6 +474,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestions:
       return dataSource.suggestions.isEmpty ? 0 : headerHeight * 2.0
     case .openTabsAndHistoryAndBookmarks:
+      // Check for History Bookmarks Open Tabs suggestions
+      // Show Browser Suggestions Preference effects all the modes
+      if !Preferences.Search.showBrowserSuggestions.value {
+        return 0
+      }
+      
       // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
       // when search suggestions is not enabled
       if Preferences.Privacy.privateBrowsingOnly.value,
@@ -667,6 +673,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         !dataSource.searchQuery.looksLikeAURL() &&
         !dataSource.tabType.isPrivate ? searchSuggestionsCount : 0
     case .openTabsAndHistoryAndBookmarks:
+      // Check for History Bookmarks Open Tabs suggestions
+      // Show Browser Suggestions Preference effects all the modes
+      if !Preferences.Search.showBrowserSuggestions.value {
+          return 0
+      }
+      
       // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
       // when search suggestions is not enabled
       if Preferences.Privacy.privateBrowsingOnly.value, dataSource.searchEngines?.shouldShowSearchSuggestions == false {

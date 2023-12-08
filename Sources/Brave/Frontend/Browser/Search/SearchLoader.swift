@@ -21,6 +21,14 @@ class SearchLoader: Loader<[Site], SearchViewController> {
 
   var query: String = "" {
     didSet {
+      // Browser suggestions preference control frequencey query over browser items
+      // like Open Tabs, Bookmarks, History. Disabling this preference should prevent
+      // data fetch from the sources
+      guard Preferences.Search.showBrowserSuggestions.value else {
+        load([])
+        return
+      }
+      
       if query.isEmpty {
         load([])
         return

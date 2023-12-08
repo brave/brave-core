@@ -542,11 +542,20 @@ extension Strings {
       value: "Reader Mode", comment: "Title of a bar that show up when you enter reader mode.")
 }
 
-// MARK:-  SearchSettingsTableViewController.swift
+// MARK: -  SearchSettingsTableViewController
+
 extension Strings {
   public static let searchSettingNavTitle = NSLocalizedString("SearchSettingNavTitle", tableName: "BraveShared", bundle: .module, value: "Search", comment: "Navigation title for search settings.")
   public static let searchSettingSuggestionCellTitle = NSLocalizedString("SearchSettingSuggestionCellTitle", tableName: "BraveShared", bundle: .module, value: "Show Search Suggestions", comment: "Label for show search suggestions setting.")
   public static let searchSettingRecentSearchesCellTitle = NSLocalizedString("SearchSettingRecentSearchesCellTitle", tableName: "BraveShared", bundle: .module, value: "Show Recent Searches", comment: "Label for showing recent search setting.")
+  public static let searchSettingBrowserSuggestionCellTitle =
+    NSLocalizedString("SearchSettingBrowserSuggestionCellTitle", tableName: "BraveShared", bundle: .module,
+      value: "Show Browser Suggestions",
+      comment: "Label for showing browser suggestion setting")
+  public static let searchSettingBrowserSuggestionCellDescription =
+    NSLocalizedString("SearchSettingBrowserSuggestionCellDescription", tableName: "BraveShared", bundle: .module,
+      value: "Turn this on to include results from your History and Bookmarks when searching",
+      comment: "Label for showing browser suggestion setting description")
   public static let searchSettingAddCustomEngineCellTitle =
     NSLocalizedString("searchSettingAddCustomEngineCellTitle", tableName: "BraveShared", bundle: .module,
       value: "Add Custom Search Engine",

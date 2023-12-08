@@ -76,7 +76,11 @@ class SearchSuggestionDataSource {
       sections.append(.searchSuggestions)
     }
     sections.append(.findInPage)
-    sections.append(.openTabsAndHistoryAndBookmarks)
+    
+    if searchEngines?.shouldShowBrowserSuggestions == true {
+      sections.append(.openTabsAndHistoryAndBookmarks)
+    }
+    
     return sections
   }
   

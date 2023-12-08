@@ -181,6 +181,11 @@ public class SearchEngines {
     get { return Preferences.Search.shouldShowRecentSearches.value }
     set { Preferences.Search.shouldShowRecentSearches.value = newValue }
   }
+  
+  var shouldShowBrowserSuggestions: Bool {
+    get { return Preferences.Search.showBrowserSuggestions.value }
+    set { Preferences.Search.showBrowserSuggestions.value = newValue }
+  }
 
   func isEngineEnabled(_ engine: OpenSearchEngine) -> Bool {
     return disabledEngineNames.index(forKey: engine.shortName) == nil
