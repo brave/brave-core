@@ -67,6 +67,12 @@ struct NFTImageView<Placeholder: View>: View {
 struct LoadingNFTView: View {
   var shimmer: Bool = true
   @State var viewSize: CGSize = .zero
+  
+  private var fontSizeForNFTImage: CGFloat {
+    guard viewSize.width > 0 else { return 12 }
+    return floor(viewSize.width / 3)
+  }
+  
   var body: some View {
     Color(braveSystemName: .containerHighlight)
       .cornerRadius(4)
@@ -75,7 +81,7 @@ struct LoadingNFTView: View {
       .overlay {
         Image(braveSystemName: "leo.nft")
           .foregroundColor(Color(braveSystemName: .containerBackground))
-          .font(.system(size: floor(viewSize.width / 3)))
+          .font(.system(size: fontSizeForNFTImage))
           .aspectRatio(contentMode: .fit)
       }
       .background(
