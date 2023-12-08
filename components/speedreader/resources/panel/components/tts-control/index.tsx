@@ -25,7 +25,7 @@ function TtsControl(props: TtsControlProps) {
   React.useEffect(() => {
     const updateVoices = () => {
       setVoices(speechSynthesis.getVoices().filter((v) => {
-        return navigator.languages.find((l) => { return v.lang.startsWith(l) })
+        return v.default || navigator.languages.find((l) => { return v.lang.startsWith(l) })
       }))
     }
     speechSynthesis.onvoiceschanged = updateVoices
