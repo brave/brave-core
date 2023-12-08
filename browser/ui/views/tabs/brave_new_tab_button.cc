@@ -61,9 +61,12 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                         bool extend_to_top) const {
-  return GetBorderPath(
-      origin, GetWidget()->GetCompositor()->device_scale_factor(),
-      extend_to_top, GetCornerRadius(), GetContentsBounds().size());
+  if (GetWidget()) {
+    return GetBorderPath(
+        origin, GetWidget()->GetCompositor()->device_scale_factor(),
+        extend_to_top, GetCornerRadius(), GetContentsBounds().size());
+  }
+  return SkPath();
 }
 
 BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
