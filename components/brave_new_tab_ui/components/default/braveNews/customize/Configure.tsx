@@ -107,7 +107,9 @@ export default function Configure() {
     customizePage,
     toggleBraveNewsOnNTP,
     isOptInPrefEnabled,
-    isShowOnNTPPrefEnabled
+    isShowOnNTPPrefEnabled,
+    openArticlesInNewTab,
+    setOpenArticlesInNewTab
   } = useBraveNews()
 
   // TODO(petemill): We'll probably need to have 2 toggles, or some other
@@ -149,10 +151,13 @@ export default function Configure() {
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
           <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.detail.checked)} />
-          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small'>
+          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.detail.value === 'true')}>
             <span slot="label">{getLocale('braveNewsOpenArticlesIn')}</span>
-            <leo-option value='new-tab'>{getLocale('braveNewsOpenArticlesInNewTab')}</leo-option>
-            <leo-option value='current-tab'>{getLocale('braveNewsOpenArticlesInCurrentTab')}</leo-option>
+            <span slot='value'>
+              {openArticlesInNewTab ? getLocale('braveNewsOpenArticlesInNewTab') : getLocale('braveNewsOpenArticlesInCurrentTab')}
+            </span>
+            <leo-option value={'true'}>{getLocale('braveNewsOpenArticlesInNewTab')}</leo-option>
+            <leo-option value={'false'}>{getLocale('braveNewsOpenArticlesInCurrentTab')}</leo-option>
           </OpenArticlesDropdown>}
         </Flex>}
       </Header>
