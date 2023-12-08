@@ -52,7 +52,7 @@ ConversationDriver::ConversationDriver(
         skus_service_getter,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string)
-    : pref_service_(local_state_prefs),
+    : pref_service_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
       credential_manager_(std::make_unique<ai_chat::AIChatCredentialManager>(
           skus_service_getter,
