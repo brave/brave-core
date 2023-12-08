@@ -227,6 +227,15 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
+  // Since Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d
+  // we cannot change datatypes if we are not signed to sync, see changes
+  // around SyncUserSettingsImpl::SetSelectedTypes.
+  // Call pref_service()->SetString() below triggers
+  // BraveSyncServiceImpl::OnBraveSyncPrefsChanged which sets kBookmarks type.
+  // To workaround this, first set valid sync code to pretend we are signed in.
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
+
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
   EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
