@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
 
+#include <utility>
+
 #include "ui/base/cursor/cursor.h"
 
 namespace brave_tooltips {
