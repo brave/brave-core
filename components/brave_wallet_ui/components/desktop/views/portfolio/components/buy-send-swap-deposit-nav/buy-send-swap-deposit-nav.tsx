@@ -40,13 +40,9 @@ export const BuySendSwapDepositNav = () => {
   // methods
   const onClick = React.useCallback(
     (option: NavOption) => {
-      // Redirect to full page view for buy and swap page
-      // until we have a panel view for those pages
-      if (
-        (option.route === WalletRoutes.FundWalletPageStart ||
-          option.route === WalletRoutes.Swap) &&
-        isPanel
-      ) {
+      // Redirect to full page view for buy page
+      // until we have a panel view for that page.
+      if (option.route === WalletRoutes.FundWalletPageStart && isPanel) {
         chrome.tabs.create({
           url: `brave://wallet${option.route}`
         })

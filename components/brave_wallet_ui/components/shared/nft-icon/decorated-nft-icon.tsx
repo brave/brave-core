@@ -14,7 +14,9 @@ import CreateNetworkIcon from '../create-network-icon'
 import { NftIcon, NftIconProps } from './nft-icon'
 
 // styles
-import { NetworkIconWrapper } from '../../../page/screens/send/components/token-list-item/token-list-item.style'
+import {
+  NetworkIconWrapper //
+} from '../../../page/screens/composer_ui/token_list_item/token_list_item.style'
 import { IconWrapper } from './nft-icon-styles'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 

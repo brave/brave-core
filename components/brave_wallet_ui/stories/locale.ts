@@ -64,6 +64,7 @@ provideStrings({
   braveWalletBuy: 'Buy',
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
+  braveWalletBridge: 'Bridge',
   braveWalletReset: 'Reset',
   braveWalletSell: 'Sell',
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
@@ -100,14 +101,14 @@ provideStrings({
     "It looks like you've entered an ENS address. " +
     "We'll need to use a third-party resolver to resolve this request, " +
     'which may be able to see your IP address and domain.',
+  braveSwapFindingPrice: 'Finding the best quote...',
+  braveWalletReceiveEstimate: 'Receive (est.)',
+  braveWalletFromToken: 'From token',
+  braveWalletToToken: 'To token',
 
   // Send Tab
-  braveWalletSendToken: 'Send token',
-  braveWalletSendNFT: 'Send NFT',
-  braveWalletSelectToken: 'Select token',
-  braveWalletSelectNFT: 'Select NFT',
-  braveWalletSendTabSelectTokenTitle: 'Select a token to send',
-  braveWalletSendTabSelectNFTTitle: 'Select an NFT to send',
+  braveWalletChooseAssetToSend: 'Choose asset to send',
+  braveWalletChooseAssetToSwap: 'Choose asset to swap',
   braveWalletEnterRecipientAddress: 'Enter recipient address',
   braveWalletNotEnoughFunds: 'Not enough funds',
   braveWalletSendHalf: 'HALF',
@@ -117,6 +118,7 @@ provideStrings({
   braveWalletNoAvailableTokens: 'No available tokens',
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',
+  braveWalletChooseAsset: 'Choose asset',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:

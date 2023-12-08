@@ -5,8 +5,14 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Hooks
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+
+// Utils
+import { openWalletRouteTab } from '../../../utils/routes-utils'
 
 // Components
 import { DefaultPanelMenu } from '../wallet-menus/default-panel-menu'
@@ -26,10 +32,11 @@ import { Row } from '../../shared/style'
 
 interface Props {
   title: string
+  expandRoute?: WalletRoutes
 }
 
 export const DefaultPanelHeader = (props: Props) => {
-  const { title } = props
+  const { title, expandRoute } = props
 
   // State
   const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
@@ -46,12 +53,12 @@ export const DefaultPanelHeader = (props: Props) => {
 
   // Methods
   const onClickExpand = React.useCallback(() => {
-    chrome.tabs.create({ url: 'chrome://wallet/crypto' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }, [])
+    if (expandRoute) {
+      openWalletRouteTab(expandRoute)
+      return
+    }
+    openWalletRouteTab(WalletRoutes.PortfolioAssets)
+  }, [expandRoute])
 
   return (
     <Row

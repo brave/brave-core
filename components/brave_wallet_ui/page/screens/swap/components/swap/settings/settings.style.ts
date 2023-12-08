@@ -25,8 +25,8 @@ export const Modal = styled(StyledDiv)`
   width: 370px;
   min-height: 370px;
   z-index: 20;
-  right: -16px;
-  top: 28px;
+  right: 16px;
+  top: 280px;
   @media (prefers-color-scheme: dark) {
     border: 1px solid ${(p) => p.theme.color.divider01};
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
