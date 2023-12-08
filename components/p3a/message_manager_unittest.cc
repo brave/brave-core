@@ -68,6 +68,8 @@ class P3AMessageManagerTest : public testing::Test,
           {features::kConstellation,
            features::kConstellationEnclaveAttestation},
           {});
+    } else {
+      scoped_feature_list_.InitAndDisableFeature(features::kConstellation);
     }
 
     base::Time future_mock_time;
