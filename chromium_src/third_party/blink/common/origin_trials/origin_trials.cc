@@ -36,7 +36,6 @@ bool IsTrialDisabledInBrave(std::string_view trial_name) {
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
-      "WebEnvironmentIntegrity",
   };
 
   if (base::Contains(kBraveDisabledTrialNames, trial_name)) {
