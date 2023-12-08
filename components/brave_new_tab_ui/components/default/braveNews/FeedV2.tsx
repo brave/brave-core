@@ -57,7 +57,7 @@ export default function FeedV2() {
 
   // Note: Whenever the feed is updated, if we're viewing the feed, scroll to
   // the top.
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const root = document.querySelector<HTMLElement>('#root')
     if (!root?.classList.contains(CLASSNAME_PAGE_STUCK)) {
       return
