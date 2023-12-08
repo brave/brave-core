@@ -142,7 +142,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         web_contents,
         g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
         skus_service_getter, g_browser_process->local_state(),
-        version_info::GetChannelString(chrome::GetChannel()));
+        std::string(version_info::GetChannelString(chrome::GetChannel())));
   }
 #endif
 
