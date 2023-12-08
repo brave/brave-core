@@ -4705,13 +4705,23 @@ extension Strings {
     )
     
     public static let hidePrivacyHubWidgetActionTitle = NSLocalizedString("privacyHub.hidePrivacyHubWidgetActionTitle", tableName: "BraveShared", bundle: .module,
-      value: "Hide Privacy Hub Widget",
+      value: "Hide Privacy Stats",
       comment: "The title of the button action which hides the privacy hub"
+    )
+    
+    public static let hidePrivacyHubWidgetAlertDescription = NSLocalizedString("privacyHub.hidePrivacyHubWidgetAlertDescription", tableName: "BraveShared", bundle: .module,
+      value: "Tap Hide to remove the Privacy Stats widget. You can always re-enable in Settings, under New Tab Page",
+      comment: "The description in alert of the hide action which hides the privacy hub"
     )
     
     public static let openPrivacyHubWidgetActionTitle = NSLocalizedString("privacyHub.openPrivacyHubWidgetActionTitle", tableName: "BraveShared", bundle: .module,
       value: "Open Privacy Hub",
       comment: "The title of the button action which open the privacy hub"
+    )
+    
+    public static let hidePrivacyHubWidgetActionButtonTitle = NSLocalizedString("privacyHub.hidePrivacyHubWidgetActionButtonTitle", tableName: "BraveShared", bundle: .module, 
+       value: "Hide",
+       comment: "Hide Privacy Hub Alert Hide Button"
     )
   }
 }

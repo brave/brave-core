@@ -186,8 +186,7 @@ class NewTabPageViewController: UIViewController {
         
         self?.present(host, animated: true)
       }, hidePrivacyHubPressed: { [weak self] in
-        Preferences.NewTabPage.showNewTabPrivacyHub.value = false
-        self?.collectionView.reloadData()
+        self?.hidePrivacyHub()
       }),
       FavoritesSectionProvider(action: { [weak self] bookmark, action in
         self?.handleFavoriteAction(favorite: bookmark, action: action)
@@ -787,6 +786,28 @@ class NewTabPageViewController: UIViewController {
       return
     }
     feedDataSource.load(completion)
+  }
+  
+  private func hidePrivacyHub() {
+    if Preferences.NewTabPage.hidePrivacyHubAlertShown.value {
+      Preferences.NewTabPage.showNewTabPrivacyHub.value = false
+      collectionView.reloadData()
+    } else {
+      let alert = UIAlertController(
+        title: Strings.PrivacyHub.hidePrivacyHubWidgetActionTitle,
+        message: Strings.PrivacyHub.hidePrivacyHubWidgetAlertDescription,
+        preferredStyle: .alert)
+      
+      alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+      alert.addAction(UIAlertAction(title: Strings.PrivacyHub.hidePrivacyHubWidgetActionButtonTitle, style: .default) { [weak self] _ in
+        Preferences.NewTabPage.showNewTabPrivacyHub.value = false
+        Preferences.NewTabPage.hidePrivacyHubAlertShown.value = true
+        self?.collectionView.reloadData()
+      })
+      
+      UIImpactFeedbackGenerator(style: .medium).bzzt()
+      present(alert, animated: true, completion: nil)
+    }
   }
 
   // MARK: - Actions
