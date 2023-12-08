@@ -36,7 +36,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
-  private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   
   private var keyringServiceObserver: KeyringServiceObserver?
   private var rpcServiceObserver: JsonRpcServiceObserver?
@@ -278,20 +278,16 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     if account.coin == .sol {
       solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions)
     }
-    let unknownTokenContractAddresses = transactions
-      .flatMap { $0.tokenContractAddresses }
-      .filter { contractAddress in
-        !userAssets.contains(where: { $0.contractAddress.caseInsensitiveCompare(contractAddress) == .orderedSame })
-        && !allTokens.contains(where: { $0.contractAddress.caseInsensitiveCompare(contractAddress) == .orderedSame })
-        && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
+    let ethTransactions = transactions.filter { $0.coin == .eth }
+    if !ethTransactions.isEmpty {
+      // Gather known information about the transaction(s) tokens
+      let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
+        knownTokens: userAssets + allTokens + tokenInfoCache
+      )
+      if !unknownTokenInfo.isEmpty {
+        let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(for: unknownTokenInfo)
+        tokenInfoCache.append(contentsOf: unknownTokens)
       }
-    var allTokens = allTokens
-    if !unknownTokenContractAddresses.isEmpty {
-      let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
-      for unknownToken in unknownTokens {
-        tokenInfoCache[unknownToken.contractAddress] = unknownToken
-      }
-      allTokens.append(contentsOf: unknownTokens)
     }
     return transactions
       .compactMap { transaction in
@@ -303,7 +299,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           network: network,
           accountInfos: accountInfos,
           userAssets: userAssets,
-          allTokens: allTokens,
+          allTokens: allTokens + tokenInfoCache,
           assetRatios: assetRatios,
           nftMetadata: [:],
           solEstimatedTxFee: solEstimatedTxFees[transaction.id],

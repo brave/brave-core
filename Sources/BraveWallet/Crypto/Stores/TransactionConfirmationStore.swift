@@ -309,7 +309,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         }
         return
       }
-      let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
+      let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache
       let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
       
@@ -393,7 +393,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var gasTokenBalanceCache: [String: Double] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
-  private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   /// Cache for storing the estimated transaction fee for each Solana transaction. The key is the transaction id.
   private var solEstimatedTxFeeCache: [String: UInt64] = [:]
   
@@ -444,27 +444,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func fetchUnknownTokens(
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
-    // `AssetRatioService` can only fetch tokens from Ethereum Mainnet
-    let mainnetTransactions = transactions.filter { $0.chainId == BraveWallet.MainnetChainId }
-    guard !mainnetTransactions.isEmpty else { return }
+    let ethTransactions = transactions.filter { $0.coin == .eth }
+    guard !ethTransactions.isEmpty else { return } // we can only fetch unknown Ethereum tokens
     let coin: BraveWallet.CoinType = .eth
     let allNetworks = await rpcService.allNetworks(coin)
-    guard let network = allNetworks.first(where: { $0.chainId == BraveWallet.MainnetChainId }) else {
-      return
-    }
-    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
-    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-    let unknownTokenContractAddresses = mainnetTransactions.flatMap(\.tokenContractAddresses)
-      .filter { contractAddress in
-        !userAssets.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
-        && !allTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
-        && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
-      }
-    guard !unknownTokenContractAddresses.isEmpty else { return }
-    let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
-    for unknownToken in unknownTokens {
-      tokenInfoCache[unknownToken.contractAddress] = unknownToken
-    }
+    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: allNetworks, includingUserDeleted: true).flatMap(\.tokens)
+    let allTokens = await blockchainRegistry.allTokens(in: allNetworks).flatMap(\.tokens)
+    // Gather known information about the transaction(s) tokens
+    let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
+      knownTokens: userAssets + allTokens + tokenInfoCache
+    )
+    guard !unknownTokenInfo.isEmpty else { return } // Only if we have unknown tokens
+    let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(for: unknownTokenInfo)
+    tokenInfoCache.append(contentsOf: unknownTokens)
     updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
   }
   

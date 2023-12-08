@@ -82,6 +82,9 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
   private var allBuyTokensAllOptions: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [:]
+  /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
+  /// This could occur with a dapp creating a transaction.
+  private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
@@ -340,8 +343,19 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       })
     }
     var solEstimatedTxFees: [String: UInt64] = [:]
-    if token.coin == .sol {
+    switch token.coin {
+    case .eth:
+      let ethTransactions = allTransactions.filter { $0.coin == .eth }
+      if !ethTransactions.isEmpty { // we can only fetch unknown Ethereum tokens
+        let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
+          knownTokens: userAssets + allTokens + tokenInfoCache
+        )
+        updateUnknownTokens(for: unknownTokenInfo)
+      }
+    case .sol:
       solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: allTransactions)
+    default:
+      break
     }
     return allTransactions
       .filter { tx in
@@ -378,7 +392,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           network: network,
           accountInfos: accounts,
           userAssets: userAssets,
-          allTokens: allTokens,
+          allTokens: allTokens + tokenInfoCache,
           assetRatios: assetRatios,
           nftMetadata: [:],
           solEstimatedTxFee: solEstimatedTxFees[transaction.id],
@@ -418,6 +432,21 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       return true
     } else {
       return false
+    }
+  }
+  
+  private func updateUnknownTokens(
+    for contractAddressesChainIdPairs: [ContractAddressChainIdPair]
+  ) {
+    guard !contractAddressesChainIdPairs.isEmpty else { return }
+    Task { @MainActor in
+      // Gather known information about the transaction(s) tokens
+      let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(
+        for: contractAddressesChainIdPairs
+      )
+      guard !unknownTokens.isEmpty else { return }
+      tokenInfoCache.append(contentsOf: unknownTokens)
+      update()
     }
   }
 }

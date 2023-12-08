@@ -344,11 +344,11 @@ import Preferences
     )
     let networkExpectation = expectation(description: "network-expectation")
     store.$network
-      .dropFirst(7) // `network` is assigned multiple times during setup
-      .collect(5) // collect all transactions
+      .dropFirst(8) // `network` is assigned multiple times during setup
+      .collect(6) // collect all updates (1 extra for final tx network)
       .sink { networks in
         defer { networkExpectation.fulfill() }
-        XCTAssertEqual(networks.count, 5)
+        XCTAssertEqual(networks.count, 6)
         XCTAssertEqual(networks[safe: 0], BraveWallet.NetworkInfo.mockFilecoinMainnet)
         XCTAssertEqual(networks[safe: 1], BraveWallet.NetworkInfo.mockSolanaTestnet)
         XCTAssertEqual(networks[safe: 2], BraveWallet.NetworkInfo.mockSolana)

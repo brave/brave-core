@@ -34,6 +34,9 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private var assetPricesCache: [String: Double] = [:]
   /// Cache of metadata for NFTs. The key is the token's `id`.
   private var metadataCache: [String: NFTMetadata] = [:]
+  /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
+  /// This could occur with a dapp creating a transaction.
+  private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -147,10 +150,20 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       let allTransactions = await txService.allTransactions(
         networksForCoin: networksForCoin, for: allAccountInfos
       ).filter { $0.txStatus != .rejected }
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: allNetworksAllCoins, includingUserDeleted: true).flatMap(\.tokens)
+      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+        networks: allNetworksAllCoins,
+        includingUserDeleted: true
+      ).flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(
         in: allNetworksAllCoins
       ).flatMap(\.tokens)
+      let ethTransactions = allTransactions.filter { $0.coin == .eth }
+      if !ethTransactions.isEmpty { // we can only fetch unknown Ethereum tokens
+        let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
+          knownTokens: userAssets + allTokens + tokenInfoCache
+        )
+        updateUnknownTokens(for: unknownTokenInfo)
+      }
       guard !Task.isCancelled else { return }
       // display transactions prior to network request to fetch
       // estimated solana tx fees & asset prices
@@ -159,7 +172,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         networksForCoin: networksForCoin,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
-        allTokens: allTokens,
+        allTokens: allTokens + tokenInfoCache,
         assetRatios: assetPricesCache,
         nftMetadata: metadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
@@ -254,7 +267,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
             network: network,
             accountInfos: accountInfos,
             userAssets: userAssets,
-            allTokens: allTokens,
+            allTokens: allTokens + tokenInfoCache,
             assetRatios: assetRatios,
             nftMetadata: nftMetadata,
             solEstimatedTxFee: solEstimatedTxFees[transaction.id],
@@ -284,6 +297,21 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     ).compactMapValues { Double($0) }
     for (key, value) in prices { // update cached values
       self.assetPricesCache[key] = value
+    }
+  }
+  
+  private func updateUnknownTokens(
+    for contractAddressesChainIdPairs: [ContractAddressChainIdPair]
+  ) {
+    guard !contractAddressesChainIdPairs.isEmpty else { return }
+    Task { @MainActor in
+      // Gather known information about the transaction(s) tokens
+      let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(
+        for: contractAddressesChainIdPairs
+      )
+      guard !unknownTokens.isEmpty else { return }
+      tokenInfoCache.append(contentsOf: unknownTokens)
+      update()
     }
   }
   

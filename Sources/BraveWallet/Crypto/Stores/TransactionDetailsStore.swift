@@ -36,7 +36,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
-  private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var nftMetadataCache: [String: NFTMetadata] = [:]
   
   var isObserving: Bool {
@@ -111,20 +111,17 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         return
       }
       self.network = network
-      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
-      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
-      let unknownTokenContractAddresses = transaction.tokenContractAddresses
-        .filter { contractAddress in
-          !userAssets.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
-          && !allTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
-          && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
+      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap(\.tokens)
+      if coin == .eth {
+        // Gather known information about the transaction(s) tokens
+        let unknownTokenInfo = [transaction].unknownTokenContractAddressChainIdPairs(
+          knownTokens: userAssets + allTokens + tokenInfoCache
+        )
+        if !unknownTokenInfo.isEmpty {
+          let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(for: unknownTokenInfo)
+          tokenInfoCache.append(contentsOf: unknownTokens)
         }
-      if !unknownTokenContractAddresses.isEmpty {
-        let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
-        for unknownToken in unknownTokens {
-          tokenInfoCache[unknownToken.contractAddress] = unknownToken
-        }
-        allTokens.append(contentsOf: unknownTokens)
       }
       
       let priceResult = await assetRatioService.priceWithIndividualRetry(
@@ -144,7 +141,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         network: network,
         accountInfos: allAccounts,
         userAssets: userAssets,
-        allTokens: allTokens,
+        allTokens: allTokens + tokenInfoCache,
         assetRatios: assetRatios,
         nftMetadata: nftMetadataCache,
         solEstimatedTxFee: solEstimatedTxFee,
@@ -190,15 +187,5 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       self.parsedTransaction = parsedTransaction
     }
-  }
-  
-  @MainActor private func fetchTokenInfo(for contractAddress: String) async -> BraveWallet.BlockchainToken? {
-    if let cachedToken = tokenInfoCache[contractAddress] {
-      return cachedToken
-    }
-    let tokenInfo = await assetRatioService.tokenInfo(contractAddress)
-    guard let tokenInfo = tokenInfo else { return nil }
-    self.tokenInfoCache[contractAddress] = tokenInfo
-    return tokenInfo
   }
 }
