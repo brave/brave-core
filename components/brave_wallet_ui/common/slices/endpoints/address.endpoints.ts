@@ -93,16 +93,31 @@ export const addressEndpoints = ({
 
     getAddressFromNameServiceUrl: query<
       { address: string; requireOffchainConsent: boolean },
-      { url: string; tokenId: string | null }
+      {
+        /**
+         * Name service URLs are case-insensitive, but this arg should always be
+         * lowercase to prevent refetching of resolutions for casing changes
+         */
+        url: string
+        /**
+         * Only used by Unstoppable Domains
+         */
+        tokenId: string | null
+      }
     >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
 
+          // https://github.com/brave/brave-browser/issues/34796
+          // name service URLs are case-insensitive, but backend currently
+          // fails to resolve addresses for URLS containing capital letters
+          const lowercaseURL = arg.url.toLowerCase()
+
           // Ens
-          if (endsWithAny(supportedENSExtensions, arg.url)) {
+          if (endsWithAny(supportedENSExtensions, lowercaseURL)) {
             const { address, errorMessage, requireOffchainConsent } =
-              await api.jsonRpcService.ensGetEthAddr(arg.url)
+              await api.jsonRpcService.ensGetEthAddr(lowercaseURL)
 
             if (errorMessage) {
               throw new Error(errorMessage)
@@ -117,9 +132,9 @@ export const addressEndpoints = ({
           }
 
           // Sns
-          if (endsWithAny(supportedSNSExtensions, arg.url)) {
+          if (endsWithAny(supportedSNSExtensions, lowercaseURL)) {
             const { address, errorMessage } =
-              await api.jsonRpcService.snsGetSolAddr(arg.url)
+              await api.jsonRpcService.snsGetSolAddr(lowercaseURL)
 
             if (errorMessage) {
               throw new Error(errorMessage)
@@ -134,7 +149,7 @@ export const addressEndpoints = ({
           }
 
           // Unstoppable-Domains
-          if (endsWithAny(supportedUDExtensions, arg.url)) {
+          if (endsWithAny(supportedUDExtensions, lowercaseURL)) {
             const token = arg.tokenId
               ? (await cache.getUserTokensRegistry()).entities[arg.tokenId] ||
                 null
@@ -142,7 +157,7 @@ export const addressEndpoints = ({
 
             const { address, errorMessage } =
               await api.jsonRpcService.unstoppableDomainsGetWalletAddr(
-                arg.url,
+                lowercaseURL,
                 token
               )
 
@@ -181,7 +196,9 @@ export const addressEndpoints = ({
           ? 'UNKNOWN_ERROR'
           : {
               type: 'NameServiceAddress',
-              id: [arg.url, arg.tokenId].filter((arg) => arg !== null).join('-')
+              id: [arg.url.toLowerCase(), arg.tokenId]
+                .filter((arg) => arg !== null)
+                .join('-')
             }
       ]
     }),
