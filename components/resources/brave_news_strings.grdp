@@ -178,4 +178,48 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS" desc="Translation of the 'World News' channel">
     World News
   </message>
+
+  <!-- Feed -->
+  <message name="IDS_BRAVE_NEWS_NEWS_PEEK" desc="The 'News' heading for the peeking card">
+    News
+  </message>
+  <message name="IDS_BRAVE_NEWS_MY_FEED_HEADING" desc="The heading for the feed sidebar">
+    My Feed
+  </message>
+  <message name="IDS_BRAVE_NEWS_FOR_YOU_FEED" desc="The heading for For You feed">
+    For You
+  </message>
+  <message name="IDS_BRAVE_NEWS_FOLLOWING_FEED" desc="The heading for Following feed">
+    Following
+  </message>
+  <message name="IDS_BRAVE_NEWS_ADD_CHANNELS_OR_PUBLISHERS" desc="Text for the buttons for adding channels or adding publishers">
+    Add
+  </message>
+  <message name="IDS_BRAVE_NEWS_PUBLISHERS_HEADING" desc="Heading for the list of followed publishers">
+    Publishers
+  </message>
+  <message name="IDS_BRAVE_NEWS_SHOW_ALL" desc="Text for the button to show all publishers or channels">
+    Show all
+  </message>
+  <message name="IDS_BRAVE_NEWS_SHOW_LESS" desc="Text for the button to show fewer publishers or channels">
+    Show less
+  </message>
+  <message name="IDS_BRAVE_NEWS_ADVERT_BADGE" desc="Text for the badge indicating advertisements. Should be short">
+    Ad
+  </message>
+  <message name="IDS_BRAVE_NEWS_HIDE_CONTENT_FROM" desc="Text for menu item to hide content from a publisher">
+    Hide content from <ph name="PUBLISHER_NAME">$1<ex>The Verge</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION" desc="Text recommending publishers">
+    Sources you'll enjoy
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_ARTICLES" desc="Message displayed when there are no articles available">
+    Feed is empty
+  </message>
+  <message name="IDS_BRAVE_NEWS_CUSTOMIZE_FEED" desc="Text of button for opening the customize dialog">
+    Customize
+  </message>
+  <message name="IDS_BRAVE_NEWS_REFRESH_FEED" desc="Text of button for refreshing the feed">
+    Refresh
+  </message>
 </grit-part>

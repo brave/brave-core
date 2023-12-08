@@ -10,14 +10,20 @@ export default function Image({ src, ...rest }: React.DetailedHTMLProps<React.Im
     if (!ref.current) return
     ref.current.setAttribute('style', 'opacity: 0')
 
-    const handler = () => {
+    const loadHandler = () => {
       ref.current?.setAttribute('style', '')
     }
 
-    ref.current.addEventListener('load', handler)
+    const errorHandler = () => {
+      ref.current?.setAttribute('style', 'opacity: 0')
+    }
+
+    ref.current.addEventListener('load', loadHandler)
+    ref.current.addEventListener('error', errorHandler)
 
     return () => {
-      ref.current?.removeEventListener('load', handler)
+      ref.current?.removeEventListener('load', loadHandler)
+      ref.current?.removeEventListener('error', errorHandler)
     }
   }, [src])
   return <img ref={ref} src={src} {...rest} />
