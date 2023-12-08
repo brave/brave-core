@@ -65,6 +65,8 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
 std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 
+std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
+
 mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
                                        mojom::KeyringId keyring_id,
                                        mojom::AccountKind kind,

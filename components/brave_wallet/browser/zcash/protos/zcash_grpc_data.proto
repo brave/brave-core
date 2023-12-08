@@ -45,3 +45,13 @@ message SendResponse {
   int32 errorCode = 1;
   string errorMessage = 2;
 }
+
+message BlockRange {
+  BlockID start = 1;
+  BlockID end = 2;
+}
+
+message TransparentAddressBlockFilter {
+  string address = 1;
+  BlockRange range = 2;
+}

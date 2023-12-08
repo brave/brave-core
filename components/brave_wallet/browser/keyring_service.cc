@@ -2501,43 +2501,49 @@ void KeyringService::HasPendingUnlockRequest(
   std::move(callback).Run(HasPendingUnlockRequest());
 }
 
-std::optional<std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>>>
-KeyringService::GetZCashAddresses(const mojom::AccountId& account_id) {
-  CHECK(IsZCashAccount(account_id));
+std::optional<std::vector<mojom::ZCashAddressPtr>>
+KeyringService::GetZCashAddresses(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsZCashAccount(*account_id));
 
-  auto* zcash_keyring = GetZCashKeyringById(account_id.keyring_id);
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
   if (!zcash_keyring) {
     return std::nullopt;
   }
 
-  // TODO(cypt4): store used addresses indexes in prefs.
-
-  // TODO(cypt4): temporarily just return first 5 recieve and 5 change
-  // addresses.
-  std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>> addresses;
-  for (auto i = 0; i < 5; ++i) {
-    auto key_id =
-        mojom::ZCashKeyId::New(account_id.bitcoin_account_index, 0, i);
-    auto address = zcash_keyring->GetAddress(*key_id);
-    if (!address) {
-      return std::nullopt;
-    }
-    addresses.emplace_back(*address, std::move(key_id));
+  auto zcash_account_info = GetZCashAccountInfo(account_id);
+  if (!zcash_account_info) {
+    return std::nullopt;
   }
-  for (auto i = 0; i < 5; ++i) {
-    auto key_id =
-        mojom::ZCashKeyId::New(account_id.bitcoin_account_index, 1, i);
+
+  std::vector<mojom::ZCashAddressPtr> addresses;
+  for (auto i = 0u;
+       i < zcash_account_info->next_transparent_receive_address->key_id->index;
+       ++i) {
+    auto key_id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index,
+                                         kBitcoinReceiveIndex, i);
     auto address = zcash_keyring->GetAddress(*key_id);
     if (!address) {
       return std::nullopt;
     }
-    addresses.emplace_back(*address, std::move(key_id));
+    addresses.emplace_back(std::move(address));
+  }
+  for (auto i = 0u;
+       i < zcash_account_info->next_transparent_change_address->key_id->index;
+       ++i) {
+    auto key_id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index,
+                                         kBitcoinChangeIndex, i);
+    auto address = zcash_keyring->GetAddress(*key_id);
+    if (!address) {
+      return absl::nullopt;
+    }
+    addresses.emplace_back(std::move(address));
   }
 
   return addresses;
 }
 
-std::optional<std::string> KeyringService::GetZCashAddress(
+mojom::ZCashAddressPtr KeyringService::GetZCashAddress(
     const mojom::AccountId& account_id,
     const mojom::ZCashKeyId& key_id) {
   CHECK(IsZCashAccount(account_id));
@@ -2545,7 +2551,7 @@ std::optional<std::string> KeyringService::GetZCashAddress(
 
   auto* zcash_keyring = GetZCashKeyringById(account_id.keyring_id);
   if (!zcash_keyring) {
-    return std::nullopt;
+    return nullptr;
   }
 
   return zcash_keyring->GetAddress(key_id);
@@ -2572,6 +2578,38 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     std::optional<uint32_t> next_change_index) {
   CHECK(account_id);
   CHECK(IsBitcoinAccount(*account_id));
+  CHECK(next_receive_index || next_change_index);
+
+  ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
+  base::Value::List& account_metas = GetListPrefForKeyringUpdate(
+      keyrings_update, kAccountMetas, account_id->keyring_id);
+  for (auto& item : account_metas) {
+    if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
+      if (*account_id == *MakeAccountIdForDerivedAccount(
+                             *derived_account, account_id->keyring_id)) {
+        if (next_receive_index) {
+          derived_account->bitcoin_next_receive_address_index =
+              *next_receive_index;
+        }
+        if (next_change_index) {
+          derived_account->bitcoin_next_change_address_index =
+              *next_change_index;
+        }
+
+        item = derived_account->ToValue();
+        NotifyAccountsChanged();
+        return;
+      }
+    }
+  }
+}
+
+void KeyringService::UpdateNextUnusedAddressForZCashAccount(
+    const mojom::AccountIdPtr& account_id,
+    std::optional<uint32_t> next_receive_index,
+    std::optional<uint32_t> next_change_index) {
+  CHECK(account_id);
+  CHECK(IsZCashAccount(*account_id));
   CHECK(next_receive_index || next_change_index);
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
@@ -2755,6 +2793,49 @@ std::optional<std::vector<uint8_t>> KeyringService::SignMessageByBitcoinKeyring(
 
   return bitcoin_keyring->SignMessage(account_id->bitcoin_account_index,
                                       *key_id, message);
+}
+
+mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsZCashAccount(*account_id));
+
+  auto keyring_id = account_id->keyring_id;
+  auto* zcash_keyring = GetZCashKeyringById(keyring_id);
+  if (!zcash_keyring) {
+    return {};
+  }
+
+  for (const auto& derived_account_info :
+       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+    if (account_id->bitcoin_account_index !=
+        derived_account_info.account_index) {
+      continue;
+    }
+    auto result = mojom::ZCashAccountInfo::New();
+
+    auto receive_key_id = mojom::ZCashKeyId::New(
+        account_id->bitcoin_account_index, kBitcoinReceiveIndex,
+        derived_account_info.bitcoin_next_receive_address_index.value_or(0));
+    auto receive_address = zcash_keyring->GetAddress(*receive_key_id);
+    if (!receive_address) {
+      return {};
+    }
+    result->next_transparent_receive_address = std::move(receive_address);
+
+    auto change_key_id = mojom::ZCashKeyId::New(
+        account_id->bitcoin_account_index, kBitcoinChangeIndex,
+        derived_account_info.bitcoin_next_change_address_index.value_or(0));
+    auto change_address = zcash_keyring->GetAddress(*change_key_id);
+    if (!change_address) {
+      return {};
+    }
+
+    result->next_transparent_change_address = std::move(change_address);
+    return result;
+  }
+
+  return {};
 }
 
 std::optional<std::vector<uint8_t>> KeyringService::SignMessageByZCashKeyring(

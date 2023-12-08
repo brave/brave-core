@@ -16,9 +16,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_grpc_utils.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 
 namespace brave_wallet {
 
@@ -33,6 +35,10 @@ class ZCashRpc {
       base::expected<zcash::RawTransaction, std::string>)>;
   using SendTransactionCallback = base::OnceCallback<void(
       base::expected<zcash::SendResponse, std::string>)>;
+  using GetTransactionsCallback = base::OnceCallback<void(
+      base::expected<zcash::SendResponse, std::string>)>;
+  using IsKnownAddressCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
 
   ZCashRpc(PrefService* prefs,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -53,10 +59,18 @@ class ZCashRpc {
                                const std::string& data,
                                SendTransactionCallback callback);
 
+  virtual void IsKnownAddress(const std::string& chain_id,
+                              const std::string& addr,
+                              uint64_t block_start,
+                              uint64_t block_end,
+                              IsKnownAddressCallback callback);
+
  private:
   friend class base::RefCountedThreadSafe<ZCashRpc>;
 
   using UrlLoadersList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
+  using StreamHandlersList =
+      std::list<std::unique_ptr<GRrpcMessageStreamHandler>>;
 
   void OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
                           UrlLoadersList::iterator it,
@@ -77,7 +91,13 @@ class ZCashRpc {
       UrlLoadersList::iterator it,
       const std::unique_ptr<std::string> response_body);
 
+  void OnGetAddressTxResponse(ZCashRpc::IsKnownAddressCallback callback,
+                              UrlLoadersList::iterator it,
+                              StreamHandlersList::iterator handler_it,
+                              base::expected<bool, std::string> result);
+
   UrlLoadersList url_loaders_list_;
+  StreamHandlersList stream_handlers_list_;
   raw_ptr<PrefService> prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
   base::WeakPtrFactory<ZCashRpc> weak_ptr_factory_{this};

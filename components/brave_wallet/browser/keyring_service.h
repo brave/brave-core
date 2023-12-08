@@ -238,15 +238,22 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id,
       const mojom::BitcoinKeyIdPtr& key_id,
       base::span<const uint8_t, 32> message);
+
+  /* ZCash */
+  void UpdateNextUnusedAddressForZCashAccount(
+      const mojom::AccountIdPtr& account_id,
+      std::optional<uint32_t> next_receive_index,
+      std::optional<uint32_t> next_change_index);
+  mojom::ZCashAccountInfoPtr GetZCashAccountInfo(
+      const mojom::AccountIdPtr& account_id);
   std::optional<std::vector<uint8_t>> SignMessageByZCashKeyring(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id,
       const base::span<const uint8_t, 32> message);
-
-  std::optional<std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>>>
-  GetZCashAddresses(const mojom::AccountId& account_id);
-  std::optional<std::string> GetZCashAddress(const mojom::AccountId& account_id,
-                                             const mojom::ZCashKeyId& key_id);
+  mojom::ZCashAddressPtr GetZCashAddress(const mojom::AccountId& account_id,
+                                         const mojom::ZCashKeyId& key_id);
+  std::optional<std::vector<mojom::ZCashAddressPtr>> GetZCashAddresses(
+      const mojom::AccountIdPtr& account_id);
   std::optional<std::vector<uint8_t>> GetZCashPubKey(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);

@@ -2077,8 +2077,8 @@ void BraveWalletService::GenerateReceiveAddress(
       std::move(callback).Run("", WalletInternalErrorMessage());
       return;
     }
-    zcash_wallet_service_->GetReceiverAddress(
-        std::move(account_id),
+    zcash_wallet_service_->RunDiscovery(
+        std::move(account_id), false,
         base::BindOnce(&BraveWalletService::OnGenerateZecReceiveAddress,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
