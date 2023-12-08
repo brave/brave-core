@@ -262,17 +262,18 @@ int GetNormal(int min, int max) {
   return min + floor((max - min) * GetNormal());
 }
 
-using GetWeighting = double(const ArticleWeight& weight);
+using GetWeighting = double(const mojom::FeedItemMetadataPtr& article,
+                            const ArticleWeight& weight);
 
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    GetWeighting get_weighting = [](const auto& weight) {
+    GetWeighting get_weighting = [](const auto& article, const auto& weight) {
       return weight.weighting;
     }) {
   double total_weight = 0;
   for (const auto& [article, weight] : articles) {
-    total_weight += get_weighting(weight);
+    total_weight += get_weighting(article, weight);
   }
 
   // None of the items are eligible to be picked.
@@ -286,7 +287,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
     auto& [article, weight] = articles[i];
-    current_weight += get_weighting(weight);
+    current_weight += get_weighting(article, weight);
     if (current_weight > picked_value) {
       break;
     }
@@ -304,12 +305,13 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles, [](const auto& weight) {
-    if (weight.subscribed || weight.visited) {
-      return 0.;
-    }
-    return weight.pop_recency;
-  });
+  return PickRouletteAndRemove(articles,
+                               [](const auto& article, const auto& weight) {
+                                 if (weight.subscribed || weight.visited) {
+                                   return 0.;
+                                 }
+                                 return weight.pop_recency;
+                               });
 }
 
 // Generates a standard block:
@@ -329,13 +331,20 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     return result;
   }
 
-  auto hero_article = PickRouletteAndRemove(articles);
-  if (!hero_article) {
-    return result;
-  }
+  auto hero_article = PickRouletteAndRemove(
+      articles, [](const auto& article, const auto& weight) {
+        auto image_url = article->image->is_padded_image_url()
+                             ? article->image->get_padded_image_url()
+                             : article->image->get_image_url();
+        return image_url.is_valid() ? weight.weighting : 0;
+      });
 
-  result.push_back(mojom::FeedItemV2::NewHero(
-      mojom::HeroArticle::New(std::move(hero_article))));
+  // We might not be able to generate a hero card, if none of the articles in
+  // this feed have an image.
+  if (hero_article) {
+    result.push_back(mojom::FeedItemV2::NewHero(
+        mojom::HeroArticle::New(std::move(hero_article))));
+  }
 
   const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
