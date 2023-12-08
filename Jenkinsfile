@@ -41,7 +41,9 @@ pipeline {
                         STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
                     }
 
-                    if (SKIP && PLATFORM != 'noplatform') {
+                    // TODO: linux-x64 should remain unskippable until we have a good way of automatically determining what really needs to run in a PR.
+                    //       This is mostly to address cases where all desktop platforms are skipped, even though the changes affect desktop.
+                    if (SKIP && PLATFORM != 'noplatform' && PLATFORM != 'linux-x64') {
                         echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
                         return
