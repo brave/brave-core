@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index f9115ca487ed16be5b92bd37181e526e729a5380..35bdff48f0ce50de73385945bfe8a53401c83993 100644
+index 37398140f71f771fa7f9eb61bb2d98095d8f5b70..4046a14c2d3a79e4cafc63ddd0fb115bc5788924 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -25,6 +25,7 @@ robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"

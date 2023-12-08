@@ -1,8 +1,8 @@
 diff --git a/tools/perf/benchmarks/loading.py b/tools/perf/benchmarks/loading.py
-index b16eaaee9cc7b51b6ef1fdbf2bba8ece335020ca..f919dd5d7a6b2d79be75aa28fc4cda723fdae4a2 100644
+index be8b6049264c72152cbc93e8ea4d3db1f0b07bd8..11abad32478f0f3aec512790435736cd6cea4bc3 100644
 --- a/tools/perf/benchmarks/loading.py
 +++ b/tools/perf/benchmarks/loading.py
-@@ -60,3 +60,4 @@ class LoadingMBI(_LoadingBase):
+@@ -59,3 +59,4 @@ class LoadingMBI(_LoadingBase):
    @classmethod
    def Name(cls):
      return 'UNSCHEDULED_loading.mbi'
