@@ -402,12 +402,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
   }
 
   auto hero_article = PickRouletteAndRemove(
-      articles, [](const auto& article, const auto& weight) {
-        auto image_url = article->image->is_padded_image_url()
-                             ? article->image->get_padded_image_url()
-                             : article->image->get_image_url();
+      articles, base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata, const ArticleWeight& weight) {
+        auto image_url = metadata->image->is_padded_image_url()
+                             ? metadata->image->get_padded_image_url()
+                             : metadata->image->get_image_url();
         return image_url.is_valid() ? weight.weighting : 0;
-      });
+      }));
 
   // We might not be able to generate a hero card, if none of the articles in
   // this feed have an image.
@@ -472,14 +472,24 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   // invocation of |get_weighting| will generate a new |GetWeighting| tied to a
   // (freshly sampled) content_group.
   auto get_weighting = [&eligible_content_groups, &publisher_id_to_channels,
-                        &locale]() {
+                        &locale](bool is_hero = false) {
     return base::BindRepeating(
-        [](const ContentGroup& content_group,
+        [](const bool is_hero,
+           const ContentGroup& content_group,
            const base::flat_map<std::string, std::vector<std::string>>&
                publisher_id_to_channels,
            const std::string& locale,
            const mojom::FeedItemMetadataPtr& metadata,
            const ArticleWeight& weight) {
+          if (is_hero) {
+            auto image_url = metadata->image->is_padded_image_url()
+                             ? metadata->image->get_padded_image_url()
+                             : metadata->image->get_image_url();
+            if (!image_url.is_valid()) {
+              return 0.0;
+            }
+          }
+
           if (/*is_channel*/ content_group.second &&
               content_group.first != kAllContentGroup) {
             auto channels =
@@ -497,11 +507,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
           return weight.weighting;
         },
-        SampleContentGroup(eligible_content_groups), publisher_id_to_channels,
-        locale);
+        is_hero, SampleContentGroup(eligible_content_groups),
+        publisher_id_to_channels, locale);
   };
 
-  auto hero_article = PickRouletteAndRemove(articles, get_weighting());
+  auto hero_article = PickRouletteAndRemove(articles, get_weighting(/*is_hero*/ true));
   if (!hero_article) {
     DVLOG(1) << "Failed to generate hero";
     return result;
