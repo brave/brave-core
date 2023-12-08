@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function HeroArticle({ info }: Props) {
-  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, {
+  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
     useCache: true,
     rootElement: document.body,
     rootMargin: '0px 0px 200px 0px'
