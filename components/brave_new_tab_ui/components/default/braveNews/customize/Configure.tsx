@@ -54,6 +54,7 @@ const BackButtonContainer = styled.div`
   display: flex;
   padding: 12px;
   padding-left: 34px;
+  & > leo-button { max-width: max-content; }
 `
 
 const CloseButton = styled(Button)`
@@ -123,7 +124,7 @@ export default function Configure() {
     <Grid id='brave-news-configure'>
       <BackButtonContainer>
         <Button onClick={() => setCustomizePage(null)} kind='plain-faint'>
-          <Flex direction='row' align='center' gap={spacing[8]}>
+          <Flex direction='row' align='center' gap={spacing.m}>
             {BackArrow}
             <span>
               {formatMessage(getLocale('braveNewsBackToDashboard'), {
