@@ -44,7 +44,7 @@ class AIChatMetricsUnitTest : public testing::Test {
   AIChatMetrics::RetrievePremiumStatusCallback GetPremiumCallback() {
     bool is_premium = is_premium_;
     return base::BindLambdaForTesting(
-        [&is_premium](mojom::PageHandler::GetPremiumStatusCallback callback) {
+        [is_premium](mojom::PageHandler::GetPremiumStatusCallback callback) {
           std::move(callback).Run(is_premium ? mojom::PremiumStatus::Active
                                              : mojom::PremiumStatus::Inactive);
         });
