@@ -13,7 +13,6 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -79,12 +78,6 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 
   favicon_service_ = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
-
-  feedback_api_ = std::make_unique<AIChatFeedbackAPI>(
-      owner_web_contents->GetBrowserContext()
-          ->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess(),
-      brave::GetChannelName());
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -109,16 +102,7 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
     return;
   }
 
-  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
-  // Ensure we return only in intended display order
-  std::transform(kAllModelKeysDisplayOrder.cbegin(),
-                 kAllModelKeysDisplayOrder.cend(), models.begin(),
-                 [](auto& model_key) {
-                   auto model_match = kAllModels.find(model_key);
-                   DCHECK(model_match != kAllModels.end());
-                   return model_match->second.Clone();
-                 });
-  std::move(callback).Run(std::move(models),
+  std::move(callback).Run(active_chat_tab_helper_->GetModels(),
                           active_chat_tab_helper_->GetCurrentModel().key);
 }
 
@@ -146,21 +130,9 @@ void AIChatUIPageHandler::GetConversationHistory(
     std::move(callback).Run({});
     return;
   }
-  std::vector<ConversationTurn> history =
-      active_chat_tab_helper_->GetConversationHistory();
 
-  std::vector<ai_chat::mojom::ConversationTurnPtr> list;
-
-  // Remove conversations that are meant to be hidden from the user
-  auto new_end_it = std::remove_if(
-      history.begin(), history.end(), [](const ConversationTurn& turn) {
-        return turn.visibility == ConversationTurnVisibility::HIDDEN;
-      });
-
-  std::transform(history.begin(), new_end_it, std::back_inserter(list),
-                 [](const ConversationTurn& turn) { return turn.Clone(); });
-
-  std::move(callback).Run(std::move(list));
+  std::move(callback).Run(
+      active_chat_tab_helper_->GetVisibleConversationHistory());
 }
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
@@ -267,99 +239,29 @@ void AIChatUIPageHandler::GetAPIResponseError(
 
 void AIChatUIPageHandler::GetCanShowPremiumPrompt(
     GetCanShowPremiumPromptCallback callback) {
-  bool has_user_dismissed_prompt = profile_->GetPrefs()->GetBoolean(
-      ai_chat::prefs::kUserDismissedPremiumPrompt);
-
-  if (has_user_dismissed_prompt) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  base::Time last_accepted_disclaimer =
-      profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
-
-  // Can't show if we haven't accepted disclaimer yet
-  if (last_accepted_disclaimer.is_null()) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
-  bool is_more_than_24h_since_last_seen =
-      last_accepted_disclaimer < time_1_day_ago;
-
-  if (is_more_than_24h_since_last_seen) {
-    std::move(callback).Run(true);
-    return;
-  }
-
-  std::move(callback).Run(false);
+  std::move(callback).Run(active_chat_tab_helper_->GetCanShowPremium());
 }
 
 void AIChatUIPageHandler::DismissPremiumPrompt() {
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
-                                   true);
+  active_chat_tab_helper_->DismissPremiumPrompt();
 }
 
 void AIChatUIPageHandler::RateMessage(bool is_liked,
                                       uint32_t turn_id,
                                       RateMessageCallback callback) {
-  auto on_complete = base::BindOnce(
-      [](RateMessageCallback callback, APIRequestResult result) {
-        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-          std::string id = *result.value_body().GetDict().FindString("id");
-          std::move(callback).Run(id);
-          return;
-        }
-        std::move(callback).Run(std::nullopt);
-      },
-      std::move(callback));
-
-  if (active_chat_tab_helper_) {
-    const std::vector<mojom::ConversationTurn>& history =
-        active_chat_tab_helper_->GetConversationHistory();
-
-    // TODO(petemill): Something more robust than relying on message index,
-    // and probably a message uuid.
-    uint32_t current_turn_id = turn_id + 1;
-
-    if (current_turn_id <= history.size()) {
-      base::span<const mojom::ConversationTurn> history_slice =
-          base::make_span(history).first(current_turn_id);
-
-      feedback_api_->SendRating(is_liked, history_slice,
-                                active_chat_tab_helper_->GetCurrentModel().name,
-                                std::move(on_complete));
-
-      return;
-    }
-  }
-
-  std::move(callback).Run(std::nullopt);
+  active_chat_tab_helper_->RateMessage(is_liked, turn_id, std::move(callback));
 }
 
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
                                        const std::string& feedback,
                                        const std::string& rating_id,
                                        SendFeedbackCallback callback) {
-  auto on_complete = base::BindOnce(
-      [](SendFeedbackCallback callback, APIRequestResult result) {
-        if (result.Is2XXResponseCode()) {
-          std::move(callback).Run(true);
-          return;
-        }
-
-        std::move(callback).Run(false);
-      },
-      std::move(callback));
-
-  feedback_api_->SendFeedback(category, feedback, rating_id,
-                              std::move(on_complete));
+  active_chat_tab_helper_->SendFeedback(category, feedback, rating_id,
+                                        std::move(callback));
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
-                                base::Time::Now());
+  active_chat_tab_helper_->SetUserOptedIn(true);
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {

@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_driver.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -43,13 +44,22 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 
 namespace ai_chat {
 
-ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
-       raw_ptr<AIChatMetrics> ai_chat_metrics,
-       std::unique_ptr<AIChatCredentialManager> credential_manager,
-       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) :
-      pref_service_(pref_service),
+ConversationDriver::ConversationDriver(
+    PrefService* profile_prefs,
+    PrefService* local_state_prefs,
+    AIChatMetrics* ai_chat_metrics,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::string_view channel_string)
+    : pref_service_(local_state_prefs),
       ai_chat_metrics_(ai_chat_metrics),
-      credential_manager_(std::move(credential_manager)),
+      credential_manager_(std::make_unique<ai_chat::AIChatCredentialManager>(
+          skus_service_getter,
+          local_state_prefs)),
+      feedback_api_(std::make_unique<ai_chat::AIChatFeedbackAPI>(
+          url_loader_factory,
+          std::string(channel_string))),
       url_loader_factory_(url_loader_factory) {
   DCHECK(pref_service_);
 
@@ -132,8 +142,33 @@ const mojom::Model& ConversationDriver::GetCurrentModel() {
   return kAllModels.find(model_key_)->second;
 }
 
+std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
+  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  // Ensure we return only in intended display order
+  std::transform(kAllModelKeysDisplayOrder.cbegin(),
+                 kAllModelKeysDisplayOrder.cend(), models.begin(),
+                 [](auto& model_key) {
+                   auto model_match = kAllModels.find(model_key);
+                   DCHECK(model_match != kAllModels.end());
+                   return model_match->second.Clone();
+                 });
+  return models;
+}
+
 const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory() {
   return chat_history_;
+}
+
+std::vector<mojom::ConversationTurnPtr>
+ConversationDriver::GetVisibleConversationHistory() {
+  // Remove conversations that are meant to be hidden from the user
+  std::vector<ai_chat::mojom::ConversationTurnPtr> list;
+  for (const auto& turn : GetConversationHistory()) {
+    if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
+      list.push_back(turn.Clone());
+    }
+  }
+  return list;
 }
 
 void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
@@ -194,6 +229,15 @@ bool ConversationDriver::HasUserOptedIn() {
   base::Time last_accepted_disclaimer =
         pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
   return !last_accepted_disclaimer.is_null();
+}
+
+void ConversationDriver::SetUserOptedIn(bool user_opted_in) {
+  if (user_opted_in) {
+    pref_service_->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
+                           base::Time::Now());
+  } else {
+    pref_service_->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
+  }
 }
 
 void ConversationDriver::OnUserOptedIn() {
@@ -734,6 +778,94 @@ void ConversationDriver::OnConversationEntryPending() {
   for (auto& obs : observers_) {
     obs.OnConversationEntryPending();
   }
+}
+
+bool ConversationDriver::GetCanShowPremium() {
+  bool has_user_dismissed_prompt =
+      pref_service_->GetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt);
+
+  if (has_user_dismissed_prompt) {
+    return false;
+  }
+
+  base::Time last_accepted_disclaimer =
+      pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+
+  // Can't show if we haven't accepted disclaimer yet
+  if (last_accepted_disclaimer.is_null()) {
+    return false;
+  }
+
+  base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
+  bool is_more_than_24h_since_last_seen =
+      last_accepted_disclaimer < time_1_day_ago;
+
+  if (is_more_than_24h_since_last_seen) {
+    return true;
+  }
+
+  return false;
+}
+
+void ConversationDriver::DismissPremiumPrompt() {
+  pref_service_->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt, true);
+}
+
+void ConversationDriver::RateMessage(
+    bool is_liked,
+    uint32_t turn_id,
+    mojom::PageHandler::RateMessageCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](mojom::PageHandler::RateMessageCallback callback,
+         APIRequestResult result) {
+        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+          std::string id = *result.value_body().GetDict().FindString("id");
+          std::move(callback).Run(id);
+          return;
+        }
+        std::move(callback).Run(absl::nullopt);
+      },
+      std::move(callback));
+
+  const std::vector<mojom::ConversationTurn>& history =
+      GetConversationHistory();
+
+  // TODO(petemill): Something more robust than relying on message index,
+  // and probably a message uuid.
+  uint32_t current_turn_id = turn_id + 1;
+
+  if (current_turn_id <= history.size()) {
+    base::span<const mojom::ConversationTurn> history_slice =
+        base::make_span(history).first(current_turn_id);
+
+    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel().name,
+                              std::move(on_complete));
+
+    return;
+  }
+
+  std::move(callback).Run(absl::nullopt);
+}
+
+void ConversationDriver::SendFeedback(
+    const std::string& category,
+    const std::string& feedback,
+    const std::string& rating_id,
+    mojom::PageHandler::SendFeedbackCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](mojom::PageHandler::SendFeedbackCallback callback,
+         APIRequestResult result) {
+        if (result.Is2XXResponseCode()) {
+          std::move(callback).Run(true);
+          return;
+        }
+
+        std::move(callback).Run(false);
+      },
+      std::move(callback));
+
+  feedback_api_->SendFeedback(category, feedback, rating_id,
+                              std::move(on_complete));
 }
 
 }  // namespace ai_chat

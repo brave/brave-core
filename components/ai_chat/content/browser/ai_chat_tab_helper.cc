@@ -37,19 +37,19 @@ AIChatTabHelper::AIChatTabHelper(
     AIChatMetrics* ai_chat_metrics,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter,
-    PrefService* local_state_prefs)
+    PrefService* local_state_prefs,
+    const std::string& channel_name)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       ConversationDriver(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()),
+          local_state_prefs,
           ai_chat_metrics,
-          std::make_unique<ai_chat::AIChatCredentialManager>(
-              skus_service_getter,
-              local_state_prefs),
+          skus_service_getter,
           web_contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()),
-      ai_chat_metrics_(ai_chat_metrics) {
+              ->GetURLLoaderFactoryForBrowserProcess(),
+          channel_name) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }

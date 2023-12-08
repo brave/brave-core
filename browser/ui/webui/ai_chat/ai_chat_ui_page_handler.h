@@ -104,8 +104,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
 
-  std::unique_ptr<AIChatFeedbackAPI> feedback_api_ = nullptr;
-
   base::CancelableTaskTracker favicon_task_tracker_;
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>

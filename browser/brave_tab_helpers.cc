@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_tab_helpers.h"
+#include <string>
+#include <string_view>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -32,7 +34,10 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/version_info/channel.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -136,7 +141,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
         g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
-        skus_service_getter, g_browser_process->local_state());
+        skus_service_getter, g_browser_process->local_state(),
+        version_info::GetChannelString(chrome::GetChannel()));
   }
 #endif
 

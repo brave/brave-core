@@ -26,6 +26,8 @@
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/ios/app/brave_main_delegate.h"
+#include "brave/ios/browser/api/ai_chat/ai_chat+private.h"
+#include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
@@ -475,6 +477,11 @@ static bool CustomLogHandler(int severity,
                 p3aService:_p3a_service];
   }
   return _p3aUtils;
+}
+
+- (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
+  return [[AIChat alloc] initWithChromeBrowserState:_mainBrowserState
+                                           delegate:delegate];
 }
 
 + (bool)initializeICUForTesting {
