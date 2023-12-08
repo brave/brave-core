@@ -66,7 +66,7 @@ export const error = styled.div`
   width: 100%;
   height: ${panelMinHeight};
   padding: 100px 70px;
-  background: url(/${defaultBackgroundURL});
+  background: url(${defaultBackgroundURL});
   background-size: cover;
   display: flex;
   justify-content: center;
