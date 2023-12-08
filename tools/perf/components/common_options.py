@@ -9,6 +9,7 @@ import argparse
 import os
 import sys
 import tempfile
+import platform
 from typing import List, Optional
 
 import components.path_util as path_util
@@ -131,7 +132,10 @@ class CommonOptions:
     if args.target_arch is not None:
       options.target_arch = args.target_arch
     else:
-      options.target_arch = 'arm64' if options.target_os == 'android' else 'x64'
+      if options.target_os == 'android' or platform.processor() == 'arm':
+        options.target_arch = 'arm64'
+      else:
+        options.target_arch = 'x64'
 
     options.report_on_failure = args.report_on_failure
     compare = args.targets is None or args.targets == '' or args.compare

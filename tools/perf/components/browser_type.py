@@ -5,7 +5,6 @@
 
 import logging
 import os
-import platform
 import re
 import shutil
 import sys
@@ -183,10 +182,8 @@ class BraveBrowserTypeImpl(BrowserType):
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
                         'BraveSoftware', app_name, 'Application')
 
-  def _DownloadDmgAndExtract(self, tag: str, out_dir: str):
-    assert sys.platform == 'darwin'
-    mac_platform = 'arm64' if platform.processor() == 'arm' else 'x64'
-    dmg_name = f'Brave-Browser-{self._channel}-{mac_platform}.dmg'
+  def _DownloadDmgAndExtract(self, tag: str, out_dir: str, target_arch):
+    dmg_name = f'Brave-Browser-{self._channel}-{target_arch}.dmg'
     dmg_path = os.path.join(out_dir, dmg_name)
 
     DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
@@ -228,7 +225,7 @@ class BraveBrowserTypeImpl(BrowserType):
       return apk_filename
 
     if target_os == 'mac':
-      self._DownloadDmgAndExtract(tag, out_dir)
+      self._DownloadDmgAndExtract(tag, out_dir, common_options.target_arch)
     elif target_os == 'windows':
       url = _GetBraveDownloadUrl(tag, f'brave-{tag}-win32-x64.zip')
       DownloadArchiveAndUnpack(out_dir, url)
