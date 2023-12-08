@@ -1,0 +1,13 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+ai_chat_public_headers = [
+  "//brave/ios/browser/api/ai_chat/ai_chat.h",
+  "//brave/ios/browser/api/ai_chat/ai_chat_delegate.h",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc.h",
+]
+
+ai_chat_public_deps =
+    [ "//brave/ios/browser/api/ai_chat:ai_chat_mojom_wrappers" ]

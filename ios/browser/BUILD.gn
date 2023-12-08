@@ -15,6 +15,7 @@ source_set("browser") {
   ]
 
   deps = [
+    "api/ai_chat",
     "api/bookmarks",
     "api/bookmarks/exporter",
     "api/bookmarks/importer",

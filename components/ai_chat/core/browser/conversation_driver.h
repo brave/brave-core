@@ -8,12 +8,14 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -43,10 +45,14 @@ class ConversationDriver {
     virtual void OnConversationEntryPending() {}
   };
 
-  ConversationDriver(raw_ptr<PrefService> pref_service,
-                raw_ptr<AIChatMetrics> ai_chat_metrics,
-       std::unique_ptr<AIChatCredentialManager> credential_manager,
-       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ConversationDriver(
+      PrefService* profile_prefs,
+      PrefService* local_state,
+      AIChatMetrics* ai_chat_metrics,
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+          skus_service_getter,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::string_view channel_string);
   virtual ~ConversationDriver();
 
   ConversationDriver(const ConversationDriver&) = delete;
@@ -54,7 +60,9 @@ class ConversationDriver {
 
   void ChangeModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
+  std::vector<mojom::ModelPtr> GetModels();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
@@ -81,10 +89,23 @@ class ConversationDriver {
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
+  bool GetCanShowPremium();
+  void DismissPremiumPrompt();
+  bool HasUserOptedIn();
+  void SetUserOptedIn(bool user_opted_in);
   bool IsPageContentsTruncated();
   void SubmitSummarizationRequest();
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
+
+  void RateMessage(bool is_liked,
+                   uint32_t turn_id,
+                   mojom::PageHandler::RateMessageCallback callback);
+
+  void SendFeedback(const std::string& category,
+                    const std::string& feedback,
+                    const std::string& rating_id,
+                    mojom::PageHandler::SendFeedbackCallback callback);
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -107,7 +128,6 @@ class ConversationDriver {
 
  private:
   void InitEngine();
-  bool HasUserOptedIn();
   void OnUserOptedIn();
   bool MaybePopPendingRequests();
   void MaybeGenerateQuestions();
@@ -134,6 +154,7 @@ class ConversationDriver {
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
+  std::unique_ptr<ai_chat::AIChatFeedbackAPI> feedback_api_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
 

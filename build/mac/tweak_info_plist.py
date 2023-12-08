@@ -67,24 +67,32 @@ def Main():
         'the tweaked plist, rather than overwriting the input.')
     parser.add_argument('--brave_channel', dest='brave_channel', action='store',
         default=None, help='Channel (beta, dev, nightly)')
-    parser.add_argument('--brave_product_dir_name', dest='brave_product_dir_name',
-        action='store', default=None,
-        help='Product directory name')
-    parser.add_argument('--brave_eddsa_key', dest='brave_eddsa_key', action='store',
-        default=None, help='Public EdDSA key for update')
+    parser.add_argument('--brave_product_dir_name',
+                        dest='brave_product_dir_name',
+                        action='store',
+                        default=None,
+                        help='Product directory name')
+    parser.add_argument('--brave_eddsa_key',
+                        dest='brave_eddsa_key',
+                        action='store',
+                        default=None,
+                        help='Public EdDSA key for update')
     parser.add_argument('--brave_version', dest='brave_version', action='store',
         default=None, help='brave version string')
     parser.add_argument('--format', choices=('binary1', 'xml1', 'json'),
         default='xml1', help='Format to use when writing property list '
             '(default: %(default)s)')
-    parser.add_argument('--skip_signing', dest='skip_signing', action='store_true')
+    parser.add_argument('--skip_signing',
+                        dest='skip_signing',
+                        action='store_true')
     args = parser.parse_args()
 
     # Read the plist into its parsed format. Convert the file to 'xml1' as
     # plistlib only supports that format in Python 2.7.
     with tempfile.NamedTemporaryFile() as temp_info_plist:
         if sys.version_info.major == 2:
-            retcode = _ConvertPlist(args.plist_path, temp_info_plist.name, 'xml1')
+            retcode = _ConvertPlist(args.plist_path, temp_info_plist.name,
+                                    'xml1')
             if retcode != 0:
                 return retcode
             plist = plistlib.readPlist(temp_info_plist.name)
@@ -103,7 +111,8 @@ def Main():
         # during signing
         del plist['KSChannelID']
 
-    plist['CrProductDirName'] = args.brave_product_dir_name
+    if args.brave_product_dir_name:
+        plist['CrProductDirName'] = args.brave_product_dir_name
 
     if args.brave_eddsa_key:
         plist['SUPublicEDKey'] = args.brave_eddsa_key
@@ -121,8 +130,12 @@ def Main():
             plistlib.writePlist(plist, temp_info_plist.name)
             return _ConvertPlist(temp_info_plist.name, output_path, args.format)
     with open(output_path, 'wb') as f:
-        plist_format = {'binary1': plistlib.FMT_BINARY, 'xml1': plistlib.FMT_XML}
+        plist_format = {
+            'binary1': plistlib.FMT_BINARY,  # pylint: disable=no-member
+            'xml1': plistlib.FMT_XML  # pylint: disable=no-member
+        }
         plistlib.dump(plist, f, fmt=plist_format[args.format])
+    return 0
 
 
 if __name__ == '__main__':

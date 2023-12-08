@@ -45,7 +45,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
       AIChatMetrics* ai_chat_metrics,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
-      PrefService* local_state_prefs);
+      PrefService* local_state_prefs,
+      const std::string& channel_name);
 
   // content::WebContentsObserver
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;

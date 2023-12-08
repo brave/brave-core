@@ -1,7 +1,7 @@
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
@@ -9,6 +9,7 @@ import("//ios/public/provider/chrome/browser/build_config.gni")
 
 source_set("app") {
   configs += [
+    "//brave/ios/browser/api/ai_chat:mojom_header_config",
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
   ]
@@ -37,6 +38,8 @@ source_set("app") {
     "//brave/ios/app/resources",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/api/ai_chat:ai_chat_mojom_wrappers",
     "//brave/ios/browser/api/bookmarks",
     "//brave/ios/browser/api/brave_rewards",
     "//brave/ios/browser/api/brave_shields",

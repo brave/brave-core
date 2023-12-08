@@ -24,6 +24,8 @@
 @class BraveTabGeneratorAPI;
 @class WebImageDownloader;
 @class NTPBackgroundImagesService;
+@class AIChat;
+@protocol AIChatDelegate;
 @protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -93,6 +95,8 @@ OBJC_EXPORT
 @property(readonly) BraveP3AUtils* p3aUtils;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
+
+- (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.
