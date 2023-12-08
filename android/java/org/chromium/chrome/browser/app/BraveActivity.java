@@ -2029,7 +2029,15 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public void initMiscAndroidMetrics() {
+    public void initMiscAndroidMetricsFromAWorkerThread() {
+        runOnUiThread(
+                () -> {
+                    initMiscAndroidMetrics();
+                });
+    }
+
+    private void initMiscAndroidMetrics() {
+        ThreadUtils.assertOnUiThread();
         if (mMiscAndroidMetrics != null) {
             return;
         }
