@@ -100,8 +100,6 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "SpeculationRulesPrefetchProxy", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("WebEnvironmentIntegrity",
-                                                     false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
