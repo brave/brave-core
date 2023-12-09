@@ -1254,8 +1254,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
 
-  providers.push_back(internal::constant::kWalletUphold);
-
   if (IsBitFlyerCountry()) {
     providers.push_back(internal::constant::kWalletBitflyer);
     return providers;
@@ -1265,6 +1263,8 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletZebPay);
     return providers;
   }
+
+  providers.push_back(internal::constant::kWalletUphold);
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
