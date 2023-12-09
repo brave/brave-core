@@ -141,22 +141,26 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 10);
 }
 
-TEST_F(AIChatMetricsUnitTest, UsageDaily) {
+TEST_F(AIChatMetricsUnitTest, UsageDailyAndMonthly) {
   is_premium_ = false;
 
   ai_chat_metrics_->RecordEnabled(false, GetPremiumCallback());
   task_environment_.RunUntilIdle();
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 0);
 
   RecordPrompts(true, 1);
   histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 
   is_premium_ = true;
   ai_chat_metrics_->OnPremiumStatusUpdated(false, mojom::PremiumStatus::Active);
   RecordPrompts(true, 1);
   histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
+  histogram_tester_.ExpectBucketCount(kUsageMonthlyHistogramName, 2, 1);
 
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 2);
+  histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 2);
 }
 
 TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {

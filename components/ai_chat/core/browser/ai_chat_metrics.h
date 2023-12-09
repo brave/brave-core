@@ -23,6 +23,8 @@ inline constexpr char kAvgPromptCountHistogramName[] =
     "Brave.AIChat.AvgPromptCount";
 inline constexpr char kEnabledHistogramName[] = "Brave.AIChat.Enabled.2";
 inline constexpr char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily.2";
+inline constexpr char kUsageMonthlyHistogramName[] =
+    "Brave.AIChat.UsageMonthly";
 inline constexpr char kOmniboxWeekCompareHistogramName[] =
     "Brave.AIChat.OmniboxWeekCompare";
 inline constexpr char kOmniboxOpensHistogramName[] =

@@ -206,6 +206,7 @@ inline constexpr auto kCollectedTypicalHistograms =
 
 inline constexpr auto kCollectedSlowHistograms =
   base::MakeFixedFlatSetSorted<std::string_view>({
+    "Brave.AIChat.UsageMonthly",
     "Brave.Accessibility.DisplayZoomEnabled",
     "Brave.Core.DocumentsDirectorySizeMB",
     "Brave.Core.ProfileCount",
@@ -250,6 +251,7 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.AIChat.OmniboxOpens",
     "Brave.AIChat.OmniboxWeekCompare",
     "Brave.AIChat.UsageDaily.2",
+    "Brave.AIChat.UsageMonthly",
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.PrivacyHub.Views",
