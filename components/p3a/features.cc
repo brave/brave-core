@@ -10,7 +10,7 @@ namespace features {
 
 BASE_FEATURE(kConstellation,
              "BraveP3AConstellation",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kConstellationEnclaveAttestation,
              "BraveP3AConstellationEnclaveAttestation",
              base::FEATURE_DISABLED_BY_DEFAULT);
