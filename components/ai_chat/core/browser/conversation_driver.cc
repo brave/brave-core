@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
@@ -182,8 +183,8 @@ void ConversationDriver::InitEngine() {
 
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
-  if (HasPageContent() == PageContentAssociation::HAS_CONTENT) {
-    OnPageHasContentChanged(IsPageContentsTruncated());
+  if (!article_text_.empty()) {
+    OnPageHasContentChanged(BuildSiteInfo());
   }
 }
 
@@ -257,12 +258,19 @@ bool ConversationDriver::MaybePopPendingRequests() {
     return false;
   }
 
-  if (!pending_request_) {
+  if (!pending_conversation_entry_) {
     return false;
   }
 
-  mojom::ConversationTurn request = std::move(*pending_request_);
-  pending_request_.reset();
+  // We don't discard requests related to summarization until we have the
+  // article text.
+  if (article_text_.empty() && pending_message_needs_page_content_) {
+    return false;
+  }
+
+  mojom::ConversationTurn request = std::move(*pending_conversation_entry_);
+  pending_conversation_entry_.reset();
+  pending_message_needs_page_content_ = false;
   MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
   return true;
 }
@@ -271,8 +279,6 @@ void ConversationDriver::MaybeGeneratePageText() {
   const GURL url = GetPageURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
-    // Final decision, convey to observers
-    OnPageHasContentChanged(false);
     return;
   }
 
@@ -302,10 +308,10 @@ void ConversationDriver::MaybeGeneratePageText() {
     return;
   }
 
-  if (!should_page_content_be_disconnected_) {
+  if (should_send_page_contents_) {
     is_page_text_fetch_in_progress_ = true;
     // Update fetching status
-    OnPageHasContentChanged(false);
+    OnPageHasContentChanged(BuildSiteInfo());
     GetPageContent(
         base::BindOnce(&ConversationDriver::OnPageContentRetrieved,
                        weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
@@ -331,7 +337,7 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   engine_->SanitizeInput(article_text_);
 
   // Update completion status
-  OnPageHasContentChanged(IsPageContentsTruncated());
+  OnPageHasContentChanged(BuildSiteInfo());
 
   // Now that we have article text, we can suggest to summarize it
   DCHECK(suggestions_.empty())
@@ -347,18 +353,21 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::CanGenerate;
   OnSuggestedQuestionsChanged();
+  // We check again to see if any page content related prompt is pending
+  MaybePopPendingRequests();
 }
 
 void ConversationDriver::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggestions_.clear();
-  pending_request_.reset();
+  pending_conversation_entry_.reset();
+  pending_message_needs_page_content_ = false;
   is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
-  should_page_content_be_disconnected_ = false;
+  should_send_page_contents_ = true;
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
   engine_->ClearAllQueries();
@@ -367,7 +376,7 @@ void ConversationDriver::CleanUp() {
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
     obs.OnAPIRequestInProgress(false);
-    obs.OnPageHasContent(/* page_contents_is_truncated */ false);
+    obs.OnPageHasContent(BuildSiteInfo());
   }
 }
 
@@ -394,20 +403,14 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
   return suggestions_;
 }
 
-PageContentAssociation ConversationDriver::HasPageContent() {
-  if (is_page_text_fetch_in_progress_) {
-    return PageContentAssociation::FETCHING_CONTENT;
-  }
-  if (article_text_.empty()) {
-    return PageContentAssociation::NO_CONTENT;
-  }
-  return PageContentAssociation::HAS_CONTENT;
+void ConversationDriver::SetShouldSendPageContents(bool should_send) {
+  DCHECK(should_send_page_contents_ != should_send);
+
+  should_send_page_contents_ = should_send;
 }
 
-void ConversationDriver::DisconnectPageContents() {
-  CleanUp();
-
-  should_page_content_be_disconnected_ = true;
+bool ConversationDriver::GetShouldSendPageContents() {
+  return should_send_page_contents_;
 }
 
 void ConversationDriver::ClearConversationHistory() {
@@ -488,12 +491,26 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
 }
 
 void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
-    mojom::ConversationTurn turn) {
-  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    mojom::ConversationTurn turn,
+    bool needs_page_content /* = false */) {
+  // Decide if this entry needs to wait for one of:
+  // - user to be opted-in
+  // - conversation to be active
+  // - content to be retrieved
+  if (!is_conversation_active_ || !HasUserOptedIn() ||
+      (article_text_.empty() && needs_page_content)) {
     // This function should not be presented in the UI if the user has not
     // opted-in yet.
-    pending_request_ =
+    pending_conversation_entry_ =
         std::make_unique<mojom::ConversationTurn>(std::move(turn));
+
+    if (article_text_.empty() && needs_page_content) {
+      pending_message_needs_page_content_ = true;
+    }
+
+    // Invoking this before the creation of the page handler means the pending
+    // request will not be reported.
+    OnConversationEntryPending();
     return;
   }
 
@@ -515,9 +532,13 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   std::string question_part;
-  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
     question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+  } else if (turn.text ==
+             l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
   } else {
     question_part = turn.text;
   }
@@ -535,6 +556,14 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
+
+  // Now the conversation is committed, we can remove some unneccessary data if
+  // we're not associated with a page.
+  if (!should_send_page_contents_) {
+    article_text_.clear();
+    suggestions_.clear();
+    OnSuggestedQuestionsChanged();
+  }
 
   engine_->GenerateAssistantResponse(
       is_video_, article_text_, history, question_part,
@@ -620,9 +649,9 @@ void ConversationDriver::OnSuggestedQuestionsChanged() {
   }
 }
 
-void ConversationDriver::OnPageHasContentChanged(bool page_contents_is_truncated) {
+void ConversationDriver::OnPageHasContentChanged(mojom::SiteInfoPtr site_info) {
   for (auto& obs : observers_) {
-    obs.OnPageHasContent(page_contents_is_truncated);
+    obs.OnPageHasContent(std::move(site_info));
   }
 }
 
@@ -634,12 +663,47 @@ void ConversationDriver::SetAPIError(const mojom::APIError& error) {
   }
 }
 
+bool ConversationDriver::HasPendingConversationEntry() {
+  return pending_conversation_entry_ != nullptr;
+}
+
 bool ConversationDriver::IsPageContentsTruncated() {
   if (article_text_.empty()) {
     return false;
   }
   return (static_cast<uint32_t>(article_text_.length()) >
           GetCurrentModel().max_page_content_length);
+}
+
+void ConversationDriver::SubmitSummarizationRequest() {
+  DCHECK(IsContentAssociationPossible())
+      << "This conversation request is not associated with content\n";
+  DCHECK(should_send_page_contents_)
+      << "This conversation request should send page contents\n";
+
+  mojom::ConversationTurn turn = {
+      CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn),
+                                              /*needs_page_content=*/true);
+}
+
+mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
+  mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
+  site_info->title = base::UTF16ToUTF8(GetPageTitle());
+  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->is_content_association_possible = IsContentAssociationPossible();
+  return site_info;
+}
+
+bool ConversationDriver::IsContentAssociationPossible() {
+  const GURL url = GetPageURL();
+
+  if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return false;
+  }
+
+  return true;
 }
 
 void ConversationDriver::GetPremiumStatus(
@@ -659,6 +723,12 @@ void ConversationDriver::OnPremiumStatusReceived(
   }
   last_premium_status_ = premium_status;
   std::move(parent_callback).Run(premium_status);
+}
+
+void ConversationDriver::OnConversationEntryPending() {
+  for (auto& obs : observers_) {
+    obs.OnConversationEntryPending();
+  }
 }
 
 }  // namespace ai_chat

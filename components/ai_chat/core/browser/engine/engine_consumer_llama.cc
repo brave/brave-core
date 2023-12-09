@@ -355,8 +355,8 @@ void EngineConsumerLlamaRemote::SanitizeInput(std::string& input) {
   base::ReplaceSubstringsAfterOffset(&input, 0, kLlama2ESys, "");
   // TODO(petemill): Case-sensitive?
   base::ReplaceSubstringsAfterOffset(&input, 0, "<SYS>", "");
-  base::ReplaceSubstringsAfterOffset(&input, 0, "<article>", "");
-  base::ReplaceSubstringsAfterOffset(&input, 0, "</article>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "<page>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "</page>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<question>", "");

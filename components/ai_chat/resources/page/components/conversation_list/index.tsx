@@ -13,6 +13,7 @@ import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
+import SiteTitle from '../site_title'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -28,14 +29,17 @@ function ConversationList() {
     isGenerating,
     conversationHistory,
     suggestedQuestions,
-    shouldDisableUserInput
+    shouldDisableUserInput,
+    hasAcceptedAgreement,
+    shouldSendPageContents
   } = context
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
   const showSuggestions: boolean =
+    hasAcceptedAgreement && context.shouldSendPageContents && (
     suggestedQuestions.length > 0 ||
-    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus)
+    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
@@ -64,8 +68,8 @@ function ConversationList() {
           const isLastEntry = id === conversationHistory.length - 1
           const isLoading = isLastEntry && isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
-          const isAIAssistant =
-            turn.characterType === mojom.CharacterType.ASSISTANT
+          const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
+          const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
 
           const turnClass = classnames({
             [styles.turn]: true,
@@ -99,6 +103,7 @@ function ConversationList() {
                 <div className={styles.message}>
                   {turn.text}
                   {isLoading && <span className={styles.caret} />}
+                  {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                 </div>
               </div>
               {isAIAssistant ? (

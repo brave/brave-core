@@ -213,8 +213,8 @@ void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {
   // TODO(petemill): Do we need to strip the versions of these without newlines?
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPromptPlaceholder, "");
   base::ReplaceSubstringsAfterOffset(&input, 0, kAIPromptPlaceholder, "");
-  base::ReplaceSubstringsAfterOffset(&input, 0, "<article>", "");
-  base::ReplaceSubstringsAfterOffset(&input, 0, "</article>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "<page>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "</page>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<question>", "");

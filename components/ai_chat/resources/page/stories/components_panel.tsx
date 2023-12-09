@@ -75,7 +75,9 @@ const SAMPLE_QUESTIONS = [
 
 const SITE_INFO = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
-  isContentTruncated: false
+  isContentTruncated: false,
+  isContentAssociationPossible: true,
+  hasContentAssociated: true
 }
 
 export default {
@@ -101,7 +103,6 @@ export default {
     hasConversation: true,
     hasSuggestedQuestions: true,
     hasSiteInfo: true,
-    showModelIntro: true,
     canShowPremiumPrompt: false,
     hasAcceptedAgreement: true,
     isPremiumModel: false,
@@ -109,7 +110,8 @@ export default {
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].name
+    model: MODELS[0].name,
+    showAgreementModal: false,
   },
   decorators: [
     (Story: any, options: any) => {
@@ -117,7 +119,7 @@ export default {
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : null
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
@@ -131,7 +133,6 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
         currentModel: MODELS.find(m => m.name === options.args.model),
         conversationHistory: options.args.hasConversation ? HISTORY : [],
@@ -147,7 +148,8 @@ export default {
         apiHasError,
         shouldDisableUserInput,
         isPremiumUser: options.args.isPremiumUser,
-        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        showAgreementModal: options.args.showAgreementModal,
       }
 
       return (
