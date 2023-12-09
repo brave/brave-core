@@ -116,6 +116,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripDragAndDropBrowserTest,
                            DragTabToReorder);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
