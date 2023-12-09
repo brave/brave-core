@@ -2029,7 +2029,15 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public void initMiscAndroidMetrics() {
+    public void initMiscAndroidMetricsFromAWorkerThread() {
+        runOnUiThread(
+                () -> {
+                    initMiscAndroidMetrics();
+                });
+    }
+
+    private void initMiscAndroidMetrics() {
+        ThreadUtils.assertOnUiThread();
         if (mMiscAndroidMetrics != null) {
             return;
         }
@@ -2045,7 +2053,9 @@ public abstract class BraveActivity extends ChromeActivity
                             mMiscAndroidMetrics = miscAndroidMetrics;
                             mMiscAndroidMetrics.recordPrivacyHubEnabledStatus(
                                     OnboardingPrefManager.getInstance().isBraveStatsEnabled());
-                            mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
+                            if (mUsageMonitor == null) {
+                                mUsageMonitor = UsageMonitor.getInstance(mMiscAndroidMetrics);
+                            }
                             mUsageMonitor.start();
                         });
     }
@@ -2092,6 +2102,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void cleanUpMiscAndroidMetrics() {
+        if (mUsageMonitor != null) {
+            mUsageMonitor.stop();
+        }
         if (mMiscAndroidMetrics != null) mMiscAndroidMetrics.close();
         mMiscAndroidMetrics = null;
     }
