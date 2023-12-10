@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import SecureLink, { handleOpenURLClick } from '$web-common/SecureLink';
+import { getLocale } from '$web-common/locale';
 import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
@@ -14,7 +15,6 @@ import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title } from './Card';
-import { getLocale } from '$web-common/locale';
 
 interface Props {
   info: FeedV2Ad

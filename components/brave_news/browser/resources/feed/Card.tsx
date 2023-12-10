@@ -5,6 +5,9 @@
 
 import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import styled from "styled-components";
+import SecureLink, { SecureLinkProps, validateScheme } from '$web-common/SecureLink';
+import * as React from 'react';
+import { configurationCache, useBraveNews } from '../shared/Context';
 
 export const Header = styled.h2`
   margin: 0;
@@ -70,3 +73,18 @@ export default styled.div`
 
   ${p => p.onClick && 'cursor: pointer'}
 `
+
+export const braveNewsCardClickHandler = (href: string | undefined) => (e: React.MouseEvent) => {
+  validateScheme(href)
+
+  if (configurationCache.value.openArticlesInNewTab || e.ctrlKey || e.metaKey || e.buttons & 4) {
+    window.open(href, '_blank', 'noopener noreferrer')
+  } else {
+    window.location.href = href!
+  }
+}
+
+export function BraveNewsLink(props: SecureLinkProps) {
+  const { openArticlesInNewTab } = useBraveNews()
+  return <SecureLink {...props} onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} />
+}

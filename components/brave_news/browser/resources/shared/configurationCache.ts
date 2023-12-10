@@ -22,7 +22,8 @@ export class ConfigurationCachingWrapper
   constructor() {
     super({
       isOptedIn: false,
-      showOnNTP: false
+      showOnNTP: false,
+      openArticlesInNewTab: true,
     })
 
     this.controller = getBraveNewsController()

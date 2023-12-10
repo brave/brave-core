@@ -248,6 +248,7 @@ struct ChannelsEvent {
 struct Configuration {
   bool isOptedIn;
   bool showOnNTP;
+  bool openArticlesInNewTab;
 };
 
 interface ChannelsListener {
