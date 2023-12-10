@@ -85,7 +85,8 @@ const fetchFeed = (feedView: FeedView) => {
   })
 }
 
-export const maybeClearCaches = (latestHash: string) => {
+// Clear out of date caches when the feed receives new data.
+addFeedListener(latestHash => {
   // Delete everything in the localCache which wasn't generated from the latest
   // data - the last visited feed is stored in under |FEED_KEY| so clicking an
   // article and coming back will still work.
@@ -99,20 +100,18 @@ export const maybeClearCaches = (latestHash: string) => {
   const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
   if (localStorageData?.sourceHash != latestHash) {
     localStorage.removeItem(FEED_KEY)
-  } 
-}
+  }
+})
 
 export const useFeedV2 = () => {
   const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
   const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
   const [hash, setHash] = useState<string>()
 
-  // Add a listener for hash changes
+  // Add a listener for the latest hash.
   useEffect(() => {
-    addFeedListener((hash) => {
-      setHash(hash)
-      maybeClearCaches(hash)
-    })
+    // Note: A new feed listener will be notified with the latest hash.
+    addFeedListener(setHash)
   }, [])
 
   useEffect(() => {
@@ -137,7 +136,7 @@ export const useFeedV2 = () => {
     fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
 
-  const updatesAvailable = hash && feedV2 && hash !== feedV2.sourceHash
+  const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
 
   return {
     feedV2,
