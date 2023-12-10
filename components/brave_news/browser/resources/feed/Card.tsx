@@ -3,11 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import styled from "styled-components";
 import SecureLink, { SecureLinkProps, validateScheme } from '$web-common/SecureLink';
-import * as React from 'react';
 import { configurationCache, useBraveNews } from '../shared/Context';
 
 export const Header = styled.h2`
@@ -36,12 +35,18 @@ export const Title = styled.h3`
 `
 
 const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+  const ref = React.useRef<HTMLImageElement>()
+
+  React.useEffect(() => {
+    ref.current!.style.opacity = ''
+  }, [rest.src])
+
   const handleError = React.useCallback((e) => {
-    e.target.style.opacity = 0
+    ref.current!.style.opacity = '0'
     onError?.(e)
   }, [onError])
 
-  return <img {...rest} onError={handleError} />
+  return <img {...rest} ref={ref as any} onError={handleError} />
 }
 
 export const SmallImage = styled(HidableImage)`
