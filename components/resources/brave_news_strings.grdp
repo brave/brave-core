@@ -222,4 +222,13 @@
   <message name="IDS_BRAVE_NEWS_REFRESH_FEED" desc="Text of button for refreshing the feed">
     Refresh
   </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN" desc="Question for how the user would like to open their articles">
+    Open articles in
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB" desc="Indicates the user would like to open articles in a new tab">
+    New tab
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB" desc="Indicates the user would like to open articles in the current tab">
+    Current tab
+  </message>
 </grit-part>

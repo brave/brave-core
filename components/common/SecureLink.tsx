@@ -6,7 +6,7 @@ import * as React from "react";
 
 export const defaultAllowedSchemes = ['http:', 'https:']
 
-type Props = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & {
+export type SecureLinkProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & {
   allowedSchemes?: string[]
 }
 
@@ -50,7 +50,7 @@ export const linkClickHandler = (href: string | undefined) => (e: React.MouseEve
  * to an allowed scheme. By default, allowed schemes are http: or https:,
  * but this can be overridden.
  */
-export default function SecureLink({ href, allowedSchemes, ...rest }: Props) {
+export default function SecureLink({ href, allowedSchemes, ...rest }: SecureLinkProps) {
   validateScheme(href, allowedSchemes ?? defaultAllowedSchemes)
   return <a href={href} {...rest} />
 }

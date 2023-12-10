@@ -78,6 +78,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveNewsSources);
   registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
   registry->RegisterDictionaryPref(prefs::kBraveNewsDirectFeeds);
+  registry->RegisterBooleanPref(prefs::kBraveNewsOpenArticlesInNewTab, true);
 
   p3a::RegisterProfilePrefs(registry);
 }
@@ -550,6 +551,8 @@ void BraveNewsController::SetConfiguration(
     SetConfigurationCallback callback) {
   prefs_->SetBoolean(prefs::kBraveNewsOptedIn, configuration->isOptedIn);
   prefs_->SetBoolean(prefs::kNewTabPageShowToday, configuration->showOnNTP);
+  prefs_->SetBoolean(prefs::kBraveNewsOpenArticlesInNewTab,
+                     configuration->openArticlesInNewTab);
   std::move(callback).Run();
 }
 
@@ -560,6 +563,8 @@ void BraveNewsController::AddConfigurationListener(
   auto event = mojom::Configuration::New();
   event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
   event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  event->openArticlesInNewTab =
+      prefs_->GetBoolean(prefs::kBraveNewsOpenArticlesInNewTab);
   configuration_listeners_.Get(id)->Changed(std::move(event));
 }
 
@@ -727,6 +732,8 @@ void BraveNewsController::OnOptInChange() {
   auto event = mojom::Configuration::New();
   event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
   event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  event->openArticlesInNewTab =
+      prefs_->GetBoolean(prefs::kBraveNewsOpenArticlesInNewTab);
   for (const auto& listener : configuration_listeners_) {
     listener->Changed(event->Clone());
   }

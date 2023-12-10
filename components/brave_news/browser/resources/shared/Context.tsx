@@ -39,6 +39,8 @@ interface BraveNewsContext {
   isOptInPrefEnabled: boolean | undefined
   isShowOnNTPPrefEnabled: boolean | undefined
   toggleBraveNewsOnNTP: (enabled: boolean) => void
+  openArticlesInNewTab: boolean,
+  setOpenArticlesInNewTab: (newTab: boolean) => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -58,12 +60,14 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   updateSuggestedPublisherIds: () => { },
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
-  toggleBraveNewsOnNTP: (enabled: boolean) => { }
+  toggleBraveNewsOnNTP: (enabled: boolean) => { },
+  openArticlesInNewTab: true,
+  setOpenArticlesInNewTab: () => {}
 })
 
 export const publishersCache = new PublishersCachingWrapper()
 const channelsCache = new ChannelsCachingWrapper()
-const configurationCache = new ConfigurationCachingWrapper()
+export const configurationCache = new ConfigurationCachingWrapper()
 
 export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
@@ -131,6 +135,10 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     configurationCache.set({ showOnNTP: false })
   }
 
+  const setOpenArticlesInNewTab = useCallback((inNewTab: boolean) => {
+    configurationCache.set({ openArticlesInNewTab: inNewTab })
+  }, [])
+
   const context = useMemo<BraveNewsContext>(() => ({
     locale,
     feedView,
@@ -148,7 +156,9 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     updateSuggestedPublisherIds,
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
-    toggleBraveNewsOnNTP
+    toggleBraveNewsOnNTP,
+    openArticlesInNewTab: configuration.openArticlesInNewTab,
+    setOpenArticlesInNewTab
   }), [customizePage, setFeedView, feedV2, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>
