@@ -136,10 +136,6 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                                       bool allow_provider_overwrite) {
   CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
 
-  const auto keyring_id =
-      keyring_service_->GetKeyringIdForCoinNonFIL(coin_type);
-  CHECK(keyring_id.has_value());
-
   const char* histogram_name;
   switch (coin_type) {
     case mojom::CoinType::ETH:

@@ -1867,14 +1867,6 @@ TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
             "58gw7Ez8qsvKSZee6KdUQ");
 }
 
-TEST_F(KeyringServiceUnitTest, GetMainKeyringIdForCoin) {
-  EXPECT_FALSE(KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::FIL));
-  EXPECT_EQ(*KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::SOL),
-            mojom::kSolanaKeyringId);
-  EXPECT_EQ(*KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::ETH),
-            mojom::kDefaultKeyringId);
-}
-
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 

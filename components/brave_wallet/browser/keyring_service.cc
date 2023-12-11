@@ -750,24 +750,6 @@ void KeyringService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-// static
-std::optional<mojom::KeyringId> KeyringService::GetKeyringIdForCoinNonFIL(
-    mojom::CoinType coin) {
-  // TODO(apaymyshev): we should get rid of these methods which try to guess
-  // keyring_id by coin as this is not possible for filecoin and bitcoin. In
-  // many cases keyring_id should come as a call argument known from context.
-  DCHECK_NE(coin, mojom::CoinType::BTC) << "Bitcoin not supported";
-
-  if (coin == mojom::CoinType::FIL) {
-    return std::nullopt;
-  } else if (coin == mojom::CoinType::SOL) {
-    return mojom::kSolanaKeyringId;
-  }
-
-  DCHECK_EQ(coin, mojom::CoinType::ETH);
-  return mojom::kDefaultKeyringId;
-}
-
 void KeyringService::MaybeMigrateSelectedAccountPrefs() {
   if (!profile_prefs_->HasPrefPath(kBraveWalletSelectedCoinDeprecated)) {
     return;
@@ -1311,26 +1293,25 @@ void KeyringService::ImportAccount(const std::string& account_name,
                                    const std::string& private_key,
                                    mojom::CoinType coin,
                                    ImportAccountCallback callback) {
-  DCHECK_NE(coin, mojom::CoinType::BTC) << "Bitcoin not supported";
-
   std::string private_key_trimmed;
   base::TrimString(private_key, " \n\t", &private_key_trimmed);
-  auto keyring_id = GetKeyringIdForCoinNonFIL(coin);
 
-  if (!keyring_id) {
-    NOTREACHED() << "ImportFilecoinAccount must be used";
+  if (coin != mojom::CoinType::ETH && coin != mojom::CoinType::SOL) {
+    NOTREACHED() << "Invalid coin " << coin;
     std::move(callback).Run({});
     return;
   }
 
-  if (account_name.empty() || private_key.empty() ||
-      !encryptors_[*keyring_id]) {
+  auto keyring_id = coin == mojom::CoinType::ETH ? mojom::KeyringId::kDefault
+                                                 : mojom::KeyringId::kSolana;
+
+  if (account_name.empty() || private_key.empty() || !encryptors_[keyring_id]) {
     std::move(callback).Run({});
     return;
   }
 
   std::vector<uint8_t> private_key_bytes;
-  if (*keyring_id == mojom::kDefaultKeyringId) {
+  if (keyring_id == mojom::KeyringId::kDefault) {
     if (!base::HexStringToBytes(private_key_trimmed, &private_key_bytes)) {
       // try again with 0x prefix considered
       if (!PrefixedHexStringToBytes(private_key_trimmed, &private_key_bytes)) {
@@ -1338,7 +1319,7 @@ void KeyringService::ImportAccount(const std::string& account_name,
         return;
       }
     }
-  } else if (*keyring_id == mojom::kSolanaKeyringId) {
+  } else if (keyring_id == mojom::KeyringId::kSolana) {
     std::vector<uint8_t> keypair(kSolanaKeypairSize);
     if (!Base58Decode(private_key_trimmed, &keypair, keypair.size())) {
       if (!Uint8ArrayDecode(private_key_trimmed, &keypair,
@@ -1356,7 +1337,7 @@ void KeyringService::ImportAccount(const std::string& account_name,
     return;
   }
 
-  auto account = ImportAccountForKeyring(coin, *keyring_id, account_name,
+  auto account = ImportAccountForKeyring(coin, keyring_id, account_name,
                                          private_key_bytes);
 
   std::move(callback).Run(std::move(account));

@@ -136,7 +136,7 @@ export const FilterAccountsSection = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {getAccountTypeDescription(account.accountId.coin)}
+                  {getAccountTypeDescription(account.accountId)}
                 </Description>
               </Column>
             </Checkbox>
