@@ -10,7 +10,7 @@
 namespace content::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kFileSystemAccessDirectoryIterationSymbolicLinkCheck,
+    {kFileSystemAccessDirectoryIterationBlocklistCheck,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
