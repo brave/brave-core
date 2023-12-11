@@ -255,7 +255,9 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"braveNewsHideContentFrom", IDS_BRAVE_NEWS_HIDE_CONTENT_FROM},
                {"braveNewsSourcesRecommendation",
                 IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION},
-               {"braveNewsNoArticles", IDS_BRAVE_NEWS_NO_ARTICLES},
+               {"braveNewsNoArticlesTitle", IDS_BRAVE_NEWS_NO_ARTICLES_TITLE},
+               {"braveNewsNoArticlesMessage",
+                IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE},
                {"braveNewsCustomizeFeed", IDS_BRAVE_NEWS_CUSTOMIZE_FEED},
                {"braveNewsRefreshFeed", IDS_BRAVE_NEWS_REFRESH_FEED},
                {"braveNewsOpenArticlesIn", IDS_BRAVE_NEWS_OPEN_ARTICLES_IN},
@@ -263,6 +265,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                 IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB},
                {"braveNewsOpenArticlesInCurrentTab",
                 IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB},
+               {"braveNewsCaughtUp", IDS_BRAVE_NEWS_CAUGHT_UP},
 
                // Brave News Channels
                {"braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
