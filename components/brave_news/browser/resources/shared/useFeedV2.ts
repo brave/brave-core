@@ -139,6 +139,7 @@ export const useFeedV2 = () => {
   // Updates are available if we've been told the latest hash, we have a feed
   // and the hashes don't match.
   const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
+  console.log("Latest hash: ", hash, "Current hash:", feedV2?.sourceHash)
   return {
     feedV2,
     feedView,

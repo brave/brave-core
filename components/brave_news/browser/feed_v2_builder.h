@@ -15,6 +15,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -34,7 +35,7 @@ namespace brave_news {
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
-class FeedV2Builder {
+class FeedV2Builder : public PublishersController::Observer {
  public:
   FeedV2Builder(
       PublishersController& publishers_controller,
@@ -45,7 +46,7 @@ class FeedV2Builder {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
-  ~FeedV2Builder();
+  ~FeedV2Builder() override;
 
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
 
@@ -57,6 +58,9 @@ class FeedV2Builder {
   void EnsureFeedIsUpdating();
 
   void GetSignals(GetSignalsCallback callback);
+
+  // PublishersController::Observer:
+  void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
   using UpdateCallback = base::OnceCallback<void()>;
@@ -134,6 +138,9 @@ class FeedV2Builder {
   raw_ref<ChannelsController> channels_controller_;
   raw_ref<SuggestionsController> suggestions_controller_;
   raw_ref<PrefService> prefs_;
+
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      publishers_observation_{this};
 
   FeedFetcher fetcher_;
   TopicsFetcher topics_fetcher_;

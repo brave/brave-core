@@ -2,17 +2,17 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { getLocale } from '$web-common/locale'
+import Button from '@brave/leo/react/button'
 import { spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'
 import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigation'
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
-import { CLASSNAME_PAGE_STUCK } from '../page'
-import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale';
 import Flex from '../../../../common/Flex'
+import { CLASSNAME_PAGE_STUCK } from '../page'
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
@@ -51,11 +51,21 @@ const ButtonsContainer = styled.div`
   gap: ${spacing.m};
 `
 
-const LoadNewContentButton = styled(Button)`
+// TODO: Remove from flow when hidden
+const LoadNewContentButton = styled(Button) <{ show: boolean }>`
   position: sticky;
   top: ${spacing.xl};
 
   flex-grow: 0;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+
+  ${p => p.show && css`
+    opacity: 1;
+    pointer-events: unset;
+  `}
 `
 
 export default function FeedV2() {
@@ -88,9 +98,12 @@ export default function FeedV2() {
       <FeedNavigation />
     </SidebarContainer>
     <Flex align='center' direction='column' gap={spacing.l}>
-      {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
+      <LoadNewContentButton show={!!feedV2UpdatesAvailable} onClick={e => {
+        refreshFeedV2()
+        e.stopPropagation()
+      }}>
         {getLocale('braveNewsNewContentAvailable')}
-      </LoadNewContentButton>}
+      </LoadNewContentButton>
       <Feed feed={feedV2} />
     </Flex>
 
