@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 
+#include <utility>
+
 #include "brave/components/playlist/browser/playlist_service.h"
 
 namespace playlist {
@@ -20,7 +22,8 @@ PlaylistMediaHandler::~PlaylistMediaHandler() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
+void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame(const GURL& page_url,
+                                                         base::Value value) {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (!render_frame_host) {
@@ -34,7 +37,8 @@ void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
   }
 
   if (service_) {
-    service_->OnMediaUpdatedFromContents(web_contents);
+    service_->OnMediaUpdatedFromContents(web_contents, page_url,
+                                         std::move(value));
   }
 }
 

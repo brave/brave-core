@@ -12,9 +12,6 @@ if (enable_playlist) {
   brave_browser_playlist_sources += [
     "//brave/browser/playlist/playlist_service_factory.cc",
     "//brave/browser/playlist/playlist_service_factory.h",
-    "//brave/browser/playlist/playlist_tab_helper.cc",
-    "//brave/browser/playlist/playlist_tab_helper.h",
-    "//brave/browser/playlist/playlist_tab_helper_observer.h",
   ]
 
   brave_browser_playlist_deps += [

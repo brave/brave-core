@@ -33,7 +33,7 @@ deps = {
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@c043566e2ff6133d110cf516ed472451039139e2",
+  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@30d27a5aea1e2c75bde481ddb4a53f817fb5b6dd",
   "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/macholib": {

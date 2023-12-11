@@ -10,24 +10,28 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/generated_resources.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/animation/slide_animation.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/skia_paint_util.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/controls/progress_ring_utils.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
@@ -49,6 +53,46 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
   auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
   widget->Show();
 }
+
+// LoadingSpinner represents the loading animation for the 'Add bubble'
+class LoadingSpinner : public views::View, gfx::AnimationDelegate {
+ public:
+  LoadingSpinner() {
+    animation_.SetSlideDuration(base::Milliseconds(2500));
+    animation_.SetTweenType(gfx::Tween::LINEAR);
+
+    constexpr int kSpinnerSize = 40;
+    SetPreferredSize(gfx::Size(kSpinnerSize, kSpinnerSize));
+  }
+  ~LoadingSpinner() override = default;
+
+  // views::View:
+  void OnPaint(gfx::Canvas* canvas) override {
+    if (!animation_.is_animating()) {
+      animation_.Show();
+    }
+
+    auto preferred_size = GetPreferredSize();
+    auto origin =
+        GetLocalBounds().CenterPoint() -
+        gfx::Vector2d(preferred_size.width() / 2, preferred_size.height() / 2);
+
+    SkColor foreground_color = SkColorSetRGB(0x3f, 0x39, 0xe8);
+    SkColor background_color = SkColorSetA(foreground_color, 0.3 * 255);
+    views::DrawSpinningRing(
+        canvas, gfx::RectToSkRect(gfx::Rect(origin, preferred_size)),
+        background_color, foreground_color, 4,
+        gfx::Tween::IntValueBetween(animation_.GetCurrentValue(), 0, 360));
+  }
+
+  // gfx::AnimationDelegate:
+  void AnimationProgressed(const gfx::Animation* animation) override {
+    SchedulePaint();
+  }
+
+ private:
+  gfx::SlideAnimation animation_{this};
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // ConfirmBubble
@@ -108,6 +152,9 @@ END_METADATA
 class AddBubble : public PlaylistActionBubbleView {
  public:
   METADATA_HEADER(AddBubble);
+
+  static constexpr int kWidth = 288;
+
   AddBubble(Browser* browser,
             PlaylistActionIconView* anchor,
             playlist::PlaylistTabHelper* playlist_tab_helper);
@@ -117,12 +164,18 @@ class AddBubble : public PlaylistActionBubbleView {
             const std::vector<playlist::mojom::PlaylistItemPtr>& items);
 
  private:
+  void InitListView();
+
   void AddSelected();
   void OnSelectionChanged();
 
+  raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<SelectableItemsView> list_view_ = nullptr;
+  raw_ptr<LoadingSpinner> loading_spinner_ = nullptr;
 
   std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
+
+  base::WeakPtrFactory<AddBubble> weak_ptr_factory_{this};
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -359,33 +412,53 @@ AddBubble::AddBubble(Browser* browser,
       l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE)));
   header->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
-  auto* scroll_view = AddChildView(std::make_unique<views::ScrollView>());
-  scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/230);
-  scroll_view->SetDrawOverflowIndicator(false);
-  scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+  scroll_view_ = AddChildView(std::make_unique<views::ScrollView>());
+  scroll_view_->ClipHeightTo(/*min_height=*/0, /*max_height=*/230);
+  scroll_view_->SetDrawOverflowIndicator(false);
+  scroll_view_->SetBorder(views::CreateThemedRoundedRectBorder(
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
-
-  list_view_ = scroll_view->SetContents(std::make_unique<SelectableItemsView>(
-      thumbnail_provider_.get(), items,
-      base::BindRepeating(&AddBubble::OnSelectionChanged,
-                          base::Unretained(this))));
-  list_view_->SetSelected(items);
+  scroll_view_->SetVisible(false);
+  loading_spinner_ = AddChildView(std::make_unique<LoadingSpinner>());
 
   // Fix preferred width. This is for ignoring insets that could be added by
   // border.
-  static constexpr int kWidth = 288;
-  scroll_view->SetPreferredSize(
-      gfx::Size(kWidth, scroll_view->GetPreferredSize().height()));
-
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
+
+  if (playlist_tab_helper_->ShouldRefetch()) {
+    scroll_view_->SetContents(std::make_unique<views::View>());
+    playlist_tab_helper_->RefetchMediaURL(base::BindOnce(
+        &AddBubble::InitListView, weak_ptr_factory_.GetWeakPtr()));
+    scroll_view_->SetPreferredSize(
+        gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
+  } else {
+    InitListView();
+  }
+}
+
+void AddBubble::InitListView() {
+  CHECK(scroll_view_);
+  CHECK(!list_view_);
+  loading_spinner_->SetVisible(false);
+  scroll_view_->SetVisible(true);
+  list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
+      thumbnail_provider_.get(), playlist_tab_helper_->found_items(),
+      base::BindRepeating(&AddBubble::OnSelectionChanged,
+                          base::Unretained(this))));
+  list_view_->SetSelected(playlist_tab_helper_->found_items());
 
   // This callback is called by itself, it's okay to pass Unretained(this).
   SetAcceptCallback(base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
                                    base::Unretained(this))
                         .Then(base::BindOnce(&AddBubble::AddSelected,
                                              base::Unretained(this))));
+
+  scroll_view_->SetPreferredSize(
+      gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
+  if (GetWidget()) {
+    SizeToContents();
+  }
 }
 
 void AddBubble::AddSelected() {

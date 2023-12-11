@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
@@ -22,8 +21,6 @@ class FilePath;
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
-
-class GURL;
 
 namespace playlist {
 
@@ -50,16 +47,16 @@ class MediaDetectorComponentManager {
   // Returns a script to get media from page. If the script isn't fetched
   // from component yet, will return a local script.
   std::string GetMediaDetectorScript(const GURL& url);
+  std::string GetMediaDetectorScript(const net::SchemefulSite& site);
+  base::flat_map<net::SchemefulSite, std::string> GetAllMediaDetectorScripts();
 
-  void SetUseLocalScriptForTesting();
+  void SetUseLocalScript();
 
   bool ShouldHideMediaSrcAPI(const GURL& url) const;
   void SetUseLocalListToHideMediaSrcAPI();
 
   bool ShouldUseFakeUA(const GURL& url) const;
   void SetUseLocalListToUseFakeUA();
-
-  bool CouldURLHaveMedia(const GURL& url) const;
 
   const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
     return sites_to_hide_media_src_api_;
@@ -72,6 +69,7 @@ class MediaDetectorComponentManager {
   using ScriptMap = base::flat_map</* script_name */ base::FilePath::StringType,
                                    /* contents */ std::string>;
 
+  void MaybeInitScripts();
   void RegisterIfNeeded();
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScripts(const ScriptMap& script_map);
@@ -83,8 +81,6 @@ class MediaDetectorComponentManager {
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
   std::vector<net::SchemefulSite> sites_to_use_fake_ua_;
-  base::flat_map<net::SchemefulSite, base::RepeatingCallback<bool(const GURL&)>>
-      site_and_media_page_url_checkers_;
 
   base::flat_map<net::SchemefulSite, std::string> site_specific_detectors_;
 

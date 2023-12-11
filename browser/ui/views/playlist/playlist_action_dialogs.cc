@@ -9,11 +9,11 @@
 #include <utility>
 
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/thumbnail_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"

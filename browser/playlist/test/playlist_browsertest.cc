@@ -13,7 +13,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -27,6 +26,7 @@
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -136,7 +136,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     auto* service = GetService();
     service->download_request_manager_->media_detector_component_manager()
-        ->SetUseLocalScriptForTesting();
+        ->SetUseLocalScript();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -343,14 +343,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
       [&]() { return playlist_tab_helper->found_items().size() == 0; }));
 }
 
-class PlaylistBrowserTestWithArbitrarySites : public PlaylistBrowserTest {
+class PlaylistBrowserTestWithSitesUsingMediaSource
+    : public PlaylistBrowserTest {
  public:
   // PlaylistBrowserTest:
   void SetUpHTTPSServer() override {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->RegisterRequestHandler(base::BindRepeating(
-        &PlaylistBrowserTestWithArbitrarySites::Serve, https_server_.get()));
+        &PlaylistBrowserTestWithSitesUsingMediaSource::Serve,
+        https_server_.get()));
     ASSERT_TRUE(https_server_->Start());
   }
 
@@ -365,8 +367,17 @@ class PlaylistBrowserTestWithArbitrarySites : public PlaylistBrowserTest {
         <html>
         <meta property="og:image" content="/img.jpg">
         <body>
-          <video src="test1.mp4"/>
+          <video id="vid"/>
         </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } else {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = '/test.mp4';
+          }
+        </script>
         </html>
       )html");
     response->set_content_type("text/html; charset=utf-8");
@@ -374,7 +385,7 @@ class PlaylistBrowserTestWithArbitrarySites : public PlaylistBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithArbitrarySites,
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
                        BackgroundWebContentsOnNavigation) {
   auto* playlist_service = GetService();
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
@@ -393,22 +404,23 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithArbitrarySites,
 
   // Background web contents shouldn't be created on navigation without user
   // action.
-  EXPECT_TRUE(playlist_service->ShouldGetMediaFromBackgroundWebContents(url));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
   EXPECT_FALSE(GetDownloadRequestManager()->background_contents());
-  EXPECT_TRUE(playlist_tab_helper->CouldTabHaveMedia());
-  EXPECT_TRUE(playlist_tab_helper->found_items().empty());
   EXPECT_TRUE(playlist_action_icon_view->GetVisible());
+  EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsBlob());
+  EXPECT_TRUE(playlist_service->ShouldRefetchMediaSourceToCache(
+      playlist_tab_helper->found_items()));
 
-  bool detected = false;
-  playlist_action_icon_view->ExecuteImpl();
-  playlist_tab_helper->ResumeSuspendedMediaDetection(
-      base::BindLambdaForTesting([&]() { detected = true; }));
-  EXPECT_TRUE(playlist_tab_helper->suspended_media_detection() || detected);
-  EXPECT_TRUE(playlist_action_icon_view->GetVisible());
+  playlist_action_icon_view->ShowPlaylistBubble();
+  EXPECT_TRUE(PlaylistActionBubbleView::GetBubble());
+  EXPECT_TRUE(playlist_tab_helper->IsRefetching());
   EXPECT_TRUE(GetDownloadRequestManager()->background_contents());
 
-  WaitUntil(base::BindLambdaForTesting([&]() { return detected; }));
-  EXPECT_TRUE(playlist_action_icon_view->GetBubble());
-  EXPECT_TRUE(playlist_action_icon_view->GetBubble()->GetWidget()->IsVisible());
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !playlist_tab_helper->IsRefetching(); }));
   EXPECT_TRUE(playlist_tab_helper->found_items().size());
+  EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsHTTPOrHTTPS());
 }

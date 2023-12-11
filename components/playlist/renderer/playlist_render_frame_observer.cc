@@ -63,6 +63,27 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   }
 
   if (blink_preferences.should_detect_media_files) {
+    auto iter = base::ranges::find_if(
+        blink_preferences.url_and_media_detection_scripts,
+        [current_site = net::SchemefulSite(url_)](const auto& site_and_script) {
+          return net::SchemefulSite::Deserialize(site_and_script.first) ==
+                 current_site;
+        });
+
+    if (iter == blink_preferences.url_and_media_detection_scripts.end()) {
+      iter = blink_preferences.url_and_media_detection_scripts.find(
+          net::SchemefulSite().Serialize());
+      CHECK(iter != blink_preferences.url_and_media_detection_scripts.end())
+          << "Default script must exist";
+    }
+
+    javascript_handler_->SetDetectorScript(
+        blink::WebString::FromUTF8(iter->second));
+
+    if (blink_preferences.allow_to_run_script_on_main_world) {
+      javascript_handler_->allow_to_run_script_on_main_world();
+    }
+
     InstallMediaDetector();
   }
 }
@@ -93,7 +114,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
   static const char kScript[] = R"(
     (function(onMediaUpdated) {
       // Firstly, we try to get find all <video> or <audio> tags periodically,
-      // for a a while from the start up. If we find them, then we attach 
+      // for a a while from the start up. If we find them, then we attach
       // MutationObservers to them to detect source URL.
       // After a given amount of time, we do this in requestIdleCallback().
       // Note that there's a global object named |pl_worker|. This worker is
@@ -101,26 +122,32 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
       const mutationSources = new Set();
       const mutationObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => { onMediaUpdated(mutation.target.src); })
+        mutations.forEach(mutation => { onMediaUpdated(window.location.href); })
       });
       const findNewMediaAndObserveMutation = () => {
-          return document.querySelectorAll('video, audio').forEach((mediaNode) => {
+          return document.querySelectorAll('video, audio').forEach(
+            (mediaNode) => {
               if (mutationSources.has(mediaNode)) return
 
               mutationSources.add(mediaNode)
-              onMediaUpdated(mediaNode.src)
+              onMediaUpdated(window.location.href)
               mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
           });
       }
 
-      const pollingIntervalId = window.setInterval(findNewMediaAndObserveMutation, 1000);
+      const pollingIntervalId = window.setInterval(
+          findNewMediaAndObserveMutation, 1000);
       window.setTimeout(() => {
           window.clearInterval(pollingIntervalId)
           window.requestIdleCallback(findNewMediaAndObserveMutation)
-          // TODO(sko) We might want to check if idle callback is waiting too long.
-          // In that case, we should get back to the polling style. And also, this
-          // time could be too long for production.
+          // TODO(sko) We might want to check if idle callback is waiting too
+          // long. In that case, we should get back to the polling style. And
+          // also, this time could be too long for production.
       }, 20000)
+
+      // Try getting media after page was restored or navigated back.
+        window.addEventListener(
+            'pageshow', () => { onMediaUpdated(window.location.href); });
     })
   )";
 
@@ -154,10 +181,6 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
 void PlaylistRenderFrameObserver::OnMediaUpdated(const std::string& page_url) {
   if (!GURL(page_url).SchemeIsHTTPOrHTTPS()) {
-    return;
-  }
-
-  if (!EnsureConnectedToMediaHandler()) {
     return;
   }
 

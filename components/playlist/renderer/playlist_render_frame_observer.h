@@ -38,6 +38,7 @@ class PlaylistRenderFrameObserver final
 
   void OnMediaUpdated(const std::string& page_url);
 
+ private:
   int32_t isolated_world_id_;
   mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};

@@ -3,19 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/playlist/playlist_tab_helper.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
-#include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -25,18 +24,20 @@ namespace playlist {
 
 // static
 void PlaylistTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents) {
+    content::WebContents* contents,
+     playlist::PlaylistService* service) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return;
   }
 
-  // |service| could be null when the service is not supported for the
-  // browser context.
-  if (auto* service = PlaylistServiceFactory::GetForBrowserContext(
-          contents->GetBrowserContext())) {
-    content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-        contents, service);
+  if (!service) {
+    // |service| could be null when the service is not supported for the
+    // browser context.
+    return;
   }
+
+  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
+      contents, service);
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
@@ -154,23 +155,17 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
-bool PlaylistTabHelper::CouldTabHaveMedia() const {
-  CHECK(suspended_media_detection_) << "This method is expected to be called "
-                                       "only when media detection is suspended";
-
-  return service_->CouldURLHaveMedia(target_url_);
+bool PlaylistTabHelper::ShouldRefetch() const {
+  return service_->ShouldRefetchMediaSourceToCache(found_items());
 }
 
-void PlaylistTabHelper::ResumeSuspendedMediaDetection(
-    base::OnceClosure detected_callback) {
-  CHECK(suspended_media_detection_ ||
-        media_detected_after_suspension_callback_.size())
-      << "This method is expected to be called "
-         "only when media detection is suspended";
+bool PlaylistTabHelper::IsRefetching() const {
+  return media_detected_after_refetching_callback_.size();
+}
 
-  media_detected_after_suspension_callback_.push_back(
+void PlaylistTabHelper::RefetchMediaURL(base::OnceClosure detected_callback) {
+  media_detected_after_refetching_callback_.push_back(
       std::move(detected_callback));
-  suspended_media_detection_ = false;
   FindMediaFromCurrentContents();
 }
 
@@ -189,30 +184,6 @@ void PlaylistTabHelper::DidFinishNavigation(
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
-
-  if (service_->ShouldGetMediaFromBackgroundWebContents(target_url_)) {
-    // As loading the same site on a background web contents would cost much,
-    // we suspend media detection until user takes action.
-    suspended_media_detection_ = true;
-    if (CouldTabHaveMedia()) {
-      for (auto& observer : observers_) {
-        observer.OnFoundItemsChanged(found_items_);
-      }
-    }
-    return;
-  }
-
-  if (navigation_handle->IsSameDocument() ||
-      navigation_handle->IsServedFromBackForwardCache()) {
-    FindMediaFromCurrentContents();
-  }  // else DOMContentLoaded() will trigger FindMediaFromCurrentContents()
-}
-
-void PlaylistTabHelper::DOMContentLoaded(
-    content::RenderFrameHost* render_frame_host) {
-  DVLOG(2) << __FUNCTION__;
-
-  FindMediaFromCurrentContents();
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -293,8 +264,7 @@ void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
   sent_find_media_request_ = false;
-  suspended_media_detection_ = false;
-  media_detected_after_suspension_callback_.clear();
+  media_detected_after_refetching_callback_.clear();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -343,10 +313,6 @@ void PlaylistTabHelper::FindMediaFromCurrentContents() {
     return;
   }
 
-  if (suspended_media_detection_) {
-    return;
-  }
-
   CHECK(service_);
 
   service_->FindMediaFilesFromContents(
@@ -372,8 +338,12 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
   base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
-  for (auto& item : found_items_) {
-    already_found_items.insert({item->media_source.spec(), &item});
+  if (IsRefetching()) {
+    found_items_.clear();
+  } else {
+    for (auto& item : found_items_) {
+      already_found_items.insert({item->media_source.spec(), &item});
+    }
   }
 
   for (auto& new_item : items) {
@@ -391,12 +361,9 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     observer.OnFoundItemsChanged(found_items_);
   }
 
-  if (found_items_.size() && media_detected_after_suspension_callback_.size()) {
-    for (auto& callback : media_detected_after_suspension_callback_) {
-      std::move(callback).Run();
-    }
-
-    media_detected_after_suspension_callback_.clear();
+  auto callbacks = std::move(media_detected_after_refetching_callback_);
+  for (auto& callback : callbacks) {
+    std::move(callback).Run();
   }
 }
 

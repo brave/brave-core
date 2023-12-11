@@ -1172,9 +1172,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE" desc="A sub title in a bubble to add media files to playlist">
             Media found in this page
           </message>
-          <message name="IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME" desc="A default playlist folder's name">
-            Play Later
-          </message>
           <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER" desc="A label on a bubble that shows up when items were added from the current page">
             Added to <ph name="PLAYLIST_FOLDER_NAME">$1<ex>Play Later</ex></ph>
           </message>

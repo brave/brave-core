@@ -15,6 +15,7 @@
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/image/image.h"
 #include "ui/views/controls/button/button.h"
