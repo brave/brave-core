@@ -402,7 +402,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
   }
 
   auto hero_article = PickRouletteAndRemove(
-      articles, base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata, const ArticleWeight& weight) {
+      articles,
+      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                             const ArticleWeight& weight) {
         auto image_url = metadata->image->is_padded_image_url()
                              ? metadata->image->get_padded_image_url()
                              : metadata->image->get_image_url();
@@ -474,8 +476,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   auto get_weighting = [&eligible_content_groups, &publisher_id_to_channels,
                         &locale](bool is_hero = false) {
     return base::BindRepeating(
-        [](const bool is_hero,
-           const ContentGroup& content_group,
+        [](const bool is_hero, const ContentGroup& content_group,
            const base::flat_map<std::string, std::vector<std::string>>&
                publisher_id_to_channels,
            const std::string& locale,
@@ -483,8 +484,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
            const ArticleWeight& weight) {
           if (is_hero) {
             auto image_url = metadata->image->is_padded_image_url()
-                             ? metadata->image->get_padded_image_url()
-                             : metadata->image->get_image_url();
+                                 ? metadata->image->get_padded_image_url()
+                                 : metadata->image->get_image_url();
             if (!image_url.is_valid()) {
               return 0.0;
             }
@@ -511,7 +512,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
         publisher_id_to_channels, locale);
   };
 
-  auto hero_article = PickRouletteAndRemove(articles, get_weighting(/*is_hero*/ true));
+  auto hero_article =
+      PickRouletteAndRemove(articles, get_weighting(/*is_hero*/ true));
   if (!hero_article) {
     DVLOG(1) << "Failed to generate hero";
     return result;
