@@ -160,9 +160,6 @@ class PlaylistService : public KeyedService,
   void GetPlaylistItem(const std::string& id,
                        GetPlaylistItemCallback callback) override;
 
-  void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
-                                       const GURL& url,
-                                       bool can_cache) override;
   void AddMediaFilesFromActiveTabToPlaylist(const std::string& playlist_id,
                                             bool can_cache) override;
   void FindMediaFilesFromActiveTab(
@@ -211,9 +208,18 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaUpdatedFromContents(content::WebContents* contents);
+  void OnMediaUpdatedFromContents(content::WebContents* contents,
+                                  const GURL& page_url,
+                                  base::Value value);
 
   bool HasPlaylistItem(const std::string& id) const;
+
+  // Returns true when we should try getting media from a background web
+  // contents, which means it could have impact on performance/memory.
+  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
+
+  bool ShouldRefetchMediaSourceToCache(
+      const std::vector<mojom::PlaylistItemPtr>& items);
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;

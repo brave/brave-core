@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_TAB_HELPER_H_
-#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
 
 #include <string>
 #include <vector>
@@ -27,7 +27,8 @@ class PlaylistTabHelper
       public content::WebContentsObserver,
       public mojom::PlaylistServiceObserver {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents);
+  static void MaybeCreateForWebContents(content::WebContents* contents,
+                                        playlist::PlaylistService* service);
 
   ~PlaylistTabHelper() override;
 
@@ -60,10 +61,14 @@ class PlaylistTabHelper
 
   std::u16string GetSavedFolderName();
 
+  // |found_items| contains items with blob: url pointing at MediaSource Object.
+  bool ShouldRefetch() const;
+  bool IsRefetching() const;
+  void RefetchMediaURL(base::OnceClosure detected_callback);
+
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -106,10 +111,12 @@ class PlaylistTabHelper
 
   raw_ptr<PlaylistService> service_;
 
-  GURL target_url;
+  GURL target_url_;
   bool sent_find_media_request_ = false;
 
   bool is_adding_items_ = false;
+
+  std::vector<base::OnceClosure> media_detected_after_refetching_callback_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
@@ -126,4 +133,4 @@ class PlaylistTabHelper
 
 }  // namespace playlist
 
-#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_

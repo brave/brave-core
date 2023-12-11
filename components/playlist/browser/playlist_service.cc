@@ -22,6 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "base/token.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
@@ -69,7 +70,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
-      std::make_unique<PlaylistDownloadRequestManager>(context, manager);
+      std::make_unique<PlaylistDownloadRequestManager>(this, context, manager);
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -88,7 +89,6 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
-  download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
@@ -112,18 +112,32 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
   VLOG(2) << __func__
           << " download media from WebContents to playlist: " << playlist_id;
 
-  PlaylistDownloadRequestManager::Request request;
-  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
-    request.url_or_contents = contents->GetVisibleURL().spec();
-  } else {
-    request.url_or_contents = contents->GetWeakPtr();
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
+  CHECK(tab_helper);
+  const auto& found_items = tab_helper->found_items();
+  if (found_items.empty()) {
+    return;
   }
 
-  request.should_force_fake_ua = ShouldUseFakeUA(contents->GetVisibleURL());
-  request.callback = base::BindOnce(
+  auto add_items = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, cache,
       base::NullCallback());
+  if (base::ranges::none_of(found_items, [](const auto& item_ptr) {
+        return item_ptr->is_blob_from_media_source;
+      })) {
+    std::vector<mojom::PlaylistItemPtr> items;
+    base::ranges::transform(found_items, std::back_inserter(items),
+                            &mojom::PlaylistItemPtr::Clone);
+    std::move(add_items).Run(std::move(items));
+    return;
+  }
+
+  // Get media urls using background web contents.
+  PlaylistDownloadRequestManager::Request request;
+  request.url = contents->GetVisibleURL();
+  request.should_force_fake_ua = ShouldUseFakeUA(request.url);
+  request.callback = std::move(add_items);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -412,6 +426,14 @@ base::FilePath PlaylistService::GetPlaylistItemDirPath(
 void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     content::WebContents* web_contents,
     blink::web_pref::WebPreferences* web_prefs) {
+  if (!*enabled_pref_) {
+    return;
+  }
+
+  if (!PlaylistTabHelper::FromWebContents(web_contents)) {
+    return;
+  }
+
   download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
 }
@@ -424,19 +446,27 @@ void PlaylistService::FindMediaFilesFromContents(
     content::WebContents* contents,
     FindMediaFilesFromContentsCallback callback) {
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
-  DCHECK(contents);
+  CHECK(contents);
 
-  PlaylistDownloadRequestManager::Request request;
   auto current_url = contents->GetVisibleURL();
-  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
-    request.url_or_contents = current_url.spec();
-  } else {
-    request.url_or_contents = contents->GetWeakPtr();
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
+  CHECK(tab_helper);
+
+  for (const auto& item : tab_helper->found_items()) {
+    if (download_request_manager_->ShouldRefetchMediaSourceToCache(item)) {
+      PlaylistDownloadRequestManager::Request request;
+      request.url = current_url;
+      request.should_force_fake_ua = ShouldUseFakeUA(current_url);
+      request.callback = base::BindOnce(std::move(callback), current_url);
+      download_request_manager_->GetMediaFilesFromPage(std::move(request));
+      return;
+    }
   }
 
-  request.should_force_fake_ua = ShouldUseFakeUA(contents->GetVisibleURL());
-  request.callback = base::BindOnce(std::move(callback), current_url);
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  std::vector<mojom::PlaylistItemPtr> items;
+  base::ranges::transform(tab_helper->found_items(), std::back_inserter(items),
+                          &mojom::PlaylistItemPtr::Clone);
+  std::move(callback).Run(current_url, std::move(items));
 }
 
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
@@ -513,22 +543,22 @@ bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
 
-void PlaylistService::AddMediaFilesFromPageToPlaylist(
-    const std::string& playlist_id,
-    const GURL& url,
-    bool can_cache) {
-  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
+    const GURL& url) const {
+  return ShouldUseFakeUA(url) ||
+         download_request_manager_->media_detector_component_manager()
+             ->ShouldHideMediaSrcAPI(url);
+}
 
-  VLOG(2) << __func__ << " " << playlist_id << " " << url;
-  PlaylistDownloadRequestManager::Request request;
-  request.url_or_contents = url.spec();
-  request.callback = base::BindOnce(
-      &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
-      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
-      /* cache= */ can_cache &&
-          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-      base::NullCallback()),
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+bool PlaylistService::ShouldRefetchMediaSourceToCache(
+    const std::vector<mojom::PlaylistItemPtr>& items) {
+  for (const auto& item : items) {
+    if (download_request_manager_->ShouldRefetchMediaSourceToCache(item)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
@@ -720,10 +750,7 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
 
   CHECK(contents);
   const auto& url = contents->GetVisibleURL();
-
-  return ShouldUseFakeUA(url) ||
-         download_request_manager_->media_detector_component_manager()
-             ->ShouldHideMediaSrcAPI(url);
+  return ShouldGetMediaFromBackgroundWebContents(url);
 }
 
 bool PlaylistService::ShouldUseFakeUA(const GURL& url) const {
@@ -943,7 +970,7 @@ void PlaylistService::RecoverLocalDataForItem(
 
   PlaylistDownloadRequestManager::Request request;
   DCHECK(!item->page_source.spec().empty());
-  request.url_or_contents = item->page_source.spec();
+  request.url = item->page_source;
   request.should_force_fake_ua = ShouldUseFakeUA(item->page_source);
   request.callback = std::move(update_media_src_and_recover);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
@@ -1146,23 +1173,16 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::OnMediaUpdatedFromContents(
-    content::WebContents* contents) {
+void PlaylistService::OnMediaUpdatedFromContents(content::WebContents* contents,
+                                                 const GURL& page_url,
+                                                 base::Value value) {
   if (!*enabled_pref_) {
     return;
   }
 
-  if (download_request_manager_->background_contents() != contents) {
-    return;
-  }
-
-  // Try getting media files that are added dynamically after we've tried.
-  PlaylistDownloadRequestManager::Request request;
-  request.url_or_contents = contents->GetWeakPtr();
-  request.callback =
-      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
-                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL());
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  auto items = download_request_manager_->ProcessFoundMedia(contents, page_url,
+                                                            std::move(value));
+  NotifyMediaFilesUpdated(page_url, std::move(items));
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

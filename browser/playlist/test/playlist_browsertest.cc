@@ -13,7 +13,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -27,6 +26,7 @@
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -85,6 +85,10 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
         browser()->profile());
   }
 
+  playlist::PlaylistDownloadRequestManager* GetDownloadRequestManager() {
+    return GetService()->download_request_manager_.get();
+  }
+
   void ActivatePlaylistSidePanel() {
     auto* sidebar_controller =
         static_cast<BraveBrowser*>(browser())->sidebar_controller();
@@ -110,26 +114,29 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     return contents;
   }
 
-  // PlatformBrowserTest:
-  void SetUpOnMainThread() override {
-    PlatformBrowserTest::SetUpOnMainThread();
-
+  virtual void SetUpHTTPSServer() {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
-
-    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
     https_server_->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_->Start());
+  }
+
+  // PlatformBrowserTest:
+  void SetUpOnMainThread() override {
+    PlatformBrowserTest::SetUpOnMainThread();
+
+    host_resolver()->AddRule("*", "127.0.0.1");
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    SetUpHTTPSServer();
 
     auto* service = GetService();
     service->download_request_manager_->media_detector_component_manager()
-        ->SetUseLocalScriptForTesting();
+        ->SetUseLocalScript();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -147,13 +154,15 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
+ protected:
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
   content::ContentMockCertVerifier mock_cert_verifier_;
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
@@ -332,4 +341,86 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
   browser()->command_controller()->ExecuteCommand(IDC_FORWARD);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() == 0; }));
+}
+
+class PlaylistBrowserTestWithSitesUsingMediaSource
+    : public PlaylistBrowserTest {
+ public:
+  // PlaylistBrowserTest:
+  void SetUpHTTPSServer() override {
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server_->RegisterRequestHandler(base::BindRepeating(
+        &PlaylistBrowserTestWithSitesUsingMediaSource::Serve,
+        https_server_.get()));
+    ASSERT_TRUE(https_server_->Start());
+  }
+
+ private:
+  static std::unique_ptr<net::test_server::HttpResponse> Serve(
+      net::EmbeddedTestServer* server,
+      const net::test_server::HttpRequest& request) {
+    GURL absolute_url = server->GetURL(request.relative_url);
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content(R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video id="vid"/>
+        </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } else {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = '/test.mp4';
+          }
+        </script>
+        </html>
+      )html");
+    response->set_content_type("text/html; charset=utf-8");
+    return response;
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
+                       BackgroundWebContentsOnNavigation) {
+  auto* playlist_service = GetService();
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
+      browser_view->GetLocationBarView());
+  auto* playlist_action_icon_view =
+      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+
+  ASSERT_FALSE(GetDownloadRequestManager()->background_contents());
+  ASSERT_FALSE(playlist_action_icon_view->GetVisible());
+
+  GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
+
+  // Background web contents shouldn't be created on navigation without user
+  // action.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
+  EXPECT_FALSE(GetDownloadRequestManager()->background_contents());
+  EXPECT_TRUE(playlist_action_icon_view->GetVisible());
+  EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsBlob());
+  EXPECT_TRUE(playlist_service->ShouldRefetchMediaSourceToCache(
+      playlist_tab_helper->found_items()));
+
+  playlist_action_icon_view->ShowPlaylistBubble();
+  EXPECT_TRUE(PlaylistActionBubbleView::GetBubble());
+  EXPECT_TRUE(playlist_tab_helper->IsRefetching());
+  EXPECT_TRUE(GetDownloadRequestManager()->background_contents());
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !playlist_tab_helper->IsRefetching(); }));
+  EXPECT_TRUE(playlist_tab_helper->found_items().size());
+  EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsHTTPOrHTTPS());
 }
