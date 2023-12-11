@@ -7,6 +7,8 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
+import ProgressRing from '@brave/leo/react/progressRing'
+
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
 import {
@@ -34,7 +36,10 @@ import { useLocationPathName } from '../common/hooks/use-pathname'
 
 // style
 import 'emptykit.css'
-import { SimplePageWrapper } from './screens/page-screen.styles'
+import {
+  FullScreenWrapper,
+  SimplePageWrapper
+} from './screens/page-screen.styles'
 
 // components
 import { LockScreen } from '../components/desktop/lock-screen/index'
@@ -44,7 +49,6 @@ import {
 import {
   WalletSubViewLayout //
 } from '../components/desktop/wallet-sub-view-layout/index'
-import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
@@ -114,7 +118,11 @@ export const Container = () => {
 
   // render
   if (!hasInitialized) {
-    return <Skeleton />
+    return (
+      <FullScreenWrapper>
+        <ProgressRing mode='indeterminate' />
+      </FullScreenWrapper>
+    )
   }
 
   return (

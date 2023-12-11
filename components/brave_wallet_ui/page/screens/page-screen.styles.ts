@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 export const SimplePageWrapper = styled.div`
   display: flex;
@@ -12,4 +13,17 @@ export const SimplePageWrapper = styled.div`
   justify-content: flex-start;
   width: 100%;
   margin-bottom: 20px;
+`
+
+export const FullScreenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: ${leo.color.container.background};
 `
