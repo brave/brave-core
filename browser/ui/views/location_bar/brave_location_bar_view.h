@@ -88,6 +88,8 @@ class BraveLocationBarView : public LocationBarView {
  private:
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTestWithArbitrarySites,
+                           BackgroundWebContentsOnNavigation);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 

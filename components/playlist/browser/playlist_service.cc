@@ -513,6 +513,18 @@ bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
 
+bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
+    const GURL& url) const {
+  return ShouldUseFakeUA(url) ||
+         download_request_manager_->media_detector_component_manager()
+             ->ShouldHideMediaSrcAPI(url);
+}
+
+bool PlaylistService::CouldURLHaveMedia(const GURL& url) {
+  return download_request_manager_->media_detector_component_manager()
+      ->CouldURLHaveMedia(url);
+}
+
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
     const GURL& url,
@@ -738,10 +750,7 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
 
   CHECK(contents);
   const auto& url = contents->GetVisibleURL();
-
-  return ShouldUseFakeUA(url) ||
-         download_request_manager_->media_detector_component_manager()
-             ->ShouldHideMediaSrcAPI(url);
+  return ShouldGetMediaFromBackgroundWebContents(url);
 }
 
 bool PlaylistService::ShouldUseFakeUA(const GURL& url) const {

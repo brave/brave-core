@@ -11,10 +11,10 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
-
 namespace base {
 class FilePath;
 }  // namespace base
@@ -22,6 +22,8 @@ class FilePath;
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
+
+class GURL;
 
 namespace playlist {
 
@@ -57,11 +59,16 @@ class MediaDetectorComponentManager {
   bool ShouldUseFakeUA(const GURL& url) const;
   void SetUseLocalListToUseFakeUA();
 
+  bool CouldURLHaveMedia(const GURL& url) const;
+
   const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
     return sites_to_hide_media_src_api_;
   }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(MediaDetectorComponentManagerTest,
+                           SitesThatNeedsURLRuleForMediaPage);
+
   using ScriptMap = base::flat_map</* script_name */ base::FilePath::StringType,
                                    /* contents */ std::string>;
 
@@ -76,6 +83,8 @@ class MediaDetectorComponentManager {
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
   std::vector<net::SchemefulSite> sites_to_use_fake_ua_;
+  base::flat_map<net::SchemefulSite, base::RepeatingCallback<bool(const GURL&)>>
+      site_and_media_page_url_checkers_;
 
   base::flat_map<net::SchemefulSite, std::string> site_specific_detectors_;
 

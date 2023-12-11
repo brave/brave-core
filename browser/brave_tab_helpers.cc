@@ -203,7 +203,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   }
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(ENABLE_PLAYLIST) && !BUILDFLAG(IS_ANDROID)
   playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 }

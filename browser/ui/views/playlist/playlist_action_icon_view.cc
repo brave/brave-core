@@ -33,6 +33,10 @@ PlaylistActionIconView::PlaylistActionIconView(
 
 PlaylistActionIconView::~PlaylistActionIconView() = default;
 
+void PlaylistActionIconView::ExecuteCommand(ExecuteSource source) {
+  ExecuteImpl();
+}
+
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
   return PlaylistActionBubbleView::GetBubble();
 }
@@ -114,7 +118,10 @@ void PlaylistActionIconView::OnFoundItemsChanged(
     return;
   }
 
-  UpdateState(playlist_tab_helper->saved_items().size(), found_items.size());
+  UpdateState(
+      playlist_tab_helper->saved_items().size(),
+      found_items.size() || (playlist_tab_helper->suspended_media_detection() &&
+                             playlist_tab_helper->CouldTabHaveMedia()));
 }
 
 playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper() {
@@ -145,6 +152,27 @@ void PlaylistActionIconView::UpdateVisibilityPerState() {
 
   SetVisible(should_be_visible);
   PreferredSizeChanged();
+}
+
+void PlaylistActionIconView::ExecuteImpl() {
+  auto* playlist_tab_helper = GetPlaylistTabHelper();
+  if (!playlist_tab_helper) {
+    return;
+  }
+
+  if (playlist_tab_helper->suspended_media_detection()) {
+    playlist_tab_helper->ResumeSuspendedMediaDetection(
+        base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
+                       weak_ptr_factory_.GetWeakPtr()));
+
+    // In case we have saved items on this site, we should show the confirm
+    // bubble right away.
+    if (playlist_tab_helper->saved_items().empty()) {
+      return;
+    }
+  }
+
+  ShowPlaylistBubble();
 }
 
 void PlaylistActionIconView::OnAddedItemFromTabHelper(

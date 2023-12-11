@@ -35,17 +35,23 @@ class PlaylistActionIconView : public PageActionIconView,
 
   // PageActionIconView:
   void OnExecuting(ExecuteSource execute_source) override {}
+  void ExecuteCommand(ExecuteSource source) override;
   views::BubbleDialogDelegate* GetBubble() const override;
   const gfx::VectorIcon& GetVectorIcon() const override;
   void UpdateImpl() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTestWithArbitrarySites,
+                           BackgroundWebContentsOnNavigation);
+
   enum class State { kNone, kAdded, kFound };
 
   playlist::PlaylistTabHelper* GetPlaylistTabHelper();
 
   void UpdateState(bool has_saved, bool found_items);
   void UpdateVisibilityPerState();
+
+  void ExecuteImpl();
 
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
