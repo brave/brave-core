@@ -79,9 +79,16 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   )
 
   // queries
-  const { data: isMetaMaskInstalled } = useGetIsMetaMaskInstalledQuery()
-  const { data: defaultEthereumWallet } = useGetDefaultEthereumWalletQuery()
-  const { data: defaultSolanaWallet } = useGetDefaultSolanaWalletQuery()
+  const {
+    data: isMetaMaskInstalled,
+    isLoading: isCheckingInstalledExtensions
+  } = useGetIsMetaMaskInstalledQuery()
+  const {
+    data: defaultEthereumWallet,
+    isLoading: isLoadingDefaultEthereumWallet
+  } = useGetDefaultEthereumWalletQuery()
+  const { data: defaultSolanaWallet, isLoading: isLoadingDefaultSolanaWallet } =
+    useGetDefaultSolanaWalletQuery()
   const {
     data: isWalletBackedUp = false,
     isLoading: isCheckingWalletBackupStatus
@@ -143,7 +150,13 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   }, [location.key])
 
   // computed
+  const isCheckingWallets =
+    isCheckingInstalledExtensions ||
+    isLoadingDefaultEthereumWallet ||
+    isLoadingDefaultSolanaWallet
+
   const showBanner =
+    !isCheckingWallets &&
     (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet ||
       defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
     (defaultEthereumWallet !==
