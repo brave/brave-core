@@ -19,7 +19,8 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
-  gap: ${spacing.m};
+  gap: ${spacing['2Xl']};
+  padding-top: ${spacing['2Xl']};
 `
 
 export default function Cluster({ info }: Props) {

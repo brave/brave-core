@@ -14,6 +14,8 @@ import HeroArticle from "./feed/Hero";
 import { getHistoryValue, setHistoryState } from "./shared/history";
 import NoArticles from "./feed/NoArticles";
 import LoadingCard from "./feed/LoadingCard";
+import { spacing } from "@brave/leo/tokens/css";
+import CaughtUp from "./feed/CaughtUp";
 
 // Restoring scroll position is complicated - we have two available strategies:
 // 1. Scroll to the same position - as long as the window hasn't been resized,
@@ -27,11 +29,17 @@ interface NewsScrollData {
   scrollPos: number,
 }
 
+const CARD_CLASS = 'feed-card'
 const FeedContainer = styled.div`
   width: 540px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: ${spacing.xl};
+
+  /* Hide Ad elements, if we weren't able to fill them */
+  & .${CARD_CLASS}:empty {
+    display: none;
+  }
 `
 
 interface Props {
@@ -52,7 +60,6 @@ export const NEWS_FEED_CLASS = "news-feed"
 // The number of cards to load at a time. Making this too high will result in
 // jank as all the cards are rendered at once.
 const PAGE_SIZE = 25;
-const CARD_CLASS = 'feed-card'
 const HISTORY_SCROLL_DATA = 'bn-scroll-data'
 const HISTORY_CARD_COUNT = 'bn-card-count'
 
@@ -73,7 +80,7 @@ export default function Component({ feed }: Props) {
   // Store the number of cards we've loaded in history - otherwise when we
   // navigate back we might not be able to scroll down far enough.
   React.useEffect(() => {
-    setHistoryState({ HISTORY_CARD_COUNT: cardCount })
+    setHistoryState({ [HISTORY_CARD_COUNT]: cardCount })
   }, [cardCount])
 
   // Track the feed scroll position - if we mount this component somewhere with
@@ -138,7 +145,11 @@ export default function Component({ feed }: Props) {
 
   return <FeedContainer className={NEWS_FEED_CLASS}>
     {feed
-      ? !feed.items.length ? <NoArticles /> : cards
+      ? !feed.items.length ? <NoArticles />
+      : <>
+          {cards}
+          <CaughtUp />
+      </>
       : <LoadingCard />}
   </FeedContainer>
 }
