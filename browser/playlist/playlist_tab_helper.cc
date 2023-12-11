@@ -154,12 +154,33 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
+bool PlaylistTabHelper::CouldTabHaveMedia() const {
+  CHECK(suspended_media_detection_) << "This method is expected to be called "
+                                       "only when media detection is suspended";
+
+  return service_->CouldURLHaveMedia(target_url_);
+}
+
+void PlaylistTabHelper::ResumeSuspendedMediaDetection(
+    base::OnceClosure detected_callback) {
+  CHECK(suspended_media_detection_ ||
+        media_detected_after_suspension_callback_.size())
+      << "This method is expected to be called "
+         "only when media detection is suspended";
+
+  media_detected_after_suspension_callback_.push_back(
+      std::move(detected_callback));
+  suspended_media_detection_ = false;
+  FindMediaFromCurrentContents();
+}
+
 void PlaylistTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
 
-  if (auto old_url = std::exchange(target_url, web_contents()->GetVisibleURL());
-      old_url == target_url) {
+  if (auto old_url =
+          std::exchange(target_url_, web_contents()->GetVisibleURL());
+      old_url == target_url_) {
     return;
   }
 
@@ -168,6 +189,18 @@ void PlaylistTabHelper::DidFinishNavigation(
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
+
+  if (service_->ShouldGetMediaFromBackgroundWebContents(target_url_)) {
+    // As loading the same site on a background web contents would cost much,
+    // we suspend media detection until user takes action.
+    suspended_media_detection_ = true;
+    if (CouldTabHaveMedia()) {
+      for (auto& observer : observers_) {
+        observer.OnFoundItemsChanged(found_items_);
+      }
+    }
+    return;
+  }
 
   if (navigation_handle->IsSameDocument() ||
       navigation_handle->IsServedFromBackForwardCache()) {
@@ -260,6 +293,8 @@ void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
   sent_find_media_request_ = false;
+  suspended_media_detection_ = false;
+  media_detected_after_suspension_callback_.clear();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -308,6 +343,10 @@ void PlaylistTabHelper::FindMediaFromCurrentContents() {
     return;
   }
 
+  if (suspended_media_detection_) {
+    return;
+  }
+
   CHECK(service_);
 
   service_->FindMediaFilesFromContents(
@@ -350,6 +389,14 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
+  }
+
+  if (found_items_.size() && media_detected_after_suspension_callback_.size()) {
+    for (auto& callback : media_detected_after_suspension_callback_) {
+      std::move(callback).Run();
+    }
+
+    media_detected_after_suspension_callback_.clear();
   }
 }
 
