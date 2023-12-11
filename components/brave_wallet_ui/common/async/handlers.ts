@@ -12,17 +12,7 @@ import {
   UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
-import {
-  BraveWallet,
-  WalletState,
-  RefreshOpts,
-  UpdateAccountNamePayloadType
-} from '../../constants/types'
-import {
-  ImportAccountFromJsonPayloadType,
-  ImportAccountPayloadType,
-  RemoveAccountPayloadType
-} from '../../page/constants/action_types'
+import { BraveWallet, WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
@@ -292,67 +282,6 @@ handler.on(
   WalletActions.selectPortfolioTimeline.type,
   async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
     store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-  }
-)
-
-handler.on(
-  WalletActions.updateAccountName.type,
-  async (_store: Store, payload: UpdateAccountNamePayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result = await keyringService.setAccountName(
-      payload.accountId,
-      payload.name
-    )
-    return result.success
-  }
-)
-
-handler.on(
-  WalletActions.removeAccount.type,
-  async (_store: Store, payload: RemoveAccountPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    await keyringService.removeAccount(payload.accountId, payload.password)
-  }
-)
-
-handler.on(
-  WalletActions.importAccount.type,
-  async (store: Store, payload: ImportAccountPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result =
-      payload.coin === BraveWallet.CoinType.FIL && payload.network
-        ? await keyringService.importFilecoinAccount(
-            payload.accountName,
-            payload.privateKey,
-            payload.network
-          )
-        : await keyringService.importAccount(
-            payload.accountName,
-            payload.privateKey,
-            payload.coin
-          )
-    if (result.account) {
-      store.dispatch(WalletActions.setImportAccountError(false))
-    } else {
-      store.dispatch(WalletActions.setImportAccountError(true))
-    }
-  }
-)
-
-handler.on(
-  WalletActions.importAccountFromJson.type,
-  async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result = await keyringService.importAccountFromJson(
-      payload.accountName,
-      payload.password,
-      payload.json
-    )
-    if (result.account) {
-      store.dispatch(WalletActions.setImportAccountError(false))
-    } else {
-      store.dispatch(WalletActions.setImportAccountError(true))
-    }
   }
 )
 

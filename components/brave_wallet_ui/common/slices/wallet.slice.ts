@@ -9,9 +9,7 @@ import {
   WalletInitializedPayload,
   SolFeeEstimates,
   NetworkFilterType,
-  RefreshOpts,
-  UpdateAccountNamePayloadType,
-  ImportAccountErrorType
+  RefreshOpts
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
@@ -20,11 +18,6 @@ import {
   UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
-import {
-  ImportAccountFromJsonPayloadType,
-  ImportAccountPayloadType,
-  RemoveAccountPayloadType
-} from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
@@ -126,8 +119,7 @@ const defaultState: WalletState = {
     window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
     ) === 'true',
-  isRefreshingNetworksAndTokens: false,
-  importAccountError: undefined
+  isRefreshingNetworksAndTokens: false
 }
 
 // async actions
@@ -173,14 +165,7 @@ export const WalletAsyncActions = {
   setSelectedAccountFilterItem: createAction<string>(
     'setSelectedAccountFilterItem'
   ),
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateAccountName:
-    createAction<UpdateAccountNamePayloadType>('updateAccountName'),
-  removeAccount: createAction<RemoveAccountPayloadType>('removeAccount'),
-  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
-    'importAccountFromJson'
-  )
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
 
 // slice
@@ -394,12 +379,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) => {
         state.isRefreshingNetworksAndTokens = payload
       },
-      setImportAccountError(
-        state: WalletState,
-        { payload }: PayloadAction<ImportAccountErrorType>
-      ) {
-        state.importAccountError = payload
-      },
+
       setAllowNewWalletFilecoinAccount(
         state: WalletState,
         { payload }: PayloadAction<boolean>

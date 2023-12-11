@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 
 // utils
@@ -16,12 +15,8 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 // types
 import {
   CreateAccountOptionsType,
-  WalletRoutes,
-  ImportAccountErrorType
+  WalletRoutes
 } from '../../../../constants/types'
-
-// actions
-import { WalletActions } from '../../../../common/actions'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'
@@ -45,9 +40,6 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const history = useHistory()
   const { accountTypeName } = useParams<Params>()
 
-  // redux
-  const dispatch = useDispatch()
-
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
@@ -64,17 +56,9 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
     }, [createAccountOptions, accountTypeName])
 
   // methods
-  const setImportError = React.useCallback(
-    (hasError: ImportAccountErrorType) => {
-      dispatch(WalletActions.setImportAccountError(hasError))
-    },
-    []
-  )
-
   const closeModal = React.useCallback(() => {
-    setImportError(undefined)
     history.push(WalletRoutes.Accounts)
-  }, [setImportError])
+  }, [])
 
   // render
   return (

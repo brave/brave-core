@@ -7,7 +7,6 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { WalletActions } from '../../../../common/actions'
 import {
   AccountsTabActions,
   AccountsTabState
@@ -19,6 +18,7 @@ import { BraveWallet } from '../../../../constants/types'
 
 // hooks
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { useRemoveAccountMutation } from '../../../../common/slices/api.slice'
 
 // components
 import { PopupModal } from '../../popup-modals/index'
@@ -45,12 +45,15 @@ export const ConfirmPasswordModal = () => {
   const [isCorrectPassword, setIsCorrectPassword] =
     React.useState<boolean>(true)
 
+  // mutations
+  const [removeAccount] = useRemoveAccountMutation()
+
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
   const onConfirmRemoveAccount = React.useCallback(
-    (password: string) => {
+    async (password: string) => {
       if (!accountToRemove) {
         return
       }
@@ -61,12 +64,12 @@ export const ConfirmPasswordModal = () => {
         accountId.kind === BraveWallet.AccountKind.kHardware ||
         accountId.kind === BraveWallet.AccountKind.kImported
       ) {
-        dispatch(WalletActions.removeAccount({ accountId, password }))
+        await removeAccount({ accountId, password })
       }
 
       dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
     },
-    [accountToRemove, dispatch]
+    [accountToRemove, dispatch, removeAccount]
   )
 
   const onSubmit = React.useCallback(async () => {

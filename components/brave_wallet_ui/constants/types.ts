@@ -233,7 +233,6 @@ export interface WalletState {
   hidePortfolioSmallBalances: boolean
   showNetworkLogoOnNfts: boolean
   isRefreshingNetworksAndTokens: boolean
-  importAccountError: ImportAccountErrorType
 }
 
 export interface PanelState {
@@ -559,11 +558,6 @@ export type TransactionPanelPayload = {
   ethPrice: string
   tokenPrice: string
   transactionData: TransactionDataType
-}
-
-export type UpdateAccountNamePayloadType = {
-  accountId: BraveWallet.AccountId
-  name: string
 }
 
 export enum WalletRoutes {
