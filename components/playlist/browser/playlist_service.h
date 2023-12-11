@@ -215,6 +215,15 @@ class PlaylistService : public KeyedService,
 
   bool HasPlaylistItem(const std::string& id) const;
 
+  // Returns true when we should try getting media from a background web
+  // contents, which means it could have impact on performance/memory.
+  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
+
+  // Returns true if the url is known to have media file. As this is decided
+  // based on a given list and url format, it could be used when
+  // ShouldGetMediaFromBackgroundWebContents() returns true.
+  bool CouldURLHaveMedia(const GURL& url);
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
