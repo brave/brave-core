@@ -24,7 +24,9 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
       isolated_world_id_(isolated_world_id),
-      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
+      javascript_handler_(
+          std::make_unique<PlaylistJSHandler>(render_frame,
+                                              isolated_world_id)) {}
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
@@ -35,6 +37,10 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   }
 
   if (blink_preferences.should_detect_media_files) {
+    javascript_handler_->SetDetectorScript(
+        url_, blink::WebString::FromUTF8(
+                  blink_preferences.url_and_media_detection_scripts.at("")));
+
     InstallMediaDetector();
   }
 }
@@ -80,7 +86,10 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
       const mutationSources = new Set();
       const mutationObserver = new MutationObserver(mutations => {
-          mutations.forEach(mutation => { pl_worker.onMediaUpdated(mutation.target.src); })
+          mutations.forEach(mutation => { 
+            pl_worker.onMediaUpdated(mutation.target.src); 
+            pl_worker.onNotifyMedia('notified') 
+        })
       });
       const findNewMediaAndObserveMutation = () => {
           return document.querySelectorAll('video, audio').forEach((mediaNode) => {
@@ -88,6 +97,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
               mutationSources.add(mediaNode)
               pl_worker.onMediaUpdated(mediaNode.src)
+              pl_worker.onNotifyMedia('notified')
               mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
           });
       }
@@ -113,6 +123,12 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       blink::WebScriptSource(
           blink::WebString::FromUTF16(kScriptToDetectVideoAndAudio)),
       blink::BackForwardCacheAware::kAllow);
+}
+
+void PlaylistRenderFrameObserver::DidStartNavigation(
+    const GURL& url,
+    absl::optional<blink::WebNavigationType> navigation_type) {
+  url_ = url;
 }
 
 void PlaylistRenderFrameObserver::OnDestruct() {

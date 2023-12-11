@@ -200,35 +200,36 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
 }
 
 void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
-  DVLOG(2) << __func__;
-  DCHECK(contents && contents->GetPrimaryMainFrame());
+  //   DVLOG(2) << __func__;
+  //   DCHECK(contents && contents->GetPrimaryMainFrame());
 
-  const auto& media_detector_script =
-      media_detector_component_manager_->GetMediaDetectorScript(
-          contents->GetVisibleURL());
-  DCHECK(!media_detector_script.empty());
+  //   const auto& media_detector_script =
+  //       media_detector_component_manager_->GetMediaDetectorScript(
+  //           contents->GetVisibleURL());
+  //   DCHECK(!media_detector_script.empty());
 
-#if BUILDFLAG(IS_ANDROID)
-  content::RenderFrameHost::AllowInjectingJavaScript();
-  contents->GetPrimaryMainFrame()->ExecuteJavaScript(
-      base::UTF8ToUTF16(media_detector_script),
-      base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
-                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
-#else
-  if (run_script_on_main_world_) {
-    contents->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
-        base::UTF8ToUTF16(media_detector_script),
-        base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
-                       weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
+  // #if BUILDFLAG(IS_ANDROID)
+  //   content::RenderFrameHost::AllowInjectingJavaScript();
+  //   contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+  //       base::UTF8ToUTF16(media_detector_script),
+  //       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+  //                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
+  // #else
+  //   if (run_script_on_main_world_) {
+  //     contents->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
+  //         base::UTF8ToUTF16(media_detector_script),
+  //         base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+  //                        weak_factory_.GetWeakPtr(),
+  //                        contents->GetWeakPtr()));
 
-  } else {
-    contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(media_detector_script),
-        base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
-                       weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
-        g_playlist_javascript_world_id);
-  }
-#endif
+  //   } else {
+  //     contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  //         base::UTF8ToUTF16(media_detector_script),
+  //         base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+  //                        weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
+  //         g_playlist_javascript_world_id);
+  //   }
+  // #endif
 }
 
 void PlaylistDownloadRequestManager::OnGetMedia(
@@ -274,7 +275,8 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
   if (!value.is_list()) {
     LOG(ERROR) << __func__
-               << " Got invalid value after running media detector script";
+               << " Got invalid value after running media detector script "
+               << (int)value.type();
     return;
   }
 
@@ -351,10 +353,21 @@ void PlaylistDownloadRequestManager::SetRunScriptOnMainWorldForTest() {
 void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
     content::WebContents* web_contents,
     blink::web_pref::WebPreferences* web_prefs) {
+  // TODO(sko) Check preference
+
+  web_prefs->should_detect_media_files = true;
+
+  web_prefs->url_and_media_detection_scripts.insert(
+      {"", media_detector_component_manager_->GetMediaDetectorScript(GURL())});
+  web_prefs->url_and_media_detection_scripts.insert(
+      {"www.youtube.com",
+       media_detector_component_manager_->GetMediaDetectorScript(
+           GURL("www.youtube.com"))});
+
   if (web_contents_ && web_contents_.get() == web_contents) {
+    // Background web contents.
     web_prefs->force_cosmetic_filtering = true;
     web_prefs->hide_media_src_api = true;
-    web_prefs->should_detect_media_files = true;
   }
 }
 

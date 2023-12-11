@@ -20,7 +20,9 @@ PlaylistMediaHandler::~PlaylistMediaHandler() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
+void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame(
+    const GURL& page_url,
+    std::vector<mojom::PlaylistItemPtr> items) {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (!render_frame_host) {

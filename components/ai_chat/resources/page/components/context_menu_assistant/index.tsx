@@ -142,8 +142,8 @@ function ContextMenuAssistant_(
       <ButtonMenu className={classnames(styles.moreButton, props.className)}>
         <Button
           slot='anchor-content'
-          size="small"
-          kind="plain-faint"
+          size='small'
+          kind='plain-faint'
         >
           <Icon name='more-horizontal' />
         </Button>

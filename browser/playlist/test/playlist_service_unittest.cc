@@ -212,7 +212,7 @@ class PlaylistServiceUnitTest : public testing::Test {
 
     detector_manager_ =
         std::make_unique<MediaDetectorComponentManager>(nullptr);
-    detector_manager_->SetUseLocalScriptForTesting();
+    detector_manager_->SetUseLocalScript();
     service_ = std::make_unique<PlaylistService>(profile_.get(), &local_state_,
                                                  detector_manager_.get(),
                                                  nullptr, base::Time::Now());

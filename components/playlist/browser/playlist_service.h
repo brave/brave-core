@@ -160,9 +160,9 @@ class PlaylistService : public KeyedService,
   void GetPlaylistItem(const std::string& id,
                        GetPlaylistItemCallback callback) override;
 
-  void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
-                                       const GURL& url,
-                                       bool can_cache) override;
+//   void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
+//                                        const GURL& url,
+//                                        bool can_cache) override;
   void AddMediaFilesFromActiveTabToPlaylist(const std::string& playlist_id,
                                             bool can_cache) override;
   void FindMediaFilesFromActiveTab(
@@ -214,6 +214,15 @@ class PlaylistService : public KeyedService,
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
+
+  // Returns true when we should try getting media from a background web
+  // contents, which means it could have impact on performance/memory.
+  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
+
+  // Returns true if the url is known to have media file. As this is decided
+  // based on a given list and url format, it could be used when
+  // ShouldGetMediaFromBackgroundWebContents() returns true.
+  bool CouldURLHaveMedia(const GURL& url);
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;

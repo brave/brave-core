@@ -428,11 +428,11 @@ void PlaylistService::FindMediaFilesFromContents(
 
   PlaylistDownloadRequestManager::Request request;
   auto current_url = contents->GetVisibleURL();
-  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
-    request.url_or_contents = current_url.spec();
-  } else {
-    request.url_or_contents = contents->GetWeakPtr();
-  }
+  // if (ShouldGetMediaFromBackgroundWebContents(contents)) {
+  //   request.url_or_contents = current_url.spec();
+  // } else {
+  request.url_or_contents = contents->GetWeakPtr();
+  // }
 
   request.should_force_fake_ua = ShouldUseFakeUA(contents->GetVisibleURL());
   request.callback = base::BindOnce(std::move(callback), current_url);
@@ -513,23 +513,35 @@ bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
 
-void PlaylistService::AddMediaFilesFromPageToPlaylist(
-    const std::string& playlist_id,
-    const GURL& url,
-    bool can_cache) {
-  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
-
-  VLOG(2) << __func__ << " " << playlist_id << " " << url;
-  PlaylistDownloadRequestManager::Request request;
-  request.url_or_contents = url.spec();
-  request.callback = base::BindOnce(
-      &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
-      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
-      /* cache= */ can_cache &&
-          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-      base::NullCallback()),
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
+    const GURL& url) const {
+  return ShouldUseFakeUA(url) ||
+         download_request_manager_->media_detector_component_manager()
+             ->ShouldHideMediaSrcAPI(url);
 }
+
+bool PlaylistService::CouldURLHaveMedia(const GURL& url) {
+  return download_request_manager_->media_detector_component_manager()
+      ->CouldURLHaveMedia(url);
+}
+
+// void PlaylistService::AddMediaFilesFromPageToPlaylist(
+//     const std::string& playlist_id,
+//     const GURL& url,
+//     bool can_cache) {
+//   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+
+//   VLOG(2) << __func__ << " " << playlist_id << " " << url;
+//   PlaylistDownloadRequestManager::Request request;
+//   request.url_or_contents = url.spec();
+//   request.callback = base::BindOnce(
+//       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
+//       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
+//       /* cache= */ can_cache &&
+//           prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+//       base::NullCallback()),
+//   download_request_manager_->GetMediaFilesFromPage(std::move(request));
+// }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     const std::string& playlist_id,
@@ -720,10 +732,7 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
 
   CHECK(contents);
   const auto& url = contents->GetVisibleURL();
-
-  return ShouldUseFakeUA(url) ||
-         download_request_manager_->media_detector_component_manager()
-             ->ShouldHideMediaSrcAPI(url);
+  return ShouldGetMediaFromBackgroundWebContents(url);
 }
 
 bool PlaylistService::ShouldUseFakeUA(const GURL& url) const {

@@ -21,7 +21,9 @@ class PlaylistMediaHandler: public mojom::PlaylistMediaHandler{
   ~PlaylistMediaHandler() override;
 
   // mojom::PlaylistMediaHandler:
-  void OnMediaUpdatedFromRenderFrame() override;
+  void OnMediaUpdatedFromRenderFrame(
+      const GURL& page_url,
+      std::vector<mojom::PlaylistItemPtr> items) override;
 
  private:
   content::GlobalRenderFrameHostId frame_id_;

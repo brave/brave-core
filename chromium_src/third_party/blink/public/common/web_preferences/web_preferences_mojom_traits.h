@@ -36,6 +36,11 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.should_detect_media_files;
   }
 
+  static std::map<std::string, std::string> url_and_media_detection_scripts(
+      const blink::web_pref::WebPreferences& r) {
+    return r.url_and_media_detection_scripts;
+  }
+
   static bool Read(blink::mojom::WebPreferencesDataView r,
                    blink::web_pref::WebPreferences* out);
 };

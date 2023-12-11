@@ -139,7 +139,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     request_manager_ = playlist_service->download_request_manager_.get();
     component_manager_ = request_manager_->media_detector_component_manager();
-    component_manager_->SetUseLocalScriptForTesting();
+    component_manager_->SetUseLocalScript();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
