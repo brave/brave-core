@@ -11,11 +11,9 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
-#include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/media_detector_component_installer.h"
 #include "components/grit/brave_components_resources.h"
-#include "net/base/url_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -71,122 +69,20 @@ base::flat_map<ScriptName, std::string> ReadScriptsFromComponent(
   return script_map;
 }
 
-std::vector<std::string> SplitString(std::string_view input,
-                                     std::string_view delim) {
-  return base::SplitString(input, delim, base::TRIM_WHITESPACE,
-                           base::SPLIT_WANT_NONEMPTY);
-}
-
-std::vector<std::string> SplitPaths(const GURL& url) {
-  return SplitString(url.path_piece(), "/");
-}
-
 }  // namespace
 
 MediaDetectorComponentManager::MediaDetectorComponentManager(
     component_updater::ComponentUpdateService* component_update_service)
     : component_update_service_(component_update_service) {
+  // TODO(sko) We have breaking changes and not using scripts from component
+  // updater. But we should use script from the component at some point.
+  SetUseLocalScript();
+
   // TODO(sko) These lists should be dynamically updated from the playlist.
   // Even after we finish the job, we should leave these call so that we can
   // use local resources until the component is updated.
   SetUseLocalListToHideMediaSrcAPI();
   SetUseLocalListToUseFakeUA();
-
-  site_and_media_page_url_checkers_ = {
-      {net::SchemefulSite(GURL("https://youtube.com")),
-       // youtube.com/watch?v=123123
-       base::BindRepeating([](const GURL& url) {
-         if (url.path_piece() != "/watch" || !url.has_query()) {
-           return false;
-         }
-
-         std::string video_id;
-         net::GetValueForKeyInQuery(url, "v", &video_id);
-         return !video_id.empty();
-       })},
-      {net::SchemefulSite(GURL("https://bbcgoodfood.com")),
-       base::BindRepeating([](const GURL& url) {
-         // "https://bbcgoodfood.com/videos/foo"
-         if (url.path_piece() == "/") {
-           return false;
-         }
-
-         auto paths = SplitPaths(url);
-         return paths.size() == 2 && paths.front() == "videos";
-       })},
-      {net::SchemefulSite(GURL("https://bitchute.com")),
-       base::BindRepeating([](const GURL& url) {
-         // https://www.bitchute.com/video/XXXXXXXXXXXX/
-         if (url.path_piece() == "/") {
-           return false;
-         }
-
-         auto paths = SplitPaths(url);
-         return paths.size() == 2 && paths.front() == "video";
-       })},
-      {net::SchemefulSite(GURL("https://brighteon.com")),
-       base::BindRepeating([](const GURL& url) {
-         // GUID format
-         // https://www.brighteon.com/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-         if (url.path_piece() == "/") {
-           return false;
-         }
-
-         auto paths = SplitPaths(url);
-         if (paths.size() != 1) {
-           return false;
-         }
-
-         const auto guid_parts = SplitString(paths.front(), "-");
-         if (guid_parts.size() != 5) {
-           return false;
-         }
-
-         return guid_parts.at(0).length() == 8 &&
-                guid_parts.at(1).length() == 4 &&
-                guid_parts.at(2).length() == 4 &&
-                guid_parts.at(3).length() == 4 &&
-                guid_parts.at(4).length() == 12;
-       })},
-      {net::SchemefulSite(GURL("https://marthastewart.com")),
-       base::BindRepeating([](const GURL& url) {
-         // TODO(sko) Can't tell a page would have media from url.
-         return false;
-       })},
-      {net::SchemefulSite(GURL("https://rumble.com/")),
-       base::BindRepeating([](const GURL& url) {
-         // Starts with vXXXXXX (6 chars) and followed by title of video
-         // https://rumble.com/vXXXXXX-foo-bar-baz.html
-         if (url.path_piece() == "/") {
-           return false;
-         }
-
-         auto paths = SplitPaths(url);
-         if (paths.size() != 1) {
-           return false;
-         }
-
-         const auto media_page_parts = SplitString(paths.front(), "-");
-         return media_page_parts.size() > 1 &&
-                media_page_parts.front().size() == 7 &&
-                media_page_parts.front().at(0) == 'v';
-       })},
-      {net::SchemefulSite(GURL("https://ted.com")),
-       base::BindRepeating([](const GURL& url) {
-         // https://www.ted.com/talks/frances_s_chance_are_insect_brains_the_secret_to_great_ai
-         if (url.path_piece() == "/") {
-           return false;
-         }
-
-         auto paths = SplitPaths(url);
-         return paths.size() == 2 && paths.front() == "talks";
-       })},
-      {net::SchemefulSite(GURL("https://vimeo.com")),
-       base::BindRepeating([](const GURL& url) {
-         // https://vimeo.com/1234567  (5-9 digits)
-         return false;
-       })},
-  };
 }
 
 MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
@@ -197,6 +93,15 @@ void MediaDetectorComponentManager::AddObserver(Observer* observer) {
 
 void MediaDetectorComponentManager::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
+}
+
+void MediaDetectorComponentManager::MaybeInitScripts() {
+  if (base_script_.empty()) {
+    // In case we have yet to fetch the script, use local script instead. At the
+    // same time, fetch the script from component.
+    RegisterIfNeeded();
+    OnGetScripts(GetLocalScriptMap());
+  }
 }
 
 void MediaDetectorComponentManager::RegisterIfNeeded() {
@@ -250,7 +155,7 @@ void MediaDetectorComponentManager::OnGetScripts(
     observer.OnScriptReady(base_script_);
 }
 
-void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
+void MediaDetectorComponentManager::SetUseLocalScript() {
   register_requested_ = true;
 
   OnGetScripts(GetLocalScriptMap());
@@ -267,17 +172,17 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
-  if (base_script_.empty()) {
-    // In case we have yet to fetch the script, use local script instead. At the
-    // same time, fetch the script from component.
-    RegisterIfNeeded();
-    OnGetScripts(GetLocalScriptMap());
-  }
+  return GetMediaDetectorScript(net::SchemefulSite(url));
+}
+
+std::string MediaDetectorComponentManager::GetMediaDetectorScript(
+    const net::SchemefulSite& site) {
+  MaybeInitScripts();
 
   std::string detector_script = base_script_;
   DCHECK(!detector_script.empty());
 
-  if (net::SchemefulSite site(url); site_specific_detectors_.count(site)) {
+  if (site_specific_detectors_.count(site)) {
     constexpr std::string_view kPlaceholder =
         "const siteSpecificDetector = null";
     auto pos = detector_script.find(kPlaceholder);
@@ -301,6 +206,18 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
   }
 
   return detector_script;
+}
+
+base::flat_map<net::SchemefulSite, std::string>
+MediaDetectorComponentManager::GetAllMediaDetectorScripts() {
+  MaybeInitScripts();
+
+  base::flat_map<net::SchemefulSite, std::string> scripts;
+  scripts.insert({net::SchemefulSite(), base_script_});
+  for (const auto& [site, _] : site_specific_detectors_) {
+    scripts.insert({site, GetMediaDetectorScript(site)});
+  }
+  return scripts;
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {
@@ -335,15 +252,6 @@ void MediaDetectorComponentManager::SetUseLocalListToUseFakeUA() {
           GURL("https://brighteon.com"))},  // This site partially supported,
                                             // Audio only.
   };
-}
-
-bool MediaDetectorComponentManager::CouldURLHaveMedia(const GURL& url) const {
-  net::SchemefulSite site(url);
-  if (!base::Contains(site_and_media_page_url_checkers_, site)) {
-    return false;
-  }
-
-  return site_and_media_page_url_checkers_.at(site).Run(url);
 }
 
 }  // namespace playlist

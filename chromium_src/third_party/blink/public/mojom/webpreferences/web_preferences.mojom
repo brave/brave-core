@@ -21,4 +21,7 @@ struct WebPreferences {
   // try to inject JavaScript to detect <video> and <audio> tag, that are
   // dynamically attached.
   bool should_detect_media_files;
+
+  map<string, string> url_and_media_detection_scripts;
+  bool allow_to_run_script_on_main_world;
 };
