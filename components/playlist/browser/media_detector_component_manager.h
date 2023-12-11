@@ -51,6 +51,9 @@ class MediaDetectorComponentManager {
 
   void SetUseLocalScriptForTesting();
 
+  bool ShouldSupportMediaSrcAPI(const GURL& url) const;
+  void SetUseLocalListToSupportMediaSrcAPI();
+
   bool ShouldHideMediaSrcAPI(const GURL& url) const;
   void SetUseLocalListToHideMediaSrcAPI();
 
@@ -74,6 +77,7 @@ class MediaDetectorComponentManager {
 
   std::string base_script_;
 
+  std::vector<net::SchemefulSite> sites_to_support_media_src_api_;
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
   std::vector<net::SchemefulSite> sites_to_use_fake_ua_;
 

@@ -25,6 +25,8 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
   out->hide_media_src_api = data.hide_media_src_api();
   out->should_detect_media_files = data.should_detect_media_files();
+  out->should_inject_media_source_downloader =
+      data.should_inject_media_source_downloader();
   return true;
 }
 

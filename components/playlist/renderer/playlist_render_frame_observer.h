@@ -31,6 +31,7 @@ class PlaylistRenderFrameObserver
 
   void HideMediaSourceAPI();
   void InstallMediaDetector();
+  void InjectMediaSourceDownloader();
 
   // RenderFrameObserver:
   void OnDestruct() override;

@@ -25,16 +25,18 @@ class PlaylistJSHandler {
   explicit PlaylistJSHandler(content::RenderFrame* render_frame);
   ~PlaylistJSHandler();
 
-  void AddWorkerObjectToFrame(v8::Local<v8::Context> context);
+  void AddWorkerObjectToFrame(v8::Local<v8::Context> context, int32_t world_id);
 
  private:
   bool EnsureConnectedToClient();
   void OnClientDisconnect();
 
-  void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
+  void CreateWorkerObject(v8::Local<v8::Context> context, int32_t world_id);
   void BindFunctionsToWorkerObject(v8::Isolate* isolate,
+                                   int32_t world_id,
                                    v8::Local<v8::Object> worker_object);
 
+  void OnProgress(const std::string& src);
   void OnMediaUpdated(const std::string& src);
 
   content::RenderFrame* render_frame_ = nullptr;

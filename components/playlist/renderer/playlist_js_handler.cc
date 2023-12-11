@@ -11,6 +11,7 @@
 #include "gin/converter.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/web/blink.h"
 
 namespace {
@@ -41,14 +42,13 @@ PlaylistJSHandler::PlaylistJSHandler(content::RenderFrame* render_frame)
 
 PlaylistJSHandler::~PlaylistJSHandler() {}
 
-void PlaylistJSHandler::AddWorkerObjectToFrame(v8::Local<v8::Context> context) {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::HandleScope handle_scope(isolate);
+void PlaylistJSHandler::AddWorkerObjectToFrame(v8::Local<v8::Context> context,
+                                               int32_t world_id) {
   if (context.IsEmpty()) {
     return;
   }
 
-  CreateWorkerObject(isolate, context);
+  CreateWorkerObject(context, world_id);
 }
 
 bool PlaylistJSHandler::EnsureConnectedToClient() {
@@ -68,9 +68,10 @@ void PlaylistJSHandler::OnClientDisconnect() {
   EnsureConnectedToClient();
 }
 
-void PlaylistJSHandler::CreateWorkerObject(v8::Isolate* isolate,
-                                           v8::Local<v8::Context> context) {
+void PlaylistJSHandler::CreateWorkerObject(v8::Local<v8::Context> context,
+                                           int32_t world_id) {
   DVLOG(2) << __FUNCTION__;
+  v8::Isolate* isolate = context->GetIsolate();
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Value> pl_worker;
   if (!global->Get(context, gin::StringToV8(isolate, "pl_worker"))
@@ -82,17 +83,28 @@ void PlaylistJSHandler::CreateWorkerObject(v8::Isolate* isolate,
         ->Set(context, gin::StringToSymbol(isolate, "pl_worker"),
               pl_worker_object)
         .Check();
-    BindFunctionsToWorkerObject(isolate, pl_worker_object);
+    BindFunctionsToWorkerObject(isolate, world_id, pl_worker_object);
   }
 }
 
 void PlaylistJSHandler::BindFunctionsToWorkerObject(
     v8::Isolate* isolate,
+    int32_t world_id,
     v8::Local<v8::Object> worker_object) {
   DVLOG(2) << __FUNCTION__;
-  BindFunctionToObject(isolate, worker_object, "onMediaUpdated",
-                       base::BindRepeating(&PlaylistJSHandler::OnMediaUpdated,
-                                           weak_ptr_factory_.GetWeakPtr()));
+  if (world_id == blink::kMainDOMWorldId) {
+    BindFunctionToObject(isolate, worker_object, "onProgress",
+                         base::BindRepeating(&PlaylistJSHandler::OnProgress,
+                                             weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    BindFunctionToObject(isolate, worker_object, "onMediaUpdated",
+                         base::BindRepeating(&PlaylistJSHandler::OnMediaUpdated,
+                                             weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
+void PlaylistJSHandler::OnProgress(const std::string& value) {
+  DVLOG(2) << "Progress: " << value;
 }
 
 void PlaylistJSHandler::OnMediaUpdated(const std::string& src) {

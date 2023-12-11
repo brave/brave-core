@@ -30,6 +30,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/filename_util.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 namespace playlist {
 namespace {
@@ -60,7 +61,8 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
                                  MediaDetectorComponentManager* manager,
                                  std::unique_ptr<Delegate> delegate,
                                  base::Time browser_first_run_time)
-    : delegate_(std::move(delegate)),
+    : context_(context),
+      delegate_(std::move(delegate)),
       base_dir_(context->GetPath().Append(kBaseDirName)),
       playlist_p3a_(local_state, browser_first_run_time),
       prefs_(user_prefs::UserPrefs::Get(context)) {
@@ -392,16 +394,23 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
   VLOG(2) << __func__;
   DCHECK(item);
 
-  auto job = std::make_unique<PlaylistMediaFileDownloadManager::DownloadJob>();
-  job->item = item.Clone();
-  job->on_progress_callback =
-      base::BindRepeating(&PlaylistService::OnMediaFileDownloadProgressed,
-                          weak_factory_.GetWeakPtr());
-  job->on_finish_callback = base::BindOnce(
-      &PlaylistService::OnMediaFileDownloadFinished, weak_factory_.GetWeakPtr(),
-      update_media_src_and_retry_on_fail, std::move(callback));
+  content::WebContents::CreateParams create_params(context_, nullptr);
+  web_contents_ = content::WebContents::Create(create_params);
+  content::NavigationController& controller = web_contents_->GetController();
+  auto load_url_params =
+      content::NavigationController::LoadURLParams(item->media_source);
+  controller.LoadURLWithParams(load_url_params);
 
-  media_file_download_manager_->DownloadMediaFile(std::move(job));
+  // auto job = std::make_unique<PlaylistMediaFileDownloadManager::DownloadJob>();
+  // job->item = item.Clone();
+  // job->on_progress_callback =
+  //     base::BindRepeating(&PlaylistService::OnMediaFileDownloadProgressed,
+  //                         weak_factory_.GetWeakPtr());
+  // job->on_finish_callback = base::BindOnce(
+  //     &PlaylistService::OnMediaFileDownloadFinished, weak_factory_.GetWeakPtr(),
+  //     update_media_src_and_retry_on_fail, std::move(callback));
+
+  // media_file_download_manager_->DownloadMediaFile(std::move(job));
 }
 
 base::FilePath PlaylistService::GetPlaylistItemDirPath(
@@ -412,6 +421,11 @@ base::FilePath PlaylistService::GetPlaylistItemDirPath(
 void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     content::WebContents* web_contents,
     blink::web_pref::WebPreferences* web_prefs) {
+  if (web_contents_.get() == web_contents) {
+    web_prefs->should_inject_media_source_downloader = true;
+    return;
+  }
+
   download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
 }
@@ -722,6 +736,8 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
   const auto& url = contents->GetVisibleURL();
 
   return ShouldUseFakeUA(url) ||
+         download_request_manager_->media_detector_component_manager()
+             ->ShouldSupportMediaSrcAPI(url) ||
          download_request_manager_->media_detector_component_manager()
              ->ShouldHideMediaSrcAPI(url);
 }

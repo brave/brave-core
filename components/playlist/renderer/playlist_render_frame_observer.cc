@@ -37,6 +37,10 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   if (blink_preferences.should_detect_media_files) {
     InstallMediaDetector();
   }
+
+  if (blink_preferences.should_inject_media_source_downloader) {
+    InjectMediaSourceDownloader();
+  }
 }
 
 void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
@@ -115,6 +119,19 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       blink::BackForwardCacheAware::kAllow);
 }
 
+void PlaylistRenderFrameObserver::InjectMediaSourceDownloader() {
+  DVLOG(2) << __FUNCTION__;
+
+  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
+  if (web_frame->IsProvisional())
+    return;
+
+  web_frame->ExecuteScript(blink::WebScriptSource(
+      blink::WebString::FromUTF16(uR"(
+        pl_worker.onProgress('100');
+      )")));
+}
+
 void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
@@ -122,12 +139,14 @@ void PlaylistRenderFrameObserver::OnDestruct() {
 void PlaylistRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (world_id != isolated_world_id_) {
+  if (world_id != isolated_world_id_ && world_id != blink::kMainDOMWorldId) {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << "Will add Playlist worker object to the frame";
-  javascript_handler_->AddWorkerObjectToFrame(context);
+  DVLOG(2) << __FUNCTION__
+           << "Will add Playlist worker object to the frame (world_id: "
+           << world_id << ")";
+  javascript_handler_->AddWorkerObjectToFrame(context, world_id);
 }
 
 }  // namespace playlist

@@ -308,8 +308,9 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
-    if (GURL media_url(*src); !media_url.SchemeIs(url::kHttpsScheme)) {
-      LOG(ERROR) << __func__ << "media scheme is not https://";
+    if (GURL media_url(*src); !media_url.SchemeIs(url::kHttpsScheme) &&
+                              !media_url.SchemeIs(url::kBlobScheme)) {
+      LOG(ERROR) << __func__ << "media scheme is not https:// or blob:";
       continue;
     }
 
@@ -353,7 +354,9 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
     blink::web_pref::WebPreferences* web_prefs) {
   if (web_contents_ && web_contents_.get() == web_contents) {
     web_prefs->force_cosmetic_filtering = true;
-    web_prefs->hide_media_src_api = true;
+    web_prefs->hide_media_src_api =
+        !media_detector_component_manager_->ShouldSupportMediaSrcAPI(
+            requested_url_);
     web_prefs->should_detect_media_files = true;
   }
 }

@@ -5,6 +5,7 @@
 
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -77,6 +78,7 @@ MediaDetectorComponentManager::MediaDetectorComponentManager(
   // TODO(sko) These lists should be dynamically updated from the playlist.
   // Even after we finish the job, we should leave these call so that we can
   // use local resources until the component is updated.
+  SetUseLocalListToSupportMediaSrcAPI();
   SetUseLocalListToHideMediaSrcAPI();
   SetUseLocalListToUseFakeUA();
 }
@@ -195,9 +197,20 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
   return detector_script;
 }
 
+bool MediaDetectorComponentManager::ShouldSupportMediaSrcAPI(
+    const GURL& url) const {
+  return base::Contains(sites_to_support_media_src_api_,
+                        net::SchemefulSite(url));
+}
+
+void MediaDetectorComponentManager::SetUseLocalListToSupportMediaSrcAPI() {
+  sites_to_support_media_src_api_ = {
+      {net::SchemefulSite(GURL("https://youtube.com"))},
+  };
+}
+
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {
   sites_to_hide_media_src_api_ = {
-      {net::SchemefulSite(GURL("https://youtube.com"))},
       {net::SchemefulSite(GURL("https://vimeo.com"))},
       {net::SchemefulSite(GURL("https://ted.com"))},
       {net::SchemefulSite(GURL("https://bitchute.com"))},

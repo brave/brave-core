@@ -368,6 +368,9 @@ class PlaylistService : public KeyedService,
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
 
+  raw_ptr<content::BrowserContext> context_;
+  std::unique_ptr<content::WebContents> web_contents_;
+
   std::unique_ptr<Delegate> delegate_;
 
   const base::FilePath base_dir_;
