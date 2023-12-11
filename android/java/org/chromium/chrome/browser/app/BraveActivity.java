@@ -163,6 +163,7 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -306,12 +307,6 @@ public abstract class BraveActivity extends ChromeActivity
             BraveVpnNativeWorker.getInstance().addObserver(this);
             BraveVpnUtils.reportBackgroundUsageP3A();
         }
-        Profile profile = getCurrentTabModel().getProfile();
-        if (profile != null) {
-            // Set proper active DSE whenever brave returns to foreground.
-            // If active tab is private, set private DSE as an active DSE.
-            BraveSearchEngineUtils.updateActiveDSE(profile);
-        }
 
         // The check on mNativeInitialized is mostly to ensure that mojo
         // services for wallet are initialized.
@@ -341,12 +336,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
-        }
-        Profile profile = getCurrentTabModel().getProfile();
-        if (profile != null && profile.isOffTheRecord()) {
-            // Set normal DSE as an active DSE when brave goes in background
-            // because currently set DSE is used by outside of brave(ex, brave search widget).
-            BraveSearchEngineUtils.updateActiveDSE(profile);
         }
         super.onPauseWithNative();
     }
@@ -803,7 +792,6 @@ public abstract class BraveActivity extends ChromeActivity
         setLoadedFeed(false);
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
-        BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
         Intent intent = getIntent();
         if (intent != null && intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY, false)) {
             openBraveWallet(false,
@@ -938,6 +926,8 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        BraveSearchEngineUtils.initializeBraveSearchEngineStates(
+                (TabModelSelector) getTabModelSelectorSupplier().get());
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
