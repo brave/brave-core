@@ -613,7 +613,12 @@ FeedV2Builder::~FeedV2Builder() = default;
 
 void FeedV2Builder::AddListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
-  listeners_.Add(std::move(listener));
+  auto id = listeners_.Add(std::move(listener));
+
+  auto* instance = listeners_.Get(id);
+  CHECK(instance);
+
+  instance->OnUpdateAvailable(hash_);
 }
 
 void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {

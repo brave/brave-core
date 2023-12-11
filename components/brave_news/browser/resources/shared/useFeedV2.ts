@@ -98,7 +98,7 @@ addFeedListener(latestHash => {
   // If what's in localStorage isn't from the latest data, make sure we remove
   // it.
   const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
-  if (localStorageData?.sourceHash != latestHash) {
+  if (localStorageData?.sourceHash !== latestHash) {
     localStorage.removeItem(FEED_KEY)
   }
 })
@@ -136,8 +136,9 @@ export const useFeedV2 = () => {
     fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
 
+  // Updates are available if we've been told the latest hash, we have a feed
+  // and the hashes don't match.
   const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
-
   return {
     feedV2,
     feedView,

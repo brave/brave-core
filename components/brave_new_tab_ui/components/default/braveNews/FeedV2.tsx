@@ -12,6 +12,7 @@ import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Co
 import { CLASSNAME_PAGE_STUCK } from '../page'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale';
+import Flex from '../../../../common/Flex'
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
@@ -50,8 +51,15 @@ const ButtonsContainer = styled.div`
   gap: ${spacing.m};
 `
 
+const LoadNewContentButton = styled(Button)`
+  position: sticky;
+  top: ${spacing.xl};
+
+  flex-grow: 0;
+`
+
 export default function FeedV2() {
-  const { feedV2, setCustomizePage, refreshFeedV2 } = useBraveNews()
+  const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable } = useBraveNews()
 
   const ref = React.useRef<HTMLDivElement>()
 
@@ -79,7 +87,13 @@ export default function FeedV2() {
     <SidebarContainer>
       <FeedNavigation />
     </SidebarContainer>
-    <Feed feed={feedV2} />
+    <Flex align='center' direction='column' gap={spacing.l}>
+      {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
+        {getLocale('braveNewsNewContentAvailable')}
+      </LoadNewContentButton>}
+      <Feed feed={feedV2} />
+    </Flex>
+
     <ButtonsContainer>
       <Button kind='outline' onClick={() => setCustomizePage('news')}>
         {getLocale('braveNewsCustomizeFeed')}
