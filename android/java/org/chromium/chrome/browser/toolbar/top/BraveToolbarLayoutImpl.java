@@ -743,17 +743,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private void addMediaToPlaylist() {
-        Tab currentTab = getToolbarDataProvider().getTab();
-        if (mPlaylistService == null || currentTab == null) {
-            return;
-        }
-        org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-        contentUrl.url = currentTab.getUrl().getSpec();
-        mPlaylistService.addMediaFilesFromPageToPlaylist(
-                ConstantUtils.DEFAULT_PLAYLIST, contentUrl, shouldCacheMediaFilesForPlaylist());
-    }
-
     private void showAddedToPlaylistSnackBar() {
         SnackBarActionModel snackBarActionModel =
                 new SnackBarActionModel(getContext().getResources().getString(R.string.view_action),

@@ -9,6 +9,7 @@ import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -171,6 +172,7 @@ brave_grit("strings") {
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_playlist=$enable_playlist",
   ]
 
   foreach(locale, all_chrome_locales) {
