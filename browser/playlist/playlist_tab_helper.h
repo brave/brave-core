@@ -60,6 +60,13 @@ class PlaylistTabHelper
 
   std::u16string GetSavedFolderName();
 
+  bool suspended_media_detection() const {
+    return suspended_media_detection_ ||
+           media_detected_after_suspension_callback_.size();
+  }
+  bool CouldTabHaveMedia() const;
+  void ResumeSuspendedMediaDetection(base::OnceClosure detected_callback);
+
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -108,10 +115,13 @@ class PlaylistTabHelper
 
   raw_ptr<PlaylistService> service_;
 
-  GURL target_url;
+  GURL target_url_;
   bool sent_find_media_request_ = false;
 
   bool is_adding_items_ = false;
+
+  bool suspended_media_detection_ = false;
+  std::vector<base::OnceClosure> media_detected_after_suspension_callback_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
