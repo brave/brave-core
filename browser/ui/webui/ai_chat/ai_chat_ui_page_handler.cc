@@ -372,7 +372,19 @@ void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
     return;
   }
 
-  active_chat_tab_helper_->GetPremiumStatus(std::move(callback));
+  // Don't pass |callback| directly to tab helper because this PageHandler
+  // binding could be closed before running it.
+  active_chat_tab_helper_->GetPremiumStatus(
+      base::BindOnce(&AIChatUIPageHandler::OnGetPremiumStatus,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::OnGetPremiumStatus(
+    GetPremiumStatusCallback callback,
+    ai_chat::mojom::PremiumStatus status) {
+  if (page_.is_bound()) {
+    std::move(callback).Run(status);
+  }
 }
 
 }  // namespace ai_chat

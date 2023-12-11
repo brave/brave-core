@@ -98,6 +98,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
 
+  void OnGetPremiumStatus(GetPremiumStatusCallback callback,
+                          ai_chat::mojom::PremiumStatus status);
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
