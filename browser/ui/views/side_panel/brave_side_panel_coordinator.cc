@@ -27,12 +27,7 @@ std::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 
 }  // namespace
 
-BraveSidePanelCoordinator::~BraveSidePanelCoordinator() {
-  if (auto key = GetLastActiveEntryKey()) {
-    sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
-                                  key->id());
-  }
-}
+BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 
 void BraveSidePanelCoordinator::Show(
     std::optional<SidePanelEntry::Id> entry_id,
@@ -51,6 +46,12 @@ void BraveSidePanelCoordinator::Show(
       // Use default pick when we don't have lastly used panel.
       entry_id = default_entry_id;
     }
+  }
+
+  // Cache lastly shown entry id to make it persist across the re-launch.
+  if (entry_id) {
+    sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
+                                  *entry_id);
   }
 
   SidePanelCoordinator::Show(entry_id, open_trigger);
