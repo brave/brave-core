@@ -202,8 +202,8 @@ version = "0.1"
 build-script-outputs = ["tables.rs"]
 
 [dependencies.uuid]
-version = "0.8"
-features = ["serde"]
+version = "1"
+features = ["v4"]
 [patch.crates-io.adblock_v0_8]
 path = "adblock/v0_8/crate"
 package = "adblock"
@@ -1307,10 +1307,6 @@ package = "urlencoding"
 [patch.crates-io.utf-8_v0_7]
 path = "utf_8/v0_7/crate"
 package = "utf-8"
-
-[patch.crates-io.uuid_v0_8]
-path = "uuid/v0_8/crate"
-package = "uuid"
 
 [patch.crates-io.uuid_v1]
 path = "uuid/v1/crate"
