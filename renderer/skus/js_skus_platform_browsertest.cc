@@ -105,6 +105,7 @@ IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest, FetchOrderCredentialsError) {
   const GURL url = https_server_.GetURL("account.brave.software", "/");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   content::ExecuteScriptAsync(web_contents()->GetPrimaryMainFrame(), script);
+  // This message comes from an error by the SKUs SDK in Rust.
   std::u16string expected_title(u"HTTP request failed");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
