@@ -359,7 +359,7 @@
     "@brave/brave-ui": "0.40.4",
     "@brave/leo": "github:brave/leo#99fe83ce417b4dadc22e6c9989f8f52f9e39daa5",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@brave/wallet-standard-brave": "~0.0.11",
+    "@brave/wallet-standard-brave": "0.0.12",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
