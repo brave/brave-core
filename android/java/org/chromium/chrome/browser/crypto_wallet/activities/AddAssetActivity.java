@@ -244,7 +244,8 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
         //     });
         // }
 
-        if (tokenName.isEmpty() || tokenSymbol.isEmpty()
+        if (tokenName.isEmpty()
+                || tokenSymbol.isEmpty()
                 || (mNetworkInfo.coin == CoinType.ETH
                         && ((mNftsOnly && mTokenIdEdit.getText().toString().isEmpty())
                                 || mTokenDecimalsEdit.getText().toString().isEmpty()))) {
