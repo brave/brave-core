@@ -175,5 +175,6 @@ interface PlaylistServiceObserver {
 };
 
 interface PlaylistRenderFrameBrowserClient {
+  OnBlobURL(string blob_url);
   OnMediaUpdatedFromRenderFrame();
 };

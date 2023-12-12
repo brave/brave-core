@@ -211,6 +211,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
+  void DownloadBlob(content::WebContents* contents, const std::string& blob_url);
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
@@ -393,6 +394,9 @@ class PlaylistService : public KeyedService,
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
 #endif  // BUILDFLAG(IS_ANDROID)
+
+  mojom::PlaylistItemPtr temp_item{};
+  DownloadMediaFileCallback temp_callback{};
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };

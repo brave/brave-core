@@ -96,6 +96,9 @@ void PlaylistJSHandler::BindFunctionsToWorkerObject(
     BindFunctionToObject(isolate, worker_object, "onProgress",
                          base::BindRepeating(&PlaylistJSHandler::OnProgress,
                                              weak_ptr_factory_.GetWeakPtr()));
+    BindFunctionToObject(isolate, worker_object, "onBlobURL",
+                         base::BindRepeating(&PlaylistJSHandler::OnBlobURL,
+                                             weak_ptr_factory_.GetWeakPtr()));
   } else {
     BindFunctionToObject(isolate, worker_object, "onMediaUpdated",
                          base::BindRepeating(&PlaylistJSHandler::OnMediaUpdated,
@@ -105,6 +108,16 @@ void PlaylistJSHandler::BindFunctionsToWorkerObject(
 
 void PlaylistJSHandler::OnProgress(const std::string& value) {
   DVLOG(2) << "Progress: " << value;
+}
+
+void PlaylistJSHandler::OnBlobURL(const std::string& blob_url) {
+  DVLOG(2) << __FUNCTION__ << " " << blob_url;
+
+  if (!EnsureConnectedToClient()) {
+    return;
+  }
+
+  client_->OnBlobURL(blob_url);
 }
 
 void PlaylistJSHandler::OnMediaUpdated(const std::string& src) {

@@ -172,8 +172,10 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
       return;
     }
 
-    DVLOG(2) << "Try detecting media files from existing web contents: "
-             << web_contents_->GetVisibleURL();
+    if (web_contents_) {
+      DVLOG(2) << "Try detecting media files from existing web contents: "
+               << web_contents_->GetVisibleURL();
+    }
     requested_url_ = weak_contents->GetVisibleURL();
     GetMedia(weak_contents.get());
   }
@@ -308,9 +310,10 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
-    if (GURL media_url(*src); !media_url.SchemeIs(url::kHttpsScheme) &&
-                              !media_url.SchemeIs(url::kBlobScheme)) {
-      LOG(ERROR) << __func__ << "media scheme is not https:// or blob:";
+    if (GURL media_url(*src);
+        !media_url.SchemeIs(url::kHttpsScheme) && !media_url.SchemeIsBlob()) {
+      LOG(ERROR) << __func__
+                 << "Unsupported scheme: " << media_url.scheme_piece();
       continue;
     }
 

@@ -20,6 +20,25 @@ PlaylistRenderFrameBrowserClient::~PlaylistRenderFrameBrowserClient() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
+void PlaylistRenderFrameBrowserClient::OnBlobURL(const std::string& blob_url) {
+  DVLOG(2) << __FUNCTION__ << " " << frame_id_;
+
+  auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
+  if (!render_frame_host) {
+    return;
+  }
+
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  if (service_) {
+    service_->DownloadBlob(web_contents, blob_url);
+  }
+}
+
 void PlaylistRenderFrameBrowserClient::OnMediaUpdatedFromRenderFrame() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);

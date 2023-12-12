@@ -25,6 +25,7 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom-forward.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
@@ -398,8 +399,11 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
   web_contents_ = content::WebContents::Create(create_params);
   content::NavigationController& controller = web_contents_->GetController();
   auto load_url_params =
-      content::NavigationController::LoadURLParams(item->media_source);
+      content::NavigationController::LoadURLParams(item->page_source);
   controller.LoadURLWithParams(load_url_params);
+
+  temp_item = item->Clone();
+  temp_callback = std::move(callback);
 
   // auto job = std::make_unique<PlaylistMediaFileDownloadManager::DownloadJob>();
   // job->item = item.Clone();
@@ -1135,6 +1139,8 @@ void PlaylistService::OnMediaFileDownloadFinished(
   if (callback) {
     std::move(callback).Run(item.Clone());
   }
+
+  web_contents_.reset();
 }
 
 void PlaylistService::OnEnabledPrefChanged() {
@@ -1160,6 +1166,30 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
   observers_.Add(std::move(observer));
+}
+
+void PlaylistService::DownloadBlob(content::WebContents* contents,
+                                   const std::string& blob_url) {
+  if (!*enabled_pref_) {
+    return;
+  }
+
+  if (web_contents_.get() != contents) {
+    return;
+  }
+
+  temp_item->media_path = temp_item->media_source = GURL(blob_url);
+
+  auto job = std::make_unique<PlaylistMediaFileDownloadManager::DownloadJob>();
+  job->item = temp_item->Clone();
+  job->on_progress_callback =
+      base::BindRepeating(&PlaylistService::OnMediaFileDownloadProgressed,
+                          weak_factory_.GetWeakPtr());
+  job->on_finish_callback = base::BindOnce(
+      &PlaylistService::OnMediaFileDownloadFinished, weak_factory_.GetWeakPtr(),
+      false, std::move(temp_callback));
+
+  media_file_download_manager_->DownloadMediaFile(std::move(job));
 }
 
 void PlaylistService::OnMediaUpdatedFromContents(
@@ -1303,7 +1333,7 @@ bool PlaylistService::GetMediaPath(const std::string& id,
     }
 
     if (!extension.empty()) {
-      *media_path = media_path->AddExtensionASCII(extension);
+      *media_path = media_path->AddExtensionASCII("mp4");
     }
   }
 

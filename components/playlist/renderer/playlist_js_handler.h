@@ -37,6 +37,7 @@ class PlaylistJSHandler {
                                    v8::Local<v8::Object> worker_object);
 
   void OnProgress(const std::string& src);
+  void OnBlobURL(const std::string& blob_url);
   void OnMediaUpdated(const std::string& src);
 
   content::RenderFrame* render_frame_ = nullptr;

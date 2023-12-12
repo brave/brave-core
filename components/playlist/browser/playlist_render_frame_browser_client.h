@@ -22,6 +22,7 @@ class PlaylistRenderFrameBrowserClient
   ~PlaylistRenderFrameBrowserClient() override;
 
   // mojom::PlaylistRenderFrameBrowserClient:
+  void OnBlobURL(const std::string& blob_url) override;
   void OnMediaUpdatedFromRenderFrame() override;
 
  private:
