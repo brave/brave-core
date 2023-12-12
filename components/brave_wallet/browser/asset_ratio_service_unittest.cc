@@ -92,18 +92,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         }));
   }
 
-  void GetTokenInfo(const std::string& contract_address,
-                    mojom::BlockchainTokenPtr expected_token) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetTokenInfo(
-        contract_address,
-        base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-          EXPECT_EQ(token, expected_token);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
   void TestGetBuyUrlV1(mojom::OnRampProvider on_ramp_provider,
                        const std::string& chain_id,
                        const std::string& address,
@@ -415,60 +403,6 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
             AssetRatioService::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::All)
                 .path());
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
-  std::string url(GetAssetRatioBaseURL());
-  EXPECT_EQ(url +
-                "/v3/etherscan/"
-                "passthrough?module=token&action=tokeninfo&contractaddress="
-                "0xdac17f958d2ee523a2206206994597c13d831ec7",
-            AssetRatioService::GetTokenInfoURL(
-                "0xdac17f958d2ee523a2206206994597c13d831ec7")
-                .spec());
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
-  SetInterceptor(R"(
-    {
-      "result": [{
-        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-        "tokenName": "Tether USD",
-        "symbol": "USDT",
-        "divisor": "6",
-        "tokenType": "ERC20",
-        "totalSupply": "39828710009874796",
-        "blueCheckmark": "true",
-        "description": "Tether gives you the joint benefits of open...",
-        "website": "https://tether.to/",
-        "email": "support@tether.to",
-        "blog": "https://tether.to/category/announcements/",
-        "reddit": "",
-        "slack": "",
-        "facebook": "",
-        "twitter": "https://twitter.com/Tether_to",
-        "bitcointalk": "",
-        "github": "",
-        "telegram": "",
-        "wechat": "",
-        "linkedin": "",
-        "discord": "",
-        "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-        "tokenPriceUSD": "1.000000000000000000"
-      }]
-    }
-  )");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7",
-               mojom::BlockchainToken::New(
-                   "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD",
-                   "", true, false, false, false, false, "USDT", 6, true, "",
-                   "", "0x1", mojom::CoinType::ETH));
-
-  SetInterceptor("unexpected response");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
-
-  SetErrorInterceptor("error");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetCoinMarkets) {

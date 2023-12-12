@@ -29,10 +29,6 @@ std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
 
 std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
 
-mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
-                                         const std::string& chain_id,
-                                         mojom::CoinType coin);
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_

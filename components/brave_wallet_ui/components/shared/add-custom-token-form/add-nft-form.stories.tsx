@@ -14,7 +14,6 @@ export const _AddNftForm = () => {
       <AddNftForm
         contractAddress={contractAddress}
         onHideForm={() => undefined}
-        onTokenFound={setContractAddress}
         onChangeContractAddress={setContractAddress}
       />
     </WalletPageStory>

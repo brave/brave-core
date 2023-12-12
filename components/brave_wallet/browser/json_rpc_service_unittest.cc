@@ -753,6 +753,40 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
     return false;
   }
+
+  void SetEthTokenInfoInterceptor(const GURL& network_url,
+                                  const std::string& chain_id,
+                                  const std::string& symbol,
+                                  const std::string& name,
+                                  const std::string& decimals) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url, chain_id](const network::ResourceRequest& request) {
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("0x95d89b41") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + symbol + "\"}");
+          }
+
+          if (request_string.find("0x06fdde03") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + name + "\"}");
+          }
+
+          if (request_string.find("0x313ce567") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + decimals +
+                    "\"}");
+          }
+        }));
+  }
+
   void SetEthChainIdInterceptor(const GURL& network_url,
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -1319,6 +1353,25 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
           EXPECT_EQ(decimals, expected_decimals);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestGetEthTokenInfo(const std::string& contract_address,
+                           const std::string& chain_id,
+                           mojom::BlockchainTokenPtr expected_token,
+                           mojom::ProviderError expected_error,
+                           const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetEthTokenInfo(
+        contract_address, chain_id,
+        base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          // EXPECT_EQ(token, expected_token);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -6719,6 +6772,95 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenDecimals) {
                           mojom::kMainnetChainId, "",
                           mojom::ProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthTokenInfo) {
+  const std::string bat_decimals_result =
+      "0x"
+      "0000000000000000000000000000000000000000000000000000000000000012";
+  const std::string bat_symbol_result =
+      "0x"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      "4241540000000000000000000000000000000000000000000000000000000000";
+  const std::string bat_name_result =
+      "0x"
+      "000000000000000000000000000000000000000000000000000000000000002000"
+      "000000000000000000000000000000000000000000000000000000000000154261"
+      "73696320417474656e74696f6e20546f6b656e0000000000000000000000";
+
+  SetEthTokenInfoInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+      mojom::kMainnetChainId, bat_symbol_result, bat_name_result,
+      bat_decimals_result);
+
+  // Setup tokens list to populate coingecko id
+  std::string coingecko_ids_json = R"({
+    "0x1": {
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": "basic-attention-token"
+    }
+  })";
+  std::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(coingecko_ids_json);
+  ASSERT_TRUE(coingecko_ids_map);
+  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
+      std::move(*coingecko_ids_map));
+
+  TestGetEthTokenInfo(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
+      mojom::BlockchainToken::New(
+          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+          "", false, false, false, false, false, "BAT", 18, true, "",
+          "basic-attention-token", "0x1", mojom::CoinType::ETH),
+      mojom::ProviderError::kSuccess, "");
+
+  // Invalid (empty) symbol response does not yield error
+  SetEthTokenInfoInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+      mojom::kMainnetChainId, "", bat_name_result, bat_decimals_result);
+  TestGetEthTokenInfo(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
+      mojom::BlockchainToken::New(
+          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+          "", false, false, false, false, false, "", 18, true, "",
+          "basic-attention-token", "0x1", mojom::CoinType::ETH),
+      mojom::ProviderError::kSuccess, "");
+
+  // Invalid (empty) name response does not yield error
+  SetEthTokenInfoInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+      mojom::kMainnetChainId, bat_symbol_result, "", bat_decimals_result);
+  TestGetEthTokenInfo(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
+      mojom::BlockchainToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                                  "", "", false, false, false, false, false,
+                                  "BAT", 18, true, "", "basic-attention-token",
+                                  "0x1", mojom::CoinType::ETH),
+      mojom::ProviderError::kSuccess, "");
+
+  // Empty decimals response does not yield error
+  SetEthTokenInfoInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+      mojom::kMainnetChainId, bat_symbol_result, bat_name_result, "");
+  TestGetEthTokenInfo(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
+      mojom::BlockchainToken::New(
+          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+          "", false, false, false, false, false, "BAT", 0, true, "",
+          "basic-attention-token", "0x1", mojom::CoinType::ETH),
+      mojom::ProviderError::kSuccess, "");
+
+  // Invalid decimals response does not yield error
+  SetEthTokenInfoInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+      mojom::kMainnetChainId, bat_symbol_result, bat_name_result, "invalid");
+  TestGetEthTokenInfo(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
+      mojom::BlockchainToken::New(
+          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+          "", false, false, false, false, false, "BAT", 0, true, "",
+          "basic-attention-token", "0x1", mojom::CoinType::ETH),
+      mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {

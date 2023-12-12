@@ -10,7 +10,6 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
   BraveWallet,
-  GetBlockchainTokenInfoReturnInfo,
   SolanaSerializedTransactionParams
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -151,13 +150,6 @@ export const onConnectHardwareWallet = (
 export async function isStrongPassword(value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringService.isStrongPassword(value)).result
-}
-
-export async function getBlockchainTokenInfo(
-  contractAddress: string
-): Promise<GetBlockchainTokenInfoReturnInfo> {
-  const apiProxy = getAPIProxy()
-  return await apiProxy.assetRatioService.getTokenInfo(contractAddress)
 }
 
 export async function getSellAssetUrl(args: {

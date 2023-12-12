@@ -525,40 +525,6 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
 }
 
 // static
-GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
-  std::string spec = base::StringPrintf(
-      "%s/v3/etherscan/"
-      "passthrough?module=token&action=tokeninfo&contractaddress=%s",
-      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
-                                    : base_url_for_test_.spec().c_str(),
-      contract_address.c_str());
-  return GURL(spec);
-}
-
-void AssetRatioService::GetTokenInfo(const std::string& contract_address,
-                                     GetTokenInfoCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&AssetRatioService::OnGetTokenInfo,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request(
-      "GET", GetTokenInfoURL(contract_address), "", "",
-      std::move(internal_callback), MakeBraveServicesKeyHeader(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
-}
-
-void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
-                                       APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::move(callback).Run(ParseTokenInfo(api_request_result.value_body(),
-                                         mojom::kMainnetChainId,
-                                         mojom::CoinType::ETH));
-}
-
-// static
 GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
   GURL url = GURL(base::StringPrintf("%s/v2/market/provider/coingecko",
