@@ -252,6 +252,7 @@ pub struct TimeLimitedV2Credentials {
     pub creds: Vec<Token>,
     pub unblinded_creds: Option<Vec<TimeLimitedV2Credential>>,
     pub state: CredentialState,
+    pub request_id: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
