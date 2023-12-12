@@ -279,7 +279,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   SetUpP3AService();
 
   std::vector<std::string> test_histograms(
-      {std::string(*p3a::kCollectedSlowHistograms.begin()),
+      {std::string(*(p3a::kCollectedSlowHistograms.begin() + 1)),
        std::string(kTestExampleMetric)});
 
   p3a_service_->RegisterDynamicMetric(kTestExampleMetric, MetricLogType::kSlow);

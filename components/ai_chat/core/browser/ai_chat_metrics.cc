@@ -112,6 +112,8 @@ void AIChatMetrics::RecordNewChat() {
 
 void AIChatMetrics::RecordNewPrompt() {
   UMA_HISTOGRAM_EXACT_LINEAR(kUsageDailyHistogramName, is_premium_ ? 2 : 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kUsageMonthlyHistogramName, is_premium_ ? 2 : 1,
+                             3);
   prompt_count_storage_.AddDelta(1);
   report_debounce_timer_.Start(
       FROM_HERE, kReportDebounceDelay,
