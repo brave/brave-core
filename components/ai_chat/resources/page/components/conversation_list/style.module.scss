@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  font: var(--leo-font-secondary-default-regular);
+  font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   padding: 16px;
   background-color: var(--leo-color-page-background);
@@ -42,7 +42,7 @@
 .suggestedQuestionLabel {
   --leo-icon-size: 18px;
 
-  font: var(--leo-font-secondary-small-regular);
+  font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
   padding-bottom: 16px;
 }
@@ -51,7 +51,7 @@
   display: flex;
   align-items: flex-start;
   text-align: left;
-  font: var(--leo-font-secondary-default-regular);
+  font: var(--leo-font-default-regular);
 }
 
 .questionsList {
