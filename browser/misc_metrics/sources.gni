@@ -8,22 +8,22 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/doh_metrics.cc",
   "//brave/browser/misc_metrics/doh_metrics.h",
-  "//brave/browser/misc_metrics/page_metrics_service_factory.cc",
-  "//brave/browser/misc_metrics/page_metrics_service_factory.h",
   "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
   "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
   "//brave/browser/misc_metrics/process_misc_metrics.cc",
   "//brave/browser/misc_metrics/process_misc_metrics.h",
+  "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
+  "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
+  "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.cc",
+  "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
   "//brave/browser/misc_metrics/uptime_monitor.cc",
   "//brave/browser/misc_metrics/uptime_monitor.h",
 ]
 
 if (!is_android) {
   brave_browser_misc_metrics_sources += [
-    "//brave/browser/misc_metrics/extension_metrics_service.cc",
-    "//brave/browser/misc_metrics/extension_metrics_service.h",
-    "//brave/browser/misc_metrics/extension_metrics_service_factory.cc",
-    "//brave/browser/misc_metrics/extension_metrics_service_factory.h",
+    "//brave/browser/misc_metrics/extension_metrics.cc",
+    "//brave/browser/misc_metrics/extension_metrics.h",
     "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
     "//brave/browser/misc_metrics/vertical_tab_metrics.h",
   ]
@@ -31,8 +31,6 @@ if (!is_android) {
   brave_browser_misc_metrics_sources += [
     "//brave/browser/misc_metrics/misc_android_metrics.cc",
     "//brave/browser/misc_metrics/misc_android_metrics.h",
-    "//brave/browser/misc_metrics/misc_android_metrics_factory.cc",
-    "//brave/browser/misc_metrics/misc_android_metrics_factory.h",
   ]
 }
 

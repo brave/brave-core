@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/extension_metrics_service.h"
+#include "brave/browser/misc_metrics/extension_metrics.h"
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
@@ -30,7 +30,7 @@ constexpr base::TimeDelta kReportDebounceTime = base::Seconds(10);
 
 }  // namespace
 
-ExtensionMetricsService::ExtensionMetricsService(
+ExtensionMetrics::ExtensionMetrics(
     extensions::ExtensionRegistry* extension_registry)
     : extension_registry_(extension_registry), observation_(this) {
   CHECK(extension_registry);
@@ -43,9 +43,9 @@ ExtensionMetricsService::ExtensionMetricsService(
   ScheduleAdBlockMetricReport();
 }
 
-ExtensionMetricsService::~ExtensionMetricsService() = default;
+ExtensionMetrics::~ExtensionMetrics() = default;
 
-void ExtensionMetricsService::Shutdown() {
+void ExtensionMetrics::Shutdown() {
   report_debounce_timer_.Stop();
   if (extension_registry_) {
     observation_.Reset();
@@ -53,7 +53,7 @@ void ExtensionMetricsService::Shutdown() {
   }
 }
 
-void ExtensionMetricsService::OnExtensionLoaded(
+void ExtensionMetrics::OnExtensionLoaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
   if (kPopularAdBlockExtensions.contains(extension->id())) {
@@ -62,7 +62,7 @@ void ExtensionMetricsService::OnExtensionLoaded(
   }
 }
 
-void ExtensionMetricsService::OnExtensionUninstalled(
+void ExtensionMetrics::OnExtensionUninstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     extensions::UninstallReason reason) {
@@ -72,14 +72,14 @@ void ExtensionMetricsService::OnExtensionUninstalled(
   }
 }
 
-void ExtensionMetricsService::ScheduleAdBlockMetricReport() {
+void ExtensionMetrics::ScheduleAdBlockMetricReport() {
   report_debounce_timer_.Start(
       FROM_HERE, kReportDebounceTime,
-      base::BindOnce(&ExtensionMetricsService::ReportAdBlockMetric,
+      base::BindOnce(&ExtensionMetrics::ReportAdBlockMetric,
                      base::Unretained(this)));
 }
 
-void ExtensionMetricsService::ReportAdBlockMetric() {
+void ExtensionMetrics::ReportAdBlockMetric() {
   UMA_HISTOGRAM_BOOLEAN(kAdblockExtensionsHistogramName,
                         !adblock_extensions_loaded_.empty());
 }

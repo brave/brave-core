@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
-#define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_H_
+#define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_H_
 
 #include <memory>
 #include <utility>
@@ -13,7 +13,6 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/keyed_service/core/keyed_service.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -29,11 +28,11 @@ inline constexpr char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded";
 inline constexpr char kDomainsLoadedHistogramName[] =
     "Brave.Core.DomainsLoaded";
 
-class PageMetricsService : public KeyedService {
+class PageMetrics {
  public:
-  PageMetricsService(PrefService* local_state,
-                     history::HistoryService* history_service);
-  ~PageMetricsService() override;
+  PageMetrics(PrefService* local_state,
+              history::HistoryService* history_service);
+  ~PageMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -62,4 +61,4 @@ class PageMetricsService : public KeyedService {
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/extension_metrics_service.h"
+#include "brave/browser/misc_metrics/extension_metrics.h"
 
 #include <memory>
 
@@ -21,9 +21,9 @@ constexpr char kUBOExtensionName[] = "uBO";
 constexpr char kUBOExtensionId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
 }  // namespace
 
-class ExtensionMetricsServiceTest : public testing::Test {
+class ExtensionMetricsTest : public testing::Test {
  public:
-  ExtensionMetricsServiceTest()
+  ExtensionMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
  protected:
@@ -37,17 +37,17 @@ class ExtensionMetricsServiceTest : public testing::Test {
 
   void SetUpMetrics() {
     extension_metrics_ =
-        std::make_unique<ExtensionMetricsService>(extension_registry_.get());
+        std::make_unique<ExtensionMetrics>(extension_registry_.get());
   }
 
   scoped_refptr<const extensions::Extension> ubo_extension_;
   std::unique_ptr<extensions::ExtensionRegistry> extension_registry_;
-  std::unique_ptr<ExtensionMetricsService> extension_metrics_;
+  std::unique_ptr<ExtensionMetrics> extension_metrics_;
   base::HistogramTester histogram_tester_;
   content::BrowserTaskEnvironment task_environment_;
 };
 
-TEST_F(ExtensionMetricsServiceTest, InstallAtRuntime) {
+TEST_F(ExtensionMetricsTest, InstallAtRuntime) {
   SetUpMetrics();
   histogram_tester_.ExpectTotalCount(kAdblockExtensionsHistogramName, 0);
 
@@ -79,7 +79,7 @@ TEST_F(ExtensionMetricsServiceTest, InstallAtRuntime) {
   histogram_tester_.ExpectTotalCount(kAdblockExtensionsHistogramName, 3);
 }
 
-TEST_F(ExtensionMetricsServiceTest, LoadedAtInit) {
+TEST_F(ExtensionMetricsTest, LoadedAtInit) {
   extension_registry_->AddEnabled(ubo_extension_);
   SetUpMetrics();
   histogram_tester_.ExpectTotalCount(kAdblockExtensionsHistogramName, 0);

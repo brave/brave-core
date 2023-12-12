@@ -5,8 +5,9 @@
 
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 
-#include "brave/browser/misc_metrics/page_metrics_service_factory.h"
-#include "brave/components/misc_metrics/page_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace misc_metrics {
@@ -14,22 +15,23 @@ namespace misc_metrics {
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<PageMetricsTabHelper>(*web_contents) {
-  page_metrics_service_ = PageMetricsServiceFactory::GetServiceForContext(
-      web_contents->GetBrowserContext());
-  DCHECK(page_metrics_service_);
+  page_metrics_ = ProfileMiscMetricsServiceFactory::GetServiceForContext(
+                      web_contents->GetBrowserContext())
+                      ->GetPageMetrics();
+  DCHECK(page_metrics_);
 }
 
 PageMetricsTabHelper::~PageMetricsTabHelper() = default;
 
 void PageMetricsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!page_metrics_service_ || !navigation_handle->IsInMainFrame() ||
+  if (!page_metrics_ || !navigation_handle->IsInMainFrame() ||
       navigation_handle->IsSameDocument() ||
       !navigation_handle->HasCommitted() ||
       !navigation_handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     return;
   }
-  page_metrics_service_->IncrementPagesLoadedCount();
+  page_metrics_->IncrementPagesLoadedCount();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PageMetricsTabHelper);
