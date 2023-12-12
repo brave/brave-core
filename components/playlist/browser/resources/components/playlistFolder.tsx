@@ -166,7 +166,7 @@ const StyledEmptyFolderIcon = styled.div`
 const StyledEmptyFolderMessage = styled.div`
   color: ${color.text.tertiary};
   text-align: center;
-  font: ${font.primary.default.regular};
+  font: ${font.default.regular};
   padding: 0px 40px;
 `
 

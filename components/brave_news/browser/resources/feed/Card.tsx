@@ -12,7 +12,7 @@ import { configurationCache, useBraveNews } from '../shared/Context';
 export const Header = styled.h2`
   margin: 0;
 
-  font: ${font.primary.heading.h2};
+  font: ${font.heading.h2};
   color: var(--bn-glass-100);
 
   --leo-icon-size: 18px;
@@ -27,7 +27,7 @@ export const Title = styled.h3`
   margin: 0;
 
   text-align: start;
-  font: ${font.primary.default.semibold};
+  font: ${font.default.semibold};
   color: var(--bn-glass-100);
 
 

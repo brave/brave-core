@@ -9,6 +9,7 @@ import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 // Fonts
 import '../ui/webui/resources/fonts/poppins.css'
 import '../ui/webui/resources/fonts/manrope.css'
+import '../ui/webui/resources/fonts/inter.css'
 
 // Icon path
 // The storybook might be hosted at the root, but it might also be hosted

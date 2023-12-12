@@ -97,7 +97,7 @@ export const LearnMoreLink = styled.a`
   line-height: 16px;
   text-decoration: none;
   color: ${leo.color.text.interactive};
-  font: ${leo.font.primary.xSmall.regular};
+  font: ${leo.font.xSmall.regular};
 `
 
 export const OptionsRow = styled.div`

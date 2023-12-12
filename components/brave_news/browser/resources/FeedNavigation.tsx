@@ -30,7 +30,7 @@ const Container = styled(Card)`
 `
 
 const Heading = styled.h3`
-  font: ${font.primary.default.semibold};
+  font: ${font.default.semibold};
   color: var(--bn-glass-25);
   margin: 0;
 
@@ -50,7 +50,7 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?
   width: 100%;
 
   color: ${p => p.faint ? `var(--bn-glass-25)` : `var(--bn-glass-70)`};
-  font: ${p => font.primary.small[p.bold ? 'semibold' : 'regular']};
+  font: ${p => font.small[p.bold ? 'semibold' : 'regular']};
   cursor: pointer;
 
   &:hover {
@@ -76,7 +76,7 @@ const Section = styled.details`
     align-items: center;
     gap: ${spacing.m};
     list-style: none;
-    font: ${font.primary.small.semibold};
+    font: ${font.small.semibold};
 
     cursor: pointer;
 

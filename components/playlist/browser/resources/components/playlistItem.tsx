@@ -118,7 +118,7 @@ const ItemInfoContainer = styled.div`
 
 const PlaylistItemName = styled.span`
   color: ${color.text.primary};
-  font: ${font.primary.default.semibold};
+  font: ${font.default.semibold};
   cursor: default;
   max-height: 48px;
   overflow: hidden;
@@ -130,7 +130,7 @@ const ItemDetailsContainer = styled.div`
   gap: 8px;
   align-self: stretch;
   color: ${color.text.tertiary};
-  font: ${font.primary.small.regular};
+  font: ${font.small.regular};
 `
 
 const CachedIcon = styled(Icon)`
