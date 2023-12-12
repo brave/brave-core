@@ -18,18 +18,15 @@ import {
 } from '../../shared/create-placeholder-icon/index'
 
 // Styled Components
+import { HorizontalSpace, Row } from '../../shared/style'
+import { BubbleContainer } from '../shared-styles'
 import {
   AssetIcon,
   AssetButton,
   AssetTicker,
   CaratDownIcon,
-  Input,
-  Row,
-  ButtonLeftSide,
-  Spacer
+  Input
 } from './buy_amount_input.style'
-
-import { BubbleContainer } from '../shared-styles'
 
 export interface Props {
   autoFocus?: boolean
@@ -76,13 +73,13 @@ export function BuyAmountInput({
   // render
   return (
     <BubbleContainer isV2>
-      <Row>
+      <Row justifyContent='space-between'>
         <AssetButton onClick={onShowCurrencySelection}>
           <AssetTicker role='currency'>
             {CurrencySymbols[selectedFiatCurrencyCode]}
           </AssetTicker>
           <CaratDownIcon />
-          <Spacer />
+          <HorizontalSpace space='8px' />
         </AssetButton>
         {!(selectedAsset?.isErc721 || selectedAsset?.isNft) && (
           <Input
@@ -96,7 +93,7 @@ export function BuyAmountInput({
           />
         )}
         <AssetButton isERC721={selectedAsset?.isErc721 || selectedAsset?.isNft}>
-          <ButtonLeftSide>
+          <Row>
             <AssetIconWithPlaceholder
               asset={selectedAsset}
               network={selectedNetwork}
@@ -107,7 +104,7 @@ export function BuyAmountInput({
                 ? '#' + new Amount(selectedAsset.tokenId).toNumber()
                 : ''}
             </AssetTicker>
-          </ButtonLeftSide>
+          </Row>
         </AssetButton>
       </Row>
     </BubbleContainer>

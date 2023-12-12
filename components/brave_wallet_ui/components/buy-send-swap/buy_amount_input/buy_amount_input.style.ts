@@ -12,14 +12,6 @@ import {
   WalletButton
 } from '../../shared/style'
 
-export const Row = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`
-
 export const AssetButton = styled(WalletButton)<{ isERC721?: boolean }>`
   display: flex;
   flex-direction: row;
@@ -32,13 +24,6 @@ export const AssetButton = styled(WalletButton)<{ isERC721?: boolean }>`
   border: none;
   padding: 0px;
   margin: 0px;
-`
-
-export const ButtonLeftSide = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -118,8 +103,4 @@ export const Input = styled.input<{ hasError?: boolean }>`
     -webkit-appearance: none;
     margin: 0;
   }
-`
-
-export const Spacer = styled.div`
-  padding-right: 8px;
 `
