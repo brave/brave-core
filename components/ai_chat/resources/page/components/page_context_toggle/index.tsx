@@ -29,6 +29,7 @@ function PageContextToggle() {
         checked={context.shouldSendPageContents}
         className={styles.toggle}
       >
+        <span slot="on-icon"/>
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
           <Tooltip visible={showTooltip}>

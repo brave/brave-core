@@ -27,9 +27,6 @@
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
   </message>
-  <message name="IDS_CHAT_UI_SUGGESTIONS_TITLE" desc="Title for suggestions of what to ask the AI Chat">
-    Suggested follow-ups
-  </message>
   <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
     Suggest questions…
   </message>

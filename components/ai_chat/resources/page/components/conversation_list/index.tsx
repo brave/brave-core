@@ -118,9 +118,6 @@ function ConversationList() {
       </div>
       {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
-          <div className={styles.suggestedQuestionLabel}>
-            {getLocale('suggestionsTitle')}
-          </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
               <Button
