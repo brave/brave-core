@@ -19,13 +19,13 @@ class TabDragController : public TabDragControllerChromium {
 
   // Making this virtual method is really painful as "Init" is too common name.
   // So, just hide Chromium's Init and make clients use this version
-  void Init(TabDragContext* source_context,
-            TabSlotView* source_view,
-            const std::vector<TabSlotView*>& dragging_views,
-            const gfx::Point& mouse_offset,
-            int source_view_offset,
-            ui::ListSelectionModel initial_selection_model,
-            ui::mojom::DragEventSource event_source);
+  Liveness Init(TabDragContext* source_context,
+                TabSlotView* source_view,
+                const std::vector<TabSlotView*>& dragging_views,
+                const gfx::Point& mouse_offset,
+                int source_view_offset,
+                ui::ListSelectionModel initial_selection_model,
+                ui::mojom::DragEventSource event_source);
 
   // TabDragControllerChromium:
   gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;

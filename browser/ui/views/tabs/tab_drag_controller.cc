@@ -45,16 +45,20 @@ TabDragController::TabDragController() = default;
 
 TabDragController::~TabDragController() = default;
 
-void TabDragController::Init(TabDragContext* source_context,
-                             TabSlotView* source_view,
-                             const std::vector<TabSlotView*>& dragging_views,
-                             const gfx::Point& mouse_offset,
-                             int source_view_offset,
-                             ui::ListSelectionModel initial_selection_model,
-                             ui::mojom::DragEventSource event_source) {
-  TabDragControllerChromium::Init(source_context, source_view, dragging_views,
-                                  mouse_offset, source_view_offset,
-                                  initial_selection_model, event_source);
+TabDragController::Liveness TabDragController::Init(
+    TabDragContext* source_context,
+    TabSlotView* source_view,
+    const std::vector<TabSlotView*>& dragging_views,
+    const gfx::Point& mouse_offset,
+    int source_view_offset,
+    ui::ListSelectionModel initial_selection_model,
+    ui::mojom::DragEventSource event_source) {
+  if (TabDragControllerChromium::Init(
+          source_context, source_view, dragging_views, mouse_offset,
+          source_view_offset, initial_selection_model,
+          event_source) == TabDragController::Liveness::DELETED) {
+    return TabDragController::Liveness::DELETED;
+  }
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     if (base::ranges::any_of(dragging_views, [](auto* slot_view) {
@@ -75,7 +79,7 @@ void TabDragController::Init(TabDragContext* source_context,
   is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_) {
-    return;
+    return TabDragController::Liveness::ALIVE;
   }
 
   // Adjust coordinate for vertical mode.
@@ -86,6 +90,7 @@ void TabDragController::Init(TabDragContext* source_context,
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
+  return TabDragController::Liveness::ALIVE;
 }
 
 gfx::Point TabDragController::GetAttachedDragPoint(
