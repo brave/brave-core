@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.58.2](https://github.com/brave/brave-ios/releases/tag/v1.58.2)
+
+- Fixed crash when loading https://dailymail.co.uk. ([#8346](https://github.com/brave/brave-ios/issues/8346))
+- Fixed playlist not working with high quality videos on https://youtube.com. ([#8350](https://github.com/brave/brave-ios/issues/8350))
+
 ## [1.58.1](https://github.com/brave/brave-ios/releases/tag/v1.58.1)
 
 - Fixed Adblock initialization crash. ([#8334](https://github.com/brave/brave-ios/issues/8334))
