@@ -32,12 +32,16 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 
-public class BraveWalletPreferences
-        extends BravePreferenceFragment implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
+public class BraveWalletPreferences extends BravePreferenceFragment
+        implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private static final String TAG = "WalletPreferences";
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
-    /** @noinspection unused*/
+
+    /**
+     * @noinspection unused
+     */
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
+
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
     private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH =
             "nft_auto_discovery_switch";
@@ -83,7 +87,12 @@ public class BraveWalletPreferences
             mDefaultEthereumWallet.setOnPreferenceChangeListener(this);
             mDefaultEthereumWallet.setEnabled(false);
             if (mWalletModel != null) {
-                mWalletModel.getBraveWalletService().getDefaultEthereumWallet((@DefaultWallet.EnumType Integer defaultEthereumWallet) -> setupDefaultWalletPreference(mDefaultEthereumWallet, defaultEthereumWallet));
+                mWalletModel
+                        .getBraveWalletService()
+                        .getDefaultEthereumWallet(
+                                (@DefaultWallet.EnumType Integer defaultEthereumWallet) ->
+                                        setupDefaultWalletPreference(
+                                                mDefaultEthereumWallet, defaultEthereumWallet));
             }
         }
         mDefaultSolanaWallet = findPreference(PREF_DEFAULT_SOLANA_WALLET);
@@ -91,8 +100,12 @@ public class BraveWalletPreferences
             mDefaultSolanaWallet.setOnPreferenceChangeListener(this);
             mDefaultSolanaWallet.setEnabled(false);
             if (mWalletModel != null) {
-                mWalletModel.getBraveWalletService().getDefaultSolanaWallet((@DefaultWallet.EnumType Integer defaultSolanaWallet) -> setupDefaultWalletPreference(mDefaultSolanaWallet, defaultSolanaWallet));
-
+                mWalletModel
+                        .getBraveWalletService()
+                        .getDefaultSolanaWallet(
+                                (@DefaultWallet.EnumType Integer defaultSolanaWallet) ->
+                                        setupDefaultWalletPreference(
+                                                mDefaultSolanaWallet, defaultSolanaWallet));
             }
         }
 
@@ -107,15 +120,21 @@ public class BraveWalletPreferences
         initKeyringService();
     }
 
-    private void setupDefaultWalletPreference(@NonNull final BraveDialogPreference walletPreference, @DefaultWallet.EnumType final Integer defaultWallet) {
+    private void setupDefaultWalletPreference(
+            @NonNull final BraveDialogPreference walletPreference,
+            @DefaultWallet.EnumType final Integer defaultWallet) {
         walletPreference.setEnabled(true);
         if (defaultWallet == DefaultWallet.BRAVE_WALLET_PREFER_EXTENSION) {
             walletPreference.setSummary(
-                    requireActivity().getResources().getString(R.string.settings_default_wallet_option_2));
+                    requireActivity()
+                            .getResources()
+                            .getString(R.string.settings_default_wallet_option_2));
             walletPreference.setCheckedIndex(1);
         } else {
             walletPreference.setSummary(
-                    requireActivity().getResources().getString(R.string.settings_default_wallet_option_1));
+                    requireActivity()
+                            .getResources()
+                            .getString(R.string.settings_default_wallet_option_1));
             walletPreference.setCheckedIndex(0);
         }
     }
@@ -140,20 +159,31 @@ public class BraveWalletPreferences
     private void setUpNftDiscoveryPreference() {
         if (mWalletModel == null) return;
         mWeb3NftDiscoverySwitch = findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH);
-        mWalletModel.getCryptoModel().isNftDiscoveryEnabled(isNftDiscoveryEnabled -> mWeb3NftDiscoverySwitch.setChecked(isNftDiscoveryEnabled));
+        mWalletModel
+                .getCryptoModel()
+                .isNftDiscoveryEnabled(
+                        isNftDiscoveryEnabled ->
+                                mWeb3NftDiscoverySwitch.setChecked(isNftDiscoveryEnabled));
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(this);
 
         TextMessagePreference learnMorePreference =
                 findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE);
         if (learnMorePreference != null) {
             SpannableString learnMoreDesc =
-                    SpanApplier.applySpans(getString(R.string.settings_enable_nft_discovery_desc),
-                            new SpanApplier.SpanInfo("<LINK_1>", "</LINK_1>",
+                    SpanApplier.applySpans(
+                            getString(R.string.settings_enable_nft_discovery_desc),
+                            new SpanApplier.SpanInfo(
+                                    "<LINK_1>",
+                                    "</LINK_1>",
                                     new NoUnderlineClickableSpan(
-                                            requireContext(), R.color.brave_link, result -> {
-                                        TabUtils.openUrlInCustomTab(requireContext(),
-                                                WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
-                                    })));
+                                            requireContext(),
+                                            R.color.brave_link,
+                                            result -> {
+                                                TabUtils.openUrlInCustomTab(
+                                                        requireContext(),
+                                                        WalletConstants
+                                                                .NFT_DISCOVERY_LEARN_MORE_LINK);
+                                            })));
             learnMorePreference.setSummary(learnMoreDesc);
         }
     }
@@ -189,16 +219,20 @@ public class BraveWalletPreferences
 
     private void refreshAutolockView() {
         if (mKeyringService != null) {
-            mKeyringService.getAutoLockMinutes(minutes -> {
-                mPrefAutolock.setSummary(requireContext().getResources().getQuantityString(
-                        R.plurals.time_long_mins, minutes, minutes));
-                RecyclerView.ViewHolder viewHolder =
-                        getListView().findViewHolderForAdapterPosition(
-                                mPrefAutolock.getOrder());
-                if (viewHolder != null) {
-                    viewHolder.itemView.invalidate();
-                }
-            });
+            mKeyringService.getAutoLockMinutes(
+                    minutes -> {
+                        mPrefAutolock.setSummary(
+                                requireContext()
+                                        .getResources()
+                                        .getQuantityString(
+                                                R.plurals.time_long_mins, minutes, minutes));
+                        RecyclerView.ViewHolder viewHolder =
+                                getListView()
+                                        .findViewHolderForAdapterPosition(mPrefAutolock.getOrder());
+                        if (viewHolder != null) {
+                            viewHolder.itemView.invalidate();
+                        }
+                    });
         }
     }
 
@@ -213,11 +247,13 @@ public class BraveWalletPreferences
     public boolean onPreferenceChange(@NonNull Preference preference, Object object) {
         String key = preference.getKey();
         if (PREF_DEFAULT_ETHEREUM_WALLET.equals(key) && mWalletModel != null) {
-            @DefaultWallet.EnumType final int defaultEthereumWallet = convertToNativeDefaultWallet((Integer) object);
+            @DefaultWallet.EnumType
+            final int defaultEthereumWallet = convertToNativeDefaultWallet((Integer) object);
             mWalletModel.getBraveWalletService().setDefaultEthereumWallet(defaultEthereumWallet);
             setupDefaultWalletPreference(mDefaultEthereumWallet, defaultEthereumWallet);
         } else if (PREF_DEFAULT_SOLANA_WALLET.equals(key) && mWalletModel != null) {
-            @DefaultWallet.EnumType final int defaultSolanaWallet = convertToNativeDefaultWallet((Integer) object);
+            @DefaultWallet.EnumType
+            final int defaultSolanaWallet = convertToNativeDefaultWallet((Integer) object);
             mWalletModel.getBraveWalletService().setDefaultSolanaWallet(defaultSolanaWallet);
             setupDefaultWalletPreference(mDefaultSolanaWallet, defaultSolanaWallet);
         } else if (BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH.equals(key)) {
