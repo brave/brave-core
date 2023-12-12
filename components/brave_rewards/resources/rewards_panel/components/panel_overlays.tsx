@@ -13,22 +13,18 @@ import { NotificationOverlay } from './notification_overlay'
 export function PanelOverlays() {
   const host = React.useContext(HostContext)
 
-  const [options, setOptions] = React.useState(host.state.options)
   const [grantCaptchaInfo, setGrantCaptchaInfo] =
     React.useState(host.state.grantCaptchaInfo)
   const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
     React.useState(host.state.adaptiveCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
-  const [userType, setUserType] = React.useState(host.state.userType)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
 
   useHostListener(host, (state) => {
-    setOptions(state.options)
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
-    setUserType(state.userType)
   })
 
   if (adaptiveCaptchaInfo) {

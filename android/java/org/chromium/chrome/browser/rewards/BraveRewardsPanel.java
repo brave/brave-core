@@ -1015,10 +1015,10 @@ public class BraveRewardsPanel
 
         if (maxEarningsThisMonth == 0.0) { // don't show range just show 0.000
             estimatedRange.setText(maxValue);
-            } else {
-                final String estimatedValue = minValue + " - " + maxValue;
-                estimatedRange.setText(estimatedValue);
-            }
+        } else {
+            final String estimatedValue = minValue + " - " + maxValue;
+            estimatedRange.setText(estimatedValue);
+        }
 
         if (minEarningsLastMonth > 0) {
             showPayoutStatusBanner((long) nextPaymentDate);
