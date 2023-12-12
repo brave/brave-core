@@ -71,9 +71,9 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       u"https://consensys.net/terms-of-use/",
       u"https://consensys.net/privacy-policy/"};
 
-  const std::vector<std::u16string> syndica_links = {
-      u"https://syndica.io/terms-and-conditions/",
-      u"https://syndica.io/privacy-policy/"};
+  const std::u16string sns_wiki_link =
+      u"https://github.com/brave/brave-browser/wiki/"
+      u"Resolve-Methods-for-Solana-Name-Service";
 
   if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
@@ -106,16 +106,15 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                        base::ReplaceStringPlaceholders(
                            brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
-                           syndica_links, nullptr));
+                           sns_wiki_link, nullptr));
   } else {
     NOTREACHED();
   }
 
   if (IsSnsTLD(request_url_.host_piece())) {
-    load_time_data.Set(
-        "primaryButtonText",
-        brave_l10n::GetLocalizedResourceUTF16String(
-            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SYNDICA_BUTTON));
+    load_time_data.Set("primaryButtonText",
+                       brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SNS_BUTTON));
   } else {
     load_time_data.Set("primaryButtonText",
                        brave_l10n::GetLocalizedResourceUTF16String(
