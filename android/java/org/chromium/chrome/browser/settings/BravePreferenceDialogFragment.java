@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
@@ -37,7 +38,8 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         this.onPreferenceChangeListener = listener;
     }
 
-    public static BravePreferenceDialogFragment newInstance(BraveDialogPreference preference) {
+    @NonNull
+    public static BravePreferenceDialogFragment newInstance(@NonNull Preference preference) {
         BravePreferenceDialogFragment fragment = new BravePreferenceDialogFragment();
         Bundle bundle = new Bundle(1);
         bundle.putString(PreferenceDialogFragmentCompat.ARG_KEY, preference.getKey());
