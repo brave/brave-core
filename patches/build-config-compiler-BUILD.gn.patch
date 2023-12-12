@@ -1,0 +1,38 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 80bc79e5fb350f5cc7664f1b5be3dc61142f9e55..293ee1a97b6ca1885b18c5576a98da19fccd138d 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -1870,19 +1870,23 @@ config("default_warnings") {
+ 
+           # TODO(crbug.com/1412713) Evaluate and possibly enable.
+           "-Wno-deprecated-this-capture",
++        ]
+ 
+-          # TODO(https://crbug.com/1491833): Fix and re-enable.
+-          "-Wno-invalid-offsetof",
+-
+-          # TODO(crbug.com/1494809): Evaluate and possibly enable.
+-          "-Wno-vla-extension",
+-
++        if (llvm_force_head_revision) {
+           # TODO(https://crbug.com/1490607): Fix and re-enable.
+-          "-Wno-thread-safety-reference-return",
++          cflags += [ "-Wno-thread-safety-reference" ]
+ 
+-          # TODO(crbug.com/1495100): Evaluate and possibly enable.
+-          "-Wno-delayed-template-parsing-in-cxx20",
+-        ]
++          # TODO(https://crbug.com/1491833): Fix and re-enable.
++          cflags += [ "-Wno-invalid-offsetof" ]
++        }
++
++        if (enable_precompiled_headers && !is_win &&
++            !llvm_force_head_revision) {
++          cflags += [
++            # TODO(crbug.com/1486799) Remove in next clang roll.
++            "-Wno-deprecated-include-gch",
++          ]
++        }
+       }
+     }
+ 
