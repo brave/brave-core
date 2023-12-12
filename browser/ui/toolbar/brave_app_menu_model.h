@@ -37,6 +37,7 @@ class BraveAppMenuModel : public AppMenuModel {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest);
+  friend class BraveAppMenuModelBrowserTest;
 
   // AppMenuModel overrides:
   void Build() override;
