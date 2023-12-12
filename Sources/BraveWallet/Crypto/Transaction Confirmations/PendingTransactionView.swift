@@ -454,9 +454,8 @@ struct PendingTransactionView: View {
         
         // Current Active Transaction info
         if confirmationStore.activeParsedTransaction.transaction.txType == .ethSwap {
-          SwapTransactionConfirmationView(
+          SaferSignTransactionContainerView(
             parsedTransaction: confirmationStore.activeParsedTransaction,
-            network: confirmationStore.network ?? .init(),
             editGasFeeTapped: {
               isShowingGas = true
             },

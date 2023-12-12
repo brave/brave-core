@@ -322,6 +322,14 @@ extension BraveWallet.NetworkInfo {
     }
     return nil
   }
+  
+  func tokenBlockExplorerURL(_ contractAddress: String) -> URL? {
+    if let explorerURL = blockExplorerUrls.first,
+       let tokenURL = URL(string: "\(explorerURL)/token/\(contractAddress)") {
+      return tokenURL
+    }
+    return nil
+  }
 }
 
 extension BraveWallet.BlockchainToken {

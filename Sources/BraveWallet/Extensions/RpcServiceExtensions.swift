@@ -437,7 +437,7 @@ extension BraveWalletJsonRpcService {
   }
 }
 
-struct ContractAddressChainIdPair: Equatable {
+struct ContractAddressChainIdPair: Equatable, Hashable {
   let contractAddress: String
   let chainId: String
 }

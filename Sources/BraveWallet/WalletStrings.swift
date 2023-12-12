@@ -127,6 +127,13 @@ extension Strings {
       value: "Details",
       comment: "A button title which when pressed displays a new screen with additional details/information"
     )
+    public static let hideDetailsButtonTitle = NSLocalizedString(
+      "wallet.hideDetailsButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Hide Details",
+      comment: "A button title which when pressed hides the details screen."
+    )
     public static let renameButtonTitle = NSLocalizedString(
       "wallet.renameButtonTitle",
       tableName: "BraveWallet",

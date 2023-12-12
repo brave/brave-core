@@ -11,54 +11,62 @@ import DesignSystem
 /// View for displaying an array of `SignMessageRequest`s`
 struct SignMessageRequestContainerView: View {
 
-  var requests: [BraveWallet.SignMessageRequest]
+  @ObservedObject var store: SignMessageRequestStore
   @ObservedObject var keyringStore: KeyringStore
   var cryptoStore: CryptoStore
   @ObservedObject var networkStore: NetworkStore
   var onDismiss: () -> Void
-
-  @State private var requestIndex: Int = 0
-  
-  /// A map between request index and a boolean value indicates this request message needs pilcrow formating
-  @State private var needPilcrowFormatted: [Int32: Bool] = [0: false]
-  /// A map between request index and a boolean value indicates this request message is displayed as
-  /// its original content
-  @State private var showOrignalMessage: [Int32: Bool] = [0: true]
-    
-  /// The current request
-  private var currentRequest: BraveWallet.SignMessageRequest {
-    requests[requestIndex]
-  }
   
   /// The account for the current request
   private var currentRequestAccount: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address == currentRequest.accountId.address }) ?? keyringStore.selectedAccount
+    keyringStore.allAccounts.first(where: { $0.address == store.currentRequest.accountId.address }) ?? keyringStore.selectedAccount
   }
   
   /// The network for the current request
   private var currentRequestNetwork: BraveWallet.NetworkInfo? {
-    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId })
+    networkStore.allChains.first(where: { $0.chainId == store.currentRequest.chainId })
   }
   
   var body: some View {
     Group {
-      if let ethSiweData = currentRequest.signData.ethSiweData {
+      if let ethSiweData = store.currentRequest.signData.ethSiweData {
         SignInWithEthereumView(
           account: currentRequestAccount,
-          originInfo: currentRequest.originInfo,
+          originInfo: store.currentRequest.originInfo,
           message: ethSiweData,
+          action: handleAction(approved:)
+        )
+      } else if let cowSwapOrder = store.currentRequest.signData.ethSignTypedData?.meta?.cowSwapOrder {
+        SaferSignMessageRequestContainerView(
+          account: currentRequestAccount,
+          request: store.currentRequest,
+          network: currentRequestNetwork,
+          requestIndex: store.requestIndex,
+          requestCount: store.requests.count,
+          namedFromAddress: NamedAddresses.name(
+            for: currentRequestAccount.address, accounts: keyringStore.allAccounts
+          ),
+          receiverAddress: cowSwapOrder.receiver,
+          namedReceiverAddress: NamedAddresses.name(
+            for: cowSwapOrder.receiver, accounts: keyringStore.allAccounts
+          ),
+          cowSwapOrder: cowSwapOrder,
+          ethSwapDetails: store.ethSwapDetails[store.currentRequest.id],
+          needPilcrowFormatted: $store.needPilcrowFormatted,
+          showOrignalMessage: $store.showOrignalMessage,
+          nextTapped: store.next,
           action: handleAction(approved:)
         )
       } else { // ethSignTypedData, ethStandardSignData, solanaSignData
         SignMessageRequestView(
           account: currentRequestAccount,
-          request: currentRequest,
+          request: store.currentRequest,
           network: currentRequestNetwork,
-          requestIndex: requestIndex,
-          requestCount: requests.count,
-          needPilcrowFormatted: $needPilcrowFormatted,
-          showOrignalMessage: $showOrignalMessage,
-          nextTapped: next,
+          requestIndex: store.requestIndex,
+          requestCount: store.requests.count,
+          needPilcrowFormatted: $store.needPilcrowFormatted,
+          showOrignalMessage: $store.showOrignalMessage,
+          nextTapped: store.next,
           action: handleAction(approved:)
         )
       }
@@ -66,26 +74,14 @@ struct SignMessageRequestContainerView: View {
     .navigationBarTitleDisplayMode(.inline)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(braveSystemName: .containerHighlight))
-  }
-  
-  /// Advance to the next (or first if displaying the last) sign message request.
-  func next() {
-    if requestIndex + 1 < requests.count {
-      if let nextRequestId = requests[safe: requestIndex + 1]?.id,
-         showOrignalMessage[nextRequestId] == nil {
-        // if we have not previously assigned a `showOriginalMessage`
-        // value for the next request, assign it the default value now.
-        showOrignalMessage[nextRequestId] = true
-      }
-      requestIndex = requestIndex + 1
-    } else {
-      requestIndex = 0
+    .onAppear {
+      store.update()
     }
   }
   
   private func handleAction(approved: Bool) {
-    cryptoStore.handleWebpageRequestResponse(.signMessage(approved: approved, id: currentRequest.id))
-    if requests.count <= 1 {
+    cryptoStore.handleWebpageRequestResponse(.signMessage(approved: approved, id: store.currentRequest.id))
+    if store.requests.count <= 1 {
       onDismiss()
     }
   }

@@ -537,6 +537,30 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     }
   }
   
+  private var signMessageRequestStore: SignMessageRequestStore?
+  func signMessageRequestStore(for requests: [BraveWallet.SignMessageRequest]) -> SignMessageRequestStore {
+    if let store = signMessageRequestStore {
+      DispatchQueue.main.async { // don't update in view body computation
+        store.requests = requests
+      }
+      return store
+    }
+    let store = SignMessageRequestStore(
+      requests: requests,
+          keyringService: keyringService,
+      rpcService: rpcService,
+      assetRatioService: assetRatioService,
+      blockchainRegistry: blockchainRegistry,
+      userAssetManager: userAssetManager
+    )
+    self.signMessageRequestStore = store
+    return store
+  }
+  
+  func closeSignMessageRequestStore() {
+    self.signMessageRequestStore = nil
+  }
+  
   public private(set) lazy var settingsStore = SettingsStore(
     keyringService: keyringService,
     walletService: walletService,

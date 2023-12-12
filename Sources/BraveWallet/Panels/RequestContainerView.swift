@@ -56,12 +56,15 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             )
           case let .signMessage(requests):
             SignMessageRequestContainerView(
-              requests: requests,
+              store: cryptoStore.signMessageRequestStore(for: requests),
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
+            .onDisappear {
+              cryptoStore.closeSignMessageRequestStore()
+            }
           case let .signMessageError(signMessageErrors):
             SignMessageErrorView(
               signMessageErrors: signMessageErrors,
