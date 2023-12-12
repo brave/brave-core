@@ -5,6 +5,7 @@
 import { getLocale } from "$web-common/locale"
 
 export const getTranslatedChannelName = (channelName: string) => {
+  if (!channelName) return ''
   try {
     return getLocale(`braveNewsChannel-${channelName}`)
   } catch (err) {
