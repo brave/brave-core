@@ -296,10 +296,22 @@ void BraveAppMenuModel::BuildBrowserSection() {
                              IDS_SHOW_DOWNLOADS);
   }
 
+  // Use this command's enabled state to not having it in guest window.
+  // It's disabled in guest window. Upstream's guest window has extensions
+  // menu in app menu, but we hide it.
   if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
+    // Upstream enabled extensions submenu by default.
+    CHECK(features::IsExtensionMenuInRootAppMenu());
+
+    // Use IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS instead of
+    // IDC_MANAGE_EXTENSIONS because executing it from private(tor) window
+    // causes crash as LogSafetyHubInteractionMetrics() tries to refer
+    // SafetyHubMenuNotificationService. But it's not instantiated in private
+    // window. Upstream also has this crash if ExtensionsMenuInAppMenu feature
+    // is disabled.
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
+        IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
   }
 }
 
@@ -384,19 +396,11 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   DCHECK(more_tools_model);
 
   // Remove upstream's extensions item. It'll be added into top level third
-  // section.
-  if (base::FeatureList::IsEnabled(features::kExtensionsMenuInAppMenu) ||
-      features::IsChromeRefresh2023()) {
-    // Hide extensions sub menu.
-    DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
-    RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
-  } else {
-    // Hide extensions item from more tools sub menu.
-    DCHECK(more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS)
-               .has_value());
-    more_tools_model->RemoveItemAt(
-        more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
-  }
+  // section. Upstream enabled extensions submenu by default.
+  CHECK(features::IsExtensionMenuInRootAppMenu());
+  // Hide extensions sub menu.
+  DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
+  RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
 
   // Remove upstream's cast item. It'll be added into more tools sub menu.
   if (media_router::MediaRouterEnabled(browser()->profile())) {
@@ -489,6 +493,11 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
              IsIpfsServiceLaunched(browser_context);
   }
 #endif
+  if (id == IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS) {
+    // Always returns true as this command id is only added when it could be
+    // used.
+    return true;
+  }
   return AppMenuModel::IsCommandIdEnabled(id);
 }
 

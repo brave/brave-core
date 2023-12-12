@@ -90,6 +90,13 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
     ipfs_service_->GetIpnsKeysManager()->SetKeysForTest(keys);
   }
 #endif
+
+  void RunCommandFromAppMenuModel(Browser* browser, int command_id) {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    BraveAppMenuModel model(browser_view->toolbar(), browser);
+    model.Init();
+    model.ExecuteCommand(command_id, /*event_flags=*/0);
+  }
 };
 
 void CheckCommandsAreDisabledInMenuModel(
@@ -190,6 +197,11 @@ void CheckHistoryCommandsAreInOrderInMenuModel(
   CheckCommandsAreInOrderInMenuModel(history_model, history_commands_in_order);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, CommandsExecutionTest) {
+  RunCommandFromAppMenuModel(CreateIncognitoBrowser(),
+                             IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS);
+}
+
 // Test brave menu order test.
 // Brave menu is inserted based on corresponding commands enable status.
 // So, this doesn't test for each profiles(normal, private, tor and guest).
@@ -209,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
     IDC_ZOOM_MENU,
     IDC_PRINT,
     IDC_FIND,
@@ -263,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
     IDC_ZOOM_MENU,
     IDC_PRINT,
     IDC_FIND,
@@ -316,7 +328,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #endif
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
   };
 
   CheckCommandsAreDisabledInMenuModel(guest_browser,
@@ -355,7 +367,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_SHOW_BRAVE_WALLET,
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      IDC_MANAGE_EXTENSIONS,
+      IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
       IDC_ZOOM_MENU,
       IDC_PRINT,
       IDC_FIND,
