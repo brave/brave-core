@@ -195,8 +195,9 @@ void SkusJSHandler::OnFetchOrderCredentials(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
-  
+  v8::Local<v8::String> result =
+      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+
   if (response.empty()) {
     std::ignore = resolver->Resolve(context, result);
   } else {

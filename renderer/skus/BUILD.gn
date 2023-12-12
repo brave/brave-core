@@ -8,7 +8,10 @@ import("//testing/test.gni")
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "js_skus_browsertest.cc" ]
+  sources = [
+    "js_skus_browsertest.cc",
+    "js_skus_platform_browsertest.cc",
+  ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
