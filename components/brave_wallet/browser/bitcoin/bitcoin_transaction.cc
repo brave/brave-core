@@ -86,6 +86,10 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
 
 BitcoinTransaction::BitcoinTransaction() = default;
 BitcoinTransaction::~BitcoinTransaction() = default;
+BitcoinTransaction::BitcoinTransaction(const BitcoinTransaction& other) =
+    default;
+BitcoinTransaction& BitcoinTransaction::operator=(
+    const BitcoinTransaction& other) = default;
 BitcoinTransaction::BitcoinTransaction(BitcoinTransaction&& other) = default;
 BitcoinTransaction& BitcoinTransaction::operator=(BitcoinTransaction&& other) =
     default;
@@ -294,7 +298,7 @@ bool BitcoinTransaction::TxOutput::operator!=(
 base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
   base::Value::Dict dict;
 
-  // TODO(apaymsyhev): consts strings
+  // TODO(apaymyshev): consts strings
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
                                                  : kChangeOuputType);
   dict.Set("address", address);
@@ -332,18 +336,6 @@ BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   return result;
 }
 
-BitcoinTransaction BitcoinTransaction::Clone() const {
-  BitcoinTransaction result;
-
-  result.inputs_ = inputs_;
-  result.outputs_ = outputs_;
-  result.locktime_ = locktime_;
-  result.to_ = to_;
-  result.amount_ = amount_;
-
-  return result;
-}
-
 base::Value::Dict BitcoinTransaction::ToValue() const {
   base::Value::Dict dict;
 
@@ -360,6 +352,7 @@ base::Value::Dict BitcoinTransaction::ToValue() const {
   dict.Set("locktime", base::NumberToString(locktime_));
   dict.Set("to", to_);
   dict.Set("amount", base::NumberToString(amount_));
+  dict.Set("sending_max_amount", sending_max_amount_);
 
   return dict;
 }
@@ -410,6 +403,9 @@ std::optional<BitcoinTransaction> BitcoinTransaction::FromValue(
   if (!ReadUint64StringTo(value, "amount", result.amount_)) {
     return std::nullopt;
   }
+
+  result.sending_max_amount_ =
+      value.FindBool("sending_max_amount").value_or(false);
 
   return result;
 }

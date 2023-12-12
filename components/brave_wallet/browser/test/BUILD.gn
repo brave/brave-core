@@ -16,6 +16,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_knapsack_solver_unittest.cc",
+    "//brave/components/brave_wallet/browser/bitcoin/bitcoin_max_send_solver_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction_unittest.cc",

@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -45,7 +46,7 @@ bool operator==(const UnspentOutput& l, const UnspentOutput& r) {
 
 }  // namespace bitcoin_rpc
 
-// TOOD(apaymyshev): cover failure scenarios for BitcoinWalletService with tests
+// TODO(apaymyshev): cover failure scenarios for BitcoinWalletService with tests
 class BitcoinWalletServiceUnitTest : public testing::Test {
  public:
   BitcoinWalletServiceUnitTest()
@@ -129,11 +130,11 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
   base::MockCallback<BitcoinWalletService::GetBitcoinAccountInfoCallback>
       callback;
 
-  auto expected_bitcoin_accont_info = mojom::BitcoinAccountInfo::New();
-  expected_bitcoin_accont_info->next_receive_address =
+  auto expected_bitcoin_account_info = mojom::BitcoinAccountInfo::New();
+  expected_bitcoin_account_info->next_receive_address =
       mojom::BitcoinAddress::New("bc1qe68jzwhglrs9lm0zf8ddqvzrdcxeg8ej5nd0rc",
                                  mojom::BitcoinKeyId::New(0, 5));
-  expected_bitcoin_accont_info->next_change_address =
+  expected_bitcoin_account_info->next_change_address =
       mojom::BitcoinAddress::New("bc1q9khch2y932xktwxxzplvaxw6r7h0pw2yeelvj7",
                                  mojom::BitcoinKeyId::New(1, 5));
   auto& stats_map = bitcoin_test_rpc_server_->address_stats_map();
@@ -149,7 +150,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
     }
   }
 
-  EXPECT_CALL(callback, Run(EqualsMojo(expected_bitcoin_accont_info)));
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_bitcoin_account_info)));
   bitcoin_wallet_service_->GetBitcoinAccountInfo(account_id(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -265,11 +266,11 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   BitcoinTransaction actual_tx;
   EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
                 EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value().Clone();
+                actual_tx = arg.value();
                 return true;
               })));
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, callback.Get());
+                                             48000, false, callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -328,18 +329,18 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
   BitcoinTransaction initial_tx;
   EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
                 EXPECT_TRUE(arg.has_value());
-                initial_tx = arg.value().Clone();
+                initial_tx = arg.value();
                 return true;
               })));
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, callback.Get());
+                                             48000, false, callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   BitcoinTransaction signed_tx;
   EXPECT_CALL(sign_callback, Run(kMockBtcTxid3, _, ""))
-      .WillOnce(WithArg<1>(
-          [&](const BitcoinTransaction& tx) { signed_tx = tx.Clone(); }));
+      .WillOnce(
+          WithArg<1>([&](const BitcoinTransaction& tx) { signed_tx = tx; }));
   bitcoin_wallet_service_->SignAndPostTransaction(
       account_id(), std::move(initial_tx), sign_callback.Get());
   base::RunLoop().RunUntilIdle();
@@ -417,7 +418,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
           ->address_string;
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_30);
 
-  // For acc 0 next recieve address is 6.
+  // For acc 0 next receive address is 6.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
                 expected.next_unused_receive_index = 6;

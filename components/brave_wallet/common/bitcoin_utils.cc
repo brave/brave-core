@@ -176,4 +176,10 @@ std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
                         testnet ? kBech32TestnetHrp : kBech32MainnetHrp, input);
 }
 
+uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes) {
+  // Bitcoin core does ceiling here.
+  // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/feerate.cpp#L29
+  return static_cast<uint64_t>(std::ceil(fee_rate * vbytes));
+}
+
 }  // namespace brave_wallet

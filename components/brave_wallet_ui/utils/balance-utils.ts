@@ -35,7 +35,7 @@ export const getPercentAmount = (
 ): string => {
   const assetBalance =
     getBalance(accountId, asset, tokenBalancesRegistry) || '0'
-  const amountWrapped = new Amount(assetBalance).times(percent)
+  const amountWrapped = new Amount(assetBalance).times(percent).parseInteger()
 
   const formattedAmount =
     percent === 1

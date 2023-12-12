@@ -293,6 +293,7 @@ export const transactionEndpoints = ({
           const btcTxData: BraveWallet.BtcTxData = {
             to: payload.to,
             amount: BigInt(payload.value),
+            sendingMaxAmount: payload.sendingMaxValue,
             fee: BigInt(0),
             inputs: [],
             outputs: []

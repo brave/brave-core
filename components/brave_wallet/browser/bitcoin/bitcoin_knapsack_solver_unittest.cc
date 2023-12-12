@@ -90,7 +90,7 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
 TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {
   auto base_tx = MakeMockTransaction(send_amount());
 
-  KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(), {});
+  KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(), {});
 
   // Can't send exactly what we have as we need to add some fee.
   EXPECT_EQ("Insufficient funds", solver.Solve().error());
@@ -102,8 +102,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NotEnoughInputsForFee) {
   std::vector<BitcoinTransaction::TxInputGroup> input_groups;
   input_groups.emplace_back();
   input_groups.back().AddInput(MakeMockTxInput(send_amount(), 0));
-  KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
-                        input_groups);
+  KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(), input_groups);
 
   // Can't send exact amount of coin we have as we need to add some fee.
   EXPECT_EQ("Insufficient funds", solver.Solve().error());
@@ -113,14 +112,13 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoChangeGenerated) {
   auto base_tx = MakeMockTransaction(send_amount());
 
   // Fee for typical 1 input -> 1 output transaction.
-  uint32_t min_fee =
-      KnapsackSolver::ApplyFeeRate(fee_rate(), std::ceil(109.25));
+  uint32_t min_fee = ApplyFeeRate(fee_rate(), std::ceil(109.25));
   {
     uint32_t total_input = send_amount() + min_fee;
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -138,7 +136,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoChangeGenerated) {
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     // We have a bit less than send amount + fee. Can't create transaction.
@@ -151,7 +149,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoChangeGenerated) {
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -170,15 +168,14 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoDustChangeGenerated) {
   auto base_tx = MakeMockTransaction(send_amount());
 
   // Fee for typical 1 input -> 2 outputs transaction.
-  uint32_t min_fee =
-      KnapsackSolver::ApplyFeeRate(fee_rate(), std::ceil(140.25));
+  uint32_t min_fee = ApplyFeeRate(fee_rate(), std::ceil(140.25));
   EXPECT_EQ(min_fee, 1566u);
 
   // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/policy.cpp#L57
   // Change ouput with less than this amount is not worth creating.
   uint32_t dust_change_threshold =
-      KnapsackSolver::ApplyFeeRate(fee_rate(), std::ceil(31.0)) +
-      KnapsackSolver::ApplyFeeRate(longterm_fee_rate(), std::ceil(67.75));
+      ApplyFeeRate(fee_rate(), std::ceil(31.0)) +
+      ApplyFeeRate(longterm_fee_rate(), std::ceil(67.75));
   EXPECT_EQ(dust_change_threshold, 549u);
 
   {
@@ -186,7 +183,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoDustChangeGenerated) {
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -204,12 +201,12 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoDustChangeGenerated) {
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
-    // We have slighly less than needed for change output, so it is not created
+    // We have slightly less than needed for change output, so it is not created
     // and surplus goes to fee.
     EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee + dust_change_threshold - 1);
     EXPECT_EQ(tx->TotalInputsAmount(), total_input);
@@ -223,7 +220,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, NoDustChangeGenerated) {
     std::vector<BitcoinTransaction::TxInputGroup> input_groups;
     input_groups.emplace_back();
     input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
+    KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(),
                           input_groups);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -250,8 +247,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, GroupIsSpentAsAWhole) {
   input_groups.back().AddInput(MakeMockTxInput(300000, 1));
   input_groups.back().AddInput(MakeMockTxInput(400000, 1));
 
-  KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
-                        input_groups);
+  KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(), input_groups);
 
   // Large portion of inputs is spent to change as inputs group is not allowed
   // to be split.
@@ -291,8 +287,7 @@ TEST_F(BitcoinKnapsackSolverUnitTest, RandomTest) {
 
   auto base_tx = MakeMockTransaction(total_inputs / 2);
 
-  KnapsackSolver solver(base_tx.Clone(), fee_rate(), longterm_fee_rate(),
-                        input_groups);
+  KnapsackSolver solver(base_tx, fee_rate(), longterm_fee_rate(), input_groups);
   auto tx = solver.Solve();
   ASSERT_TRUE(tx.has_value());
 }

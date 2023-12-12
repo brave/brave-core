@@ -114,14 +114,13 @@ class BitcoinTransaction {
 
   BitcoinTransaction();
   ~BitcoinTransaction();
-  BitcoinTransaction(const BitcoinTransaction& other) = delete;
-  BitcoinTransaction& operator=(const BitcoinTransaction& other) = delete;
+  BitcoinTransaction(const BitcoinTransaction& other);
+  BitcoinTransaction& operator=(const BitcoinTransaction& other);
   BitcoinTransaction(BitcoinTransaction&& other);
   BitcoinTransaction& operator=(BitcoinTransaction&& other);
   bool operator==(const BitcoinTransaction& other) const;
   bool operator!=(const BitcoinTransaction& other) const;
 
-  BitcoinTransaction Clone() const;
   base::Value::Dict ToValue() const;
   static std::optional<BitcoinTransaction> FromValue(
       const base::Value::Dict& value);
@@ -148,6 +147,11 @@ class BitcoinTransaction {
 
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }
+
+  bool sending_max_amount() const { return sending_max_amount_; }
+  void set_sending_max_amount(bool sending_max_amount) {
+    sending_max_amount_ = sending_max_amount;
+  }
 
   const std::vector<TxInput>& inputs() const { return inputs_; }
   void AddInput(TxInput input);
@@ -182,6 +186,7 @@ class BitcoinTransaction {
   uint32_t locktime_ = 0;
   std::string to_;
   uint64_t amount_ = 0;
+  bool sending_max_amount_ = false;
 };
 
 }  // namespace brave_wallet

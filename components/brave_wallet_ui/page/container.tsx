@@ -50,6 +50,7 @@ import {
   WalletSubViewLayout //
 } from '../components/desktop/wallet-sub-view-layout/index'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
+import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
   WalletPageWrapper //
@@ -74,6 +75,9 @@ export const Container = () => {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isBitcoinEnabled = useSafeWalletSelector(
+    WalletSelectors.isBitcoinEnabled
+  )
 
   // page selectors (safe)
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
@@ -190,6 +194,17 @@ export const Container = () => {
         redirectRoute={defaultRedirect}
       >
         <UnlockedWalletRoutes sessionRoute={sessionRoute} />
+      </ProtectedRoute>
+
+      <ProtectedRoute
+        path={WalletRoutes.DevBitcoin}
+        exact={true}
+        requirement={
+          !isWalletLocked && !walletNotYetCreated && isBitcoinEnabled
+        }
+        redirectRoute={defaultRedirect}
+      >
+        <DevBitcoin />
       </ProtectedRoute>
 
       <Redirect to={defaultRedirect} />
