@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_
 
 #include <memory>
+#include <optional>
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
@@ -23,6 +24,8 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   BraveBrowserTabStripController& operator=(
       const BraveBrowserTabStripController&) = delete;
   ~BraveBrowserTabStripController() override;
+
+  const std::optional<int> GetModelIndexOf(Tab* tab);
 
   // BrowserTabStripController overrides:
   void ShowContextMenuForTab(Tab* tab,
