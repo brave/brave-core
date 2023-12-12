@@ -628,14 +628,8 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   )
 
   const openBuyAssetLink = React.useCallback(
-    async ({
-      buyOption,
-      depositAddress
-    }: {
-      buyOption: BraveWallet.OnRampProvider
-      depositAddress: string
-    }) => {
-      if (!selectedAsset || !assetNetwork) {
+    async (buyOption: BraveWallet.OnRampProvider) => {
+      if (!selectedAsset || !assetNetwork || !selectedAccount) {
         return
       }
 
@@ -649,7 +643,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
               : selectedAsset.symbol,
           onRampProvider: buyOption,
           chainId: assetNetwork.chainId,
-          address: depositAddress,
+          address: selectedAccount.address,
           amount: params.buyAmount,
           currencyCode:
             buyOption === BraveWallet.OnRampProvider.kStripe
@@ -672,20 +666,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
         console.error(error)
       }
     },
-    [selectedAsset, assetNetwork, getBuyUrl, params, selectedCurrency]
-  )
-
-  const onSubmitBuy = React.useCallback(
-    (buyOption: BraveWallet.OnRampProvider) => {
-      if (!selectedAsset || !assetNetwork || !selectedAccount) {
-        return
-      }
-      openBuyAssetLink({
-        buyOption,
-        depositAddress: selectedAccount.address
-      })
-    },
-    [selectedAsset, assetNetwork, selectedAccount, selectedCurrency]
+    [
+      selectedAsset,
+      assetNetwork,
+      selectedAccount,
+      getBuyUrl,
+      params,
+      currencyCode
+    ]
   )
 
   // effects
@@ -783,7 +771,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
             <SelectBuyOption
               layoutType='loose'
               buyOptions={selectedAssetBuyOptions}
-              onSelect={onSubmitBuy}
+              onSelect={openBuyAssetLink}
               selectedOption={undefined}
             />
 
