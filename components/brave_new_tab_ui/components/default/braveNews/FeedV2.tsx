@@ -52,9 +52,15 @@ const ButtonsContainer = styled.div`
 `
 
 const LoadNewContentButton = styled(Button)`
+  --leo-button-color: var(--bn-glass-10);
+
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: brightness(0.8) blur(32px);
+
   position: fixed;
   z-index: 1;
-  top: ${spacing.xl};
+  top: ${spacing['3Xl']};
 
   flex-grow: 0;
 `
