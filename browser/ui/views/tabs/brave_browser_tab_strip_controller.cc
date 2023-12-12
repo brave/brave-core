@@ -24,6 +24,11 @@ BraveBrowserTabStripController::~BraveBrowserTabStripController() {
     context_menu_contents_->Cancel();
 }
 
+const std::optional<int> BraveBrowserTabStripController::GetModelIndexOf(
+    Tab* tab) {
+  return tabstrip_->GetModelIndexOf(tab);
+}
+
 void BraveBrowserTabStripController::ShowContextMenuForTab(
     Tab* tab,
     const gfx::Point& p,
