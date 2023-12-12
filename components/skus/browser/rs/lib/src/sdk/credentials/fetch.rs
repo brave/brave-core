@@ -83,9 +83,7 @@ where
 
         let blinded_creds: Vec<BlindedToken> = creds.iter().map(|t| t.blind()).collect();
 
-        self.client
-            .upsert_time_limited_v2_item_creds(item_id, request_id, creds)
-            .await?;
+        self.client.upsert_time_limited_v2_item_creds(item_id, request_id, creds).await?;
 
         Ok(blinded_creds)
     }
@@ -333,13 +331,14 @@ where
 
         for item in order.items {
             let item_id = &item.id;
-            let request_id = &self
-                .submit_order_item_credentials_to_sign(order_id, &item.id)
-                .await?;
+            let request_id =
+                &self.submit_order_item_credentials_to_sign(order_id, &item.id).await?;
 
             let request_with_retries = FutureRetry::new(
                 || async move {
-                    let builder = http::Request::builder().method("GET").uri(format!(
+                    let mut builder = http::Request::builder();
+                    builder.method("GET");
+                    builder.uri(format!(
                         "{}/v1/orders/{}/credentials/items/{}/batches/{}",
                         self.base_url, order_id, item_id, request_id
                     ));
@@ -524,9 +523,7 @@ where
             }
 
             for (item_id, item_creds) in time_limited_creds.into_iter() {
-                self.client
-                    .store_time_limited_creds(&item_id, item_creds)
-                    .await?;
+                self.client.store_time_limited_creds(&item_id, item_creds).await?;
             }
         }
 
