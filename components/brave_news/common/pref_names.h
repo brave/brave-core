@@ -43,6 +43,8 @@ inline constexpr char kBraveNewsLastSessionTime[] =
     "brave.today.p3a_last_session_time";
 inline constexpr char kBraveNewsWasEverEnabled[] =
     "brave.today.p3a_was_ever_enabled";
+inline constexpr char kBraveNewsOpenArticlesInNewTab[] =
+    "brave.news.open-articles-in-new-tab";
 
 // Dictionary value keys
 inline constexpr char kBraveNewsDirectFeedsKeyTitle[] = "title";
