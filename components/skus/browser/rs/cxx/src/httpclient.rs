@@ -50,9 +50,8 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
     fn from(resp: ffi::HttpResponse<'_>) -> Self {
         match resp.result {
             ffi::SkusResult::Ok => {
-                let mut response = http::Response::builder();
+                let mut response = http::Response::builder().status(resp.return_code);
 
-                response.status(resp.return_code);
                 for header in resp.headers {
                     let header = header.to_string();
                     // header: value
@@ -63,14 +62,22 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                         ))
                         .debug_unwrap()?;
                     let (key, value) = header.split_at(idx);
+                    let key = http::HeaderName::try_from(key).map_err(|_| {
+                        InternalError::InvalidCall("must pass a valid header name".to_string())
+                    })?;
                     let value = value
                         .get(1..)
                         .ok_or(InternalError::InvalidCall(
                             "must pass headers as `KEY: VALUE`".to_string(),
                         ))
                         .debug_unwrap()?;
+                    let value = http::HeaderValue::try_from(value).map_err(|_| {
+                        InternalError::InvalidCall(
+                            "must pass a valid (ASCII-printable) header value".to_string(),
+                        )
+                    })?;
 
-                    response.header(key, value);
+                    response.headers_mut().ok_or(InternalError::BorrowFailed)?.insert(key, value);
                 }
 
                 response
