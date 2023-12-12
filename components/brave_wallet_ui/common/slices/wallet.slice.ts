@@ -15,7 +15,6 @@ import {
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
   SetUserAssetVisiblePayloadType,
-  UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
@@ -40,7 +39,6 @@ const defaultState: WalletState = {
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  hasIncorrectPassword: false,
   userVisibleTokensInfo: [],
   fullTokenList: [],
   selectedPortfolioTimeline:
@@ -126,8 +124,6 @@ const defaultState: WalletState = {
 export const WalletAsyncActions = {
   initialize: createAction<RefreshOpts>('initialize'),
   refreshAll: createAction<RefreshOpts>('refreshAll'),
-  lockWallet: createAction('lockWallet'), // keyringService.lock()
-  unlockWallet: createAction<UnlockWalletPayloadType>('unlockWallet'),
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
   updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
@@ -186,13 +182,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.addUserAssetError = payload
-      },
-
-      hasIncorrectPassword(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.hasIncorrectPassword = payload
       },
 
       initialized(

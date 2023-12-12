@@ -10,10 +10,6 @@ import {
   TransactionProviderError
 } from '../../constants/types'
 
-export type UnlockWalletPayloadType = {
-  password: string
-}
-
 export type IsEip1559Changed = {
   chainId: string
   isEip1559: boolean

@@ -500,6 +500,9 @@ export class MockedWalletApiProxy {
       return {
         success: validId
       }
+    },
+    unlock: async (password) => {
+      return { success: password === 'password' }
     }
   }
 

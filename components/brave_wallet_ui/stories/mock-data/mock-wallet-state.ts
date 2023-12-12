@@ -25,7 +25,6 @@ export const mockWalletState: WalletState = {
   addUserAssetError: false,
   fullTokenList: mockErc20TokensList,
   gasEstimates: undefined,
-  hasIncorrectPassword: false,
   hasInitialized: true,
   isBitcoinEnabled: false,
   isZCashEnabled: false,

@@ -451,6 +451,59 @@ export const walletEndpoints = ({
         }
       },
       invalidatesTags: ['IsWalletBackedUp']
+    }),
+
+    lockWallet: mutation<
+      true, // success
+      void
+    >({
+      queryFn: async (
+        password,
+        { endpoint, dispatch },
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          api.keyringService.lock()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'An error occurred while attempting to lock the wallet',
+            error
+          )
+        }
+      }
+    }),
+
+    unlockWallet: mutation<
+      boolean, // success
+      string // password
+    >({
+      queryFn: async (
+        password,
+        { endpoint, dispatch },
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const result = await api.keyringService.unlock(password)
+          return {
+            data: result.success
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'An error occurred while attempting to unlock the wallet',
+            error
+          )
+        }
+      }
     })
   }
 }

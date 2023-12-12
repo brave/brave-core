@@ -198,7 +198,6 @@ export interface WalletState {
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  hasIncorrectPassword: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
