@@ -223,6 +223,12 @@ void BraveToolbarView::Init() {
   }
 #endif
 
+  // Make sure that avatar button should be located right before the app menu.
+  if (auto* avatar = GetAvatarToolbarButton()) {
+    container_view->ReorderChildView(
+        avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  }
+
   brave_initialized_ = true;
   UpdateHorizontalPadding();
 }
