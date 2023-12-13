@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
 
 #include <memory>
-#include <utility>
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/creative_instance_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -23,9 +22,8 @@ InlineContentAdExclusionRules::InlineContentAdExclusionRules(
                          subdivision_targeting,
                          anti_targeting_resource,
                          browsing_history) {
-  auto creative_instance_exclusion_rule =
-      std::make_unique<CreativeInstanceExclusionRule>(ad_events);
-  exclusion_rules_.push_back(std::move(creative_instance_exclusion_rule));
+  exclusion_rules_.push_back(
+      std::make_unique<CreativeInstanceExclusionRule>(ad_events));
 }
 
 InlineContentAdExclusionRules::~InlineContentAdExclusionRules() = default;
