@@ -42,10 +42,7 @@ namespace skus {
 
 class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
  public:
-  JsSkusPlatformBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitWithFeatures({skus::features::kSkusFeature}, {});
-  }
+  JsSkusPlatformBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
@@ -78,12 +75,13 @@ class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
   }
 
  protected:
-  net::EmbeddedTestServer https_server_;
+  net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 
  private:
   BraveContentBrowserClient client_;
   content::ContentMockCertVerifier mock_cert_verifier_;
-  base::test::ScopedFeatureList scoped_feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_{
+      skus::features::kSkusFeature};
 };
 
 IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest, FetchOrderCredentialsError) {
