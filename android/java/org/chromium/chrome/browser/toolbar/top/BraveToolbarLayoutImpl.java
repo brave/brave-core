@@ -1492,18 +1492,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        updateNotificationBadgeForNewInstall();
         if (!PackageUtils.isFirstInstall(getContext())
                 && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
             mayShowBraveAdsOnboardingDialog();
         }
 
-        if (checkForRewardsOnboarding()) {
-            if (mBraveRewardsOnboardingIcon != null) {
-                mBraveRewardsOnboardingIcon.setVisibility(View.VISIBLE);
-            }
-            if (mBraveRewardsNotificationsCount != null) {
-                mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+        if (System.currentTimeMillis() > BraveRewardsHelper.getRewardsOnboardingIconTiming()) {
+            updateNotificationBadgeForNewInstall();
+
+            if (checkForRewardsOnboarding()) {
+                if (mBraveRewardsOnboardingIcon != null) {
+                    mBraveRewardsOnboardingIcon.setVisibility(View.VISIBLE);
+                }
+                if (mBraveRewardsNotificationsCount != null) {
+                    mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+                }
             }
         }
     }

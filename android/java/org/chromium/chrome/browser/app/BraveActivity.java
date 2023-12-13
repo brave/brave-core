@@ -240,6 +240,7 @@ public abstract class BraveActivity extends ChromeActivity
     private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
+    private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
@@ -1145,6 +1146,16 @@ public abstract class BraveActivity extends ChromeActivity
                     .writeBoolean(BravePrivacySettings.PREF_APP_LINKS, true);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+        }
+
+        if (PackageUtils.isFirstInstall(this)
+                && ChromeSharedPreferences.getInstance().readInt(
+                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                        == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_7);
+            BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
         }
     }
 

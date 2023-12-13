@@ -37,6 +37,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
@@ -62,6 +63,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             "next_rewards_onboarding_modal_date";
     private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
+    private static final String PREF_REWARDS_ONBOARDING_ICON_TIMING =
+            "rewards_onboarding_icon_timing";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
@@ -126,6 +129,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                 ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, nextDate);
         sharedPreferencesEditor.apply();
+    }
+
+    public static long getRewardsOnboardingIconTiming() {
+        return ChromeSharedPreferences.getInstance().readLong(PREF_REWARDS_ONBOARDING_ICON_TIMING);
+    }
+
+    public static void setRewardsOnboardingIconTiming(long nextDate) {
+        ChromeSharedPreferences.getInstance().writeLong(
+                PREF_REWARDS_ONBOARDING_ICON_TIMING, nextDate);
     }
 
     public static void setRewardsOnboardingModalShown(boolean isShown) {
