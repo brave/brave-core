@@ -32,13 +32,13 @@ import { makeNetworkAsset } from '../../options/asset-options'
 
 // Custom Hooks
 import useGetTokenInfo from './use-get-token-info'
-import { useLib } from './useLib'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector, useSafeWalletSelector } from './use-safe-selector'
 import {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetERC20AllowanceQuery,
   useGetGasEstimation1559Query,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
@@ -182,14 +182,6 @@ export const usePendingTransactions = () => {
 
   const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
 
-  // custom hooks
-  const { getERC20Allowance } = useLib()
-
-  // state
-  const [erc20AllowanceResult, setERC20AllowanceResult] = React.useState<
-    string | undefined
-  >(undefined)
-
   // tx detail & gas memos
   const gasFee = React.useMemo(() => {
     if (!transactionInfo) {
@@ -230,6 +222,19 @@ export const usePendingTransactions = () => {
     gasFee,
     combinedTokensList
   ])
+
+  // token approval queries
+  const { data: erc20AllowanceResult } = useGetERC20AllowanceQuery(
+    txAccount && transactionDetails?.approvalTarget
+      ? {
+          contractAddress: transactionDetails.recipient,
+          ownerAddress: txAccount.address,
+          spenderAddress: transactionDetails.approvalTarget,
+          chainId: transactionDetails.chainId
+        }
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   // balance queries
   const { data: nativeBalance } = useGetAccountTokenCurrentBalanceQuery(
@@ -558,45 +563,6 @@ export const usePendingTransactions = () => {
         isCurrentAllowanceUnlimited
       }
     }, [erc20AllowanceResult])
-
-  // effects
-  React.useEffect(() => {
-    let subscribed = true
-    if (transactionInfo?.txType !== BraveWallet.TransactionType.ERC20Approve) {
-      return
-    }
-
-    if (!transactionDetails?.approvalTarget) {
-      return
-    }
-
-    if (!txAccount) {
-      return () => {
-        subscribed = false
-      }
-    }
-
-    getERC20Allowance(
-      transactionDetails.recipient,
-      txAccount.address,
-      transactionDetails.approvalTarget,
-      transactionDetails.chainId
-    )
-      .then((result) => {
-        subscribed && setERC20AllowanceResult(result)
-      })
-      .catch((e) => console.error(e))
-
-    // cleanup
-    return () => {
-      subscribed = false
-    }
-  }, [
-    transactionInfo?.txType,
-    txAccount,
-    transactionDetails,
-    getERC20Allowance
-  ])
 
   const { tokenInfo: erc20ApproveTokenInfo } = useGetTokenInfo(
     transactionDetails?.recipient &&

@@ -386,6 +386,45 @@ export const tokenEndpoints = ({
                 id: `${args.coin}-${args.chainId}-${args.contractAddress}`
               }
             ]
+    }),
+    getERC20Allowance: query<
+      string, // allowance
+      {
+        contractAddress: string
+        ownerAddress: string
+        spenderAddress: string
+        chainId: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const result = await api.jsonRpcService.getERC20TokenAllowance(
+            arg.contractAddress,
+            arg.ownerAddress,
+            arg.spenderAddress,
+            arg.chainId
+          )
+
+          if (result.error !== BraveWallet.ProviderError.kSuccess) {
+            throw new Error(result.errorMessage)
+          }
+
+          return {
+            data: result.allowance
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to get ERC20 allowance for: ${JSON.stringify(
+              arg,
+              undefined,
+              2
+            )}`,
+            error
+          )
+        }
+      }
     })
   }
 }

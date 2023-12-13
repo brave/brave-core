@@ -51,29 +51,6 @@ import {
 } from '../../utils/string-utils'
 import { toTxDataUnion } from '../../utils/tx-utils'
 
-export const getERC20Allowance = (
-  contractAddress: string,
-  ownerAddress: string,
-  spenderAddress: string,
-  chainId: string
-): Promise<string> => {
-  return new Promise(async (resolve, reject) => {
-    const { jsonRpcService } = getAPIProxy()
-    const result = await jsonRpcService.getERC20TokenAllowance(
-      contractAddress,
-      ownerAddress,
-      spenderAddress,
-      chainId
-    )
-
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(result.allowance)
-    } else {
-      reject(result.errorMessage)
-    }
-  })
-}
-
 export const onConnectHardwareWallet = (
   opts: HardwareWalletConnectOpts
 ): Promise<BraveWallet.HardwareWalletAccount[]> => {
