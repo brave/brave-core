@@ -12,16 +12,17 @@ import {
   getRampAssetSymbol
 } from '../../utils/asset-utils'
 import Amount from '../../utils/amount'
+import { openTab } from '../../utils/routes-utils'
 
 // Types
 import { BraveWallet } from '../../constants/types'
 
 // Hooks
-import { useLib } from './useLib'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetOffRampNetworksQuery,
-  useGetOffRampAssetsQuery
+  useGetOffRampAssetsQuery,
+  useLazyGetSellAssetUrlQuery
 } from '../slices/api.slice'
 
 export const useMultiChainSellAssets = () => {
@@ -31,7 +32,7 @@ export const useMultiChainSellAssets = () => {
   const { data: { allAssetOptions } = {} } = useGetOffRampAssetsQuery()
 
   // Hooks
-  const { getSellAssetUrl } = useLib()
+  const [getSellAssetUrl] = useLazyGetSellAssetUrlQuery()
 
   // State
   const [sellAmount, setSellAmount] = React.useState<string>('')
@@ -62,7 +63,7 @@ export const useMultiChainSellAssets = () => {
   // Methods
 
   const openSellAssetLink = React.useCallback(
-    ({
+    async ({
       sellAddress,
       sellAsset
     }: {
@@ -73,37 +74,30 @@ export const useMultiChainSellAssets = () => {
         return
       }
 
-      const asset = {
-        ...sellAsset,
-        symbol: getRampAssetSymbol(sellAsset, true)
-      }
+      try {
+        const url = await getSellAssetUrl({
+          assetSymbol: getRampAssetSymbol(sellAsset, true),
+          offRampProvider: BraveWallet.OffRampProvider.kRamp,
+          chainId: sellAsset.chainId,
+          address: sellAddress,
+          amount:
+            sellAsset.coin === BraveWallet.CoinType.SOL
+              ? new Amount(sellAmount)
+                  .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                  .toNumber()
+                  .toString()
+              : new Amount(sellAmount)
+                  .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                  .toHex(),
+          fiatCurrencyCode: defaultFiatCurrency
+        }).unwrap()
 
-      getSellAssetUrl({
-        asset: asset,
-        offRampProvider: BraveWallet.OffRampProvider.kRamp,
-        chainId: sellAsset.chainId,
-        address: sellAddress,
-        amount:
-          sellAsset.coin === BraveWallet.CoinType.SOL
-            ? new Amount(sellAmount)
-                .multiplyByDecimals(sellAsset?.decimals ?? 18)
-                .toNumber()
-                .toString()
-            : new Amount(sellAmount)
-                .multiplyByDecimals(sellAsset?.decimals ?? 18)
-                .toHex(),
-        currencyCode: defaultFiatCurrency
-      })
-        .then((url) => {
-          chrome.tabs.create({ url }, () => {
-            if (chrome.runtime.lastError) {
-              console.error(
-                'tabs.create failed: ' + chrome.runtime.lastError.message
-              )
-            }
-          })
-        })
-        .catch((e) => console.error(e))
+        if (url) {
+          openTab(url)
+        }
+      } catch (error) {
+        console.error(error)
+      }
     },
     [getSellAssetUrl, defaultFiatCurrency, sellAmount]
   )
