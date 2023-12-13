@@ -182,12 +182,17 @@ export const makeSendRoute = (
 }
 
 // Tabs
-function openTab(url: string) {
-  chrome.tabs.create({ url }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-    }
-  })
+export function openTab(url: string) {
+  if (chrome.tabs !== undefined) {
+    chrome.tabs.create({ url }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  } else {
+    // Tabs.create is desktop specific. Using window.open for android.
+    window.open(url, '_blank', 'noopener noreferrer')
+  }
 }
 
 // Wallet Page Tabs

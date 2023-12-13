@@ -152,31 +152,6 @@ export async function isStrongPassword(value: string) {
   return (await apiProxy.keyringService.isStrongPassword(value)).result
 }
 
-export async function getSellAssetUrl(args: {
-  asset: BraveWallet.BlockchainToken
-  offRampProvider: BraveWallet.OffRampProvider
-  chainId: string
-  address: string
-  amount: string
-  currencyCode: string
-}) {
-  const { assetRatioService } = getAPIProxy()
-  const { url, error } = await assetRatioService.getSellUrl(
-    args.offRampProvider,
-    args.chainId,
-    args.address,
-    args.asset.symbol,
-    args.amount,
-    args.currencyCode
-  )
-
-  if (error) {
-    console.log(`Failed to get sell URL: ${error}`)
-  }
-
-  return url
-}
-
 export function refreshVisibleTokenInfo(
   targetNetwork?: BraveWallet.NetworkInfo
 ) {
