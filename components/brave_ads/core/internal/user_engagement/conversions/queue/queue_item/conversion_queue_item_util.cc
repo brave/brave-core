@@ -19,18 +19,22 @@ std::optional<base::TimeDelta>
     g_scoped_delay_before_processing_conversion_queue_item_for_testing;
 
 base::TimeDelta DelayBeforeProcessingQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  return conversion_queue_item.process_at - base::Time::Now();
+    const ConversionQueueItemInfo& conversion_queue_item,
+    const base::Time time) {
+  return conversion_queue_item.process_at - time;
 }
 
 bool ShouldHaveProcessedConversionQueueItemInThePast(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  return DelayBeforeProcessingQueueItem(conversion_queue_item).is_negative();
+    const ConversionQueueItemInfo& conversion_queue_item,
+    const base::Time time) {
+  return DelayBeforeProcessingQueueItem(conversion_queue_item, time)
+      .is_negative();
 }
 
 bool ShouldProcessConversionQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  return base::Time::Now() >= conversion_queue_item.process_at;
+    const ConversionQueueItemInfo& conversion_queue_item,
+    const base::Time time) {
+  return time >= conversion_queue_item.process_at;
 }
 
 }  // namespace
@@ -41,13 +45,16 @@ base::TimeDelta CalculateDelayBeforeProcessingConversionQueueItem(
     return *g_scoped_delay_before_processing_conversion_queue_item_for_testing;
   }
 
-  if (ShouldHaveProcessedConversionQueueItemInThePast(conversion_queue_item) ||
-      ShouldProcessConversionQueueItem(conversion_queue_item)) {
+  const base::Time now = base::Time::Now();
+
+  if (ShouldHaveProcessedConversionQueueItemInThePast(conversion_queue_item,
+                                                      now) ||
+      ShouldProcessConversionQueueItem(conversion_queue_item, now)) {
     return kMinimumDelayBeforeProcessingQueueItem;
   }
 
   const base::TimeDelta delay =
-      DelayBeforeProcessingQueueItem(conversion_queue_item);
+      DelayBeforeProcessingQueueItem(conversion_queue_item, now);
   if (delay < kMinimumDelayBeforeProcessingQueueItem) {
     return kMinimumDelayBeforeProcessingQueueItem;
   }
