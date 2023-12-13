@@ -53,7 +53,7 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/bytes/v0_4:lib",
+    "//brave/third_party/rust/bytes/v1:lib",
     "//brave/third_party/rust/fnv/v1:lib",
     "//third_party/rust/itoa/v1:lib",
   ]
