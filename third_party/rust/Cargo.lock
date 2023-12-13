@@ -1051,11 +1051,11 @@ dependencies = [
 
 [[package]]
 name = "http"
-version = "0.1.21"
+version = "1.0.0"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 0.4.8",
+ "itoa",
 ]
 
 [[package]]
