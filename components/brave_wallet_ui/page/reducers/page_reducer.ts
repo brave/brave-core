@@ -12,15 +12,13 @@ import {
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
-  RecoveryWordsAvailablePayloadType,
-  UpdateSelectedAssetType
+  RecoveryWordsAvailablePayloadType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
   showRecoveryPhrase: false,
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
-  selectedAsset: undefined,
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
   nftMetadataError: undefined,
@@ -35,8 +33,7 @@ const defaultState: PageState = {
 export const WalletPageAsyncActions = {
   addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>(
     'addHardwareAccounts'
-  ),
-  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
+  )
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -87,13 +84,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>
       ) {
         state.selectedTimeline = payload
-      },
-
-      updateSelectedAsset(
-        state,
-        { payload }: PayloadAction<BraveWallet.BlockchainToken | undefined>
-      ) {
-        state.selectedAsset = payload
       },
 
       walletCreated(

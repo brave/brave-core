@@ -7,20 +7,9 @@ import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import { BraveWallet } from '../../constants/types'
-import { UpdateSelectedAssetType } from '../constants/action_types'
 import { Store } from '../../common/async/types'
 
 const handler = new AsyncActionHandler()
-
-handler.on(
-  WalletPageActions.selectAsset.type,
-  async (store: Store, payload: UpdateSelectedAssetType) => {
-    store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
-    if (payload.asset) {
-      store.dispatch(WalletPageActions.selectPriceTimeframe(payload.timeFrame))
-    }
-  }
-)
 
 handler.on(
   WalletPageActions.addHardwareAccounts.type,

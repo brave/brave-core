@@ -13,7 +13,6 @@ export const mockPageState: PageState = {
   nftMetadataError:
     'Something went wrong when fetching NFT details. Please try again later.',
   hasInitialized: false,
-  selectedAsset: undefined,
   pinStatusOverview: undefined,
   selectedCoinMarket: undefined,
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,

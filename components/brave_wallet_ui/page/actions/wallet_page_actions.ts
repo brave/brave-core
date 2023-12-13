@@ -10,13 +10,11 @@ export const {
   addHardwareAccounts,
   agreeToWalletTerms,
   recoveryWordsAvailable,
-  selectAsset,
   selectCoinMarket,
   setIsFetchingNFTMetadata,
   updateNFTMetadata,
   updateNftMetadataError,
   selectPriceTimeframe,
-  updateSelectedAsset,
   walletCreated,
   walletSetupComplete
 } = PageActions
