@@ -6,21 +6,6 @@
 import { BraveWallet } from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
-let mockedAllowance = '1000000000000000000' // 1 unit
-
-export const getERC20Allowance = (
-  _fromAddress: string,
-  _selectedAccountAddress: string,
-  allowanceTarget: string
-) =>
-  new Promise<string>((resolve) => {
-    resolve(allowanceTarget || mockedAllowance)
-  })
-
-export const setERC20Allowance = (newAllowance: string) => {
-  mockedAllowance = newAllowance
-}
-
 export const isStrongPassword = (value: string) => {
   return value.length >= 8 // is at least 8 characters
 }

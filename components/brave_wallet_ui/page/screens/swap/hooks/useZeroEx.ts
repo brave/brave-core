@@ -22,6 +22,7 @@ import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
   useApproveERC20AllowanceMutation,
   useGetDefaultFiatCurrencyQuery,
+  useLazyGetERC20AllowanceQuery,
   useSendEvmTransactionMutation
 } from '../../../../common/slices/api.slice'
 import { useLib } from '../../../../common/hooks/useLib'
@@ -30,6 +31,7 @@ export function useZeroEx(params: SwapParams) {
   const { selectedNetwork, selectedAccount } = params
 
   // Queries
+  const [getERC20Allowance] = useLazyGetERC20AllowanceQuery()
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const nativeAsset = useMemo(
@@ -57,7 +59,7 @@ export function useZeroEx(params: SwapParams) {
   const [sendEvmTransaction] = useSendEvmTransactionMutation()
   const [approveERC20Allowance] = useApproveERC20AllowanceMutation()
   // FIXME(josheleonard): use slices API
-  const { getERC20Allowance, getSwapService } = useLib()
+  const { getSwapService } = useLib()
   const swapService = getSwapService()
 
   const reset = useCallback(
@@ -199,12 +201,12 @@ export function useZeroEx(params: SwapParams) {
         overriddenParams.fromToken.contractAddress
       ) {
         try {
-          const allowance = await getERC20Allowance(
-            priceQuoteResponse.response.sellTokenAddress,
-            selectedAccount.address,
-            priceQuoteResponse.response.allowanceTarget,
-            selectedNetwork.chainId
-          )
+          const allowance = await getERC20Allowance({
+            contractAddress: priceQuoteResponse.response.sellTokenAddress,
+            ownerAddress: selectedAccount.address,
+            spenderAddress: priceQuoteResponse.response.allowanceTarget,
+            chainId: selectedNetwork.chainId
+          }).unwrap()
           hasAllowanceResult = new Amount(allowance).gte(
             priceQuoteResponse.response.sellAmount
           )

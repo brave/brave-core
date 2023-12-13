@@ -736,6 +736,19 @@ export class MockedWalletApiProxy {
         errorMessage: ''
       }
     },
+    // Allowances
+    getERC20TokenAllowance: async (
+      contract,
+      ownerAddress,
+      spenderAddress,
+      chainId
+    ) => {
+      return {
+        allowance: '1000000000000000000', // 1 unit
+        error: BraveWallet.ProviderError.kSuccess,
+        errorMessage: ''
+      }
+    },
     // NFT Metadata
     getERC721Metadata: async (contract, tokenId, chainId) => {
       const mockedMetadata =
