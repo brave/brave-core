@@ -121,7 +121,7 @@ class NFTStoreTests: XCTestCase {
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
-    walletService._simpleHashSpamNfTs = {walletAddress, chainIds, coin, _, completion in
+    walletService._simpleHashSpamNfTs = { walletAddress, chainIds, coin, _, completion in
       if walletAddress == self.ethAccount1.address, chainIds.contains(BraveWallet.MainnetChainId), coin == .eth {
         completion([self.spamEthNFT], nil)
       } else {
@@ -414,7 +414,7 @@ class NFTStoreTests: XCTestCase {
   }
   
   // MARK: Group By `None`
-  func testUpdateSpamGroupOnlyFromSimpleHash() async {
+  func testSpamOnlyFromSimpleHash() async {
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
       .mockUSDCToken.copy(asVisibleAsset: false), // Verify non-visible assets not displayed #6386
@@ -476,13 +476,13 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
 
-    store.update()
+    store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
   }
   
   // MARK: Group By `None`
-  func testUpdateSpamGroupFromSimpleHashAndUserMarked() async {
+  func testSpamFromSimpleHashAndUserMarked() async {
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
       .mockUSDCToken.copy(asVisibleAsset: false), // Verify non-visible assets not displayed #6386
@@ -546,13 +546,13 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 1]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
     
-    store.update()
+    store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
   }
   
   // MARK: Group By `None`
-  func testUpdateSpamGroupDuplicationFromSimpleHashAndUserMarked() async {
+  func testSpamDuplicationFromSimpleHashAndUserMarked() async {
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
       .mockUSDCToken.copy(asVisibleAsset: false), // Verify non-visible assets not displayed #6386
@@ -614,7 +614,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
     
-    store.update()
+    store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
   }
@@ -688,6 +688,7 @@ class NFTStoreTests: XCTestCase {
     await fulfillment(of: [groupByAccountVisibleExpectation], timeout: 1)
     cancellables.removeAll()
   }
+  
   // MARK: Group by `Accounts` with `displayType`: `hidden`
   func testUpdateGroupByAccountsHiddenNFTs() async {
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [

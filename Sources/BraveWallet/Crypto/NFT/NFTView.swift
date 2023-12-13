@@ -114,12 +114,12 @@ struct NFTView: View {
           }
         }
         .pickerStyle(.inline)
-        .disabled(nftStore.isShowingNFTLoadingState)
+        .disabled(nftStore.isLoadingJunkNFTs)
       } label: {
         HStack(spacing: 12) {
           Text(nftStore.displayType.dropdownTitle)
             .font(.subheadline.weight(.semibold))
-          if !nftStore.isShowingNFTLoadingState {
+          if !nftStore.isLoadingJunkNFTs {
             Text("\(nftStore.totalDisplayedNFTCount)")
               .padding(.horizontal, 8)
               .padding(.vertical, 4)
@@ -141,9 +141,9 @@ struct NFTView: View {
       Spacer()
       addCustomAssetButton
         .padding(.trailing, 10)
-        .disabled(nftStore.isShowingNFTLoadingState)
+        .disabled(nftStore.isLoadingJunkNFTs)
       filtersButton
-        .disabled(nftStore.isShowingNFTLoadingState)
+        .disabled(nftStore.isLoadingJunkNFTs)
     }
     .padding(.horizontal)
     .frame(maxWidth: .infinity, alignment: .leading)
@@ -274,7 +274,7 @@ struct NFTView: View {
   var body: some View {
     LazyVStack(spacing: 16) {
       nftHeaderView
-      if nftStore.isShowingNFTLoadingState {
+      if nftStore.isLoadingJunkNFTs {
         SkeletonLoadingNFTView()
       } else if nftStore.isShowingNFTEmptyState {
         emptyView

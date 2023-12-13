@@ -259,11 +259,17 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // CoreData are added after.
         guard let self else { return }
         if !self.isUpdatingUserAssets {
+          let dispatchGroup = DispatchGroup()
           for asset in discoveredAssets {
-            self.userAssetManager.addUserAsset(asset, completion: nil)
+            dispatchGroup.enter()
+            self.userAssetManager.addUserAsset(asset) {
+              dispatchGroup.leave()
+            }
           }
-          if !discoveredAssets.isEmpty {
-            self.updateAssets()
+          dispatchGroup.notify(queue: .main) {
+            if !discoveredAssets.isEmpty {
+              self.updateAutoDiscoveredAssets()
+            }
           }
         } else {
           self.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
@@ -574,6 +580,14 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func updateAssets() {
     portfolioStore.update()
     nftStore.update()
+  }
+  
+  func updateAutoDiscoveredAssets() {
+    // at this point, all auto-discovered assets have been added to CD
+    // update `Portfolio/Assets`
+    portfolioStore.update()
+    // fetch junk NFTs from SimpleHash which will also update `Portfolio/NFTs`
+    nftStore.fetchJunkNFTs()
   }
   
   func prepare(isInitialOpen: Bool = false) {
