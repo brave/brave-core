@@ -15,8 +15,8 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -48,14 +48,21 @@ class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::SetUpOnMainThread();
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.RegisterRequestHandler(base::BindRepeating(HandleRequest));
     content::SetBrowserClientForTesting(&client_);
 
-    ASSERT_TRUE(https_server_.Start());
+    https_server_.RegisterRequestHandler(base::BindRepeating(HandleRequest));
+    https_server_.StartAcceptingConnections();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    // Add a host resolver rule to map all outgoing requests to the test server.
+    // This allows us to use "real" hostnames and standard ports in URLs (i.e.,
+    // without having to inject the port number into all URLs).
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP * " + https_server_.host_port_pair().ToString() +
+            ",EXCLUDE localhost");
     PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
@@ -92,11 +99,12 @@ IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest, FetchOrderCredentialsError) {
           document.title = error;
       }
   })();)";
-  const GURL url = https_server_.GetURL("account.brave.software", "/");
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+
+  EXPECT_TRUE(content::NavigateToURL(web_contents(),
+                                     GURL("https://account.brave.software/")));
   content::ExecuteScriptAsync(web_contents()->GetPrimaryMainFrame(), script);
   // This message comes from an error by the SKUs SDK in Rust.
-  std::u16string expected_title(u"HTTP request failed");
+  std::u16string expected_title(u"Could not (de)serialize");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
