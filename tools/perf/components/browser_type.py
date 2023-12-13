@@ -16,7 +16,7 @@ import components.path_util as path_util
 from components.version import BraveVersion
 from components.common_options import CommonOptions
 from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
-                                        GetProcessOutput,
+                                        GetProcessOutput, ToBravePlatformName,
                                         ToChromiumPlatformName)
 
 
@@ -224,13 +224,10 @@ class BraveBrowserTypeImpl(BrowserType):
       DownloadFile(url, apk_filename)
       return apk_filename
 
-    if target_os == 'mac':
-      self._DownloadDmgAndExtract(tag, out_dir, common_options.target_arch)
-    elif target_os == 'windows':
-      url = _GetBraveDownloadUrl(tag, f'brave-{tag}-win32-x64.zip')
-      DownloadArchiveAndUnpack(out_dir, url)
-    else:
-      raise NotImplementedError(f'target_os {target_os} isn\'t supported')
+    brave_platform = ToBravePlatformName(target_os)
+    url = _GetBraveDownloadUrl(tag, f'brave-{tag}-{brave_platform}.zip')
+    DownloadArchiveAndUnpack(out_dir, url)
+    _FixUpUnpackedBrowser(out_dir)
 
     return os.path.join(out_dir, self.GetBinaryPath(target_os))
 
@@ -277,8 +274,8 @@ class ChromiumBrowserTypeImpl(BrowserType):
       DownloadFile(url, apk_path)
       return apk_path
 
-    platform_name = ToChromiumPlatformName(target_os)
-    filename = f'chromium-{chromium_version_str}-{platform_name}.zip'
+    brave_platform_name = ToBravePlatformName(target_os)
+    filename = f'chromium-{chromium_version_str}-{brave_platform_name}.zip'
     if url is None:
       url = _GetChromiumDownloadUrl(chromium_version_str, filename)
     DownloadArchiveAndUnpack(out_dir, url)
