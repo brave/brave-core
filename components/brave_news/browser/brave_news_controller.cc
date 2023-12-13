@@ -541,7 +541,7 @@ void BraveNewsController::IsFeedUpdateAvailable(
 void BraveNewsController::AddFeedListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
   if (MaybeInitFeedV2()) {
-    feed_controller_.AddListener(std::move(listener));
+    feed_v2_builder_->AddListener(std::move(listener));
   } else {
     feed_controller_.AddListener(std::move(listener));
   }

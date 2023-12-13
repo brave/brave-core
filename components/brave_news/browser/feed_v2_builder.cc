@@ -785,13 +785,20 @@ FeedV2Builder::FeedV2Builder(
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
-                         history_service) {}
+                         history_service) {
+  publishers_observation_.Observe(&publishers_controller);
+}
 
 FeedV2Builder::~FeedV2Builder() = default;
 
 void FeedV2Builder::AddListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
-  listeners_.Add(std::move(listener));
+  auto id = listeners_.Add(std::move(listener));
+
+  auto* instance = listeners_.Get(id);
+  CHECK(instance);
+
+  instance->OnUpdateAvailable(hash_);
 }
 
 void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
@@ -910,6 +917,17 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
                    std::move(callback).Run(std::move(signals));
                  },
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void FeedV2Builder::OnPublishersUpdated(
+    PublishersController* publishers_controller) {
+  const auto& publishers = publishers_controller_->GetLastPublishers();
+  auto channels =
+      channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
+  hash_ = GetFeedHash(channels, publishers, feed_etags_);
+  for (const auto& listener : listeners_) {
+    listener->OnUpdateAvailable(hash_);
+  }
 }
 
 void FeedV2Builder::UpdateData(UpdateSettings settings,
@@ -1049,6 +1067,13 @@ void FeedV2Builder::OnGotTopics(TopicsResult topics) {
 void FeedV2Builder::NotifyUpdateCompleted() {
   CHECK(current_update_);
 
+  // Recalculate the hash_ - this will be used to mark the source of generated
+  // feeds.
+  const auto& publishers = publishers_controller_->GetLastPublishers();
+  auto channels =
+      channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
+  hash_ = GetFeedHash(channels, publishers, feed_etags_);
+
   // Fire all the pending callbacks.
   for (auto& callback : current_update_->callbacks) {
     std::move(callback).Run();
@@ -1058,6 +1083,7 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   current_update_ = std::move(next_update_);
   next_update_ = std::nullopt;
 
+  // Notify listeners of updated hash.
   for (const auto& listener : listeners_) {
     listener->OnUpdateAvailable(hash_);
   }
@@ -1083,24 +1109,12 @@ void FeedV2Builder::GenerateFeed(
               return;
             }
 
-            const auto& publishers =
-                builder->publishers_controller_->GetLastPublishers();
-            auto channels =
-                builder->channels_controller_->GetChannelsFromPublishers(
-                    publishers, &*builder->prefs_);
-            builder->hash_ =
-                GetFeedHash(channels, publishers, builder->feed_etags_);
-
             auto feed = std::move(build_feed).Run();
             feed->construct_time = base::Time::Now();
             feed->type = std::move(type);
             feed->source_hash = builder->hash_;
 
             std::move(callback).Run(feed->Clone());
-
-            for (const auto& listener : builder->listeners_) {
-              listener->OnUpdateAvailable(builder->hash_);
-            }
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
           std::move(build_feed), std::move(callback)));
