@@ -172,7 +172,7 @@ export const AccountDetailsHeader = (props: Props) => {
   ])
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
-    // We are not able to remove a Derviced account
+    // We are not able to remove a Derived account
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
       return AccountDetailsMenuOptions.filter(
@@ -234,7 +234,7 @@ export const AccountDetailsHeader = (props: Props) => {
             </Row>
           )}
           <AccountsNetworkText>
-            {getAccountTypeDescription(account.accountId.coin)}
+            {getAccountTypeDescription(account.accountId)}
           </AccountsNetworkText>
         </Column>
       </Row>

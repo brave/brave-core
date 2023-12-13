@@ -332,7 +332,7 @@ export const AccountListItem = ({
             <AccountDescription>
               {isRewardsAccount
                 ? getRewardsTokenDescription(externalProvider ?? null)
-                : getAccountTypeDescription(account.accountId.coin)}
+                : getAccountTypeDescription(account.accountId)}
             </AccountDescription>
           </AccountAndAddress>
         </NameAndIcon>

@@ -104,24 +104,29 @@ describe('Account Utils', () => {
 })
 
 describe('Test getAccountTypeDescription', () => {
-  test('CoinType ETH Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH)).toEqual(
-      'braveWalletETHAccountDescrption'
+  test('ETH Account Description', () => {
+    expect(getAccountTypeDescription(mockEthAccountInfo.accountId)).toEqual(
+      'braveWalletETHAccountDescription'
     )
   })
-  test('CoinType SOL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL)).toEqual(
-      'braveWalletSOLAccountDescrption'
+  test('SOL Account Description', () => {
+    expect(getAccountTypeDescription(mockSolanaAccount.accountId)).toEqual(
+      'braveWalletSOLAccountDescription'
     )
   })
-  test('CoinType FIL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL)).toEqual(
-      'braveWalletFILAccountDescrption'
+  test('FIL Account Description', () => {
+    expect(getAccountTypeDescription(mockFilecoinAccount.accountId)).toEqual(
+      'braveWalletFILAccountDescription'
     )
   })
-  test('CoinType BTC Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC)).toEqual(
-      'braveWalletBTCAccountDescrption'
+  test('BTC Mainnet Account Description', () => {
+    expect(getAccountTypeDescription(mockBitcoinAccount.accountId)).toEqual(
+      'braveWalletBTCMainnetAccountDescription'
     )
+  })
+  test('BTC Testnet Account Description', () => {
+    expect(
+      getAccountTypeDescription(mockBitcoinTestnetAccount.accountId)
+    ).toEqual('braveWalletBTCTestnetAccountDescription')
   })
 })

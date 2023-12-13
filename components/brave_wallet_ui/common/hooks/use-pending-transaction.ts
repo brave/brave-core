@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { ThunkDispatch } from '@reduxjs/toolkit'
@@ -487,8 +488,15 @@ export const usePendingTransactions = () => {
   )
 
   const isLoadingGasFee = React.useMemo(() => {
-    // TODO(apaymyshev): handle bitcoin
-    if (txCoinType === BraveWallet.CoinType.BTC) {
+    if (txCoinType === undefined) {
+      return false
+    }
+
+    // BTC and ZEC provide fee by txDataUnion
+    if (
+      txCoinType === BraveWallet.CoinType.BTC ||
+      txCoinType === BraveWallet.CoinType.ZEC
+    ) {
       return false
     }
 
@@ -498,19 +506,17 @@ export const usePendingTransactions = () => {
     }
 
     // FIL has gas info provided by txDataUnion
-    if (transactionDetails?.isFilecoinTransaction) {
+    if (txCoinType === BraveWallet.CoinType.FIL) {
       return gasFee === ''
     }
 
     // EVM
-    return isLoadingGasEstimates
-  }, [
-    txCoinType,
-    isLoadingSolFeeEstimates,
-    transactionDetails?.isFilecoinTransaction,
-    gasFee,
-    isLoadingGasEstimates
-  ])
+    if (txCoinType === BraveWallet.CoinType.ETH) {
+      return isLoadingGasEstimates
+    }
+
+    assertNotReached(`Unknown coin ${txCoinType}`)
+  }, [txCoinType, isLoadingSolFeeEstimates, gasFee, isLoadingGasEstimates])
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (hasFeeEstimatesError || isLoadingGasFee) {

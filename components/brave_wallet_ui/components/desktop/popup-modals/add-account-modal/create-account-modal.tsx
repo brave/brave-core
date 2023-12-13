@@ -77,7 +77,7 @@ export const CreateAccountModal = () => {
     BraveWallet.FILECOIN_MAINNET
   )
   const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
-    BraveWallet.BITCOIN_TESTNET
+    BraveWallet.BITCOIN_MAINNET
   )
   const [zcashNetwork, setZCashNetwork] = React.useState<ZCashNetwork>(
     BraveWallet.Z_CASH_MAINNET

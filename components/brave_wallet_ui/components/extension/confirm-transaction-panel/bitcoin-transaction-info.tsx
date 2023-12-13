@@ -21,25 +21,18 @@ import {
   TransactionTypeText,
   TransactionText,
   Divider,
-  SectionRow,
-  EditButton
+  SectionRow
 } from './style'
 import { WarningBoxTitleRow } from '../shared-panel-styles'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 import { Column } from '../../shared/style'
 
-interface TransactionInfoProps {
-  onToggleEditGas?: () => void
-}
-export const BitcoinTransactionInfo = ({
-  onToggleEditGas
-}: TransactionInfoProps) => {
+interface TransactionInfoProps {}
+export const BitcoinTransactionInfo = (props: TransactionInfoProps) => {
   const {
     transactionDetails,
     transactionsNetwork,
-    hasFeeEstimatesError,
-    isLoadingGasFee,
-    gasFee,
+    gasFee: fee,
     insufficientFundsError,
     insufficientFundsForGasError
   } = usePendingTransactions()
@@ -55,7 +48,7 @@ export const BitcoinTransactionInfo = ({
     return null
   }
 
-  const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency || isLoadingGasFee
+  const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency
 
   /**
    * This will need updating if we ever switch to using per-locale formatting,
@@ -83,48 +76,21 @@ export const BitcoinTransactionInfo = ({
   // render
   return (
     <>
-      {
-        <SectionRow>
-          <TransactionTitle>
-            {getLocale('braveWalletConfirmTransactionTransactionFee')}
-          </TransactionTitle>
+      <SectionRow>
+        <TransactionTitle>
+          {getLocale('braveWalletConfirmTransactionTransactionFee')}
+        </TransactionTitle>
+      </SectionRow>
 
-          {onToggleEditGas && (
-            <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
-            </EditButton>
-          )}
-        </SectionRow>
-      }
+      <TransactionTypeText>
+        {(transactionsNetwork &&
+          new Amount(fee)
+            .divideByDecimals(transactionsNetwork.decimals)
+            .formatAsAsset(6, transactionsNetwork.symbol)) ||
+          ''}
+      </TransactionTypeText>
 
-      {hasFeeEstimatesError ? (
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-        </TransactionText>
-      ) : isLoadingGasFee ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton
-            width={'40px'}
-            height={'12px'}
-            enableAnimation
-          />
-        </Column>
-      ) : (
-        <TransactionTypeText>
-          {(transactionsNetwork &&
-            new Amount(gasFee)
-              .divideByDecimals(transactionsNetwork.decimals)
-              .formatAsAsset(6, transactionsNetwork.symbol)) ||
-            ''}
-        </TransactionTypeText>
-      )}
-
-      {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
+      {isLoadingGasFeeFiat ? (
         <Column
           fullHeight
           fullWidth
@@ -154,34 +120,15 @@ export const BitcoinTransactionInfo = ({
       <TransactionTypeText>
         {transactionValueText} {transactionDetails.symbol}
       </TransactionTypeText>
-      {hasFeeEstimatesError ? (
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-        </TransactionText>
-      ) : isLoadingGasFee ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton
-            width={'40px'}
-            height={'12px'}
-            enableAnimation
-          />
-        </Column>
-      ) : (
-        <TransactionTypeText>
-          +{' '}
-          {transactionsNetwork &&
-            new Amount(gasFee)
-              .divideByDecimals(transactionsNetwork.decimals)
-              .formatAsAsset(6, transactionsNetwork.symbol)}
-        </TransactionTypeText>
-      )}
+      <TransactionTypeText>
+        +{' '}
+        {transactionsNetwork &&
+          new Amount(fee)
+            .divideByDecimals(transactionsNetwork.decimals)
+            .formatAsAsset(6, transactionsNetwork.symbol)}
+      </TransactionTypeText>
 
-      {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
+      {isLoadingGasFeeFiat ? (
         <Column
           fullHeight
           fullWidth

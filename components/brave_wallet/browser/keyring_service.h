@@ -79,9 +79,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                        base::span<const uint8_t> bytes,
                                        mojom::KeyringId keyring_id);
 
-  static std::optional<mojom::KeyringId> GetKeyringIdForCoinNonFIL(
-      mojom::CoinType coin);
-
   mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
