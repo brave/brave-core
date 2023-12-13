@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index a1f8e4c5cc300b692a559299c1a66f8c660d546f..4f9d7cd1060a5edc2e38cb75f9061cc6b7fe9680 100644
+index 2f70778543a7dac8816db047860f7ffe7f231137..e4216c938653e12ec84e238a188df9ee3658ce81 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -374,6 +374,24 @@ enum class ContentSettingsType : int32_t {
+@@ -371,6 +371,24 @@ enum class ContentSettingsType : int32_t {
    // shown to the user, for a given origin.
    FILE_SYSTEM_ACCESS_RESTORE_PERMISSION,
  
