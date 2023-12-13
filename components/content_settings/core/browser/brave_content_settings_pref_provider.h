@@ -48,8 +48,7 @@ class BravePrefProvider : public PrefProvider,
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
       bool incognito,
-      const PartitionKey& partition_key =
-          PartitionKey::WipGetDefault()) const override;
+      const PartitionKey& partition_key) const override;
 
   // calls superclass directly
   bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
