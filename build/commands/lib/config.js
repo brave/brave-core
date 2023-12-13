@@ -424,6 +424,11 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
+  // Disable PGO. IMPORTANT: This change should not be merged into master branch
+  // and should be used for Windows x86 only.
+  // See https://github.com/brave/brave-browser/issues/34854
+  args.chrome_pgo_phase = 0
+
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
