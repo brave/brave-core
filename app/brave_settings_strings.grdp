@@ -1434,7 +1434,7 @@ chat history will delete all your previous conversations with Brave
 Leo. This action cannot be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK" desc="A label for a link to settings page to adjust autocomplete suggestion based on Leo">
-    Adjust autocomplete suggestion
+    Adjust autocomplete suggestions
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL" desc="The text for settings option">
     Leo
