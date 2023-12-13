@@ -24,7 +24,7 @@ export const ButtonIcon = styled(Icon)`
 `
 
 export const LeftRightContainer = styled(Row)`
-  min-width: 25%;
+  min-width: 35%;
 `
 
 export const ClickAwayArea = styled.div`
