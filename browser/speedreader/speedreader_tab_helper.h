@@ -118,7 +118,8 @@ class SpeedreaderTabHelper
   void ReloadContents();
 
   // Applies the distill state & updates UI for the navigation.
-  void ProcessNavigation(content::NavigationHandle* navigation_handle);
+  void ProcessNavigation(content::NavigationHandle* navigation_handle,
+                         bool finish_navigation = false);
 
   // Updates UI if the tab is visible.
   void UpdateUI();
@@ -127,6 +128,8 @@ class SpeedreaderTabHelper
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidStopLoading() override;
   void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
