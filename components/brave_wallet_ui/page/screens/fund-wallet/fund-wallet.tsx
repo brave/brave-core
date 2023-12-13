@@ -34,6 +34,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 
 // hooks
 import {
+  useGetBuyUrlQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetOnRampAssetsQuery,
@@ -76,7 +77,9 @@ import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
-import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
+import {
+  BuyAmountInput //
+} from '../../../components/buy-send-swap/buy_amount_input/buy_amount_input'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
 import {
   SelectOnRampFiatCurrency //
@@ -380,17 +383,14 @@ function AssetSelection({ isAndroid }: Props) {
       >
         <SelectAssetWrapper>
           <Row marginBottom={8}>
-            <SwapInputComponent
-              componentType='buyAmount'
-              onInputChange={setBuyAmount}
-              selectedAssetInputAmount={buyAmount}
-              inputName='buy'
+            <BuyAmountInput
+              onAmountChange={setBuyAmount}
+              buyAmount={buyAmount}
               selectedAsset={selectedAsset}
               selectedNetwork={selectedNetwork}
               autoFocus={true}
               onShowCurrencySelection={() => setShowFiatSelection(true)}
-              isV2={true}
-              selectedCurrencyCode={selectedCurrency}
+              selectedFiatCurrencyCode={selectedCurrency}
             />
           </Row>
 
@@ -528,6 +528,20 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
 
+  // state-dependant queries
+  const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
+    selectedAsset && assetNetwork && selectedAccount
+      ? {
+          assetSymbol: selectedAsset.symbol.toLowerCase(),
+          onRampProvider: BraveWallet.OnRampProvider.kStripe,
+          chainId: assetNetwork.chainId,
+          address: selectedAccount.address,
+          amount: params.buyAmount,
+          currencyCode: currencyCode.toLowerCase()
+        }
+      : skipToken
+  )
+
   // memos
   const accountsForSelectedAssetNetwork = React.useMemo(() => {
     return assetNetwork
@@ -565,16 +579,22 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     }
 
     return selectedAsset
-      ? [...BuyOptions]
-          .filter((buyOption) =>
-            isSelectedAssetInAssetOptions(
-              selectedAsset,
-              onRampAssetMap[buyOption.id]
-            )
+      ? BuyOptions.filter((buyOption) =>
+          isSelectedAssetInAssetOptions(
+            selectedAsset,
+            onRampAssetMap[buyOption.id]
           )
+        )
+          .filter((buyOption) => {
+            if (buyOption.id === BraveWallet.OnRampProvider.kStripe) {
+              // hide the option if Stripe URL could not be created
+              return buyWithStripeUrl
+            }
+            return true
+          })
           .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
       : []
-  }, [selectedAsset, onRampAssetMap])
+  }, [selectedAsset, onRampAssetMap, buyWithStripeUrl])
 
   // computed
   const needsAccount: boolean =
@@ -608,14 +628,8 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   )
 
   const openBuyAssetLink = React.useCallback(
-    async ({
-      buyOption,
-      depositAddress
-    }: {
-      buyOption: BraveWallet.OnRampProvider
-      depositAddress: string
-    }) => {
-      if (!selectedAsset || !assetNetwork) {
+    async (buyOption: BraveWallet.OnRampProvider) => {
+      if (!selectedAsset || !assetNetwork || !selectedAccount) {
         return
       }
 
@@ -629,7 +643,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
               : selectedAsset.symbol,
           onRampProvider: buyOption,
           chainId: assetNetwork.chainId,
-          address: depositAddress,
+          address: selectedAccount.address,
           amount: params.buyAmount,
           currencyCode:
             buyOption === BraveWallet.OnRampProvider.kStripe
@@ -652,20 +666,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
         console.error(error)
       }
     },
-    [selectedAsset, assetNetwork, getBuyUrl, params, selectedCurrency]
-  )
-
-  const onSubmitBuy = React.useCallback(
-    (buyOption: BraveWallet.OnRampProvider) => {
-      if (!selectedAsset || !assetNetwork || !selectedAccount) {
-        return
-      }
-      openBuyAssetLink({
-        buyOption,
-        depositAddress: selectedAccount.address
-      })
-    },
-    [selectedAsset, assetNetwork, selectedAccount, selectedCurrency]
+    [
+      selectedAsset,
+      assetNetwork,
+      selectedAccount,
+      getBuyUrl,
+      params,
+      currencyCode
+    ]
   )
 
   // effects
@@ -763,7 +771,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
             <SelectBuyOption
               layoutType='loose'
               buyOptions={selectedAssetBuyOptions}
-              onSelect={onSubmitBuy}
+              onSelect={openBuyAssetLink}
               selectedOption={undefined}
             />
 
