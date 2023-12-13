@@ -20,8 +20,9 @@ struct LanguageSynonymPair {
   const char* active_code;
 };
 
-constexpr auto kOrderedLangCodes =
-    base::MakeFixedFlatSetSorted<std::string_view>({
+constexpr auto kOrderedLangCodes = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "aa",  // Afar
         "ab",  // Abkhazian
         "ae",  // Avestan

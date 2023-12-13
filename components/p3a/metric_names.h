@@ -289,6 +289,13 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.WebTorrent.UsageWeekly"
 });
 
+// List of metrics that should only be via STAR/Constellation.
+// TODO(djandries): remove this once JSON deprecation is complete
+inline constexpr auto kConstellationOnlyHistograms =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.Core.PrimaryLang",
+});
+
 // clang-format on
 
 }  // namespace p3a
