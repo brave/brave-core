@@ -25,6 +25,7 @@ CreativeAdModelBasedPredictorList<T> ComputeCreativeAdModelBasedPredictors(
     const UserModelInfo& user_model,
     const AdEventList& ad_events) {
   CreativeAdModelBasedPredictorList<T> creative_ad_predictors;
+  creative_ad_predictors.reserve(creative_ads.size());
 
   const CreativeAdModelBasedPredictorWeightsInfo weights =
       BuildCreativeAdModelBasedPredictorWeights(creative_ads);

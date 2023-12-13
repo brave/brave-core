@@ -18,6 +18,12 @@
 
 namespace brave_ads {
 
+// Uses a sampling algorithm to select a creative ad based on its score. The
+// algorithm normalizes the scores of all ads, generates a random number, and
+// then iterates through the ads, summing their normalized scores until the sum
+// exceeds the random number. The ad where the sum exceeds the random number is
+// the one selected.
+
 template <typename T>
 std::optional<T> MaybeSampleCreativeAd(
     const CreativeAdModelBasedPredictorList<T>& creative_ad_predictors) {
