@@ -182,24 +182,6 @@ class BraveBrowserTypeImpl(BrowserType):
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
                         'BraveSoftware', app_name, 'Application')
 
-  def _DownloadDmgAndExtract(self, tag: str, out_dir: str, target_arch):
-    dmg_name = f'Brave-Browser-{self._channel}-{target_arch}.dmg'
-    dmg_path = os.path.join(out_dir, dmg_name)
-
-    DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
-
-    _, output = GetProcessOutput(
-        ['hdiutil', 'attach', '-noautoopen', '-nobrowse', dmg_path], check=True)
-    mount_path = output.rsplit('\t')[-1].rstrip()
-
-    app_name = f'Brave Browser {self.channel}'
-    GetProcessOutput(
-        ['cp', '-R',
-         os.path.join(mount_path, app_name + '.app'), out_dir],
-        check=True)
-    _FixUpUnpackedBrowser(out_dir)
-    GetProcessOutput(['hdiutil', 'detach', mount_path], check=True)
-
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
                             out_dir: str, common_options: CommonOptions) -> str:
     if url is None and not version.is_tag:
