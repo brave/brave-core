@@ -5,6 +5,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
+import { addFeedListener } from "./feedListener";
 
 export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`
 
@@ -84,9 +85,35 @@ const fetchFeed = (feedView: FeedView) => {
   })
 }
 
+// Clear out of date caches when the feed receives new data.
+addFeedListener(latestHash => {
+  // Delete everything in the localCache which wasn't generated from the latest
+  // data - the last visited feed is stored in under |FEED_KEY| so clicking an
+  // article and coming back will still work.
+  for (const key in localCache) {
+    if (localCache[key].sourceHash === latestHash) continue
+    delete localCache[key]
+  }
+
+  // If what's in localStorage isn't from the latest data, make sure we remove
+  // it. Without the eslint-disable-next-line comment the below will fail on iOS
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
+  if (localStorageData?.sourceHash !== latestHash) {
+    localStorage.removeItem(FEED_KEY)
+  }
+})
+
 export const useFeedV2 = () => {
   const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
   const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
+  const [hash, setHash] = useState<string>()
+
+  // Add a listener for the latest hash.
+  useEffect(() => {
+    // Note: A new feed listener will be notified with the latest hash.
+    addFeedListener(setHash)
+  }, [])
 
   useEffect(() => {
     const cachedFeed = maybeLoadFeed(feedView)
@@ -110,10 +137,15 @@ export const useFeedV2 = () => {
     fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
 
+  // Updates are available if we've been told the latest hash, we have a feed
+  // and the hashes don't match.
+  const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
+  console.log("Latest hash: ", hash, "Current hash:", feedV2?.sourceHash)
   return {
     feedV2,
     feedView,
     setFeedView,
-    refresh
+    refresh,
+    updatesAvailable
   }
 }

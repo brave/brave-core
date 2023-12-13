@@ -2,6 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import Flex from '$web-common/Flex'
+import { getLocale } from '$web-common/locale'
+import Button from '@brave/leo/react/button'
 import { spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
 import styled from 'styled-components'
@@ -10,8 +13,6 @@ import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigat
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
-import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale';
 
 const Root = styled(Variables)`
   padding-top: ${spacing.xl};
@@ -50,8 +51,22 @@ const ButtonsContainer = styled.div`
   gap: ${spacing.m};
 `
 
+const LoadNewContentButton = styled(Button)`
+  --leo-button-color: var(--bn-glass-10);
+
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: brightness(0.8) blur(32px);
+
+  position: fixed;
+  z-index: 1;
+  top: ${spacing['3Xl']};
+
+  flex-grow: 0;
+`
+
 export default function FeedV2() {
-  const { feedV2, setCustomizePage, refreshFeedV2 } = useBraveNews()
+  const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable } = useBraveNews()
 
   const ref = React.useRef<HTMLDivElement>()
 
@@ -79,7 +94,13 @@ export default function FeedV2() {
     <SidebarContainer>
       <FeedNavigation />
     </SidebarContainer>
-    <Feed feed={feedV2} />
+    <Flex align='center' direction='column' gap={spacing.l}>
+      {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
+        {getLocale('braveNewsNewContentAvailable')}
+      </LoadNewContentButton>}
+      <Feed feed={feedV2} />
+    </Flex>
+
     <ButtonsContainer>
       <Button kind='outline' onClick={() => setCustomizePage('news')}>
         {getLocale('braveNewsCustomizeFeed')}
