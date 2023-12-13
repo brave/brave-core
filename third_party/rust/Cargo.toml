@@ -676,10 +676,6 @@ package = "idna"
 path = "indexmap/v1/crate"
 package = "indexmap"
 
-[patch.crates-io.iovec_v0_1]
-path = "iovec/v0_1/crate"
-package = "iovec"
-
 [patch.crates-io.itertools_v0_10]
 path = "itertools/v0_10/crate"
 package = "itertools"
