@@ -63,13 +63,16 @@ constexpr const char* kAllowedUrlPrefixes[] = {
     "https://rewards-stg.bravesoftware.com/publishers/prefix-list",
     "https://grant.rewards.bravesoftware.com/v1/promotions",
 
+    // p3a
+    "https://p3a-creative.brave.com/",
+    "https://p3a-json.brave.com/",
+    "https://p3a.brave.com/",
+    "https://star-randsrv.bsg.brave.com/",
+
     // Other
     "https://brave-core-ext.s3.brave.com/",
     "https://dict.brave.com/",
     "https://go-updater.brave.com/",
-    "https://p3a.brave.com/",
-    "https://p3a-creative.brave.com/",
-    "https://p3a-json.brave.com/",
     "https://redirector.brave.com/",
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
