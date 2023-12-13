@@ -26,14 +26,10 @@ extension Web3Service {
   var errorDescription: String {
     switch self {
     case .solana:
-      let termsOfUseUrl = WalletConstants.snsTermsOfUseURL.absoluteString
-      let privacyPolicyUrl = WalletConstants.snsPrivacyPolicyURL.absoluteString
+      let braveWikiUrl = WalletConstants.snsBraveWikiURL.absoluteString
       return String.localizedStringWithFormat(
         Strings.Wallet.snsDomainInterstitialPageDescription,
-        termsOfUseUrl,
-        Strings.Wallet.web3DomainInterstitialPageTAndU,
-        privacyPolicyUrl,
-        Strings.Wallet.web3DomainInterstitialPagePrivacyPolicy)
+        braveWikiUrl)
     case .ethereum:
       let termsOfUseUrl = WalletConstants.ensTermsOfUseURL.absoluteString
       let privacyPolicyUrl = WalletConstants.ensPrivacyPolicyURL.absoluteString

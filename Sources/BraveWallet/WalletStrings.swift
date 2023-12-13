@@ -4144,21 +4144,21 @@ extension Strings {
       "wallet.snsDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable support of Solana Name Service (SNS) in Brave?",
+      value: "Enable Support of Solana Name Service (SNS) in Brave?",
       comment: "Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one."
     )
     public static let snsDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.snsDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave will be using Syndica to resolve .sol domain names. Brave hides your IP address. If you enable this, Syndica will see that someone is trying to visit these .sol domains but nothing else. See Syndica's <a href=%@>%@</a> and <a href=%@>%@</a>.",
-      comment: "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
+      value: "Brave will use a third-party to resolve .sol domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains, but nothing else. For more information about which third-parties we use and their privacy policies, please see our <a href=%@>help page</a>.",
+      comment: "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
     )
     public static let snsDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.snsDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Proceed using Syndica server",
+      value: "Proceed using an SNS server",
       comment: "Title on the button that users can click to enable Brave to resolve the SNS domain they entered."
     )
     // ENS
@@ -4166,7 +4166,7 @@ extension Strings {
       "wallet.ensDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable support of Ethereum Name Service (ENS) in Brave?",
+      value: "Enable Support of Ethereum Name Service (ENS) in Brave?",
       comment: "Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one."
     )
     public static let ensDomainInterstitialPageDescription = NSLocalizedString(

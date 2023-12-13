@@ -29,11 +29,9 @@ public struct WalletConstants {
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet")!
   
-  /// Terms of Use for Solana Name Service (SNS)
-  public static let snsTermsOfUseURL: URL = URL(string: "https://syndica.io/terms-and-conditions/")!
-  
-  /// Privacy Policy for Solana Name Service (SNS)
-  public static let snsPrivacyPolicyURL: URL = URL(string: "https://syndica.io/privacy-policy/")!
+  // TODO: update wiki link
+  /// Brave Wiki page for Solana Name Service (SNS)
+  public static let snsBraveWikiURL: URL = URL(string: "https://github.com/brave/brave-browser/wiki/Resolve-Methods-for-Solana-Name-Service")!
   
   /// Terms of Use for Ethereum Name Service (ENS)
   public static let ensTermsOfUseURL: URL = URL(string: "https://consensys.net/terms-of-use/")!
