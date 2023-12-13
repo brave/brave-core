@@ -25,15 +25,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
-namespace skus {
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> GetRemote(
-    content::RenderFrameHost* rfh) {
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
-      script_injector_remote;
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote);
-  return script_injector_remote;
-}
+namespace {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
@@ -43,6 +35,10 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   response->set_content_type("application/json");
   return response;
 }
+
+}  // namespace
+
+namespace skus {
 
 class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
  public:
