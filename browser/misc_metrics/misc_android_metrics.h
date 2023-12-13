@@ -21,6 +21,7 @@ class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
  public:
   MiscAndroidMetrics(ProcessMiscMetrics* misc_metrics,
                      SearchEngineTracker* search_engine_tracker);
+  ~MiscAndroidMetrics() override;
 
   MiscAndroidMetrics(const MiscAndroidMetrics&) = delete;
   MiscAndroidMetrics& operator=(const MiscAndroidMetrics&) = delete;

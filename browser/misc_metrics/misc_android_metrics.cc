@@ -18,6 +18,8 @@ MiscAndroidMetrics::MiscAndroidMetrics(
     : misc_metrics_(misc_metrics),
       search_engine_tracker_(search_engine_tracker) {}
 
+MiscAndroidMetrics::~MiscAndroidMetrics() = default;
+
 mojo::PendingRemote<mojom::MiscAndroidMetrics>
 MiscAndroidMetrics::MakeRemote() {
   mojo::PendingRemote<mojom::MiscAndroidMetrics> remote;

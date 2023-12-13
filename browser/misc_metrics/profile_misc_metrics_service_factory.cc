@@ -7,12 +7,14 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
-#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "extensions/browser/extension_registry_factory.h"
+#else
+#include "brave/browser/search_engines/search_engine_tracker.h"
+#endif
 
 namespace misc_metrics {
 
@@ -35,23 +37,19 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "ProfileMiscMetricsService",
           BrowserContextDependencyManager::GetInstance()) {
+#if !BUILDFLAG(IS_ANDROID)
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
-  DependsOn(HistoryServiceFactory::GetInstance());
+#else
   DependsOn(SearchEngineTrackerFactory::GetInstance());
+#endif
+  DependsOn(HistoryServiceFactory::GetInstance());
 }
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 
 KeyedService* ProfileMiscMetricsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* extension_registry =
-      extensions::ExtensionRegistryFactory::GetForBrowserContext(context);
-  auto* history_service = HistoryServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(context), ServiceAccessType::EXPLICIT_ACCESS);
-  auto* search_engine_tracker =
-      SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
-  return new ProfileMiscMetricsService(extension_registry, history_service,
-                                       search_engine_tracker);
+  return new ProfileMiscMetricsService(context);
 }
 
 content::BrowserContext*

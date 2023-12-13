@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -13,9 +13,15 @@
 
 class SearchEngineTracker;
 
+namespace content {
+class BrowserContext;
+}  // namespace content
+
+#if !BUILDFLAG(IS_ANDROID)
 namespace extensions {
 class ExtensionRegistry;
 }  // namespace extensions
+#endif
 
 namespace history {
 class HistoryService;
@@ -28,14 +34,12 @@ class MiscAndroidMetrics;
 #else
 class ExtensionMetrics;
 #endif
+class LanguageMetrics;
 class PageMetrics;
-class ProcessMiscMetrics;
 
 class ProfileMiscMetricsService : public KeyedService {
  public:
-  ProfileMiscMetricsService(extensions::ExtensionRegistry* extension_registry,
-                            history::HistoryService* history_service,
-                            SearchEngineTracker* search_engine_tracker);
+  explicit ProfileMiscMetricsService(content::BrowserContext* context);
   ~ProfileMiscMetricsService() override;
 
   ProfileMiscMetricsService(const ProfileMiscMetricsService&) = delete;
@@ -50,6 +54,7 @@ class ProfileMiscMetricsService : public KeyedService {
 #endif
 
  private:
+  std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
 #if BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_ = nullptr;

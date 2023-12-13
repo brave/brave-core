@@ -213,6 +213,7 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.AIChat.UsageMonthly",
     "Brave.Accessibility.DisplayZoomEnabled",
     "Brave.Core.DocumentsDirectorySizeMB",
+    "Brave.Core.PrimaryLang",
     "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
     "Brave.General.BottomBarLocation",
