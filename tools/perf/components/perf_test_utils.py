@@ -26,6 +26,7 @@ def ToChromiumPlatformName(target_os: str) -> str:
     return 'android-arm64'
   raise RuntimeError('Platform is not supported')
 
+
 def ToBravePlatformName(target_os: str) -> str:
   if target_os == 'mac':
     return 'darwin-arm64' if platform.processor() == 'arm' else 'darwin-x64'

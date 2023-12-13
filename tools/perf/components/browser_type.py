@@ -85,7 +85,7 @@ class FieldTrialsMode(Enum):
 
 
 class BrowserType:
-  _name: str
+  _win_name: str
   _mac_name: str
   _channel: Optional[str] = None
   _extra_browser_args: List[str] = []
@@ -93,10 +93,10 @@ class BrowserType:
   _field_trials_mode: FieldTrialsMode
   _report_as_reference = False
 
-  def __init__(self, name: str, mac_name: str, channel: Optional[str],
+  def __init__(self, win_name: str, mac_name: str, channel: Optional[str],
                extra_browser_args: List[str], extra_benchmark_args: List[str],
                report_as_reference: bool, field_trials_mode: FieldTrialsMode):
-    self._name = name
+    self._win_name = win_name
     self._mac_name = mac_name
     self._channel = channel
     self._extra_browser_args = extra_browser_args
@@ -118,8 +118,8 @@ class BrowserType:
     return self._extra_benchmark_args
 
   @property
-  def name(self) -> str:
-    return self._name
+  def win_name(self) -> str:
+    return self._win_name
 
   @property
   def mac_name(self) -> str:
@@ -155,7 +155,7 @@ class BrowserType:
 
   def GetBinaryPath(self, target_os: str) -> str:
     if target_os == 'windows':
-      return os.path.join(self.name + '.exe')
+      return os.path.join(self.win_name + '.exe')
 
     if target_os == 'mac':
       if self.channel is not None:
@@ -240,7 +240,7 @@ class ChromiumBrowserTypeImpl(BrowserType):
       browser_args = [
           '--variations-override-country=us', '--fake-variations-channel=stable'
       ]
-    super().__init__('chromium', 'Chromium', None, browser_args, [], True,
+    super().__init__('chrome', 'Chromium', None, browser_args, [], True,
                      field_trials_mode)
 
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
