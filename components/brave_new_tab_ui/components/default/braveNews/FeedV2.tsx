@@ -5,7 +5,8 @@
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
-import { spacing } from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
+import { radius, spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
 import styled from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'
@@ -38,8 +39,9 @@ const ButtonsContainer = styled.div`
   visibility: hidden;
 
   position: fixed;
-  bottom: ${spacing.xl};
-  right: ${spacing.xl};
+  bottom: ${spacing['5Xl']};
+  right: ${spacing['5Xl']};
+  border-radius: ${radius.m};
 
   opacity: calc((var(--ntp-scroll-percent) - 0.5) / 0.5);
 
@@ -48,7 +50,16 @@ const ButtonsContainer = styled.div`
   }
 
   display: flex;
-  gap: ${spacing.m};
+  gap: ${spacing.xl};
+  padding: ${spacing.xl};
+
+  background: var(--bn-glass-container);
+`
+
+const NewsButton = styled(Button)`
+  --leo-button-color: var(--bn-glass-50);
+  --leo-button-radius: ${radius.s};
+  --leo-button-padding: ${spacing.m};
 `
 
 const LoadNewContentButton = styled(Button)`
@@ -102,12 +113,12 @@ export default function FeedV2() {
     </Flex>
 
     <ButtonsContainer>
-      <Button kind='outline' onClick={() => setCustomizePage('news')}>
-        {getLocale('braveNewsCustomizeFeed')}
-      </Button>
-      <Button isLoading={!feedV2} kind='outline' onClick={() => {
+      <NewsButton fab kind='outline' onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
+        <Icon name="settings" />
+      </NewsButton>
+      <NewsButton fab isLoading={!feedV2} kind='outline' title={getLocale('braveNewsRefreshFeed')} onClick={() => {
         refreshFeedV2()
-      }}>{getLocale('braveNewsRefreshFeed')}</Button>
+      }}><Icon name="refresh" /></NewsButton>
     </ButtonsContainer>
   </Root>
 }

@@ -16,7 +16,7 @@ export default function HeroArticle({ info }: Props) {
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
     useCache: true,
     rootElement: document.body,
-    rootMargin: '0px 0px 200px 0px'
+    rootMargin: '500px 0px'
   })
   return <Card onClick={braveNewsCardClickHandler(info.data.url.url)} ref={setElementRef}>
     <LargeImage src={url} />
