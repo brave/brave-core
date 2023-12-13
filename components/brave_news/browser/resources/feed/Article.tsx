@@ -23,7 +23,10 @@ const Container = styled(Card)`
 `
 
 export default function Article({ info, hideChannel }: Props) {
-  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, { useCache: true })
+  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
+    useCache: true,
+    rootMargin: '500px 0px'
+  })
   const url = info.data.url.url;
 
   return <Container ref={setElementRef} onClick={braveNewsCardClickHandler(url)}>

@@ -39,6 +39,7 @@ const BatAdLabel = styled.a`
 `
 
 const CtaButton = styled(Button)`
+  --leo-button-color: var(--bn-glass-container);
   align-self: flex-start;
 `
 
@@ -121,6 +122,6 @@ export default function Advert(props: Props) {
         {advert.title}
       </SecureLink>
     </Title>
-    <CtaButton kind='plain-faint'>{advert.ctaText}</CtaButton>
+    <CtaButton kind='filled'>{advert.ctaText}</CtaButton>
   </Container>
 }
