@@ -449,6 +449,12 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
+  if (this.isAsan()) {
+    args.enable_backup_ref_ptr_support = false
+    args.use_asan_backup_ref_ptr = false
+    args.use_asan_unowned_ptr = true
+  }
+
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
