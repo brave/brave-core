@@ -26,25 +26,39 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       static_cast<int>(EnsOffchainResolveMethod::kAsk));
   registry->RegisterIntegerPref(kSnsResolveMethod,
                                 static_cast<int>(ResolveMethodTypes::ASK));
+
+  // Register prefs for migration.
+  // Added 12/2023 to reset SNS pref to re-opt in with updated interstitial.
+  registry->RegisterBooleanPref(kSnsResolveMethodMigrated, false);
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // Added 05/2022
   if (static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS) ==
-      local_state->GetInteger(
-          decentralized_dns::kUnstoppableDomainsResolveMethod)) {
-    local_state->ClearPref(decentralized_dns::kUnstoppableDomainsResolveMethod);
+      local_state->GetInteger(kUnstoppableDomainsResolveMethod)) {
+    local_state->ClearPref(kUnstoppableDomainsResolveMethod);
   }
   if (static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS) ==
-      local_state->GetInteger(decentralized_dns::kENSResolveMethod)) {
-    local_state->ClearPref(decentralized_dns::kENSResolveMethod);
+      local_state->GetInteger(kENSResolveMethod)) {
+    local_state->ClearPref(kENSResolveMethod);
+  }
+
+  // Added 12/2023
+  // Reset SNS resolve method to ask to re-opt in with updated interstitial.
+  if (!local_state->GetBoolean(kSnsResolveMethodMigrated)) {
+    if (local_state->GetInteger(kSnsResolveMethod) ==
+        static_cast<int>(ResolveMethodTypes::ENABLED)) {
+      local_state->ClearPref(kSnsResolveMethod);
+    }
+    local_state->SetBoolean(kSnsResolveMethodMigrated, true);
   }
 }
 
 bool IsUnstoppableDomainsTLD(const std::string_view host) {
   for (auto* domain : kUnstoppableDomains) {
-    if (base::EndsWith(host, domain))
+    if (base::EndsWith(host, domain)) {
       return true;
+    }
   }
   return false;
 }
