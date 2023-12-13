@@ -7,6 +7,7 @@ import * as React from 'react'
 
 interface Props {
   amount: number
+  minimumIntegerDigits?: number
   minimumFractionDigits?: number
   hideCurrency?: boolean
 }
@@ -15,6 +16,9 @@ const defaultMinimumFractionDigits = 3
 
 function getFormatter (props: Props) {
   return new Intl.NumberFormat(undefined, {
+    minimumIntegerDigits: typeof props.minimumIntegerDigits === 'number'
+      ? props.minimumIntegerDigits
+      : undefined,
     maximumFractionDigits: 3,
     minimumFractionDigits: typeof props.minimumFractionDigits === 'number'
       ? props.minimumFractionDigits
