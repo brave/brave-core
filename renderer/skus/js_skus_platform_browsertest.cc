@@ -39,12 +39,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
   response->set_code(net::HTTP_OK);
-  response->set_content(R"(
-                          <html>
-                           <head><title>OK</title></head>
-                          </html>
-                        )");
-  response->set_content_type("text/html; charset=utf-8");
+  response->set_content(R"({})");
+  response->set_content_type("application/json");
   return response;
 }
 
