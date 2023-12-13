@@ -8,10 +8,10 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
@@ -29,14 +29,10 @@ TransactionInfo BuildTransaction(const double value,
                                  const bool should_use_random_uuids) {
   TransactionInfo transaction;
 
-  transaction.id = should_use_random_uuids
-                       ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                       : kTransactionId;
+  transaction.id = GetConstantId(should_use_random_uuids, kTransactionId);
   transaction.created_at = Now();
   transaction.creative_instance_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeInstanceId;
+      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
   transaction.value = value;
   transaction.segment = "untargeted";
   transaction.ad_type = AdType::kNotificationAd;

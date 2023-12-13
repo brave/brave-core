@@ -10,8 +10,8 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -30,10 +30,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
 
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kPlacementId;
+  ad_event.placement_id = GetConstantId(should_use_random_uuids, kPlacementId);
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
