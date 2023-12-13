@@ -202,11 +202,13 @@
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkToolbar {

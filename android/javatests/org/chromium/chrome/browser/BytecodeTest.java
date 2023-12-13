@@ -433,14 +433,36 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "shouldShowIncognitoToggle", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/download/MimeUtils",
-                "canAutoOpenMimeType", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
-                "addOrEditBookmark", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "addOrEditBookmark", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
-                "showBookmarkManagerOnPhone", false, null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/download/MimeUtils",
+                        "canAutoOpenMimeType",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                        "addOrEditBookmark",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                        "addOrEditBookmark",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                        "showBookmarkManagerOnPhone",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                        "isSpecialFolder",
+                        false,
+                        null));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
