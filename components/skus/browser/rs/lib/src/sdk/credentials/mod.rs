@@ -2,7 +2,7 @@ mod fetch;
 mod present;
 
 use chrono::Utc;
-use tracing::{error, instrument};
+use tracing::{debug, instrument};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -64,7 +64,7 @@ where
                         }));
                     }
 
-                    error!("No matches found for credential summary.");
+                    debug!("No matches found for credential summary.");
                 }
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;
@@ -103,7 +103,7 @@ where
                         }));
                     }
 
-                    error!("No matches found for credential summary.");
+                    debug!("No matches found for credential summary.");
                 }
             };
         } // for
