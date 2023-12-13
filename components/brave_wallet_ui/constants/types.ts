@@ -257,7 +257,6 @@ export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
-  selectedAsset: BraveWallet.BlockchainToken | undefined
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined

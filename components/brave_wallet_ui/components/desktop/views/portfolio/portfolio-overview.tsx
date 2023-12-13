@@ -509,9 +509,7 @@ export const PortfolioOverview = () => {
           }/${asset.contractAddress}`
         )
       }
-      dispatch(
-        WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline })
-      )
+      dispatch(WalletPageActions.selectPriceTimeframe(selectedTimeline))
       if ((asset.isErc721 || asset.isNft) && nftMetadata) {
         // reset nft metadata
         dispatch(WalletPageActions.updateNFTMetadata(undefined))
@@ -589,12 +587,7 @@ export const PortfolioOverview = () => {
 
   // effects
   React.useEffect(() => {
-    dispatch(
-      WalletPageActions.selectAsset({
-        asset: undefined,
-        timeFrame: selectedTimeline
-      })
-    )
+    dispatch(WalletPageActions.selectPriceTimeframe(selectedTimeline))
   }, [selectedTimeline])
 
   // render

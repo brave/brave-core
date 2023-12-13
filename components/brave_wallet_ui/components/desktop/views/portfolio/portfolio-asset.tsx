@@ -448,10 +448,9 @@ export const PortfolioAsset = (props: Props) => {
     )
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     dispatch(
-      WalletPageActions.selectAsset({
-        asset: undefined,
-        timeFrame: BraveWallet.AssetPriceTimeframe.OneDay
-      })
+      WalletPageActions.selectPriceTimeframe(
+        BraveWallet.AssetPriceTimeframe.OneDay
+      )
     )
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
