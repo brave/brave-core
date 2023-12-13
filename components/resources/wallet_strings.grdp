@@ -103,7 +103,9 @@
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_DESCRIPTION" desc="Message description shown when requesting to do an ENS off chain lookup.">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">Use ENS domain</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
+  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_EXPLANATION" desc="Slippage Tolerance tooltip explanation">Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
+  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_DESCRIPTION" desc="Custom slippage tolerance input description">Enter a value between 0.5% and 99%</message>
   <message name="IDS_BRAVE_WALLET_EXPIRES_IN_TITLE" desc="BuySendSwap expires in title">Expires in</message>
   <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">Wallet address or URL</message>
   <message name="IDS_BRAVE_WALLET_SEND_NO_URL_PLACEHOLDER" desc="BuySendSwap send placeholder without URL">Wallet address</message>
@@ -890,7 +892,6 @@
   <message name="IDS_BRAVE_SWAP_AVERAGE" desc="Gas price corresponding to average speed for confirmation">Average</message>
   <message name="IDS_BRAVE_SWAP_FAST" desc="Gas price corresponding to fast speed for confirmation">Fast</message>
   <message name="IDS_BRAVE_SWAP_GWEI" desc="Unit to use for gas price (giga-wei)">Gwei</message>
-  <message name="IDS_BRAVE_SWAP_SETTINGS" desc="Swap settings">Swap settings</message>
   <message name="IDS_BRAVE_SWAP_SLIPPAGE_TOLERANCE" desc="Percentage tolerance to allow for slippage during the swap">Slippage tolerance</message>
   <message name="IDS_BRAVE_SWAP_EXCHANGES" desc="Exchanges to use for the swap trade">Exchanges</message>
   <message name="IDS_BRAVE_SWAP_DIRECT_ROUTE_TITLE" desc="Text indicating that swap must use direct routes in the trade">Direct route only</message>

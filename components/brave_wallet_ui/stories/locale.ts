@@ -70,6 +70,9 @@ provideStrings({
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
   braveWalletSlippageToleranceTitle: 'Slippage tolerance',
+  braveWalletSlippageToleranceExplanation:
+    'Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.',
+  braveWalletSlippageToleranceDescription: 'Enter a value between 0.5% and 99%',
   braveWalletExpiresInTitle: 'Expires in',
   braveWalletSendPlaceholder: 'Wallet address or URL',
   braveWalletSendNoURLPlaceholder: 'Wallet address',

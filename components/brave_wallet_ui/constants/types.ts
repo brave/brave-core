@@ -1041,7 +1041,6 @@ export const ZCashNetworkLocaleMapping = {
 export type GasFeeOption = {
   id: string
   name: string
-  icon: string
 }
 
 export type GasEstimate = {
