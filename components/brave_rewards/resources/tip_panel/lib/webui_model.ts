@@ -61,17 +61,34 @@ export function createModel (): Model {
         : false
     }
 
-    function mapBanner () {
-      return banner || {
-        name: '',
-        provider: '',
-        title: '',
-        description: '',
-        logo: '',
-        background: '',
-        links: {},
-        web3Url: ''
+    function mapURL (url: string) {
+      try {
+        return new URL(url).toString()
+      } catch {
+        return ''
       }
+    }
+
+    function mapBanner () {
+      if (!banner) {
+        return {
+          name: '',
+          provider: '',
+          title: '',
+          description: '',
+          logo: '',
+          background: '',
+          links: {},
+          web3Url: ''
+        }
+      }
+
+      banner.web3Url = mapURL(banner.web3Url)
+      for (const [key, value] of Object.entries(banner.links)) {
+        banner.links[key] = mapURL(String(value || ''))
+      }
+
+      return banner
     }
 
     function mapCreatorVerified () {

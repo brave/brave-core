@@ -64,10 +64,10 @@ export function CreatorView () {
 
   if (creatorBanner.web3Url) {
     if (renderedLinks.length > 0) {
-      renderedLinks.push(<style.linkDivider />)
+      renderedLinks.push(<style.linkDivider key='divider' />)
     }
     renderedLinks.push(
-      <NewTabLink href={creatorBanner.web3Url}>
+      <NewTabLink key='web3' href={creatorBanner.web3Url}>
         <LaunchIcon />
       </NewTabLink>
     )
