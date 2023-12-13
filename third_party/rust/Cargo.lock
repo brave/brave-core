@@ -212,11 +212,7 @@ version = "1.4.3"
 
 [[package]]
 name = "bytes"
-version = "0.4.12"
-dependencies = [
- "byteorder",
- "iovec",
-]
+version = "1.5.0"
 
 [[package]]
 name = "camino"

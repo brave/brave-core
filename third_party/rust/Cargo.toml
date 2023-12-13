@@ -308,10 +308,6 @@ package = "bls12_381"
 path = "byteorder/v1/crate"
 package = "byteorder"
 
-[patch.crates-io.bytes_v0_4]
-path = "bytes/v0_4/crate"
-package = "bytes"
-
 [patch.crates-io.bytes_v1]
 path = "bytes/v1/crate"
 package = "bytes"
