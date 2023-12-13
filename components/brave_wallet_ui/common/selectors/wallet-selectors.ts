@@ -9,8 +9,6 @@ type State = Omit<WalletPageState, 'page'>
 
 // safe selectors (primitive return types only)
 export const addUserAssetError = ({ wallet }: State) => wallet.addUserAssetError
-export const hasIncorrectPassword = ({ wallet }: State) =>
-  wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled

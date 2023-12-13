@@ -20,7 +20,6 @@ export const _DesktopWalletConcept = () => {
   return (
     <WalletPageStory
       walletStateOverride={{
-        hasIncorrectPassword: false,
         isWalletCreated: true
       }}
       pageStateOverride={{
@@ -43,7 +42,6 @@ export const _WalletOnboardingConcept = () => {
   return (
     <WalletPageStory
       walletStateOverride={{
-        hasIncorrectPassword: false,
         isWalletCreated: false
       }}
       pageStateOverride={{

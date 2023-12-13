@@ -9,7 +9,6 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
   SetUserAssetVisiblePayloadType,
-  UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
 import { BraveWallet, WalletState, RefreshOpts } from '../../constants/types'
@@ -124,20 +123,6 @@ handler.on(
   WalletActions.defaultBaseCryptocurrencyChanged.type,
   async (store) => {
     await refreshWalletInfo(store)
-  }
-)
-
-handler.on(WalletActions.lockWallet.type, async (store) => {
-  const keyringService = getAPIProxy().keyringService
-  keyringService.lock()
-})
-
-handler.on(
-  WalletActions.unlockWallet.type,
-  async (store: Store, payload: UnlockWalletPayloadType) => {
-    const keyringService = getAPIProxy().keyringService
-    const result = await keyringService.unlock(payload.password)
-    store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
   }
 )
 
