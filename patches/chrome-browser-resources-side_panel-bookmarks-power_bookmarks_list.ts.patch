@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
+index 897919f0015c30e247d10872ae031dc059f413f0..e1e3f74ead610b18919dcf75fdc4ab400cf38a34 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
+@@ -171,7 +171,8 @@ export class PowerBookmarksListElement extends PolymerElement {
+                sortOrder: SortOrder.kReverseAlphabetical,
+                label: loadTimeData.getString('sortReverseAlphabetically'),
+                lowerLabel: loadTimeData.getString('sortReverseAlphabetically'),
+-             }],
++             },
++             { sortOrder: SortOrder.kCustom, label: loadTimeData.getString('sortCustom'), lowerLabel: loadTimeData.getString('sortCustomLower'), }],
+       },
+ 
+       editing_: {
+@@ -412,6 +413,7 @@ export class PowerBookmarksListElement extends PolymerElement {
+     const shouldShow = this.bookmarkShouldShow_(bookmark);
+     const isShowing = this.bookmarkIsShowing_(bookmark);
+     if (oldParent === newParent && shouldShow) {
++      if (this.activeSortIndex_ == /*customOrder*/5) { this.updateDisplayLists_(); }
+       getAnnouncerInstance().announce(loadTimeData.getStringF(
+           'bookmarkReordered', getBookmarkName(bookmark)));
+     } else if (
