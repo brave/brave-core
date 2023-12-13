@@ -24,7 +24,7 @@ struct PortfolioView: View {
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   
-  @State private var selectedContent: PortfolioSegmentedControl.SelectedContent = .assets
+  @State private var selectedContent: PortfolioSegmentedControl.Item = .assets
   @ObservedObject private var isShowingNFTsTab = Preferences.Wallet.isShowingNFTsTab
   
   var body: some View {

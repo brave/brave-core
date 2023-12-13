@@ -13,11 +13,11 @@ import Shared
 
 struct PortfolioSegmentedControl: View {
   
-  enum SelectedContent: Int, Equatable, CaseIterable, Identifiable {
+  enum Item: Int, Equatable, CaseIterable, Identifiable, WalletSegmentedControlItem {
     case assets
     case nfts
     
-    var displayText: String {
+    var title: String {
       switch self {
       case .assets: return Strings.Wallet.assetsTitle
       case .nfts: return Strings.Wallet.nftsTitle
@@ -27,81 +27,103 @@ struct PortfolioSegmentedControl: View {
     var id: Int { rawValue }
   }
   
-  @Binding var selected: SelectedContent
+  @Binding var selected: Item
+  
+  var body: some View {
+    WalletSegmentedControl(
+      items: Item.allCases,
+      selected: $selected
+    )
+  }
+}
+
+#if DEBUG
+struct PortfolioSegmentedControl_Previews: PreviewProvider {
+  static var previews: some View {
+    PortfolioSegmentedControl(
+      selected: .constant(.nfts)
+    )
+  }
+}
+#endif
+
+protocol WalletSegmentedControlItem: Equatable, Hashable, Identifiable {
+  var title: String { get }
+}
+
+struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
+  
+  let items: [Item]
+  @Binding var selected: Item
+  let dynamicTypeRange = (...DynamicTypeSize.xxxLarge)
+  
+  var minHeight: CGFloat = 40
+  @ScaledMetric var height: CGFloat = 40
+  var maxHeight: CGFloat = 60
+  
   @State private var viewSize: CGSize = .zero
   @State private var location: CGPoint = .zero
   @GestureState private var isDragGestureActive: Bool = false
   
   var body: some View {
-    GeometryReader { geometryProxy in
-      Capsule()
-        .fill(Color(braveSystemName: .containerHighlight))
-        .osAvailabilityModifiers {
-          if #unavailable(iOS 16) {
-            $0.overlay {
-              // TapGesture does not give a location,
-              // SpatialTapGesture is iOS 16+.
-              HStack {
+    Capsule()
+      .fill(Color(braveSystemName: .containerHighlight))
+      .osAvailabilityModifiers {
+        if #unavailable(iOS 16) {
+          $0.overlay {
+            // TapGesture does not give a location,
+            // SpatialTapGesture is iOS 16+.
+            HStack {
+              ForEach(items) { item in
                 Color.clear
                   .contentShape(Rectangle())
                   .onTapGesture {
-                    select(.assets)
-                  }
-                Color.clear
-                  .contentShape(Rectangle())
-                  .onTapGesture {
-                    select(.nfts)
+                    select(item)
                   }
               }
             }
-          } else {
-            $0
+          }
+        } else {
+          $0
+        }
+      }
+      .overlay { // selected capsule
+        Capsule()
+          .fill(Color(braveSystemName: .containerBackground))
+          .padding(4)
+          .frame(width: itemWidth)
+          .position(location)
+      }
+      .overlay { // text for each item
+        HStack {
+          ForEach(items) { item in
+            titleView(for: item)
+            
+            if item != items.last {
+              Spacer()
+            }
           }
         }
-        .overlay {
-          Capsule()
-            .fill(Color(braveSystemName: .containerBackground))
-            .padding(4)
-            .frame(width: geometryProxy.size.width / 2)
-            .position(location)
-        }
-        .overlay {
-          HStack {
-            Spacer()
-            Text(SelectedContent.assets.displayText)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: selected == .assets ? .textPrimary : .textSecondary))
-              .allowsHitTesting(false)
-            Spacer()
-            Spacer()
-            Text(SelectedContent.nfts.displayText)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: selected == .nfts ? .textPrimary : .textSecondary))
-              .allowsHitTesting(false)
-            Spacer()
-          }
-        }
-        .readSize { size in
-          if location == .zero {
-            let newX = selected == .assets ? geometryProxy.size.width / 4 : geometryProxy.size.width / 4 * 3
-            location = CGPoint(
-              x: newX,
-              y: geometryProxy.size.height / 2
-            )
-          }
-          viewSize = size
-        }
-    }
-    .frame(height: 40)
+      }
+      .readSize { size in
+        viewSize = size
+      }
+    .frame(height: min(max(height, minHeight), maxHeight))
     .gesture(dragGesture)
     .onChange(of: isDragGestureActive) { isDragGestureActive in
       if !isDragGestureActive { // cancellation of gesture, ex while scrolling
-        var newX = location.x
-        if newX < viewSize.width / 2 {
-          select(.assets)
-        } else {
-          select(.nfts)
+        if let itemForLocation = item(for: location) {
+          select(itemForLocation)
         }
+      }
+    }
+    .onChange(of: viewSize) { viewSize in
+      if location == .zero {
+        // set initial location
+        select(selected, animated: false)
+      } else if !isDragGestureActive {
+        // possible when accessibility size changes
+        select(selected, animated: false)
       }
     }
     .osAvailabilityModifiers {
@@ -113,8 +135,8 @@ struct PortfolioSegmentedControl: View {
     }
     .accessibilityRepresentation {
       Picker(selection: $selected) {
-        ForEach(SelectedContent.allCases) { content in
-          Text(content.displayText).tag(content)
+        ForEach(items) { item in
+          Text(item.title).tag(item.id)
         }
       } label: {
         EmptyView()
@@ -123,28 +145,40 @@ struct PortfolioSegmentedControl: View {
     }
   }
   
+  private func select(_ item: Item, animated: Bool = true) {
+    selected = item
+    withAnimation(animated ? .spring() : nil) {
+      location = location(for: item)
+    }
+  }
+  
+  private func titleView(for item: Item) -> some View {
+    Text(item.title)
+      .font(.subheadline.weight(.semibold))
+      .foregroundColor(Color(braveSystemName: selected == item ? .textPrimary : .textSecondary))
+      .dynamicTypeSize(dynamicTypeRange)
+      .allowsHitTesting(false)
+      .frame(width: itemWidth)
+  }
+  
   private var dragGesture: some Gesture {
     DragGesture()
       .updating($isDragGestureActive) { value, state, transaction in
         state = true
       }
       .onChanged { value in
-        var newX = value.location.x
-        if newX < viewSize.width / 4 {
-          newX = viewSize.width / 4
-        } else if newX > (viewSize.width / 4 * 3) {
-          newX = (viewSize.width / 4 * 3)
-        }
+        // `location` is the middle of capsule
+        let minX = itemWidth / 2
+        let maxX = viewSize.width - minX
+        let newX = min(max(value.location.x, minX), maxX)
         location = CGPoint(
           x: newX,
           y: location.y
         )
       }
       .onEnded { value in
-        if value.predictedEndLocation.x <= viewSize.width / 2 {
-          select(.assets)
-        } else {
-          select(.nfts)
+        if let itemForLocation = item(for: value.predictedEndLocation) {
+          select(itemForLocation)
         }
       }
   }
@@ -153,26 +187,35 @@ struct PortfolioSegmentedControl: View {
   private var tapGesture: some Gesture {
     SpatialTapGesture()
       .onEnded { value in
-        if value.location.x < viewSize.width / 2 {
-          select(.assets)
-        } else {
-          select(.nfts)
+        if let itemForLocation = item(for: value.location) {
+          select(itemForLocation)
         }
       }
   }
   
-  private func select(_ selectedContent: SelectedContent) {
-    selected = selectedContent
-    withAnimation(.spring()) {
-      var newX = viewSize.width / 4
-      if selectedContent == .nfts {
-        newX *= 3
-      }
-      location = CGPoint(
-        x: newX,
-        y: viewSize.height / 2
-      )
-    }
+  private var itemWidth: CGFloat {
+    viewSize.width / CGFloat(items.count)
+  }
+  
+  private func location(for item: Item) -> CGPoint {
+    CGPoint(
+      x: xPosition(for: item),
+      y: viewSize.height / 2
+    )
+  }
+  
+  private func xPosition(for item: Item) -> CGFloat {
+    let itemWidth = viewSize.width / CGFloat(items.count)
+    let firstItemPosition = itemWidth / 2
+    let selectedIndex = items.firstIndex(of: item) ?? 0
+    let newX = firstItemPosition + (CGFloat(selectedIndex) * itemWidth)
+    return newX
+  }
+  
+  private func item(for location: CGPoint) -> Item? {
+    let percent = location.x / viewSize.width
+    let itemIndex = Int(percent * CGFloat(items.count))
+    return items[safe: itemIndex]
   }
 }
 
