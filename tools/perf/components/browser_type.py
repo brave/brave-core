@@ -234,7 +234,7 @@ class BraveBrowserTypeImpl(BrowserType):
 
 def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
                             variations_repo_dir: str, branch: str) -> str:
-  combined_version = version.combined_version
+  combined_version: str = version.combined_version()
   logging.debug('Generating trials for combined_version %s', combined_version)
   target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')
 
