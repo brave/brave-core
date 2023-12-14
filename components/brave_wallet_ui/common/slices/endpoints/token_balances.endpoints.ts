@@ -25,10 +25,7 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
 import { networkEntityAdapter } from '../entities/network.entity'
-import {
-  TokenBalancesRegistry,
-  TokenBalancesForChainId
-} from '../entities/token-balance.entity'
+import { TokenBalancesRegistry } from '../entities/token-balance.entity'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -91,7 +88,6 @@ export const tokenBalancesEndpoints = ({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         const { data: api } = baseQuery(undefined)
         const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
-
         try {
           return fetchAccountTokenCurrentBalance({
             arg,
@@ -206,7 +202,7 @@ export const tokenBalancesEndpoints = ({
 
           const userTokens = await getUserTokensRegistry()
 
-          let tokenBalancesRegistry: TokenBalancesRegistry = {}
+          const tokenBalancesRegistry: TokenBalancesRegistry = {}
 
           await eachLimit(
             args.accountIds,
@@ -216,8 +212,6 @@ export const tokenBalancesEndpoints = ({
                 nonAnkrSupportedNetworks.filter((network) =>
                   networkSupportsAccount(network, accountId)
                 )
-
-              const nonAnkrBalancesRegistry: TokenBalancesRegistry = {}
 
               if (nonAnkrSupportedAccountNetworks.length) {
                 await eachLimit(
@@ -264,15 +258,13 @@ export const tokenBalancesEndpoints = ({
                         uniqueKey,
                         balancesByChainId
                       ] of Object.entries(partialRegistry)) {
-                        if (
-                          !nonAnkrBalancesRegistry.hasOwnProperty(uniqueKey)
-                        ) {
-                          nonAnkrBalancesRegistry[uniqueKey] = balancesByChainId
-                        } else {
-                          nonAnkrBalancesRegistry[uniqueKey] = {
-                            ...nonAnkrBalancesRegistry[uniqueKey],
+                        if (tokenBalancesRegistry[uniqueKey]) {
+                          tokenBalancesRegistry[uniqueKey] = {
+                            ...tokenBalancesRegistry[uniqueKey],
                             ...balancesByChainId
                           }
+                        } else {
+                          tokenBalancesRegistry[uniqueKey] = balancesByChainId
                         }
                       }
                     } catch (error) {
@@ -297,24 +289,18 @@ export const tokenBalancesEndpoints = ({
 
               const accountKey = getAccountBalancesKey(accountId)
 
-              const accountBalancesRegistry: TokenBalancesRegistry =
-                nonAnkrBalancesRegistry
-
-              for (const { asset, balance } of ankrAssetBalances) {
-                accountBalancesRegistry[accountKey] = {
-                  ...(accountBalancesRegistry[accountKey] || {}),
-                  [asset.chainId]: {
-                    ...((accountBalancesRegistry[accountKey] || {})[
-                      asset.chainId
-                    ] || {}),
-                    [asset.contractAddress]: balance
-                  }
-                }
+              if (!tokenBalancesRegistry[accountKey]) {
+                tokenBalancesRegistry[accountKey] = {}
               }
 
-              tokenBalancesRegistry = {
-                ...tokenBalancesRegistry,
-                ...accountBalancesRegistry
+              for (const { asset, balance } of ankrAssetBalances) {
+                if (!tokenBalancesRegistry[accountKey][asset.chainId]) {
+                  tokenBalancesRegistry[accountKey][asset.chainId] = {}
+                }
+
+                tokenBalancesRegistry[accountKey][asset.chainId][
+                  asset.contractAddress
+                ] = balance
               }
             }
           )
@@ -662,7 +648,11 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     (token) => !isNativeAsset(token)
   )
 
-  const baseTokenBalances: TokenBalancesForChainId = {}
+  const tokenBalanceRegistry: TokenBalancesRegistry = {
+    [accountBalanceKey]: {
+      [arg.chainId]: {}
+    }
+  }
 
   if (nativeTokenArg) {
     const { data: balance } = await fetchAccountTokenCurrentBalance({
@@ -676,7 +666,9 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     })
 
     if (balance) {
-      baseTokenBalances[nativeTokenArg.contractAddress] = balance
+      tokenBalanceRegistry[accountBalanceKey][arg.chainId][
+        nativeTokenArg.contractAddress
+      ] = balance
     }
   }
 
@@ -684,11 +676,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     // jsonRpcService.getERC20TokenBalances cannot handle
     // native assets
     if (nonNativeTokens.length === 0) {
-      return {
-        [accountBalanceKey]: {
-          [arg.chainId]: baseTokenBalances
-        }
-      }
+      return tokenBalanceRegistry
     }
 
     // TODO(josheleonard): aggresively cache this response
@@ -713,29 +701,15 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         )
       }
 
-      return {
-        [accountBalanceKey]: {
-          [arg.chainId]: result.balances.reduce(
-            (acc, { balance, contractAddress }) => {
-              const token = arg.tokens.find(
-                (token) => token.contractAddress === contractAddress
-              )
-
-              const balanceAmount = balance ? new Amount(balance) : undefined
-
-              if (balanceAmount && token) {
-                return {
-                  ...acc,
-                  [contractAddress]: balanceAmount.format()
-                }
-              }
-
-              return acc
-            },
-            baseTokenBalances
-          )
+      for (const { balance, contractAddress } of result.balances) {
+        if (balance) {
+          tokenBalanceRegistry[accountBalanceKey][arg.chainId][
+            contractAddress
+          ] = new Amount(balance).format()
         }
       }
+
+      return tokenBalanceRegistry
     }
   }
 
@@ -753,30 +727,17 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       )
     }
 
-    return {
-      [accountBalanceKey]: {
-        [arg.chainId]: result.balances.reduce((acc, balanceResult) => {
-          if (balanceResult.amount) {
-            return {
-              ...acc,
-              [balanceResult.mint]: Amount.normalize(balanceResult.amount)
-            }
-          }
-
-          return acc
-        }, baseTokenBalances)
+    for (const { mint, amount } of result.balances) {
+      if (amount) {
+        tokenBalanceRegistry[accountBalanceKey][arg.chainId][mint] =
+          Amount.normalize(amount)
       }
     }
+
+    return tokenBalanceRegistry
   }
 
   // Fallback to fetching individual balances
-
-  const combinedBalancesRegistry: TokenBalancesRegistry = {
-    [accountBalanceKey]: {
-      [arg.chainId]: baseTokenBalances
-    }
-  }
-
   await eachLimit(
     nonNativeTokens,
     10,
@@ -792,14 +753,14 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       })
 
       if (result && new Amount(result).gt(0)) {
-        combinedBalancesRegistry[accountBalanceKey][arg.chainId][
+        tokenBalanceRegistry[accountBalanceKey][arg.chainId][
           token.contractAddress
         ] = result
       }
     }
   )
 
-  return combinedBalancesRegistry
+  return tokenBalanceRegistry
 }
 
 async function fetchTokenBalanceRegistryForAccountsAndChainIds({
@@ -815,7 +776,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
 }): Promise<TokenBalancesRegistry> {
-  let tokenBalancesRegistry = {}
+  const tokenBalancesRegistry = {}
 
   await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
     const partialRegistry = await fetchAccountTokenBalanceRegistryForChainId({
@@ -828,13 +789,13 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
 
     const [[uniqueKey, balancesByChainId]] = Object.entries(partialRegistry)
 
-    if (!tokenBalancesRegistry.hasOwnProperty(uniqueKey)) {
-      tokenBalancesRegistry[uniqueKey] = balancesByChainId
-    } else {
+    if (tokenBalancesRegistry[uniqueKey]) {
       tokenBalancesRegistry[uniqueKey] = {
         ...tokenBalancesRegistry[uniqueKey],
         ...balancesByChainId
       }
+    } else {
+      tokenBalancesRegistry[uniqueKey] = balancesByChainId
     }
   })
 
