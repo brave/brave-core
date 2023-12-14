@@ -9,8 +9,8 @@
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorLastSeenInputVariableInfo;
-struct CreativeAdModelBasedPredictorSegmentInputVariablesInfo;
 struct CreativeAdModelBasedPredictorPriorityInputVariableInfo;
+struct CreativeAdModelBasedPredictorSegmentInputVariablesInfo;
 
 double ComputeSegmentScore(
     const CreativeAdModelBasedPredictorSegmentInputVariablesInfo&

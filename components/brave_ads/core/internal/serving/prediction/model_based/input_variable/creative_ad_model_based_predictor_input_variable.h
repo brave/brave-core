@@ -26,27 +26,27 @@ ComputeCreativeAdModelBasedPredictorInputVariable(
 
   input_variable.intent_segment =
       ComputeCreativeAdModelBasedPredictorIntentSegmentInputVariable(
-          user_model, creative_ad.segment, weights);
+          user_model, creative_ad.segment, weights.intent_segment);
 
   input_variable.latent_interest_segment =
       ComputeCreativeAdModelBasedPredictorLatentInterestSegmentInputVariable(
-          user_model, creative_ad.segment, weights);
+          user_model, creative_ad.segment, weights.latent_interest_segment);
 
   input_variable.interest_segment =
       ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
-          user_model, creative_ad.segment, weights);
+          user_model, creative_ad.segment, weights.interest_segment);
 
   input_variable.last_seen_ad =
       ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
-          creative_ad, ad_events, weights);
+          creative_ad, ad_events, weights.last_seen_ad);
 
   input_variable.last_seen_advertiser =
       ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-          creative_ad, ad_events, weights);
+          creative_ad, ad_events, weights.last_seen_advertiser);
 
   input_variable.priority =
-      ComputeCreativeAdModelBasedPredictorPriorityInputVariable(creative_ad,
-                                                                weights);
+      ComputeCreativeAdModelBasedPredictorPriorityInputVariable(
+          creative_ad, weights.priority);
 
   return input_variable;
 }

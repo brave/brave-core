@@ -22,8 +22,8 @@ namespace brave_ads {
 
 class Account;
 class AntiTargetingResource;
-class SubdivisionTargeting;
 class SiteVisit;
+class SubdivisionTargeting;
 struct NewTabPageAdInfo;
 
 class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,

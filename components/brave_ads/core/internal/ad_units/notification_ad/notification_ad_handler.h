@@ -28,8 +28,8 @@ namespace brave_ads {
 class Account;
 class AntiTargetingResource;
 class EpsilonGreedyBanditProcessor;
-class SubdivisionTargeting;
 class SiteVisit;
+class SubdivisionTargeting;
 struct NotificationAdInfo;
 
 class NotificationAdHandler final : public AdsClientNotifierObserver,

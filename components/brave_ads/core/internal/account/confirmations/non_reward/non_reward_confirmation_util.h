@@ -11,8 +11,8 @@
 namespace brave_ads {
 
 struct ConfirmationInfo;
-struct UserDataInfo;
 struct TransactionInfo;
+struct UserDataInfo;
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,

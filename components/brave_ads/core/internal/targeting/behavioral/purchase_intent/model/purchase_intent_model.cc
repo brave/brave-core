@@ -5,73 +5,36 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
 
-#include <cstdint>
 #include <map>
 #include <string>
-#include <utility>
 
-#include "base/containers/adapters.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_scoring.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_signal_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 
 namespace brave_ads {
 
-namespace {
+void BuyPurchaseIntentSignal(
+    const PurchaseIntentSignalInfo& purchase_intent_signal) {
+  const PurchaseIntentSignalHistoryInfo signal_history(
+      purchase_intent_signal.at, purchase_intent_signal.weight);
 
-constexpr uint16_t kSignalLevel = 1;
-constexpr size_t kMaximumSegments = 3;
-
-uint16_t CalculateScoreForHistory(
-    const PurchaseIntentSignalHistoryList& history) {
-  uint16_t score = 0;
-
-  const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
-
-  for (const auto& signal_segment : history) {
-    const base::Time signal_decayed_time =
-        signal_segment.created_at + time_window;
-
-    if (base::Time::Now() > signal_decayed_time) {
-      continue;
-    }
-
-    score += kSignalLevel * signal_segment.weight;
+  for (const auto& segment : purchase_intent_signal.segments) {
+    ClientStateManager::GetInstance()
+        .AppendToPurchaseIntentSignalHistoryForSegment(segment, signal_history);
   }
-
-  return score;
 }
 
-}  // namespace
-
 SegmentList GetPurchaseIntentSegments() {
-  SegmentList segments;
-
-  const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
+  const PurchaseIntentSignalHistoryMap& signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  if (purchase_intent_signal_history.empty()) {
-    return segments;
-  }
+  const std::multimap</*score*/ int, /*segment*/ std::string> segment_scores =
+      ComputePurchaseIntentSignalHistorySegmentScores(signal_history);
 
-  std::multimap<uint16_t, std::string> scores;
-  for (const auto& [segment, history] : purchase_intent_signal_history) {
-    const uint16_t score = CalculateScoreForHistory(history);
-    scores.insert(std::make_pair(score, segment));
-  }
-
-  const uint16_t threshold = kPurchaseIntentThreshold.Get();
-
-  for (const auto& [score, segment] : base::Reversed(scores)) {
-    if (score >= threshold) {
-      segments.push_back(segment);
-      if (segments.size() >= kMaximumSegments) {
-        break;
-      }
-    }
-  }
-
-  return segments;
+  return PredictPurchaseIntentSegments(segment_scores);
 }
 
 }  // namespace brave_ads

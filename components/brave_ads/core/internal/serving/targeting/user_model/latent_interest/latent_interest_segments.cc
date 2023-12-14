@@ -5,20 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_segments.h"
 
-#include "base/containers/extend.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/model/epsilon_greedy_bandit_model.h"
 
 namespace brave_ads {
 
 SegmentList BuildLatentInterestSegments() {
-  SegmentList segments;
-
-  if (base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature)) {
-    base::Extend(segments, GetEpsilonGreedyBanditSegments());
+  if (!base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature)) {
+    return {};
   }
 
-  return segments;
+  return GetEpsilonGreedyBanditSegments();
 }
 
 }  // namespace brave_ads

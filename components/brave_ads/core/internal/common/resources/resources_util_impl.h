@@ -25,7 +25,7 @@ class File;
 namespace brave_ads {
 
 template <typename T>
-base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
+base::expected<T, std::string> LoadAndParseComponentResourceOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
     return base::ok(T{});
@@ -56,7 +56,7 @@ void LoadComponentResourceCallback(LoadAndParseResourceCallback<T> callback,
                                    base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileAndParseResourceOnBackgroundThread<T>,
+      base::BindOnce(&LoadAndParseComponentResourceOnBackgroundThread<T>,
                      std::move(file)),
       std::move(callback));
 }

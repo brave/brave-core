@@ -44,6 +44,7 @@ inline constexpr base::FeatureParam<double>
     kInlineContentAdLastSeenPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
         "last_seen_ad_predictor_weight", 1.0};
+
 inline constexpr base::FeatureParam<double>
     kInlineContentAdLastSeenAdvertiserPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,

@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
@@ -39,11 +40,16 @@ base::Value::Dict ClientInfo::ToValue() const {
 
   dict.Set("adsShownHistory", HistoryItemsToValue(history_items));
 
+  const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
+
   base::Value::Dict purchase_intent_signal_history_dict;
   for (const auto& [segment, history] : purchase_intent_signal_history) {
     base::Value::List list;
     for (const auto& item : history) {
-      list.Append(PurchaseIntentSignalHistoryToValue(item));
+      const base::Time decay_signal_at = item.at + time_window;
+      if (base::Time::Now() < decay_signal_at) {
+        list.Append(PurchaseIntentSignalHistoryToValue(item));
+      }
     }
 
     purchase_intent_signal_history_dict.Set(segment, std::move(list));
