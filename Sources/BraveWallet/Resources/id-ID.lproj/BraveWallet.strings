@@ -626,7 +626,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Brave akan menggunakan Infura untuk menyelesaikan nama domain .eth yang berada di Layanan Nama Ethereum (ENS). Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .eth ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Aktifkan dukungan dari Ethereum Name Service (ENS) di Brave?";
+"wallet.ensDomainInterstitialPageTitle" = "Aktifkan Dukungan dari Ethereum Name Service (ENS) di Brave?";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Lanjutkan pencarian luar rantai";
@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "Gambar tidak tersedia";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Ikhtisar";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Dimiliki Oleh";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Properti";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Kirim";
 
@@ -990,9 +999,6 @@
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Gambar yang ditampilkan di atas mungkin tidak sama persis dengan NFT";
-
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "Detail NFT";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "ID token";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "Tangkapan layar terdeteksi";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Cari";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Cari aset";
@@ -1514,13 +1523,13 @@
 "wallet.skipButtonTitle" = "Lewatkan";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "Lanjutkan dengan menggunakan peladen Syndica";
+"wallet.snsDomainInterstitialPageButtonProceed" = "Lanjutkan dengan menggunakan peladen SNS";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave akan menggunakan Syndica untuk menyelesaikan nama domain .sol. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Syndica akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .sol ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Syndica.";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave akan menggunakan pihak ketiga untuk menyelesaikan nama domain .sol. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, pihak ketiga akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .sol ini, namun hanya itu. Untuk informasi lebih lanjut tentang pihak ketiga yang kami gunakan and kebijakan privasi mereka, silakan lihat <a href=%@>halaman bantuan</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Aktifkan dukungan Solana Name Service (SNS) di Brave?";
+"wallet.snsDomainInterstitialPageTitle" = "Aktifkan Dukungan Solana Name Service (SNS) di Brave?";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Lanjutkan Akun Nonce";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Total";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Disetujui";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ yang disetujui";
 
@@ -1808,7 +1820,7 @@
 "wallet.transactionDetailsTitle" = "Detail Transaksi";
 
 /* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
-"wallet.transactionDetailsTransactionHashTitle" = "Label transaksi";
+"wallet.transactionDetailsTransactionHashTitle" = "Hash Transaksi";
 
 /* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
 "wallet.transactionDetailsTxFeeTitle" = "Biaya transaksi";
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "Biaya: %1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ dari";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Pertukaran Solana";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Tukar pada";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "Tukar %1$@ %2$@ ke %3$@ %4$@";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Kesalahan yang tidak diketahui";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Buka Kunci Dompet";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Buka Kunci";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "Masukkan kata sandi untuk membuka dompet";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ di %2$@";

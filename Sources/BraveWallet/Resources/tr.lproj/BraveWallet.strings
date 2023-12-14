@@ -626,7 +626,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Brave, Ethereum Name Service (ENS) üzerinde bulunan .eth alan adlarını çözmek için Infura'yı kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu .eth alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> belgelerine bakın.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Brave'de Ethereum Name Service (ENS) desteği etkinleştirilsin mi?";
+"wallet.ensDomainInterstitialPageTitle" = "Brave'de Ethereum Name Service (ENS) Desteği Etkinleştirilsin mi?";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Offchain aramasıyla devam et";
@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "Resim kullanılamıyor";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Genel bakış";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Sahibi:";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Özellikler";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Gönder";
 
@@ -991,14 +1000,11 @@
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Yukarıda işlenen resim NFT ile tam olarak uyuşmayabilir";
 
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "NFT Ayrıntıları";
-
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "Token Kimliği";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
-"wallet.nftDetailTokenStandard" = "Token standardı";
+"wallet.nftDetailTokenStandard" = "Token Standardı";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
 "wallet.nftDiscoveryCalloutDescription" = "Brave Cüzdan, NFT'lerinizi otomatik olarak görüntülemek için üçüncü taraf bir hizmet kullanabilir. Brave, bu hizmeti sağlamak için cüzdan adreslerinizi SimpleHash ile paylaşacaktır. Daha fazla bilgi alın.";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "Ekran görüntüsü tespit edildi";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Ara";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Varlıkları arayın";
@@ -1514,13 +1523,13 @@
 "wallet.skipButtonTitle" = "Atla";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "Syndica sunucusunu kullanarak ilerleyin";
+"wallet.snsDomainInterstitialPageButtonProceed" = "Bir SNS sunucusu kullanarak ilerleyin";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave, .sol alan adlarını çözmek için Syndica'yı kullanacak. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz, Syndica birilerinin bu .sol alanlarını ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Syndica'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> bölümlerine bakın.";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave, .sol alan adlarını çözmek için bir üçüncü taraf yazılımı kullanacak. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz, üçüncü taraf yazılımı birilerinin bu .sol alanlarını ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Hangi üçüncü taraf yazılımlarını kullandığımız ve bu yazılımların gizlilik politikaları hakkında daha fazla bilgi için lütfen <a href=%@>yardım sayfamıza</a> bakın.";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Brave'de Solana Name Service (SNS) desteği etkinleştirilsin mi?";
+"wallet.snsDomainInterstitialPageTitle" = "Brave'de Solana Name Service (SNS) Desteği Etkinleştirilsin mi?";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Tek Seferlik Hesabı Yükselt";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Toplam";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Tasdik Edildi";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ Onaylandı";
 
@@ -1808,7 +1820,7 @@
 "wallet.transactionDetailsTitle" = "İşlem Detayları";
 
 /* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
-"wallet.transactionDetailsTransactionHashTitle" = "İşlem hash değeri";
+"wallet.transactionDetailsTransactionHashTitle" = "İşlem Hash Değeri";
 
 /* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
 "wallet.transactionDetailsTxFeeTitle" = "İşlem ücreti";
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "Ücret: %1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ Tarafından";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solana Swap";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Takas işlemi:";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "%1$@ %2$@ to %3$@ %4$@ takas edildi";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Bilinmeyen hata";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Cüzdan Kilidini Aç";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Kilidi aç";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "Cüzdanın kilidini açmak için şifreyi girin";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@'de %1$@";

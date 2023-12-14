@@ -55,3 +55,9 @@
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Modo de navegação privada";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomInTitle" = "Ampliar";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomOutTitle" = "Diminuir";
+

@@ -626,7 +626,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Brave 將會使用 Infura 來解析 Ethereum Name Service (ENS) 上的 .eth 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用這項功能，Infura 將會看到有人正在嘗試造訪這些 .eth 網域，但不會看到其他資料。查看 Infura 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "在 Brave 中啟用支援以太坊域名服務 (ENS)？";
+"wallet.ensDomainInterstitialPageTitle" = "是否在 Brave 中啟用 Ethereum Name Service (ENS) 支援？";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "繼續鏈下查找";
@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "圖片不可用";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "總覽";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "擁有者";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "屬性";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "傳送";
 
@@ -990,9 +999,6 @@
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "上方呈現的圖片可能與 NFT 不完全一致";
-
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "NFT 詳細資訊";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "代幣 ID";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "已偵測到螢幕擷取畫面";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "搜尋";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "搜尋資產";
@@ -1514,13 +1523,13 @@
 "wallet.skipButtonTitle" = "略過";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "使用 Syndica 伺服器繼續";
+"wallet.snsDomainInterstitialPageButtonProceed" = "使用 SNS 伺服器繼續操作";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave 將會使用 Syndica 來解析 .sol 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用這項功能，Syndica 只會看到有人正在嘗試造訪這些 .sol 網域，不會看到其他資料。查看 Syndica 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave 將使用第三方來解析 .sol 網域名稱。Brave 會隱藏您的 IP 位址。若您啟用此選項，則第三方會看到有人嘗試造訪這些 .sol 網域。更多關於我們所使用的第三方及其隱私權政策，請參閱我們的<a href=%@>說明頁面</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "是否要在 Brave 中啟用 Solana Name Service (SNS)？";
+"wallet.snsDomainInterstitialPageTitle" = "是否在 Brave 中啟用 Solana Name Service (SNS) 支援？";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "進階隨機帳戶";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "總計";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "已核准";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "已核准 %1$@ %2$@";
 
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "費用：%1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@自";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "兌換 Solana";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "交換";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "%1$@ %2$@ 已兌換成 %3$@ %4$@";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "不明錯誤";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "解鎖錢包";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "解鎖";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "輸入密碼以解鎖錢包";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@ 版 %1$@";

@@ -5,10 +5,10 @@
 "AntiAdBlockWarningConfirmationButton" = "Dostosuj tarcze";
 
 /* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Ta strona zaczęła wykrywać niektóre blokery reklam, dzięki czemu ta stron może nie działać prawidłowo.";
+"AntiAdBlockWarningDescription" = "Ta strona zaczęła wykrywać niektóre blokery reklam, z tego powodu może ona nie działać prawidłowo.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Aby to naprawić, Brave może zmienić ustawienia tarcz dla ciebie. Po zmianie, zamiast tego możesz obejrzeć tę treść w Odtwarzaczu Brave.";
+"AntiAdBlockWarningDescription2" = "Aby rozwiązać ten problem, Brave może dostosować ustawienia tarcz. Po wprowadzeniu zmian można spróbować obejrzeć tę treść w Odtwarzaczu Brave.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zachowaj obecne ustawienia";
@@ -41,7 +41,7 @@
 "BravePlayerDismissButton" = "Nie teraz";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Odtwarzacz Brave pozwala ci oglądać filmy bez przerw.";
+"BravePlayerInfoMessage" = "Odtwarzacz Brave pozwala Ci oglądać filmy bez przerw.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Obejrz w Odtwarzaczu Brave";

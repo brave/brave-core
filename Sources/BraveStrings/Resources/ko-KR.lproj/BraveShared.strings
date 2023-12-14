@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "기기 %1$@(%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "보안 인증서";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "표시";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "프라이버시 보호 제품 분석(P3A) 허용";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "이 사이트로의 연결이 안전하지 않을 수 있습니다.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "이 사이트에서는 공격자에게 유출될 가능성이 있으므로 민감한 정보(비밀번호, 신용카드 정보 등)를 입력하지 마세요.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "이 사이트로의 연결이 안전하지 않습니다.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "인증서 보기";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "기본 웹페이지 확대 수준";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "모든 Shields 데이터를 지우시겠습니까?";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "비공개 허브 위젯 숨기기";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "지난주";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "제출";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\"에서 카메라 및 마이크 액세스를 요청함";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\"에서 카메라 액세스를 요청함";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "허용";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\"에서 미디어 캡처 기기 액세스를 요청함";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\"에서 마이크 액세스를 요청함";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "복원된 북마크";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "안전하지 않음";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "재생목록";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "사용자 소스";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "리더 모드 토글";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "VPN 지역이 변경되었습니다.";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "VPN 구성을 재설정하지 못했습니다. 나중에 다시 시도하세요.";
+"vpn.resetVPNErrorBody" = "VPN 구성을 재설정할 수 없습니다. 다시 시도하세요. 문제가 지속되면 지원팀에 문의하여 도움을 받으세요.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "다시 시도";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "오류";
+"vpn.resetVPNErrorTitle" = "재설정 실패";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN 구성이 성공적으로 재설정되었습니다.";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "성공";
+"vpn.resetVPNSuccessTitle" = "재설정 성공";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "복구";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "다른 기기에서도 Brave VPN을 사용하려면 App Store 구매 항목을 Brave 계정에 연결하세요.";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "구독 관리";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "프로모션 코드 사용";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "구성 재설정";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "권한 거부됨";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "프로모션 코드를 사용할 수 없습니다. 프로모션 코드 세부정보를 확인하고 다시 시도하세요.";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "구매를 완료할 수 없습니다. 다시 시도하거나 Apple에서 결제 세부 정보를 확인하고 다시 시도하세요.";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "코드 사용";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "현재 설정: %@";

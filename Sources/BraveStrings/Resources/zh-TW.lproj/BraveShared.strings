@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "裝置 %1$@ (%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "安全認證";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "顯示";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允許保護隱私的產品分析 (P3A)";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "您與此網站之間的連線並非完全安全。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "请勿在此网站上输入任何敏感信息（例如密码或信用卡信息），因为攻击者可能会盗取这些信息。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "您與此網站之間的連線不安全。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "查看認證";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "預設網頁縮放比例";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "要清除所有防護資料？";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "隱藏隱私中心小工具";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "上週";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "「%@」想要存取攝影機和麥克風";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "「%@」想要存取攝影機";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "允許";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "「%@」想要存取媒體擷取裝置";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "「%@」想要存取麥克風";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "恢復的書籤";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "選單";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "不安全";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "播放清單";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "使用者來源";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "切換閱讀器模式";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "無法重設 VPN 組態，請稍後再試。";
+"vpn.resetVPNErrorBody" = "無法重設 VPN 設定，請再試一次。如果問題仍未解決，請聯絡支援團隊尋求協助。";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "再試一次";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "錯誤";
+"vpn.resetVPNErrorTitle" = "重設失敗";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "已成功重設 VPN 設定。";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "成功";
+"vpn.resetVPNSuccessTitle" = "重設成功";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "還原";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave VPN。";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "管理訂閱";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "兌換優惠代碼";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "重設組態";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "無法兌換優惠代碼。請再試一次，或檢查您的優惠代碼詳細資訊後重試。";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "目前的設定：%@";

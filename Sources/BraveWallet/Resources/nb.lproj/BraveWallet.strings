@@ -626,7 +626,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Brave vil bruke Infura til å resolve .eth-domenenavn som er på Ethereum Name Service (ENS). Brave skjuler IP-adressen din. Hvis du slår på dette, vil Infura se at noen forsøker å besøke disse .eth-domenene, men ikke noe annet. Se Infuras <a href=%1$@>%2$@</a> og <a href=%3$@>%4$@</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Vil du slå på støtte for Ethereum Name Service (ENS) i Brave?";
+"wallet.ensDomainInterstitialPageTitle" = "Vil du aktivere støtte for Ethereum Name Service (ENS) i Brave?";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Fortsett med offchain-søk";
@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "Bildet er ikke tilgjengelig";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Oversikt";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Eies av";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Egenskaper";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Send";
 
@@ -990,9 +999,6 @@
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Bildet over er kanskje ikke en eksakt match for NFT-en";
-
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "NFT-info";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "Token-ID";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "Skjembilde oppdaget";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Søk";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Søk i ressurser";
@@ -1514,13 +1523,13 @@
 "wallet.skipButtonTitle" = "Hopp over";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "Fortsett med Syndica-serveren";
+"wallet.snsDomainInterstitialPageButtonProceed" = "Fortsett med en SNS-server";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave vil bruke Syndica til å resolve .sol-domenenavn. Brave skjuler IP-adressen din. Hvis du slår på dette vil Syndica se at noen forsøker å besøke disse .sol-domenene, men ikke noe annet. Se Syndicas <a href=%1$@>%2$@</a> og <a href=%3$@>%4$@</a>.";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave bruker en tredjepart for å løse .sol-domenenavn. Brave skjuler IP-adressen din. Hvis du aktiverer dette, ser tredjeparten at noen prøver å besøke disse .sol-domenene, men ingenting annet. For å få mer informasjon om hvilke tredjeparter vi bruker og retningslinjene deres for personvern, kan du se <a href=%@>hjelpesiden</a> vår.";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Vil du slå på støtte for Solana Name Service (SNS) i Brave?";
+"wallet.snsDomainInterstitialPageTitle" = "Vil du aktivere støtte for Solana Name Service (SNS) i Brave?";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Advance Nonce-konto";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Totalt";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Godkjent";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "Godkjent: %1$@ %2$@";
 
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "Avgift: %1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ fra";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solana Swap";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Swap på";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "Byttet fra %1$@ %2$@ til %3$@ %4$@";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Ukjent feil";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Lås opp lommeboken";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Lås opp";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "Skriv inn passordet for å låse opp lommeboken";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ på %2$@";

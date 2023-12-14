@@ -55,3 +55,9 @@
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "비공개 브라우징 모드";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomInTitle" = "확대";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomOutTitle" = "축소";
+

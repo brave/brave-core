@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "图片不可用";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "概要";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "所有者";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "属性";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "发送";
 
@@ -991,14 +1000,11 @@
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "上方呈现的图片可能与 NFT 不完全一致";
 
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "NFT 详细信息";
-
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "代幣 ID";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
-"wallet.nftDetailTokenStandard" = "代幣標準";
+"wallet.nftDetailTokenStandard" = "代币标准";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
 "wallet.nftDiscoveryCalloutDescription" = "Brave 钱包可使用第三方服务自动显示您的 NFT。Brave 将与 SimpleHash 共享您的钱包地址，以提供此服务。了解更多。";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "检测到截图";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "搜索";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "搜索资产";
@@ -1514,10 +1523,10 @@
 "wallet.skipButtonTitle" = "跳过";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "使用 Syndica 服务器继续";
+"wallet.snsDomainInterstitialPageButtonProceed" = "继续使用 SNS 服务器";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave 将会使用 Syndica 来解析 .sol 域名。Brave 将隐藏您的 IP 地址。如果您启用这项功能，Syndica 只会看到有人正在尝试访问这些 .sol 域，不会看到其他信息。查看 Syndica 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave 将使用第三方解析 .sol 域名。Brave 会隐藏您的 IP 地址。如果启用此功能，第三方将看到有人试图访问这些 .sol 域名，但不会看到任何其他信息。有关我们使用的第三方及其隐私政策的更多信息，请参阅我们的<a href=%@>帮助页面</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "是否在 Brave 中启用 Solana Name Service（SNS）的支持？";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "总计";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "已批准";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "已批准 %1$@ %2$@";
 
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "费用：%1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ 自";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "兑换 Solana";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "调换";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "将 %1$@ %2$@ 换成 %3$@ %4$@";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "未知错误";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "解鎖錢包";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "解锁";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "输入密码以解锁钱包";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@上的 %1$@";

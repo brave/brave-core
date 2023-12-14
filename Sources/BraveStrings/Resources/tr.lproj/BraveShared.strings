@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Aygıt %1$@ ( %2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Güvenlik Sertifikası";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "Göster";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Bu siteye bağlantınız tamamen güvenli değil.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Bu siteye hiçbir hassas bilgi girmemelisiniz (örneğin parolalar veya kredi kartları) çünkü bu bilgiler saldırganlar tarafından çalınabilir.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Bu siteye bağlantınız güvenli değil.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Sertifikayı Görüntüle";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Varsayılan Web Sayfası Yakınlaştırma Seviyesi";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Tüm Kalkanlar verileri temizlensin mi?";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "Gizlilik Merkezi Widget'ını gizle";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Geçen hafta";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Gönder";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\", Kamera ve Mikrofona Erişmek İstiyor";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\", Kameraya Erişmek İstiyor";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "İzin Ver";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\", Bir Medya Yakalama Aygıtına Erişmek İstiyor";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\", Mikrofona Erişmek İstiyor";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Geri Yüklenen Yer İşaretleri";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menü";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Güvenli Değil";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Oynatma listesi";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Kullanıcı Kaynakları";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Okuyucu Modunu Aç/Kapat";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Arama önerileri açılsın mı?";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "VPN bölgesi değişti.";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "VPN yapılandırması sıfırlanamadı, lütfen daha sonra yeniden deneyin.";
+"vpn.resetVPNErrorBody" = "VPN yapılandırması sıfırlanamıyor. Lütfen tekrar deneyin. Sorun devam ederse, yardım için destekle iletişime geçin.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Tekrar Dene";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Hata";
+"vpn.resetVPNErrorTitle" = "Sıfırlama Başarısız";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN yapılandırması başarıyla sıfırlandı.";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Başarılı";
+"vpn.resetVPNSuccessTitle" = "Sıfırlama Başarılı";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Geri yükle";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Brave VPN'i ve diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Aboneliği Yönet";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Teklif Kodunu Kullan";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Yapılandırmayı Sıfırla";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "İzin reddedildi";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Teklif kodu kullanılamadı. Lütfen tekrar deneyin veya teklif kodu ayrıntılarınızı kontrol edip tekrar deneyin.";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Satın alma işlemi tamamlanamıyor. Lütfen yeniden deneyin veya Apple'daki ödeme bilgilerinizi kontrol edin ve yeniden deneyin.";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Abonelikler iTunes hesabınız üzerinden ücretlendirilir.\n\nÜcretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir.\n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Kodu Kullan";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Mevcut Ayar: %@";

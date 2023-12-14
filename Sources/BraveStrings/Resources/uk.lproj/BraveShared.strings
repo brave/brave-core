@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Пристрій %1$@ (%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Сертифікат безпеки";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "Перегляд";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Ваше підключення до сайту не є цілком захищеним.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Радимо не вводити конфіденційну інформацію на цьому сайті (наприклад, паролі або дані кредитних карток), оскільки вона може бути викрадена зловмисниками.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Ваше з’єднання із цим сайтом незахищене.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Переглянути сертифікат";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Рівень масштабування сторінки за замовчуванням";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Очистити всі дані Shields?";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "Приховати віджет Центру конфіденційності";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Останній  тиждень";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Надіслати";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "Сайт %@ хоче отримати доступ до камери й мікрофона";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "Сайт %@ хоче отримати доступ до камери";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Дозволити";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "Сайт %@ хоче отримати доступ до пристрою захоплення медіаданих";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "Сайт %@ хоче отримати доступ до мікрофона";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Відновлені закладки";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Меню";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Не захищене";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Список відтворення";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Джерела користувача";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Переключення режиму читання";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "Регіон VPN змінено.";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Не вдалося скинути налаштування VPN. Cпробуйте пізніше.";
+"vpn.resetVPNErrorBody" = "Не вдалося скинути конфігурацію VPN. Спробуйте ще раз. Якщо проблема не зникне, зверніться до служби підтримки.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Повторити спробу";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Помилка";
+"vpn.resetVPNErrorTitle" = "Помилка скидання";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Параметри VPN скинуто.";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Успішно";
+"vpn.resetVPNSuccessTitle" = "Параметри скинуто";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Відновити";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Зв’яжіть покупку в App Store з вашим обліковим записом Brave, щоб користуватися Brave VPN і на інших пристроях.";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Керування підпискою";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Активувати код пропозиції";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Скинути налаштування";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "В доступі відмовлено";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Не вдалося активувати код пропозиції. Спробуйте ще раз або перевірте код і повторіть спробу.";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Не вдалося здійснити покупку. Спробуйте ще раз або перевірте свої платіжні реквізити, вказані в мережі Apple, та повторіть спробу.";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Плата за підписку стягується з вашого рахунку в iTunes.\n\nБудь-яка невикористана частина безкоштовної пробної версії, якщо вона пропонується, втрачається під час покупки підписки.\n\nПідписка продовжується автоматично, якщо її не скасовано не менше ніж за 24 години до закінчення поточного періоду.\n\nВи можете керувати своїми підписками у налаштуваннях.\n\nВикористовуючи Brave, ви погоджуєтеся з Умовами користування та Політикою конфіденційності.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Активувати код";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Поточне налаштування: %@";

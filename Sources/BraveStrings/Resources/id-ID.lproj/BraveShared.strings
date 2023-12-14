@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Perangkat %1$@ (%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Sertifikat Keamanan";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "Tampilan";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Memungkinkan Analitik Produk yang Menjaga Privasi (P3A)";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Koneksi Anda ke situs ini tidak sepenuhnya aman.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Anda seharusnya tidak memasukkan informasi sensitif apa pun di situs ini (misalnya, kata sandi atau kartu kredit), karena dapat dicuri oleh penyerang.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Koneksi Anda ke situs ini tidak aman.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Lihat Sertifikat";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Level Perbesar Halaman Web Bawaan";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Hapus semua data Perisai";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "Tombol Hub Sembunyikan Privasi";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Minggu lalu";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Kirim";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" Ingin Mengakses Kamera dan Mikrofon";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\" Ingin Mengakses Kamera";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Izinkan";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" Ingin Mengakses Perangkat Penangkap Media";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\" Ingin Mengakses Mikrofon";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Penanda Halaman Dikembalikan";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Tidak Aman";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Daftar Putar";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Sumber Pengguna";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Pilih Mode Pembaca";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "VPN kawasan berubah";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Gagal mengatur ulang konfigurasi vpn, silakan coba lagi nanti.";
+"vpn.resetVPNErrorBody" = "Tidak dapat mengatur ulang konfigurasi VPN. Silakan coba lagi. Jika masalah ini terus berlanjut, hubungi dukungan pelanggan untuk mendapatkan bantuan.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Coba Lagi";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Kesalahan";
+"vpn.resetVPNErrorTitle" = "Gagal Mengatur Ulang";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Konfigurasi VPN telah berhasil diatur ulang.";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Berhasil";
+"vpn.resetVPNSuccessTitle" = "Pengaturan Ulang Berhasil";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Pulihkan";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Tautkan pembelian Toko Aplikasi Anda ke akun Brave Anda untuk menggunakan VPN Brave pada perangkat lain.";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Kelola Langganan";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Tebus Kode Penawaran";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Atur Ulang Konfigurasi";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Izin tidak diberikan";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Tidak dapat menebus kode penawaran. Silakan coba lagi, atau periksa detail kode penawaran Anda dan coba lagi.";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menyelesaikan pembelian. Silakan coba lagi, atau periksa detail pembayaran Anda di akun Apple dan coba lagi.";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Biaya berlangganan akan ditagihkan melalui akun iTunes Anda.\n\nBagian dari uji coba gratis yang tidak digunakan, jika ditawarkan, akan hangus saat Anda berlangganan.\n\nLangganan Anda akan diperbarui secara otomatis kecuali jika dibatalkan dalam minimum 24 jam sebelum akhir periode berjalanan.\n\nAnda dapat mengelola langganan Anda di Pengaturan.\n\nDengan menggunakan Brave, anda menyetujui Syarat Penggunaan dan Kebijakan Privasi ini.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kode";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Pengaturan Saat Ini: %@";

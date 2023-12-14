@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Certificado de seguridad";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "Visualización";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permitir estadísticas del producto con preservación de la privacidad (P3A)";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Tu conexión a este sitio no es completamente segura.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "No debes introducir ninguna información confidencial en este sitio (por ejemplo, contraseñas o tarjetas de crédito), porque podría ser robada por los atacantes.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Tu conexión a este sitio no es segura.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Ver certificado";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Nivel de zoom predeterminado en las páginas web";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "¿Borrar todos los datos de Protecciones?";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "Ocultar widget del centro de privacidad";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "La semana pasada";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Enviar";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "A \"%@\" le gustaría acceder a la cámara y al micrófono";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "A \"%@\" le gustaría acceder a la cámara";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Permitir";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "A \"%@\" le gustaría acceder a un dispositivo de captura multimedia";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "A \"%@\" le gustaría acceder al micrófono";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Marcadores restaurados";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menú";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "No es seguro";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Lista de reproducción";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Fuentes de usuario";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Activar/desactivar modo de lectura";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "¿Activar las sugerencias de búsqueda?";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "Se ha cambiado la región de VPN.";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Error al restablecer la configuración de VPN. Vuelve a intentarlo más tarde.";
+"vpn.resetVPNErrorBody" = "No ha sido posible restablecer la configuración de la VPN. Vuelve a intentarlo y, si el problema continúa, contacta con el servicio de asistencia.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Volver a intentarlo";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Error";
+"vpn.resetVPNErrorTitle" = "Error de restablecimiento";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Se ha restablecido la configuración de la VPN.";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Hecho";
+"vpn.resetVPNSuccessTitle" = "Restablecimiento correcto";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaurar";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Vincula la compra que has hecho en el App Store con tu cuenta de Brave para usar la VPN de Brave en otros dispositivos.";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Gestionar la suscripción";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Canjear código de oferta";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Restablecer la configuración";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Permiso denegado";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "No ha sido posible canjear el código de oferta. Vuelve a intentarlo, o revisa los detalles de tu código de oferta e inténtalo de nuevo.";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "No ha sido posible completar la compra. Vuelve a intentarlo, o comprueba la información de pago que tienes en Apple e inténtalo de nuevo.";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Las suscripciones se cobrarán a través de tu cuenta de iTunes.\n\nCuando compras una suscripción, te quedas sin las partes que no hayas utilizado durante la prueba gratuita, en caso de que hubieses tenido una.\n\nLa suscripción se renovará automáticamente a menos que la canceles, como mínimo, 24 horas antes de que finalice el periodo activo en ese momento.\n\nPuedes gestionar las suscripciones que hayas comprado en Ajustes.\n\nAl utilizar Brave, aceptas las Condiciones de uso y la Política de privacidad.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Canjear código";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Ajuste actual: %@";

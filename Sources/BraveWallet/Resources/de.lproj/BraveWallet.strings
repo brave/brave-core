@@ -982,6 +982,15 @@
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "Bild ist nicht verfügbar";
 
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Übersicht";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Eigentum von";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Eigenschaften";
+
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Senden";
 
@@ -990,9 +999,6 @@
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Das oben gezeigte gerenderte Bild stimmt möglicherweise nicht genau mit dem NFT überein";
-
-/* The navigation title for NFT detail screen. */
-"wallet.nftDetailTitle" = "NFT-Detail";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "Token-ID";
@@ -1239,6 +1245,9 @@
 
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "Screenshot erkannt";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Suchen";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Assets durchsuchen";
@@ -1514,10 +1523,10 @@
 "wallet.skipButtonTitle" = "Überspringen";
 
 /* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"wallet.snsDomainInterstitialPageButtonProceed" = "Mit Syndica-Server fortfahren";
+"wallet.snsDomainInterstitialPageButtonProceed" = "Weiter mit einem SNS-Server";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave verwendet Syndica zur Auflösung von .sol-Domainnamen. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Syndica, dass jemand versucht, diese .sol-Domains zu besuchen, aber sonst nichts. Siehe die <a href=%1$@>%2$@</a> und die <a href=%3$@>%4$@</a> von Syndica.";
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave verwendet einen Drittanbieter für die Auflösung von .sol-Domainnamen. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht der Drittanbieter, dass jemand versucht, diese .sol-Domains zu besuchen, aber sonst nichts. Weitere Informationen zu den von uns verwendeten Drittanbietern und deren Datenschutzrichtlinien finden Sie auf unserer <a href=%@>Hilfeseite</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Unterstützung des Solana Name Service (SNS) in Brave aktivieren?";
@@ -1774,6 +1783,9 @@
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Insgesamt";
 
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Genehmigt";
+
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ genehmigt";
 
@@ -1855,6 +1867,15 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "Gebühr: %1$@ %2$@ (%3$@)";
 
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ von";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solana-Tausch";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Swap an";
+
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
 "wallet.transactionSwappedTitle" = "%1$@ %2$@ in %3$@ %4$@ getauscht";
 
@@ -1888,8 +1909,14 @@
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Unbekannter Fehler";
 
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Wallet freischalten";
+
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "Entsperren";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "Geben Sie Ihr Passwort ein, um die Wallet zu entsperren";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ auf %2$@";

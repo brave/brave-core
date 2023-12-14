@@ -658,6 +658,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
 
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "セキュリティ証明書";
+
 /* Section name for display preferences. */
 "DisplaySettingsSection" = "ディスプレイ";
 
@@ -1450,6 +1453,18 @@
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "プライバシーを保護したプロダクト分析 (P3A) を許可する";
 
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "このサイトへの接続は保護されていません。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "このサイトは攻撃を受けるリスクがあるため、機密情報 (パスワードやクレジットカードなど) を入力しないようにしてください。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "このサイトへの接続は保護されていません。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "証明書を見る";
+
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "デフォルトのウェブページズームレベル";
 
@@ -1927,9 +1942,6 @@
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Shieldsのすべてのデータをクリアしますか？";
 
-/* The title of the button action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetActionTitle" = "プライバシーハブのウィジェットを非表示";
-
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "先週";
 
@@ -2220,6 +2232,21 @@
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "送信";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" がカメラとマイクへのアクセスを要求しています";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\" がカメラへのアクセスを要求しています";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "許可する";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" がメディアキャプチャデバイスへのアクセスを要求しています";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\" がマイクへのアクセスを要求しています";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "復元されたブックマーク";
@@ -3214,6 +3241,9 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
 
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "保護されていません";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3474,6 +3504,9 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "ユーザーソース";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "リーダーモードをオン/オフ";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
@@ -3749,13 +3782,19 @@
 "vpn.regionSwitchSuccessPopupText" = "VPNのリージョンが変更されました。";
 
 /* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "VPN設定のリセットに失敗しました。もう一度お試しください。";
+"vpn.resetVPNErrorBody" = "VPN設定をリセットできません。もう一度お試しください。問題が解決しない場合は、サポートにお問い合わせください。";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "再試行";
 
 /* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "エラー";
+"vpn.resetVPNErrorTitle" = "リセット失敗";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN設定をリセットしました。";
 
 /* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "完了";
+"vpn.resetVPNSuccessTitle" = "リセット成功";
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "復元";
@@ -3790,9 +3829,11 @@
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave VPNを利用できます。";
 
-/* Button to manage your VPN subscription
-   Button to redeem offer code subscription */
+/* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "購読の管理";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "オファーコードを使用する";
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "設定をリセット";
@@ -3887,6 +3928,9 @@
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
 
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "オファーコードを使用できません。再試行するか、オファーコードの詳細を確認してからもう一度お試しください。";
+
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
 
@@ -3895,6 +3939,9 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "現在の設定: %@";
