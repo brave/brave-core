@@ -89,12 +89,14 @@ export const tokenBalancesEndpoints = ({
         const { data: api } = baseQuery(undefined)
         const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
         try {
-          return fetchAccountTokenCurrentBalance({
-            arg,
-            bitcoinWalletService,
-            jsonRpcService,
-            zcashWalletService
-          })
+          return {
+            data: await fetchAccountTokenCurrentBalance({
+              arg,
+              bitcoinWalletService,
+              jsonRpcService,
+              zcashWalletService
+            })
+          }
         } catch (error) {
           return handleEndpointError(
             endpoint,
@@ -435,9 +437,7 @@ async function fetchAccountCurrentNativeBalance({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
-}): Promise<
-  { data: string; error?: undefined } | { error: string; data?: undefined }
-> {
+}): Promise<string> {
   // LOCALHOST
   if (
     token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
@@ -453,14 +453,10 @@ async function fetchAccountCurrentNativeBalance({
     // return a '0' balance until it's detected.
     if (error !== 0) {
       console.log(`getBalance error: ${errorMessage}`)
-      return {
-        data: Amount.zero().format()
-      }
+      return Amount.zero().format()
     }
 
-    return {
-      data: Amount.normalize(balance)
-    }
+    return Amount.normalize(balance)
   }
 
   // NON-LOCALHOST
@@ -472,12 +468,10 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (token.chainId === BraveWallet.LOCALHOST_CHAIN_ID && error !== 0) {
-        return { data: Amount.zero().format() }
+        return Amount.zero().format()
       }
 
-      return {
-        data: Amount.normalize(balance.toString())
-      }
+      return Amount.normalize(balance.toString())
     }
 
     case BraveWallet.CoinType.FIL:
@@ -489,15 +483,10 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (error && errorMessage) {
-        console.log(`getBalance error: ${errorMessage}`)
-        return {
-          error: errorMessage
-        }
+        throw new Error(`getBalance error: ${errorMessage}`)
       }
 
-      return {
-        data: Amount.normalize(balance)
-      }
+      return Amount.normalize(balance)
     }
 
     case BraveWallet.CoinType.BTC: {
@@ -506,15 +495,10 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        console.log(`getBalance error: ${errorMessage}`)
-        return {
-          error: errorMessage || 'Unknown error'
-        }
+        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
       }
 
-      return {
-        data: Amount.normalize(balance.totalBalance.toString())
-      }
+      return Amount.normalize(balance.totalBalance.toString())
     }
 
     case BraveWallet.CoinType.ZEC: {
@@ -524,15 +508,10 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        console.log(`getBalance error: ${errorMessage}`)
-        return {
-          error: errorMessage || 'Unknown error'
-        }
+        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
       }
 
-      return {
-        data: Amount.normalize(balance.totalBalance.toString())
-      }
+      return Amount.normalize(balance.totalBalance.toString())
     }
 
     default: {
@@ -551,9 +530,7 @@ async function fetchAccountTokenCurrentBalance({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
-}): Promise<
-  { data: string; error?: undefined } | { error: string; data?: undefined }
-> {
+}): Promise<string> {
   // Native asset balances
   if (isNativeAsset(token)) {
     return fetchAccountCurrentNativeBalance({
@@ -582,12 +559,10 @@ async function fetchAccountTokenCurrentBalance({
           )
 
       if (error && errorMessage) {
-        return { error: errorMessage }
+        throw new Error(errorMessage || 'Unknown error')
       }
 
-      return {
-        data: Amount.normalize(balance)
-      }
+      return Amount.normalize(balance)
     }
     // Solana Network Tokens
     case BraveWallet.CoinType.SOL: {
@@ -599,19 +574,15 @@ async function fetchAccountTokenCurrentBalance({
         )
 
       if (error && errorMessage) {
-        return { error: errorMessage }
+        throw new Error(errorMessage || 'Unknown error')
       }
 
-      return {
-        data: token.isNft ? uiAmountString : amount
-      }
+      return token.isNft ? uiAmountString : amount
     }
 
     // Other network type tokens
     default: {
-      return {
-        data: Amount.zero().format()
-      }
+      return Amount.zero().format()
     }
   }
 }
@@ -655,7 +626,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   }
 
   if (nativeTokenArg) {
-    const { data: balance } = await fetchAccountTokenCurrentBalance({
+    const balance = await fetchAccountTokenCurrentBalance({
       arg: {
         accountId: arg.accountId,
         token: nativeTokenArg
@@ -742,7 +713,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     nonNativeTokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
-      const { data: result } = await fetchAccountTokenCurrentBalance({
+      const result = await fetchAccountTokenCurrentBalance({
         arg: {
           accountId: arg.accountId,
           token
@@ -776,7 +747,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
 }): Promise<TokenBalancesRegistry> {
-  const tokenBalancesRegistry = {}
+  const tokenBalancesRegistry: TokenBalancesRegistry = {}
 
   await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
     const partialRegistry = await fetchAccountTokenBalanceRegistryForChainId({
