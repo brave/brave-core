@@ -5,58 +5,168 @@
 
 import * as React from 'react'
 
+// types
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
+import {
+  TypedSolanaInstructionWithParams //
+} from '../../../utils/solana-instruction-utils'
+
+// utils
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
-import { CodeSnippet, CodeSnippetText, DetailColumn, DetailText, TransactionText } from './style'
+
+// components
+import {
+  SolanaTransactionInstruction //
+} from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
+
+// style
+import {
+  BitcoinDetailLine,
+  CodeSnippet,
+  CodeSnippetText,
+  DetailColumn,
+  DetailText,
+  TransactionText
+} from './style'
 
 export interface Props {
   transactionInfo: SerializableTransactionInfo
+  instructions?: TypedSolanaInstructionWithParams[]
 }
 
 const txKeys = Object.keys(BraveWallet.TransactionType)
 
-export const TransactionDetailBox = (props: Props) => {
-  const { transactionInfo } = props
-  const {
-    txArgs,
-    txParams,
-    txType
-  } = transactionInfo
-  const data = transactionInfo.txDataUnion.ethTxData1559?.baseData.data || []
+export const TransactionDetailBox = ({
+  transactionInfo,
+  instructions
+}: Props) => {
+  const { txArgs, txParams, txType, txDataUnion } = transactionInfo
+
+  const solData = txDataUnion.solanaTxData
+  const btcData = txDataUnion.btcTxData
+  const zecData = txDataUnion.zecTxData
+  const dataArray = txDataUnion.ethTxData1559?.baseData.data || []
+
+  // render
+  // No Data
+  if (dataArray.length === 0 && !btcData && !zecData && !solData) {
+    return (
+      <CodeSnippet>
+        <code>
+          <CodeSnippetText>
+            {getLocale('braveWalletConfirmTransactionNoData')}
+          </CodeSnippetText>
+        </code>
+      </CodeSnippet>
+    )
+  }
+
+  // BTC
+  // TODO(apaymyshev): strings localization.
+  if (btcData) {
+    return (
+      <DetailColumn>
+        {btcData.inputs?.map((input, index) => {
+          return (
+            <div key={'input' + index}>
+              <BitcoinDetailLine>{`Input: ${index}`}</BitcoinDetailLine>
+              <BitcoinDetailLine>{`Value: ${input.value}`}</BitcoinDetailLine>
+              <BitcoinDetailLine>{`Address: ${
+                input.address //
+              }`}</BitcoinDetailLine>
+            </div>
+          )
+        })}
+        {btcData.outputs?.map((output, index) => {
+          return (
+            <div key={'output' + index}>
+              <BitcoinDetailLine>{`Output: ${index}`}</BitcoinDetailLine>
+              <BitcoinDetailLine>{`Value: ${output.value}`}</BitcoinDetailLine>
+              <BitcoinDetailLine>
+                {`Address: ${output.address}`}
+              </BitcoinDetailLine>
+            </div>
+          )
+        })}
+      </DetailColumn>
+    )
+  }
+
+  // ZEC
+  if (zecData) {
+    return (
+      <>
+        <DetailColumn>
+          {zecData.inputs?.map((input, index) => {
+            return (
+              <code key={index}>{`input-${input.value}-${input.address}`}</code>
+            )
+          })}
+        </DetailColumn>
+
+        <DetailColumn>
+          {zecData.outputs?.map((output, index) => {
+            return (
+              <code
+                key={index}
+              >{`output-${output.value}-${output.address}`}</code>
+            )
+          })}
+        </DetailColumn>
+      </>
+    )
+  }
+
+  // SOL, EVM & FIL
   return (
     <>
-      {data.length === 0 ? (
-        <CodeSnippet>
-          <code>
-            <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
-          </code>
-        </CodeSnippet>
-      ) : (
-        <>
+      {solData || dataArray ? (
+        <DetailColumn>
+          <TransactionText>
+            {getLocale('braveWalletTransactionDetailBoxFunction')}:
+          </TransactionText>
+          <DetailText>{txKeys[txType]}</DetailText>
+        </DetailColumn>
+      ) : null}
+
+      {
+        // SOL
+        instructions?.length ? (
           <DetailColumn>
-            <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
-            <DetailText>{txKeys[txType]}</DetailText>
+            {instructions?.map((instruction, index) => {
+              return (
+                <SolanaTransactionInstruction
+                  key={index}
+                  typedInstructionWithParams={instruction}
+                />
+              )
+            })}
           </DetailColumn>
-          {txType !== BraveWallet.TransactionType.Other && txParams.map((param, i) =>
+        ) : // FIL & EVM
+        txType === BraveWallet.TransactionType.Other ? (
+          <CodeSnippet>
+            <code>
+              <CodeSnippetText>
+                {`0x${numberArrayToHexStr(dataArray)}`}
+              </CodeSnippetText>
+            </code>
+          </CodeSnippet>
+        ) : (
+          txParams.map((param, i) => (
             <CodeSnippet key={i}>
               <code>
-                <CodeSnippetText>{param}: {txArgs[i]}</CodeSnippetText>
-              </code>
-            </CodeSnippet>
-          )}
-
-          {txType === BraveWallet.TransactionType.Other && (
-            <CodeSnippet>
-              <code>
                 <CodeSnippetText>
-                  {`0x${numberArrayToHexStr(data)}`}
+                  {param}: {txArgs[i]}
                 </CodeSnippetText>
               </code>
             </CodeSnippet>
-          )}
-        </>
-      )}
+          ))
+        )
+      }
     </>
   )
 }

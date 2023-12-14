@@ -23,10 +23,11 @@ import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   getTransactionGasFee,
-  isSolanaTransaction,
   parseTransactionWithPrices,
   findTransactionToken,
-  isEthereumTransaction
+  isEthereumTransaction,
+  isZCashTransaction,
+  isBitcoinTransaction
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -295,7 +296,7 @@ export const usePendingTransactions = () => {
           sellTokenBalance: sellTokenBalance || '',
           tx: transactionInfo
         })
-      : undefined
+      : false
   }, [
     gasFee,
     nativeBalance,
@@ -332,18 +333,15 @@ export const usePendingTransactions = () => {
   const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
 
-  const isSolanaTxn = transactionInfo && isSolanaTransaction(transactionInfo)
-  const isSolanaDappTransaction = transactionInfo?.txType && [
-    BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
-    BraveWallet.TransactionType.SolanaDappSignTransaction
-  ].includes(transactionInfo.txType)
+  const isSolanaDappTransaction = transactionInfo?.txType
+    ? [
+        BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        BraveWallet.TransactionType.SolanaDappSignTransaction
+      ].includes(transactionInfo.txType)
+    : false
 
   const isAssociatedTokenAccountCreation =
     transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-
-  const isFilecoinTransaction =
-    transactionInfo?.txType === BraveWallet.TransactionType.Other &&
-    transactionInfo?.txDataUnion?.filTxData
 
   // methods
   const onEditAllowanceSave = React.useCallback((allowance: string) => {
@@ -514,14 +512,12 @@ export const usePendingTransactions = () => {
       return true
     }
 
-    return (
-      !!transactionDetails?.sameAddressError ||
-      !!transactionDetails?.contractAddressError ||
-      insufficientFundsForGasError === undefined ||
-      insufficientFundsError === undefined ||
-      !!insufficientFundsForGasError ||
-      !!insufficientFundsError ||
-      !!transactionDetails?.missingGasLimitError
+    return Boolean(
+      transactionDetails?.sameAddressError ||
+        transactionDetails?.contractAddressError ||
+        insufficientFundsForGasError ||
+        insufficientFundsError ||
+        transactionDetails?.missingGasLimitError
     )
   }, [
     transactionDetails,
@@ -615,9 +611,9 @@ export const usePendingTransactions = () => {
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
     isSolanaDappTransaction,
-    isSolanaTransaction: isSolanaTxn,
+    isSolanaTransaction: transactionDetails?.isSolanaTransaction || false,
     isAssociatedTokenAccountCreation,
-    isFilecoinTransaction,
+    isFilecoinTransaction: transactionDetails?.isFilecoinTransaction || false,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
@@ -638,6 +634,8 @@ export const usePendingTransactions = () => {
     onConfirm,
     onReject,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    isZCashTransaction: isZCashTransaction(transactionInfo),
+    isBitcoinTransaction: isBitcoinTransaction(transactionInfo)
   }
 }

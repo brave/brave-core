@@ -134,20 +134,10 @@ export const TransactionTypeText = styled.span`
   font-weight: 600;
 `
 
-export const FromToRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 8px;
-`
-
 export const ArrowIcon = styled(ArrowRightIcon)`
-  width: auto;
+  display: inline-block;
+  width: 16px;
   height: 16px;
-  margin-right: 6px;
-  margin-left: 6px;
   color: ${(p) => p.theme.color.text03};
 `
 
