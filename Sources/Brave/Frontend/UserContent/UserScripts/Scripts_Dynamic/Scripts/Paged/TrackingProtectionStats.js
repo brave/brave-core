@@ -120,6 +120,9 @@ window.__firefox__.execute(function($) {
           // If this `Image` instance fails to load, we can assume
           // it has been blocked.
           this._tpErrorHandler = $(function() {
+            // We don't need to send it if the src is set to ""
+            // (which will give us `window.location.href`)
+            if (this.src === window.location.href) { return }
             sendMessage(this.src, "image");
           });
           this.addEventListener("error", this._tpErrorHandler);
