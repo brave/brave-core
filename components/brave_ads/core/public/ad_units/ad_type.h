@@ -9,11 +9,9 @@
 #include <ostream>
 #include <string_view>
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-
 namespace brave_ads {
 
-// An enum with the codified ad types.
+// An enum with the codified ad types. These values must match mojom::AdType.
 enum class AdType {
   kUndefined,
   kNotificationAd,
@@ -23,14 +21,11 @@ enum class AdType {
   kSearchResultAd
 };
 
-// Returns a string constant for a given AdType value
+// Returns a string constant for a given AdType value.
 const char* ToString(AdType type);
 
 // Creates an AdType instance with a value corresponding the string provided.
 AdType ParseAdType(std::string_view value);
-
-// Creates an AdType instance from a mojom::AdType instance.
-AdType FromMojomTypeToAdType(mojom::AdType value);
 
 std::ostream& operator<<(std::ostream& os, AdType type);
 

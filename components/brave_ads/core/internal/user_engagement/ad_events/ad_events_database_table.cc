@@ -259,7 +259,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
       "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
       "created_at DESC;",
-      {GetTableName(), ToString(FromMojomTypeToAdType(ad_type))}, nullptr);
+      {GetTableName(), ToString(static_cast<AdType>(ad_type))}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
@@ -299,7 +299,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served') "
       "AND type = '$4';",
       {GetTableName(), GetTableName(), GetTableName(),
-       ToString(FromMojomTypeToAdType(ad_type))},
+       ToString(static_cast<AdType>(ad_type))},
       nullptr);
   transaction->commands.push_back(std::move(command));
 

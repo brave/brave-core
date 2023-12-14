@@ -6,17 +6,17 @@
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/debug/crash_logging.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
 namespace {
 
 // Do not change the following string values as they are used for persisting and
-// restoring state
+// restoring state.
 constexpr char kUndefinedType[] = "";
 constexpr char kNotificationAdType[] = "ad_notification";
 constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
@@ -24,31 +24,30 @@ constexpr char kPromotedContentAdType[] = "promoted_content_ad";
 constexpr char kInlineContentAdType[] = "inline_content_ad";
 constexpr char kSearchResultAdType[] = "search_result_ad";
 
+constexpr auto kParseAdTypeMap =
+    base::MakeFixedFlatMap<std::string_view, AdType>(
+        {{kUndefinedType, AdType::kUndefined},
+         {kNotificationAdType, AdType::kNotificationAd},
+         {kNewTabPageAdType, AdType::kNewTabPageAd},
+         {kPromotedContentAdType, AdType::kPromotedContentAd},
+         {kInlineContentAdType, AdType::kInlineContentAd},
+         {kSearchResultAdType, AdType::kSearchResultAd}});
+
+constexpr auto kAdTypeToStringMap =
+    base::MakeFixedFlatMap<AdType, std::string_view>(
+        {{AdType::kUndefined, kUndefinedType},
+         {AdType::kNotificationAd, kNotificationAdType},
+         {AdType::kNewTabPageAd, kNewTabPageAdType},
+         {AdType::kPromotedContentAd, kPromotedContentAdType},
+         {AdType::kInlineContentAd, kInlineContentAdType},
+         {AdType::kSearchResultAd, kSearchResultAdType}});
+
 }  // namespace
 
 AdType ParseAdType(std::string_view value) {
-  if (value == kUndefinedType) {
-    return AdType::kUndefined;
-  }
-
-  if (value == kNotificationAdType) {
-    return AdType::kNotificationAd;
-  }
-
-  if (value == kNewTabPageAdType) {
-    return AdType::kNewTabPageAd;
-  }
-
-  if (value == kPromotedContentAdType) {
-    return AdType::kPromotedContentAd;
-  }
-
-  if (value == kInlineContentAdType) {
-    return AdType::kInlineContentAd;
-  }
-
-  if (value == kSearchResultAdType) {
-    return AdType::kSearchResultAd;
+  const auto* iter = kParseAdTypeMap.find(value);
+  if (iter != kParseAdTypeMap.cend()) {
+    return iter->second;
   }
 
   SCOPED_CRASH_KEY_STRING32("AdType", "value", value);
@@ -56,61 +55,10 @@ AdType ParseAdType(std::string_view value) {
   return AdType::kUndefined;
 }
 
-AdType FromMojomTypeToAdType(const mojom::AdType value) {
-  CHECK(mojom::IsKnownEnumValue(value));
-
-  switch (value) {
-    case mojom::AdType::kUndefined: {
-      return AdType::kUndefined;
-    }
-
-    case mojom::AdType::kNotificationAd: {
-      return AdType::kNotificationAd;
-    }
-
-    case mojom::AdType::kNewTabPageAd: {
-      return AdType::kNewTabPageAd;
-    }
-
-    case mojom::AdType::kPromotedContentAd: {
-      return AdType::kPromotedContentAd;
-    }
-
-    case mojom::AdType::kInlineContentAd: {
-      return AdType::kInlineContentAd;
-    }
-
-    case mojom::AdType::kSearchResultAd: {
-      return AdType::kSearchResultAd;
-    }
-  }
-}
-
 const char* ToString(AdType type) {
-  switch (type) {
-    case AdType::kUndefined: {
-      return kUndefinedType;
-    }
-
-    case AdType::kNotificationAd: {
-      return kNotificationAdType;
-    }
-
-    case AdType::kNewTabPageAd: {
-      return kNewTabPageAdType;
-    }
-
-    case AdType::kPromotedContentAd: {
-      return kPromotedContentAdType;
-    }
-
-    case AdType::kInlineContentAd: {
-      return kInlineContentAdType;
-    }
-
-    case AdType::kSearchResultAd: {
-      return kSearchResultAdType;
-    }
+  const auto* iter = kAdTypeToStringMap.find(type);
+  if (iter != kAdTypeToStringMap.cend()) {
+    return iter->second.data();
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for AdType: "
