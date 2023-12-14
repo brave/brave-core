@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabRootUiCoordinator.java
+index bb2767010fcbec709d1ecaf7eacfc0be2092c5db..ef8db3992ad1de0ace685725ae9c1a951a69199a 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabRootUiCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabRootUiCoordinator.java
+@@ -100,7 +100,7 @@ public class BaseCustomTabRootUiCoordinator extends RootUiCoordinator {
+     private final Supplier<BrowserServicesIntentDataProvider> mIntentDataProvider;
+     private final Supplier<CustomTabActivityTabController> mTabController;
+ 
+-    private CustomTabHeightStrategy mCustomTabHeightStrategy;
++    public CustomTabHeightStrategy mCustomTabHeightStrategy;
+ 
+     // Created only when ChromeFeatureList.CctBrandTransparency is enabled.
+     // TODO(https://crbug.com/1343056): Make it part of the ctor.

@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy.java
+index 72cb08749c0fa97026336622667cf34906905e66..a411094c593a16a56a53205ffbef8bd8be61deda 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy.java
+@@ -243,7 +243,7 @@ public class PartialCustomTabBottomSheetStrategy extends PartialCustomTabBaseStr
+      * @param autoResize {@code true} if the animation starts not by user gesture dragging
+      *        the tab but by other UI actions such as soft keyboard display/find-in-page command.
+      */
+-    private void animateTabTo(int targetStatus, boolean autoResize) {
++    public void animateTabTo(int targetStatus, boolean autoResize) {
+         // Tab cannot be animated to top/initial when running in full height.
+         assert !(isFullHeight()
+                 && (targetStatus == HeightStatus.TOP

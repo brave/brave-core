@@ -15,14 +15,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Browser;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.customtabs.TranslucentCustomTabActivity;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.CustomTabHeightStrategy;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBaseStrategy;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabDisplayManager;
 import org.chromium.ui.util.ColorUtils;
 
 /**
@@ -32,6 +40,14 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     // The Activity could be 50% or 100% of the screen. That number
     // indicates that we want it to be 50% on a first start.
     static final int INITIAL_ACTIVITY_HEIGHT_PX = 300;
+
+    private final GestureDetector mGestureDetector;
+
+    public BraveLeoActivity() {
+        super();
+        mGestureDetector =
+                new GestureDetector(ContextUtils.getApplicationContext(), new GestureListener());
+    }
 
     @Override
     public boolean supportsAppMenu() {
@@ -73,5 +89,76 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
+    }
+
+    private final class GestureListener extends SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) < Math.abs(diffY)
+                        && Math.abs(diffY) > SWIPE_THRESHOLD
+                        && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        onSwipeBottom();
+                    } else {
+                        onSwipeTop();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    public void onSwipeTop() {
+        PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
+        if (strategy != null) {
+            strategy.animateTabTo(/*HeightStatus.TOP*/ 0, /* autoResize= */ true);
+            ;
+        }
+    }
+
+    public void onSwipeBottom() {
+        PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
+        if (strategy != null) {
+            strategy.animateTabTo(/*HeightStatus.INITIAL_HEIGHT*/ 1, /* autoResize= */ true);
+            ;
+        }
+    }
+
+    private PartialCustomTabBottomSheetStrategy getPartialCustomTabBottomSheetStrategy() {
+        CustomTabHeightStrategy customTabHeightStrategy =
+                mBaseCustomTabRootUiCoordinator.mCustomTabHeightStrategy;
+        if (customTabHeightStrategy instanceof PartialCustomTabDisplayManager) {
+            PartialCustomTabDisplayManager partialCustomTabDisplayManager =
+                    (PartialCustomTabDisplayManager) customTabHeightStrategy;
+            PartialCustomTabBaseStrategy partialCustomTabBaseStrategy =
+                    partialCustomTabDisplayManager.mStrategy;
+            if (partialCustomTabBaseStrategy instanceof PartialCustomTabBottomSheetStrategy) {
+                PartialCustomTabBottomSheetStrategy partialCustomTabBottomSheetStrategy =
+                        (PartialCustomTabBottomSheetStrategy) partialCustomTabBaseStrategy;
+                return partialCustomTabBottomSheetStrategy;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        mGestureDetector.onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
     }
 }
