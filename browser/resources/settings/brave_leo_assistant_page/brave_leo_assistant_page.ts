@@ -13,6 +13,8 @@ import {getTemplate} from './brave_leo_assistant_page.html.js'
 import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, Model}
   from './brave_leo_assistant_browser_proxy.js'
 import 'chrome://resources/brave/leo.bundle.js'
+import {SettingsRoutes, Router, Route} from '../router.js';
+import {routes} from '../route.js';
 
 const MODEL_PREF_PATH = 'brave.ai_chat.default_model_key'
 
@@ -119,6 +121,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     onLeoAssistantShowOnToolbarChange_(e: any) {
       e.stopPropagation()
       this.browserProxy_.toggleLeoIcon()
+    }
+
+    openAutocompleteSetting_() {
+      Router.getInstance().navigateTo(routes.APPEARANCE, new URLSearchParams("highlight=#autocomplete-suggestion-sources"))
     }
 }
 
