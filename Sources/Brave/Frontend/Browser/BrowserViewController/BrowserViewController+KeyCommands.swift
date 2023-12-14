@@ -73,6 +73,8 @@ extension BrowserViewController {
       hideReaderModeBar(animated: false)
     }
     
+    // Initially add the tab to recently closed and remove it from Tab Data after
+    tabManager.addTabToRecentlyClosed(currentTab)
     tabManager.removeTab(currentTab)
   }
 
