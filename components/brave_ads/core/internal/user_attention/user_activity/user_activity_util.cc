@@ -38,10 +38,11 @@ base::TimeDelta GetTimeSinceLastUserActivityEvent(
 }
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {
-  UserActivityTriggerList triggers;
-
   const std::vector<std::string> components = base::SplitString(
       param_value, ";", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  UserActivityTriggerList triggers;
+  triggers.reserve(components.size());
 
   for (const auto& component : components) {
     const std::vector<std::string> value = base::SplitString(
