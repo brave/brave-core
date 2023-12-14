@@ -644,19 +644,16 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
   // Construct arg to query native token for use in case the
   // optimized balance fetcher kicks in.
-  const nativeTokenArg =
-    arg.coin === CoinTypes.ETH
-      ? arg.tokens.find(isNativeAsset)
-      : arg.tokens // arg.coin is SOL
-      ? arg.tokens.find(isNativeAsset)
-      : {
-          coin: arg.coin,
-          chainId: arg.chainId,
-          contractAddress: '',
-          isErc721: false,
-          isNft: false,
-          tokenId: ''
-        }
+  const nativeTokenArg = arg.tokens
+    ? arg.tokens.find(isNativeAsset)
+    : {
+        coin: arg.coin,
+        chainId: arg.chainId,
+        contractAddress: '',
+        isErc721: false,
+        isNft: false,
+        tokenId: ''
+      }
 
   const baseTokenBalances: TokenBalancesForChainId = {}
   if (nativeTokenArg) {
