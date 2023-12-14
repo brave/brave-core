@@ -32,7 +32,9 @@ const gfx::VectorIcon& ToolbarButton_ChromiumImpl::GetVectorTouchIcon() const {
   return vector_icons_->touch_icon;
 }
 
-ToolbarButton::~ToolbarButton() = default;
+ToolbarButton::~ToolbarButton() {
+  views::InkDrop::Get(this)->GetInkDrop()->RemoveObserver(this);
+}
 
 void ToolbarButton::OnThemeChanged() {
   ToolbarButton_ChromiumImpl::OnThemeChanged();
