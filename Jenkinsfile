@@ -82,7 +82,7 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            branch('oajara-devops-10866-avoid-wildcard-macos')
+                                            branch('oajara-devops-4950-add-clangtidy')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
