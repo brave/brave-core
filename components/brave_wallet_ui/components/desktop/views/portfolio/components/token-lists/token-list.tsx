@@ -316,6 +316,15 @@ export const TokenLists = ({
     ]
   )
 
+  const doesNetworkHaveBalance = React.useCallback(
+    (network: BraveWallet.NetworkInfo) => {
+      return getAssetsByNetwork(network).some((asset) =>
+        new Amount(asset.assetBalance).gt(0)
+      )
+    },
+    [getAssetsByNetwork]
+  )
+
   // Returns a list of assets based on provided coin type
   const getAssetsByCoin = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
@@ -427,6 +436,15 @@ export const TokenLists = ({
     [getSortedAssetsByAccount, filteredAssetList]
   )
 
+  const doesAccountHaveBalance = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      return getFilteredOutAssetsByAccount(account).some((asset) => {
+        return new Amount(asset.assetBalance).gt(0)
+      })
+    },
+    [getFilteredOutAssetsByAccount]
+  )
+
   const onCloseSearchBar = React.useCallback(() => {
     setShowSearchBar(false)
     setSearchValue('')
@@ -440,16 +458,29 @@ export const TokenLists = ({
     if (noNetworks) {
       return undefined
     }
-    return [...networks]
-      .filter((network) => {
-        return getNetworkFiatValue(network).gt(0)
-      })
-      .sort((a, b) => {
-        const aBalance = getNetworkFiatValue(a)
-        const bBalance = getNetworkFiatValue(b)
-        return bBalance.minus(aBalance).toNumber()
-      })
-  }, [networks, noNetworks, getNetworkFiatValue])
+    if (hideSmallBalances) {
+      return networks
+        .filter((network) => {
+          return getNetworkFiatValue(network).gt(0)
+        })
+        .sort((a, b) => {
+          const aBalance = getNetworkFiatValue(a)
+          const bBalance = getNetworkFiatValue(b)
+          return bBalance.minus(aBalance).toNumber()
+        })
+    }
+    return networks.filter(doesNetworkHaveBalance).sort((a, b) => {
+      const aBalance = getNetworkFiatValue(a)
+      const bBalance = getNetworkFiatValue(b)
+      return bBalance.minus(aBalance).toNumber()
+    })
+  }, [
+    networks,
+    noNetworks,
+    getNetworkFiatValue,
+    hideSmallBalances,
+    doesNetworkHaveBalance
+  ])
 
   const listUiByNetworks = React.useMemo(() => {
     if (showEmptyState) {
@@ -510,16 +541,29 @@ export const TokenLists = ({
     if (noAccounts) {
       return undefined
     }
-    return [...accounts]
-      .filter((account) => {
-        return getAccountFiatValue(account).gt(0)
-      })
-      .sort((a, b) => {
-        const aBalance = getAccountFiatValue(a)
-        const bBalance = getAccountFiatValue(b)
-        return bBalance.minus(aBalance).toNumber()
-      })
-  }, [accounts, noAccounts, getAccountFiatValue])
+    if (hideSmallBalances) {
+      return accounts
+        .filter((account) => {
+          return getAccountFiatValue(account).gt(0)
+        })
+        .sort((a, b) => {
+          const aBalance = getAccountFiatValue(a)
+          const bBalance = getAccountFiatValue(b)
+          return bBalance.minus(aBalance).toNumber()
+        })
+    }
+    return accounts.filter(doesAccountHaveBalance).sort((a, b) => {
+      const aBalance = getAccountFiatValue(a)
+      const bBalance = getAccountFiatValue(b)
+      return bBalance.minus(aBalance).toNumber()
+    })
+  }, [
+    accounts,
+    noAccounts,
+    getAccountFiatValue,
+    hideSmallBalances,
+    doesAccountHaveBalance
+  ])
 
   const listUiByAccounts = React.useMemo(() => {
     if (showEmptyState) {
