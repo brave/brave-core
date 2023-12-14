@@ -7,7 +7,9 @@
 #include <string_view>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/no_destructor.h"
 #include "base/strings/pattern.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
@@ -35,6 +37,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_ui_controller_factory.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -310,7 +313,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     }
   }
 
-  void VerifyPage(const GURL url,
+  void VerifyPage(const GURL& url,
+                  const GURL& expected_url,
                   const std::vector<std::string> ignore_patterns) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PageTransitionFromInt(
@@ -323,8 +327,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     web_contents->GetController().LoadURLWithParams(params);
     web_contents->GetOutermostWebContents()->Focus();
     EXPECT_TRUE(WaitForLoadStop(web_contents));
-    EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
-        << "Expected URL " << url << " but observed "
+    EXPECT_TRUE(web_contents->GetLastCommittedURL() == expected_url)
+        << "Expected URL " << expected_url << " but observed "
         << web_contents->GetLastCommittedURL();
 
     auto result = content::EvalJs(
@@ -341,6 +345,12 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
                                 ignore_patterns);
   }
 
+  const std::vector<std::string>& GetWebUISchemes() {
+    static base::NoDestructor<std::vector<std::string>> kWebUISchemes(
+        {"chrome://", "brave://"});
+    return *kWebUISchemes;
+  }
+
   base::ScopedTempDir temp_dir_;
   int64_t file_size_;
   std::optional<std::string> file_digest_;
@@ -354,45 +364,78 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestWalletPageRoute) {
+  const GURL expected_real_url =
+      GURL("chrome://wallet/crypto/portfolio/assets");
+  const GURL expected_virtual_url =
+      GURL("brave://wallet/crypto/portfolio/assets");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/"}));
+
+    auto* web_contents = GetActiveWebContents();
+    content::NavigateToURLBlockUntilNavigationsComplete(web_contents, url, 2);
+    EXPECT_EQ(web_contents->GetController().GetLastCommittedEntry()->GetURL(),
+              expected_real_url);
+    EXPECT_EQ(
+        web_contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
+        expected_virtual_url);
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestPortfolioPageAppearing) {
-  GURL url = GURL("chrome://wallet/crypto/portfolio/assets");
-  const std::vector<std::string> ignore_patterns = {
-      "TypeError: Cannot read properties of undefined (reading "
-      "'onCompleteReset')",
-      "Error calling jsonRpcService.getERC20TokenBalances"};
-  VerifyPage(url, ignore_patterns);
+  const GURL expected_url = GURL("brave://wallet/crypto/portfolio/assets");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/portfolio/assets"}));
+    const std::vector<std::string> ignore_patterns = {
+        "TypeError: Cannot read properties of undefined (reading "
+        "'onCompleteReset')",
+        "Error calling jsonRpcService.getERC20TokenBalances"};
+    VerifyPage(url, expected_url, ignore_patterns);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
-  GURL url = GURL("chrome://wallet/swap");
-  const std::vector<std::string> ignore_patterns = {
-      "TypeError: Cannot read properties of undefined (reading 'forEach')",
-      "Error calling jsonRpcService.getERC20TokenBalances",
-      "Error querying balance:", "Error: An internal error has occurred",
-      "Unable to fetch getTokenBalancesForChainId"};
-  VerifyPage(url, ignore_patterns);
+  const GURL expected_url = GURL("brave://wallet/swap");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/swap"}));
+    const std::vector<std::string> ignore_patterns = {
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "Error calling jsonRpcService.getERC20TokenBalances",
+        "Error querying balance:", "Error: An internal error has occurred",
+        "Unable to fetch getTokenBalancesForChainId"};
+    VerifyPage(url, expected_url, ignore_patterns);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
-  GURL url = GURL("chrome://wallet/send");
-  const std::vector<std::string> ignore_patterns = {
-      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
-  VerifyPage(url, ignore_patterns);
+  const GURL expected_url = GURL("brave://wallet/send");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
+    const std::vector<std::string> ignore_patterns = {
+        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+    VerifyPage(url, expected_url, ignore_patterns);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  GURL url = GURL("chrome://wallet/crypto/deposit-funds");
-  const std::vector<std::string> ignore_patterns = {
-      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
-  VerifyPage(url, ignore_patterns);
+  const GURL expected_url = GURL("brave://wallet/crypto/deposit-funds");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
+    const std::vector<std::string> ignore_patterns = {
+        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+    VerifyPage(url, expected_url, ignore_patterns);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
-  GURL url = GURL("chrome://wallet/crypto/fund-wallet");
-  const std::vector<std::string> ignore_patterns = {
-      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
-  VerifyPage(url, ignore_patterns);
+  const GURL expected_url = GURL("brave://wallet/crypto/fund-wallet");
+  for (const std::string& scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
+    const std::vector<std::string> ignore_patterns = {
+        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+    VerifyPage(url, expected_url, ignore_patterns);
+  }
 }
 }  // namespace brave_wallet
