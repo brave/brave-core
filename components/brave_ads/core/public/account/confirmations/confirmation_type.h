@@ -13,7 +13,7 @@ namespace brave_ads {
 
 enum class ConfirmationType {
   // When adding new confirmation types they must be added with highest
-  // priority at the top so that ads history can be filtered
+  // priority at the top so that ads history can be filtered.
   kUndefined,
   kClicked,
   kDismissed,
