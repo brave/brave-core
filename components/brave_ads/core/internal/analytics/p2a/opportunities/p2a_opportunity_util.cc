@@ -20,10 +20,15 @@ constexpr char kAdOpportunitiesPerSegmentEvent[] =
     "Brave.P2A.$1.opportunities_per_segment.$2";
 constexpr char kAdOpportunitiesEvent[] = "Brave.P2A.$1.opportunities";
 
-std::string NormalizeSegment(const std::string& segment) {
+std::optional<std::string> NormalizeSegment(const std::string& segment) {
   std::string normalized_segment;
   base::ReplaceChars(StripNonAlphaNumericCharacters(segment), " ", "",
                      &normalized_segment);
+
+  if (normalized_segment.empty()) {
+    return std::nullopt;
+  }
+
   return normalized_segment;
 }
 
@@ -34,13 +39,14 @@ std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
   CHECK(!segment.empty());
 
   const std::string parent_segment = GetParentSegment(segment);
-  const std::string normalized_segment = NormalizeSegment(parent_segment);
-  if (normalized_segment.empty()) {
+  const std::optional<std::string> normalized_segment =
+      NormalizeSegment(parent_segment);
+  if (!normalized_segment) {
     return std::nullopt;
   }
 
   return base::ReplaceStringPlaceholders(
-      kAdOpportunitiesPerSegmentEvent, {ToString(ad_type), normalized_segment},
+      kAdOpportunitiesPerSegmentEvent, {ToString(ad_type), *normalized_segment},
       nullptr);
 }
 
@@ -59,16 +65,16 @@ std::vector<std::string> BuildP2AAdOpportunityEvents(
   CHECK_NE(AdType::kUndefined, ad_type);
 
   std::vector<std::string> events;
+  events.reserve(segments.size() + 1);
 
   for (const auto& segment : segments) {
-    if (const std::optional<std::string> ad_opportunities_per_segment_event =
+    if (std::optional<std::string> ad_opportunities_per_segment_event =
             BuildAdOpportunitiesPerSegmentEvent(ad_type, segment)) {
       events.push_back(*ad_opportunities_per_segment_event);
     }
   }
 
-  const std::string ad_opportunities_event = BuildAdOpportunitiesEvent(ad_type);
-  events.push_back(ad_opportunities_event);
+  events.push_back(BuildAdOpportunitiesEvent(ad_type));
 
   return events;
 }
