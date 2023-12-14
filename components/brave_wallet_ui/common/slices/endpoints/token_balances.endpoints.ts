@@ -703,37 +703,38 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         arg.accountId.address,
         arg.chainId
       )
-      if (result.error === BraveWallet.ProviderError.kSuccess) {
-        return {
-          [accountBalanceKey]: {
-            [arg.chainId]: result.balances.reduce(
-              (acc, { balance, contractAddress }) => {
-                const token = arg.tokens.find(
-                  (token) => token.contractAddress === contractAddress
-                )
 
-                const balanceAmount = balance ? new Amount(balance) : undefined
-
-                if (balanceAmount && token) {
-                  return {
-                    ...acc,
-                    [contractAddress]: balanceAmount.format()
-                  }
-                }
-
-                return acc
-              },
-              baseTokenBalances
-            )
-          }
-        }
-      } else {
+      if (result.error !== BraveWallet.ProviderError.kSuccess) {
         throw new Error(
           'Error calling ' +
             'jsonRpcService.getERC20TokenBalances: ' +
             `error=${result.errorMessage} arg=` +
             JSON.stringify(arg, undefined, 2)
         )
+      }
+
+      return {
+        [accountBalanceKey]: {
+          [arg.chainId]: result.balances.reduce(
+            (acc, { balance, contractAddress }) => {
+              const token = arg.tokens.find(
+                (token) => token.contractAddress === contractAddress
+              )
+
+              const balanceAmount = balance ? new Amount(balance) : undefined
+
+              if (balanceAmount && token) {
+                return {
+                  ...acc,
+                  [contractAddress]: balanceAmount.format()
+                }
+              }
+
+              return acc
+            },
+            baseTokenBalances
+          )
+        }
       }
     }
   }
@@ -744,27 +745,27 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       arg.chainId
     )
 
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
-      return {
-        [accountBalanceKey]: {
-          [arg.chainId]: result.balances.reduce((acc, balanceResult) => {
-            if (balanceResult.amount) {
-              return {
-                ...acc,
-                [balanceResult.mint]: Amount.normalize(balanceResult.amount)
-              }
-            }
-
-            return acc
-          }, baseTokenBalances)
-        }
-      }
-    } else {
+    if (result.error !== BraveWallet.ProviderError.kSuccess) {
       throw new Error(
         `Error calling jsonRpcService.getSPLTokenBalances:
               error=${result.errorMessage}
               arg=` + JSON.stringify(arg, undefined, 2)
       )
+    }
+
+    return {
+      [accountBalanceKey]: {
+        [arg.chainId]: result.balances.reduce((acc, balanceResult) => {
+          if (balanceResult.amount) {
+            return {
+              ...acc,
+              [balanceResult.mint]: Amount.normalize(balanceResult.amount)
+            }
+          }
+
+          return acc
+        }, baseTokenBalances)
+      }
     }
   }
 
