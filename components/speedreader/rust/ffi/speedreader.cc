@@ -19,7 +19,12 @@ SpeedReader::~SpeedReader() {
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
-  return std::make_unique<Rewriter>(raw_, url);
+  std::unique_ptr<Rewriter> rewriter(new Rewriter(raw_, url));
+  if (rewriter->raw_ == nullptr) {
+    // Underlying implementation failed to create a rewriter for some reason.
+    return nullptr;
+  }
+  return rewriter;
 }
 
 Rewriter::Rewriter(C_SpeedReader* speedreader, const std::string& url)
