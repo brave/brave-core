@@ -110,11 +110,13 @@ export const Row = styled.div<
     padding?: number | string
     width?: '100%' | 'unset'
     marginBottom?: number | string
+    wrap?: boolean
   }
 >`
   font-family: 'Poppins';
   display: flex;
   flex-direction: row;
+  flex-wrap: ${(p) => (p.wrap ? 'wrap' : 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
