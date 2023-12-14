@@ -656,6 +656,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       }
 
   const baseTokenBalances: TokenBalancesForChainId = {}
+
   if (nativeTokenArg) {
     const { data: balance } = await fetchAccountTokenCurrentBalance({
       arg: {
@@ -671,12 +672,12 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     }
   }
 
+  const tokens = (arg.tokens ?? []).filter((token) => !isNativeAsset(token))
+
   if (arg.coin === CoinTypes.ETH) {
     // jsonRpcService.getERC20TokenBalances cannot handle
     // native assets
-    const contracts = arg.tokens
-      .filter((token) => !isNativeAsset(token))
-      .map((token) => token.contractAddress)
+    const contracts = tokens.map((token) => token.contractAddress)
     if (contracts.length === 0) {
       return {
         [accountBalanceKey]: {
@@ -763,7 +764,6 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   }
 
   // Fallback to fetching individual balances
-  const tokens = (arg.tokens ?? []).filter((token) => !isNativeAsset(token))
 
   const combinedBalancesResult = await mapLimit(
     tokens,
