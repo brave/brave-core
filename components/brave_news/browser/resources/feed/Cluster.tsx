@@ -7,7 +7,7 @@ import { Cluster as Info, ClusterType } from 'gen/brave/components/brave_news/co
 import Card, { Title } from './Card';
 import Article from './Article';
 import styled from 'styled-components';
-import { icon, spacing } from '@brave/leo/tokens/css';
+import { icon, radius, spacing } from '@brave/leo/tokens/css';
 import { channelIcons } from '../shared/Icons';
 import { getTranslatedChannelName } from '../shared/channel';
 
@@ -20,8 +20,7 @@ const Container = styled(Card)`
   flex-direction: column;
   gap: ${spacing.m};
 
-  padding-left: ${spacing.m};
-  padding-right: ${spacing.m};
+  padding: ${spacing['2Xl']} ${spacing.m} ${spacing.m} ${spacing.m};
 
   & > ${Title} {
     --leo-icon-color: currentColor;
@@ -32,6 +31,10 @@ const Container = styled(Card)`
 
     margin-left: ${spacing.xl};
     margin-bottom: ${spacing.xl};
+  }
+
+  & > ${Card} {
+    border-radius: ${radius.m};
   }
 `
 
