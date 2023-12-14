@@ -644,8 +644,10 @@ async function fetchTokenBalancesForChainId({
     args,
     1,
     async (arg: GetTokenBalancesForChainIdArg) => {
+      const accountBalanceKey = getAccountBalancesKey(arg.accountId)
+
       // Construct arg to query native token for use in case the
-      // optimised balance fetcher kicks in.
+      // optimized balance fetcher kicks in.
       const nativeTokenArg =
         arg.coin === CoinTypes.ETH
           ? arg.tokens.find(isNativeAsset)
@@ -684,7 +686,7 @@ async function fetchTokenBalancesForChainId({
           .map((token) => token.contractAddress)
         if (contracts.length === 0) {
           return {
-            [getAccountBalancesKey(arg.accountId)]: {
+            [accountBalanceKey]: {
               [arg.chainId]: baseTokenBalances
             }
           }
@@ -704,7 +706,7 @@ async function fetchTokenBalancesForChainId({
           )
           if (result.error === BraveWallet.ProviderError.kSuccess) {
             return {
-              [getAccountBalancesKey(arg.accountId)]: {
+              [accountBalanceKey]: {
                 [arg.chainId]: result.balances.reduce(
                   (acc, { balance, contractAddress }) => {
                     const token = arg.tokens.find(
@@ -747,7 +749,7 @@ async function fetchTokenBalancesForChainId({
 
         if (result.error === BraveWallet.ProviderError.kSuccess) {
           return {
-            [getAccountBalancesKey(arg.accountId)]: {
+            [accountBalanceKey]: {
               [arg.chainId]: result.balances.reduce((acc, balanceResult) => {
                 if (balanceResult.amount) {
                   return {
@@ -794,7 +796,7 @@ async function fetchTokenBalancesForChainId({
       )
 
       return {
-        [getAccountBalancesKey(arg.accountId)]: {
+        [accountBalanceKey]: {
           [arg.chainId]: combinedBalancesResult
             .filter(
               (
