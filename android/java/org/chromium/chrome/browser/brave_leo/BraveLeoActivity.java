@@ -45,6 +45,12 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
 
     private final GestureDetector mGestureDetector;
 
+    // In fact this is PartialCustomTabBottomSheetStrategy.HeightStatus
+    private static final int HEIGHT_STATUS_TOP = 0;
+    private static final int HEIGHT_STATUS_INITIAL_HEIGHT = 1;
+    private static final int HEIGHT_STATUS_TRANSITION = 2;
+    private static final int HEIGHT_STATUS_CLOSE = 3;
+
     public BraveLeoActivity() {
         super();
         mGestureDetector =
@@ -128,14 +134,20 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     public void onSwipeTop() {
         PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
         if (strategy != null) {
-            callAnimateTabTo(strategy, /*HeightStatus.TOP*/ 0);
+            int status = getPanelHeightStatus(strategy);
+            if (status == HEIGHT_STATUS_INITIAL_HEIGHT || status == HEIGHT_STATUS_TRANSITION) {
+                callAnimateTabTo(strategy, HEIGHT_STATUS_TOP);
+            }
         }
     }
 
     public void onSwipeBottom() {
         PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
         if (strategy != null) {
-            callAnimateTabTo(strategy, /*HeightStatus.INITIAL_HEIGHT*/ 1);
+            int status = getPanelHeightStatus(strategy);
+            if (status == HEIGHT_STATUS_TOP || status == HEIGHT_STATUS_TRANSITION) {
+                callAnimateTabTo(strategy, HEIGHT_STATUS_INITIAL_HEIGHT);
+            }
         }
     }
 
@@ -165,18 +177,23 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
         return null;
     }
 
-    private void callAnimateTabTo(
-            PartialCustomTabBottomSheetStrategy partialCustomTabBottomSheetStrategy,
-            int heightStatus) {
+    private void callAnimateTabTo(PartialCustomTabBottomSheetStrategy strategy, int heightStatus) {
 
         BraveReflectionUtil.InvokeMethod(
                 PartialCustomTabBottomSheetStrategy.class,
-                partialCustomTabBottomSheetStrategy,
+                strategy,
                 "animateTabTo",
                 int.class,
                 heightStatus,
                 boolean.class,
                 true);
+    }
+
+    private int getPanelHeightStatus(PartialCustomTabBottomSheetStrategy strategy) {
+        Object status =
+                BraveReflectionUtil.getField(
+                        PartialCustomTabBottomSheetStrategy.class, "mStatus", strategy);
+        return (int) status;
     }
 
     @Override
