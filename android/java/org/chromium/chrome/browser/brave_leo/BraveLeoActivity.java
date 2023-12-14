@@ -22,10 +22,12 @@ import android.view.View;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
 import org.chromium.chrome.browser.customtabs.TranslucentCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.CustomTabHeightStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBaseStrategy;
@@ -126,27 +128,34 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     public void onSwipeTop() {
         PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
         if (strategy != null) {
-            strategy.animateTabTo(/*HeightStatus.TOP*/ 0, /* autoResize= */ true);
-            ;
+            callAnimateTabTo(strategy, /*HeightStatus.TOP*/ 0);
         }
     }
 
     public void onSwipeBottom() {
         PartialCustomTabBottomSheetStrategy strategy = getPartialCustomTabBottomSheetStrategy();
         if (strategy != null) {
-            strategy.animateTabTo(/*HeightStatus.INITIAL_HEIGHT*/ 1, /* autoResize= */ true);
-            ;
+            callAnimateTabTo(strategy, /*HeightStatus.INITIAL_HEIGHT*/ 1);
         }
     }
 
     private PartialCustomTabBottomSheetStrategy getPartialCustomTabBottomSheetStrategy() {
         CustomTabHeightStrategy customTabHeightStrategy =
-                mBaseCustomTabRootUiCoordinator.mCustomTabHeightStrategy;
+                (CustomTabHeightStrategy)
+                        BraveReflectionUtil.getField(
+                                BaseCustomTabRootUiCoordinator.class,
+                                "mCustomTabHeightStrategy",
+                                mBaseCustomTabRootUiCoordinator);
+
         if (customTabHeightStrategy instanceof PartialCustomTabDisplayManager) {
             PartialCustomTabDisplayManager partialCustomTabDisplayManager =
                     (PartialCustomTabDisplayManager) customTabHeightStrategy;
             PartialCustomTabBaseStrategy partialCustomTabBaseStrategy =
-                    partialCustomTabDisplayManager.mStrategy;
+                    (PartialCustomTabBaseStrategy)
+                            BraveReflectionUtil.getField(
+                                    PartialCustomTabDisplayManager.class,
+                                    "mStrategy",
+                                    partialCustomTabDisplayManager);
             if (partialCustomTabBaseStrategy instanceof PartialCustomTabBottomSheetStrategy) {
                 PartialCustomTabBottomSheetStrategy partialCustomTabBottomSheetStrategy =
                         (PartialCustomTabBottomSheetStrategy) partialCustomTabBaseStrategy;
@@ -154,6 +163,20 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
             }
         }
         return null;
+    }
+
+    private void callAnimateTabTo(
+            PartialCustomTabBottomSheetStrategy partialCustomTabBottomSheetStrategy,
+            int heightStatus) {
+
+        BraveReflectionUtil.InvokeMethod(
+                PartialCustomTabBottomSheetStrategy.class,
+                partialCustomTabBottomSheetStrategy,
+                "animateTabTo",
+                int.class,
+                heightStatus,
+                boolean.class,
+                true);
     }
 
     @Override
