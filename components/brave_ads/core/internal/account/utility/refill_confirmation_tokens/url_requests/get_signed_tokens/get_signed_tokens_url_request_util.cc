@@ -36,18 +36,13 @@ ConfirmationTokenList BuildConfirmationTokens(
     const cbr::PublicKey& public_key,
     const WalletInfo& wallet) {
   ConfirmationTokenList confirmation_tokens;
+  confirmation_tokens.reserve(unblinded_tokens.size());
 
   for (const cbr::UnblindedToken& unblinded_token : unblinded_tokens) {
     const std::optional<std::string> signature = Sign(unblinded_token, wallet);
     CHECK(signature);
 
-    ConfirmationTokenInfo confirmation_token;
-    confirmation_token.unblinded_token = unblinded_token;
-    confirmation_token.public_key = public_key;
-    confirmation_token.signature = *signature;
-    CHECK(IsValid(confirmation_token));
-
-    confirmation_tokens.push_back(confirmation_token);
+    confirmation_tokens.emplace_back(unblinded_token, public_key, *signature);
   }
 
   return confirmation_tokens;

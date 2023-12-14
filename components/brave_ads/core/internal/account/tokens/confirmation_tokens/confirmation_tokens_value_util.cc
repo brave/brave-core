@@ -50,6 +50,7 @@ base::Value::List ConfirmationTokensToValue(
 ConfirmationTokenList ConfirmationTokensFromValue(
     const base::Value::List& list) {
   ConfirmationTokenList confirmation_tokens;
+  confirmation_tokens.reserve(list.size());
 
   for (const auto& item : list) {
     const auto* const item_dict = item.GetIfDict();

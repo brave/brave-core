@@ -46,7 +46,7 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
-  TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type);
 
   database::table::Transactions database_table;

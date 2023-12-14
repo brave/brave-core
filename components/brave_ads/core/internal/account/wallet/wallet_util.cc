@@ -28,10 +28,9 @@ std::optional<WalletInfo> ToWallet(const std::string& payment_id,
     return std::nullopt;
   }
 
-  WalletInfo wallet;
-  wallet.payment_id = payment_id;
-  wallet.public_key = base::Base64Encode(key_pair->public_key);
-  wallet.secret_key = base::Base64Encode(key_pair->secret_key);
+  WalletInfo wallet{.payment_id = payment_id,
+                    .public_key = base::Base64Encode(key_pair->public_key),
+                    .secret_key = base::Base64Encode(key_pair->secret_key)};
 
   if (!wallet.IsValid()) {
     return std::nullopt;

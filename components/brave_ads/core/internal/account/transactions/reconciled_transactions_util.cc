@@ -16,13 +16,11 @@ namespace {
 bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
                                            const base::Time from_time,
                                            const base::Time to_time) {
-  const size_t count = base::ranges::count_if(
+  return base::ranges::any_of(
       transactions, [from_time, to_time](const TransactionInfo& transaction) {
         return DidReconcileTransactionWithinDateRange(transaction, from_time,
                                                       to_time);
       });
-
-  return count > 0;
 }
 
 }  // namespace

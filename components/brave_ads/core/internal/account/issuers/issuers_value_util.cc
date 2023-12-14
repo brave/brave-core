@@ -134,6 +134,7 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
 
 std::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
   IssuerList issuers;
+  issuers.reserve(list.size());
 
   for (const auto& item : list) {
     const auto* item_dict = item.GetIfDict();

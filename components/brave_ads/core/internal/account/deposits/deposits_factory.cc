@@ -36,7 +36,7 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     }
 
     case ConfirmationType::kUndefined: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
 

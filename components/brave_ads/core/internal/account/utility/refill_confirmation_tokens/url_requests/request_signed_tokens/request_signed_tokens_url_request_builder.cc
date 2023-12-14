@@ -73,21 +73,14 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
     const std::string& body) const {
   std::vector<std::string> headers;
 
-  const std::string digest_header_value = BuildDigestHeaderValue(body);
-  const std::string digest_header =
-      base::StrCat({"digest: ", digest_header_value});
-  headers.push_back(digest_header);
+  headers.push_back(base::StrCat({"digest: ", BuildDigestHeaderValue(body)}));
 
-  const std::string signature_header_value = BuildSignatureHeaderValue(body);
-  const std::string signature_header =
-      base::StrCat({"signature: ", signature_header_value});
-  headers.push_back(signature_header);
+  headers.push_back(
+      base::StrCat({"signature: ", BuildSignatureHeaderValue(body)}));
 
-  const std::string content_type_header = "content-type: application/json";
-  headers.push_back(content_type_header);
+  headers.emplace_back("content-type: application/json");
 
-  const std::string accept_header = "accept: application/json";
-  headers.push_back(accept_header);
+  headers.emplace_back("accept: application/json");
 
   return headers;
 }

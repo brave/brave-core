@@ -10,24 +10,17 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
 namespace brave_ads {
 
 void CashDeposit::GetValue(const std::string& creative_instance_id,
                            GetDepositCallback callback) {
-  const database::table::Deposits database_table;
-  database_table.GetForCreativeInstanceId(
+  database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           [](GetDepositCallback callback, const bool success,
              const std::optional<DepositInfo>& deposit) {
-            if (!success) {
-              return std::move(callback).Run(/*success=*/false,
-                                             /*value=*/0.0);
-            }
-
-            if (!deposit) {
+            if (!success || !deposit) {
               return std::move(callback).Run(/*success=*/false,
                                              /*value=*/0.0);
             }
