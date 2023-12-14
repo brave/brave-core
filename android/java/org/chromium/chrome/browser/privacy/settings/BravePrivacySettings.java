@@ -415,7 +415,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof BraveDialogPreference) {
             BravePreferenceDialogFragment dialogFragment =
-                    BravePreferenceDialogFragment.newInstance((BraveDialogPreference) preference);
+                    BravePreferenceDialogFragment.newInstance(preference);
             dialogFragment.setTargetFragment(this, 0);
             if (getFragmentManager() != null) {
                 dialogFragment.show(getFragmentManager(), BravePreferenceDialogFragment.TAG);

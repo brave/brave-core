@@ -1961,6 +1961,18 @@ Are you sure you want to do this?
       <message name="IDS_SETTINGS_APP_LINKS_LABEL" desc="App Links setting label">
         Allow app links to open in apps outside of Brave
       </message>
+      <message name="IDS_SETTINGS_DEFAULT_ETHEREUM_WALLET_LABEL" desc="Default Ethereum wallet label">
+        Default Ethereum wallet
+      </message>
+      <message name="IDS_SETTINGS_DEFAULT_SOLANA_WALLET_LABEL" desc="Default Solana wallet label">
+        Default Solana wallet
+      </message>
+      <message name="IDS_SETTINGS_DEFAULT_WALLET_OPTION_1" desc="None as default wallet">
+        None
+      </message>
+      <message name="IDS_SETTINGS_DEFAULT_WALLET_OPTION_2" desc="Brave Wallet as default wallet">
+        Brave Wallet
+      </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
       </message>
