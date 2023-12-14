@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
-import { eachLimit, mapLimit } from 'async'
+import { eachLimit } from 'async'
 
 // constants
 import { BraveWallet, CoinTypes } from '../../../constants/types'
@@ -260,17 +260,18 @@ export const tokenBalancesEndpoints = ({
                         })
 
                       // add partial registry data to main registry
-                      for (const [uniqueKey, chainIds] of Object.entries(
-                        partialRegistry
-                      )) {
+                      for (const [
+                        uniqueKey,
+                        balancesByChainId
+                      ] of Object.entries(partialRegistry)) {
                         if (
                           !nonAnkrBalancesRegistry.hasOwnProperty(uniqueKey)
                         ) {
-                          nonAnkrBalancesRegistry[uniqueKey] = chainIds
+                          nonAnkrBalancesRegistry[uniqueKey] = balancesByChainId
                         } else {
                           nonAnkrBalancesRegistry[uniqueKey] = {
                             ...nonAnkrBalancesRegistry[uniqueKey],
-                            ...chainIds
+                            ...balancesByChainId
                           }
                         }
                       }
@@ -318,7 +319,9 @@ export const tokenBalancesEndpoints = ({
             }
           )
 
-          return { data: tokenBalancesRegistry }
+          return {
+            data: tokenBalancesRegistry
+          }
         } catch (error) {
           return handleEndpointError(
             endpoint,
@@ -639,7 +642,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
-}) {
+}): Promise<TokenBalancesRegistry> {
   const accountBalanceKey = getAccountBalancesKey(arg.accountId)
 
   // Construct arg to query native token for use in case the
@@ -655,6 +658,10 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         tokenId: ''
       }
 
+  const nonNativeTokens = (arg.tokens ?? []).filter(
+    (token) => !isNativeAsset(token)
+  )
+
   const baseTokenBalances: TokenBalancesForChainId = {}
 
   if (nativeTokenArg) {
@@ -667,18 +674,16 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       jsonRpcService,
       zcashWalletService
     })
+
     if (balance) {
       baseTokenBalances[nativeTokenArg.contractAddress] = balance
     }
   }
 
-  const tokens = (arg.tokens ?? []).filter((token) => !isNativeAsset(token))
-
   if (arg.coin === CoinTypes.ETH) {
     // jsonRpcService.getERC20TokenBalances cannot handle
     // native assets
-    const contracts = tokens.map((token) => token.contractAddress)
-    if (contracts.length === 0) {
+    if (nonNativeTokens.length === 0) {
       return {
         [accountBalanceKey]: {
           [arg.chainId]: baseTokenBalances
@@ -694,7 +699,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
     if (supportedChainIds.includes(arg.chainId)) {
       const result = await jsonRpcService.getERC20TokenBalances(
-        contracts,
+        nonNativeTokens.map((token) => token.contractAddress),
         arg.accountId.address,
         arg.chainId
       )
@@ -765,8 +770,14 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
   // Fallback to fetching individual balances
 
-  const combinedBalancesResult = await mapLimit(
-    tokens,
+  const combinedBalancesRegistry: TokenBalancesRegistry = {
+    [accountBalanceKey]: {
+      [arg.chainId]: baseTokenBalances
+    }
+  }
+
+  await eachLimit(
+    nonNativeTokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
       const { data: result } = await fetchAccountTokenCurrentBalance({
@@ -779,30 +790,15 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         zcashWalletService
       })
 
-      return {
-        key: token.contractAddress,
-        value: result
+      if (result && new Amount(result).gt(0)) {
+        combinedBalancesRegistry[accountBalanceKey][arg.chainId][
+          token.contractAddress
+        ] = result
       }
     }
   )
 
-  return {
-    [accountBalanceKey]: {
-      [arg.chainId]: combinedBalancesResult
-        .filter(
-          (
-            item
-          ): item is {
-            key: string
-            value: string
-          } => new Amount(item.value || '').gt(0)
-        )
-        .reduce((obj, item) => {
-          obj[item.key] = item.value
-          return obj
-        }, baseTokenBalances)
-    }
-  }
+  return combinedBalancesRegistry
 }
 
 async function fetchTokenBalanceRegistryForAccountsAndChainIds({
@@ -829,14 +825,14 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
       zcashWalletService
     })
 
-    const [[uniqueKey, chainIdBalances]] = Object.entries(partialRegistry)
+    const [[uniqueKey, balancesByChainId]] = Object.entries(partialRegistry)
 
     if (!tokenBalancesRegistry.hasOwnProperty(uniqueKey)) {
-      tokenBalancesRegistry[uniqueKey] = chainIdBalances
+      tokenBalancesRegistry[uniqueKey] = balancesByChainId
     } else {
       tokenBalancesRegistry[uniqueKey] = {
         ...tokenBalancesRegistry[uniqueKey],
-        ...chainIdBalances
+        ...balancesByChainId
       }
     }
   })
