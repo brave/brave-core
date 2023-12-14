@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import { Cluster as Info, ClusterType } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
-import Card from './Card';
+import Card, { Title } from './Card';
 import Article from './Article';
 import styled from 'styled-components';
-import { spacing } from '@brave/leo/tokens/css';
+import { icon, spacing } from '@brave/leo/tokens/css';
 import { channelIcons } from '../shared/Icons';
-import { MetaInfoContainer } from './ArticleMetaRow';
 import { getTranslatedChannelName } from '../shared/channel';
 
 interface Props {
@@ -19,8 +18,21 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
-  gap: ${spacing['2Xl']};
-  padding-top: ${spacing['2Xl']};
+  gap: ${spacing.m};
+
+  padding-left: ${spacing.m};
+  padding-right: ${spacing.m};
+
+  & > ${Title} {
+    --leo-icon-color: currentColor;
+    --leo-icon-size: ${icon.s};
+
+    gap: ${spacing.m};
+    align-items: center;
+
+    margin-left: ${spacing.xl};
+    margin-bottom: ${spacing.xl};
+  }
 `
 
 export default function Cluster({ info }: Props) {
@@ -28,9 +40,9 @@ export default function Cluster({ info }: Props) {
     ? getTranslatedChannelName(info.id)
     : info.id
   return <Container>
-    <MetaInfoContainer>
+    <Title>
       {channelIcons[info.id] ?? channelIcons.default} {groupName}
-    </MetaInfoContainer>
+    </Title>
     {info.articles.map((a, i) => {
       const info: any = a.article || a.hero
       return <Article key={i} info={info} hideChannel={info.type === ClusterType.CHANNEL} />
