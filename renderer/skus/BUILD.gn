@@ -17,6 +17,7 @@ source_set("browser_tests") {
 
   deps = [
     "//brave/components/script_injector/common/mojom",
+    "//brave/components/skus/browser:browser",
     "//brave/components/skus/common",
     "//brave/components/skus/renderer",
     "//chrome/browser",
