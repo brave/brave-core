@@ -358,7 +358,13 @@ export default function Player() {
             })
           }}
           onError={() => {
-            // TODO(sko) Show alert when z-index patch is ready.
+            if (currentItem) {
+              notifyEventsToTopFrame({
+                type: PlaylistTypes.PLAYLIST_PLAYER_FAILED_TO_PLAY_ITEM,
+                data: { ...currentItem }
+              })
+            }
+
             if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
 
             setCurrentTime(0)

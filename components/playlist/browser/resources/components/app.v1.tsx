@@ -7,6 +7,8 @@ import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
+import AlertCenter from '@brave/leo/react/alertCenter'
+
 // Components
 import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
@@ -48,6 +50,7 @@ export default function App() {
         const playlistId = match?.params.playlistId
         return (
           <AppContainer isPlaylistPlayerPage={!!playlistId}>
+            <AlertCenter />
             <StickyArea>
               <StyledHeader playlistId={playlistId} />
               <VideoFrame

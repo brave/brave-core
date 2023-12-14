@@ -20,10 +20,14 @@ type LastPlayedPositionChangedPayload = {
 }
 
 type GoBackToCurrentFolderPayload = {
-  data: { currentList: Playlist, currentItem: PlaylistItem }
+  data: { currentList: Playlist; currentItem: PlaylistItem }
 }
 
 type OpenSourcePagePayload = {
+  data: PlaylistItem
+}
+
+type FailedToPlayItemPayload = {
   data: PlaylistItem
 }
 
@@ -40,8 +44,11 @@ export type PlayerEventsPayload =
   | ({
       type: types.PLAYLIST_OPEN_SOURCE_PAGE
     } & OpenSourcePagePayload)
+  | ({
+      type: types.PLAYLIST_PLAYER_FAILED_TO_PLAY_ITEM
+    } & FailedToPlayItemPayload)
 
-export function notifyEventsToTopFrame (playerState: PlayerEventsPayload) {
+export function notifyEventsToTopFrame(playerState: PlayerEventsPayload) {
   if (location.protocol.startsWith('chrome-untrusted:')) {
     window.parent.postMessage(playerState, 'chrome-untrusted://playlist')
   }

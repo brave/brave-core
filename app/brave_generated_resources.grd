@@ -1312,6 +1312,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_A11Y_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
           Repeat all
         </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_TITLE" desc="A title for alert that shows up when an item is not playable">
+          Failed to play item
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION" desc="Description for alert that shows up when an item is not playable">
+          [<ph name="ITEM_NAME">$1<ex>Awesome video</ex></ph>] may be expired. Would you like to recover it?
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER" desc="A label for 'Recover' button">
+          Recover
+        </message>
+        <message name="IDS_PLAYLIST_ALERT_DISMISS" desc="A label for 'Dismiss' button on alert">
+          Dismiss
+        </message>
       </if> <!-- enable_playlist_webui -->
 
       <if expr="enable_brave_player">
