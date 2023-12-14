@@ -170,6 +170,7 @@
 # These tests fail because we disable kFirstPartySets.
 -RelatedWebsiteSetsSourceTest.RWS
 -RelatedWebsiteSetsSourceTest.RWS_Empty
+-RelatedWebsiteSetsSourceTest.SubsetsAreSorted
 
 # These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
 # having NOTREACHED which causes an immediate crash
@@ -400,14 +401,8 @@
 -ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/27
 -ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/3
 -ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/9
--ContentAnalysisDelegateResultHandlingTest.Test/0
--ContentAnalysisDelegateResultHandlingTest.Test/10
--ContentAnalysisDelegateResultHandlingTest.Test/12
--ContentAnalysisDelegateResultHandlingTest.Test/14
--ContentAnalysisDelegateResultHandlingTest.Test/2
--ContentAnalysisDelegateResultHandlingTest.Test/4
--ContentAnalysisDelegateResultHandlingTest.Test/6
--ContentAnalysisDelegateResultHandlingTest.Test/8
+-ContentAnalysisDelegateResultHandlingTest.Test/*
+-ContentAnalysisDelegateWithLocalClient.*
 -ManagementUIHandlerTests.ThreatReportingInfo
 
 # These tests fail because we disable safe browsing enhanced protection and
@@ -512,6 +507,17 @@
 -EligibilityServiceDisable3PCsTest.Onboarded_NotifyManager
 -EligibilityServiceTest.VersionChange_OnboardingPrefsReset
 -ThirdPartyCookiesBlockedByCookieDeprecationExperiment/ThirdPartyCookiesBlockedByCookieDeprecationExperimentTest.AreThirdPartyCookiesBlockedByExperiment/*
+
+# This test fails because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
+-UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest
+
+# This test fails because we disable kVisualQuerySuggestions
+-CompanionUrlBuilderTest.MsbbAndPcOn
+
+# This test fails because we replace WebUI chrome:// scheme with brave://
+-ChromeURLsTest.ContainsConfigURLs
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
