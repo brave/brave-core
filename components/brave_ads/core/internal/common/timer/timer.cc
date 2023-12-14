@@ -50,13 +50,9 @@ bool Timer::IsRunning() const {
 }
 
 bool Timer::Stop() {
-  if (!IsRunning()) {
-    return false;
-  }
-
+  const bool was_running = IsRunning();
   timer_.Stop();
-
-  return true;
+  return was_running;
 }
 
 ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
