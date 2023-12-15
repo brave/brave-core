@@ -25,9 +25,7 @@ function InputBox () {
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const parentNode = e.target.parentNode as HTMLDivElement
     setInputText(e.target.value)
-    parentNode.dataset.replicatedValue = e.target.value
   }
 
   const submitInputTextToAPI = () => {
@@ -56,9 +54,11 @@ function InputBox () {
 
   return (
     <form className={styles.form}>
-      <div className={styles.growWrap}>
+      <div
+        className={styles.growWrap}
+        data-replicated-value={inputText}
+      >
         <textarea
-          className={styles.textarea}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={onUserPressEnter}
@@ -76,7 +76,7 @@ function InputBox () {
           {`${inputText.length} / ${MAX_INPUT_CHAR}`}
         </div>
       )}
-      <div className={styles.actionsContainer}>
+      <div className={styles.actions}>
         <Button
           kind="plain-faint"
           onClick={handleSubmit}
