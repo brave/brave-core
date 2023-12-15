@@ -475,17 +475,47 @@ struct Dapp {
   string range;
 };
 
-// Structs to model 0x (swap) HTTP API interactions
-// Docs: https://docs.0x.org/0x-api-swap
-struct SwapParams {
-  string chain_id;
-  string taker_address;
-  string sell_amount;
-  string buy_amount;
-  string buy_token;
-  string sell_token;
-  double slippage_percentage;
-  string gas_price;
+enum RoutePriority {
+  kRecommended,
+  kFastest,
+  kCheapest,
+  kSafest
+};
+
+struct SwapQuoteParams {
+  AccountId from_account_id;
+  string from_chain_id;
+  string from_token;
+  string from_amount;
+
+  // Setting the to_account_id is only supported for LiFi swaps.
+  AccountId to_account_id;
+  string to_chain_id;
+  string to_token;
+
+  // Setting the to_amount is not supported for Jupiter and LiFi swaps.
+  string to_amount;
+
+  string slippage_percentage;
+
+  // This is primarily used for LiFi swaps. For every other case, this should
+  // be set to kRecommended.
+  RoutePriority route_priority;
+};
+
+union SwapTransactionParamsUnion {
+  JupiterTransactionParams jupiter_transaction_params;
+  SwapQuoteParams zero_ex_transaction_params;
+};
+
+union SwapQuoteUnion {
+  JupiterQuote jupiter_quote;
+  ZeroExQuote zero_ex_quote;
+};
+
+union SwapTransactionUnion {
+  string jupiter_transaction;
+  ZeroExQuote zero_ex_transaction;
 };
 
 struct ZeroExSource {
@@ -504,7 +534,7 @@ struct ZeroExFees {
   ZeroExFee? zero_ex_fee;
 };
 
-struct SwapResponse {
+struct ZeroExQuote {
   string price;
   string guaranteed_price; // Unused for price quote response
   string to;   // Unused for price quote response
@@ -527,17 +557,22 @@ struct SwapResponse {
   ZeroExFees fees;
 };
 
-struct SwapErrorResponseItem {
+struct ZeroExErrorItem {
   string field;
   int32 code;
   string reason;
 };
 
-struct SwapErrorResponse {
+struct ZeroExError {
   int32 code;
   string reason;
-  array<SwapErrorResponseItem> validation_errors;
+  array<ZeroExErrorItem> validation_errors;
   bool is_insufficient_liquidity;
+};
+
+union SwapErrorUnion {
+  JupiterError jupiter_error;
+  ZeroExError zero_ex_error;
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
@@ -579,16 +614,7 @@ struct JupiterQuote {
   array<JupiterRoute> routes;
 };
 
-struct JupiterQuoteParams {
-  string chain_id;
-  string input_mint;
-  string output_mint;
-  string amount;
-  int32 slippage_bps;
-  string user_public_key;
-};
-
-struct JupiterSwapParams {
+struct JupiterTransactionParams {
   string chain_id;
   JupiterRoute route;
   string user_public_key;
@@ -596,11 +622,7 @@ struct JupiterSwapParams {
   string output_mint;
 };
 
-struct JupiterSwapTransactions {
-  string swap_transaction;
-};
-
-struct JupiterErrorResponse {
+struct JupiterError {
   string status_code;
   string error;
   string message;
@@ -972,21 +994,11 @@ interface AssetRatioService {
 
 // Implements swapping related functionality through the 0x API.
 interface SwapService {
-  // Obtains a price quote for a swap
-  GetPriceQuote(SwapParams params) =>
-      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
+  GetQuote(SwapQuoteParams params) =>
+      (SwapQuoteUnion? response, SwapErrorUnion? error, string error_string);
 
-  // Obtains transaction payload data for a swap
-  GetTransactionPayload(SwapParams params) =>
-      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
-
-  // Obtains a price quote from Jupiter for a Solana swap
-  GetJupiterQuote(JupiterQuoteParams params) =>
-      (JupiterQuote? response, JupiterErrorResponse? error_response, string error_string);
-
-  // Get the serialized transactions to perform the swap
-  GetJupiterSwapTransactions(JupiterSwapParams params) =>
-      (JupiterSwapTransactions? response, JupiterErrorResponse? error_response, string error_string);
+  GetTransaction(SwapTransactionParamsUnion params) =>
+      (SwapTransactionUnion? response, SwapErrorUnion? error, string error_string);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);

@@ -64,10 +64,11 @@ const char* GetJupiterQuoteTemplate() {
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   auto* json_template = GetJupiterQuoteTemplate();
   std::string json = base::StringPrintf(json_template, "10000", "30");
-  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(ParseJson(json));
+  mojom::JupiterQuotePtr swap_quote =
+      ParseJupiterQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);
 
-  mojom::JupiterSwapParams params;
+  mojom::JupiterTransactionParams params;
   params.route = swap_quote->routes.at(0).Clone();
   params.user_public_key = "mockPubKey";
   params.output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC
