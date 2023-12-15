@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/timer/timer.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_delegate_view.h"
 #include "ui/views/interaction/element_tracker_views.h"
 #include "ui/views/view.h"
@@ -47,12 +48,16 @@ class BraveHelpBubbleHostView : public views::View,
   // views::WidgetObserver:
   void OnWidgetBoundsChanged(views::Widget* widget, const gfx::Rect&) override;
   void OnWidgetDestroying(views::Widget* widget) override;
+  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
 
   void OnTrackedElementActivated(ui::TrackedElement* element);
 
   std::string text_;
   raw_ptr<views::View> tracked_element_ = nullptr;
   raw_ptr<views::Widget> help_bubble_ = nullptr;
+
+  // Bubble will be closed if user doesn't interact with it for some time.
+  base::OneShotTimer bubble_auto_closing_timer_;
   ui::ElementTracker::Subscription activated_subscription_;
   base::ScopedObservation<views::View, views::ViewObserver>
       tracked_view_observation_{this};

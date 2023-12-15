@@ -25,6 +25,8 @@ namespace {
 constexpr int kWidth = 60;
 constexpr int kHeight = 60;
 
+constexpr base::TimeDelta kBubbleAutoClosingIntervalInSec = base::Seconds(15);
+
 // The points here are defined as start and end points of the gradient,
 // associated with an entire rect
 constexpr SkPoint kPts[] = {{0, 0}, {kWidth, kHeight}};
@@ -116,6 +118,11 @@ bool BraveHelpBubbleHostView::Show() {
   UpdatePosition();
   SetVisible(true);
 
+  bubble_auto_closing_timer_.Start(
+      FROM_HERE, kBubbleAutoClosingIntervalInSec,
+      base::BindOnce(&BraveHelpBubbleHostView::Hide,
+                     weak_factory_.GetWeakPtr()));
+
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     SchedulePulsingAnimation(layer());
   }
@@ -203,6 +210,20 @@ void BraveHelpBubbleHostView::OnWidgetDestroying(views::Widget* widget) {
   }
 
   host_widget_observation_.Reset();
+}
+
+void BraveHelpBubbleHostView::OnWidgetActivationChanged(views::Widget* widget,
+                                                        bool active) {
+  if (help_bubble_ != widget) {
+    return;
+  }
+
+  if (active) {
+    // Initially, bubble is launched in inactive state.
+    // If user activates it explicitely, we don't need to close it by timer.
+    // Instead, bubble will be closed when it goes inactive state later.
+    bubble_auto_closing_timer_.Stop();
+  }
 }
 
 void BraveHelpBubbleHostView::OnTrackedElementActivated(
