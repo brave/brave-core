@@ -271,7 +271,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
       &ntp_features::kNtpHistoryClustersModule,
-      &ntp_features::kNtpHistoryClustersModuleDiscounts,
       &ntp_features::kNtpHistoryClustersModuleLoad,
       &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
