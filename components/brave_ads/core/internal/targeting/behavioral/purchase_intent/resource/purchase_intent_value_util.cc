@@ -31,8 +31,8 @@ constexpr char kFunnelSitesKey[] = "sites";
 
 constexpr int kDefaultFunnelSiteWeight = 1;
 
-absl::optional<SegmentList> ParseFunnelSegments(const SegmentList& segments,
-                                                const base::Value::Dict& dict) {
+std::optional<SegmentList> ParseFunnelSegments(const SegmentList& segments,
+                                               const base::Value::Dict& dict) {
   const auto* const funnel_segment_list = dict.FindList(kFunnelSegmentsKey);
   if (!funnel_segment_list) {
     return std::nullopt;
