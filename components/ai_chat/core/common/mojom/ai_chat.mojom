@@ -164,3 +164,8 @@ interface ChatUIPage {
 interface CredentialManagerHelper {
   GetPremiumStatus() => (PremiumStatus result);
 };
+
+[EnableIf=is_android]
+interface IAPSubscription {
+  GetPurchaseToken() => (string token);
+};

@@ -17,9 +17,8 @@ source_set("android") {
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/renderer",
     "//content/public/renderer",
     "//gin",
@@ -29,6 +28,19 @@ source_set("android") {
     "//third_party/blink/public/strings",
     "//v8",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
+    ]
+  }
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
+    ]
+  }
 }
 
 source_set("browser_tests") {
@@ -39,6 +51,8 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags:buildflags",
     "//brave/components/brave_mobile_subscription/renderer/android",

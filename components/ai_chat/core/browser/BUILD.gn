@@ -11,14 +11,14 @@ static_library("browser") {
   sources = [
     "ai_chat_credential_manager.cc",
     "ai_chat_credential_manager.h",
-    "conversation_driver.cc",
-    "conversation_driver.h",
     "ai_chat_feedback_api.cc",
     "ai_chat_feedback_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "constants.cc",
     "constants.h",
+    "conversation_driver.cc",
+    "conversation_driver.h",
     "engine/engine_consumer.h",
     "engine/engine_consumer_claude.cc",
     "engine/engine_consumer_claude.h",
@@ -29,6 +29,13 @@ static_library("browser") {
     "models.cc",
     "models.h",
   ]
+
+  if (is_android) {
+    sources += [
+      "android/ai_chat_iap_subscription_android.cc",
+      "android/ai_chat_iap_subscription_android.h",
+    ]
+  }
 
   deps = [
     "//base",

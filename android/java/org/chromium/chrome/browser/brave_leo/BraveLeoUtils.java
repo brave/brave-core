@@ -24,7 +24,12 @@ public class BraveLeoUtils {
                 activePurchaseModel -> {
                     BraveLeoPrefUtils.setIsSubscriptionActive(activePurchaseModel != null);
                     if (activePurchaseModel != null) {
+                        BraveLeoPrefUtils.setChatPurchaseToken(
+                                activePurchaseModel.getPurchaseToken());
+                        BraveLeoPrefUtils.setChatPackageName();
+                        BraveLeoPrefUtils.setChatProductId(activePurchaseModel.getProductId());
                     } else {
+                        // TODO(sergz): showRestoreMenu?
                     }
                     if (callback != null) {
                         callback.onResult(null);

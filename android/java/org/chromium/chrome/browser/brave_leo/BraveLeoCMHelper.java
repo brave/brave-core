@@ -9,6 +9,7 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.ai_chat.mojom.CredentialManagerHelper;
+import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -62,6 +63,7 @@ public class BraveLeoCMHelper implements ConnectionErrorHandler {
 
     public void getPremiumStatus(CredentialManagerHelper.GetPremiumStatus_Response callback) {
         if (mCredentialManagerHelper == null) {
+            callback.call(PremiumStatus.INACTIVE);
             return;
         }
         mCredentialManagerHelper.getPremiumStatus(callback);

@@ -27,6 +27,11 @@ TEST(SubscriptionRenderFrameObserverTest, ExtractParam) {
           GURL("https://account.brave.com/?intent=connect-receipt&product=vpn"),
           "product"),
       "vpn");
+  EXPECT_EQ(
+      observer.ExtractParam(
+          GURL("https://account.brave.com/?intent=connect-receipt&product=leo"),
+          "product"),
+      "leo");
   EXPECT_TRUE(observer
                   .ExtractParam(GURL("https://account.brave.com/"
                                      "?intent=connect-receipt&product=vpn"),

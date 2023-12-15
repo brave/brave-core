@@ -24,6 +24,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kDefaultModelKey, "chat-default");
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
+  registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
+  registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
 #endif
 }
 

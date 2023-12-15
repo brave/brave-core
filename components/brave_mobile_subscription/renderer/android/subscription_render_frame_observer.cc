@@ -25,15 +25,20 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
 namespace brave_subscription {
 
 namespace {
 
-char kIntentParamName[] = "intent";
-char kIntentParamValue[] = "connect-receipt";
-char kIntentParamTestValue[] = "connect-receipt-test";
-char kProductParamName[] = "product";
-char kProductParamValue[] = "vpn";
+inline constexpr char kIntentParamName[] = "intent";
+inline constexpr char kIntentParamValue[] = "connect-receipt";
+inline constexpr char kIntentParamTestValue[] = "connect-receipt-test";
+inline constexpr char kProductParamName[] = "product";
+inline constexpr char kProductVPNParamValue[] = "vpn";
+inline constexpr char kProductLeoParamValue[] = "leo";
 
 }  // namespace
 
@@ -47,11 +52,23 @@ SubscriptionRenderFrameObserver::~SubscriptionRenderFrameObserver() = default;
 bool SubscriptionRenderFrameObserver::EnsureConnected() {
   bool bound = false;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (!vpn_service_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
-        vpn_service_.BindNewPipeAndPassReceiver());
+  if (brave_vpn::IsBraveVPNFeatureEnabled() && product_ == Product::kVPN) {
+    if (!vpn_service_.is_bound()) {
+      render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+          vpn_service_.BindNewPipeAndPassReceiver());
+    }
+    bound |= vpn_service_.is_bound();
   }
-  bound = vpn_service_.is_bound();
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatHistoryEnabled() &&
+      product_ == Product::kLeo) {
+    if (!ai_chat_subscription_.is_bound()) {
+      render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+          ai_chat_subscription_.BindNewPipeAndPassReceiver());
+    }
+    bound |= ai_chat_subscription_.is_bound();
+  }
 #endif
   return bound;
 }
@@ -67,17 +84,33 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
     return;
   }
 
+  DCHECK(product_.has_value());
+  if (!product_.has_value()) {
+    return;
+  }
   auto connected = EnsureConnected();
   if (!connected) {
-    LOG(ERROR) << "Failed to establish connection to BraveVpnService";
+    LOG(ERROR) << "Failed to establish connection to a mojo channel";
     return;
   }
 
+  if (product_ == Product::kVPN) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_service_->GetPurchaseToken(base::BindOnce(
-      &SubscriptionRenderFrameObserver::OnGetPurchaseToken,
-      weak_factory_.GetWeakPtr()));
+    if (vpn_service_.is_bound()) {
+      vpn_service_->GetPurchaseToken(
+          base::BindOnce(&SubscriptionRenderFrameObserver::OnGetPurchaseToken,
+                         weak_factory_.GetWeakPtr()));
+    }
 #endif
+  } else if (product_ == Product::kLeo) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (ai_chat_subscription_.is_bound()) {
+      ai_chat_subscription_->GetPurchaseToken(
+          base::BindOnce(&SubscriptionRenderFrameObserver::OnGetPurchaseToken,
+                         weak_factory_.GetWeakPtr()));
+    }
+#endif
+  }
 }
 
 void SubscriptionRenderFrameObserver::OnGetPurchaseToken(
@@ -88,11 +121,15 @@ void SubscriptionRenderFrameObserver::OnGetPurchaseToken(
   auto* frame = render_frame();
   if (frame) {
     if (IsValueAllowed(purchase_token)) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-      std::u16string set_local_storage =
-          base::StrCat({u"window.localStorage.setItem(\"braveVpn.receipt\", \"",
-                        base::UTF8ToUTF16(purchase_token), u"\");"});
-#endif
+      std::string_view receipt_var_name;
+      if (product_ == Product::kVPN) {
+        receipt_var_name = "braveVpn.receipt";
+      } else if (product_ == Product::kLeo) {
+        receipt_var_name = "braveLeo.receipt";
+      }
+      std::u16string set_local_storage = base::UTF8ToUTF16(
+          base::StrCat({"window.localStorage.setItem(\"", receipt_var_name,
+                        "\", \"", purchase_token, "\");"}));
       frame->ExecuteJavaScript(set_local_storage);
     }
   }
@@ -129,10 +166,6 @@ bool SubscriptionRenderFrameObserver::IsValueAllowed(
 }
 
 bool SubscriptionRenderFrameObserver::IsAllowed() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  DCHECK(brave_vpn::IsBraveVPNFeatureEnabled());
-#endif
-
   if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin())) {
     return false;
   }
@@ -142,8 +175,15 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
 
   std::string intent = ExtractParam(current_url, kIntentParamName);
   std::string product = ExtractParam(current_url, kProductParamName);
+  if (product == kProductVPNParamValue) {
+    product_ = Product::kVPN;
+  } else if (product == kProductLeoParamValue) {
+    product_ = Product::kLeo;
+  } else {
+    product_ = std::nullopt;
+  }
   return (intent == kIntentParamValue || intent == kIntentParamTestValue) &&
-         product == kProductParamValue;
+         product_.has_value();
 }
 
 void SubscriptionRenderFrameObserver::OnDestruct() {

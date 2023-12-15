@@ -39,6 +39,12 @@ inline constexpr char kBraveChatP3ALastPremiumStatus[] =
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kBraveChatSubscriptionActiveAndroid[] =
     "brave.ai_chat.subscription_active_android";
+inline constexpr char kBraveChatPurchaseTokenAndroid[] =
+    "brave.ai_chat.purchase_token_android";
+inline constexpr char kBraveChatPackageNameAndroid[] =
+    "brave.ai_chat.package_name_android";
+inline constexpr char kBraveChatProductIdAndroid[] =
+    "brave.ai_chat.product_id_android";
 #endif
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

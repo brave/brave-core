@@ -355,6 +355,7 @@ public class InAppPurchaseWrapper {
             if (isVPNProduct) {
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
             } else if (isLeoProduct) {
+                BraveLeoPrefUtils.setIsSubscriptionActive(true);
             }
         }
     }

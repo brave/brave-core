@@ -54,7 +54,10 @@ if (enable_speedreader) {
 }
 
 if (enable_ai_chat) {
-  brave_chrome_renderer_deps += [ "//brave/components/ai_chat/renderer" ]
+  brave_chrome_renderer_deps += [
+    "//brave/components/ai_chat/core/common:common",
+    "//brave/components/ai_chat/renderer",
+  ]
 }
 
 if (enable_playlist) {

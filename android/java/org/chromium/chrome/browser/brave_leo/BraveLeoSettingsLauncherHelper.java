@@ -5,9 +5,7 @@
 
 package org.chromium.chrome.browser.brave_leo;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import org.jni_zero.CalledByNative;
 
@@ -31,11 +29,14 @@ public class BraveLeoSettingsLauncherHelper {
 
     @CalledByNative
     private static void goPremium(WebContents webContents) {
-        Activity activity = webContents.getTopLevelNativeWindow().getActivity().get();
-        Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
-        braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        braveLeoPlansIntent.setAction(Intent.ACTION_VIEW);
-        activity.startActivity(braveLeoPlansIntent);
+        // TODO(sergz): We need to uncomment that section when our backend can handle
+        // mobile subscription. It's commented to avoid Purchase happens on Google Play Store
+
+        // Activity activity = webContents.getTopLevelNativeWindow().getActivity().get();
+        // Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
+        // braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // braveLeoPlansIntent.setAction(Intent.ACTION_VIEW);
+        // activity.startActivity(braveLeoPlansIntent);
     }
 
     private static SettingsLauncher getLauncher() {
