@@ -51,7 +51,7 @@ function ConversationList(props: ConversationListProps) {
   React.useEffect(() => {
     if (!lastEntryElementRef.current) return
     props.onLastElementHeightChange()
-  }, [lastEntryElementRef.current?.clientHeight])
+  }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
   return (
     <>
