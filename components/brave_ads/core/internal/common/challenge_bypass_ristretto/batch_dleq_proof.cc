@@ -50,6 +50,8 @@ std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
 std::vector<UnblindedToken> ToUnblindedTokens(
     const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
   std::vector<UnblindedToken> unblinded_tokens;
+  unblinded_tokens.reserve(raw_tokens.size());
+
   for (const auto& raw_token : raw_tokens) {
     const UnblindedToken unblinded_token(raw_token);
     if (!unblinded_token.has_value()) {
