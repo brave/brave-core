@@ -4,11 +4,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.chrome.browser.settings.BraveLeoDescriptionPreference
         android:key="leo_summary"
         android:summary="@string/leo_summary" />
 
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="link_subscription"
+        android:title="@string/link_subscription_title_leo"
+        android:summary="@string/link_subscription_summary_leo"
+        app:isPreferenceVisible="false"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="subscription_manage"
+        android:title="@string/manage_subscription_leo"
+        app:isPreferenceVisible="false"/>
     <org.chromium.chrome.browser.settings.BraveLeoResetPreference
         android:key="reset_data"
         android:title="@string/leo_reset_data"/>

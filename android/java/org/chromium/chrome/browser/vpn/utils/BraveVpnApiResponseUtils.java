@@ -15,10 +15,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
-import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
 import java.util.TimeZone;
@@ -41,7 +41,9 @@ public class BraveVpnApiResponseUtils {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                 MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
                 LiveData<PurchaseModel> activePurchases = _activePurchases;
-                InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+                InAppPurchaseWrapper.getInstance()
+                        .queryPurchases(
+                                _activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
                 LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
                     InAppPurchaseWrapper.getInstance().processPurchases(
                             activity, activePurchaseModel.getPurchase());

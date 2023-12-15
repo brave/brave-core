@@ -38,6 +38,12 @@
 
 namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
+constexpr char kURLRefreshPremiumSession[] =
+    "https://account.brave.com/?intent=recover&product=leo";
+#if !BUILDFLAG(IS_ANDROID)
+constexpr char kURLGoPremium[] =
+    "https://account.brave.com/account/?intent=checkout&product=leo";
+#endif
 }  // namespace
 
 namespace ai_chat {
@@ -200,6 +206,21 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   // are done.
   return;
 #endif
+}
+
+void AIChatUIPageHandler::GoPremium() {
+#if !BUILDFLAG(IS_ANDROID)
+  OpenURL(GURL(kURLGoPremium));
+#else
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  ai_chat::GoPremium(contents_to_navigate);
+#endif
+}
+
+void AIChatUIPageHandler::RefreshPremiumSession() {
+  OpenURL(GURL(kURLRefreshPremiumSession));
 }
 
 void AIChatUIPageHandler::SetShouldSendPageContents(bool should_send) {

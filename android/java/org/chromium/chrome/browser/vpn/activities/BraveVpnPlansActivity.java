@@ -23,10 +23,10 @@ import com.android.billingclient.api.ProductDetails;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
-import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
@@ -262,7 +262,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
         this.mShouldShowRestoreMenu = shouldShowRestore;
-        InAppPurchaseWrapper.getInstance().queryProductDetailsAsync();
+        InAppPurchaseWrapper.getInstance()
+                .queryProductDetailsAsync(InAppPurchaseWrapper.SubscriptionProduct.VPN);
         invalidateOptionsMenu();
     }
 

@@ -759,6 +759,7 @@ brave_java_resources = [
   "java/res/layout/activity_add_asset.xml",
   "java/res/layout/activity_advance_tx_setting.xml",
   "java/res/layout/activity_asset_detail.xml",
+  "java/res/layout/activity_brave_leo_plans.xml",
   "java/res/layout/activity_brave_vpn_plan.xml",
   "java/res/layout/activity_brave_vpn_profile.xml",
   "java/res/layout/activity_brave_vpn_support.xml",

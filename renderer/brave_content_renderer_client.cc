@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -42,7 +43,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
+#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
@@ -54,6 +55,10 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace {
@@ -153,9 +158,13 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
-    new brave_vpn::VpnRenderFrameObserver(render_frame,
-                                          content::ISOLATED_WORLD_ID_GLOBAL);
+  if (brave_vpn::IsBraveVPNFeatureEnabled()
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      || ai_chat::features::IsAIChatHistoryEnabled()
+#endif
+  ) {
+    new brave_subscription::SubscriptionRenderFrameObserver(
+        render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 #endif
 

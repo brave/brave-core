@@ -9,9 +9,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext, { AIChatContext } from './context'
 
-// TODO(petemill): Build account urls in the browser
-const URL_REFRESH_PREMIUM_SESSION = 'https://account.brave.com/?intent=recover&product=leo'
-const URL_GO_PREMIUM = 'https://account.brave.com/account/?intent=checkout&product=leo'
 const URL_MANAGE_PREMIUM = 'https://account.brave.com/'
 
 function toBlobURL(data: number[] | null) {
@@ -146,7 +143,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const userRefreshPremiumSession = () => {
-    getPageHandlerInstance().pageHandler.openURL({ url: URL_REFRESH_PREMIUM_SESSION })
+    getPageHandlerInstance().pageHandler.refreshPremiumSession()
   }
 
   const updateShouldSendPageContents = (shouldSend: boolean) => {
@@ -198,9 +195,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const goPremium = () => {
-    getPageHandlerInstance().pageHandler.openURL({
-      url: URL_GO_PREMIUM
-    })
+    getPageHandlerInstance().pageHandler.goPremium()
   }
 
   const managePremium = () => {

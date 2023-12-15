@@ -66,6 +66,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void SetShouldSendPageContents(bool should_send) override;
   void GetShouldSendPageContents(
       GetShouldSendPageContentsCallback callback) override;
+  void GoPremium() override;
+  void RefreshPremiumSession() override;
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;

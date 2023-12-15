@@ -122,6 +122,8 @@ interface PageHandler {
   OpenURL(url.mojom.Url url);
   SetShouldSendPageContents(bool should_send);
   GetShouldSendPageContents() => (bool should_send);
+  GoPremium();
+  RefreshPremiumSession();
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
@@ -156,4 +158,14 @@ interface ChatUIPage {
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
   // This reports if there are any pending entries to be sent to the remote LLM.
   OnConversationEntryPending();
+};
+
+[EnableIf=is_android]
+interface CredentialManagerHelper {
+  GetPremiumStatus() => (PremiumStatus result);
+};
+
+[EnableIf=is_android]
+interface IAPSubscription {
+  GetPurchaseToken() => (string token);
 };

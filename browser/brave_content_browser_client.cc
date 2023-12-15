@@ -154,6 +154,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -449,6 +452,18 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+#if BUILDFLAG(IS_ANDROID)
+void BindIAPSubscription(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<ai_chat::mojom::IAPSubscription> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ai_chat::AIChatIAPSubscription>(profile->GetPrefs()),
+      std::move(receiver));
+}
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void MaybeBindBraveVpnImpl(
     content::RenderFrameHost* const frame_host,
@@ -743,6 +758,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
+#if BUILDFLAG(IS_ANDROID)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    map->Add<ai_chat::mojom::IAPSubscription>(
+        base::BindRepeating(&BindIAPSubscription));
+  }
+#endif
 #endif
 
 // Brave News

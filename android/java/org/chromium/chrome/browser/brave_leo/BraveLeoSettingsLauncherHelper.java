@@ -14,7 +14,7 @@ import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
 
-/** Launches Brave Leo settings page. */
+/** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
     private static SettingsLauncher sLauncher;
 
@@ -25,6 +25,18 @@ public class BraveLeoSettingsLauncherHelper {
             return;
         }
         getLauncher().launchSettingsActivity(context, BraveLeoPreferences.class);
+    }
+
+    @CalledByNative
+    private static void goPremium(WebContents webContents) {
+        // TODO(sergz): We need to uncomment that section when our backend can handle
+        // mobile subscription. It's commented to avoid Purchase happens on Google Play Store
+
+        // Activity activity = webContents.getTopLevelNativeWindow().getActivity().get();
+        // Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
+        // braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // braveLeoPlansIntent.setAction(Intent.ACTION_VIEW);
+        // activity.startActivity(braveLeoPlansIntent);
     }
 
     private static SettingsLauncher getLauncher() {

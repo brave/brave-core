@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.vpn.billing;
+package org.chromium.chrome.browser.billing;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,10 +27,12 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +42,16 @@ import java.util.Map;
 
 public class InAppPurchaseWrapper {
     private static final String TAG = "InAppPurchaseWrapper";
-    private static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
-    private static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
+    private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
 
-    private static final String BETA_MONTHLY_SUBSCRIPTION = "beta.bravevpn.monthly";
-    private static final String BETA_YEARLY_SUBSCRIPTION = "beta.bravevpn.yearly";
+    private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
 
-    public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
-    public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
+    private static final String VPN_BETA_MONTHLY_SUBSCRIPTION = "beta.bravevpn.monthly";
+    private static final String VPN_BETA_YEARLY_SUBSCRIPTION = "beta.bravevpn.yearly";
+
+    public static final String VPN_RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
+    public static final String VPN_RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
 
     private static final long MICRO_UNITS =
@@ -59,6 +63,11 @@ public class InAppPurchaseWrapper {
     private enum SubscriptionType {
         MONTHLY,
         YEARLY
+    }
+
+    public enum SubscriptionProduct {
+        VPN,
+        LEO
     }
 
     private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
@@ -93,18 +102,14 @@ public class InAppPurchaseWrapper {
     }
 
     public boolean isMonthlySubscription(String productId) {
-        return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
-                || productId.equals(BETA_MONTHLY_SUBSCRIPTION)
-                || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
+        return productId.equals(VPN_NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productId.equals(VPN_BETA_MONTHLY_SUBSCRIPTION)
+                || productId.equals(VPN_RELEASE_MONTHLY_SUBSCRIPTION);
     }
 
     private void startBillingServiceConnection(
             MutableLiveData<Boolean> billingClientConnectionState) {
         Context context = ContextUtils.getApplicationContext();
-        if (!BraveVpnUtils.isVpnFeatureSupported(context)) {
-            return;
-        }
-
         // End existing connection if any before we start another connection
         endConnection();
 
@@ -127,7 +132,7 @@ public class InAppPurchaseWrapper {
                                 billingClientConnectionState.postValue(true);
                             }
                         } else {
-                            BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                            showToast(billingResult.getDebugMessage());
                             retryBillingServiceConnection(billingClientConnectionState);
                         }
                     }
@@ -154,32 +159,43 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    public String getProductId(SubscriptionType subscriptionType) {
-        String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
-        if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
-            return subscriptionType == SubscriptionType.MONTHLY ? RELEASE_MONTHLY_SUBSCRIPTION
-                                                                : RELEASE_YEARLY_SUBSCRIPTION;
-        } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
-            return subscriptionType == SubscriptionType.MONTHLY
-                    ? BETA_MONTHLY_SUBSCRIPTION
-                    : BETA_YEARLY_SUBSCRIPTION;
+    public String getProductId(SubscriptionProduct product, SubscriptionType subscriptionType) {
+        if (product.equals(SubscriptionProduct.VPN)) {
+            String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
+            if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY ?
+                        VPN_RELEASE_MONTHLY_SUBSCRIPTION
+                        : VPN_RELEASE_YEARLY_SUBSCRIPTION;
+            } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? VPN_BETA_MONTHLY_SUBSCRIPTION
+                        : VPN_BETA_YEARLY_SUBSCRIPTION;
+            } else {
+                return subscriptionType == SubscriptionType.MONTHLY ?
+                        VPN_NIGHTLY_MONTHLY_SUBSCRIPTION
+                        : VPN_NIGHTLY_YEARLY_SUBSCRIPTION;
+            }
+        } else if (product.equals(SubscriptionProduct.LEO)) {
+            return LEO_MONTHLY_SUBSCRIPTION;
         } else {
-            return subscriptionType == SubscriptionType.MONTHLY ? NIGHTLY_MONTHLY_SUBSCRIPTION
-                                                                : NIGHTLY_YEARLY_SUBSCRIPTION;
+            assert false;
+            return "";
         }
     }
 
-    public void queryProductDetailsAsync() {
+    public void queryProductDetailsAsync(SubscriptionProduct product) {
         Map<String, ProductDetails> productDetails = new HashMap<>();
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
         products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(SubscriptionType.MONTHLY))
+                             .setProductId(getProductId(product, SubscriptionType.MONTHLY))
                              .setProductType(BillingClient.ProductType.SUBS)
                              .build());
-        products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(SubscriptionType.YEARLY))
-                             .setProductType(BillingClient.ProductType.SUBS)
-                             .build());
+        if (!product.equals(SubscriptionProduct.LEO)) {
+            products.add(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(getProductId(product, SubscriptionType.YEARLY))
+                    .setProductType(BillingClient.ProductType.SUBS)
+                    .build());
+        }
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
@@ -199,21 +215,28 @@ public class InAppPurchaseWrapper {
                                     productDetails.put(productDetail.getProductId(), productDetail);
                                 }
                                 setMonthlyProductDetails(
-                                        productDetails.get(getProductId(SubscriptionType.MONTHLY)));
-                                setYearlyProductDetails(
-                                        productDetails.get(getProductId(SubscriptionType.YEARLY)));
+                                        productDetails.get(getProductId(product,
+                                                SubscriptionType.MONTHLY)));
+                                if (!product.equals(SubscriptionProduct.LEO)) {
+                                    setYearlyProductDetails(
+                                            productDetails.get(
+                                                    getProductId(
+                                                            product,
+                                                            SubscriptionType.YEARLY)));
+                                }
                             } else {
                                 Log.e(TAG,
                                         "queryProductDetailsAsync failed"
                                                 + billingResult.getDebugMessage());
-                                BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                                showToast(billingResult.getDebugMessage());
                             }
                         });
             }
         });
     }
 
-    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases) {
+    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases,
+                               SubscriptionProduct type) {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
@@ -232,7 +255,14 @@ public class InAppPurchaseWrapper {
                                     == BillingClient.BillingResponseCode.OK) {
                                 for (Purchase purchase : purchases) {
                                     if (purchase.getPurchaseState()
-                                            == Purchase.PurchaseState.PURCHASED) {
+                                            != Purchase.PurchaseState.PURCHASED) {
+                                        continue;
+                                    }
+                                    List<String> productIds = purchase.getProducts();
+                                    boolean isVPNProduct = isVPNProduct(productIds);
+                                    boolean isLeoProduct = isLeoProduct(productIds);
+                                    if (isVPNProduct && type.equals(SubscriptionProduct.VPN) ||
+                                            isLeoProduct && type.equals(SubscriptionProduct.LEO)) {
                                         activePurchaseModel = new PurchaseModel(
                                                 purchase.getPurchaseToken(),
                                                 purchase.getProducts().get(0).toString(), purchase);
@@ -242,7 +272,7 @@ public class InAppPurchaseWrapper {
                             } else {
                                 Log.e(TAG,
                                         "queryPurchases failed" + billingResult.getDebugMessage());
-                                BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                                showToast(billingResult.getDebugMessage());
                             }
                             mutableActivePurchases.postValue(activePurchaseModel);
                         });
@@ -284,6 +314,9 @@ public class InAppPurchaseWrapper {
                 AcknowledgePurchaseParams.newBuilder()
                         .setPurchaseToken(purchase.getPurchaseToken())
                         .build();
+        List<String> productIds = purchase.getProducts();
+        boolean isVPNProduct = isVPNProduct(productIds);
+        boolean isLeoProduct = isLeoProduct(productIds);
         if (!purchase.isAcknowledged()) {
             MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
             LiveData<Boolean> billingConnectionState = _billingConnectionState;
@@ -301,22 +334,43 @@ public class InAppPurchaseWrapper {
                         }
                         if (billingResult.getResponseCode()
                                 == BillingClient.BillingResponseCode.OK) {
-                            BraveVpnPrefUtils.setSubscriptionPurchase(true);
-                            if (activity != null) {
-                                BraveVpnUtils.openBraveVpnProfileActivity(activity);
-                                BraveVpnUtils.showToast(activity.getResources().getString(
-                                        R.string.subscription_consumed));
+                            if (isVPNProduct) {
+                                BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                                if (activity != null) {
+                                    BraveVpnUtils.openBraveVpnProfileActivity(activity);
+                                }
+                            } else if (isLeoProduct) {
+                                BraveLeoPrefUtils.setIsSubscriptionActive(true);
                             }
+                            showToast(context.getResources().getString(
+                                    R.string.subscription_consumed));
                         } else {
-                            BraveVpnUtils.showToast(
+                            showToast(
                                     context.getResources().getString(R.string.fail_to_aknowledge));
                         }
                     });
                 }
             });
         } else {
-            BraveVpnPrefUtils.setSubscriptionPurchase(true);
+            if (isVPNProduct) {
+                BraveVpnPrefUtils.setSubscriptionPurchase(true);
+            } else if (isLeoProduct) {
+                BraveLeoPrefUtils.setIsSubscriptionActive(true);
+            }
         }
+    }
+
+    private boolean isVPNProduct(List<String> productIds) {
+        return productIds.contains(VPN_NIGHTLY_MONTHLY_SUBSCRIPTION) ||
+                productIds.contains(VPN_NIGHTLY_YEARLY_SUBSCRIPTION) ||
+                productIds.contains(VPN_BETA_MONTHLY_SUBSCRIPTION) ||
+                productIds.contains(VPN_BETA_YEARLY_SUBSCRIPTION) ||
+                productIds.contains(VPN_RELEASE_MONTHLY_SUBSCRIPTION) ||
+                productIds.contains(VPN_RELEASE_YEARLY_SUBSCRIPTION);
+    }
+
+    private boolean isLeoProduct(List<String> productIds) {
+        return productIds.contains(LEO_MONTHLY_SUBSCRIPTION);
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
@@ -332,27 +386,27 @@ public class InAppPurchaseWrapper {
                 }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                BraveVpnUtils.showToast(
+                showToast(
                         context.getResources().getString(R.string.already_subscribed));
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
-                BraveVpnUtils.showToast(
+                showToast(
                         context.getResources().getString(R.string.error_caused_by_user));
             } else {
-                BraveVpnUtils.showToast(
+                showToast(
                         context.getResources().getString(R.string.purchased_failed));
             }
         };
     }
 
-    private int maxTries;
-    private int tries;
-    private boolean isConnectionEstablished;
+    private int mMaxTries;
+    private int mTries;
+    private boolean mIsConnectionEstablished;
     private void retryBillingServiceConnection(
             MutableLiveData<Boolean> billingClientConnectionState) {
-        maxTries = 3;
-        tries = 1;
-        isConnectionEstablished = false;
+        mMaxTries = 3;
+        mTries = 1;
+        mIsConnectionEstablished = false;
         do {
             try {
                 // End existing connection if any before we start another connection
@@ -368,7 +422,7 @@ public class InAppPurchaseWrapper {
                 mBillingClient.startConnection(new BillingClientStateListener() {
                     @Override
                     public void onBillingServiceDisconnected() {
-                        if (tries == maxTries && billingClientConnectionState != null) {
+                        if (mTries == mMaxTries && billingClientConnectionState != null) {
                             billingClientConnectionState.postValue(false);
                         }
                     }
@@ -376,21 +430,21 @@ public class InAppPurchaseWrapper {
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                         if (billingResult.getResponseCode()
                                 == BillingClient.BillingResponseCode.OK) {
-                            isConnectionEstablished = true;
+                            mIsConnectionEstablished = true;
                             if (billingClientConnectionState != null) {
                                 billingClientConnectionState.postValue(true);
                             }
                         } else {
-                            BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                            showToast(billingResult.getDebugMessage());
                         }
                     }
                 });
             } catch (Exception ex) {
                 Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
             } finally {
-                tries++;
+                mTries++;
             }
-        } while (tries <= maxTries && !isConnectionEstablished);
+        } while (mTries <= mMaxTries && !mIsConnectionEstablished);
     }
 
     private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {
@@ -428,5 +482,10 @@ public class InAppPurchaseWrapper {
             return pricingPhase.getPriceCurrencyCode() + priceString;
         }
         return null;
+    }
+
+    private void showToast(String message) {
+        Context context = ContextUtils.getApplicationContext();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }
