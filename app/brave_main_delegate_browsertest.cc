@@ -253,7 +253,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
-      &lens::features::kEnableLensPing,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
