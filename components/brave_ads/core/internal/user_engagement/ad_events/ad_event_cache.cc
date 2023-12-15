@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 
@@ -21,16 +20,11 @@ std::string BuildTypeId(const std::string& ad_type,
   return base::StrCat({ad_type, confirmation_type});
 }
 
-void PurgeCacheOlderThan(std::vector<base::Time>* cache,
+void PurgeCacheOlderThan(std::vector<base::Time>& cache,
                          const base::TimeDelta time_delta) {
-  CHECK(cache);
-
   const base::Time past = base::Time::Now() - time_delta;
 
-  cache->erase(
-      base::ranges::remove_if(
-          *cache, [past](const base::Time time) { return time < past; }),
-      cache->end());
+  std::erase_if(cache, [past](const base::Time time) { return time < past; });
 }
 
 }  // namespace
@@ -51,7 +45,7 @@ void AdEventCache::AddEntryForInstanceId(const std::string& id,
 
   ad_event_cache_[id][type_id].push_back(time);
 
-  PurgeCacheOlderThan(&ad_event_cache_[id][type_id], base::Days(1));
+  PurgeCacheOlderThan(ad_event_cache_[id][type_id], base::Days(1));
 }
 
 std::vector<base::Time> AdEventCache::Get(
