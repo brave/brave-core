@@ -40,17 +40,22 @@ const double kFallbackTestnetFeeRate = 1;   // 1 sat per byte fallback rate.
 const double kDustRelayFeeRate = 3;         // 3 sat per byte rate.
 const uint32_t kAddressDiscoveryGapLimit = 20;
 
-uint64_t GetChainBalance(const bitcoin_rpc::AddressChainStats& chain_stats) {
+struct ChainBalance {
   uint64_t funded = 0;
-  if (!base::StringToUint64(chain_stats.funded_txo_sum, &funded)) {
-    return 0;
-  }
   uint64_t spent = 0;
-  if (!base::StringToUint64(chain_stats.spent_txo_sum, &spent)) {
-    return 0;
+};
+
+ChainBalance GetChainBalance(
+    const bitcoin_rpc::AddressChainStats& chain_stats) {
+  ChainBalance result;
+  if (!base::StringToUint64(chain_stats.funded_txo_sum, &result.funded)) {
+    return {};
+  }
+  if (!base::StringToUint64(chain_stats.spent_txo_sum, &result.spent)) {
+    return {};
   }
 
-  return base::ClampSub(funded, spent);
+  return result;
 }
 
 std::vector<BitcoinTransaction::TxInputGroup> TxInputGroupsFromUtxoMap(
@@ -111,6 +116,10 @@ class GetBalanceTask : public base::RefCountedThreadSafe<GetBalanceTask> {
   bool requests_sent_ = false;
 
   std::map<std::string, uint64_t> balances_;
+  uint64_t total_balance_ = 0;
+  uint64_t available_balance_ = 0;
+  int64_t pending_balance_ = 0;
+
   std::optional<std::string> error_;
   mojom::BitcoinBalancePtr result_;
   GetBalanceCallback callback_;
@@ -187,16 +196,26 @@ void GetBalanceTask::OnGetAddressStats(
   }
 
   auto chain_balance = GetChainBalance(stats->chain_stats);
-  // TODO(apaymyshev): should show only confirmed balance?
   auto mempool_balance = GetChainBalance(stats->mempool_stats);
-  balances_[address->address_string] = chain_balance + mempool_balance;
+
+  uint64_t address_total =
+      base::ClampSub(chain_balance.funded + mempool_balance.funded,
+                     chain_balance.spent + mempool_balance.spent);
+  balances_[address->address_string] = address_total;
+
+  total_balance_ += address_total;
+  available_balance_ +=
+      base::ClampSub(chain_balance.funded,
+                     chain_balance.spent + mempool_balance.spent)
+          .RawValue();
+  pending_balance_ += mempool_balance.funded - mempool_balance.spent;
 
   CHECK(std::erase(addresses_, address));
   if (addresses_.empty()) {
     result_ = mojom::BitcoinBalance::New();
-    for (auto& balance : balances_) {
-      result_->total_balance += balance.second;
-    }
+    result_->total_balance = total_balance_;
+    result_->available_balance = available_balance_;
+    result_->pending_balance = pending_balance_;
     result_->balances.insert(balances_.begin(), balances_.end());
   }
 
