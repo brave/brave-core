@@ -119,10 +119,11 @@ ConversationDriver::ConversationDriver(
   InitEngine();
   DCHECK(engine_);
 
-  if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
+  if (ai_chat_metrics_ != nullptr) {
     ai_chat_metrics_->RecordEnabled(
-        false, base::BindOnce(&ConversationDriver::GetPremiumStatus,
-                              weak_ptr_factory_.GetWeakPtr()));
+        HasUserOptedIn(), false,
+        base::BindOnce(&ConversationDriver::GetPremiumStatus,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -247,7 +248,7 @@ void ConversationDriver::OnUserOptedIn() {
   }
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
-    ai_chat_metrics_->RecordEnabled(true, {});
+    ai_chat_metrics_->RecordEnabled(true, true, {});
   }
 }
 
