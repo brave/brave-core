@@ -95,7 +95,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   const GURL url = request.GetURL();
   const std::string path_trimmed = StripTrailingUUID(url.path());
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-  if (request.method_string == "GET" and
+  if (request.method_string == "GET" &&
       path_trimmed ==
           "/v1/orders/f24787ab-7bc3-46b9-bc05-65befb360cb8/credentials/items/"
           "b9114ccc-b3a5-4951-9a5d-8b7a28732054/batches/") {
