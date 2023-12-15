@@ -74,6 +74,7 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
 
 base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   for (const auto& history_item : history_items) {
     list.Append(HistoryItemToValue(history_item));
@@ -84,6 +85,7 @@ base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
 
 base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   int uuid = 0;
 
@@ -102,6 +104,7 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
 
 HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
+  history_items.reserve(list.size());
 
   for (const auto& item : list) {
     if (const auto* const item_dict = item.GetIfDict()) {

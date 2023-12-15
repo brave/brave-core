@@ -54,14 +54,12 @@ std::map</*placement_id=*/std::string, HistoryItemInfo> BuildBuckets(
     }
 
     const std::string& placement_id = history_item.ad_content.placement_id;
-    const auto iter = buckets.find(placement_id);
-    if (iter == buckets.cend()) {
-      buckets.insert({placement_id, history_item});
-    } else {
+    auto [iter, inserted] = buckets.try_emplace(placement_id, history_item);
+    if (!inserted) {
       const HistoryItemInfo& current_history_item = iter->second;
       if (current_history_item.ad_content.confirmation_type >
           confirmation_type) {
-        buckets[placement_id] = history_item;
+        iter->second = history_item;
       }
     }
   }
@@ -71,16 +69,17 @@ std::map</*placement_id=*/std::string, HistoryItemInfo> BuildBuckets(
 
 }  // namespace
 
-HistoryItemList ConfirmationHistoryFilter::Apply(
-    const HistoryItemList& history) const {
+void ConfirmationHistoryFilter::Apply(HistoryItemList& history) const {
   const std::map<std::string, HistoryItemInfo> buckets = BuildBuckets(history);
 
   HistoryItemList filtered_history;
-  for (const auto& [placement_id, history_item] : buckets) {
+  filtered_history.reserve(buckets.size());
+
+  for (const auto& [_, history_item] : buckets) {
     filtered_history.push_back(history_item);
   }
 
-  return filtered_history;
+  history = filtered_history;
 }
 
 }  // namespace brave_ads

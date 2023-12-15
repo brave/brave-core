@@ -62,7 +62,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
   const ConfirmationHistoryFilter filter;
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   const HistoryItemList expected_history = {
@@ -130,7 +130,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   const ConfirmationHistoryFilter filter;
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   const HistoryItemList expected_history = {

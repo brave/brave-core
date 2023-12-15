@@ -14,7 +14,7 @@ class HistoryFilterInterface {
  public:
   virtual ~HistoryFilterInterface() = default;
 
-  virtual HistoryItemList Apply(const HistoryItemList& history) const = 0;
+  virtual void Apply(HistoryItemList& history) const = 0;
 };
 
 }  // namespace brave_ads

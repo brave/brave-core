@@ -48,7 +48,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   HistoryItemList expected_history;
@@ -73,7 +73,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());
@@ -90,7 +90,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   HistoryItemList expected_history;
@@ -115,7 +115,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());
@@ -132,7 +132,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   HistoryItemList expected_history;
@@ -161,7 +161,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());
@@ -177,7 +177,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   const DateRangeHistoryFilter filter(from_time, to_time);
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());

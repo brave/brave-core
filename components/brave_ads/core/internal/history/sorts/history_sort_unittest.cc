@@ -50,7 +50,7 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
   HistoryItemList history = GetUnsortedHistory();
 
   // Act
-  history = sort->Apply(history);
+  sort->Apply(history);
 
   // Assert
   HistoryItemList expected_history;
@@ -76,7 +76,7 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   HistoryItemList history;
 
   // Act
-  history = sort->Apply(history);
+  sort->Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());
@@ -89,7 +89,7 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   HistoryItemList history = GetUnsortedHistory();
 
   // Act
-  history = sort->Apply(history);
+  sort->Apply(history);
 
   // Assert
   HistoryItemList expected_history;
@@ -114,7 +114,7 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   HistoryItemList history;
 
   // Act
-  history = sort->Apply(history);
+  sort->Apply(history);
 
   // Assert
   EXPECT_TRUE(history.empty());

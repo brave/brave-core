@@ -16,7 +16,7 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
   DateRangeHistoryFilter(base::Time from_time, base::Time to_time);
 
-  HistoryItemList Apply(const HistoryItemList& history) const override;
+  void Apply(HistoryItemList& history) const override;
 
  private:
   base::Time from_time_;

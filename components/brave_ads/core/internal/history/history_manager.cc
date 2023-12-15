@@ -57,16 +57,14 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
-  history_items = date_range_filter->Apply(history_items);
+  date_range_filter->Apply(history_items);
 
-  const auto filter = HistoryFilterFactory::Build(filter_type);
-  if (filter) {
-    history_items = filter->Apply(history_items);
+  if (const auto filter = HistoryFilterFactory::Build(filter_type)) {
+    filter->Apply(history_items);
   }
 
-  const auto sort = HistorySortFactory::Build(sort_type);
-  if (sort) {
-    history_items = sort->Apply(history_items);
+  if (const auto sort = HistorySortFactory::Build(sort_type)) {
+    sort->Apply(history_items);
   }
 
   return history_items;
