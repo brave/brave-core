@@ -689,7 +689,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(
               brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId,
@@ -760,7 +760,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                   const std::string& name,
                                   const std::string& decimals) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, network_url, chain_id](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
@@ -790,7 +790,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   void SetEthChainIdInterceptor(const GURL& network_url,
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, network_url, chain_id](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
@@ -806,7 +806,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
   void SetEthChainIdInterceptorWithBrokenResponse(const GURL& network_url) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, network_url](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
@@ -824,7 +824,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, network_url](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
@@ -876,7 +876,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, network_url](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
@@ -915,10 +915,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     GURL network_url = GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, interface_id, supports_interface_provider_response,
-         token_uri_provider_response, metadata_response,
-         supports_interface_status, token_uri_status, metadata_status,
-         network_url](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           if (request.method ==
               "POST") {  // An eth_call, either to supportsInterface or tokenURI
@@ -962,8 +959,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const GURL& expected_url,
       const std::map<std::string, std::string>& interface_id_to_response) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_url,
-         interface_id_to_response](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
@@ -996,8 +992,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     ASSERT_TRUE(expected_rpc_url.is_valid());
     ASSERT_TRUE(expected_metadata_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_rpc_url, get_account_info_response, expected_metadata_url,
-         metadata_response](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           url_loader_factory_.AddResponse(expected_rpc_url.spec(),
                                           get_account_info_response);
           url_loader_factory_.AddResponse(expected_metadata_url.spec(),
@@ -1010,8 +1005,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
                       const std::string& expected_cache_header,
                       const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_url, expected_method, expected_cache_header,
-         content](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
           std::string header_value;
           EXPECT_EQ(request.headers.GetHeader("X-Eth-Method", &header_value),
@@ -1036,7 +1030,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetInvalidJsonInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), "Answer is 42");
         }));
@@ -1044,7 +1038,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetHTTPRequestTimeoutInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), "",
                                           net::HTTP_REQUEST_TIMEOUT);
@@ -1053,7 +1047,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetFilecoinActorErrorJsonErrorResponse() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(),
                                           R"({
@@ -1069,7 +1063,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetLimitExceededJsonErrorResponse() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(),
                                           R"({
@@ -1098,7 +1092,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, content](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1371,7 +1365,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token,
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
-          // EXPECT_EQ(token, expected_token);
+          EXPECT_EQ(token, expected_token);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
