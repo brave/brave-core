@@ -16,6 +16,8 @@ static_library("browser") {
     "channels_controller.h",
     "combined_feed_parsing.cc",
     "combined_feed_parsing.h",
+    "channel_migrator.cc",
+    "channel_migrator.h",
     "direct_feed_controller.cc",
     "direct_feed_controller.h",
     "direct_feed_fetcher.cc",
