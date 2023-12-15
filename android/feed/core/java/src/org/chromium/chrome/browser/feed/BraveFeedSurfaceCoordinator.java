@@ -16,6 +16,7 @@ import androidx.annotation.Px;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.jank_tracker.JankTracker;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
@@ -23,7 +24,6 @@ import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.xsurface.feed.FeedLaunchReliabilityLogger.SurfaceType;
@@ -64,7 +64,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate,
             HelpAndFeedbackLauncher helpAndFeedbackLauncher,
-            TabModelSelector tabModelSelector) {
+            @NonNull ObservableSupplier<Integer> tabStripHeightSupplier) {
         super(
                 activity,
                 snackbarManager,
@@ -90,7 +90,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 viewportView,
                 actionDelegate,
                 helpAndFeedbackLauncher,
-                tabModelSelector);
+                tabStripHeightSupplier);
     }
 
     public void createFrameLayoutForPolicy() {

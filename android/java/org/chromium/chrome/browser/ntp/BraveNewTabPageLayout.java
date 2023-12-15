@@ -48,6 +48,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
@@ -102,6 +103,7 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.tab_resumption.TabResumptionModuleUtils.SuggestionClickCallback;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -1170,10 +1172,12 @@ public class BraveNewTabPageLayout
             NewTabPageUma uma,
             boolean isIncognito,
             WindowAndroid windowAndroid,
-            boolean isNtpAsHomeSurfaceEnabled,
+            boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
-            boolean isTablet) {
+            boolean isTablet,
+            ObservableSupplier<Integer> tabStripHeightSupplier,
+            SuggestionClickCallback suggestionClickCallback) {
         super.initialize(
                 manager,
                 activity,
@@ -1187,10 +1191,12 @@ public class BraveNewTabPageLayout
                 uma,
                 isIncognito,
                 windowAndroid,
-                isNtpAsHomeSurfaceEnabled,
+                isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
-                isTablet);
+                isTablet,
+                tabStripHeightSupplier,
+                suggestionClickCallback);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
