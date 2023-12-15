@@ -378,7 +378,8 @@ public class BrowserViewController: UIViewController {
     }
     
     if Preferences.Privacy.screenTimeEnabled.value {
-      screenTimeViewController = STWebpageController()
+      // Enable once fixed, ref #8566
+      //screenTimeViewController = STWebpageController()
     }
   }
 
@@ -3302,7 +3303,8 @@ extension BrowserViewController: PreferencesObserver {
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value {
-        screenTimeViewController = STWebpageController()
+        // Enable once fixed, ref #8566
+        //screenTimeViewController = STWebpageController()
         if let tab = tabManager.selectedTab {
           recordScreenTimeUsage(for: tab)
         }
