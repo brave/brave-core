@@ -16,7 +16,7 @@ import { getLocale } from '$web-common/locale';
 import { getTranslatedChannelName } from "../shared/channel";
 
 const MenuButton = styled(Button)`
-  --leo-button-padding: ${spacing.s};
+  --leo-button-padding: 0;
 
   flex-grow: 0;
 `
@@ -34,6 +34,12 @@ export const MetaInfoContainer = styled.h4`
   gap: ${spacing.s};
 `
 
+const publisherDescription = (article: FeedItemMetadata) => {
+  if (article.publisherName) return article.publisherName
+  const url = new URL(article.url.url)
+  return url.origin
+}
+
 export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
   const maybeChannel = !props.hideChannel && <>
     • {channelIcons[props.article.categoryName] ?? channelIcons.default} {getTranslatedChannelName(props.article.categoryName)}
@@ -43,7 +49,7 @@ export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boole
     • {props.article.relativeTimeDescription}
   </>
   return <MetaInfoContainer>
-    {props.article.publisherName} {maybeChannel} {maybeTime}
+    {publisherDescription(props.article)} {maybeChannel} {maybeTime}
   </MetaInfoContainer>
 }
 
@@ -52,15 +58,16 @@ export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideC
     <MetaInfo {...props} />
 
     <ButtonMenu>
-      <MenuButton slot='anchor-content' kind='plain-faint'>
+      <MenuButton slot='anchor-content' kind='plain-faint' size="tiny">
         <Icon name='more-horizontal' />
       </MenuButton>
       <leo-menu-item onClick={e => {
         getBraveNewsController().setPublisherPref(props.article.publisherId, UserEnabled.DISABLED)
         e.stopPropagation()
-      }}>{getLocale('braveNewsHideContentFrom', {
-        '$1': props.article.publisherName
-      })}</leo-menu-item>
+      }}>
+        {getLocale('braveNewsHideContentFrom')
+          .replace('$1', publisherDescription(props.article))}
+      </leo-menu-item>
     </ButtonMenu>
   </Flex>
 }

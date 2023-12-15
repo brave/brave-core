@@ -121,6 +121,6 @@ export default function Advert(props: Props) {
         {advert.title}
       </SecureLink>
     </Title>
-    <CtaButton kind='outline'>{advert.ctaText}</CtaButton>
+    <CtaButton kind='plain-faint'>{advert.ctaText}</CtaButton>
   </Container>
 }

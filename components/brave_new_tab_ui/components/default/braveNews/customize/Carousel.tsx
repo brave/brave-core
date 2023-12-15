@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Flex from '$web-common/Flex'
-import FeedCard from './FeedCard'
+import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
 import { ArrowRight } from '../../../../../brave_news/browser/resources/shared/Icons'
 
 const CARD_SIZE = 208
@@ -84,7 +84,7 @@ const ItemsContainer = styled(Flex)`
   }
 `
 
-const FeedCardContainer = styled.div`
+const PublisherCardContainer = styled.div`
   min-width: calc((100cqi - ${CARD_GAP} * 2) / 3);
   max-width: ${CARD_SIZE_PX};
   scroll-snap-align: start;
@@ -138,9 +138,9 @@ export default function Carousel(props: Props) {
       </Subtitle>}
       <CarouselContainer>
         <ItemsContainer direction='row' gap={CARD_GAP} ref={scrollContainerRef as any} onScroll={updateAvailableDirections}>
-          {props.publisherIds.map(p => <FeedCardContainer key={p}>
-            <FeedCard publisherId={p} />
-          </FeedCardContainer>)}
+          {props.publisherIds.map(p => <PublisherCardContainer key={p}>
+            <PublisherCard publisherId={p} />
+          </PublisherCardContainer>)}
         </ItemsContainer>
         <ScrollButtonLeft onClick={() => scroll('left')} hidden={availableDirections === 'right' || availableDirections === 'none'}>
           {ArrowRight}

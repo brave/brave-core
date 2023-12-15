@@ -19,6 +19,7 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
+  padding-top: ${spacing.l};
 `
 
 export default function Article({ info, hideChannel }: Props) {
@@ -27,7 +28,7 @@ export default function Article({ info, hideChannel }: Props) {
 
   return <Container ref={setElementRef} onClick={braveNewsCardClickHandler(url)}>
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
-    <Flex direction='row' gap={spacing.m} justify='space-between'>
+    <Flex direction='row' gap={spacing.m} justify='space-between' align='start'>
       <Title>
         <BraveNewsLink href={url}>{info.data.title}</BraveNewsLink>
       </Title>
