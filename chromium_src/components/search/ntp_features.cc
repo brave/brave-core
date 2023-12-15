@@ -18,7 +18,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kNtpBackgroundImageErrorDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpChromeCartModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModule, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kNtpHistoryClustersModuleDiscounts, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModuleLoad, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
