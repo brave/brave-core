@@ -87,7 +87,7 @@ ConversationDriver::ConversationDriver(
             return;
           }
           // Use default premium model for this instance
-          instance->ChangeModel(kModelsPremiumDefaultKey);
+          instance->ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
           // Make sure default model reflects premium status
           const auto* current_default =
               instance->pref_service_
@@ -95,10 +95,10 @@ ConversationDriver::ConversationDriver(
                   ->GetIfString();
 
           if (current_default &&
-              *current_default != kModelsPremiumDefaultKey) {
+              *current_default != features::kAIModelsPremiumDefaultKey.Get()) {
             instance->pref_service_->SetDefaultPrefValue(
                 prefs::kDefaultModelKey,
-                    base::Value(kModelsPremiumDefaultKey));
+                    base::Value(features::kAIModelsPremiumDefaultKey.Get()));
           }
         },
         // Unretained is ok as credential manager is owned by this class,
@@ -189,7 +189,7 @@ void ConversationDriver::InitEngine() {
   if (model_match == kAllModels.end()) {
     NOTREACHED() << "Model was not part of static model list";
     // Use default
-    model_match = kAllModels.find(kModelsDefaultKey);
+    model_match = kAllModels.find(features::kAIModelsDefaultKey.Get());
     const auto is_found = model_match != kAllModels.end();
     DCHECK(is_found);
     if (!is_found) {
@@ -768,7 +768,7 @@ void ConversationDriver::OnPremiumStatusReceived(
   if (last_premium_status_ != premium_status &&
       premium_status == mojom::PremiumStatus::Active) {
     // Change model if we haven't already
-    ChangeModel(kModelsPremiumDefaultKey);
+    ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
   }
   last_premium_status_ = premium_status;
   if (HasUserOptedIn()) {

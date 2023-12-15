@@ -9,12 +9,10 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
-
-inline constexpr char kModelsDefaultKey[] = "chat-default";
-inline constexpr char kModelsPremiumDefaultKey[] = "chat-claude-instant";
 
 // All models that the user can choose for chat conversations.
 extern const base::flat_map<std::string_view, mojom::Model> kAllModels;

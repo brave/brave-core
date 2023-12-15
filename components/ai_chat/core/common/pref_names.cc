@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 
+#include "brave/components/ai_chat/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -21,7 +22,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
-  registry->RegisterStringPref(kDefaultModelKey, "chat-default");
+  registry->RegisterStringPref(kDefaultModelKey, features::kAIModelsDefaultKey.Get());
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
   registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
@@ -36,6 +37,7 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 
 void MigrateProfilePrefs(PrefService* profile_prefs) {
   profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
+  // TODO(petemill): migrate model key from "chat-default" to "chat-basic"
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

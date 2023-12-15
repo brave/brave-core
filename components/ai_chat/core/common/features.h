@@ -14,7 +14,8 @@
 namespace ai_chat::features {
 
 BASE_DECLARE_FEATURE(kAIChat);
-extern const base::FeatureParam<std::string> kAIModelName;
+extern const base::FeatureParam<std::string> kAIModelsDefaultKey;
+extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
 extern const base::FeatureParam<bool> kAIChatSSE;
 extern const base::FeatureParam<double> kAITemperature;
 

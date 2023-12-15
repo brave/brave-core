@@ -48,7 +48,7 @@
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT" desc="AI Chat intro message for the default model">
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the default model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
@@ -199,7 +199,7 @@
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message name="IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE" desc="A description for default chat model">
+  <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
   <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for llama-2-70b model">

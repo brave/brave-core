@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -172,7 +173,8 @@ void BraveLeoAssistantHandler::HandleGetModels(const base::Value::List& args) {
     dict.Set("display_maker", model->display_maker);
     dict.Set("engine_type", static_cast<int>(model->engine_type));
     dict.Set("category", static_cast<int>(model->category));
-    dict.Set("is_premium", model->is_premium);
+    dict.Set("is_premium",
+             model->access == ai_chat::mojom::ModelAccess::PREMIUM);
     models_list.Append(std::move(dict));
   }
 
