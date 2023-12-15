@@ -11,7 +11,6 @@ namespace lens {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kEnableLensPing, base::FEATURE_DISABLED_BY_DEFAULT},
     {kLensStandalone, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
