@@ -129,9 +129,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
-  static bool HandleURLOverrideRewrite(
-      GURL* url,
-      content::BrowserContext* browser_context);
+  static bool HandleURLRewrite(GURL* url,
+                               content::BrowserContext* browser_context);
+  static bool HandleURLReverseRewrite(GURL* url,
+                                      content::BrowserContext* browser_context);
   std::vector<std::unique_ptr<content::NavigationThrottle>>
   CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 

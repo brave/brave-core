@@ -3,20 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
-
-#include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
-#include "content/public/common/url_constants.h"
-#include "ui/views/controls/label.h"
 
 // In addition to the feature flag, we also enable hover card previews when
 // the tab hover mode is CARD_WITH_PREVIEW.
@@ -29,28 +21,6 @@
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc"
 #undef TabHoverCardBubbleView
 #undef AreHoverCardImagesEnabled
-
-void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
-    const Tab* tab) {
-  TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(tab);
-  const std::u16string& domain = domain_label_->GetText();
-  const std::u16string kChromeUISchemeU16 =
-      base::ASCIIToUTF16(base::StrCat({content::kChromeUIScheme, "://"}));
-  // Replace chrome:// with brave://. Since this is purely in the UI we can
-  // just do a sub-string replacement instead of parsing into GURL.
-  if (base::StartsWith(domain, kChromeUISchemeU16,
-                       base::CompareCase::INSENSITIVE_ASCII)) {
-    std::u16string new_domain = domain;
-    base::ReplaceFirstSubstringAfterOffset(
-        &new_domain, 0ul, kChromeUISchemeU16,
-        base::ASCIIToUTF16(base::StrCat({content::kBraveUIScheme, "://"})));
-    domain_label_->SetData({new_domain, /*is_filename*/ false});
-  }
-}
-
-void TabHoverCardBubbleView::UpdateCardContent(const Tab* tab) {
-  BraveUpdateCardContent(tab);
-}
 
 void TabHoverCardBubbleView::SetTargetTabImage(gfx::ImageSkia preview_image) {
   if (!has_thumbnail_view())

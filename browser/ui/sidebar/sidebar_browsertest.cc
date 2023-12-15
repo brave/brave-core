@@ -339,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   // activated.
   auto items = model()->GetAllSidebarItems();
   auto iter =
-      base::ranges::find(items, GURL("chrome://settings/"), &SidebarItem::url);
+      base::ranges::find(items, GURL("brave://settings/"), &SidebarItem::url);
   EXPECT_NE(items.end(), iter);
   controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());

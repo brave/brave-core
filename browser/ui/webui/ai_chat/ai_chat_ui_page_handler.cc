@@ -190,6 +190,7 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
   if (!url.SchemeIs(content::kChromeUIScheme) &&
+      !url.SchemeIs(content::kBraveUIScheme) &&
       !url.SchemeIs(url::kHttpsScheme)) {
     return;
   }

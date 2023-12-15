@@ -20,11 +20,13 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/url_util.h"
 
 using ::testing::Eq;
 using ::testing::Optional;
@@ -200,11 +202,18 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
+  // Have to manually add the brave scheme since
+  // BraveContentClient::AddAdditionalSchemes is not run.
+  url::ScopedSchemeRegistryForTests scoped_registry;
+  url::AddStandardScheme(content::kBraveUIScheme, url::SCHEME_WITH_HOST);
+
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(GURL("https://talk.brave.com")));
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(
                 GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
+  EXPECT_EQ(GURL(kBraveUIWalletPageURL),
+            ConvertURLToBuiltInItemURL(GURL("brave://wallet/send")));
   EXPECT_EQ(
       GURL(kBraveUIWalletPageURL),
       ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));

@@ -58,7 +58,7 @@ IN_PROC_BROWSER_TEST_F(BraveWhatsNewBrowserTest,
   // It's upstream logic - see the comments of
   // StartupBrowserCreatorImpl::DetermineStartupTabs().
   EXPECT_EQ(1, tab_model()->count());
-  EXPECT_EQ(GURL(" chrome://welcome/"),
+  EXPECT_EQ(GURL("brave://welcome/"),
             tab_model()->GetActiveWebContents()->GetVisibleURL());
 
   // In production, fresh user doesn't see whats-new for that version.
@@ -87,7 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveWhatsNewBrowserTest,
   // It's upstream logic - see the comments of
   // StartupBrowserCreatorImpl::DetermineStartupTabs().
   EXPECT_EQ(1, tab_model()->count());
-  EXPECT_EQ(GURL(" chrome://welcome/"),
+  EXPECT_EQ(GURL("brave://welcome/"),
             tab_model()->GetActiveWebContents()->GetVisibleURL());
 
   // Update profile created version to make this user as not updated user.

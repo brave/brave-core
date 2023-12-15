@@ -32,7 +32,7 @@
 
 namespace {
 
-const char kChromeIPFSSettingsURL[] = "chrome://settings/ipfs";
+const char kBraveIPFSSettingsURL[] = "brave://settings/ipfs";
 
 security_interstitials::SecurityInterstitialPage* GetCurrentInterstitial(
     content::WebContents* web_contents) {
@@ -288,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   web_contents = browser()->tab_strip_model()->GetWebContentsAt(1);
-  EXPECT_EQ(GURL(kChromeIPFSSettingsURL), web_contents->GetURL());
+  EXPECT_EQ(GURL(kBraveIPFSSettingsURL), web_contents->GetURL());
 }
 
 }  // namespace ipfs

@@ -6,15 +6,23 @@
 #include "chrome/browser/favicon/favicon_utils.h"
 
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/common/url_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/url_util.h"
 
 namespace favicon {
 
 TEST(BraveFaviconUtilsTest, ShouldThemeifyFaviconForBraveInternalUrl) {
+  // Have to manually add the brave scheme since
+  // BraveContentClient::AddAdditionalSchemes is not run.
+  url::ScopedSchemeRegistryForTests scoped_registry;
+  url::AddStandardScheme(content::kBraveUIScheme, url::SCHEME_WITH_HOST);
+
   std::unique_ptr<content::NavigationEntry> entry =
       content::NavigationEntry::Create();
-  const GURL unthemeable_url("chrome://wallet");
-  const GURL themeable_url("chrome://brave-somethingelse");
+  const GURL unthemeable_url("brave://wallet");
+  const GURL themeable_url("brave://brave-somethingelse");
 
   entry->SetVirtualURL(unthemeable_url);
   // Brave's override for some brave-internal urls should not be themeable.
