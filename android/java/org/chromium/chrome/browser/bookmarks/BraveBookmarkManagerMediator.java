@@ -54,21 +54,46 @@ class BraveBookmarkManagerMediator
     private Context mContext;
     private static final String TAG = "BraveBookmarkManager";
 
-    BraveBookmarkManagerMediator(Context context, BookmarkModel bookmarkModel,
-            BookmarkOpener bookmarkOpener, SelectableListLayout<BookmarkId> selectableListLayout,
-            SelectionDelegate<BookmarkId> selectionDelegate, RecyclerView recyclerView,
+    BraveBookmarkManagerMediator(
+            Context context,
+            BookmarkModel bookmarkModel,
+            BookmarkOpener bookmarkOpener,
+            SelectableListLayout<BookmarkId> selectableListLayout,
+            SelectionDelegate<BookmarkId> selectionDelegate,
+            RecyclerView recyclerView,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
-            LargeIconBridge largeIconBridge, boolean isDialogUi, boolean isIncognito,
-            ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
-            BookmarkUndoController bookmarkUndoController, ModelList modelList,
-            BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
-            BookmarkImageFetcher bookmarkImageFetcher, ShoppingService shoppingService,
-            SnackbarManager snackbarManager, Consumer<OnScrollListener> onScrollListenerConsumer) {
-        super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
-                recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
-                isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
-                bookmarkUiPrefs, hideKeyboardRunnable, bookmarkImageFetcher, shoppingService,
-                snackbarManager, onScrollListenerConsumer);
+            LargeIconBridge largeIconBridge,
+            boolean isDialogUi,
+            ObservableSupplierImpl<Boolean> backPressStateSupplier,
+            Profile profile,
+            BookmarkUndoController bookmarkUndoController,
+            ModelList modelList,
+            BookmarkUiPrefs bookmarkUiPrefs,
+            Runnable hideKeyboardRunnable,
+            BookmarkImageFetcher bookmarkImageFetcher,
+            ShoppingService shoppingService,
+            SnackbarManager snackbarManager,
+            Consumer<OnScrollListener> onScrollListenerConsumer) {
+        super(
+                context,
+                bookmarkModel,
+                bookmarkOpener,
+                selectableListLayout,
+                selectionDelegate,
+                recyclerView,
+                dragReorderableRecyclerViewAdapter,
+                largeIconBridge,
+                isDialogUi,
+                backPressStateSupplier,
+                profile,
+                bookmarkUndoController,
+                modelList,
+                bookmarkUiPrefs,
+                hideKeyboardRunnable,
+                bookmarkImageFetcher,
+                shoppingService,
+                snackbarManager,
+                onScrollListenerConsumer);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

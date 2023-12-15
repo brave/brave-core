@@ -53,10 +53,14 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private ObservableSupplier<Integer> mConstraintsProxy;
     private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
 
-    public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
-            ViewStub toolbarStub, ToolbarLayout toolbarLayout,
-            ToolbarDataProvider toolbarDataProvider, ToolbarTabController tabController,
-            UserEducationHelper userEducationHelper, List<ButtonDataProvider> buttonDataProviders,
+    public BraveTopToolbarCoordinator(
+            ToolbarControlContainer controlContainer,
+            ViewStub toolbarStub,
+            ToolbarLayout toolbarLayout,
+            ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController,
+            UserEducationHelper userEducationHelper,
+            List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
             ThemeColorProvider overviewThemeColorProvider,
@@ -65,30 +69,56 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
-            ButtonDataProvider identityDiscController, Callback<Runnable> invalidatorCallback,
+            ButtonDataProvider identityDiscController,
             Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
-            BooleanSupplier isIncognitoModeEnabledSupplier, boolean isTabToGtsAnimationEnabled,
-            boolean isStartSurfaceEnabled, HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
+            BooleanSupplier isIncognitoModeEnabledSupplier,
+            boolean isTabToGtsAnimationEnabled,
+            boolean isStartSurfaceEnabled,
+            HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier,
+            OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
-            boolean isStartSurfaceRefactorEnabled, ObservableSupplier<Integer> constraintsSupplier,
+            boolean isStartSurfaceRefactorEnabled,
+            ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
-            boolean shouldCreateLogoInStartToolbar, FullscreenManager fullscreenManager) {
-        super(controlContainer, toolbarStub, toolbarLayout, toolbarDataProvider, tabController,
-                userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
-                normalThemeColorProvider, overviewThemeColorProvider,
-                browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
-                appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
-                identityDiscController, invalidatorCallback, identityDiscButtonSupplier,
-                resourceManagerSupplier, isIncognitoModeEnabledSupplier, isTabToGtsAnimationEnabled,
-                isStartSurfaceEnabled, historyDelegate, partnerHomepageEnabledSupplier,
-                offlineDownloader, initializeWithIncognitoColors, startSurfaceLogoClickedCallback,
-                isStartSurfaceRefactorEnabled, constraintsSupplier, compositorInMotionSupplier,
-                browserStateBrowserControlsVisibilityDelegate, shouldCreateLogoInStartToolbar,
+            boolean shouldCreateLogoInStartToolbar,
+            FullscreenManager fullscreenManager) {
+        super(
+                controlContainer,
+                toolbarStub,
+                toolbarLayout,
+                toolbarDataProvider,
+                tabController,
+                userEducationHelper,
+                buttonDataProviders,
+                layoutStateProviderSupplier,
+                normalThemeColorProvider,
+                overviewThemeColorProvider,
+                browsingModeMenuButtonCoordinator,
+                overviewModeMenuButtonCoordinator,
+                appMenuButtonHelperSupplier,
+                tabModelSelectorSupplier,
+                homepageEnabledSupplier,
+                identityDiscController,
+                identityDiscButtonSupplier,
+                resourceManagerSupplier,
+                isIncognitoModeEnabledSupplier,
+                isTabToGtsAnimationEnabled,
+                isStartSurfaceEnabled,
+                historyDelegate,
+                partnerHomepageEnabledSupplier,
+                offlineDownloader,
+                initializeWithIncognitoColors,
+                startSurfaceLogoClickedCallback,
+                isStartSurfaceRefactorEnabled,
+                constraintsSupplier,
+                compositorInMotionSupplier,
+                browserStateBrowserControlsVisibilityDelegate,
+                shouldCreateLogoInStartToolbar,
                 fullscreenManager);
 
         mBraveToolbarLayout = toolbarLayout;
@@ -98,10 +128,15 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
-                mTabSwitcherModeCoordinator = new BraveTabSwitcherModeTTCoordinator(
-                        controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
-                        overviewModeMenuButtonCoordinator, isTabToGtsAnimationEnabled,
-                        isIncognitoModeEnabledSupplier, mToolbarColorObserverManager);
+                mTabSwitcherModeCoordinator =
+                        new BraveTabSwitcherModeTTCoordinator(
+                                controlContainer
+                                        .getRootView()
+                                        .findViewById(R.id.tab_switcher_toolbar_stub),
+                                overviewModeMenuButtonCoordinator,
+                                isTabToGtsAnimationEnabled,
+                                isIncognitoModeEnabledSupplier,
+                                mToolbarColorObserverManager);
             }
         }
     }

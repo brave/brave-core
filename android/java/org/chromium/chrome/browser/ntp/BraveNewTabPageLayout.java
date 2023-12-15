@@ -48,6 +48,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
@@ -1177,10 +1178,11 @@ public class BraveNewTabPageLayout
             NewTabPageUma uma,
             boolean isIncognito,
             WindowAndroid windowAndroid,
-            boolean isNtpAsHomeSurfaceEnabled,
+            boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
-            boolean isTablet) {
+            boolean isTablet,
+            ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
                 manager,
                 activity,
@@ -1194,10 +1196,11 @@ public class BraveNewTabPageLayout
                 uma,
                 isIncognito,
                 windowAndroid,
-                isNtpAsHomeSurfaceEnabled,
+                isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
-                isTablet);
+                isTablet,
+                tabStripHeightSupplier);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 

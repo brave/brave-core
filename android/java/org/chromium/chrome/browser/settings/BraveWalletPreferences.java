@@ -90,7 +90,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                 mWalletModel
                         .getBraveWalletService()
                         .getDefaultEthereumWallet(
-                                (@DefaultWallet.EnumType Integer defaultEthereumWallet) ->
+                                (@DefaultWallet.EnumType int defaultEthereumWallet) ->
                                         setupDefaultWalletPreference(
                                                 mDefaultEthereumWallet, defaultEthereumWallet));
             }
@@ -103,7 +103,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                 mWalletModel
                         .getBraveWalletService()
                         .getDefaultSolanaWallet(
-                                (@DefaultWallet.EnumType Integer defaultSolanaWallet) ->
+                                (@DefaultWallet.EnumType int defaultSolanaWallet) ->
                                         setupDefaultWalletPreference(
                                                 mDefaultSolanaWallet, defaultSolanaWallet));
             }

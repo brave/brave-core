@@ -16,10 +16,19 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
     // Overridden Chromium's BookmarkManagerCoordinator.mMediator
     private BookmarkManagerMediator mMediator;
 
-    public BraveBookmarkManagerCoordinator(Context context, ComponentName openBookmarkComponentName,
-            boolean isDialogUi, boolean isIncognito, SnackbarManager snackbarManager,
-            Profile profile, BookmarkUiPrefs bookmarkUiPrefs) {
-        super(context, openBookmarkComponentName, isDialogUi, isIncognito, snackbarManager, profile,
+    public BraveBookmarkManagerCoordinator(
+            Context context,
+            ComponentName openBookmarkComponentName,
+            boolean isDialogUi,
+            SnackbarManager snackbarManager,
+            Profile profile,
+            BookmarkUiPrefs bookmarkUiPrefs) {
+        super(
+                context,
+                openBookmarkComponentName,
+                isDialogUi,
+                snackbarManager,
+                profile,
                 bookmarkUiPrefs);
     }
 

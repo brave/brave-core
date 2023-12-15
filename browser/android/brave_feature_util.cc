@@ -36,7 +36,8 @@ static void JNI_BraveFeatureUtil_EnableFeature(
     const base::android::JavaParamRef<jstring>& featureName,
     jboolean enabled,
     jboolean fallback_to_default) {
-  std::string feature_name = ConvertJavaStringToUTF8(env, featureName);
+  std::string feature_name =
+      base::android::ConvertJavaStringToUTF8(env, featureName);
   std::string disabled_value =
       fallback_to_default
           ? "0"

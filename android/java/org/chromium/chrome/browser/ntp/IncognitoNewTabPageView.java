@@ -49,17 +49,19 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
         /**
          * Initializes the cookie controls manager for interaction with the cookie controls toggle.
-         * */
+         */
         void initCookieControlsManager();
 
-        /**
-         * Tells the caller whether a new snapshot is required or not.
-         * */
+        /** Tells the caller whether a new snapshot is required or not. */
         boolean shouldCaptureThumbnail();
 
-        /**
-         * Cleans up the manager after it is finished being used.
-         * */
+        /** Whether the new version of the Incognito NTP should be shown. */
+        boolean shouldShowRevampedIncognitoNtp();
+
+        /** Whether to show the tracking protection UI on the NTP. */
+        boolean shouldShowTrackingProtectionNtp();
+
+        /** Cleans up the manager after it is finished being used. */
         void destroy();
 
         /**

@@ -18,7 +18,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.bookmarks.BookmarkType;
@@ -30,23 +29,30 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 public class BraveBookmarkUtils extends BookmarkUtils {
     private static final String TAG = "BraveBookmarkUtils";
 
-    public static void addOrEditBookmark(@Nullable BookmarkItem existingBookmarkItem,
-            BookmarkModel bookmarkModel, Tab tab, SnackbarManager snackbarManager,
-            BottomSheetController bottomSheetController, Activity activity, boolean fromCustomTab,
-            @BookmarkType int bookmarkType, Callback<BookmarkId> callback,
+    public static void addOrEditBookmark(
+            @Nullable BookmarkItem existingBookmarkItem,
+            BookmarkModel bookmarkModel,
+            Tab tab,
+            BottomSheetController bottomSheetController,
+            Activity activity,
+            @BookmarkType int bookmarkType,
+            Callback<BookmarkId> callback,
             boolean fromExplicitTrackUi) {
         assert bookmarkModel.isBookmarkModelLoaded();
         if (existingBookmarkItem != null) {
-            if (snackbarManager.isShowing()) {
-                snackbarManager.dismissAllSnackbars();
-            }
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
             callback.onResult(existingBookmarkItem.getId());
             return;
         }
 
-        BookmarkUtils.addOrEditBookmark(existingBookmarkItem, bookmarkModel, tab, snackbarManager,
-                bottomSheetController, activity, fromCustomTab, bookmarkType, callback,
+        BookmarkUtils.addOrEditBookmark(
+                existingBookmarkItem,
+                bookmarkModel,
+                tab,
+                bottomSheetController,
+                activity,
+                bookmarkType,
+                callback,
                 fromExplicitTrackUi);
     }
 

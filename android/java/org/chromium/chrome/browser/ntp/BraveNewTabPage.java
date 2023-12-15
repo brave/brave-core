@@ -39,6 +39,7 @@ import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
     private JankTracker mJankTracker;
+    private final ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
@@ -67,7 +68,8 @@ public class BraveNewTabPage extends NewTabPage {
             JankTracker jankTracker,
             Supplier<Toolbar> toolbarSupplier,
             HomeSurfaceTracker homeSurfaceTracker,
-            ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
+            ObservableSupplier<TabContentManager> tabContentManagerSupplier,
+            ObservableSupplier<Integer> tabStripHeightSupplier) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -87,9 +89,11 @@ public class BraveNewTabPage extends NewTabPage {
                 jankTracker,
                 toolbarSupplier,
                 homeSurfaceTracker,
-                tabContentManagerSupplier);
+                tabContentManagerSupplier,
+                tabStripHeightSupplier);
 
         mJankTracker = jankTracker;
+        mTabStripHeightSupplier = tabStripHeightSupplier;
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -116,9 +120,14 @@ public class BraveNewTabPage extends NewTabPage {
     }
 
     @Override
-    protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
-            SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
+    protected void initializeMainView(
+            Activity activity,
+            WindowAndroid windowAndroid,
+            SnackbarManager snackbarManager,
+            NewTabPageUma uma,
+            boolean isInNightMode,
+            Supplier<ShareDelegate> shareDelegateSupplier,
+            String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
@@ -152,7 +161,7 @@ public class BraveNewTabPage extends NewTabPage {
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
                         HelpAndFeedbackLauncherImpl.getForProfile(profile),
-                        mTabModelSelector);
+                        mTabStripHeightSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
