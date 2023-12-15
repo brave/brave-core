@@ -16,7 +16,6 @@ KeywordList ParseKeyphrase(const std::string& keyphrase) {
   std::istringstream iss(base::ToLowerASCII(keyphrase));
 
   KeywordList keywords;
-  keywords.reserve(5);  // Average number of keywords in a keyphrase.
 
   std::string keyword;
   while (iss >> std::quoted(keyword)) {

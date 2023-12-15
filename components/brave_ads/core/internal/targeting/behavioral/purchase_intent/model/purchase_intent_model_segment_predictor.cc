@@ -30,7 +30,7 @@ SegmentList PredictPurchaseIntentSegments(
       continue;
     }
 
-    segments.emplace_back(segment);
+    segments.push_back(segment);
 
     if (segments.size() == segment_scores.size() ||
         segments.size() >= kMaximumSegments) {
