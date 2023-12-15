@@ -1537,7 +1537,7 @@ public class BrowserViewController: UIViewController {
       toolbar?.line.isHidden = isUsingBottomBar
     }
     
-    header.expandedBarStackView.removeArrangedSubview(tabsBar.view)
+    tabsBar.view.removeFromSuperview()
     if isUsingBottomBar {
       header.expandedBarStackView.insertArrangedSubview(tabsBar.view, at: 0)
     } else {
@@ -2340,11 +2340,6 @@ public class BrowserViewController: UIViewController {
   func displayPageZoom(visible: Bool) {
     if !visible || pageZoomBar != nil {
       pageZoomBar?.view.removeFromSuperview()
-
-      if let zoomBarView = pageZoomBar?.view {
-        alertStackView.removeArrangedSubview(zoomBarView)
-      }
-        
       updateViewConstraints()
       pageZoomBar = nil
       
@@ -2379,6 +2374,7 @@ public class BrowserViewController: UIViewController {
 
     pageZoomBar.view.snp.makeConstraints { make in
       make.height.greaterThanOrEqualTo(UIConstants.toolbarHeight)
+      make.height.equalTo(UIConstants.toolbarHeight).priority(.high)
       make.edges.equalTo(alertStackView)
     }
     
