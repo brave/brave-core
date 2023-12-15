@@ -17,8 +17,14 @@
 #define resizeTo resizeTo_ChromiumImpl
 #define moveTo moveTo_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#define BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS                        \
+  if (WebContentSettingsClient* settings_client =                         \
+          GetFrame()->GetContentSettingsClient()) {                       \
+    script_enabled = settings_client->AllowScript(allow_script_renderer); \
+  }
 
+#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#undef BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
 #undef outerHeight
 #undef outerWidth
 #undef screenX
