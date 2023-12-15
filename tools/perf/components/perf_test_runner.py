@@ -105,7 +105,7 @@ class RunableConfiguration:
     rebase_benchmark.stories = ['BraveSearch_cold']
     rebase_benchmark.pageset_repeat = 1
 
-    REBASE_TIMEOUT = 120
+    REBASE_TIMEOUT = 240
 
     rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
     result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
@@ -199,6 +199,9 @@ class RunableConfiguration:
   def RunTests(self) -> bool:
     assert self.binary is not None
     has_failure = False
+
+    if not self.RebaseProfile():
+      return False
 
     if not self.RebaseProfile():
       return False
