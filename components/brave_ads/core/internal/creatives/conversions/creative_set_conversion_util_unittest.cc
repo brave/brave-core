@@ -98,7 +98,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_3);
 
   // Act & Assert
-  CreativeSetConversionBuckets expected_buckets;
+  CreativeSetConversionBucketMap expected_buckets;
   expected_buckets.insert(  // Bucket #1
       {kCreativeSetId, {creative_set_conversion_1, creative_set_conversion_3}});
   expected_buckets.insert(  // Bucket #2
@@ -110,7 +110,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        SortEmptyCreativeSetConversionsIntoBuckets) {
   // Act
-  const CreativeSetConversionBuckets buckets =
+  const CreativeSetConversionBucketMap buckets =
       SortCreativeSetConversionsIntoBuckets({});
 
   // Assert

@@ -123,7 +123,7 @@ void Conversions::CheckForConversions(
     return BLOG(1, "There are no eligible creative set conversions");
   }
 
-  CreativeSetConversionBuckets creative_set_conversion_buckets =
+  CreativeSetConversionBucketMap creative_set_conversion_buckets =
       SortCreativeSetConversionsIntoBuckets(filtered_creative_set_conversions);
 
   BLOG(1, filtered_creative_set_conversions.size()
