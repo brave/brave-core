@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -31,8 +30,6 @@ void NewTabPageAdEventHandler::FireEvent(
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire new tab page ad event due to an invalid placement id");
@@ -66,8 +63,6 @@ void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
     const bool success,
     const std::string& creative_instance_id,
     const CreativeNewTabPageAdInfo& creative_ad) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     BLOG(1,
          "Failed to fire new tab page ad event due to missing creative "
@@ -93,8 +88,6 @@ void NewTabPageAdEventHandler::GetForTypeCallback(
     FireNewTabPageAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              event_type, std::move(callback));
@@ -140,8 +133,6 @@ void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   NotifyDidFireNewTabPageAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
@@ -152,8 +143,6 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   BLOG(1, "Failed to fire new tab page ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);

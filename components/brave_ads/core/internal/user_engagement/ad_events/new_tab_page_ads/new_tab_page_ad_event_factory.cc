@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_served.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
@@ -15,8 +14,6 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<NewTabPageAdInfo>>
 NewTabPageAdEventFactory::Build(const mojom::NewTabPageAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   switch (event_type) {
     case mojom::NewTabPageAdEventType::kServed: {
       return std::make_unique<NewTabPageAdEventServed>();

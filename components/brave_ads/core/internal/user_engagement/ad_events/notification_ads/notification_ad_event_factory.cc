@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_factory.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_clicked.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_dismissed.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_served.h"
@@ -18,8 +17,6 @@ namespace brave_ads {
 std::unique_ptr<AdEventInterface<NotificationAdInfo>>
 NotificationAdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
       return std::make_unique<NotificationAdEventServed>();

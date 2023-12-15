@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_clicked.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_served.h"
@@ -16,8 +15,6 @@ namespace brave_ads {
 std::unique_ptr<AdEventInterface<PromotedContentAdInfo>>
 PromotedContentAdEventFactory::Build(
     const mojom::PromotedContentAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   switch (event_type) {
     case mojom::PromotedContentAdEventType::kServed: {
       return std::make_unique<PromotedContentAdEventServed>();

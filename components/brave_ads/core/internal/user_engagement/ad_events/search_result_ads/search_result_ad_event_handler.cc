@@ -38,7 +38,6 @@ void SearchResultAdEventHandler::FireEvent(
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(ad_mojom);
-  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -77,8 +76,6 @@ void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   const auto ad_event = SearchResultAdEventFactory::Build(event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&SearchResultAdEventHandler::FireEventCallback,
@@ -202,8 +199,6 @@ void SearchResultAdEventHandler::MaybeFireEventCallback(
     FireSearchResultAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     BLOG(1, "Search result ad: Failed to get ad events");
     return FailedToFireEvent(ad, event_type, std::move(callback));
@@ -230,8 +225,6 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   NotifyDidFireSearchResultAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
@@ -241,8 +234,6 @@ void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   BLOG(1, "Failed to fire search result ad "
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);

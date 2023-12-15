@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -32,8 +31,6 @@ void PromotedContentAdEventHandler::FireEvent(
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type,
     FirePromotedContentAdEventHandlerCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid placement "
@@ -75,8 +72,6 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const bool success,
     const std::string& creative_instance_id,
     const CreativePromotedContentAdInfo& creative_ad) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     BLOG(1,
          "Failed to fire promoted content ad event due to missing creative "
@@ -149,8 +144,6 @@ void PromotedContentAdEventHandler::SuccessfullyFiredEvent(
     const PromotedContentAdInfo& ad,
     const mojom::PromotedContentAdEventType event_type,
     FirePromotedContentAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   NotifyDidFirePromotedContentAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
@@ -161,8 +154,6 @@ void PromotedContentAdEventHandler::FailedToFireEvent(
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type,
     FirePromotedContentAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   BLOG(1, "Failed to fire promoted content ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);

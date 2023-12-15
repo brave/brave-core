@@ -23,8 +23,6 @@ template <typename T>
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const T& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   return event_type == T::kServed ||
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
 }
@@ -33,7 +31,6 @@ template <typename T>
 bool ShouldDebounceViewedAdEvent(const AdInfo& ad,
                                  const AdEventList& ad_events,
                                  const T& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK(WasAdServed(ad, ad_events, event_type));
 
   return event_type == T::kViewed &&
@@ -44,7 +41,6 @@ template <typename T>
 bool ShouldDebounceClickedAdEvent(const AdInfo& ad,
                                   const AdEventList& ad_events,
                                   const T& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK(WasAdServed(ad, ad_events, event_type));
 
   return event_type == T::kClicked &&
@@ -55,7 +51,6 @@ template <typename T>
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const T& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK(WasAdServed(ad, ad_events, event_type));
 
   return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||

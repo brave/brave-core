@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -48,8 +47,6 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(
       ad_type, base::BindOnce(

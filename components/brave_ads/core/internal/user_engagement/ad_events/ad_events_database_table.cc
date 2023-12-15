@@ -249,8 +249,6 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -288,8 +286,6 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
