@@ -1371,7 +1371,7 @@ public class BraveNewTabPageLayout
         mSuperReferralSitesLayout.setWeightSum(1f);
         mSuperReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
         mSuperReferralSitesLayout.setBackgroundColor(
-                mActivity.getResources().getColor(R.color.topsite_bg_color));
+                mActivity.getColor(R.color.topsite_bg_color));
 
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1382,7 +1382,7 @@ public class BraveNewTabPageLayout
             TextView tileViewTitleTv = tileView.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
             tileViewTitleTv.setTextColor(
-                    getResources().getColor(R.color.brave_state_time_count_color));
+                    getContext().getColor(R.color.brave_state_time_count_color));
 
             ImageView iconIv = tileView.findViewById(R.id.tile_view_icon);
             if (NTPUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
@@ -1391,7 +1391,7 @@ public class BraveNewTabPageLayout
                                 NTPUtil.getTopSiteBitmap(topSite.getImagePath())));
             }
             iconIv.setImageBitmap(NTPUtil.imageCache.get(topSite.getDestinationUrl()).get());
-            iconIv.setBackgroundColor(mActivity.getResources().getColor(android.R.color.white));
+            iconIv.setBackgroundColor(mActivity.getColor(android.R.color.white));
             iconIv.setClickable(false);
 
             tileView.setOnClickListener(
