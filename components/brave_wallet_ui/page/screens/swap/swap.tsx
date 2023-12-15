@@ -28,7 +28,9 @@ import { ToAsset } from '../composer_ui/to_asset/to_asset'
 import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token_modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
 import { QuoteOptions } from './components/swap/quote-options/quote-options'
-import { SwapSettingsModal } from './components/swap/settings/swap-settings-modal'
+import {
+  AdvancedSettingsModal //
+} from '../composer_ui/advanced_settings_modal.style.ts/advanced_settings_modal'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
@@ -51,7 +53,6 @@ export const Swap = () => {
     selectingFromOrTo,
     selectedGasFeeOption,
     slippageTolerance,
-    useDirectRoute,
     gasEstimates,
     onSelectFromToken,
     onSelectToToken,
@@ -62,7 +63,6 @@ export const Swap = () => {
     handleOnSetToAmount,
     setSelectedGasFeeOption,
     setSlippageTolerance,
-    setUseDirectRoute,
     onSubmit,
     submitButtonText,
     isSubmitButtonDisabled,
@@ -208,13 +208,11 @@ export const Swap = () => {
           </Row>
         </ToAsset>
         {showSwapSettings && (
-          <SwapSettingsModal
+          <AdvancedSettingsModal
             selectedGasFeeOption={selectedGasFeeOption}
             slippageTolerance={slippageTolerance}
-            useDirectRoute={useDirectRoute}
             setSelectedGasFeeOption={setSelectedGasFeeOption}
             setSlippageTolerance={setSlippageTolerance}
-            setUseDirectRoute={setUseDirectRoute}
             gasEstimates={gasEstimates}
             onClose={() => setShowSwapSettings(false)}
             selectedNetwork={selectedNetwork}

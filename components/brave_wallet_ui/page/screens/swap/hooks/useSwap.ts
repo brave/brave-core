@@ -21,12 +21,11 @@ import {
 // Types and constants
 import {
   QuoteOption,
-  GasFeeOption,
   GasEstimate,
   SwapParams,
   SwapValidationErrorType
 } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, GasFeeOption } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'

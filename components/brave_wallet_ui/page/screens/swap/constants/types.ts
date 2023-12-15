@@ -43,12 +43,6 @@ export type SwapAndSend = {
   name: string
 }
 
-export type GasFeeOption = {
-  id: string
-  name: string
-  icon: string
-}
-
 export type Exchange = {
   id: string
   name: string
