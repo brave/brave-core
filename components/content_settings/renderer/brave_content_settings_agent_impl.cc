@@ -161,6 +161,10 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 }
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
+  if (blocked_script_url_.is_empty()) {
+    blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+    blocked_script_url_ = url::Origin(frame->GetSecurityOrigin()).GetURL();
+  }
   if (!blocked_script_url_.is_empty()) {
     BraveSpecificDidBlockJavaScript(
         base::UTF8ToUTF16(blocked_script_url_.spec()));
