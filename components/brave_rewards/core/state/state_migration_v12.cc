@@ -81,12 +81,6 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
       return false;
   }
 
-  wallet = wallet::GenerateLinks(std::move(wallet));
-  if (!wallet) {
-    BLOG(0, "Failed to generate links for " << wallet_type << " wallet!");
-    return false;
-  }
-
   if (!wallet::SetWallet(*engine_, std::move(wallet))) {
     BLOG(0, "Failed to set " << wallet_type << " wallet!");
     return false;

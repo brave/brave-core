@@ -39,6 +39,8 @@ class WalletProvider {
 
   virtual base::TimeDelta GetDelay() const;
 
+  virtual void AssignWalletLinks(mojom::ExternalWallet& external_wallet) = 0;
+
   void Initialize();
 
   void StartContribution(const std::string& contribution_id,

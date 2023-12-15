@@ -22,7 +22,9 @@ std::string GetClientSecret();
 
 std::string GetFeeAddress();
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
+std::string GetAccountUrl();
+
+std::string GetActivityUrl();
 
 }  // namespace brave_rewards::internal::bitflyer
 

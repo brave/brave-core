@@ -19,7 +19,9 @@ std::string GetClientId();
 
 std::string GetClientSecret();
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
+std::string GetAccountUrl();
+
+std::string GetActivityUrl();
 
 }  // namespace brave_rewards::internal::zebpay
 

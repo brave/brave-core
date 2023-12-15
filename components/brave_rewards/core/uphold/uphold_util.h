@@ -21,7 +21,9 @@ std::string GetClientSecret();
 
 std::string GetFeeAddress();
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
+std::string GetAccountUrl();
+
+std::string GetActivityUrl(const std::string& address);
 
 }  // namespace brave_rewards::internal::uphold
 

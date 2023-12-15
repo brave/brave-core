@@ -29,14 +29,6 @@ std::string GetUrl(UrlType type) {
   }
 }
 
-std::string GetAccountUrl() {
-  return GetUrl(UrlType::kOAuth);
-}
-
-std::string GetActivityUrl() {
-  return GetUrl(UrlType::kOAuth) + "/balances";
-}
-
 }  // namespace
 
 namespace gemini {
@@ -77,15 +69,12 @@ std::string GetFeeAddress() {
              : BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS);
 }
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
-  if (wallet) {
-    wallet->account_url = GetAccountUrl();
-    wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
-                               ? GetActivityUrl()
-                               : "";
-  }
+std::string GetAccountUrl() {
+  return GetUrl(UrlType::kOAuth);
+}
 
-  return wallet;
+std::string GetActivityUrl() {
+  return GetUrl(UrlType::kOAuth) + "/balances";
 }
 
 }  // namespace gemini
