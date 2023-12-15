@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
@@ -124,10 +125,14 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       new FilTxManager(this, json_rpc_service, keyring_service, prefs,
                        delegate_.get(), account_resolver_delegate_.get()));
   if (IsBitcoinEnabled()) {
-    CHECK(bitcoin_wallet_service);
-    tx_manager_map_[mojom::CoinType::BTC] = std::make_unique<BitcoinTxManager>(
-        this, bitcoin_wallet_service, keyring_service, prefs, delegate_.get(),
-        account_resolver_delegate_.get());
+    if (!bitcoin_wallet_service) {
+      CHECK_IS_TEST();
+    } else {
+      tx_manager_map_[mojom::CoinType::BTC] =
+          std::make_unique<BitcoinTxManager>(
+              this, bitcoin_wallet_service, keyring_service, prefs,
+              delegate_.get(), account_resolver_delegate_.get());
+    }
   }
 
   if (IsZCashEnabled()) {

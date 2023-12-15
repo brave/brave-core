@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -69,19 +70,22 @@ void AccountDiscoveryManager::StartDiscovery() {
       derived_count[mojom::KeyringId::kSolana], kDiscoveryAttempts));
 
   if (IsBitcoinEnabled()) {
-    CHECK(bitcoin_wallet_service_);
-
-    bitcoin_wallet_service_->DiscoverAccount(
-        mojom::KeyringId::kBitcoin84, 0,
-        base::BindOnce(&AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
-                       weak_ptr_factory_.GetWeakPtr()));
-
-    if (features::kBitcoinTestnetDiscovery.Get()) {
+    if (!bitcoin_wallet_service_) {
+      CHECK_IS_TEST();
+    } else {
       bitcoin_wallet_service_->DiscoverAccount(
-          mojom::KeyringId::kBitcoin84Testnet, 0,
+          mojom::KeyringId::kBitcoin84, 0,
           base::BindOnce(
               &AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
               weak_ptr_factory_.GetWeakPtr()));
+
+      if (features::kBitcoinTestnetDiscovery.Get()) {
+        bitcoin_wallet_service_->DiscoverAccount(
+            mojom::KeyringId::kBitcoin84Testnet, 0,
+            base::BindOnce(
+                &AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
+                weak_ptr_factory_.GetWeakPtr()));
+      }
     }
   }
 }

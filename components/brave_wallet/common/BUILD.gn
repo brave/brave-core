@@ -23,6 +23,7 @@ buildflag_header("buildflags") {
   flags = [
     "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
     "BRAVE_ZERO_EX_API_KEY=\"$brave_zero_ex_api_key\"",
+    "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
   ]
 }
 
@@ -73,6 +74,7 @@ static_library("common") {
     "zcash_utils.h",
   ]
   deps = [
+    ":buildflags",
     ":common_constants",
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
