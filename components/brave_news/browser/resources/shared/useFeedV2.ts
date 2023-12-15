@@ -126,6 +126,8 @@ export const useFeedV2 = () => {
   }, [])
 
   useEffect(() => {
+    setFeedV2(undefined)
+
     const cachedFeed = maybeLoadFeed(feedView)
     if (cachedFeed) {
       setFeedV2(cachedFeed)

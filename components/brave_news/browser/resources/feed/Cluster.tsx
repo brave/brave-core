@@ -18,9 +18,7 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
-  gap: ${spacing.m};
-
-  padding: ${spacing['2Xl']} ${spacing.m} ${spacing.m} ${spacing.m};
+  gap: ${spacing.l};
 
   & > ${Title} {
     --leo-icon-color: currentColor;
@@ -28,9 +26,6 @@ const Container = styled(Card)`
 
     gap: ${spacing.m};
     align-items: center;
-
-    margin-left: ${spacing.xl};
-    margin-bottom: ${spacing.xl};
   }
 
   & > ${Card} {

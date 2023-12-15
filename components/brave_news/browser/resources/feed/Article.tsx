@@ -19,6 +19,7 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
+  gap: ${spacing.s};
   padding-top: ${spacing.l};
 `
 

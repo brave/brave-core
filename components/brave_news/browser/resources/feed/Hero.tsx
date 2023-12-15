@@ -15,8 +15,12 @@ interface Props {
 }
 
 const Container = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.s};
+
   & > ${LargeImage} {
-    margin-bottom: ${spacing.m};
+    margin-bottom: ${spacing.l};
   }
 `
 
