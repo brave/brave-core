@@ -205,7 +205,7 @@ public class NTPUtil {
         Spanned learnMoreSpanned = BraveRewardsHelper.spannedFromHtmlString(bannerText);
         SpannableString learnMoreTextSS = new SpannableString(learnMoreSpanned.toString());
 
-        ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(chromeActivity.getResources().getColor(R.color.brave_theme_color));
+        ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(chromeActivity.getColor(R.color.brave_theme_color));
         // setSpan gives us IndexOutOfBoundsException in case of end or start are > length and in
         // some other cases.
         int length = learnMoreTextSS.length();
@@ -235,7 +235,8 @@ public class NTPUtil {
         bundle.putInt(SponsoredImageUtil.NTP_TYPE, ntpType);
         rewardsBottomSheetDialogFragment.setArguments(bundle);
         rewardsBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
-        rewardsBottomSheetDialogFragment.show(chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
+        rewardsBottomSheetDialogFragment.show(
+                chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
         rewardsBottomSheetDialogFragment.setCancelable(false);
     }
 

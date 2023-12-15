@@ -405,18 +405,14 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                         mSiteText.setText(statPair.first);
                         if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
                             mSiteText.setTextColor(
-                                    mContext.getResources()
-                                            .getColor(R.color.brave_stats_text_dark_color));
+                                    mContext.getColor(R.color.brave_stats_text_dark_color));
                             mTrackerCountText.setTextColor(
-                                    mContext.getResources()
-                                            .getColor(R.color.brave_stats_text_dark_color));
+                                    mContext.getColor(R.color.brave_stats_text_dark_color));
                         } else {
                             mSiteText.setTextColor(
-                                    mContext.getResources()
-                                            .getColor(R.color.brave_stats_text_light_color));
+                                    mContext.getColor(R.color.brave_stats_text_light_color));
                             mTrackerCountText.setTextColor(
-                                    mContext.getResources()
-                                            .getColor(R.color.brave_stats_text_light_color));
+                                    mContext.getColor(R.color.brave_stats_text_light_color));
                         }
 
                         rootView.addView(layout);

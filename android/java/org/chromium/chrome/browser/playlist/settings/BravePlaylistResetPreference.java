@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 
 /**
@@ -33,8 +32,7 @@ public class BravePlaylistResetPreference
         super(context, attrs);
 
         Resources resources = getContext().getResources();
-        mPrefAccentColor =
-                ApiCompatibilityUtils.getColor(resources, R.color.wallet_error_text_color);
+        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);

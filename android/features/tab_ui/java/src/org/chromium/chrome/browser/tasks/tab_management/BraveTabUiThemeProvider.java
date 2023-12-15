@@ -11,7 +11,6 @@ import android.content.res.ColorStateList;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.tab_ui.R;
 
 public class BraveTabUiThemeProvider {
@@ -29,8 +28,7 @@ public class BraveTabUiThemeProvider {
             : "Something has changed in the upstream!";
 
         if (isSelected) {
-            return ApiCompatibilityUtils.getColor(
-                    context.getResources(), R.color.baseline_neutral_10);
+            return context.getColor(R.color.baseline_neutral_10);
         }
 
         return TabUiThemeProvider.getTitleTextColor(context, isIncognito, isSelected);
@@ -49,8 +47,7 @@ public class BraveTabUiThemeProvider {
     public static int getCardViewBackgroundColor(
             Context context, boolean isIncognito, boolean isSelected) {
         if (isSelected && !isIncognito) {
-            return ApiCompatibilityUtils.getColor(
-                    context.getResources(), R.color.brave_tab_view_card_selected_bg);
+            return context.getColor(R.color.brave_tab_view_card_selected_bg);
         }
 
         return TabUiThemeProvider.getCardViewBackgroundColor(context, isIncognito, isSelected);

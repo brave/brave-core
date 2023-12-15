@@ -108,7 +108,7 @@ public class BraveRewardsOnboardingFragment extends Fragment {
                    ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         ForegroundColorSpan foregroundSpan =
-            new ForegroundColorSpan(getResources().getColor(R.color.onboarding_orange));
+                new ForegroundColorSpan(getContext().getColor(R.color.onboarding_orange));
         ss.setSpan(foregroundSpan, getResources().getString(R.string.terms_text).length(),
                    ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());

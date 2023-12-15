@@ -82,22 +82,24 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     }
 
     @Override
-    public void initializeWithNative(Activity activity,
+    public void initializeWithNative(
+            Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
         super.initializeWithNative(activity, visibilityController, onModelTokenChange);
 
-        mIncognitoStateObserver = (isIncognito) -> {
-            if (!isIncognito) {
-                // Make sure that background color match bottom toolbar color.
-                LinearLayout mainContent = mToolbarView.findViewById(R.id.main_content);
-                assert mainContent != null : "Something has changed in upstream!";
-                if (mainContent != null) {
-                    mainContent.setBackgroundColor(
-                            activity.getResources().getColor(R.color.dialog_bg_color_baseline));
-                }
-            }
-        };
+        mIncognitoStateObserver =
+                (isIncognito) -> {
+                    if (!isIncognito) {
+                        // Make sure that background color match bottom toolbar color.
+                        LinearLayout mainContent = mToolbarView.findViewById(R.id.main_content);
+                        assert mainContent != null : "Something has changed in upstream!";
+                        if (mainContent != null) {
+                            mainContent.setBackgroundColor(
+                                    activity.getColor(R.color.dialog_bg_color_baseline));
+                        }
+                    }
+                };
         mIncognitoStateProvider.addIncognitoStateObserverAndTrigger(mIncognitoStateObserver);
     }
 

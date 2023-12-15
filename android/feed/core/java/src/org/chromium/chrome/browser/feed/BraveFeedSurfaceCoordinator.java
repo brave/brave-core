@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -100,10 +99,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.removeAllViews();
 
         mFrameLayoutForPolicy = new FrameLayout(mActivity);
-        mFrameLayoutForPolicy.setLayoutParams(new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        mFrameLayoutForPolicy.setBackgroundColor(ApiCompatibilityUtils.getColor(
-                mActivity.getResources(), R.color.default_bg_color_baseline));
+        mFrameLayoutForPolicy.setLayoutParams(
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT));
+        mFrameLayoutForPolicy.setBackgroundColor(
+                mActivity.getColor(R.color.default_bg_color_baseline));
 
         // Make framelayout focusable so that it is the next focusable view when the url bar clears
         // focus.

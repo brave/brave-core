@@ -118,8 +118,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
                 rdBtn.setLayoutParams(params);
                 rdBtn.setButtonDrawable(null);
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
-                rdBtn.setTextColor(
-                        getActivity().getResources().getColor(R.color.onboarding_text_color));
+                rdBtn.setTextColor(getActivity().getColor(R.color.onboarding_text_color));
                 rdBtn.setBackgroundDrawable(
                         ResourcesCompat.getDrawable(getActivity().getResources(),
                                 R.drawable.radiobutton_background, /* theme= */ null));

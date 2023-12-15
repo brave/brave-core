@@ -198,7 +198,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         : android.R.color.black;
                 ImageViewCompat.setImageTintList(imageCreditViewHolder.superReferralLogo,
                         ColorStateList.valueOf(
-                                mActivity.getResources().getColor(floatingButtonIconColor)));
+                                mActivity.getColor(floatingButtonIconColor)));
                 imageCreditViewHolder.superReferralLogo.setOnClickListener(view -> {
                     QRCodeShareDialogFragment qRCodeShareDialogFragment =
                             new QRCodeShareDialogFragment();

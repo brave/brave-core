@@ -183,7 +183,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             };
 
             tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
+            ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(getContext().getColor(R.color.brave_theme_color));
             tosTextSS.setSpan(brOffForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             bottomSheetTosText.setMovementMethod(LinkMovementMethod.getInstance());
             bottomSheetTosText.setText(tosTextSS);

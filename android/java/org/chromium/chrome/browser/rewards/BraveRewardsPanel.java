@@ -496,15 +496,15 @@ public class BraveRewardsPanel
 
     private void showSummarySection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
+                mActivity.getColor(R.color.rewards_panel_secondary_text_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
+                mActivity.getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
+                mActivity.getColor(R.color.rewards_panel_action_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
+                mActivity.getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mRewardsSummaryDetailLayout.setVisibility(View.VISIBLE);
@@ -513,15 +513,15 @@ public class BraveRewardsPanel
 
     private void showTipSection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
+                mActivity.getColor(R.color.rewards_panel_action_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
+                mActivity.getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
+                mActivity.getColor(R.color.rewards_panel_secondary_text_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
+                mActivity.getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
         mRewardsSummaryDetailLayout.setVisibility(View.GONE);
         mRewardsTipLayout.setVisibility(View.VISIBLE);

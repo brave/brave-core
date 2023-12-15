@@ -1359,7 +1359,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         String braveSyncCodeWarning = getResources().getString(R.string.brave_sync_code_warning);
         SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
 
-        ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.default_red));
+        ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(getContext().getColor(R.color.default_red));
         braveSyncCodeWarningSpanned.setSpan(foregroundSpan, 0, braveSyncCodeWarningSpanned.length()-1, 0);
         mBraveSyncWarningTextViewAddMobileDevice.setText(braveSyncCodeWarningSpanned);
       }
@@ -1450,7 +1450,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         String braveSyncCodeWarning = getResources().getString(R.string.brave_sync_code_warning);
         SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
 
-        ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.default_red));
+        ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(getContext().getColor(R.color.default_red));
         braveSyncCodeWarningSpanned.setSpan(foregroundSpan, 0, braveSyncCodeWarningSpanned.length()-1, 0);
         mBraveSyncWarningTextViewAddLaptop.setText(braveSyncCodeWarningSpanned);
       }

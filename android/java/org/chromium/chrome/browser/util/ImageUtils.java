@@ -69,14 +69,14 @@ public class ImageUtils {
         }
 
         Paint topPaint = new Paint();
-        LinearGradient topShader = new LinearGradient(0,0,0,height, context.getResources().getColor(R.color.black_alpha_50), Color.TRANSPARENT, Shader.TileMode.CLAMP);
+        LinearGradient topShader = new LinearGradient(0,0,0,height, context.getColor(R.color.black_alpha_50), Color.TRANSPARENT, Shader.TileMode.CLAMP);
         topPaint.setShader(topShader);
         topPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN));
         canvas.drawRect(0,0,w,height,topPaint);
 
         //Bottom gradient
         Paint bottomPaint = new Paint();
-        LinearGradient bottomShader = new LinearGradient(0,2*(h/3),0,h, Color.TRANSPARENT, context.getResources().getColor(R.color.black_alpha_30), Shader.TileMode.CLAMP);
+        LinearGradient bottomShader = new LinearGradient(0,2*(h/3),0,h, Color.TRANSPARENT, context.getColor(R.color.black_alpha_30), Shader.TileMode.CLAMP);
         bottomPaint.setShader(bottomShader);
         bottomPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN));
         canvas.drawRect(0,2*(h/3),w,h,bottomPaint);
