@@ -16,8 +16,11 @@ bool ShouldTargetSubdivisionCountryCode(const std::string& country_code) {
 
 bool ShouldTargetSubdivision(const std::string& country_code,
                              const std::string& subdivision) {
-  const auto iter = GetSupportedSubdivisions().find(country_code);
-  if (iter == GetSupportedSubdivisions().cend()) {
+  const SupportedSubdivisionMap& supported_subdivisions =
+      GetSupportedSubdivisions();
+
+  const auto iter = supported_subdivisions.find(country_code);
+  if (iter == supported_subdivisions.cend()) {
     return false;
   }
 
