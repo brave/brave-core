@@ -57,6 +57,7 @@ export interface State {
   tipsList: Publisher[]
   ui: {
     modalConnect: boolean
+    modalConnectState: 'loading' | 'error' | ''
     modalRedirect: ConnectExternalWalletResult
       | 'error'
       | 'hide'

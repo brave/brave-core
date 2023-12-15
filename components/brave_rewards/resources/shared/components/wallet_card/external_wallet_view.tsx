@@ -8,10 +8,7 @@ import * as React from 'react'
 import { ExternalWallet } from '../../lib/external_wallet'
 import { ExternalWalletAction } from './external_wallet_action'
 import { LocaleContext } from '../../lib/locale_context'
-import { GeminiIcon } from '../icons/gemini_icon'
-import { BitflyerIcon } from '../icons/bitflyer_icon'
-import { UpholdIcon } from '../icons/uphold_icon'
-import { ZebPayIcon } from '../icons/zebpay_icon'
+import { WalletProviderIcon } from '../icons/wallet_provider_icon'
 import { CaretIcon } from '../icons/caret_icon'
 import { ArrowNextIcon } from '../icons/arrow_next_icon'
 import { ExternalWalletBubble } from './external_wallet_bubble'
@@ -33,19 +30,6 @@ export function ExternalWalletView (props: Props) {
 
   function actionHandler (action: ExternalWalletAction) {
     return () => props.onExternalWalletAction(action)
-  }
-
-  function ProviderIcon () {
-    if (!externalWallet) {
-      return null
-    }
-
-    switch (externalWallet.provider) {
-      case 'gemini': return <GeminiIcon />
-      case 'bitflyer': return <BitflyerIcon />
-      case 'uphold': return <UpholdIcon />
-      case 'zebpay': return <ZebPayIcon />
-    }
   }
 
   function toggleBubble () {
@@ -83,7 +67,9 @@ export function ExternalWalletView (props: Props) {
             }
           </style.buttonText>
           <style.buttonIcons>
-            <span className='provider'><ProviderIcon /></span>
+            <span className='provider'>
+              <WalletProviderIcon provider={externalWallet.provider} />
+            </span>
             <span className='caret'>
               <CaretIcon direction='down' />
             </span>

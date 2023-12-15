@@ -19,6 +19,7 @@ export function defaultState (): Rewards.State {
     reconcileStamp: 0,
     ui: {
       modalConnect: false,
+      modalConnectState: '',
       modalRedirect: 'hide',
       modalRedirectProvider: '',
       modalReset: false,

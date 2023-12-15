@@ -43,7 +43,11 @@ export const localeStrings = {
   unexpectedErrorTitle: 'An unexpected error has occurred',
   unexpectedErrorText: 'Please reopen the contribution panel to try again.',
   defaultCreatorDescription: 'Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.',
-  platformPublisherTitle: '$1 on $2'
+  platformPublisherTitle: '$1 on $2',
+  selfCustodyTitle: 'Support your favorite creators',
+  selfCustodyHeader: 'Show your love and send a token of your gratitude',
+  selfCustodyText: 'Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation',
+  selfCustodySendButtonLabel: 'Send with Web3 wallet'
 }
 
 export type StringKey = keyof typeof localeStrings

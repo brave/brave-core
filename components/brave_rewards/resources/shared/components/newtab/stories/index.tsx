@@ -35,8 +35,8 @@ export function Card () {
       <WithThemeVariables>
         <div style={{ width: '284px' }}>
           <RewardsCard
-            rewardsEnabled={false}
-            userType='connected'
+            rewardsEnabled={true}
+            userType='unconnected'
             vbatDeadline={Date.parse('2023-01-01T00:00:00-05:00')}
             isUnsupportedRegion={false}
             declaredCountry='US'
@@ -67,9 +67,13 @@ export function Card () {
             contributionsThisMonth={10}
             publishersVisited={4}
             canConnectAccount={true}
+            showSelfCustodyInvite={true}
             onEnableRewards={actionLogger('onEnableRewards')}
             onSelectCountry={actionLogger('onSelectCountry')}
             onClaimGrant={actionLogger('onClaimGrant')}
+            onSelfCustodyInviteDismissed={
+              actionLogger('onSelfCustodyInviteDismissed')
+            }
           />
         </div>
       </WithThemeVariables>
