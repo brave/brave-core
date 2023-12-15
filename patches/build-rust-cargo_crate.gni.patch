@@ -10,3 +10,11 @@ index 1c86569e45153d9bfad207c65ca728373adb9d84..e523e46a017da8f2efcc858af6280807
  
    # cargo_crate() should set library_configs, executable_configs,
    # proc_macro_configs. Not configs.
+@@ -236,6 +237,7 @@ template("cargo_crate") {
+     testonly = _testonly
+     if (defined(invoker.visibility)) {
+       visibility = invoker.visibility
++      visibility += [ "//brave/third_party/*", "//brave/components/*",  ]
+     }
+     if (defined(crate_type) && crate_type == "cdylib") {
+       # See comments above about cdylib.
