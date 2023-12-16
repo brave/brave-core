@@ -27,6 +27,18 @@ def ToChromiumPlatformName(target_os: str) -> str:
   raise RuntimeError('Platform is not supported')
 
 
+def ToBravePlatformName(target_os: str) -> str:
+  if target_os == 'mac':
+    return 'darwin-arm64' if platform.processor() == 'arm' else 'darwin-x64'
+  if target_os == 'windows':
+    return 'win32-x64'
+  if target_os == 'linux':
+    return 'linux-x64'
+  if target_os == 'android':
+    return 'android-arm64'
+  raise RuntimeError('Platform is not supported')
+
+
 def TerminateProcess(p):
   logging.error('terminating process by timeout %r', p.args)
   p.terminate()

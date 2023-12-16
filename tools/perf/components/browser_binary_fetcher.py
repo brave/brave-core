@@ -99,7 +99,7 @@ def _InstallApk(apk_path: str, browser_type: BrowserType,
   ],
                    check=True)
 
-  if browser_type.name.startswith('brave') and version is not None:
+  if browser_type.win_name.startswith('brave') and version is not None:
     installed_version = 'v' + _GetPackageVersion(package)
     if installed_version != version.last_tag:
       raise RuntimeError('Version mismatch: expected ' +
