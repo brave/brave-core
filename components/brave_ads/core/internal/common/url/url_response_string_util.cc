@@ -21,14 +21,13 @@ std::string HeadersToString(
     const base::flat_map<std::string, std::string>& headers,
     const int indent = 4) {
   std::vector<std::string> formatted_headers;
+  formatted_headers.reserve(headers.size());
 
-  const std::string spaces = std::string(indent, ' ');
+  const std::string spaces(indent, ' ');
 
   for (const auto& [header, value] : headers) {
-    const std::string formatted_header = base::ReplaceStringPlaceholders(
-        "$1$2: $3", {spaces, header, value}, nullptr);
-
-    formatted_headers.push_back(formatted_header);
+    formatted_headers.push_back(base::StringPrintf(
+        "%s%s: %s", spaces.c_str(), header.c_str(), value.c_str()));
   }
 
   return base::JoinString(formatted_headers, "\n");
