@@ -42,7 +42,6 @@ class ConversationDriver {
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
-    virtual void OnConversationEntryPending() {}
   };
 
   ConversationDriver(
@@ -69,9 +68,8 @@ class ConversationDriver {
   void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(mojom::ConversationTurn turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
-  void MakeAPIRequestWithConversationHistoryUpdate(
-      mojom::ConversationTurn turn,
-      bool needs_page_content = false);
+  void SubmitHumanConversationEntry(mojom::ConversationTurn turn,
+                                    bool has_latest_content = false);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -117,7 +115,7 @@ class ConversationDriver {
 
   virtual void OnFaviconImageDataChanged();
 
-  void MaybeGeneratePageText();
+  bool MaybeGeneratePageText();
   void CleanUp();
 
   int64_t GetNavigationId() const;
@@ -129,8 +127,8 @@ class ConversationDriver {
  private:
   void InitEngine();
   void OnUserOptedIn();
-  bool MaybePopPendingRequests();
-  void MaybeGenerateQuestions();
+  bool MaybePopPendingRequests(bool content_was_retrieved);
+  void MaybeSeedOrClearSuggestions();
 
   void OnPageContentRetrieved(int64_t navigation_id,
                               std::string contents_text,
@@ -147,7 +145,6 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
-  void OnConversationEntryPending();
 
   void SetAPIError(const mojom::APIError& error);
   bool IsContentAssociationPossible();
@@ -186,7 +183,6 @@ class ConversationDriver {
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
 
   std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
-  bool pending_message_needs_page_content_ = false;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

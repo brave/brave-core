@@ -49,7 +49,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
       const std::string& channel_name);
 
   // content::WebContentsObserver
-  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -71,11 +70,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::u16string GetPageTitle() const override;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
-
-  // Store the unique ID for each navigation so that
-  // we can ignore API responses for previous navigations.
-  int64_t current_navigation_id_;
-  bool is_same_document_navigation_ = false;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

@@ -174,16 +174,18 @@ ConversationDriver::GetVisibleConversationHistory() {
       list.push_back(turn.Clone());
     }
   }
+  if (pending_conversation_entry_ && pending_conversation_entry_->visibility !=
+                                         ConversationTurnVisibility::HIDDEN) {
+    list.push_back(pending_conversation_entry_->Clone());
+  }
   return list;
 }
 
 void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
-  if (MaybePopPendingRequests()) {
-    return;
-  }
-  MaybeGeneratePageText();
+  MaybeSeedOrClearSuggestions();
+  MaybePopPendingRequests(false);
 }
 
 void ConversationDriver::InitEngine() {
@@ -246,9 +248,7 @@ void ConversationDriver::SetUserOptedIn(bool user_opted_in) {
 }
 
 void ConversationDriver::OnUserOptedIn() {
-  if (!MaybePopPendingRequests()) {
-    MaybeGeneratePageText();
-  }
+  MaybePopPendingRequests(false);
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
     ai_chat_metrics_->RecordEnabled(true, true, {});
@@ -304,7 +304,7 @@ void ConversationDriver::OnFaviconImageDataChanged() {
   }
 }
 
-bool ConversationDriver::MaybePopPendingRequests() {
+bool ConversationDriver::MaybePopPendingRequests(bool content_was_retrieved) {
   if (!is_conversation_active_ || !HasUserOptedIn()) {
     return false;
   }
@@ -315,63 +315,87 @@ bool ConversationDriver::MaybePopPendingRequests() {
 
   // We don't discard requests related to summarization until we have the
   // article text.
-  if (article_text_.empty() && pending_message_needs_page_content_) {
+  if (is_page_text_fetch_in_progress_) {
     return false;
   }
 
   mojom::ConversationTurn request = std::move(*pending_conversation_entry_);
   pending_conversation_entry_.reset();
-  pending_message_needs_page_content_ = false;
-  MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
+  SubmitHumanConversationEntry(std::move(request), content_was_retrieved);
   return true;
 }
 
-void ConversationDriver::MaybeGeneratePageText() {
+bool ConversationDriver::MaybeGeneratePageText() {
+  // TODO(petemill): This function should just happen inline with
+  // SubmitHumanInput.
+  DCHECK(should_send_page_contents_);
   const GURL url = GetPageURL();
 
-  if (!base::Contains(kAllowedSchemes, url.scheme())) {
-    return;
-  }
-
-  // User might have already asked questions before the page is loaded. It'd be
-  // strange if we generate contents based on the page.
-  // TODO(sko) This makes it impossible to ask something like "Summarize this
-  // page" once a user already asked a question. But for now we'd like to keep
-  // it simple and not confuse users with the context changing. We'll see what
-  // users say.
-  if (!chat_history_.empty()) {
-    return;
+  if (!IsContentAssociationPossible()) {
+    NOTREACHED() << "Shouldn't have been asked to generate page text when "
+                 << "|IsContentAssociationPossible()| is false.";
+    return false;
   }
 
   // Make sure user is opted in since this may make a network request
   // for more page content (e.g. video transcript).
   // Perf: make sure we're not doing this when the feature
   // won't be used (e.g. not opted in or no active conversation).
-  if (is_page_text_fetch_in_progress_ || !article_text_.empty() ||
-      !HasUserOptedIn() || !is_conversation_active_ ||
-      !IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
-    return;
+  if (is_page_text_fetch_in_progress_ ||
+      !HasUserOptedIn() || !is_conversation_active_) {
+    return false;
   }
 
   if (!HasPrimaryMainFrame()) {
     VLOG(1) << "Summary request submitted for a WebContents without a "
                "primary main frame";
+    return false;
+  }
+
+  is_page_text_fetch_in_progress_ = true;
+  // Update fetching status
+  OnPageHasContentChanged(BuildSiteInfo());
+  VLOG(1) << "Calling GetPageContent";
+  GetPageContent(
+      base::BindOnce(&ConversationDriver::OnPageContentRetrieved,
+                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
+  return true;
+}
+
+void ConversationDriver::MaybeSeedOrClearSuggestions() {
+  if (!is_conversation_active_) {
     return;
   }
 
-  if (should_send_page_contents_) {
-    is_page_text_fetch_in_progress_ = true;
-    // Update fetching status
-    OnPageHasContentChanged(BuildSiteInfo());
-    GetPageContent(
-        base::BindOnce(&ConversationDriver::OnPageContentRetrieved,
-                       weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
+  const bool is_page_associated =
+      IsContentAssociationPossible() && should_send_page_contents_;
+
+  if (!is_page_associated && !suggestions_.empty()) {
+    suggestions_.clear();
+    OnSuggestedQuestionsChanged();
+    return;
+  }
+
+  if (is_page_associated && suggestions_.empty() &&
+      suggestion_generation_status_ !=
+          mojom::SuggestionGenerationStatus::IsGenerating &&
+      suggestion_generation_status_ !=
+          mojom::SuggestionGenerationStatus::HasGenerated) {
+    suggestions_.emplace_back(
+        is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                  : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::CanGenerate;
+    OnSuggestedQuestionsChanged();
   }
 }
 
 void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
                                           std::string contents_text,
                                           bool is_video) {
+  VLOG(1) << "OnPageContentRetrieved";
+  VLOG(4) << "Contents(is_video=" << is_video << "): "
+          << contents_text;
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
@@ -390,30 +414,17 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   // Update completion status
   OnPageHasContentChanged(BuildSiteInfo());
 
-  // Now that we have article text, we can suggest to summarize it
-  DCHECK(suggestions_.empty())
-      << "Expected suggested questions to be clear when there has been no"
-      << " previous text content but there were " << suggestions_.size()
-      << " suggested questions: " << base::JoinString(suggestions_, ", ");
-
-  // Now that we have content, we can provide a summary on-demand. Add that to
-  // suggested questions.
-  suggestions_.emplace_back(
-      is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
-                : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
-  suggestion_generation_status_ =
-      mojom::SuggestionGenerationStatus::CanGenerate;
-  OnSuggestedQuestionsChanged();
   // We check again to see if any page content related prompt is pending
-  MaybePopPendingRequests();
+  MaybePopPendingRequests(true);
 }
 
 void ConversationDriver::CleanUp() {
+  DVLOG(1) << __func__;
   chat_history_.clear();
   article_text_.clear();
+  is_video_ = false;
   suggestions_.clear();
   pending_conversation_entry_.reset();
-  pending_message_needs_page_content_ = false;
   is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
@@ -422,6 +433,8 @@ void ConversationDriver::CleanUp() {
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
   engine_->ClearAllQueries();
+
+  MaybeSeedOrClearSuggestions();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -456,8 +469,9 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
 
 void ConversationDriver::SetShouldSendPageContents(bool should_send) {
   DCHECK(should_send_page_contents_ != should_send);
-
   should_send_page_contents_ = should_send;
+
+  MaybeSeedOrClearSuggestions();
 }
 
 bool ConversationDriver::GetShouldSendPageContents() {
@@ -516,6 +530,7 @@ void ConversationDriver::GenerateQuestions() {
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
   auto navigation_id_for_query = current_navigation_id_;
+  // TODO(petemill): Need to get page content
   engine_->GenerateQuestionSuggestions(
       is_video_, article_text_,
       base::BindOnce(&ConversationDriver::OnSuggestedQuestionsResponse,
@@ -541,31 +556,40 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
   DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
 }
 
-void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
-    mojom::ConversationTurn turn,
-    bool needs_page_content /* = false */) {
+void ConversationDriver::SubmitHumanConversationEntry(
+    mojom::ConversationTurn turn, bool has_latest_content/* = false */) {
+  VLOG(4) << "SubmitHumanConversationEntry: " << turn.text;
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - conversation to be active
   // - content to be retrieved
-  if (!is_conversation_active_ || !HasUserOptedIn() ||
-      (article_text_.empty() && needs_page_content)) {
-    // This function should not be presented in the UI if the user has not
-    // opted-in yet.
+  bool delay_entry = false;
+  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    delay_entry = true;
+  } else if (!has_latest_content && should_send_page_contents_ && MaybeGeneratePageText()) {
+    delay_entry = true;
+  }
+
+  if (delay_entry) {
+    VLOG(2) << "Adding a pending conversation entry: " << turn.text;
+    DCHECK(!pending_conversation_entry_)
+        << "Should not be able to add a pending conversation entry "
+        << "when there is already a pending conversation entry.";
     pending_conversation_entry_ =
         std::make_unique<mojom::ConversationTurn>(std::move(turn));
-
-    if (article_text_.empty() && needs_page_content) {
-      pending_message_needs_page_content_ = true;
+    // Pending entry is added to conversation history when asked for
+    // so notify observers.
+    for (auto& obs : observers_) {
+      obs.OnHistoryUpdate();
     }
-
-    // Invoking this before the creation of the page handler means the pending
-    // request will not be reported.
-    OnConversationEntryPending();
     return;
   }
 
   DCHECK(turn.character_type == CharacterType::HUMAN);
+  DCHECK(!is_request_in_progress_) << "Should not be able to submit more"
+      << "than a single human conversation turn at a time.";
+
+  is_request_in_progress_ = true;
 
   bool is_suggested_question = false;
 
@@ -623,7 +647,6 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
-  is_request_in_progress_ = true;
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());
   }
@@ -641,7 +664,7 @@ void ConversationDriver::RetryAPIRequest() {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
       chat_history_.erase(human_turn_iter, chat_history_.end());
-      MakeAPIRequestWithConversationHistoryUpdate(turn);
+      SubmitHumanConversationEntry(turn);
       break;
     }
   }
@@ -735,8 +758,7 @@ void ConversationDriver::SubmitSummarizationRequest() {
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
-  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn),
-                                              /*needs_page_content=*/true);
+  SubmitHumanConversationEntry(std::move(turn));
 }
 
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
@@ -779,12 +801,6 @@ void ConversationDriver::OnPremiumStatusReceived(
                                              std::move(premium_info));
   }
   std::move(parent_callback).Run(premium_status, std::move(premium_info));
-}
-
-void ConversationDriver::OnConversationEntryPending() {
-  for (auto& obs : observers_) {
-    obs.OnConversationEntryPending();
-  }
 }
 
 bool ConversationDriver::GetCanShowPremium() {

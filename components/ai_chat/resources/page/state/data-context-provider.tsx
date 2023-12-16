@@ -75,6 +75,14 @@ function DataContextProvider (props: DataContextProviderProps) {
       .then((res) => setConversationHistory(res.conversationHistory))
   }
 
+  // If a conversation entry is submitted but we haven't yet
+  // accepted the policy, show the policy.
+  React.useEffect(() => {
+    if (conversationHistory.length && !hasAcceptedAgreement) {
+      setShowAgreementModal(true)
+    }
+  }, [conversationHistory?.length, hasAcceptedAgreement])
+
   const getSuggestedQuestions = () => {
     getPageHandlerInstance()
       .pageHandler.getSuggestedQuestions()
@@ -249,12 +257,6 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     getPageHandlerInstance().callbackRouter.onModelChanged.addListener((modelKey: string) => {
       setCurrentModelKey(modelKey)
-    })
-
-    getPageHandlerInstance().callbackRouter.onConversationEntryPending.addListener(() => {
-      if (!hasAcceptedAgreement) {
-        setShowAgreementModal(true)
-      }
     })
 
     // Since there is no server-side event for premium status changing,

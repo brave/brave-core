@@ -97,7 +97,7 @@ void AIChatUIPageHandler::SetClientPage(
   // ex. A user may ask a question from the location bar
   if (active_chat_tab_helper_ &&
       active_chat_tab_helper_->HasPendingConversationEntry()) {
-    OnConversationEntryPending();
+    OnHistoryUpdate();
   }
 }
 
@@ -120,8 +120,7 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
   mojom::ConversationTurn turn = {CharacterType::HUMAN,
                                   ConversationTurnVisibility::VISIBLE, input};
-  active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
-      std::move(turn));
+  active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
 }
 
 void AIChatUIPageHandler::SubmitSummarizationRequest() {
@@ -336,12 +335,6 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
 void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   if (page_.is_bound()) {
     page_->OnSiteInfoChanged(std::move(site_info));
-  }
-}
-
-void AIChatUIPageHandler::OnConversationEntryPending() {
-  if (page_.is_bound()) {
-    page_->OnConversationEntryPending();
   }
 }
 

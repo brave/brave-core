@@ -57,14 +57,6 @@ AIChatTabHelper::~AIChatTabHelper() = default;
 
 // content::WebContentsObserver
 
-void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  // We might have content here, so check.
-  // TODO(petemill): If there are other navigation events to also
-  // check if content is available at, then start a queue and make
-  // sure we don't have multiple async distills going on at the same time.
-  MaybeGeneratePageText();
-}
-
 void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
@@ -88,8 +80,8 @@ void AIChatTabHelper::DidFinishNavigation(
   // of framgment / pushState / replaceState navigations.
   // Content won't be retrieved immediately and we don't have a similar
   // "DOM Content Loaded" event, so let's wait for something else such as
-  // page title changing, or a timer completing before calling
-  // |MaybeGeneratePageText|.
+  // page title changing before committing to starting a new conversation
+  // and treating it as a "fresh page".
   SetSameDocumentNavigation(navigation_handle->IsSameDocument());
   // Experimentally only call |CleanUp| _if_ a same-page navigation
   // results in a page title change (see |TtileWasSet|).
@@ -100,13 +92,14 @@ void AIChatTabHelper::DidFinishNavigation(
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
-  if (is_same_document_navigation_) {
+  if (IsSameDocumentNavigation()) {
+    DVLOG(3)
+        << "Same document navigation detected new \"page\" - calling CleanUp()";
     // Seems as good a time as any to check for content after a same-document
     // navigation.
     // We only perform CleanUp here in case it was a minor pushState / fragment
-    // navigation and didn't result in new content.
+    // navigation and didn't result in new meaningful content.
     CleanUp();
-    MaybeGeneratePageText();
   }
 }
 
