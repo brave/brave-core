@@ -624,7 +624,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   result->type = mojom::ClusterType::TOPIC;
 
   auto& [topic, articles] = topics.front();
-  result->id = topic.title;
+  result->id = topic.claude_title_short;
 
   uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
   for (const auto& article : articles) {

@@ -29,8 +29,18 @@ const saveFeed = (feed?: FeedV2) => {
   const data = JSON.stringify(feed, (_, value) => typeof value === "bigint"
     ? value.toString()
     : value);
-  sessionStorage.setItem(FEED_KEY, data)
-  localStorage.setItem(FEED_KEY, data)
+
+  try {
+    sessionStorage.setItem(FEED_KEY, data)
+  } catch (err) {
+    console.log(err)
+  }
+
+  try {
+    localStorage.setItem(FEED_KEY, data)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const maybeLoadFeed = (view?: FeedView) => {
@@ -116,6 +126,8 @@ export const useFeedV2 = () => {
   }, [])
 
   useEffect(() => {
+    setFeedV2(undefined)
+
     const cachedFeed = maybeLoadFeed(feedView)
     if (cachedFeed) {
       setFeedV2(cachedFeed)
