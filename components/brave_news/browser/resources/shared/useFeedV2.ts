@@ -21,7 +21,11 @@ const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
 const FEED_KEY = 'feedV2'
 const localCache: { [feedView: string]: FeedV2 } = {}
 const saveFeed = (feed?: FeedV2) => {
-  if (!feed) return
+  if (!feed || !feed.items.length) {
+    sessionStorage.removeItem(FEED_KEY)
+    localStorage.removeItem(FEED_KEY)
+    return
+  }
 
   localCache[feedTypeToFeedView(feed.type)] = feed
 
@@ -114,7 +118,7 @@ addFeedListener(latestHash => {
   }
 })
 
-export const useFeedV2 = () => {
+export const useFeedV2 = (enabled: boolean) => {
   const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
   const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
   const [hash, setHash] = useState<string>()
@@ -126,6 +130,8 @@ export const useFeedV2 = () => {
   }, [])
 
   useEffect(() => {
+    if (!enabled) return
+
     setFeedV2(undefined)
 
     const cachedFeed = maybeLoadFeed(feedView)
@@ -140,7 +146,7 @@ export const useFeedV2 = () => {
       setFeedV2(feed)
     })
     return () => { cancelled = true }
-  }, [feedView])
+  }, [feedView, enabled])
 
   const refresh = useCallback(() => {
     // Set the feed to undefined - this will trigger the loading indicator.
