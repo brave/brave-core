@@ -50,8 +50,8 @@ const ButtonsContainer = styled.div`
   }
 
   display: flex;
-  gap: ${spacing.xl};
-  padding: ${spacing.xl};
+  gap: ${spacing.m};
+  padding: ${spacing.m};
 
   background: var(--bn-glass-container);
 `
