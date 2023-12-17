@@ -123,11 +123,21 @@ export const useFeedV2 = (enabled: boolean) => {
   const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
   const [hash, setHash] = useState<string>()
 
-  // Add a listener for the latest hash.
+  // Add a listener for the latest hash if Brave News is enabled. Note: We need
+  // to re-add the listener when the enabled state changes because the backing
+  // FeedV2Builder is created/destroyed.
   useEffect(() => {
+    if (!enabled) return
+
+    let cancelled = false
     // Note: A new feed listener will be notified with the latest hash.
-    addFeedListener(setHash)
-  }, [])
+    addFeedListener(newHash => {
+      if (cancelled) return
+      setHash(newHash)
+    })
+
+    return () => { cancelled = true }
+  }, [enabled])
 
   useEffect(() => {
     if (!enabled) return
@@ -158,7 +168,6 @@ export const useFeedV2 = (enabled: boolean) => {
   // Updates are available if we've been told the latest hash, we have a feed
   // and the hashes don't match.
   const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
-  console.log("Latest hash: ", hash, "Current hash:", feedV2?.sourceHash)
   return {
     feedV2,
     feedView,
