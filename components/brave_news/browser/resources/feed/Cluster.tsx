@@ -26,6 +26,8 @@ const Container = styled(Card)`
 
     gap: ${spacing.m};
     align-items: center;
+
+    margin: ${spacing.m} 0;
   }
 
   & > ${Card} {
