@@ -23,14 +23,8 @@ bool IsSafeOrigin(const blink::WebSecurityOrigin& origin) {
        {blink::WebSecurityOrigin::Create(
            GURL("https://account.brave.software"))}}};
 
-  const GURL origin_url(origin.ToString().Utf8());
-  const GURL stripped_port_url =
-      GURL(origin_url.scheme() + "://" + origin_url.host() + origin_url.path());
-  blink::WebSecurityOrigin stripped_port_origin =
-      blink::WebSecurityOrigin::Create(stripped_port_url);
-
   for (const blink::WebSecurityOrigin& safe_origin : *safe_origins) {
-    if (safe_origin.IsSameOriginWith(stripped_port_origin)) {
+    if (safe_origin.IsSameOriginWith(origin)) {
       return true;
     }
   }
