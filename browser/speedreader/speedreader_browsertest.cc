@@ -843,6 +843,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
                               WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
+  WaitDistillable(tab_helper());
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
   GoBack(browser());
