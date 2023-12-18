@@ -150,11 +150,6 @@ export const ConfirmSimulatedTransactionPanel = ({
       : BraveWallet.CoinType.SOL
   )
 
-  const hasCriticalWarnings = txSimulation.warnings.some(
-    (warning) =>
-      warning.severity === BraveWallet.BlowfishWarningSeverity.kCritical
-  )
-
   // methods
   const onSelectTab = React.useCallback(
     (tab: confirmPanelTabs) => () => setSelectedTab(tab),
@@ -339,7 +334,6 @@ export const ConfirmSimulatedTransactionPanel = ({
         <SimulationWarnings
           txSimulation={txSimulation}
           isWarningCollapsed={isWarningCollapsed}
-          hasCriticalWarnings={hasCriticalWarnings}
           setIsWarningCollapsed={setIsWarningCollapsed}
         />
 

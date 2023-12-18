@@ -29,7 +29,6 @@ import {
 } from '../confirm_simulated_tx_panel.styles'
 
 export function SimulationWarnings({
-  hasCriticalWarnings,
   isWarningCollapsed,
   setIsWarningCollapsed,
   txSimulation
@@ -38,9 +37,14 @@ export function SimulationWarnings({
     | BraveWallet.EVMSimulationResponse
     | BraveWallet.SolanaSimulationResponse
   isWarningCollapsed: boolean
-  hasCriticalWarnings: boolean
   setIsWarningCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element | null {
+  // memos
+  const hasCriticalWarnings = txSimulation.warnings.some(
+    (warning) =>
+      warning.severity === BraveWallet.BlowfishWarningSeverity.kCritical
+  )
+
   // no warnings
   if (txSimulation.warnings.length < 1) {
     return null
