@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -64,7 +65,8 @@ public class BraveMainPreferencesBase
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
-    private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
+    private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
+            "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";

@@ -41,7 +41,7 @@
             android:enabled="false"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:fragment="org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences"
+            android:fragment="org.chromium.chrome.browser.vpn.settings.BraveVpnServerSelectionPreferences"
             android:key="server_change_location"
             android:title="@string/change_location"/>
 

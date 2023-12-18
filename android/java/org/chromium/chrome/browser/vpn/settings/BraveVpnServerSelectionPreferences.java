@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.chrome.browser.vpn.settings;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.widget.Toast;
 
 import java.util.Collections;

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.chrome.browser.vpn.settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.widget.Toast;
 
 import java.text.SimpleDateFormat;
