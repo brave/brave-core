@@ -70,10 +70,11 @@ const char kTestPageReadable[] = "/articles/guardian.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
-const char kTestXml[] = "/article/rss.xml";
+const char kTestXml[] = "/articles/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
+const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -828,6 +829,30 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                      .ExtractInt());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestErrorPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(ActiveWebContents()->GetPrimaryMainFrame()->IsErrorDocument());
+  EXPECT_FALSE(GetReaderButton()->GetVisible());
+
+  // Navigate to the non-automatic distillable page.
+  NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+      tab_helper()->PageDistillState()));
+  WaitDistillable(tab_helper());
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  GoBack(browser());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  WaitDistilled();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest
