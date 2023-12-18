@@ -33,7 +33,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
                base::ToLowerASCII(VectorToDelimitedString(
                    creative_ad.embedding, kEmbeddingStringDelimiter)));
 
-    count++;
+    ++count;
   }
 
   return count;

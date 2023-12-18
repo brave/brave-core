@@ -94,7 +94,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.alt);
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -382,8 +382,7 @@ void CreativeNewTabPageAds::GetForSegments(
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(&*command, index, segment);
-    index++;
+    BindString(&*command, index++, segment);
   }
 
   transaction->commands.push_back(std::move(command));

@@ -105,7 +105,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     concatenated_header += header;
     concatenated_message += base::StrCat({header, ": ", value});
 
-    index++;
+    ++index;
   }
 
   const std::optional<std::string> signature_base64 =

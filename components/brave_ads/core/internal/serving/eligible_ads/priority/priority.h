@@ -28,7 +28,7 @@ T PrioritizeCreativeAds(const T& creative_ads) {
   for (const auto& [priority, ads] : buckets) {
     BLOG(3, ads.size() << " ads with a priority of " << priority
                        << " in bucket " << bucket);
-    bucket++;
+    ++bucket;
   }
 
   const auto& [_, highest_priority_bucket] = GetHighestPriorityBucket(buckets);

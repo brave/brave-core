@@ -89,7 +89,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
                   .InMicroseconds());
     BindBool(command, index++, conversion_queue_item.was_processed);
 
-    count++;
+    ++count;
   }
 
   return count;

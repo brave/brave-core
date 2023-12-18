@@ -100,10 +100,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
 
     if (creative_ad->creative_instance_id ==
         creative_ad_predictor_1.creative_ad.creative_instance_id) {
-      creative_ad_1_count++;
+      ++creative_ad_1_count;
     } else if (creative_ad->creative_instance_id ==
                creative_ad_predictor_2.creative_ad.creative_instance_id) {
-      creative_ad_2_count++;
+      ++creative_ad_2_count;
     }
   }
 

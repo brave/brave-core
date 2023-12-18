@@ -25,7 +25,7 @@ bool DoesRespectCap(const AdEventList& ad_events) {
     if (ad_event.confirmation_type == ConfirmationType::kClicked) {
       count = 0;
     } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
-      count++;
+      ++count;
       if (count >= 2) {
         // An ad was dismissed two or more times in a row without being clicked,
         // so do not show another ad from the same campaign for the specified
