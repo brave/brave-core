@@ -26,7 +26,7 @@ export const MetaInfoContainer = styled.h4`
 
   margin: 0;
 
-  font: ${font.primary.xSmall.regular};
+  font: ${font.xSmall.regular};
   color: var(--bn-glass-50);
 
   display: flex;

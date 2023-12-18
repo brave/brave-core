@@ -12,6 +12,7 @@ import { loadTimeData } from '../../common/loadTimeData'
 // css
 import 'emptykit.css'
 import 'chrome://resources/brave/fonts/poppins.css'
+import 'chrome://resources/brave/fonts/inter.css'
 import './css/nft-global.css'
 
 // theme setup

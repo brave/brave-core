@@ -13,12 +13,12 @@
 }
 
 .title {
-  font: var(--leo-font-primary-heading-h1);
+  font: var(--leo-font-heading-h1);
   margin: 0 var(--leo-spacing-2xl);
 }
 
 .subtitle {
-  font: var(--leo-font-primary-heading-h2);
+  font: var(--leo-font-heading-h2);
   color: var(--leo-color-text-tertiary);
   margin: var(--leo-spacing-2xl);
 }
@@ -38,7 +38,7 @@
 }
 
 .cardTitle {
-  font: var(--leo-font-primary-heading-h4);
+  font: var(--leo-font-heading-h4);
   color: var(--leo-color-text-primary);
   margin: 0 0 8px 0;
 }

@@ -1,6 +1,11 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const fs = require('fs-extra')
 const path = require('path')
-const pathMap = require('./path-map')
+const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
 
 const srcPath = path.resolve(__dirname, '../../../')
 const braveSrcPath = path.join(srcPath, 'brave')

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .form {
-  --leo-control-font: var(--leo-font-secondary-default-regular);
+  --leo-control-font: var(--leo-font-default-regular);
 
   margin-top: 16px;
   max-width: 500px;
@@ -14,7 +14,7 @@
 
   h4 {
     padding: 24px 16px;
-    font: var(--leo-font-secondary-heading-h4);
+    font: var(--leo-font-heading-h4);
     margin: 0;
   }
 
