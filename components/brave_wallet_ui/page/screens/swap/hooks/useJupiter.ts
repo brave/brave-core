@@ -121,7 +121,7 @@ export function useJupiter(params: SwapParams) {
         return
       }
 
-      if (!overriddenParams.fromAccountId) {
+      if (!overriddenParams.fromAccount) {
         return
       }
 
@@ -139,7 +139,7 @@ export function useJupiter(params: SwapParams) {
           outputToken:
             overriddenParams.toToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
-          taker: overriddenParams.fromAccountId.address
+          taker: overriddenParams.fromAccount.address
         })
         setBraveFee(braveFeeResponse || undefined)
       } catch (e) {
@@ -154,7 +154,7 @@ export function useJupiter(params: SwapParams) {
       let jupiterQuoteResponse
       try {
         jupiterQuoteResponse = await swapService.getQuote({
-          fromAccountId: overriddenParams.fromAccountId,
+          fromAccountId: overriddenParams.fromAccount.accountId,
           fromChainId: selectedNetwork.chainId,
           fromToken:
             overriddenParams.fromToken.contractAddress ||
@@ -166,7 +166,7 @@ export function useJupiter(params: SwapParams) {
             : new Amount(overriddenParams.toAmount)
                 .multiplyByDecimals(overriddenParams.toToken.decimals)
                 .format(),
-          toAccountId: overriddenParams.fromAccountId,
+          toAccountId: overriddenParams.fromAccount.accountId,
           toChainId: selectedNetwork.chainId,
           toToken:
             overriddenParams.toToken.contractAddress ||

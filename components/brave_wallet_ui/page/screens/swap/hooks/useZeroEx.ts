@@ -116,7 +116,7 @@ export function useZeroEx(params: SwapParams) {
         return
       }
 
-      if (!overriddenParams.fromAccountId) {
+      if (!overriddenParams.fromAccount) {
         return
       }
 
@@ -128,7 +128,7 @@ export function useZeroEx(params: SwapParams) {
       let quoteResponse
       try {
         quoteResponse = await swapService.getQuote({
-          fromAccountId: overriddenParams.fromAccountId,
+          fromAccountId: overriddenParams.fromAccount.accountId,
           fromChainId: selectedNetwork.chainId,
           fromAmount:
             overriddenParams.fromAmount &&
@@ -139,7 +139,7 @@ export function useZeroEx(params: SwapParams) {
             overriddenParams.fromToken.contractAddress ||
             NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
 
-          toAccountId: overriddenParams.fromAccountId,
+          toAccountId: overriddenParams.fromAccount.accountId,
           toChainId: selectedNetwork.chainId,
           toAmount:
             overriddenParams.toAmount &&
@@ -168,7 +168,7 @@ export function useZeroEx(params: SwapParams) {
           outputToken:
             overriddenParams.toToken.contractAddress ||
             NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-          taker: overriddenParams.fromAccountId.address
+          taker: overriddenParams.fromAccount.address
         })
 
         if (quoteResponse?.response?.zeroExQuote && braveFeeResponse) {
@@ -294,7 +294,7 @@ export function useZeroEx(params: SwapParams) {
         return
       }
 
-      if (!overriddenParams.fromAccountId) {
+      if (!overriddenParams.fromAccount) {
         return
       }
 
@@ -305,7 +305,7 @@ export function useZeroEx(params: SwapParams) {
           toMojoUnion(
             {
               zeroExTransactionParams: {
-                fromAccountId: overriddenParams.fromAccountId,
+                fromAccountId: overriddenParams.fromAccount.accountId,
                 fromChainId: selectedNetwork.chainId,
                 fromAmount: new Amount(overriddenParams.fromAmount)
                   .multiplyByDecimals(overriddenParams.fromToken.decimals)
@@ -314,7 +314,7 @@ export function useZeroEx(params: SwapParams) {
                   overriddenParams.fromToken.contractAddress ||
                   NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
 
-                toAccountId: overriddenParams.fromAccountId,
+                toAccountId: overriddenParams.fromAccount.accountId,
                 toChainId: selectedNetwork.chainId,
                 toAmount: new Amount(overriddenParams.toAmount)
                   .multiplyByDecimals(overriddenParams.toToken.decimals)
