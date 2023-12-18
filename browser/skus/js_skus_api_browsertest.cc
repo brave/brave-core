@@ -125,9 +125,9 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 namespace skus {
 
-class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
+class SkusAPIBrowserTest : public PlatformBrowserTest {
  public:
-  JsSkusPlatformBrowserTest() = default;
+  SkusAPIBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
@@ -181,8 +181,7 @@ class JsSkusPlatformBrowserTest : public PlatformBrowserTest {
       skus::features::kSkusFeature};
 };
 
-IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest,
-                       FetchOrderCredentialsSuccess) {
+IN_PROC_BROWSER_TEST_F(SkusAPIBrowserTest, FetchOrderCredentialsSuccess) {
   EXPECT_TRUE(content::NavigateToURL(web_contents(),
                                      GURL("https://account.brave.software/")));
   // Valid ID results in no errors.
@@ -194,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest,
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-IN_PROC_BROWSER_TEST_F(JsSkusPlatformBrowserTest, FetchOrderCredentialsError) {
+IN_PROC_BROWSER_TEST_F(SkusAPIBrowserTest, FetchOrderCredentialsError) {
   EXPECT_TRUE(content::NavigateToURL(web_contents(),
                                      GURL("https://account.brave.software/")));
   // Invalid item id yields an error that's passed up to JS layer.

@@ -9,7 +9,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "js_skus_platform_browsertest.cc" ]
+  sources = [ "js_skus_api_browsertest.cc" ]
 
   deps = [
     "//brave/components/script_injector/common/mojom",
