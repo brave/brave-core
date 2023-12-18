@@ -164,6 +164,14 @@ window.__firefox__.includeOnce("Playlist", function($) {
            style.visibility !== 'hidden';
   }
   
+  function getAllVideoElements() {
+    return [...document.querySelectorAll('video')].reverse();
+  }
+
+  function getAllAudioElements() {
+    return [...document.querySelectorAll('audio')].reverse();
+  }
+  
   function setupLongPress() {
     Object.defineProperty(window.__firefox__, '$<playlistLongPressed>', {
       enumerable: false,
@@ -220,14 +228,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
   // MARK: ---------------------------------------
   
   function setupDetector() {
-    function getAllVideoElements() {
-      return [...document.querySelectorAll('video')].reverse();
-    }
-
-    function getAllAudioElements() {
-      return [...document.querySelectorAll('audio')].reverse();
-    }
-    
     function requestWhenIdleShim(fn) {
       var start = Date.now()
       return setTimeout(function () {

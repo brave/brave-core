@@ -637,7 +637,7 @@ extension PlaylistListViewController {
       return
     }
 
-    playerView.stop()
+    playerView.pause()
     playerView.bringSubviewToFront(activityIndicator)
     activityIndicator.startAnimating()
     activityIndicator.isHidden = false

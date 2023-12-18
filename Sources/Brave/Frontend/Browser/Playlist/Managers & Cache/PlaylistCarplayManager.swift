@@ -108,12 +108,11 @@ public class PlaylistCarplayManager: NSObject {
 
   func getPlaylistController(tab: Tab?, initialItem: PlaylistInfo?, initialItemPlaybackOffset: Double) -> PlaylistViewController {
 
-    // If background playback is enabled, tabs will continue to play media
+    // If background playback is enabled (on iPhone), tabs will continue to play media
     // Even if another controller is presented and even when PIP is enabled in playlist.
     // Therefore we need to stop the page/tab from playing when using playlist.
-    if Preferences.General.mediaAutoBackgrounding.value {
-      tab?.stopMediaPlayback()
-    }
+    // On iPad, media will continue to play with or without the background play setting.
+    tab?.stopMediaPlayback()
 
     // If there is no media player, create one,
     // pass it to the play-list controller

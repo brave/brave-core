@@ -275,6 +275,13 @@ public class PlaylistManager: NSObject {
   public func download(item: PlaylistInfo) {
     guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
     Task {
+      if assetUrl.scheme == "data" {
+        DispatchQueue.main.async {
+          self.downloadManager.downloadDataAsset(assetUrl, for: item)
+        }
+        return
+      }
+      
       let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
       guard let mimeType = mimeType?.lowercased() else { return }
 

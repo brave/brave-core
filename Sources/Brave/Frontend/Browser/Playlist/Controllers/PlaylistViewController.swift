@@ -581,6 +581,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     stop(playerView)
 
     // Cancel all loading.
+    PlaylistManager.shared.playbackTask?.cancel()
     PlaylistManager.shared.playbackTask = nil
   }
 
@@ -864,7 +865,12 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   func load(_ videoView: VideoView, asset: AVURLAsset, autoPlayEnabled: Bool) async throws /*`MediaPlaybackError`*/ {
-    self.clear()
+    // Task will be nil if the playback has stopped, but not paused
+    // If it is paused, and we're loading another track, don't bother clearing the player
+    // as this will break PIP
+    if PlaylistManager.shared.playbackTask == nil {
+      self.clear()
+    }
     
     let isNewItem = try await player.load(asset: asset)
     

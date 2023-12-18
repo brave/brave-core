@@ -178,7 +178,7 @@ extension PlaylistListViewController: UITableViewDataSource {
       header.onAddPlaylist = { [unowned self] in
         guard let sharedFolderUrl = folder.sharedFolderUrl else { return }
         
-        if PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value) != nil {
+        if PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value) != .off {
           let controller = PopupViewController(rootView: PlaylistFolderSharingManagementView(onAddToPlaylistPressed: { [unowned self] in
             self.dismiss(animated: true)
             
