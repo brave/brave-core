@@ -57,6 +57,7 @@ export const WarningsList = styled.ul`
   margin: 0;
   max-height: 230px;
   overflow-y: scroll;
+  padding: 8px 12px;
 
   ${styledScrollbarMixin}
 
