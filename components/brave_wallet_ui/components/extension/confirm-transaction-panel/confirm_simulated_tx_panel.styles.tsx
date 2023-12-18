@@ -29,75 +29,10 @@ export const IconButton = styled(Button)`
   border: none;
 `
 
-export const IconSlot = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-export const WarningTriangleFilledIcon = styled(Icon).attrs({
-  name: 'warning-triangle-filled'
-})`
-  --leo-icon-size: 20px;
-  --leo-icon-color: ${leo.color.systemfeedback.warningIcon};
-`
-
-export const CriticalWarningIcon = styled(Icon).attrs({
-  name: 'warning-circle-filled'
-})`
-  --leo-icon-size: 20px;
-  --leo-icon-color: ${leo.color.systemfeedback.errorIcon};
-`
-
 export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
   --leo-icon-size: 14px;
   --leo-icon-color: ${leo.color.icon.interactive};
   margin-bottom: 1px;
-`
-
-export const WarningCollapse = styled(Collapse)<{
-  isCritical?: boolean
-}>`
-  --leo-collapse-summary-padding: 0px 16px;
-  --leo-collapse-radius: ${leo.radius.m};
-  --leo-collapse-shadow: none;
-  --leo-collapse-border-color: none;
-  --leo-collapse-background-color: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorBackground
-      : leo.color.systemfeedback.warningBackground};
-  --leo-collapse-icon-color: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorIcon
-      : leo.color.systemfeedback.warningIcon};
-  --leo-collapse-icon-color-hover: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorIcon
-      : leo.color.systemfeedback.warningIcon};
-
-  font: var(--leo-font-primary-small-semibold);
-
-  color: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorText
-      : leo.color.systemfeedback.warningText};
-
-  & > * > li {
-    font: var(--leo-font-primary-small-regular);
-    margin-bottom: 8px;
-  }
-`
-
-export const WarningTitle = styled.p<{
-  isCritical?: boolean
-}>`
-  color: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorText
-      : leo.color.systemfeedback.warningText};
-  font: ${leo.font.browser.small.semibold};
-  font-family: 'Inter', 'Poppins';
 `
 
 export const TransactionChangeCollapseContent = styled.div`

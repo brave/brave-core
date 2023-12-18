@@ -25,6 +25,7 @@ export const AlertIcon = styled(Icon).attrs<WarningBannerProps>((props) => ({
       : leo.color.systemfeedback.warningIcon};
 `
 
+// TODO: match new collapse style
 export const WarningAlertRow = styled(Row)<WarningBannerProps>`
   min-height: 44px;
   color: ${leo.color.text.primary};

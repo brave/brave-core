@@ -280,18 +280,6 @@ export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
   --leo-icon-color: ${leo.color.icon.interactive};
   margin-bottom: 1px;
 `
-export const WarningsList = styled.ul`
-  margin: 0;
-  max-height: 230px;
-  overflow-y: scroll;
-
-  ${styledScrollbarMixin}
-
-  & > li {
-    line-height: 18px;
-    margin-bottom: 14px;
-  }
-`
 
 export const LargeWarningCircleIcon = styled(Icon).attrs({
   name: 'warning-circle-filled'
