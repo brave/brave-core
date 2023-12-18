@@ -289,6 +289,7 @@ export const ConfirmTransactionPanel = () => {
           >
             <Tooltip
               text={fromAccount.address}
+              isVisible={!!fromAccount.address}
               isAddress={true}
               position={'left'}
             >
