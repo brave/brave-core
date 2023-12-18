@@ -159,12 +159,12 @@ export function useJupiter(params: SwapParams) {
           fromToken:
             overriddenParams.fromToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
-          fromAmount: !isFromAmountEmpty
-            ? new Amount(overriddenParams.fromAmount)
-                .multiplyByDecimals(overriddenParams.fromToken.decimals)
-                .format()
-            : new Amount(overriddenParams.toAmount)
+          fromAmount: isFromAmountEmpty
+            ? new Amount(overriddenParams.toAmount)
                 .multiplyByDecimals(overriddenParams.toToken.decimals)
+                .format()
+            : new Amount(overriddenParams.fromAmount)
+                .multiplyByDecimals(overriddenParams.fromToken.decimals)
                 .format(),
           toAccountId: overriddenParams.fromAccount.accountId,
           toChainId: selectedNetwork.chainId,

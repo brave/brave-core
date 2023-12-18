@@ -149,10 +149,7 @@ export function useZeroEx(params: SwapParams) {
           toToken:
             overriddenParams.toToken.contractAddress ||
             NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-          slippagePercentage: new Amount(overriddenParams.slippageTolerance)
-            .div(100)
-            .format(), // FIXME: this is a number?
-          // gasPrice: '' // FIXME: gasPrice is not used in the API
+          slippagePercentage: overriddenParams.slippageTolerance,
           routePriority: BraveWallet.RoutePriority.kRecommended
         })
       } catch (e) {
@@ -323,8 +320,6 @@ export function useZeroEx(params: SwapParams) {
                   overriddenParams.toToken.contractAddress ||
                   NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
                 slippagePercentage: overriddenParams.slippageTolerance,
-                // TODO(onyb): gasPrice is not used in the backend
-                // gasPrice: ''
                 routePriority: BraveWallet.RoutePriority.kRecommended
               },
               jupiterTransactionParams: undefined
