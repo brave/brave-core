@@ -16,12 +16,11 @@
 #define kQuickCommands kBraveCommander
 #endif
 
-#define GetChannel                                                        \
-  GetChannel();                                                           \
+#define BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY                       \
   if (flags_ui::BraveShouldSkipConditionalFeatureEntry(storage, entry)) { \
     return true;                                                          \
-  }                                                                       \
-  chrome::GetChannel
+  }
+
 #include "src/chrome/browser/about_flags.cc"
-#undef GetChannel
+#undef BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY
 #undef kQuickCommands
