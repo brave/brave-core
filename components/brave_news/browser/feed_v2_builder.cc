@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <iterator>
-#include <locale>
 #include <numeric>
 #include <optional>
 #include <string>
@@ -290,28 +289,6 @@ using GetWeighting =
     base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& metadata,
                                    const ArticleWeight& weight)>;
 
-// Returns a probability distribution (sum to 1) of the weights. Temperature
-// controls how "smooth" the distribution is. High temperature brings the
-// distribution closer to a uniform distribution (more randomness).
-// Low temperature brings the distribution closer to a delta function (less
-// randomness).
-void SoftmaxWithTemperature(
-    std::vector<double>& weights,
-    double temperature = features::kBraveNewsTemperature.Get()) {
-  if (temperature == 0) {
-    return;
-  }
-
-  double max = *base::ranges::max_element(weights.begin(), weights.end());
-  base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
-                          [temperature, max](double weight) {
-                            return std::exp((weight - max) / temperature);
-                          });
-  double sum = std::accumulate(weights.begin(), weights.end(), 0.0);
-  base::ranges::transform(weights.begin(), weights.end(), weights.begin(),
-                          [sum](double weight) { return weight / sum; });
-}
-
 // Sample across subscribed channels (direct and native) and publishers.
 ContentGroup SampleContentGroup(
     const std::vector<ContentGroup>& eligible_content_groups) {
@@ -343,15 +320,12 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
                           });
 
   // None of the items are eligible to be picked.
-  if (std::accumulate(weights.begin(), weights.end(), 0.0) == 0) {
+  const auto total_weight =
+      std::accumulate(weights.begin(), weights.end(), 0.0);
+  if (total_weight == 0) {
     return nullptr;
   }
 
-  if (use_softmax) {
-    SoftmaxWithTemperature(weights);
-  }
-
-  double total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
   double picked_value = base::RandDouble() * total_weight;
   double current_weight = 0;
 
@@ -516,13 +490,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
   auto hero_article =
       PickRouletteAndRemove(articles, get_weighting(/*is_hero*/ true));
-  if (!hero_article) {
-    DVLOG(1) << "Failed to generate hero";
-    return result;
-  }
 
-  result.push_back(mojom::FeedItemV2::NewHero(
-      mojom::HeroArticle::New(std::move(hero_article))));
+  // This may fail if the the content group has no images.
+  if (hero_article) {
+    result.push_back(mojom::FeedItemV2::NewHero(
+        mojom::HeroArticle::New(std::move(hero_article))));
+  }
 
   const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
@@ -809,7 +782,6 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce(
           [](FeedV2Builder* builder) {
-            LOG(ERROR) << "Generating basic feed";
             return builder->GenerateBasicFeed(builder->raw_feed_items_);
           },
           base::Unretained(this)),
@@ -1139,12 +1111,6 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
     auto items = GenerateBlock(articles, /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
-    }
-
-    for (const auto& item : items) {
-      auto& data = item->is_article() ? item->get_article()->data
-                                      : item->get_hero()->data;
-      LOG(ERROR) << "Picked source from " << data->publisher_name;
     }
 
     // After the first block, every second block should be an ad.
