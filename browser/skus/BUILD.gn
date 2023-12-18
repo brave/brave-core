@@ -10,15 +10,17 @@ source_set("browser_tests") {
   sources = [ "js_skus_api_browsertest.cc" ]
 
   deps = [
-    "//brave/components/script_injector/common/mojom",
+    "//base/test:test_support",
+    "//brave/browser",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
-    "//chrome/browser",
     "//chrome/browser:browser_process",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/common",
     "//content/test:test_support",
+    "//net:test_support",
+    "//services/network/public/cpp",
   ]
 
   if (is_android) {

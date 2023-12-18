@@ -7,7 +7,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -17,10 +16,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
