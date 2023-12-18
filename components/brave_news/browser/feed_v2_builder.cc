@@ -329,9 +329,11 @@ ContentGroup SampleContentGroup(
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    GetWeighting get_weighting = base::BindRepeating(
-        [](const mojom::FeedItemMetadataPtr& metadata,
-           const ArticleWeight& weight) { return weight.weighting; }),
+    GetWeighting get_weighting =
+        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                               const ArticleWeight& weight) {
+          return weight.subscribed ? weight.weighting : 0;
+        }),
     bool use_softmax = false) {
   std::vector<double> weights;
   base::ranges::transform(articles, std::back_inserter(weights),
@@ -408,7 +410,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
         auto image_url = metadata->image->is_padded_image_url()
                              ? metadata->image->get_padded_image_url()
                              : metadata->image->get_image_url();
-        return image_url.is_valid() ? weight.weighting : 0;
+        return image_url.is_valid() && weight.subscribed ? weight.weighting : 0;
       }));
 
   // We might not be able to generate a hero card, if none of the articles in
@@ -807,6 +809,7 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce(
           [](FeedV2Builder* builder) {
+            LOG(ERROR) << "Generating basic feed";
             return builder->GenerateBasicFeed(builder->raw_feed_items_);
           },
           base::Unretained(this)),
@@ -1136,6 +1139,12 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
     auto items = GenerateBlock(articles, /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
+    }
+
+    for (const auto& item : items) {
+      auto& data = item->is_article() ? item->get_article()->data
+                                      : item->get_hero()->data;
+      LOG(ERROR) << "Picked source from " << data->publisher_name;
     }
 
     // After the first block, every second block should be an ad.
