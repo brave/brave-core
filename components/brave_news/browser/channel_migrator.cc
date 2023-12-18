@@ -20,11 +20,11 @@ constexpr auto kMigrateChannels =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
         {{"Tech News", "Technology"},
          {"Sport", "Sports"},
-         {"Entertainment", "Celebrity News"},
-         {"Entertainment news", "Celebrity News"},
+         {"Celebrity News", "Celebrities"},
+         {"Entertainment news", "Celebrities"},
          {"Tech Reviews", "Technology"}});
 
-}
+}  // namespace
 
 void MigrateChannels(PrefService& prefs) {
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveNewsChannels);

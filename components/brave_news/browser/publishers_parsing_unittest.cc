@@ -130,7 +130,7 @@ TEST(BraveNewsPublisherParsing, ChannelsAreMigrated) {
           {
             "locale": "en_AU",
             "channels": [
-              "Entertainment"
+              "Celebrity News"
             ]
           }
         ],
@@ -163,7 +163,7 @@ TEST(BraveNewsPublisherParsing, ChannelsAreMigrated) {
   auto& en_au = publisher->locales[2];
   ASSERT_EQ("en_AU", en_au->locale);
   ASSERT_EQ(1u, en_au->channels.size());
-  EXPECT_EQ("Celebrity News", en_au->channels[0]);
+  EXPECT_EQ("Celebrities", en_au->channels[0]);
 }
 
 }  // namespace brave_news

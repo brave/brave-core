@@ -6,7 +6,6 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
 #include <optional>
-#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>

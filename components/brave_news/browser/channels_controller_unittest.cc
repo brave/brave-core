@@ -277,7 +277,7 @@ TEST_F(ChannelsControllerTest, LocaleWithNoSubscribedChannelsIsNotIncluded) {
 TEST_F(ChannelsControllerTest, ChannelMigrationsAreApplied) {
   channels_controller_.SetChannelSubscribed("en_US", "Tech News", true);
   channels_controller_.SetChannelSubscribed("en_US", "Sport", true);
-  
+
   ChannelsController controller(profile_.GetPrefs(), &publishers_controller_);
   EXPECT_FALSE(controller.GetChannelSubscribed("en_US", "Tech News"));
   EXPECT_TRUE(controller.GetChannelSubscribed("en_US", "Technology"));
