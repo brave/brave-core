@@ -10,6 +10,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
@@ -117,6 +118,7 @@ static constexpr auto kConditionalQueryStringTrackers =
         {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
     });
 
+// The second parameter is a comma-separated list of domains.
 // The domain comparison will also match on subdomains. So if the
 // parameter is scoped to example.com below, it will be removed from
 // https://example.com/index.php and from http://www.example.com/ for
@@ -126,9 +128,31 @@ static constexpr auto kScopedQueryStringTrackers =
         // https://github.com/brave/brave-browser/issues/11580
         {"igshid", "instagram.com"},
         // https://github.com/brave/brave-browser/issues/26966
-        {"ref_src", "twitter.com"},
-        {"ref_url", "twitter.com"},
+        {"ref_src", "twitter.com,x.com"},
+        {"ref_url", "twitter.com,x.com"},
     });
+
+bool IsScopedTracker(const std::string_view param_name,
+                     const std::string& spec) {
+  if (!base::Contains(trackers, param_name)) {
+    return false;
+  }
+
+  const std::vector<std::string_view> domain_strings =
+      SplitStringPiece(kScopedQueryStringTrackers.at(param_name).data(), ",",
+                       base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (domain_strings.empty()) {
+    return false;
+  }
+  const GURL original_url = GURL(spec);
+  for (const auto& domain : domain_strings) {
+    if (original_url.DomainIs(domain)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
@@ -151,8 +175,7 @@ std::optional<std::string> StripQueryParameter(const std::string_view query,
     const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
-         (kScopedQueryStringTrackers.count(key) == 1 &&
-          GURL(spec).DomainIs(kScopedQueryStringTrackers.at(key).data())) ||
+         IsScopedTracker(key, spec) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
