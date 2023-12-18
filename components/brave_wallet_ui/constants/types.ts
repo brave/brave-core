@@ -210,7 +210,7 @@ export interface WalletState {
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
   selectedAccountFilter: string
-  allowNewWalletFilecoinAccount: boolean
+  allowedNewWalletAccountTypeNetworkIds: EntityId[]
   /**
    * used for "buy" and "deposit" screens
    */

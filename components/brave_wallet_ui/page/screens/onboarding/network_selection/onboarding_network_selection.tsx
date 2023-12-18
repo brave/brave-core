@@ -81,25 +81,11 @@ import {
 import { WalletActions } from '../../../../common/actions'
 
 // Featured Networks
-const EthMainnetId = getNetworkId({
-  chainId: BraveWallet.MAINNET_CHAIN_ID,
-  coin: BraveWallet.CoinType.ETH
-})
-
-const SolMainnetId = getNetworkId({
-  chainId: BraveWallet.SOLANA_MAINNET,
-  coin: BraveWallet.CoinType.SOL
-})
-
-const FilMainnetId = getNetworkId({
-  chainId: BraveWallet.FILECOIN_MAINNET,
-  coin: BraveWallet.CoinType.FIL
-})
-
 const featuredChainIds = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.FILECOIN_MAINNET
+  BraveWallet.FILECOIN_MAINNET,
+  BraveWallet.BITCOIN_MAINNET
 ]
 
 /** Forcing ETH, SOL account creation until their networks can be hidden */
@@ -164,11 +150,7 @@ export const OnboardingNetworkSelection = () => {
   // state
   const [searchText, setSearchText] = React.useState('')
   const [showTestNets, setShowTestNets] = React.useState(false)
-  const [selectedChainIds, setSelectedChainIds] = React.useState<EntityId[]>([
-    EthMainnetId,
-    SolMainnetId,
-    FilMainnetId
-  ])
+  const [selectedChainIds, setSelectedChainIds] = React.useState<EntityId[]>([])
 
   // queries
   const { data: networks = [], isLoading: isLoadingNetworks } =
@@ -280,14 +262,14 @@ export const OnboardingNetworkSelection = () => {
     // force show selected networks
     await restoreNetworks(selectedNetworks).unwrap()
 
-    // Temporary workaround to prevent unwanted filecoin account creation
+    // Temporary workaround:
+    // prevent creation of unwanted bitcoin & filecoin accounts
     dispatch(
-      WalletActions.setAllowNewWalletFilecoinAccount(
-        selectedNetworks.some((net) => net.coin === BraveWallet.CoinType.FIL)
+      WalletActions.setAllowedNewWalletAccountTypeNetworkIds(
+        visibleSelectedChainIds
       )
     )
 
-    // TODO: mark coin-types for wallet creation
     history.push(
       onboardingType === 'hardware'
         ? WalletRoutes.OnboardingHardwareWalletCreatePassword

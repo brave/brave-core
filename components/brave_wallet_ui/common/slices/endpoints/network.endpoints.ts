@@ -39,7 +39,10 @@ export const networkEndpoints = ({
     getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
+
+          const { isBitcoinEnabled } =
+            cache.walletInfo || (await cache.getWalletInfo())
 
           const { networks: ethNetworks } =
             await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
@@ -47,9 +50,21 @@ export const networkEndpoints = ({
             await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.SOL)
           const { networks: filNetworks } =
             await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.FIL)
+          const btcNetworks = isBitcoinEnabled
+            ? (
+                await api.jsonRpcService.getAllNetworks(
+                  BraveWallet.CoinType.BTC
+                )
+              ).networks
+            : []
 
           return {
-            data: [...ethNetworks, ...solNetworks, ...filNetworks]
+            data: [
+              ...ethNetworks,
+              ...solNetworks,
+              ...filNetworks,
+              ...btcNetworks
+            ]
           }
         } catch (error) {
           return handleEndpointError(

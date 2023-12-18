@@ -43,8 +43,8 @@ export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const selectedOnRampAssetId = ({ wallet }: State) =>
   wallet.selectedDepositAssetId
-export const allowNewWalletFilecoinAccount = ({ wallet }: State) =>
-  wallet.allowNewWalletFilecoinAccount
+export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
+  wallet.allowedNewWalletAccountTypeNetworkIds
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)

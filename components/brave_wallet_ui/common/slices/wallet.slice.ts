@@ -4,6 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  createAction,
+  createSlice,
+  PayloadAction,
+  EntityId
+} from '@reduxjs/toolkit'
+
+import {
   BraveWallet,
   WalletState,
   WalletInitializedPayload,
@@ -30,11 +37,10 @@ import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { NoneGroupByOption } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
-  allowNewWalletFilecoinAccount: true,
+  allowedNewWalletAccountTypeNetworkIds: [],
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
@@ -369,11 +375,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isRefreshingNetworksAndTokens = payload
       },
 
-      setAllowNewWalletFilecoinAccount(
+      setAllowedNewWalletAccountTypeNetworkIds(
         state: WalletState,
-        { payload }: PayloadAction<boolean>
+        { payload }: PayloadAction<EntityId[]>
       ) {
-        state.allowNewWalletFilecoinAccount = payload
+        state.allowedNewWalletAccountTypeNetworkIds = payload
       }
     },
     extraReducers: (builder) => {

@@ -73,8 +73,8 @@ export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
  * A place to store & manage dependency data for other queries
  */
 export class BaseQueryCache {
+  walletInfo?: BraveWallet.WalletInfo
   private _networksRegistry?: NetworksRegistry
-  private _walletInfo?: BraveWallet.WalletInfo
   private _allAccountsInfo?: BraveWallet.AllAccountsInfo
   private _accountsRegistry?: AccountInfoEntityState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
@@ -84,12 +84,12 @@ export class BaseQueryCache {
   private _erc721MetadataRegistry: Record<string, ERC721Metadata>
 
   getWalletInfo = async () => {
-    if (!this._walletInfo) {
+    if (!this.walletInfo) {
       const { walletInfo } =
         await apiProxyFetcher().walletHandler.getWalletInfo()
-      this._walletInfo = walletInfo
+      this.walletInfo = walletInfo
     }
-    return this._walletInfo
+    return this.walletInfo
   }
 
   getAllAccounts = async () => {
@@ -114,7 +114,7 @@ export class BaseQueryCache {
   }
 
   clearWalletInfo = () => {
-    this._walletInfo = undefined
+    this.walletInfo = undefined
     this._allAccountsInfo = undefined
     this._accountsRegistry = undefined
   }
