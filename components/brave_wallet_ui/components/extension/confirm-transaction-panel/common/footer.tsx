@@ -5,12 +5,18 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet } from '../../../../constants/types'
+
 // Utils
 import { getLocale } from '../../../../../common/locale'
+import {
+  translateSimulationWarning //
+} from '../../../../utils/tx-simulation-utils'
 
 // components
 import { NavButton } from '../../buttons'
-import { TxWarningBanner } from './tx_warning_banner'
+import { TransactionWarnings } from './tx_warnings'
 
 // Styled components
 import { Row } from '../../../shared/style'
@@ -18,10 +24,10 @@ import {
   FooterButtonRow,
   ConfirmingButton,
   ConfirmingButtonText,
-  ErrorText,
   FooterContainer,
   LoadIcon,
-  QueueStepButton
+  QueueStepButton,
+  queueStepButtonRowPadding
 } from './style'
 
 // Hooks
@@ -31,11 +37,22 @@ interface Props {
   rejectButtonType?: 'reject' | 'cancel'
   showGasErrors?: boolean
   disableConfirmation?: boolean
+  blowfishWarnings?: BraveWallet.BlowfishWarning[]
+  setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
+  isWarningCollapsed?: boolean
 }
 
-export function Footer(props: Props) {
-  const { rejectButtonType, showGasErrors, disableConfirmation } = props
+type Warning = Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 
+export function Footer({
+  isWarningCollapsed,
+  setIsWarningCollapsed,
+  blowfishWarnings,
+  rejectButtonType,
+  showGasErrors,
+  disableConfirmation
+}: Props) {
+  // custom hooks
   const {
     isConfirmButtonDisabled,
     rejectAllTransactions,
@@ -47,20 +64,14 @@ export function Footer(props: Props) {
     onConfirm
   } = usePendingTransactions()
 
+  // state
   const [transactionConfirmed, setTranactionConfirmed] =
     React.useState<boolean>(false)
   const [queueLength, setQueueLength] = React.useState<number | undefined>(
     undefined
   )
 
-  React.useEffect(() => {
-    // This will update the transactionConfirmed state back to false
-    // if there are more than 1 transactions in the queue.
-    if (queueLength !== transactionsQueueLength || queueLength === undefined) {
-      setTranactionConfirmed(false)
-    }
-  }, [queueLength, transactionsQueueLength])
-
+  // methods
   const onClickConfirmTransaction = React.useCallback(async () => {
     // Checks to see if there are multiple transactions in the queue, if there
     // is we keep track of the length of the last confirmed transaction.
@@ -73,47 +84,65 @@ export function Footer(props: Props) {
     await onConfirm()
   }, [transactionsQueueLength, onConfirm])
 
+  // memos
+  const warnings: Warning[] = React.useMemo(() => {
+    if (blowfishWarnings?.length) {
+      return blowfishWarnings.map(
+        (warning): Warning => ({
+          message: translateSimulationWarning(warning),
+          severity: warning.severity
+        })
+      )
+    }
+
+    return [
+      transactionDetails?.contractAddressError,
+      transactionDetails?.sameAddressError,
+      transactionDetails?.missingGasLimitError,
+      showGasErrors && insufficientFundsForGasError
+        ? getLocale('braveWalletSwapInsufficientFundsForGas')
+        : undefined,
+      showGasErrors && !insufficientFundsForGasError && insufficientFundsError
+        ? getLocale('braveWalletSwapInsufficientBalance')
+        : undefined
+    ]
+      .filter((warning): warning is string => Boolean(warning))
+      .map(
+        (warning): Warning => ({
+          message: warning,
+          severity: BraveWallet.BlowfishWarningSeverity.kWarning
+        })
+      )
+  }, [transactionDetails, blowfishWarnings])
+
+  // effects
+  React.useEffect(() => {
+    // This will update the transactionConfirmed state back to false
+    // if there are more than 1 transactions in the queue.
+    if (queueLength !== transactionsQueueLength || queueLength === undefined) {
+      setTranactionConfirmed(false)
+    }
+  }, [queueLength, transactionsQueueLength])
+
+  // render
   return (
     <FooterContainer>
+      <TransactionWarnings
+        warnings={warnings}
+        isWarningCollapsed={isWarningCollapsed ?? true}
+        setIsWarningCollapsed={setIsWarningCollapsed}
+      />
+
       {transactionsQueueLength > 1 && (
-        <QueueStepButton
-          needsMargin={false}
-          onClick={rejectAllTransactions}
-        >
-          {getLocale('braveWalletQueueRejectAll').replace(
-            '$1',
-            transactionsQueueLength.toString()
-          )}
-        </QueueStepButton>
+        <Row padding={queueStepButtonRowPadding}>
+          <QueueStepButton onClick={rejectAllTransactions}>
+            {getLocale('braveWalletQueueRejectAll').replace(
+              '$1',
+              transactionsQueueLength.toString()
+            )}
+          </QueueStepButton>
+        </Row>
       )}
-
-      <Row
-        margin={'8px 0px 0px 0px'}
-        padding={'0px 5%'}
-      >
-        {transactionDetails &&
-          [
-            transactionDetails.contractAddressError,
-            transactionDetails.sameAddressError,
-            transactionDetails.missingGasLimitError
-          ]
-            .filter(Boolean)
-            .map((error) => <ErrorText key={error}>{error}</ErrorText>)}
-      </Row>
-
-      {showGasErrors && insufficientFundsForGasError && (
-        <TxWarningBanner>
-          {getLocale('braveWalletSwapInsufficientFundsForGas')}
-        </TxWarningBanner>
-      )}
-
-      {showGasErrors &&
-        !insufficientFundsForGasError &&
-        insufficientFundsError && (
-          <TxWarningBanner>
-            {getLocale('braveWalletSwapInsufficientBalance')}
-          </TxWarningBanner>
-        )}
 
       <FooterButtonRow>
         <NavButton

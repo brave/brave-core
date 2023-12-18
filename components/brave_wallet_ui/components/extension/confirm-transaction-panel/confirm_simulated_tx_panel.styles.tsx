@@ -40,6 +40,13 @@ export const CaratUpIcon = styled(Icon).attrs({ name: 'carat-up' })`
   --leo-icon-color: ${leo.color.icon.default};
 `
 
+export const IconSlot = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 export const WarningTriangleFilledIcon = styled(Icon).attrs({
   name: 'warning-triangle-filled'
 })`
@@ -63,6 +70,7 @@ export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
 export const WarningCollapse = styled(Collapse)<{
   isCritical?: boolean
 }>`
+  --leo-collapse-summary-padding: 0px 16px;
   --leo-collapse-radius: 0px;
   --leo-collapse-shadow: none;
   --leo-collapse-border-color: none;
@@ -77,6 +85,12 @@ export const WarningCollapse = styled(Collapse)<{
     font: var(--leo-font-primary-small-regular);
     margin-bottom: 8px;
   }
+`
+
+export const WarningTitle = styled.p`
+  color: ${leo.color.text.primary};
+  font: ${leo.font.browser.small.semibold};
+  font-family: 'Inter', 'Poppins';
 `
 
 export const TransactionChangeCollapseContent = styled.div`

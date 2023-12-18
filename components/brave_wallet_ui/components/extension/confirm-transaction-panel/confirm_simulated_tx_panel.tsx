@@ -50,7 +50,6 @@ import {
   LoadingSimulation //
 } from '../enable_transaction_simulations/enable_transaction_simulations'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
-import { SimulationWarnings } from './common/tx_simulation_warnings'
 import { CriticalWarningPopup } from './critical-warning-popup'
 
 // Styled Components
@@ -330,18 +329,13 @@ export const ConfirmSimulatedTransactionPanel = ({
         </TabsAndContent>
       </Column>
 
-      <Column fullWidth>
-        <SimulationWarnings
-          txSimulation={txSimulation}
-          isWarningCollapsed={isWarningCollapsed}
-          setIsWarningCollapsed={setIsWarningCollapsed}
-        />
-
-        <Footer
-          showGasErrors
-          disableConfirmation={!!simulationResultsErrorText}
-        />
-      </Column>
+      <Footer
+        showGasErrors
+        disableConfirmation={!!simulationResultsErrorText}
+        blowfishWarnings={txSimulation.warnings}
+        isWarningCollapsed={isWarningCollapsed}
+        setIsWarningCollapsed={setIsWarningCollapsed}
+      />
     </StyledWrapper>
   )
 }

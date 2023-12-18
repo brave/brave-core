@@ -34,6 +34,8 @@ export const QueueStepText = styled.span`
   margin-right: 9px;
 `
 
+export const queueStepButtonRowPadding = '16px 0px 4px 0px'
+
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   font-family: Poppins;
   font-style: normal;
@@ -47,15 +49,6 @@ export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   margin: 0;
   padding: 0;
   margin-bottom: ${(p) => (p.needsMargin ? '12px' : '0px')};
-`
-
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.errorText};
-  text-align: center;
 `
 
 export const ConfirmingButton = styled(WalletButton)`

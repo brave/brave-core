@@ -9,7 +9,8 @@ import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import {
-  translateSimulationResultError //
+  translateSimulationResultError, //
+  translateSimulationWarning
 } from '../../../utils/tx-simulation-utils'
 import {
   getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
@@ -34,7 +35,7 @@ import NavButton from '../buttons/nav-button'
 import {
   LoadingSimulation //
 } from '../enable_transaction_simulations/enable_transaction_simulations'
-import { SimulationWarnings } from './common/tx_simulation_warnings'
+import { TransactionWarnings } from './common/tx_warnings'
 import {
   SolanaTransactionInstruction //
 } from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
@@ -143,6 +144,13 @@ export const SignSimulatedTransactionPanel = ({
       ? getTxDatasFromQueuedSolSignRequest(selectedQueueData)
       : []
   }, [selectedQueueData])
+
+  const warnings = React.useMemo(() => {
+    return txSimulation.warnings.map((w) => ({
+      message: translateSimulationWarning(w),
+      severity: w.severity
+    }))
+  }, [txSimulation])
 
   // render
   if (!txSimulation || !network || !selectedQueueData) {
@@ -286,10 +294,10 @@ export const SignSimulatedTransactionPanel = ({
             </Column>
 
             <Column fullWidth>
-              <SimulationWarnings
+              <TransactionWarnings
                 isWarningCollapsed={isWarningCollapsed}
                 setIsWarningCollapsed={setIsWarningCollapsed}
-                txSimulation={txSimulation}
+                warnings={warnings}
               />
 
               <SignTransactionFooter
