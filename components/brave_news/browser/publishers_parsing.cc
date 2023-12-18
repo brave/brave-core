@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -13,6 +14,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "url/gurl.h"
@@ -68,7 +70,11 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
         auto locale_info = mojom::LocaleInfo::New();
         locale_info->locale = locale.locale;
         locale_info->rank = locale.rank.value_or(0);
-        locale_info->channels = std::move(locale.channels);
+
+        auto transformed =
+            locale.channels | std::views::transform(brave_news::GetChannelName);
+        locale_info->channels =
+            std::vector<std::string>(transformed.begin(), transformed.end());
 
         publisher->locales.push_back(std::move(locale_info));
       }
