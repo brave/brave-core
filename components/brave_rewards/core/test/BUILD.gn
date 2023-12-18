@@ -103,6 +103,7 @@ source_set("test") {
     "//brave/components/brave_rewards/core/wallet/wallet_unittest.cc",
     "//brave/components/brave_rewards/core/wallet/wallet_utils_unittest.cc",
     "//brave/components/brave_rewards/core/wallet_provider/connect_external_wallet_unittest.cc",
+    "//brave/components/brave_rewards/core/wallet_provider/linkage_checker_unittest.cc",
   ]
 
   deps = [

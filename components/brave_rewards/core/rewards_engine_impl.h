@@ -7,11 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
 
 #include <map>
+#include <memory>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
@@ -50,6 +53,9 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
+
+class InitializationManager;
+class LinkageChecker;
 
 class RewardsEngineImpl : public mojom::RewardsEngine {
  public:
@@ -340,6 +346,13 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   mojom::RewardsEngineClient* client();
 
+  template <typename T>
+  T& Get() const {
+    auto& helper = std::get<std::unique_ptr<T>>(helpers_);
+    CHECK(helper) << "Rewards engine helper has not been created";
+    return *helper;
+  }
+
   promotion::Promotion* promotion() { return &promotion_; }
 
   publisher::Publisher* publisher() { return &publisher_; }
@@ -366,39 +379,26 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   zebpay::ZebPay* zebpay() { return &zebpay_; }
 
-  bool IsShuttingDown() const;
-
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
 
+ private:
   bool IsReady() const;
 
- private:
-  enum class ReadyState {
-    kUninitialized,
-    kInitializing,
-    kReady,
-    kShuttingDown
-  };
+  bool IsShuttingDown() const;
 
-  bool IsUninitialized() const;
+  void OnInitializationComplete(InitializeCallback callback, bool success);
 
-  virtual void InitializeDatabase(ResultCallback callback);
-
-  void OnDatabaseInitialized(ResultCallback callback, mojom::Result result);
-
-  void OnStateInitialized(ResultCallback callback, mojom::Result result);
-
-  void OnInitialized(ResultCallback callback, mojom::Result result);
-
-  void StartServices();
-
-  void OnAllDone(mojom::Result result, LegacyResultCallback callback);
+  void OnShutdownComplete(ShutdownCallback callback, bool success);
 
   template <typename T>
   void WhenReady(T callback);
 
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
+
+  std::tuple<std::unique_ptr<InitializationManager>,
+             std::unique_ptr<LinkageChecker>>
+      helpers_;
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
@@ -419,7 +419,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
   base::OneShotEvent ready_event_;
-  ReadyState ready_state_ = ReadyState::kUninitialized;
+  base::WeakPtrFactory<RewardsEngineImpl> weak_factory_{this};
 };
 
 }  // namespace brave_rewards::internal
