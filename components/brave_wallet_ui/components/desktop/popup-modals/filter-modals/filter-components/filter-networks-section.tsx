@@ -6,9 +6,7 @@
 import * as React from 'react'
 
 // Constants
-import {
-  emptyRewardsInfo //
-} from '../../../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../../../common/async/base-query-cache'
 
 // Queries
 import {

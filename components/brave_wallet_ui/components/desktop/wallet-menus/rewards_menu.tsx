@@ -9,9 +9,7 @@ import * as React from 'react'
 import {
   useGetRewardsInfoQuery //
 } from '../../../common/slices/api.slice'
-import {
-  emptyRewardsInfo //
-} from '../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

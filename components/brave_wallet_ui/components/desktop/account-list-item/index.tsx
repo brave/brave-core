@@ -12,9 +12,7 @@ import { useDispatch } from 'react-redux'
 import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 
 // constants
-import {
-  emptyRewardsInfo //
-} from '../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'

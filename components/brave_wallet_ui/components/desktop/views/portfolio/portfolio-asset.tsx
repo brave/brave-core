@@ -17,9 +17,7 @@ import {
 } from '../../../../constants/types'
 
 // constants
-import {
-  emptyRewardsInfo //
-} from '../../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
 // Utils
 import Amount from '../../../../utils/amount'

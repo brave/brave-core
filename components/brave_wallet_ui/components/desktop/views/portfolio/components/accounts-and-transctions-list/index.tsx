@@ -14,7 +14,7 @@ import {
 } from '../../../../../../common/constants/local-storage-keys'
 import {
   emptyRewardsInfo //
-} from '../../../../../../common/slices/endpoints/rewards.endpoints'
+} from '../../../../../../common/async/base-query-cache'
 
 // Actions
 import { WalletActions } from '../../../../../../common/actions'

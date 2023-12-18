@@ -12,7 +12,7 @@ import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
-import { emptyRewardsInfo } from '../../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
 // Selectors
 import {

@@ -8,6 +8,10 @@ import { EntityId } from '@reduxjs/toolkit'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
+import { WalletStatus } from '../common/async/brave_rewards_api_proxy'
+import {
+  ExternalWalletProvider //
+} from '../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -1263,3 +1267,15 @@ export interface LineChartIframeData {
 
 export type WalletCreationMode = 'new' | 'import' | 'hardware'
 export type WalletImportMode = 'seed' | 'metamask' | 'legacy'
+
+export interface BraveRewardsInfo {
+  isRewardsEnabled: boolean
+  balance: number | undefined
+  rewardsToken: BraveWallet.BlockchainToken | undefined
+  provider: ExternalWalletProvider | undefined
+  providerName: string
+  status: WalletStatus
+  rewardsAccount: BraveWallet.AccountInfo | undefined
+  rewardsNetwork: BraveWallet.NetworkInfo | undefined
+  accountLink: string | undefined
+}

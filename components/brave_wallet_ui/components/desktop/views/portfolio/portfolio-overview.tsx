@@ -30,9 +30,7 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 import { WalletStatus } from '../../../../common/async/brave_rewards_api_proxy'
-import {
-  emptyRewardsInfo //
-} from '../../../../common/slices/endpoints/rewards.endpoints'
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'

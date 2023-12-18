@@ -12,7 +12,7 @@ import {
 } from '../../../../../../common/constants/magics'
 import {
   emptyRewardsInfo //
-} from '../../../../../../common/slices/endpoints/rewards.endpoints'
+} from '../../../../../../common/async/base-query-cache'
 
 // Selectors
 import {
