@@ -42,7 +42,7 @@ void PaymentTokens::AddTokens(const PaymentTokenList& payment_tokens) {
 }
 
 bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
-  auto iter = base::ranges::find(payment_tokens_, payment_token);
+  const auto iter = base::ranges::find(payment_tokens_, payment_token);
   if (iter == payment_tokens_.cend()) {
     return false;
   }

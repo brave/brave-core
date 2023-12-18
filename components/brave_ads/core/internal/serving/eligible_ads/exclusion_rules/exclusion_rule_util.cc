@@ -13,7 +13,7 @@ namespace brave_ads {
 
 bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
-                            ConfirmationType confirmation_type,
+                            const ConfirmationType confirmation_type,
                             const base::TimeDelta time_constraint,
                             const size_t cap) {
   const base::Time now = base::Time::Now();
@@ -31,7 +31,7 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
 
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
-                               ConfirmationType confirmation_type,
+                               const ConfirmationType confirmation_type,
                                const base::TimeDelta time_constraint,
                                const size_t cap) {
   const base::Time now = base::Time::Now();
@@ -49,7 +49,7 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
 
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
-                            ConfirmationType confirmation_type,
+                            const ConfirmationType confirmation_type,
                             const base::TimeDelta time_constraint,
                             const size_t cap) {
   const base::Time now = base::Time::Now();

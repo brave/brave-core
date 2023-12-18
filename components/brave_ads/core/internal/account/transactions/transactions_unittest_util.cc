@@ -24,7 +24,7 @@ void SaveTransactions(const TransactionList& transactions) {
 }
 
 TransactionInfo BuildTransaction(const double value,
-                                 ConfirmationType confirmation_type,
+                                 const ConfirmationType confirmation_type,
                                  const base::Time reconciled_at,
                                  const bool should_use_random_uuids) {
   TransactionInfo transaction;
@@ -44,7 +44,7 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildUnreconciledTransaction(
     const double value,
-    ConfirmationType confirmation_type,
+    const ConfirmationType confirmation_type,
     const bool should_use_random_uuids) {
   return BuildTransaction(value, confirmation_type, /*reconciled_at=*/{},
                           should_use_random_uuids);

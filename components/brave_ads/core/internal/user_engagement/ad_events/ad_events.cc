@@ -18,7 +18,7 @@
 namespace brave_ads {
 
 void RecordAdEvent(const AdInfo& ad,
-                   ConfirmationType confirmation_type,
+                   const ConfirmationType confirmation_type,
                    AdEventCallback callback) {
   RecordAdEvent(BuildAdEvent(ad, confirmation_type, base::Time::Now()),
                 std::move(callback));

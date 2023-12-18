@@ -15,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-bool ShouldFilterConfirmationType(ConfirmationType confirmation_type) {
+bool ShouldFilterConfirmationType(const ConfirmationType confirmation_type) {
   switch (confirmation_type) {
     case ConfirmationType::kViewed:
     case ConfirmationType::kClicked:

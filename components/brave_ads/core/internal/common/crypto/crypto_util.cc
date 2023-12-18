@@ -112,7 +112,7 @@ std::optional<std::string> Sign(const std::string& message,
     return std::nullopt;
   }
 
-  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
 
   std::vector<uint8_t> raw_signature;
   raw_signature.resize(ED25519_SIGNATURE_LEN);
@@ -139,7 +139,7 @@ bool Verify(const std::string& message,
     return false;
   }
 
-  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
 
   return ED25519_verify(raw_message.data(), raw_message.size(),
                         raw_signature->data(), raw_public_key->data()) != 0;

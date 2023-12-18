@@ -63,7 +63,7 @@ void SetProfileListPrefValue(const std::string& path, base::Value::List value) {
   SetProfilePrefValue(path, base::Value(std::move(value)));
 }
 
-void SetProfileTimePrefValue(const std::string& path, base::Time value) {
+void SetProfileTimePrefValue(const std::string& path, const base::Time value) {
   SetProfilePrefValue(path, base::TimeToValue(value));
 }
 

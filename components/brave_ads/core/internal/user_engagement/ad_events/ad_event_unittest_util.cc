@@ -22,8 +22,8 @@
 namespace brave_ads::test {
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         AdType ad_type,
-                         ConfirmationType confirmation_type,
+                         const AdType ad_type,
+                         const ConfirmationType confirmation_type,
                          const base::Time created_at,
                          const bool should_use_random_uuids) {
   AdEventInfo ad_event;

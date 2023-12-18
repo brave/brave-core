@@ -21,7 +21,7 @@ namespace {
 bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
       creative_ad.geo_targets, [](const std::string& geo_target) {
-        return std::count(geo_target.begin(), geo_target.end(), '-') == 1;
+        return std::count(geo_target.cbegin(), geo_target.cend(), '-') == 1;
       });
 
   return iter != creative_ad.geo_targets.cend();

@@ -77,7 +77,7 @@ void CloseNotificationAd(const std::string& placement_id) {
 void CacheAdEventForInstanceId(const std::string& id,
                                const AdType ad_type,
                                const ConfirmationType confirmation_type,
-                               base::Time time) {
+                               const base::Time time) {
   GetInstance()->CacheAdEventForInstanceId(id, ToString(ad_type),
                                            ToString(confirmation_type), time);
 }
@@ -312,11 +312,12 @@ void SetProfileUint64Pref(const std::string& path, const uint64_t value) {
   SetProfilePref(path, base::Value(base::NumberToString(value)));
 }
 
-void SetProfileTimePref(const std::string& path, base::Time value) {
+void SetProfileTimePref(const std::string& path, const base::Time value) {
   SetProfilePref(path, base::TimeToValue(value));
 }
 
-void SetProfileTimeDeltaPref(const std::string& path, base::TimeDelta value) {
+void SetProfileTimeDeltaPref(const std::string& path,
+                             const base::TimeDelta value) {
   SetProfilePref(path, base::TimeDeltaToValue(value));
 }
 
@@ -491,12 +492,12 @@ void SetLocalStateUint64Pref(const std::string& path, const uint64_t value) {
   SetLocalStatePref(path, base::Value(base::NumberToString(value)));
 }
 
-void SetLocalStateTimePref(const std::string& path, base::Time value) {
+void SetLocalStateTimePref(const std::string& path, const base::Time value) {
   SetLocalStatePref(path, base::TimeToValue(value));
 }
 
 void SetLocalStateTimeDeltaPref(const std::string& path,
-                                base::TimeDelta value) {
+                                const base::TimeDelta value) {
   SetLocalStatePref(path, base::TimeDeltaToValue(value));
 }
 

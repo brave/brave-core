@@ -127,7 +127,7 @@ void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
                     conversion.ad_type, ConfirmationType::kConversion);
 }
 
-void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) {
+void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, const base::Time maybe_at) {
   CHECK(ad.IsValid());
 
   BLOG(1, "Maybe land page for " << ad.target_url << " "

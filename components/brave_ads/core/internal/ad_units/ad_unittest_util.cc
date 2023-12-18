@@ -19,7 +19,7 @@ std::string GetConstantId(const bool should_use_random_uuids,
              : constant_id;
 }
 
-AdInfo BuildAd(AdType ad_type, const bool should_use_random_uuids) {
+AdInfo BuildAd(const AdType ad_type, const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;

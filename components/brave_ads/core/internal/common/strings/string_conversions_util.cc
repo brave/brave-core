@@ -31,7 +31,7 @@ std::vector<float> DelimitedStringToVector(const std::string& string,
   std::vector<float> vector_components;
   vector_components.reserve(string_components.size());
 
-  std::transform(string_components.begin(), string_components.end(),
+  std::transform(string_components.cbegin(), string_components.cend(),
                  std::back_inserter(vector_components),
                  [](const std::string& string_component) {
                    double value;

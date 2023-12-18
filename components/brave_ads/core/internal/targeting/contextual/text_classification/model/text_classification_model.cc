@@ -56,7 +56,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
   segments.reserve(segment_probabilities.size());
 
-  std::transform(segment_probabilities.begin(), segment_probabilities.end(),
+  std::transform(segment_probabilities.cbegin(), segment_probabilities.cend(),
                  std::back_inserter(segments),
                  [](const auto& segment_probability) {
                    CHECK(!segment_probability.first.empty());

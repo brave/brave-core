@@ -46,7 +46,8 @@ void ConfirmationTokens::AddTokens(
 
 bool ConfirmationTokens::RemoveToken(
     const ConfirmationTokenInfo& confirmation_token) {
-  auto iter = base::ranges::find(confirmation_tokens_, confirmation_token);
+  const auto iter =
+      base::ranges::find(confirmation_tokens_, confirmation_token);
   if (iter == confirmation_tokens_.cend()) {
     return false;
   }
