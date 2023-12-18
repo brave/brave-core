@@ -10,3 +10,11 @@ index 7c316d05b3203788ffe4e863ca40430b3b3d5000..1d506349dd01d1ef5c5ee6aa98d7da09
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
+@@ -11254,6 +11255,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
+ 
+ bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
+                                        const FeatureEntry& entry) {
++  BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
+   version_info::Channel channel = chrome::GetChannel();
+   // enable-projector-server-side-speech-recognition is only available if
