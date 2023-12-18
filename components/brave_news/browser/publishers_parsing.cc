@@ -75,13 +75,13 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
         // With migrations, it's possible we'll end up with duplicate channels,
         // so filter them out with a set.
         base::flat_set<std::string> seen;
-        for (const auto& channel : locale_info->channels) {
+        for (const auto& channel : locale.channels) {
           auto transformed = brave_news::GetMigratedChannel(channel);
           if (seen.contains(transformed)) {
             continue;
           }
           seen.insert(transformed);
-          locale_info->channels.push_back(transformed);
+          locale_info->channels.push_back(std::move(transformed));
         }
 
         publisher->locales.push_back(std::move(locale_info));
