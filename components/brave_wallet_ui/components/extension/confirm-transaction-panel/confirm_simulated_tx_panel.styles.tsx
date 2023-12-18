@@ -22,22 +22,11 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
 `
 
 export const IconButton = styled(Button)`
   background: none;
   border: none;
-`
-
-export const CaratDownIcon = styled(Icon).attrs({ name: 'carat-down' })`
-  --leo-icon-size: 22px;
-  --leo-icon-color: ${leo.color.icon.default};
-`
-
-export const CaratUpIcon = styled(Icon).attrs({ name: 'carat-up' })`
-  --leo-icon-size: 22px;
-  --leo-icon-color: ${leo.color.icon.default};
 `
 
 export const IconSlot = styled.div`
@@ -71,15 +60,28 @@ export const WarningCollapse = styled(Collapse)<{
   isCritical?: boolean
 }>`
   --leo-collapse-summary-padding: 0px 16px;
-  --leo-collapse-radius: 0px;
+  --leo-collapse-radius: ${leo.radius.m};
   --leo-collapse-shadow: none;
   --leo-collapse-border-color: none;
   --leo-collapse-background-color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorBackground
       : leo.color.systemfeedback.warningBackground};
+  --leo-collapse-icon-color: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.warningIcon};
+  --leo-collapse-icon-color-hover: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.warningIcon};
 
   font: var(--leo-font-primary-small-semibold);
+
+  color: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.warningText};
 
   & > * > li {
     font: var(--leo-font-primary-small-regular);
@@ -87,8 +89,13 @@ export const WarningCollapse = styled(Collapse)<{
   }
 `
 
-export const WarningTitle = styled.p`
-  color: ${leo.color.text.primary};
+export const WarningTitle = styled.p<{
+  isCritical?: boolean
+}>`
+  color: ${(p) =>
+    p.isCritical
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.warningText};
   font: ${leo.font.browser.small.semibold};
   font-family: 'Inter', 'Poppins';
 `
