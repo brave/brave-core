@@ -1755,6 +1755,14 @@ public class BrowserViewController: UIViewController {
         navigateInTab(tab: tab)
       } else {
         updateURLBar()
+        // If navigation will start from NTP, tab display url will be nil until
+        // didCommit is called and it will cause url bar be empty in that period
+        // To fix this when tab display url is empty, webview url is used
+        if tab.url?.displayURL == nil {
+          if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
+            updateToolbarCurrentURL(url.displayURL)
+          }
+        }
       }
 
       // Rewards reporting
