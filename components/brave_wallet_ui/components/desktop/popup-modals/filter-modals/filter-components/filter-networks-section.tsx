@@ -5,17 +5,19 @@
 
 import * as React from 'react'
 
+// Constants
 import {
-  useGetExternalRewardsWalletQuery,
-  useGetRewardsEnabledQuery,
-  useGetVisibleNetworksQuery
+  emptyRewardsInfo //
+} from '../../../../../common/slices/endpoints/rewards.endpoints'
+
+// Queries
+import {
+  useGetVisibleNetworksQuery,
+  useGetRewardsInfoQuery
 } from '../../../../../common/slices/api.slice'
 
 // Types
 import { SupportedTestNetworks } from '../../../../../constants/types'
-import {
-  WalletStatus //
-} from '../../../../../common/async/brave_rewards_api_proxy'
 
 // Options
 import {
@@ -26,9 +28,6 @@ import {
 import {
   networkEntityAdapter //
 } from '../../../../../common/slices/entities/network.entity'
-import {
-  getNormalizedExternalRewardsNetwork //
-} from '../../../../../utils/rewards_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -48,8 +47,8 @@ export const FilterNetworksSection = (props: Props) => {
 
   // Queries
   const { data: networks } = useGetVisibleNetworksQuery()
-  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const { data: { rewardsNetwork: providerNetwork } = emptyRewardsInfo } =
+    useGetRewardsInfoQuery()
 
   // Memos
   const primaryNetworks = React.useMemo(() => {
@@ -73,13 +72,6 @@ export const FilterNetworksSection = (props: Props) => {
   }, [networks])
 
   // Computed
-  const providerNetwork =
-    isRewardsEnabled && externalRewardsInfo?.status === WalletStatus.kConnected
-      ? getNormalizedExternalRewardsNetwork(
-          externalRewardsInfo?.provider ?? undefined
-        )
-      : undefined
-
   const isSelectAll = React.useMemo(() => {
     return (
       filteredOutNetworkKeys.length > 0 &&

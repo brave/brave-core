@@ -7,12 +7,14 @@ import * as React from 'react'
 
 // Queries
 import {
-  useGetExternalRewardsWalletQuery //
+  useGetRewardsInfoQuery //
 } from '../../../common/slices/api.slice'
+import {
+  emptyRewardsInfo //
+} from '../../../common/slices/endpoints/rewards.endpoints'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getRewardsProviderName } from '../../../utils/rewards_utils'
 
 // Styled Components
 import {
@@ -37,14 +39,14 @@ const onClickRewardsSettings = () => {
 
 export const RewardsMenu = () => {
   // Queries
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const {
+    data: { accountLink: providerAccountUrl, providerName } = emptyRewardsInfo
+  } = useGetRewardsInfoQuery()
 
   // Computed
-  const provider = externalRewardsInfo?.provider ?? ''
-  const providerAccountUrl = externalRewardsInfo?.links.account
   const providerButtonText = getLocale('braveWalletViewOn').replace(
     '$1',
-    getRewardsProviderName(provider)
+    providerName
   )
 
   // Methods

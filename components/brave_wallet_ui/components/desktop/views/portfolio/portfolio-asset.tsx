@@ -16,6 +16,11 @@ import {
   LineChartIframeData
 } from '../../../../constants/types'
 
+// constants
+import {
+  emptyRewardsInfo //
+} from '../../../../common/slices/endpoints/rewards.endpoints'
+
 // Utils
 import Amount from '../../../../utils/amount'
 import {
@@ -34,10 +39,7 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { makeDepositFundsRoute } from '../../../../utils/routes-utils'
-import {
-  getIsRewardsToken,
-  getRewardsBATToken
-} from '../../../../utils/rewards_utils'
+import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
   getStoredPortfolioTimeframe //
 } from '../../../../utils/local-storage-utils'
@@ -74,8 +76,7 @@ import {
   useGetTokenSpotPricesQuery,
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetRewardsEnabledQuery,
-  useGetExternalRewardsWalletQuery,
+  useGetRewardsInfoQuery,
   useGetCoinMarketQuery
 } from '../../../../common/slices/api.slice'
 import {
@@ -150,8 +151,7 @@ export const PortfolioAsset = (props: Props) => {
 
   // Queries
   const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
-  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const { data: { rewardsToken } = emptyRewardsInfo } = useGetRewardsInfoQuery()
   const { data: coinMarketData = [] } = useGetCoinMarketQuery({
     limit: 250,
     vsAsset: defaultFiat
@@ -159,13 +159,10 @@ export const PortfolioAsset = (props: Props) => {
 
   // Memos
   const userTokensInfo = React.useMemo(() => {
-    const rewardsToken = getRewardsBATToken(
-      externalRewardsInfo?.provider ?? undefined
-    )
-    return isRewardsEnabled && rewardsToken
+    return rewardsToken
       ? [rewardsToken, ...userVisibleTokensInfo]
       : userVisibleTokensInfo
-  }, [isRewardsEnabled, userVisibleTokensInfo])
+  }, [userVisibleTokensInfo, rewardsToken])
 
   // params
   const selectedAssetFromParams = React.useMemo(() => {

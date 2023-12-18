@@ -4,14 +4,27 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
+import {
+  ExternalWalletProvider //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // proxies
 import {
   BraveRewardsProxy,
-  RewardsExternalWallet,
+  WalletStatus,
   getBraveRewardsProxy
 } from '../../async/brave_rewards_api_proxy'
+
+// utils
+import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  getNormalizedExternalRewardsNetwork,
+  getNormalizedExternalRewardsWallet,
+  getRewardsBATToken,
+  getRewardsProviderName
+} from '../../../utils/rewards_utils'
 
 /**
  * A function to return the ref to either the main api proxy, or a mocked proxy
@@ -28,64 +41,86 @@ export let rewardsProxyFetcher = getBraveRewardsProxy
 export const setRewardsProxyFetcher = (fetcher: () => BraveRewardsProxy) => {
   rewardsProxyFetcher = fetcher
 }
+interface BraveRewardsInfo {
+  isRewardsEnabled: boolean
+  balance: number | undefined
+  rewardsToken: BraveWallet.BlockchainToken | undefined
+  provider: ExternalWalletProvider | undefined
+  providerName: string
+  status: WalletStatus
+  rewardsAccount: BraveWallet.AccountInfo | undefined
+  rewardsNetwork: BraveWallet.NetworkInfo | undefined
+  accountLink: string | undefined
+}
+
+export const emptyRewardsInfo: BraveRewardsInfo = {
+  isRewardsEnabled: false,
+  balance: undefined,
+  rewardsToken: undefined,
+  provider: undefined,
+  providerName: '',
+  status: WalletStatus.kNotConnected,
+  rewardsAccount: undefined,
+  rewardsNetwork: undefined,
+  accountLink: undefined
+} as const
 
 export function braveRewardsApiEndpoints({
   mutation,
   query
 }: WalletApiEndpointBuilderParams) {
   return {
-    getRewardsEnabled: query<boolean, void>({
-      queryFn: async (arg, api, extraOptions, baseQuery) => {
+    getRewardsInfo: query<BraveRewardsInfo, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const enabled = await rewardsProxyFetcher().getRewardsEnabled()
-          return { data: enabled }
-        } catch (error) {
-          const message = `Failed to check if rewards are enabled: ${
-            error.toString() //
-          }`
-          console.error(message)
-          return {
-            error: message
-          }
-        }
-      },
-      providesTags: ['BraveRewards-Enabled']
-    }),
+          const isRewardsEnabled =
+            await rewardsProxyFetcher().getRewardsEnabled()
 
-    getRewardsBalance: query<number, void>({
-      queryFn: async (arg, api, extraOptions, baseQuery) => {
-        try {
+          if (!isRewardsEnabled) {
+            return {
+              data: emptyRewardsInfo
+            }
+          }
+
           const balance = await rewardsProxyFetcher().fetchBalance()
-          return { data: balance || 0 }
-        } catch (error) {
-          const message = `Failed to fetch rewards balance: ${
-            error.toString() //
-          }`
-          console.error(message)
-          return {
-            error: message
-          }
-        }
-      },
-      providesTags: ['BraveRewards-RewardsBalance']
-    }),
 
-    getExternalRewardsWallet: query<RewardsExternalWallet | null, void>({
-      queryFn: async (arg, api, extraOptions, baseQuery) => {
-        try {
-          const externalWallet = await rewardsProxyFetcher().getExternalWallet()
-          return { data: externalWallet }
-        } catch (error) {
-          const message = `Failed to fetch rewards balance: ${
-            error.toString() //
-          }`
-          console.error(message)
+          const { provider, status, links } =
+            (await rewardsProxyFetcher().getExternalWallet()) || {}
+
+          const rewardsToken = getRewardsBATToken(provider)
+
+          const isConnected = status === WalletStatus.kConnected
+
+          const rewardsAccount = isConnected
+            ? getNormalizedExternalRewardsWallet(provider)
+            : undefined
+
+          const rewardsNetwork = isConnected
+            ? getNormalizedExternalRewardsNetwork(provider)
+            : undefined
+
           return {
-            error: message
+            data: {
+              isRewardsEnabled: true,
+              balance,
+              provider,
+              rewardsToken,
+              status: status || WalletStatus.kNotConnected,
+              rewardsAccount,
+              rewardsNetwork,
+              accountLink: links?.account,
+              providerName: getRewardsProviderName(provider)
+            }
           }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get Brave Rewards information',
+            error
+          )
         }
       },
-      providesTags: ['BraveRewards-ExternalWallet']
+      providesTags: ['BraveRewards-Info']
     })
   } as const
 }
