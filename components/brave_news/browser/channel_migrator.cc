@@ -42,16 +42,13 @@ void MigrateChannels(PrefService& prefs) {
 
       // If we were subscribed to the channel "from", subscribe to the channel
       // "to" and remove that subscription.
-      LOG(ERROR) << "Converting " << locale << "." << from << " to " << to;
       update->SetByDottedPath(base::StrCat({locale, ".", to}), true);
       update->RemoveByDottedPath(base::StrCat({locale, ".", from}));
     }
   }
-
-  LOG(ERROR) << "Channel migration" << update->DebugString();
 }
 
-std::string GetChannelName(const std::string& channel) {
+std::string GetMigratedChannel(const std::string& channel) {
   auto* it = kMigrateChannels.find(channel);
   return it == kMigrateChannels.end() ? channel : std::string{it->second};
 }

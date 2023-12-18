@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
@@ -71,10 +72,17 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
         locale_info->locale = locale.locale;
         locale_info->rank = locale.rank.value_or(0);
 
-        auto transformed =
-            locale.channels | std::views::transform(brave_news::GetChannelName);
-        locale_info->channels =
-            std::vector<std::string>(transformed.begin(), transformed.end());
+        // With migrations, it's possible we'll end up with duplicate channels,
+        // so filter them out with a set.
+        base::flat_set<std::string> seen;
+        for (const auto& channel : locale_info->channels) {
+          auto transformed = brave_news::GetMigratedChannel(channel);
+          if (seen.contains(transformed)) {
+            continue;
+          }
+          seen.insert(transformed);
+          locale_info->channels.push_back(transformed);
+        }
 
         publisher->locales.push_back(std::move(locale_info));
       }

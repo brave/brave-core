@@ -69,7 +69,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
   for (const auto& it : publishers) {
     for (const auto& locale_info : it.second->locales) {
       for (const auto& channel_id : locale_info->channels) {
-        auto migrated_channel_id = GetChannelName(channel_id);
+        auto migrated_channel_id = GetMigratedChannel(channel_id);
         if (!channels.contains(migrated_channel_id)) {
           auto channel = mojom::Channel::New();
           channel->channel_name = channel_id;
