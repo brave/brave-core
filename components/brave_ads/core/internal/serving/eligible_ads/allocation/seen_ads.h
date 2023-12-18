@@ -29,11 +29,7 @@ T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, AdType ad_type) {
 
   BLOG(1, "All " << ad_type << " ads have been shown, so round robin");
 
-  CreativeAdList creative_ads;
-  for (const auto& ad : ads) {
-    creative_ads.push_back(ad);
-  }
-
+  const CreativeAdList creative_ads{ads.cbegin(), ads.cend()};
   ClientStateManager::GetInstance().ResetSeenAdsForType(creative_ads, ad_type);
 
   return ads;

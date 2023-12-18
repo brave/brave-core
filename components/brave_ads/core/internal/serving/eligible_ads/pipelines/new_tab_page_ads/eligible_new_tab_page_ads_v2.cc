@@ -95,8 +95,8 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  const CreativeNewTabPageAdList eligible_creative_ads =
-      FilterCreativeAds(creative_ads, ad_events, browsing_history);
+  CreativeNewTabPageAdList eligible_creative_ads = creative_ads;
+  FilterCreativeAds(eligible_creative_ads, ad_events, browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
@@ -112,22 +112,20 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
   std::move(callback).Run({*creative_ad});
 }
 
-CreativeNewTabPageAdList EligibleNewTabPageAdsV2::FilterCreativeAds(
-    const CreativeNewTabPageAdList& creative_ads,
+void EligibleNewTabPageAdsV2::FilterCreativeAds(
+    CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
   if (creative_ads.empty()) {
-    return {};
+    return;
   }
 
   NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
                                              *anti_targeting_resource_,
                                              browsing_history);
+  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
-  CreativeNewTabPageAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  return PaceCreativeAds(eligible_creative_ads);
+  PaceCreativeAds(creative_ads);
 }
 
 }  // namespace brave_ads

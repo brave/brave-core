@@ -241,20 +241,19 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
     return {};
   }
 
-  InlineContentAdExclusionRules exclusion_rules(
-      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-      browsing_history);
-
   CreativeInlineContentAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
-      eligible_creative_ads, AdType::kInlineContentAd);
+      FilterSeenAdvertisersAndRoundRobinIfNeeded(creative_ads,
+                                                 AdType::kInlineContentAd);
 
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kInlineContentAd);
 
-  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
+  InlineContentAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      browsing_history);
+  ApplyExclusionRules(eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  PaceCreativeAds(eligible_creative_ads);
 
   return PrioritizeCreativeAds(eligible_creative_ads);
 }

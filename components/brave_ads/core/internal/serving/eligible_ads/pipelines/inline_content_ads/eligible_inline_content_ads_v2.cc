@@ -99,8 +99,8 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  const CreativeInlineContentAdList eligible_creative_ads =
-      FilterCreativeAds(creative_ads, ad_events, browsing_history);
+  CreativeInlineContentAdList eligible_creative_ads = creative_ads;
+  FilterCreativeAds(eligible_creative_ads, ad_events, browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
@@ -116,22 +116,20 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
   std::move(callback).Run({*creative_ad});
 }
 
-CreativeInlineContentAdList EligibleInlineContentAdsV2::FilterCreativeAds(
-    const CreativeInlineContentAdList& creative_ads,
+void EligibleInlineContentAdsV2::FilterCreativeAds(
+    CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
   if (creative_ads.empty()) {
-    return {};
+    return;
   }
 
   InlineContentAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       browsing_history);
+  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
-  const CreativeInlineContentAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  return PaceCreativeAds(eligible_creative_ads);
+  PaceCreativeAds(creative_ads);
 }
 
 }  // namespace brave_ads

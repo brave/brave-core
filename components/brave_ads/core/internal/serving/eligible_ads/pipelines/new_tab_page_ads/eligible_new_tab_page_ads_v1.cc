@@ -225,20 +225,19 @@ CreativeNewTabPageAdList EligibleNewTabPageAdsV1::FilterCreativeAds(
     return {};
   }
 
-  NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
-                                             *anti_targeting_resource_,
-                                             browsing_history);
-
   CreativeNewTabPageAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
-      eligible_creative_ads, AdType::kNewTabPageAd);
+      FilterSeenAdvertisersAndRoundRobinIfNeeded(creative_ads,
+                                                 AdType::kNewTabPageAd);
 
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNewTabPageAd);
 
-  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
+  NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
+                                             *anti_targeting_resource_,
+                                             browsing_history);
+  ApplyExclusionRules(eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  PaceCreativeAds(eligible_creative_ads);
 
   return PrioritizeCreativeAds(eligible_creative_ads);
 }

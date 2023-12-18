@@ -53,10 +53,9 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       bool success,
       const CreativeInlineContentAdList& creative_ads);
 
-  CreativeInlineContentAdList FilterCreativeAds(
-      const CreativeInlineContentAdList& creative_ads,
-      const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history);
+  void FilterCreativeAds(CreativeInlineContentAdList& creative_ads,
+                         const AdEventList& ad_events,
+                         const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleInlineContentAdsV2> weak_factory_{this};
 };
