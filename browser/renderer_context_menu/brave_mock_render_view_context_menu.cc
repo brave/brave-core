@@ -225,7 +225,7 @@ void BraveMockRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
 
 void BraveMockRenderViewContextMenu::AddPdfOcrMenuItem() {}
 
-content::RenderFrameHost* BraveMockRenderViewContextMenu::GetRenderFrameHost()
+content::RenderViewHost* BraveMockRenderViewContextMenu::GetRenderViewHost()
     const {
   return nullptr;
 }
