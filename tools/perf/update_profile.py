@@ -25,7 +25,8 @@ import time
 import components.path_util as path_util
 import components.perf_profile as perf_profile
 
-from lib.util import make_zip, scoped_cwd
+with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+  from lib.util import make_zip, scoped_cwd
 
 
 def EraseVariationsFromLocalState(local_state_path: str):

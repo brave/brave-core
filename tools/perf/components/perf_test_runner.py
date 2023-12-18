@@ -97,12 +97,11 @@ class RunableConfiguration:
     logging.info('Rebasing dir %s using binary %s', self.binary.profile_dir,
                  self.binary)
     rebase_runner_config = deepcopy(self.config)
-    rebase_runner_config.extra_browser_args.extend(
-        ['--update-source-profile', '--enable-brave-features-for-perf-testing'])
 
     rebase_benchmark = BenchmarkConfig()
-    rebase_benchmark.name = 'loading.desktop.brave'
-    rebase_benchmark.stories = ['BraveSearch_cold']
+    rebase_benchmark.name = 'brave_utils'
+    rebase_benchmark.stories = ['UpdateProfile']
+
     rebase_benchmark.pageset_repeat = 1
 
     REBASE_TIMEOUT = 240

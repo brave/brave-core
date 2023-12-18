@@ -1,51 +1,27 @@
-# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# you can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# A page set for loading.desktop benchmark.brave benchmark.
+#
 # Used as part of chromium src/tools/perf/page_sets/
-# Therefore has the same code conventions (including pylint).
-# pylint: disable=line-too-long, import-error, super-with-arguments
+# Uses the the same code conventions (including pylint).
+# pylint: disable=import-error, no-self-use
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
-import collections
-import time
+import os
 
 from page_sets import page_cycler_story
+
 from telemetry.page import cache_temperature as cache_temperature_module
 from telemetry.page import shared_page_state
 from telemetry import story
 
-Tag = collections.namedtuple('Tag', ['name', 'description'])
+from core.path_util import SysPath, GetChromiumSrcDir
 
-
-class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
-  """ Brave version of SharedDesktopPageState with extras.
-
-  1. A delay after the browser startup before running a test.
-  2. It's used for rebasing profiles (do some setup in via the settings page).
-  """
-
-  def _StartBrowser(self, page):
-    super(shared_page_state.SharedDesktopPageState, self)._StartBrowser(page)
-    # Wait a fixed time to finish all startup work.
-    rebasing_profile = '--update-source-profile' in self._browser.startup_args
-    time.sleep(90 if rebasing_profile else 10)
-
-  def _StopBrowser(self):
-    if self._browser:
-      rebasing_profile = '--update-source-profile' in self._browser.startup_args
-      if rebasing_profile:
-        # Disable session restore via settingsPrivate API.
-        t = self._browser.tabs[-1]
-        t.Navigate('chrome://settings')
-        t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
-        t.EvaluateJavaScript(
-            'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
-        time.sleep(2)
-
-    super(shared_page_state.SharedDesktopPageState, self)._StopBrowser()
-
+with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
+  from components.path_util import GetPageSetsDataPath
 
 class BraveLoadingDesktopStorySet(story.StorySet):
   """ Brave version of LoadingDesktopStorySet.
@@ -53,9 +29,9 @@ class BraveLoadingDesktopStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self, cache_temperatures=None, with_delay=True):
-    super(BraveLoadingDesktopStorySet,
-          self).__init__(archive_data_file='data/brave_loading_desktop.json',
+  def __init__(self, cache_temperatures=None):
+    archive_data_file = GetPageSetsDataPath('brave_loading_desktop.json')
+    super().__init__(archive_data_file=archive_data_file,
                          cloud_storage_bucket=story.PARTNER_BUCKET)
 
     if cache_temperatures is None:
@@ -68,10 +44,9 @@ class BraveLoadingDesktopStorySet(story.StorySet):
                      ('https://search.brave.com/', 'BraveSearch'),
                      ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
                      ('https://www.economist.com/', 'Economist'),
-                     ('https://www.ign.com/', 'IGN')], cache_temperatures,
-                    with_delay)
+                     ('https://www.ign.com/', 'IGN')], cache_temperatures)
 
-  def AddStories(self, tags, urls, cache_temperatures, with_delay):
+  def AddStories(self, tags, urls, cache_temperatures):
     for url, name in urls:
       for temp in cache_temperatures:
         if temp == cache_temperature_module.COLD:
@@ -84,7 +59,7 @@ class BraveLoadingDesktopStorySet(story.StorySet):
           raise NotImplementedError
 
         page_tags = tags[:]
-        shared_page_state_class = DelayedSharedDesktopPageState if with_delay else shared_page_state.SharedDesktopPageState
+        shared_page_state_class = shared_page_state.SharedDesktopPageState
 
         self.AddStory(
             page_cycler_story.PageCyclerStory(url,
