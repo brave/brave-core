@@ -42,9 +42,7 @@ import { SignTransactionFooter } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
-import {
-  TxWarningBanner //
-} from './common/tx_warning_banner'
+import { TxWarningBanner } from './common/tx_warnings'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   PendingTransactionNetworkFeeAndSettings //

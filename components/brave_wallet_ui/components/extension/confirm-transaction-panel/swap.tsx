@@ -24,9 +24,7 @@ import {
   PendingTransactionNetworkFeeAndSettings //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import { SwapBase } from '../swap'
-import {
-  TxWarningBanner //
-} from './common/tx_warning_banner'
+import { TxWarningBanner } from './common/tx_warnings'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
