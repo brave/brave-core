@@ -32,8 +32,15 @@
       ]
     },
     {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+      ]
+    },
+    {
       "name": "speedometer2",
-      "pageset-repeat": 1
+      "pageset-repeat": 10
     }
   ]
 }
