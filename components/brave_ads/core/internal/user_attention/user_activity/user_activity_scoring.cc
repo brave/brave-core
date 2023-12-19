@@ -61,7 +61,7 @@ double CalculateScore(const UserActivityTriggerList& triggers,
 
       if (pos % 2 != 0) {
         // Event sequences start on hex/byte character boundaries
-        pos++;
+        ++pos;
         continue;
       }
 

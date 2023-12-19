@@ -38,7 +38,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindInt(command, index++, creative_ad.priority);
     BindDouble(command, index++, creative_ad.pass_through_rate);
 
-    count++;
+    ++count;
   }
 
   return count;

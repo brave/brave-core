@@ -28,14 +28,14 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
     } else {
       // If last month does not have reconciled transactions, then the next
       // payment date will occur next month
-      month++;
+      ++month;
     }
   } else {
     // Today is after our next payment day
     if (DidReconcileTransactionsThisMonth(transactions)) {
       // If this month has reconciled transactions, then the next payment date
       // will occur next month
-      month++;
+      ++month;
     } else {
       base::Time::Exploded next_token_redemption_at_exploded;
       next_token_redemption_at.UTCExplode(&next_token_redemption_at_exploded);
@@ -44,7 +44,7 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
         // If this month does not have reconciled transactions and our next
         // token redemption date is this month, then the next payment date will
         // occur next month
-        month++;
+        ++month;
       } else {
         // If this month does not have reconciled transactions and our next
         // token redemption date is next month, then the next payment date will
@@ -58,7 +58,7 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
 
   if (month > 12) {
     month -= 12;
-    year++;
+    ++year;
   }
 
   base::Time::Exploded next_payment_date_exploded = now_exploded;

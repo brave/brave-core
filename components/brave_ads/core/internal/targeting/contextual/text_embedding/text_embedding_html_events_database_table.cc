@@ -57,7 +57,7 @@ size_t BindParameters(
                VectorToDelimitedString(text_embedding_html_event.embedding,
                                        kDelimiter));
 
-    count++;
+    ++count;
   }
 
   return count;

@@ -65,7 +65,7 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
     // uuid does not exist so insert a new index set to 0 for the url responses.
     UrlResponseIndexes()[uuid] = index;
   } else {
-    iter->second++;
+    ++iter->second;
     if (iter->second == url_responses_for_request_path.size()) {
       iter->second = 0;
     }

@@ -88,7 +88,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.title);
     BindString(command, index++, creative_ad.body);
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -303,7 +303,7 @@ void CreativeNotificationAds::GetForSegments(
   int index = 0;
   for (const auto& segment : segments) {
     BindString(&*command, index, segment);
-    index++;
+    ++index;
   }
 
   transaction->commands.push_back(std::move(command));

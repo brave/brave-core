@@ -50,7 +50,7 @@ mojom::DBRecordInfoPtr CreateRecord(
     }
 
     record->fields.push_back(std::move(value));
-    column++;
+    ++column;
   }
 
   return record;

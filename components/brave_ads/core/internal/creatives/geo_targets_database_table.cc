@@ -31,7 +31,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       BindString(command, index++, creative_ad.campaign_id);
       BindString(command, index++, geo_target);
 
-      count++;
+      ++count;
     }
   }
 

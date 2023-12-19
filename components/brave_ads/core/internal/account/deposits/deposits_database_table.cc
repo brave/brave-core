@@ -48,7 +48,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindInt64(command, index++,
               creative_ad.end_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;

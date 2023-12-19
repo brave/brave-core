@@ -61,7 +61,7 @@ size_t BindParameters(
               creative_set_conversion.expire_at.ToDeltaSinceWindowsEpoch()
                   .InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;

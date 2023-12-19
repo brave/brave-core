@@ -30,7 +30,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++, creative_ad.segment);
 
-    count++;
+    ++count;
   }
 
   return count;

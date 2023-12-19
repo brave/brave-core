@@ -67,7 +67,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
         command, index++,
         transaction.reconciled_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -261,7 +261,7 @@ void Transactions::Update(const PaymentTokenList& payment_tokens,
   int index = 0;
   for (const auto& transaction_id : transaction_ids) {
     BindString(&*command, index, transaction_id);
-    index++;
+    ++index;
   }
 
   BindString(&*command, index, rewards::kMigrationUnreconciledTransactionId);

@@ -33,7 +33,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       BindInt(command, index++, daypart.start_minute);
       BindInt(command, index++, daypart.end_minute);
 
-      count++;
+      ++count;
     }
   }
 

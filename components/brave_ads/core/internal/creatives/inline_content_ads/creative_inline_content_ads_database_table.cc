@@ -92,7 +92,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.dimensions);
     BindString(command, index++, creative_ad.cta_text);
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -388,8 +388,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(&*command, index, segment);
-    index++;
+    BindString(&*command, index++, segment);
   }
 
   transaction->commands.push_back(std::move(command));

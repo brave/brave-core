@@ -66,7 +66,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.split_test_group);
     BindString(command, index++, creative_ad.target_url.spec());
 
-    count++;
+    ++count;
   }
 
   return count;

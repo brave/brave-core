@@ -19,7 +19,7 @@ int DayOfWeek(int year, int month, int day) {
 
   if (month < 3) {
     month += 12;
-    year--;
+    --year;
   }
 
   return (day + (2 * month) + ((6 * (month + 1)) / 10) + year + (year / 4) -
