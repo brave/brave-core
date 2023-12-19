@@ -10,31 +10,20 @@ import Icon from '@brave/leo/react/icon'
 import Collapse from '@brave/leo/react/collapse'
 
 // shared styles
-import { Row, styledScrollbarMixin } from '../../../shared/style'
+import { styledScrollbarMixin } from '../../../shared/style'
 
-interface WarningBannerProps {
+interface WarningProps {
   isCritical?: boolean
 }
 
-export const AlertIcon = styled(Icon).attrs<WarningBannerProps>((props) => ({
-  name: props.isCritical ? 'warning-circle-filled' : 'warning-triangle-filled'
-}))<WarningBannerProps>`
+export const WarningCloseIcon = styled(Icon).attrs<WarningProps>({
+  name: 'close'
+})<WarningProps>`
   --leo-icon-size: 20px;
-  padding: 0px 16px;
   color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.warningIcon};
-`
-
-// TODO: match new collapse style
-export const WarningAlertRow = styled(Row)<WarningBannerProps>`
-  min-height: 44px;
-  color: ${leo.color.text.primary};
-  background-color: ${(p) =>
-    p.isCritical
-      ? leo.color.systemfeedback.errorBackground
-      : leo.color.systemfeedback.warningBackground};
 `
 
 export const WarningCollapse = styled(Collapse)<{
