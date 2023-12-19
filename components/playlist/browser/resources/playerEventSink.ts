@@ -38,6 +38,7 @@ function handlePlayerEvents(payload: PlayerEventsPayload) {
 
     case types.PLAYLIST_OPEN_SOURCE_PAGE: {
       window.open(payload.data.pageSource.url, '_blank', 'noopener noreferrer')
+      break
     }
 
     case types.PLAYLIST_PLAYER_FAILED_TO_PLAY_ITEM: {
@@ -70,6 +71,7 @@ function handlePlayerEvents(payload: PlayerEventsPayload) {
         },
         5000
       )
+      break
     }
   }
 }

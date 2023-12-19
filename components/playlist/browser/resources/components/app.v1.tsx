@@ -50,9 +50,9 @@ export default function App() {
         const playlistId = match?.params.playlistId
         return (
           <AppContainer isPlaylistPlayerPage={!!playlistId}>
-            <AlertCenter />
             <StickyArea>
               <StyledHeader playlistId={playlistId} />
+              <AlertCenter />
               <VideoFrame
                 visible={
                   !!lastPlayerState?.currentItem &&

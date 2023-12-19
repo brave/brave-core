@@ -84,7 +84,7 @@ class API {
 
   recoverLocalData(
     playlistItemId: string,
-    updateMediaSrcBeforeRecovery: boolean = false
+    updateMediaSrcBeforeRecovery = false
   ) {
     this.#pageHandler.recoverLocalDataForItem(
       playlistItemId,
