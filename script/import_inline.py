@@ -10,7 +10,7 @@ import sys
 
 
 @functools.lru_cache(maxsize=None)
-def get_src_dir():
+def get_src_dir() -> str:
     """Searches for src/ dir which includes brave/ dir."""
     current_file = globals().get('__file__')
     if current_file:
@@ -29,7 +29,7 @@ def get_src_dir():
 
 
 # Returns OS path from workspace path (//brave/path/file.py).
-def wspath(path):
+def wspath(path: str) -> str:
     assert isinstance(path, str)
 
     if path.startswith('//'):
@@ -40,7 +40,7 @@ def wspath(path):
 
 
 # Inline file by executing it using passed scopes.
-def inline_file(path, _globals, _locals):
+def inline_file(path: str, _globals, _locals):
     path = wspath(path)
     with open(path, "r") as f:
         # Compile first to set the location explicitly. This makes stacktrace to
@@ -51,12 +51,12 @@ def inline_file(path, _globals, _locals):
 
 
 # Locate src/ dir and inline relative file by executing it using passed scopes.
-def inline_file_from_src(path, _globals, _locals):
+def inline_file_from_src(path: str, _globals, _locals):
     inline_file(f"//{path}", _globals, _locals)
 
 
 @contextlib.contextmanager
-def sys_path(path, position=None):
+def sys_path(path: str, position=None):
     path = wspath(path)
     path_exists = path in sys.path
     if not path_exists:
