@@ -21,6 +21,7 @@ use tracing::debug;
 pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
+use errors::result_to_string;
 
 pub struct NativeClientContext {
     environment: skus::Environment,
@@ -163,6 +164,8 @@ mod ffi {
             order_id: String,
             receipt: String,
         );
+
+        fn result_to_string(result: &SkusResult) -> String;
     }
 
     unsafe extern "C++" {

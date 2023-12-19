@@ -32,8 +32,14 @@ void OnFetchOrderCredentials(
     skus::FetchOrderCredentialsCallbackState* callback_state,
     skus::SkusResult result) {
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run("");
+    std::string error_message;
+    if (result != skus::SkusResult::Ok) {
+      error_message = std::string{skus::result_to_string(result)};
+    }
+
+    std::move(callback_state->cb).Run(error_message);
   }
+
   delete callback_state;
 }
 

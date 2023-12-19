@@ -299,8 +299,9 @@ where
         if let Some(credentials) = state.credentials.as_mut() {
             // check and see if we already have this item initialized
             if let Some(item_credentials) = credentials.items.get_mut(item_id) {
-                // don't overwrite the existing unblinded_creds, we just want to add the new blinded
-                // tokens to the item_credentials.creds for signing request
+                // don't overwrite the existing unblinded_creds, we just want to add the new
+                // blinded tokens to the item_credentials.creds for signing
+                // request
                 if let Credentials::TimeLimitedV2(item_credentials) = item_credentials {
                     item_credentials.creds = creds;
                     // update state to generated credentials

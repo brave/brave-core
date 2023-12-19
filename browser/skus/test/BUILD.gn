@@ -1,0 +1,31 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "js_skus_api_browsertest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//chrome/browser:browser_process",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/network/public/cpp",
+  ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
+}
