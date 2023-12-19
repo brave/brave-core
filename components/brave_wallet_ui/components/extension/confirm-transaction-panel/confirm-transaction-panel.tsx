@@ -170,6 +170,8 @@ export const ConfirmTransactionPanel = ({
   // state
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
+  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
+    React.useState(false)
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [isEditingAllowance, setIsEditingAllowance] =
     React.useState<boolean>(false)
@@ -469,7 +471,12 @@ export const ConfirmTransactionPanel = ({
         />
       </NetworkFeeRow>
 
-      {retrySimulation && <TxWarningBanner retrySimulation={retrySimulation} />}
+      {retrySimulation && !isSimulationWarningDismissed && (
+        <TxWarningBanner
+          retrySimulation={retrySimulation}
+          onDismiss={() => setIsSimulationWarningDismissed(true)}
+        />
+      )}
 
       <SignTransactionFooter
         onConfirm={onConfirm}

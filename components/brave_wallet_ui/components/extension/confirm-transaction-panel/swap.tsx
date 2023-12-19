@@ -44,6 +44,8 @@ export function ConfirmSwapTransaction({ retrySimulation }: Props) {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [isEditingGas, setIsEditingGas] = React.useState<boolean>(false)
+  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
+    React.useState(false)
 
   // hooks
   const {
@@ -122,12 +124,15 @@ export function ConfirmSwapTransaction({ retrySimulation }: Props) {
         onToggleEditGas={onToggleEditGas}
       />
 
-      {retrySimulation ? (
+      {retrySimulation && !isSimulationWarningDismissed && (
         <>
           <VerticalSpace space='16px' />
-          <TxWarningBanner retrySimulation={retrySimulation} />
+          <TxWarningBanner
+            retrySimulation={retrySimulation}
+            onDismiss={() => setIsSimulationWarningDismissed(true)}
+          />
         </>
-      ) : null}
+      )}
 
       <Footer rejectButtonType={'cancel'} />
     </StyledWrapper>

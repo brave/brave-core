@@ -26,9 +26,7 @@ export const WarningCloseIcon = styled(Icon).attrs<WarningProps>({
       : leo.color.systemfeedback.warningIcon};
 `
 
-export const WarningCollapse = styled(Collapse)<{
-  isCritical?: boolean
-}>`
+export const WarningCollapse = styled(Collapse)<WarningProps>`
   --leo-collapse-summary-padding: 0px 16px;
   --leo-collapse-radius: ${leo.radius.m};
   --leo-collapse-shadow: none;
@@ -59,14 +57,15 @@ export const WarningCollapse = styled(Collapse)<{
   }
 `
 
-export const WarningTitle = styled.p<{
-  isCritical?: boolean
-}>`
+export const WarningTitle = styled.p<WarningProps & { isBold?: boolean }>`
   color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.warningText};
-  font: ${leo.font.browser.small.semibold};
+  font: ${(p) =>
+    p.isBold
+      ? leo.font.browser.small.semibold
+      : leo.font.browser.small.regular};
   font-family: 'Inter', 'Poppins';
 `
 
