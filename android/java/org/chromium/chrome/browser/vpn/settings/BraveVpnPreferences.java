@@ -36,11 +36,11 @@ import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
-import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
@@ -51,12 +51,10 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class BraveVpnPreferences extends BravePreferenceFragment implements BraveVpnObserver {
@@ -210,6 +208,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
+        findPreference(PREF_SERVER_CHANGE_LOCATION)
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                BraveVpnUtils.openVpnServerSelectionActivity(getActivity());
+                                return true;
+                            }
+                        });
         PreferenceCategory preferenceCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
         preferenceCategory.addPreference(mLinkSubscriptionPreference);
@@ -229,23 +236,24 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             .build();
             connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
         }
-        BraveVpnNativeWorker.getInstance().getAllServerRegions();
+        // BraveVpnNativeWorker.getInstance().getAllServerRegions();
         if (!InternetConnection.isNetworkAvailable(getActivity())) {
             Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }
     }
 
-    @Override
-    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
-        if (isSuccess) {
-            BraveVpnPrefUtils.setServerRegions(jsonResponse);
-            new Handler().post(() -> updateSummaries());
-        } else {
-            Toast.makeText(getActivity(), R.string.fail_to_get_server_locations, Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
+    // @Override
+    // public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
+    //     if (isSuccess) {
+    //         BraveVpnPrefUtils.setServerRegions(jsonResponse);
+    //         new Handler().post(() -> updateSummaries());
+    //     } else {
+    //         Toast.makeText(getActivity(), R.string.fail_to_get_server_locations,
+    // Toast.LENGTH_LONG)
+    //                 .show();
+    //     }
+    // }
 
     @Override
     public void onResume() {
@@ -285,20 +293,20 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         if (getActivity() == null) {
             return;
         }
-        List<BraveVpnServerRegion> vpnServerRegions =
-                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
-        String serverLocation = "";
-        for (BraveVpnServerRegion vpnServerRegion : vpnServerRegions) {
-            if (BraveVpnPrefUtils.getServerRegion().equals(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
-                serverLocation = getActivity().getResources().getString(R.string.automatic);
-            }
-            if (vpnServerRegion.getName().equals(BraveVpnPrefUtils.getServerRegion())) {
-                serverLocation = vpnServerRegion.getNamePretty();
-                break;
-            }
-        }
-        updateSummary(PREF_SERVER_CHANGE_LOCATION, serverLocation);
+        // List<BraveVpnServerRegion> vpnServerRegions =
+        //         BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
+        // String serverLocation = "";
+        // for (BraveVpnServerRegion vpnServerRegion : vpnServerRegions) {
+        //     if (BraveVpnPrefUtils.getServerRegion().equals(
+        //                 BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+        //         serverLocation = getActivity().getResources().getString(R.string.automatic);
+        //     }
+        //     if (vpnServerRegion.getName().equals(BraveVpnPrefUtils.getServerRegion())) {
+        //         serverLocation = vpnServerRegion.getNamePretty();
+        //         break;
+        //     }
+        // }
+        // updateSummary(PREF_SERVER_CHANGE_LOCATION, serverLocation);
         updateSummary(PREF_SERVER_HOST, BraveVpnPrefUtils.getHostnameDisplay());
         if (!BraveVpnPrefUtils.getProductId().isEmpty()) {
             String subscriptionStatus = String.format(

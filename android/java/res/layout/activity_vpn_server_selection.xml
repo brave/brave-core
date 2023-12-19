@@ -13,6 +13,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"/>
+
             <include
                 android:id="@+id/automatic_server_text"
                 android:background="@drawable/rounded_filled_bg_radius_12"

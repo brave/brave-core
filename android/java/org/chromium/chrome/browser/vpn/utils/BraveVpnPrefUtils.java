@@ -181,16 +181,6 @@ public class BraveVpnPrefUtils {
         return sSharedPreferences.getLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, 0);
     }
 
-    public static void setServerRegions(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = sSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_REGIONS, value);
-        sharedPreferencesEditor.apply();
-    }
-
-    public static String getServerRegions() {
-        return sSharedPreferences.getString(PREF_BRAVE_VPN_SERVER_REGIONS, "");
-    }
-
     public static String getServerRegion() {
         return sSharedPreferences.getString(
                 PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, PREF_BRAVE_VPN_AUTOMATIC);
