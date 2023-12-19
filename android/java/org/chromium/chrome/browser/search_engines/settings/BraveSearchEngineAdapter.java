@@ -28,13 +28,13 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
 
     private Profile mProfile;
-    private boolean needUpdateActiveDSE;
+    private boolean mNeedUpdateActiveDSE;
 
     public BraveSearchEngineAdapter(Context context, Profile profile) {
         super(context, profile);
     }
 
-    static public void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
+    public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putString(
@@ -43,28 +43,36 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         sharedPreferencesEditor.apply();
     }
 
-    static public void updateActiveDSE(Profile profile) {
-        String shortName = getDSEShortName(profile, false);
-        TemplateUrl templateUrl = getTemplateUrlByShortName(profile, shortName);
+    public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {
+        String shortName = getDSEShortName(profile, false, templateUrlServiceArg);
+        TemplateUrl templateUrl =
+                getTemplateUrlByShortName(profile, shortName, templateUrlServiceArg);
         if (templateUrl == null) {
             return;
         }
         String keyword = templateUrl.getKeyword();
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
-        if (templateUrlService != null)
+        TemplateUrlService templateUrlService =
+                templateUrlServiceArg != null
+                        ? templateUrlServiceArg
+                        : TemplateUrlServiceFactory.getForProfile(profile);
+        if (templateUrlService != null) {
             templateUrlService.setSearchEngine(keyword);
-        else
+        } else {
             setDSEPrefs(templateUrl, profile);
+        }
     }
 
     // when readJavaPrefOnly is true, only read short names from Java preference and
     // avoid calling native methods
-    static public String getDSEShortName(Profile profile, boolean readJavaPrefOnly) {
+    public static String getDSEShortName(
+            Profile profile, boolean readJavaPrefOnly, TemplateUrlService templateUrlServiceArg) {
         String defaultSearchEngineName = null;
 
         if (!readJavaPrefOnly) {
-            TemplateUrlService templateUrlService =
-                    TemplateUrlServiceFactory.getForProfile(profile);
+            final TemplateUrlService templateUrlService =
+                    templateUrlServiceArg != null
+                            ? templateUrlServiceArg
+                            : TemplateUrlServiceFactory.getForProfile(profile);
             TemplateUrl dseTemplateUrl = null;
             if (templateUrlService != null) {
                 dseTemplateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
@@ -85,8 +93,12 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
                 defaultSearchEngineName);
     }
 
-    static public TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
+    public static TemplateUrl getTemplateUrlByShortName(
+            Profile profile, String name, TemplateUrlService templateUrlServiceArg) {
+        TemplateUrlService templateUrlService =
+                templateUrlServiceArg != null
+                        ? templateUrlServiceArg
+                        : TemplateUrlServiceFactory.getForProfile(profile);
         if (templateUrlService != null) {
             List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
             for (int index = 0; index < templateUrls.size(); ++index) {
@@ -109,7 +121,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             if (templateUrlService == null || !templateUrlService.isLoaded()) {
                 // updateActiveDSE needs to be delayed for private because service needs to be
                 // loaded if no private tab is opened already
-                needUpdateActiveDSE = true;
+                mNeedUpdateActiveDSE = true;
             }
         } catch (IllegalStateException e) {
             // IllegalStateException indicates that search engine is not available anymore. We just
@@ -120,6 +132,9 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
 
     @Override
     public void stop() {
+        if (!mProfile.isNativeInitialized()) {
+            return;
+        }
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(mProfile);
         // For some reason there is a short period of time when native reference to the profile
         // has been destroyed but Java reference still exists. The stop() function only removes
@@ -151,9 +166,9 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         // It is necessary to ensure user's selection is updated on first entering private setting
         // but it causes updateActiveDSE() to be called twice (once here and
         // once from SearchEngineTabModelSelectorObserver)
-        if (needUpdateActiveDSE) {
-            needUpdateActiveDSE = false;
-            updateActiveDSE(mProfile);
+        if (mNeedUpdateActiveDSE) {
+            mNeedUpdateActiveDSE = false;
+            updateActiveDSE(mProfile, null);
         }
         super.onTemplateUrlServiceLoaded();
     }
