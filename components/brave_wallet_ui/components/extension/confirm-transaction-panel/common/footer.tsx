@@ -65,8 +65,8 @@ export function Footer({
   } = usePendingTransactions()
 
   // state
-  const [transactionConfirmed, setTranactionConfirmed] =
-    React.useState<boolean>(false)
+  const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
+  const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
   const [queueLength, setQueueLength] = React.useState<number | undefined>(
     undefined
   )
@@ -127,11 +127,21 @@ export function Footer({
   // render
   return (
     <FooterContainer>
-      <TransactionWarnings
-        warnings={warnings}
-        isWarningCollapsed={isWarningCollapsed ?? true}
-        setIsWarningCollapsed={setIsWarningCollapsed}
-      />
+      {!isWarningDismissed && (
+        <TransactionWarnings
+          warnings={warnings}
+          isWarningCollapsed={isWarningCollapsed ?? true}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+          onDismiss={
+            setIsWarningDismissed
+              ? () => {
+                  setIsWarningDismissed(true)
+                  setIsWarningCollapsed?.(true)
+                }
+              : undefined
+          }
+        />
+      )}
 
       {transactionsQueueLength > 1 && (
         <Row padding={queueStepButtonRowPadding}>

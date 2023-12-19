@@ -118,13 +118,13 @@ export const SignSimulatedTransactionPanel = ({
     SignDataSteps.SignRisk
   )
   const [isCriticalWarningPopupOpen, setIsCriticalWarningPopupOpen] =
-    React.useState<boolean>(
+    React.useState(
       txSimulation.action === BraveWallet.BlowfishSuggestedAction.kBlock
     )
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
-  const [isWarningCollapsed, setIsWarningCollapsed] =
-    React.useState<boolean>(true)
+  const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
+  const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
 
   // computed
   const simulationResultsErrorText = translateSimulationResultError(
@@ -294,11 +294,14 @@ export const SignSimulatedTransactionPanel = ({
             </Column>
 
             <Column fullWidth>
-              <TransactionWarnings
-                isWarningCollapsed={isWarningCollapsed}
-                setIsWarningCollapsed={setIsWarningCollapsed}
-                warnings={warnings}
-              />
+              {!isWarningDismissed && (
+                <TransactionWarnings
+                  isWarningCollapsed={isWarningCollapsed}
+                  setIsWarningCollapsed={setIsWarningCollapsed}
+                  warnings={warnings}
+                  onDismiss={() => setIsWarningDismissed(true)}
+                />
+              )}
 
               <SignTransactionFooter
                 onConfirm={onSign}
