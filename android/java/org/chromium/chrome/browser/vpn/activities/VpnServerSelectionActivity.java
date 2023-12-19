@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
+import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,7 +78,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity {
                     public void onClick(View v) {
                         BraveVpnUtils.selectedServerRegion =
                                 BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC;
-                        BraveVpnUtils.mIsServerLocationChanged = true;
+                        // BraveVpnUtils.mIsServerLocationChanged = true;
                         onBackPressed();
                     }
                 });
@@ -193,8 +194,15 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity {
                                 .show();
                     } else {
                         BraveVpnUtils.selectedServerRegion = braveVpnServerRegion.getName();
-                        BraveVpnUtils.mIsServerLocationChanged = true;
-                        onBackPressed();
+                        // BraveVpnUtils.mIsServerLocationChanged = true;
+                        // onBackPressed();
+                        BraveVpnUtils.showProgressDialog(VpnServerSelectionActivity.this, getResources().getString(R.string.vpn_connect_text));
+                            if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                                mBraveVpnPrefModel = new BraveVpnPrefModel();
+                                BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                            } else {
+                                verifySubscription();
+                            }
                     }
                 }
             };
