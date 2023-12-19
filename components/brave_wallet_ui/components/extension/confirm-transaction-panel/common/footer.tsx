@@ -113,7 +113,13 @@ export function Footer({
           severity: BraveWallet.BlowfishWarningSeverity.kWarning
         })
       )
-  }, [transactionDetails, blowfishWarnings])
+  }, [
+    transactionDetails,
+    blowfishWarnings,
+    showGasErrors,
+    insufficientFundsForGasError,
+    insufficientFundsError
+  ])
 
   // effects
   React.useEffect(() => {
