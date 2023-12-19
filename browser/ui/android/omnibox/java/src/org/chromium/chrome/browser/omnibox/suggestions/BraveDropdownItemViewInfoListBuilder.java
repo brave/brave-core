@@ -36,7 +36,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
     private UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
     private @NonNull Supplier<Tab> mActivityTabSupplier;
-    private static final List<String> mBraveSearchEngineDefaultRegions =
+    private static final List<String> sBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     @Px
     private static final int DROPDOWN_HEIGHT_UNKNOWN = -1;
@@ -105,15 +105,15 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
                 && mUrlBarEditingTextProvider != null
                 && mUrlBarEditingTextProvider.getTextWithoutAutocomplete().length() > 0
-                && activeTab != null && !activeTab.isIncognito()
-                && mBraveSearchEngineDefaultRegions.contains(Locale.getDefault().getCountry())
-                && !BraveSearchEngineAdapter
-                            .getDSEShortName(
-                                    Profile.fromWebContents(activeTab.getWebContents()), false)
-                            .equals("Brave")
+                && activeTab != null
+                && !activeTab.isIncognito()
+                && sBraveSearchEngineDefaultRegions.contains(Locale.getDefault().getCountry())
+                && !BraveSearchEngineAdapter.getDSEShortName(
+                                Profile.fromWebContents(activeTab.getWebContents()), false, null)
+                        .equals("Brave")
                 && !OmniboxPrefManager.getInstance().isBraveSearchPromoBannerDismissed()
                 && !OmniboxPrefManager.getInstance()
-                            .isBraveSearchPromoBannerDismissedCurrentSession()) {
+                        .isBraveSearchPromoBannerDismissedCurrentSession()) {
             long expiredDate =
                     OmniboxPrefManager.getInstance().getBraveSearchPromoBannerExpiredDate();
 

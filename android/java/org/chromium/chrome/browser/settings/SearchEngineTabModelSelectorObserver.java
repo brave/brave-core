@@ -29,7 +29,7 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
         if (newModel.getProfile().isOffTheRecord()) {
             BraveSearchEngineUtils.initializeBraveSearchEngineStates(newModel.getProfile());
         } else {
-            BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile());
+            BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile(), null);
         }
     }
 
