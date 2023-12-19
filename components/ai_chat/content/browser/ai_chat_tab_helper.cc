@@ -58,48 +58,44 @@ AIChatTabHelper::~AIChatTabHelper() = default;
 // content::WebContentsObserver
 
 void AIChatTabHelper::WebContentsDestroyed() {
-  CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
 }
 
 void AIChatTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  // Store current navigation ID of the main document
-  // so that we can ignore async responses against any navigated-away-from
-  // documents.
   if (!navigation_handle->IsInMainFrame()) {
-    DVLOG(3) << "FinishNavigation NOT in main frame";
     return;
   }
   DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
            << " url: " << navigation_handle->GetURL().spec()
            << " same document? " << navigation_handle->IsSameDocument();
-  SetNavigationId(navigation_handle->GetNavigationId());
+
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
   // Content won't be retrieved immediately and we don't have a similar
   // "DOM Content Loaded" event, so let's wait for something else such as
   // page title changing before committing to starting a new conversation
   // and treating it as a "fresh page".
-  SetSameDocumentNavigation(navigation_handle->IsSameDocument());
-  // Experimentally only call |CleanUp| _if_ a same-page navigation
-  // results in a page title change (see |TtileWasSet|).
-  if (!IsSameDocumentNavigation()) {
-    CleanUp();
+  is_same_document_navigation_ = navigation_handle->IsSameDocument();
+  pending_navigation_id_ = navigation_handle->GetNavigationId();
+  // Experimentally only call |OnNewPage| for same-page navigations _if_
+  // it results in a page title change (see |TtileWasSet|).
+  if (!is_same_document_navigation_) {
+    OnNewPage(pending_navigation_id_);
   }
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
-  if (IsSameDocumentNavigation()) {
+  if (is_same_document_navigation_) {
     DVLOG(3)
-        << "Same document navigation detected new \"page\" - calling CleanUp()";
-    // Seems as good a time as any to check for content after a same-document
-    // navigation.
-    // We only perform CleanUp here in case it was a minor pushState / fragment
-    // navigation and didn't result in new meaningful content.
-    CleanUp();
+        << "Same document navigation detected new \"page\" - calling OnNewPage()";
+    // Page title modification after same-document navigation seems as good a
+    // time as any to assume meaningful changes occured to the content.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
   }
 }
 

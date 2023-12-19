@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/observer_list.h"
+#include "base/one_shot_event.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -129,13 +130,9 @@ class ConversationDriver {
 
   virtual void OnFaviconImageDataChanged();
 
-  void CleanUp();
-
-  int64_t GetNavigationId() const;
-  void SetNavigationId(int64_t navigation_id);
-
-  bool IsSameDocumentNavigation() const;
-  void SetSameDocumentNavigation(bool same_document_navigation);
+  // To be called when a page navigation is detected and a new conversation
+  // is expected.
+  void OnNewPage(int64_t navigation_id);
 
  private:
   void InitEngine();
@@ -156,6 +153,8 @@ class ConversationDriver {
                                      std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
+  void OnExistingGeneratePageContentComplete(GetPageContentCallback callback);
+
   void OnEngineCompletionDataReceived(int64_t navigation_id,
                                       std::string result);
   void OnEngineCompletionComplete(int64_t navigation_id,
@@ -172,6 +171,8 @@ class ConversationDriver {
   void SetAPIError(const mojom::APIError& error);
   bool IsContentAssociationPossible();
 
+  void CleanUp();
+
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
@@ -185,10 +186,14 @@ class ConversationDriver {
   // TODO(nullhook): Abstract the data model
   std::string model_key_;
   std::vector<mojom::ConversationTurn> chat_history_;
+  bool is_conversation_active_ = false;
+
+  // Page content
   std::string article_text_;
   std::string content_invalidation_token_;
-  bool is_conversation_active_ = false;
   bool is_page_text_fetch_in_progress_ = false;
+  std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_;
+
   bool is_request_in_progress_ = false;
   std::vector<std::string> suggestions_;
   // Keep track of whether we've generated suggested questions for the current
@@ -199,10 +204,12 @@ class ConversationDriver {
       mojom::SuggestionGenerationStatus::None;
   bool is_video_ = false;
   bool should_send_page_contents_ = true;
-  // Store the unique ID for each navigation so that
-  // we can ignore API responses for previous navigations.
+
+  // Store the unique ID for each "page" so that
+  // we can ignore API async responses against any navigated-away-from
+  // documents.
   int64_t current_navigation_id_;
-  bool is_same_document_navigation_ = false;
+
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
 

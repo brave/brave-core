@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
+#include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -60,7 +61,8 @@ ConversationDriver::ConversationDriver(
       feedback_api_(std::make_unique<ai_chat::AIChatFeedbackAPI>(
           url_loader_factory,
           std::string(channel_string))),
-      url_loader_factory_(url_loader_factory) {
+      url_loader_factory_(url_loader_factory),
+      on_page_text_fetch_complete_(new base::OneShotEvent()) {
   DCHECK(pref_service_);
 
   pref_change_registrar_.Init(pref_service_);
@@ -325,37 +327,6 @@ bool ConversationDriver::MaybePopPendingRequests() {
   return true;
 }
 
-void ConversationDriver::GeneratePageContent(GetPageContentCallback callback) {
-  // TODO(petemill): This function should just happen inline with
-  // SubmitHumanInput and get suggestions.
-  DCHECK(should_send_page_contents_);
-  DCHECK(IsContentAssociationPossible())
-      << "Shouldn't have been asked to generate page text when "
-      << "|IsContentAssociationPossible()| is false.";
-  DCHECK(!is_page_text_fetch_in_progress_)
-      << "UI shouldn't allow multiple operations at the same time";
-
-  // Make sure user is opted in since this may make a network request
-  // for more page content (e.g. video transcript).
-  DCHECK(HasUserOptedIn())
-      << "UI shouldn't allow operations before user has accepted agreement";
-
-  // Perf: make sure we're not doing this when the feature
-  // won't be used (e.g. no active conversation).
-  DCHECK(is_conversation_active_)
-      << "UI shouldn't allow operations for an inactive conversation";
-
-  is_page_text_fetch_in_progress_ = true;
-  // Update fetching status
-  OnPageHasContentChanged(BuildSiteInfo());
-  VLOG(1) << "Calling GetPageContent";
-  GetPageContent(
-      base::BindOnce(&ConversationDriver::OnGeneratePageContentComplete,
-                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_,
-                     std::move(callback)),
-      content_invalidation_token_);
-}
-
 void ConversationDriver::MaybeSeedOrClearSuggestions() {
   if (!is_conversation_active_) {
     return;
@@ -384,6 +355,49 @@ void ConversationDriver::MaybeSeedOrClearSuggestions() {
         mojom::SuggestionGenerationStatus::CanGenerate;
     OnSuggestedQuestionsChanged();
   }
+}
+
+void ConversationDriver::GeneratePageContent(GetPageContentCallback callback) {
+  VLOG(1) << __func__;
+  DCHECK(should_send_page_contents_);
+  DCHECK(IsContentAssociationPossible())
+      << "Shouldn't have been asked to generate page text when "
+      << "|IsContentAssociationPossible()| is false.";
+  DCHECK(!is_page_text_fetch_in_progress_)
+      << "UI shouldn't allow multiple operations at the same time";
+
+  // Make sure user is opted in since this may make a network request
+  // for more page content (e.g. video transcript).
+  DCHECK(HasUserOptedIn())
+      << "UI shouldn't allow operations before user has accepted agreement";
+
+  // Perf: make sure we're not doing this when the feature
+  // won't be used (e.g. no active conversation).
+  DCHECK(is_conversation_active_)
+      << "UI shouldn't allow operations for an inactive conversation";
+
+  // Only perform a fetch once at a time, and then use the results from
+  // an in-progress operation.
+  if (is_page_text_fetch_in_progress_) {
+    VLOG(1) << "A page content fetch is in progress, waiting for the existing "
+               "operation to complete";
+    auto handle_existing_fetch_complete = base::BindOnce(
+        &ConversationDriver::OnExistingGeneratePageContentComplete,
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+    on_page_text_fetch_complete_->Post(
+        FROM_HERE, std::move(handle_existing_fetch_complete));
+    return;
+  }
+
+  is_page_text_fetch_in_progress_ = true;
+  // Update fetching status
+  OnPageHasContentChanged(BuildSiteInfo());
+
+  GetPageContent(
+      base::BindOnce(&ConversationDriver::OnGeneratePageContentComplete,
+                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_,
+                     std::move(callback)),
+      content_invalidation_token_);
 }
 
 void ConversationDriver::OnGeneratePageContentComplete(
@@ -420,6 +434,9 @@ void ConversationDriver::OnGeneratePageContentComplete(
     OnPageHasContentChanged(BuildSiteInfo());
   }
 
+  on_page_text_fetch_complete_->Signal();
+  on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
+
   if (contents_text.empty()) {
     VLOG(1) << __func__ << ": No data";
   }
@@ -430,15 +447,30 @@ void ConversationDriver::OnGeneratePageContentComplete(
                           content_invalidation_token_);
 }
 
+void ConversationDriver::OnExistingGeneratePageContentComplete(
+    GetPageContentCallback callback) {
+  // Don't need to check navigation ID since existing event will be
+  // deleted when there's a new conversation.
+  VLOG(1) << "Existing page content fetch completed, proceeding with "
+             "the results of that operation.";
+  std::move(callback).Run(article_text_, is_video_,
+                          content_invalidation_token_);
+}
+
+void ConversationDriver::OnNewPage(int64_t navigation_id) {
+  current_navigation_id_ = navigation_id;
+  CleanUp();
+}
+
 void ConversationDriver::CleanUp() {
   DVLOG(1) << __func__;
   chat_history_.clear();
   article_text_.clear();
   content_invalidation_token_.clear();
+  on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
   is_video_ = false;
   suggestions_.clear();
   pending_conversation_entry_.reset();
-  is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
@@ -457,22 +489,6 @@ void ConversationDriver::CleanUp() {
   }
 }
 
-int64_t ConversationDriver::GetNavigationId() const {
-  return current_navigation_id_;
-}
-
-void ConversationDriver::SetNavigationId(int64_t navigation_id) {
-  current_navigation_id_ = navigation_id;
-}
-
-bool ConversationDriver::IsSameDocumentNavigation() const {
-  return is_same_document_navigation_;
-}
-
-void ConversationDriver::SetSameDocumentNavigation(bool same_document_navigation) {
-  is_same_document_navigation_ = same_document_navigation;
-}
-
 std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
     mojom::SuggestionGenerationStatus& suggestion_status) {
   // Can we get suggested questions
@@ -481,6 +497,7 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
 }
 
 void ConversationDriver::SetShouldSendPageContents(bool should_send) {
+  DCHECK(IsContentAssociationPossible());
   DCHECK(should_send_page_contents_ != should_send);
   should_send_page_contents_ = should_send;
 
@@ -576,12 +593,13 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
 
 void ConversationDriver::SubmitHumanConversationEntry(
     mojom::ConversationTurn turn) {
-  VLOG(4) << "SubmitHumanConversationEntry: " << turn.text;
+  VLOG(1) << __func__;
+  DVLOG(4) << __func__ << ": " << turn.text;
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - conversation to be active
   if (!is_conversation_active_ || !HasUserOptedIn()) {
-    VLOG(2) << "Adding a pending conversation entry: " << turn.text;
+    VLOG(1) << "Adding as a pending conversation entry";
     DCHECK(!pending_conversation_entry_)
         << "Should not be able to add a pending conversation entry "
         << "when there is already a pending conversation entry.";
@@ -641,7 +659,10 @@ void ConversationDriver::SubmitHumanConversationEntry(
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
-  if (should_send_page_contents_) {
+  const bool is_page_associated =
+      IsContentAssociationPossible() && should_send_page_contents_;
+
+  if (is_page_associated) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationDriver::PerformAssistantGeneration,

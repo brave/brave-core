@@ -69,6 +69,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
+  bool is_same_document_navigation_ = false;
+  int64_t pending_navigation_id_;
+
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
