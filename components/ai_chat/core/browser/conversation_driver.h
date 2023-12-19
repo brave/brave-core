@@ -29,6 +29,15 @@ class AIChatMetrics;
 
 class ConversationDriver {
  public:
+  // |invalidation_token| is an optional parameter that will be passed back on
+  // the next call to |GetPageContent| so that the implementer may determine if
+  // the page content is static or if it needs to be fetched again. Most page
+  // content should be fetched again, but some pages are known to be static
+  // during their lifetime and may have expensive content fetching, e.g. videos
+  // with transcripts fetched over the network.
+  using GetPageContentCallback = base::OnceCallback<
+      void(std::string content, bool is_video, std::string invalidation_token)>;
+
   class Observer : public base::CheckedObserver {
    public:
     ~Observer() override {}
@@ -68,8 +77,7 @@ class ConversationDriver {
   void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(mojom::ConversationTurn turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
-  void SubmitHumanConversationEntry(mojom::ConversationTurn turn,
-                                    bool has_latest_content = false);
+  void SubmitHumanConversationEntry(mojom::ConversationTurn turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -108,14 +116,19 @@ class ConversationDriver {
  protected:
   virtual GURL GetPageURL() const = 0;
   virtual std::u16string GetPageTitle() const = 0;
-  virtual void GetPageContent(
-      base::OnceCallback<void(std::string, bool is_video)> callback) const = 0;
-  virtual bool HasPrimaryMainFrame() const = 0;
-  virtual bool IsDocumentOnLoadCompletedInPrimaryMainFrame() const = 0;
+
+  // Implementer should fetch content from the "page" associated with this
+  // conversation.
+  // |is_video| lets the conversation know that the content is focused on video
+  // content so that various UI language can be adapted.
+  // |invalidation_token| is an optional parameter received in a prior callback
+  // response of this function against the same page. See GetPageContentCallback
+  // for explanation.
+  virtual void GetPageContent(GetPageContentCallback callback,
+                              std::string_view invalidation_token) const = 0;
 
   virtual void OnFaviconImageDataChanged();
 
-  bool MaybeGeneratePageText();
   void CleanUp();
 
   int64_t GetNavigationId() const;
@@ -127,12 +140,22 @@ class ConversationDriver {
  private:
   void InitEngine();
   void OnUserOptedIn();
-  bool MaybePopPendingRequests(bool content_was_retrieved);
+  bool MaybePopPendingRequests();
   void MaybeSeedOrClearSuggestions();
 
-  void OnPageContentRetrieved(int64_t navigation_id,
-                              std::string contents_text,
-                              bool is_video = false);
+  void PerformAssistantGeneration(std::string input,
+                                  std::vector<mojom::ConversationTurn> history,
+                                  int64_t current_navigation_id,
+                                  std::string page_content = "",
+                                  bool is_video = false,
+                                  std::string invalidation_token = "");
+
+  void GeneratePageContent(GetPageContentCallback callback);
+  void OnGeneratePageContentComplete(int64_t navigation_id,
+                                     GetPageContentCallback callback,
+                                     std::string contents_text,
+                                     bool is_video,
+                                     std::string invalidation_token);
   void OnEngineCompletionDataReceived(int64_t navigation_id,
                                       std::string result);
   void OnEngineCompletionComplete(int64_t navigation_id,
@@ -163,6 +186,7 @@ class ConversationDriver {
   std::string model_key_;
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
+  std::string content_invalidation_token_;
   bool is_conversation_active_ = false;
   bool is_page_text_fetch_in_progress_ = false;
   bool is_request_in_progress_ = false;

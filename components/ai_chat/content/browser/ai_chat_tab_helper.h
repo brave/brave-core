@@ -63,10 +63,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // ai_chat::ConversationDriver
   GURL GetPageURL() const override;
-  void GetPageContent(base::OnceCallback<void(std::string, bool is_video)>
-                          callback) const override;
-  bool HasPrimaryMainFrame() const override;
-  bool IsDocumentOnLoadCompletedInPrimaryMainFrame() const override;
+  void GetPageContent(GetPageContentCallback callback,
+                      std::string_view invalidation_token) const override;
   std::u16string GetPageTitle() const override;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;

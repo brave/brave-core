@@ -121,16 +121,9 @@ GURL AIChatTabHelper::GetPageURL() const {
 }
 
 void AIChatTabHelper::GetPageContent(
-    base::OnceCallback<void(std::string, bool is_video)> callback) const {
-  FetchPageContent(web_contents(), std::move(callback));
-}
-
-bool AIChatTabHelper::HasPrimaryMainFrame() const {
-  return web_contents()->GetPrimaryMainFrame() != nullptr;
-}
-
-bool AIChatTabHelper::IsDocumentOnLoadCompletedInPrimaryMainFrame() const {
-  return web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
+    GetPageContentCallback callback,
+    std::string_view invalidation_token) const {
+  FetchPageContent(web_contents(), invalidation_token, std::move(callback));
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
