@@ -22,6 +22,7 @@ import {
 } from '../../../../common/slices/api.slice.extra'
 
 // components
+import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import {
   ChainInfo,
   InlineViewOnBlockExplorerIconButton
@@ -262,6 +263,72 @@ export const SPLTokenTransfer = ({
             urlType={'contract'}
           />
         </Row>
+      </Row>
+    </Column>
+  )
+}
+
+export const SPLTokenApproval = ({
+  network,
+  approval
+}: {
+  approval: BraveWallet.BlowfishSPLApprovalData
+  network: BlockchainInfo
+}): JSX.Element => {
+  // computed
+  const isNft =
+    approval.metaplexTokenStandard ===
+      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible ||
+    approval.metaplexTokenStandard ===
+      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition
+
+  // memos
+  const afterAmount = React.useMemo(() => {
+    return new Amount(approval.diff.digits.toString())
+      .divideByDecimals(approval.decimals)
+      .formatAsAsset(6, approval.symbol)
+  }, [approval])
+
+  // render
+  return (
+    <Column
+      margin={'0px 0px 6px 0px'}
+      alignItems='flex-start'
+      justifyContent='center'
+    >
+      <Row
+        gap={'4px'}
+        alignItems='center'
+        justifyContent='flex-start'
+      >
+        <StateChangeText>
+          <strong>{isNft ? approval.name : afterAmount}</strong>
+        </StateChangeText>
+      </Row>
+      <Row
+        alignItems='center'
+        justifyContent='flex-start'
+      >
+        <CopyTooltip
+          isAddress
+          text={approval.delegate}
+          tooltipText={approval.delegate}
+          position='left'
+          verticalPosition='below'
+        >
+          <Text textSize='11px'>
+            {getLocale('braveWalletSpenderAddress').replace(
+              '$1',
+              reduceAddress(approval.delegate)
+            )}
+          </Text>
+        </CopyTooltip>
+
+        <InlineViewOnBlockExplorerIconButton
+          address={approval.delegate}
+          network={network}
+          urlType={'address'}
+        />
       </Row>
     </Column>
   )

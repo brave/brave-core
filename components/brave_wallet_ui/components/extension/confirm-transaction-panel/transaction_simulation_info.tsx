@@ -20,7 +20,8 @@ import {
 } from './common/evm_state_changes'
 import {
   getComponentForSvmTransfer,
-  SolStakingAuthChange
+  SolStakingAuthChange,
+  SPLTokenApproval
 } from './common/svm_state_changes'
 
 // style
@@ -204,6 +205,18 @@ export const TransactionSimulationInfo = ({
                 {i < arr.length - 1 ? <Divider /> : null}
               </React.Fragment>
             ))}
+
+            {svmChanges?.splApprovals.map((approval, i, arr) =>
+              approval.rawInfo.data.splApprovalData ? (
+                <React.Fragment key={'SVM-Token-Approval-' + i}>
+                  <SPLTokenApproval
+                    network={network}
+                    approval={approval.rawInfo.data.splApprovalData}
+                  />
+                  {i < arr.length - 1 ? <Divider /> : null}
+                </React.Fragment>
+              ) : null
+            )}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>
       )}
