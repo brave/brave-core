@@ -198,28 +198,28 @@
     "includes": [57920],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
-    "META": {"sizes": {"includes": [10]}},
+    "META": {"sizes": {"includes": [20]}},
     "includes": [58020]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [58030],
+    "includes": [58040],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [58040],
+    "includes": [58050],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [58050],
+    "includes": [58060],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-line_chart_display/line_chart_display.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [58060]
+    "includes": [58070]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [58070],
+    "includes": [58080],
   }
 }
