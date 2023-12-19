@@ -44,8 +44,6 @@ source_set("net") {
     "brave_proxying_web_socket.h",
     "brave_reduce_language_network_delegate_helper.cc",
     "brave_reduce_language_network_delegate_helper.h",
-    "brave_referrals_network_delegate_helper.cc",
-    "brave_referrals_network_delegate_helper.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
     "brave_service_key_network_delegate_helper.cc",
@@ -225,13 +223,5 @@ source_set("unit_tests") {
       "//brave/browser/extensions",
       "//brave/components/brave_referrals/browser",
     ]
-  }
-
-  if (!is_android) {
-    sources += [
-      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-      "brave_referrals_network_delegate_helper_unittest.cc",
-    ]
-    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }

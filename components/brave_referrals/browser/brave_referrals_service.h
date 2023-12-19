@@ -39,34 +39,6 @@ class SimpleURLLoader;
 
 namespace brave {
 
-class BraveReferralsHeaders {
- public:
-  static BraveReferralsHeaders* GetInstance() {
-    static base::NoDestructor<BraveReferralsHeaders> instance;
-    return instance.get();
-  }
-
-  template <typename Iter>
-  bool GetMatchingReferralHeaders(
-      const Iter& referral_headers_list,
-      const base::Value::Dict** request_headers_dict,
-      const GURL& url);
-
-  bool GetMatchingReferralHeaders(
-      const base::Value::Dict** request_headers_dict,
-      const GURL& url);
-
-  BraveReferralsHeaders(const BraveReferralsHeaders&) = delete;
-  BraveReferralsHeaders& operator=(const BraveReferralsHeaders&) = delete;
-  ~BraveReferralsHeaders() = delete;
-
- private:
-  friend class base::NoDestructor<BraveReferralsHeaders>;
-  BraveReferralsHeaders();
-
-  std::vector<base::Value::Dict> referral_headers_;
-};
-
 class BraveReferralsService {
  public:
   class Delegate {
