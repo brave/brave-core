@@ -11,7 +11,8 @@ export const BLOWFISH_URL_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kCopyCatImageUnresponsiveDomain,
   BraveWallet.BlowfishWarningKind.kMultiCopyCatDomain,
   BraveWallet.BlowfishWarningKind.kNewDomain,
-  BraveWallet.BlowfishWarningKind.kSemiTrustedBlocklistDomain
+  BraveWallet.BlowfishWarningKind.kSemiTrustedBlocklistDomain,
+  BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain,
 ] as const
 
 export const BLOWFISH_WARNING_KINDS = [
@@ -20,15 +21,22 @@ export const BLOWFISH_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kBulkApprovalsRequest,
   BraveWallet.BlowfishWarningKind.kCompromisedAuthorityUpgrade,
   BraveWallet.BlowfishWarningKind.kDanglingApproval,
+  BraveWallet.BlowfishWarningKind.kDanglingApproval,
+  BraveWallet.BlowfishWarningKind.kEthSignTxHash,
   BraveWallet.BlowfishWarningKind.kEthSignTxHash,
   BraveWallet.BlowfishWarningKind.kKnownMalicious,
   BraveWallet.BlowfishWarningKind.kPermitNoExpiration,
+  BraveWallet.BlowfishWarningKind.kPermitNoExpiration,
+  BraveWallet.BlowfishWarningKind.kPermitUnlimitedAllowance,
   BraveWallet.BlowfishWarningKind.kPermitUnlimitedAllowance,
   BraveWallet.BlowfishWarningKind.kPoisonedAddress,
   BraveWallet.BlowfishWarningKind.kReferencedOfacAddress,
   BraveWallet.BlowfishWarningKind.kSetOwnerAuthority,
+  BraveWallet.BlowfishWarningKind.kSetOwnerAuthority,
   BraveWallet.BlowfishWarningKind.kSuspectedMalicious,
   BraveWallet.BlowfishWarningKind.kTooManyTransactions,
+  BraveWallet.BlowfishWarningKind.kTooManyTransactions,
+  BraveWallet.BlowfishWarningKind.kTradeForNothing,
   BraveWallet.BlowfishWarningKind.kTradeForNothing,
   BraveWallet.BlowfishWarningKind.kTransferringErc20ToOwnContract,
   BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain,
@@ -36,5 +44,6 @@ export const BLOWFISH_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kUnlimitedAllowanceToNfts,
   BraveWallet.BlowfishWarningKind.kUnusualGasConsumption,
   BraveWallet.BlowfishWarningKind.kUserAccountOwnerChange,
-  BraveWallet.BlowfishWarningKind.kWhitelistedDomainCrossOrigin
+  BraveWallet.BlowfishWarningKind.kWhitelistedDomainCrossOrigin,
+  BraveWallet.BlowfishWarningKind.kWhitelistedDomainCrossOrigin,
 ] as const
