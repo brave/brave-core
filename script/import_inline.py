@@ -4,59 +4,60 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import contextlib
-import importlib.util
+import functools
 import os.path
 import sys
 
 
-def get_src_dir():
+@functools.lru_cache(maxsize=None)
+def get_src_dir() -> str:
     """Searches for src/ dir which includes brave/ dir."""
     current_file = globals().get('__file__')
-    if current_file and os.path.isabs(current_file):
-        path = os.path.dirname(current_file)
+    if current_file:
+        current_dir = os.path.dirname(os.path.abspath(current_file))
     else:
-        path = os.getcwd()
+        current_dir = os.getcwd()
     while True:
-        if os.path.basename(path) == 'src' and os.path.isdir(
-                os.path.join(path, 'brave')):
-            return path
-        parent_dir = os.path.dirname(path)
-        if parent_dir == path:
+        if os.path.basename(current_dir) == 'src' and os.path.isdir(
+                os.path.join(current_dir, 'brave')):
+            return current_dir
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:
             # We hit the system root directory.
             raise RuntimeError("Can't find src/ directory")
-        path = parent_dir
+        current_dir = parent_dir
 
 
-def join_src_dir(*args):
-    return os.path.join(get_src_dir(), *args)
+# Returns OS path from workspace path (//brave/path/file.py).
+def wspath(path: str) -> str:
+    assert isinstance(path, str)
+
+    if path.startswith('//'):
+        path = os.path.join(get_src_dir(), path[2:])
+
+    # Normalize path separators.
+    return os.path.normpath(path)
 
 
-def _inline_file(location, _globals, _locals):
-    """Inlines file by executing it using passed scopes."""
-    with open(location, "r") as f:
+# Inline file by executing it using passed scopes.
+def inline_file(path: str, _globals, _locals):
+    path = wspath(path)
+    with open(path, "r") as f:
+        # Compile first to set the location explicitly. This makes stacktrace to
+        # show the actual filename instead of '<string>'.
+        code = compile(f.read(), path, 'exec')
         # pylint: disable=exec-used
-        exec(f.read(), _globals, _locals)
+        exec(code, _globals, _locals)
 
 
-def inline_module(module_name, _globals, _locals):
-    """Finds module and inlines it by executing using passed scopes."""
-    module_spec = importlib.util.find_spec(module_name)
-    if not module_spec:
-        raise ModuleNotFoundError(
-            f"Can't find module to inline: {module_name}")
-    # pylint: disable=exec-used
-    exec(module_spec.loader.get_data(module_spec.loader.path), _globals,
-         _locals)
-
-
-def inline_file_from_src(location, _globals, _locals):
-    """Locates src/ dir and inlines relative file by executing it using passed
-    scopes."""
-    _inline_file(join_src_dir(location), _globals, _locals)
+# Locate src/ dir and inline relative file by executing it using passed scopes.
+def inline_file_from_src(path: str, _globals, _locals):
+    inline_file(f"//{path}", _globals, _locals)
 
 
 @contextlib.contextmanager
-def sys_path(path, position=None):
+def sys_path(path: str, position=None):
+    path = wspath(path)
     path_exists = path in sys.path
     if not path_exists:
         if position is None:

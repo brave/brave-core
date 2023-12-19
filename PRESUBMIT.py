@@ -281,8 +281,8 @@ def CheckLicense(input_api, output_api):
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
 # do this to have the right order of checks, so all `--fix`-aware checks are
 # executed first.
-chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
-                                                       globals(), locals())
+chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
+                                              locals())
 
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
@@ -441,4 +441,4 @@ To remove unused imports: ./tools/android/checkstyle/remove_unused_imports.sh"""
         ret.append(output_api.PresubmitError(msg))
     return ret
 
-# DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
+# DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit().

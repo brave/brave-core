@@ -3,23 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import sys
-
 from argparse import ArgumentParser
 from os import getcwd
 from os.path import basename, dirname
 from subprocess import check_call
 
-from import_inline import join_src_dir
+from import_inline import sys_path
 
-_upstream_dir = join_src_dir('chrome', 'tools', 'build', 'win')
-sys.path.append(_upstream_dir)
-
-# pylint: disable=import-error, wrong-import-position
-import create_installer_archive as upstream_impl
-
-sys.path.remove(_upstream_dir)
-del _upstream_dir
+with sys_path('//chrome/tools/build/win'):
+    # pylint: disable=import-error, wrong-import-position
+    import create_installer_archive as upstream_impl
 
 
 def main():
