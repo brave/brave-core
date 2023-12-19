@@ -1,5 +1,16 @@
 def SKIP_SIGNING_DEFAULT = ! JOB_NAME.contains("windows")
 
+def setBuildStatus(String context, String message, String state) {
+  step([
+      $class: 'GitHubCommitStatusSetter',
+      reposSource: [$class: 'ManuallyEnteredRepositorySource', url: env.GIT_URL],
+      commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: env.GIT_COMMIT],
+      contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: context],
+      errorHandlers: [[ $class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+      statusResultSource: [ $class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]] ]
+  ])
+}
+
 pipeline {
     agent none
     options {
@@ -23,6 +34,7 @@ pipeline {
             steps {
                 script {
                     PLATFORM = JOB_NAME.substring(JOB_NAME.indexOf('-build-pr') + 10, JOB_NAME.indexOf('/PR-'))
+                    echo sh(script: 'env|sort', returnStdout: true)
                     PIPELINE_NAME = 'pr-brave-browser-' + CHANGE_BRANCH.replace('/', '-') + '-' + PLATFORM
 
                     withCredentials([usernamePassword(credentialsId: 'brave-builds-github-token-for-pr-builder', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
@@ -43,7 +55,8 @@ pipeline {
 
                     if (SKIP && PLATFORM != 'noplatform') {
                         echo "Skipping build, not required"
-                        currentBuild.result = 'SUCCESS'
+                        setBuildStatus('continuous-integration/' + PLATFORM + '/pr-head', 'Skipped', 'SUCCESS')
+                        currentBuild.result = 'NOT_BUILT'
                         return
                     }
 
