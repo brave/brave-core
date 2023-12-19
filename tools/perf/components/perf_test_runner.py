@@ -105,7 +105,7 @@ class RunableConfiguration:
     rebase_benchmark.stories = ['BraveSearch_cold']
     rebase_benchmark.pageset_repeat = 1
 
-    REBASE_TIMEOUT = 120
+    REBASE_TIMEOUT = 240
 
     rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
     result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
@@ -202,6 +202,11 @@ class RunableConfiguration:
 
     if not self.RebaseProfile():
       return False
+
+    # Another preliminary run to make sure that all the components are updated.
+    if self.config.extra_benchmark_args.count('--use-live-sites') > 0:
+      if not self.RebaseProfile():
+        return False
 
     start_time = time.time()
     for benchmark in self.benchmarks:
