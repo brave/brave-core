@@ -9,6 +9,7 @@ import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import {
+  isUrlWarning,
   translateSimulationResultError, //
   translateSimulationWarning
 } from '../../../utils/tx-simulation-utils'
@@ -234,7 +235,12 @@ export const SignSimulatedTransactionPanel = ({
             >
               {originInfo && (
                 <OriginRow>
-                  <TransactionOrigin originInfo={originInfo} />
+                  <TransactionOrigin
+                    originInfo={originInfo}
+                    isFlagged={txSimulation.warnings.some((w) =>
+                      isUrlWarning(w.kind)
+                    )}
+                  />
                 </OriginRow>
               )}
 
