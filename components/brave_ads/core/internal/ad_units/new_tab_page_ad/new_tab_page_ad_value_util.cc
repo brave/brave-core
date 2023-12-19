@@ -19,35 +19,31 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
-  auto dict =
-      base::Value::Dict()
-          .Set(kTypeKey, ToString(ad.type))
-          .Set(kNewTabPageAdPlacementIdKey, ad.placement_id)
-          .Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id)
-          .Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id)
-          .Set(kNewTabPageAdCampaignIdKey, ad.campaign_id)
-          .Set(kNewTabPageAdAdvertiserIdKey, ad.advertiser_id)
-          .Set(kNewTabPageAdSegmentKey, ad.segment)
-          .Set(kNewTabPageAdCompanyNameKey, ad.company_name)
-          .Set(kNewTabPageAdImageUrlKey, ad.image_url.spec())
-          .Set(kNewTabPageAdAltKey, ad.alt)
-          .Set(kNewTabPageAdTargetUrlKey, ad.target_url.spec());
-
   base::Value::List wallpapers;
   for (const NewTabPageAdWallpaperInfo& wallpaper : ad.wallpapers) {
-    base::Value::Dict wallpaper_dict;
-    wallpaper_dict.Set(kNewTabPageAdImageUrlKey, wallpaper.image_url.spec());
-
-    base::Value::Dict focal_point_dict;
-    focal_point_dict.Set(kNewTabPageAdFocalPointXKey, wallpaper.focal_point.x);
-    focal_point_dict.Set(kNewTabPageAdFocalPointYKey, wallpaper.focal_point.y);
-    wallpaper_dict.Set(kNewTabPageAdFocalPointKey, std::move(focal_point_dict));
-
-    wallpapers.Append(std::move(wallpaper_dict));
+    wallpapers.Append(
+        base::Value::Dict()
+            .Set(kNewTabPageAdImageUrlKey, wallpaper.image_url.spec())
+            .Set(kNewTabPageAdFocalPointKey,
+                 base::Value::Dict()
+                     .Set(kNewTabPageAdFocalPointXKey, wallpaper.focal_point.x)
+                     .Set(kNewTabPageAdFocalPointYKey,
+                          wallpaper.focal_point.y)));
   }
-  dict.Set(kNewTabPageAdWallpapersKey, std::move(wallpapers));
 
-  return dict;
+  return base::Value::Dict()
+      .Set(kTypeKey, ToString(ad.type))
+      .Set(kNewTabPageAdPlacementIdKey, ad.placement_id)
+      .Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id)
+      .Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id)
+      .Set(kNewTabPageAdCampaignIdKey, ad.campaign_id)
+      .Set(kNewTabPageAdAdvertiserIdKey, ad.advertiser_id)
+      .Set(kNewTabPageAdSegmentKey, ad.segment)
+      .Set(kNewTabPageAdCompanyNameKey, ad.company_name)
+      .Set(kNewTabPageAdImageUrlKey, ad.image_url.spec())
+      .Set(kNewTabPageAdAltKey, ad.alt)
+      .Set(kNewTabPageAdTargetUrlKey, ad.target_url.spec())
+      .Set(kNewTabPageAdWallpapersKey, std::move(wallpapers));
 }
 
 NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
@@ -127,12 +123,9 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
         continue;
       }
 
-      NewTabPageAdWallpaperInfo wallpaper;
-      wallpaper.image_url = GURL(*image_url);
-      wallpaper.focal_point.x = *focal_point_x;
-      wallpaper.focal_point.y = *focal_point_y;
-
-      ad.wallpapers.push_back(wallpaper);
+      ad.wallpapers.emplace_back(
+          GURL(*image_url),
+          NewTabPageAdWallpaperFocalPointInfo{*focal_point_x, *focal_point_y});
     }
   }
 

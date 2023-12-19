@@ -12,34 +12,24 @@
 
 namespace brave_ads::test {
 
-AdInfo BuildAd(AdType ad_type, const bool should_use_random_uuids) {
+std::string GetConstantId(const bool should_use_random_uuids,
+                          const std::string& constant_id) {
+  return should_use_random_uuids
+             ? base::Uuid::GenerateRandomV4().AsLowercaseString()
+             : constant_id;
+}
+
+AdInfo BuildAd(const AdType ad_type, const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;
-
-  ad.placement_id = should_use_random_uuids
-                        ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                        : kPlacementId;
-
+  ad.placement_id = GetConstantId(should_use_random_uuids, kPlacementId);
   ad.creative_instance_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeInstanceId;
-
-  ad.creative_set_id = should_use_random_uuids
-                           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                           : kCreativeSetId;
-
-  ad.campaign_id = should_use_random_uuids
-                       ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                       : kCampaignId;
-
-  ad.advertiser_id = should_use_random_uuids
-                         ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                         : kAdvertiserId;
-
+      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
+  ad.creative_set_id = GetConstantId(should_use_random_uuids, kCreativeSetId);
+  ad.campaign_id = GetConstantId(should_use_random_uuids, kCampaignId);
+  ad.advertiser_id = GetConstantId(should_use_random_uuids, kAdvertiserId);
   ad.segment = kSegment;
-
   ad.target_url = GURL("https://brave.com");
 
   return ad;

@@ -49,10 +49,9 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
 
-  CreativeNotificationAdList FilterCreativeAds(
-      const CreativeNotificationAdList& creative_ads,
-      const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history);
+  void FilterCreativeAds(CreativeNotificationAdList& creative_ads,
+                         const AdEventList& ad_events,
+                         const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleNotificationAdsV2> weak_factory_{this};
 };

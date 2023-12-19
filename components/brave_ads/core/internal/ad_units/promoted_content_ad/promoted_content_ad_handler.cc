@@ -42,7 +42,6 @@ void PromotedContentAdHandler::TriggerEvent(
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::PromotedContentAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";

@@ -7,15 +7,11 @@
 
 #include <sstream>
 
-#include "base/check.h"
-
 namespace brave_ads {
 
 NotificationAdEventPredictorVariable::NotificationAdEventPredictorVariable(
     const mojom::NotificationAdEventType event_type)
-    : event_type_(event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type_));
-}
+    : event_type_(event_type) {}
 
 brave_federated::mojom::DataType
 NotificationAdEventPredictorVariable::GetDataType() const {

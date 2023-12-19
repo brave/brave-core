@@ -45,9 +45,9 @@ ComputePurchaseIntentSignalHistorySegmentScores(
   std::multimap<int, std::string> segment_scores;
 
   for (const auto& [segment, history] : signal_history) {
-    segment_scores.emplace(ComputePurchaseIntentSignalHistoryScore(
+    segment_scores.insert({ComputePurchaseIntentSignalHistoryScore(
                                history, now, time_window, signal_level),
-                           segment);
+                           segment});
   }
 
   return segment_scores;

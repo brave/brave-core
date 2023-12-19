@@ -21,8 +21,6 @@ mojom::DBRecordInfoPtr CreateRecord(
   int column = 0;
 
   for (const auto& binding : bindings) {
-    CHECK(mojom::IsKnownEnumValue(binding));
-
     mojom::DBValuePtr value;
     switch (binding) {
       case mojom::DBCommandInfo::RecordBindingType::STRING_TYPE: {

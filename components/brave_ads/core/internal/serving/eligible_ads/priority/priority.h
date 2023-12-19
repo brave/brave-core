@@ -24,15 +24,15 @@ T PrioritizeCreativeAds(const T& creative_ads) {
     return {};
   }
 
-  int bucket_number = 1;
+  int bucket = 1;
   for (const auto& [priority, ads] : buckets) {
     BLOG(3, ads.size() << " ads with a priority of " << priority
-                       << " in bucket " << bucket_number);
-    bucket_number++;
+                       << " in bucket " << bucket);
+    bucket++;
   }
 
-  const auto& [_, bucket] = GetHighestPriorityBucket(buckets);
-  return bucket;
+  const auto& [_, highest_priority_bucket] = GetHighestPriorityBucket(buckets);
+  return highest_priority_bucket;
 }
 
 }  // namespace brave_ads

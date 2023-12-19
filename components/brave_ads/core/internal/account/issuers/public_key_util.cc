@@ -18,11 +18,9 @@ bool PublicKeyExists(const IssuerInfo& issuer,
                      const cbr::PublicKey& public_key) {
   const std::optional<std::string> public_key_base64 =
       public_key.EncodeBase64();
-  if (!public_key_base64) {
-    return false;
-  }
 
-  return base::Contains(issuer.public_keys, public_key_base64);
+  return public_key_base64 &&
+         base::Contains(issuer.public_keys, public_key_base64.value());
 }
 
 }  // namespace brave_ads

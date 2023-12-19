@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 SegmentList GetTopSegments(const SegmentList& segments,
-                           int max_count,
+                           size_t max_count,
                            bool parent_only);
 
 std::optional<std::string> GetTopSegment(const SegmentList& segments,

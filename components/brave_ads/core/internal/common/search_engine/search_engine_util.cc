@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 
 #include <optional>
-#include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_constants.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_info.h"
@@ -23,8 +22,8 @@ std::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
   }
 
   const GURL url_with_empty_path = url.GetWithEmptyPath();
-  const std::vector<SearchEngineInfo>& search_engines = GetSearchEngines();
-  for (const auto& search_engine : search_engines) {
+
+  for (const auto& search_engine : GetSearchEngines()) {
     if (RE2::FullMatch(url_with_empty_path.spec(), search_engine.url_pattern) ||
         RE2::FullMatch(url.spec(), search_engine.url_pattern)) {
       return search_engine;

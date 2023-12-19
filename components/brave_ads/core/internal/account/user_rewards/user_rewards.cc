@@ -123,7 +123,8 @@ void UserRewards::OnFailedToRefillConfirmationTokens() {
   BLOG(1, "Failed to refill confirmation tokens");
 }
 
-void UserRewards::OnWillRetryRefillingConfirmationTokens(base::Time retry_at) {
+void UserRewards::OnWillRetryRefillingConfirmationTokens(
+    const base::Time retry_at) {
   BLOG(1,
        "Retry refilling confirmation tokens " << FriendlyDateAndTime(retry_at));
 }

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -84,8 +83,6 @@ void NewTabPageAdHandler::TriggerEvent(
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false);
   }

@@ -13,7 +13,7 @@ namespace brave_ads {
 struct UserModelInfo;
 
 SegmentList GetTopSegments(const UserModelInfo& user_model,
-                           int max_count,
+                           size_t max_count,
                            bool parent_only);
 
 }  // namespace brave_ads

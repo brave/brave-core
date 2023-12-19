@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kTopSegmentsMaxCount = 2;
+constexpr size_t kTopSegmentsMaxCount = 2;
 
 UserModelInfo BuildUserModel() {
   return UserModelInfo{

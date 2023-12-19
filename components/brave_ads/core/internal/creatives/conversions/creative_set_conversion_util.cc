@@ -61,9 +61,9 @@ CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
   return filtered_creative_set_conversions;
 }
 
-CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
+CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions) {
-  CreativeSetConversionBuckets buckets;
+  CreativeSetConversionBucketMap buckets;
 
   for (const auto& creative_set_conversion : creative_set_conversions) {
     buckets[creative_set_conversion.id].push_back(creative_set_conversion);

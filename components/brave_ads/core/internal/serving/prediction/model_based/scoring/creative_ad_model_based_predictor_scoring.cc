@@ -12,18 +12,12 @@ namespace brave_ads {
 
 double ComputeCreativeAdModelBasedPredictorScore(
     const CreativeAdModelBasedPredictorInputVariableInfo& input_variable) {
-  double score = 0.0;
-
-  score += ComputeSegmentScore(input_variable.intent_segment);
-  score += ComputeSegmentScore(input_variable.latent_interest_segment);
-  score += ComputeSegmentScore(input_variable.interest_segment);
-
-  score += ComputeLastSeenScore(input_variable.last_seen_ad);
-  score += ComputeLastSeenScore(input_variable.last_seen_advertiser);
-
-  score += ComputePriorityScore(input_variable.priority);
-
-  return score;
+  return ComputeSegmentScore(input_variable.intent_segment) +
+         ComputeSegmentScore(input_variable.latent_interest_segment) +
+         ComputeSegmentScore(input_variable.interest_segment) +
+         ComputeLastSeenScore(input_variable.last_seen_ad) +
+         ComputeLastSeenScore(input_variable.last_seen_advertiser) +
+         ComputePriorityScore(input_variable.priority);
 }
 
 }  // namespace brave_ads

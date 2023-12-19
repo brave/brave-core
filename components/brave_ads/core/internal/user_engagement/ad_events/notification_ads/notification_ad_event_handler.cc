@@ -27,7 +27,6 @@ void NotificationAdEventHandler::FireEvent(
     const mojom::NotificationAdEventType event_type,
     FireNotificationAdEventHandlerCallback callback) {
   CHECK(!placement_id.empty());
-  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const std::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
@@ -62,8 +61,6 @@ void NotificationAdEventHandler::SuccessfullyFiredEvent(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type,
     FireNotificationAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   NotifyDidFireNotificationAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
@@ -73,8 +70,6 @@ void NotificationAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type,
     FireNotificationAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   BLOG(1, "Failed to fire notification ad "
               << event_type << " event for placement id " << placement_id);
 

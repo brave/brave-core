@@ -24,6 +24,7 @@ base::Value::List SegmentsToValue(const SegmentList& segments) {
 
 SegmentList SegmentsFromValue(const base::Value::List& list) {
   SegmentList segments;
+  segments.reserve(list.size());
 
   for (const auto& item : list) {
     if (!item.is_string()) {

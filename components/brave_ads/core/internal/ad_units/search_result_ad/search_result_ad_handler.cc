@@ -49,7 +49,6 @@ void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::SearchResultAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
@@ -132,7 +131,6 @@ void SearchResultAd::FireAdViewedEventCallback(
     const bool success,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {

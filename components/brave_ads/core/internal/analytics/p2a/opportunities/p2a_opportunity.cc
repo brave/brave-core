@@ -12,10 +12,10 @@
 namespace brave_ads {
 
 namespace {
-constexpr int kTopSegmentsMaxCount = 1;
+constexpr size_t kTopSegmentsMaxCount = 1;
 }  // namespace
 
-void RecordP2AAdOpportunity(AdType ad_type, const SegmentList& segments) {
+void RecordP2AAdOpportunity(const AdType ad_type, const SegmentList& segments) {
   const SegmentList top_segments =
       GetTopSegments(segments, kTopSegmentsMaxCount, /*parent_only=*/false);
 

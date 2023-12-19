@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_WEIGHT_CREATIVE_AD_MODEL_BASED_PREDICTOR_WEIGHTS_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_WEIGHT_CREATIVE_AD_MODEL_BASED_PREDICTOR_WEIGHTS_BUILDER_H_
 
-#include <type_traits>
 #include <vector>
 
-#include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -21,22 +19,35 @@
 namespace brave_ads {
 
 template <typename T>
-CreativeAdModelBasedPredictorWeightsInfo
-BuildCreativeAdModelBasedPredictorWeights(
-    const std::vector<T>& /*creative_ad*/) {
-  if constexpr (std::is_same_v<T, CreativeInlineContentAdInfo>) {
+struct CreativeAdModelBasedPredictorWeightsBuilder;
+
+template <>
+struct CreativeAdModelBasedPredictorWeightsBuilder<
+    CreativeInlineContentAdInfo> {
+  static CreativeAdModelBasedPredictorWeightsInfo build() {
     return BuildCreativeInlineContentAdModelBasedPredictorWeights();
   }
+};
 
-  if constexpr (std::is_same_v<T, CreativeNewTabPageAdInfo>) {
+template <>
+struct CreativeAdModelBasedPredictorWeightsBuilder<CreativeNewTabPageAdInfo> {
+  static CreativeAdModelBasedPredictorWeightsInfo build() {
     return BuildCreativeNewTabPageAdModelBasedPredictorWeights();
   }
+};
 
-  if constexpr (std::is_same_v<T, CreativeNotificationAdInfo>) {
+template <>
+struct CreativeAdModelBasedPredictorWeightsBuilder<CreativeNotificationAdInfo> {
+  static CreativeAdModelBasedPredictorWeightsInfo build() {
     return BuildCreativeNotificationAdModelBasedPredictorWeights();
   }
+};
 
-  NOTREACHED_NORETURN() << "Unsupported creative ad";
+template <typename T>
+CreativeAdModelBasedPredictorWeightsInfo
+BuildCreativeAdModelBasedPredictorWeights(
+    const std::vector<T>& /*creative_ads*/) {
+  return CreativeAdModelBasedPredictorWeightsBuilder<T>::build();
 }
 
 }  // namespace brave_ads

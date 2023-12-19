@@ -32,6 +32,7 @@ base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
 base::Value::List NotificationAdsToValue(
     const base::circular_deque<NotificationAdInfo>& ads) {
   base::Value::List list;
+  list.reserve(ads.size());
 
   for (const auto& ad : ads) {
     list.Append(NotificationAdToValue(ad));

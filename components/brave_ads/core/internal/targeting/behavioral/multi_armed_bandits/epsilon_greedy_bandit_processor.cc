@@ -106,8 +106,6 @@ EpsilonGreedyBanditProcessor::~EpsilonGreedyBanditProcessor() {
 
 void EpsilonGreedyBanditProcessor::Process(
     const EpsilonGreedyBanditFeedbackInfo& feedback) const {
-  CHECK(mojom::IsKnownEnumValue(feedback.ad_event_type));
-
   if (!is_initialized_) {
     return;
   }

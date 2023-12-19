@@ -13,15 +13,17 @@ namespace brave_ads {
 
 bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
-                            ConfirmationType confirmation_type,
+                            const ConfirmationType confirmation_type,
                             const base::TimeDelta time_constraint,
                             const size_t cap) {
+  const base::Time now = base::Time::Now();
+
   const size_t count = base::ranges::count_if(
-      ad_events, [&creative_ad, &confirmation_type,
+      ad_events, [&creative_ad, &confirmation_type, now,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               base::Time::Now() - ad_event.created_at < time_constraint;
+               now - ad_event.created_at < time_constraint;
       });
 
   return count < cap;
@@ -29,15 +31,17 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
 
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
-                               ConfirmationType confirmation_type,
+                               const ConfirmationType confirmation_type,
                                const base::TimeDelta time_constraint,
                                const size_t cap) {
+  const base::Time now = base::Time::Now();
+
   const size_t count = base::ranges::count_if(
-      ad_events, [&creative_ad, &confirmation_type,
+      ad_events, [&creative_ad, &confirmation_type, now,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_set_id == creative_ad.creative_set_id &&
-               base::Time::Now() - ad_event.created_at < time_constraint;
+               now - ad_event.created_at < time_constraint;
       });
 
   return count < cap;
@@ -45,16 +49,18 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
 
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
-                            ConfirmationType confirmation_type,
+                            const ConfirmationType confirmation_type,
                             const base::TimeDelta time_constraint,
                             const size_t cap) {
+  const base::Time now = base::Time::Now();
+
   const size_t count = base::ranges::count_if(
-      ad_events, [&creative_ad, &confirmation_type,
+      ad_events, [&creative_ad, &confirmation_type, now,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_instance_id ==
                    creative_ad.creative_instance_id &&
-               base::Time::Now() - ad_event.created_at < time_constraint;
+               now - ad_event.created_at < time_constraint;
       });
 
   return count < cap;

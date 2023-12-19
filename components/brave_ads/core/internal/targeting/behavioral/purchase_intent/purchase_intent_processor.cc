@@ -40,9 +40,9 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
   }
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(1, url.scheme()
-                << " scheme is not supported for processing purchase intent");
-    return;
+    return BLOG(
+        1, url.scheme()
+               << " scheme is not supported for processing purchase intent");
   }
 
   if (!url.is_valid()) {

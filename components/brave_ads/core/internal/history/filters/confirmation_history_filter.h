@@ -13,7 +13,7 @@ namespace brave_ads {
 
 class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
-  HistoryItemList Apply(const HistoryItemList& history_items) const override;
+  void Apply(HistoryItemList& history_items) const override;
 };
 
 }  // namespace brave_ads

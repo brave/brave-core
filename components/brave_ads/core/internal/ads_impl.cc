@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
@@ -188,8 +187,6 @@ void AdsImpl::TriggerSearchResultAdEvent(
 void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }

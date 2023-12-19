@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         ConfirmationType confirmation_type,
+                         const ConfirmationType confirmation_type,
                          const base::Time created_at) {
   AdEventInfo ad_event;
 
@@ -30,7 +30,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
 }
 
 AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
-                           ConfirmationType confirmation_type,
+                           const ConfirmationType confirmation_type,
                            const base::Time created_at) {
   AdEventInfo mutable_ad_event(ad_event);
 

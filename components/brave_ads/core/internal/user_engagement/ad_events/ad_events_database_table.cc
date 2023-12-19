@@ -249,8 +249,6 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -259,7 +257,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
       "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
       "created_at DESC;",
-      {GetTableName(), ToString(FromMojomTypeToAdType(ad_type))}, nullptr);
+      {GetTableName(), ToString(static_cast<AdType>(ad_type))}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
@@ -288,8 +286,6 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
-
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -299,7 +295,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served') "
       "AND type = '$4';",
       {GetTableName(), GetTableName(), GetTableName(),
-       ToString(FromMojomTypeToAdType(ad_type))},
+       ToString(static_cast<AdType>(ad_type))},
       nullptr);
   transaction->commands.push_back(std::move(command));
 

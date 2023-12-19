@@ -16,6 +16,7 @@ TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                                             const base::Time from_time,
                                             const base::Time to_time) {
   TransactionList filtered_transactions;
+  filtered_transactions.reserve(transactions.size());
 
   base::ranges::copy_if(
       transactions, std::back_inserter(filtered_transactions),

@@ -9,7 +9,6 @@
 
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -22,10 +21,7 @@ namespace {
 bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
       creative_ad.geo_targets, [](const std::string& geo_target) {
-        const std::vector<std::string> components = base::SplitString(
-            geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-
-        return components.size() == 2;
+        return std::count(geo_target.cbegin(), geo_target.cend(), '-') == 1;
       });
 
   return iter != creative_ad.geo_targets.cend();

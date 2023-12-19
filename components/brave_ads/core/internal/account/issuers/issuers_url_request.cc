@@ -43,13 +43,10 @@ IssuersUrlRequest::~IssuersUrlRequest() {
 }
 
 void IssuersUrlRequest::PeriodicallyFetch() {
-  if (is_periodically_fetching_) {
-    return;
+  if (!is_periodically_fetching_) {
+    is_periodically_fetching_ = true;
+    Fetch();
   }
-
-  is_periodically_fetching_ = true;
-
-  Fetch();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

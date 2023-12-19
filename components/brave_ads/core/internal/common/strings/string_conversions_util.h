@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_STRINGS_STRING_CONVERSIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_STRINGS_STRING_CONVERSIONS_UTIL_H_
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -22,11 +23,12 @@ std::vector<float> DelimitedStringToVector(const std::string& string,
 template <typename T>
 std::string VectorToDelimitedString(const std::vector<T>& vector_components,
                                     const std::string_view delimiter) {
-  std::vector<std::string> string_components;
-  string_components.reserve(vector_components.size());
-  for (const auto& vector_component : vector_components) {
-    string_components.emplace_back(base::NumberToString(vector_component));
-  }
+  std::vector<std::string> string_components(vector_components.size());
+
+  std::transform(vector_components.cbegin(), vector_components.cend(),
+                 string_components.begin(), [](const T& vector_component) {
+                   return base::NumberToString(vector_component);
+                 });
 
   return base::JoinString(string_components, delimiter);
 }

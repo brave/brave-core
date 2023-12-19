@@ -229,21 +229,19 @@ CreativeNotificationAdList EligibleNotificationAdsV1::FilterCreativeAds(
     return {};
   }
 
-  CreativeNotificationAdList eligible_creative_ads = creative_ads;
-
-  NotificationAdExclusionRules exclusion_rules(
-      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-      browsing_history);
-  eligible_creative_ads = ApplyExclusionRules(
-      eligible_creative_ads, last_served_ad_, &exclusion_rules);
-
-  eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
-      eligible_creative_ads, AdType::kNotificationAd);
+  CreativeNotificationAdList eligible_creative_ads =
+      FilterSeenAdvertisersAndRoundRobinIfNeeded(creative_ads,
+                                                 AdType::kNotificationAd);
 
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNotificationAd);
 
-  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
+  NotificationAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      browsing_history);
+  ApplyExclusionRules(eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  PaceCreativeAds(eligible_creative_ads);
 
   return PrioritizeCreativeAds(eligible_creative_ads);
 }

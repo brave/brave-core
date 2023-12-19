@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 
+#include <algorithm>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -30,9 +32,11 @@ UserActivityTriggerList SortTriggers(const UserActivityTriggerList& triggers) {
 
 std::string EncodeEvents(const UserActivityEventList& events) {
   std::vector<UserActivityEventType> eligible_events;
-  for (const auto& event : events) {
-    eligible_events.push_back(event.type);
-  }
+  eligible_events.reserve(events.size());
+
+  std::transform(events.cbegin(), events.cend(),
+                 std::back_inserter(eligible_events),
+                 [](const auto& event) { return event.type; });
 
   const std::string encoded_eligible_events =
       base::HexEncode(eligible_events.data(), eligible_events.size());

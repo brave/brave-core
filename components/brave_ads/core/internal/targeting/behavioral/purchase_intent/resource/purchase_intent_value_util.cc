@@ -49,8 +49,7 @@ std::optional<SegmentList> ParseFunnelSegments(const SegmentList& segments,
       return std::nullopt;
     }
 
-    const std::string& segment = segments[*index];
-    funnel_segments.emplace_back(segment);
+    funnel_segments.push_back(segments[*index]);
   }
 
   return funnel_segments;
@@ -77,7 +76,7 @@ std::optional<SegmentList> ParseSegments(const base::Value::Dict& dict) {
       return std::nullopt;
     }
 
-    segments.emplace_back(base::ToLowerASCII(*segment));
+    segments.push_back(base::ToLowerASCII(*segment));
   }
 
   return segments;
@@ -113,11 +112,10 @@ std::optional<PurchaseIntentSegmentKeyphraseList> ParseSegmentKeyphrases(
         return std::nullopt;
       }
 
-      const std::string& segment = segments[*index];
-      segment_keyphrase.segments.emplace_back(segment);
+      segment_keyphrase.segments.push_back(segments[*index]);
     }
 
-    segment_keyphrases.emplace_back(std::move(segment_keyphrase));
+    segment_keyphrases.push_back(std::move(segment_keyphrase));
   }
 
   return segment_keyphrases;
@@ -145,7 +143,7 @@ std::optional<PurchaseIntentFunnelKeyphraseList> ParseFunnelKeyphrases(
     base::ranges::sort(funnel_keyphrase.keywords);
     funnel_keyphrase.weight = weight.GetInt();
 
-    funnel_keyphrases.emplace_back(std::move(funnel_keyphrase));
+    funnel_keyphrases.push_back(std::move(funnel_keyphrase));
   }
 
   return funnel_keyphrases;
@@ -184,9 +182,9 @@ std::optional<PurchaseIntentFunnelSiteMap> ParseFunnelSites(
         return std::nullopt;
       }
 
-      funnel_sites.emplace(
-          GURL(*funnel_site).GetWithEmptyPath().spec(),
-          PurchaseIntentFunnelInfo{*funnel_segments, kDefaultFunnelSiteWeight});
+      funnel_sites.insert({GURL(*funnel_site).GetWithEmptyPath().spec(),
+                           PurchaseIntentFunnelInfo{*funnel_segments,
+                                                    kDefaultFunnelSiteWeight}});
     }
   }
 

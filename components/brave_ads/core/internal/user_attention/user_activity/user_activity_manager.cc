@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
+#include <iterator>
 #include <optional>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
@@ -65,11 +65,8 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
     return;
   }
 
-  UserActivityEventInfo user_activity_event;
-  user_activity_event.type = event_type;
-  user_activity_event.created_at = base::Time::Now();
-
-  user_activity_events_.push_back(user_activity_event);
+  user_activity_events_.push_back(UserActivityEventInfo{
+      .type = event_type, .created_at = base::Time::Now()});
 
   if (user_activity_events_.size() >
       static_cast<size_t>(kMaximumUserActivityEvents.Get())) {
@@ -81,16 +78,15 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
 
 UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
     const base::TimeDelta time_window) const {
-  UserActivityEventList filtered_history = user_activity_events_;
+  UserActivityEventList filtered_history;
 
   const base::Time time = base::Time::Now() - time_window;
 
-  filtered_history.erase(
-      base::ranges::remove_if(filtered_history,
-                              [time](const UserActivityEventInfo& event) {
-                                return event.created_at < time;
-                              }),
-      filtered_history.cend());
+  std::copy_if(user_activity_events_.cbegin(), user_activity_events_.cend(),
+               std::back_inserter(filtered_history),
+               [time](const UserActivityEventInfo& event) {
+                 return event.created_at >= time;
+               });
 
   return filtered_history;
 }

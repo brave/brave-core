@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_UNITTEST_UTIL_H_
 
+#include <string>
+
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
@@ -13,6 +15,9 @@ namespace brave_ads {
 struct AdInfo;
 
 namespace test {
+
+std::string GetConstantId(bool should_use_random_uuids,
+                          const std::string& constant_id);
 
 AdInfo BuildAd(AdType ad_type, bool should_use_random_uuids);
 

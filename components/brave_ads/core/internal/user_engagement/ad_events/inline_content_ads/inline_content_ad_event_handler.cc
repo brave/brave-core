@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
@@ -32,8 +31,6 @@ void InlineContentAdEventHandler::FireEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type,
     FireInlineContentAdEventHandlerCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid placement "
@@ -68,8 +65,6 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const bool success,
     const std::string& creative_instance_id,
     const CreativeInlineContentAdInfo& creative_ad) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     BLOG(1,
          "Failed to fire inline content ad event due to missing creative "
@@ -96,8 +91,6 @@ void InlineContentAdEventHandler::GetForTypeCallback(
     FireInlineContentAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   if (!success) {
     BLOG(1, "Inline content ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
@@ -144,8 +137,6 @@ void InlineContentAdEventHandler::SuccessfullyFiredEvent(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type,
     FireInlineContentAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   NotifyDidFireInlineContentAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
@@ -156,8 +147,6 @@ void InlineContentAdEventHandler::FailedToFireEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type,
     FireInlineContentAdEventHandlerCallback callback) const {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   BLOG(1, "Failed to fire inline content ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
@@ -22,13 +21,18 @@ bool DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  const size_t count = base::ranges::count_if(
-      ad_events, [&creative_ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kServed &&
-               ad_event.creative_set_id == creative_ad.creative_set_id;
-      });
+  int count = 0;
+  for (const auto& ad_event : ad_events) {
+    if (ad_event.confirmation_type == ConfirmationType::kServed &&
+        ad_event.creative_set_id == creative_ad.creative_set_id) {
+      ++count;
+      if (count >= creative_ad.total_max) {
+        return false;
+      }
+    }
+  }
 
-  return static_cast<int>(count) < creative_ad.total_max;
+  return true;
 }
 
 }  // namespace

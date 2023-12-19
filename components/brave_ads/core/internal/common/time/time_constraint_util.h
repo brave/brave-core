@@ -15,6 +15,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+// Check if the `history` of time points respects a certain `time_constraint`
+// and a `cap` on the number of elements. Assumes that `history` is in
+// chronological order.
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     base::TimeDelta time_constraint,

@@ -13,11 +13,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kTopSegmentsMaxCount = 3;
+constexpr size_t kTopSegmentsMaxCount = 3;
 
-constexpr int kTopIntentSegmentsMaxCount = 3;
-constexpr int kTopLatentInterestSegmentsMaxCount = 3;
-constexpr int kTopInterestSegmentsMaxCount = 3;
+constexpr size_t kTopIntentSegmentsMaxCount = 3;
+constexpr size_t kTopLatentInterestSegmentsMaxCount = 3;
+constexpr size_t kTopInterestSegmentsMaxCount = 3;
 
 }  // namespace
 

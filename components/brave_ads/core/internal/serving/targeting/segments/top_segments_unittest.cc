@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr int kSegmentsMaxCount = 2;
+constexpr size_t kSegmentsMaxCount = 2;
 }  // namespace
 
 class BraveAdsTopSegmentsTest : public UnitTestBase {};

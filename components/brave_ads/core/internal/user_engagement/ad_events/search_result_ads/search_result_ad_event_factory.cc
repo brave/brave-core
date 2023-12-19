@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_factory.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_clicked.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_served.h"
@@ -16,8 +15,6 @@ namespace brave_ads {
 std::unique_ptr<AdEventInterface<SearchResultAdInfo>>
 SearchResultAdEventFactory::Build(
     const mojom::SearchResultAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   switch (event_type) {
     case mojom::SearchResultAdEventType::kServed: {
       return std::make_unique<SearchResultAdEventServed>();

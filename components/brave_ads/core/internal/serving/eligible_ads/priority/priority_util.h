@@ -36,6 +36,8 @@ SortCreativeAdsIntoPrioritizedBuckets(const T& creative_ads) {
   return buckets;
 }
 
+// 1 is deemed as the top priority, and numbers greater than 1 represent
+// decreasing levels of priority.
 template <typename T>
 std::pair</*priority*/ int, /*creative_ads*/ T> GetHighestPriorityBucket(
     const base::flat_map<int, T>& buckets) {

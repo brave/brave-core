@@ -28,26 +28,25 @@ double ComputeSegmentScore(
 double ComputeLastSeenScore(
     const CreativeAdModelBasedPredictorLastSeenInputVariableInfo&
         last_seen_input_variable) {
-  double weight = last_seen_input_variable.weight;
-
-  if (!last_seen_input_variable.value) {
-    return weight;
+  if (!last_seen_input_variable.value ||
+      last_seen_input_variable.value > base::Days(1)) {
+    return last_seen_input_variable.weight;
   }
 
-  if (last_seen_input_variable.value <= base::Days(1)) {
-    weight *= last_seen_input_variable.value->InHours() /
-              static_cast<double>(base::Time::kHoursPerDay);
-  }
-
-  return weight;
+  return last_seen_input_variable.weight *
+         last_seen_input_variable.value->InHours() /
+         static_cast<double>(base::Time::kHoursPerDay);
 }
 
 double ComputePriorityScore(
     const CreativeAdModelBasedPredictorPriorityInputVariableInfo&
         priority_input_variable) {
-  return priority_input_variable.value == 0
-             ? 0.0
-             : priority_input_variable.weight / priority_input_variable.value;
+  if (priority_input_variable.value == 0) {
+    return 0.0;
+  }
+
+  const double value_reciprocal = 1.0 / priority_input_variable.value;
+  return priority_input_variable.weight * value_reciprocal;
 }
 
 }  // namespace brave_ads

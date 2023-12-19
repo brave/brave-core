@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
 namespace brave_ads {
 
@@ -16,6 +17,9 @@ class CashDeposit final : public DepositInterface {
  public:
   void GetValue(const std::string& creative_instance_id,
                 GetDepositCallback callback) override;
+
+ private:
+  database::table::Deposits database_table_;
 };
 
 }  // namespace brave_ads

@@ -12,9 +12,10 @@
 namespace brave_ads {
 
 SegmentList GetTopSegments(const UserModelInfo& user_model,
-                           const int max_count,
+                           const size_t max_count,
                            const bool parent_only) {
   SegmentList segments;
+  segments.reserve(3 * max_count);
 
   base::Extend(segments, GetTopSegments(user_model.intent.segments, max_count,
                                         parent_only));

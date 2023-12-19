@@ -86,7 +86,6 @@ void InlineContentAdHandler::TriggerEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::InlineContentAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling MaybeServe";
