@@ -275,19 +275,29 @@ export const AccountListItem = ({
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     // We are not able to remove a Derived account so we filter out this option.
-    if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
-      return AccountButtonOptions.filter(
-        (option: AccountButtonOptionsObjectType) => option.id !== 'remove'
-      )
-    }
+    const canRemove =
+      account.accountId.kind !== BraveWallet.AccountKind.kDerived
+
     // We are not able to fetch Private Keys for a Hardware account so we filter
-    // out this option.
-    if (account.accountId.kind === BraveWallet.AccountKind.kHardware) {
-      return AccountButtonOptions.filter(
-        (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
-      )
+    // out this option. Also PK export is allowed only for ETH, SOL and FIL.
+    const canExportPrivateKey =
+      [
+        // TODO(apaymyshev): support BTC and ZEC
+        BraveWallet.CoinType.ETH,
+        BraveWallet.CoinType.SOL,
+        BraveWallet.CoinType.FIL
+      ].includes(account.accountId.coin) &&
+      account.accountId.kind !== BraveWallet.AccountKind.kHardware
+
+    let options = [...AccountButtonOptions]
+
+    if (!canRemove) {
+      options = options.filter((option) => option.id !== 'remove')
     }
-    return AccountButtonOptions
+    if (!canExportPrivateKey) {
+      options = options.filter((option) => option.id !== 'privateKey')
+    }
+    return options
   }, [account])
 
   // render

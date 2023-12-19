@@ -86,7 +86,7 @@ import {
   SellIconPlaceholder,
   BuyIconPlaceholder,
   SwapPlaceholderIcon
-} from '../../portfolio_transaction_item/portfolio_tranasction_item.style'
+} from '../../portfolio_transaction_item/portfolio_transaction_item.style'
 import {
   Column,
   HorizontalSpace,
@@ -245,7 +245,7 @@ export const TransactionDetailsModal = (props: Props) => {
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
-  const { txStatus } = transaction
+  const { txStatus, fromAddress } = transaction
 
   const showCancelSpeedupButtons =
     isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
@@ -505,12 +505,14 @@ export const TransactionDetailsModal = (props: Props) => {
           </SectionLabel>
           <Row justifyContent='space-between'>
             <Column alignItems='flex-start'>
-              <SectionInfoText
-                textAlign='left'
-                textSize='14px'
-              >
-                {transaction.fromAccountId.address}
-              </SectionInfoText>
+              {fromAddress && (
+                <SectionInfoText
+                  textAlign='left'
+                  textSize='14px'
+                >
+                  {fromAddress}
+                </SectionInfoText>
+              )}
               <IntentAddressText
                 textAlign='left'
                 textSize='12px'
@@ -518,19 +520,19 @@ export const TransactionDetailsModal = (props: Props) => {
                 {senderLabel}
               </IntentAddressText>
             </Column>
-            <Row width='unset'>
-              <HorizontalSpace space='12px' />
-              <Button
-                onClick={() =>
-                  copyToClipboard(transaction.fromAccountId.address)
-                }
-                kind='outline'
-                size='tiny'
-                fab
-              >
-                <Icon name='copy' />
-              </Button>
-            </Row>
+            {fromAddress && (
+              <Row width='unset'>
+                <HorizontalSpace space='12px' />
+                <Button
+                  onClick={() => copyToClipboard(fromAddress)}
+                  kind='outline'
+                  size='tiny'
+                  fab
+                >
+                  <Icon name='copy' />
+                </Button>
+              </Row>
+            )}
           </Row>
         </SectionRow>
         <VerticalDivider />
