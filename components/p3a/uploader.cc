@@ -24,7 +24,7 @@ namespace {
 constexpr char kBraveP3AHeader[] = "X-Brave-P3A";
 constexpr char kBraveP3AVersionHeader[] = "Brave-P3A-Version";
 
-constexpr size_t kCurrentP3AVersionValue = 2;
+constexpr size_t kCurrentP3AVersionValue = 3;
 
 GURL GetConstellationUploadURL(const P3AConfig* config,
                                MetricLogType log_type,
