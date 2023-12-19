@@ -72,7 +72,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   params.route = swap_quote->routes.at(0).Clone();
   params.user_public_key = "mockPubKey";
   params.output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC
-  auto encoded_params = EncodeJupiterTransactionParams(params.Clone(), true);
+  auto encoded_params = EncodeJupiterTransactionParams(params, true);
 
   std::string expected_params(R"(
     {
@@ -118,7 +118,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
 
   // OK: Jupiter transaction params WITHOUT feeAccount
   params.output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";  // SHDW
-  encoded_params = EncodeJupiterTransactionParams(params.Clone(), false);
+  encoded_params = EncodeJupiterTransactionParams(params, false);
   expected_params = R"(
     {
       "route": {
@@ -158,15 +158,11 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   ASSERT_NE(encoded_params, std::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
 
-  // KO: empty params
-  EXPECT_DCHECK_DEATH(EncodeJupiterTransactionParams(nullptr, true));
-  EXPECT_DCHECK_DEATH(EncodeJupiterTransactionParams(nullptr, false));
-
   // KO: invalid output mint
   params.output_mint = "invalid output mint";
-  encoded_params = EncodeJupiterTransactionParams(params.Clone(), true);
+  encoded_params = EncodeJupiterTransactionParams(params, true);
   ASSERT_EQ(encoded_params, std::nullopt);
-  encoded_params = EncodeJupiterTransactionParams(params.Clone(), false);
+  encoded_params = EncodeJupiterTransactionParams(params, false);
   ASSERT_EQ(encoded_params, std::nullopt);
 }
 }  // namespace brave_wallet

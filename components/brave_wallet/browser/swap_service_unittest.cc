@@ -601,7 +601,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
   for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url = swap_service_->GetZeroExQuoteURL(
-        GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -623,7 +623,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
   for (const auto& [chain_id, domain] : rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url = swap_service_->GetZeroExQuoteURL(
-        GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -643,7 +643,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
 
   // KO: unsupported network
   EXPECT_EQ(swap_service_->GetZeroExQuoteURL(
-                GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3")),
+                *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3")),
             "");
 }
 
@@ -665,7 +665,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
   for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url = swap_service_->GetZeroExTransactionURL(
-        GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -686,7 +686,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
   for (const auto& [chain_id, domain] : rfqt_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
     auto url = swap_service_->GetZeroExTransactionURL(
-        GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id));
 
     EXPECT_EQ(url,
               base::StringPrintf(
@@ -705,7 +705,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
 
   // KO: unsupported network
   EXPECT_EQ(swap_service_->GetZeroExTransactionURL(
-                GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3")),
+                *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3")),
             "");
 }
 
@@ -741,7 +741,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
   params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->from_amount = "10000";
 
-  auto url = swap_service_->GetJupiterQuoteURL(params.Clone());
+  auto url = swap_service_->GetJupiterQuoteURL(*params);
 
   // OK: output mint has Jupiter fees
   EXPECT_EQ(url,
@@ -754,7 +754,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
             "feeBps=85");
 
   params->to_token = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
-  url = swap_service_->GetJupiterQuoteURL(params.Clone());
+  url = swap_service_->GetJupiterQuoteURL(*params);
 
   // OK: output mint does not have Jupiter fees
   EXPECT_EQ(url,
