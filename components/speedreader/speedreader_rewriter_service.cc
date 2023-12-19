@@ -171,6 +171,9 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const std::string& font_size,
     const std::string& column_width) {
   auto rewriter = speedreader_->MakeRewriter(url.spec());
+  if (!rewriter) {
+    return nullptr;
+  }
   rewriter->SetMinOutLength(speedreader::kSpeedreaderMinOutLengthParam.Get());
   rewriter->SetTheme(theme);
   rewriter->SetFontFamily(font_family);
