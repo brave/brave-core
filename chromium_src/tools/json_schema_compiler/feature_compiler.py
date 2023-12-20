@@ -27,23 +27,21 @@ class BraveFeatureDefinitionExtender:
         "extensions/common/api/_permission_features.json": True,
     }
 
-    @classmethod
-    def GetFeatureDefinitions(cls, source_file):
-        has_counterpart = cls._HasBraveChromiumSrcConterpart(source_file)
-        overridden_filepath = import_inline.wspath(
-            f"//brave/chromium_src/{source_file}")
-        assert has_counterpart == os.path.exists(
-            overridden_filepath), overridden_filepath
+    def __init__(self):
+        self._ValidateKnownFiles()
+
+    def GetFeatureDefinitions(self, source_file):
+        has_counterpart = self._HasBraveChromiumSrcConterpart(source_file)
         if not has_counterpart:
             return None
 
-        with open(overridden_filepath, "r") as f:
+        with open(import_inline.wspath(f"//brave/chromium_src/{source_file}"),
+                  "r") as f:
             parsed_json = json_parse.Parse(f.read())
         return parsed_json
 
-    @classmethod
-    def _HasBraveChromiumSrcConterpart(cls, source_file):
-        has_counterpart = cls.KNOWN_FILES.get(source_file)
+    def _HasBraveChromiumSrcConterpart(self, source_file):
+        has_counterpart = self.KNOWN_FILES.get(source_file)
         if has_counterpart is None:
             raise RuntimeError(
                 f"Unknown features file {source_file}. Please update "
@@ -51,11 +49,27 @@ class BraveFeatureDefinitionExtender:
             )
         return has_counterpart
 
+    def _ValidateKnownFiles(self):
+        for source_file, should_exist in self.KNOWN_FILES.items():
+            # Ensure original file exists.
+            original_filepath = import_inline.wspath(f"//{source_file}")
+            if not os.path.exists(original_filepath):
+                raise RuntimeError(
+                    f"Original features file {original_filepath} not found. Please update "
+                    "//brave/chromium_src/tools/json_schema_compiler/feature_compiler.py"
+                )
+            # Ensure override file exists if it has to.
+            overridden_filepath = import_inline.wspath(
+                f"//brave/chromium_src/{source_file}")
+            assert should_exist == os.path.exists(
+                overridden_filepath), overridden_filepath
+
 
 @override_utils.override_method(FeatureCompiler)
 def Load(self, original_method):
     original_method(self)
 
+    brave_extender = BraveFeatureDefinitionExtender()
     parent_dir_prefix = "../../"
     feature_replace_prefix = "replace!"
 
@@ -67,8 +81,7 @@ def Load(self, original_method):
         if source_file.startswith("brave/") or "/test/" in source_file:
             continue
 
-        feature_definitions = BraveFeatureDefinitionExtender. \
-            GetFeatureDefinitions(source_file)
+        feature_definitions = brave_extender.GetFeatureDefinitions(source_file)
         if feature_definitions:
             for feature, definitions in feature_definitions.items():
                 should_replace = feature.startswith(feature_replace_prefix)
