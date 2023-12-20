@@ -250,6 +250,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveNewsOpenArticlesInNewTab", IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB},
         { "braveNewsOpenArticlesInCurrentTab", IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB},
         { "braveNewsCaughtUp", IDS_BRAVE_NEWS_CAUGHT_UP},
+        { "braveNewsNewContentAvailable", IDS_BRAVE_NEWS_NEW_CONTENT_AVAILABLE},
 
         // Brave News Channels
         { "braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
