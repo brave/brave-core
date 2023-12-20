@@ -34,7 +34,7 @@ bool ShouldFilterConfirmationType(const ConfirmationType confirmation_type) {
     }
 
     case ConfirmationType::kUndefined: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
 

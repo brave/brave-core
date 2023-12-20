@@ -11,6 +11,7 @@
 
 #include "base/check_op.h"
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -49,7 +50,7 @@ void MockBuildChannel(const BuildChannelType type) {
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
-                        << static_cast<int>(type);
+                        << base::to_underlying(type);
 }
 
 void MockPlatformHelper(const PlatformHelperMock& mock,

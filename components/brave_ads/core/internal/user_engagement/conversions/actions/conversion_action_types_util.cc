@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_constants.h"
 
 namespace brave_ads {
@@ -22,9 +23,12 @@ ConversionActionType ToConversionActionType(
     }
 
     default: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
+
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << base::to_underlying(confirmation_type);
 }
 
 ConversionActionType StringToConversionActionType(
@@ -37,7 +41,7 @@ ConversionActionType StringToConversionActionType(
     return ConversionActionType::kClickThrough;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED_NORETURN() << "Unexpected value for action_type: " << action_type;
 }
 
 std::string ConversionActionTypeToString(
@@ -52,9 +56,12 @@ std::string ConversionActionTypeToString(
     }
 
     default: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
+
+  NOTREACHED_NORETURN() << "Unexpected value for ConversionActionType: "
+                        << base::to_underlying(action_type);
 }
 
 }  // namespace brave_ads

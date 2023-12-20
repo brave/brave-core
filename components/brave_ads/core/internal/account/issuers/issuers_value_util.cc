@@ -11,6 +11,7 @@
 #include "base/check_op.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
@@ -43,7 +44,7 @@ std::optional<std::string> GetNameForIssuerType(const IssuerType type) {
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for IssuerType: "
-                        << static_cast<int>(type);
+                        << base::to_underlying(type);
 }
 
 std::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
