@@ -224,7 +224,7 @@ void Conversions::NotifyFailedToConvertAd(
 
 void Conversions::OnDidAddConversionToQueue(const ConversionInfo& conversion) {
   BLOG(1, "Successfully added "
-              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ToString(conversion.action_type) << " "
               << ConversionTypeToString(conversion) << " for "
               << conversion.ad_type << " with creative instance id "
               << conversion.creative_instance_id << ", creative set id "
@@ -235,21 +235,21 @@ void Conversions::OnDidAddConversionToQueue(const ConversionInfo& conversion) {
 
 void Conversions::OnFailedToAddConversionToQueue(
     const ConversionInfo& conversion) {
-  BLOG(1,
-       "Failed to add " << ConversionActionTypeToString(conversion.action_type)
-                        << " " << ConversionTypeToString(conversion) << " for "
-                        << conversion.ad_type << " with creative instance id "
-                        << conversion.creative_instance_id
-                        << ", creative set id " << conversion.creative_set_id
-                        << ", campaign id " << conversion.campaign_id
-                        << " and advertiser id " << conversion.advertiser_id
-                        << " to the queue");
+  BLOG(1, "Failed to add " << ToString(conversion.action_type) << " "
+                           << ConversionTypeToString(conversion) << " for "
+                           << conversion.ad_type
+                           << " with creative instance id "
+                           << conversion.creative_instance_id
+                           << ", creative set id " << conversion.creative_set_id
+                           << ", campaign id " << conversion.campaign_id
+                           << " and advertiser id " << conversion.advertiser_id
+                           << " to the queue");
 }
 
 void Conversions::OnWillProcessConversionQueue(const ConversionInfo& conversion,
                                                const base::Time process_at) {
-  BLOG(1, "Process " << ConversionActionTypeToString(conversion.action_type)
-                     << " " << ConversionTypeToString(conversion) << " for "
+  BLOG(1, "Process " << ToString(conversion.action_type) << " "
+                     << ConversionTypeToString(conversion) << " for "
                      << conversion.ad_type << " with creative instance id "
                      << conversion.creative_instance_id << ", creative set id "
                      << conversion.creative_set_id << ", campaign id "
@@ -261,7 +261,7 @@ void Conversions::OnWillProcessConversionQueue(const ConversionInfo& conversion,
 void Conversions::OnDidProcessConversionQueue(
     const ConversionInfo& conversion) {
   BLOG(1, "Successfully processed "
-              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ToString(conversion.action_type) << " "
               << ConversionTypeToString(conversion) << " for "
               << conversion.ad_type << " with creative instance id "
               << conversion.creative_instance_id << ", creative set id "
@@ -275,7 +275,7 @@ void Conversions::OnDidProcessConversionQueue(
 void Conversions::OnFailedToProcessConversionQueue(
     const ConversionInfo& conversion) {
   BLOG(1, "Failed to process "
-              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ToString(conversion.action_type) << " "
               << ConversionTypeToString(conversion) << " for "
               << conversion.ad_type << " with creative instance id "
               << conversion.creative_instance_id << ", creative set id "

@@ -31,8 +31,8 @@ ConversionActionType ToConversionActionType(
                         << base::to_underlying(confirmation_type);
 }
 
-ConversionActionType StringToConversionActionType(
-    const std::string& action_type) {
+ConversionActionType ToConversionActionType(
+    const std::string_view action_type) {
   if (action_type == kViewThroughConversionActionType) {
     return ConversionActionType::kViewThrough;
   }
@@ -44,8 +44,7 @@ ConversionActionType StringToConversionActionType(
   NOTREACHED_NORETURN() << "Unexpected value for action_type: " << action_type;
 }
 
-std::string ConversionActionTypeToString(
-    const ConversionActionType action_type) {
+std::string ToString(const ConversionActionType action_type) {
   switch (action_type) {
     case ConversionActionType::kViewThrough: {
       return kViewThroughConversionActionType;
