@@ -43,6 +43,10 @@ const CtaButton = styled(Button)`
   align-self: flex-start;
 `
 
+const AdImage = styled(LargeImage)`
+  height: unset;
+`
+
 export const useVisibleFor = (callback: () => void, timeout: number) => {
   const [el, setEl] = React.useState<HTMLElement | null>(null)
   const callbackRef = React.useRef<() => void>()
@@ -107,7 +111,7 @@ export default function Advert(props: Props) {
   }
 
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
-    <LargeImage src={imageUrl} />
+    <AdImage src={imageUrl} />
     <MetaInfoContainer>
       <BatAdLabel onClick={e => e.stopPropagation()} href="brave://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
       •
