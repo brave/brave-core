@@ -28,7 +28,7 @@ class BraveFeatureDefinitionExtender:
     }
 
     @classmethod
-    def GetFeatureDefinitionsToAdd(cls, source_file):
+    def GetFeatureDefinitions(cls, source_file):
         has_counterpart = cls._HasBraveChromiumSrcConterpart(source_file)
         overridden_filepath = import_inline.wspath(
             f"//brave/chromium_src/{source_file}")
@@ -39,8 +39,6 @@ class BraveFeatureDefinitionExtender:
 
         with open(overridden_filepath, "r") as f:
             parsed_json = json_parse.Parse(f.read())
-        for feature, definitions in parsed_json.items():
-            assert isinstance(definitions, list), (overridden_filepath, feature)
         return parsed_json
 
     @classmethod
@@ -59,6 +57,7 @@ def Load(self, original_method):
     original_method(self)
 
     parent_dir_prefix = "../../"
+    feature_replace_prefix = "replace!"
 
     for source_file in self._source_files:
         assert source_file.startswith(parent_dir_prefix), source_file
@@ -68,20 +67,30 @@ def Load(self, original_method):
         if source_file.startswith("brave/") or "/test/" in source_file:
             continue
 
-        feature_definitions_to_add = BraveFeatureDefinitionExtender. \
-            GetFeatureDefinitionsToAdd(source_file)
-        if feature_definitions_to_add:
-            for feature, definitions in feature_definitions_to_add.items():
+        feature_definitions = BraveFeatureDefinitionExtender. \
+            GetFeatureDefinitions(source_file)
+        if feature_definitions:
+            for feature, definitions in feature_definitions.items():
+                should_replace = feature.startswith(feature_replace_prefix)
+                if should_replace:
+                    feature = feature[len(feature_replace_prefix):]
+
                 existing_definitions = self._json.get(feature, None)
                 if existing_definitions is None:
                     raise RuntimeError(
                         f"Feature {feature} not found in {source_file}")
 
-                # Convert to ComplexFeature if it's currently a SimpleFeature.
-                if not isinstance(existing_definitions, list):
-                    existing_definitions = [existing_definitions]
+                if should_replace:
+                    # Fully replace definitions.
+                    self._json[feature] = definitions
+                else:
+                    assert isinstance(definitions, list), feature
+                    # Convert to ComplexFeature if it's currently a
+                    # SimpleFeature.
+                    if not isinstance(existing_definitions, list):
+                        existing_definitions = [existing_definitions]
 
-                # Add new definitions.
-                existing_definitions.extend(definitions)
+                    # Add new definitions.
+                    existing_definitions.extend(definitions)
 
-                self._json[feature] = existing_definitions
+                    self._json[feature] = existing_definitions
