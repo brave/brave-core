@@ -88,6 +88,12 @@ std::string GetFeedHash(const Channels& channels,
     if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
       hash_items.push_back(id);
     }
+
+    // Disabling a publisher should also change the hash, as it will affect what
+    // articles can be shown.
+    if (publisher->user_enabled_status == mojom::UserEnabled::DISABLED) {
+      hash_items.push_back(id + "_disabled");
+    }
   }
 
   for (const auto& [region, etag] : etags) {
