@@ -26,6 +26,7 @@ public class BraveClassAdapter {
         chain = new BraveBookmarkPageClassAdapter(chain);
         chain = new BraveBookmarkToolbarClassAdapter(chain);
         chain = new BraveBookmarkToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveBookmarkUiPrefsClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);

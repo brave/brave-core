@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 import org.chromium.base.Callback;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -373,6 +374,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs"));
     }
 
     @Test
@@ -1107,6 +1111,11 @@ public class BytecodeTest {
                         Context.class,
                         ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs",
+                        SharedPreferencesManager.class));
     }
 
     @Test

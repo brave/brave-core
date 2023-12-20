@@ -813,3 +813,11 @@
 -keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUiPrefs {
+    <init>(...);
+}
