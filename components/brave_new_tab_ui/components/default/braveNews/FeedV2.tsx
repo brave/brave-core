@@ -92,15 +92,6 @@ export default function FeedV2() {
     ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
-  // For some reason |createGlobalStyle| doesn't seem to work in Brave Core
-  // To get the background blur effect looking nice, we need to set the body
-  // background to black - unfortunately we can't do this in root HTML file
-  // because we want to avoid the background flash effect.
-  React.useEffect(() => {
-    // Note: This is always black because this doesn't support light mode.
-    document.body.style.backgroundColor = 'black';
-  }, [])
-
   return <Root ref={ref as any} data-theme="dark">
     <SidebarContainer>
       <FeedNavigation />
