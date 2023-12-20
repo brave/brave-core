@@ -236,7 +236,7 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
       completion(BraveWallet.FilecoinMainnet)
     case .btc:
       fallthrough
-    @unknown default:
+    default:
       completion("")
     }
   }
@@ -249,12 +249,8 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion(true, .success, "")
   }
   
-  func ethTokenSymbol(_ contractAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
-    completion("", .internalError, "Error Message")
-  }
-  
-  func ethTokenDecimals(_ contractAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
-    completion("", .internalError, "Error Message")
+  func ethTokenInfo(_ contractAddress: String, chainId: String, completion: @escaping (BraveWallet.BlockchainToken?, BraveWallet.ProviderError, String) -> Void) {
+    completion(nil, .internalError, "Error Message")
   }
   
   func ankrGetAccountBalances(_ accountAddress: String, chainIds: [String], completion: @escaping ([BraveWallet.AnkrAssetBalance], BraveWallet.ProviderError, String) -> Void) {

@@ -819,12 +819,12 @@ class SettingsViewController: TableViewController {
         Row(
           text: "View Brave Histogram (p3a) Logs",
           selection: { [unowned self] in
-            let histogramsController = self.p3aUtilities.histogramsController().then {
+            let histogramsController = ChromeWebViewController(privateBrowsing: false).then {
               $0.title = "Histograms (p3a)"
+              $0.loadURL("brave://histograms")
             }
             if #available(iOS 16.0, *) {
-              // TODO: Replace this with property access when exposed from brave-core side
-              let webView = histogramsController.value(forKey: "_webView") as! WKWebView // swiftlint:disable:this force_cast
+              let webView = histogramsController.webView
               webView.isFindInteractionEnabled = true
               histogramsController.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 systemItem: .search,

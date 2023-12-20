@@ -392,26 +392,29 @@ extension BraveWalletJsonRpcService {
     contractAddress: String,
     chainId: String
   ) async -> BraveWallet.BlockchainToken? {
-    let (symbol, symbolStatus, _) = await ethTokenSymbol(contractAddress, chainId: chainId)
-    let (decimals, decimalsStatus, _) = await ethTokenDecimals(contractAddress, chainId: chainId)
-    guard symbolStatus == .success || decimalsStatus == .success else { return nil }
-    return .init(
-      contractAddress: contractAddress,
-      name: "",
-      logo: "",
-      isErc20: false, // rpcService.getSupportsInterface() is private / internal.
-      isErc721: false, // rpcService.getSupportsInterface() is private / internal.
-      isErc1155: false, // rpcService.getSupportsInterface() is private / internal.
-      isNft: false,
-      isSpam: false,
-      symbol: symbol,
-      decimals: Int32(decimals.removingHexPrefix, radix: 16) ?? 0,
-      visible: false,
-      tokenId: "",
-      coingeckoId: "", // blockchainRegistry can fetch this for us, but not needed in Tx Confirmation.
-      chainId: chainId,
-      coin: .eth
-    )
+    // Fetches token info by contract address and chain ID. The returned token
+    // has the following fields populated:
+    //   - contract_address
+    //   - chain_id
+    //   - coin
+    //   - name
+    //   - symbol
+    //   - decimals
+    //   - coingecko_id
+    //
+    // The following fields are always set to false, and callers must NOT rely
+    // on them:
+    //   - is_erc721
+    //   - is_erc1155
+    //   - is_erc20
+    //   - is_nft
+    let (token, status, _) = await ethTokenInfo(contractAddress, chainId: chainId)
+    guard status == .success else { return nil }
+    token?.logo = ""
+    token?.isSpam = false
+    token?.visible = false
+    token?.tokenId = ""
+    return token
   }
   
   /// Fetches the BlockchainToken for the given contract addresses. The token for a given contract

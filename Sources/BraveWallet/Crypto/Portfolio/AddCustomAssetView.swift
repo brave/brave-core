@@ -81,27 +81,8 @@ struct AddCustomAssetView: View {
           header: WalletListHeaderView(title: networkSelectionStore.networkSelectionInForm?.coin == .sol ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress))
         ) {
           TextField(Strings.Wallet.enterAddress, text: $addressInput)
-            .onChange(of: addressInput) { newValue in
-              guard !newValue.isEmpty else { return }
-              userAssetStore.tokenInfo(address: newValue) { token in
-                guard let token else { return }
-                if nameInput.isEmpty {
-                  nameInput = token.name
-                }
-                if symbolInput.isEmpty {
-                  symbolInput = token.symbol
-                }
-                if !token.isErc721, !token.isNft, decimalsInput.isEmpty {
-                  decimalsInput = "\(token.decimals)"
-                }
-                if let network = networkStore.allChains.first(where: { $0.chainId == token.chainId }) {
-                  networkSelectionStore.networkSelectionInForm = network
-                }
-              }
-            }
             .autocapitalization(.none)
             .autocorrectionDisabled()
-            .disabled(userAssetStore.isSearchingToken)
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
@@ -123,45 +104,27 @@ struct AddCustomAssetView: View {
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
         ) {
-          HStack {
-            TextField(Strings.Wallet.enterTokenName, text: $nameInput)
-              .autocapitalization(.none)
-              .autocorrectionDisabled()
-              .disabled(userAssetStore.isSearchingToken)
-            if userAssetStore.isSearchingToken && nameInput.isEmpty {
-              ProgressView()
-            }
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          TextField(Strings.Wallet.enterTokenName, text: $nameInput)
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenSymbol))
         ) {
-          HStack {
-            TextField(Strings.Wallet.enterTokenSymbol, text: $symbolInput)
-              .autocapitalization(.none)
-              .autocorrectionDisabled()
-              .disabled(userAssetStore.isSearchingToken)
-            if userAssetStore.isSearchingToken && symbolInput.isEmpty {
-              ProgressView()
-            }
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          TextField(Strings.Wallet.enterTokenSymbol, text: $symbolInput)
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         switch selectedTokenType {
         case .token:
           Section(
             header: WalletListHeaderView(title: Text(Strings.Wallet.decimalsPrecision))
           ) {
-            HStack {
-              TextField(NumberFormatter().string(from: NSNumber(value: 0)) ?? "0", text: $decimalsInput)
-                .keyboardType(.numberPad)
-                .disabled(userAssetStore.isSearchingToken)
-              if userAssetStore.isSearchingToken && decimalsInput.isEmpty {
-                ProgressView()
-              }
-            }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            TextField(NumberFormatter().string(from: NSNumber(value: 0)) ?? "0", text: $decimalsInput)
+              .keyboardType(.numberPad)
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
           Section {
             Button(

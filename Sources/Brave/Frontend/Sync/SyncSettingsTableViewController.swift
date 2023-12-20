@@ -339,8 +339,9 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
       
-      let syncInternalsController = self.syncAPI.createSyncInternalsController().then {
+      let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
         $0.title = Strings.braveSyncInternalsTitle
+        $0.loadURL("brave://sync-internals")
       }
       
       self.navigationController?.pushViewController(syncInternalsController, animated: true)

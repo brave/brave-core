@@ -281,8 +281,9 @@ class SyncWelcomeViewController: SyncViewController {
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
       
-      let syncInternalsController = syncAPI.createSyncInternalsController().then {
+      let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
         $0.title = Strings.braveSyncInternalsTitle
+        $0.loadURL("brave://sync-internals")
       }
       
       navigationController?.pushViewController(syncInternalsController, animated: true)
