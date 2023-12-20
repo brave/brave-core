@@ -72,6 +72,10 @@ brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 browser/net/ @iefremov
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
+# Chromium Extension API modifications
+chromium_src/**/extensions/**/*_features.json @brave/sec-team
+chromium_src/tools/json_schema_compiler/ @brave/sec-team
+
 # Brave theme
 browser/themes @simonhong
 

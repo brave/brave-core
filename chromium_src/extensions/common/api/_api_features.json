@@ -1,0 +1,55 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Listed feature definitions are appended to the existing Chromium ones. To
+// fully replace definitions use "replace!" prefix like so:
+// "replace!sockets.tcp" : { ... }.
+
+// Command to get allowlist ID:
+// IPFS Companion      780BF954C0F7C586EA9662D4F967771F49CC2114: echo -n nibjojkomfdiaoajekhjakgkdhaomnch | openssl sha1 | tr '[:lower:]' '[:upper:]'
+// IPFS Companion Beta FF32507DC3DB5DFFD1D6733187C84D4B74713D63: echo -n hjoieblefckbooibpepigmacodalfndh | openssl sha1 | tr '[:lower:]' '[:upper:]'
+// WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
+
+{
+  "runtime.sendMessage": [
+    {
+      "contexts": ["webui"],
+      "matches": ["chrome://newtab/*"]
+    }
+  ],
+  "sockets.tcp": [
+    {
+      "dependencies": ["manifest:sockets"],
+      "contexts": ["blessed_extension"],
+      "allowlist": [
+        "780BF954C0F7C586EA9662D4F967771F49CC2114", // IPFS Companion
+        "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", // IPFS Companion Beta
+        "3D9518A72EB02667A773B69DBA9E72E0F4A37423" // WebTorrent
+      ]
+    }
+  ],
+  "sockets.tcpServer": [
+    {
+      "dependencies": ["manifest:sockets"],
+      "contexts": ["blessed_extension"],
+      "allowlist": [
+        "780BF954C0F7C586EA9662D4F967771F49CC2114", // IPFS Companion
+        "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", // IPFS Companion Beta
+        "3D9518A72EB02667A773B69DBA9E72E0F4A37423" // WebTorrent
+      ]
+    }
+  ],
+  "sockets.udp": [
+    {
+      "dependencies": ["manifest:sockets"],
+      "contexts": ["blessed_extension"],
+      "allowlist": [
+        "780BF954C0F7C586EA9662D4F967771F49CC2114", // IPFS Companion
+        "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", // IPFS Companion Beta
+        "3D9518A72EB02667A773B69DBA9E72E0F4A37423" // WebTorrent
+      ]
+    }
+  ]
+}
