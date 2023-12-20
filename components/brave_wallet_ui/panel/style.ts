@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import { styledScrollbarMixin } from '../components/shared/style'
 
 export const PanelWrapper = styled.div<{
   isLonger?: boolean
@@ -16,8 +15,6 @@ export const PanelWrapper = styled.div<{
   width: ${(p) => (p.width ? p.width : 320)}px;
   height: ${(p) => (p.height ? p.height : p.isLonger ? 540 : 400)}px;
   background-color: ${(p) => p.theme.color.background01};
-  overflow-y: auto;
-  ${styledScrollbarMixin}
 `
 
 export const WelcomePanelWrapper = styled.div`
