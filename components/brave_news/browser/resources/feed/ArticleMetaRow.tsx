@@ -37,7 +37,7 @@ export const MetaInfoContainer = styled.h4`
 const publisherDescription = (article: FeedItemMetadata) => {
   if (article.publisherName) return article.publisherName
   const url = new URL(article.url.url)
-  return url.origin
+  return url.hostname
 }
 
 export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {

@@ -73,6 +73,7 @@ export const configurationCache = new ConfigurationCachingWrapper()
 
 export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
+  const [configuration, setConfiguration] = useState<Configuration>(configurationCache.value)
 
   // Note: It's okay to fetch the FeedV2 even when the feature isn't enabled
   // because the controller will just return an empty feed.
@@ -81,13 +82,12 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     feedView,
     setFeedView,
     refresh: refreshFeedV2
-  } = useFeedV2()
+  } = useFeedV2(configuration.isOptedIn && configuration.showOnNTP)
 
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
-  const [configuration, setConfiguration] = useState<Configuration>(configurationCache.value)
 
   // Get the default locale on load.
   useEffect(() => {
