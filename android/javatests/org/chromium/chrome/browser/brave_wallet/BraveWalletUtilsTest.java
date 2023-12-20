@@ -308,10 +308,14 @@ public class BraveWalletUtilsTest {
             }
         }
         testStruct.fromAccountId = new AccountId();
+        testStruct.fromAccountId.address = "";
+        testStruct.fromAccountId.uniqueKey = "";
         testStruct.fromChainId = "";
         testStruct.fromToken = "";
         testStruct.fromAmount = "";
         testStruct.toAccountId = new AccountId();
+        testStruct.toAccountId.address = "";
+        testStruct.toAccountId.uniqueKey = "";
         testStruct.toChainId = "";
         testStruct.toToken = "";
         testStruct.toAmount = "";
