@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 
@@ -21,6 +21,25 @@
 
 using tabs::features::HorizontalTabsUpdateEnabled;
 
+namespace {
+
+SkPath GetBorderPath(const gfx::Point& origin,
+                     bool extend_to_top,
+                     int corner_radius,
+                     const gfx::Size& contents_bounds) {
+  // Overridden to use Brave's non-circular shape
+  SkPath path;
+  const gfx::Rect path_rect(
+      origin.x(), extend_to_top ? 0 : origin.y(), contents_bounds.width(),
+      (extend_to_top ? origin.y() : 0) +
+          std::min(contents_bounds.width(), contents_bounds.height()));
+  path.addRoundRect(RectToSkRect(path_rect), corner_radius, corner_radius);
+  path.close();
+  return path;
+}
+
+}  // namespace
+
 // static
 gfx::Size BraveNewTabButton::GetButtonSize() {
   if (!HorizontalTabsUpdateEnabled()) {
@@ -29,30 +48,8 @@ gfx::Size BraveNewTabButton::GetButtonSize() {
   return {28, 28};
 }
 
-// static
-SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                        float scale,
-                                        bool extend_to_top,
-                                        int corner_radius,
-                                        const gfx::Size& contents_bounds) {
-  // Overriden to use Brave's non-circular shape
-  gfx::PointF scaled_origin(origin);
-  scaled_origin.Scale(scale);
-  const float radius = corner_radius * scale;
-
-  SkPath path;
-  const gfx::Rect path_rect(
-      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
-      contents_bounds.width() * scale,
-      (extend_to_top ? scaled_origin.y() : 0) +
-          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
-  path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-  path.close();
-  return path;
-}
-
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
-  // Overriden so that we use Brave's custom button size
+  // Overridden so that we use Brave's custom button size
   gfx::Size size = GetButtonSize();
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
@@ -62,9 +59,8 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                         bool extend_to_top) const {
   if (GetWidget()) {
-    return GetBorderPath(
-        origin, GetWidget()->GetCompositor()->device_scale_factor(),
-        extend_to_top, GetCornerRadius(), GetContentsBounds().size());
+    return ::GetBorderPath(origin, extend_to_top, GetCornerRadius(),
+                           GetContentsBounds().size());
   }
   return SkPath();
 }
@@ -97,7 +93,7 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   }
 
   // Shim base implementation's painting
-  // Overriden to fix chromium assumption that border radius
+  // Overridden to fix chromium assumption that border radius
   // will be 50% of width.
 
   // Incorrect offset that base class will use

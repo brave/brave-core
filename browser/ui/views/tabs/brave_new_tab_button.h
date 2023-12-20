@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
@@ -23,15 +23,10 @@ class BraveNewTabButton : public NewTabButton {
   METADATA_HEADER(BraveNewTabButton, NewTabButton)
 
  public:
-  // These static members are shared with BraveTabSearchButton
+  // This static members are shared with BraveTabSearchButton
   // TODO(sko) If we could make TabSearchButton inherit BraveNewTabButton,
-  // we might not need these any more.
+  // we might not need to do this any more.
   static gfx::Size GetButtonSize();
-  static SkPath GetBorderPath(const gfx::Point& origin,
-                              float scale,
-                              bool extend_to_top,
-                              int border_radius,
-                              const gfx::Size& contents_bounds);
 
   BraveNewTabButton(TabStrip* tab_strip, PressedCallback callback);
   ~BraveNewTabButton() override;

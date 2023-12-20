@@ -319,11 +319,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     SkPath path;
     const auto* widget = GetWidget();
     if (widget) {
-      float scale = widget->GetCompositor()->device_scale_factor();
-      const float radius = GetCornerRadius() * scale;
-      const gfx::Rect path_rect(origin.x(), origin.y(),
-                                contents_bounds.width() * scale,
-                                contents_bounds.height() * scale);
+      const float radius = GetCornerRadius();
+      const gfx::Rect path_rect(origin.x(), origin.y(), contents_bounds.width(),
+                                contents_bounds.height());
       path.addRoundRect(RectToSkRect(path_rect), radius, radius);
       path.close();
     }
