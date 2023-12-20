@@ -243,17 +243,17 @@ void AddFootnoteViewIfNeeded(
 
 }  // namespace
 
-#define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                         \
-  AddAdditionalWidevineViewControlsIfNeeded(this, delegate->Requests()); \
-  auto* permission_lifetime_view =                                       \
-      AddPermissionLifetimeComboboxIfNeeded(this, delegate.get());       \
-  AddFootnoteViewIfNeeded(this, delegate->Requests(), browser);          \
-  if (permission_lifetime_view) {                                        \
-    set_fixed_width(                                                     \
-        std::max(GetPreferredSize().width(),                             \
-                 permission_lifetime_view->GetPreferredSize().width()) + \
-        margins().width());                                              \
-    set_should_ignore_snapping(true);                                    \
+#define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                          \
+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
+  auto* permission_lifetime_view =                                        \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());       \
+  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser_);         \
+  if (permission_lifetime_view) {                                         \
+    set_fixed_width(                                                      \
+        std::max(GetPreferredSize().width(),                              \
+                 permission_lifetime_view->GetPreferredSize().width()) +  \
+        margins().width());                                               \
+    set_should_ignore_snapping(true);                                     \
   }
 
 #include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc"
