@@ -12,9 +12,10 @@ import Preferences
 /// A menu button that provides a shortcut to toggling Night Mode
 struct NightModeMenuButton: View {
   @ObservedObject private var nightMode = Preferences.General.nightModeEnabled
+  @State private var isViewDisplayed = false
 
   var dismiss: () -> Void
-
+  
   var body: some View {
     HStack {
       MenuItemHeaderView(
@@ -25,6 +26,7 @@ struct NightModeMenuButton: View {
         .labelsHidden()
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         .onChange(of: nightMode.value) { _ in
+          guard isViewDisplayed else { return }
           dismiss()
         }
     }
@@ -42,5 +44,11 @@ struct NightModeMenuButton: View {
     .accessibilityElement()
     .accessibility(addTraits: .isButton)
     .accessibility(label: Text(Strings.NightMode.settingsTitle))
+    .onAppear {
+        isViewDisplayed = true
+    }
+    .onDisappear {
+        isViewDisplayed = false
+    }
   }
 }
