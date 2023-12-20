@@ -10,10 +10,12 @@ import { PlayerEventsPayload } from './api/playerEventsNotifier'
 import { types } from './constants/playlist_types'
 import { History } from 'history'
 import { useEffect } from 'react'
+import { showAlert } from '@brave/leo/react/alertCenter'
+import { getLocalizedString } from './utils/l10n'
 
 let history: History | undefined
 
-function handlePlayerEvents (payload: PlayerEventsPayload) {
+function handlePlayerEvents(payload: PlayerEventsPayload) {
   switch (payload.type) {
     case types.PLAYLIST_PLAYER_STATE_CHANGED:
       getPlaylistActions().playerStateChanged(payload.data)
@@ -25,36 +27,66 @@ function handlePlayerEvents (payload: PlayerEventsPayload) {
         payload.data.lastPlayedPosition
       )
       break
-    
+
     case types.PLAYLIST_GO_BACK_TO_CURRENTLY_PLAYING_FOLDER: {
       if (history) {
-        const {currentList, currentItem } = payload.data
+        const { currentList, currentItem } = payload.data
         history.push(`/playlist/${currentList.id}#${currentItem.id}`)
       }
-      break;
+      break
     }
 
     case types.PLAYLIST_OPEN_SOURCE_PAGE: {
-      window.open(
-        payload.data.pageSource.url,
-        '_blank',
-        'noopener noreferrer'
+      window.open(payload.data.pageSource.url, '_blank', 'noopener noreferrer')
+      break
+    }
+
+    case types.PLAYLIST_PLAYER_FAILED_TO_PLAY_ITEM: {
+      showAlert(
+        {
+          title: getLocalizedString('bravePlaylistFailedToPlayTitle'),
+          content: getLocalizedString(
+            'bravePlaylistFailedToPlayDescription'
+          ).replace('$1', payload.data.name),
+          mode: 'full',
+          type: 'error',
+          actions: [
+            {
+              text: getLocalizedString('bravePlaylistFailedToPlayRecover'),
+              kind: 'filled',
+              action: (a) => {
+                getPlaylistAPI().recoverLocalData(
+                  payload.data.id,
+                  /* updateMediaSrcBeforeRecovery= */ true
+                )
+                a.dismiss()
+              }
+            },
+            {
+              text: getLocalizedString('bravePlaylistAlertDismiss'),
+              kind: 'plain-faint',
+              action: (a) => a.dismiss()
+            }
+          ]
+        },
+        5000
       )
+      break
     }
   }
 }
 
-export function useHistorySynchronization () {
+export function useHistorySynchronization() {
   const h = useHistory()
   useEffect(() => {
     history = h
-    return () => history = undefined
+    return () => (history = undefined)
   }, [h])
 }
 
 // Used to mirror state of Player from Playlist side.
-export default function startReceivingPlayerEvents () {
-  window.onmessage = e => {
+export default function startReceivingPlayerEvents() {
+  window.onmessage = (e) => {
     if (e.origin !== 'chrome-untrusted://playlist-player') {
       console.error(`Invalid origin: ${e.origin}`)
       return
@@ -63,4 +95,3 @@ export default function startReceivingPlayerEvents () {
     handlePlayerEvents(e.data)
   }
 }
-
