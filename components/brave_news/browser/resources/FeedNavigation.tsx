@@ -27,6 +27,9 @@ const Container = styled(Card)`
 
   max-height: calc(100vh - ${spacing.xl} * 2);
   overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--bn-glass-10) var(--bn-glass-10);
 `
 
 const Heading = styled.h3`

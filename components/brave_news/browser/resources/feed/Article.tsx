@@ -19,16 +19,20 @@ interface Props {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
+  gap: ${spacing.s};
   padding-top: ${spacing.l};
 `
 
 export default function Article({ info, hideChannel }: Props) {
-  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, { useCache: true })
+  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
+    useCache: true,
+    rootMargin: '500px 0px'
+  })
   const url = info.data.url.url;
 
   return <Container ref={setElementRef} onClick={braveNewsCardClickHandler(url)}>
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
-    <Flex direction='row' gap={spacing.m} justify='space-between' align='start'>
+    <Flex direction='row' gap={spacing.xl} justify='space-between' align='start'>
       <Title>
         <BraveNewsLink href={url}>{info.data.title}</BraveNewsLink>
       </Title>
