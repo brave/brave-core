@@ -79,6 +79,6 @@ export type SwapParams = {
    * format for Jupiter and 0x swap providers.
    */
   slippageTolerance: string
-  fromAddress?: string
+  fromAccount?: BraveWallet.AccountInfo
   spotPrices?: SpotPriceRegistry
 }

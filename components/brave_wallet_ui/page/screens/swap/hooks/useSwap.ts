@@ -181,7 +181,7 @@ export const useSwap = () => {
     fromAmount,
     toAmount: '',
     slippageTolerance,
-    fromAddress: selectedAccount?.address,
+    fromAccount: selectedAccount,
     spotPrices: spotPriceRegistry
   })
   const zeroEx = useZeroEx({
@@ -192,7 +192,7 @@ export const useSwap = () => {
     fromToken,
     toToken,
     slippageTolerance,
-    fromAddress: selectedAccount?.address,
+    fromAccount: selectedAccount,
     spotPrices: spotPriceRegistry
   })
 

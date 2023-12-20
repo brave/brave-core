@@ -19,9 +19,8 @@
 namespace brave_wallet {
 
 std::optional<std::string> EncodeJupiterTransactionParams(
-    mojom::JupiterSwapParamsPtr params,
+    const mojom::JupiterTransactionParams& params,
     bool has_fee) {
-  DCHECK(params);
   base::Value::Dict tx_params;
 
   // The code below does the following two things:
@@ -29,7 +28,7 @@ std::optional<std::string> EncodeJupiterTransactionParams(
   //   - verify if output_mint is a valid address
   std::optional<std::string> associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(
-          params->output_mint, brave_wallet::kSolanaFeeRecipient);
+          params.output_mint, brave_wallet::kSolanaFeeRecipient);
   if (!associated_token_account) {
     return std::nullopt;
   }
@@ -43,20 +42,20 @@ std::optional<std::string> EncodeJupiterTransactionParams(
     tx_params.Set("feeAccount", *associated_token_account);
   }
 
-  tx_params.Set("userPublicKey", params->user_public_key);
+  tx_params.Set("userPublicKey", params.user_public_key);
 
   base::Value::Dict route;
-  route.Set("inAmount", base::NumberToString(params->route->in_amount));
-  route.Set("outAmount", base::NumberToString(params->route->out_amount));
-  route.Set("amount", base::NumberToString(params->route->amount));
+  route.Set("inAmount", base::NumberToString(params.route->in_amount));
+  route.Set("outAmount", base::NumberToString(params.route->out_amount));
+  route.Set("amount", base::NumberToString(params.route->amount));
   route.Set("otherAmountThreshold",
-            base::NumberToString(params->route->other_amount_threshold));
-  route.Set("swapMode", params->route->swap_mode);
-  route.Set("priceImpactPct", params->route->price_impact_pct);
-  route.Set("slippageBps", base::NumberToString(params->route->slippage_bps));
+            base::NumberToString(params.route->other_amount_threshold));
+  route.Set("swapMode", params.route->swap_mode);
+  route.Set("priceImpactPct", params.route->price_impact_pct);
+  route.Set("slippageBps", base::NumberToString(params.route->slippage_bps));
 
   base::Value::List market_infos_value;
-  for (const auto& market_info : params->route->market_infos) {
+  for (const auto& market_info : params.route->market_infos) {
     base::Value::Dict market_info_value;
     market_info_value.Set("id", market_info->id);
     market_info_value.Set("label", market_info->label);
@@ -104,7 +103,7 @@ std::optional<std::string> EncodeJupiterTransactionParams(
   result = std::string(json::convert_string_value_to_uint64(
       "/route/slippageBps", result, false));
 
-  for (int i = 0; i < static_cast<int>(params->route->market_infos.size());
+  for (int i = 0; i < static_cast<int>(params.route->market_infos.size());
        i++) {
     result = std::string(json::convert_string_value_to_uint64(
         base::StringPrintf("/route/marketInfos/%d/inAmount", i), result,

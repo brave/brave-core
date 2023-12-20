@@ -16,6 +16,7 @@ import { WRAPPED_SOL_CONTRACT_ADDRESS } from '../constants/magics'
 import Amount from '../../../../utils/amount'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import { toMojoUnion } from '../../../../utils/mojo-utils'
 
 // Hooks
 import { useLib } from '../../../../common/hooks/useLib'
@@ -42,9 +43,9 @@ export function useJupiter(params: SwapParams) {
   const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(
     undefined
   )
-  const [error, setError] = useState<
-    BraveWallet.JupiterErrorResponse | undefined
-  >(undefined)
+  const [error, setError] = useState<BraveWallet.JupiterError | undefined>(
+    undefined
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<
     BraveWallet.JupiterRoute | undefined
@@ -120,7 +121,7 @@ export function useJupiter(params: SwapParams) {
         return
       }
 
-      if (!overriddenParams.fromAddress) {
+      if (!overriddenParams.fromAccount) {
         return
       }
 
@@ -138,7 +139,7 @@ export function useJupiter(params: SwapParams) {
           outputToken:
             overriddenParams.toToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
-          taker: overriddenParams.fromAddress
+          taker: overriddenParams.fromAccount.address
         })
         setBraveFee(braveFeeResponse || undefined)
       } catch (e) {
@@ -152,26 +153,27 @@ export function useJupiter(params: SwapParams) {
 
       let jupiterQuoteResponse
       try {
-        jupiterQuoteResponse = await swapService.getJupiterQuote({
-          chainId: selectedNetwork.chainId,
-          inputMint:
+        jupiterQuoteResponse = await swapService.getQuote({
+          fromAccountId: overriddenParams.fromAccount.accountId,
+          fromChainId: selectedNetwork.chainId,
+          fromToken:
             overriddenParams.fromToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
-          outputMint:
+          fromAmount: isFromAmountEmpty
+            ? new Amount(overriddenParams.toAmount)
+                .multiplyByDecimals(overriddenParams.toToken.decimals)
+                .format()
+            : new Amount(overriddenParams.fromAmount)
+                .multiplyByDecimals(overriddenParams.fromToken.decimals)
+                .format(),
+          toAccountId: overriddenParams.fromAccount.accountId,
+          toChainId: selectedNetwork.chainId,
+          toToken:
             overriddenParams.toToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
-          amount: !isFromAmountEmpty
-            ? new Amount(overriddenParams.fromAmount)
-                .multiplyByDecimals(overriddenParams.fromToken.decimals)
-                .format()
-            : new Amount(overriddenParams.toAmount)
-                .multiplyByDecimals(overriddenParams.toToken.decimals)
-                .format(),
-          slippageBps: new Amount(overriddenParams.slippageTolerance)
-            .times(100)
-            .parseInteger()
-            .toNumber(),
-          userPublicKey: overriddenParams.fromAddress
+          toAmount: '',
+          slippagePercentage: overriddenParams.slippageTolerance,
+          routePriority: BraveWallet.RoutePriority.kRecommended
         })
       } catch (e) {
         console.log(`Error getting Jupiter quote: ${e}`)
@@ -183,19 +185,19 @@ export function useJupiter(params: SwapParams) {
         return
       }
 
-      if (jupiterQuoteResponse?.response) {
-        setQuote(jupiterQuoteResponse.response)
+      if (jupiterQuoteResponse?.response?.jupiterQuote) {
+        setQuote(jupiterQuoteResponse.response.jupiterQuote)
       }
 
-      if (jupiterQuoteResponse?.errorResponse) {
-        setError(jupiterQuoteResponse.errorResponse)
+      if (jupiterQuoteResponse?.error?.jupiterError) {
+        setError(jupiterQuoteResponse.error.jupiterError)
       }
 
       setLoading(false)
       setAbortController(undefined)
 
       // Return undefined if response is null.
-      return jupiterQuoteResponse?.response || undefined
+      return jupiterQuoteResponse?.response?.jupiterQuote || undefined
     },
     [selectedNetwork, params, reset, swapService]
   )
@@ -217,32 +219,41 @@ export function useJupiter(params: SwapParams) {
       }
 
       setLoading(true)
-      let jupiterTransactionsPayloadResponse
+      let jupiterTransactionResponse
       try {
-        jupiterTransactionsPayloadResponse =
-          await swapService.getJupiterSwapTransactions({
-            chainId: selectedNetwork.chainId,
-            userPublicKey: selectedAccount.address,
-            route: selectedRoute || quote.routes[0],
-            inputMint:
-              params.fromToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS,
-            outputMint:
-              params.toToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
-          })
+        jupiterTransactionResponse = await swapService.getTransaction(
+          toMojoUnion(
+            {
+              jupiterTransactionParams: {
+                chainId: selectedNetwork.chainId,
+                userPublicKey: selectedAccount.address,
+                route: selectedRoute || quote.routes[0],
+                inputMint:
+                  params.fromToken.contractAddress ||
+                  WRAPPED_SOL_CONTRACT_ADDRESS,
+                outputMint:
+                  params.toToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
+              },
+              zeroExTransactionParams: undefined
+            },
+            'jupiterTransactionParams'
+          )
+        )
       } catch (e) {
         console.log(`Error getting Jupiter swap transactions: ${e}`)
       }
 
-      if (jupiterTransactionsPayloadResponse?.errorResponse) {
-        setError(jupiterTransactionsPayloadResponse.errorResponse)
+      if (jupiterTransactionResponse?.error?.jupiterError) {
+        setError(jupiterTransactionResponse.error.jupiterError)
       }
 
-      if (!jupiterTransactionsPayloadResponse?.response) {
+      if (!jupiterTransactionResponse?.response?.jupiterTransaction) {
         setLoading(false)
         return
       }
 
-      const { swapTransaction } = jupiterTransactionsPayloadResponse.response
+      const swapTransaction =
+        jupiterTransactionResponse.response.jupiterTransaction
 
       try {
         const { success, errorMessage } = await sendSolanaSerializedTransaction(
