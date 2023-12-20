@@ -31,6 +31,8 @@ export const WarningButton = styled(Button)<WarningProps>`
 
 export const WarningCollapse = styled(Collapse)<WarningProps>`
   --leo-collapse-summary-padding: 12px 16px;
+  --leo-collapse-content-padding: ${leo.spacing.m} ${leo.spacing['2Xl']};
+
   --leo-collapse-radius: ${leo.radius.m};
   --leo-collapse-shadow: none;
   --leo-collapse-border-color: none;
@@ -92,4 +94,8 @@ export const WarningsList = styled.ul`
     line-height: 18px;
     margin-bottom: 14px;
   }
+`
+
+export const DismissButton = styled(Button)`
+  flex-grow: 0;
 `
