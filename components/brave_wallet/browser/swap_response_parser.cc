@@ -73,8 +73,8 @@ mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
 
 }  // namespace
 
-mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
-                                         bool expect_transaction_data) {
+mojom::ZeroExQuotePtr ParseZeroExQuoteResponse(const base::Value& json_value,
+                                               bool expect_transaction_data) {
   // {
   //   "price":"1916.27547998814058355",
   //   "guaranteedPrice":"1935.438234788021989386",
@@ -125,7 +125,7 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
     return nullptr;
   }
 
-  auto swap_response = mojom::SwapResponse::New();
+  auto swap_response = mojom::ZeroExQuote::New();
   swap_response->price = swap_response_value->price;
 
   if (expect_transaction_data) {
@@ -179,8 +179,7 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   return swap_response;
 }
 
-mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
-    const base::Value& json_value) {
+mojom::ZeroExErrorPtr ParseZeroExErrorResponse(const base::Value& json_value) {
   // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
   //
   // {
@@ -210,13 +209,13 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
     return nullptr;
   }
 
-  auto result = mojom::SwapErrorResponse::New();
+  auto result = mojom::ZeroExError::New();
   result->code = swap_error_response_value->code;
   result->reason = swap_error_response_value->reason;
 
   if (swap_error_response_value->validation_errors) {
     for (auto& error_item : *swap_error_response_value->validation_errors) {
-      result->validation_errors.emplace_back(mojom::SwapErrorResponseItem::New(
+      result->validation_errors.emplace_back(mojom::ZeroExErrorItem::New(
           error_item.field, error_item.code, error_item.reason));
     }
   }
@@ -232,7 +231,8 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
   return result;
 }
 
-mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
+mojom::JupiterQuotePtr ParseJupiterQuoteResponse(
+    const base::Value& json_value) {
   //    {
   //      "data": [
   //        {
@@ -368,19 +368,17 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
   return swap_quote;
 }
 
-mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
+std::optional<std::string> ParseJupiterTransactionResponse(
     const base::Value& json_value) {
   auto value = swap_responses::JupiterSwapTransactions::FromValue(json_value);
   if (!value) {
-    return nullptr;
+    return std::nullopt;
   }
 
-  auto result = mojom::JupiterSwapTransactions::New();
-  result->swap_transaction = value->swap_transaction;
-  return result;
+  return value->swap_transaction;
 }
 
-mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
+mojom::JupiterErrorPtr ParseJupiterErrorResponse(
     const base::Value& json_value) {
   auto jupiter_error_response_value =
       swap_responses::JupiterErrorResponse::FromValue(json_value);
@@ -388,7 +386,7 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
     return nullptr;
   }
 
-  auto result = mojom::JupiterErrorResponse::New();
+  auto result = mojom::JupiterError::New();
   result->status_code = jupiter_error_response_value->status_code;
   result->error = jupiter_error_response_value->error;
   result->message = jupiter_error_response_value->message;
