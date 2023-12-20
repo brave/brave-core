@@ -6,6 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
+import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Collapse from '@brave/leo/react/collapse'
 
@@ -18,33 +19,46 @@ interface WarningProps {
 
 export const WarningCloseIcon = styled(Icon).attrs<WarningProps>({
   name: 'close'
-})<WarningProps>`
+})`
   --leo-icon-size: 20px;
-  color: ${(p) =>
+`
+export const WarningButton = styled(Button)<WarningProps>`
+  --leo-button-color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.warningIcon};
 `
 
 export const WarningCollapse = styled(Collapse)<WarningProps>`
-  --leo-collapse-summary-padding: 0px 16px;
+  --leo-collapse-summary-padding: 12px 16px;
   --leo-collapse-radius: ${leo.radius.m};
   --leo-collapse-shadow: none;
   --leo-collapse-border-color: none;
+
   --leo-collapse-background-color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorBackground
       : leo.color.systemfeedback.warningBackground};
+
   --leo-collapse-icon-color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.warningIcon};
+
   --leo-collapse-icon-color-hover: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.warningIcon};
 
-  font: var(--leo-font-primary-small-semibold);
+  @supports (color: color-mix(in srgb, transparent, transparent)) {
+    --leo-collapse-icon-color-hover: color-mix(
+      in srgb,
+      var(--leo-collapse-icon-color),
+      var(--leo-collapse-background-color) 50%
+    );
+  }
+
+  font: ${leo.font.small.semibold};
 
   color: ${(p) =>
     p.isCritical
@@ -52,21 +66,18 @@ export const WarningCollapse = styled(Collapse)<WarningProps>`
       : leo.color.systemfeedback.warningText};
 
   & > * > li {
-    font: var(--leo-font-primary-small-regular);
+    font: ${leo.font.small.regular};
     margin-bottom: 8px;
   }
 `
 
-export const WarningTitle = styled.p<WarningProps & { isBold?: boolean }>`
+export const WarningTitle = styled.span<WarningProps & { isBold?: boolean }>`
+  vertical-align: middle;
   color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.warningText};
-  font: ${(p) =>
-    p.isBold
-      ? leo.font.browser.small.semibold
-      : leo.font.browser.small.regular};
-  font-family: 'Inter', 'Poppins';
+  font: ${(p) => (p.isBold ? leo.font.small.semibold : leo.font.small.regular)};
 `
 
 export const WarningsList = styled.ul`
