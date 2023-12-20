@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.provider.Browser;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -33,6 +34,7 @@ import org.chromium.chrome.browser.customtabs.features.partialcustomtab.CustomTa
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBaseStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabDisplayManager;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.ui.util.ColorUtils;
 
 /**
@@ -129,6 +131,37 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
             }
             return result;
         }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent ev) {
+            Tab tab = getActivityTab();
+            if (tab != null) {
+                View view = tab.getView();
+                assert view != null;
+                int location[] = new int[2];
+                view.getLocationOnScreen(location);
+                int delta = (int) ev.getRawY() - location[1];
+                if (delta < 0 || delta < 150) {
+                    View dragHandle = findViewById(R.id.drag_handle);
+                    if (dragHandle != null) {
+                        emulateTouchDragHandle(dragHandle);
+                        return true;
+                    }
+                }
+            }
+            // true if the event is consumed, else false
+            return false;
+        }
+    }
+
+    private MotionEvent createStubEvent(int action) {
+        return MotionEvent.obtain(
+                SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), action, 0, 0, 0);
+    }
+
+    private void emulateTouchDragHandle(View dragHandle) {
+        dragHandle.dispatchTouchEvent(createStubEvent(MotionEvent.ACTION_DOWN));
+        dragHandle.dispatchTouchEvent(createStubEvent(MotionEvent.ACTION_UP));
     }
 
     public void onSwipeTop() {
