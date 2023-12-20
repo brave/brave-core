@@ -457,8 +457,8 @@ const util = {
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
-      const supported_exts = ['.cc','.h', '.mm', '.mojom', '.py', '.pdl'];
-      return supported_exts.includes(path.extname(file))
+      const supportedExts = ['.cc', '.h', '.json', '.mm', '.mojom', '.py', '.pdl'];
+      return supportedExts.includes(path.extname(file))
     }
 
     const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')

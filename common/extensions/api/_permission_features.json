@@ -3,8 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// DO NOT CHANGE UPSTREAM FEATURES HERE.
-// Use //brave/chromium_src/tools/json_schema_compiler/feature_compiler.py
+// To change upstream features use //brave/chromium_src/... counterpart.
 
 {
 }

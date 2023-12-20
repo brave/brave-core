@@ -5,190 +5,59 @@
 
 #pylint: disable=line-too-long,too-few-public-methods,undefined-variable,protected-access
 
+import import_inline
 import override_utils
-
-
-# echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
-class BraveExtensions:
-    BRAVE_SHIELDS = "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"  # mnojpmjdmbbfmejpflffifhffcmidifd
-    ETHEREUM_REMOTE_CLIENT = "21070F3D60711361C1210B870439BE49B5D995F4"  # odbfpeeihdkbihmopkbjmoonfanlbfcl
-    IPFS_COMPANION = "780BF954C0F7C586EA9662D4F967771F49CC2114"  # nibjojkomfdiaoajekhjakgkdhaomnch
-    IPFS_COMPANION_BETA = "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"  # hjoieblefckbooibpepigmacodalfndh
-    WEB_TORRENT = "3D9518A72EB02667A773B69DBA9E72E0F4A37423"  # lgjmpdmojkpocjcopdikifhejkkjglho
 
 
 class BraveFeatureDefinitionExtender:
     # This is executed for all important files. List all of them so we can fail
     # in case something new appears in the repository or if an existing file is
-    # being moved somewhere.
+    # being moved somewhere. "True" means //brave/chromium_src/... counterpart
+    # must exist.
     KNOWN_FILES = {
-        "chrome/common/apps/platform_apps/api/_api_features.json",
-        "chrome/common/apps/platform_apps/api/_permission_features.json",
-        "chrome/common/controlled_frame/api/_api_features.json",
-        "chrome/common/extensions/api/_api_features.json",
-        "chrome/common/extensions/api/_manifest_features.json",
-        "chrome/common/extensions/api/_permission_features.json",
-        "extensions/common/api/_api_features.json",
-        "extensions/common/api/_behavior_features.json",
-        "extensions/common/api/_manifest_features.json",
-        "extensions/common/api/_permission_features.json",
+        "chrome/common/apps/platform_apps/api/_api_features.json": False,
+        "chrome/common/apps/platform_apps/api/_permission_features.json": False,
+        "chrome/common/controlled_frame/api/_api_features.json": False,
+        "chrome/common/extensions/api/_api_features.json": True,
+        "chrome/common/extensions/api/_manifest_features.json": True,
+        "chrome/common/extensions/api/_permission_features.json": True,
+        "extensions/common/api/_api_features.json": True,
+        "extensions/common/api/_behavior_features.json": True,
+        "extensions/common/api/_manifest_features.json": True,
+        "extensions/common/api/_permission_features.json": True,
     }
 
-    # Feature definitions to be added to existing features.
-    FEATURE_DEFINITIONS_TO_ADD = {
-        "chrome/common/extensions/api/_api_features.json": {
-            "bookmarks": [
-                {
-                    "channel": "stable",
-                    "contexts": ["webui"],
-                    "matches": [
-                        "chrome://newtab/*",
-                    ]
-                },
-            ],
-            "extension.inIncognitoContext": [
-                {
-                    "channel": "stable",
-                    "contexts": ["webui"],
-                    "matches": [
-                        "chrome://newtab/*",
-                    ]
-                },
-            ],
-            "tabs": [
-                {
-                    "channel": "stable",
-                    "contexts": ["webui"],
-                    "matches": [
-                        "chrome://brave-shields.top-chrome/*",
-                        "chrome://rewards-panel.top-chrome/*",
-                        "chrome://wallet-panel.top-chrome/*",
-                        "chrome://wallet/*",
-                    ]
-                },
-            ],
-            "topSites": [
-                {
-                    "channel": "stable",
-                    "contexts": ["webui"],
-                    "matches": [
-                        "chrome://newtab/*",
-                    ]
-                },
-            ],
-        },
-        "chrome/common/extensions/api/_permission_features.json": {
-            "settingsPrivate": [
-                {
-                    "channel": "stable",
-                    "extension_types": ["extension"],
-                    "allowlist": [
-                        BraveExtensions.BRAVE_SHIELDS,
-                    ]
-                },
-            ],
-        },
-        "extensions/common/api/_api_features.json": {
-            "runtime.sendMessage": [
-                {
-                    "contexts": ["webui"],
-                    "matches": [
-                        "chrome://newtab/*",
-                    ]
-                },
-            ],
-            "sockets.tcp": [
-                {
-                    "dependencies": ["manifest:sockets"],
-                    "contexts": ["blessed_extension"],
-                    "allowlist": [
-                        BraveExtensions.IPFS_COMPANION,
-                        BraveExtensions.IPFS_COMPANION_BETA,
-                        BraveExtensions.WEB_TORRENT,
-                    ]
-                },
-            ],
-            "sockets.tcpServer": [
-                {
-                    "dependencies": ["manifest:sockets"],
-                    "contexts": ["blessed_extension"],
-                    "allowlist": [
-                        BraveExtensions.IPFS_COMPANION,
-                        BraveExtensions.IPFS_COMPANION_BETA,
-                        BraveExtensions.WEB_TORRENT,
-                    ]
-                },
-            ],
-            "sockets.udp": [
-                {
-                    "dependencies": ["manifest:sockets"],
-                    "contexts": ["blessed_extension"],
-                    "allowlist": [
-                        BraveExtensions.IPFS_COMPANION,
-                        BraveExtensions.IPFS_COMPANION_BETA,
-                        BraveExtensions.WEB_TORRENT,
-                    ]
-                },
-            ],
-        },
-        "extensions/common/api/_manifest_features.json": {
-            "sockets": [
-                {
-                    "channel": "stable",
-                    "extension_types": ["extension", "platform_app"],
-                    "allowlist": [
-                        BraveExtensions.IPFS_COMPANION,
-                        BraveExtensions.IPFS_COMPANION_BETA,
-                        BraveExtensions.WEB_TORRENT,
-                    ]
-                },
-            ],
-        },
-        "extensions/common/api/_permission_features.json": {
-            "hid": [
-                {
-                    "channel": "stable",
-                    "extension_types": ["extension"],
-                    "allowlist": [
-                        BraveExtensions.ETHEREUM_REMOTE_CLIENT,
-                    ]
-                },
-            ],
-            "usbDevices": [
-                {
-                    "channel": "stable",
-                    "extension_types": ["extension"],
-                    "allowlist": [
-                        BraveExtensions.ETHEREUM_REMOTE_CLIENT,
-                    ]
-                },
-            ],
-        },
-    }
+    @classmethod
+    def GetFeatureDefinitionsToAdd(cls, source_file):
+        has_counterpart = cls._HasBraveChromiumSrcConterpart(source_file)
+        overridden_filepath = import_inline.wspath(
+            f"//brave/chromium_src/{source_file}")
+        assert has_counterpart == os.path.exists(
+            overridden_filepath), overridden_filepath
+        if not has_counterpart:
+            return None
 
-    def __init__(self):
-        for file_name, features in self.FEATURE_DEFINITIONS_TO_ADD.items():
-            self._EnsureFileIsBraveKnown(file_name)
-            for feature, definitions in features.items():
-                assert isinstance(definitions, list), feature
+        with open(overridden_filepath, "r") as f:
+            parsed_json = json_parse.Parse(f.read())
+        for feature, definitions in parsed_json.items():
+            assert isinstance(definitions, list), (overridden_filepath, feature)
+        return parsed_json
 
-    def GetFeatureDefinitionsToAdd(self, source_file):
-        self._EnsureFileIsBraveKnown(source_file)
-        return self.FEATURE_DEFINITIONS_TO_ADD.get(source_file, None)
-
-    def _EnsureFileIsBraveKnown(self, source_file):
-        if source_file not in self.KNOWN_FILES:
+    @classmethod
+    def _HasBraveChromiumSrcConterpart(cls, source_file):
+        has_counterpart = cls.KNOWN_FILES.get(source_file)
+        if has_counterpart is None:
             raise RuntimeError(
                 f"Unknown features file {source_file}. Please update "
                 "//brave/chromium_src/tools/json_schema_compiler/feature_compiler.py"
             )
+        return has_counterpart
 
 
 @override_utils.override_method(FeatureCompiler)
 def Load(self, original_method):
     original_method(self)
 
-    brave_extender = BraveFeatureDefinitionExtender()
     parent_dir_prefix = "../../"
 
     for source_file in self._source_files:
@@ -199,8 +68,8 @@ def Load(self, original_method):
         if source_file.startswith("brave/") or "/test/" in source_file:
             continue
 
-        feature_definitions_to_add = brave_extender.GetFeatureDefinitionsToAdd(
-            source_file)
+        feature_definitions_to_add = BraveFeatureDefinitionExtender. \
+            GetFeatureDefinitionsToAdd(source_file)
         if feature_definitions_to_add:
             for feature, definitions in feature_definitions_to_add.items():
                 existing_definitions = self._json.get(feature, None)
