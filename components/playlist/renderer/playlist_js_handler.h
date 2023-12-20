@@ -28,8 +28,8 @@ class PlaylistJSHandler {
   void AddWorkerObjectToFrame(v8::Local<v8::Context> context);
 
  private:
-  bool EnsureConnectedToClient();
-  void OnClientDisconnect();
+  bool EnsureConnectedToMediaHandler();
+  void OnMediaHandlerDisconnect();
 
   void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
   void BindFunctionsToWorkerObject(v8::Isolate* isolate,
@@ -39,7 +39,7 @@ class PlaylistJSHandler {
 
   content::RenderFrame* render_frame_ = nullptr;
 
-  mojo::Remote<playlist::mojom::PlaylistRenderFrameBrowserClient> client_;
+  mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
 
   base::WeakPtrFactory<PlaylistJSHandler> weak_ptr_factory_{this};
 };

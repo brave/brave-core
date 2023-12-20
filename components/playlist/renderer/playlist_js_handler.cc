@@ -36,7 +36,7 @@ namespace playlist {
 
 PlaylistJSHandler::PlaylistJSHandler(content::RenderFrame* render_frame)
     : render_frame_(render_frame) {
-  EnsureConnectedToClient();
+  EnsureConnectedToMediaHandler();
 }
 
 PlaylistJSHandler::~PlaylistJSHandler() {}
@@ -51,21 +51,21 @@ void PlaylistJSHandler::AddWorkerObjectToFrame(v8::Local<v8::Context> context) {
   CreateWorkerObject(isolate, context);
 }
 
-bool PlaylistJSHandler::EnsureConnectedToClient() {
-  if (!client_.is_bound()) {
+bool PlaylistJSHandler::EnsureConnectedToMediaHandler() {
+  if (!media_handler_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        client_.BindNewPipeAndPassReceiver());
-    client_.set_disconnect_handler(
-        base::BindOnce(&PlaylistJSHandler::OnClientDisconnect,
+        media_handler_.BindNewPipeAndPassReceiver());
+    media_handler_.set_disconnect_handler(
+        base::BindOnce(&PlaylistJSHandler::OnMediaHandlerDisconnect,
                        weak_ptr_factory_.GetWeakPtr()));
   }
 
-  return client_.is_bound();
+  return media_handler_.is_bound();
 }
 
-void PlaylistJSHandler::OnClientDisconnect() {
-  client_.reset();
-  EnsureConnectedToClient();
+void PlaylistJSHandler::OnMediaHandlerDisconnect() {
+  media_handler_.reset();
+  EnsureConnectedToMediaHandler();
 }
 
 void PlaylistJSHandler::CreateWorkerObject(v8::Isolate* isolate,
@@ -97,11 +97,11 @@ void PlaylistJSHandler::BindFunctionsToWorkerObject(
 
 void PlaylistJSHandler::OnMediaUpdated(const std::string& src) {
   DVLOG(2) << __FUNCTION__ << " " << src;
-  if (!EnsureConnectedToClient()) {
+  if (!EnsureConnectedToMediaHandler()) {
     return;
   }
 
-  client_->OnMediaUpdatedFromRenderFrame();
+  media_handler_->OnMediaUpdatedFromRenderFrame();
 }
 
 }  // namespace playlist

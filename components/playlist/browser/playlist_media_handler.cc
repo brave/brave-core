@@ -3,24 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/browser/playlist_render_frame_browser_client.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 
 #include "brave/components/playlist/browser/playlist_service.h"
 
 namespace playlist {
 
-PlaylistRenderFrameBrowserClient::PlaylistRenderFrameBrowserClient(
+PlaylistMediaHandler::PlaylistMediaHandler(
     content::GlobalRenderFrameHostId frame_id,
     const base::WeakPtr<PlaylistService>& service)
     : frame_id_(frame_id), service_(service) {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-PlaylistRenderFrameBrowserClient::~PlaylistRenderFrameBrowserClient() {
+PlaylistMediaHandler::~PlaylistMediaHandler() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-void PlaylistRenderFrameBrowserClient::OnMediaUpdatedFromRenderFrame() {
+void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (!render_frame_host) {
