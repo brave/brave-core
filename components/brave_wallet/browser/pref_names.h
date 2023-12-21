@@ -59,10 +59,6 @@ inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
 // Added 03/2023 to set is_erc1155 = false for all existing tokens.
 inline constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
-// Added 10/2022 to replace ETH selected network with mainnet if selected
-// network is one of the Ethereum testnets deprecated on 10/5/2022.
-inline constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
-    "brave.wallet.deprecated_ethereum_test_networks_migrated";
 // Added 06/2023 to set is_spam = false for all existing tokens.
 inline constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
     "brave.wallet.user.assets.add_is_spam_migrated";

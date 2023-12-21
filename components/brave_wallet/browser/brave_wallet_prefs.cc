@@ -43,6 +43,9 @@ constexpr char kBraveWalletUserAssetsAddIsNFTMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
     "brave.wallet.ethereum_transactions.coin_type_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
+    "brave.wallet.deprecated_ethereum_test_networks_migrated";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -126,6 +129,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(
       kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -137,6 +143,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsNFTMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletDeprecateEthereumTestNetworksMigrated);
 }
 
 }  // namespace
@@ -205,10 +213,6 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
-
-  // Added 10/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
 
   // Added 11/2022
   p3a_utils::RegisterFeatureUsagePrefs(
@@ -300,11 +304,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
-
-  JsonRpcService::MigrateMultichainNetworks(prefs);
-
-  // Added 10/2022
-  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 
   // Added 12/2022
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
