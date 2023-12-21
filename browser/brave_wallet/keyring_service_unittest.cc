@@ -1540,47 +1540,6 @@ TEST_F(KeyringServiceUnitTest, AddAccount) {
   EXPECT_EQ(account_infos[1]->name, "Account5566");
 }
 
-TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
-  GetPrefs()->SetDict(kBraveWalletKeyrings,
-                      GetHardwareKeyringValueForTesting());
-  EXPECT_EQ(*GetPrefs()
-                 ->GetDict(kBraveWalletKeyrings)
-                 .FindStringByDottedPath(
-                     "hardware.A1.account_metas.0x111.account_name"),
-            "test1");
-
-  KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-
-  const base::Value::Dict& hardware_accounts =
-      KeyringService::GetPrefForKeyring(*GetPrefs(), kHardwareAccounts,
-                                        mojom::kDefaultKeyringId)
-          ->GetDict();
-  EXPECT_EQ(hardware_accounts.size(), 2u);
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.account_name"),
-            "test1");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.derivation_path"),
-            "path1");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.hardware_vendor"),
-            "vendor1");
-
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.account_name"),
-            "test2");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.derivation_path"),
-            "path2");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.hardware_vendor"),
-            "vendor2");
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDict(kBraveWalletKeyrings)
-                   .FindStringByDottedPath(
-                       "hardware.A1.account_metas.0x111.account_name"));
-}
-
 TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 

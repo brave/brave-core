@@ -62,10 +62,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   JsonRpcService();
   ~JsonRpcService() override;
 
-  static void MigrateMultichainNetworks(PrefService* prefs);
-  static void MigrateDeprecatedEthereumTestnets(PrefService* prefs);
-  static void MigrateShowTestNetworksToggle(PrefService* prefs);
-
   mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
