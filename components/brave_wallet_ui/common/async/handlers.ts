@@ -263,11 +263,4 @@ handler.on(
   }
 )
 
-handler.on(
-  WalletActions.selectPortfolioTimeline.type,
-  async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
-    store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-  }
-)
-
 export default handler.middleware

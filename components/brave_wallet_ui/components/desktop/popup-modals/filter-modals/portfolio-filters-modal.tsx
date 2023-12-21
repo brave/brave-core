@@ -96,9 +96,6 @@ export const PortfolioFiltersModal = (props: Props) => {
   const hidePortfolioSmallBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioSmallBalances
   )
-  const selectedPortfolioTimeline = useSafeWalletSelector(
-    WalletSelectors.selectedPortfolioTimeline
-  )
   const showNetworkLogoOnNfts = useSafeWalletSelector(
     WalletSelectors.showNetworkLogoOnNfts
   )
@@ -224,7 +221,6 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateFilteredOutAccountAddresses,
     onUpdateHidePortfolioSmallBalances,
     onUpdateShowNetworkLogoOnNfts,
-    selectedPortfolioTimeline,
     onClose
   ])
 

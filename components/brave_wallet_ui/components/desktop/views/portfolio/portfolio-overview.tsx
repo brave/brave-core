@@ -13,7 +13,6 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import {
   useSafeWalletSelector,
   useUnsafeWalletSelector,
-  useSafePageSelector,
   useUnsafePageSelector
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
@@ -30,13 +29,9 @@ import {
   UserAssetInfoType,
   WalletRoutes
 } from '../../../../constants/types'
-import {
-  LOCAL_STORAGE_KEYS //
-} from '../../../../common/constants/local-storage-keys'
 import { WalletStatus } from '../../../../common/async/brave_rewards_api_proxy'
 
 // actions
-import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
 
 // Utils
@@ -58,6 +53,9 @@ import {
   getNormalizedExternalRewardsWallet,
   getRewardsBATToken
 } from '../../../../utils/rewards_utils'
+import {
+  getStoredPortfolioTimeframe //
+} from '../../../../utils/local-storage-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
@@ -81,9 +79,6 @@ import {
   BuySendSwapDepositNav //
 } from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 import {
-  LineChartControls //
-} from '../../line-chart/line-chart-controls/line-chart-controls'
-import {
   PortfolioFiltersModal //
 } from '../../popup-modals/filter-modals/portfolio-filters-modal'
 
@@ -92,7 +87,6 @@ import {
   BalanceText,
   PercentBubble,
   FiatChange,
-  SelectTimelineWrapper,
   ControlsRow,
   BalanceAndButtonsWrapper,
   BalanceAndChangeWrapper
@@ -121,14 +115,9 @@ export const PortfolioOverview = () => {
 
   // redux
   const dispatch = useDispatch()
-
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
-  const selectedPortfolioTimeline = useSafeWalletSelector(
-    WalletSelectors.selectedPortfolioTimeline
-  )
-  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
@@ -163,6 +152,8 @@ export const PortfolioOverview = () => {
   // State
   const [showPortfolioSettings, setShowPortfolioSettings] =
     React.useState<boolean>(false)
+  const [selectedTimeframe, setSelectedTimeframe] =
+    React.useState<BraveWallet.AssetPriceTimeframe>(getStoredPortfolioTimeframe)
 
   // Computed & Memos
   const externalRewardsProvider = externalRewardsInfo?.provider ?? undefined
@@ -364,7 +355,7 @@ export const PortfolioOverview = () => {
       defaultFiat
       ? {
           tokens: visibleTokensForFilteredChains,
-          timeframe: selectedPortfolioTimeline,
+          timeframe: selectedTimeframe,
           vsAsset: defaultFiat,
           tokenBalancesRegistry: tokenBalancesRegistryWithRewards
         }
@@ -467,17 +458,6 @@ export const PortfolioOverview = () => {
   const isPortfolioDown = new Amount(percentageChange).lt(0)
 
   // methods
-  const onChangeTimeline = React.useCallback(
-    (id: BraveWallet.AssetPriceTimeframe) => {
-      window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
-        id.toString()
-      )
-      dispatch(WalletActions.selectPortfolioTimeline(id))
-    },
-    []
-  )
-
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
       if (asset.contractAddress === '') {
@@ -509,13 +489,12 @@ export const PortfolioOverview = () => {
           }/${asset.contractAddress}`
         )
       }
-      dispatch(WalletPageActions.selectPriceTimeframe(selectedTimeline))
       if ((asset.isErc721 || asset.isNft) && nftMetadata) {
         // reset nft metadata
         dispatch(WalletPageActions.updateNFTMetadata(undefined))
       }
     },
-    [selectedTimeline]
+    []
   )
 
   const tokenLists = React.useMemo(() => {
@@ -585,11 +564,6 @@ export const PortfolioOverview = () => {
     isLoadingBalances
   ])
 
-  // effects
-  React.useEffect(() => {
-    dispatch(WalletPageActions.selectPriceTimeframe(selectedTimeline))
-  }, [selectedTimeline])
-
   // render
   return (
     <>
@@ -654,16 +628,9 @@ export const PortfolioOverview = () => {
           <BuySendSwapDepositNav />
         </BalanceAndButtonsWrapper>
         <ColumnReveal hideContent={hidePortfolioGraph}>
-          <SelectTimelineWrapper
-            padding='0px 32px'
-            marginBottom={8}
-          >
-            <LineChartControls
-              onSelectTimeline={onChangeTimeline}
-              selectedTimeline={selectedPortfolioTimeline}
-            />
-          </SelectTimelineWrapper>
           <PortfolioOverviewChart
+            timeframe={selectedTimeframe}
+            onTimeframeChanged={setSelectedTimeframe}
             hasZeroBalance={fullPortfolioFiatBalance.isZero()}
             portfolioPriceHistory={portfolioPriceHistory}
             isLoading={

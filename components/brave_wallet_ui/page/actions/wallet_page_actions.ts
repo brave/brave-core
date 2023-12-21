@@ -14,7 +14,6 @@ export const {
   setIsFetchingNFTMetadata,
   updateNFTMetadata,
   updateNftMetadataError,
-  selectPriceTimeframe,
   walletCreated,
   walletSetupComplete
 } = PageActions

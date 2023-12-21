@@ -18,7 +18,6 @@ import {
 const defaultState: PageState = {
   hasInitialized: false,
   showRecoveryPhrase: false,
-  selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
   nftMetadataError: undefined,
@@ -77,13 +76,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         { payload }: PayloadAction<string | undefined>
       ) {
         state.nftMetadataError = payload
-      },
-
-      selectPriceTimeframe(
-        state,
-        { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>
-      ) {
-        state.selectedTimeline = payload
       },
 
       walletCreated(
