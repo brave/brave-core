@@ -5,10 +5,7 @@
 
 package org.chromium.chrome.browser.vpn.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class BraveVpnServerRegion implements Parcelable {
+public class BraveVpnServerRegion {
     private String mContinent;
     private String mCountryIsoCode;
     private String mName;
@@ -21,8 +18,6 @@ public class BraveVpnServerRegion implements Parcelable {
         this.mName = name;
         this.mNamePretty = namePretty;
     }
-
-    // Getters for your member variables
 
     public String getContinent() {
         return mContinent;
@@ -38,39 +33,5 @@ public class BraveVpnServerRegion implements Parcelable {
 
     public String getNamePretty() {
         return mNamePretty;
-    }
-
-    // Parcelable implementation
-
-    protected BraveVpnServerRegion(Parcel in) {
-        mContinent = in.readString();
-        mCountryIsoCode = in.readString();
-        mName = in.readString();
-        mNamePretty = in.readString();
-    }
-
-    public static final Creator<BraveVpnServerRegion> CREATOR = new Creator<BraveVpnServerRegion>() {
-        @Override
-        public BraveVpnServerRegion createFromParcel(Parcel in) {
-            return new BraveVpnServerRegion(in);
-        }
-
-        @Override
-        public BraveVpnServerRegion[] newArray(int size) {
-            return new BraveVpnServerRegion[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mContinent);
-        dest.writeString(mCountryIsoCode);
-        dest.writeString(mName);
-        dest.writeString(mNamePretty);
     }
 }

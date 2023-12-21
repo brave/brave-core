@@ -55,9 +55,8 @@ public class BraveVpnUtils {
     private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
             "https://account.bravesoftware.com?intent=connect-receipt&product=vpn";
 
-    public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
-    public static String selectedServerRegion;
+    public static BraveVpnServerRegion selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
     public static String getBraveAccountUrl() {
@@ -107,7 +106,8 @@ public class BraveVpnUtils {
         }
     }
 
-    public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
+    public static BraveVpnServerRegion getServerRegionForTimeZone(
+            String jsonTimezones, String currentTimezone) {
         // Add root element to make it real JSON, otherwise getJSONArray cannot parse it
         jsonTimezones = "{\"regions\":" + jsonTimezones + "}";
         try {
@@ -118,14 +118,20 @@ public class BraveVpnUtils {
                 JSONArray timezones = region.getJSONArray("timezones");
                 for (int j = 0; j < timezones.length(); j++) {
                     if (timezones.getString(j).equals(currentTimezone)) {
-                        return region.getString("name");
+                        BraveVpnServerRegion braveVpnServerRegion =
+                                new BraveVpnServerRegion(
+                                        region.getString("continent"),
+                                        region.getString("country-iso-code"),
+                                        region.getString("name"),
+                                        region.getString("name-pretty"));
+                        return braveVpnServerRegion;
                     }
                 }
             }
         } catch (JSONException e) {
             Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
         }
-        return "";
+        return null;
     }
 
     public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {

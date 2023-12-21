@@ -11,6 +11,8 @@ import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,12 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onInvalidateCredentials(String jsonInvalidateCredentials, boolean isSuccess) {
+        Log.e(
+                "VPN",
+                "isSuccess : "
+                        + isSuccess
+                        + " jsonInvalidateCredentials : "
+                        + jsonInvalidateCredentials);
         for (BraveVpnObserver observer : mObservers) {
             observer.onInvalidateCredentials(jsonInvalidateCredentials, isSuccess);
         }

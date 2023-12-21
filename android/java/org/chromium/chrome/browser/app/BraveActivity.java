@@ -400,7 +400,7 @@ public abstract class BraveActivity extends ChromeActivity
                     }
                 }
             }
-        } else if (id == R.id.vpn_location_id) {
+        } else if (id == R.id.request_vpn_location_id || id == R.id.request_vpn_location_icon_id) {
             BraveVpnUtils.openVpnServerSelectionActivity(BraveActivity.this);
         } else if (id == R.id.brave_speedreader_id) {
             enableSpeedreaderMode();
