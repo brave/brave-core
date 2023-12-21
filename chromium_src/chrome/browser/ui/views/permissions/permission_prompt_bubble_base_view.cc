@@ -78,7 +78,8 @@ void DontAskAgainCheckbox::ButtonPressed() {
 
 void AddAdditionalWidevineViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
-    const std::vector<permissions::PermissionRequest*>& requests) {
+    const std::vector<raw_ptr<permissions::PermissionRequest,
+                              VectorExperimental>>& requests) {
   if (!HasWidevinePermissionRequest(requests)) {
     return;
   }
@@ -121,7 +122,8 @@ void AddWidevineFootnoteView(
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
-    const std::vector<permissions::PermissionRequest*>& requests) {}
+    const std::vector<raw_ptr<permissions::PermissionRequest,
+                              VectorExperimental>>& requests) {}
 #endif
 
 // Custom combobox, shows permission lifetime options and applies selected value
@@ -211,7 +213,8 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
 
 void AddFootnoteViewIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
-    const std::vector<permissions::PermissionRequest*>& requests,
+    const std::vector<
+        raw_ptr<permissions::PermissionRequest, VectorExperimental>>& requests,
     Browser* browser) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Widevine permission bubble has custom footnote.
