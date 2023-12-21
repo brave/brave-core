@@ -105,10 +105,6 @@ inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
 // DEPRECATED
 inline constexpr char kShowWalletTestNetworksDeprecated[] =
     "brave.wallet.show_wallet_test_networks";
-inline constexpr char kBraveWalletCustomNetworksDeprecated[] =
-    "brave.wallet.wallet_custom_networks";
-inline constexpr char kBraveWalletCurrentChainId[] =
-    "brave.wallet.wallet_current_chain_id";
 inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
 inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
 // 06/2023

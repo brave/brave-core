@@ -206,11 +206,6 @@ void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
 
-  // Added 22/02/2022
-  registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
-  registry->RegisterStringPref(kBraveWalletCurrentChainId,
-                               brave_wallet::mojom::kMainnetChainId);
-
   // Added 10/2022
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);

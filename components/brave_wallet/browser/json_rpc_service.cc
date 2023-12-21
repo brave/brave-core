@@ -308,29 +308,6 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
 JsonRpcService::~JsonRpcService() = default;
 
 // static
-void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
-  // custom networks
-  if (prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated)) {
-    const auto& custom_networks =
-        prefs->GetList(kBraveWalletCustomNetworksDeprecated);
-
-    base::Value::Dict new_custom_networks;
-    new_custom_networks.Set(kEthereumPrefKey, custom_networks.Clone());
-
-    prefs->SetDict(kBraveWalletCustomNetworks, std::move(new_custom_networks));
-
-    prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
-  }
-  // selected networks
-  if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
-    const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
-    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    update->Set(kEthereumPrefKey, chain_id);
-    prefs->ClearPref(kBraveWalletCurrentChainId);
-  }
-}
-
-// static
 void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated)) {
     return;
