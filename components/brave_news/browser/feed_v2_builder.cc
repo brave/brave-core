@@ -900,8 +900,7 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedV2Builder::OnPublishersUpdated(
-    PublishersController* publishers_controller) {
+void FeedV2Builder::RecheckFeedHash() {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels =
       channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
@@ -909,6 +908,11 @@ void FeedV2Builder::OnPublishersUpdated(
   for (const auto& listener : listeners_) {
     listener->OnUpdateAvailable(hash_);
   }
+}
+
+void FeedV2Builder::OnPublishersUpdated(
+    PublishersController* publishers_controller) {
+  RecheckFeedHash();
 }
 
 void FeedV2Builder::UpdateData(UpdateSettings settings,
