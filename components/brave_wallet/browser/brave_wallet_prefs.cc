@@ -205,23 +205,27 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 04/2023
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 }
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
 
-  // Added 11/2022
+  // Added 04/2023
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
