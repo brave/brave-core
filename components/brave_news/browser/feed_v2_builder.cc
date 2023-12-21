@@ -85,7 +85,8 @@ std::string GetFeedHash(const Channels& channels,
   }
 
   for (const auto& [id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
       hash_items.push_back(id);
     }
 
