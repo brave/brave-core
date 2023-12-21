@@ -174,12 +174,12 @@
             android:summary="@string/show_autocomplete_in_address_bar_summary"
             android:order="25"
             android:persistent="false"/>
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        <!-- <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="search_suggestions"
             android:title="@string/improve_search_suggestions_title"
             android:summary="@string/improve_search_suggestions_summary"
             android:persistent="false"
-            android:order="25"/>
+            android:order="25"/> -->
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="autocomplete_top_sites"
             android:order="25"

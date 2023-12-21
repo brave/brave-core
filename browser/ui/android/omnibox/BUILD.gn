@@ -62,10 +62,15 @@ android_library("java") {
 android_resources("java_resources") {
   sources = [
     "java/res/drawable-night/ic_search_omnibox_promo.xml",
+    "java/res/drawable-night/ic_search_suggestion.xml",
     "java/res/drawable/bg_brave_search_banner.xml",
     "java/res/drawable/ic_brave_ai_color.xml",
     "java/res/drawable/ic_search_omnibox_promo.xml",
+    "java/res/drawable/ic_search_suggestion.xml",
+    "java/res/drawable/search_suggestions_bg.xml",
+    "java/res/drawable/search_suggestions_button_bg.xml",
     "java/res/layout/omnibox_brave_search_banner.xml",
+    "java/res/layout/search_suggestion_layout.xml",
     "java/res/values-night/colors.xml",
     "java/res/values/colors.xml",
     "java/res/values/dimens.xml",

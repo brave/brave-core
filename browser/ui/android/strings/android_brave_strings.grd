@@ -287,6 +287,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
       </message>
+      <message name="IDS_TURN_ON"  desc="Text for Turn On">
+        Turn on
+      </message>
       <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
         Block 'Switch to App' Notices
       </message>
@@ -4003,7 +4006,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill swicth tutorial action text">
       Open Android settings
     </message>
-    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
+    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in git diff
+      app update snackbar">
       Update is downloaded.
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_SUCCESS_TEXT" desc="Text to notify users for updating filterlist successfully">
@@ -4011,6 +4015,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
       Filter list could not be updated. Please try again
+    </message>
+    <message name="IDS_SEARCH_SUGGESTIONS_TITLE" desc="Search suggestion UI title">
+      "Find it faster!"
+    </message>
+    <message name="IDS_SEARCH_SUGGESTIONS_TEXT" desc="Search suggestion UI text">
+      Turn on search suggestions
     </message>
   </messages>
   </release>

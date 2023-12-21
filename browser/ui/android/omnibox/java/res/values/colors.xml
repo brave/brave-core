@@ -11,4 +11,11 @@
     <color name="brave_search_promo_secondary_button_color">#1D1F25</color>
     <color name="brave_search_promo_bg_color">#33FFFFFF</color>
     <color name="brave_search_promo_bg_stroke_color">#E2E3F8</color>
+
+    <color name="search_suggestions_primary_text_color">#0D0F14</color>
+    <color name="search_suggestions_secondary_text_color">#3F4855</color>
+    <color name="search_suggestions_action_text_color">#FFFFFF</color>
+    <color name="search_suggestion_action_color">#3F39E8</color>
+    <color name="search_suggestions_close_color">#687485</color>
+    <color name="search_suggestions_bg_color">#D5DCFF</color>
 </resources>
