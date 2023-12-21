@@ -268,6 +268,33 @@ export const accountEndpoints = ({
       invalidatesTags: ['AccountInfos', 'Network']
     }),
 
+    importHardwareAccounts: mutation<true, BraveWallet.HardwareWalletAccount[]>(
+      {
+        queryFn: async (
+          hardwareAccounts,
+          { endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
+          try {
+            const { cache, data: api } = baseQuery(undefined)
+            api.keyringService.addHardwareAccounts(hardwareAccounts)
+            cache.clearAccountsRegistry()
+            return {
+              data: true
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Failed to import hardware accounts',
+              error
+            )
+          }
+        },
+        invalidatesTags: ['AccountInfos']
+      }
+    ),
+
     removeAccount: mutation<
       true,
       {

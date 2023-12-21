@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
@@ -39,7 +38,6 @@ import {
   SolDerivationPaths
 } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
-import { WalletPageActions } from '../../../../../page/actions'
 import {
   BraveWallet,
   CreateAccountOptionsType,
@@ -50,6 +48,9 @@ import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-mess
 // hooks
 import { useLib } from '../../../../../common/hooks/useLib'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
+import {
+  useImportHardwareAccountsMutation //
+} from '../../../../../common/slices/api.slice'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -108,11 +109,11 @@ export const HardwareWalletConnect = ({
   // lib
   const { onConnectHardwareWallet } = useLib()
 
-  // redux
-  const dispatch = useDispatch()
-
   // queries
   const { accounts: savedAccounts } = useAccountsQuery()
+
+  // mutations
+  const [importHardwareAccounts] = useImportHardwareAccountsMutation()
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] =
@@ -167,11 +168,15 @@ export const HardwareWalletConnect = ({
   )
 
   const onAddHardwareAccounts = React.useCallback(
-    (selected: BraveWallet.HardwareWalletAccount[]) => {
-      dispatch(WalletPageActions.addHardwareAccounts(selected))
-      onSuccess()
+    async (accounts: BraveWallet.HardwareWalletAccount[]) => {
+      try {
+        await importHardwareAccounts(accounts).unwrap()
+        onSuccess()
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [onSuccess]
+    [onSuccess, importHardwareAccounts]
   )
 
   const onChangeDerivationScheme = React.useCallback(
