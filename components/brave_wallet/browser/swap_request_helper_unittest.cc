@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -68,6 +69,537 @@ const char* GetJupiterQuoteTemplate() {
     })";
 }
 
+const char* GetLiFiQuoteTemplate() {
+  return R"(
+    {
+      "routes": [
+        {
+          "id": "0x343bc553146a3dd8438518d80bd1b6957f3fec05d137ff65a940bfb5390d3f1f",
+          "fromChainId": "1",
+          "fromAmountUSD": "1.00",
+          "fromAmount": "1000000",
+          "fromToken": {
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "chainId": "1",
+            "symbol": "USDC",
+            "decimals": "6",
+            "name": "USD Coin",
+            "coinKey": "USDC",
+            "logoURI": "usdc.png",
+            "priceUSD": "1"
+          },
+          "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+          "toChainId": "10",
+          "toAmountUSD": "1.01",
+          "toAmount": "1013654",
+          "toAmountMin": "1008586",
+          "toToken": {
+            "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+            "chainId": "10",
+            "symbol": "USDT",
+            "decimals": "6",
+            "name": "USDT",
+            "coinKey": "USDT",
+            "logoURI": "usdt.png",
+            "priceUSD": "0.999685"
+          },
+          "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+          "gasCostUSD": "14.65",
+          "containsSwitchChain": false,
+          "steps": [
+            {
+              "type": "lifi",
+              "id": "5a6876f1-988e-4710-85b7-be2bd7681421",
+              "tool": "optimism",
+              "toolDetails": {
+                "key": "optimism",
+                "name": "Optimism Gateway",
+                "logoURI": "optimism.png"
+              },
+              "action": {
+                "fromToken": {
+                  "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                  "chainId": "1",
+                  "symbol": "USDC",
+                  "decimals": "6",
+                  "name": "USD Coin",
+                  "coinKey": "USDC",
+                  "logoURI": "usdc.png",
+                  "priceUSD": "1"
+                },
+                "fromAmount": "1000000",
+                "toToken": {
+                  "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+                  "chainId": "10",
+                  "symbol": "USDT",
+                  "decimals": "6",
+                  "name": "USDT",
+                  "coinKey": "USDT",
+                  "logoURI": "usdt.png",
+                  "priceUSD": "0.999685"
+                },
+                "fromChainId": "1",
+                "toChainId": "10",
+                "slippage": "0.005",
+                "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+                "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+              },
+              "estimate": {
+                "tool": "optimism",
+                "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+                "toAmountMin": "1008586",
+                "toAmount": "1013654",
+                "fromAmount": "1000000",
+                "feeCosts": [
+                  {
+                    "name": "LP Fee",
+                    "description": "Fee paid to the Liquidity Provider",
+                    "token": {
+                      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                      "chainId": "1",
+                      "symbol": "USDC",
+                      "decimals": "6",
+                      "name": "USD Coin",
+                      "coinKey": "USDC",
+                      "logoURI": "usdc.png",
+                      "priceUSD": "1"
+                    },
+                    "amount": "3000",
+                    "amountUSD": "0.01",
+                    "percentage": "0.003",
+                    "included": true
+                  }
+                ],
+                "gasCosts": [
+                  {
+                    "type": "SEND",
+                    "price": "17621901985",
+                    "estimate": "375000",
+                    "limit": "618000",
+                    "amount": "6608213244375000",
+                    "amountUSD": "14.65",
+                    "token": {
+                      "address": "0x0000000000000000000000000000000000000000",
+                      "chainId": "1",
+                      "symbol": "ETH",
+                      "decimals": "18",
+                      "name": "ETH",
+                      "coinKey": "ETH",
+                      "logoURI": "eth.png",
+                      "priceUSD": "2216.770000000000000000"
+                    }
+                  }
+                ],
+                "executionDuration": "106.944",
+                "fromAmountUSD": "1.00",
+                "toAmountUSD": "1.01"
+              },
+              "includedSteps": [
+                {
+                  "id": "9ac4d9f1-9b72-463d-baf1-fcd8b09f8a8d",
+                  "type": "swap",
+                  "action": {
+                    "fromChainId": "1",
+                    "fromAmount": "1000000",
+                    "fromToken": {
+                      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                      "chainId": "1",
+                      "symbol": "USDC",
+                      "decimals": "6",
+                      "name": "USD Coin",
+                      "coinKey": "USDC",
+                      "logoURI": "usdc.png",
+                      "priceUSD": "1"
+                    },
+                    "toChainId": "1",
+                    "toToken": {
+                      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+                      "chainId": "1",
+                      "symbol": "USDT",
+                      "decimals": "6",
+                      "name": "USDT",
+                      "coinKey": "USDT",
+                      "logoURI": "usdt.png",
+                      "priceUSD": "0.999685"
+                    },
+                    "slippage": "0.005"
+                  },
+                  "estimate": {
+                    "tool": "verse-dex",
+                    "fromAmount": "1000000",
+                    "toAmount": "1013654",
+                    "toAmountMin": "1008586",
+                    "approvalAddress": "0xB4B0ea46Fe0E9e8EAB4aFb765b527739F2718671",
+                    "executionDuration": "30",
+                    "feeCosts": [
+                      {
+                        "name": "LP Fee",
+                        "description": "Fee paid to the Liquidity Provider",
+                        "token": {
+                          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                          "chainId": "1",
+                          "symbol": "USDC",
+                          "decimals": "6",
+                          "name": "USD Coin",
+                          "coinKey": "USDC",
+                          "logoURI": "usdc.png",
+                          "priceUSD": "1"
+                        },
+                        "amount": "3000",
+                        "amountUSD": "0.01",
+                        "percentage": "0.003",
+                        "included": true
+                      }
+                    ],
+                    "gasCosts": [
+                      {
+                        "type": "SEND",
+                        "price": "17621901985",
+                        "estimate": "200000",
+                        "limit": "260000",
+                        "amount": "3524380397000000",
+                        "amountUSD": "7.81",
+                        "token": {
+                          "address": "0x0000000000000000000000000000000000000000",
+                          "chainId": "1",
+                          "symbol": "ETH",
+                          "decimals": "18",
+                          "name": "ETH",
+                          "coinKey": "ETH",
+                          "logoURI": "eth.png",
+                          "priceUSD": "2216.770000000000000000"
+                        }
+                      }
+                    ]
+                  },
+                  "tool": "verse-dex",
+                  "toolDetails": {
+                    "key": "verse-dex",
+                    "name": "Verse Dex",
+                    "logoURI": "https://analytics.verse.bitcoin.com/logo.png"
+                  }
+                },
+                {
+                  "id": "b952ed38-1d5c-43bc-990a-468fd32d29b9",
+                  "type": "cross",
+                  "action": {
+                    "fromChainId": "1",
+                    "fromAmount": "1008586",
+                    "fromToken": {
+                      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+                      "chainId": "1",
+                      "symbol": "USDT",
+                      "decimals": "6",
+                      "name": "USDT",
+                      "coinKey": "USDT",
+                      "logoURI": "usdt.png",
+                      "priceUSD": "0.999685"
+                    },
+                    "toChainId": "10",
+                    "toToken": {
+                      "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+                      "chainId": "10",
+                      "symbol": "USDT",
+                      "decimals": "6",
+                      "name": "USDT",
+                      "coinKey": "USDT",
+                      "logoURI": "usdt.png",
+                      "priceUSD": "0.999685"
+                    },
+                    "slippage": "0.005",
+                    "destinationGasConsumption": "0",
+                    "destinationCallData": "0x0"
+                  },
+                  "estimate": {
+                    "tool": "optimism",
+                    "fromAmount": "1013654",
+                    "toAmount": "1013654",
+                    "toAmountMin": "1008586",
+                    "approvalAddress": "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1",
+                    "executionDuration": "76.944",
+                    "feeCosts": [],
+                    "gasCosts": [
+                      {
+                        "type": "SEND",
+                        "price": "17621901985",
+                        "estimate": "175000",
+                        "limit": "227500",
+                        "amount": "3083832847375000",
+                        "amountUSD": "6.84",
+                        "token": {
+                          "address": "0x0000000000000000000000000000000000000000",
+                          "chainId": "1",
+                          "symbol": "ETH",
+                          "decimals": "18",
+                          "name": "ETH",
+                          "coinKey": "ETH",
+                          "logoURI": "eth.png",
+                          "priceUSD": "2216.770000000000000000"
+                        }
+                      }
+                    ]
+                  },
+                  "tool": "optimism",
+                  "toolDetails": {
+                    "key": "optimism",
+                    "name": "Optimism Gateway",
+                    "logoURI": "optimism.png"
+                  }
+                }
+              ],
+              "integrator": "jumper.exchange"
+            }
+          ],
+          "insurance": {
+            "state": "NOT_INSURABLE",
+            "feeAmountUsd": "0"
+          },
+          "tags": [
+            "RECOMMENDED",
+            "CHEAPEST",
+            "FASTEST"
+          ]
+        }
+      ]
+    }
+  )";
+}
+
+const char* GetLiFiEvmToSolQuoteTemplate() {
+  return R"(
+    {
+      "routes": [
+        {
+          "id": "0x9a448018e09b62da15c1bd64571c21b33cb177cee5d2f07c325d6485364362a5",
+          "fromChainId": "137",
+          "fromAmountUSD": "2.00",
+          "fromAmount": "2000000",
+          "fromToken": {
+            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+            "chainId": "137",
+            "symbol": "USDCe",
+            "decimals": "6",
+            "name": "USDC.e",
+            "coinKey": "USDCe",
+            "logoURI": "eth.png",
+            "priceUSD": "1"
+          },
+          "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+          "toChainId": "1151111081099710",
+          "toAmountUSD": "1.14",
+          "toAmount": "1138627",
+          "toAmountMin": "1136350",
+          "toToken": {
+            "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "chainId": "1151111081099710",
+            "symbol": "USDC",
+            "decimals": "6",
+            "name": "USD Coin",
+            "coinKey": "USDC",
+            "logoURI": "usdc.png",
+            "priceUSD": "0.999501"
+          },
+          "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+          "gasCostUSD": "0.02",
+          "containsSwitchChain": false,
+          "steps": [
+            {
+              "type": "lifi",
+              "id": "57d247fc-d80a-4f4a-9596-72db3061aa72",
+              "tool": "allbridge",
+              "toolDetails": {
+                "key": "allbridge",
+                "name": "Allbridge",
+                "logoURI": "allbridge.png"
+              },
+              "action": {
+                "fromChainId": "137",
+                "fromAmount": "2000000",
+                "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                "slippage": "0.03",
+                "toChainId": "1151111081099710",
+                "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+                "fromToken": {
+                  "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                  "chainId": "137",
+                  "symbol": "USDCe",
+                  "decimals": "6",
+                  "name": "USDC.e",
+                  "coinKey": "USDCe",
+                  "logoURI": "usdce.png",
+                  "priceUSD": "1"
+                },
+                "toToken": {
+                  "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                  "chainId": "1151111081099710",
+                  "symbol": "USDC",
+                  "decimals": "6",
+                  "name": "USD Coin",
+                  "coinKey": "USDC",
+                  "logoURI": "usdc.png",
+                  "priceUSD": "0.999501"
+                }
+              },
+              "estimate": {
+                "tool": "allbridge",
+                "fromAmount": "2000000",
+                "fromAmountUSD": "2.00",
+                "toAmount": "1138627",
+                "toAmountMin": "1136350",
+                "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+                "executionDuration": "500.298",
+                "feeCosts": [
+                  {
+                    "name": "Allbridge's fee",
+                    "description": "AllBridge fee and messenger fee charged by Allbridge",
+                    "token": {
+                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                      "chainId": "137",
+                      "symbol": "USDCe",
+                      "decimals": "6",
+                      "name": "USDC.e",
+                      "coinKey": "USDCe",
+                      "logoURI": "usdce.png",
+                      "priceUSD": "1"
+                    },
+                    "amount": "853380",
+                    "amountUSD": "0.85",
+                    "percentage": "0.4267",
+                    "included": true
+                  }
+                ],
+                "gasCosts": [
+                  {
+                    "type": "SEND",
+                    "price": "112000000000",
+                    "estimate": "185000",
+                    "limit": "277500",
+                    "amount": "20720000000000000",
+                    "amountUSD": "0.02",
+                    "token": {
+                      "address": "0x0000000000000000000000000000000000000000",
+                      "chainId": "137",
+                      "symbol": "MATIC",
+                      "decimals": "18",
+                      "name": "MATIC",
+                      "coinKey": "MATIC",
+                      "logoURI": "matic.png",
+                      "priceUSD": "0.809079000000000000"
+                    }
+                  }
+                ],
+                "toAmountUSD": "1.14"
+              },
+              "includedSteps": [
+                {
+                  "id": "1b914bef-e1be-4895-a9b1-c57da16d9de5",
+                  "type": "cross",
+                  "action": {
+                    "fromChainId": "137",
+                    "fromAmount": "2000000",
+                    "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                    "slippage": "0.03",
+                    "toChainId": "1151111081099710",
+                    "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+                    "fromToken": {
+                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                      "chainId": "137",
+                      "symbol": "USDCe",
+                      "decimals": "6",
+                      "name": "USDC.e",
+                      "coinKey": "USDCe",
+                      "logoURI": "usdce.png",
+                      "priceUSD": "1"
+                    },
+                    "toToken": {
+                      "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                      "chainId": "1151111081099710",
+                      "symbol": "USDC",
+                      "decimals": "6",
+                      "name": "USD Coin",
+                      "coinKey": "USDC",
+                      "logoURI": "usdc.png",
+                      "priceUSD": "0.999501"
+                    }
+                  },
+                  "estimate": {
+                    "tool": "allbridge",
+                    "fromAmount": "2000000",
+                    "fromAmountUSD": "2.00",
+                    "toAmount": "1138627",
+                    "toAmountMin": "1136350",
+                    "approvalAddress": "0x7775d63836987f444E2F14AA0fA2602204D7D3E0",
+                    "executionDuration": "500.298",
+                    "feeCosts": [
+                      {
+                        "name": "Allbridge's fee",
+                        "description": "AllBridge fee and messenger fee charged by Allbridge",
+                        "token": {
+                          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                          "chainId": "137",
+                          "symbol": "USDCe",
+                          "decimals": "6",
+                          "name": "USDC.e",
+                          "coinKey": "USDCe",
+                          "logoURI": "usdce.png",
+                          "priceUSD": "1"
+                        },
+                        "amount": "853380",
+                        "amountUSD": "0.85",
+                        "percentage": "0.4267",
+                        "included": true
+                      }
+                    ],
+                    "gasCosts": [
+                      {
+                        "type": "SEND",
+                        "price": "112000000000",
+                        "estimate": "185000",
+                        "limit": "277500",
+                        "amount": "20720000000000000",
+                        "amountUSD": "0.02",
+                        "token": {
+                          "address": "0x0000000000000000000000000000000000000000",
+                          "chainId": "137",
+                          "symbol": "MATIC",
+                          "decimals": "18",
+                          "name": "MATIC",
+                          "coinKey": "MATIC",
+                          "logoURI": "matic.png",
+                          "priceUSD": "0.809079000000000000"
+                        }
+                      }
+                    ]
+                  },
+                  "tool": "allbridge",
+                  "toolDetails": {
+                    "key": "allbridge",
+                    "name": "Allbridge",
+                    "logoURI": "allbridge.png"
+                  }
+                }
+              ]
+            }
+          ],
+          "tags": [
+            "RECOMMENDED",
+            "CHEAPEST",
+            "FASTEST"
+          ],
+          "insurance": {
+            "state": "NOT_INSURABLE",
+            "feeAmountUsd": "0"
+          }
+        }
+      ],
+      "unavailableRoutes": {
+        "filteredOut": [],
+        "failed": []
+      }
+    }
+  )";
+}
+
 }  // namespace
 
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
@@ -75,13 +607,13 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   std::string json = base::StringPrintf(
       json_template, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
   mojom::JupiterQuotePtr swap_quote =
-      ParseJupiterQuoteResponse(ParseJson(json));
+      jupiter::ParseQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);
 
   mojom::JupiterTransactionParams params;
   params.quote = swap_quote.Clone();
   params.user_public_key = "mockPubKey";
-  auto encoded_params = EncodeJupiterTransactionParams(params, true);
+  auto encoded_params = jupiter::EncodeTransactionParams(params);
 
   std::string expected_params(R"(
     {
@@ -137,23 +669,19 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
 
   // OK: Jupiter transaction params WITHOUT feeAccount
-  params.quote->output_mint =
-      "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";  // SHDW
-  encoded_params = EncodeJupiterTransactionParams(params, false);
+  params.quote->platform_fee = nullptr;
+  encoded_params = jupiter::EncodeTransactionParams(params);
   expected_params = R"(
     {
       "quoteResponse": {
         "inputMint": "So11111111111111111111111111111111111111112",
         "inAmount": "100000000",
-        "outputMint": "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
         "outAmount": "10886298",
         "otherAmountThreshold": "10885210",
         "swapMode": "ExactIn",
         "slippageBps": 1,
-        "platformFee": {
-          "amount": "93326",
-          "feeBps": 85
-        },
+        "platformFee": null,
         "priceImpactPct": "0",
         "routePlan": [
           {
@@ -192,9 +720,420 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
 
   // KO: invalid output mint
   params.quote->output_mint = "invalid output mint";
-  encoded_params = EncodeJupiterTransactionParams(params, true);
+  encoded_params = jupiter::EncodeTransactionParams(params);
   ASSERT_EQ(encoded_params, std::nullopt);
-  encoded_params = EncodeJupiterTransactionParams(params, false);
+  encoded_params = jupiter::EncodeTransactionParams(params);
   ASSERT_EQ(encoded_params, std::nullopt);
 }
+
+TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kPolygonMainnetChainId;
+  params->from_token = "";
+  params->from_amount = "1000000000000000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->to_chain_id = mojom::kSolanaMainnet;
+  params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kSafest;
+
+  auto encoded_params = lifi::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "allowDestinationCall": true,
+      "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "fromAmount": "1000000000000000000000",
+      "fromChainId": "137",
+      "fromTokenAddress": "0x0000000000000000000000000000000000000000",
+      "options": {
+        "allowSwitchChain": false,
+        "fee": 0.2,
+        "insurance": true,
+        "integrator": "brave",
+        "slippage": 0.03
+      },
+      "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+      "toChainId": "SOL",
+      "toTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    }
+  )");
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
+  // OK: EVM -> EVM bridge quotes are correctly handled
+  mojom::LiFiQuotePtr quote =
+      lifi::ParseQuoteResponse(ParseJson(GetLiFiQuoteTemplate()));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1UL);
+  ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
+
+  auto& step = quote->routes[0]->steps[0];
+  auto params = lifi::EncodeTransactionParams(std::move(step));
+  ASSERT_NE(params, std::nullopt);
+
+  std::string expected_params(R"(
+    {
+      "type": "lifi",
+      "id": "5a6876f1-988e-4710-85b7-be2bd7681421",
+      "tool": "optimism",
+      "toolDetails": {
+        "key": "optimism",
+        "name": "Optimism Gateway"
+      },
+      "action": {
+        "fromToken": {
+          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "chainId": "1",
+          "symbol": "USDC",
+          "decimals": 6,
+          "name": "USD Coin"
+        },
+        "fromAmount": "1000000",
+        "toToken": {
+          "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+          "chainId": "10",
+          "symbol": "USDT",
+          "decimals": 6,
+          "name": "USDT"
+        },
+        "fromChainId": "1",
+        "toChainId": "10",
+        "slippage": 0.005,
+        "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+        "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+      },
+      "estimate": {
+        "tool": "optimism",
+        "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+        "toAmountMin": "1008586",
+        "toAmount": "1013654",
+        "fromAmount": "1000000",
+        "feeCosts": [
+          {
+            "name": "LP Fee",
+            "description": "Fee paid to the Liquidity Provider",
+            "token": {
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "chainId": "1",
+              "symbol": "USDC",
+              "decimals": 6,
+              "name": "USD Coin"
+            },
+            "amount": "3000",
+            "percentage": "0.003",
+            "included": true
+          }
+        ],
+        "gasCosts": [
+          {
+            "type": "SEND",
+            "estimate": "375000",
+            "limit": "618000",
+            "amount": "6608213244375000",
+            "token": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "chainId": "1",
+              "symbol": "ETH",
+              "decimals": 18,
+              "name": "ETH"
+            }
+          }
+        ],
+        "executionDuration": 106.944
+      },
+      "includedSteps": [
+        {
+          "id": "9ac4d9f1-9b72-463d-baf1-fcd8b09f8a8d",
+          "type": "swap",
+          "action": {
+            "fromChainId": "1",
+            "fromAmount": "1000000",
+            "fromToken": {
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "chainId": "1",
+              "symbol": "USDC",
+              "decimals": 6,
+              "name": "USD Coin"
+            },
+            "toChainId": "1",
+            "toToken": {
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "chainId": "1",
+              "symbol": "USDT",
+              "decimals": 6,
+              "name": "USDT"
+            },
+            "slippage": 0.005
+          },
+          "estimate": {
+            "tool": "verse-dex",
+            "fromAmount": "1000000",
+            "toAmount": "1013654",
+            "toAmountMin": "1008586",
+            "approvalAddress": "0xB4B0ea46Fe0E9e8EAB4aFb765b527739F2718671",
+            "executionDuration": 30.0,
+            "feeCosts": [
+              {
+                "name": "LP Fee",
+                "description": "Fee paid to the Liquidity Provider",
+                "token": {
+                  "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                  "chainId": "1",
+                  "symbol": "USDC",
+                  "decimals": 6,
+                  "name": "USD Coin"
+                },
+                "amount": "3000",
+                "percentage": "0.003",
+                "included": true
+              }
+            ],
+            "gasCosts": [
+              {
+                "type": "SEND",
+                "estimate": "200000",
+                "limit": "260000",
+                "amount": "3524380397000000",
+                "token": {
+                  "address": "0x0000000000000000000000000000000000000000",
+                  "chainId": "1",
+                  "symbol": "ETH",
+                  "decimals": 18,
+                  "name": "ETH"
+                }
+              }
+            ]
+          },
+          "tool": "verse-dex",
+          "toolDetails": {
+            "key": "verse-dex",
+            "name": "Verse Dex"
+          }
+        },
+        {
+          "id": "b952ed38-1d5c-43bc-990a-468fd32d29b9",
+          "type": "cross",
+          "action": {
+            "fromChainId": "1",
+            "fromAmount": "1008586",
+            "fromToken": {
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "chainId": "1",
+              "symbol": "USDT",
+              "decimals": 6,
+              "name": "USDT"
+            },
+            "toChainId": "10",
+            "toToken": {
+              "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+              "chainId": "10",
+              "symbol": "USDT",
+              "decimals": 6,
+              "name": "USDT"
+            },
+            "slippage": 0.005,
+            "destinationCallData": "0x0"
+          },
+          "estimate": {
+            "tool": "optimism",
+            "fromAmount": "1013654",
+            "toAmount": "1013654",
+            "toAmountMin": "1008586",
+            "approvalAddress": "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1",
+            "executionDuration": 76.944,
+            "feeCosts": [],
+            "gasCosts": [
+              {
+                "type": "SEND",
+                "estimate": "175000",
+                "limit": "227500",
+                "amount": "3083832847375000",
+                "token": {
+                  "address": "0x0000000000000000000000000000000000000000",
+                  "chainId": "1",
+                  "symbol": "ETH",
+                  "decimals": 18,
+                  "name": "ETH"
+                }
+              }
+            ]
+          },
+          "tool": "optimism",
+          "toolDetails": {
+            "key": "optimism",
+            "name": "Optimism Gateway"
+          }
+        }
+      ],
+      "integrator": "jumper.exchange"
+    }
+  )");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+
+  // OK: EVM -> SOL bridge quotes are correctly handled
+  quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate()));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1UL);
+  ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
+
+  auto& step_1 = quote->routes[0]->steps[0];
+  params = lifi::EncodeTransactionParams(std::move(step_1));
+  ASSERT_NE(params, std::nullopt);
+
+  expected_params = R"(
+    {
+      "type": "lifi",
+      "id": "57d247fc-d80a-4f4a-9596-72db3061aa72",
+      "tool": "allbridge",
+      "toolDetails": {
+        "key": "allbridge",
+        "name": "Allbridge"
+      },
+      "action": {
+        "fromChainId": "137",
+        "fromAmount": "2000000",
+        "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+        "slippage": 0.03,
+        "toChainId": "SOL",
+        "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+        "fromToken": {
+          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+          "chainId": "137",
+          "symbol": "USDCe",
+          "decimals": 6,
+          "name": "USDC.e"
+        },
+        "toToken": {
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "chainId": "SOL",
+          "symbol": "USDC",
+          "decimals": 6,
+          "name": "USD Coin"
+        }
+      },
+      "estimate": {
+        "tool": "allbridge",
+        "fromAmount": "2000000",
+        "toAmount": "1138627",
+        "toAmountMin": "1136350",
+        "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+        "executionDuration": 500.298,
+        "feeCosts": [
+          {
+            "name": "Allbridge's fee",
+            "description": "AllBridge fee and messenger fee charged by Allbridge",
+            "token": {
+              "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "chainId": "137",
+              "symbol": "USDCe",
+              "decimals": 6,
+              "name": "USDC.e"
+            },
+            "amount": "853380",
+            "percentage": "0.4267",
+            "included": true
+          }
+        ],
+        "gasCosts": [
+          {
+            "type": "SEND",
+            "estimate": "185000",
+            "limit": "277500",
+            "amount": "20720000000000000",
+            "token": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "chainId": "137",
+              "symbol": "MATIC",
+              "decimals": 18,
+              "name": "MATIC"
+            }
+          }
+        ]
+      },
+      "includedSteps": [
+        {
+          "id": "1b914bef-e1be-4895-a9b1-c57da16d9de5",
+          "type": "cross",
+          "action": {
+            "fromChainId": "137",
+            "fromAmount": "2000000",
+            "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+            "slippage": 0.03,
+            "toChainId": "SOL",
+            "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+            "fromToken": {
+              "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "chainId": "137",
+              "symbol": "USDCe",
+              "decimals": 6,
+              "name": "USDC.e"
+            },
+            "toToken": {
+              "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "chainId": "SOL",
+              "symbol": "USDC",
+              "decimals": 6,
+              "name": "USD Coin"
+            }
+          },
+          "estimate": {
+            "tool": "allbridge",
+            "fromAmount": "2000000",
+            "toAmount": "1138627",
+            "toAmountMin": "1136350",
+            "approvalAddress": "0x7775d63836987f444E2F14AA0fA2602204D7D3E0",
+            "executionDuration": 500.298,
+            "feeCosts": [
+              {
+                "name": "Allbridge's fee",
+                "description": "AllBridge fee and messenger fee charged by Allbridge",
+                "token": {
+                  "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                  "chainId": "137",
+                  "symbol": "USDCe",
+                  "decimals": 6,
+                  "name": "USDC.e"
+                },
+                "amount": "853380",
+                "percentage": "0.4267",
+                "included": true
+              }
+            ],
+            "gasCosts": [
+              {
+                "type": "SEND",
+                "estimate": "185000",
+                "limit": "277500",
+                "amount": "20720000000000000",
+                "token": {
+                  "address": "0x0000000000000000000000000000000000000000",
+                  "chainId": "137",
+                  "symbol": "MATIC",
+                  "decimals": 18,
+                  "name": "MATIC"
+                }
+              }
+            ]
+          },
+          "tool": "allbridge",
+          "toolDetails": {
+            "key": "allbridge",
+            "name": "Allbridge"
+          }
+        }
+      ]
+    }
+  )";
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+}
+
 }  // namespace brave_wallet

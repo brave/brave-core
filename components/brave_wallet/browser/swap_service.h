@@ -55,28 +55,34 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void IsSwapSupported(const std::string& chain_id,
                        IsSwapSupportedCallback callback) override;
 
-  static std::string GetBaseSwapURL(const std::string& chain_id);
-  static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params);
-  static GURL GetZeroExTransactionURL(const mojom::SwapQuoteParams& params);
-  static GURL GetJupiterQuoteURL(const mojom::SwapQuoteParams& params);
+  static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params,
+                                const std::optional<std::string> fee_param);
+  static GURL GetZeroExTransactionURL(
+      const mojom::SwapQuoteParams& params,
+      const std::optional<std::string> fee_param);
+  static GURL GetJupiterQuoteURL(const mojom::SwapQuoteParams& params,
+                                 const std::optional<std::string> fee_param);
   static GURL GetJupiterTransactionURL(const std::string& chain_id);
-
-  void GetBraveFee(mojom::BraveSwapFeeParamsPtr params,
-                   GetBraveFeeCallback callback) override;
-
-  static void SetBaseURLForTest(const GURL& base_url_for_test);
+  static GURL GetLiFiQuoteURL();
+  static GURL GetLiFiTransactionURL();
 
  private:
-  void OnGetZeroExQuote(GetQuoteCallback callback,
+  void OnGetZeroExQuote(mojom::SwapFeesPtr swap_fee,
+                        GetQuoteCallback callback,
                         APIRequestResult api_request_result);
-  void OnGetJupiterQuote(GetQuoteCallback callback,
+  void OnGetJupiterQuote(mojom::SwapFeesPtr swap_fee,
+                         GetQuoteCallback callback,
                          APIRequestResult api_request_result);
+  void OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
+                      GetQuoteCallback callback,
+                      APIRequestResult api_request_result);
   void OnGetZeroExTransaction(GetTransactionCallback callback,
                               APIRequestResult api_request_result);
   void OnGetJupiterTransaction(GetTransactionCallback callback,
                                APIRequestResult api_request_result);
+  void OnGetLiFiTransaction(GetTransactionCallback callback,
+                            APIRequestResult api_request_result);
 
-  static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED

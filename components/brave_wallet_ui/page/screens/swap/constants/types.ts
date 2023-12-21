@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 import Amount from '../../../../utils/amount'
 
@@ -13,7 +13,6 @@ type LiquiditySource = {
 }
 
 export type QuoteOption = {
-  label: string
   fromAmount: Amount
   toAmount: Amount
   minimumToAmount: Amount | undefined
@@ -33,9 +32,9 @@ export type QuoteOption = {
    */
   routing: 'split' | 'flow'
 
-  networkFee: string
+  networkFee: Amount
 
-  braveFee: BraveWallet.BraveSwapFeeResponse | undefined
+  networkFeeFiat: string
 }
 
 export type SwapAndSend = {
@@ -68,17 +67,25 @@ export type SwapValidationErrorType =
   | 'unknownError'
 
 export type SwapParams = {
-  selectedNetwork: BraveWallet.NetworkInfo | undefined
-  selectedAccount: BraveWallet.AccountInfo | undefined
+  fromAccount?: BraveWallet.AccountInfo
   fromToken?: BraveWallet.BlockchainToken
-  toToken?: BraveWallet.BlockchainToken
+  fromNetwork?: BraveWallet.NetworkInfo
   fromAmount: string
+
+  toAccountId?: BraveWallet.AccountId
+  toToken?: BraveWallet.BlockchainToken
   toAmount: string
+
   /**
    * This is the value as seen on the UI - should be converted to appropriate
    * format for Jupiter and 0x swap providers.
    */
   slippageTolerance: string
-  fromAccount?: BraveWallet.AccountInfo
-  spotPrices?: SpotPriceRegistry
+}
+
+export type SwapParamsOverrides = {
+  fromAmount?: string
+  toAmount?: string
+  fromToken?: BraveWallet.BlockchainToken
+  toToken?: BraveWallet.BlockchainToken
 }

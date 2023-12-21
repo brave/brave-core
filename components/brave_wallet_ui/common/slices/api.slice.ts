@@ -174,7 +174,6 @@ export const {
   useCreateWalletMutation,
   useDiscoverAssetsMutation,
   useEnableEnsOffchainLookupMutation,
-  useGenerateBraveSwapFeeMutation,
   useGenerateReceiveAddressMutation,
   useGenerateSwapQuoteMutation,
   useGenerateSwapTransactionMutation,

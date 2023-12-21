@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
+#include <limits>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -17,10 +18,12 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
+namespace jupiter {
 namespace {
 
 // Docs: https://station.jup.ag/docs/apis/adding-fees
@@ -49,9 +52,8 @@ std::optional<std::string> GetFeeAccount(const std::string& output_mint) {
 
 }  // namespace
 
-std::optional<std::string> EncodeJupiterTransactionParams(
-    const mojom::JupiterTransactionParams& params,
-    bool has_fee) {
+std::optional<std::string> EncodeTransactionParams(
+    const mojom::JupiterTransactionParams& params) {
   base::Value::Dict tx_params;
 
   // The code below does the following two things:
@@ -66,7 +68,7 @@ std::optional<std::string> EncodeJupiterTransactionParams(
   // If the if-condition below is false, fee_account is unused,
   // but the originating call to GetFeeAccount() is still done to ensure
   // output_mint is always valid.
-  if (has_fee) {
+  if (params.quote->platform_fee) {
     tx_params.Set("feeAccount", *fee_account);
   }
 
@@ -87,6 +89,8 @@ std::optional<std::string> EncodeJupiterTransactionParams(
     platform_fee.Set("amount", params.quote->platform_fee->amount);
     platform_fee.Set("feeBps", params.quote->platform_fee->fee_bps);
     quote.Set("platformFee", std::move(platform_fee));
+  } else {
+    quote.Set("platformFee", base::Value());
   }
 
   base::Value::List route_plan_value;
@@ -131,5 +135,288 @@ std::optional<std::string> EncodeJupiterTransactionParams(
 
   return result;
 }
+
+}  // namespace jupiter
+
+namespace lifi {
+
+namespace {
+
+std::optional<std::string> EncodeChainId(const std::string& value) {
+  if (value == mojom::kSolanaMainnet) {
+    return "SOL";
+  }
+
+  uint256_t val;
+  if (!HexValueToUint256(value, &val)) {
+    return std::nullopt;
+  }
+
+  if (val > std::numeric_limits<uint64_t>::max() ||
+      val < std::numeric_limits<uint64_t>::min()) {
+    return std::nullopt;
+  }
+
+  return base::NumberToString(static_cast<uint64_t>(val));
+}
+
+base::Value::Dict EncodeToolDetails(
+    const mojom::LiFiToolDetailsPtr tool_details) {
+  base::Value::Dict result;
+  result.Set("key", tool_details->key);
+  result.Set("name", tool_details->name);
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeToken(
+    const mojom::BlockchainTokenPtr token) {
+  base::Value::Dict result;
+  result.Set("address", token->contract_address == ""
+                            ? kLiFiNativeAssetContractAddress
+                            : token->contract_address);
+  result.Set("decimals", token->decimals);
+  result.Set("symbol", token->symbol);
+
+  if (auto chain_id = EncodeChainId(token->chain_id)) {
+    result.Set("chainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("name", token->name);
+  return result;
+}
+
+std::optional<std::string> EncodeStepType(const mojom::LiFiStepType type) {
+  if (type == mojom::LiFiStepType::kSwap) {
+    return "swap";
+  }
+
+  if (type == mojom::LiFiStepType::kCross) {
+    return "cross";
+  }
+
+  if (type == mojom::LiFiStepType::kNative) {
+    return "lifi";
+  }
+
+  return std::nullopt;
+}
+
+std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
+  base::Value::Dict result;
+
+  if (auto chain_id = EncodeChainId(action->from_token->chain_id)) {
+    result.Set("fromChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAmount", action->from_amount);
+
+  if (auto token = EncodeToken(std::move(action->from_token))) {
+    result.Set("fromToken", std::move(*token));
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->from_address) {
+    result.Set("fromAddress", *action->from_address);
+  }
+
+  if (auto chain_id = EncodeChainId(action->to_token->chain_id)) {
+    result.Set("toChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  if (auto token = EncodeToken(std::move(action->to_token))) {
+    result.Set("toToken", std::move(*token));
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->to_address) {
+    result.Set("toAddress", *action->to_address);
+  }
+
+  double slippage = 0.0;
+  if (base::StringToDouble(action->slippage, &slippage)) {
+    result.Set("slippage", slippage);
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->destination_call_data) {
+    result.Set("destinationCallData", *action->destination_call_data);
+  }
+
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeStepEstimate(
+    mojom::LiFiStepEstimatePtr estimate) {
+  base::Value::Dict result;
+
+  result.Set("tool", estimate->tool);
+  result.Set("fromAmount", estimate->from_amount);
+  result.Set("toAmount", estimate->to_amount);
+  result.Set("toAmountMin", estimate->to_amount_min);
+  result.Set("approvalAddress", estimate->approval_address);
+
+  double execution_duration = 0.0;
+  if (base::StringToDouble(estimate->execution_duration, &execution_duration)) {
+    result.Set("executionDuration", execution_duration);
+  } else {
+    return std::nullopt;
+  }
+
+  base::Value::List fee_costs_value;
+  for (const auto& fee_cost : estimate->fee_costs) {
+    base::Value::Dict fee_cost_value;
+    fee_cost_value.Set("name", fee_cost->name);
+    fee_cost_value.Set("description", fee_cost->description);
+    fee_cost_value.Set("amount", fee_cost->amount);
+    fee_cost_value.Set("percentage", fee_cost->percentage);
+    fee_cost_value.Set("included", fee_cost->included);
+
+    if (auto token = EncodeToken(std::move(fee_cost->token))) {
+      fee_cost_value.Set("token", std::move(*token));
+    } else {
+      return std::nullopt;
+    }
+
+    fee_costs_value.Append(std::move(fee_cost_value));
+  }
+  result.Set("feeCosts", std::move(fee_costs_value));
+
+  base::Value::List gas_costs_value;
+  for (const auto& gas_cost : estimate->gas_costs) {
+    base::Value::Dict gas_cost_value;
+    gas_cost_value.Set("type", gas_cost->type);
+    gas_cost_value.Set("estimate", gas_cost->estimate);
+    gas_cost_value.Set("limit", gas_cost->limit);
+    gas_cost_value.Set("amount", gas_cost->amount);
+
+    if (auto token = EncodeToken(std::move(gas_cost->token))) {
+      gas_cost_value.Set("token", std::move(*token));
+    } else {
+      return std::nullopt;
+    }
+
+    gas_costs_value.Append(std::move(gas_cost_value));
+  }
+  result.Set("gasCosts", std::move(gas_costs_value));
+
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
+  base::Value::Dict result;
+  result.Set("id", step->id);
+
+  if (auto type = EncodeStepType(step->type)) {
+    result.Set("type", *type);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("tool", step->tool);
+
+  if (auto action = EncodeStepAction(std::move(step->action))) {
+    result.Set("action", std::move(*action));
+  } else {
+    return std::nullopt;
+  }
+
+  if (auto estimate = EncodeStepEstimate(step->estimate->Clone())) {
+    result.Set("estimate", std::move(*estimate));
+  } else {
+    return std::nullopt;
+  }
+
+  if (step->integrator) {
+    result.Set("integrator", *step->integrator);
+  }
+
+  result.Set("toolDetails", EncodeToolDetails(std::move(step->tool_details)));
+
+  if (!step->included_steps) {
+    return result;
+  }
+
+  base::Value::List included_steps_value;
+  for (auto& included_step : *step->included_steps) {
+    if (auto included_step_value = EncodeStep(std::move(included_step))) {
+      included_steps_value.Append(std::move(*included_step_value));
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  result.Set("includedSteps", std::move(included_steps_value));
+  return result;
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
+  base::Value::Dict result;
+
+  if (auto chain_id = EncodeChainId(params->from_chain_id)) {
+    result.Set("fromChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAmount", params->from_amount);
+  result.Set("fromTokenAddress", params->from_token == ""
+                                     ? kLiFiNativeAssetContractAddress
+                                     : params->from_token);
+  result.Set("fromAddress", params->from_account_id->address);
+
+  if (auto chain_id = EncodeChainId(params->to_chain_id)) {
+    result.Set("toChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("toTokenAddress", params->to_token == ""
+                                   ? kLiFiNativeAssetContractAddress
+                                   : params->to_token);
+  result.Set("toAddress", params->to_account_id->address);
+  result.Set("allowDestinationCall", true);
+
+  base::Value::Dict options;
+  options.Set("insurance", true);
+  options.Set("integrator", kLiFiIntegratorID);
+  options.Set("allowSwitchChain", false);
+  options.Set("fee", 0.2);  // FIXME
+
+  double slippage_percentage = 0.0;
+  if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {
+    options.Set("slippage", slippage_percentage / 100);
+  }
+
+  result.Set("options", std::move(options));
+
+  return GetJSON(base::Value(std::move(result)));
+}
+
+std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step) {
+  auto result = EncodeStep(std::move(step));
+  if (!result) {
+    return std::nullopt;
+  }
+
+  std::string result_str = GetJSON(base::Value(std::move(*result)));
+  if (result_str.empty()) {
+    return std::nullopt;
+  }
+
+  return result_str;
+}
+
+}  // namespace lifi
 
 }  // namespace brave_wallet
