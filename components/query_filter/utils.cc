@@ -123,26 +123,26 @@ static constexpr auto kConditionalQueryStringTrackers =
 // parameter is scoped to example.com below, it will be removed from
 // https://example.com/index.php and from http://www.example.com/ for
 // example.
-static constexpr auto kScopedQueryStringTrackers =
-    base::MakeFixedFlatMapSorted<std::string_view, std::string_view>({
+static const auto kScopedQueryStringTrackers =
+    std::map<std::string_view, std::vector<std::string_view>>({
         // https://github.com/brave/brave-browser/issues/11580
-        {"igshid", "instagram.com"},
+        {"igshid", {"instagram.com"}},
         // https://github.com/brave/brave-browser/issues/26966
-        {"ref_src", "twitter.com,x.com"},
-        {"ref_url", "twitter.com,x.com"},
+        {"ref_src", {"twitter.com", "x.com"}},
+        {"ref_url", {"twitter.com", "x.com"}},
         // https://github.com/brave/brave-browser/issues/34719
-        {"si", "youtube.com,youtu.be"},
+        {"si", {"youtube.com", "youtu.be"}},
     });
 
-bool IsScopedTracker(const std::string_view param_name,
-                     const std::string& spec) {
+bool IsScopedTracker(
+    const std::string_view param_name,
+    const std::string& spec,
+    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
   if (!base::Contains(trackers, param_name)) {
     return false;
   }
 
-  const std::vector<std::string_view> domain_strings =
-      SplitStringPiece(kScopedQueryStringTrackers.at(param_name).data(), ",",
-                       base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const auto& domain_strings = trackers.at(param_name);
   if (domain_strings.empty()) {
     return false;
   }
@@ -154,6 +154,13 @@ bool IsScopedTracker(const std::string_view param_name,
   }
 
   return false;
+}
+
+bool IsScopedTrackerForTesting(
+    const std::string_view param_name,
+    const std::string& spec,
+    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
+  return IsScopedTracker(param_name, spec, trackers);
 }
 
 // Remove tracking query parameters from a GURL, leaving all
@@ -177,7 +184,7 @@ std::optional<std::string> StripQueryParameter(const std::string_view query,
     const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
-         IsScopedTracker(key, spec) ||
+         IsScopedTracker(key, spec, kScopedQueryStringTrackers) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
