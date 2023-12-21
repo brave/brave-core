@@ -294,10 +294,17 @@
 # This test fails because we disable the privacy sandbox
 -PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
 
-# These tests fail because we disable
-# privacy_sandbox::kEnforcePrivacySandboxAttestations
+# These tests fail because we disable the
+# privacy_sandbox::kEnforcePrivacySandboxAttestations feature
 -PrivacySandboxAttestationsHistograms/PrivacySandboxAttestationsHistogramsTest.*/*
 -PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
+
+# These tests fail because we override PrivacySandboxSettings (specifically,
+# GetCookieDeprecationExperimentCurrentEligibility)
+-EligibilityServiceHistogramTests/EligibilityServiceHistogramTest.ProfileEligibilityMismatch/*
+-EligibilityServiceTest.ClientEligibilityKnown_ClientEligibilityNotSet
+-EligibilityServiceTest.ClientEligibilityUnknownProfileEligible_ClientEligibilitySet
+-EligibilityServiceTest.ClientEligibilityUnknownProfileIneligible_ClientEligibilitySet
 
 # This test fails because we intentionally disable the Federated Credential
 # Management API via features::kFedCm
@@ -487,10 +494,6 @@
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
-
-# These tests fail because we disable the
-# privacy_sandbox::kEnforcePrivacySandboxAttestations feature
--PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
 
 # This test fails because we disable kPartitionedCookies
 -ExtensionCookiesTest.PartitionKeySerialization

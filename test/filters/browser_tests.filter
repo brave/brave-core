@@ -146,8 +146,16 @@
 -TrackingProtectionHatsBrowserTest.CallHatsServiceWithProductData/*
 
 # These tests are disabled because sharedStorage is not enabled in Brave
+# (PrivacySandboxSettings is overridden)
 -All/BrowsingDataModelBrowserTest.SharedStorageAccessReportedCorrectly/*
 -All/BrowsingDataModelBrowserTest.SharedStorageHandledCorrectly/*
+-All/SharedStorageChromeBrowserTest.*
+-All/SharedStorageHeaderPrefBrowserTest.*
+-All/SharedStoragePrefBrowserTest.*
+-All/SharedStoragePrivateAggregationChromeBrowserTest.*
+-ExternalProtocolHandlerSandboxFencedFrameBrowserTest.SandboxAllowTopNavigationByUserActivationWithGestureInFencedFrame
+-PrivacySandboxSettingsAdsApisFlagBrowserTest.FollowsOverrideBehavior
+-SharedStorageFencedFrameChromeBrowserTest.*
 
 # This test fails because kPrerender2 feature is disabled. Javascript in the
 # test expects `document.prerendering === false` whereas we have
