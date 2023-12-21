@@ -11,7 +11,10 @@ action("generate_tsconfig") {
     "//ui/webui/resources/js:build_ts",
   ]
   inputs = [
-    "gen-tsconfig.js",
+    "//brave/package.json",
+    "//brave/build/commands/lib/config.js",
+    "//brave/build/commands/lib/genTsConfig.js",
+    "//brave/build/commands/scripts/genTsConfig.js",
     "path-map.js",
   ]
   outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]

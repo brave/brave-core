@@ -34,7 +34,7 @@
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
+    "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
