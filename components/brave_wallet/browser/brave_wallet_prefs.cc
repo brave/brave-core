@@ -203,11 +203,6 @@ void RegisterProfilePrefsForMigration(
       kBraveWalletWeb3ProviderDeprecated,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
 
-  // Added 25/10/2021
-  registry->RegisterIntegerPref(
-      kDefaultWalletDeprecated,
-      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
-
   // Added 02/2022
   registry->RegisterBooleanPref(
       kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
@@ -324,17 +319,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     }
     prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
     prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
-  }
-  if (prefs->HasPrefPath(kDefaultWalletDeprecated)) {
-    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
-        prefs->GetInteger(kDefaultWalletDeprecated));
-    mojom::DefaultWallet default_wallet =
-        mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None) {
-      default_wallet = mojom::DefaultWallet::None;
-    }
-    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
-    prefs->ClearPref(kDefaultWalletDeprecated);
   }
 
   // Added 02/2022.
