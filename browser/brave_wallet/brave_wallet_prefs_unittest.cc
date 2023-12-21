@@ -53,73 +53,6 @@ class BraveWalletPrefsUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
 };
 
-TEST_F(BraveWalletPrefsUnitTest,
-       MigrateObsoleteProfilePrefsBraveWalletEthereumTransactionsCoinType) {
-  GetPrefs()->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
-  // Migration when kBraveWalletTransactions is default value (empty dict).
-  ASSERT_FALSE(
-      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-  auto* pref = GetPrefs()->FindPreference(kBraveWalletTransactions);
-  ASSERT_TRUE(pref && pref->IsDefaultValue());
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_TRUE(pref && pref->IsDefaultValue());
-  EXPECT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-
-  // Migration with existing transactions.
-  GetPrefs()->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
-  GetPrefs()->ClearPref(kBraveWalletTransactions);
-  GetPrefs()->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
-  ASSERT_FALSE(
-      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-  base::Value::Dict tx1;
-  tx1.Set("id", "0x1");
-  tx1.Set("status", 1);
-
-  base::Value::Dict tx2;
-  tx2.Set("id", "0x2");
-  tx2.Set("status", 2);
-
-  {
-    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
-    update->SetByDottedPath("mainnet.meta1", tx1.Clone());
-    update->SetByDottedPath("mainnet.meta2", tx2.Clone());
-    update->SetByDottedPath("ropsten.meta3", tx1.Clone());
-  }
-
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  const auto& dict = GetPrefs()->GetDict(kBraveWalletTransactions);
-  const auto* tx1_value = dict.FindDictByDottedPath("ethereum.mainnet.meta1");
-  const auto* tx2_value = dict.FindDictByDottedPath("ethereum.mainnet.meta2");
-  const auto* tx3_value = dict.FindDictByDottedPath("ethereum.ropsten.meta3");
-  ASSERT_TRUE(tx1_value && tx2_value && tx3_value);
-  EXPECT_EQ(*tx1_value, tx1);
-  EXPECT_EQ(*tx2_value, tx2);
-  EXPECT_EQ(*tx3_value, tx1);
-  EXPECT_EQ(dict.size(), 1u);
-  EXPECT_EQ(dict.FindDict("ethereum")->size(), 2u);
-  EXPECT_EQ(dict.FindDictByDottedPath("ethereum.mainnet")->size(), 2u);
-  EXPECT_EQ(dict.FindDictByDottedPath("ethereum.ropsten")->size(), 1u);
-  EXPECT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-
-  // Migration when kBraveWalletTransactions is an empty dict.
-  GetPrefs()->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
-  GetPrefs()->ClearPref(kBraveWalletTransactions);
-  {
-    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
-    update->SetByDottedPath("mainnet.meta1", tx1.Clone());
-    update->Remove("mainnet");
-  }
-  EXPECT_TRUE(pref && !pref->IsDefaultValue());
-  EXPECT_TRUE(GetPrefs()->GetDict(kBraveWalletTransactions).empty());
-
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_TRUE(pref && pref->IsDefaultValue());
-  EXPECT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-}
-
 TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
 
@@ -170,7 +103,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   GetPrefs()->SetBoolean(kShowWalletTestNetworksDeprecated, true);
 
   brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  // Test networks are removed from hidden list after successfull migration.
+  // Test networks are removed from hidden list after successful migration.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH), SizeIs(0));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
               ElementsAreArray({"0x123"}));
@@ -179,8 +112,6 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
 }
 
 TEST_F(BraveWalletPrefsUnitTest, MigrateAddChainIdToTransactionInfo) {
-  GetPrefs()->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated,
-                         true);
   EXPECT_FALSE(
       GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));

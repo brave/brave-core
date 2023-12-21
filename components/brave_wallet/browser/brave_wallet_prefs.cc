@@ -40,6 +40,9 @@ constexpr char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetsAddIsNFTMigrated[] =
     "brave.wallet.user.assets.add_is_nft_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
+    "brave.wallet.ethereum_transactions.coin_type_migrated";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -120,6 +123,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
       kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -129,6 +135,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddPreloadingNetworksMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsNFTMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
 }
 
 }  // namespace
@@ -197,10 +205,6 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
-
-  // Added 02/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
 
   // Added 22/02/2022
   registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
@@ -304,19 +308,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 
-  // Added 02/2022.
-  // Migrate kBraveWalletTransactions to have coin_type as the top level.
-  // Ethereum transactions were at kBraveWalletTransactions.network_id.tx_id,
-  // migrate it to be at kBraveWalletTransactions.ethereum.network_id.tx_id.
-  if (!prefs->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated)) {
-    auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
-    prefs->ClearPref(kBraveWalletTransactions);
-    if (!transactions.empty()) {
-      ScopedDictPrefUpdate update(prefs, kBraveWalletTransactions);
-      update->Set(kEthereumPrefKey, std::move(transactions));
-    }
-    prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
-  }
   // Added 10/2022
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 

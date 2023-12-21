@@ -70,10 +70,6 @@ inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
 inline constexpr char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
-// Added 02/2022 to migrate ethereum transactions to be under ethereum coin
-// type.
-inline constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
-    "brave.wallet.ethereum_transactions.coin_type_migrated";
 inline constexpr char kBraveWalletP3AFirstUnlockTime[] =
     "brave.wallet.p3a_first_unlock_time";
 inline constexpr char kBraveWalletP3ALastUnlockTime[] =
