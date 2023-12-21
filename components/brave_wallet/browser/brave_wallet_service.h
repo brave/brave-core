@@ -87,8 +87,6 @@ class BraveWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
-  static void MigrateUserAssetEthContractAddress(PrefService* profile_prefs);
-  static void MigrateMultichainUserAssets(PrefService* profile_prefs);
   static void MigrateUserAssetsAddPreloadingNetworks(
       PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);

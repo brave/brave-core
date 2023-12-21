@@ -53,9 +53,6 @@ inline constexpr char kBraveWalletUserAssets[] =
     "brave.wallet.wallet_user_assets";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
-// Added 10/2021 to migrate contract address to an empty string for ETH.
-inline constexpr char kBraveWalletUserAssetEthContractAddressMigrated[] =
-    "brave.wallet.user.asset.eth_contract_address_migrated";
 // Added 06/2022 to add native assets of preloading networks to user assets.
 inline constexpr char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated_3";
@@ -126,8 +123,6 @@ inline constexpr char kBraveWalletCustomNetworksDeprecated[] =
     "brave.wallet.wallet_custom_networks";
 inline constexpr char kBraveWalletCurrentChainId[] =
     "brave.wallet.wallet_current_chain_id";
-inline constexpr char kBraveWalletUserAssetsDeprecated[] =
-    "brave.wallet.user_assets";
 inline constexpr char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[] =
         "brave.wallet.user.assets.add_preloading_networks_migrated";

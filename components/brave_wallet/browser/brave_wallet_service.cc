@@ -810,7 +810,7 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
   mojom::AccountIdPtr acc_to_select;
 
   // Prefer currently dapp selected account if available. This matches legacy
-  // behaior.
+  // behavior.
   // TODO(apaymyshev): implement account selection history pref to prefer
   // picking recently used matching account in a general way.
   if (coin == mojom::CoinType::ETH && all_accounts->eth_dapp_selected_account) {
@@ -995,72 +995,6 @@ void BraveWalletService::ResetWebSitePermission(
     const std::string& formed_website,
     ResetWebSitePermissionCallback callback) {
   delegate_->ResetWebSitePermission(coin, formed_website, std::move(callback));
-}
-
-// static
-void BraveWalletService::MigrateUserAssetEthContractAddress(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
-    prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssetsDeprecated);
-  auto& user_assets_pref = update.Get();
-
-  for (auto user_asset_list : user_assets_pref) {
-    auto& item = user_asset_list.second.GetList();
-    auto it = FindAsset(&item, "eth", "", false, "contract_address");
-    if (it == item.end()) {
-      continue;
-    }
-
-    auto* asset = it->GetIfDict();
-    if (asset) {
-      const std::string* contract_address =
-          asset->FindString("contract_address");
-      if (contract_address && *contract_address == "eth") {
-        asset->Set("contract_address", "");
-        break;
-      }
-    }
-  }
-
-  prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
-}
-
-// static
-void BraveWalletService::MigrateMultichainUserAssets(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
-    return;
-  }
-
-  auto eth_user_assets =
-      prefs->GetDict(kBraveWalletUserAssetsDeprecated).Clone();
-
-  // Update contract_address key to address.
-  for (auto user_asset_list : eth_user_assets) {
-    for (auto& item : user_asset_list.second.GetList()) {
-      auto& asset = item.GetDict();
-      const std::string* address = asset.FindString("contract_address");
-      if (address) {
-        asset.Set("address", *address);
-        asset.Remove("contract_address");
-      }
-    }
-  }
-
-  base::Value::Dict new_user_assets;
-  new_user_assets.Set(kEthereumPrefKey, std::move(eth_user_assets));
-  new_user_assets.Set(kSolanaPrefKey, GetDefaultSolanaAssets());
-  new_user_assets.Set(kFilecoinPrefKey, GetDefaultFilecoinAssets());
-
-  prefs->Set(kBraveWalletUserAssets, base::Value(std::move(new_user_assets)));
-  prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
 }
 
 // static

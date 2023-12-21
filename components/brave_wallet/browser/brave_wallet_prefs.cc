@@ -31,6 +31,10 @@ namespace {
 
 constexpr int kDefaultWalletAutoLockMinutes = 10;
 
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetEthContractAddressMigrated[] =
+    "brave.wallet.user.asset.eth_contract_address_migrated";
+
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
   user_assets_pref.Set(kEthereumPrefKey,
@@ -165,9 +169,6 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  // Added 10/2021
-  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
-                                false);
   // Added 09/2021
   registry->RegisterIntegerPref(
       kBraveWalletWeb3ProviderDeprecated,
@@ -186,9 +187,6 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
   registry->RegisterStringPref(kBraveWalletCurrentChainId,
                                brave_wallet::mojom::kMainnetChainId);
-
-  // Added 04/2022
-  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
 
   // Added 06/2022
   registry->RegisterBooleanPref(
@@ -242,6 +240,10 @@ void RegisterProfilePrefsForMigration(
   // Added 08/2023
   registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
                                 false);
+
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -277,14 +279,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Added 10/2021 for migrating the contract address for eth in user asset
-  // list from 'eth' to an empty string.
-  BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
-
-  // Added 04/22 to have coin_type as the top level, also rename
-  // contract_address key to address.
-  BraveWalletService::MigrateMultichainUserAssets(prefs);
-
   // Added 06/22 to have native tokens for all preloading networks.
   BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
 
@@ -353,6 +347,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 07/2023
   KeyringService::MigrateDerivedAccountIndex(prefs);
+
+  // Added 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetEthContractAddressMigrated);
 }
 
 }  // namespace brave_wallet
