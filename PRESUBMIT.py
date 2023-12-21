@@ -79,6 +79,12 @@ def CheckPatchFormatted(input_api, output_api):
 
     # Run git cl format and get return code.
     git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
+    if git_cl_format_code not in (0, 2):
+        return [
+            output_api.PresubmitError(
+                f'Presubmit format check has failed, return code: {git_cl_format_code}'
+            )
+        ]
 
     is_format_required = git_cl_format_code == 2
 
