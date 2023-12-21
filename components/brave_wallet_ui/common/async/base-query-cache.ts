@@ -261,12 +261,34 @@ export class BaseQueryCache {
       const { braveWalletService } = apiProxyFetcher()
       const networksRegistry = await this.getNetworksRegistry()
 
-      const tokenIdsByChainId: Record<string, string[]> = {}
-      const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+      const nonFungibleTokenIds: string[] = []
+      const fungibleTokenIds: string[] = []
+
+      const idsByChainId: Record<string, string[]> = {}
+      const idsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
       const visibleTokenIds: string[] = []
       const visibleTokenIdsByChainId: Record<string, string[]> = {}
       const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
         {}
+
+      const fungibleIdsByChainId: Record<string, string[]> = {}
+      const fungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+      const fungibleVisibleTokenIds: string[] = []
+      const fungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+      const fungibleVisibleTokenIdsByCoinType: Record<
+        BraveWallet.CoinType,
+        string[]
+      > = {}
+
+      const nonFungibleIdsByChainId: Record<string, string[]> = {}
+      const nonFungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
+        {}
+      const nonFungibleVisibleTokenIds: string[] = []
+      const nonFungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+      const nonFungibleVisibleTokenIdsByCoinType: Record<
+        BraveWallet.CoinType,
+        string[]
+      > = {}
 
       const userTokenListsForNetworks = await mapLimit(
         Object.entries(networksRegistry.entities),
@@ -279,24 +301,71 @@ export class BaseQueryCache {
           const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
             await fetchUserAssetsForNetwork(braveWalletService, network)
 
-          tokenIdsByChainId[networkId] =
-            fullTokensListForNetwork.map(getAssetIdKey)
+          idsByChainId[networkId] = []
+          visibleTokenIdsByChainId[networkId] = []
+          fungibleIdsByChainId[networkId] = []
+          fungibleVisibleTokenIdsByChainId[networkId] = []
+          nonFungibleIdsByChainId[networkId] = []
+          nonFungibleVisibleTokenIdsByChainId[networkId] = []
+          for (const token of fullTokensListForNetwork) {
+            const tokenId = getAssetIdKey(token)
+            const { visible } = token
+            const isNft = token.isNft || token.isErc1155 || token.isErc721
 
-          tokenIdsByCoinType[network.coin] = (
-            tokenIdsByCoinType[network.coin] || []
-          ).concat(tokenIdsByChainId[networkId] || [])
+            idsByChainId[networkId].push(tokenId)
+            if (isNft) {
+              nonFungibleTokenIds.push(tokenId)
+              nonFungibleIdsByChainId[networkId].push(tokenId)
+            } else {
+              fungibleTokenIds.push(tokenId)
+              fungibleIdsByChainId[networkId].push(tokenId)
+            }
 
-          const visibleTokensForNetwork: BraveWallet.BlockchainToken[] =
-            fullTokensListForNetwork.filter((t) => t.visible)
+            if (visible) {
+              visibleTokenIdsByChainId[networkId].push(tokenId)
+              if (isNft) {
+                nonFungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
+              } else {
+                fungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
+              }
+            }
+            // else { } // TODO: hiddenIds
+          }
 
-          visibleTokenIdsByChainId[networkId] =
-            visibleTokensForNetwork.map(getAssetIdKey)
+          // All Ids by coin type
+          idsByCoinType[network.coin] = (
+            idsByCoinType[network.coin] || []
+          ).concat(idsByChainId[networkId])
 
+          nonFungibleIdsByCoinType[network.coin] = (
+            nonFungibleIdsByCoinType[network.coin] || []
+          ).concat(nonFungibleIdsByChainId[networkId])
+
+          fungibleIdsByCoinType[network.coin] = (
+            fungibleIdsByCoinType[network.coin] || []
+          ).concat(fungibleIdsByChainId[networkId])
+
+          // visible Ids by chain
           visibleTokenIdsByCoinType[network.coin] = (
             visibleTokenIdsByCoinType[network.coin] || []
-          ).concat(visibleTokenIdsByChainId[networkId] || [])
+          ).concat(visibleTokenIdsByChainId[networkId])
 
+          nonFungibleVisibleTokenIdsByCoinType[network.coin] = (
+            nonFungibleVisibleTokenIdsByCoinType[network.coin] || []
+          ).concat(nonFungibleVisibleTokenIdsByChainId[networkId])
+
+          fungibleVisibleTokenIdsByCoinType[network.coin] = (
+            fungibleVisibleTokenIdsByCoinType[network.coin] || []
+          ).concat(fungibleVisibleTokenIdsByChainId[networkId])
+
+          // All visible ids
           visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
+          nonFungibleVisibleTokenIds.push(
+            ...nonFungibleVisibleTokenIdsByChainId[networkId]
+          )
+          fungibleVisibleTokenIds.push(
+            ...fungibleVisibleTokenIdsByChainId[networkId]
+          )
 
           return fullTokensListForNetwork
         }
@@ -305,12 +374,25 @@ export class BaseQueryCache {
       const userTokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
         {
           ...blockchainTokenEntityAdaptorInitialState,
-          idsByChainId: tokenIdsByChainId,
-          tokenIdsByChainId,
+          idsByChainId,
           visibleTokenIds,
           visibleTokenIdsByChainId,
           visibleTokenIdsByCoinType,
-          idsByCoinType: tokenIdsByCoinType
+          idsByCoinType,
+
+          fungibleTokenIds,
+          fungibleIdsByChainId,
+          fungibleIdsByCoinType,
+          fungibleVisibleTokenIds,
+          fungibleVisibleTokenIdsByChainId,
+          fungibleVisibleTokenIdsByCoinType,
+
+          nonFungibleTokenIds,
+          nonFungibleIdsByChainId,
+          nonFungibleIdsByCoinType,
+          nonFungibleVisibleTokenIds,
+          nonFungibleVisibleTokenIdsByChainId,
+          nonFungibleVisibleTokenIdsByCoinType
         },
         userTokenListsForNetworks.flat(1)
       )

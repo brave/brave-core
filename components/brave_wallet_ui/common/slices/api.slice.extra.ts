@@ -29,7 +29,9 @@ import { selectAllAccountInfosFromQuery } from './entities/account-info.entity'
 import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult,
-  selectCombinedTokensList
+  selectCombinedTokensList,
+  selectCombinedTokensRegistry,
+  blockchainTokenEntityAdaptorInitialState
 } from '../slices/entities/blockchain-token.entity'
 import {
   findAccountByAccountId,
@@ -97,6 +99,56 @@ export const useSelectedAccountQuery = () => {
     isLoading: isLoadingSelectedAccountId || isLoadingAccount,
     data: selectedAccount
   }
+}
+
+export const useGetCombinedTokensRegistryQuery = (
+  arg?: undefined | typeof skipToken,
+  opts?: { skip?: boolean }
+) => {
+  const { isLoadingUserTokens, userTokens } = useGetUserTokensRegistryQuery(
+    arg || opts?.skip ? skipToken : undefined,
+    {
+      selectFromResult: (res) => ({
+        isLoadingUserTokens: res.isLoading,
+        userTokens: res.data
+      })
+    }
+  )
+
+  const { isLoadingKnownTokens, knownTokens } = useGetTokensRegistryQuery(
+    undefined,
+    {
+      selectFromResult: (res) => ({
+        isLoadingKnownTokens: res.isLoading,
+        knownTokens: res.data
+      }),
+      skip: opts?.skip
+    }
+  )
+
+  const combinedQuery = React.useMemo(() => {
+    if (
+      isLoadingUserTokens ||
+      isLoadingKnownTokens ||
+      !knownTokens ||
+      !userTokens
+    ) {
+      return {
+        isLoading: true,
+        data: blockchainTokenEntityAdaptorInitialState
+      }
+    }
+    const combinedRegistry = selectCombinedTokensRegistry(
+      knownTokens,
+      userTokens
+    )
+    return {
+      isLoading: isLoadingUserTokens || isLoadingKnownTokens,
+      data: combinedRegistry
+    }
+  }, [isLoadingKnownTokens, isLoadingUserTokens, userTokens, knownTokens])
+
+  return combinedQuery
 }
 
 export const useGetCombinedTokensListQuery = (
