@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mapLimit } from 'async'
+import { EntityId } from '@reduxjs/toolkit'
 
 // types
 import type { BaseQueryCache } from '../../async/base-query-cache'
@@ -23,6 +24,7 @@ import { getLocale } from '../../../../common/locale'
 import { keyringIdForNewAccount } from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import { networkEntityAdapter } from '../entities/network.entity'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -134,10 +136,12 @@ export const walletEndpoints = ({
             WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
           )
 
+          const { allowedNewWalletAccountTypeNetworkIds } = (
+            getState() as { wallet: WalletState }
+          ).wallet
+
           await createDefaultAccounts({
-            allowNewWalletFilecoinAccount: (
-              getState() as { wallet: WalletState }
-            ).wallet.allowNewWalletFilecoinAccount,
+            allowedNewWalletAccountTypeNetworkIds,
             keyringService,
             cache
           })
@@ -194,10 +198,12 @@ export const walletEndpoints = ({
             )
           }
 
+          const { allowedNewWalletAccountTypeNetworkIds } = (
+            getState() as { wallet: WalletState }
+          ).wallet
+
           await createDefaultAccounts({
-            allowNewWalletFilecoinAccount: (
-              getState() as { wallet: WalletState }
-            ).wallet.allowNewWalletFilecoinAccount,
+            allowedNewWalletAccountTypeNetworkIds,
             keyringService,
             cache
           })
@@ -352,10 +358,12 @@ export const walletEndpoints = ({
             }
           }
 
+          const { allowedNewWalletAccountTypeNetworkIds } = (
+            getState() as { wallet: WalletState }
+          ).wallet
+
           await createDefaultAccounts({
-            allowNewWalletFilecoinAccount: (
-              getState() as { wallet: WalletState }
-            ).wallet.allowNewWalletFilecoinAccount,
+            allowedNewWalletAccountTypeNetworkIds,
             keyringService,
             cache
           })
@@ -407,10 +415,12 @@ export const walletEndpoints = ({
             }
           }
 
+          const { allowedNewWalletAccountTypeNetworkIds } = (
+            getState() as { wallet: WalletState }
+          ).wallet
+
           await createDefaultAccounts({
-            allowNewWalletFilecoinAccount: (
-              getState() as { wallet: WalletState }
-            ).wallet.allowNewWalletFilecoinAccount,
+            allowedNewWalletAccountTypeNetworkIds,
             keyringService,
             cache
           })
@@ -541,13 +551,13 @@ async function importFromExternalWallet(
 }
 
 async function createDefaultAccounts({
-  allowNewWalletFilecoinAccount,
+  allowedNewWalletAccountTypeNetworkIds,
   keyringService,
   cache
 }: {
   cache: BaseQueryCache
   keyringService: BraveWallet.KeyringServiceRemote
-  allowNewWalletFilecoinAccount: boolean
+  allowedNewWalletAccountTypeNetworkIds: EntityId[]
 }) {
   const networksRegistry = await cache.getNetworksRegistry()
   const accountsRegistry = await cache.getAccountsRegistry()
@@ -575,16 +585,31 @@ async function createDefaultAccounts({
     networksWithUniqueKeyrings,
     3,
     async function (net: BraveWallet.NetworkInfo) {
+      // TODO: remove these checks when we can hide "default" networks
       if (
-        // TODO: remove this check when we can hide "default" networks
-        net.coin === BraveWallet.CoinType.FIL &&
-        allowNewWalletFilecoinAccount
-      ) {
-        await keyringService.addAccount(
-          net.coin,
-          keyringIdForNewAccount(net.coin, net.chainId),
-          suggestNewAccountName(accounts, net)
+        !allowedNewWalletAccountTypeNetworkIds.includes(
+          networkEntityAdapter.selectId(net)
         )
+      ) {
+        return
+      }
+
+      switch (net.coin) {
+        case BraveWallet.CoinType.BTC: {
+          await keyringService.addAccount(
+            net.coin,
+            keyringIdForNewAccount(net.coin, net.chainId),
+            suggestNewAccountName(accounts, net)
+          )
+          return
+        }
+        case BraveWallet.CoinType.FIL: {
+          await keyringService.addAccount(
+            net.coin,
+            keyringIdForNewAccount(net.coin, net.chainId),
+            suggestNewAccountName(accounts, net)
+          )
+        }
       }
     }
   )
