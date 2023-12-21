@@ -109,8 +109,6 @@ inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
 // DEPRECATED
 inline constexpr char kShowWalletTestNetworksDeprecated[] =
     "brave.wallet.show_wallet_test_networks";
-inline constexpr char kBraveWalletWeb3ProviderDeprecated[] =
-    "brave.wallet.web3_provider";
 inline constexpr char kBraveWalletCustomNetworksDeprecated[] =
     "brave.wallet.wallet_custom_networks";
 inline constexpr char kBraveWalletCurrentChainId[] =

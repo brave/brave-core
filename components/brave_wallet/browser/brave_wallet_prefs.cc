@@ -198,11 +198,6 @@ void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
 
-  // Added 09/2021
-  registry->RegisterIntegerPref(
-      kBraveWalletWeb3ProviderDeprecated,
-      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
-
   // Added 02/2022
   registry->RegisterBooleanPref(
       kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
@@ -308,18 +303,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
-
-  if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
-    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
-        prefs->GetInteger(kBraveWalletWeb3ProviderDeprecated));
-    mojom::DefaultWallet default_wallet =
-        mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None) {
-      default_wallet = mojom::DefaultWallet::None;
-    }
-    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
-    prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
-  }
 
   // Added 02/2022.
   // Migrate kBraveWalletTransactions to have coin_type as the top level.
