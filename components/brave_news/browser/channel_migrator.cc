@@ -9,6 +9,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -17,12 +18,13 @@ namespace brave_news {
 namespace {
 
 constexpr auto kMigrateChannels =
-    base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {{"Tech News", "Technology"},
-         {"Sport", "Sports"},
-         {"Celebrity News", "Celebrities"},
-         {"Entertainment news", "Celebrities"},
-         {"Tech Reviews", "Technology"}});
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
+        {"celebrity news", "Celebrities"},
+        {"entertainment news", "Entertainment"},
+        {"sport", "Sports"},
+        {"tech news", "Technology"},
+        {"tech reviews", "Technology"},
+    });
 
 }  // namespace
 
@@ -48,7 +50,7 @@ void MigrateChannels(PrefService& prefs) {
 }
 
 std::string GetMigratedChannel(const std::string& channel) {
-  auto* it = kMigrateChannels.find(channel);
+  auto* it = kMigrateChannels.find(base::ToLowerASCII(channel));
   return it == kMigrateChannels.end() ? channel : std::string{it->second};
 }
 
