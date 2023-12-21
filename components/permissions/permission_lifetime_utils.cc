@@ -90,7 +90,7 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate) {
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
                          size_t index,
                          PermissionPrompt::Delegate* delegate) {
-  for (auto* request : delegate->Requests()) {
+  for (PermissionRequest* request : delegate->Requests()) {
     SetRequestLifetime(options, index, request);
   }
 }

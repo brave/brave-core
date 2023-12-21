@@ -200,10 +200,11 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
   if (open_tabs_delegate) {
     // Iterating through all remote sessions, then retrieving the tabs to
     // display to the user.
-    std::vector<const sync_sessions::SyncedSession*> sessions;
+    std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
+        sessions;
     open_tabs_delegate->GetAllForeignSessions(&sessions);
 
-    for (const auto* session : sessions) {
+    for (const sync_sessions::SyncedSession* session : sessions) {
       // Create a distant session
       IOSOpenDistantSession* distant_session = [[IOSOpenDistantSession alloc]
               initWithName:base::SysUTF8ToNSString(session->GetSessionName())

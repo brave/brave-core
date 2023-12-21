@@ -142,7 +142,7 @@ void BraveLocationBarView::Init() {
   Update(nullptr);
 
   // Stop slide animation for all content settings views icon.
-  for (auto* content_setting_view : content_setting_views_) {
+  for (ContentSettingImageView* content_setting_view : content_setting_views_) {
     content_setting_view->disable_animation();
   }
 }

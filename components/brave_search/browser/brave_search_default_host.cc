@@ -38,7 +38,7 @@ TemplateURL* GetSearchTemplateForSite(TemplateURLService* service,
   // but ignore extension-provided entries.
   TemplateURL::TemplateURLVector urls = service->GetTemplateURLs();
   TemplateURL* other_entry = nullptr;
-  for (auto* template_url : urls) {
+  for (TemplateURL* template_url : urls) {
     if (template_url->url_ref().GetHost(SearchTermsData()) != host) {
       continue;
     }

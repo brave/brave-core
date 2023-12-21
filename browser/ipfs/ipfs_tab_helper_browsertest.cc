@@ -906,7 +906,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
       [](infobars::ContentInfoBarManager* content_infobar_manager)
       -> infobars::InfoBar* {
     for (size_t i = 0; i < content_infobar_manager->infobars().size(); i++) {
-      auto* infobar = content_infobar_manager->infobars()[i];
+      infobars::InfoBar* infobar = content_infobar_manager->infobars()[i];
       if (infobar->delegate()->GetIdentifier() ==
           BraveConfirmInfoBarDelegate::BRAVE_IPFS_FALLBACK_INFOBAR_DELEGATE) {
         return infobar;
@@ -1015,7 +1015,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSAlwaysStartInfobar) {
   auto find_infobar =
       [](infobars::ContentInfoBarManager* content_infobar_manager)
       -> infobars::InfoBar* {
-    for (auto* infobar : content_infobar_manager->infobars()) {
+    for (infobars::InfoBar* infobar : content_infobar_manager->infobars()) {
       if (infobar->delegate()->GetIdentifier() ==
           BraveConfirmInfoBarDelegate::
               BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE) {

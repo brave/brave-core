@@ -8,11 +8,14 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+
 namespace permissions {
 class PermissionRequest;
 
 bool HasWidevinePermissionRequest(
-    const std::vector<permissions::PermissionRequest*>& requests);
+    const std::vector<
+        raw_ptr<permissions::PermissionRequest, VectorExperimental>>& requests);
 
 }  // namespace permissions
 

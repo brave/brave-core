@@ -131,7 +131,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto sidebar_items_contents_view =
         GetSidebarItemsContentsView(controller());
 
-    auto* item = sidebar_items_contents_view->children()[index];
+    auto* item = sidebar_items_contents_view->children()[index].get();
     DCHECK(item);
 
     const gfx::Point origin(0, 0);

@@ -44,8 +44,8 @@ void AddBookmarkNode(Profile* profile) {
   bookmarks::BookmarkModel* bookmark_model =
       BookmarkModelFactory::GetForBrowserContext(profile);
 
-  std::vector<const bookmarks::BookmarkNode*> nodes =
-      bookmark_model->GetNodesByURL(url);
+  std::vector<raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>
+      nodes = bookmark_model->GetNodesByURL(url);
   EXPECT_EQ(0UL, nodes.size());
 
   // We need to pass a non-empty title when creating a bookmark so that an

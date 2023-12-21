@@ -119,7 +119,7 @@ bool PrivateWindowSearchEngineProviderServiceBase::CouldAddExtensionTemplateURL(
     const TemplateURL* url) {
   DCHECK(url);
   DCHECK_NE(TemplateURL::NORMAL, url->type());
-  for (const auto* turl : otr_template_url_service_->GetTemplateURLs()) {
+  for (const TemplateURL* turl : otr_template_url_service_->GetTemplateURLs()) {
     DCHECK(turl);
     if (url->type() == turl->type() &&
         url->GetExtensionId() == turl->GetExtensionId())

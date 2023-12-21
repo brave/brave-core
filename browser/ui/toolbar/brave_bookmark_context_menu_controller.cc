@@ -19,7 +19,8 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     Profile* profile,
     BookmarkLaunchLocation opened_from,
     const bookmarks::BookmarkNode* parent,
-    const std::vector<const bookmarks::BookmarkNode*>& selection)
+    const std::vector<
+        raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection)
     : BookmarkContextMenuController(parent_window,
                                     delegate,
                                     browser,

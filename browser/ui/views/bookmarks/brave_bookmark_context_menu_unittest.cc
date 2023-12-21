@@ -54,7 +54,8 @@ class BraveBookmarkContextMenuTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuTest, OverrideBookmarkMenu) {
   auto controller = std::make_unique<BraveBookmarkContextMenu>(
       nullptr, nullptr, profile_.get(), BookmarkLaunchLocation::kNone, nullptr,
-      std::vector<const BookmarkNode*>(), false);
+      std::vector<raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>(),
+      false);
   auto* menu =
       controller->menu()->GetMenuItemByID(IDC_BRAVE_BOOKMARK_BAR_SUBMENU);
   EXPECT_TRUE(menu);
