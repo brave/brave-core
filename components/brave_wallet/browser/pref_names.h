@@ -53,9 +53,6 @@ inline constexpr char kBraveWalletUserAssets[] =
     "brave.wallet.wallet_user_assets";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
-// Added 10/2022 to set is_nft = true for existing ERC721 tokens.
-inline constexpr char kBraveWalletUserAssetsAddIsNFTMigrated[] =
-    "brave.wallet.user.assets.add_is_nft_migrated";
 // Added 03/2023 to add networks hidden by default
 inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
     "brave.wallet.user.assets.default_hidden_networks_version";

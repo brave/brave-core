@@ -998,47 +998,6 @@ void BraveWalletService::ResetWebSitePermission(
 }
 
 // static
-void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get();
-
-  for (auto user_asset_dict_per_cointype : user_assets_pref) {
-    if (!user_asset_dict_per_cointype.second.is_dict()) {
-      continue;
-    }
-    for (auto user_asset_list_per_chain :
-         user_asset_dict_per_cointype.second.GetDict()) {
-      if (!user_asset_list_per_chain.second.is_list()) {
-        continue;
-      }
-      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
-        auto* asset = user_asset.GetIfDict();
-        if (!asset) {
-          continue;
-        }
-
-        auto is_erc721 = asset->FindBool("is_erc721");
-        if (is_erc721 && *is_erc721 == true) {
-          asset->Set("is_nft", true);
-        } else {
-          asset->Set("is_nft", false);
-        }
-      }
-    }
-  }
-  prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
-}
-
-// static
 void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
   auto previous_version_code =
       prefs->GetInteger(kBraveWalletDefaultHiddenNetworksVersion);
