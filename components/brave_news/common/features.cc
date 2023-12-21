@@ -42,7 +42,4 @@ const base::FeatureParam<double> kBraveNewsSourceVisitsMin{
 const base::FeatureParam<double> kBraveNewsCategoryTopicRatio{
     &kBraveNewsFeedUpdate, "category-topic-ratio", 0.5};
 
-const base::FeatureParam<double> kBraveNewsTemperature{&kBraveNewsFeedUpdate,
-                                                       "temperature", 1};
-
 }  // namespace brave_news::features
