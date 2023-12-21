@@ -46,6 +46,9 @@ constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
+    "brave.wallet.keyring_encryption_keys_migrated";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -132,6 +135,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
+                                false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -145,6 +151,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletDeprecateEthereumTestNetworksMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletKeyringEncryptionKeysMigrated);
 }
 
 }  // namespace
@@ -175,8 +183,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
-  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
-                                false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks,
                                    GetDefaultHiddenNetworks());
