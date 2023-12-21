@@ -258,143 +258,11 @@ export class BaseQueryCache {
 
   getUserTokensRegistry = async () => {
     if (!this._userTokensRegistry) {
-      const { braveWalletService } = apiProxyFetcher()
       const networksRegistry = await this.getNetworksRegistry()
 
-      const nonFungibleTokenIds: string[] = []
-      const fungibleTokenIds: string[] = []
-
-      const idsByChainId: Record<string, string[]> = {}
-      const idsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
-      const visibleTokenIds: string[] = []
-      const visibleTokenIdsByChainId: Record<string, string[]> = {}
-      const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
-        {}
-
-      const fungibleIdsByChainId: Record<string, string[]> = {}
-      const fungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
-      const fungibleVisibleTokenIds: string[] = []
-      const fungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
-      const fungibleVisibleTokenIdsByCoinType: Record<
-        BraveWallet.CoinType,
-        string[]
-      > = {}
-
-      const nonFungibleIdsByChainId: Record<string, string[]> = {}
-      const nonFungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
-        {}
-      const nonFungibleVisibleTokenIds: string[] = []
-      const nonFungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
-      const nonFungibleVisibleTokenIdsByCoinType: Record<
-        BraveWallet.CoinType,
-        string[]
-      > = {}
-
-      const userTokenListsForNetworks = await mapLimit(
-        Object.entries(networksRegistry.entities),
-        10,
-        async ([networkId, network]: [string, BraveWallet.NetworkInfo]) => {
-          if (!network) {
-            return []
-          }
-
-          const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
-            await fetchUserAssetsForNetwork(braveWalletService, network)
-
-          idsByChainId[networkId] = []
-          visibleTokenIdsByChainId[networkId] = []
-          fungibleIdsByChainId[networkId] = []
-          fungibleVisibleTokenIdsByChainId[networkId] = []
-          nonFungibleIdsByChainId[networkId] = []
-          nonFungibleVisibleTokenIdsByChainId[networkId] = []
-          for (const token of fullTokensListForNetwork) {
-            const tokenId = getAssetIdKey(token)
-            const { visible } = token
-            const isNft = token.isNft || token.isErc1155 || token.isErc721
-
-            idsByChainId[networkId].push(tokenId)
-            if (isNft) {
-              nonFungibleTokenIds.push(tokenId)
-              nonFungibleIdsByChainId[networkId].push(tokenId)
-            } else {
-              fungibleTokenIds.push(tokenId)
-              fungibleIdsByChainId[networkId].push(tokenId)
-            }
-
-            if (visible) {
-              visibleTokenIdsByChainId[networkId].push(tokenId)
-              if (isNft) {
-                nonFungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
-              } else {
-                fungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
-              }
-            }
-            // else { } // TODO: hiddenIds
-          }
-
-          // All Ids by coin type
-          idsByCoinType[network.coin] = (
-            idsByCoinType[network.coin] || []
-          ).concat(idsByChainId[networkId])
-
-          nonFungibleIdsByCoinType[network.coin] = (
-            nonFungibleIdsByCoinType[network.coin] || []
-          ).concat(nonFungibleIdsByChainId[networkId])
-
-          fungibleIdsByCoinType[network.coin] = (
-            fungibleIdsByCoinType[network.coin] || []
-          ).concat(fungibleIdsByChainId[networkId])
-
-          // visible Ids by chain
-          visibleTokenIdsByCoinType[network.coin] = (
-            visibleTokenIdsByCoinType[network.coin] || []
-          ).concat(visibleTokenIdsByChainId[networkId])
-
-          nonFungibleVisibleTokenIdsByCoinType[network.coin] = (
-            nonFungibleVisibleTokenIdsByCoinType[network.coin] || []
-          ).concat(nonFungibleVisibleTokenIdsByChainId[networkId])
-
-          fungibleVisibleTokenIdsByCoinType[network.coin] = (
-            fungibleVisibleTokenIdsByCoinType[network.coin] || []
-          ).concat(fungibleVisibleTokenIdsByChainId[networkId])
-
-          // All visible ids
-          visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
-          nonFungibleVisibleTokenIds.push(
-            ...nonFungibleVisibleTokenIdsByChainId[networkId]
-          )
-          fungibleVisibleTokenIds.push(
-            ...fungibleVisibleTokenIdsByChainId[networkId]
-          )
-
-          return fullTokensListForNetwork
-        }
-      )
-
-      const userTokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
-        {
-          ...blockchainTokenEntityAdaptorInitialState,
-          idsByChainId,
-          visibleTokenIds,
-          visibleTokenIdsByChainId,
-          visibleTokenIdsByCoinType,
-          idsByCoinType,
-
-          fungibleTokenIds,
-          fungibleIdsByChainId,
-          fungibleIdsByCoinType,
-          fungibleVisibleTokenIds,
-          fungibleVisibleTokenIdsByChainId,
-          fungibleVisibleTokenIdsByCoinType,
-
-          nonFungibleTokenIds,
-          nonFungibleIdsByChainId,
-          nonFungibleIdsByCoinType,
-          nonFungibleVisibleTokenIds,
-          nonFungibleVisibleTokenIdsByChainId,
-          nonFungibleVisibleTokenIdsByCoinType
-        },
-        userTokenListsForNetworks.flat(1)
+      const userTokensByChainIdRegistry = await makeTokensRegistry(
+        networksRegistry,
+        'user'
       )
 
       this._userTokensRegistry = userTokensByChainIdRegistry
@@ -497,16 +365,19 @@ export const resetCache = () => {
   cache = new BaseQueryCache()
 }
 
+type AssetsListType = 'user' | 'known'
+
 // internals
-async function fetchUserAssetsForNetwork(
-  braveWalletService: BraveWallet.BraveWalletServiceRemote,
+async function fetchAssetsForNetwork(
+  listType: AssetsListType,
   network: BraveWallet.NetworkInfo
 ) {
+  const { blockchainRegistry, braveWalletService } = apiProxyFetcher()
   // Get a list of user tokens for each coinType and network.
-  const { tokens } = await braveWalletService.getUserAssets(
-    network.chainId,
-    network.coin
-  )
+  const { tokens } =
+    listType === 'known'
+      ? await blockchainRegistry.getAllTokens(network.chainId, network.coin)
+      : await braveWalletService.getUserAssets(network.chainId, network.coin)
 
   // Adds a logo and chainId to each token object
   const tokenList: BraveWallet.BlockchainToken[] = await mapLimit(
@@ -527,4 +398,191 @@ async function fetchUserAssetsForNetwork(
   }
 
   return tokenList
+}
+
+async function makeTokensRegistry(
+  networksRegistry: NetworksRegistry,
+  listType: AssetsListType
+) {
+  const nonFungibleTokenIds: string[] = []
+  const fungibleTokenIds: string[] = []
+
+  const idsByChainId: Record<string, string[]> = {}
+  const idsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+  const visibleTokenIds: string[] = []
+  const hiddenTokenIds: string[] = []
+  const visibleTokenIdsByChainId: Record<string, string[]> = {}
+  const hiddenTokenIdsByChainId: Record<string, string[]> = {}
+  const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+  const hiddenTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+
+  const fungibleIdsByChainId: Record<string, string[]> = {}
+  const fungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+  const fungibleVisibleTokenIds: string[] = []
+  const fungibleHiddenTokenIds: string[] = []
+  const fungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+  const fungibleHiddenTokenIdsByChainId: Record<string, string[]> = {}
+  const fungibleVisibleTokenIdsByCoinType: Record<
+    BraveWallet.CoinType,
+    string[]
+  > = {}
+  const fungibleHiddenTokenIdsByCoinType: Record<
+    BraveWallet.CoinType,
+    string[]
+  > = {}
+
+  const nonFungibleIdsByChainId: Record<string, string[]> = {}
+  const nonFungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+  const nonFungibleVisibleTokenIds: string[] = []
+  const nonFungibleHiddenTokenIds: string[] = []
+  const nonFungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+  const nonFungibleHiddenTokenIdsByChainId: Record<string, string[]> = {}
+  const nonFungibleVisibleTokenIdsByCoinType: Record<
+    BraveWallet.CoinType,
+    string[]
+  > = {}
+  const nonFungibleHiddenTokenIdsByCoinType: Record<
+    BraveWallet.CoinType,
+    string[]
+  > = {}
+
+  const userTokenListsForNetworks = await mapLimit(
+    Object.entries(networksRegistry.entities),
+    10,
+    async ([networkId, network]: [string, BraveWallet.NetworkInfo]) => {
+      if (!network) {
+        return []
+      }
+
+      const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
+        await fetchAssetsForNetwork(listType, network)
+
+      idsByChainId[networkId] = []
+      visibleTokenIdsByChainId[networkId] = []
+      hiddenTokenIdsByChainId[networkId] = []
+      fungibleIdsByChainId[networkId] = []
+      fungibleVisibleTokenIdsByChainId[networkId] = []
+      fungibleHiddenTokenIdsByChainId[networkId] = []
+      nonFungibleIdsByChainId[networkId] = []
+      nonFungibleVisibleTokenIdsByChainId[networkId] = []
+      nonFungibleHiddenTokenIdsByChainId[networkId] = []
+      for (const token of fullTokensListForNetwork) {
+        const tokenId = getAssetIdKey(token)
+        const { visible } = token
+        const isNft = token.isNft || token.isErc1155 || token.isErc721
+
+        idsByChainId[networkId].push(tokenId)
+        if (isNft) {
+          nonFungibleTokenIds.push(tokenId)
+          nonFungibleIdsByChainId[networkId].push(tokenId)
+        } else {
+          fungibleTokenIds.push(tokenId)
+          fungibleIdsByChainId[networkId].push(tokenId)
+        }
+
+        if (visible) {
+          visibleTokenIdsByChainId[networkId].push(tokenId)
+          if (isNft) {
+            nonFungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
+          } else {
+            fungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
+          }
+        } else {
+          hiddenTokenIdsByChainId[networkId].push(tokenId)
+          if (isNft) {
+            nonFungibleHiddenTokenIdsByChainId[networkId].push(tokenId)
+          } else {
+            fungibleHiddenTokenIdsByChainId[networkId].push(tokenId)
+          }
+        }
+      }
+
+      // All Ids by coin type
+      idsByCoinType[network.coin] = (idsByCoinType[network.coin] || []).concat(
+        idsByChainId[networkId]
+      )
+
+      nonFungibleIdsByCoinType[network.coin] = (
+        nonFungibleIdsByCoinType[network.coin] || []
+      ).concat(nonFungibleIdsByChainId[networkId])
+
+      fungibleIdsByCoinType[network.coin] = (
+        fungibleIdsByCoinType[network.coin] || []
+      ).concat(fungibleIdsByChainId[networkId])
+
+      // visible Ids by coin
+      visibleTokenIdsByCoinType[network.coin] = (
+        visibleTokenIdsByCoinType[network.coin] || []
+      ).concat(visibleTokenIdsByChainId[networkId])
+
+      nonFungibleVisibleTokenIdsByCoinType[network.coin] = (
+        nonFungibleVisibleTokenIdsByCoinType[network.coin] || []
+      ).concat(nonFungibleVisibleTokenIdsByChainId[networkId])
+
+      fungibleVisibleTokenIdsByCoinType[network.coin] = (
+        fungibleVisibleTokenIdsByCoinType[network.coin] || []
+      ).concat(fungibleVisibleTokenIdsByChainId[networkId])
+
+      // hidden Ids by coin
+      hiddenTokenIdsByCoinType[network.coin] = (
+        hiddenTokenIdsByCoinType[network.coin] || []
+      ).concat(hiddenTokenIdsByChainId[networkId])
+
+      nonFungibleHiddenTokenIdsByCoinType[network.coin] = (
+        nonFungibleHiddenTokenIdsByCoinType[network.coin] || []
+      ).concat(nonFungibleHiddenTokenIdsByChainId[networkId])
+
+      fungibleHiddenTokenIdsByCoinType[network.coin] = (
+        fungibleHiddenTokenIdsByCoinType[network.coin] || []
+      ).concat(fungibleHiddenTokenIdsByChainId[networkId])
+
+      // All visible ids
+      visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
+      nonFungibleVisibleTokenIds.push(
+        ...nonFungibleVisibleTokenIdsByChainId[networkId]
+      )
+      fungibleVisibleTokenIds.push(
+        ...fungibleVisibleTokenIdsByChainId[networkId]
+      )
+
+      // All hidden ids
+      hiddenTokenIds.push(...hiddenTokenIdsByChainId[networkId])
+      nonFungibleHiddenTokenIds.push(
+        ...nonFungibleHiddenTokenIdsByChainId[networkId]
+      )
+      fungibleHiddenTokenIds.push(...fungibleHiddenTokenIdsByChainId[networkId])
+
+      return fullTokensListForNetwork
+    }
+  )
+
+  const userTokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
+    {
+      ...blockchainTokenEntityAdaptorInitialState,
+      idsByChainId,
+      visibleTokenIds,
+      hiddenTokenIds,
+      visibleTokenIdsByChainId,
+      visibleTokenIdsByCoinType,
+      idsByCoinType,
+
+      fungibleHiddenTokenIds,
+      fungibleTokenIds,
+      fungibleIdsByChainId,
+      fungibleIdsByCoinType,
+      fungibleVisibleTokenIds,
+      fungibleVisibleTokenIdsByChainId,
+      fungibleVisibleTokenIdsByCoinType,
+
+      nonFungibleHiddenTokenIds,
+      nonFungibleTokenIds,
+      nonFungibleIdsByChainId,
+      nonFungibleIdsByCoinType,
+      nonFungibleVisibleTokenIds,
+      nonFungibleVisibleTokenIdsByChainId,
+      nonFungibleVisibleTokenIdsByCoinType
+    },
+    userTokenListsForNetworks.flat(1)
+  )
+  return userTokensByChainIdRegistry
 }

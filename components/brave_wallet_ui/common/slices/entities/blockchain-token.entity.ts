@@ -40,6 +40,8 @@ export type BlockchainTokenEntityAdaptorState = ReturnType<
   hiddenTokenIds: string[]
   visibleTokenIdsByChainId: Record<string, string[]>
   visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  hiddenTokenIdsByChainId: Record<string, string[]>
+  hiddenTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 
   // fungible tokens
   fungibleIdsByChainId: Record<EntityId, EntityId[]>
@@ -49,6 +51,8 @@ export type BlockchainTokenEntityAdaptorState = ReturnType<
   fungibleHiddenTokenIds: string[]
   fungibleVisibleTokenIdsByChainId: Record<string, string[]>
   fungibleVisibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  fungibleHiddenTokenIdsByChainId: Record<string, string[]>
+  fungibleHiddenTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 
   // non-fungible tokens
   nonFungibleIdsByChainId: Record<EntityId, EntityId[]>
@@ -58,6 +62,8 @@ export type BlockchainTokenEntityAdaptorState = ReturnType<
   nonFungibleHiddenTokenIds: string[]
   nonFungibleVisibleTokenIdsByChainId: Record<string, string[]>
   nonFungibleVisibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  nonFungibleHiddenTokenIdsByChainId: Record<string, string[]>
+  nonFungibleHiddenTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 }
 
 export const blockchainTokenEntityAdaptorInitialState: //
@@ -69,6 +75,8 @@ BlockchainTokenEntityAdaptorState = {
   hiddenTokenIds: [],
   visibleTokenIdsByChainId: {},
   visibleTokenIdsByCoinType: {},
+  hiddenTokenIdsByChainId: {},
+  hiddenTokenIdsByCoinType: {},
 
   fungibleIdsByChainId: {},
   fungibleIdsByCoinType: {},
@@ -77,6 +85,8 @@ BlockchainTokenEntityAdaptorState = {
   fungibleVisibleTokenIds: [],
   fungibleVisibleTokenIdsByChainId: {},
   fungibleVisibleTokenIdsByCoinType: {},
+  fungibleHiddenTokenIdsByChainId: {},
+  fungibleHiddenTokenIdsByCoinType: {},
 
   nonFungibleIdsByChainId: {},
   nonFungibleIdsByCoinType: {},
@@ -84,7 +94,9 @@ BlockchainTokenEntityAdaptorState = {
   nonFungibleHiddenTokenIds: [],
   nonFungibleVisibleTokenIds: [],
   nonFungibleVisibleTokenIdsByChainId: {},
-  nonFungibleVisibleTokenIdsByCoinType: {}
+  nonFungibleVisibleTokenIdsByCoinType: {},
+  nonFungibleHiddenTokenIdsByChainId: {},
+  nonFungibleHiddenTokenIdsByCoinType: {}
 }
 
 export const combineTokenRegistries = (
@@ -107,8 +119,11 @@ export const combineTokenRegistries = (
   const fungibleIdsByCoinType: Record<string, string[]> = {}
   const nonFungibleIdsByCoinType: Record<string, string[]> = {}
   const visibleTokenIdsByCoinType: Record<number, EntityId[]> = {}
+  const hiddenTokenIdsByCoinType: Record<number, EntityId[]> = {}
   const fungibleVisibleTokenIdsByCoinType: Record<number, EntityId[]> = {}
   const nonFungibleVisibleTokenIdsByCoinType: Record<number, EntityId[]> = {}
+  const fungibleHiddenTokenIdsByCoinType: Record<number, EntityId[]> = {}
+  const nonFungibleHiddenTokenIdsByCoinType: Record<number, EntityId[]> = {}
   for (const coinType of coinTypes) {
     // ids by coin type
     idsByCoinType[coinType] = Array.from(
@@ -159,14 +174,42 @@ export const combineTokenRegistries = (
           )
       )
     )
+
+    // hidden ids by coin type
+    hiddenTokenIdsByCoinType[coinType] = Array.from(
+      new Set(
+        (hiddenTokenIdsByCoinType[coinType] || [])
+          .concat(tokensRegistry.hiddenTokenIdsByCoinType[coinType])
+          .concat(userTokensRegistry.hiddenTokenIdsByCoinType[coinType])
+      )
+    )
+    fungibleHiddenTokenIdsByCoinType[coinType] = Array.from(
+      new Set(
+        (fungibleHiddenTokenIdsByCoinType[coinType] || [])
+          .concat(tokensRegistry.fungibleHiddenTokenIdsByCoinType[coinType])
+          .concat(userTokensRegistry.fungibleHiddenTokenIdsByCoinType[coinType])
+      )
+    )
+    nonFungibleHiddenTokenIdsByCoinType[coinType] = Array.from(
+      new Set(
+        (nonFungibleHiddenTokenIdsByCoinType[coinType] || [])
+          .concat(tokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType])
+          .concat(
+            userTokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType]
+          )
+      )
+    )
   }
 
   const idsByChainId: Record<EntityId, EntityId[]> = {}
   const fungibleIdsByChainId: Record<EntityId, EntityId[]> = {}
   const nonFungibleIdsByChainId: Record<EntityId, EntityId[]> = {}
   const visibleTokenIdsByChainId: Record<string, string[]> = {}
+  const hiddenTokenIdsByChainId: Record<string, string[]> = {}
   const nonFungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+  const nonFungibleHiddenTokenIdsByChainId: Record<string, string[]> = {}
   const fungibleVisibleTokenIdsByChainId: Record<string, string[]> = {}
+  const fungibleHiddenTokenIdsByChainId: Record<string, string[]> = {}
   for (const chainId of chainIds) {
     // ids by chain
     idsByChainId[chainId] = Array.from(
@@ -215,6 +258,31 @@ export const combineTokenRegistries = (
           .concat(userTokensRegistry.fungibleVisibleTokenIdsByChainId[chainId])
       )
     )
+
+    // hidden ids by chain
+    hiddenTokenIdsByChainId[chainId] = Array.from(
+      new Set(
+        (hiddenTokenIdsByChainId[chainId] || [])
+          .concat(tokensRegistry.hiddenTokenIdsByChainId[chainId])
+          .concat(userTokensRegistry.hiddenTokenIdsByChainId[chainId])
+      )
+    )
+    nonFungibleHiddenTokenIdsByChainId[chainId] = Array.from(
+      new Set(
+        (nonFungibleHiddenTokenIdsByChainId[chainId] || [])
+          .concat(tokensRegistry.nonFungibleHiddenTokenIdsByChainId[chainId])
+          .concat(
+            userTokensRegistry.nonFungibleHiddenTokenIdsByChainId[chainId]
+          )
+      )
+    )
+    fungibleHiddenTokenIdsByChainId[chainId] = Array.from(
+      new Set(
+        (fungibleHiddenTokenIdsByChainId[chainId] || [])
+          .concat(tokensRegistry.fungibleHiddenTokenIdsByChainId[chainId])
+          .concat(userTokensRegistry.fungibleHiddenTokenIdsByChainId[chainId])
+      )
+    )
   }
 
   // all visible ids
@@ -231,6 +299,26 @@ export const combineTokenRegistries = (
     )
   )
   const nonFungibleVisibleTokenIds = Array.from(
+    new Set(
+      tokensRegistry.nonFungibleVisibleTokenIds.concat(
+        userTokensRegistry.nonFungibleVisibleTokenIds
+      )
+    )
+  )
+  // all hidden ids
+  const hiddenTokenIds = Array.from(
+    new Set(
+      tokensRegistry.hiddenTokenIds.concat(userTokensRegistry.hiddenTokenIds)
+    )
+  )
+  const fungibleHiddenTokenIds = Array.from(
+    new Set(
+      tokensRegistry.fungibleHiddenTokenIds.concat(
+        userTokensRegistry.fungibleHiddenTokenIds
+      )
+    )
+  )
+  const nonFungibleHiddenTokenIds = Array.from(
     new Set(
       tokensRegistry.nonFungibleVisibleTokenIds.concat(
         userTokensRegistry.nonFungibleVisibleTokenIds
@@ -260,22 +348,31 @@ export const combineTokenRegistries = (
 
     // new combined grouping Ids
     visibleTokenIds,
+    hiddenTokenIds,
     idsByChainId,
     visibleTokenIdsByChainId,
+    hiddenTokenIdsByChainId,
     idsByCoinType,
     visibleTokenIdsByCoinType,
+    hiddenTokenIdsByCoinType,
     fungibleTokenIds,
     fungibleIdsByChainId,
     fungibleIdsByCoinType,
     fungibleVisibleTokenIds,
+    fungibleHiddenTokenIds,
     fungibleVisibleTokenIdsByChainId,
+    fungibleHiddenTokenIdsByChainId,
     fungibleVisibleTokenIdsByCoinType,
+    fungibleHiddenTokenIdsByCoinType,
     nonFungibleTokenIds,
     nonFungibleIdsByChainId,
     nonFungibleIdsByCoinType,
     nonFungibleVisibleTokenIds,
+    nonFungibleHiddenTokenIds,
     nonFungibleVisibleTokenIdsByChainId,
-    nonFungibleVisibleTokenIdsByCoinType
+    nonFungibleHiddenTokenIdsByChainId,
+    nonFungibleVisibleTokenIdsByCoinType,
+    nonFungibleHiddenTokenIdsByCoinType
   }
 
   // add user tokens to known tokens registry
