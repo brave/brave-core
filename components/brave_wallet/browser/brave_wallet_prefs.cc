@@ -34,6 +34,9 @@ constexpr int kDefaultWalletAutoLockMinutes = 10;
 // Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
+    "brave.wallet.user.assets.add_preloading_networks_migrated_3";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -188,10 +191,6 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterStringPref(kBraveWalletCurrentChainId,
                                brave_wallet::mojom::kMainnetChainId);
 
-  // Added 06/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
-
   // Added 10/2022
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
@@ -244,6 +243,9 @@ void RegisterProfilePrefsForMigration(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
                                 false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -279,9 +281,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Added 06/22 to have native tokens for all preloading networks.
-  BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
-
   // Added 10/22 to have is_nft set for existing ERC721 tokens.
   BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
 
@@ -350,6 +349,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 12/2023
   prefs->ClearPref(kBraveWalletUserAssetEthContractAddressMigrated);
+
+  // Added 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddPreloadingNetworksMigrated);
 }
 
 }  // namespace brave_wallet

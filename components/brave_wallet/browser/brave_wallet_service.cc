@@ -998,48 +998,6 @@ void BraveWalletService::ResetWebSitePermission(
 }
 
 // static
-void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated,
-                      true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  auto& user_assets_pref = update.Get();
-
-  // For each user asset list in ethereum known chains, check if it has the
-  // native token (address is empty) in the list already, if not, insert a
-  // native asset at the beginning based on the network info.
-  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
-    const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
-    DCHECK(!network_id.empty());
-    const auto path = base::StrCat({kEthereumPrefKey, ".", network_id});
-    auto* user_assets_list = user_assets_pref.FindListByDottedPath(path);
-    if (!user_assets_list) {
-      user_assets_list =
-          user_assets_pref.SetByDottedPath(path, base::Value::List())
-              ->GetIfList();
-      user_assets_list->Append(GetEthNativeAssetFromChain(chain));
-      continue;
-    }
-
-    auto it = FindAsset(user_assets_list, "", "", false);
-    if (it == user_assets_list->end()) {
-      user_assets_list->Insert(user_assets_list->begin(),
-                               base::Value(GetEthNativeAssetFromChain(chain)));
-    }
-  }
-
-  prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated, true);
-}
-
-// static
 void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated)) {
     return;

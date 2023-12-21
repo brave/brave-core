@@ -87,8 +87,6 @@ class BraveWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
-  static void MigrateUserAssetsAddPreloadingNetworks(
-      PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
