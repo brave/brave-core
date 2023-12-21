@@ -1196,6 +1196,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))
     })
     env.PYTHONUNBUFFERED = '1'
+    if (process.platform === 'win32') {
+      // UTF-8 is default on Linux/Mac, but on Windows CP1252 is used in most
+      // cases. This var makes Python use UTF-8 if encoding is not set
+      // explicitly in calls such as `open()`.
+      // https://peps.python.org/pep-0540/
+      env.PYTHONUTF8 = '1'
+    }
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
     env.RUSTUP_HOME = path.join(this.srcDir, 'third_party', 'rust-toolchain')
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
