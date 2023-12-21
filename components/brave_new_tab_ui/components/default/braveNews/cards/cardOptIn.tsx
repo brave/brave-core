@@ -8,6 +8,7 @@ import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 import * as Card from '../cardIntro'
 import BraveNewsLogoUrl from '../braveNewsLogo.svg'
 import { CardButton, TertiaryButton } from '../default'
+import { NEWS_FEED_CLASS } from '../../../../../brave_news/browser/resources/Feed'
 
 type Props = {
   onOptIn: () => unknown
@@ -19,7 +20,7 @@ const descriptionTwoTextParts = getLocaleWithTag('braveNewsIntroDescriptionTwo')
 export default function IntroCard (props: Props) {
   const introElementRef = React.useRef(null)
   return (
-    <Card.Intro ref={introElementRef}>
+    <Card.Intro ref={introElementRef} className={NEWS_FEED_CLASS}>
       <Card.Image src={BraveNewsLogoUrl} />
       <Card.Title>{getLocale('braveNewsIntroTitle')}</Card.Title>
       <div>

@@ -85,8 +85,15 @@ std::string GetFeedHash(const Channels& channels,
   }
 
   for (const auto& [id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
       hash_items.push_back(id);
+    }
+
+    // Disabling a publisher should also change the hash, as it will affect what
+    // articles can be shown.
+    if (publisher->user_enabled_status == mojom::UserEnabled::DISABLED) {
+      hash_items.push_back(id + "_disabled");
     }
   }
 
@@ -894,8 +901,7 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedV2Builder::OnPublishersUpdated(
-    PublishersController* publishers_controller) {
+void FeedV2Builder::RecheckFeedHash() {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels =
       channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
@@ -903,6 +909,11 @@ void FeedV2Builder::OnPublishersUpdated(
   for (const auto& listener : listeners_) {
     listener->OnUpdateAvailable(hash_);
   }
+}
+
+void FeedV2Builder::OnPublishersUpdated(
+    PublishersController* publishers_controller) {
+  RecheckFeedHash();
 }
 
 void FeedV2Builder::UpdateData(UpdateSettings settings,

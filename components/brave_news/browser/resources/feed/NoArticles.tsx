@@ -36,24 +36,24 @@ export default function NoArticles() {
       <rect x="9.5" y="75" width="64" height="4" rx="2" fill="url(#paint4_linear_5051_10730)" />
       <defs>
         <linearGradient id="paint0_linear_5051_10730" x1="49.5" y1="1" x2="49.5" y2="78.5" gradientUnits="userSpaceOnUse">
-          <stop stop-color="white" stop-opacity="0.15" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" stopOpacity="0.15" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="paint1_linear_5051_10730" x1="9.5" y1="33" x2="89.5" y2="33" gradientUnits="userSpaceOnUse">
-          <stop stop-color="white" stop-opacity="0.03" />
-          <stop offset="1" stop-color="white" stop-opacity="0.2" />
+          <stop stopColor="white" stopOpacity="0.03" />
+          <stop offset="1" stopColor="white" stopOpacity="0.2" />
         </linearGradient>
         <linearGradient id="paint2_linear_5051_10730" x1="9.5" y1="71.0426" x2="89.5" y2="71.0425" gradientUnits="userSpaceOnUse">
-          <stop stop-color="white" stop-opacity="0.03" />
-          <stop offset="1" stop-color="white" stop-opacity="0.2" />
+          <stop stopColor="white" stopOpacity="0.03" />
+          <stop offset="1" stopColor="white" stopOpacity="0.2" />
         </linearGradient>
         <linearGradient id="paint3_linear_5051_10730" x1="9.5" y1="60.0213" x2="57.5" y2="60.0213" gradientUnits="userSpaceOnUse">
-          <stop stop-color="white" stop-opacity="0.03" />
-          <stop offset="1" stop-color="white" stop-opacity="0.2" />
+          <stop stopColor="white" stopOpacity="0.03" />
+          <stop offset="1" stopColor="white" stopOpacity="0.2" />
         </linearGradient>
         <linearGradient id="paint4_linear_5051_10730" x1="9.5" y1="77.0426" x2="73.5" y2="77.0425" gradientUnits="userSpaceOnUse">
-          <stop stop-color="white" stop-opacity="0.03" />
-          <stop offset="1" stop-color="white" stop-opacity="0.2" />
+          <stop stopColor="white" stopOpacity="0.03" />
+          <stop offset="1" stopColor="white" stopOpacity="0.2" />
         </linearGradient>
       </defs>
     </svg>
