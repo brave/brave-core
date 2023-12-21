@@ -46,6 +46,7 @@ import { tokenBalancesEndpoints } from './endpoints/token_balances.endpoints'
 import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
+import { swapEndpoints } from './endpoints/swap.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -146,6 +147,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: fiatCurrencyEndpoints })
       // Site permission (connected accounts) endpoints
       .injectEndpoints({ endpoints: sitePermissionEndpoints })
+      // Brave Swap endpoints
+      .injectEndpoints({ endpoints: swapEndpoints })
   )
 }
 
@@ -171,7 +174,10 @@ export const {
   useConnectToSiteMutation,
   useCreateWalletMutation,
   useEnableEnsOffchainLookupMutation,
+  useGenerateBraveSwapFeeMutation,
   useGenerateReceiveAddressMutation,
+  useGenerateSwapQuoteMutation,
+  useGenerateSwapTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,

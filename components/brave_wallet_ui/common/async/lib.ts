@@ -200,11 +200,6 @@ export async function sendSolanaSerializedTransaction(
   )
 }
 
-export function getSwapService() {
-  const { swapService } = getAPIProxy()
-  return swapService
-}
-
 export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {
   const { jsonRpcService } = getAPIProxy()
   if (token.coin === BraveWallet.CoinType.ETH) {

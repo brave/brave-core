@@ -23,6 +23,9 @@ import { useLib } from '../../../../common/hooks/useLib'
 
 // Query hooks
 import {
+  useGenerateBraveSwapFeeMutation,
+  useGenerateSwapQuoteMutation,
+  useGenerateSwapTransactionMutation,
   useGetDefaultFiatCurrencyQuery //
 } from '../../../../common/slices/api.slice'
 
@@ -38,6 +41,11 @@ export function useJupiter(params: SwapParams) {
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
+
+  // Mutations
+  const [generateSwapQuote] = useGenerateSwapQuoteMutation()
+  const [generateBraveSwapFee] = useGenerateBraveSwapFeeMutation()
+  const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
 
   // State
   const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(
@@ -59,8 +67,7 @@ export function useJupiter(params: SwapParams) {
 
   // Custom hooks
   // FIXME(josheleonard): use slices API
-  const { getSwapService, sendSolanaSerializedTransaction } = useLib()
-  const swapService = getSwapService()
+  const { sendSolanaSerializedTransaction } = useLib()
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -131,7 +138,7 @@ export function useJupiter(params: SwapParams) {
       setLoading(true)
 
       try {
-        const { response: braveFeeResponse } = await swapService.getBraveFee({
+        const { response: braveFeeResponse } = await generateBraveSwapFee({
           chainId: selectedNetwork.chainId,
           inputToken:
             overriddenParams.fromToken.contractAddress ||
@@ -140,7 +147,7 @@ export function useJupiter(params: SwapParams) {
             overriddenParams.toToken.contractAddress ||
             WRAPPED_SOL_CONTRACT_ADDRESS,
           taker: overriddenParams.fromAccount.address
-        })
+        }).unwrap()
         setBraveFee(braveFeeResponse || undefined)
       } catch (e) {
         console.log(
@@ -153,7 +160,7 @@ export function useJupiter(params: SwapParams) {
 
       let jupiterQuoteResponse
       try {
-        jupiterQuoteResponse = await swapService.getQuote({
+        jupiterQuoteResponse = await generateSwapQuote({
           fromAccountId: overriddenParams.fromAccount.accountId,
           fromChainId: selectedNetwork.chainId,
           fromToken:
@@ -174,7 +181,7 @@ export function useJupiter(params: SwapParams) {
           toAmount: '',
           slippagePercentage: overriddenParams.slippageTolerance,
           routePriority: BraveWallet.RoutePriority.kRecommended
-        })
+        }).unwrap()
       } catch (e) {
         console.log(`Error getting Jupiter quote: ${e}`)
       }
@@ -199,7 +206,7 @@ export function useJupiter(params: SwapParams) {
       // Return undefined if response is null.
       return jupiterQuoteResponse?.response?.jupiterQuote || undefined
     },
-    [selectedNetwork, params, reset, swapService]
+    [selectedNetwork, params, reset, generateBraveSwapFee, generateSwapQuote]
   )
 
   const exchange = useCallback(
@@ -221,7 +228,7 @@ export function useJupiter(params: SwapParams) {
       setLoading(true)
       let jupiterTransactionResponse
       try {
-        jupiterTransactionResponse = await swapService.getTransaction(
+        jupiterTransactionResponse = await generateSwapTransaction(
           toMojoUnion(
             {
               jupiterTransactionParams: {
@@ -238,7 +245,7 @@ export function useJupiter(params: SwapParams) {
             },
             'jupiterTransactionParams'
           )
-        )
+        ).unwrap()
       } catch (e) {
         console.log(`Error getting Jupiter swap transactions: ${e}`)
       }
@@ -290,7 +297,7 @@ export function useJupiter(params: SwapParams) {
       selectedNetwork,
       params.toToken,
       selectedAccount,
-      swapService,
+      generateSwapTransaction,
       selectedRoute,
       sendSolanaSerializedTransaction,
       reset
