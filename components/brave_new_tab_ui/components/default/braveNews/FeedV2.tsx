@@ -11,8 +11,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'
 import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigation'
+import NewsButton from '../../../../brave_news/browser/resources/NewsButton'
 import Variables from '../../../../brave_news/browser/resources/Variables'
 import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
+import { isPublisherEnabled } from '../../../../brave_news/browser/resources/shared/api'
 import { CLASSNAME_PAGE_STUCK } from '../page'
 
 const Root = styled(Variables)`
@@ -56,19 +58,13 @@ const ButtonsContainer = styled.div`
   background: var(--bn-glass-container);
 `
 
-const NewsButton = styled(Button)`
+const SettingsButton = styled(Button)`
   --leo-button-color: var(--bn-glass-50);
   --leo-button-radius: ${radius.s};
   --leo-button-padding: ${spacing.m};
 `
 
-const LoadNewContentButton = styled(Button)`
-  --leo-button-color: var(--bn-glass-10);
-
-  border-radius: 20px;
-  overflow: hidden;
-  backdrop-filter: brightness(0.8) blur(32px);
-
+const LoadNewContentButton = styled(NewsButton)`
   position: fixed;
   z-index: 1;
   top: ${spacing['3Xl']};
@@ -77,7 +73,22 @@ const LoadNewContentButton = styled(Button)`
 `
 
 export default function FeedV2() {
-  const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable } = useBraveNews()
+  const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable, publishers, channels } = useBraveNews()
+
+  // We don't want to decide whether we have subscriptions until the publishers
+  // and channels have loaded.
+  const loaded = React.useMemo(() => !!Object.values(publishers).length && !!Object.values(channels).length, [publishers, channels])
+
+  // This is a bit of an interesting |useMemo| - we only want it to be updated
+  // when the feed changes so as to not break the case where:
+  // 1. The user has no feeds (we show the NoFeeds card)
+  // 2. The user subscribes to a feed (we should still show the NoFeeds card,
+  //    not the "Empty Feed")
+  // To achieve this, |hasSubscriptions| is only updated when the feed changes,
+  // or the opt-in status is changed.
+  const hasSubscriptions = React.useMemo(() => !loaded
+    || Object.values(publishers).some(isPublisherEnabled)
+    || Object.values(channels).some(c => c.subscribedLocales.length), [feedV2, loaded])
 
   const ref = React.useRef<HTMLDivElement>()
 
@@ -92,15 +103,6 @@ export default function FeedV2() {
     ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
-  // For some reason |createGlobalStyle| doesn't seem to work in Brave Core
-  // To get the background blur effect looking nice, we need to set the body
-  // background to black - unfortunately we can't do this in root HTML file
-  // because we want to avoid the background flash effect.
-  React.useEffect(() => {
-    // Note: This is always black because this doesn't support light mode.
-    document.body.style.backgroundColor = 'black';
-  }, [])
-
   return <Root ref={ref as any} data-theme="dark">
     <SidebarContainer>
       <FeedNavigation />
@@ -109,16 +111,16 @@ export default function FeedV2() {
       {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
         {getLocale('braveNewsNewContentAvailable')}
       </LoadNewContentButton>}
-      <Feed feed={feedV2} />
+      <Feed feed={feedV2} hasSubscriptions={hasSubscriptions} />
     </Flex>
 
     <ButtonsContainer>
-      <NewsButton fab kind='outline' onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
+      <SettingsButton fab kind='outline' onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
         <Icon name="settings" />
-      </NewsButton>
-      <NewsButton fab isLoading={!feedV2} kind='outline' title={getLocale('braveNewsRefreshFeed')} onClick={() => {
+      </SettingsButton>
+      <SettingsButton fab isLoading={!feedV2} kind='outline' title={getLocale('braveNewsRefreshFeed')} onClick={() => {
         refreshFeedV2()
-      }}><Icon name="refresh" /></NewsButton>
+      }}><Icon name="refresh" /></SettingsButton>
     </ButtonsContainer>
   </Root>
 }

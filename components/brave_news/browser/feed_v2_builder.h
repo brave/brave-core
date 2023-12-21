@@ -59,6 +59,8 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void GetSignals(GetSignalsCallback callback);
 
+  void RecheckFeedHash();
+
   // PublishersController::Observer:
   void OnPublishersUpdated(PublishersController* controller) override;
 

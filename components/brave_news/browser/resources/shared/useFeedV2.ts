@@ -15,6 +15,7 @@ const MAX_AGE_FOR_LOCAL_STORAGE_FEED = 1000 * 60 * 60
 const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
   if (type?.channel) return `channels/${type.channel.channel}`
   if (type?.publisher) return `publishers/${type.publisher.publisherId}`
+  if (type?.following) return `following`
   return 'all'
 }
 
