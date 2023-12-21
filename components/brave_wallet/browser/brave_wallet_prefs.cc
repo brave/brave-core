@@ -227,9 +227,6 @@ void RegisterProfilePrefsForMigration(
                              base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
-  // Added 12/2022
-  registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
-
   // Added 02/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
 
@@ -308,9 +305,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
-
-  // Added 12/2022
-  JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 
   // Added 02/2023
   TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);

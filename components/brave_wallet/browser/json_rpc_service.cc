@@ -307,42 +307,6 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
 
 JsonRpcService::~JsonRpcService() = default;
 
-// static
-void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kShowWalletTestNetworksDeprecated)) {
-    return;
-  }
-
-  bool show_test_networks =
-      prefs->GetBoolean(kShowWalletTestNetworksDeprecated);
-  prefs->ClearPref(kShowWalletTestNetworksDeprecated);
-
-  if (!show_test_networks) {
-    return;
-  }
-
-  // Show test networks toggle was explicitly enabled. Go through coins and
-  // remove all test networks from hidden lists.
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get();
-
-  auto* eth_list = dict.EnsureList(kEthereumPrefKey);
-  eth_list->EraseValue(base::Value(mojom::kGoerliChainId));
-  eth_list->EraseValue(base::Value(mojom::kSepoliaChainId));
-  eth_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-  eth_list->EraseValue(base::Value(mojom::kFilecoinEthereumTestnetChainId));
-
-  auto* fil_list = dict.EnsureList(kFilecoinPrefKey);
-  fil_list->EraseValue(base::Value(mojom::kFilecoinTestnet));
-  fil_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-
-  auto* sol_list = dict.EnsureList(kSolanaPrefKey);
-  sol_list->EraseValue(base::Value(mojom::kSolanaDevnet));
-  sol_list->EraseValue(base::Value(mojom::kSolanaTestnet));
-  sol_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-}
-
 mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
   mojo::PendingRemote<mojom::JsonRpcService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());

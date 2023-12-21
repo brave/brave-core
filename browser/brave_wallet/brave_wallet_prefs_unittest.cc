@@ -53,64 +53,6 @@ class BraveWalletPrefsUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
 };
 
-TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
-
-  // Hiding non-test network which should not be touched by migration.
-  AddHiddenNetwork(GetPrefs(), mojom::CoinType::FIL, "0x123");
-
-  // Test networks are hidden by default.
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
-              ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId,
-                                mojom::kFilecoinEthereumTestnetChainId}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
-              ElementsAreArray({mojom::kFilecoinTestnet,
-                                mojom::kLocalhostChainId, "0x123"}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::SOL),
-              ElementsAreArray({mojom::kSolanaDevnet, mojom::kSolanaTestnet,
-                                mojom::kLocalhostChainId}));
-
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  // Still same when nothing to migrate.
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
-              ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId,
-                                mojom::kFilecoinEthereumTestnetChainId}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
-              ElementsAreArray({mojom::kFilecoinTestnet,
-                                mojom::kLocalhostChainId, "0x123"}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::SOL),
-              ElementsAreArray({mojom::kSolanaDevnet, mojom::kSolanaTestnet,
-                                mojom::kLocalhostChainId}));
-
-  GetPrefs()->SetBoolean(kShowWalletTestNetworksDeprecated, false);
-
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  // Still same when test networks toggle was explicitly off.
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
-              ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId,
-                                mojom::kFilecoinEthereumTestnetChainId}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
-              ElementsAreArray({mojom::kFilecoinTestnet,
-                                mojom::kLocalhostChainId, "0x123"}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::SOL),
-              ElementsAreArray({mojom::kSolanaDevnet, mojom::kSolanaTestnet,
-                                mojom::kLocalhostChainId}));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
-
-  GetPrefs()->SetBoolean(kShowWalletTestNetworksDeprecated, true);
-
-  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
-  // Test networks are removed from hidden list after successful migration.
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH), SizeIs(0));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
-              ElementsAreArray({"0x123"}));
-  EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::SOL), SizeIs(0));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
-}
-
 TEST_F(BraveWalletPrefsUnitTest, MigrateAddChainIdToTransactionInfo) {
   EXPECT_FALSE(
       GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));

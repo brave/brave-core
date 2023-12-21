@@ -82,6 +82,9 @@ inline constexpr char kBraveWalletNftDiscoveryEnabled[] =
     "brave.wallet.nft_discovery_enabled";
 inline constexpr char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
+inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
+inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
+
 // Added 02/2023 to migrate transactions to contain the
 // chain_id for each one.
 inline constexpr char kBraveWalletTransactionsChainIdMigrated[] =
@@ -92,17 +95,11 @@ inline constexpr char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
 // Added 07/2023 to migrate transactions from prefs to DB.
 inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
     "brave.wallet.transactions.from_prefs_to_db_migrated";
-
-// Added 08/09 to migrate Fantom mainnet, previously a preloaded network,
+// Added 08/2023 to migrate Fantom mainnet, previously a preloaded network,
 // to a custom network.
 inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
     "brave.wallet.custom_networks.fantom_mainnet_migrated";
 
-// DEPRECATED
-inline constexpr char kShowWalletTestNetworksDeprecated[] =
-    "brave.wallet.show_wallet_test_networks";
-inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
-inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
 // 06/2023
 inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
     "brave.wallet.selected_coin";
