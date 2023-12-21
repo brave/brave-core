@@ -18,7 +18,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
-namespace query_filter {
+namespace {
 
 static constexpr auto kSimpleQueryStringTrackers =
     base::MakeFixedFlatSetSorted<std::string_view>({
@@ -156,13 +156,6 @@ bool IsScopedTracker(
   return false;
 }
 
-bool IsScopedTrackerForTesting(
-    const std::string_view param_name,
-    const std::string& spec,
-    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
-  return IsScopedTracker(param_name, spec, trackers);
-}
-
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
 std::optional<std::string> StripQueryParameter(const std::string_view query,
@@ -198,6 +191,9 @@ std::optional<std::string> StripQueryParameter(const std::string_view query,
   }
   return std::nullopt;
 }
+}  // namespace
+
+namespace query_filter {
 
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   const auto& query = original_url.query_piece();
@@ -256,5 +252,12 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
   }
 
   return ApplyQueryFilter(request_url);
+}
+
+bool IsScopedTrackerForTesting(
+    const std::string_view param_name,
+    const std::string& spec,
+    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
+  return IsScopedTracker(param_name, spec, trackers);
 }
 }  // namespace query_filter
