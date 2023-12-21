@@ -9,18 +9,14 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/no_destructor.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
-#include "base/values.h"
 #include "build/build_config.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_referrals/browser/android_brave_referrer.h"
