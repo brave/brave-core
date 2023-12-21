@@ -75,14 +75,21 @@ const LoadNewContentButton = styled(NewsButton)`
 export default function FeedV2() {
   const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable, publishers, channels } = useBraveNews()
 
+  // We don't want to decide whether we have subscriptions until the publishers
+  // and channels have loaded.
+  const loaded = React.useMemo(() => !!Object.values(publishers).length && !!Object.values(channels).length, [publishers, channels])
+
   // This is a bit of an interesting |useMemo| - we only want it to be updated
   // when the feed changes so as to not break the case where:
   // 1. The user has no feeds (we show the NoFeeds card)
   // 2. The user subscribes to a feed (we should still show the NoFeeds card,
   //    not the "Empty Feed")
-  // To achieve this, |hasSubscriptions| is only updated when the feed changes.
-  const hasSubscriptions = React.useMemo(() => Object.values(publishers).some(isPublisherEnabled)
-    || Object.values(channels).some(c => c.subscribedLocales.length), [feedV2])
+  // To achieve this, |hasSubscriptions| is only updated when the feed changes,
+  // or the opt-in status is changed.
+  const hasSubscriptions = React.useMemo(() => !loaded
+    || Object.values(publishers).some(isPublisherEnabled)
+    || Object.values(channels).some(c => c.subscribedLocales.length), [feedV2, loaded])
+
   const ref = React.useRef<HTMLDivElement>()
 
   // Note: Whenever the feed is updated, if we're viewing the feed, scroll to
