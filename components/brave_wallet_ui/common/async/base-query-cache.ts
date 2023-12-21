@@ -400,7 +400,7 @@ async function fetchAssetsForNetwork(
   return tokenList
 }
 
-async function makeTokensRegistry(
+export async function makeTokensRegistry(
   networksRegistry: NetworksRegistry,
   listType: AssetsListType
 ) {
