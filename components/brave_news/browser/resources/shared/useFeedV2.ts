@@ -15,6 +15,7 @@ const MAX_AGE_FOR_LOCAL_STORAGE_FEED = 1000 * 60 * 60
 const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
   if (type?.channel) return `channels/${type.channel.channel}`
   if (type?.publisher) return `publishers/${type.publisher.publisherId}`
+  if (type?.following) return `following`
   return 'all'
 }
 
@@ -123,6 +124,8 @@ export const useFeedV2 = (enabled: boolean) => {
   const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
   const [hash, setHash] = useState<string>()
 
+  window['feed'] = feedV2
+
   // Add a listener for the latest hash if Brave News is enabled. Note: We need
   // to re-add the listener when the enabled state changes because the backing
   // FeedV2Builder is created/destroyed.
@@ -144,8 +147,11 @@ export const useFeedV2 = (enabled: boolean) => {
 
     setFeedV2(undefined)
 
+    console.log("Attempting to load feed", feedView)
     const cachedFeed = maybeLoadFeed(feedView)
     if (cachedFeed) {
+      console.log("Got feed with", feedTypeToFeedView(cachedFeed?.type))
+      console.log(cachedFeed)
       setFeedV2(cachedFeed)
       return
     }
