@@ -18,13 +18,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "build/build_config.h"
 
-#if defined(REDIRECT_CC_AS_GOMACC)
-#include "brave/tools/redirect_cc/gomacc_buildflags.h"
-#elif defined(REDIRECT_CC_AS_REWRAPPER)
+#if defined(REDIRECT_CC_AS_REWRAPPER)
 #include "brave/tools/redirect_cc/rewrapper_buildflags.h"
-#else  // defined(REDIRECT_CC_AS_GOMACC) || defined(REDIRECT_CC_AS_REWRAPPER)
+#else  // defined(REDIRECT_CC_AS_REWRAPPER)
 #include "base/environment.h"
-#endif  // defined(REDIRECT_CC_AS_GOMACC) || defined(REDIRECT_CC_AS_REWRAPPER)
+#endif  // defined(REDIRECT_CC_AS_REWRAPPER)
 
 const base::FilePath::StringPieceType kIncludeFlag = FILE_PATH_LITERAL("-I");
 const base::FilePath::StringPieceType kBraveChromiumSrc =
@@ -48,13 +46,10 @@ class RedirectCC {
       return base::FilePath::StringType();
     }
 
-#if defined(REDIRECT_CC_AS_GOMACC)
-    *first_compiler_arg_idx = 1;
-    return UTF8ToFilePathString(BUILDFLAG(REAL_GOMACC));
-#elif defined(REDIRECT_CC_AS_REWRAPPER)
+#if defined(REDIRECT_CC_AS_REWRAPPER)
     *first_compiler_arg_idx = 1;
     return UTF8ToFilePathString(BUILDFLAG(REAL_REWRAPPER));
-#else   // defined(REDIRECT_CC_AS_GOMACC) || defined(REDIRECT_CC_AS_REWRAPPER)
+#else   // defined(REDIRECT_CC_AS_REWRAPPER)
     std::string cc_wrapper;
     std::unique_ptr<base::Environment> env(base::Environment::Create());
     if (env->HasVar("CC_WRAPPER")) {
@@ -68,12 +63,12 @@ class RedirectCC {
 
     *first_compiler_arg_idx = 2;
     return argv_[1];
-#endif  // defined(REDIRECT_CC_AS_GOMACC) || defined(REDIRECT_CC_AS_REWRAPPER)
+#endif  // defined(REDIRECT_CC_AS_REWRAPPER)
   }
 
   int Run() {
     // Get compiler executable. It can be a first arg to redirect_cc, a
-    // REAL_GOMACC/REAL_REWRAPPER buildflag or a CC_WRAPPER env variable.
+    // REAL_REWRAPPER buildflag or a CC_WRAPPER env variable.
     int first_compiler_arg_idx = 0;
     const base::FilePath::StringType& compiler_executable =
         GetCompilerExecutable(&first_compiler_arg_idx);
