@@ -91,7 +91,7 @@ struct OrderResponse {
     currency: String,
     updated_at: DateTime<Utc>,
     total_price: String,
-    location: String,
+    location: Option<String>,
     merchant_id: String,
     status: String,
     items: Vec<OrderItemResponse>,

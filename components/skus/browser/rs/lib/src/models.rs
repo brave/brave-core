@@ -174,7 +174,7 @@ pub struct Order {
     pub currency: String,
     pub updated_at: NaiveDateTime,
     pub total_price: f64,
-    pub location: String,
+    pub location: Option<String>,
     pub merchant_id: String,
     pub status: String,
     pub items: Vec<OrderItem>,
@@ -191,17 +191,7 @@ pub struct SubmitReceipt {
 
 impl Order {
     pub fn location_matches(&self, environment: &Environment, domain: &str) -> bool {
-        if *environment != Environment::Local && *environment != Environment::Testing {
-            // domain we are comparing with must be the location or a subdomain of it
-            if domain
-                .strip_suffix(&self.location)
-                .filter(|s| s.is_empty() || s.ends_with('.'))
-                .is_none()
-            {
-                return false;
-            }
-        }
-        true
+        self.items.iter().any(|x| x.location_matches(environment, domain))
     }
 
     pub fn is_paid(&self) -> bool {
@@ -221,6 +211,21 @@ impl Order {
 
     pub fn can_submit_credentials(&self, now: NaiveDateTime) -> bool {
         return self.is_paid() || (self.is_cancelled() && !self.has_expired(now));
+    }
+}
+
+impl OrderItem {
+    pub fn location_matches(&self, environment: &Environment, domain: &str) -> bool {
+        if *environment != Environment::Local && *environment != Environment::Testing {
+            if domain
+                .strip_suffix(&self.location)
+                .filter(|s| s.is_empty() || s.ends_with('.'))
+                .is_none()
+            {
+                return false;
+            }
+        }
+        true
     }
 }
 

@@ -42,6 +42,10 @@ where
 
         let expires_at = order.expires_at;
         for item in &order.items {
+            if !item.location_matches(&self.environment, domain) {
+                continue
+            }
+
             match item.credential_type {
                 CredentialType::TimeLimitedV2 => {
                     let expires_at = self
