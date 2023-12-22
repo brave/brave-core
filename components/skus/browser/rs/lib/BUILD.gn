@@ -13,6 +13,7 @@ rust_static_library("rust_lib") {
     "src/errors.rs",
     "src/http.rs",
     "src/lib.rs",
+    "src/log.rs",
     "src/models.rs",
     "src/sdk/credentials/fetch.rs",
     "src/sdk/credentials/mod.rs",
