@@ -260,13 +260,11 @@ export const TransactionSimulationInfo = ({
           key='SOL-staking-changes'
         >
           <TransactionChangeCollapseTitle slot='title'>
-            {/* TODO: */}
-            {'No Changes'}
+            {getLocale('braveWalletNoChanges')}
           </TransactionChangeCollapseTitle>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'NoChanges-Divider'} />
-            {/* TODO */}
-            NO Changes detected
+            {getLocale('braveWalletNoChangesDetected')}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>
       )}
