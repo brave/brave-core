@@ -61,11 +61,6 @@ extern const base::FeatureParam<double> kBraveNewsSourceVisitsMin;
 // 80% of the clusters should be categories and 20% topics.
 extern const base::FeatureParam<double> kBraveNewsCategoryTopicRatio;
 
-// The temperature of the softmax function used to compute the sampling
-// probabilities of the articles in the feed. High temperature means the
-// distribution is more uniform.
-extern const base::FeatureParam<double> kBraveNewsTemperature;
-
 }  // namespace brave_news::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_
