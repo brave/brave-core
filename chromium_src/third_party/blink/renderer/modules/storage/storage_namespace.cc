@@ -5,11 +5,12 @@
 
 #include "third_party/blink/renderer/modules/storage/storage_namespace.h"
 
+#include "net/base/features.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/modules/storage/storage_controller.h"
 
 #define GetStorageKey GetEphemeralStorageKeyOrStorageKey
-#define BindStorageArea BindStorageArea_Unused
+#define BindStorageArea BindStorageArea_ChromiumImpl
 
 #include "src/third_party/blink/renderer/modules/storage/storage_namespace.cc"
 
@@ -24,6 +25,13 @@ namespace blink {
 void StorageNamespace::BindStorageArea(
     const LocalDOMWindow& local_dom_window,
     mojo::PendingReceiver<mojom::blink::StorageArea> receiver) {
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    BindStorageArea_ChromiumImpl(local_dom_window, std::move(receiver));
+    return;
+  }
+
   if (IsSessionStorage()) {
     controller_->dom_storage()->BindSessionStorageArea(
         local_dom_window.GetStorageKey(), local_dom_window.GetLocalFrameToken(),

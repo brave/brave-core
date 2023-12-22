@@ -193,7 +193,9 @@ void EphemeralStorageService::RemoveObserver(
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
     const std::string& ephemeral_domain) {
   if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
+          net::features::kBraveForgetFirstPartyStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
     return;
   }
 

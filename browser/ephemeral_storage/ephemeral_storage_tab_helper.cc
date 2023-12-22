@@ -105,28 +105,31 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   auto* site_instance = web_contents()->GetSiteInstance();
   auto* storage_partition = browser_context->GetStoragePartition(site_instance);
 
-  // Session storage is always per-tab and never per-TLD, so we always delete
-  // and recreate the session storage when switching domains.
-  //
-  // We need to explicitly release the storage namespace before recreating a
-  // new one in order to make sure that we remove the final reference and free
-  // it.
-  session_storage_namespace_.reset();
+  if (!base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    // Session storage is always per-tab and never per-TLD, so we always delete
+    // and recreate the session storage when switching domains.
+    //
+    // We need to explicitly release the storage namespace before recreating a
+    // new one in order to make sure that we remove the final reference and free
+    // it.
+    session_storage_namespace_.reset();
 
-  std::string session_partition_id = StringToSessionStorageId(
-      content::GetSessionStorageNamespaceId(web_contents()),
-      kSessionStorageSuffix);
+    std::string session_partition_id = StringToSessionStorageId(
+        content::GetSessionStorageNamespaceId(web_contents()),
+        kSessionStorageSuffix);
 
-  auto* opener_rfh = web_contents()->GetOpener();
-  session_storage_namespace_ = content::CreateSessionStorageNamespace(
-      storage_partition, session_partition_id,
-      // clone the namespace if there is an opener
-      // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
-      opener_rfh ? std::make_optional<std::string>(StringToSessionStorageId(
-                       content::GetSessionStorageNamespaceId(
-                           WebContents::FromRenderFrameHost(opener_rfh)),
-                       kSessionStorageSuffix))
-                 : std::nullopt);
+    auto* opener_rfh = web_contents()->GetOpener();
+    session_storage_namespace_ = content::CreateSessionStorageNamespace(
+        storage_partition, session_partition_id,
+        // clone the namespace if there is an opener
+        // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
+        opener_rfh ? std::make_optional<std::string>(StringToSessionStorageId(
+                         content::GetSessionStorageNamespaceId(
+                             WebContents::FromRenderFrameHost(opener_rfh)),
+                         kSessionStorageSuffix))
+                   : std::nullopt);
+  }
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       browser_context, new_domain, site_instance->GetStoragePartitionConfig());

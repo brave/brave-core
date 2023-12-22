@@ -159,6 +159,12 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    return storage;
+  }
+
   if (!GetEphemeralStorageOrigin(window))
     return storage;
 
@@ -187,10 +193,16 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
 
 StorageArea* BraveDOMWindowStorage::localStorage(
     ExceptionState& exception_state) {
+  LocalDOMWindow* window = GetSupplementable();
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    return DOMWindowStorage::From(*window).localStorage(exception_state);
+  }
+
   if (ephemeral_local_storage_)
     return ephemeral_local_storage_;
 
-  LocalDOMWindow* window = GetSupplementable();
   const SecurityOrigin* ephemeral_storage_origin =
       GetEphemeralStorageOrigin(window);
   if (ephemeral_storage_origin) {
