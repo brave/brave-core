@@ -6,6 +6,7 @@
 /* eslint-disable @typescript-eslint/key-spacing */
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { color } from '@brave/leo/tokens/css'
 
 // magics
@@ -22,6 +23,9 @@ import Amount from '../../../../utils/amount'
 import { getLocale } from '../../../../../common/locale'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { IconAsset } from '../../../shared/create-placeholder-icon'
+import {
+  useGetCombinedTokensRegistryQuery //
+} from '../../../../common/slices/api.slice.extra'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
@@ -64,18 +68,36 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
     | BraveWallet.BlowfishNativeAssetTransferData
   network: ChainInfo
 }): JSX.Element => {
+  // queries
+  const { data: tokensRegistry } = useGetCombinedTokensRegistryQuery(
+    transfer.asset.imageUrl ? skipToken : undefined
+  )
+
   // memos
   const asset: IconAsset = React.useMemo(() => {
+    const foundTokenId = transfer.asset.imageUrl
+      ? tokensRegistry.fungibleIdsByChainId[network.chainId].find(
+          (id) =>
+            tokensRegistry.entities[id]?.contractAddress?.toLowerCase() ===
+            transfer.asset.address
+        )
+      : undefined
+
+    const foundTokenLogo =
+      foundTokenId !== undefined
+        ? tokensRegistry.entities[foundTokenId]?.logo || ''
+        : ''
+
     return {
       contractAddress: transfer.asset.address,
       isErc721: false,
       isNft: false,
       chainId: network.chainId,
-      logo: transfer.asset.imageUrl || '',
+      logo: transfer.asset.imageUrl || foundTokenLogo,
       name: transfer.asset.name,
       symbol: transfer.asset.symbol
     }
-  }, [transfer.asset, network.chainId])
+  }, [transfer.asset, network.chainId, tokensRegistry])
 
   // computed
   const normalizedAmount = new Amount(transfer.amount.after)

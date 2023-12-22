@@ -4,26 +4,24 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { EntityId } from '@reduxjs/toolkit'
-import { mapLimit } from 'async'
 
 // types
 import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { SetUserAssetVisiblePayloadType } from '../../constants/action_types'
-import type { BaseQueryCache } from '../../async/base-query-cache'
+import {
+  makeTokensRegistry,
+  type BaseQueryCache
+} from '../../async/base-query-cache'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { addChainIdToToken, getAssetIdKey } from '../../../utils/asset-utils'
-import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { addLogoToToken } from '../../async/lib'
 import {
   BlockchainTokenEntityAdaptorState,
-  blockchainTokenEntityAdaptor,
-  blockchainTokenEntityAdaptorInitialState
+  blockchainTokenEntityAdaptor
 } from '../entities/blockchain-token.entity'
-import { networkEntityAdapter } from '../entities/network.entity'
 
 export const TOKEN_TAG_IDS = {
   REGISTRY: 'REGISTRY'
@@ -37,93 +35,13 @@ export const tokenEndpoints = ({
     getTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const {
-            cache,
-            data: { blockchainRegistry }
-          } = baseQuery(undefined)
+          const { cache } = baseQuery(undefined)
 
           const networksRegistry = await cache.getNetworksRegistry()
-          const networksList: BraveWallet.NetworkInfo[] =
-            getEntitiesListFromEntityState(
-              networksRegistry,
-              networksRegistry.visibleIds
-            )
 
-          const tokenIdsByChainId: Record<string, string[]> = {}
-          const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
-
-          const getTokensList = async () => {
-            const tokenListsForNetworks = await mapLimit(
-              networksList,
-              10,
-              async (network: BraveWallet.NetworkInfo) => {
-                const networkId = networkEntityAdapter.selectId(network)
-
-                const { tokens } = await blockchainRegistry.getAllTokens(
-                  network.chainId,
-                  network.coin
-                )
-
-                const fullTokensListForChain: //
-                BraveWallet.BlockchainToken[] = await mapLimit(
-                  tokens,
-                  10,
-                  async (token: BraveWallet.BlockchainToken) => {
-                    return addChainIdToToken(
-                      await addLogoToToken(token),
-                      network.chainId
-                    )
-                  }
-                )
-
-                tokenIdsByChainId[networkId] =
-                  fullTokensListForChain.map(getAssetIdKey)
-
-                tokenIdsByCoinType[network.coin] = (
-                  tokenIdsByCoinType[network.coin] || []
-                ).concat(tokenIdsByChainId[networkId] || [])
-
-                return fullTokensListForChain
-              }
-            )
-
-            const flattenedTokensList = tokenListsForNetworks.flat(1)
-            return flattenedTokensList
-          }
-
-          let flattenedTokensList = await getTokensList()
-
-          // on startup, the tokens list returned from core may be empty
-          const startDate = new Date()
-          const timeoutSeconds = 5
-          const timeoutMilliseconds = timeoutSeconds * 1000
-
-          // retry until we have some tokens or the request takes too
-          // long
-          while (
-            // empty list
-            flattenedTokensList.length < 1 &&
-            // try until timeout reached
-            new Date().getTime() - startDate.getTime() < timeoutMilliseconds
-          ) {
-            flattenedTokensList = await getTokensList()
-          }
-
-          // return an error on timeout, so a retry can be attempted
-          if (flattenedTokensList.length === 0) {
-            throw new Error('No tokens found in tokens registry')
-          }
-
-          const tokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
-            {
-              ...blockchainTokenEntityAdaptorInitialState,
-              idsByChainId: tokenIdsByChainId,
-              idsByCoinType: tokenIdsByCoinType,
-              visibleTokenIds: [],
-              visibleTokenIdsByChainId: {},
-              visibleTokenIdsByCoinType: {}
-            },
-            flattenedTokensList
+          const tokensByChainIdRegistry = await makeTokensRegistry(
+            networksRegistry,
+            'known'
           )
 
           return {
