@@ -57,7 +57,7 @@ export const TransactionChangeCollapse = styled(Collapse)<{
   --leo-collapse-shadow: none;
   --leo-collapse-summary-padding: 8px;
   --leo-collapse-content-padding: 0px 8px 8px 8px;
-  font: var(--leo-font-primary-small-semibold);
+  font: ${leo.font.small.semibold};
 `
 
 export const TransactionChangeCollapseContainer = styled.div<{
