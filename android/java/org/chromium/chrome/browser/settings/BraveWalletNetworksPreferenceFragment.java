@@ -49,12 +49,14 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.brave_wallet_networks_title);
+        requireActivity().setTitle(R.string.brave_wallet_networks_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_wallet_networks_preference);
 
         BraveWalletNetworksPreference mNetworksAddPref =
-                (BraveWalletNetworksPreference) findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
-        mNetworksAddPref.registerActivityLauncher(this);
+                findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
+        if (mNetworksAddPref != null) {
+            mNetworksAddPref.registerActivityLauncher(this);
+        }
     }
 
     @Override
