@@ -651,7 +651,7 @@ public class BrowserViewController: UIViewController {
       let webView = tab.webView {
       updateURLBar()
       navigationToolbar.updateBackStatus(webView.canGoBack)
-      navigationToolbar.updateForwardStatus(webView.canGoForward)
+      updateForwardStatusIfNeeded(webView: webView)
       topToolbar.locationView.loading = tab.loading
     }
 
@@ -1921,6 +1921,14 @@ public class BrowserViewController: UIViewController {
     }
   }
 
+  func updateForwardStatusIfNeeded(webView: WKWebView) {
+    if let forwardListItem = webView.backForwardList.forwardList.first, forwardListItem.url.isReaderModeURL {
+      navigationToolbar.updateForwardStatus(false)
+    } else {
+      navigationToolbar.updateForwardStatus(webView.canGoForward)
+    }
+  }
+    
   func updateUIForReaderHomeStateForTab(_ tab: Tab) {
     updateURLBar()
     toolbarVisibilityViewModel.toolbarState = .expanded

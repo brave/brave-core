@@ -666,6 +666,8 @@ extension BrowserViewController: WKNavigationDelegate {
     if tabManager.selectedTab === tab {
       updateUIForReaderHomeStateForTab(tab)
     }
+      
+    updateForwardStatusIfNeeded(webView: webView)
   }
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
