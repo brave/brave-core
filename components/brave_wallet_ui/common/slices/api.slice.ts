@@ -295,6 +295,7 @@ export const {
   useSendETHFilForwarderTransferMutation,
   useSendEvmTransactionMutation,
   useSendFilTransactionMutation,
+  useSendSolanaSerializedTransactionMutation,
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendZecTransactionMutation,

@@ -18,15 +18,13 @@ import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 import { toMojoUnion } from '../../../../utils/mojo-utils'
 
-// Hooks
-import { useLib } from '../../../../common/hooks/useLib'
-
 // Query hooks
 import {
   useGenerateBraveSwapFeeMutation,
   useGenerateSwapQuoteMutation,
   useGenerateSwapTransactionMutation,
-  useGetDefaultFiatCurrencyQuery //
+  useGetDefaultFiatCurrencyQuery,
+  useSendSolanaSerializedTransactionMutation
 } from '../../../../common/slices/api.slice'
 
 const networkFee = new Amount('0.000005')
@@ -46,6 +44,8 @@ export function useJupiter(params: SwapParams) {
   const [generateSwapQuote] = useGenerateSwapQuoteMutation()
   const [generateBraveSwapFee] = useGenerateBraveSwapFeeMutation()
   const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
+  const [sendSolanaSerializedTransaction] =
+    useSendSolanaSerializedTransactionMutation()
 
   // State
   const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(
@@ -64,10 +64,6 @@ export function useJupiter(params: SwapParams) {
   const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
-
-  // Custom hooks
-  // FIXME(josheleonard): use slices API
-  const { sendSolanaSerializedTransaction } = useLib()
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -263,28 +259,21 @@ export function useJupiter(params: SwapParams) {
         jupiterTransactionResponse.response.jupiterTransaction
 
       try {
-        const { success, errorMessage } = await sendSolanaSerializedTransaction(
-          {
-            encodedTransaction: swapTransaction,
-            chainId: selectedNetwork.chainId,
-            accountId: selectedAccount.accountId,
-            txType: BraveWallet.TransactionType.SolanaSwap,
-            sendOptions: {
-              skipPreflight: {
-                skipPreflight: true
-              },
-              maxRetries: {
-                maxRetries: BigInt(2)
-              },
-              preflightCommitment: undefined
-            }
+        await sendSolanaSerializedTransaction({
+          encodedTransaction: swapTransaction,
+          chainId: selectedNetwork.chainId,
+          accountId: selectedAccount.accountId,
+          txType: BraveWallet.TransactionType.SolanaSwap,
+          sendOptions: {
+            skipPreflight: {
+              skipPreflight: true
+            },
+            maxRetries: {
+              maxRetries: BigInt(2)
+            },
+            preflightCommitment: undefined
           }
-        )
-
-        if (!success) {
-          console.error(`Error creating Solana transaction: ${errorMessage}`)
-        }
-
+        }).unwrap()
         await reset(callback)
       } catch (e) {
         // Bubble up error
@@ -298,6 +287,7 @@ export function useJupiter(params: SwapParams) {
       params.toToken,
       selectedAccount,
       generateSwapTransaction,
+      sendSolanaSerializedTransaction,
       selectedRoute,
       sendSolanaSerializedTransaction,
       reset

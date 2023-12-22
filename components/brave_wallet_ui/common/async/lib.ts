@@ -8,10 +8,7 @@ import { mapLimit } from 'async'
 import {
   HardwareWalletConnectOpts //
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import {
-  BraveWallet,
-  SolanaSerializedTransactionParams
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
@@ -49,7 +46,6 @@ import {
   isIpfs,
   stripERC20TokenImageURL
 } from '../../utils/string-utils'
-import { toTxDataUnion } from '../../utils/tx-utils'
 
 export const onConnectHardwareWallet = (
   opts: HardwareWalletConnectOpts
@@ -176,28 +172,6 @@ export function refreshVisibleTokenInfo(
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
   }
-}
-
-export async function sendSolanaSerializedTransaction(
-  payload: SolanaSerializedTransactionParams
-) {
-  const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const result =
-    await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
-      payload.encodedTransaction,
-      payload.txType,
-      payload.sendOptions || null
-    )
-  if (result.error !== BraveWallet.ProviderError.kSuccess) {
-    console.error(`Failed to sign Solana message: ${result.errorMessage}`)
-    return { success: false, errorMessage: result.errorMessage, txMetaId: '' }
-  }
-
-  return await txService.addUnapprovedTransaction(
-    toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
-    payload.chainId,
-    payload.accountId
-  )
 }
 
 export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {
