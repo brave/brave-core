@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 (async _ => {
   const W = window
   const D = W.document
@@ -37,7 +42,8 @@
   const frameCaseEnum = {
     CURRENT_FRAME: 0,
     LOCAL_FRAME: 1,
-    REMOTE_FRAME: 2
+    REMOTE_FRAME: 2,
+    NESTED_FRAME: 3
   }
   const apiCaseEnum = {
     COOKIE: 0,
@@ -73,32 +79,38 @@
   const allSetTable = {
     [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.SET,
     [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.SET,
-    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.SET
+    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.SET,
+    [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.SET
   }
   const allEmptyButRemoteIdbTable = {
     [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.EMPTY,
     [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.EMPTY,
-    [frameCaseEnum.REMOTE_FRAME]: allEmptyButIDBCol
+    [frameCaseEnum.REMOTE_FRAME]: allEmptyButIDBCol,
+    [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.NA
   }
   const allSetButRemoteIdbTable = {
     [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.SET,
     [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.SET,
-    [frameCaseEnum.REMOTE_FRAME]: allSetButIDBCol
+    [frameCaseEnum.REMOTE_FRAME]: allSetButIDBCol,
+    [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.SET
   }
   const allEmpty3pBlockTable = {
     [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.EMPTY,
     [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.EMPTY,
-    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION
+    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION,
+    [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.EMPTY
   }
   const allButSessionTable = {
     [frameCaseEnum.CURRENT_FRAME]: allSetButSessionCol,
     [frameCaseEnum.LOCAL_FRAME]: allSetButSessionCol,
-    [frameCaseEnum.REMOTE_FRAME]: allSetButSessionCol
+    [frameCaseEnum.REMOTE_FRAME]: allSetButSessionCol,
+    [frameCaseEnum.NESTED_FRAME]: allSetButSessionCol
   }
   const allButSession3pBlockingTable = {
     [frameCaseEnum.CURRENT_FRAME]: allSetButSessionCol,
     [frameCaseEnum.LOCAL_FRAME]: allSetButSessionCol,
-    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION
+    [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION,
+    [frameCaseEnum.NESTED_FRAME]: allSetButSessionCol
   }
 
   // If the value is a number (a testOutcomeEnum value) than
@@ -117,7 +129,8 @@
         [cookieSettingEnum.BLOCK_THIRD_PARTY]: {
           [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.SET,
           [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.SET,
-          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION
+          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION,
+          [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.SET
         },
         [cookieSettingEnum.BLOCK_ALL]: testOutcomeEnum.EXCEPTION
       },
@@ -134,7 +147,8 @@
         [cookieSettingEnum.BLOCK_THIRD_PARTY]: {
           [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.EMPTY,
           [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.EMPTY,
-          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION
+          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION,
+          [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.EMPTY
         },
         [cookieSettingEnum.BLOCK_ALL]: testOutcomeEnum.EXCEPTION
       },
@@ -164,7 +178,8 @@
         [cookieSettingEnum.BLOCK_THIRD_PARTY]: {
           [frameCaseEnum.CURRENT_FRAME]: testOutcomeEnum.SET,
           [frameCaseEnum.LOCAL_FRAME]: testOutcomeEnum.SET,
-          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION
+          [frameCaseEnum.REMOTE_FRAME]: testOutcomeEnum.EXCEPTION,
+          [frameCaseEnum.NESTED_FRAME]: testOutcomeEnum.SET
         },
         [cookieSettingEnum.BLOCK_ALL]: testOutcomeEnum.EXCEPTION
       },
@@ -186,7 +201,13 @@
         [cookieSettingEnum.BLOCK_THIRD_PARTY]: {
           [frameCaseEnum.CURRENT_FRAME]: allSetButSessionCol,
           [frameCaseEnum.LOCAL_FRAME]: allSetButSessionCol,
-          [frameCaseEnum.REMOTE_FRAME]: allSetButSessionOrIDBCol
+          [frameCaseEnum.REMOTE_FRAME]: allSetButSessionOrIDBCol,
+          [frameCaseEnum.NESTED_FRAME]: {
+            [apiCaseEnum.COOKIE]: testOutcomeEnum.SET,
+            [apiCaseEnum.LOCAL_STORAGE]: testOutcomeEnum.SET,
+            [apiCaseEnum.SESSION_STORAGE]: testOutcomeEnum.NA,
+            [apiCaseEnum.INDEX_DB]: testOutcomeEnum.SET
+          }
         },
         [cookieSettingEnum.BLOCK_ALL]: testOutcomeEnum.EXCEPTION
       }
@@ -203,7 +224,8 @@
         [cookieSettingEnum.BLOCK_THIRD_PARTY]: {
           [frameCaseEnum.CURRENT_FRAME]: allSetButSessionCol,
           [frameCaseEnum.LOCAL_FRAME]: allSetButSessionCol,
-          [frameCaseEnum.REMOTE_FRAME]: allEmptyButIDBCol
+          [frameCaseEnum.REMOTE_FRAME]: allEmptyButIDBCol,
+          [frameCaseEnum.NESTED_FRAME]: allSetButSessionCol
         },
         [cookieSettingEnum.BLOCK_ALL]: testOutcomeEnum.EXCEPTION
       }
@@ -364,7 +386,8 @@
     const classNamesForFrameCases = {
       [frameCaseEnum.CURRENT_FRAME]: 'cell-this-frame',
       [frameCaseEnum.LOCAL_FRAME]: 'cell-local-frame',
-      [frameCaseEnum.REMOTE_FRAME]: 'cell-remote-frame'
+      [frameCaseEnum.REMOTE_FRAME]: 'cell-remote-frame',
+      [frameCaseEnum.NESTED_FRAME]: 'cell-nested-frame'
     }
     const elmCache = {}
 
@@ -483,12 +506,15 @@
     })
     const testResults = O.create(null)
     for (const [nestedStorageKey, nestedStorageVal] of O.entries(nestedFrameStorage)) {
+      console.log(JSON.stringify({nestedStorageKey, nestedStorageVal, nestedFrameTestValue}))
       if (nestedStorageVal === exceptionEncoding) {
         testResults[nestedStorageKey] = testOutcomeEnum.EXCEPTION
+      } else if (nestedStorageVal === nestedFrameTestValue) {
+        testResults[nestedStorageKey] = testOutcomeEnum.SET
+      } else if (nestedStorageVal === undefined || nestedStorageVal === null) {
+        testResults[nestedStorageKey] = testOutcomeEnum.EMPTY
       } else {
-        testResults[nestedStorageKey] = nestedStorageVal === nestedFrameTestValue
-          ? testOutcomeEnum.SET
-          : testOutcomeEnum.WRONG
+        testResults[nestedStorageKey] = testOutcomeEnum.WRONG
       }
     }
     return testResults
