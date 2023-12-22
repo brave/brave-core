@@ -70,7 +70,7 @@ public class BraveAutocompleteCoordinator {
                         BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER,
                         parent ->
                                 LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.omnibox_brave_search_banner, null),
+                                        .inflate(R.layout.search_suggestion_layout, null),
                         BraveSearchBannerViewBinder::bind);
 
                 adapter.registerType(

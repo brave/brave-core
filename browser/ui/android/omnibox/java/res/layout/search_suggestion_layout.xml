@@ -1,67 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="8dp"
-    android:padding="16dp"
-    android:gravity="center_vertical"
-    android:background="@drawable/search_suggestions_bg"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_search_suggestion"
-        android:contentDescription="@null"
-        android:layout_marginEnd="8dp" />
-
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UselessParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginEnd="8dp"
-        android:orientation="vertical">
+        android:layout_marginHorizontal="8dp"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/search_suggestions_bg"
+        android:orientation="horizontal">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_suggestions_title"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="16sp"/>
+            app:srcCompat="@drawable/ic_search_suggestion"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp" />
 
-        <TextView
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_suggestions_title"
+                android:maxLines="1"
+                android:textColor="@color/search_suggestions_primary_text_color"
+                android:ellipsize="end"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_suggestions_text"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/search_suggestions_secondary_text_color"
+                android:textSize="12sp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/search_suggestions_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_suggestions_text"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:textSize="12sp"/>
+            android:text="@string/turn_on"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:background="@drawable/search_suggestions_button_bg"
+            android:textColor="@color/search_suggestions_action_text_color" />
+
+        <ImageView
+            android:id="@+id/search_suggestions_close_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_baseline_close_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:tint="@color/search_suggestions_close_color"/>
+
+        <include layout="@layout/omnibox_brave_search_banner"
+            android:visibility="gone" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <Button
-        android:id="@+id/search_suggestions_action_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/turn_on"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
-        android:layout_marginEnd="8dp"
-        android:lineHeight="16dp"
-        android:textSize="12sp"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        android:background="@drawable/search_suggestions_button_bg"
-        android:textColor="@android:color/white" />
-
-    <ImageView
-        android:id="@+id/search_suggestions_close_btn"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_close"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        app:tint="@color/search_suggestions_close_color"/>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

@@ -10,10 +10,10 @@ package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 import android.content.res.Configuration;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.ui.modelutil.PropertyKey;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -32,31 +32,34 @@ public class BraveSearchBannerViewBinder {
             textViewDesc.setLayoutParams(textViewParams);
         }
 
-        final Button btnPositive = contentView.findViewById(R.id.btn_positive);
-        final Button btnNegative = contentView.findViewById(R.id.btn_negative);
+        final Button btnPositive = contentView.findViewById(R.id.search_suggestions_action_btn);
+        final ImageView btnNegative = contentView.findViewById(R.id.search_suggestions_close_btn);
 
-        boolean isMaybeLaterPressed =
-                OmniboxPrefManager.getInstance().isBraveSearchPromoBannerMaybeLater();
-        if (isMaybeLaterPressed) {
-            btnNegative.setText(
-                    contentView.getResources().getString(R.string.dismiss_search_promo));
-        } else {
-            btnNegative.setText(contentView.getResources().getString(R.string.maybe_later));
-        }
+        // boolean isMaybeLaterPressed =
+        //         OmniboxPrefManager.getInstance().isBraveSearchPromoBannerMaybeLater();
+        // if (isMaybeLaterPressed) {
+        //     btnNegative.setText(
+        //             contentView.getResources().getString(R.string.dismiss_search_promo));
+        // } else {
+        //     btnNegative.setText(contentView.getResources().getString(R.string.maybe_later));
+        // }
         if (propertyKey == BraveSearchBannerProperties.DELEGATE) {
             BraveSearchBannerProperties.Delegate delegate =
                     model.get(BraveSearchBannerProperties.DELEGATE);
             if (delegate != null) {
                 btnPositive.setOnClickListener(view -> { delegate.onPositiveClicked(); });
 
-                btnNegative.setOnClickListener(view -> {
-                    if (!isMaybeLaterPressed) {
-                        OmniboxPrefManager.getInstance().setBraveSearchPromoBannerMaybeLater();
-                    } else {
-                        OmniboxPrefManager.getInstance().setBraveSearchPromoBannerDismissed();
-                    }
-                    delegate.onNegativeClicked();
-                });
+                btnNegative.setOnClickListener(
+                        view -> {
+                            // if (!isMaybeLaterPressed) {
+                            //
+                            // OmniboxPrefManager.getInstance().setBraveSearchPromoBannerMaybeLater();
+                            // } else {
+                            //
+                            // OmniboxPrefManager.getInstance().setBraveSearchPromoBannerDismissed();
+                            // }
+                            delegate.onNegativeClicked();
+                        });
             }
         }
     }
