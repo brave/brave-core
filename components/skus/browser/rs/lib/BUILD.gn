@@ -35,6 +35,7 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/rand/v0_7:lib",
     "//brave/third_party/rust/sha2/v0_9:lib",
     "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/tracing_subscriber/v0_2:lib",
     "//brave/third_party/rust/urlencoding/v1:lib",
     "//brave/third_party/rust/uuid/v1:lib",
     "//third_party/rust/base64/v0_13:lib",
