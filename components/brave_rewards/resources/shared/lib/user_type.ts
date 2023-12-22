@@ -8,11 +8,10 @@ import * as mojom from '../../shared/lib/mojom'
 export type UserType = 'unconnected' | 'connected'
 
 export function userTypeFromMojo (type: number): UserType {
-  switch (type) {
-    case mojom.UserType.kConnected:
-      return 'connected'
-    default:
-      return 'unconnected'
+  if (type == mojom.UserType.kConnected) {
+    return "connected":
+  } else {
+    return 'unconnected'
   }
 }
 

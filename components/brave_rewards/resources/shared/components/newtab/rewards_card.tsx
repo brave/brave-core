@@ -54,7 +54,6 @@ export function RewardsCardHeader () {
 interface Props {
   rewardsEnabled: boolean
   userType: UserType
-  vbatDeadline: number | undefined
   isUnsupportedRegion: boolean
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
