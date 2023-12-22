@@ -118,14 +118,16 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         if (!mChainId.isEmpty()) {
             mButtonSubmit.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
-            mJsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
-                for (NetworkInfo chain : networks) {
-                    if (chain.chainId.equals(mChainId)) {
-                        fillControls(chain);
-                        break;
-                    }
-                }
-            });
+            mJsonRpcService.getAllNetworks(
+                    CoinType.ETH,
+                    networks -> {
+                        for (NetworkInfo chain : networks) {
+                            if (chain.chainId.equals(mChainId)) {
+                                fillControls(chain);
+                                break;
+                            }
+                        }
+                    });
         }
     }
 
@@ -153,7 +155,9 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             int chainId = Integer.parseInt(strChainId, 16);
             mChainIdEditText.setText(String.valueOf(chainId));
             mChainCurrencyDecimals.setText(String.valueOf(chain.decimals));
-        } catch (NumberFormatException ignored) { /* Ignored. */ }
+        } catch (NumberFormatException ignored) {
+            /* Ignored. */
+        }
 
         mChainName.setText(chain.chainName);
         mChainCurrencyName.setText(chain.symbolName);
@@ -172,18 +176,33 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             mBlockExplorerUrls.setText(chain.blockExplorerUrls[0]);
         }
         if (mIsActiveNetwork) {
-            AndroidUtils.disable(mChainIdEditText, mChainCurrencyDecimals, mChainName, mChainCurrencyName, mChainCurrencySymbol, mRpcUrls, mIconUrls, mBlockExplorerUrls);
+            AndroidUtils.disable(
+                    mChainIdEditText,
+                    mChainCurrencyDecimals,
+                    mChainName,
+                    mChainCurrencyName,
+                    mChainCurrencySymbol,
+                    mRpcUrls,
+                    mIconUrls,
+                    mBlockExplorerUrls);
         }
     }
 
     /**
-     * Validates input fields and adds a new chain.
-     * Based on Desktop implementation the following logic applies:
-     * - Chain ID, chain name, and RPC URL are mandatory fields and cannot be empty.
-     * - Chain's currency name, currency symbol, currency decimal, icon URL and block explorer URL can be empty. They'll default to empty except for chain's currency decimal that will default to 18.
-     * - Chain's currency decimal accepts only numbers greater than 0. If not set, it will default to 0.
-     * - RPC URL, icon URL and block explorer URL support only HTTP and HTTPS protocols.
-     * - Chain ID, and RPC URL are cross validated: if the chain ID returned by RPC endpoint doesn't match the chain ID provided an error message will be displayed.
+     * Validates input fields and adds a new chain. Based on Desktop implementation the following
+     * logic applies:
+     *
+     * <ul>
+     *   <li>Chain ID, chain name, and RPC URL are mandatory fields and cannot be empty.
+     *   <li>Chain's currency name, currency symbol, currency decimal, icon URL and block explorer
+     *       URL can be empty. They'll default to empty except for chain's currency decimal that
+     *       will default to 18.
+     *   <li>Chain's currency decimal accepts only numbers greater than 0. If not set, it will
+     *       default to 0.
+     *   <li>RPC URL, icon URL and block explorer URL support only HTTP and HTTPS protocols.
+     *   <li>Chain ID, and RPC URL are cross validated: if the chain ID returned by RPC endpoint
+     *       doesn't match the chain ID provided an error message will be displayed.
+     * </ul>
      */
     private void validateInputsAddChain() {
         boolean error = false;
@@ -204,7 +223,11 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             }
         } catch (NumberFormatException exc) {
             error = true;
-            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> mChainIdEditText.setError(getString(R.string.brave_wallet_add_network_chain_id_error)));
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            mChainIdEditText.setError(
+                                    getString(R.string.brave_wallet_add_network_chain_id_error)));
         }
 
         String strChainName = mChainName.getText().toString().trim();
@@ -228,12 +251,19 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             if (iChainCurrencyDecimals > 0) {
                 chain.decimals = iChainCurrencyDecimals;
             } else {
-                mChainCurrencyDecimals.setError(getString(R.string.brave_wallet_add_network_chain_currency_decimals_error));
+                mChainCurrencyDecimals.setError(
+                        getString(R.string.brave_wallet_add_network_chain_currency_decimals_error));
                 error = true;
             }
         } catch (NumberFormatException numberFormatException) {
             error = true;
-            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> mChainCurrencyDecimals.setError(getString(R.string.brave_wallet_add_network_chain_currency_decimals_error)));
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            mChainCurrencyDecimals.setError(
+                                    getString(
+                                            R.string
+                                                    .brave_wallet_add_network_chain_currency_decimals_error)));
         }
 
         String strRpcUrls = mRpcUrls.getText().toString().trim();
@@ -250,7 +280,11 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             }
         } catch (MalformedURLException exc) {
             error = true;
-            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> mRpcUrls.setError(getString(R.string.brave_wallet_add_network_urls_error)));
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            mRpcUrls.setError(
+                                    getString(R.string.brave_wallet_add_network_urls_error)));
         }
 
         String strIconUrls = mIconUrls.getText().toString().trim();
@@ -265,7 +299,11 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 }
             } catch (MalformedURLException exc) {
                 error = true;
-                PostTask.postTask(TaskTraits.UI_DEFAULT, () -> mIconUrls.setError(getString(R.string.brave_wallet_add_network_urls_error)));
+                PostTask.postTask(
+                        TaskTraits.UI_DEFAULT,
+                        () ->
+                                mIconUrls.setError(
+                                        getString(R.string.brave_wallet_add_network_urls_error)));
             }
         } else {
             chain.iconUrls = new String[0];
@@ -280,11 +318,15 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                             getString(R.string.brave_wallet_add_network_urls_error));
                     error = true;
                 } else {
-                    chain.blockExplorerUrls = new String[]{strBlockExplorerUrls};
+                    chain.blockExplorerUrls = new String[] {strBlockExplorerUrls};
                 }
             } catch (MalformedURLException exc) {
                 error = true;
-                PostTask.postTask(TaskTraits.UI_DEFAULT, () -> mBlockExplorerUrls.setError(getString(R.string.brave_wallet_add_network_urls_error)));
+                PostTask.postTask(
+                        TaskTraits.UI_DEFAULT,
+                        () ->
+                                mBlockExplorerUrls.setError(
+                                        getString(R.string.brave_wallet_add_network_urls_error)));
             }
         } else {
             chain.blockExplorerUrls = new String[0];
@@ -314,25 +356,30 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
     private void addChain(@NonNull final NetworkInfo chain, final boolean remove) {
         assert mJsonRpcService != null;
-        mJsonRpcService.addChain(chain, (chainId, error, errorMessage) -> {
-            if (error != ProviderError.SUCCESS) {
-                // (sergz): Perhaps we will need to add more errors in the future.
-                // We support only that one for now from backend
-                if (errorMessage.contains("eth_chainId")) {
-                    mSubmitError.setText(errorMessage);
-                    mSubmitError.setVisibility(View.VISIBLE);
-                }
-                return;
-            }
-            if (remove) {
-                mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
-                    // We just do nothing here as we added a chain with a diff
-                    // chainId already
+        mJsonRpcService.addChain(
+                chain,
+                (chainId, error, errorMessage) -> {
+                    if (error != ProviderError.SUCCESS) {
+                        // (sergz): Perhaps we will need to add more errors in the future.
+                        // We support only that one for now from backend
+                        if (errorMessage.contains("eth_chainId")) {
+                            mSubmitError.setText(errorMessage);
+                            mSubmitError.setVisibility(View.VISIBLE);
+                        }
+                        return;
+                    }
+                    if (remove) {
+                        mJsonRpcService.removeChain(
+                                mChainId,
+                                CoinType.ETH,
+                                success -> {
+                                    // We just do nothing here as we added a chain with a diff
+                                    // chainId already
+                                    refreshNetworksFinishFragment();
+                                });
+                    }
                     refreshNetworksFinishFragment();
                 });
-            }
-            refreshNetworksFinishFragment();
-        });
     }
 
     private void refreshNetworksFinishFragment() {
@@ -346,7 +393,9 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         requireActivity().finish();
     }
 
-    /** @noinspection BooleanMethodIsAlwaysInverted*/
+    /**
+     * @noinspection BooleanMethodIsAlwaysInverted
+     */
     private boolean isProtocolSupported(@NonNull final URL url) {
         return url.getProtocol().equals("http") && !url.getProtocol().equals("https");
     }

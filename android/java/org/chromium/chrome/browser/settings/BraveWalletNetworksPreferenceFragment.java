@@ -37,7 +37,8 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
         // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
         // https://github.com/brave/brave-browser/issues/31882
         mAddNetworkActivityResultLauncher =
-                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
                         requireActivity().getActivityResultRegistry(),
                         result -> {
                             if (result.getResultCode() != Activity.RESULT_OK) return;
