@@ -19,11 +19,11 @@ namespace {
 
 constexpr auto kMigrateChannels =
     base::MakeFixedFlatMap<std::string_view, std::string_view>({
-        {"celebrity news", "Celebrities"},
-        {"entertainment news", "Entertainment"},
-        {"sport", "Sports"},
-        {"tech news", "Technology"},
-        {"tech reviews", "Technology"},
+        {"Celebrity News", "Celebrities"},
+        {"Entertainment News", "Entertainment"},
+        {"Sport", "Sports"},
+        {"Tech News", "Technology"},
+        {"Tech Reviews", "Technology"},
     });
 
 }  // namespace
@@ -50,7 +50,7 @@ void MigrateChannels(PrefService& prefs) {
 }
 
 std::string GetMigratedChannel(const std::string& channel) {
-  auto* it = kMigrateChannels.find(base::ToLowerASCII(channel));
+  auto* it = kMigrateChannels.find(channel);
   return it == kMigrateChannels.end() ? channel : std::string{it->second};
 }
 
