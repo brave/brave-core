@@ -57,7 +57,7 @@ source_set("browser") {
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/url:constants",
-    "//ios/chrome/browser/web:web_internal",
+    "//ios/chrome/browser/web/model:web_internal",
     "//ios/components/webui:url_constants",
     "//ios/public/provider/chrome/browser/url_rewriters:url_rewriters_api",
     "//ios/web/public",
