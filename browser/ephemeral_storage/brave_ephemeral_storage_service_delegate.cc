@@ -98,7 +98,9 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
     const std::string& registerable_domain) {
   DVLOG(1) << __func__ << " " << registerable_domain;
   DCHECK(base::FeatureList::IsEnabled(
-      net::features::kBraveForgetFirstPartyStorage));
+             net::features::kBraveForgetFirstPartyStorage) ||
+         base::FeatureList::IsEnabled(
+             net::features::kThirdPartyStoragePartitioning));
 
   content::BrowsingDataRemover::DataType data_to_remove =
       content::BrowsingDataRemover::DATA_TYPE_COOKIES |
