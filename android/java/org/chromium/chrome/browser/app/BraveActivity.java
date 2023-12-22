@@ -929,6 +929,9 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        boolean isFirstInstall = PackageUtils.isFirstInstall(this);
+
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(
                 (TabModelSelector) getTabModelSelectorSupplier().get());
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
@@ -980,7 +983,7 @@ public abstract class BraveActivity extends ChromeActivity
         ChromeSharedPreferences.getInstance()
                 .writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
-        if (PackageUtils.isFirstInstall(this) && appOpenCount == 0) {
+        if (isFirstInstall && appOpenCount == 0) {
             checkForYandexSE();
         }
 
@@ -1054,8 +1057,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         BraveSyncAccountDeletedInformer.show();
 
-        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
-                && PackageUtils.isFirstInstall(this)) {
+        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted() && isFirstInstall) {
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_6);
@@ -1068,7 +1070,7 @@ public abstract class BraveActivity extends ChromeActivity
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
         }
 
-        if (PackageUtils.isFirstInstall(this)
+        if (isFirstInstall
                 && ChromeSharedPreferences.getInstance()
                                 .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
@@ -1082,15 +1084,15 @@ public abstract class BraveActivity extends ChromeActivity
             BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
         }
 
-        checkFingerPrintingOnUpgrade();
-        checkForVpnCallout();
+        checkFingerPrintingOnUpgrade(isFirstInstall);
+        checkForVpnCallout(isFirstInstall);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
                 && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
             showLinkVpnSubscriptionDialog();
         }
-        if (PackageUtils.isFirstInstall(this)
+        if (isFirstInstall
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                         || getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME))) {
             OnboardingPrefManager.getInstance().setDormantUsersPrefs();
@@ -1137,7 +1139,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         // Added to reset app links settings for upgrade case
-        if (!PackageUtils.isFirstInstall(this)
+        if (!isFirstInstall
                 && !ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePrivacySettings.PREF_APP_LINKS, true)
                 && ChromeSharedPreferences.getInstance()
@@ -1148,9 +1150,9 @@ public abstract class BraveActivity extends ChromeActivity
                     .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         }
 
-        if (PackageUtils.isFirstInstall(this)
-                && ChromeSharedPreferences.getInstance().readInt(
-                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+        if (isFirstInstall
+                && ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
@@ -1164,7 +1166,7 @@ public abstract class BraveActivity extends ChromeActivity
         BraveVpnUtils.openBraveVpnPlansActivity(this);
     }
 
-    private void checkForVpnCallout() {
+    private void checkForVpnCallout(boolean isFirstInstall) {
         String countryCode = Locale.getDefault().getCountry();
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
@@ -1176,11 +1178,11 @@ public abstract class BraveActivity extends ChromeActivity
                                                             BravePreferenceKeys
                                                                     .BRAVE_APP_OPEN_COUNT)
                                             == 1
-                                    && !PackageUtils.isFirstInstall(this))
+                                    && !isFirstInstall)
                     || (ChromeSharedPreferences.getInstance()
                                             .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                     == 7
-                            && PackageUtils.isFirstInstall(this))) {
+                            && isFirstInstall)) {
                 showVpnCalloutDialog();
             }
 
@@ -1353,8 +1355,8 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private void checkFingerPrintingOnUpgrade() {
-        if (!PackageUtils.isFirstInstall(this)
+    private void checkFingerPrintingOnUpgrade(boolean isFirstInstall) {
+        if (!isFirstInstall
                 && ChromeSharedPreferences.getInstance()
                                 .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 0) {
