@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
   BraveWallet,
@@ -28,12 +28,6 @@ const defaultState: PageState = {
   setupStillInProgress: false,
   walletTermsAcknowledged: false,
   selectedCoinMarket: undefined
-}
-
-export const WalletPageAsyncActions = {
-  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>(
-    'addHardwareAccounts'
-  )
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -124,5 +118,5 @@ export const createPageReducer = (initialState: PageState) => {
 
 export const pageSlice = createPageSlice()
 export const pageReducer = pageSlice.reducer
-export const PageActions = { ...WalletPageAsyncActions, ...pageSlice.actions }
+export const PageActions = pageSlice.actions
 export default pageReducer

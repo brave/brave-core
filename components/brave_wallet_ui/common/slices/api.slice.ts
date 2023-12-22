@@ -233,6 +233,7 @@ export const {
   useImportAccountMutation,
   useImportFromCryptoWalletsMutation,
   useImportFromMetaMaskMutation,
+  useImportHardwareAccountsMutation,
   useInvalidateAccountInfosMutation,
   useInvalidateSelectedAccountMutation,
   useInvalidateTransactionsCacheMutation,
