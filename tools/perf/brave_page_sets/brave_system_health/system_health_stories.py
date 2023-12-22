@@ -72,7 +72,7 @@ class LoadYoutubeStory2023(_BraveLoadingStory):
 
 
 class LoadWikipediaStory2023(_BraveLoadingStory):
-  NAME = 'load:wikipedia'
+  NAME = 'load:site:wikipedia:2023'
   URL = 'https://en.wikipedia.org/wiki/World_Wide_Web'
   TAGS = [story_tags.YEAR_2023]
 
