@@ -47,16 +47,6 @@ const defaultState: WalletState = {
   isWalletLocked: true,
   userVisibleTokensInfo: [],
   fullTokenList: [],
-  selectedPortfolioTimeline:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
-    ) !== undefined
-      ? Number(
-          window.localStorage.getItem(
-            LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
-          )
-        )
-      : BraveWallet.AssetPriceTimeframe.OneDay,
   addUserAssetError: false,
   activeOrigin: {
     eTldPlusOne: '',
@@ -145,9 +135,6 @@ export const WalletAsyncActions = {
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
   getAllTokensList: createAction('getAllTokensList'),
-  selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
-    'selectPortfolioTimeline'
-  ),
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged'
   ), // refreshWalletInfo
@@ -203,13 +190,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
-      },
-
-      portfolioTimelineUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>
-      ) {
-        state.selectedPortfolioTimeline = payload
       },
 
       setAllTokensList: (

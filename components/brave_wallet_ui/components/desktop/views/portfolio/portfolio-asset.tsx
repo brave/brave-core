@@ -38,6 +38,9 @@ import {
   getIsRewardsToken,
   getRewardsBATToken
 } from '../../../../utils/rewards_utils'
+import {
+  getStoredPortfolioTimeframe //
+} from '../../../../utils/local-storage-utils'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -122,7 +125,7 @@ export const PortfolioAsset = (props: Props) => {
   const [showHideTokenModel, setShowHideTokenModal] =
     React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
-    BraveWallet.AssetPriceTimeframe.OneDay
+    getStoredPortfolioTimeframe
   )
 
   // routing
@@ -447,11 +450,6 @@ export const PortfolioAsset = (props: Props) => {
       })
     )
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
-    dispatch(
-      WalletPageActions.selectPriceTimeframe(
-        BraveWallet.AssetPriceTimeframe.OneDay
-      )
-    )
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
@@ -507,6 +505,7 @@ export const PortfolioAsset = (props: Props) => {
       hideDivider={true}
       cardHeader={
         <AssetDetailsHeader
+          selectedTimeline={selectedTimeline}
           selectedAsset={selectedAssetFromParams}
           isShowingMarketData={isShowingMarketData}
           onBack={goBack}

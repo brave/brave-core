@@ -69,7 +69,6 @@ export const mockWalletState: WalletState = {
   ],
   isWalletCreated: false,
   isWalletLocked: false,
-  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   userVisibleTokensInfo: [
     {
       coingeckoId: '',

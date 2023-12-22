@@ -200,7 +200,6 @@ export interface WalletState {
   isWalletLocked: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
-  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
   solFeeEstimates?: SolFeeEstimates
@@ -256,7 +255,6 @@ export interface PanelState {
 export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
-  selectedTimeline: BraveWallet.AssetPriceTimeframe
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined

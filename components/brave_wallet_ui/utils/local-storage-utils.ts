@@ -91,3 +91,26 @@ export function storeCurrentAndPreviousPanel(
     )
   }
 }
+
+export function getStoredPortfolioTimeframe(): BraveWallet.AssetPriceTimeframe {
+  const storedValue = window.localStorage.getItem(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
+  )
+
+  if (storedValue !== undefined) {
+    return Number(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION)
+    )
+  }
+
+  return BraveWallet.AssetPriceTimeframe.OneDay
+}
+
+export function setStoredPortfolioTimeframe(
+  timeframe: BraveWallet.AssetPriceTimeframe
+) {
+  window.localStorage.setItem(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
+    timeframe.toString()
+  )
+}

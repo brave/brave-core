@@ -7,11 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import {
-  useSafePageSelector,
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // Utils
@@ -74,6 +70,7 @@ interface Props {
   onClickTokenDetails: () => void
   onClickHideToken: () => void
   isShowingMarketData?: boolean
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
 }
 
 export const AssetDetailsHeader = (props: Props) => {
@@ -82,11 +79,9 @@ export const AssetDetailsHeader = (props: Props) => {
     onBack,
     onClickHideToken,
     onClickTokenDetails,
-    isShowingMarketData
+    isShowingMarketData,
+    selectedTimeline
   } = props
-
-  // selectors
-  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
