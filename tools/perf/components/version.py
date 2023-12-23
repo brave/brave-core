@@ -78,7 +78,7 @@ class BraveVersion:
   def to_string(self) -> str:
     if self._is_tag:
       return self._last_tag
-    return f'{self._last_tag}+({self.git_hash})'
+    return f'{self._last_tag}_{self.git_hash[:8]}'
 
   @property
   def git_hash(self) -> str:
