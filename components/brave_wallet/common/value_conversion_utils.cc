@@ -307,6 +307,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
 
   std::optional<bool> is_spam = value.FindBool("is_spam");
   if (!is_spam) {
+    // Might be missing in case of migration(06/2023).
     tokenPtr->is_spam = false;
   } else {
     tokenPtr->is_spam = is_spam.value();

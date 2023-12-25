@@ -49,6 +49,9 @@ constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
+    "brave.wallet.user.assets.add_is_spam_migrated";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -138,6 +141,8 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -153,6 +158,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletDeprecateEthereumTestNetworksMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletKeyringEncryptionKeysMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
 }
 
 }  // namespace
@@ -253,9 +260,6 @@ void RegisterProfilePrefsForMigration(
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
 
   // Added 07/2023
-  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
-
-  // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
                                 false);
 
@@ -304,9 +308,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 03/2023 to have is_erc1155 set false for existing ERC1155 tokens.
   BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
-
-  // Added 07/2023 to have is_spam set false for existing tokens.
-  BraveWalletService::MigrateUserAssetsAddIsSpam(prefs);
 
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
