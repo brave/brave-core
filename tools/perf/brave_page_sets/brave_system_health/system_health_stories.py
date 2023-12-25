@@ -17,6 +17,8 @@ from page_sets.helpers import override_online
 
 from telemetry.util import wpr_modes
 
+from py_utils import TimeoutException
+
 
 class _BraveLoadingStory(system_health_story.SystemHealthStory):
   """Abstract base class for single-page System Health user stories."""
@@ -77,8 +79,12 @@ class LoadWikipediaStory2023(_BraveLoadingStory):
   TAGS = [story_tags.YEAR_2023]
 
   def _DidLoadDocument(self, action_runner):
-    action_runner.WaitForElement(selector='.js-close')
-    action_runner.ClickElement(selector='.js-close')
+    try:
+      action_runner.WaitForElement(selector='.js-close', timeout_in_seconds=5)
+      action_runner.ClickElement(selector='.js-close')
+    except TimeoutException:
+      # Sometimes the pop up doesn't appear.
+      pass
     super()._DidLoadDocument(action_runner)
 
 
