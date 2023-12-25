@@ -56,9 +56,6 @@ inline constexpr char kBraveWalletEthAllowancesCache[] =
 // Added 03/2023 to add networks hidden by default
 inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
     "brave.wallet.user.assets.default_hidden_networks_version";
-// Added 03/2023 to set is_erc1155 = false for all existing tokens.
-inline constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
-    "brave.wallet.user.assets.add_is_erc1155_migrated";
 inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
 inline constexpr char kSupportEip1559OnLocalhostChain[] =

@@ -1744,7 +1744,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, MigradeDefaultHiddenNetworks_NoList) {
+TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks_NoList) {
   ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
             0);
   {
@@ -1759,94 +1759,6 @@ TEST_F(BraveWalletServiceUnitTest, MigradeDefaultHiddenNetworks_NoList) {
                            [](const auto& v) { return v == "0x4cb2f"; }),
               list->end());
   }
-}
-
-TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsERC1155) {
-  ASSERT_FALSE(
-      GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated));
-
-  std::string json = R"({
-    "ethereum": {
-      "mainnet": [
-        {
-          "address": "",
-          "name": "Ethereum",
-          "symbol": "ETH",
-          "is_erc20": false,
-          "is_erc721": false,
-          "decimals": 18,
-          "visible": true
-        },
-        {
-          "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-          "name": "Basic Attention Token",
-          "symbol": "BAT",
-          "is_erc20": true,
-          "is_erc721": false,
-          "decimals": 18,
-          "visible": true
-        },
-        {
-          "address": "0x0D8775F648430679A709E98d2b0Cb6250d288888",
-          "name": "My NFT",
-          "symbol": "MN",
-          "is_erc20": false,
-          "is_erc721": true,
-          "token_id": 1,
-          "visible": false
-        }
-      ],
-      "0x89": [
-        {
-          "address": "",
-          "coingecko_id": "",
-          "decimals": 18,
-          "is_erc20": false,
-          "is_erc721": false,
-          "logo": "https://brave.com/logo.jpg",
-          "name": "MATIC",
-          "symbol": "MATIC",
-          "token_id": "",
-          "visible": true
-        }
-      ]
-    },
-    "solana": {
-      "mainnet": [
-        {
-          "address": "",
-          "coingecko_id": "",
-          "decimals": 9,
-          "is_erc20": false,
-          "is_erc721": false,
-          "logo": "https://brave.com/logo.jpg",
-          "name": "Solana",
-          "symbol": "SOL",
-          "visible": true
-        }
-      ]
-    }
-  })";
-
-  auto user_assets_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(user_assets_value);
-  GetPrefs()->Set(kBraveWalletUserAssets, *user_assets_value);
-  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
-  BraveWalletService::MigrateUserAssetsAddIsERC1155(GetPrefs());
-
-  // Add `"is_erc1155": false` key/values to the expected kBraveWalletUserAssets
-  // json after migrating.
-  base::ReplaceSubstringsAfterOffset(
-      &json, 0, "\"is_erc721\": false",
-      R"("is_erc721": false, "is_erc1155": false)");
-  base::ReplaceSubstringsAfterOffset(
-      &json, 0, "\"is_erc721\": true",
-      R"("is_erc721": true, "is_erc1155": false)");
-  user_assets_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(user_assets_value);
-  EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), *user_assets_value);
-  EXPECT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated));
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {

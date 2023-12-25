@@ -52,6 +52,9 @@ constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
     "brave.wallet.user.assets.add_is_spam_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
+    "brave.wallet.user.assets.add_is_erc1155_migrated";
 
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
@@ -143,6 +146,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
                                 false);
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
+                                false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -160,6 +166,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletKeyringEncryptionKeysMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
 }
 
 }  // namespace
@@ -246,10 +254,6 @@ void RegisterProfilePrefsForMigration(
   // Added 03/2023
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
 
-  // Added 03/2023
-  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
-                                false);
-
   // Added 04/2023
   registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
                                 false);
@@ -305,9 +309,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 03/2023 to add filecoin evm support.
   BraveWalletService::MigrateHiddenNetworks(prefs);
-
-  // Added 03/2023 to have is_erc1155 set false for existing ERC1155 tokens.
-  BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
 
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.

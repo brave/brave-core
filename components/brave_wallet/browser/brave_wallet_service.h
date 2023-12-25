@@ -88,7 +88,6 @@ class BraveWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
-  static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
