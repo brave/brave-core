@@ -22,6 +22,10 @@ namespace base {
 class Version;
 }
 
+namespace extensions {
+class ExtensionService;
+}
+
 namespace greaselion {
 
 enum GreaselionFeature {
@@ -45,6 +49,8 @@ class GreaselionService : public KeyedService,
   // KeyedService
   void Shutdown() override {}
 
+  virtual void SetExtensionService(
+      extensions::ExtensionService* extension_service) = 0;
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;
   virtual bool IsGreaselionExtension(const std::string& id) = 0;
