@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 namespace {
@@ -74,7 +75,7 @@ void ZCashWalletService::GetReceiverAddress(
   }
   auto str_addr = addr->address_string;
   std::move(callback).Run(mojom::ZCashAddress::New(str_addr, std::move(id)),
-                          absl::nullopt);
+                          std::nullopt);
 }
 
 void ZCashWalletService::GetZCashAccountInfo(
@@ -378,9 +379,21 @@ void ZCashWalletService::CreateTransaction(const std::string& chain_id,
                                            const std::string& address_to,
                                            uint64_t amount,
                                            CreateTransactionCallback callback) {
+  std::string final_address = address_to;
+  if (IsUnifiedAddress(address_to)) {
+    auto transparent =
+        ExtractTransparentPart(address_to, chain_id == mojom::kZCashTestnet);
+    if (!transparent) {
+      std::move(callback).Run(base::unexpected("Wrong unified address format"));
+      return;
+    }
+    final_address = transparent.value();
+  }
+
   auto& task = create_transaction_tasks_.emplace_back(
       std::make_unique<CreateTransparentTransactionTask>(
-          this, chain_id, account_id, address_to, amount, std::move(callback)));
+          this, chain_id, account_id, final_address, amount,
+          std::move(callback)));
   task->ScheduleWorkOnTask();
 }
 

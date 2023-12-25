@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const config = require('../lib/config')
 const updatePatches = require('../lib/updatePatches')
@@ -26,6 +31,8 @@ module.exports = function RunCommand (options) {
   const v8PatchDir = path.join(patchDir, 'v8')
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
   const devtoolsFrontendPatchDir = path.join(patchDir, 'third_party', 'devtools-frontend', 'src')
+  const bitcoinDir = path.join(config.srcDir, 'brave', 'third_party', 'bitcoin-core', 'src')
+  const bitcoinPatchDir = path.join(patchDir, 'brave', 'third_party', 'bitcoin-core')
 
   Promise.all([
     // chromium
@@ -36,6 +43,8 @@ module.exports = function RunCommand (options) {
     updatePatches(catapultDir, catapultPatchDir),
     // third_party/devtools-frontend/src
     updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir),
+    // brave/third_party/bitcoin-core
+    updatePatches(bitcoinDir, bitcoinPatchDir),
   ])
   .then(() => {
     console.log('Done.')
