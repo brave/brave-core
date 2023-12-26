@@ -256,6 +256,7 @@ void GreaselionServiceImpl::Shutdown() {
 void GreaselionServiceImpl::SetExtensionService(
     extensions::ExtensionService* extension_service) {
   DCHECK(extension_service);
+  DCHECK(!extension_service_);
   extension_service_ = extension_service;
 }
 
