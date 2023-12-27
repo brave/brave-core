@@ -29,21 +29,24 @@ namespace brave_vpn {
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel);
+    version_info::Channel channel,
+    base::RepeatingCallback<bool()> service_installer);
 
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel);
+    version_info::Channel channel,
+    base::RepeatingCallback<bool()> service_installer);
 
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel) {
+    version_info::Channel channel,
+    base::RepeatingCallback<bool()> service_installer) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   if (IsBraveVPNWireguardEnabled(local_prefs)) {
     return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
-                                                channel);
+                                                channel, service_installer);
   }
 #endif
 #if BUILDFLAG(IS_ANDROID)
@@ -51,7 +54,7 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
   return nullptr;
 #else
   return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                          channel);
+                                          channel, service_installer);
 #endif
 }
 
@@ -266,11 +269,6 @@ void BraveVPNOSConnectionAPI::ToggleConnection() {
       (GetConnectionState() == mojom::ConnectionState::CONNECTED ||
        GetConnectionState() == mojom::ConnectionState::CONNECTING);
   can_disconnect ? Disconnect() : Connect();
-}
-
-void BraveVPNOSConnectionAPI::SetInstallSystemServiceCallback(
-    base::RepeatingCallback<bool()> callback) {
-  install_system_service_callback_ = std::move(callback);
 }
 
 void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {

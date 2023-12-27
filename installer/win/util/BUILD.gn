@@ -16,7 +16,6 @@ source_set("vpn_utils") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win:win",
-    "//chrome/elevation_service:public_headers",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
     "//components/version_info",

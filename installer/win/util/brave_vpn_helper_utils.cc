@@ -5,29 +5,21 @@
 
 #include "brave/installer/win/util/brave_vpn_helper_utils.h"
 
-#include "base/files/file_util.h"
-#include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/win/com_init_util.h"
 #include "base/win/registry.h"
 #include "base/win/scoped_handle.h"
-#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "brave/installer/win/util/brave_vpn_helper_constants.h"
-#include "chrome/elevation_service/elevation_service_idl.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_service_work_item.h"
-#include "components/version_info/version_info.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_vpn {
@@ -234,37 +226,6 @@ std::wstring GetBraveVpnHelperServiceName() {
   std::wstring name = GetBraveVpnHelperServiceDisplayName();
   name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
   return name;
-}
-
-bool InstallVPNSystemServices() {
-  base::win::AssertComInitialized();
-
-  Microsoft::WRL::ComPtr<IElevator> elevator;
-  HRESULT hr = CoCreateInstance(
-      install_static::GetElevatorClsid(), nullptr, CLSCTX_LOCAL_SERVER,
-      install_static::GetElevatorIid(), IID_PPV_ARGS_Helper(&elevator));
-  if (FAILED(hr)) {
-    LOG(ERROR) << "CoCreateInstance returned: 0x" << std::hex << hr;
-    return false;
-  }
-
-  hr = CoSetProxyBlanket(
-      elevator.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
-      COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-      RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING);
-  if (FAILED(hr)) {
-    LOG(ERROR) << "CoSetProxyBlanket returned: 0x" << std::hex << hr;
-    return false;
-  }
-
-  hr = elevator->InstallVPNServices();
-  if (FAILED(hr)) {
-    LOG(ERROR) << "InstallVPNServices returned: 0x" << std::hex << hr;
-    return false;
-  }
-
-  VLOG(1) << "InstallVPNServices: SUCCESS";
-  return true;
 }
 
 }  // namespace brave_vpn

@@ -97,6 +97,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_vpn/win/vpn_utils_win.h"
+#endif
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -505,8 +508,19 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
     return brave_vpn_os_connection_api_.get();
   }
 
+  // Currently, service installer only used on Windows.
+  // Installs registers IKEv2 service (for DNS) and our WireGuard impl.
+  // NOTE: Install only happens if person has purchased the product.
+  auto service_installer =
+#if BUILDFLAG(IS_WIN)
+      base::BindRepeating(&brave_vpn::InstallVpnSystemServices);
+#else
+      nullptr;
+#endif
+
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
-      shared_url_loader_factory(), local_state(), chrome::GetChannel());
+      shared_url_loader_factory(), local_state(), chrome::GetChannel(),
+      service_installer);
   return brave_vpn_os_connection_api_.get();
 }
 #endif

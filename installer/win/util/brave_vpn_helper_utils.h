@@ -27,8 +27,6 @@ std::wstring GetBraveVPNConnectionName();
 std::wstring GetBraveVpnHelperServiceDisplayName();
 std::wstring GetBraveVpnHelperServiceName();
 
-bool InstallVPNSystemServices();
-
 }  // namespace brave_vpn
 
 #endif  // BRAVE_INSTALLER_WIN_UTIL_BRAVE_VPN_HELPER_UTILS_H_

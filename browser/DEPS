@@ -9,6 +9,7 @@ include_rules = [
   "+chrome/app",
   "+chrome/browser",
   "+chrome/common",
+  "+chrome/elevation_service", # Used for installing Brave VPN services (windows only)
   "+chrome/grit",
   "+chrome/installer/util",
   "+chrome/install_static",

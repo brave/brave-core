@@ -61,8 +61,6 @@ class BraveVPNOSConnectionAPI
   // Otherwise returns empty.
   std::string GetLastConnectionError() const;
   void ToggleConnection();
-  void SetInstallSystemServiceCallback(
-      base::RepeatingCallback<bool()> callback);
 
   // Connection dependent APIs.
   virtual void Connect() = 0;
@@ -101,6 +99,8 @@ class BraveVPNOSConnectionAPI
       net::NetworkChangeNotifier::ConnectionType type) override;
   void OnInstallSystemServicesCompleted(bool success);
 
+  // Installs system services (if neeeded) or is nullptr.
+  // Bound in brave_vpn::CreateBraveVPNConnectionAPI.
   base::RepeatingCallback<bool()> install_system_service_callback_;
 
  private:
@@ -141,11 +141,13 @@ class BraveVPNOSConnectionAPI
   base::ObserverList<Observer> observers_;
   // Used for tracking if the VPN dependencies have been installed.
   // If the user has Brave VPN purchased and loaded with this profile
-  // AND they are a system user, we should call this once per session.
-  //
-  // We should also guard against calling the method while it's in progress.
-  bool install_in_progress_ = false;
+  // AND they did a system level install, we should call
+  // install_system_service_callback_ once per browser open.
   bool install_performed_ = false;
+  // Used for tracking if the VPN dependencies are being installed.
+  // Guard against calling install_system_service_callback_ while a call
+  // is already in progress.
+  bool install_in_progress_ = false;
   base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
 
@@ -155,7 +157,8 @@ class BraveVPNOSConnectionAPI
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel);
+    version_info::Channel channel,
+    base::RepeatingCallback<bool()> service_installer);
 
 }  // namespace brave_vpn
 
