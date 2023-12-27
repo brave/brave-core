@@ -6,6 +6,7 @@
 import collections.abc
 import copy
 import os
+import sys
 
 import brave_node
 import chromium_presubmit_overrides
@@ -16,7 +17,7 @@ import override_utils
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
-# pylint: disable=line-too-long,protected-access,undefined-variable
+# pylint: disable=line-too-long
 
 
 # Adds support for chromium_presubmit_config.json5 and some helpers.
@@ -150,7 +151,7 @@ def CheckESLint(input_api, output_api):
     with import_inline.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
                                    'tools')):
-        # pylint: disable=import-error,import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from web_dev_style import js_checker
         return js_checker.JSChecker(input_api,
                                     output_api).RunEsLintChecks(files_to_check)
@@ -160,7 +161,7 @@ def CheckWebDevStyle(input_api, output_api):
     with import_inline.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
                                    'tools')):
-        # pylint: disable=import-error,import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from web_dev_style import presubmit_support, js_checker
         # Disable RunEsLintChecks, it's run separately in CheckESLint.
         with override_utils.override_scope_function(
@@ -180,9 +181,6 @@ def CheckPylint(input_api, output_api):
     extra_paths_list = os.environ['PYTHONPATH'].split(os.pathsep)
     return input_api.canned_checks.RunPylint(input_api,
                                              output_api,
-                                             pylintrc=input_api.os_path.join(
-                                                 input_api.PresubmitLocalPath(),
-                                                 '.pylintrc'),
                                              extra_paths_list=extra_paths_list)
 
 
@@ -313,7 +311,7 @@ def ApplyBanRuleExcludes():
         value for name, value in globals().items()
         if name.startswith('_BANNED_')
         and isinstance(value, collections.abc.Sequence) and len(value) > 0
-        and isinstance(value[0], BanRule)  # pylint: disable=undefined-variable
+        and isinstance(value[0], BanRule)
     ]
 
     # Get additional excluded paths from the config.
@@ -407,7 +405,6 @@ def CheckJavaStyle(_original_check, input_api, output_api):
             for f in input_api.AffectedFiles()):
         return []
 
-    import sys  # pylint: disable=import-outside-toplevel
     # Android toolchain is only available on Linux.
     if not sys.platform.startswith('linux'):
         return []
@@ -415,7 +412,8 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     with import_inline.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
                                    'android')):
-        from checkstyle import checkstyle  # pylint: disable=import-outside-toplevel, import-error
+        # pylint: disable=import-outside-toplevel
+        from checkstyle import checkstyle
 
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 

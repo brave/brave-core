@@ -14,10 +14,10 @@ import override_utils
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(1, SCRIPTS_DIR)
 
-from bind_gen.code_node import SymbolNode, TextNode  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_accumulator import CodeGenAccumulator  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_context import CodeGenContext  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_format import format_template as _format  # pylint: disable=import-error,wrong-import-position
+from bind_gen.code_node import SymbolNode, TextNode
+from bind_gen.codegen_accumulator import CodeGenAccumulator
+from bind_gen.codegen_context import CodeGenContext
+from bind_gen.codegen_format import format_template as _format
 
 # Get gn arg to enable WebAPI probes.
 _IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(

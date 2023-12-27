@@ -6,7 +6,6 @@
 import codecs
 import os.path
 
-# pylint: disable=import-error
 from mojom.parse import ast
 from mojom.parse import conditional_features
 from mojom.parse import parser

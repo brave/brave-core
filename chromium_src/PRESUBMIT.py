@@ -52,7 +52,7 @@ def CheckOverrides(input_api, output_api):
     with import_inline.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
                                    'tools')):
-        # pylint: disable=import-error,import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from chromium_src import check_chromium_src
     overrides = [
         f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)
