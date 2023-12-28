@@ -42,7 +42,6 @@ class RunnerConfig:
         raise RuntimeError(f'Unexpected {key} in configuration')
       setattr(self, key_, json[key])
 
-
 def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   """
   Parse the version and location from the passed string `target`.

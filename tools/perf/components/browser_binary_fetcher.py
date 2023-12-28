@@ -139,9 +139,9 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
     elif config.location.startswith('package:') and is_android:
       package = config.location[len('package:'):]
     else:
-      raise RuntimeError(f'{config.location} doesn\'t exist')
+      raise RuntimeError(f'Bad explicit location {config.location}')
 
-  if not binary_location:
+  if binary_location is None and package is None:
     assert config.version is not None
     binary_location = config.browser_type.DownloadBrowserBinary(
         url, config.version, binary_dir, common_options)

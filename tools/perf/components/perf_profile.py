@@ -8,9 +8,10 @@ import os
 import uuid
 import shutil
 
-from lib.util import extract_zip
-
 import components.path_util as path_util
+
+with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+  from lib.util import extract_zip
 
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   import download_from_google_storage  # pylint: disable=import-error

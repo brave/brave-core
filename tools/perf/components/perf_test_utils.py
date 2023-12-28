@@ -12,7 +12,10 @@ from threading import Timer
 from typing import List, Optional, Tuple
 from urllib.request import urlopen
 
-from lib.util import extract_zip
+import components.path_util as path_util
+
+with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+  from lib.util import extract_zip
 
 
 def ToChromiumPlatformName(target_os: str) -> str:
