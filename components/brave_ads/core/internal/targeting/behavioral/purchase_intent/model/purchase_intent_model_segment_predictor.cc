@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.h"
 
+#include <cstddef>
+
 #include "base/containers/adapters.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 

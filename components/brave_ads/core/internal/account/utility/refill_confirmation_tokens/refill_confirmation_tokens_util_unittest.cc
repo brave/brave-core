@@ -42,7 +42,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 
   // Act & Assert
   EXPECT_EQ(kMaxConfirmationTokens.Get() - 10,
-            CalculateAmountOfConfirmationTokensToRefill());
+            static_cast<int>(CalculateAmountOfConfirmationTokensToRefill()));
 }
 
 }  // namespace brave_ads

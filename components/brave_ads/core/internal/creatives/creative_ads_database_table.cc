@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 
+#include <cstddef>
 #include <map>
 #include <utility>
 

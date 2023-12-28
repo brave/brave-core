@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 

@@ -75,7 +75,7 @@ bool ConfirmationTokensIsEmpty() {
       .IsEmpty();
 }
 
-int ConfirmationTokenCount() {
+size_t ConfirmationTokenCount() {
   return ConfirmationStateManager::GetInstance()
       .GetConfirmationTokens()
       .Count();

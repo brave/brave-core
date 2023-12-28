@@ -88,7 +88,7 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
   user_rewards_->MaybeRefillConfirmationTokens();
 
   // Assert
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsUserRewardsTest, RedeemPaymentTokens) {
@@ -131,7 +131,7 @@ TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
   SetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, true);
 
   // Assert
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
   EXPECT_EQ(0U, PaymentTokenCount());
   EXPECT_FALSE(GetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser));
   EXPECT_TRUE(HasIssuers());

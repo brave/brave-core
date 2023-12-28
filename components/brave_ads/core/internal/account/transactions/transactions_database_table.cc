@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <utility>
 #include <vector>
 

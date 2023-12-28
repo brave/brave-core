@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 
+#include <cstddef>
+
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority_util.h"
 

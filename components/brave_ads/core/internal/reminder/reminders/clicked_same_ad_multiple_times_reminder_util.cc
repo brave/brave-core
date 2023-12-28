@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/reminder/reminders/clicked_same_ad_multiple_times_reminder_util.h"
 
+#include <cstddef>
+
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
