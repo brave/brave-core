@@ -130,13 +130,14 @@ export const MarketAsset = () => {
     return coinMarketData.find(
       (token) => token.id.toLowerCase() === coingeckoIdLower
     )
-  }, [coinMarketData])
-  const marketSymbolLower = selectedCoinMarket?.symbol.toLowerCase()
+  }, [coinMarketData, coingeckoIdLower])
 
   const { selectedAssetFromParams, foundTokens } = React.useMemo(() => {
     if (!selectedCoinMarket) {
       return { selectedAssetFromParams: undefined, foundTokens: [] }
     }
+
+    const marketSymbolLower = selectedCoinMarket.symbol.toLowerCase()
 
     const foundTokens = combinedTokensList.filter(
       (t) => t.symbol.toLowerCase() === marketSymbolLower
@@ -153,12 +154,7 @@ export const MarketAsset = () => {
     token.symbol = selectedCoinMarket.symbol.toUpperCase()
     token.logo = selectedCoinMarket.image
     return { selectedAssetFromParams: token, foundTokens }
-  }, [
-    selectedCoinMarket,
-    combinedTokensList,
-    marketSymbolLower,
-    selectedTimeline
-  ])
+  }, [selectedCoinMarket, combinedTokensList, selectedTimeline])
 
   const isRewardsToken = getIsRewardsToken(selectedAssetFromParams)
 
@@ -205,7 +201,7 @@ export const MarketAsset = () => {
     }
 
     return foundTokens.length > 0
-  }, [combinedTokensList, selectedAssetFromParams?.symbol, isRewardsToken])
+  }, [selectedAssetFromParams, isRewardsToken, foundTokens])
 
   const candidateAccounts = React.useMemo(() => {
     if (!selectedAssetsNetwork) {
@@ -268,7 +264,7 @@ export const MarketAsset = () => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.push(WalletRoutes.Market)
-  }, [selectedTimeline])
+  }, [])
 
   const onCloseTokenDetailsModal = React.useCallback(
     () => setShowTokenDetailsModal(false),
