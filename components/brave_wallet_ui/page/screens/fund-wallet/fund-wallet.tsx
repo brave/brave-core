@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { Redirect, Route, Switch, useHistory } from 'react-router'
+import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
 import type { VariableSizeList as List } from 'react-window'
 
 // Selectors
@@ -109,6 +109,9 @@ const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
 interface Props {
   isAndroid?: boolean
 }
+interface Params {
+  assetId: string
+}
 
 export const FundWalletScreen = ({ isAndroid }: Props) => {
   // render
@@ -121,9 +124,14 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         <PurchaseOptionSelection isAndroid={isAndroid} />
       </Route>
 
-      <Route>
+      <Route
+        path={WalletRoutes.FundWalletPage}
+        exact
+      >
         <AssetSelection isAndroid={isAndroid} />
       </Route>
+
+      <Redirect to={WalletRoutes.FundWalletPage} />
     </Switch>
   )
 }
@@ -131,13 +139,13 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
 function AssetSelection({ isAndroid }: Props) {
   // routing
   const history = useHistory()
+  const { assetId: selectedOnRampAssetId } = useParams<Params>()
   const params = new URLSearchParams(history.location.search)
   const currencyCode = params.get('currencyCode')
   const buyAmountParam = params.get('buyAmount')
   const searchParam = params.get('search')
   const chainIdParam = params.get('chainId')
   const coinTypeParam = params.get('coinType')
-  const selectedOnRampAssetId = params.get('assetId')
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -215,13 +223,7 @@ function AssetSelection({ isAndroid }: Props) {
             selectedCurrency={selectedCurrency}
             key={assetId}
             token={asset}
-            onClick={() =>
-              history.push(
-                makeFundWalletRoute({
-                  assetId
-                })
-              )
-            }
+            onClick={() => history.push(makeFundWalletRoute(assetId))}
           />
         )
       },
@@ -404,12 +406,15 @@ function AssetSelection({ isAndroid }: Props) {
                 : getLocale('braveWalletBuySelectAsset')
             }
             onSubmit={() => {
+              if (!selectedOnRampAssetId) {
+                return
+              }
+
               const searchValueLower = searchValue.toLowerCase()
 
               // save latest form values in router history
               history.replace(
-                makeFundWalletRoute({
-                  assetId: selectedOnRampAssetId || undefined,
+                makeFundWalletRoute(selectedOnRampAssetId, {
                   currencyCode: selectedCurrency,
                   buyAmount,
                   // save latest search-box value (if it matches selection name
@@ -440,10 +445,9 @@ function AssetSelection({ isAndroid }: Props) {
 
               // go to payment option selection
               history.push(
-                makeFundWalletPurchaseOptionsRoute({
+                makeFundWalletPurchaseOptionsRoute(selectedOnRampAssetId, {
                   buyAmount: buyAmount || '0',
-                  currencyCode: selectedCurrency,
-                  assetId: selectedOnRampAssetId || undefined
+                  currencyCode: selectedCurrency
                 })
               )
             }}
@@ -460,10 +464,10 @@ function AssetSelection({ isAndroid }: Props) {
 function PurchaseOptionSelection({ isAndroid }: Props) {
   // routing
   const history = useHistory()
+  const { assetId: selectedOnRampAssetId } = useParams<Params>()
   const params = new URLSearchParams(history.location.search)
   const currencyCodeParam = params.get('currencyCode')
   const buyAmountParam = params.get('buyAmount')
-  const selectedOnRampAssetId = params.get('assetId')
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -659,7 +663,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   // render
   if (!selectedOnRampAssetId) {
-    console.log('REDIRECT')
     return <Redirect to={WalletRoutes.FundWalletPageStart} />
   }
 

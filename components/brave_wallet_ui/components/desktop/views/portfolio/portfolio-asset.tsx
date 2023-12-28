@@ -392,11 +392,7 @@ export const PortfolioAsset = () => {
 
   const onSelectBuy = React.useCallback(() => {
     if (selectedAssetFromParams) {
-      history.push(
-        makeFundWalletRoute({
-          assetId: getAssetIdKey(selectedAssetFromParams)
-        })
-      )
+      history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
     }
   }, [selectedAssetFromParams])
 
