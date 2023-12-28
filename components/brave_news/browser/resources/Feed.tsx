@@ -3,19 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { spacing } from "@brave/leo/tokens/css";
 import { FeedItemV2, FeedV2 } from "gen/brave/components/brave_news/common/brave_news.mojom.m";
 import * as React from 'react';
 import styled from "styled-components";
 import Advert from "./feed/Ad";
 import Article from "./feed/Article";
+import CaughtUp from "./feed/CaughtUp";
 import Cluster from "./feed/Cluster";
 import Discover from "./feed/Discover";
 import HeroArticle from "./feed/Hero";
-import { getHistoryValue, setHistoryState } from "./shared/history";
-import NoArticles from "./feed/NoArticles";
 import LoadingCard from "./feed/LoadingCard";
-import { spacing } from "@brave/leo/tokens/css";
-import CaughtUp from "./feed/CaughtUp";
+import NoArticles from "./feed/NoArticles";
+import NoFeeds from "./feed/NoFeeds";
+import { getHistoryValue, setHistoryState } from "./shared/history";
 
 // Restoring scroll position is complicated - we have two available strategies:
 // 1. Scroll to the same position - as long as the window hasn't been resized,
@@ -44,6 +45,7 @@ const FeedContainer = styled.div`
 
 interface Props {
   feed: FeedV2 | undefined;
+  hasSubscriptions: boolean;
 }
 
 const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
@@ -74,7 +76,7 @@ const saveScrollPos = (itemId: React.Key) => () => {
   })
 }
 
-export default function Component({ feed }: Props) {
+export default function Component({ feed, hasSubscriptions }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
 
   // Store the number of cards we've loaded in history - otherwise when we
@@ -144,12 +146,15 @@ export default function Component({ feed }: Props) {
   }, [cardCount, feed?.items])
 
   return <FeedContainer className={NEWS_FEED_CLASS}>
-    {feed
-      ? !feed.items.length ? <NoArticles />
-      : <>
-          {cards}
-          <CaughtUp />
-      </>
-      : <LoadingCard />}
+    {!hasSubscriptions
+      ? <NoFeeds />
+      : feed
+        ? !feed.items.length
+          ? <NoArticles />
+          : <>
+            {cards}
+            <CaughtUp />
+          </>
+        : <LoadingCard />}
   </FeedContainer>
 }

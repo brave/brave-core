@@ -307,6 +307,12 @@ void BraveNewsController::SetChannelSubscribed(
     SetChannelSubscribedCallback callback) {
   auto result =
       channels_controller_.SetChannelSubscribed(locale, channel_id, subscribed);
+
+  // When channels are changed, see if it affects the feed.
+  if (MaybeInitFeedV2()) {
+    feed_v2_builder_->RecheckFeedHash();
+  }
+
   std::move(callback).Run(std::move(result));
 }
 
