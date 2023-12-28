@@ -12,6 +12,9 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetOnRampAssetsQuery
 } from '../../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery //
+} from '../../../../common/slices/api.slice.extra'
 
 // Constants
 import { WalletRoutes } from '../../../../constants/types'
@@ -38,7 +41,6 @@ import {
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { useGetCombinedTokensListQuery } from '../../../../common/slices/api.slice.extra'
 
 const defaultCurrency = 'usd'
 const assetsRequestLimit = 250
