@@ -44,7 +44,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment {
     private void checkLinkPurchase() {
         BraveLeoCMHelper.getInstance(getProfile())
                 .getPremiumStatus(
-                        status -> {
+                        (status, info) -> {
                             if (status == PremiumStatus.ACTIVE
                                     || !BraveLeoPrefUtils.getIsSubscriptionActive(getProfile())) {
                                 return;

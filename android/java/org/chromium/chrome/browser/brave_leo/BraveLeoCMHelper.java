@@ -63,7 +63,7 @@ public class BraveLeoCMHelper implements ConnectionErrorHandler {
 
     public void getPremiumStatus(CredentialManagerHelper.GetPremiumStatus_Response callback) {
         if (mCredentialManagerHelper == null) {
-            callback.call(PremiumStatus.INACTIVE);
+            callback.call(PremiumStatus.INACTIVE, null);
             return;
         }
         mCredentialManagerHelper.getPremiumStatus(callback);

@@ -172,7 +172,7 @@ interface ChatUIPage {
 
 [EnableIf=is_android]
 interface CredentialManagerHelper {
-  GetPremiumStatus() => (PremiumStatus result);
+  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
 };
 
 [EnableIf=is_android]

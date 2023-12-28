@@ -60,8 +60,9 @@ void AIChatCMHelperAndroid::GetPremiumStatus(
 
 void AIChatCMHelperAndroid::OnPremiumStatusReceived(
     mojom::PageHandler::GetPremiumStatusCallback parent_callback,
-    mojom::PremiumStatus premium_status) {
-  std::move(parent_callback).Run(premium_status);
+    mojom::PremiumStatus premium_status,
+    mojom::PremiumInfoPtr premium_info) {
+  std::move(parent_callback).Run(premium_status, std::move(premium_info));
 }
 
 }  // namespace ai_chat

@@ -31,7 +31,8 @@ class AIChatCMHelperAndroid : public mojom::CredentialManagerHelper {
  private:
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
-      mojom::PremiumStatus premium_status);
+      mojom::PremiumStatus premium_status,
+      mojom::PremiumInfoPtr premium_info);
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
   mojo::ReceiverSet<mojom::CredentialManagerHelper> receivers_;
   base::WeakPtrFactory<AIChatCMHelperAndroid> weak_ptr_factory_{this};
