@@ -5,6 +5,8 @@
 
 import override_utils
 
+# pylint: disable=undefined-variable, function-redefined
+
 
 def _add_brave_metrics(options):
     options.ExtendTimelineBasedMetric(['braveNavigationMetric'])
