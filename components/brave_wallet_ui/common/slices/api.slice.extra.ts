@@ -28,8 +28,7 @@ import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult,
   selectCombinedTokensList,
-  selectCombinedTokensRegistry,
-  blockchainTokenEntityAdaptorInitialState
+  selectCombinedTokensRegistry
 } from '../slices/entities/blockchain-token.entity'
 import {
   findAccountByAccountId,
@@ -133,7 +132,7 @@ export const useGetCombinedTokensRegistryQuery = (
     ) {
       return {
         isLoading: true,
-        data: blockchainTokenEntityAdaptorInitialState
+        data: undefined
       }
     }
     const combinedRegistry = selectCombinedTokensRegistry(

@@ -62,6 +62,7 @@ import {
   PortfolioOverviewHeader //
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
+import { MarketAsset } from '../market/market_asset'
 
 export interface Props {
   sessionRoute: string | undefined
@@ -312,7 +313,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
               {banners}
-              <PortfolioAsset isShowingMarketData={true} />
+              <MarketAsset />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>

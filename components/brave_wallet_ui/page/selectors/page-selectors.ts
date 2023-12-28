@@ -24,4 +24,3 @@ export const walletTermsAcknowledged = ({ page }: State) =>
 export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const nftMetadataError = ({ page }: State) => page.nftMetadataError
 export const pinStatusOverview = ({ page }: State) => page.pinStatusOverview
-export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 
 // Components
 import {
@@ -31,7 +31,6 @@ import {
   DecryptRequestPanel
 } from '../components/extension/encryption-key-panel/index'
 
-import { getInitialSessionRoute } from '../utils/routes-utils'
 import {
   StyledExtensionWrapper,
   LongWrapper,
@@ -39,7 +38,7 @@ import {
 } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
 
-import { BraveWallet, WalletRoutes } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
@@ -72,14 +71,7 @@ import {
   return this.toString()
 }
 
-const initialSessionRoute =
-  getInitialSessionRoute() || WalletRoutes.PortfolioAssets
-let hasInitializedRouter = false
-
 function Container() {
-  // routing
-  const history = useHistory()
-
   // wallet selectors (safe)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -136,20 +128,6 @@ function Container() {
   // false`, and also using `React.lazy` to put all the main UI in a separate JS
   // bundle and display that loading indicator ASAP.
   const { selectedPendingTransaction } = usePendingTransactions()
-
-  const canInitializePageRouter =
-    !isWalletLocked &&
-    !hasInitializedRouter &&
-    hasInitialized &&
-    isWalletCreated
-
-  // initialize session route
-  React.useEffect(() => {
-    if (canInitializePageRouter) {
-      history.push(initialSessionRoute)
-      hasInitializedRouter = true
-    }
-  }, [canInitializePageRouter])
 
   if (!hasInitialized) {
     return null

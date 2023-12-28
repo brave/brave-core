@@ -39,8 +39,6 @@ export const showNetworkLogoOnNfts = ({ wallet }: State) =>
   wallet.showNetworkLogoOnNfts
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
-export const selectedOnRampAssetId = ({ wallet }: State) =>
-  wallet.selectedDepositAssetId
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
   wallet.allowedNewWalletAccountTypeNetworkIds
 

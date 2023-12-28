@@ -66,7 +66,6 @@ const defaultState: WalletState = {
     NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
-  selectedDepositAssetId: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
@@ -204,13 +203,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.assetAutoDiscoveryCompleted = payload
-      },
-
-      selectOnRampAssetId(
-        state: WalletState,
-        { payload }: PayloadAction<string | undefined>
-      ) {
-        state.selectedDepositAssetId = payload
       },
 
       setGasEstimates(

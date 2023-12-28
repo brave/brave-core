@@ -183,3 +183,13 @@ export const getRewardsBATToken = (
     chainId: provider
   }
 }
+
+export const isRewardsAssetId = (assetId: string) => {
+  const assetIdLower = assetId.toLowerCase()
+  return (
+    assetIdLower.includes('bat') &&
+    externalWalletProviders.some((provider) =>
+      assetIdLower.includes(provider.toLowerCase())
+    )
+  )
+}

@@ -214,10 +214,6 @@ export interface WalletState {
   selectedGroupAssetsByItem: string
   selectedAccountFilter: string
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
-  /**
-   * used for "buy" and "deposit" screens
-   */
-  selectedDepositAssetId?: string | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
@@ -268,7 +264,6 @@ export interface PageState {
   mnemonic?: string
   setupStillInProgress: boolean
   walletTermsAcknowledged: boolean
-  selectedCoinMarket: BraveWallet.CoinMarket | undefined
 }
 
 export interface WalletPageState {
@@ -601,16 +596,15 @@ export enum WalletRoutes {
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:currencyCode?/:buyAmount?',
-  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase/' +
-    ':currencyCode/:buyAmount',
+  FundWalletPage = '/crypto/fund-wallet',
+  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase',
   DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds',
   DepositFundsAccountPage = '/crypto/deposit-funds/account',
 
   // market
   Market = '/crypto/market',
-  MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
+  MarketSub = '/crypto/market/:coingeckoId?',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -646,15 +640,8 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
-  PortfolioNFTAsset = '/crypto/portfolio/nfts/' +
-    ':chainId/' +
-    ':contractAddress/' +
-    ':tokenId?',
-  PortfolioAsset = '/crypto/portfolio/assets/' +
-    ':chainIdOrMarketSymbol/' +
-    ':contractOrSymbol?/' +
-    ':tokenId?',
-  PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
+  PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
+  PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',

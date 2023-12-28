@@ -97,58 +97,98 @@ export const makeAccountTransactionRoute = (
   )
 }
 
-export const makeFundWalletRoute = (
-  currencyCode?: string,
-  buyAmount?: string,
-  searchText?: string,
-  chainId?: string,
+export const makeFundWalletRoute = ({
+  buyAmount,
+  chainId,
+  coinType,
+  currencyCode,
+  searchText,
+  assetId
+}: {
+  assetId?: string
+  currencyCode?: string
+  buyAmount?: string
+  searchText?: string
+  chainId?: string
   coinType?: string
-) => {
-  const routePartial = WalletRoutes.FundWalletPage.replace(
-    '/:currencyCode?',
-    currencyCode ? `/${currencyCode}` : ''
-  ).replace('/:buyAmount?', currencyCode && buyAmount ? `/${buyAmount}` : '')
-
+}) => {
   const params = new URLSearchParams()
+  if (assetId) {
+    params.append('assetId', assetId)
+  }
+  if (currencyCode) {
+    params.append('currencyCode', currencyCode)
+  }
+  if (buyAmount) {
+    params.append('buyAmount', buyAmount)
+  }
   if (searchText) {
-    params?.append('search', searchText)
+    params.append('search', searchText)
   }
   if (chainId) {
-    params?.append('chainId', chainId)
+    params.append('chainId', chainId)
   }
   if (coinType) {
-    params?.append('coinType', coinType)
+    params.append('coinType', coinType)
   }
 
   const paramsString = params ? params.toString() : undefined
 
-  return `${routePartial}${paramsString ? `?${paramsString}` : ''}`
+  return `${WalletRoutes.FundWalletPage}${
+    paramsString ? `?${paramsString}` : ''
+  }`
 }
 
-export const makeFundWalletPurchaseOptionsRoute = (
-  currencyCode: string,
+export const makeFundWalletPurchaseOptionsRoute = ({
+  buyAmount,
+  currencyCode,
+  assetId
+}: {
+  currencyCode: string
   buyAmount: string
-) => {
-  return WalletRoutes.FundWalletPurchaseOptionsPage.replace(
-    ':currencyCode',
-    currencyCode
-  ).replace(':buyAmount', buyAmount)
+  assetId?: string
+}) => {
+  const params = new URLSearchParams()
+  if (assetId) {
+    params.append('assetId', assetId)
+  }
+  if (currencyCode) {
+    params.append('currencyCode', currencyCode)
+  }
+  if (buyAmount) {
+    params.append('buyAmount', buyAmount)
+  }
+
+  const paramsString = params ? params.toString() : undefined
+
+  return `${WalletRoutes.FundWalletPurchaseOptionsPage}${
+    paramsString ? `?${paramsString}` : ''
+  }`
 }
 
-export const makeDepositFundsRoute = (
-  searchText?: string,
-  chainId?: string,
+export const makeDepositFundsRoute = ({
+  assetId,
+  chainId,
+  coinType,
+  searchText
+}: {
+  searchText?: string
+  chainId?: string
   coinType?: string
-) => {
+  assetId?: string
+}) => {
   const params = new URLSearchParams()
+  if (assetId) {
+    params.append('assetId', assetId)
+  }
   if (searchText) {
-    params?.append('search', searchText)
+    params.append('search', searchText)
   }
   if (chainId) {
-    params?.append('chainId', chainId)
+    params.append('chainId', chainId)
   }
   if (coinType) {
-    params?.append('coinType', coinType)
+    params.append('coinType', coinType)
   }
 
   const paramsString = params ? params.toString() : undefined
@@ -156,6 +196,15 @@ export const makeDepositFundsRoute = (
   return `${WalletRoutes.DepositFundsPage}${
     paramsString ? `?${paramsString}` : ''
   }`
+}
+
+export const makeDepositFundsAccountRoute = (assetId: string) => {
+  const params = new URLSearchParams()
+  if (assetId) {
+    params.append('assetId', assetId)
+  }
+
+  return `${WalletRoutes.DepositFundsAccountPage}?${params.toString()}`
 }
 
 export const makeSendRoute = (
@@ -179,6 +228,12 @@ export const makeSendRoute = (
   }
 
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
+}
+
+export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
+  return (
+    isNft ? WalletRoutes.PortfolioNFTAsset : WalletRoutes.PortfolioAsset
+  ).replace(':assetId', assetId)
 }
 
 // Tabs

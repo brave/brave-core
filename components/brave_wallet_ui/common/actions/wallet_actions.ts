@@ -30,7 +30,6 @@ export const {
   setAssetAutoDiscoveryCompleted,
   setGasEstimates,
   setHasFeeEstimatesError,
-  selectOnRampAssetId,
   setPasswordAttempts,
   setSelectedAccountFilterItem,
   setSelectedAssetFilterItem,
