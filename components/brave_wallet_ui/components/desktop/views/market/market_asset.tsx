@@ -127,28 +127,26 @@ export const MarketAsset = () => {
   }, [coinMarketData])
   const marketSymbolLower = selectedCoinMarket?.symbol.toLowerCase()
 
-  const selectedAssetFromParams = React.useMemo(() => {
+  const { selectedAssetFromParams, foundTokens } = React.useMemo(() => {
     if (!selectedCoinMarket) {
-      return undefined
+      return { selectedAssetFromParams: undefined, foundTokens: [] }
     }
 
-    const knownToken = combinedTokensList.find(
+    const foundTokens = combinedTokensList.filter(
       (t) => t.symbol.toLowerCase() === marketSymbolLower
     )
 
-    if (knownToken) {
-      return knownToken
+    if (foundTokens.length) {
+      return { selectedAssetFromParams: foundTokens[0], foundTokens }
     }
-    if (selectedCoinMarket) {
-      const token = new BraveWallet.BlockchainToken()
-      token.coingeckoId = selectedCoinMarket.id
-      token.name = selectedCoinMarket.name
-      token.contractAddress = ''
-      token.symbol = selectedCoinMarket.symbol.toUpperCase()
-      token.logo = selectedCoinMarket.image
-      return token
-    }
-    return undefined
+
+    const token = new BraveWallet.BlockchainToken()
+    token.coingeckoId = selectedCoinMarket.id
+    token.name = selectedCoinMarket.name
+    token.contractAddress = ''
+    token.symbol = selectedCoinMarket.symbol.toUpperCase()
+    token.logo = selectedCoinMarket.image
+    return { selectedAssetFromParams: token, foundTokens }
   }, [
     selectedCoinMarket,
     combinedTokensList,
@@ -200,11 +198,7 @@ export const MarketAsset = () => {
       return false
     }
 
-    return combinedTokensList.some(
-      (token) =>
-        token.symbol.toLowerCase() ===
-        selectedAssetFromParams.symbol.toLowerCase()
-    )
+    return foundTokens.length > 0
   }, [combinedTokensList, selectedAssetFromParams?.symbol, isRewardsToken])
 
   const candidateAccounts = React.useMemo(() => {
@@ -295,18 +289,60 @@ export const MarketAsset = () => {
   }, [selectedAssetFromParams])
 
   const onSelectBuy = React.useCallback(() => {
-    if (selectedAssetFromParams) {
-      history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
+    if (foundTokens.length === 1) {
+      history.push(
+        makeFundWalletRoute(getAssetIdKey(foundTokens[0]), {
+          searchText: foundTokens[0].symbol
+        })
+      )
+      return
     }
-  }, [selectedAssetFromParams])
 
-  const onSelectDeposit = React.useCallback(() => {
+    if (foundTokens.length > 1) {
+      history.push(
+        makeFundWalletRoute('', {
+          searchText: foundTokens[0].symbol
+        })
+      )
+      return
+    }
+
     if (selectedAssetFromParams) {
       history.push(
-        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
+        makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams), {
+          searchText: selectedAssetFromParams.symbol
+        })
       )
     }
-  }, [selectedAssetFromParams])
+  }, [foundTokens, selectedAssetFromParams])
+
+  const onSelectDeposit = React.useCallback(() => {
+    if (foundTokens.length === 1) {
+      history.push(
+        makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
+          searchText: foundTokens[0].symbol
+        })
+      )
+      return
+    }
+
+    if (foundTokens.length > 1) {
+      history.push(
+        makeDepositFundsRoute('', {
+          searchText: foundTokens[0].symbol
+        })
+      )
+      return
+    }
+
+    if (selectedAssetFromParams) {
+      history.push(
+        makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams), {
+          searchText: selectedAssetFromParams.symbol
+        })
+      )
+    }
+  }, [foundTokens, selectedAssetFromParams])
 
   // token list needs to load before we can find an asset to select from the url
   // params
