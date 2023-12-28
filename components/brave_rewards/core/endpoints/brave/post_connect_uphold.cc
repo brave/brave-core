@@ -10,7 +10,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
@@ -50,9 +50,20 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  std::string digest = util::Security::DigestValue(octets);
-  std::string signature = util::Security::Sign(
-      {{{"digest", digest}}}, "primary", wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    BLOG(0, "Unable to sign request");
+    return std::nullopt;
+  }
+
+  std::string digest =
+      RequestSigner::GetDigest(base::as_bytes(base::make_span(octets)));
+
+  signer->set_key_id("primary");
+
+  std::string signature = signer->SignHeaders(
+      std::vector<std::pair<std::string, std::string>>{{"digest", digest}});
+
   if (signature.empty()) {
     BLOG(0, "Failed to create signature!");
     return std::nullopt;

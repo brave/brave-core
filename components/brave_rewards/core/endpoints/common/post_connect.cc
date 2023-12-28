@@ -10,7 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -193,9 +193,15 @@ std::optional<std::vector<std::string>> PostConnect::Headers(
   DCHECK(!wallet->payment_id.empty());
   DCHECK(!wallet->recovery_seed.empty());
 
-  return util::BuildSignHeaders(
-      "post " + base::StringPrintf(Path(), wallet->payment_id.c_str()), content,
-      wallet->payment_id, wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    BLOG(0, "Unable to sign request");
+    return std::nullopt;
+  }
+
+  return signer->GetSignedHeaders(
+      "post " + base::StringPrintf(Path(), wallet->payment_id.c_str()),
+      content);
 }
 
 std::string PostConnect::ContentType() const {

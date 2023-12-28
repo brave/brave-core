@@ -8,7 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
@@ -64,7 +64,7 @@ void WalletCreate::CreateWallet(std::optional<std::string>&& geo_country,
 
   if (!wallet) {
     wallet = mojom::RewardsWallet::New();
-    wallet->recovery_seed = util::Security::GenerateSeed();
+    wallet->recovery_seed = Signer::GenerateRecoverySeed();
 
     if (!engine_->wallet()->SetWallet(std::move(wallet))) {
       BLOG(0, "Failed to set Rewards wallet!");
