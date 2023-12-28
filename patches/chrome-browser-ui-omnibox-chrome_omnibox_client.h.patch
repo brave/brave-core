@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/omnibox/chrome_omnibox_client.h b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
+index db1e94ddecdefe05ef45d090722eeee3e5eb0105..d79e108c47a13155f0f0e558564d1baf29b7606c 100644
+--- a/chrome/browser/ui/omnibox/chrome_omnibox_client.h
++++ b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
+@@ -17,13 +17,14 @@
+ #include "components/omnibox/browser/favicon_cache.h"
+ #include "components/omnibox/browser/omnibox.mojom-shared.h"
+ #include "components/omnibox/browser/omnibox_client.h"
++#include "brave/components/omnibox/browser/brave_omnibox_client.h"
+ 
+ class Browser;
+ class GURL;
+ class LocationBar;
+ class Profile;
+ 
+-class ChromeOmniboxClient final : public OmniboxClient {
++class ChromeOmniboxClient : public BraveOmniboxClient {
+  public:
+   ChromeOmniboxClient(LocationBar* location_bar,
+                       Browser* browser,
