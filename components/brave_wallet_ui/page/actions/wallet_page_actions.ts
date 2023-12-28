@@ -9,7 +9,6 @@ import { PageActions } from '../reducers/page_reducer'
 export const {
   agreeToWalletTerms,
   recoveryWordsAvailable,
-  selectCoinMarket,
   setIsFetchingNFTMetadata,
   updateNFTMetadata,
   updateNftMetadataError,
