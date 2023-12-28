@@ -93,11 +93,7 @@ export const MarketView = () => {
             (t) => t.symbol.toLowerCase() === symbolLower
           )
           if (foundToken) {
-            history.push(
-              makeFundWalletRoute({
-                assetId: getAssetIdKey(foundToken)
-              })
-            )
+            history.push(makeFundWalletRoute(getAssetIdKey(foundToken)))
           }
           break
         }

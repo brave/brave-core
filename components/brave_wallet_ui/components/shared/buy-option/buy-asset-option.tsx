@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useLocation } from 'react-router'
+import { useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -67,9 +67,7 @@ const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(
   ({ onClick, token, isPanel, selectedCurrency }, ref) => {
     // routing
-    const { search } = useLocation()
-    const params = new URLSearchParams(search)
-    const selectedOnRampAssetId = params.get('assetId')
+    const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
 
     // query Params
     const tokenIds = React.useMemo(() => {
