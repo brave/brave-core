@@ -89,11 +89,25 @@ export const MarketView = () => {
         case MarketUiCommand.SelectBuy: {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
-          const foundToken = combinedTokensList.find(
+          const foundTokens = combinedTokensList.filter(
             (t) => t.symbol.toLowerCase() === symbolLower
           )
-          if (foundToken) {
-            history.push(makeFundWalletRoute(getAssetIdKey(foundToken)))
+
+          if (foundTokens.length === 1) {
+            history.push(
+              makeFundWalletRoute(getAssetIdKey(foundTokens[0]), {
+                searchText: symbolLower
+              })
+            )
+            return
+          }
+
+          if (foundTokens.length > 1) {
+            history.push(
+              makeFundWalletRoute('', {
+                searchText: symbolLower
+              })
+            )
           }
           break
         }
@@ -101,11 +115,25 @@ export const MarketView = () => {
         case MarketUiCommand.SelectDeposit: {
           const { payload } = message as SelectDepositMessage
           const symbolLower = payload.symbol.toLowerCase()
-          const foundToken = combinedTokensList.find(
+          const foundTokens = combinedTokensList.filter(
             (t) => t.symbol.toLowerCase() === symbolLower
           )
-          if (foundToken) {
-            history.push(makeDepositFundsRoute(getAssetIdKey(foundToken)))
+
+          if (foundTokens.length === 1) {
+            history.push(
+              makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
+                searchText: symbolLower
+              })
+            )
+            return
+          }
+
+          if (foundTokens.length > 1) {
+            history.push(
+              makeDepositFundsRoute('', {
+                searchText: symbolLower
+              })
+            )
           }
         }
 
