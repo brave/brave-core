@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -32,7 +32,9 @@ import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -82,8 +84,12 @@ import {
   ButtonRow,
   StyledWrapper
 } from '../portfolio/style'
-import { TokenDetailsModal } from '../portfolio/components/token-details-modal/token-details-modal'
-import { HideTokenModal } from '../portfolio/components/hide-token-modal/hide-token-modal'
+import {
+  TokenDetailsModal //
+} from '../portfolio/components/token-details-modal/token-details-modal'
+import {
+  HideTokenModal //
+} from '../portfolio/components/hide-token-modal/hide-token-modal'
 import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
 
 const emptyPriceList: TokenPriceHistory[] = []
