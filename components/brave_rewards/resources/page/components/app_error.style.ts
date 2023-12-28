@@ -15,7 +15,7 @@ export const root = styled.div`
 `
 
 export const title = styled.div`
-  background-image: url(/${errorBackground});
+  background-image: url(${errorBackground});
   background-repeat: no-repeat;
   background-position: center top;
   background-size: auto 50px;

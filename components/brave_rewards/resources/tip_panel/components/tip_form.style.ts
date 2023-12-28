@@ -26,20 +26,20 @@ export const root = styled.div`
   flex-direction: column;
   gap: 24px;
 
-  --form-background-url: url(./${formBackgroundURL});
+  --form-background-url: url(${formBackgroundURL});
   --form-background-gradient-color-1: #FFFFFF;
   --form-background-gradient-color-2: rgba(255, 255, 255, 0);
-  --success-background-1-url: url(./${successBackground1URL});
-  --success-background-2-url: url(./${successBackground2URL});
-  --success-background-3-url: url(./${successBackground3URL});
+  --success-background-1-url: url(${successBackground1URL});
+  --success-background-2-url: url(${successBackground2URL});
+  --success-background-3-url: url(${successBackground3URL});
 
   @media (prefers-color-scheme: dark) {
-    --form-background-url: url(./${formBackgroundDarkURL});
+    --form-background-url: url(${formBackgroundDarkURL});
     --form-background-gradient-color-1: #1E2025;
     --form-background-gradient-color-2: rgba(30, 32, 37, 0);
-    --success-background-1-url: url(./${successBackground1DarkURL});
-    --success-background-2-url: url(./${successBackground2DarkURL});
-    --success-background-3-url: url(./${successBackground3DarkURL});
+    --success-background-1-url: url(${successBackground1DarkURL});
+    --success-background-2-url: url(${successBackground2DarkURL});
+    --success-background-3-url: url(${successBackground3DarkURL});
   }
 `
 

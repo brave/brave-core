@@ -20,7 +20,7 @@ export const root = styled.div`
 
   select {
     -webkit-appearance: none;
-    background: url(/${selectArrow}) calc(100% - 12px) center no-repeat;
+    background: url(${selectArrow}) calc(100% - 12px) center no-repeat;
     background-size: 12px;
     width: 100%;
     border-radius: 4px;
