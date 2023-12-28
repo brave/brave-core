@@ -76,12 +76,10 @@ import {
   useGetTokenSpotPricesQuery,
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetRewardsInfoQuery
+  useGetRewardsInfoQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
-import {
-  useAccountsQuery,
-  useGetCombinedTokensRegistryQuery
-} from '../../../../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
@@ -134,8 +132,8 @@ export const PortfolioAsset = () => {
   )
 
   // Queries
-  const { data: combinedTokensRegistry, isLoading: isLoadingTokens } =
-    useGetCombinedTokensRegistryQuery()
+  const { data: userTokensRegistry, isLoading: isLoadingTokens } =
+    useGetUserTokensRegistryQuery()
   const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const { data: { rewardsToken } = emptyRewardsInfo } = useGetRewardsInfoQuery()
 
@@ -145,12 +143,12 @@ export const PortfolioAsset = () => {
     if (isRewardsToken) {
       return rewardsToken
     }
-    return assetId ? combinedTokensRegistry?.entities[assetId] : undefined
+    return assetId ? userTokensRegistry?.entities[assetId] : undefined
   }, [
     isRewardsToken,
     rewardsToken,
     assetId,
-    combinedTokensRegistry
+    userTokensRegistry
   ])
 
   // queries
