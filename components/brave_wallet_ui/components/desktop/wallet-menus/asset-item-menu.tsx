@@ -97,11 +97,7 @@ export const AssetItemMenu = (props: Props) => {
 
   // Methods
   const onClickBuy = React.useCallback(() => {
-    history.push(
-      makeFundWalletRoute({
-        assetId: getAssetIdKey(asset)
-      })
-    )
+    history.push(makeFundWalletRoute(getAssetIdKey(asset)))
   }, [asset])
 
   const onClickSend = React.useCallback(() => {

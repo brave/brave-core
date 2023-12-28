@@ -97,73 +97,70 @@ export const makeAccountTransactionRoute = (
   )
 }
 
-export const makeFundWalletRoute = ({
-  buyAmount,
-  chainId,
-  coinType,
-  currencyCode,
-  searchText,
-  assetId
-}: {
-  assetId?: string
-  currencyCode?: string
-  buyAmount?: string
-  searchText?: string
-  chainId?: string
-  coinType?: string
-}) => {
-  const params = new URLSearchParams()
-  if (assetId) {
-    params.append('assetId', assetId)
+export const makeFundWalletRoute = (
+  assetId: string,
+  options?: {
+    currencyCode?: string
+    buyAmount?: string
+    searchText?: string
+    chainId?: string
+    coinType?: string
   }
-  if (currencyCode) {
-    params.append('currencyCode', currencyCode)
-  }
-  if (buyAmount) {
-    params.append('buyAmount', buyAmount)
-  }
-  if (searchText) {
-    params.append('search', searchText)
-  }
-  if (chainId) {
-    params.append('chainId', chainId)
-  }
-  if (coinType) {
-    params.append('coinType', coinType)
-  }
+) => {
+  if (options) {
+    const params = new URLSearchParams()
 
-  const paramsString = params ? params.toString() : undefined
+    if (options.currencyCode) {
+      params.append('currencyCode', options.currencyCode)
+    }
+    if (options.buyAmount) {
+      params.append('buyAmount', options.buyAmount)
+    }
+    if (options.searchText) {
+      params.append('search', options.searchText)
+    }
+    if (options.chainId) {
+      params.append('chainId', options.chainId)
+    }
+    if (options.coinType) {
+      params.append('coinType', options.coinType)
+    }
 
-  return `${WalletRoutes.FundWalletPage}${
-    paramsString ? `?${paramsString}` : ''
-  }`
+    return `${WalletRoutes.FundWalletPage.replace(
+      ':assetId?',
+      assetId
+    )}?${params.toString()}`
+  }
+  return WalletRoutes.FundWalletPage.replace(':assetId?', assetId)
 }
 
-export const makeFundWalletPurchaseOptionsRoute = ({
-  buyAmount,
-  currencyCode,
-  assetId
-}: {
-  currencyCode: string
-  buyAmount: string
-  assetId?: string
-}) => {
-  const params = new URLSearchParams()
-  if (assetId) {
-    params.append('assetId', assetId)
+export const makeFundWalletPurchaseOptionsRoute = (
+  assetId: string,
+  options?: {
+    currencyCode: string
+    buyAmount: string
   }
-  if (currencyCode) {
-    params.append('currencyCode', currencyCode)
-  }
-  if (buyAmount) {
-    params.append('buyAmount', buyAmount)
+) => {
+  if (options) {
+    const params = new URLSearchParams()
+    if (options.currencyCode) {
+      params.append('currencyCode', options.currencyCode)
+    }
+    if (options.buyAmount) {
+      params.append('buyAmount', options.buyAmount)
+    }
+    console.log(params.toString())
+
+    return `${WalletRoutes.FundWalletPurchaseOptionsPage.replace(
+      ':assetId',
+      assetId
+    )}?${params.toString()}`
   }
 
-  const paramsString = params ? params.toString() : undefined
-
-  return `${WalletRoutes.FundWalletPurchaseOptionsPage}${
-    paramsString ? `?${paramsString}` : ''
-  }`
+  return WalletRoutes.FundWalletPurchaseOptionsPage.replace(
+    ':assetId', //
+    assetId
+  )
 }
 
 export const makeDepositFundsRoute = ({
