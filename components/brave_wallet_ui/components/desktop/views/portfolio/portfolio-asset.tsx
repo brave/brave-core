@@ -83,7 +83,7 @@ import {
 } from '../../../../common/slices/constants'
 
 // Styled Components
-import { BridgeToAuroraButton, StyledWrapper, ButtonRow } from './style'
+import { BuySellBridgeButton, StyledWrapper, ButtonRow } from './style'
 import { Row, Column } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
@@ -474,28 +474,28 @@ export const PortfolioAsset = () => {
         <Row padding='0px 20px'>
           <ButtonRow>
             {isAssetBuySupported && (
-              <BridgeToAuroraButton
+              <BuySellBridgeButton
                 onClick={onSelectBuy}
                 noBottomMargin={true}
               >
                 {getLocale('braveWalletBuy')}
-              </BridgeToAuroraButton>
+              </BuySellBridgeButton>
             )}
             {isSelectedAssetDepositSupported && (
-              <BridgeToAuroraButton
+              <BuySellBridgeButton
                 onClick={onSelectDeposit}
                 noBottomMargin={true}
               >
                 {getLocale('braveWalletAccountsDeposit')}
-              </BridgeToAuroraButton>
+              </BuySellBridgeButton>
             )}
             {isSelectedAssetBridgeSupported && (
-              <BridgeToAuroraButton
+              <BuySellBridgeButton
                 onClick={onBridgeToAuroraButton}
                 noBottomMargin={true}
               >
                 {getLocale('braveWalletBridgeToAuroraButton')}
-              </BridgeToAuroraButton>
+              </BuySellBridgeButton>
             )}
           </ButtonRow>
         </Row>

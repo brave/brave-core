@@ -87,7 +87,7 @@ import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import {
-  BridgeToAuroraButton,
+  BuySellBridgeButton,
   ButtonRow,
   StyledWrapper
 } from '../portfolio/style'
@@ -407,20 +407,20 @@ export const MarketAsset = () => {
         <Row padding='0px 20px'>
           <ButtonRow>
             {isAssetBuySupported && (
-              <BridgeToAuroraButton
+              <BuySellBridgeButton
                 onClick={onSelectBuy}
                 noBottomMargin={true}
               >
                 {getLocale('braveWalletBuy')}
-              </BridgeToAuroraButton>
+              </BuySellBridgeButton>
             )}
             {isSelectedAssetDepositSupported && (
-              <BridgeToAuroraButton
+              <BuySellBridgeButton
                 onClick={onSelectDeposit}
                 noBottomMargin={true}
               >
                 {getLocale('braveWalletAccountsDeposit')}
-              </BridgeToAuroraButton>
+              </BuySellBridgeButton>
             )}
           </ButtonRow>
         </Row>
