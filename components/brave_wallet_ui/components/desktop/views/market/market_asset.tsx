@@ -38,6 +38,9 @@ import {
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
+import {
+  WalletActions //
+} from '../../../../common/actions'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -46,6 +49,14 @@ import { WalletSelectors } from '../../../../common/selectors'
 import {
   LineChartControls //
 } from '../../line-chart/line-chart-controls/line-chart-controls'
+import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
+import {
+  TokenDetailsModal //
+} from '../portfolio/components/token-details-modal/token-details-modal'
+import {
+  HideTokenModal //
+} from '../portfolio/components/hide-token-modal/hide-token-modal'
+import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
 
 // Hooks
 import {
@@ -73,24 +84,13 @@ import {
 import { Row, Column } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
-  WalletActions //
-} from '../../../../common/actions'
-import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
 import {
   BridgeToAuroraButton,
   ButtonRow,
   StyledWrapper
 } from '../portfolio/style'
-import {
-  TokenDetailsModal //
-} from '../portfolio/components/token-details-modal/token-details-modal'
-import {
-  HideTokenModal //
-} from '../portfolio/components/hide-token-modal/hide-token-modal'
-import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
 
 const emptyPriceList: TokenPriceHistory[] = []
 
