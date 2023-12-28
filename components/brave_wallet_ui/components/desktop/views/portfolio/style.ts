@@ -160,7 +160,7 @@ export const FilterTokenRow = styled.div<{
   margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
 `
 
-export const BridgeToAuroraButton = styled(WalletButton)<{
+export const BuySellBridgeButton = styled(WalletButton)<{
   noBottomMargin?: boolean
 }>`
   display: flex;
