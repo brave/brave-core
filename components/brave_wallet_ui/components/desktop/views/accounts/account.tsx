@@ -30,7 +30,8 @@ import { getBalance } from '../../../../utils/balance-utils'
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
-  makeAccountTransactionRoute
+  makeAccountTransactionRoute,
+  makePortfolioAssetRoute
 } from '../../../../utils/routes-utils'
 
 import Amount from '../../../../utils/amount'
@@ -366,34 +367,11 @@ export const Account = () => {
 
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      if (asset.contractAddress === '') {
-        history.push(
-          `${
-            WalletRoutes.PortfolioAssets //
-          }/${
-            asset.chainId //
-          }/${asset.symbol}`
-        )
-        return
-      }
-      if (asset.isErc721 || asset.isNft || asset.isErc1155) {
-        history.push(
-          `${
-            WalletRoutes.PortfolioNFTs //
-          }/${
-            asset.chainId //
-          }/${
-            asset.contractAddress //
-          }/${asset.tokenId}`
-        )
-        return
-      }
       history.push(
-        `${
-          WalletRoutes.PortfolioAssets //
-        }/${
-          asset.chainId //
-        }/${asset.contractAddress}`
+        makePortfolioAssetRoute(
+          asset.isErc721 || asset.isNft || asset.isErc1155,
+          getAssetIdKey(asset)
+        )
       )
     },
     []

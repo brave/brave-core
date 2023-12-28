@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // Hooks
@@ -15,17 +14,12 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // Constants
-import {
-  BraveWallet,
-  WalletRoutes,
-  WalletState
-} from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
 
 // Utils
-import { WalletPageActions } from '../../../../page/actions'
 import {
   braveMarketUiOrigin,
   MarketCommandMessage,
@@ -35,36 +29,35 @@ import {
   SelectDepositMessage,
   sendMessageToMarketUiFrame,
   UpdateCoinMarketMessage,
-  UpdateTradableAssetsMessage,
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateIframeHeightMessage
 } from '../../../../market/market-ui-messages'
-import { makeDepositFundsRoute } from '../../../../utils/routes-utils'
+import {
+  makeDepositFundsRoute,
+  makeFundWalletRoute
+} from '../../../../utils/routes-utils'
+import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { useGetCombinedTokensListQuery } from '../../../../common/slices/api.slice.extra'
 
 const defaultCurrency = 'usd'
 const assetsRequestLimit = 250
 
 export const MarketView = () => {
+  // refs
+  const isMountedRef = React.useRef(true)
+
   // State
   const [iframeLoaded, setIframeLoaded] = React.useState<boolean>(false)
   const [iframeHeight, setIframeHeight] = React.useState<number>(0)
   const marketDataIframeRef = React.useRef<HTMLIFrameElement>(null)
-
-  // Redux
-  const dispatch = useDispatch()
-  const tradableAssets = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo
-  )
-  const fullTokenList = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.fullTokenList
-  )
 
   // Hooks
   const history = useHistory()
 
   // Queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
   const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
     selectFromResult: (res) => ({
@@ -80,30 +73,6 @@ export const MarketView = () => {
     })
 
   // Methods
-  const onSelectCoinMarket = React.useCallback(
-    (coinMarket: BraveWallet.CoinMarket) => {
-      dispatch(WalletPageActions.selectCoinMarket(coinMarket))
-      history.push(`${WalletRoutes.Market}/${coinMarket.symbol}`)
-    },
-    []
-  )
-
-  const onSelectBuy = React.useCallback(
-    (coinMarket: BraveWallet.CoinMarket) => {
-      history.push(
-        WalletRoutes.FundWalletPage.replace(':tokenId?', coinMarket.symbol)
-      )
-    },
-    []
-  )
-
-  const onSelectDeposit = React.useCallback(
-    (coinMarket: BraveWallet.CoinMarket) => {
-      history.push(makeDepositFundsRoute(coinMarket.symbol))
-    },
-    []
-  )
-
   const onMessageEventListener = React.useCallback(
     (event: MessageEvent<MarketCommandMessage>) => {
       // validate message origin
@@ -113,34 +82,57 @@ export const MarketView = () => {
       switch (message.command) {
         case MarketUiCommand.SelectCoinMarket: {
           const { payload } = message as SelectCoinMarketMessage
-          onSelectCoinMarket(payload)
+          history.push(`${WalletRoutes.Market}/${payload.id}`)
           break
         }
 
         case MarketUiCommand.SelectBuy: {
           const { payload } = message as SelectBuyMessage
-          onSelectBuy(payload)
+          const symbolLower = payload.symbol.toLowerCase()
+          const foundToken = combinedTokensList.find(
+            (t) => t.symbol.toLowerCase() === symbolLower
+          )
+          if (foundToken) {
+            history.push(
+              makeFundWalletRoute({
+                assetId: getAssetIdKey(foundToken)
+              })
+            )
+          }
           break
         }
 
         case MarketUiCommand.SelectDeposit: {
           const { payload } = message as SelectDepositMessage
-          onSelectDeposit(payload)
+          const symbolLower = payload.symbol.toLowerCase()
+          const foundToken = combinedTokensList.find(
+            (t) => t.symbol.toLowerCase() === symbolLower
+          )
+          if (foundToken) {
+            history.push(
+              makeDepositFundsRoute({
+                assetId: getAssetIdKey(foundToken)
+              })
+            )
+          }
         }
 
         case MarketUiCommand.UpdateIframeHeight: {
           const { payload } = message as UpdateIframeHeightMessage
+          // prevent memory-leaks
+          if (!isMountedRef.current) return
           setIframeHeight(payload)
         }
       }
     },
-    [onSelectCoinMarket, onSelectBuy, onSelectDeposit]
+    [combinedTokensList, isMountedRef]
   )
 
-  const onMarketDataFrameLoad = React.useCallback(
-    () => setIframeLoaded(true),
-    []
-  )
+  const onMarketDataFrameLoad = React.useCallback(() => {
+    if (isMountedRef.current) {
+      setIframeLoaded(true)
+    }
+  }, [isMountedRef])
 
   // Effects
   React.useEffect(() => {
@@ -158,15 +150,6 @@ export const MarketView = () => {
       updateCoinsMsg
     )
 
-    const updateAssetsMsg: UpdateTradableAssetsMessage = {
-      command: MarketUiCommand.UpdateTradableAssets,
-      payload: tradableAssets
-    }
-    sendMessageToMarketUiFrame(
-      marketDataIframeRef.current.contentWindow,
-      updateAssetsMsg
-    )
-
     const updateBuyableAssetsMsg: UpdateBuyableAssetsMessage = {
       command: MarketUiCommand.UpdateBuyableAssets,
       payload: buyAssets
@@ -178,7 +161,7 @@ export const MarketView = () => {
 
     const updateDepositableAssetsMsg: UpdateDepositableAssetsMessage = {
       command: MarketUiCommand.UpdateDepositableAssets,
-      payload: fullTokenList
+      payload: combinedTokensList
     }
     sendMessageToMarketUiFrame(
       marketDataIframeRef.current.contentWindow,
@@ -189,13 +172,18 @@ export const MarketView = () => {
     marketDataIframeRef,
     allCoins,
     buyAssets,
-    fullTokenList,
+    combinedTokensList,
     defaultCurrency
   ])
 
   React.useEffect(() => {
+    isMountedRef.current = true
     window.addEventListener('message', onMessageEventListener)
-    return () => window.removeEventListener('message', onMessageEventListener)
+
+    return () => {
+      isMountedRef.current = false
+      window.removeEventListener('message', onMessageEventListener)
+    }
   }, [])
 
   return (

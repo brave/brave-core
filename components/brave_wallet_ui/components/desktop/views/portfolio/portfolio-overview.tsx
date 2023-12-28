@@ -56,6 +56,7 @@ import {
 import {
   getStoredPortfolioTimeframe //
 } from '../../../../utils/local-storage-utils'
+import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
@@ -460,39 +461,16 @@ export const PortfolioOverview = () => {
   // methods
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      if (asset.contractAddress === '') {
-        history.push(
-          `${
-            WalletRoutes.PortfolioAssets //
-          }/${
-            asset.chainId //
-          }/${asset.symbol}`
-        )
-        return
-      }
-      if (asset.isErc721 || asset.isNft || asset.isErc1155) {
-        history.push(
-          `${
-            WalletRoutes.PortfolioNFTs //
-          }/${
-            asset.chainId //
-          }/${
-            asset.contractAddress //
-          }/${asset.tokenId}`
-        )
-      } else {
-        history.push(
-          `${
-            WalletRoutes.PortfolioAssets //
-          }/${
-            asset.chainId //
-          }/${asset.contractAddress}`
-        )
-      }
       if ((asset.isErc721 || asset.isNft) && nftMetadata) {
         // reset nft metadata
         dispatch(WalletPageActions.updateNFTMetadata(undefined))
       }
+      history.push(
+        makePortfolioAssetRoute(
+          asset.isErc721 || asset.isNft || asset.isErc1155,
+          getAssetIdKey(asset)
+        )
+      )
     },
     []
   )
