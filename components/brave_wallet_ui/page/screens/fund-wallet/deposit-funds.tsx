@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { Redirect, Route, Switch, useHistory } from 'react-router'
+import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
 import type { VariableSizeList as List } from 'react-window'
 
 // utils
@@ -108,6 +108,10 @@ interface Props {
   isAndroid?: boolean
 }
 
+interface Params {
+  assetId: string
+}
+
 export const DepositFundsScreen = ({ isAndroid }: Props) => {
   // routing
   const history = useHistory()
@@ -136,7 +140,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
         </WalletPageWrapper>
       </Route>
 
-      <Route>
+      <Route path={WalletRoutes.DepositFundsPage}>
         <WalletPageWrapper
           hideNav={isAndroid}
           hideHeader={isAndroid}
@@ -151,6 +155,8 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           <AssetSelection />
         </WalletPageWrapper>
       </Route>
+
+      <Redirect to={WalletRoutes.DepositFundsPage} />
     </Switch>
   )
 }
@@ -158,11 +164,11 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
 function AssetSelection() {
   // routing
   const history = useHistory()
+  const { assetId: selectedDepositAssetId } = useParams<Params>()
   const params = new URLSearchParams(history.location.search)
   const searchParam = params.get('search')
   const chainIdParam = params.get('chainId')
   const coinTypeParam = params.get('coinType')
-  const selectedDepositAssetId = params.get('assetId')
 
   // refs
   const listRef = React.useRef<List<BraveWallet.BlockchainToken[]>>(null)
@@ -325,8 +331,7 @@ function AssetSelection() {
 
     // save latest form values in router history
     history.replace(
-      makeDepositFundsRoute({
-        assetId: selectedDepositAssetId,
+      makeDepositFundsRoute(selectedDepositAssetId, {
         // save latest search-box value (if it matches selection name or symbol)
         searchText:
           searchValue &&
@@ -364,13 +369,7 @@ function AssetSelection() {
       <BuyAssetOptionItem
         key={assetId}
         token={asset}
-        onClick={() =>
-          history.push(
-            makeDepositFundsRoute({
-              assetId
-            })
-          )
-        }
+        onClick={() => history.push(makeDepositFundsRoute(assetId))}
       />
     )
   }, [])
@@ -456,8 +455,7 @@ function AssetSelection() {
 function DepositAccount() {
   // routing
   const history = useHistory()
-  const params = new URLSearchParams(history.location.search)
-  const selectedDepositAssetId = params.get('assetId')
+  const { assetId: selectedDepositAssetId } = useParams<Params>()
 
   // queries
   const { accounts } = useAccountsQuery()

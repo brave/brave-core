@@ -401,9 +401,7 @@ export const PortfolioAsset = () => {
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
       history.push(
-        makeDepositFundsRoute({
-          assetId: getAssetIdKey(selectedAssetFromParams)
-        })
+        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
       )
     }
   }, [selectedAssetFromParams])
