@@ -76,7 +76,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
   // memos
   const asset: IconAsset = React.useMemo(() => {
     const foundTokenId = transfer.asset.imageUrl
-      ? tokensRegistry.fungibleIdsByChainId[network.chainId].find(
+      ? tokensRegistry?.fungibleIdsByChainId[network.chainId].find(
           (id) =>
             tokensRegistry.entities[id]?.contractAddress?.toLowerCase() ===
             transfer.asset.address
@@ -85,7 +85,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
 
     const foundTokenLogo =
       foundTokenId !== undefined
-        ? tokensRegistry.entities[foundTokenId]?.logo || ''
+        ? tokensRegistry?.entities[foundTokenId]?.logo || ''
         : ''
 
     return {
