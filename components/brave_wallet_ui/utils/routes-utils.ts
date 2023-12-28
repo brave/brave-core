@@ -163,45 +163,37 @@ export const makeFundWalletPurchaseOptionsRoute = (
   )
 }
 
-export const makeDepositFundsRoute = ({
-  assetId,
-  chainId,
-  coinType,
-  searchText
-}: {
-  searchText?: string
-  chainId?: string
-  coinType?: string
-  assetId?: string
-}) => {
-  const params = new URLSearchParams()
-  if (assetId) {
-    params.append('assetId', assetId)
+export const makeDepositFundsRoute = (
+  assetId: string,
+  options?: {
+    searchText?: string
+    chainId?: string
+    coinType?: string
   }
-  if (searchText) {
-    params.append('search', searchText)
-  }
-  if (chainId) {
-    params.append('chainId', chainId)
-  }
-  if (coinType) {
-    params.append('coinType', coinType)
+) => {
+  if (options) {
+    const params = new URLSearchParams()
+    if (options.searchText) {
+      params.append('search', options.searchText)
+    }
+    if (options.chainId) {
+      params.append('chainId', options.chainId)
+    }
+    if (options.coinType) {
+      params.append('coinType', options.coinType)
+    }
+
+    return `${WalletRoutes.DepositFundsPage.replace(
+      ':assetId?',
+      assetId
+    )}?${params.toString()}`
   }
 
-  const paramsString = params ? params.toString() : undefined
-
-  return `${WalletRoutes.DepositFundsPage}${
-    paramsString ? `?${paramsString}` : ''
-  }`
+  return WalletRoutes.DepositFundsPage.replace(':assetId?', assetId)
 }
 
 export const makeDepositFundsAccountRoute = (assetId: string) => {
-  const params = new URLSearchParams()
-  if (assetId) {
-    params.append('assetId', assetId)
-  }
-
-  return `${WalletRoutes.DepositFundsAccountPage}?${params.toString()}`
+  return WalletRoutes.DepositFundsAccountPage.replace(':assetId', assetId)
 }
 
 export const makeSendRoute = (

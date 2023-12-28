@@ -105,11 +105,7 @@ export const MarketView = () => {
             (t) => t.symbol.toLowerCase() === symbolLower
           )
           if (foundToken) {
-            history.push(
-              makeDepositFundsRoute({
-                assetId: getAssetIdKey(foundToken)
-              })
-            )
+            history.push(makeDepositFundsRoute(getAssetIdKey(foundToken)))
           }
         }
 

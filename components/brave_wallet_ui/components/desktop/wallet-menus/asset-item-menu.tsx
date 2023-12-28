@@ -113,11 +113,7 @@ export const AssetItemMenu = (props: Props) => {
   }, [])
 
   const onClickDeposit = React.useCallback(() => {
-    history.push(
-      makeDepositFundsRoute({
-        assetId: getAssetIdKey(asset)
-      })
-    )
+    history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
   }, [asset])
 
   const onClickSell = React.useCallback(() => {

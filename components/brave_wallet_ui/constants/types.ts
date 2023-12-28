@@ -594,9 +594,11 @@ export enum WalletRoutes {
   FundWalletPageStart = '/crypto/fund-wallet',
   FundWalletPage = '/crypto/fund-wallet/:assetId?',
   FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/:assetId/purchase',
+
+  // deposit funds
   DepositFundsPageStart = '/crypto/deposit-funds',
-  DepositFundsPage = '/crypto/deposit-funds',
-  DepositFundsAccountPage = '/crypto/deposit-funds/account',
+  DepositFundsPage = '/crypto/deposit-funds/:assetId?',
+  DepositFundsAccountPage = '/crypto/deposit-funds/:assetId/account',
 
   // market
   Market = '/crypto/market',
