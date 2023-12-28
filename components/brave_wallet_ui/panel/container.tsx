@@ -6,8 +6,6 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-// import { useHistory } from 'react-router-dom'
-
 // Components
 import {
   ConnectWithSite //
