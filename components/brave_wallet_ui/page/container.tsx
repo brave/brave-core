@@ -105,7 +105,7 @@ export const Container = () => {
     // so that we can return to that page after unlock
     if (isPersistableSessionRoute(walletLocation)) {
       window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.SESSION_ROUTE,
+        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
         walletLocation
       )
       setSessionRoute(walletLocation)

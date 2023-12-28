@@ -43,7 +43,7 @@ export function isPersistableSessionRoute(
 
 export function getInitialSessionRoute(): WalletRoutes | undefined {
   const route =
-    window.localStorage.getItem(LOCAL_STORAGE_KEYS.SESSION_ROUTE) || ''
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
   return isPersistableSessionRoute(route) ? route : undefined
 }
 
