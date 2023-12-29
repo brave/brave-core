@@ -32,7 +32,7 @@ module.exports = function RunCommand (options) {
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
   const devtoolsFrontendPatchDir = path.join(patchDir, 'third_party', 'devtools-frontend', 'src')
   const bitcoinDir = path.join(config.srcDir, 'brave', 'third_party', 'bitcoin-core', 'src')
-  const bitcoinPatchDir = path.join(patchDir, 'brave', 'third_party', 'bitcoin-core')
+  const bitcoinPatchDir = path.join(patchDir, 'brave', 'third_party', 'bitcoin-core', 'src')
 
   Promise.all([
     // chromium
