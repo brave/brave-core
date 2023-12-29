@@ -90,9 +90,7 @@ export function TransactionStatus(props: Props) {
       return ''
     }
 
-    const token = networkAsset
-      ? findTransactionToken(tx, combinedTokensList, networkAsset)
-      : undefined
+    const token = findTransactionToken(tx, combinedTokensList)
 
     const { buyAmount, sellAmount, buyToken, sellToken } =
       getETHSwapTransactionBuyAndSellTokens({

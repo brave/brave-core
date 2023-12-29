@@ -141,9 +141,7 @@ export const usePendingTransactions = () => {
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
 
-  const txToken = networkAsset
-    ? findTransactionToken(transactionInfo, combinedTokensList, networkAsset)
-    : undefined
+  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
 
   const tokenPriceIds = React.useMemo(
     () =>

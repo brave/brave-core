@@ -30,7 +30,8 @@ import {
   mockEthSendTransaction,
   mockFilSendTransaction,
   mockSolanaTransactionInfo,
-  mockTransactionInfo
+  mockTransactionInfo,
+  mockZecSendTransaction
 } from '../stories/mock-data/mock-transaction-info'
 import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
@@ -288,8 +289,7 @@ describe('check for insufficient funds errors', () => {
 
       const token = findTransactionToken(
         mockTransactionInfo,
-        mockErc20TokensList,
-        nativeAsset
+        mockErc20TokensList
       )
 
       const { sellAmountWei, sellToken } =
@@ -481,11 +481,7 @@ describe('check for insufficient funds errors', () => {
         chainId: transactionInfo.chainId
       }
 
-      const token = findTransactionToken(
-        transactionInfo,
-        mockErc20TokensList,
-        nativeAsset
-      )
+      const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
       const { sellAmountWei, sellToken } =
         getETHSwapTransactionBuyAndSellTokens({
@@ -573,11 +569,7 @@ describe('check for insufficient funds errors', () => {
         chainId: transactionInfo.chainId
       }
 
-      const token = findTransactionToken(
-        transactionInfo,
-        mockErc20TokensList,
-        nativeAsset
-      )
+      const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
       const { sellAmountWei, sellToken } =
         getETHSwapTransactionBuyAndSellTokens({
@@ -660,52 +652,33 @@ describe('findTransactionToken', () => {
         'as the token for Solana System transfer transactions',
       () => {
         expect(
-          findTransactionToken(
-            mockSolanaTransactionInfo,
-            [mockSolToken],
-            mockSolToken
-          )?.symbol
+          findTransactionToken(mockSolanaTransactionInfo, [mockSolToken])
+            ?.symbol
         ).toBe('SOL')
       }
     )
 
     it('should detect FIL as the token for Filecoin send transactions', () => {
       expect(
-        findTransactionToken(
-          mockFilSendTransaction,
-          [mockFilToken],
-          mockFilToken
-        )?.symbol
+        findTransactionToken(mockFilSendTransaction, [mockFilToken])?.symbol
       ).toBe('FIL')
     })
 
     it('should detect ETH as the token for Ethereum send transactions', () => {
       expect(
-        findTransactionToken(
-          mockEthSendTransaction,
-          [mockEthToken],
-          mockEthToken
-        )?.symbol
+        findTransactionToken(mockEthSendTransaction, [mockEthToken])?.symbol
       ).toBe('ETH')
     })
 
     it('should detect BTC as the token for Bitcoin transactions', () => {
       expect(
-        findTransactionToken(
-          mockBtcSendTransaction,
-          [mockBtcToken],
-          mockBtcToken
-        )?.symbol
+        findTransactionToken(mockBtcSendTransaction, [mockBtcToken])?.symbol
       ).toBe('BTC')
     })
 
     it('should detect ZEC as the token for ZCash transactions', () => {
       expect(
-        findTransactionToken(
-          mockBtcSendTransaction,
-          [mockZecToken],
-          mockZecToken
-        )?.symbol
+        findTransactionToken(mockZecSendTransaction, [mockZecToken])?.symbol
       ).toBe('ZEC')
     })
   })
@@ -724,8 +697,7 @@ describe('findTransactionToken', () => {
             toAddress: mockAccount.address,
             isERC20Send: true
           }),
-          [mockEthToken, mockBasicAttentionToken],
-          mockEthToken
+          [mockEthToken, mockBasicAttentionToken]
         )?.symbol
       ).toBe('BAT')
     })
@@ -743,8 +715,7 @@ describe('findTransactionToken', () => {
             toAddress: mockAccount.address,
             isERC721Send: true
           }),
-          [mockEthToken, mockMoonCatNFT],
-          mockEthToken
+          [mockEthToken, mockMoonCatNFT]
         )?.symbol
       ).toBe('AMC')
     })
@@ -760,8 +731,7 @@ describe('findTransactionToken', () => {
             sendApproveOrSellAssetContractAddress: mockSplBat.contractAddress,
             toAddress: mockSolanaAccount.address
           }),
-          [mockSolToken, mockSplBat],
-          mockSolToken
+          [mockSolToken, mockSplBat]
         )?.symbol
       ).toBe('BAT')
     })

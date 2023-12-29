@@ -330,9 +330,7 @@ export const PortfolioAsset = (props: Props) => {
 
     if (selectedAssetFromParams) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        const token = nativeAsset
-          ? findTransactionToken(tx, [selectedAssetFromParams], nativeAsset)
-          : undefined
+        const token = findTransactionToken(tx, [selectedAssetFromParams])
 
         const selectedAssetIdKey = getAssetIdKey(selectedAssetFromParams)
         const tokenId = token ? getAssetIdKey(token) : undefined

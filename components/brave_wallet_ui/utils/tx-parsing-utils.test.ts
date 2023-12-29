@@ -24,10 +24,7 @@ import {
   transactionHasSameAddressError,
   isSendingToKnownTokenContractAddress
 } from './tx-utils'
-import {
-  mockERC20Token,
-  mockEthToken
-} from '../stories/mock-data/mock-asset-options'
+import { mockERC20Token } from '../stories/mock-data/mock-asset-options'
 
 const tokenList = [
   ...mockWalletState.fullTokenList,
@@ -274,11 +271,7 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockRecipient', '0xde0b6b3a7640000']
         }
 
-        const token = findTransactionToken(
-          mockTransaction,
-          tokenList,
-          mockEthToken
-        )
+        const token = findTransactionToken(mockTransaction, tokenList)
 
         const txSymbol = getTransactionTokenSymbol({
           tx: mockTransaction,
@@ -312,11 +305,7 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockRecipient', '0xde0b6b3a7640000']
         }
 
-        const token = findTransactionToken(
-          mockTransaction,
-          tokenList,
-          mockEthToken
-        )
+        const token = findTransactionToken(mockTransaction, tokenList)
 
         const txSymbol = getTransactionTokenSymbol({
           tx: mockTransaction,

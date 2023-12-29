@@ -200,7 +200,7 @@ export const mockEthSendTransaction = {
     originSpec: 'chrome://wallet',
     eTldPlusOne: ''
   },
-  chainId: '0x5',
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
   effectiveRecipient: mockEthAccount.accountId.address
 }
 
@@ -271,8 +271,8 @@ export const mockZecSendTransaction = {
     originSpec: 'chrome://wallet',
     eTldPlusOne: ''
   },
-  chainId: BraveWallet.BITCOIN_MAINNET,
-  effectiveRecipient: mockBtcAccount.accountId.address
+  chainId: BraveWallet.Z_CASH_MAINNET,
+  effectiveRecipient: mockZecAccount.accountId.address
 }
 
 export const createMockERC20TransferTxArgs = ({

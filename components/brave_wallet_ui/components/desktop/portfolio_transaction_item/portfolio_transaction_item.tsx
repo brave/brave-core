@@ -161,9 +161,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       return makeNetworkAsset(txNetwork)
     }, [txNetwork])
 
-    const txToken = networkAsset
-      ? findTransactionToken(transaction, combinedTokensList, networkAsset)
-      : undefined
+    const txToken = findTransactionToken(transaction, combinedTokensList)
 
     const recipientLabel = getAddressLabel(recipient, accountInfosRegistry)
 

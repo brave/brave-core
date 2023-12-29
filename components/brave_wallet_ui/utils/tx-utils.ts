@@ -411,11 +411,13 @@ export function isSolanaSplTransaction(
 }
 
 export const findTransactionToken = <
-  T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+  T extends Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'chainId' | 'coin'
+  >
 >(
   tx: TransactionInfo | undefined,
-  tokensList: T[],
-  nativeAsset: T
+  tokensList: T[]
 ): T | undefined => {
   if (!tx) {
     return undefined
@@ -429,7 +431,12 @@ export const findTransactionToken = <
     tx.txDataUnion.btcTxData ||
     tx.txDataUnion.zecTxData
   ) {
-    return nativeAsset
+    return tokensList.find(
+      (t) =>
+        t.contractAddress === '' &&
+        t.chainId === tx.chainId &&
+        t.coin === tx.fromAccountId.coin
+    )
   }
 
   // Solana SPL
@@ -1581,11 +1588,9 @@ export const parseTransactionWithoutPrices = ({
   tokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransactionWithoutFiatValues => {
   const to = getTransactionToAddress(tx)
-  const nativeAsset = makeNetworkAsset(transactionNetwork)
-  const token = nativeAsset
-    ? findTransactionToken(tx, tokensList, nativeAsset)
-    : undefined
 
+  const nativeAsset = makeNetworkAsset(transactionNetwork)
+  const token = findTransactionToken(tx, tokensList)
   const {
     buyToken,
     sellToken,

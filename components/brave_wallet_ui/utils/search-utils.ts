@@ -61,9 +61,7 @@ export const makeSearchableTransaction = (
 
   const nativeAsset = makeNetworkAsset(txNetwork)
 
-  const token = nativeAsset
-    ? findTransactionToken(tx, combinedTokensListForSelectedChain, nativeAsset)
-    : undefined
+  const token = findTransactionToken(tx, combinedTokensListForSelectedChain)
 
   const erc721BlockchainToken = [
     BraveWallet.TransactionType.ERC721TransferFrom,
