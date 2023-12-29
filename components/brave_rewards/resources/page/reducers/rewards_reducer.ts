@@ -324,6 +324,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       chrome.send('brave_rewards.connectExternalWallet', [path, query])
       ui.modalRedirect = 'show'
+      // The first non-empty path segment contains the wallet provider type.
+      ui.modalRedirectProvider = path.replace(/^\//, '').split('/')[0] || ''
 
       state = { ...state, ui }
       break
