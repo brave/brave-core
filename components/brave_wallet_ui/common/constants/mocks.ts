@@ -215,6 +215,34 @@ export const mockAccount: BraveWallet.AccountInfo = {
   hardware: undefined
 }
 
+export const mockBtcAccount: BraveWallet.AccountInfo = {
+  name: 'mockBtcAccountName',
+  address: 'bc1q4500000000000000000',
+  accountId: {
+    coin: BraveWallet.CoinType.BTC,
+    keyringId: BraveWallet.KeyringId.kBitcoin84,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: 'bc1q4500000000000000000',
+    bitcoinAccountIndex: 0,
+    uniqueKey: 'unique_key_bc1q4500000000000000000'
+  },
+  hardware: undefined
+}
+
+export const mockZecAccount: BraveWallet.AccountInfo = {
+  name: 'mockZecAccountName',
+  address: 'zCash-address',
+  accountId: {
+    coin: BraveWallet.CoinType.ZEC,
+    keyringId: BraveWallet.KeyringId.kZCashMainnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: 'zCash-address',
+    bitcoinAccountIndex: 0,
+    uniqueKey: 'unique_key_zCash-address'
+  },
+  hardware: undefined
+}
+
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
   hardware: undefined,
   name: 'mockEthAccountName',

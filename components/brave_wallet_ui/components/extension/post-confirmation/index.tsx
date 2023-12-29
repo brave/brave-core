@@ -81,18 +81,24 @@ export function TransactionStatus(props: Props) {
   const { transactionsQueueLength } = usePendingTransactions()
 
   // memos
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionNetwork)
+  }, [transactionNetwork])
+
   const transactionIntent = React.useMemo(() => {
     if (!tx) {
       return ''
     }
 
-    const token = findTransactionToken(tx, combinedTokensList)
+    const token = networkAsset
+      ? findTransactionToken(tx, combinedTokensList, networkAsset)
+      : undefined
 
     const { buyAmount, sellAmount, buyToken, sellToken } =
       getETHSwapTransactionBuyAndSellTokens({
         tokensList: combinedTokensList,
         tx,
-        nativeAsset: makeNetworkAsset(transactionNetwork)
+        nativeAsset: networkAsset
       })
 
     const { normalizedTransferredValue } =

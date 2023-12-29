@@ -51,15 +51,6 @@ export const makeSearchableTransaction = (
   networksRegistry: NetworksRegistry | undefined,
   accountInfosRegistry: EntityState<AccountInfoEntity>
 ): SearchableTransaction => {
-  const token = findTransactionToken(tx, combinedTokensListForSelectedChain)
-
-  const erc721BlockchainToken = [
-    BraveWallet.TransactionType.ERC721TransferFrom,
-    BraveWallet.TransactionType.ERC721SafeTransferFrom
-  ].includes(tx.txType)
-    ? token
-    : undefined
-
   const txNetwork =
     networksRegistry?.entities[
       networkEntityAdapter.selectId({
@@ -67,7 +58,19 @@ export const makeSearchableTransaction = (
         coin: getCoinFromTxDataUnion(tx.txDataUnion)
       })
     ]
+
   const nativeAsset = makeNetworkAsset(txNetwork)
+
+  const token = nativeAsset
+    ? findTransactionToken(tx, combinedTokensListForSelectedChain, nativeAsset)
+    : undefined
+
+  const erc721BlockchainToken = [
+    BraveWallet.TransactionType.ERC721TransferFrom,
+    BraveWallet.TransactionType.ERC721SafeTransferFrom
+  ].includes(tx.txType)
+    ? token
+    : undefined
 
   const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
     nativeAsset,
