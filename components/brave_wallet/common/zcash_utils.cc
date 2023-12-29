@@ -191,7 +191,7 @@ std::optional<std::string> ExtractTransparentPart(
   }
 
   auto reverted = RevertF4Jumble(data);
-  // HRP with 16 bytes padding which is appened to the end of message
+  // HRP with 16 bytes padding which is appended to the end of message
   if (!reverted || reverted->size() < kPaddedHrpSize) {
     return std::nullopt;
   }
@@ -209,7 +209,7 @@ std::optional<std::string> ExtractTransparentPart(
   }
 
   auto parts = ParseUnifiedAddress(
-      base::make_span(*reverted).subspan(0, reverted->size() - 16));
+      base::make_span(*reverted).subspan(0, reverted->size() - kPaddedHrpSize));
   if (!parts.has_value()) {
     return std::nullopt;
   }

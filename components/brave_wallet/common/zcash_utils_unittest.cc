@@ -49,12 +49,12 @@ TEST(ZCashUtilsUnitTest, PubkeyToTransparentAddress) {
 }
 
 TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
-  auto transparent_past = ExtractTransparentPart(
+  auto transparent_part = ExtractTransparentPart(
       "u14nl3xm252a24u4tr9ml453ptz4uv4lam2ytau94nmnf9sf3cx5vdrh9ksf3f24d7jk8l35"
       "le9ntldzh3zl0xusyqlhs2t6j55xsrngulcv2p0del8ecrv9s0xyy3uawkh8clsquj7c89s9"
       "r9thxhvsd3h0eqcd3lj5grmnj3uf9l8u07s8n28wece35y0qvzj8q6sxa32fndc86h8dt",
       false);
-  EXPECT_EQ("t1LdJpgcni2jYpkadiPtBGYv5maCD5Wu8zq", transparent_past);
+  EXPECT_EQ("t1LdJpgcni2jYpkadiPtBGYv5maCD5Wu8zq", transparent_part);
 }
 
 }  // namespace brave_wallet
