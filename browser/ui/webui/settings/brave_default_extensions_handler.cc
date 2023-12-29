@@ -47,6 +47,7 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/feature_switch.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
@@ -502,21 +503,22 @@ void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
   }
 }
 
-void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
-                                                 int index,
-                                                 void* params) {
+void BraveDefaultExtensionsHandler::FileSelected(
+    const ui::SelectedFileInfo& file,
+    int index,
+    void* params) {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (!service)
     return;
   if (dialog_type_ == ui::SelectFileDialog::SELECT_OPEN_FILE) {
     service->GetIpnsKeysManager()->ImportKey(
-        path, dialog_key_,
+        file.path(), dialog_key_,
         base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
                        weak_ptr_factory_.GetWeakPtr()));
   } else if (dialog_type_ == ui::SelectFileDialog::SELECT_SAVEAS_FILE) {
     service->ExportKey(
-        dialog_key_, path,
+        dialog_key_, file.path(),
         base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyExported,
                        weak_ptr_factory_.GetWeakPtr(), dialog_key_));
   }

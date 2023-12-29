@@ -29,6 +29,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -196,18 +197,18 @@ void SkusInternalsUI::DownloadSkusState() {
       web_contents->GetTopLevelNativeWindow(), nullptr);
 }
 
-void SkusInternalsUI::FileSelected(const base::FilePath& path,
+void SkusInternalsUI::FileSelected(const ui::SelectedFileInfo& file,
                                    int index,
                                    void* params) {
   auto* web_contents = web_ui()->GetWebContents();
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  profile->set_last_selected_directory(path.DirName());
+  profile->set_last_selected_directory(file.path().DirName());
   select_file_dialog_ = nullptr;
 
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&SaveSkusStateToFile, path, GetSkusStateAsString()));
+  base::ThreadPool::PostTask(FROM_HERE, {base::MayBlock()},
+                             base::BindOnce(&SaveSkusStateToFile, file.path(),
+                                            GetSkusStateAsString()));
 }
 
 void SkusInternalsUI::FileSelectionCanceled(void* params) {

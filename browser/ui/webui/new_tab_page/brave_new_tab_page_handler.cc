@@ -41,6 +41,7 @@
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
 
 namespace {
@@ -402,30 +403,30 @@ void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
   page_->OnCustomImageBackgroundsUpdated(std::move(backgrounds));
 }
 
-void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
+void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
                                           int index,
                                           void* params) {
-  profile_->set_last_selected_directory(path.DirName());
+  profile_->set_last_selected_directory(file.path().DirName());
 
   file_manager_->SaveImage(
-      path, base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
-                           weak_factory_.GetWeakPtr()));
+      file.path(), base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
+                                  weak_factory_.GetWeakPtr()));
 
   select_file_dialog_ = nullptr;
 }
 
 void BraveNewTabPageHandler::MultiFilesSelected(
-    const std::vector<base::FilePath>& files,
+    const std::vector<ui::SelectedFileInfo>& files,
     void* params) {
   NTPBackgroundPrefs prefs(profile_->GetPrefs());
   auto available_image_count =
       brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
       prefs.GetCustomImageList().size();
-  for (const auto& path : files) {
+  for (const auto& file : files) {
     if (available_image_count == 0)
       break;
 
-    FileSelected(path, 0, params);
+    FileSelected(file, 0, params);
     available_image_count--;
   }
 }

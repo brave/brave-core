@@ -79,7 +79,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void ExportIPNSKey(const base::Value::List& args);
 
   // ui::SelectFileDialog::Listener
-  void FileSelected(const base::FilePath& path,
+  void FileSelected(const ui::SelectedFileInfo& file,
                     int index,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;

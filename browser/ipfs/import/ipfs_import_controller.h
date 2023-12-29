@@ -64,7 +64,7 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
 
  private:
   // ui::SelectFileDialog::Listener
-  void FileSelected(const base::FilePath& path,
+  void FileSelected(const ui::SelectedFileInfo& file,
                     int index,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;
