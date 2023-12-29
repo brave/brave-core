@@ -22,11 +22,13 @@ import { toMojoUnion } from '../../../../utils/mojo-utils'
 // Query hooks
 import {
   useApproveERC20AllowanceMutation,
+  useGenerateBraveSwapFeeMutation,
+  useGenerateSwapQuoteMutation,
+  useGenerateSwapTransactionMutation,
   useGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
   useSendEvmTransactionMutation
 } from '../../../../common/slices/api.slice'
-import { useLib } from '../../../../common/hooks/useLib'
 
 export function useZeroEx(params: SwapParams) {
   const { selectedNetwork, selectedAccount } = params
@@ -39,6 +41,13 @@ export function useZeroEx(params: SwapParams) {
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
+
+  // Mutations
+  const [sendEvmTransaction] = useSendEvmTransactionMutation()
+  const [approveERC20Allowance] = useApproveERC20AllowanceMutation()
+  const [generateSwapQuote] = useGenerateSwapQuoteMutation()
+  const [generateBraveSwapFee] = useGenerateBraveSwapFeeMutation()
+  const [generateSwapTransaction] = useGenerateSwapTransactionMutation()
 
   // State
   const [quote, setQuote] = useState<BraveWallet.ZeroExQuote | undefined>(
@@ -55,13 +64,6 @@ export function useZeroEx(params: SwapParams) {
   const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
-
-  // Custom hooks
-  const [sendEvmTransaction] = useSendEvmTransactionMutation()
-  const [approveERC20Allowance] = useApproveERC20AllowanceMutation()
-  // FIXME(josheleonard): use slices API
-  const { getSwapService } = useLib()
-  const swapService = getSwapService()
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -127,7 +129,7 @@ export function useZeroEx(params: SwapParams) {
 
       let quoteResponse
       try {
-        quoteResponse = await swapService.getQuote({
+        quoteResponse = await generateSwapQuote({
           fromAccountId: overriddenParams.fromAccount.accountId,
           fromChainId: selectedNetwork.chainId,
           fromAmount:
@@ -151,13 +153,13 @@ export function useZeroEx(params: SwapParams) {
             NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           slippagePercentage: overriddenParams.slippageTolerance,
           routePriority: BraveWallet.RoutePriority.kRecommended
-        })
+        }).unwrap()
       } catch (e) {
         console.log(`Error getting 0x quote: ${e}`)
       }
 
       try {
-        const { response: braveFeeResponse } = await swapService.getBraveFee({
+        const { response: braveFeeResponse } = await generateBraveSwapFee({
           chainId: selectedNetwork.chainId,
           inputToken:
             overriddenParams.fromToken.contractAddress ||
@@ -166,7 +168,7 @@ export function useZeroEx(params: SwapParams) {
             overriddenParams.toToken.contractAddress ||
             NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           taker: overriddenParams.fromAccount.address
-        })
+        }).unwrap()
 
         if (quoteResponse?.response?.zeroExQuote && braveFeeResponse) {
           setBraveFee({
@@ -246,7 +248,8 @@ export function useZeroEx(params: SwapParams) {
       selectedNetwork,
       selectedAccount,
       reset,
-      swapService,
+      generateSwapQuote,
+      generateBraveSwapFee,
       getERC20Allowance
     ]
   )
@@ -298,7 +301,7 @@ export function useZeroEx(params: SwapParams) {
       setLoading(true)
       let transactionResponse
       try {
-        transactionResponse = await swapService.getTransaction(
+        transactionResponse = await generateSwapTransaction(
           toMojoUnion(
             {
               zeroExTransactionParams: {
@@ -326,7 +329,7 @@ export function useZeroEx(params: SwapParams) {
             },
             'zeroExTransactionParams'
           )
-        )
+        ).unwrap()
       } catch (e) {
         console.log(`Error getting 0x swap quote: ${e}`)
       }
@@ -364,7 +367,7 @@ export function useZeroEx(params: SwapParams) {
       params,
       selectedNetwork,
       selectedAccount,
-      swapService,
+      generateSwapTransaction,
       sendEvmTransaction,
       reset
     ]

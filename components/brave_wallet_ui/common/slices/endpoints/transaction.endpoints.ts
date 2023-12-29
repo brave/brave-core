@@ -281,6 +281,59 @@ export const transactionEndpoints = ({
         })
     }),
 
+    sendSolanaSerializedTransaction: mutation<
+      boolean, // success,
+      {
+        encodedTransaction: string
+        chainId: string
+        accountId: BraveWallet.AccountId
+        txType: BraveWallet.TransactionType
+        sendOptions?: BraveWallet.SolanaSendTransactionOptions
+      }
+    >({
+      queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { solanaTxManagerProxy, txService } = api
+          const result =
+            await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
+              payload.encodedTransaction,
+              payload.txType,
+              payload.sendOptions || null
+            )
+
+          if (result.error !== BraveWallet.ProviderError.kSuccess) {
+            throw new Error(
+              `Failed to sign Solana message: ${result.errorMessage}`
+            )
+          }
+
+          const { errorMessage, success } =
+            await txService.addUnapprovedTransaction(
+              toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
+              payload.chainId,
+              payload.accountId
+            )
+
+          if (!success) {
+            throw new Error(
+              `Error creating Solana transaction: ${errorMessage}`
+            )
+          }
+
+          return {
+            data: success
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to send Solana serialized transaction',
+            error
+          )
+        }
+      }
+    }),
+
     // BTC
     sendBtcTransaction: mutation<
       { success: boolean },
