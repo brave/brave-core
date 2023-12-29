@@ -24,7 +24,7 @@ import threading
 sys.path.append(os.path.join(os.path.dirname(__file__),
                              os.pardir, os.pardir, os.pardir,
                              "build"))
-import gn_helpers # pylint: disable=wrong-import-position
+import gn_helpers
 
 CONCURRENT_TASKS=4
 
@@ -203,7 +203,7 @@ def GenerateSymbols(options, binaries):
                 f = open(os.path.join(output_path, symbol_file), 'w')
                 f.write(syms)
                 f.close()
-            except Exception as inst: # pylint: disable=broad-except
+            except Exception as inst:
                 with print_lock:
                     print(f'Symbol failure {binary} {type(inst)} {inst}')
             finally:

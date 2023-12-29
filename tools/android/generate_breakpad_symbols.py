@@ -132,7 +132,7 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
                     # Lets fail just not to ignore something important
                     at_least_one_failed.value = True
 
-            except  Exception as e: # pylint: disable=broad-except
+            except Exception as e:
                 if args.verbose:
                     with print_lock:
                         print(type(e))

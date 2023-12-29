@@ -11,7 +11,6 @@ from subprocess import check_call
 from import_inline import sys_path
 
 with sys_path('//chrome/tools/build/win'):
-    # pylint: disable=import-error, wrong-import-position
     import create_installer_archive as upstream_impl
 
 
