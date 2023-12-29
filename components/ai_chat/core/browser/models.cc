@@ -37,20 +37,25 @@ const base::flat_map<std::string_view, mojom::Model> kAllModels = {
      {"chat-basic", "llama-2-13b-chat", "llama2 13b", "Meta",
       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
       mojom::ModelAccess::BASIC, 9000, 9700}},
-    {"chat-leo-expanded",
-     {"chat-leo-expanded", "llama-2-70b-chat", "llama2 70b", "Meta",
-      mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
-      mojom::ModelAccess::PREMIUM, 9000, 9700}},
+    // {"chat-leo-expanded",
+    //  {"chat-leo-expanded", "llama-2-70b-chat", "llama2 70b", "Meta",
+    //   mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
+    //   mojom::ModelAccess::PREMIUM, 9000, 9700}},
     {"chat-claude-instant",
      {"chat-claude-instant", "claude-instant-v1", "Claude Instant", "Anthropic",
       mojom::ModelEngineType::CLAUDE_REMOTE, mojom::ModelCategory::CHAT,
       mojom::ModelAccess::BASIC_AND_PREMIUM, 200000, 320000}},
+    {"chat-leo-expanded",
+     {"chat-leo-expanded", "mixtral-8x7b-instruct", "Mixtral", "Mistral AI",
+      mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
+      mojom::ModelAccess::BASIC_AND_PREMIUM, 9000, 9700}},
 };
 
 const std::vector<std::string_view> kAllModelKeysDisplayOrder = {
+    // "chat-mixtral-basic"
+    "chat-leo-expanded",
     "chat-claude-instant",
     "chat-basic",
-    "chat-leo-expanded",
 };
 
 }  // namespace ai_chat
