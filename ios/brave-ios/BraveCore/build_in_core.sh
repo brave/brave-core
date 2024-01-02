@@ -2,7 +2,7 @@
 
 set -e
 
-cd ../../.. # Back to brave-core root
+cd "${PROJECT_DIR}/../../.." # Back to brave-core root
 target_environment=""
 target_environment_dir=""
 if [[ $PLATFORM_NAME == "iphonesimulator" ]]; then

@@ -6,6 +6,20 @@
 	objectVersion = 54;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		279242042B44B39F0068F68C /* BraveCore */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 279242052B44B3A00068F68C /* Build configuration list for PBXAggregateTarget "BraveCore" */;
+			buildPhases = (
+				2792420D2B44B3A60068F68C /* Build BraveCore */,
+			);
+			dependencies = (
+			);
+			name = BraveCore;
+			productName = BraveCore;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */; };
 		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
@@ -844,7 +858,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F84B21DD1A090F8100AAB793 /* Build configuration list for PBXNativeTarget "Client" */;
 			buildPhases = (
-				27E2007E2B1A8ED900B26454 /* Build BraveCore */,
 				2779B7052159297D0044A102 /* Run SwiftLint */,
 				0A43293F21B1CB810041625B /* Headers */,
 				F84B21BA1A090F8100AAB793 /* Sources */,
@@ -897,6 +910,9 @@
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
+					279242042B44B39F0068F68C = {
+						CreatedOnToolsVersion = 15.1;
+					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
@@ -979,6 +995,7 @@
 				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
 				2FD860C029C3D676005AADD1 /* BraveWireGuard */,
+				279242042B44B39F0068F68C /* BraveCore */,
 			);
 		};
 /* End PBXProject section */
@@ -1075,7 +1092,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"${SRCROOT}/..\"\nsh swiftlint.sh\n\n";
 		};
-		27E2007E2B1A8ED900B26454 /* Build BraveCore */ = {
+		2792420D2B44B3A60068F68C /* Build BraveCore */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -1349,6 +1366,69 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		279242062B44B3A00068F68C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		279242072B44B3A00068F68C /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug (AppStore)";
+		};
+		279242082B44B3A00068F68C /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Dev;
+		};
+		279242092B44B3A00068F68C /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Enterprise;
+		};
+		2792420A2B44B3A00068F68C /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release (AppStore)";
+		};
+		2792420B2B44B3A00068F68C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2792420C2B44B3A00068F68C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 97533VPBBC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Beta;
+		};
 		27A1AC1624884F7A00344503 /* Enterprise */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 27A1AC1424884EB300344503 /* Enterprise.xcconfig */;
@@ -3439,6 +3519,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		279242052B44B3A00068F68C /* Build configuration list for PBXAggregateTarget "BraveCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				279242062B44B3A00068F68C /* Debug */,
+				279242072B44B3A00068F68C /* Debug (AppStore) */,
+				279242082B44B3A00068F68C /* Dev */,
+				279242092B44B3A00068F68C /* Enterprise */,
+				2792420A2B44B3A00068F68C /* Release (AppStore) */,
+				2792420B2B44B3A00068F68C /* Release */,
+				2792420C2B44B3A00068F68C /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
