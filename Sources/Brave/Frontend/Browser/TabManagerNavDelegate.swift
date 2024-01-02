@@ -105,6 +105,10 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
           res = policy
         }
         
+        if policy == .download {
+          res = policy
+        }
+        
         pref = preferences
       }
     }
@@ -127,6 +131,10 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
         if policy == .cancel {
           res = policy
         }
+        
+        if policy == .download {
+          res = policy
+        }
       }
     }
 
@@ -136,5 +144,25 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
     
     return res
+  }
+  
+  @MainActor
+  public func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome download: WKDownload) {
+    for delegate in delegates {
+      delegate.webView?(webView, navigationAction: navigationAction, didBecome: download)
+      if download.delegate != nil {
+        return
+      }
+    }
+  }
+  
+  @MainActor
+  public func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome download: WKDownload) {
+    for delegate in delegates {
+      delegate.webView?(webView, navigationResponse: navigationResponse, didBecome: download)
+      if download.delegate != nil {
+        return
+      }
+    }
   }
 }

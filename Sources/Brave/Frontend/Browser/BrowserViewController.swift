@@ -192,6 +192,8 @@ public class BrowserViewController: UIViewController {
   var downloadToast: DownloadToast?  // A toast that is showing the combined download progress
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine If AddToListActivity should be added
   var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine if OpenInPlaylistActivity should be shown
+  var shouldDownloadNavigationResponse: Bool = false
+  var pendingDownloads = [WKDownload: PendingDownload]()
 
   var navigationToolbar: ToolbarProtocol {
     return toolbar ?? topToolbar

@@ -394,6 +394,10 @@ extension BrowserViewController: WKNavigationDelegate {
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
 
+      if navigationAction.shouldPerformDownload {
+        self.shouldDownloadNavigationResponse = true
+      }
+      
       return (.allow, preferences)
     }
 
@@ -493,6 +497,14 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     // Check if this response should be handed off to Passbook.
+    if shouldDownloadNavigationResponse {
+      shouldDownloadNavigationResponse = false
+      
+      if response.mimeType == MIMEType.passbook {
+        return .download
+      }
+    }
+    
     if let passbookHelper = OpenPassBookHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
       // Open our helper and cancel this response from the webview.
       passbookHelper.open()
@@ -529,10 +541,22 @@ extension BrowserViewController: WKNavigationDelegate {
 
       tab.mimeType = response.mimeType
     }
+    
+    if canShowInWebView {
+      return .allow
+    }
  
     // If none of our helpers are responsible for handling this response,
     // just let the webview handle it as normal.
     return .allow
+  }
+  
+  public func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome download: WKDownload) {
+    Logger.module.error("ERROR: Should Never download NavigationAction since we never return .download from decidePolicyForAction.")
+  }
+  
+  public func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome download: WKDownload) {
+    download.delegate = self
   }
 
   nonisolated public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
