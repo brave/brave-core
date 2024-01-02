@@ -175,11 +175,6 @@ bool ChannelsController::GetChannelSubscribed(const std::string& locale,
 }
 
 void ChannelsController::OnPublishersUpdated(PublishersController* controller) {
-  // Don't notify updates until the pref is initialized.
-  if (!prefs_->HasPrefPath(prefs::kBraveNewsChannels)) {
-    return;
-  }
-
   GetAllChannels(base::BindOnce(
       [](ChannelsController* controller, Channels channels) {
         auto event = mojom::ChannelsEvent::New();
