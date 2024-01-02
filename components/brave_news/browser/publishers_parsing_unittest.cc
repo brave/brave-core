@@ -103,4 +103,67 @@ TEST(BraveNewsPublisherParsing, PublisherListWithNoneValuesInOptionalFields) {
   ASSERT_EQ(publisher_list->size(), 3UL);
 }
 
+TEST(BraveNewsPublisherParsing, ChannelsAreMigrated) {
+  // Test that we parse expected remote publisher JSON
+  const char json[] = (R"(
+    [
+      {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1",
+        "category": "",
+        "locales": [
+          {
+            "locale": "en_US",
+            "channels": [
+              "Tech News",
+              "Tech Reviews",
+              "Technology"
+            ]
+          },
+          {
+            "locale": "en_NZ",
+            "channels": [
+              "Sport",
+              "Stuff"
+            ]
+          },
+          {
+            "locale": "en_AU",
+            "channels": [
+              "Celebrity News"
+            ]
+          }
+        ],
+        "enabled": false,
+        "site_url": "https://one.example.com",
+        "feed_url": "https://one.example.com/feed"
+      }
+    ]
+  )");
+
+  std::optional<Publishers> publisher_list =
+      ParseCombinedPublisherList(base::test::ParseJson(json));
+  ASSERT_TRUE(publisher_list);
+  ASSERT_EQ(publisher_list->size(), 1ul);
+
+  auto& publisher = (*publisher_list)["111"];
+  ASSERT_EQ(3u, publisher->locales.size());
+
+  auto& en_us = publisher->locales[0];
+  ASSERT_EQ("en_US", en_us->locale);
+  ASSERT_EQ(1u, en_us->channels.size());
+  EXPECT_EQ("Technology", en_us->channels[0]);
+
+  auto& en_nz = publisher->locales[1];
+  ASSERT_EQ("en_NZ", en_nz->locale);
+  ASSERT_EQ(2u, en_nz->channels.size());
+  EXPECT_EQ("Sports", en_nz->channels[0]);
+  EXPECT_EQ("Stuff", en_nz->channels[1]);
+
+  auto& en_au = publisher->locales[2];
+  ASSERT_EQ("en_AU", en_au->locale);
+  ASSERT_EQ(1u, en_au->channels.size());
+  EXPECT_EQ("Celebrities", en_au->channels[0]);
+}
+
 }  // namespace brave_news
