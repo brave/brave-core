@@ -16,7 +16,6 @@
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
-#include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
@@ -104,10 +103,6 @@ void BraveRequestHandler::SetupCallbacks() {
 
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey);
-  before_start_transaction_callbacks_.push_back(start_transaction_callback);
-
-  start_transaction_callback =
-      base::BindRepeating(brave::OnBeforeStartTransaction_ReferralsWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
   if (base::FeatureList::IsEnabled(
