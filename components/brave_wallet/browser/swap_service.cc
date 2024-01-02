@@ -250,7 +250,8 @@ GURL AppendJupiterQuoteParams(
   brave_swap_fee_params->output_token = params.to_token;
   const auto& brave_fee = GetBraveFeeInternal(brave_swap_fee_params);
   if (brave_fee && brave_fee->has_brave_fee) {
-    url = net::AppendQueryParameter(url, "feeBps", brave_fee->fee_param);
+    url =
+        net::AppendQueryParameter(url, "platformFeeBps", brave_fee->fee_param);
   }
 
   // TODO(onyb): append userPublicKey to get information on fees and ATA
@@ -377,7 +378,7 @@ GURL SwapService::GetZeroExTransactionURL(
 // static
 GURL SwapService::GetJupiterQuoteURL(const mojom::SwapQuoteParams& params) {
   std::string spec = base::StringPrintf(
-      "%sv4/quote", GetBaseSwapURL(params.from_chain_id).c_str());
+      "%sv6/quote", GetBaseSwapURL(params.from_chain_id).c_str());
   GURL url(spec);
   url = AppendJupiterQuoteParams(url, params);
 
@@ -387,7 +388,7 @@ GURL SwapService::GetJupiterQuoteURL(const mojom::SwapQuoteParams& params) {
 // static
 GURL SwapService::GetJupiterTransactionURL(const std::string& chain_id) {
   std::string spec =
-      base::StringPrintf("%sv4/swap", GetBaseSwapURL(chain_id).c_str());
+      base::StringPrintf("%sv6/swap", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   return url;
 }
@@ -518,9 +519,10 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
     auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
     brave_swap_fee_params->chain_id = jupiter_transaction_params->chain_id;
     brave_swap_fee_params->taker = jupiter_transaction_params->user_public_key;
-    brave_swap_fee_params->input_token = jupiter_transaction_params->input_mint;
+    brave_swap_fee_params->input_token =
+        jupiter_transaction_params->quote->input_mint;
     brave_swap_fee_params->output_token =
-        jupiter_transaction_params->output_mint;
+        jupiter_transaction_params->quote->output_mint;
     const auto& brave_fee =
         GetBraveFeeInternal(std::move(brave_swap_fee_params));
     bool has_fee = brave_fee && brave_fee->has_brave_fee;
