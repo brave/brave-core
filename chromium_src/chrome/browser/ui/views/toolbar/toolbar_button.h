@@ -17,7 +17,11 @@
   virtual void SetHighlight
 
 #define UpdateColorsAndInsets virtual UpdateColorsAndInsets
+#define kDefaultIconSize \
+  kDefaultIconSize = 18; \
+  static constexpr int kDefaultIconSize_UnUsed
 #include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
+#undef kDefaultIconSize
 #undef UpdateColorsAndInsets
 #undef SetHighlight
 #undef ToolbarButton

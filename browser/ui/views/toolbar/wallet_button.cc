@@ -213,8 +213,7 @@ void WalletButton::UpdateImageAndText(bool activated) {
     color_id = kColorToolbarButtonActivated;
   }
 
-  constexpr int kIconSize = 16;
-  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, kIconSize,
+  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, GetIconSize(),
                                     color_provider->GetColor(color_id));
 
   if (counter_ == 0) {
