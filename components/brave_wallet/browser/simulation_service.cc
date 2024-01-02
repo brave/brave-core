@@ -86,6 +86,9 @@ std::string GetRelativeScanPath(const std::string& chain_id,
   } else if (coin == mojom::CoinType::ETH &&
              chain_id == mojom::kArbitrumMainnetChainId) {
     return "arbitrum/v0/one/scan";
+  } else if (coin == mojom::CoinType::ETH &&
+             chain_id == mojom::kBaseMainnetChainId) {
+    return "base/v0/mainnet/scan";
   }
 
   return "";
@@ -103,7 +106,9 @@ bool HasTransactionScanSupportInternal(const std::string& chain_id,
          (coin == mojom::CoinType::ETH &&
           chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId);
+          chain_id == mojom::kArbitrumMainnetChainId) ||
+         (coin == mojom::CoinType::ETH &&
+          chain_id == mojom::kBaseMainnetChainId);
 }
 
 bool HasMessageScanSupportInternal(const std::string& chain_id,
@@ -150,9 +155,7 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
                                               const std::string& language) {
   std::string spec = base::StringPrintf(
       "%s/%s/%s", kBlowfishBaseAPIURL,
-      GetRelativeScanPath(chain_id, coin).c_str(),
-      coin == mojom::CoinType::SOL ? "transactions" : "transaction");
-
+      GetRelativeScanPath(chain_id, coin).c_str(), "transactions");
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
@@ -215,29 +218,30 @@ void SimulationService::ScanSolanaTransaction(
     return;
   }
 
-  const auto& encoded_params = solana::EncodeScanTransactionParams(request);
-  if (!encoded_params) {
+  const auto& params = solana::EncodeScanTransactionParams(request);
+  if (!params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanSolanaTransaction,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), params->second);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
       GetScanTransactionURL(chain_id, mojom::CoinType::SOL, language),
-      *encoded_params, "application/json", std::move(internal_callback),
+      params->first, "application/json", std::move(internal_callback),
       GetHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));
 }
 
 void SimulationService::OnScanSolanaTransaction(
     ScanSolanaTransactionCallback callback,
+    const std::string& user_account,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
@@ -251,8 +255,8 @@ void SimulationService::OnScanSolanaTransaction(
     return;
   }
 
-  if (auto simulation_response =
-          solana::ParseSimulationResponse(api_request_result.value_body())) {
+  if (auto simulation_response = solana::ParseSimulationResponse(
+          api_request_result.value_body(), user_account)) {
     std::move(callback).Run(std::move(simulation_response), "", "");
   } else {
     std::move(callback).Run(nullptr, "",
@@ -279,29 +283,30 @@ void SimulationService::ScanEVMTransaction(
     return;
   }
 
-  const auto& encoded_params = evm::EncodeScanTransactionParams(tx_info);
-  if (!encoded_params) {
+  const auto& params = evm::EncodeScanTransactionParams(tx_info);
+  if (!params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanEVMTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanEVMTransaction, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), params->second);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
       GetScanTransactionURL(chain_id, mojom::CoinType::ETH, language),
-      *encoded_params, "application/json", std::move(internal_callback),
+      params->first, "application/json", std::move(internal_callback),
       GetHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));
 }
 
 void SimulationService::OnScanEVMTransaction(
     ScanEVMTransactionCallback callback,
+    const std::string& user_account,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
@@ -315,8 +320,8 @@ void SimulationService::OnScanEVMTransaction(
     return;
   }
 
-  if (auto simulation_response =
-          evm::ParseSimulationResponse(api_request_result.value_body())) {
+  if (auto simulation_response = evm::ParseSimulationResponse(
+          api_request_result.value_body(), user_account)) {
     std::move(callback).Run(std::move(simulation_response), "", "");
   } else {
     std::move(callback).Run(nullptr, "",

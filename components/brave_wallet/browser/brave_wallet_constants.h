@@ -1406,7 +1406,7 @@ inline constexpr char kJupiterReferralProgramHeader[] = "referral_ata";
 inline constexpr char kBlowfishBaseAPIURL[] =
     "https://blowfish.wallet.brave.com";
 inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
-inline constexpr char kBlowfishAPIVersion[] = "2023-03-08";
+inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

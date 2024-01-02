@@ -2463,7 +2463,7 @@ struct BlowfishEVMError {
   string human_readable_error;
 };
 
-struct BlowfishEVMContract {
+struct BlowfishEVMCounterparty {
   string address;
   BlowfishEVMAddressKind kind;
 };
@@ -2475,12 +2475,37 @@ struct BlowfishEVMAmount {
 
 struct BlowfishEVMAsset {
   string address;
+
+  // The symbol field is defined in the following cases:
+  //   - ERC20:   always defined.
+  //   - ERC721:  may not be defined as it's not required in the standard.
+  //   - ERC1155: never defined as it's not part of the standard.
   string symbol;
+
+  // The name field is defined in the following cases:
+  //   - ERC20:  always defined.
+  //   - ERC721: may not be defined as it's not required in the standard.
+  //   - ERC1155: may not be defined as it's not required in the standard.
   string name;
+
+  // For ERC721 and ERC1155, decimals will always be 0, since each token is
+  // distinct and cannot be partitioned into smaller units.
   int32 decimals;
+
+  // The token_id field is defined only for ERC721 and ERC1155 tokens. In some
+  // edge cases where Blowfish is unable to parse the value, it may be empty.
+  string token_id;
+
+  // The collection field is defined only for ERC721.
+  string collection;
+
   bool verified;
   array<string> lists;
-  string? image_url;
+
+  // This field is only used for ERC20 tokens. For NFT images, please use the
+  // corresponding BlowfishEVMMetadata field.
+  string image_url;
+
   BlowfishPrice? price;
 };
 
@@ -2489,72 +2514,58 @@ struct BlowfishEVMMetadata {
 };
 
 struct BlowfishERC20TransferData {
-  BlowfishEVMContract contract;
   BlowfishEVMAmount amount;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC20ApprovalData {
-  BlowfishEVMContract contract;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
   BlowfishEVMAmount amount;
   BlowfishEVMAsset asset;
 };
 
 struct BlowfishNativeAssetTransferData {
   BlowfishEVMAmount amount;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMAsset asset;
-  BlowfishEVMContract contract;
 };
 
 struct BlowfishERC721TransferData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMMetadata metadata;
-  string name;
-  string symbol;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC721ApprovalData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
-  string name;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  string symbol;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC721ApprovalForAllData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
-  string name;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  string symbol;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC1155TransferData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
-  string name;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty? counterparty;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC1155ApprovalForAllData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 union BlowfishEVMStateChangeRawInfoDataUnion {
@@ -2578,15 +2589,11 @@ struct BlowfishEVMStateChange {
   BlowfishEVMStateChangeRawInfo raw_info;
 };
 
-struct EVMSimulationResults {
-  BlowfishEVMError? error;
-  array<BlowfishEVMStateChange> expected_state_changes;
-};
-
 struct EVMSimulationResponse {
   BlowfishSuggestedAction action;
-  EVMSimulationResults simulation_results;
+  BlowfishEVMError? error;
   array<BlowfishWarning> warnings;
+  array<BlowfishEVMStateChange> expected_state_changes;
 };
 
 // Blowfish types specific to Solana.
@@ -2605,43 +2612,38 @@ struct BlowfishSolanaStakeAuthorities {
   string withdrawer;
 };
 
-struct BlowfishSOLTransferData {
+struct BlowfishSolanaAsset {
   string symbol;
   string name;
+  string mint;
   int32 decimals;
+  string image_url;
+  BlowfishPrice? price;
+  BlowfishMetaplexTokenStandardKind? metaplex_token_standard;
+};
+
+struct BlowfishSOLTransferData {
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
 };
 
 struct BlowfishSPLTransferData {
-  string symbol;
-  string name;
-  string mint;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
-  uint64 supply;
-  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
-  BlowfishPrice? asset_price;
+  string counterparty;
 };
 
 struct BlowfishSPLApprovalData {
   string delegate;
-  string mint;
-  string symbol;
-  string name;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
-  uint64 supply;
-  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
-  BlowfishPrice? asset_price;
 };
 
 struct BlowfishSOLStakeAuthorityChangeData {
   string stake_account;
-  BlowfishSolanaStakeAuthorities curr_authorities;
+  BlowfishSolanaStakeAuthorities current_authorities;
   BlowfishSolanaStakeAuthorities future_authorities;
-  string symbol;
-  string name;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   uint64 sol_staked;
 };
 
@@ -2663,16 +2665,11 @@ struct BlowfishSolanaStateChange {
   BlowfishSolanaStateChangeRawInfo raw_info;
 };
 
-struct SolanaSimulationResults {
-  bool is_recent_blockhash_expired;
-  array<BlowfishSolanaStateChange> expected_state_changes;
-  BlowfishSolanaError? error;
-};
-
 struct SolanaSimulationResponse {
   BlowfishSuggestedAction action;
   array<BlowfishWarning> warnings;
-  SolanaSimulationResults simulation_results;
+  BlowfishSolanaError? error;
+  array<BlowfishSolanaStateChange> expected_state_changes;
 };
 
 // Implements transaction and message scanning functionality through the
