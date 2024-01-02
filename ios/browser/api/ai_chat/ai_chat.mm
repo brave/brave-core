@@ -160,7 +160,8 @@
 - (void)getPremiumStatus:(void (^)(AiChatPremiumStatus))completion {
   driver_->GetPremiumStatus(base::BindOnce(
       [](void (^completion)(AiChatPremiumStatus),
-         ai_chat::mojom::PremiumStatus status) {
+         ai_chat::mojom::PremiumStatus status,
+         ai_chat::mojom::PremiumInfoPtr info) {
         if (completion) {
           completion(static_cast<AiChatPremiumStatus>(status));
         }

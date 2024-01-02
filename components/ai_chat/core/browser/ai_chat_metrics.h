@@ -65,7 +65,8 @@ class AIChatMetrics {
   void HandleOpenViaSidebar();
 
   void OnPremiumStatusUpdated(bool is_new_user,
-                              mojom::PremiumStatus premium_status);
+                              mojom::PremiumStatus premium_status,
+                              mojom::PremiumInfoPtr);
 
  private:
   void ReportAllMetrics();

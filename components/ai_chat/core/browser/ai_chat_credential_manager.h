@@ -39,8 +39,7 @@ class AIChatCredentialManager {
   AIChatCredentialManager& operator=(const AIChatCredentialManager&) = delete;
   ~AIChatCredentialManager();
 
-  void GetPremiumStatus(
-      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
+  void GetPremiumStatus(mojom::PageHandler::GetPremiumStatusCallback callback);
 
   void FetchPremiumCredential(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
@@ -54,14 +53,16 @@ class AIChatCredentialManager {
   void OnMojoConnectionError();
 
   void OnCredentialSummary(
-      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback,
+      mojom::PageHandler::GetPremiumStatusCallback callback,
       const std::string& domain,
+      const bool credential_in_cache,
       const std::string& summary_string);
 
   void OnGetPremiumStatus(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
-      ai_chat::mojom::PremiumStatus);
+      mojom::PremiumStatus,
+      mojom::PremiumInfoPtr);
 
   void OnPrepareCredentialsPresentation(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>

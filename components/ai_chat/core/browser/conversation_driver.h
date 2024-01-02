@@ -145,7 +145,8 @@ class ConversationDriver {
   void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
-      mojom::PremiumStatus premium_status);
+      mojom::PremiumStatus premium_status,
+      mojom::PremiumInfoPtr premium_info);
   void OnConversationEntryPending();
 
   void SetAPIError(const mojom::APIError& error);
