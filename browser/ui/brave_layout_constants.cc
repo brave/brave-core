@@ -39,7 +39,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 24;
     }
     case LOCATION_BAR_HEIGHT:
-      return touch ? 36 : 34;
+      return 36;
     default:
       break;
   }
