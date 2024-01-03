@@ -12,6 +12,7 @@ use crate::{
     auditor::Auditor,
     cli_config::CliConfig,
     config::{AuditConfig, DenyOption},
+    lockfile,
     prelude::*,
 };
 use abscissa_core::{config::Override, terminal::ColorChoice, FrameworkError};
@@ -211,9 +212,15 @@ impl Runnable for AuditCommand {
             exit(0)
         }
 
-        let path = self.file.as_deref();
+        let maybe_path = self.file.as_deref();
+        // It is important to generate the lockfile before initializing the auditor,
+        // otherwise we might deadlock because both need the Cargo package lock
+        let path = lockfile::locate_or_generate(maybe_path).unwrap_or_else(|e| {
+            status_err!("{}", e);
+            exit(2);
+        });
         let mut auditor = self.auditor();
-        let report = auditor.audit_lockfile(path);
+        let report = auditor.audit_lockfile(&path);
         match report {
             Ok(report) => {
                 if auditor.should_exit_with_failure(&report) {
