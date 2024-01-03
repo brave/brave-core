@@ -318,6 +318,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kGetFontsExists =
       "!!(document.getElementById('atkinson_hyperligible_font') && "
       "document.getElementById('open_dyslexic_font'))";
+  const std::string kCheckReferrer =
+      R"js(document.querySelector('meta[name="referrer"]')
+             .getAttribute('content') === 'no-referrer')js";
 
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
@@ -329,6 +332,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckReferrer,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+
   const auto speedreaded_length =
       content::EvalJs(ActiveWebContents(), kGetContentLength,
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,

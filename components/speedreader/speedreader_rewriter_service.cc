@@ -44,6 +44,7 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet,
   };
 
   constexpr const char kCSP[] = R"html(
+    <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy"
       content="script-src 'none';
                style-src-elem 'sha256-%s' 'sha256-%s' 'sha256-%s'"
