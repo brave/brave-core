@@ -30,6 +30,9 @@
     {
       "name": "speedometer2",
       "pageset-repeat": 10
-    }
+    },
+    {
+      "name": "apk_size",
+    },
   ]
 }

@@ -74,12 +74,11 @@ class BenchmarkConfig:
       return
     assert isinstance(json, dict)
     self.name = json['name']
-    self.pageset_repeat = json['pageset-repeat']
+    if pageset_repeat := json.get('pageset-repeat'):
+      self.pageset_repeat = pageset_repeat
     self.stories = []
-    if 'stories' in json:
-      story_list: List[str] = json['stories']
-      for story in story_list:
-        self.stories.append(story)
+    if story_list := json.get('stories'):
+      self.stories.extend(story_list)
 
 
 class PerfConfig:

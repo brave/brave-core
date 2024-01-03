@@ -88,6 +88,8 @@ class RunableConfiguration:
     self.binary = binary
     self.out_dir = out_dir
     self.common_options = common_options
+    self.custom_perf_handlers = {'apk_size': self.RunApkSize}
+
 
   def RebaseProfile(self) -> bool:
     assert self.binary is not None
@@ -111,6 +113,24 @@ class RunableConfiguration:
                                 rebase_out_dir, True, REBASE_TIMEOUT)
     self.status_line += f'Rebase {(time.time() - start_time):.2f}s '
     return result
+
+  def RunApkSize(self, out_dir: str):
+    assert self.binary is not None
+    assert self.binary.binary_path is not None
+    assert out_dir is not None
+    os.makedirs(out_dir, exist_ok=True)
+    args = [
+        path_util.GetVpython3Path(),
+        os.path.join(path_util.GetSrcDir(), 'build', 'android',
+                     'resource_sizes.py'), '--output-format=histograms',
+        '--output-dir', out_dir, self.binary.binary_path
+    ]
+    success, _ = perf_test_utils.GetProcessOutput(args, timeout=120)
+    if success:
+      with scoped_cwd(out_dir):
+        shutil.move('results-chart.json', 'test_results.json')
+
+    return success
 
   def RunSingleTest(self,
                     config: RunnerConfig,
@@ -143,17 +163,23 @@ class RunableConfiguration:
           '--output-format=histograms'
       ])
 
+    custom_handler = self.custom_perf_handlers.get(benchmark_name)
+    if custom_handler is not None:
+      assert bench_out_dir
+      return custom_handler(bench_out_dir)
+
     if self.binary.profile_dir:
       args.append(f'--profile-dir={self.binary.profile_dir}')
 
     assert self.binary
-    if self.binary.binary_path:
-      assert os.path.exists(self.binary.binary_path)
+    if self.binary.telemetry_browser_type is not None:
+      args.append(f'--browser={self.binary.telemetry_browser_type}')
+    elif self.binary.binary_path is not None:
       args.append('--browser=exact')
       args.append(f'--browser-executable={self.binary.binary_path}')
     else:
-      assert self.binary.telemetry_browser_type
-      args.append(f'--browser={self.binary.telemetry_browser_type}')
+      raise RuntimeError('Bad binary spec, no browser to run')
+
     args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
 
     if len(benchmark_config.stories) > 0:

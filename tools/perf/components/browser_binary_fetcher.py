@@ -37,11 +37,12 @@ class BrowserBinary:
     self.profile_dir = profile_dir
     self.field_trial_config = field_trial_config
     if android_package is not None:
+      assert binary_path is None
       for b in android_browser_backend_settings.ANDROID_BACKEND_SETTINGS:
         if b.package == android_package:
           self.telemetry_browser_type = b.browser_type
       if self.telemetry_browser_type is None:
-        raise RuntimeError('No matching browser-type found')
+        raise RuntimeError('No matching browser-type found ' + android_package)
     else:
       assert binary_path is not None
 
@@ -156,4 +157,5 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
     package = _InstallApk(binary_location, config.browser_type, config.version)
 
   _PostInstallAndroidSetup(package)
-  return BrowserBinary(None, package, profile_dir, field_trial_config)
+  return BrowserBinary(binary_location, package, profile_dir,
+                       field_trial_config)
