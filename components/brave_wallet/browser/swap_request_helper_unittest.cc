@@ -85,7 +85,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
 
   std::string expected_params(R"(
     {
-      "feeAccount": "9ogHW3wZ4unrLhQJNWnRsoggsV27QURAnb6iDptmg46j",
+      "feeAccount": "8bagio923H3HH89mRFLmTYajdcXVe4MiNBo8wAJcdL79",
       "quoteResponse": {
         "inputMint": "So11111111111111111111111111111111111111112",
         "inAmount": "100000000",

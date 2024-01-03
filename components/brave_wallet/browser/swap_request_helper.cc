@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -14,9 +15,39 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
+
+namespace {
+
+// Docs: https://station.jup.ag/docs/apis/adding-fees
+std::optional<std::string> GetFeeAccount(const std::string& output_mint) {
+  std::vector<std::vector<uint8_t>> seeds;
+  std::vector<uint8_t> referral_account_pubkey_bytes;
+  std::vector<uint8_t> output_mint_bytes;
+
+  if (!Base58Decode(kJupiterReferralKey, &referral_account_pubkey_bytes,
+                    kSolanaPubkeySize) ||
+      !Base58Decode(output_mint, &output_mint_bytes, kSolanaPubkeySize)) {
+    return std::nullopt;
+  }
+
+  const std::string& referral_fee_header = kJupiterReferralProgramHeader;
+  std::vector<uint8_t> referral_ata_bytes(referral_fee_header.begin(),
+                                          referral_fee_header.end());
+
+  seeds.push_back(std::move(referral_ata_bytes));
+  seeds.push_back(std::move(referral_account_pubkey_bytes));
+  seeds.push_back(std::move(output_mint_bytes));
+
+  return SolanaKeyring::FindProgramDerivedAddress(seeds,
+                                                  kJupiterReferralProgram);
+}
+
+}  // namespace
 
 std::optional<std::string> EncodeJupiterTransactionParams(
     const mojom::JupiterTransactionParams& params,
@@ -26,20 +57,17 @@ std::optional<std::string> EncodeJupiterTransactionParams(
   // The code below does the following two things:
   //   - compute the ATA address that should be used to receive fees
   //   - verify if output_mint is a valid address
-  std::optional<std::string> associated_token_account =
-      SolanaKeyring::GetAssociatedTokenAccount(
-          params.quote->output_mint, brave_wallet::kSolanaFeeRecipient);
-  if (!associated_token_account) {
+  std::optional<std::string> fee_account =
+      GetFeeAccount(params.quote->output_mint);
+  if (!fee_account) {
     return std::nullopt;
   }
 
-  // If the if-condition below is false, associated_token_account is unused,
-  // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()
-  // is still done to ensure output_mint is always valid.
+  // If the if-condition below is false, fee_account is unused,
+  // but the originating call to GetFeeAccount() is still done to ensure
+  // output_mint is always valid.
   if (has_fee) {
-    // feeAccount is the ATA account for the output mint where the fee will be
-    // sent to.
-    tx_params.Set("feeAccount", *associated_token_account);
+    tx_params.Set("feeAccount", *fee_account);
   }
 
   tx_params.Set("userPublicKey", params.user_public_key);
