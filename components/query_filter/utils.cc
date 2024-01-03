@@ -125,6 +125,8 @@ static constexpr auto kConditionalQueryStringTrackers =
 // example.
 static const auto kScopedQueryStringTrackers =
     std::map<std::string_view, std::vector<std::string_view>>({
+        // https://github.com/brave/brave-browser/issues/35094
+        {"igsh", {"instagram.com"}},
         // https://github.com/brave/brave-browser/issues/11580
         {"igshid", {"instagram.com"}},
         // https://github.com/brave/brave-browser/issues/26966
