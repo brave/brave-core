@@ -69,6 +69,14 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                                bool remove_all,
                                bool force_uninstall,
                                const base::CommandLine& cmd_line) {
+  InstallStatus ret = UninstallProduct_ChromiumImpl(modify_params, remove_all,
+                                                    force_uninstall, cmd_line);
+
+  // Early return if user cancelled.
+  if (ret == installer::UNINSTALL_CANCELLED) {
+    return ret;
+  }
+
   DeleteBraveFileKeys(HKEY_CURRENT_USER);
 
   const auto installer_state = modify_params.installer_state;
@@ -100,8 +108,8 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
   }
   brave_vpn::ras::RemoveEntry(brave_vpn::GetBraveVPNConnectionName());
 #endif
-  return UninstallProduct_ChromiumImpl(modify_params, remove_all,
-                                       force_uninstall, cmd_line);
+
+  return ret;
 }
 
 }  // namespace installer
