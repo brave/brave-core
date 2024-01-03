@@ -145,16 +145,18 @@ export default function Component({ feed, hasSubscriptions }: Props) {
     })
   }, [cardCount, feed?.items])
 
+  // An empty feed may still have ads in it, so we need to filter them out to
+  // determine if there are no articles.
+  const noArticles = React.useMemo(() => !feed?.items.filter(i => !i.advert).length, [feed])
+
   return <FeedContainer className={NEWS_FEED_CLASS}>
-    {!hasSubscriptions
-      ? <NoFeeds />
-      : feed
-        ? !feed.items.length
-          ? <NoArticles />
-          : <>
-            {cards}
-            <CaughtUp />
-          </>
-        : <LoadingCard />}
+    {feed
+      ? noArticles
+        ? hasSubscriptions ? <NoArticles /> : <NoFeeds />
+        : <>
+          {cards}
+          <CaughtUp />
+        </>
+      : <LoadingCard />}
   </FeedContainer>
 }
