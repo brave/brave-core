@@ -33,6 +33,8 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
         brave_tabs::kVerticalTabsExpandedWidth,
         brave_tabs::kVerticalTabsEnabled, brave_tabs::kVerticalTabsCollapsed,
         brave_tabs::kVerticalTabsFloatingEnabled,
+        brave_tabs::kVerticalTabsShowTitleOnWindow,
+        brave_tabs::kVerticalTabsOnRight,
 #endif
 #if defined(TOOLKIT_VIEWS)
         sidebar::kSidePanelWidth,

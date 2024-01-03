@@ -339,6 +339,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsOnRight] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
