@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -36,6 +37,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/ui/webui/tab_search/brave_tab_search.mojom.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
@@ -89,6 +91,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
@@ -785,6 +789,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
+  }
+
+  if (base::FeatureList::IsEnabled(features::kTabSearchHistory)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        tab_search::mojom::BraveTabSearch, TabSearchUI>(map);
   }
 #endif
 

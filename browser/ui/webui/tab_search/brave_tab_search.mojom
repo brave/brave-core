@@ -1,0 +1,25 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module tab_search.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+import "url/mojom/url.mojom";
+
+struct HistoryEntry {
+  string title;
+  url.mojom.Url url;
+  mojo_base.mojom.Time last_active_time;
+  string last_active_elapsed_text;
+};
+
+// Brave additions to the tab search dialog.
+interface BraveTabSearch {
+  // Get the most recent history entries.
+  GetHistoryEntries() => (array<HistoryEntry> history);
+
+  // Opens a URL in a new tab.
+  OpenUrl(url.mojom.Url url);
+};

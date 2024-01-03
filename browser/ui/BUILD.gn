@@ -57,6 +57,8 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
+    "webui/tab_search/brave_tab_search.cc",
+    "webui/tab_search/brave_tab_search.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -811,6 +813,7 @@ source_set("ui") {
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/commands/common",
+      "//brave/browser/ui/webui/tab_search:mojom",
       "//brave/components/speedreader/common",
       "//brave/components/speedreader/common:mojom",
       "//brave/components/speedreader/resources/panel:generated_resources",

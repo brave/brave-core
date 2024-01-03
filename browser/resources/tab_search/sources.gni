@@ -1,0 +1,32 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_tab_search_mojo_files = [ "$root_gen_dir/chrome/browser/ui/webui/tab_search/brave_tab_search.mojom-webui.ts" ]
+brave_tab_search_mojo_files_deps =
+    [ "//brave/browser/ui/webui/tab_search:mojom_copy" ]
+
+brave_tab_search_web_component_files = []
+
+brave_tab_search_non_web_component_files = [
+  "brave_overrides/index.ts",
+  "brave_overrides/tab_search_page.ts",
+  "brave_overrides/tab_data.ts"
+]
+
+# Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
+brave_tab_search_local_ts_files = brave_tab_search_web_component_files +
+                                  brave_tab_search_non_web_component_files
+
+brave_tab_search_local_html_files = []
+foreach(component_file, brave_tab_search_web_component_files) {
+  brave_tab_search_local_html_files +=
+      [ string_replace(component_file, ".ts", ".html") ]
+}
+
+# In preprocess, we copy the files to the same directory as the Chromium sources.
+brave_tab_search_ts_extra_deps =
+    [ "//brave/browser/resources/tab_search:preprocess" ]
+brave_tab_search_preprocess_deps =
+    [ "//brave/browser/resources/tab_search:preprocess" ]
