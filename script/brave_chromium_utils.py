@@ -8,6 +8,8 @@ import functools
 import os.path
 import sys
 
+from typing import Any, Dict, Optional
+
 
 @functools.lru_cache(maxsize=None)
 def get_src_dir() -> str:
@@ -28,8 +30,12 @@ def get_src_dir() -> str:
         current_dir = parent_dir
 
 
-# Returns OS path from workspace path (//brave/path/file.py).
 def wspath(path: str) -> str:
+    """Convert workspace path to OS path. Examples:
+
+    `//chrome/file.txt` -> `/home/user/brave_checkout/src/chrome/file.txt`
+    `//chrome/file.txt` -> `C:\\brave_checkout\\src\\chrome\\file.txt`
+    """
     assert isinstance(path, str)
 
     if path.startswith('//'):
@@ -37,7 +43,6 @@ def wspath(path: str) -> str:
 
     # Normalize path separators.
     return os.path.normpath(path)
-
 
 
 def get_chromium_src_override(path: str) -> str:
@@ -52,8 +57,8 @@ def get_chromium_src_override(path: str) -> str:
     return wspath(f'//brave/chromium_src/{src_path}')
 
 
-# Inline file by executing it using passed scopes.
-def inline_file(path: str, _globals, _locals):
+def inline_file(path: str, _globals: Dict[str, Any],
+                _locals: Dict[str, Any]) -> None:
     """Inline file from `path` by executing it using `_globals` and `_locals`
     scopes."""
     path = wspath(path)
@@ -65,7 +70,8 @@ def inline_file(path: str, _globals, _locals):
         exec(code, _globals, _locals)
 
 
-def inline_chromium_src_override(_globals, _locals) -> None:
+def inline_chromium_src_override(_globals: Dict[str, Any],
+                                 _locals: Dict[str, Any]) -> None:
     """Inline `__file__` override from `//brave/chromium_src`."""
     orig_file = _globals.get('__file__')
     if not orig_file:
@@ -77,7 +83,7 @@ def inline_chromium_src_override(_globals, _locals) -> None:
 
 
 @contextlib.contextmanager
-def sys_path(path: str, position=None):
+def sys_path(path: str, position: Optional[int] = None):
     path = wspath(path)
     path_exists = path in sys.path
     if not path_exists:
