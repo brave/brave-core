@@ -58,10 +58,8 @@ def _merge_commands(extended_domain, protocol_domain):
 
 
 def _merge_protocol(protocol, file_name):
-    file_name = os.path.abspath(file_name)
-    src_dir = brave_chromium_utils.get_src_dir()
-    chromium_src_file = os.path.join(src_dir, 'brave', 'chromium_src',
-                                     file_name[len(src_dir) + 1:])
+    chromium_src_file = brave_chromium_utils.get_chromium_src_override(
+        file_name)
     if not os.path.exists(chromium_src_file):
         return
     with open(chromium_src_file, "r") as input_file:

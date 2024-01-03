@@ -1,12 +1,12 @@
 diff --git a/mojo/public/tools/mojom/mojom_parser.py b/mojo/public/tools/mojom/mojom_parser.py
-index 9693090e44ea4bff0c8d0259a4bdf7c1b0ba0b77..811fc49983cb212829902fa51718dfb6c772e082 100755
+index 9693090e44ea4bff0c8d0259a4bdf7c1b0ba0b77..8785606744dad5dbc49410b9f96d9c2b3a2068ae 100755
 --- a/mojo/public/tools/mojom/mojom_parser.py
 +++ b/mojo/public/tools/mojom/mojom_parser.py
 @@ -492,6 +492,7 @@ already present in the provided output root.""")
    logging.info('Finished')
-
-
-+from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/mojo/public/tools/mojom/mojom_parser.py", globals(), locals())
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if __name__ == '__main__':
    Run(sys.argv[1:])
    # Exit without running GC, which can save multiple seconds due to the large

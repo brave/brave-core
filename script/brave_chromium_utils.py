@@ -39,8 +39,23 @@ def wspath(path: str) -> str:
     return os.path.normpath(path)
 
 
+
+def get_chromium_src_override(path: str) -> str:
+    """Convert path into `//brave/chromium_src` override path."""
+    assert path, path
+    if not os.path.isabs(path):
+        path = os.path.abspath(path)
+    assert os.path.exists(path), path
+    src_dir = get_src_dir()
+    assert path.startswith(src_dir), (path, src_dir)
+    src_path = path[len(src_dir) + 1:]
+    return wspath(f'//brave/chromium_src/{src_path}')
+
+
 # Inline file by executing it using passed scopes.
 def inline_file(path: str, _globals, _locals):
+    """Inline file from `path` by executing it using `_globals` and `_locals`
+    scopes."""
     path = wspath(path)
     with open(path, "r") as f:
         # Compile first to set the location explicitly. This makes stacktrace to
@@ -50,9 +65,16 @@ def inline_file(path: str, _globals, _locals):
         exec(code, _globals, _locals)
 
 
-# Locate src/ dir and inline relative file by executing it using passed scopes.
-def inline_file_from_src(path: str, _globals, _locals):
-    inline_file(f"//{path}", _globals, _locals)
+def inline_chromium_src_override(_globals: Dict[str, Any],
+                                 _locals: Dict[str, Any]) -> None:
+    """Inline `__file__` override from `//brave/chromium_src`."""
+    orig_file = _globals.get('__file__')
+    if not orig_file:
+        raise RuntimeError(
+            '__file__ is not set to inline from //brave/chromium_src. '
+            'Use inline_file() with full path instead.')
+    chromium_src_override = get_chromium_src_override(orig_file)
+    inline_file(chromium_src_override, _globals, _locals)
 
 
 @contextlib.contextmanager

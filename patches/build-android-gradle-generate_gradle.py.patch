@@ -1,11 +1,11 @@
 diff --git a/build/android/gradle/generate_gradle.py b/build/android/gradle/generate_gradle.py
-index f6dce230f4609e53e55d453bed50e8d6e60d3e96..4fb51148c69fdbbd7a3adbb9637e883cebf92890 100755
+index f6dce230f4609e53e55d453bed50e8d6e60d3e96..1f6b7212c5f524fbe04bc0af4a882b960a47947c 100755
 --- a/build/android/gradle/generate_gradle.py
 +++ b/build/android/gradle/generate_gradle.py
 @@ -938,5 +938,6 @@ def main():
          '+/main/docs/android_studio.md')
-
-
-+from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/build/android/gradle/generate_gradle.py", globals(), locals())
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if __name__ == '__main__':
    main()

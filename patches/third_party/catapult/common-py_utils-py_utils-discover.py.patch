@@ -6,4 +6,4 @@ index 7eac0c545a85345f972e1de15f2c2306ba43ff75..8126acc29ec161f39f0bbea66802be53
  def _GetUniqueModuleName():
    _COUNTER[0] += 1
    return "module_" + str(_COUNTER[0])
-+from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/common/py_utils/py_utils/discover.py", globals(), locals())
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

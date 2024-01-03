@@ -56,7 +56,7 @@ class BraveFeatureDefinitionExtender:
             if not os.path.exists(original_filepath):
                 raise RuntimeError(
                     f"Original features file {original_filepath} not found. Please update "
-                    "//brave/chromium_src/tools/json_schema_compiler/feature_compiler.py"
+                    f"{brave_chromium_utils.get_chromium_src_override(__file__)}"
                 )
             # Ensure override file exists if it has to.
             overridden_filepath = brave_chromium_utils.wspath(

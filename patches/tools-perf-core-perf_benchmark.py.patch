@@ -6,4 +6,4 @@ index 2da4191c86d584a578d821863ee482abb85c20d0..0512f8cdf20e6b39d078b24df027feaa
      if 'XVFB_DISPLAY' in os.environ:
        return True
      return False
-+from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/core/perf_benchmark.py", globals(), locals())
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

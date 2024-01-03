@@ -6,5 +6,5 @@ index 6b67a896f0bca44e0476af5f242d1b94ca989e32..93d41f6100291b09de1d205461432b0f
                           "InitIDLInterfacesForTesting",
                           "init_idl_interfaces_for_testing",
                           for_testing=True)
-+from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py", globals(), locals())
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
 \ No newline at end of file
