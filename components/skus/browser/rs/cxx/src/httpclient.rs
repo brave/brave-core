@@ -63,7 +63,15 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                         .debug_unwrap()?;
                     let (key, value) = header.split_at(idx);
                     let key = http::HeaderName::try_from(key).map_err(|_| {
-                        InternalError::InvalidCall("must pass a valid header name".to_string())
+                        InternalError::InvalidCall(
+                            concat!(
+                                "must pass a valid HTTP header name,",
+                                " i.e. ASCII charaters with no whitespace",
+                                " or separator punctuation.",
+                                "\nSee RFC 9110 section 5.6.2 for details.",
+                            )
+                            .to_string(),
+                        )
                     })?;
                     let value = value
                         .get(1..)
@@ -73,7 +81,7 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                         .debug_unwrap()?;
                     let value = http::HeaderValue::try_from(value).map_err(|_| {
                         InternalError::InvalidCall(
-                            "must pass a valid (ASCII-printable) header value".to_string(),
+                            "must pass a valid (ASCII-printable) HTTP header value".to_string(),
                         )
                     })?;
 
