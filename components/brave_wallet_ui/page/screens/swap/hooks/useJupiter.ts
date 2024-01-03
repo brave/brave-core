@@ -260,9 +260,9 @@ export function useJupiter(params: SwapParams) {
               skipPreflight: true
             },
             maxRetries: {
-              maxRetries: BigInt(2)
+              maxRetries: BigInt(3)
             },
-            preflightCommitment: undefined
+            preflightCommitment: 'processed'
           }
         }).unwrap()
         await reset(callback)
