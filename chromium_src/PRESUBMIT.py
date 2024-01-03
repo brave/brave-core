@@ -3,8 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import chromium_presubmit_overrides
 import brave_chromium_utils
+import chromium_presubmit_overrides
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
@@ -49,11 +49,9 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
 
 def CheckOverrides(input_api, output_api):
     items = []
-    with brave_chromium_utils.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
-                                   'tools')):
+    with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
         # pylint: disable=import-outside-toplevel
-        from chromium_src import check_chromium_src
+        import check_chromium_src
     overrides = [
         f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)
     ]

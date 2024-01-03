@@ -8,10 +8,9 @@ import copy
 import os
 import sys
 
+import brave_chromium_utils
 import brave_node
 import chromium_presubmit_overrides
-import git_cl
-import brave_chromium_utils
 import override_utils
 
 USE_PYTHON3 = True
@@ -77,6 +76,10 @@ def CheckPatchFormatted(input_api, output_api):
 
     # Pass a path where the current PRESUBMIT.py file is located.
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
+
+    with brave_chromium_utils.sys_path("//brave/vendor/depot_tools"):
+        # pylint: disable=import-outside-toplevel
+        import git_cl
 
     # Run git cl format and get return code.
     git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
@@ -148,9 +151,7 @@ def CheckESLint(input_api, output_api):
     files_to_check = input_api.AffectedFiles(file_filter=file_filter,
                                              include_deletes=False)
 
-    with brave_chromium_utils.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
-                                   'tools')):
+    with brave_chromium_utils.sys_path('//tools'):
         # pylint: disable=import-outside-toplevel
         from web_dev_style import js_checker
         return js_checker.JSChecker(input_api,
@@ -158,9 +159,7 @@ def CheckESLint(input_api, output_api):
 
 
 def CheckWebDevStyle(input_api, output_api):
-    with brave_chromium_utils.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
-                                   'tools')):
+    with brave_chromium_utils.sys_path('//tools'):
         # pylint: disable=import-outside-toplevel
         from web_dev_style import presubmit_support, js_checker
         # Disable RunEsLintChecks, it's run separately in CheckESLint.
@@ -288,6 +287,8 @@ def CheckLicense(input_api, output_api):
 chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
                                               locals())
 
+# pyright: reportUnboundVariable=false, reportUndefinedVariable=false
+
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
         r'/\b(Basic|W)?StringPiece(16)?\b',
@@ -409,11 +410,9 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     if not sys.platform.startswith('linux'):
         return []
 
-    with brave_chromium_utils.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
-                                   'android')):
+    with brave_chromium_utils.sys_path('//tools/android/checkstyle'):
         # pylint: disable=import-outside-toplevel
-        from checkstyle import checkstyle
+        import checkstyle
 
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 

@@ -35,8 +35,9 @@ class BraveFeatureDefinitionExtender:
         if not has_counterpart:
             return None
 
-        with open(brave_chromium_utils.wspath(f"//brave/chromium_src/{source_file}"),
-                  "r") as f:
+        with open(
+                brave_chromium_utils.wspath(
+                    f"//brave/chromium_src/{source_file}"), "r") as f:
             parsed_json = json_parse.Parse(f.read())
         return parsed_json
 

@@ -12,8 +12,8 @@ import os
 import re
 import traceback
 
-import override_utils
 import brave_chromium_utils
+import override_utils
 
 # pylint: disable=line-too-long,protected-access,unused-variable
 
@@ -23,11 +23,12 @@ CANNED_CHECKS_KEY = 'canned'
 # Helper to load json5 presubmit config.
 def load_presubmit_config():
     with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
-        # pylint: disable=import-outside-toplevel,import-error
+        # pylint: disable=import-outside-toplevel
         import json5
         return json5.load(
-            open(brave_chromium_utils.wspath(
-                '//brave/chromium_presubmit_config.json5')))
+            open(
+                brave_chromium_utils.wspath(
+                    '//brave/chromium_presubmit_config.json5')))
 
 
 config = load_presubmit_config()
@@ -187,7 +188,8 @@ def setup_per_check_file_filter(input_api):
 def inline_presubmit(filename, _globals, _locals):
     class State:
         def __init__(self, filename):
-            self.presubmit_dir = os.path.dirname(brave_chromium_utils.wspath(filename))
+            self.presubmit_dir = os.path.dirname(
+                brave_chromium_utils.wspath(filename))
             self.orig_cwd = os.getcwd()
             self.orig_presubmit_dir = ''
 
