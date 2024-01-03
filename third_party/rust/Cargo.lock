@@ -212,11 +212,7 @@ version = "1.4.3"
 
 [[package]]
 name = "bytes"
-version = "0.4.12"
-dependencies = [
- "byteorder",
- "iovec",
-]
+version = "1.5.0"
 
 [[package]]
 name = "camino"
@@ -1051,11 +1047,11 @@ dependencies = [
 
 [[package]]
 name = "http"
-version = "0.1.21"
+version = "1.0.0"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 0.4.8",
+ "itoa",
 ]
 
 [[package]]
@@ -1111,13 +1107,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a5bbe824c507c5da5956355e86a746d82e0e1464f65d862cc5e71da70e94b2c"
 dependencies = [
  "cfg-if",
-]
-
-[[package]]
-name = "iovec"
-version = "0.1.4"
-dependencies = [
- "libc",
 ]
 
 [[package]]

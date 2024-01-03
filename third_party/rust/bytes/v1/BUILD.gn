@@ -1,0 +1,70 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "bytes"
+  epoch = "1"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/bytes/v1/crate/benches/buf.rs",
+    "//brave/third_party/rust/bytes/v1/crate/benches/bytes.rs",
+    "//brave/third_party/rust/bytes/v1/crate/benches/bytes_mut.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/buf_impl.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/buf_mut.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/chain.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/iter.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/limit.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/mod.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/reader.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/take.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/uninit_slice.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/vec_deque.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/buf/writer.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/bytes.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/bytes_mut.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/fmt/debug.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/fmt/hex.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/fmt/mod.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/loom.rs",
+    "//brave/third_party/rust/bytes/v1/crate/src/serde.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_buf.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_buf_mut.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_bytes.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_bytes_odd_alloc.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_bytes_vec_alloc.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_chain.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_debug.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_iter.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_reader.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_serde.rs",
+    "//brave/third_party/rust/bytes/v1/crate/tests/test_take.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/bytes/v1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/bytes/v1/crate/README.md",
+  ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "1.5.0"
+  cargo_pkg_authors = [
+    "Carl Lerche <me@carllerche.com>",
+    "Sean McArthur <sean@seanmonstar.com>",
+  ]
+  cargo_pkg_name = "bytes"
+  cargo_pkg_description = "Types and traits for working with bytes"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+}

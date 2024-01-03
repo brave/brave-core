@@ -336,9 +336,7 @@ where
 
             let request_with_retries = FutureRetry::new(
                 || async move {
-                    let mut builder = http::Request::builder();
-                    builder.method("GET");
-                    builder.uri(format!(
+                    let builder = http::Request::builder().method("GET").uri(format!(
                         "{}/v1/orders/{}/credentials/items/{}/batches/{}",
                         self.base_url, order_id, item_id, request_id
                     ));
