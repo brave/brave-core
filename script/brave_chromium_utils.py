@@ -65,8 +65,7 @@ def inline_file(path: str, _globals, _locals):
         exec(code, _globals, _locals)
 
 
-def inline_chromium_src_override(_globals: Dict[str, Any],
-                                 _locals: Dict[str, Any]) -> None:
+def inline_chromium_src_override(_globals, _locals) -> None:
     """Inline `__file__` override from `//brave/chromium_src`."""
     orig_file = _globals.get('__file__')
     if not orig_file:
