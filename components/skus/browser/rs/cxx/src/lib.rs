@@ -9,14 +9,19 @@ mod log;
 mod storage;
 
 use std::cell::RefCell;
+use std::collections::VecDeque;
 use std::fmt;
 use std::rc::Rc;
+use std::sync::{Arc, Mutex};
 
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::{LocalPool, LocalSpawner};
 use futures::task::LocalSpawnExt;
 
 use tracing::debug;
+use tracing_subscriber::fmt::format::DefaultFields;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 pub use skus;
 
@@ -34,6 +39,8 @@ pub struct NativeClient {
     pool: Rc<RefCell<LocalPool>>,
     spawner: LocalSpawner,
     ctx: Rc<RefCell<NativeClientContext>>,
+    #[allow(dead_code)]
+    log_buffer: Arc<Mutex<VecDeque<char>>>,
 }
 
 impl fmt::Debug for NativeClient {
@@ -166,6 +173,8 @@ mod ffi {
         );
 
         fn result_to_string(result: &SkusResult) -> String;
+
+        fn get_logs(self: &CppSDK) -> String;
     }
 
     unsafe extern "C++" {
@@ -211,9 +220,19 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
+    let log_buffer = Arc::new(Mutex::new(VecDeque::new()));
+    let log_buffer_layer = skus::log::RingBufferLayer::new(
+        log_buffer.clone(),
+        DefaultFields::new(),
+        (1024 * 1024) - 1,
+        (1024) - 1,
+    );
+
     match tracing_subscriber::fmt()
         .event_format(log::CppFormatter::new())
         .with_max_level(tracing::Level::TRACE)
+        .finish()
+        .with(log_buffer_layer)
         .try_init()
     {
         Ok(_) => println!("tracing_subscriber - init success"),
@@ -230,6 +249,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
             pool: Rc::new(RefCell::new(pool)),
             spawner: spawner.clone(),
             ctx: Rc::new(RefCell::new(NativeClientContext { environment: env.clone(), ctx })),
+            log_buffer,
         },
         env,
         None,
@@ -364,6 +384,15 @@ impl CppSDK {
         }
 
         self.sdk.client.try_run_until_stalled();
+    }
+
+    fn get_logs(self: &CppSDK) -> String {
+        if let Some(buf) = &self.sdk.log_buffer {
+            if let Ok(buf) = buf.lock() {
+                return buf.iter().collect();
+            }
+        }
+        "".to_string()
     }
 }
 
