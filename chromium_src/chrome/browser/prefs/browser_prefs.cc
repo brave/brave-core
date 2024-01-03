@@ -84,10 +84,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs);
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  // Added 11/2019.
-  MigrateWidevinePrefs(profile_prefs);
-#endif
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
   // Added 12/2019.
@@ -247,11 +243,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
-
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  // Added 11/2020.
-  MigrateObsoleteWidevineLocalStatePrefs(local_state);
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   // Added 4/2021.

@@ -75,10 +75,6 @@
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  RegisterWidevineLocalstatePrefsForMigration(registry);
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
