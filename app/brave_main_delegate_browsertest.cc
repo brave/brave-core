@@ -30,6 +30,7 @@
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/lens/lens_features.h"
+#include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
@@ -117,6 +118,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
       &attribution_reporting::features::kAttributionReportingTriggerConfig,
+      &attribution_reporting::features::kAttributionReportingTriggerContextId,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
       &autofill::features::test::kAutofillServerCommunication,
@@ -251,6 +253,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &lens::features::kEnableLensPing,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
+      &metrics::structured::kEnabledStructuredMetricsService,
+      &metrics::structured::kNearbyShareMetrics,
+      &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kPartitionedCookies,
       &net::features::kThirdPartyPartitionedStorageAllowedByDefault,

@@ -117,6 +117,7 @@ source_set("browser_tests") {
       "//components/history_clusters/core",
       "//components/language/core/common",
       "//components/lens",
+      "//components/metrics/structured:structured_metrics_features",
       "//components/network_time",
       "//components/omnibox/browser",
       "//components/optimization_guide/core",
