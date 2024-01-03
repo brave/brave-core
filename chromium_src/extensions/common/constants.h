@@ -8,7 +8,6 @@
 
 #include "src/extensions/common/constants.h"  // IWYU pragma: export
 
-inline constexpr int kBraveActionGraphicSize = 18;
 inline constexpr int kBraveActionLeftMarginExtra = -2;
 
 inline constexpr char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";

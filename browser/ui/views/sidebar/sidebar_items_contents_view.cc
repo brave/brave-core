@@ -64,8 +64,8 @@
 
 namespace {
 
-constexpr gfx::Size kIconSize(SidebarButtonView::kIconSize,
-                              SidebarButtonView::kIconSize);
+constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
+                              SidebarButtonView::kExternalIconSize);
 
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
@@ -552,7 +552,7 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
             : (state == views::Button::STATE_PRESSED
                    ? kColorSidebarButtonPressed
                    : kColorSidebarButtonBase),
-        SidebarButtonView::kIconSize);
+        SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

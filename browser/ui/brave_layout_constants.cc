@@ -40,6 +40,8 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case LOCATION_BAR_HEIGHT:
       return 36;
+    case LOCATION_BAR_TRAILING_ICON_SIZE:
+      return 18;
     default:
       break;
   }

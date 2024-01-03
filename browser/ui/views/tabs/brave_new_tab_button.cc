@@ -82,7 +82,7 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   if (HorizontalTabsUpdateEnabled()) {
     // Instead of letting `NewTabButton` draw a "plus", paint a vector icon to
     // the canvas in the center of the view.
-    constexpr int kIconSize = 16;
+    constexpr int kIconSize = 18;
     gfx::Rect bounds = GetContentsBounds();
     canvas->Translate(gfx::Vector2d((bounds.width() - kIconSize) / 2,
                                     (bounds.height() - kIconSize) / 2));
