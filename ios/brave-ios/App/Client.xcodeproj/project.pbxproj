@@ -176,13 +176,9 @@
 		0A24F838233EB5B4004D2F3A /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		0A24F839233EB5B4004D2F3A /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
 		0A24F83A233EB5B4004D2F3A /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
-		0A24F83C233EB5B4004D2F3A /* BuildId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildId.xcconfig; sourceTree = "<group>"; };
-		0A24F83D233EB5B4004D2F3A /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
 		0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
-		0A24F841233EB5B5004D2F3A /* BuildId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildId.xcconfig; sourceTree = "<group>"; };
 		0A24F842233EB5B5004D2F3A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		0A24F843233EB5B5004D2F3A /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
 		0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
 		0A24F846233EB5B5004D2F3A /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
@@ -204,7 +200,6 @@
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27444B6A29831BBE002E1EBE /* topics_news.en_US.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = topics_news.en_US.json; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
-		274831D629C10EB700B96AAD /* Keys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Keys.xcconfig; sourceTree = "<group>"; };
 		275A4C39284FDB290016F5A8 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Shortcuts/ko-KR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		276FEA8B284FDB7A001A0718 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Shortcuts/tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		277CA004284FDB34002E8470 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Shortcuts/ms.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -496,22 +491,16 @@
 		0A24F83B233EB5B4004D2F3A /* Local */ = {
 			isa = PBXGroup;
 			children = (
-				274831D629C10EB700B96AAD /* Keys.xcconfig */,
-				0A24F83C233EB5B4004D2F3A /* BuildId.xcconfig */,
-				0A24F83D233EB5B4004D2F3A /* Version.xcconfig */,
 				0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */,
 				0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */,
 			);
-			name = Local;
-			path = Configuration/Local;
-			sourceTree = SOURCE_ROOT;
+			path = Local;
+			sourceTree = "<group>";
 		};
 		0A24F840233EB5B4004D2F3A /* Local.templates */ = {
 			isa = PBXGroup;
 			children = (
-				0A24F841233EB5B5004D2F3A /* BuildId.xcconfig */,
 				0A24F842233EB5B5004D2F3A /* README */,
-				0A24F843233EB5B5004D2F3A /* Version.xcconfig */,
 				0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */,
 				0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */,
 			);

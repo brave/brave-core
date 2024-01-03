@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>API_KEY</key>
-	<string>$(BRAVE_API_KEY)</string>
+	<key>STATS_KEY</key>
+	<string>$(brave_stats_api_key)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
 	<key>BRAVE_URL_SCHEME</key>
@@ -25,7 +25,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(brave_version_major).$(brave_version_minor)</string>
+	<string>$(brave_version_major).$(brave_version_minor).$(brave_version_patch)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -75,10 +75,10 @@
 	<string>Websites you visit may request your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This allows use of your microphone when using Brave.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>This permission is used to enable Apple Advanced Speech Recognition. If not allowed `on device` recognition will be used and searches will be totally private. Brave does not store or share your voice searches.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This lets you save photos.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This permission is used to enable Apple Advanced Speech Recognition. If not allowed `on device` recognition will be used and searches will be totally private. Brave does not store or share your voice searches.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>LockScreenFavoriteConfigurationIntent</string>
@@ -92,7 +92,7 @@
 		<string>com.brave.ios.browser-scene</string>
 	</array>
 	<key>SERVICES_KEY</key>
-	<string>$(BRAVE_SERVICES_KEY)</string>
+	<string>$(brave_services_key)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

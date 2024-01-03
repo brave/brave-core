@@ -19,9 +19,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(BRAVE_VERSION)</string>
+	<string>$(brave_version_major).$(brave_version_minor).$(brave_version_patch)</string>
 	<key>CFBundleVersion</key>
-	<string>$(BRAVE_BUILD_ID)</string>
+	<string>$(brave_version_build)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>

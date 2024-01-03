@@ -8,8 +8,6 @@
 
 MOZ_BUNDLE_DISPLAY_NAME = BraveBeta
 
-BRAVE_API_KEY = key
-BRAVE_SERVICES_KEY = key
 BRAVE_URL_SCHEME = brave-beta
 
 // Bundle Identifier

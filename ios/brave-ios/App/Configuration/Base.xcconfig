@@ -4,13 +4,15 @@
 
 // This is for _Global_ swift flags and will be applied to _all_ targets.
 // Configuration inheritence only works through Xcode defined levels, not configuration files.
-// So need to use unique name and utilize in subclasses 
+// So need to use unique name and utilize in subclasses
 // (e.g. can't use $(inherited) to 'pull' these changes, into sub-configurations)
 
-#include "Local/BuildId.xcconfig"
-#include "Local/Version.xcconfig"
-#include "Local/Keys.xcconfig"
-#include "../../BraveCore/build/args.xcconfig"
+brave_version_major = 0
+brave_version_minor = 0
+brave_version_patch = 0
+brave_version_build = 0
+
+#include "../BraveCore/build/args.xcconfig"
 
 OTHER_SWIFT_FLAGS_BASE=-DMOZ_TARGET_$(TARGET_NAME:upper)
 
@@ -18,7 +20,6 @@ FRAMEWORK_BASE_BUNDLE_ID = com.brave
 BASE_BUNDLE_ID = $(FRAMEWORK_BASE_BUNDLE_ID).ios
 
 DEVELOPMENT_TEAM = KL8N8XSYF4
-BRAVE_BUILD_ID=$(GENERATED_BUILD_ID)
 
 BRAVE_URL_SCHEME = brave
 
@@ -26,7 +27,7 @@ BRAVE_URL_SCHEME = brave
 // Can specify target specific flags via:
 // `OTHER_SWIFT_FLAGS_<TARGET>=-DCUSTOM_FLAG`
 // e.g. `OTHER_SWIFT_FLAGS_CLIENT=-DCUSTOM_FLAG`
-// 
+//
 // Usage: `OTHER_SWIFT_FLAGS_BASE=$(OTHER_SWIFT_FLAGS_$(TARGET_NAME:upper))`
 
 // For ObjC import filtering (e.g. ObjC SDK vai bridge header), both Swift_Flags and GCC will need the flag information

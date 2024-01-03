@@ -15,7 +15,7 @@ public class UserReferralProgram {
   private static let urpCookieOnlyDomains = ["coinbase.com"]
   public static let shared = UserReferralProgram()
 
-  private static let apiKeyPlistKey = "API_KEY"
+  private static let apiKeyPlistKey = "STATS_KEY"
 
   struct HostUrl {
     static let staging = "https://laptop-updates.bravesoftware.com"

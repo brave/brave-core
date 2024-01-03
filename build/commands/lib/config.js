@@ -216,6 +216,7 @@ const Config = function () {
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   this.ignorePatchVersionNumber = !this.isBraveReleaseBuild() && getNPMConfig(['ignore_patch_version_number'], !this.isCI)
   this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
+  this.bravePatchVersion = getNPMConfig(['brave_version_patch']) || ''
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -627,6 +628,9 @@ Config.prototype.buildArgs = function () {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
+    if (this.bravePatchVersion != '') {
+      args.brave_version_patch = this.bravePatchVersion
+    }
     args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
@@ -680,7 +684,6 @@ Config.prototype.buildArgs = function () {
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
-    delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
     delete args.bitflyer_production_client_id
     delete args.bitflyer_production_client_secret

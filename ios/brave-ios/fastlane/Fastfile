@@ -24,12 +24,6 @@ platform :ios do
   after_all do |lane, options|
     # If no uncommitted changes existed before running `lane`, reset any potential fastlane changes
     reset_git_repo(skip_clean: true) unless options[:ignore_git_status]
-
-    clean_icons()
-  end
-
-  error do
-    clean_icons()
   end
 
   desc "Run Unit Tests"
@@ -113,7 +107,7 @@ platform :ios do
       scheme: "Release (AppStore)",
       export_options: {
         method: "app-store",
-        provisioningProfiles: { 
+        provisioningProfiles: {
           "com.brave.ios.browser" => "Brave iOS",
           "com.brave.ios.browser.ShareExtension" => "Brave iOS Share Extension",
           "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension",
@@ -128,8 +122,6 @@ platform :ios do
 
   desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
   private_lane :testflight_build do |options|
-    set_build_number(options)
-
     defaultParams = gym_params()
     gym(defaultParams.merge!(options[:overrideParams]))
     unless options[:skip_upload]
@@ -138,36 +130,6 @@ platform :ios do
         api_key: api_key,
         skip_submission: true,
         skip_waiting_for_build_processing: true
-      )
-    end
-  end
-  
-  desc "All enterprise releases use this as the foundation"
-  lane :enterprise do |options|
-    build_app(
-      project: "App/Client.xcodeproj",
-      scheme: "Enterprise",
-      clean: true,
-      output_directory: "build",
-      export_options: {
-        method: "enterprise",
-        provisioningProfiles: { 
-          "com.brave.ios.enterprise.Browser" => "BraveEnt",
-          "com.brave.ios.enterprise.Browser.ShareExtension" => "Ent-ShareTo",
-          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents",
-          "com.brave.ios.enterprise.Browser.BraveWidgetsExtension" => "BraveEntWidgets"
-        },
-        manageAppVersionAndBuildNumber: false
-      },
-      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_VERSION=\"#{git_branch}\" GENERATED_BUILD_ID=\"#{get_build_number_repository}\" BRAVE_SERVICES_KEY=\"#{ENV['BRAVE_SERVICES_KEY']}\""
-    )
-
-    unless options[:skip_upload]
-      appcenter_upload(
-        owner_type: "organization",
-        file: "./build/Client.ipa",
-        dsym: "./build/Client.app.dSYM.zip",
-        notify_testers: false
       )
     end
   end
@@ -181,49 +143,8 @@ platform :ios do
       sdk: "iphoneos",
       clean: true,
       output_directory: "build",
-      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_SERVICES_KEY=\"#{ENV['BRAVE_SERVICES_KEY']}\""
+      xcargs: "-allowProvisioningUpdates"
     }
-  end
-
-  desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
-  lane :set_build_number do |options|
-    dateFormat = "%y.%-m.%-d.%-H"
-    # Allows minute override in case two betas within same hour are required
-    dateFormat += ".%-M" if options[:minutes_in_build_number]
-    formattedBuildNumber = Time.now.getutc.strftime(dateFormat)
-    sh("echo GENERATED_BUILD_ID=#{formattedBuildNumber} > #{LOCAL_PATH}/BuildId.xcconfig")
-  end
-
-  # TODO: Attempt action override on same name
-  private_lane :get_client_version_number do
-    buildIdFile = Xcodeproj::Config.new("#{CONFIG_PATH}/Base.xcconfig")
-    buildId = buildIdFile.attributes['BRAVE_VERSION']
-
-    # Traditionally, would pull version number via:
-    # get_version_number(target: "Client")
-    # This however does not work since we use xcconfigq variables and Fastlane does not seem to parse
-    #   these very well (e.g. this returns the literal value: "$(BRAVE_VERSION)")
-  end
-
-  private_lane :get_client_build_number do
-    buildIdFile = Xcodeproj::Config.new("#{LOCAL_PATH}/BuildId.xcconfig")
-    buildId = buildIdFile.attributes['GENERATED_BUILD_ID']
-  end
-
-  private_lane :clean_icons do
-    # Regardless of git flags, always want to forcefully reset icon changes
-    reset_git_repo(files: ["App/iOS/Icons.xcassets/AppIcon*"], force: true)
-  end
-
-  override_lane :get_build_number do
-    get_client_build_number()
-  end
-
-  lane :logtest do |options|
-    UI.message "1: #{options[:one]}"
-
-    foo = sh("cat", "#{LOCAL_PATH}/AppleId")
-    UI.message foo
   end
 
 end

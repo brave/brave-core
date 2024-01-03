@@ -53,7 +53,7 @@ public class DAU {
     return formatter
   }()
 
-  private static let apiKeyPlistKey = "API_KEY"
+  private static let apiKeyPlistKey = "STATS_KEY"
   private let apiKey: String?
   private let braveCoreStats: BraveStats?
 
