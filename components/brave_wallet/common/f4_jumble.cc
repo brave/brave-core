@@ -56,6 +56,9 @@ std::vector<uint8_t> blake2b(const std::vector<uint8_t>& payload,
   params.digest_length = len;
   params.fanout = 1;
   params.depth = 1;
+  if (personalizer.size() != sizeof(params.personal)) {
+    NOTREACHED_NORETURN();
+  }
   memcpy(params.personal, personalizer.data(), sizeof(params.personal));
   if (blake2b_init_param(&blake_state, &params) != 0) {
     NOTREACHED_NORETURN();
