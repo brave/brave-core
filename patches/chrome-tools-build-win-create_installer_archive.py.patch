@@ -7,14 +7,14 @@ index 56d34d12c48cb90316cc3411dac23b2bae921a67..6b010359e892d3b97569fab5c2b0ca21
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
 +  parser.add_option('--skip_signing', action='store_true', default=False)
- 
+
    options, _ = parser.parse_args()
    if not options.build_dir:
 @@ -704,6 +705,7 @@ def _ParseOptions():
- 
+
    return options
- 
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/chrome/tools/build/win/create_installer_archive.py", globals(), locals())
- 
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/chrome/tools/build/win/create_installer_archive.py", globals(), locals())
+
  if '__main__' == __name__:
    options = _ParseOptions()

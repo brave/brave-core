@@ -4,8 +4,8 @@ index d23e2f22d3379eb03314a909c4e16194a53c8626..915e51caf915fc91cbf986fec68477aa
 +++ b/tools/symsrc/source_index.py
 @@ -600,5 +600,6 @@ def main():
    return 0
- 
- 
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/symsrc/source_index.py", globals(), locals())
+
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/symsrc/source_index.py", globals(), locals())
  if __name__ == '__main__':
    sys.exit(main())

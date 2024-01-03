@@ -4,12 +4,12 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -102,7 +102,7 @@ def ExtractIconReps(icon_file_name):
    return icon_representations
- 
- 
+
+
 -def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
 +def AggregateVectorIcons(working_directory, file_list, output_cc, output_h, alt_working_directory):
    """Compiles all .icon files in a directory into two C++ files.
- 
+
    Args:
 @@ -111,6 +111,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
        file_list: A file containing the list of vector icon files to process.
@@ -18,12 +18,12 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673
 +      alt_working_directory: The alternative path to the directory that holds
 +          the .icon files
    """
- 
+
    # For each file in |file_list|, place it in |path_map| if its extension is
 @@ -129,6 +131,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
      if extension != ".icon":
        Error("Only filenames " + icon_name + ".icon are allowed.")
- 
+
 +    icon_path = get_icon_path(icon_path, alt_working_directory)
      if icon_name not in path_map:
        path_map[icon_name] = icon_path
@@ -41,14 +41,14 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673
        (icon_name, extension) = os.path.splitext(
                                 os.path.basename(path_map[icon]))
 +      icon_name = icon
- 
+
        icon_representations = ExtractIconReps(path_map[icon])
        icon_representation_strings = []
 @@ -193,6 +198,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
    output_cc.close()
- 
- 
-+from import_inline import inline_file_from_src; inline_file_from_src('brave/chromium_src/components/vector_icons/aggregate_vector_icons.py', globals(), locals())
+
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src('brave/chromium_src/components/vector_icons/aggregate_vector_icons.py', globals(), locals())
  def main():
    parser = optparse.OptionParser()
    parser.add_option("--working_directory",
@@ -58,15 +58,15 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673
                      help="The path to output the header file to.")
 +  parser.add_option("--alt_working_directory",
 +                    help="The directory to look for alternative icon files.")
- 
+
    (options, args) = parser.parse_args()
- 
+
    AggregateVectorIcons(options.working_directory,
                         options.file_list,
                         options.output_cc,
 -                       options.output_h)
 +                       options.output_h,
 +                       options.alt_working_directory)
- 
- 
+
+
  if __name__ == "__main__":

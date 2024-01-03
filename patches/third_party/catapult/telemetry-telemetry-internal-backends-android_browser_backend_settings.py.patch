@@ -6,4 +6,4 @@ index b2749323b85f49f85036981897d58e8be851593a..b06e5edab41206370c5ec983bb6a8ee0
      ANDROID_CHROME_CANARY,
      ANDROID_SYSTEM_CHROME
  )
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/telemetry/telemetry/internal/backends/android_browser_backend_settings.py", globals(), locals());
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/telemetry/telemetry/internal/backends/android_browser_backend_settings.py", globals(), locals());

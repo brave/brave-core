@@ -3,9 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import import_inline
+import brave_chromium_utils
 
-import_inline.inline_file_from_src(
+brave_chromium_utils.inline_file_from_src(
     "chrome/installer/util/prebuild/create_installer_string_rc.py", globals(),
     locals())
 

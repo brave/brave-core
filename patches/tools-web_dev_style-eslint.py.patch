@@ -4,9 +4,9 @@ index 18be4f4b076888f18538323096e84d52a8659a5c..e29cc0173d69cb9ff5d972b7c210bf25
 +++ b/tools/web_dev_style/eslint.py
 @@ -26,6 +26,7 @@ def Run(os_path=None, args=None):
    ] + args)
- 
- 
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/web_dev_style/eslint.py", globals(), locals())
+
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/web_dev_style/eslint.py", globals(), locals())
  if __name__ == '__main__':
    import os
    import sys

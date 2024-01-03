@@ -11,7 +11,7 @@ import sys
 import brave_node
 import chromium_presubmit_overrides
 import git_cl
-import import_inline
+import brave_chromium_utils
 import override_utils
 
 USE_PYTHON3 = True
@@ -148,7 +148,7 @@ def CheckESLint(input_api, output_api):
     files_to_check = input_api.AffectedFiles(file_filter=file_filter,
                                              include_deletes=False)
 
-    with import_inline.sys_path(
+    with brave_chromium_utils.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
                                    'tools')):
         # pylint: disable=import-outside-toplevel
@@ -158,7 +158,7 @@ def CheckESLint(input_api, output_api):
 
 
 def CheckWebDevStyle(input_api, output_api):
-    with import_inline.sys_path(
+    with brave_chromium_utils.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
                                    'tools')):
         # pylint: disable=import-outside-toplevel
@@ -409,7 +409,7 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     if not sys.platform.startswith('linux'):
         return []
 
-    with import_inline.sys_path(
+    with brave_chromium_utils.sys_path(
             input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
                                    'android')):
         # pylint: disable=import-outside-toplevel

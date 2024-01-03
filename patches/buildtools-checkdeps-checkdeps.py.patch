@@ -4,8 +4,8 @@ index 19e0854786de291fd9c94ac64dbbe181faee6180..02d4dc0cbe6fa8c759b5964dc425bbd5
 +++ b/buildtools/checkdeps/checkdeps.py
 @@ -290,5 +290,6 @@ def main():
    return deps_checker.Report()
- 
- 
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/buildtools/checkdeps/checkdeps.py", globals(), locals())
+
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/buildtools/checkdeps/checkdeps.py", globals(), locals())
  if '__main__' == __name__:
    sys.exit(main())

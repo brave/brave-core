@@ -6,4 +6,4 @@ index c708c0a037b01d6a6517ab6022a579fdb29c607f..3a01e545e55fa9096601c0e1d5899e10
        }
      else:
        raise Exception('Unknown build')
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/grit/grit/gather/policy_json.py", globals(), locals())
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/grit/grit/gather/policy_json.py", globals(), locals())

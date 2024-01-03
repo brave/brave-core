@@ -5,8 +5,8 @@ index cd8faa30d7b2c37c5d87ebcb5412db765371e39a..7d1942511a4f4e8c80baa53b82cb338e
 @@ -969,6 +969,7 @@ class FeatureCompiler(object):
        cc_file.Concat(cc_end)
        f.write(cc_file.Render().strip())
- 
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/json_schema_compiler/feature_compiler.py", globals(), locals())
+
++from brave_chromium_utils import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/json_schema_compiler/feature_compiler.py", globals(), locals())
  if __name__ == '__main__':
    parser = argparse.ArgumentParser(description='Compile json feature files')
    parser.add_argument('chrome_root', type=str,

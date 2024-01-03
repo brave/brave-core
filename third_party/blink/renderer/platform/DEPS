@@ -1,3 +1,3 @@
 # Inline upstream rules.
-from import_inline import inline_file_from_src
+from brave_chromium_utils import inline_file_from_src
 inline_file_from_src('third_party/blink/renderer/platform/DEPS', globals(), locals())

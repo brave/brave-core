@@ -13,7 +13,7 @@ from os.path import join
 
 import override_utils
 
-from import_inline import get_src_dir
+from brave_chromium_utils import get_src_dir
 from sign_binaries import sign_binaries
 
 
