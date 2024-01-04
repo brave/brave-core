@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import SecureLink, { handleOpenURLClick } from '$web-common/SecureLink';
+import SecureLink from '$web-common/SecureLink';
 import { getLocale } from '$web-common/locale';
 import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
-import Card, { LargeImage, Title } from './Card';
+import Card, { LargeImage, Title, braveNewsCardClickHandler } from './Card';
 
 interface Props {
   info: FeedV2Ad
@@ -88,7 +88,7 @@ export default function Advert(props: Props) {
 
     console.debug(`Brave News: Visited display ad: ${advert.uuid}`)
     await getBraveNewsController().onDisplayAdVisit(advert.uuid, advert.creativeInstanceId)
-    handleOpenURLClick(advert.targetUrl.url, e);
+    braveNewsCardClickHandler(advert.targetUrl.url)(e);
   }, [advert])
 
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
