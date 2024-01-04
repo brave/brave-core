@@ -22,6 +22,15 @@ struct WebPreferences {
   // dynamically attached.
   bool should_detect_media_files;
 
+  // A map containing JavaScript code to detect media items on websites.
+  // The keys are URLs of sites serialized using net::SchemefulSite::Serialize()
+  // and can be deserialized with net::SchemefulSite::Deserialize(). Note that
+  // the default script is located at an empty string key.
   map<string, string> url_and_media_detection_scripts;
+
+  // Indicates that we can run the media detection script on the main world.
+  // Sometimes we need to run the script in the main world to get metadata of
+  // media items from javascript object. At the moment this can be true only on
+  // Android.
   bool allow_to_run_script_on_main_world;
 };
