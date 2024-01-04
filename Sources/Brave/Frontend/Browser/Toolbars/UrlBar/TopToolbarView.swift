@@ -621,20 +621,27 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // look squished at the start of the animation and expand to be correct. As a workaround,
     // we becomeFirstResponder as the next event on UI thread, so the animation starts before we
     // set a first responder.
+    guard let urlTextField = locationTextField else {
+      return
+    }
+    
     if pasted {
       // Clear any existing text, focus the field, then set the actual pasted text.
       // This avoids highlighting all of the text.
-      locationTextField?.text = ""
+      urlTextField.text = ""
+    }
+    
+    DispatchQueue.main.async {
+      urlTextField.becomeFirstResponder()
+      self.setLocation(locationText, search: search)
+    }
+    
+    if !pasted {
       DispatchQueue.main.async {
-        self.locationTextField?.becomeFirstResponder()
-        self.setLocation(locationText, search: search)
-      }
-    } else {
-      DispatchQueue.main.async {
-        self.locationTextField?.becomeFirstResponder()
-        // Need to set location again so text could be immediately selected.
-        self.setLocation(locationText, search: search)
-        self.locationTextField?.selectAll(nil)
+        // When Not-pasted selecting text shiuld be from beggining to end
+        let textRange = urlTextField.textRange(
+          from: urlTextField.beginningOfDocument, to: urlTextField.endOfDocument)
+        urlTextField.selectedTextRange = textRange
       }
     }
     
