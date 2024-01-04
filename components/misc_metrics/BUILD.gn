@@ -5,6 +5,8 @@
 
 static_library("misc_metrics") {
   sources = [
+    "autofill_metrics.cc",
+    "autofill_metrics.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
     "language_metrics.cc",
@@ -24,6 +26,7 @@ static_library("misc_metrics") {
     "//base",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
+    "//components/autofill/core/browser",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/language/core/browser",
