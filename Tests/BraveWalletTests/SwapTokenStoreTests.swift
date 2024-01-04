@@ -247,8 +247,24 @@ class SwapStoreTests: XCTestCase {
       completion("", 0, "", .internalError, "")
     }
     let swapService = BraveWallet.TestSwapService()
-    swapService._priceQuote = { $1(.init(), nil, "") }
-    swapService._transactionPayload = { $1(.init(), nil, "") }
+    swapService._quote = { _, completion in
+      if coin == .eth {
+        completion(.init(zeroExQuote: .init()), nil, "")
+      } else if coin == .sol {
+        completion(.init(jupiterQuote: .init()), nil, "")
+      } else {
+        XCTFail("Coin type is not supported for swap")
+      }
+    }
+    swapService._transaction = { _, completion in
+      if coin == .eth {
+        completion(.init(zeroExTransaction: .init()), nil, "")
+      } else if coin == .sol {
+        completion(.init(jupiterTransaction: .init()), nil, "")
+      } else {
+        XCTFail("Coin type is not supported for swap")
+      }
+    }
     swapService._braveFee = { params, completion in
       completion(nil, "")
     }
@@ -269,17 +285,35 @@ class SwapStoreTests: XCTestCase {
   /// Test change to `sellAmount` (from value) will fetch price quote and assign to `buyAmount`
   func testFetchPriceQuoteSell() {
     let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy, mockAssetManager) = setupServices()
-    swapService._priceQuote = { _, completion in
-      let swapResponse: BraveWallet.SwapResponse = .init()
-      swapResponse.buyAmount = "2000000000000000000"
-      // protocol fee should only be shown when non-nil
-      swapResponse.fees.zeroExFee = .init(
+    let zeroExQuote: BraveWallet.ZeroExQuote = .init(
+      price: "",
+      guaranteedPrice: "",
+      to: "",
+      data: "",
+      value: "",
+      gas: "",
+      estimatedGas: "",
+      gasPrice: "",
+      protocolFee: "",
+      minimumProtocolFee: "",
+      buyTokenAddress: "",
+      sellTokenAddress: "",
+      buyAmount: "2000000000000000000",
+      sellAmount: "",
+      allowanceTarget: "",
+      sellTokenToEthRate: "",
+      buyTokenToEthRate: "",
+      estimatedPriceImpact: "",
+      sources: [],
+      fees: .init(zeroExFee: .init(
         feeType: "",
         feeToken: "",
         feeAmount: "",
         billingType: ""
-      )
-      completion(swapResponse, nil, "")
+      ))
+    )
+    swapService._quote = { _, completion in
+      completion(.init(zeroExQuote: zeroExQuote), nil, "")
     }
     swapService._braveFee = { params, completion in
       let feeResponse = BraveWallet.BraveSwapFeeResponse(
@@ -335,11 +369,10 @@ class SwapStoreTests: XCTestCase {
   /// Test change to `buyAmount` (to value) will fetch price quote and assign to `buyAmount`
   func testFetchPriceQuoteBuy() {
     let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy, mockAssetManager) = setupServices()
-    swapService._priceQuote = { _, completion in
-      let swapResponse: BraveWallet.SwapResponse = .init()
-      swapResponse.sellAmount = "3000000000000000000"
-      swapResponse.fees.zeroExFee = nil // protocol fee should only be shown when non-nil
-      completion(swapResponse, nil, "")
+    let zeroExQuote: BraveWallet.ZeroExQuote = .init()
+    zeroExQuote.sellAmount = "3000000000000000000"
+    swapService._quote = { _, completion in
+      completion(.init(zeroExQuote: zeroExQuote), nil, "")
     }
     swapService._braveFee = { params, completion in
       let feeResponse = BraveWallet.BraveSwapFeeResponse(
@@ -407,9 +440,9 @@ class SwapStoreTests: XCTestCase {
       network: .mockSolana,
       coin: .sol
     )
-    swapService._jupiterQuote = { jupiterQuoteParams, completion in
-      // verify 0.005 is converted to 50
-      XCTAssertEqual(jupiterQuoteParams.slippageBps, 50)
+    swapService._quote = { jupiterQuoteParams, completion in
+      // verify 0.005 is converted to 0.5
+      XCTAssertEqual(jupiterQuoteParams.slippagePercentage, "0.5")
       let route: BraveWallet.JupiterRoute = .init(
         inAmount: 10000000, // 0.01 SOL (9 decimals)
         outAmount: 2500000, // 2.5 SPD (6 decimals)
@@ -417,9 +450,9 @@ class SwapStoreTests: XCTestCase {
         otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
         swapMode: "",
         priceImpactPct: 0,
-        slippageBps: jupiterQuoteParams.slippageBps, // 0.5%
+        slippageBps: 50, // 0.5%
         marketInfos: [])
-      completion(.init(routes: [route]), nil, "")
+      completion(.init(jupiterQuote: .init(routes: [route])), nil, "")
     }
     swapService._braveFee = { params, completion in
       let feeResponse = BraveWallet.BraveSwapFeeResponse(
@@ -492,14 +525,14 @@ class SwapStoreTests: XCTestCase {
       network: .mockSolana,
       coin: .sol
     )
-    swapService._jupiterQuote = { _, completion in
-      let errorResponse: BraveWallet.JupiterErrorResponse = .init(
+    swapService._quote = { _, completion in
+      let errorUnion: BraveWallet.SwapErrorUnion = .init(jupiterError: .init(
         statusCode: "",
         error: "",
         message: "",
-        isInsufficientLiquidity: true
+        isInsufficientLiquidity: true)
       )
-      completion(nil, errorResponse, "")
+      completion(nil, errorUnion, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -677,9 +710,8 @@ class SwapStoreTests: XCTestCase {
       network: .mockSolana,
       coin: .sol
     )
-    swapService._jupiterSwapTransactions = { _, completion in
-      let swapTransactions: BraveWallet.JupiterSwapTransactions = .init(swapTransaction: "1")
-      completion(swapTransactions, nil, "")
+    swapService._transaction = { _, completion in
+      completion(.init(jupiterTransaction: "1"), nil, "")
     }
     solTxManagerProxy._makeTxDataFromBase64EncodedTransaction = { _, _, _, completion in
       completion(.init(), .success, "")
