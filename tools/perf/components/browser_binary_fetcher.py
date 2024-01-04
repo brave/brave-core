@@ -37,7 +37,6 @@ class BrowserBinary:
     self.profile_dir = profile_dir
     self.field_trial_config = field_trial_config
     if android_package is not None:
-      assert binary_path is None
       for b in android_browser_backend_settings.ANDROID_BACKEND_SETTINGS:
         if b.package == android_package:
           self.telemetry_browser_type = b.browser_type
