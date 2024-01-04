@@ -112,15 +112,13 @@ static constexpr auto kSimpleQueryStringTrackers =
         });
 
 static constexpr auto kConditionalQueryStringTrackers =
-    base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        base::sorted_unique,
-        {
-            // https://github.com/brave/brave-browser/issues/30731
-            {"h_sid", "/email/"},
-            {"h_slt", "/email/"},
-            // https://github.com/brave/brave-browser/issues/9018
-            {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
-        });
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
+        // https://github.com/brave/brave-browser/issues/30731
+        {"h_sid", "/email/"},
+        {"h_slt", "/email/"},
+        // https://github.com/brave/brave-browser/issues/9018
+        {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
+    });
 
 // The second parameter is a comma-separated list of domains.
 // The domain comparison will also match on subdomains. So if the

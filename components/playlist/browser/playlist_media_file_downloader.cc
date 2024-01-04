@@ -44,33 +44,31 @@ namespace playlist {
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 constexpr auto kMimeTypeToExtension =
     base::MakeFixedFlatMap<std::string_view /*mime_type*/,
-                           std::string_view /*extension*/>(
-        base::sorted_unique,
-        {
-            {"application/ogg", "ogx"},
-            {"application/vnd.apple.mpegurl", "m3u8"},
-            {"application/x-mpegurl", "m3u8"},
-            {"audio/aac", "aac"},
-            {"audio/flac", "flac"},
-            {"audio/mp3", "mp3"},
-            {"audio/mp4", "mp4"},
-            {"audio/mpeg", "mp3"},
-            {"audio/mpegurl", "m3u8"},
-            {"audio/ogg", "oga"},
-            {"audio/wav", "wav"},
-            {"audio/webm", "weba"},
-            {"audio/x-m4a", "m4a"},
-            {"audio/x-mp3", "mp3"},
-            {"audio/x-mpegurl", "m3u8"},
-            {"audio/x-wav", "wav"},
-            {"video/3gpp", "3gp"},
-            {"video/mp2t", "ts"},
-            {"video/mp4", "mp4"},
-            {"video/mpeg", "mpeg"},
-            {"video/ogg", "ogv"},
-            {"video/webm", "webm"},
-            {"video/x-m4v", "m4v"},
-        });
+                           std::string_view /*extension*/>({
+        {"application/ogg", "ogx"},
+        {"application/vnd.apple.mpegurl", "m3u8"},
+        {"application/x-mpegurl", "m3u8"},
+        {"audio/aac", "aac"},
+        {"audio/flac", "flac"},
+        {"audio/mp3", "mp3"},
+        {"audio/mp4", "mp4"},
+        {"audio/mpeg", "mp3"},
+        {"audio/mpegurl", "m3u8"},
+        {"audio/ogg", "oga"},
+        {"audio/wav", "wav"},
+        {"audio/webm", "weba"},
+        {"audio/x-m4a", "m4a"},
+        {"audio/x-mp3", "mp3"},
+        {"audio/x-mpegurl", "m3u8"},
+        {"audio/x-wav", "wav"},
+        {"video/3gpp", "3gp"},
+        {"video/mp2t", "ts"},
+        {"video/mp4", "mp4"},
+        {"video/mpeg", "mpeg"},
+        {"video/ogg", "ogv"},
+        {"video/webm", "webm"},
+        {"video/x-m4v", "m4v"},
+    });
 
 namespace {
 
