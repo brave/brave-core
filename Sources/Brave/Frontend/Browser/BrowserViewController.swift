@@ -380,8 +380,7 @@ public class BrowserViewController: UIViewController {
     }
     
     if Preferences.Privacy.screenTimeEnabled.value {
-      // Enable once fixed, ref #8566
-      //screenTimeViewController = STWebpageController()
+      screenTimeViewController = STWebpageController()
     }
   }
 
@@ -1251,11 +1250,7 @@ public class BrowserViewController: UIViewController {
       make.leading.trailing.equalTo(self.view)
     }
     
-    if let screenTimeViewController = screenTimeViewController {
-      webViewContainer.addSubview(screenTimeViewController.view)
-      addChild(screenTimeViewController)
-      screenTimeViewController.didMove(toParent: self)
-      
+    if let screenTimeViewController = screenTimeViewController, screenTimeViewController.parent != nil {
       screenTimeViewController.view.snp.remakeConstraints {
         $0.edges.equalTo(webViewContainer)
       }
@@ -1945,6 +1940,7 @@ public class BrowserViewController: UIViewController {
       }
 
       updateInContentHomePanel(url as URL)
+      updateScreenTimeUrl(url)
       updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
     }
   }
@@ -3321,13 +3317,13 @@ extension BrowserViewController: PreferencesObserver {
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value {
-        // Enable once fixed, ref #8566
-        //screenTimeViewController = STWebpageController()
+        screenTimeViewController = STWebpageController()
         if let tab = tabManager.selectedTab {
           recordScreenTimeUsage(for: tab)
         }
       } else {
         screenTimeViewController?.view.removeFromSuperview()
+        screenTimeViewController?.willMove(toParent: nil)
         screenTimeViewController?.removeFromParent()
         screenTimeViewController?.suppressUsageRecording = true
         screenTimeViewController = nil

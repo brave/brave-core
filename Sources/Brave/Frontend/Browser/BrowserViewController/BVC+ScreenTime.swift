@@ -12,12 +12,22 @@ extension BrowserViewController {
   /// There is also one hack required: STWebpageController breaks if you pass scheme other than http or https,
   /// it will not block anything for the rest of its lifecycle. Our internal urls have to be bridged to an empty https url.
   func updateScreenTimeUrl(_ url: URL?) {
-    guard let url = url, (url.scheme == "http" || url.scheme == "https") else {
-      screenTimeViewController?.url = URL(string: "https://about:blank")
+    guard let screenTimeViewController = screenTimeViewController else {
       return
     }
     
-    screenTimeViewController?.url = url
+    guard let url = url, (url.scheme == "http" || url.scheme == "https") else {
+      // This is signficantly better than removing the view controller from the screen!
+      // If we use `nil` instead, STViewController goes into a broken state PERMANENTLY until the app is restarted
+      // The URL cannot be nil, and it cannot be anything other than http(s) otherwise it will break
+      // for the duration of the app.
+      // Chromium solves this issue by not setting the URL, but instead removing it from the view entirely.
+      // But setting the URL to an empty URL works too.
+      screenTimeViewController.url = NSURL() as URL
+      return
+    }
+    
+    screenTimeViewController.url = url
   }
   
   func recordScreenTimeUsage(for tab: Tab) {

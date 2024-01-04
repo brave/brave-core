@@ -133,7 +133,7 @@ extension Preferences {
     /// The toggles states for clear private data screen
     static let clearPrivateDataToggles = Option<[Bool]>(key: "privacy.clear-data-toggles", default: [])
     /// Enables the Apple's Screen Time feature.
-    public static let screenTimeEnabled = Option<Bool>(key: "privacy.screentime", default: true)
+    public static let screenTimeEnabled = Option<Bool>(key: "privacy.screentime-toggle", default: AppConstants.buildChannel != .release)
     
   }
   final public class NewTabPage {

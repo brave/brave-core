@@ -64,6 +64,20 @@ extension BrowserViewController: TabManagerDelegate {
       webView.snp.remakeConstraints { make in
         make.left.right.top.bottom.equalTo(self.webViewContainer)
       }
+      
+      // Add ScreenTime above the WebView
+      if let screenTimeViewController = screenTimeViewController {
+        if screenTimeViewController.parent == nil {
+          addChild(screenTimeViewController)
+          screenTimeViewController.didMove(toParent: self)
+        }
+        
+        webViewContainer.addSubview(screenTimeViewController.view)
+        
+        screenTimeViewController.view.snp.remakeConstraints {
+          $0.edges.equalTo(webViewContainer)
+        }
+      }
 
       // This is a terrible workaround for a bad iOS 12 bug where PDF
       // content disappears any time the view controller changes (i.e.
@@ -137,6 +151,7 @@ extension BrowserViewController: TabManagerDelegate {
       topToolbar.updateReaderModeState(ReaderModeState.unavailable)
     }
 
+    updateScreenTimeUrl(tabManager.selectedTab?.url)
     updateInContentHomePanel(selected?.url as URL?)
 
     notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)

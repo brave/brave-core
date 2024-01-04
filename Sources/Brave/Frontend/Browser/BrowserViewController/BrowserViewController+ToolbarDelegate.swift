@@ -335,6 +335,7 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
     hideSearchController()
     hideFavoritesController()
+    updateScreenTimeUrl(tabManager.selectedTab?.url)
     updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
     updateTabsBarVisibility()
     if isUsingBottomBar {
