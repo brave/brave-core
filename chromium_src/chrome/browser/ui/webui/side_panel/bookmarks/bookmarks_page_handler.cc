@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h"
+
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h"
 
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
