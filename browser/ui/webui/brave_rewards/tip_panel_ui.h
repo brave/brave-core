@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_TIP_PANEL_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -26,6 +27,8 @@ class TipPanelUI : public ui::MojoBubbleWebUIController,
   TipPanelUI& operator=(const TipPanelUI&) = delete;
 
   void BindInterface(mojo::PendingReceiver<TipPanelHandlerFactory> receiver);
+
+  static constexpr std::string GetWebUIName() { return "TipPanel"; }
 
  private:
   // mojom::TipPanelHandlerFactory:

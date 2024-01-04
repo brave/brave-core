@@ -62,6 +62,8 @@ class PlaylistUI : public ui::UntrustedWebUIController,
                        const std::vector<std::string>& items) override;
   void OpenSettingsPage() override;
 
+  static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
+
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 

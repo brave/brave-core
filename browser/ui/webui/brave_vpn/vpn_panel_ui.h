@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_handler.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
@@ -39,6 +40,8 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
   // From MojoBubbleWebUIController
   void set_embedder(base::WeakPtr<Embedder> embedder) { embedder_ = embedder; }
   base::WeakPtr<Embedder> embedder() { return embedder_; }
+
+  static constexpr std::string GetWebUIName() { return "VPNPanel"; }
 
  private:
   // brave_vpn::mojom::PanelHandlerFactory:
