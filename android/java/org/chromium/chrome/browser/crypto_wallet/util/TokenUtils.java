@@ -11,14 +11,14 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.Callback;
+import org.chromium.base.Callbacks;
+import org.chromium.base.Callbacks.Callback1;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
-import org.chromium.mojo.bindings.Callbacks;
-import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,8 +132,10 @@ public class TokenUtils {
             @NonNull BlockchainRegistry blockchainRegistry,
             String chainId,
             int coinType,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
-        blockchainRegistry.getAllTokens(chainId, coinType,
+            BlockchainRegistry.GetAllTokens_Response callback) {
+        blockchainRegistry.getAllTokens(
+                chainId,
+                coinType,
                 tokens -> callback.call(Utils.fixupTokensRegistry(tokens, chainId)));
     }
 
