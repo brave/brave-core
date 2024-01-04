@@ -29,6 +29,15 @@ rm -rf "$ios_dir/MaterialComponents.xcframework"
 xcodebuild -create-xcframework -framework "BraveCore.framework" -debug-symbols "$(pwd)/BraveCore.dSYM" -output "$ios_dir/BraveCore.xcframework"
 xcodebuild -create-xcframework -framework "MaterialComponents.framework" -debug-symbols "$(pwd)/MaterialComponents.dSYM" -output "$ios_dir/MaterialComponents.xcframework"
 
+# Delete Chromium Assets from BraveCore.framework since they aren't used.
+# TODO: Get this removed in the brave-core builds if possible
+find "$ios_dir/BraveCore.xcframework" -name 'BraveCore.framework' -print0 | while read -d $'\0' framework
+do
+  if [[ -f "$framework/Assets.car" ]]; then
+    rm "$framework/Assets.car"
+  fi
+done
+
 # Makes an xcconfig file with some GN args such as versioning and api keys
 copy_args=(
   "brave_version_major"

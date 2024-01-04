@@ -29,29 +29,12 @@ else
   npm install
 fi
 
-# Delete Chromium Assets from BraveCore.framework since they aren't used.
-# TODO: Get this removed in the brave-core builds if possible
-echo "${COLOR_ORANGE}Cleaning up BraveCore framework assets…${COLOR_NONE}"
-find "node_modules/brave-core-ios" -name 'BraveCore.framework' -print0 | while read -d $'\0' framework
-do
-  if [[ -f "$framework/Assets.car" ]]; then
-    rm "$framework/Assets.car"
-  fi
-done
-
-# Codesign BraveCore + MaterialComponents to pass library validation on unit tests on M1 machines
-echo "${COLOR_ORANGE}Signing BraveCore frameworks…${COLOR_NONE}"
-find "node_modules/brave-core-ios" -name '*.framework' -print0 | while read -d $'\0' framework
-do
-  # MaterialComponents.framework doesn't seem to have a `CFBundleShortVersionString`
-  /usr/libexec/PlistBuddy -c 'Add :CFBundleShortVersionString string 1.0' "${framework}/Info.plist" || true
-  codesign --force --deep --sign "-" --preserve-metadata=identifier,entitlements --timestamp=none "${framework}"
-done
-
 npm run build
 
-# Setup local git config
-git config --local blame.ignoreRevsFile .git-blame-ignore-revs
+# Set up BraveCore placeholders to allow SPM to validate the package
+mkdir -p BraveCore/build
+cp -R BraveCore/placeholders BraveCore/build 
+touch BraveCore/args.xcconfig
 
 # Sets up local configurations from the tracked .template files
 
