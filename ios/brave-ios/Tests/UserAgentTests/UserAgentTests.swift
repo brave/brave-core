@@ -119,7 +119,7 @@ class UserAgentTests: XCTestCase {
       return
     }
 
-    Preferences.General.alwaysRequestDesktopSite.value = false
+    Preferences.UserAgent.alwaysRequestDesktopSite.value = false
 
     XCTAssertTrue(mobileUARegex(UserAgent.mobile), "User agent computes correctly.")
 
