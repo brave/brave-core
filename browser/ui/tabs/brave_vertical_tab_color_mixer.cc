@@ -68,7 +68,7 @@ void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static const auto kDefaultColorMap =
-      base::MakeFixedFlatMap<BraveColorIds, SkColor>({
+      base::MakeFixedFlatMapNonConsteval<BraveColorIds, SkColor>({
           {kColorBraveVerticalTabActiveBackground,
            mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
@@ -92,7 +92,7 @@ void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static const auto kDefaultColorMap =
-      base::MakeFixedFlatMap<BraveColorIds, SkColor>({
+      base::MakeFixedFlatMapNonConsteval<BraveColorIds, SkColor>({
           {kColorBraveVerticalTabActiveBackground,
            mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
