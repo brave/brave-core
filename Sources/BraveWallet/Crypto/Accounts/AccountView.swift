@@ -23,9 +23,10 @@ struct AccountView: View {
       }
       VStack(alignment: .leading, spacing: 2) {
         Text(name)
-          .fontWeight(.semibold)
+          .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.bravePrimary))
         Text(address.truncatedAddress)
+          .font(.footnote)
           .foregroundColor(Color(.braveLabel))
       }
       .font(.caption)

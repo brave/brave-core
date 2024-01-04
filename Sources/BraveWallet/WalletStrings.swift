@@ -50,6 +50,13 @@ extension Strings {
       value: "Accounts",
       comment: "The title of the accounts page in the Crypto tab"
     )
+    public static let totalBalance = NSLocalizedString(
+      "wallet.totalBalance",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Total Balance",
+      comment: "A title label that will display total balance of all none-zero balance accounts"
+    )
     public static let selectedNetworkAccessibilityLabel = NSLocalizedString(
       "wallet.selectedNetwork",
       tableName: "BraveWallet",
@@ -112,6 +119,13 @@ extension Strings {
       bundle: .module,
       value: "No Accounts",
       comment: "The empty state displayed when the user has no accounts associated with a transaction or asset"
+    )
+    public static let noAccountDescription = NSLocalizedString(
+      "wallet.noAccounts",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Accounts with a balance will appear here.",
+      comment: "The empty state description displayed when the user has no accounts associated with a transaction or asset"
     )
     public static let noTransactions = NSLocalizedString(
       "wallet.noTransactions",
@@ -504,6 +518,13 @@ extension Strings {
       bundle: .module,
       value: "Swap tokens and assets.",
       comment: "The description of a swap button on the buy/send/swap modal"
+    )
+    public static let more = NSLocalizedString(
+      "wallet.more",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "More",
+      comment: "A button title for user to open more option in asset details screen other than buy/send/swap."
     )
     public static let infoTitle = NSLocalizedString(
       "wallet.infoTitle",

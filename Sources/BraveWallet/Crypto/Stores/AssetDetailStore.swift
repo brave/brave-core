@@ -39,7 +39,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @Published private(set) var price: String = "$0.0000"
   @Published private(set) var priceDelta: String = "0.00%"
   @Published private(set) var priceIsDown: Bool = false
-  @Published private(set) var btcRatio: String = "0.0000 BTC"
   @Published private(set) var priceHistory: [BraveWallet.AssetTimePrice] = []
   @Published var timeframe: BraveWallet.AssetPriceTimeframe = .oneDay {
     didSet {
@@ -50,7 +49,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
   @Published private(set) var isLoadingAccountBalances: Bool = false
   @Published private(set) var accounts: [AccountAssetViewModel] = []
-  @Published private(set) var transactionSummaries: [TransactionSummary] = []
+  @Published private(set) var transactionSections: [TransactionSection] = []
   @Published private(set) var isBuySupported: Bool = false
   @Published private(set) var isSendSupported: Bool = false
   @Published private(set) var isSwapSupported: Bool = false
@@ -66,6 +65,12 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @Published private(set) var network: BraveWallet.NetworkInfo?
 
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
+
+  var totalBalance: Double {
+    accounts
+      .compactMap { Double($0.balance) }
+      .reduce(0, +)
+  }
 
   private(set) var assetPriceValue: Double = 0.0
 
@@ -181,8 +186,12 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     $0.maximumFractionDigits = 2
   }
   
+  private var updateTask: Task<Void, Never>?
+  private var solEstimatedTxFeesCache: [String: UInt64] = [:]
+  private var assetPricesCache: [String: Double] = [:]
   public func update() {
-    Task { @MainActor in
+    updateTask?.cancel()
+    updateTask = Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
       
@@ -203,35 +212,88 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
         
-        if !token.isErc721 && !token.isNft {
-          // fetch prices for the asset
-          let (prices, btcRatio, priceHistory) = await fetchPriceInfo(for: token.assetRatioId)
-          self.btcRatio = btcRatio
-          self.priceHistory = priceHistory
-          self.isLoadingPrice = false
-          self.isInitialState = false
-          self.isLoadingChart = false
-          
-          if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
-             let value = Double(assetPrice.price) {
-            self.assetPriceValue = value
-            self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
-            if let deltaValue = Double(assetPrice.assetTimeframeChange) {
-              self.priceIsDown = deltaValue < 0
-              self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
-            }
-            for index in 0..<updatedAccounts.count {
-              updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
-            }
+        // fetch prices for the asset
+        let (prices, _, priceHistory) = await fetchPriceInfo(for: token.assetRatioId)
+        self.priceHistory = priceHistory
+        self.isLoadingPrice = false
+        self.isInitialState = false
+        self.isLoadingChart = false
+        
+        if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
+           let value = Double(assetPrice.price) {
+          self.assetPriceValue = value
+          self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
+          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+            self.priceIsDown = deltaValue < 0
+            self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
+          }
+          for index in 0..<updatedAccounts.count {
+            updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
           }
         }
         
+        // fetch accounts balance
         self.accounts = await fetchAccountBalances(updatedAccounts, network: network)
-        let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
-        self.transactionSummaries = await fetchTransactionSummarys(
-          accounts: allAccountsForTokenCoin,
+        
+        // fetch transactions
+        let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
+        let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+        let allTransactions = await txService.allTransactions(networksForCoin: [network.coin: [network]], for: allAccountsForTokenCoin)
+        
+        let ethTransactions = allTransactions.filter { $0.coin == .eth }
+        if !ethTransactions.isEmpty { // we can only fetch unknown Ethereum tokens
+          let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
+            knownTokens: userAssets + allTokens + tokenInfoCache
+          )
+          updateUnknownTokens(for: unknownTokenInfo)
+        }
+        guard !Task.isCancelled else { return }
+        // display transactions prior to network request to fetch prices and estimated solana tx fee
+        // 1. build transaction sections
+        self.transactionSections = buildTransactionSections(
+          transactions: allTransactions,
           network: network,
-          assetRatios: assetRatios
+          accountInfos: allAccountsForTokenCoin,
+          userAssets: userAssets,
+          allTokens: allTokens,
+          assetRatios: assetPricesCache,
+          nftMetadata: [:], // NFT Detail is in another view
+          solEstimatedTxFees: solEstimatedTxFeesCache
+        )
+        guard !self.transactionSections.isEmpty else { return }
+        
+        // 2. update estimated tx fee to build tx sections again
+        if allTransactions.contains(where: { $0.coin == .sol }) {
+          let solTransactions = allTransactions.filter { $0.coin == .sol }
+          await updateSolEstimatedTxFeesCache(solTransactions)
+        }
+        
+        guard !Task.isCancelled else { return }
+        self.transactionSections = buildTransactionSections(
+          transactions: allTransactions,
+          network: network,
+          accountInfos: allAccountsForTokenCoin,
+          userAssets: userAssets,
+          allTokens: allTokens,
+          assetRatios: assetPricesCache,
+          nftMetadata: [:], // NFT Detail is in another view
+          solEstimatedTxFees: solEstimatedTxFeesCache
+        )
+        
+        // 3. update assets price t build tx section again
+        let allUserAssetsAssetRatioIds = userAssets.map(\.assetRatioId)
+        await updateAssetPricesCache(assetRatioIds: allUserAssetsAssetRatioIds)
+        
+        guard !Task.isCancelled else { return }
+        self.transactionSections = buildTransactionSections(
+          transactions: allTransactions,
+          network: network,
+          accountInfos: allAccountsForTokenCoin,
+          userAssets: userAssets,
+          allTokens: allTokens,
+          assetRatios: assetPricesCache,
+          nftMetadata: [:], // NFT Detail is in another view
+          solEstimatedTxFees: solEstimatedTxFeesCache
         )
       case .coinMarket(let coinMarket):
         // comes from Market tab
@@ -239,8 +301,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.priceDelta = self.percentFormatter.string(from: NSNumber(value: coinMarket.priceChangePercentage24h / 100.0)) ?? ""
         self.priceIsDown = coinMarket.priceChangePercentage24h < 0
         
-        let (_, btcRatio, priceHistory) = await self.fetchPriceInfo(for: coinMarket.id)
-        self.btcRatio = btcRatio
+        let (_, _, priceHistory) = await self.fetchPriceInfo(for: coinMarket.id)
         self.priceHistory = priceHistory
         self.isLoadingPrice = false
         self.isInitialState = false
@@ -255,7 +316,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSendSupported = false
         self.isSwapSupported = false
         self.accounts = []
-        self.transactionSummaries = []
+        self.transactionSections =  []
       }
     }
   }
@@ -307,98 +368,72 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     for tokenBalance in tokenBalances {
       if let index = accountAssetViewModels.firstIndex(where: { $0.account.address == tokenBalance.account.address }) {
         accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
-        if token.isErc721 || token.isNft {
-          accountAssetViewModels[index].balance = (tokenBalance.balance ?? 0) > 0 ? "1" : "0"
-        } else {
-          accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
-          accountAssetViewModels[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)) ?? ""
-        }
+        accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
+        accountAssetViewModels[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)) ?? ""
       }
     }
     self.isLoadingAccountBalances = false
-    return accountAssetViewModels
+    return accountAssetViewModels.filter { $0.decimalBalance > 0 }
   }
   
-  @MainActor private func fetchTransactionSummarys(
-    accounts: [BraveWallet.AccountInfo],
+  private func buildTransactionSections(
+    transactions: [BraveWallet.TransactionInfo],
     network: BraveWallet.NetworkInfo,
-    assetRatios: [String: Double]
-  ) async -> [TransactionSummary] {
-    guard case let .blockchainToken(token) = assetDetailType
-    else { return [] }
-    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
-    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-    let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
-      for account in accounts {
-        group.addTask { @MainActor in
-          await self.txService.allTransactionInfo(
-            network.coin,
-            chainId: network.chainId,
-            from: account.accountId
+    accountInfos: [BraveWallet.AccountInfo],
+    userAssets: [BraveWallet.BlockchainToken],
+    allTokens: [BraveWallet.BlockchainToken],
+    assetRatios: [String: Double],
+    nftMetadata: [String: NFTMetadata],
+    solEstimatedTxFees: [String: UInt64]
+  ) -> [TransactionSection] {
+    // Group transactions by day (only compare day/month/year)
+    let transactionsGroupedByDate = Dictionary(grouping: transactions) { transaction in
+      let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: transaction.createdTime)
+      return Calendar.current.date(from: dateComponents) ?? transaction.createdTime
+    }
+    // Map to 1 `TransactionSection` per date
+    return transactionsGroupedByDate.keys.sorted(by: { $0 > $1 }).compactMap { date in
+      let transactions = transactionsGroupedByDate[date] ?? []
+      guard !transactions.isEmpty else { return nil }
+      let parsedTransactions: [ParsedTransaction] = transactions
+        .sorted(by: { $0.createdTime > $1.createdTime })
+        .compactMap { transaction in
+          return TransactionParser.parseTransaction(
+            transaction: transaction,
+            network: network,
+            accountInfos: accountInfos,
+            userAssets: userAssets,
+            allTokens: allTokens + tokenInfoCache,
+            assetRatios: assetRatios,
+            nftMetadata: nftMetadata,
+            solEstimatedTxFee: solEstimatedTxFees[transaction.id],
+            currencyFormatter: currencyFormatter,
+            decimalFormatStyle: .decimals(precision: 4)
           )
         }
-      }
-      return await group.reduce([BraveWallet.TransactionInfo](), { partialResult, prior in
-        return partialResult + prior
-      })
+      return TransactionSection(
+        date: date,
+        transactions: parsedTransactions
+      )
     }
-    var solEstimatedTxFees: [String: UInt64] = [:]
-    switch token.coin {
-    case .eth:
-      let ethTransactions = allTransactions.filter { $0.coin == .eth }
-      if !ethTransactions.isEmpty { // we can only fetch unknown Ethereum tokens
-        let unknownTokenInfo = ethTransactions.unknownTokenContractAddressChainIdPairs(
-          knownTokens: userAssets + allTokens + tokenInfoCache
-        )
-        updateUnknownTokens(for: unknownTokenInfo)
-      }
-    case .sol:
-      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: allTransactions)
-    default:
-      break
+  }
+  
+  @MainActor private func updateSolEstimatedTxFeesCache(_ solTransactions: [BraveWallet.TransactionInfo]) async {
+    let fees = await solTxManagerProxy.estimatedTxFees(for: solTransactions)
+    for (key, value) in fees { // update cached values
+      self.solEstimatedTxFeesCache[key] = value
     }
-    return allTransactions
-      .filter { tx in
-        switch tx.txType {
-        case .erc20Approve, .erc20Transfer:
-          guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else {
-            return false
-          }
-          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
-        case .ethSend, .ethSwap, .other:
-          return network.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-        case .erc721TransferFrom, .erc721SafeTransferFrom:
-          guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else { return false }
-          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
-        case .solanaSystemTransfer:
-          return network.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-        case .solanaSplTokenTransfer, .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
-          guard let tokenContractAddress = tx.txDataUnion.solanaTxData?.splTokenMintAddress else {
-            return false
-          }
-          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
-        case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction, .solanaSwap:
-          return false
-        case .ethFilForwarderTransfer:
-          return false
-        @unknown default:
-          return false
-        }
-      }
-      .sorted(by: { $0.createdTime > $1.createdTime })
-      .map { transaction in
-        TransactionParser.transactionSummary(
-          from: transaction,
-          network: network,
-          accountInfos: accounts,
-          userAssets: userAssets,
-          allTokens: allTokens + tokenInfoCache,
-          assetRatios: assetRatios,
-          nftMetadata: [:],
-          solEstimatedTxFee: solEstimatedTxFees[transaction.id],
-          currencyFormatter: self.currencyFormatter
-        )
-      }
+  }
+  
+  @MainActor private func updateAssetPricesCache(assetRatioIds: [String]) async {
+    let prices = await assetRatioService.fetchPrices(
+      for: assetRatioIds,
+      toAssets: [currencyFormatter.currencyCode],
+      timeframe: .oneDay
+    ).compactMapValues { Double($0) }
+    for (key, value) in prices { // update cached values
+      self.assetPricesCache[key] = value
+    }
   }
   
   private var transactionDetailsStore: TransactionDetailsStore?

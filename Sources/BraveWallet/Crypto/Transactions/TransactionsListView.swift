@@ -21,6 +21,8 @@ struct TransactionsListView: View {
   let transactionSections: [TransactionSection]
   /// Query displayed in the search bar above the transactions.
   @Binding var query: String
+  /// Whether to display the filter button
+  var showFilter: Bool = true
   /// Called when the filters button beside the search bar is tapped/
   let filtersButtonTapped: () -> Void
   /// Called when a transaction is tapped.
@@ -87,10 +89,14 @@ struct TransactionsListView: View {
     VStack(spacing: 0) {
       HStack(spacing: 10) {
         SearchBar(text: $query, placeholder: Strings.Wallet.search)
-        WalletIconButton(braveSystemName: "leo.filter.settings", action: filtersButtonTapped)
+        if showFilter {
+          WalletIconButton(braveSystemName: "leo.filter.settings", action: filtersButtonTapped)
+            .padding(.trailing, 8)
+        }
       }
       .padding(.vertical, 8)
       Divider()
+        .padding(.horizontal, 8)
     }
     .padding(.horizontal, 8)
     .frame(maxWidth: .infinity)

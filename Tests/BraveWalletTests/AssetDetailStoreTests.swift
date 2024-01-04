@@ -17,7 +17,7 @@ class AssetDetailStoreTests: XCTestCase {
     
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
-      completion(true, [.init(fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId, toAsset: "btc", price: "0.1", assetTimeframeChange: "1"), .init(fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId, toAsset: "usd", price: "1", assetTimeframeChange: "1")])
+      completion(true, [.init(fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId, toAsset: "usd", price: "1", assetTimeframeChange: "1")])
     }
     assetRatioService._priceHistory = { _, _, _, completion in
       completion(true, [.init(date: Date(), price: "0.99")])
@@ -98,7 +98,7 @@ class AssetDetailStoreTests: XCTestCase {
     )
     
     let assetDetailException = expectation(description: "update-blockchainToken")
-    assetDetailException.expectedFulfillmentCount = 14
+    assetDetailException.expectedFulfillmentCount = 13
     store.$network
       .dropFirst()
       .sink { network in
@@ -125,13 +125,6 @@ class AssetDetailStoreTests: XCTestCase {
       .sink {
         defer { assetDetailException.fulfill() }
         XCTAssertTrue($0)
-      }
-      .store(in: &cancellables)
-    store.$btcRatio
-      .dropFirst()
-      .sink {
-        defer { assetDetailException.fulfill() }
-        XCTAssertEqual($0, "0.1 BTC")
       }
       .store(in: &cancellables)
     store.$priceHistory
@@ -173,12 +166,18 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(accounts[0].fiatBalance, formattedEthBalance)
       }
       .store(in: &cancellables)
-    store.$transactionSummaries
+    store.$transactionSections
       .dropFirst()
-      .sink { tx in
+      .collect(3)
+      .sink { updates in
         defer { assetDetailException.fulfill() }
-        XCTAssertEqual(tx.count, 1)
-        XCTAssertEqual(tx[0].txInfo.id, BraveWallet.TransactionInfo.previewConfirmedSend.id)
+        guard let txSections = updates.last else {
+          XCTFail("Unexpected transactionSections")
+          return
+        }
+        XCTAssertEqual(txSections.count, 1)
+        XCTAssertEqual(txSections.first!.transactions.count, 1)
+        XCTAssertEqual(txSections.first!.transactions.first!.transaction.id, BraveWallet.TransactionInfo.previewConfirmedSend.id)
       }
       .store(in: &cancellables)
     store.$isLoadingPrice
@@ -292,7 +291,7 @@ class AssetDetailStoreTests: XCTestCase {
     )
     
     let assetDetailBitcoinException = expectation(description: "update-coinMarket-bitcoin")
-    assetDetailBitcoinException.expectedFulfillmentCount = 11
+    assetDetailBitcoinException.expectedFulfillmentCount = 10
     store.$isBuySupported
       .dropFirst()
       .sink {
@@ -312,13 +311,6 @@ class AssetDetailStoreTests: XCTestCase {
       .sink {
         defer { assetDetailBitcoinException.fulfill() }
         XCTAssertFalse($0)
-      }
-      .store(in: &cancellables)
-    store.$btcRatio
-      .dropFirst()
-      .sink {
-        defer { assetDetailBitcoinException.fulfill() }
-        XCTAssertEqual($0, "1 BTC")
       }
       .store(in: &cancellables)
     store.$priceHistory
@@ -377,7 +369,7 @@ class AssetDetailStoreTests: XCTestCase {
         defer {
           XCTAssertNil(store.network)
           XCTAssertTrue(store.accounts.isEmpty)
-          XCTAssertTrue(store.transactionSummaries.isEmpty)
+          XCTAssertTrue(store.transactionSections.isEmpty)
 
           assetDetailBitcoinException.fulfill()
         }
@@ -409,7 +401,7 @@ class AssetDetailStoreTests: XCTestCase {
       assetDetailType: .coinMarket(.mockCoinMarketEth)
     )
     let assetDetailNonBitcoinException = expectation(description: "update-coinMarket-non-bitcoin")
-    assetDetailNonBitcoinException.expectedFulfillmentCount = 11
+    assetDetailNonBitcoinException.expectedFulfillmentCount = 10
     store.$isBuySupported
       .dropFirst()
       .sink {
@@ -429,13 +421,6 @@ class AssetDetailStoreTests: XCTestCase {
       .sink {
         defer { assetDetailNonBitcoinException.fulfill() }
         XCTAssertFalse($0)
-      }
-      .store(in: &cancellables)
-    store.$btcRatio
-      .dropFirst()
-      .sink {
-        defer { assetDetailNonBitcoinException.fulfill() }
-        XCTAssertEqual($0, "0.1 BTC")
       }
       .store(in: &cancellables)
     store.$priceHistory
@@ -466,7 +451,7 @@ class AssetDetailStoreTests: XCTestCase {
         defer {
           XCTAssertNil(store.network)
           XCTAssertTrue(store.accounts.isEmpty)
-          XCTAssertTrue(store.transactionSummaries.isEmpty)
+          XCTAssertTrue(store.transactionSections.isEmpty)
           
           assetDetailNonBitcoinException.fulfill()
         }
@@ -500,7 +485,7 @@ class AssetDetailStoreTests: XCTestCase {
         defer {
           XCTAssertNil(store.network)
           XCTAssertTrue(store.accounts.isEmpty)
-          XCTAssertTrue(store.transactionSummaries.isEmpty)
+          XCTAssertTrue(store.transactionSections.isEmpty)
           
           assetDetailNonBitcoinException.fulfill()
         }

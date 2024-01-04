@@ -129,44 +129,9 @@ struct PortfolioHeaderView: View {
     .padding(.horizontal, 30)
   }
   
-  private var timeframeSelector: some View {
-    Menu(content: {
-      ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
-        Button(action: { selectedDateRange = range }) {
-          HStack {
-            Image(braveSystemName: "leo.check.normal")
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .hidden(isHidden: selectedDateRange != range)
-            Text(verbatim: range.accessibilityLabel)
-          }
-          .tag(range)
-        }
-      }
-    }, label: {
-      HStack(spacing: 4) {
-        Text(verbatim: selectedDateRange.accessibilityLabel)
-          .font(.footnote.weight(.semibold))
-        Image(braveSystemName: "leo.carat.down")
-      }
-      .foregroundColor(Color(braveSystemName: .textInteractive))
-      .padding(.vertical, 6)
-      .padding(.horizontal, 12)
-      .padding(.trailing, -4) // whitespace on `leo.carat.down` symbol
-      .background(
-        Capsule()
-          .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
-      )
-    })
-    .transaction { transaction in
-      transaction.animation = nil
-      transaction.disablesAnimations = true
-    }
-  }
-  
   @ViewBuilder private var lineChart: some View {
     VStack(spacing: 0) {
-      timeframeSelector
+      TimeframeSelector(selectedDateRange: $selectedDateRange)
       let chartData = historicalBalances.isEmpty ? emptyBalanceData : historicalBalances
       LineChartView(data: chartData, numberOfColumns: chartData.count, selectedDataPoint: $selectedBalance) {
         LinearGradient(
@@ -188,13 +153,18 @@ struct PortfolioHeaderView: View {
   }
 }
 
-private struct PortfolioHeaderButton: View {
+struct PortfolioHeaderButton: View {
   
   enum Style: String, Equatable {
     case buy, send, swap, more
     
     var label: String {
-      rawValue.capitalizeFirstLetter
+      switch self {
+      case .buy: return Strings.Wallet.buy
+      case .send: return Strings.Wallet.send
+      case .swap: return Strings.Wallet.swap
+      case .more: return Strings.Wallet.more
+      }
     }
     
     var iconName: String {
@@ -226,6 +196,45 @@ private struct PortfolioHeaderButton: View {
           .font(.footnote.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
       }
+    }
+  }
+}
+
+struct TimeframeSelector: View {
+  @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
+  
+  var body: some View {
+    Menu(content: {
+      ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
+        Button(action: { selectedDateRange = range }) {
+          HStack {
+            Image(braveSystemName: "leo.check.normal")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .hidden(isHidden: selectedDateRange != range)
+            Text(verbatim: range.accessibilityLabel)
+          }
+          .tag(range)
+        }
+      }
+    }, label: {
+      HStack(spacing: 4) {
+        Text(verbatim: selectedDateRange.accessibilityLabel)
+          .font(.footnote.weight(.semibold))
+        Image(braveSystemName: "leo.carat.down")
+      }
+      .foregroundColor(Color(braveSystemName: .textInteractive))
+      .padding(.vertical, 6)
+      .padding(.horizontal, 12)
+      .padding(.trailing, -4) // whitespace on `leo.carat.down` symbol
+      .background(
+        Capsule()
+          .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+      )
+    })
+    .transaction { transaction in
+      transaction.animation = nil
+      transaction.disablesAnimations = true
     }
   }
 }

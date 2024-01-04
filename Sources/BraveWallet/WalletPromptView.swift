@@ -50,7 +50,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
             Button { secondaryButton.action(nil) } label: {
               Text(secondaryButton.title)
                 .font(.footnote.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(.braveLabel))
                 .frame(maxWidth: .infinity)
             }
           }
@@ -59,11 +59,13 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
             Button { secondaryButton.action(nil) } label: {
               Text(secondaryButton.title)
                 .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(.braveLabel))
             }
             .buttonStyle(BraveOutlineButtonStyle(size: .large))
             Button { primaryButton.action(nil) } label: {
               Text(primaryButton.title)
                 .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(.bravePrimary))
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
