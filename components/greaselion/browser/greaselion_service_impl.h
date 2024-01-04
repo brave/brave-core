@@ -50,6 +50,8 @@ class GreaselionServiceImpl : public GreaselionService,
   void Shutdown() override;
 
   // GreaselionService overrides
+  void SetExtensionService(
+      extensions::ExtensionService* extension_service) override;
   void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
   void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;
@@ -85,8 +87,6 @@ class GreaselionServiceImpl : public GreaselionService,
   const base::FilePath install_directory_;
   raw_ptr<extensions::ExtensionSystem> extension_system_ =
       nullptr;  // NOT OWNED
-  raw_ptr<extensions::ExtensionService> extension_service_ =
-      nullptr;  // NOT OWNED
   raw_ptr<extensions::ExtensionRegistry> extension_registry_ =
       nullptr;  // NOT OWNED
   bool all_rules_installed_successfully_;
@@ -98,6 +98,8 @@ class GreaselionServiceImpl : public GreaselionService,
   std::vector<extensions::ExtensionId> greaselion_extensions_;
   std::vector<base::FilePath> extension_dirs_;
   base::Version browser_version_;
+  raw_ptr<extensions::ExtensionService> extension_service_ =
+      nullptr;  // NOT OWNED
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 };
 

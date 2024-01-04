@@ -227,7 +227,6 @@ GreaselionServiceImpl::GreaselionServiceImpl(
     : download_service_(download_service),
       install_directory_(install_directory),
       extension_system_(extension_system),
-      extension_service_(extension_system->extension_service()),
       extension_registry_(extension_registry),
       all_rules_installed_successfully_(true),
       update_in_progress_(false),
@@ -252,6 +251,13 @@ void GreaselionServiceImpl::Shutdown() {
   extension_registry_->RemoveObserver(this);
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
+}
+
+void GreaselionServiceImpl::SetExtensionService(
+    extensions::ExtensionService* extension_service) {
+  DCHECK(extension_service);
+  DCHECK(!extension_service_);
+  extension_service_ = extension_service;
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
