@@ -54,6 +54,7 @@ public class AssetStore: ObservableObject, Equatable, WalletObserverStore {
 
 public class UserAssetsStore: ObservableObject, WalletObserverStore {
   @Published private(set) var assetStores: [AssetStore] = []
+  @Published var isSearchingToken: Bool = false
   @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
       guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
@@ -196,6 +197,37 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     assetManager.removeUserAsset(token) { [weak self] in
       self?.update()
       completion(true)
+    }
+  }
+
+  func tokenInfo(
+    address: String,
+    chainId: String,
+    completion: @escaping (BraveWallet.BlockchainToken?) -> Void
+  ) {
+    // First check user's visible assets
+    if let assetStore = assetStores.first(where: { $0.token.contractAddress.caseInsensitiveCompare(address) == .orderedSame }) {
+      completion(assetStore.token)
+    } // else check full tokens list
+    else if let token = allTokens.first(where: { $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame }) {
+      completion(token)
+    } // else use network request to get token info
+    else if address.isETHAddress { // only Eth networks supported, require ethereum address
+      timer?.invalidate()
+      timer = Timer.scheduledTimer(
+        withTimeInterval: 0.25, repeats: false,
+        block: { [weak self] _ in
+          guard let self = self else { return }
+          self.isSearchingToken = true
+          self.rpcService.ethTokenInfo(
+            address,
+            chainId: chainId,
+            completion: { token, status, error in
+              self.isSearchingToken = false
+              completion(token)
+            }
+          )
+        })
     }
   }
   

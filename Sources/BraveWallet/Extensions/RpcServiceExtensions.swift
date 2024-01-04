@@ -385,37 +385,6 @@ extension BraveWalletJsonRpcService {
       })
     }
   }
-
-  /// Helper to fetch `symbol` and `decimals` ONLY given a token contract address & chainId.
-  /// This function will be replaced by a BraveCore function that will also fetch `name` & `coingeckoId`.
-  func getEthTokenInfo(
-    contractAddress: String,
-    chainId: String
-  ) async -> BraveWallet.BlockchainToken? {
-    // Fetches token info by contract address and chain ID. The returned token
-    // has the following fields populated:
-    //   - contract_address
-    //   - chain_id
-    //   - coin
-    //   - name
-    //   - symbol
-    //   - decimals
-    //   - coingecko_id
-    //
-    // The following fields are always set to false, and callers must NOT rely
-    // on them:
-    //   - is_erc721
-    //   - is_erc1155
-    //   - is_erc20
-    //   - is_nft
-    let (token, status, _) = await ethTokenInfo(contractAddress, chainId: chainId)
-    guard status == .success else { return nil }
-    token?.logo = ""
-    token?.isSpam = false
-    token?.visible = false
-    token?.tokenId = ""
-    return token
-  }
   
   /// Fetches the BlockchainToken for the given contract addresses. The token for a given contract
   /// address is not guaranteed to be found, and will not be provided in the result if not found.
@@ -425,8 +394,8 @@ extension BraveWalletJsonRpcService {
     await withTaskGroup(of: [BraveWallet.BlockchainToken?].self) { @MainActor group in
       for contractAddressesChainIdPair in contractAddressesChainIdPairs {
         group.addTask {
-          let token = await self.getEthTokenInfo(
-            contractAddress: contractAddressesChainIdPair.contractAddress,
+          let (token, _, _) = await self.ethTokenInfo(
+            contractAddressesChainIdPair.contractAddress,
             chainId: contractAddressesChainIdPair.chainId
           )
           if let token {
