@@ -152,10 +152,11 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, service, &info);
-  auto host_port_pair = info.proxy_chain().proxy_server().host_port_pair();
+  auto host_port_pair =
+      info.proxy_chain().GetProxyServer(/*server_index=*/0).host_port_pair();
 
   EXPECT_EQ(host_port_pair.username(), anonymization_key);
-  EXPECT_TRUE(info.proxy_chain().proxy_server().scheme() ==
+  EXPECT_TRUE(info.proxy_chain().GetProxyServer(/*server_index=*/0).scheme() ==
               ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
@@ -165,11 +166,12 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info2;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, service, &info2);
-  host_port_pair = info2.proxy_chain().proxy_server().host_port_pair();
+  host_port_pair =
+      info2.proxy_chain().GetProxyServer(/*server_index=*/0).host_port_pair();
 
   EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_EQ(host_port_pair.password(), password);
-  EXPECT_TRUE(info2.proxy_chain().proxy_server().scheme() ==
+  EXPECT_TRUE(info2.proxy_chain().GetProxyServer(/*server_index=*/0).scheme() ==
               ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
@@ -182,11 +184,12 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info3;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, service, &info3);
-  host_port_pair = info3.proxy_chain().proxy_server().host_port_pair();
+  host_port_pair =
+      info3.proxy_chain().GetProxyServer(/*server_index=*/0).host_port_pair();
 
   EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_NE(host_port_pair.password(), password);
-  EXPECT_TRUE(info3.proxy_chain().proxy_server().scheme() ==
+  EXPECT_TRUE(info3.proxy_chain().GetProxyServer(/*server_index=*/0).scheme() ==
               ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
@@ -196,11 +199,12 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info4;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, service, &info4);
-  host_port_pair = info4.proxy_chain().proxy_server().host_port_pair();
+  host_port_pair =
+      info4.proxy_chain().GetProxyServer(/*server_index=*/0).host_port_pair();
 
   EXPECT_EQ(host_port_pair.username(), anonymization_key);
   EXPECT_EQ(host_port_pair.password(), password);
-  EXPECT_TRUE(info4.proxy_chain().proxy_server().scheme() ==
+  EXPECT_TRUE(info4.proxy_chain().GetProxyServer(/*server_index=*/0).scheme() ==
               ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
@@ -210,10 +214,11 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info5;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url2, service, &info5);
-  host_port_pair = info5.proxy_chain().proxy_server().host_port_pair();
+  host_port_pair =
+      info5.proxy_chain().GetProxyServer(/*server_index=*/0).host_port_pair();
   EXPECT_EQ(host_port_pair.username(), anonymization_key2);
   EXPECT_NE(host_port_pair.password(), password);
-  EXPECT_TRUE(info5.proxy_chain().proxy_server().scheme() ==
+  EXPECT_TRUE(info5.proxy_chain().GetProxyServer(/*server_index=*/0).scheme() ==
               ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
