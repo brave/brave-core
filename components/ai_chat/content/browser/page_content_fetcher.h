@@ -18,7 +18,6 @@ namespace ai_chat {
 
 using FetchPageContentCallback =
     base::OnceCallback<void(std::string, bool is_video)>;
-
 void FetchPageContent(content::WebContents* web_contents,
                       FetchPageContentCallback callback);
 

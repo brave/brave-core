@@ -1173,6 +1173,10 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (enable_ai_chat) {
+    deps += [ "//brave/browser/ai_chat:browser_tests" ]
+  }
+
   if (is_android) {
     use_default_launcher = false
 

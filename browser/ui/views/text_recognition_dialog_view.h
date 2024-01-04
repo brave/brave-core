@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -52,13 +53,12 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   // views::DialogDelegateView overrides:
   void AddedToWidget() override;
 
-  void OnGetTextFromImage(const std::vector<std::string>& text);
+  void OnGetTextFromImage(const std::pair<bool, std::vector<std::string>>&);
 
 #if BUILDFLAG(IS_WIN)
   void OnGetAvailableRecognizerLanguages(
       const std::vector<std::string>& languages);
   bool OnLanguageOptionchanged(size_t index);
-  void TextRecognizationSupported(bool supported);
 #endif
 
   // Show |text| in this dialog and copy it to clipboard.
@@ -87,7 +87,7 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   // when it's arrived. If result is arrived before firing, result is shown
   // when fired.
   base::RetainingOneShotTimer show_result_timer_;
-  base::OnceCallback<void(const std::vector<std::string>&)>
+  base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
       on_get_text_callback_for_test_;
   base::WeakPtrFactory<TextRecognitionDialogView> weak_factory_{this};
 };
