@@ -164,7 +164,7 @@ class RunableConfiguration:
       ])
 
     custom_handler = self.custom_perf_handlers.get(benchmark_name)
-    if custom_handler is not None:
+    if custom_handler is not None and not local_run:
       assert bench_out_dir
       return custom_handler(bench_out_dir)
 
