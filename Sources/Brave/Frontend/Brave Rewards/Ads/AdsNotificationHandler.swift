@@ -43,7 +43,7 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
       guard let self = self else { return }
       switch action {
       case .opened:
-        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .viewed, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .clicked, completion: { _ in })
       case .dismissed:
         self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
       case .timedOut:
