@@ -272,11 +272,20 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            `Failed to get buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
+            `Failed to get ${getRampProviderName(
+              arg.onRampProvider
+            )} buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
             error
           )
         }
       }
     })
   }
+}
+
+// internals
+function getRampProviderName(onRampProvider: BraveWallet.OnRampProvider) {
+  return Object.keys(BraveWallet.OnRampProvider)
+    .find((key) => BraveWallet.OnRampProvider[key] === onRampProvider)
+    ?.substring(1)
 }

@@ -34,6 +34,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 
 // hooks
 import {
+  useGenerateReceiveAddressMutation,
   useGetBuyUrlQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
@@ -507,6 +508,9 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const [getBuyUrl] = useLazyGetBuyUrlQuery()
 
+  // mutations
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
+
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
     return selectedAsset
       ? selectedAsset.coin === BraveWallet.CoinType.FIL
@@ -527,15 +531,18 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
+  const [generatedAddress, setGeneratedAddress] = React.useState(
+    accountsForSelectedAssetCoinType[0]?.address || ''
+  )
 
   // state-dependant queries
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
-    selectedAsset && assetNetwork && selectedAccount
+    selectedAsset && assetNetwork && generatedAddress
       ? {
           assetSymbol: selectedAsset.symbol.toLowerCase(),
           onRampProvider: BraveWallet.OnRampProvider.kStripe,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
+          address: generatedAddress,
           amount: params.buyAmount,
           currencyCode: currencyCode.toLowerCase()
         }
@@ -629,7 +636,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const openBuyAssetLink = React.useCallback(
     async (buyOption: BraveWallet.OnRampProvider) => {
-      if (!selectedAsset || !assetNetwork || !selectedAccount) {
+      if (!selectedAsset || !assetNetwork || !generatedAddress) {
         return
       }
 
@@ -643,13 +650,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
               : selectedAsset.symbol,
           onRampProvider: buyOption,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
+          address: generatedAddress,
           amount: params.buyAmount,
           currencyCode:
             buyOption === BraveWallet.OnRampProvider.kStripe
               ? currencyCode.toLowerCase()
               : currencyCode
         }).unwrap()
+
         if (url && chrome.tabs !== undefined) {
           chrome.tabs.create({ url }, () => {
             if (chrome.runtime.lastError) {
@@ -669,10 +677,10 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     [
       selectedAsset,
       assetNetwork,
-      selectedAccount,
       getBuyUrl,
       params,
-      currencyCode
+      currencyCode,
+      generatedAddress
     ]
   )
 
@@ -681,6 +689,34 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     // force selected account option state
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
   }, [accountsForSelectedAssetCoinType[0]])
+
+  // generate receive address
+  React.useEffect(() => {
+    let ignore = false
+    if (selectedAccount) {
+      if (
+        selectedAccount.accountId.coin === BraveWallet.CoinType.BTC ||
+        selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
+      ) {
+        generateReceiveAddress(selectedAccount.accountId)
+          .unwrap()
+          .then((address) => {
+            if (!ignore) {
+              setGeneratedAddress(address)
+            }
+          })
+      } else {
+        if (!ignore) {
+          setGeneratedAddress(selectedAccount.accountId.address)
+        }
+      }
+    }
+
+    // cleanup
+    return () => {
+      ignore = true
+    }
+  }, [selectedAccount?.accountId])
 
   // render
   if (!selectedOnRampAssetId) {
