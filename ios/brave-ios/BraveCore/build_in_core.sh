@@ -25,8 +25,8 @@ output_dir="iOS_${CONFIGURATION}_${target_arch_dir}${target_environment_dir}"
 
 cd ../out/$output_dir
 rm -rf "$ios_dir/BraveCore.xcframework"
-rm -rf "$ios_dir/MaterialComponents.xcframework"
 xcodebuild -create-xcframework -framework "BraveCore.framework" -debug-symbols "$(pwd)/BraveCore.dSYM" -output "$ios_dir/BraveCore.xcframework"
+rm -rf "$ios_dir/MaterialComponents.xcframework"
 xcodebuild -create-xcframework -framework "MaterialComponents.framework" -debug-symbols "$(pwd)/MaterialComponents.dSYM" -output "$ios_dir/MaterialComponents.xcframework"
 
 # Delete Chromium Assets from BraveCore.framework since they aren't used.
