@@ -181,14 +181,14 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   ProxyInfo info;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  auto proxy_server = info.proxy_chain().proxy_server();
+  auto proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // everything should still be the same on subsequent calls
   std::string password = proxy_server.host_port_pair().password();
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // Test new tor circuit.
@@ -196,7 +196,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   proxy_config_service.GetLatestProxyConfig(&config);
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
@@ -205,14 +205,14 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   password = proxy_server.host_port_pair().password();
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // SetNewTorCircuit should not affect other urls
   proxy_config_service.GetLatestProxyConfig(&config);
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url2, network_anonymization_key2, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key2);
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
@@ -240,13 +240,13 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {
   ProxyInfo info;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url2, network_anonymization_key_1_2, service(), &info);
-  auto proxy_server = info.proxy_chain().proxy_server();
+  auto proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key1);
   const auto password1 = proxy_server.host_port_pair().password();
 
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url2, network_anonymization_key_3_2, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key3);
   const auto password3 = proxy_server.host_port_pair().password();
 
@@ -268,7 +268,7 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
   ProxyInfo info;
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  auto proxy_server = info.proxy_chain().proxy_server();
+  auto proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   auto password = proxy_server.host_port_pair().password();
@@ -277,7 +277,7 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
   FastForwardBy(base::Minutes(9));
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
   EXPECT_EQ(proxy_server.host_port_pair().password(), password);
 
@@ -285,7 +285,7 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
   FastForwardBy(base::Minutes(2));
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
   password = proxy_server.host_port_pair().password();
@@ -294,7 +294,7 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
   FastForwardBy(base::Minutes(11));
   ProxyConfigServiceTor::SetProxyAuthorization(
       config, site_url, network_anonymization_key, service(), &info);
-  proxy_server = info.proxy_chain().proxy_server();
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
