@@ -87,10 +87,10 @@
     Position
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
-    Show on right
+    Show on the right
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_LEFT" desc="The label for radio button to show vertical tab on left">
-    Show on left
+    Show on the left
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD" desc="The label name of the tab hover mode where a card with the title and origin of the site is shown.">
     Card

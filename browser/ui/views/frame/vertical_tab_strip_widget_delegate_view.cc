@@ -108,7 +108,7 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
   // the web view.
   host_->SetPreferredSize(region_view_->GetMinimumSize());
 
-  // The might could be changed, so we should lay out again.
+  // The position could be changed, so we should lay out again.
   host_->parent()->Layout();
 
   // Lay out the widget manually in case the host doesn't arrange it.

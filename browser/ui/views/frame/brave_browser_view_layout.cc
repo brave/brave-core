@@ -249,7 +249,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // Control contents's margin with sidebar & vertical tab state.
   gfx::Insets contents_margins = GetContentsMargins();
 
-  // Don't need contents container's left margin with vertical tab as
+  // Don't need contents container's left or right margin with vertical tab as
   // vertical tab itself has sufficient padding.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
