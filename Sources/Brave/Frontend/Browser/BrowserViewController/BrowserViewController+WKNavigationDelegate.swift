@@ -380,7 +380,18 @@ extension BrowserViewController: WKNavigationDelegate {
       if let documentTargetURL = documentTargetURL {
         let domainForShields = Domain.getOrCreate(forUrl: documentTargetURL, persistent: !isPrivateBrowsing)
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+        
+        // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
+        // https://github.com/brave/brave-ios/issues/8585
+        //
+        // However, the deprecated API WKWebViewConfiguration.preferences.javaScriptEnabled DOES work!
+        // Even though `configuration` is @NSCopying, somehow this actually updates the preferences LIVE!!
+        // This follows the same behaviour as Safari
+        //
+        // - Brandon T.
+        //
         preferences.allowsContentJavaScript = isScriptsEnabled
+        webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
       }
 
       // Cookie Blocking code below
