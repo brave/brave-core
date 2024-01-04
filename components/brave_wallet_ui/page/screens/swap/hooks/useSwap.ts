@@ -215,7 +215,7 @@ export const useSwap = () => {
 
       setToAmount(option.toAmount.format(6))
     },
-    [quoteOptions, selectedNetwork?.coin, jupiter, toToken, zeroEx.quote]
+    [quoteOptions, toToken]
   )
 
   // Methods
