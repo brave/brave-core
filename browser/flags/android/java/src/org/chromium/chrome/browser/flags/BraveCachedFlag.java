@@ -15,7 +15,6 @@ public class BraveCachedFlag extends CachedFlag {
     private static final HashMap<String, Boolean> sFlags;
     static {
         sFlags = new HashMap<String, Boolean>();
-        sFlags.put(ChromeFeatureList.BASELINE_GM3_SURFACE_COLORS, false);
         sFlags.put(ChromeFeatureList.START_SURFACE_ANDROID, false);
         sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
     }

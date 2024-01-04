@@ -24,6 +24,8 @@
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
     <color name="default_text_color_on_accent1_dark">@color/baseline_neutral_0</color>
+    <color name="gm3_baseline_surface_tint_light">#948989</color>
+    <color name="gm3_baseline_surface_tint_dark">#F7F9FC</color>
 
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_onboarding_item_background_color">#687485</color>
