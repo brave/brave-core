@@ -61,6 +61,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         swapResponse = nil
         jupiterQuote = nil
         braveFee = nil
+        // price quote requested for a different amount
+        priceQuoteTask?.cancel()
       }
       guard !sellAmount.isEmpty, BDouble(sellAmount.normalizedDecimals) != nil else {
         state = .idle
@@ -353,13 +355,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   }
   
   @MainActor private func createEthSwapTransaction() async -> Bool {
-    self.isMakingTx = true
-    defer { self.isMakingTx = false }
     guard let accountInfo = self.accountInfo else {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
     }
+    self.isMakingTx = true
+    defer { self.isMakingTx = false }
     let coin = accountInfo.coin
     let network = await rpcService.network(coin, origin: nil)
     guard let swapParams = self.swapParameters(for: .perSellAsset, in: network) else {
@@ -661,6 +663,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     self.isUpdatingPriceQuote = true
     let (jupiterQuote, swapErrorResponse, _) = await swapService.jupiterQuote(jupiterQuoteParams)
     defer { self.isUpdatingPriceQuote = false }
+    guard !Task.isCancelled else { return }
     if let jupiterQuote {
       await self.handleSolPriceQuoteResponse(jupiterQuote, swapParams: swapParams)
     } else if let swapErrorResponse {
@@ -748,6 +751,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           let selectedFromToken else {
       return false
     }
+    self.isMakingTx = true
+    defer { self.isMakingTx = false }
     let network = await rpcService.network(.sol, origin: nil)
     let jupiterSwapParams: BraveWallet.JupiterSwapParams = .init(
       chainId: network.chainId,
@@ -777,8 +782,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       fromBase64EncodedTransaction: swapTransactions.swapTransaction,
       txType: .solanaSwap,
       send: .init(
-        maxRetries: nil,
-        preflightCommitment: nil,
+        maxRetries: .init(maxRetries: 2),
+        preflightCommitment: "processed",
         skipPreflight: .init(skipPreflight: true)
       )
     )
@@ -831,8 +836,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  private var priceQuoteTask: Task<(), Never>?
   func fetchPriceQuote(base: SwapParamsBase) {
-    Task { @MainActor in
+    priceQuoteTask?.cancel()
+    priceQuoteTask = Task { @MainActor in
       // reset quotes before fetching new quote
       swapResponse = nil
       jupiterQuote = nil
@@ -842,6 +849,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return
       }
       let network = await rpcService.network(accountInfo.coin, origin: nil)
+      guard !Task.isCancelled else { return }
       // Entering a buy amount is disabled for Solana swaps, always use
       // `SwapParamsBase.perSellAsset` to fetch quote based on the sell amount.
       // `SwapParamsBase.perBuyAsset` is sent when `selectedToToken` is changed.
@@ -871,6 +879,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     self.isUpdatingPriceQuote = true
     defer { self.isUpdatingPriceQuote = false }
     let (swapResponse, swapErrorResponse, _) = await swapService.priceQuote(swapParams)
+    guard !Task.isCancelled else { return }
     if let swapResponse = swapResponse {
       await self.handleEthPriceQuoteResponse(swapResponse, base: base, swapParams: swapParams)
     } else if let swapErrorResponse = swapErrorResponse {
