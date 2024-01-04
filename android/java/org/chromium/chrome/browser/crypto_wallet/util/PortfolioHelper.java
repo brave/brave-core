@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.base.Callbacks;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
@@ -15,7 +16,6 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.lang.ref.WeakReference;

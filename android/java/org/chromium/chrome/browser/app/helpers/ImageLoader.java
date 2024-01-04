@@ -38,6 +38,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import org.chromium.base.Callbacks;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.content.WebContentsFactory;
@@ -51,7 +52,6 @@ import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
 import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.url.GURL;
 
 import java.io.IOException;

@@ -9,6 +9,7 @@ import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.base.Callbacks;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -19,7 +20,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.HashSet;
 import java.util.Locale;

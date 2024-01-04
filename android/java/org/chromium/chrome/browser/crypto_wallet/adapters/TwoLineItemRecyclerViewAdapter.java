@@ -17,10 +17,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Callbacks;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.ui.base.ViewUtils;
 
 import java.util.List;

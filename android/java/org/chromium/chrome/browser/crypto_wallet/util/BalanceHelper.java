@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -27,7 +28,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSolanaBalanc
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSplTokenAccountBalanceResponseContext;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.MultiResponseHandler;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

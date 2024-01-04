@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;

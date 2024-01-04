@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
@@ -17,7 +18,6 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -115,7 +115,7 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(String balance, Integer error, String errorMessage) {
+        public void call(String balance, int error, String errorMessage) {
             warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
             super.callBase(balance, error, errorMessage);
         }
@@ -128,20 +128,20 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(String balance, Integer error, String errorMessage) {
+        public void call(String balance, int error, String errorMessage) {
             warnWhenError(TAG, "getErc721TokenBalance", error, errorMessage);
             super.callBase(balance, error, errorMessage);
         }
     }
 
-    public static class GetBalanceResponseContext
-            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalance_Response {
+    public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
+            implements JsonRpcService.GetBalance_Response {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
-        public void call(String balance, Integer error, String errorMessage) {
+        public void call(String balance, int error, String errorMessage) {
             warnWhenError(TAG, "getBalance", error, errorMessage);
             super.callBase(balance, error, errorMessage);
         }
@@ -155,7 +155,7 @@ public class AsyncUtils {
 
         // Returned balance is Long instead of String
         @Override
-        public void call(Long balance, Integer error, String errorMessage) {
+        public void call(long balance, int error, String errorMessage) {
             warnWhenError(TAG, "getSolanaBalance", error, errorMessage);
             super.callBase(String.valueOf(balance), error, errorMessage);
         }
@@ -169,7 +169,11 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(String amount, Byte decimals, String uiAmountString, Integer error,
+        public void call(
+                String amount,
+                byte decimals,
+                String uiAmountString,
+                int error,
                 String errorMessage) {
             warnWhenError(TAG, "getSplTokenAccountBalance", error, errorMessage);
             super.callSplBase(
@@ -177,8 +181,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioService.GetPrice_Response {
+    public static class GetPriceResponseContext extends SingleResponseBaseContext
+            implements AssetRatioService.GetPrice_Response {
         public Boolean success;
         public AssetPrice[] prices;
 
@@ -187,7 +191,7 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Boolean success, AssetPrice[] prices) {
+        public void call(boolean success, AssetPrice[] prices) {
             this.success = success;
             this.prices = prices;
             super.fireResponseCompleteCallback();
@@ -223,7 +227,7 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Boolean success, AssetTimePrice[] timePrices) {
+        public void call(boolean success, AssetTimePrice[] timePrices) {
             this.success = success;
             this.timePrices = timePrices;
             super.fireResponseCompleteCallback();
@@ -331,7 +335,7 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Long fee, Integer error, String errorMessage) {
+        public void call(long fee, int error, String errorMessage) {
             this.fee = fee;
             this.error = error;
             this.errorMessage = errorMessage;
@@ -373,7 +377,7 @@ public class AsyncUtils {
 
         @Override
         public void call(
-                String tokenUrl, String tokenMetadata, Integer errorCode, String errorMessage) {
+                String tokenUrl, String tokenMetadata, int errorCode, String errorMessage) {
             this.tokenMetadata = tokenMetadata;
             this.errorCode = errorCode;
             this.errorMessage = errorMessage;
@@ -381,15 +385,15 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetNftErc721MetadataContext
-            extends BaseGetNftMetadataContext implements JsonRpcService.GetErc721Metadata_Response {
+    public static class GetNftErc721MetadataContext extends BaseGetNftMetadataContext
+            implements JsonRpcService.GetErc721Metadata_Response {
         public GetNftErc721MetadataContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
         public void call(
-                String tokenUrl, String erc721Metadata, Integer errorCode, String errorMessage) {
+                String tokenUrl, String erc721Metadata, int errorCode, String errorMessage) {
             this.tokenMetadata = erc721Metadata;
             this.errorCode = errorCode;
             this.errorMessage = errorMessage;
