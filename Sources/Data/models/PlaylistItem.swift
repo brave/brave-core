@@ -336,16 +336,15 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-
-  public static func updateCache(uuid: String, cachedData: Data?) {
+    public static func updateCache(uuid: String, pageSrc: String, cachedData: Data?) {
     DataController.perform(context: .new(inMemory: false), save: true) { context in
-      let item = PlaylistItem.first(where: NSPredicate(format: "uuid == %@", uuid), context: context)
-
-      if let cachedData = cachedData, !cachedData.isEmpty {
-        item?.cachedData = cachedData
-      } else {
-        item?.cachedData = nil
-      }
+        if let item = PlaylistItem.first(where: NSPredicate(format: "uuid == %@ OR pageSrc == %@", uuid, pageSrc), context: context) {
+            if let cachedData = cachedData, !cachedData.isEmpty {
+              item.cachedData = cachedData
+            } else {
+              item.cachedData = nil
+            }
+        }
     }
   }
 

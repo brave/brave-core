@@ -398,7 +398,7 @@ public class PlaylistManager: NSObject {
         let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
         if FileManager.default.fileExists(atPath: url.path) {
           try FileManager.default.removeItem(atPath: url.path)
-          PlaylistItem.updateCache(uuid: item.tagId, cachedData: nil)
+          PlaylistItem.updateCache(uuid: item.tagId, pageSrc: item.pageSrc, cachedData: nil)
           onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         }
         return true
@@ -463,7 +463,7 @@ public class PlaylistManager: NSObject {
             assets.forEach({
               if let item = PlaylistItem.cachedItem(cacheURL: $0), let itemId = item.uuid {
                 self.cancelDownload(itemId: itemId)
-                PlaylistItem.updateCache(uuid: itemId, cachedData: nil)
+                PlaylistItem.updateCache(uuid: itemId, pageSrc: item.pageSrc, cachedData: nil)
               }
             })
           } catch {
