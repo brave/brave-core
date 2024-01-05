@@ -1394,8 +1394,11 @@ inline constexpr char k0xAPIKeyHeader[] = "0x-api-key";
 // Jupiter swap constants
 inline constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
 constexpr double kSolanaBuyTokenFeePercentage = 0.85;
-inline constexpr char kSolanaFeeRecipient[] =
-    "3NUW8hWoCnLgJwWCVnwdFo2Dsz8bKwLac9A3VgS2jLUQ";
+inline constexpr char kJupiterReferralKey[] =
+    "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
+inline constexpr char kJupiterReferralProgram[] =
+    "REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3";
+inline constexpr char kJupiterReferralProgramHeader[] = "referral_ata";
 
 // Blowfish simulations constants
 inline constexpr char kBlowfishBaseAPIURL[] =

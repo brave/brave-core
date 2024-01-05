@@ -25,24 +25,6 @@ constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
 
-std::optional<double> ParsePriceImpactPct(const base::Value& value) {
-  // null value is considered as 0 price impact.
-  if (value.is_none()) {
-    return 0.0;
-  }
-
-  double result;
-  if (value.is_string()) {
-    if (!base::StringToDouble(value.GetString(), &result)) {
-      return std::nullopt;
-    }
-
-    return result;
-  }
-
-  return std::nullopt;
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -234,43 +216,58 @@ mojom::ZeroExErrorPtr ParseZeroExErrorResponse(const base::Value& json_value) {
 
 mojom::JupiterQuotePtr ParseJupiterQuoteResponse(
     const base::Value& json_value) {
-  //    {
-  //      "data": [
-  //        {
-  //          "inAmount": "10000",
-  //          "outAmount": "261273",
-  //          "amount": "10000",
-  //          "otherAmountThreshold": "258660",
-  //          "swapMode": "ExactIn",
-  //          "priceImpactPct": "0.008955716118219659",
-  //          "slippageBps": "50",
-  //          "marketInfos": [
-  //            {
-  //              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-  //              "label": "Orca",
-  //              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  //              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-  //              "notEnoughLiquidity": false,
-  //              "inAmount": "10000",
-  //              "outAmount": "117001203",
-  //              "priceImpactPct": "0.0000001196568750220778",
-  //              "lpFee": {
-  //                "amount": "30",
-  //                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  //                "pct": "0.003"
-  //              },
-  //              "platformFee": {
-  //                "amount": "0",
-  //                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-  //                "pct": "0"
-  //              }
-  //            }
-  //          ]
-  //        }
-  //      ],
-  //      "timeTaken": "0.044471802000089156"
-  //    }
-
+  // {
+  //   "inputMint": "So11111111111111111111111111111111111111112",
+  //   "inAmount": "1000000",
+  //   "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  //   "outAmount": "781469842",
+  //   "otherAmountThreshold": "781391696",
+  //   "swapMode": "ExactIn",
+  //   "slippageBps": "1",
+  //   "platformFee": null,
+  //   "priceImpactPct": "0",
+  //   "routePlan": [
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da",
+  //         "label": "Raydium",
+  //         "inputMint": "So11111111111111111111111111111111111111112",
+  //         "outputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+  //         "inAmount": "997500",
+  //         "outAmount": "4052482154",
+  //         "feeAmount": "2500",
+  //         "feeMint": "So11111111111111111111111111111111111111112"
+  //       },
+  //       "percent": "100"
+  //     },
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "HqrRmb2MbEiTrJS5KXhDzUoKbSLbBXJvhNBGEyDNo9Tr",
+  //         "label": "Meteora",
+  //         "inputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+  //         "outputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+  //         "inAmount": "4052482154",
+  //         "outAmount": "834185227",
+  //         "feeAmount": "10131205",
+  //         "feeMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS"
+  //       },
+  //       "percent": "100"
+  //     },
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "6shkv2VNBPWVABvShgcGmrv98Z1vR3EcdwND6XUwGoFq",
+  //         "label": "Meteora",
+  //         "inputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+  //         "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  //         "inAmount": "834185227",
+  //         "outAmount": "781469842",
+  //         "feeAmount": "2085463",
+  //         "feeMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+  //       },
+  //       "percent": "100"
+  //     }
+  //   ]
+  // }
   auto quote_value =
       swap_responses::JupiterQuoteResponse::FromValue(json_value);
   if (!quote_value) {
@@ -278,92 +275,44 @@ mojom::JupiterQuotePtr ParseJupiterQuoteResponse(
   }
 
   auto swap_quote = mojom::JupiterQuote::New();
-  for (const auto& route_value : quote_value->data) {
-    mojom::JupiterRoute route;
-    if (!base::StringToUint64(route_value.in_amount, &route.in_amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.out_amount, &route.out_amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.amount, &route.amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.other_amount_threshold,
-                              &route.other_amount_threshold)) {
-      return nullptr;
-    }
+  swap_quote->input_mint = quote_value->input_mint;
+  swap_quote->in_amount = quote_value->in_amount;
+  swap_quote->output_mint = quote_value->output_mint;
+  swap_quote->out_amount = quote_value->out_amount;
+  swap_quote->other_amount_threshold = quote_value->other_amount_threshold;
+  swap_quote->swap_mode = quote_value->swap_mode;
+  swap_quote->slippage_bps = quote_value->slippage_bps;
+  swap_quote->price_impact_pct = quote_value->price_impact_pct;
 
-    route.swap_mode = route_value.swap_mode;
-
-    if (!base::StringToInt(route_value.slippage_bps, &route.slippage_bps)) {
+  if (!quote_value->platform_fee.is_none()) {
+    if (!quote_value->platform_fee.is_dict()) {
       return nullptr;
     }
 
-    const auto& route_price_impact_pct =
-        ParsePriceImpactPct(route_value.price_impact_pct);
-    if (!route_price_impact_pct) {
-      return nullptr;
-    }
-    route.price_impact_pct = *route_price_impact_pct;
+    auto platform_fee_value = swap_responses::JupiterPlatformFee::FromValue(
+        quote_value->platform_fee.GetDict());
 
-    for (const auto& market_info_value : route_value.market_infos) {
-      mojom::JupiterMarketInfo market_info;
+    swap_quote->platform_fee = mojom::JupiterPlatformFee::New();
+    swap_quote->platform_fee->amount = platform_fee_value->amount;
+    swap_quote->platform_fee->fee_bps = platform_fee_value->fee_bps;
+  }
 
-      market_info.id = market_info_value.id;
-      market_info.label = market_info_value.label;
-      market_info.input_mint = market_info_value.input_mint;
-      market_info.output_mint = market_info_value.output_mint;
-      market_info.not_enough_liquidity = market_info_value.not_enough_liquidity;
+  for (const auto& step_value : quote_value->route_plan) {
+    auto step = mojom::JupiterRouteStep::New();
+    step->percent = step_value.percent;
 
-      if (!base::StringToUint64(market_info_value.in_amount,
-                                &market_info.in_amount)) {
-        return nullptr;
-      }
-      if (!base::StringToUint64(market_info_value.out_amount,
-                                &market_info.out_amount)) {
-        return nullptr;
-      }
+    auto swap_info = mojom::JupiterSwapInfo::New();
+    swap_info->amm_key = step_value.swap_info.amm_key;
+    swap_info->label = step_value.swap_info.label;
+    swap_info->input_mint = step_value.swap_info.input_mint;
+    swap_info->output_mint = step_value.swap_info.output_mint;
+    swap_info->in_amount = step_value.swap_info.in_amount;
+    swap_info->out_amount = step_value.swap_info.out_amount;
+    swap_info->fee_amount = step_value.swap_info.fee_amount;
+    swap_info->fee_mint = step_value.swap_info.fee_mint;
+    step->swap_info = std::move(swap_info);
 
-      const auto& market_info_price_impact_pct =
-          ParsePriceImpactPct(market_info_value.price_impact_pct);
-      if (!market_info_price_impact_pct) {
-        return nullptr;
-      }
-      market_info.price_impact_pct = *market_info_price_impact_pct;
-
-      // Parse lpFee->amount field as a JSON integer field, since the
-      // values are typically very small, and intermediate conversion to string
-      // is expensive due to its deep nesting.
-      mojom::JupiterFee lp_fee;
-      if (!base::StringToUint64(market_info_value.lp_fee.amount,
-                                &lp_fee.amount)) {
-        return nullptr;
-      }
-      lp_fee.mint = market_info_value.lp_fee.mint;
-      if (!base::StringToDouble(market_info_value.lp_fee.pct, &lp_fee.pct)) {
-        return nullptr;
-      }
-      market_info.lp_fee = lp_fee.Clone();
-
-      // Parse platformFee->amount field as a JSON integer field, since the
-      // values are typically very small, and intermediate conversion to string
-      // is expensive due to its deep nesting.
-      mojom::JupiterFee platform_fee;
-      if (!base::StringToUint64(market_info_value.platform_fee.amount,
-                                &platform_fee.amount)) {
-        return nullptr;
-      }
-      platform_fee.mint = market_info_value.platform_fee.mint;
-      if (!base::StringToDouble(market_info_value.platform_fee.pct,
-                                &platform_fee.pct)) {
-        return nullptr;
-      }
-      market_info.platform_fee = platform_fee.Clone();
-      route.market_infos.push_back(market_info.Clone());
-    }
-
-    swap_quote->routes.push_back(route.Clone());
+    swap_quote->route_plan.push_back(std::move(step));
   }
 
   return swap_quote;
