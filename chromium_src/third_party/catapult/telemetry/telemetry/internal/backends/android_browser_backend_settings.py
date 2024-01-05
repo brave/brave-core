@@ -7,6 +7,9 @@
 ANDROID_BRAVE = GenericChromeBackendSettings(browser_type='android-brave',
                                              package='com.brave.browser')
 
+ANDROID_BRAVE_DEFAULT = GenericChromeBackendSettings(
+    browser_type='android-brave-default', package='com.brave.browser_default')
+
 ANDROID_BRAVE_BETA = GenericChromeBackendSettings(
     browser_type='android-brave-beta', package='com.brave.browser_beta')
 
@@ -16,8 +19,9 @@ ANDROID_BRAVE_DEV = GenericChromeBackendSettings(
 ANDROID_BRAVE_NIGHTLY = GenericChromeBackendSettings(
     browser_type='android-brave-nightly', package='com.brave.browser_nightly')
 
-BRAVE_ANDROID_BACKEND_SETTINGS = (ANDROID_BRAVE, ANDROID_BRAVE_BETA,
-                                  ANDROID_BRAVE_DEV, ANDROID_BRAVE_NIGHTLY)
+BRAVE_ANDROID_BACKEND_SETTINGS = (ANDROID_BRAVE_DEFAULT, ANDROID_BRAVE,
+                                  ANDROID_BRAVE_BETA, ANDROID_BRAVE_DEV,
+                                  ANDROID_BRAVE_NIGHTLY)
 
 # Add brave items to chromium ANDROID_BACKEND_SETTINGS:
 ANDROID_BACKEND_SETTINGS = BRAVE_ANDROID_BACKEND_SETTINGS + ANDROID_BACKEND_SETTINGS
