@@ -16,7 +16,10 @@ struct PrivateTabsView: View {
   }
   
   @ObservedObject var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
+  @ObservedObject var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
+  
   var tabManager: TabManager?
+  var askForAuthentication: (AuthViewType, ((Bool, LAError.Code?) -> Void)?) -> Void
   
   private var localAuthenticationType: AuthenticationType {
     let context = LAContext()
@@ -84,9 +87,20 @@ struct PrivateTabsView: View {
           
         switch localAuthenticationType {
         case .faceID, .touchID, .pinCode:
-          OptionToggleView(title: browsingLockTitle,
-                           subtitle: nil,
-                           option: Preferences.Privacy.privateBrowsingLock)
+          ShieldToggleView(
+            title: browsingLockTitle,
+            subtitle: nil,
+            toggle: .init(get: {
+              privateBrowsingLock.value
+            }, set: { isOn in
+              if isOn {
+                privateBrowsingLock.value = true
+              } else {
+                askForAuthentication(.general) { success, _ in
+                  privateBrowsingLock.value = !success
+                }
+              }
+            }))
         case .noAuthentication:
           Toggle(isOn: .constant(false)) {
             VStack(alignment: .leading, spacing: 4) {
@@ -111,7 +125,7 @@ struct PrivateTabsView: View {
 #if DEBUG
 struct PrivateTabsView_Previews: PreviewProvider {
   static var previews: some View {
-    PrivateTabsView()
+    PrivateTabsView(askForAuthentication: { _, _ in })
   }
 }
 #endif

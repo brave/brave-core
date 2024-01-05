@@ -9,7 +9,6 @@ import Preferences
 struct OptionToggleView: View {
   let title: String
   var subtitle: String?
-  var markdownSubtitle: LocalizedStringKey?
   @ObservedObject var option: Preferences.Option<Bool>
   let onChange: ShieldToggleView.OnChangeCallback?
   

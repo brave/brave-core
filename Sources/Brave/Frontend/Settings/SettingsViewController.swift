@@ -485,7 +485,7 @@ class SettingsViewController: TableViewController {
       let privateTabsRow = Row(
         text: Strings.TabsSettings.privateTabsSettingsTitle,
         selection: { [unowned self] in
-          let vc = UIHostingController(rootView: PrivateTabsView(tabManager: tabManager))
+          let vc = UIHostingController(rootView: PrivateTabsView(tabManager: tabManager, askForAuthentication: self.askForLocalAuthentication))
           self.navigationController?.pushViewController(vc, animated: true)
         },
         image: UIImage(braveSystemNamed: "leo.product.private-window"),
@@ -656,11 +656,24 @@ class SettingsViewController: TableViewController {
     return Section(
       header: .title(Strings.security),
       rows: [
-        .boolRow(
-          title: Strings.Privacy.browserLock,
+        Row(
+          text: Strings.Privacy.browserLock,
           detailText: Strings.Privacy.browserLockDescription,
-          option: Preferences.Privacy.lockWithPasscode,
-          image: UIImage(braveSystemNamed: "leo.biometric.login")),
+          image: UIImage(braveSystemNamed: "leo.biometric.login"),
+          accessory: .view(SwitchAccessoryView(initialValue: Preferences.Privacy.lockWithPasscode.value, valueChange: { isOn in
+            if isOn {
+              Preferences.Privacy.lockWithPasscode.value = isOn
+            } else {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  Preferences.Privacy.lockWithPasscode.value = isOn
+                }
+              }
+            }
+          })),
+          cellClass: MultilineSubtitleCell.self,
+          uuid: Preferences.Privacy.lockWithPasscode.key
+        ),
         Row(
           text: Strings.Login.loginListNavigationTitle,
           selection: { [unowned self] in
