@@ -194,6 +194,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
+  void OnRewardsPageShown() override;
 
   mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
 

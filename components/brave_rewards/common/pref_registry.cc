@@ -71,6 +71,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletZebPay, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
+  registry->RegisterListPref(prefs::kRewardsPageViewCount);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
