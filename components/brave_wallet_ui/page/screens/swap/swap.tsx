@@ -32,7 +32,6 @@ import {
   SelectTokenModal //
 } from './components/swap/select-token-modal/select-token-modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
-import { QuoteOptions } from './components/swap/quote-options/quote-options'
 import {
   SwapSettingsModal //
 } from './components/swap/settings/swap-settings-modal'
@@ -70,7 +69,6 @@ export const Swap = () => {
     getCachedAssetBalance,
     onSelectFromToken,
     onSelectToToken,
-    onSelectQuoteOption,
     onClickFlipSwapTokens,
     setSelectingFromOrTo,
     handleOnSetFromAmount,
@@ -190,7 +188,8 @@ export const Swap = () => {
             disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
             selectedNetwork={selectedNetwork}
           />
-          {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+          {/* QuoteOptions is currently unused
+          selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
             quoteOptions.length > 0 && (
               <QuoteOptions
                 options={quoteOptions}
@@ -198,7 +197,7 @@ export const Swap = () => {
                 onSelectQuoteOption={onSelectQuoteOption}
                 spotPrices={spotPrices}
               />
-            )}
+            ) */}
         </SwapSectionBox>
         {quoteOptions.length > 0 && (
           <>

@@ -576,50 +576,48 @@ union SwapErrorUnion {
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
-// Swagger spec: https://quote-api.jup.ag/docs/static/index.html
+// Swagger spec: https://station.jup.ag/api-v6/get-quote
 //
 // Note that amount field is incorrectly modelled as number in spec,
 // but it has been fixed here.
-struct JupiterFee {
-  uint64 amount;
-  string mint;
-  double pct;
+struct JupiterPlatformFee {
+  string amount;
+  string fee_bps;
 };
 
-struct JupiterMarketInfo {
-  string id;
+struct JupiterSwapInfo {
+  string amm_key;
   string label;
   string input_mint;
   string output_mint;
-  bool not_enough_liquidity;
-  uint64 in_amount;
-  uint64 out_amount;
-  double price_impact_pct;
-  JupiterFee lp_fee;
-  JupiterFee platform_fee;
+  string in_amount;
+  string out_amount;
+  string fee_amount;
+  string fee_mint;
 };
 
-struct JupiterRoute {
-  uint64 in_amount;
-  uint64 out_amount;
-  uint64 amount;
-  uint64 other_amount_threshold;
-  string swap_mode;
-  double price_impact_pct;
-  int32 slippage_bps;
-  array<JupiterMarketInfo> market_infos;
+struct JupiterRouteStep {
+  JupiterSwapInfo swap_info;
+  string percent;
 };
 
 struct JupiterQuote {
-  array<JupiterRoute> routes;
+  string input_mint;
+  string in_amount;
+  string output_mint;
+  string out_amount;
+  string other_amount_threshold;
+  string swap_mode;
+  string slippage_bps;
+  JupiterPlatformFee? platform_fee;
+  string price_impact_pct;
+  array<JupiterRouteStep> route_plan;
 };
 
 struct JupiterTransactionParams {
+  JupiterQuote quote;
   string chain_id;
-  JupiterRoute route;
   string user_public_key;
-  string input_mint;
-  string output_mint;
 };
 
 struct JupiterError {
