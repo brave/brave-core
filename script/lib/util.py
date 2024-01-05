@@ -5,12 +5,9 @@
 
 from __future__ import print_function
 
-import argparse
 import atexit
 import contextlib
 import errno
-import platform
-import re
 import shutil
 import ssl
 import subprocess
