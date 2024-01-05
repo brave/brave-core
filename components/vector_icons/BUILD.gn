@@ -47,6 +47,8 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_launch.icon",
     "leo_message_bubble_heart.icon",
     "leo_network_speed_fast.icon",
+    "leo_pause_filled.icon",
+    "leo_picture_in_picture_return.icon",
     "leo_plus_add.icon",
     "leo_print.icon",
     "leo_product_bat_outline.icon",
@@ -80,6 +82,10 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_window_tab_new.icon",
     "leo_window_tab_private.icon",
     "leo_window_tab_tor.icon",
+    "leo_play_filled.icon",
+    "leo_reload.icon",
+    "leo_previous_outline.icon",
+    "leo_next_outline.icon",
   ]
 
   if (enable_playlist_webui) {
