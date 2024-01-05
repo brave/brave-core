@@ -11,8 +11,10 @@ import urlparse
 
 categories = ("Advertising", "Analytics", "Social", "Content")
 
+
 def output_filename(category):
     return "Lists/disconnect-{0}.json".format(category.lower())
+
 
 def url_filter(resource):
     return "^https?://([^/]+\\.)?" + resource.replace(".", "\\.")
@@ -23,10 +25,16 @@ def unless_domain(properties):
 
 
 def create_blocklist_entry(resource, properties):
-    return {"trigger": {"url-filter": url_filter(resource),
-                        "load-type": ["third-party"],
-                        "unless-domain": unless_domain(properties)},
-            "action": {"type": "block"}}
+    return {
+        "trigger": {
+            "url-filter": url_filter(resource),
+            "load-type": ["third-party"],
+            "unless-domain": unless_domain(properties)
+        },
+        "action": {
+            "type": "block"
+        }
+    }
 
 
 def generate_entity_list(path="shavar-prod-lists/disconnect-entitylist.json"):
@@ -48,9 +56,10 @@ def generate_entity_list(path="shavar-prod-lists/disconnect-entitylist.json"):
         # Human-readable output.
         # print json.dumps(blocklist, indent=2)
 
+
 def add_entry_to_blocklist(blocklist, entities, name, property_, resources):
     if property_ == "dnt":
-        return # we don't handle dnt entries yet
+        return  # we don't handle dnt entries yet
     if name in entities:
         props = entities[name]["properties"]
     else:
@@ -61,7 +70,10 @@ def add_entry_to_blocklist(blocklist, entities, name, property_, resources):
     for res in resources:
         blocklist.append(create_blocklist_entry(res, props))
 
-def generate_blacklists(blacklist="shavar-prod-lists/disconnect-blacklist.json", entitylist="shavar-prod-lists/disconnect-entitylist.json"):
+
+def generate_blacklists(
+        blacklist="shavar-prod-lists/disconnect-blacklist.json",
+        entitylist="shavar-prod-lists/disconnect-entitylist.json"):
     # Generating the categorical lists requires some manual tweaking to the
     # data at the moment.
 
@@ -110,15 +122,17 @@ def generate_blacklists(blacklist="shavar-prod-lists/disconnect-blacklist.json",
         for entity in categories[category]:
             for name, domains in entity.iteritems():
                 for property_, resources in domains.iteritems():
-                    add_entry_to_blocklist(blocklist, entities, name, property_, resources)
+                    add_entry_to_blocklist(blocklist, entities, name, property_,
+                                           resources)
 
-        print("{cat} blacklist has {count} entries."
-              .format(cat=category, count=len(blocklist)))
+        print("{cat} blacklist has {count} entries.".format(
+            cat=category, count=len(blocklist)))
 
         with open(output_filename(category), "w") as fp:
             out = json.dumps(blocklist, indent=0,
                              separators=(',', ':')).replace('\n', '')
             fp.write(out)
+
 
 def format_one_rule_per_line():
     for category in categories:

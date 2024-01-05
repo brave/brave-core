@@ -16,10 +16,9 @@ import sys
 
 from lxml import etree
 
-NS = {'x':'urn:oasis:names:tc:xliff:document:1.2'}
+NS = {'x': 'urn:oasis:names:tc:xliff:document:1.2'}
 
-STRINGS_TO_REMOVE = ('CFBundleName',
-                     'CFBundleShortVersionString',
+STRINGS_TO_REMOVE = ('CFBundleName', 'CFBundleShortVersionString',
                      'CFBundleDisplayName')
 
 REMOVE_FILES = []
@@ -40,7 +39,8 @@ if __name__ == "__main__":
             for file_node in root.xpath("//x:file", namespaces=NS):
                 original = file_node.get('original')
                 if original and original.endswith('InfoPlist.strings'):
-                    for trans_unit_node in file_node.xpath("./x:body/x:trans-unit", namespaces=NS):
+                    for trans_unit_node in file_node.xpath(
+                            "./x:body/x:trans-unit", namespaces=NS):
                         id = trans_unit_node.get('id')
                         if id and id in STRINGS_TO_REMOVE:
                             trans_unit_node.getparent().remove(trans_unit_node)
@@ -49,7 +49,8 @@ if __name__ == "__main__":
             for file_node in root.xpath("//x:file", namespaces=NS):
                 original = file_node.get('original')
                 if original and original.endswith('Info.plist'):
-                    trans_unit_nodes = file_node.xpath("x:body/x:trans-unit", namespaces=NS)
+                    trans_unit_nodes = file_node.xpath("x:body/x:trans-unit",
+                                                       namespaces=NS)
                     if len(trans_unit_nodes) == 0:
                         file_node.getparent().remove(file_node)
         # Write it back to the same file
