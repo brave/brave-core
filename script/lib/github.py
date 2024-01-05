@@ -15,11 +15,6 @@ try:
 except ImportError:
     pass
 
-REQUESTS_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..',
-                                            'vendor', 'requests'))
-sys.path.append(os.path.join(REQUESTS_DIR, 'build', 'lib'))
-sys.path.append(os.path.join(REQUESTS_DIR, 'build', 'lib.linux-x86_64-2.7'))
-
 GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 

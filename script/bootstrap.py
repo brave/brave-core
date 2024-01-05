@@ -9,8 +9,7 @@ import argparse
 import os
 import sys
 
-from lib.config import BRAVE_CORE_ROOT, \
-    enable_verbose_mode, is_verbose_mode
+from lib.config import enable_verbose_mode, is_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
 NPM = 'npm'
@@ -22,7 +21,6 @@ def main():
     if args.verbose:
         enable_verbose_mode()
 
-    setup_python_libs()
     update_node_modules('.')
 
 
@@ -39,11 +37,6 @@ def check_root():
         choice = input("Do you want to continue? [y/N]: ")
         if choice not in ('y', 'Y'):
             sys.exit(0)
-
-
-def setup_python_libs():
-    with scoped_cwd(os.path.join(VENDOR_DIR, 'requests')):
-        execute_stdout([sys.executable, 'setup.py', 'build'])
 
 
 def update_node_modules(dirname, env=None):
