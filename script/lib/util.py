@@ -27,52 +27,6 @@ import zipfile
 from .config import is_verbose_mode
 from .env_util import get_vs_env
 
-_PLATFORM_MAPPING = {
-    'cygwin': 'win',
-    'darwin': 'mac',
-    'linux2': 'linux',
-    'linux': 'linux',
-    'win32': 'win',
-}
-
-BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
-                                        'boto'))
-
-
-def get_host_os():
-    """Returns the host OS with a predictable string."""
-    if sys.platform in _PLATFORM_MAPPING:
-        return _PLATFORM_MAPPING[sys.platform]
-
-    try:
-        return os.uname().sysname.lower()
-    except AttributeError:
-        return sys.platform
-
-
-def get_host_arch():
-    """Returns the host architecture with a predictable string."""
-    host_arch = platform.machine()
-
-    # Convert machine type to format recognized by gyp.
-    if re.match(r'i.86', host_arch) or host_arch == 'i86pc':
-        host_arch = 'ia32'
-    elif host_arch in ['x86_64', 'amd64']:
-        host_arch = 'x64'
-    elif host_arch.startswith('arm64') or host_arch.startswith('aarch64'):
-        host_arch = 'arm64'
-    elif host_arch.startswith('arm'):
-        host_arch = 'arm'
-
-    # platform.machine is based on running kernel. It's possible to use 64-bit
-    # kernel with 32-bit userland, e.g. to give linker slightly more memory.
-    # Distinguish between different userland bitness by querying
-    # the python binary.
-    if host_arch == 'x64' and platform.architecture()[0] == '32bit':
-        host_arch = 'ia32'
-
-    return host_arch
-
 
 def tempdir(prefix=''):
     directory = tempfile.mkdtemp(prefix=prefix)
@@ -263,39 +217,3 @@ def execute_stdout(argv, env=os.environ):
             raise e
     else:
         execute(argv, env)
-
-
-def parse_version(version):
-    if version[0] == 'v':
-        version = version[1:]
-
-    vs = version.split('+')[0]
-    vs = vs.split('.')
-
-    if len(version.split('+')) == 2:
-        vs = vs + [version.split('+')[1]]
-
-    return vs
-
-
-def import_vs_env(target_arch):
-    if sys.platform != 'win32':
-        return
-
-    if target_arch == 'ia32':
-        vs_arch = 'amd64_x86'
-    else:
-        vs_arch = 'x86_amd64'
-    env = get_vs_env('14.0', vs_arch)
-    os.environ.update(env)
-
-
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    v = v.lower()
-    if v in ('yes', 'true', 't', 'y', '1'):
-        return True
-    if v in ('no', 'false', 'f', 'n', '0'):
-        return False
-    raise argparse.ArgumentTypeError('Boolean value expected.')
