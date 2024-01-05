@@ -72,7 +72,9 @@ class LoadingSpinner : public views::View, gfx::AnimationDelegate {
       animation_.Show();
     }
 
+    constexpr int kSpinnerStrokeWidth = 4;
     auto preferred_size = GetPreferredSize();
+    preferred_size.Enlarge(-kSpinnerStrokeWidth, -kSpinnerStrokeWidth);
     auto origin =
         GetLocalBounds().CenterPoint() -
         gfx::Vector2d(preferred_size.width() / 2, preferred_size.height() / 2);
@@ -81,13 +83,17 @@ class LoadingSpinner : public views::View, gfx::AnimationDelegate {
     SkColor background_color = SkColorSetA(foreground_color, 0.3 * 255);
     views::DrawSpinningRing(
         canvas, gfx::RectToSkRect(gfx::Rect(origin, preferred_size)),
-        background_color, foreground_color, 4,
+        background_color, foreground_color, kSpinnerStrokeWidth,
         gfx::Tween::IntValueBetween(animation_.GetCurrentValue(), 0, 360));
   }
 
   // gfx::AnimationDelegate:
   void AnimationProgressed(const gfx::Animation* animation) override {
     SchedulePaint();
+  }
+  void AnimationEnded(const gfx::Animation* animation) override {
+    animation_.Reset();
+    animation_.Show();
   }
 
  private:
@@ -432,6 +438,7 @@ AddBubble::AddBubble(Browser* browser,
         &AddBubble::InitListView, weak_ptr_factory_.GetWeakPtr()));
     scroll_view_->SetPreferredSize(
         gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
+    SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
   } else {
     InitListView();
   }
@@ -453,6 +460,7 @@ void AddBubble::InitListView() {
                                    base::Unretained(this))
                         .Then(base::BindOnce(&AddBubble::AddSelected,
                                              base::Unretained(this))));
+  SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
 
   scroll_view_->SetPreferredSize(
       gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
