@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # pylint: disable=line-too-long
 
 """This script runs `npm audit' and `cargo audit' on relevant paths in the
@@ -14,16 +14,14 @@ import json
 import os
 import subprocess
 import sys
+import urllib.request
 
-import requests
 
 def get_remote_audit_config(
         url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
         retry = 3):
-    """Fetch additional audit configuration"""
-    s = requests.Session()
-    s.mount(url, requests.adapters.HTTPAdapter(max_retries=retry))
-    return s.get(url).json()
+    return json.loads(urllib.request.urlopen(url).read().decode("utf-8"))
+
 
 REMOTE_AUDIT_CONFIG = get_remote_audit_config()
 IGNORED_CARGO_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["cargo"]]
