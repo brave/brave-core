@@ -335,6 +335,21 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     return;
   }
 
+  if (!items.empty() && service_->ShouldRefetchMediaSourceToCache(items)) {
+    if (IsRefetching()) {
+      // We don't have to update found items with |items| as they're going to
+      // be replaced.
+      return;
+    }
+
+    if (found_items_.size() && 
+        !service_->ShouldRefetchMediaSourceToCache(found_items_)) {
+      // We don't want to override |found_items_| with |items_| as it results it
+      // refetching.
+      return;
+    }
+  }
+
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
   base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
@@ -365,6 +380,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   for (auto& callback : callbacks) {
     std::move(callback).Run();
   }
+  sent_find_media_request_ = false;
 }
 
 std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
