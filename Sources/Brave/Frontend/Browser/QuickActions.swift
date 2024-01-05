@@ -89,6 +89,8 @@ public class QuickActions: NSObject {
   }
 
   fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
+    // Open a new tab when Scan QR code is executed from quick long press action 
+    bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false)
     bvc.scanQRCode()
   }
 }
