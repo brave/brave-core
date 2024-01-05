@@ -136,7 +136,7 @@ where
                                 request_id = match item_creds.request_id {
                                     Some(request_id) => request_id,
                                     // use the item id as the request id if it was not persisted
-                                    None => item_id,
+                                    None => item_id.to_string(),
                                 };
 
                                 // are we almost expired
