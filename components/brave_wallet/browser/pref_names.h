@@ -49,8 +49,8 @@ inline constexpr char kBraveWalletSelectedEthDappAccount[] =
 inline constexpr char kBraveWalletSelectedSolDappAccount[] =
     "brave.wallet.selected_sol_dapp_account";
 inline constexpr char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
-inline constexpr char kBraveWalletUserAssets[] =
-    "brave.wallet.wallet_user_assets";
+inline constexpr char kBraveWalletUserAssetsList[] =
+    "brave.wallet.wallet_user_assets_list";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
 // Added 03/2023 to add networks hidden by default
@@ -97,5 +97,8 @@ inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
 // 06/2023
 inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
     "brave.wallet.selected_coin";
+// 01/2024
+inline constexpr char kBraveWalletUserAssetsDeprecated[] =
+    "brave.wallet.wallet_user_assets";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

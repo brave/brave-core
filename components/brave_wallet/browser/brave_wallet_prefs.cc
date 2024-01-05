@@ -53,18 +53,23 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
-base::Value::Dict GetDefaultUserAssets() {
-  base::Value::Dict user_assets_pref;
-  user_assets_pref.Set(kEthereumPrefKey,
-                       BraveWalletService::GetDefaultEthereumAssets());
-  user_assets_pref.Set(kSolanaPrefKey,
-                       BraveWalletService::GetDefaultSolanaAssets());
-  user_assets_pref.Set(kFilecoinPrefKey,
-                       BraveWalletService::GetDefaultFilecoinAssets());
-  user_assets_pref.Set(kBitcoinPrefKey,
-                       BraveWalletService::GetDefaultBitcoinAssets());
-  user_assets_pref.Set(kZCashPrefKey,
-                       BraveWalletService::GetDefaultZCashAssets());
+base::Value::List GetDefaultUserAssets() {
+  base::Value::List user_assets_pref;
+  for (auto& asset : BraveWalletService::GetDefaultEthereumAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultSolanaAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultFilecoinAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultBitcoinAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultZCashAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
   return user_assets_pref;
 }
 
@@ -199,8 +204,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworksPerOrigin,
                                    GetDefaultSelectedNetworksPerOrigin());
-  registry->RegisterDictionaryPref(kBraveWalletUserAssets,
-                                   GetDefaultUserAssets());
+  registry->RegisterListPref(kBraveWalletUserAssetsList,
+                             GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
@@ -264,6 +269,9 @@ void RegisterProfilePrefsForMigration(
   // Added 08/2023
   registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
                                 false);
+
+  // Added 01/2024
+  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -292,7 +300,7 @@ void ClearTxServiceProfilePrefs(PrefService* prefs) {
 
 void ClearBraveWalletServicePrefs(PrefService* prefs) {
   DCHECK(prefs);
-  prefs->ClearPref(kBraveWalletUserAssets);
+  prefs->ClearPref(kBraveWalletUserAssetsList);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
   prefs->ClearPref(kBraveWalletEthAllowancesCache);
@@ -313,6 +321,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 07/2023
   KeyringService::MigrateDerivedAccountIndex(prefs);
+
+  // Added 01/2024 migrate assets pref to plain list.
+  BraveWalletService::MigrateAssetsPrefToList(prefs);
 }
 
 }  // namespace brave_wallet
