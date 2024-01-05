@@ -193,7 +193,6 @@ bool BravePrivacySandboxSettings::IsPrivacySandboxEnabled() const {
 
 void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
 void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
-void BravePrivacySandboxSettings::SetPrivacySandboxEnabled(bool enabled) {}
 
 bool BravePrivacySandboxSettings::IsPrivacySandboxRestricted() const {
   return true;
