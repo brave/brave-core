@@ -9,7 +9,7 @@ import argparse
 import os
 import sys
 
-from lib.config import enable_verbose_mode, is_verbose_mode
+from lib.config import PLATFORM, enable_verbose_mode, is_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
 NPM = 'npm'

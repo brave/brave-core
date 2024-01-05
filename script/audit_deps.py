@@ -18,8 +18,8 @@ import urllib.request
 
 
 def get_remote_audit_config(
-        url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
-        retry = 3):
+    url="https://raw.githubusercontent.com/brave/audit-config/main/config.json"
+):
     return json.loads(urllib.request.urlopen(url).read().decode("utf-8"))
 
 
