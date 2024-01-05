@@ -216,4 +216,8 @@ std::optional<base::FilePath> BraveConfigurator::GetCrxCachePath() const {
                 : std::nullopt;
 }
 
+bool BraveConfigurator::IsConnectionMetered() const {
+  return configurator_impl_.IsConnectionMetered();
+}
+
 }  // namespace component_updater
