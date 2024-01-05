@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/segment/creative_ad_model_based_predictor_segment_scoring.h"
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_untargeted_segment_input_variable_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -35,7 +36,29 @@ TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
      ComputeNonMatchingSegmentScore) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeSegmentScore(/*segment_input_variable=*/{}));
+  EXPECT_DOUBLE_EQ(
+      0.0, ComputeSegmentScore(
+               CreativeAdModelBasedPredictorSegmentInputVariablesInfo{}));
+}
+
+TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
+     ComputeMatchingUntargetedSegmentScore) {
+  // Arrange
+  CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo
+      segment_input_variable;
+  segment_input_variable.value = true;
+
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeSegmentScore(segment_input_variable));
+}
+
+TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
+     ComputeNonMatchingUntargetedSegmentScore) {
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(
+      0.0,
+      ComputeSegmentScore(
+          CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo{}));
 }
 
 }  // namespace brave_ads

@@ -188,7 +188,7 @@ void EligibleNewTabPageAdsV1::GetForUntargeted(
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      {kUntargeted},
+      {kUntargetedSegment},
       base::BindOnce(&EligibleNewTabPageAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
@@ -239,7 +239,7 @@ CreativeNewTabPageAdList EligibleNewTabPageAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  return PrioritizeCreativeAds(eligible_creative_ads);
+  return HighestPriorityCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads

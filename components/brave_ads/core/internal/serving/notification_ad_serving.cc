@@ -125,7 +125,12 @@ void NotificationAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(BuildNotificationAd(ChooseCreativeAd(creative_ads)));
+  const CreativeNotificationAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  BLOG(1, "Chosen eligible ad with creative instance id "
+              << creative_ad.creative_instance_id << " and a priority of "
+              << creative_ad.priority);
+
+  ServeAd(BuildNotificationAd(creative_ad));
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {

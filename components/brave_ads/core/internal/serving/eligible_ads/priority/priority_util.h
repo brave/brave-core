@@ -6,48 +6,42 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_UTIL_H_
 
-#include <utility>
-
-#include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_constants.h"
 
 namespace brave_ads {
 
 template <typename T>
-base::flat_map</*priority*/ int, /*creative_ads*/ T>
-SortCreativeAdsIntoPrioritizedBuckets(const T& creative_ads) {
-  base::flat_map<int, T> buckets;
-
-  for (const auto& creative_ad : creative_ads) {
-    if (creative_ad.priority == 0) {
-      continue;
-    }
-
-    const auto iter = buckets.find(creative_ad.priority);
-    if (iter == buckets.cend()) {
-      buckets.insert({creative_ad.priority, {creative_ad}});
-      continue;
-    }
-
-    iter->second.push_back(creative_ad);
-  }
-
-  return buckets;
+size_t UntargetedCreativeAdCount(const T& creative_ads) {
+  return base::ranges::count_if(
+      creative_ads, [](const CreativeAdInfo& creative_ad) {
+        return creative_ad.segment == kUntargetedSegment;
+      });
 }
 
-// 1 is deemed as the top priority, and numbers greater than 1 represent
-// decreasing levels of priority.
 template <typename T>
-std::pair</*priority*/ int, /*creative_ads*/ T> GetHighestPriorityBucket(
-    const base::flat_map<int, T>& buckets) {
-  CHECK(!buckets.empty());
+void LogNumberOfUntargetedCreativeAdsForBucket(const T& creative_ads,
+                                               const int priority,
+                                               const int bucket) {
+  const size_t count = UntargetedCreativeAdCount(creative_ads);
+  if (count > 0) {
+    BLOG(3, count << " untargeted ads with a priority of " << priority
+                  << " in bucket " << bucket);
+  }
+}
 
-  const auto iter = base::ranges::min_element(
-      buckets,
-      [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
-
-  return *iter;
+template <typename T>
+void LogNumberOfTargetedCreativeAdsForBucket(const T& creative_ads,
+                                             const int priority,
+                                             const int bucket) {
+  const size_t count =
+      creative_ads.size() - UntargetedCreativeAdCount(creative_ads);
+  if (count > 0) {
+    BLOG(3, count << " targeted ads with a priority of " << priority
+                  << " in bucket " << bucket);
+  }
 }
 
 }  // namespace brave_ads

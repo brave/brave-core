@@ -200,7 +200,7 @@ void EligibleInlineContentAdsV1::GetForUntargeted(
 
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
-      {kUntargeted}, dimensions,
+      {kUntargetedSegment}, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
@@ -255,7 +255,7 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  return PrioritizeCreativeAds(eligible_creative_ads);
+  return HighestPriorityCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads
