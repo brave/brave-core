@@ -23,18 +23,12 @@ COLOR_NONE='\033[0m'
 
 # Install Node.js dependencies and build user scripts
 
-if [ "$1" == --ci ]; then
-  npm ci
-else
-  npm install
-fi
-
-npm run build
+npm run ios_pack_js
 
 # Set up BraveCore placeholders to allow SPM to validate the package
 mkdir -p BraveCore/build
 cp -R BraveCore/placeholders BraveCore/build 
-touch BraveCore/args.xcconfig
+touch BraveCore/build/args.xcconfig
 
 # Sets up local configurations from the tracked .template files
 

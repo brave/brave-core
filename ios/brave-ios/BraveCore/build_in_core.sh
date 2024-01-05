@@ -2,7 +2,9 @@
 
 set -e
 
-cd "${PROJECT_DIR}/../../.." # Back to brave-core root
+# Back to brave-core root since currently brave-ios has its own npm commands
+# TODO(@brave/ios): Remove iOS-specific npm commands if possible or shift them into brave-core root
+cd "${PROJECT_DIR}/../../.."
 target_environment=""
 target_environment_dir=""
 if [[ $PLATFORM_NAME == "iphonesimulator" ]]; then
@@ -21,16 +23,16 @@ cp -fR "$ios_dir/../placeholders/BraveCore.xcframework" "$ios_dir"
 cp -fR "$ios_dir/../placeholders/MaterialComponents.xcframework" "$ios_dir"
 
 npm run build -- $CONFIGURATION --target_os=ios --target_arch=$target_arch $target_environment
-output_dir="iOS_${CONFIGURATION}_${target_arch_dir}${target_environment_dir}"
 
-cd ../out/$output_dir
+# Create xcframeworks
+pushd "../out/iOS_${CONFIGURATION}_${target_arch_dir}${target_environment_dir}"
 rm -rf "$ios_dir/BraveCore.xcframework"
 xcodebuild -create-xcframework -framework "BraveCore.framework" -debug-symbols "$(pwd)/BraveCore.dSYM" -output "$ios_dir/BraveCore.xcframework"
 rm -rf "$ios_dir/MaterialComponents.xcframework"
 xcodebuild -create-xcframework -framework "MaterialComponents.framework" -debug-symbols "$(pwd)/MaterialComponents.dSYM" -output "$ios_dir/MaterialComponents.xcframework"
 
 # Delete Chromium Assets from BraveCore.framework since they aren't used.
-# TODO: Get this removed in the brave-core builds if possible
+# TODO(@brave/ios): Get this removed in the brave-core builds if possible
 find "$ios_dir/BraveCore.xcframework" -name 'BraveCore.framework' -print0 | while read -d $'\0' framework
 do
   if [[ -f "$framework/Assets.car" ]]; then
@@ -57,3 +59,5 @@ for key in "${copy_args[@]}"; do
       echo "$matched_line" | sed 's/"//g' >> "$args_file"
   fi
 done
+
+popd

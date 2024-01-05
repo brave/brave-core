@@ -154,8 +154,6 @@
 
 /* Begin PBXFileReference section */
 		0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
-		0A24F7E2233E8F0F004D2F3A /* package-lock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "package-lock.json"; path = "../package-lock.json"; sourceTree = "<group>"; };
-		0A24F7E3233E8F0F004D2F3A /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = package.json; path = ../package.json; sourceTree = "<group>"; };
 		0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = bootstrap.sh; path = ../bootstrap.sh; sourceTree = "<group>"; };
 		0A24F7EE233E9129004D2F3A /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Fastfile; path = ../fastlane/Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release-AppStore.xcconfig"; sourceTree = "<group>"; };
@@ -447,8 +445,6 @@
 			isa = PBXGroup;
 			children = (
 				0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */,
-				0A24F7E2233E8F0F004D2F3A /* package-lock.json */,
-				0A24F7E3233E8F0F004D2F3A /* package.json */,
 				0A24F7EE233E9129004D2F3A /* Fastfile */,
 				0A24F836233EB5B4004D2F3A /* Configuration */,
 			);

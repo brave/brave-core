@@ -22,13 +22,3 @@ BASE_BUNDLE_ID = $(FRAMEWORK_BASE_BUNDLE_ID).ios
 DEVELOPMENT_TEAM = KL8N8XSYF4
 
 BRAVE_URL_SCHEME = brave
-
-// Additional Info //
-// Can specify target specific flags via:
-// `OTHER_SWIFT_FLAGS_<TARGET>=-DCUSTOM_FLAG`
-// e.g. `OTHER_SWIFT_FLAGS_CLIENT=-DCUSTOM_FLAG`
-//
-// Usage: `OTHER_SWIFT_FLAGS_BASE=$(OTHER_SWIFT_FLAGS_$(TARGET_NAME:upper))`
-
-// For ObjC import filtering (e.g. ObjC SDK vai bridge header), both Swift_Flags and GCC will need the flag information
-// Most likely, this will look like `-DFOO` and `FOO=1`
