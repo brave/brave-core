@@ -1,0 +1,19 @@
+diff --git a/build/android/test_runner.py b/build/android/test_runner.py
+index 47833d8876103..c5b6f2a7eba96 100755
+--- a/build/android/test_runner.py
++++ b/build/android/test_runner.py
+@@ -1036,11 +1036,10 @@ def RunTestsInPlatformMode(args, result_sink_client=None):
+       yield
+     finally:
+       if args.json_results_file and os.path.exists(json_file.name):
+-        shutil.move(json_file.name, args.json_results_file)
++        shutil.copy(json_file.name, args.json_results_file)
+       elif args.isolated_script_test_output and os.path.exists(json_file.name):
+-        shutil.move(json_file.name, args.isolated_script_test_output)
+-      else:
+-        os.remove(json_file.name)
++        shutil.copy(json_file.name, args.isolated_script_test_output)
++      os.remove(json_file.name)
+
+   @contextlib.contextmanager
+   def json_writer():
