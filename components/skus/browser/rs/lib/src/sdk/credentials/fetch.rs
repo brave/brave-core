@@ -132,10 +132,11 @@ where
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_time_limited_v2_creds(&item.id).await? {
                             Some(item_creds) => {
-                                // overwrite our request id if one is already present
+                                // overwrite our request id if creds are already present
                                 request_id = match item_creds.request_id {
                                     Some(request_id) => request_id,
-                                    None => request_id,
+                                    // use the item id as the request id if it was not persisted
+                                    None => item_id,
                                 };
 
                                 // are we almost expired
