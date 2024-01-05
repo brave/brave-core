@@ -36,6 +36,7 @@ const BatAdLabel = styled.a`
 
   color: rgba(var(--bn-text-base, 0.7));
   font: ${font.small.regular};
+  line-height: 16px;
 `
 
 const CtaButton = styled(Button)`
@@ -95,7 +96,16 @@ export default function Advert(props: Props) {
     console.debug(`Brave News: Fetching an advertisement`)
 
     const advert = await getBraveNewsController().getDisplayAd().then(r => r.ad)
-    setAdvert(advert ?? null)
+    setAdvert(advert ?? {
+      creativeInstanceId: '',
+      ctaText: 'Click Me',
+      description: 'An ad about stuff',
+      dimensions: '',
+      image: { imageUrl: { url: 'https://imgs.search.brave.com/E41LUoPIDBIGvO0_wxnFk-BVrVXxkqnOmdUtO6AdYlY/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jbGlt/YmZvcmhvcGUuZmls/ZXMud29yZHByZXNz/LmNvbS8yMDEyLzAx/L2FzcGlyaW5nLmpw/Zz93PTkxNA' }, paddedImageUrl: undefined },
+      targetUrl: { url: 'https://example.com' },
+      title: 'An Advert',
+      uuid: ''
+    })
   }, {
     // Trigger ad fetch when the ad unit is 1000px away from the viewport
     rootMargin: '0px 0px 1000px 0px'
