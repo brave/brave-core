@@ -7,11 +7,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
 import json
-import os
-import re
-import requests
-import sys
 import base64
+import urllib.request
 try:
     from .util import execute, scoped_cwd
 except ImportError:
@@ -50,7 +47,8 @@ class GitHub():
                 kw['data'] = json.dumps(kw['data'])
 
         try:
-            r = getattr(requests, method)(url, **kw).json()
+            kw['method'] = method
+            r = json.loads(urllib.request.urlopen(url, **kw).read())
         except ValueError:
             # Returned response may be empty in some cases
             r = {}

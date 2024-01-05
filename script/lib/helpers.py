@@ -6,7 +6,7 @@
 from __future__ import print_function
 from builtins import range
 import os
-import requests
+import urllib.request
 from .config import get_raw_version, get_env_var
 
 BRAVE_REPO = "brave/brave-browser"
@@ -26,8 +26,8 @@ def get_channel_display_name():
 
 def call_github_api(url, headers):
     try:
-        r = requests.get(url, headers=headers)
-    except requests.exceptions.ConnectionError:
+        r = urllib.request(url, headers=headers)
+    except urllib.error.URLError:
         print("Error: Received requests.exceptions.ConnectionError, Exiting...")
         exit(1)
     except Exception as e:
