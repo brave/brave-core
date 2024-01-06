@@ -23,6 +23,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
+  registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
 }
 
 bool AreTooltipsEnabled(PrefService* prefs) {

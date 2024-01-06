@@ -25,6 +25,8 @@ inline constexpr char kVerticalTabsFloatingEnabled[] =
     "brave.tabs.vertical_tabs_floating_enabled";
 inline constexpr char kVerticalTabsExpandedWidth[] =
     "brave.tabs.vertical_tabs_expanded_width";
+inline constexpr char kVerticalTabsOnRight[] =
+    "brave.tabs.vertical_tabs_on_right";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 

@@ -55,7 +55,7 @@ bool ShouldShowVerticalTabs(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsEnabled);
 }
 
@@ -64,7 +64,7 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
 
@@ -73,8 +73,13 @@ bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled);
+}
+
+bool IsVerticalTabOnRight(const Browser* browser) {
+  return browser->profile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsOnRight);
 }
 
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
