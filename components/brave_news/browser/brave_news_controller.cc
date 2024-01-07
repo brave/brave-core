@@ -49,6 +49,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -119,6 +120,8 @@ BraveNewsController::BraveNewsController(
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
+  net::NetworkChangeNotifier::AddConnectionTypeObserver(this);
+
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
@@ -838,6 +841,11 @@ void BraveNewsController::OnPublishersUpdated(
   for (const auto& observer : publishers_listeners_) {
     observer->Changed(event->Clone());
   }
+}
+
+void BraveNewsController::OnConnectionTypeChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  LOG(ERROR) << "Connection type is: " << type;
 }
 
 }  // namespace brave_news

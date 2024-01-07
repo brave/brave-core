@@ -16,6 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -37,6 +38,8 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "net/base/network_change_notifier.h"
+#include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefRegistrySimple;
@@ -62,9 +65,11 @@ bool GetIsEnabled(PrefService* prefs);
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.
 // Controls remote feed update logic via Timer and prefs values.
-class BraveNewsController : public KeyedService,
-                            public mojom::BraveNewsController,
-                            public PublishersController::Observer {
+class BraveNewsController
+    : public KeyedService,
+      public mojom::BraveNewsController,
+      public PublishersController::Observer,
+      public net::NetworkChangeNotifier::ConnectionTypeObserver {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -151,6 +156,10 @@ class BraveNewsController : public KeyedService,
   // PublishersController::Observer:
   void OnPublishersUpdated(brave_news::PublishersController*) override;
 
+  // net::NetworkChangeNotifier::ConnectionTypeObserver:
+  void OnConnectionTypeChanged(
+      net::NetworkChangeNotifier::ConnectionType type) override;
+
  private:
   void OnOptInChange();
   void ConditionallyStartOrStopTimer();
@@ -159,6 +168,9 @@ class BraveNewsController : public KeyedService,
   void HandleSubscriptionsChanged();
   void Prefetch();
   void MaybeInitPrefs();
+
+  base::Time last_update_;
+  bool was_offline_{false};
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
