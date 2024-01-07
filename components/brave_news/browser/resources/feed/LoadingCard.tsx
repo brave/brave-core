@@ -15,7 +15,6 @@ const Container = styled(Card)`
 
 const Spinner = styled(ProgressRing)`
   --leo-progressring-color: var(--bn-glass-25);
-  backdrop-filter: blur(64px);
 `
 
 export default function LoadingCard() {
