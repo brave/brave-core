@@ -35,6 +35,10 @@ ukm::UkmRecorder* BraveApplicationContextImpl::GetUkmRecorder() {
   return nullptr;
 }
 
+SafeBrowsingService* BraveApplicationContextImpl::GetSafeBrowsingService() {
+  return nullptr;
+}
+
 BrowserPolicyConnectorIOS*
 BraveApplicationContextImpl::GetBrowserPolicyConnector() {
   return nullptr;
