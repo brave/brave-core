@@ -7,11 +7,11 @@ import Flex from '$web-common/Flex'
 import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { getCardColor } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/colors'
 import { usePublisher, usePublisherFollowed } from './Context'
+import FollowButton from './FollowButton'
 import getBraveNewsController from './api'
 import { useLazyUnpaddedImageUrl } from './useUnpaddedImageUrl'
-import FollowButton from '../../../../brave_new_tab_ui/components/default/braveNews/customize/FollowButton'
-import { getCardColor } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/colors'
 
 interface CardProps {
   backgroundColor?: string
@@ -27,7 +27,7 @@ const Card = styled('div').attrs<CardProps>(props => ({
   style: {
     backgroundColor: props.backgroundColor
   }
-}))<CardProps>`
+})) <CardProps>`
   position: relative;
   height: 80px;
   border-radius: 8px;
@@ -49,7 +49,7 @@ const CoverImage = styled('div').attrs<CoverImageProps>(props => ({
   style: {
     backgroundImage: `url('${props.backgroundImage}')`
   }
-}))<CoverImageProps>`
+})) <CoverImageProps>`
   position: absolute;
   top: 15%; bottom: 15%; left: 15%; right: 15%;
   border-radius: 8px;
@@ -63,7 +63,7 @@ const Name = styled.span`
   font-weight: 600;
 `
 
-export default function PublisherCard (props: {
+export default function PublisherCard(props: {
   publisherId: string
 }) {
   const publisher = usePublisher(props.publisherId)
@@ -79,7 +79,7 @@ export default function PublisherCard (props: {
   return <Flex direction="column" gap={8} ref={setElementRef}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
       {coverUrl && <CoverImage backgroundImage={coverUrl} />}
-      <StyledFollowButton following={followed} onClick={() => setFollowed(!followed)} />
+      <StyledFollowButton fab size='tiny' following={followed} onClick={() => setFollowed(!followed)} />
     </Card>
     <Name>
       {publisher?.publisherName}
@@ -87,14 +87,14 @@ export default function PublisherCard (props: {
   </Flex>
 }
 
-export function DirectPublisherCard (props: {
+export function DirectPublisherCard(props: {
   feedUrl: string
   title: string
 }) {
   const [loading, setLoading] = useState(false)
   return <Flex direction="column" gap={8}>
     <Card backgroundColor={getCardColor(props.feedUrl)} data-feed-card-is-followed={true}>
-      <StyledFollowButton isDisabled={loading} following={false} onClick={async () => {
+      <StyledFollowButton following={false} isDisabled={loading} onClick={async () => {
         setLoading(true)
         await getBraveNewsController().subscribeToNewDirectFeed({ url: props.feedUrl })
         setLoading(false)

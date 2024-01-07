@@ -61,7 +61,7 @@ const ButtonsContainer = styled.div`
 const SettingsButton = styled(Button)`
   --leo-button-color: var(--bn-glass-50);
   --leo-button-radius: ${radius.s};
-  --leo-button-padding: ${spacing.m};
+  --leo-button-padding: ${spacing.s};
 `
 
 const LoadNewContentButton = styled(NewsButton)`
@@ -116,7 +116,7 @@ export default function FeedV2() {
 
     <ButtonsContainer>
       <SettingsButton fab kind='outline' onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
-        <Icon name="settings" />
+        <Icon name="tune" />
       </SettingsButton>
       <SettingsButton fab isLoading={!feedV2} kind='outline' title={getLocale('braveNewsRefreshFeed')} onClick={() => {
         refreshFeedV2()

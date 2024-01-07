@@ -36,6 +36,7 @@ const BatAdLabel = styled.a`
 
   color: rgba(var(--bn-text-base, 0.7));
   font: ${font.small.regular};
+  line-height: 16px;
 `
 
 const CtaButton = styled(Button)`
