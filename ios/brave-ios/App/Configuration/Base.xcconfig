@@ -12,7 +12,7 @@ brave_version_minor = 0
 brave_version_patch = 0
 brave_version_build = 0
 
-#include "../BraveCore/build/args.xcconfig"
+#include "../../../../out/iOS_Build/args.xcconfig"
 
 OTHER_SWIFT_FLAGS_BASE=-DMOZ_TARGET_$(TARGET_NAME:upper)
 

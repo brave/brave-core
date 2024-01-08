@@ -118,8 +118,8 @@ var package = Package(
     ),
     .target(name: "BraveShields", dependencies: ["Strings", "Preferences"], plugins: ["LoggerPlugin"]),
     .target(name: "DesignSystem", plugins: ["LeoAssetsPlugin"]),
-    .binaryTarget(name: "BraveCore", path: "BraveCore/build/BraveCore.xcframework"),
-    .binaryTarget(name: "MaterialComponents", path: "BraveCore/build/MaterialComponents.xcframework"),
+    .binaryTarget(name: "BraveCore", path: "../../../out/ios_Build/BraveCore.xcframework"),
+    .binaryTarget(name: "MaterialComponents", path: "../../../out/ios_Build/MaterialComponents.xcframework"),
     .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
     .target(
       name: "Storage",
