@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/zebpay/connect_zebpay_wallet.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 
 using brave_rewards::internal::endpoints::GetBalanceZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
@@ -26,6 +27,11 @@ ZebPay::ZebPay(RewardsEngineImpl& engine)
 
 const char* ZebPay::WalletType() const {
   return constant::kWalletZebPay;
+}
+
+void ZebPay::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  external_wallet.account_url = GetAccountUrl();
+  external_wallet.activity_url = GetActivityUrl();
 }
 
 void ZebPay::FetchBalance(

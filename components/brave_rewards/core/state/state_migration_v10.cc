@@ -104,7 +104,6 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
       NOTREACHED();
   }
 
-  uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
   callback(engine_->uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::OK
                : mojom::Result::FAILED);
@@ -123,19 +122,18 @@ void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(!uphold_wallet->address.empty());
 
-  const auto is_semi_verified = [](auto result) {
-    const auto [custodian, linked] = std::move(result);
-    return custodian != constant::kWalletUphold || !linked;
+  const auto is_semi_verified = [](auto& result) {
+    auto& [wallet_provider, linked] = result;
+    return wallet_provider != constant::kWalletUphold || !linked;
   };
 
   // deemed semi-VERIFIED || semi-VERIFIED
-  if (!result.has_value() || is_semi_verified(std::move(result.value()))) {
+  if (!result.has_value() || is_semi_verified(result.value())) {
     uphold_wallet->status =
         static_cast<mojom::WalletStatus>(5);  // mojom::WalletStatus::PENDING
     uphold_wallet->address = "";
   }
 
-  uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
   callback(engine_->uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::OK
                : mojom::Result::FAILED);

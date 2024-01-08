@@ -28,6 +28,11 @@ const char* Gemini::WalletType() const {
   return constant::kWalletGemini;
 }
 
+void Gemini::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  external_wallet.account_url = GetAccountUrl();
+  external_wallet.activity_url = GetActivityUrl();
+}
+
 void Gemini::FetchBalance(
     base::OnceCallback<void(mojom::Result, double)> callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
+#include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
 
@@ -76,7 +77,7 @@ void RewardsEngineImpl::GetRewardsParameters(
     if (params->rate == 0.0) {
       // A rate of zero indicates that the rewards parameters have
       // not yet been successfully initialized from the server.
-      BLOG(1, "Rewards parameters not set - fetching from server");
+      Log(FROM_HERE) << "Rewards parameters not set - fetching from server";
       api()->FetchParameters(std::move(callback));
       return;
     }
@@ -385,7 +386,7 @@ void RewardsEngineImpl::GetRewardsInternalsInfo(
 
     mojom::RewardsWalletPtr wallet = wallet_.GetWallet();
     if (!wallet) {
-      BLOG(0, "Wallet is null");
+      LogError(FROM_HERE) << "Wallet is null";
       std::move(callback).Run(std::move(info));
       return;
     }
@@ -558,30 +559,14 @@ void RewardsEngineImpl::FetchBalance(FetchBalanceCallback callback) {
 
 void RewardsEngineImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
-    auto wallet_type = GetState<std::string>(state::kExternalWalletType);
-    if (wallet_type.empty()) {
-      std::move(callback).Run(nullptr);
-      return;
-    }
-
     mojom::ExternalWalletPtr wallet;
-
-    if (wallet_type == constant::kWalletBitflyer) {
-      wallet = bitflyer()->GetWallet();
-    } else if (wallet_type == constant::kWalletGemini) {
-      wallet = gemini()->GetWallet();
-    } else if (wallet_type == constant::kWalletUphold) {
-      wallet = uphold()->GetWallet();
-    } else if (wallet_type == constant::kWalletZebPay) {
-      wallet = zebpay()->GetWallet();
-    } else {
-      NOTREACHED() << "Unknown external wallet type!";
+    auto wallet_type = GetState<std::string>(state::kExternalWalletType);
+    if (auto* provider = GetExternalWalletProvider(wallet_type)) {
+      wallet = provider->GetWallet();
+      if (wallet && (wallet->status == mojom::WalletStatus::kNotConnected)) {
+        wallet = nullptr;
+      }
     }
-
-    if (wallet && wallet->status == mojom::WalletStatus::kNotConnected) {
-      wallet = nullptr;
-    }
-
     std::move(callback).Run(std::move(wallet));
   });
 }
@@ -590,24 +575,12 @@ void RewardsEngineImpl::BeginExternalWalletLogin(
     const std::string& wallet_type,
     BeginExternalWalletLoginCallback callback) {
   WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
-    if (wallet_type == constant::kWalletBitflyer) {
-      return bitflyer()->BeginLogin(std::move(callback));
+    if (auto* provider = GetExternalWalletProvider(wallet_type)) {
+      provider->BeginLogin(std::move(callback));
+    } else {
+      LogError(FROM_HERE) << "Invalid external wallet type";
+      std::move(callback).Run(nullptr);
     }
-
-    if (wallet_type == constant::kWalletGemini) {
-      return gemini()->BeginLogin(std::move(callback));
-    }
-
-    if (wallet_type == constant::kWalletUphold) {
-      return uphold()->BeginLogin(std::move(callback));
-    }
-
-    if (wallet_type == constant::kWalletZebPay) {
-      return zebpay()->BeginLogin(std::move(callback));
-    }
-
-    NOTREACHED() << "Unknown external wallet type!";
-    std::move(callback).Run(nullptr);
   });
 }
 
@@ -615,28 +588,15 @@ void RewardsEngineImpl::ConnectExternalWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
     ConnectExternalWalletCallback callback) {
-  WhenReady(
-      [this, wallet_type, args, callback = std::move(callback)]() mutable {
-        if (wallet_type == constant::kWalletBitflyer) {
-          return bitflyer()->ConnectWallet(args, std::move(callback));
-        }
-
-        if (wallet_type == constant::kWalletGemini) {
-          return gemini()->ConnectWallet(args, std::move(callback));
-        }
-
-        if (wallet_type == constant::kWalletUphold) {
-          return uphold()->ConnectWallet(args, std::move(callback));
-        }
-
-        if (wallet_type == constant::kWalletZebPay) {
-          return zebpay()->ConnectWallet(args, std::move(callback));
-        }
-
-        NOTREACHED() << "Unknown external wallet type!";
-        std::move(callback).Run(
-            mojom::ConnectExternalWalletResult::kUnexpected);
-      });
+  WhenReady([this, wallet_type, args,
+             callback = std::move(callback)]() mutable {
+    if (auto* provider = GetExternalWalletProvider(wallet_type)) {
+      provider->ConnectWallet(args, std::move(callback));
+    } else {
+      LogError(FROM_HERE) << "Invalid external wallet type";
+      std::move(callback).Run(mojom::ConnectExternalWalletResult::kUnexpected);
+    }
+  });
 }
 
 void RewardsEngineImpl::GetTransactionReport(
@@ -742,6 +702,14 @@ mojom::ClientInfoPtr RewardsEngineImpl::GetClientInfo() {
   return info;
 }
 
+RewardsLogStream RewardsEngineImpl::Log(base::Location location) {
+  return RewardsLogStream(*client_, location, 1);
+}
+
+RewardsLogStream RewardsEngineImpl::LogError(base::Location location) {
+  return RewardsLogStream(*client_, location, 0);
+}
+
 std::optional<std::string> RewardsEngineImpl::EncryptString(
     const std::string& value) {
   std::optional<std::string> result;
@@ -763,6 +731,23 @@ mojom::RewardsEngineClient* RewardsEngineImpl::client() {
 
 database::Database* RewardsEngineImpl::database() {
   return &database_;
+}
+
+wallet_provider::WalletProvider* RewardsEngineImpl::GetExternalWalletProvider(
+    const std::string& wallet_type) {
+  if (wallet_type == constant::kWalletBitflyer) {
+    return &bitflyer_;
+  }
+  if (wallet_type == constant::kWalletGemini) {
+    return &gemini_;
+  }
+  if (wallet_type == constant::kWalletUphold) {
+    return &uphold_;
+  }
+  if (wallet_type == constant::kWalletZebPay) {
+    return &zebpay_;
+  }
+  return nullptr;
 }
 
 bool RewardsEngineImpl::IsReady() const {

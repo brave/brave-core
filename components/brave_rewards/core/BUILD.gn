@@ -465,6 +465,8 @@ static_library("engine") {
     "rewards_engine_helper.h",
     "rewards_engine_impl.cc",
     "rewards_engine_impl.h",
+    "rewards_log_stream.cc",
+    "rewards_log_stream.h",
     "sku/sku.cc",
     "sku/sku.h",
     "sku/sku_common.cc",

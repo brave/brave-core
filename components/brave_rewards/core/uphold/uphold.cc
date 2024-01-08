@@ -28,6 +28,13 @@ const char* Uphold::WalletType() const {
   return constant::kWalletUphold;
 }
 
+void Uphold::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  external_wallet.account_url = GetAccountUrl();
+  external_wallet.activity_url = external_wallet.address.empty()
+                                     ? ""
+                                     : GetActivityUrl(external_wallet.address);
+}
+
 void Uphold::FetchBalance(
     base::OnceCallback<void(mojom::Result, double)> callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});

@@ -38,12 +38,6 @@ bool LogOutWallet(RewardsEngineImpl& engine,
                   const std::string& wallet_type,
                   const std::string& notification = "");
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
-
-void FetchBalance(RewardsEngineImpl& engine,
-                  const std::string& wallet_type,
-                  base::OnceCallback<void(mojom::Result, double)> callback);
-
 }  // namespace wallet
 }  // namespace brave_rewards::internal
 

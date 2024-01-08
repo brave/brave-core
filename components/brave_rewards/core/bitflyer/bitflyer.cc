@@ -28,6 +28,11 @@ const char* Bitflyer::WalletType() const {
   return constant::kWalletBitflyer;
 }
 
+void Bitflyer::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  external_wallet.account_url = GetAccountUrl();
+  external_wallet.activity_url = GetActivityUrl();
+}
+
 void Bitflyer::FetchBalance(
     base::OnceCallback<void(mojom::Result, double)> callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
