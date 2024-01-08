@@ -39,15 +39,14 @@ import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
     private JankTracker mJankTracker;
-    private final ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
     private FeedSurfaceProvider mFeedSurfaceProvider;
     private Supplier<Toolbar> mToolbarSupplier;
-    private TabModelSelector mTabModelSelector;
     private BottomSheetController mBottomSheetController;
+    private ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
@@ -93,7 +92,6 @@ public class BraveNewTabPage extends NewTabPage {
                 tabStripHeightSupplier);
 
         mJankTracker = jankTracker;
-        mTabStripHeightSupplier = tabStripHeightSupplier;
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {

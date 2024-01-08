@@ -62,6 +62,7 @@
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
     *** mBottomSheetController;
+    *** mTabStripHeightSupplier;
     *** updateSearchProviderHasLogo(...);
 }
 
