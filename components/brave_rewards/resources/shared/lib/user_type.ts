@@ -5,16 +5,13 @@
 
 import * as mojom from '../../shared/lib/mojom'
 
-export type UserType = 'unconnected' | 'connected' | 'legacy-unconnected'
+export type UserType = 'unconnected' | 'connected'
 
 export function userTypeFromMojo (type: number): UserType {
-  switch (type) {
-    case mojom.UserType.kConnected:
-      return 'connected'
-    case mojom.UserType.kLegacyUnconnected:
-      return 'legacy-unconnected'
-    default:
-      return 'unconnected'
+  if (type == mojom.UserType.kConnected) {
+    return "connected":
+  } else {
+    return 'unconnected'
   }
 }
 
@@ -22,7 +19,6 @@ export function userTypeFromString (type: string): UserType {
   switch (type) {
     case 'unconnected':
     case 'connected':
-    case 'legacy-unconnected':
       return type
   }
   return 'unconnected'

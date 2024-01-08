@@ -417,7 +417,6 @@ struct ExternalWalletLoginParams {
 };
 
 enum UserType {
-  kLegacyUnconnected,
   kUnconnected,
   kConnected
 };
