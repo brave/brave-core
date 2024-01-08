@@ -169,6 +169,7 @@ declare namespace NewTab {
     parameters: RewardsParameters
     totalContribution: number
     publishersVisitedCount: number
+    selfCustodyInviteDismissed: boolean
   }
 
   export const enum RewardsResult {

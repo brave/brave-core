@@ -549,10 +549,19 @@
 
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_HEADER" desc="">Custodial accounts (requires ID verification)</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_TOOLTIP" desc="">Custodial accounts are accounts with trusted third-party services that hold your BAT for you.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_HEADER" desc="">Self-custody</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_TOOLTIP" desc="">Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_NOTE" desc="">By choosing a self-custody wallet, Rewards will be paid out as SPL-BAT on the Solana network.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER" desc="">Choose where you'd like to receive BAT</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE" desc="">Currently not available in your region</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TEXT" desc="">To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SOLANA_LABEL" desc="">Brave Wallet</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SOLANA_MESSAGE" desc="">Or other wallet that supports Solana</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_TERMS" desc=""><ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_ERROR" desc="">Something went wrong. Please try again</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LOGIN_TEXT" desc="">Log in or sign up</message>
+      <message name="IDS_BRAVE_REWARDS_NEW_BADGE_TEXT" desc="">NEW</message>
 
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
         Pending until <ph name="DATE">$1</ph>

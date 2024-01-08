@@ -10,7 +10,7 @@ import { ModelContext, useModelState } from '../lib/model_context'
 import { useScopedCallback } from '../lib/scoped_callback'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { NewTabLink, TabOpenerContext } from '../../shared/components/new_tab_link'
-import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
+import { getExternalWalletProviderName, isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 import { batAmountFormatter } from '../lib/formatters'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { InfoBox } from './info_box'
@@ -227,6 +227,35 @@ export function TipForm () {
     )
   }
 
+  const isSelfCustodyUser =
+    state.rewardsUser.walletProvider &&
+    isSelfCustodyProvider(state.rewardsUser.walletProvider)
+
+  if (isSelfCustodyUser && state.creatorBanner.web3Url) {
+    return (
+      <style.root>
+        <style.card>
+          <style.selfCustody>
+            <style.selfCustodyTitle>
+              {getString('selfCustodyTitle')}
+            </style.selfCustodyTitle>
+            <style.selfCustodyHeader>
+            {getString('selfCustodyHeader')}
+            </style.selfCustodyHeader>
+            <style.selfCustodyText>
+              {getString('selfCustodyText')}
+            </style.selfCustodyText>
+          </style.selfCustody>
+          <style.buttons>
+            <button onClick={onWeb3Click}>
+              {getString('selfCustodySendButtonLabel')}
+            </button>
+          </style.buttons>
+        </style.card>
+      </style.root>
+    )
+  }
+
   const infoBox = renderInfo()
 
   return (
@@ -295,7 +324,7 @@ export function TipForm () {
         </style.buttons>
         <style.successBackgroundPreloader />
       </style.card>
-      <Terms />
+      {sendEnabled && <Terms />}
     </style.root>
   )
 }

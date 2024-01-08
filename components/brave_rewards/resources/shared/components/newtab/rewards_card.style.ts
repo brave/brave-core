@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 import { buttonReset } from '../../lib/css_mixins'
+import selfCustodyImage from '../../assets/self_custody_invitation.svg'
 
 export const root = styled.div.attrs({
   'data-theme': 'dark'
@@ -561,3 +562,53 @@ export const vbatNotice = styled.div`
     margin-bottom: 10px;
   }
 `
+
+export const selfCustodyInvite = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 12px -12px -6px;
+  border-radius: 12px;
+  background: no-repeat center 16px/auto 67px url(${selfCustodyImage}),
+              linear-gradient(137deg, #346FE1 33.4%, #5844C3 82.8%);
+  padding: 91px 16px 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  color: ${leo.color.container.background};
+  text-align: center;
+`
+
+export const selfCustodyInviteClose = styled.div`
+  --leo-icon-size: 18px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  button {
+    ${buttonReset}
+    cursor: pointer;
+  }
+`
+
+export const selfCustodyInviteHeader = styled.div`
+  font: ${leo.font.default.semibold};
+`
+
+export const selfCustodyInviteText = styled.div`
+  font: ${leo.font.small.regular};
+  padding: 0 16px;
+  margin-bottom: -4px;
+`
+
+export const selfCustodyInviteDismiss = styled.div`
+  button {
+    ${buttonReset}
+    cursor: pointer;
+    padding: 10px 0;
+    opacity: 0.85;
+    font: ${leo.font.components.buttonSmall};
+  }
+`
+

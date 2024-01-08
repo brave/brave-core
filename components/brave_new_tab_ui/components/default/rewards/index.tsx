@@ -20,7 +20,9 @@ import {
 
 import {
   externalWalletFromExtensionData,
-  isExternalWalletProviderAllowed
+  isExternalWalletProviderAllowed,
+  externalWalletProviderFromString,
+  isSelfCustodyProvider
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 import {
@@ -55,10 +57,12 @@ export interface RewardsProps {
   promotions?: NewTab.Promotion[]
   totalContribution: number
   publishersVisitedCount: number
+  selfCustodyInviteDismissed: boolean
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
   onDismissNotification: (id: string) => void
+  onSelfCustodyInviteDismissed: () => void
 }
 
 function getVisibleGrant (promotions: NewTab.Promotion[]): GrantInfo | null {
@@ -116,6 +120,26 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     return false
   }
 
+  const showSelfCustodyInvite = () => {
+    if (props.userType !== 'unconnected') {
+      return false
+    }
+    if (props.selfCustodyInviteDismissed) {
+      return false
+    }
+    const { walletProviderRegions } = props.parameters
+    for (const name of (props.externalWalletProviders || [])) {
+      const provider = externalWalletProviderFromString(name)
+      if (provider && isSelfCustodyProvider(provider)) {
+        const regions = (walletProviderRegions || {})[provider] || null
+        if (isExternalWalletProviderAllowed(props.declaredCountry, regions)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   const onClaimGrant = () => {
     if (grantInfo) {
       chrome.braveRewards.showGrantCaptcha(grantInfo.id)
@@ -148,10 +172,12 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
       canConnectAccount={canConnectAccount()}
+      showSelfCustodyInvite={showSelfCustodyInvite()}
       publishersVisited={props.publishersVisitedCount || 0}
       onEnableRewards={openRewardsPanel}
       onSelectCountry={openRewardsPanel}
       onClaimGrant={onClaimGrant}
+      onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
     />
   )
 })

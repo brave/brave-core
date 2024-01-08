@@ -166,6 +166,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_CONNECT_OPEN: {
       let ui = state.ui
       ui.modalConnect = true
+      ui.modalConnectState = ''
       state = {
         ...state,
         ui
