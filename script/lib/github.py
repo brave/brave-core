@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from builtins import str
 import json
 import base64
+import re
 import urllib.request
 try:
     from .util import execute, scoped_cwd
