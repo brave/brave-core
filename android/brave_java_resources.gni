@@ -681,7 +681,6 @@ brave_java_resources = [
   "java/res/drawable/rounded_8_bottom_bg.xml",
   "java/res/drawable/rounded_8_top_bg.xml",
   "java/res/drawable/rounded_bookmark_import_export_dialog_bg.xml",
-  "java/res/drawable/rounded_corners.xml",
   "java/res/drawable/rounded_dark_bg_alpha.xml",
   "java/res/drawable/rounded_dot_error_status.xml",
   "java/res/drawable/rounded_dot_success_status.xml",
