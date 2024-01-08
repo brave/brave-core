@@ -146,3 +146,20 @@ public extension Strings.Shields {
     comment: "A button that ignores the brave player"
   )
 }
+
+// MARK: - Shields
+public extension Strings.Shields {
+  /// A label of the GPC toggle
+  static let enableGPCLabel = NSLocalizedString(
+    "EnableGPCLabel", tableName: "BraveShared", bundle: .module,
+    value: "Enable Global Privacy Control",
+    comment: "A label of the GPC toggle"
+  )
+  
+  /// A description of what the Enable GPC toggle does
+  static let enableGPCDescription = NSLocalizedString(
+    "EnableGPCDescription", tableName: "BraveShared", bundle: .module,
+    value: "Enable the Global Privacy Control JS API",
+    comment: "A description of what the Enable GPC toggle does"
+  )
+}

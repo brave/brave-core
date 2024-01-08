@@ -5,6 +5,7 @@
 
 import XCTest
 import WebKit
+import BraveShields
 @testable import Brave
 
 final class PageDataTests: XCTestCase {
@@ -14,7 +15,6 @@ final class PageDataTests: XCTestCase {
     let mainFrameURL = URL(string: "http://example.com")!
     let subFrameURL = URL(string: "http://example.com/1p/subframe")!
     let upgradedMainFrameURL = URL(string: "https://example.com")!
-    let upgradedSubFrameURL = URL(string: "https://example.com/1p/subframe")!
     var pageData = PageData(mainFrameURL: mainFrameURL, adBlockStats: AdBlockStats())
     let expectation = expectation(description: "")
     
@@ -28,7 +28,7 @@ final class PageDataTests: XCTestCase {
       // We get only entries of the main frame
       // NOTE: If we were to add some engines we might see additional types
       let expectedMainFrameTypes: Set<UserScriptType> = [
-        .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
+        .siteStateListener, .nacl, .farblingProtection(etld: "example.com"), .gpc(ShieldPreferences.enableGPC.value)
       ]
       XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
       
@@ -50,7 +50,7 @@ final class PageDataTests: XCTestCase {
       // If we were to add some engines we might see additional types
       let addedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(domain: domain)
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
-        .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
+        .siteStateListener, .nacl, .farblingProtection(etld: "example.com"), .gpc(ShieldPreferences.enableGPC.value)
       ]
       XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
       

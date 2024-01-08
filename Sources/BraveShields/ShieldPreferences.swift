@@ -21,4 +21,10 @@ public class ShieldPreferences {
     get { ShieldLevel(rawValue: blockAdsAndTrackingLevelRaw.value) ?? defaultBlockAdsAndTrackingLevel }
     set { blockAdsAndTrackingLevelRaw.value = newValue.rawValue }
   }
+  
+  /// A boolean value inidicating if GPC is enabled
+  public static var enableGPC = Preferences.Option<Bool>(
+    key: "shields.enable-gpc",
+    default: true
+  )
 }

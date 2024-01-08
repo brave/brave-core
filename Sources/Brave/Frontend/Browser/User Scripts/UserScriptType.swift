@@ -63,6 +63,8 @@ enum UserScriptType: Hashable {
   /// Selectors poller script (aka cosmetic filtering script) is responsible for hiding and unhiding css elements as dictated by the ad-block engines.
   /// This script is actually executed rather than injected and this type is solely used for the creation rather than the injection of the script.
   case selectorsPoller(SelectorsPollerSetup)
+  /// Global Privacy Control (GPC) script
+  case gpc(Bool)
 
   /// The order in which we want to inject the scripts
   var order: Int {
@@ -72,7 +74,8 @@ enum UserScriptType: Hashable {
     case .domainUserScript: return 2
     case .siteStateListener: return 3
     case .selectorsPoller: return 4
-    case .engineScript(let configuration): return 5 + configuration.order
+    case .gpc: return 5
+    case .engineScript(let configuration): return 6 + configuration.order
     }
   }
 }
@@ -88,6 +91,8 @@ extension UserScriptType: CustomDebugStringConvertible {
       return "farblingProtection(\(etld))"
     case .nacl:
       return "nacl"
+    case .gpc(let isEnabled):
+      return "gpc(\(isEnabled)"
     case .siteStateListener:
       return "siteStateListener"
     case .selectorsPoller:
