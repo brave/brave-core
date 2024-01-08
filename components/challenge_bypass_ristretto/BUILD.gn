@@ -43,9 +43,7 @@ component("challenge_bypass_ristretto") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "challenge_bypass_ristretto_test.cc",
-  ]
+  sources = [ "challenge_bypass_ristretto_test.cc" ]
 
   deps = [
     ":challenge_bypass_ristretto",
