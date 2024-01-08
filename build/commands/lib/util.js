@@ -568,9 +568,6 @@ const util = {
     Log.progressStart('build redirect_cc')
     gnArgs = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
-      use_goma: config.use_goma,
-      goma_dir: config.realGomaDir,
-      real_gomacc: path.join(config.realGomaDir, 'gomacc'),
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
       rbe_bin_dir: config.realRewrapperDir,
@@ -639,47 +636,13 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    const useGomaOnline = config.use_goma && !config.offline
-    if (useGomaOnline) {
-      if (config.isCI) {
-        Log.progressStart('goma pre build')
-      }
-      assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
-
-      // This skips the auth check and make this call instant if compiler_proxy is already running.
-      // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
-      options.env.GOMACTL_SKIP_AUTH = 1
-      const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
-      delete options.env.GOMACTL_SKIP_AUTH
-
-      if (gomaStartInfo.status !== 0) {
-        const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
-        if (gomaLoginInfo.status !== 0) {
-          console.log('Login required for using Goma. This is only needed once')
-          util.run('goma_auth', ['login'], options)
-        }
-        util.run('goma_ctl', ['ensure_start'], options)
-      }
-
-      if (config.isCI) {
-        util.run('goma_ctl', ['showflags'], options)
-        util.run('goma_ctl', ['stat'], options)
-        Log.progressFinish('goma pre build')
-      }
-    }
-
-    // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
-    // debugging issues (e.g., slowness or remote-failures).
+    // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
+    // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
     Log.progressScope(`ninja ${target} ${config.buildConfig}`, () => {
       util.run('autoninja', ninjaOpts, options)
     })
 
-    if (config.isCI && useGomaOnline) {
-      Log.progressScope('goma post build', () => {
-        util.run('goma_ctl', ['stat'], options)
-      })
-    }
     Log.progressFinish(progressMessage)
   },
 
