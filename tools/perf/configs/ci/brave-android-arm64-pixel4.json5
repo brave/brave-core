@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "pixel4",
     "browser-type": "brave",
-    "profile": "brave-typical-android-v1.63",
+    "profile": "brave-typical-android",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
     "save-artifacts": true,
