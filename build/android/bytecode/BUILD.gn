@@ -73,7 +73,6 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePermissionDialogModelClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePreferenceFragmentClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePureJavaExceptionReporterClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveQueryTileSectionClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReaderModeManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReturnToChromeUtilClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchEngineAdapterClassAdapter.java",
