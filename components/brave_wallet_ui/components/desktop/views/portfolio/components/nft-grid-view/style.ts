@@ -9,24 +9,6 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
-export const StyledWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 25px;
-  box-sizing: border-box;
-  width: 100%;
-  padding-top: 10px;
-  @media screen and (max-width: 1350px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  @media screen and (max-width: 1150px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media screen and (max-width: 950px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`
-
 export const NFTWrapper = styled.div`
   display: flex;
   align-items: flex-start;
