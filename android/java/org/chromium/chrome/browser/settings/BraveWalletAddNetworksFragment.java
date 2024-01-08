@@ -397,6 +397,6 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
      * @noinspection BooleanMethodIsAlwaysInverted
      */
     private boolean isProtocolSupported(@NonNull final URL url) {
-        return url.getProtocol().equals("http") && !url.getProtocol().equals("https");
+        return url.getProtocol().equals("http") || url.getProtocol().equals("https");
     }
 }
