@@ -494,6 +494,69 @@ export const tokenEndpoints = ({
         }
       },
       invalidatesTags: ['UserBlockchainTokens']
+    }),
+
+    // Token spam
+    updateNftSpamStatus: mutation<
+      boolean,
+      {
+        // Not using tokenId since spam NFTs are not
+        // included in token registry by default
+        token: BraveWallet.BlockchainToken
+        status: boolean
+      }
+    >({
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const { success } = await braveWalletService.setAssetSpamStatus(
+            arg.token,
+            arg.status
+          )
+
+          // update user token
+
+          cache.clearUserTokensRegistry()
+
+          const deleteResult = await braveWalletService.removeUserAsset(
+            arg.token
+          )
+
+          if (!deleteResult.success) {
+            throw new Error('Unable to delete token')
+          }
+
+          const { success: addTokenSuccess } = await addUserToken({
+            braveWalletService,
+            cache,
+            tokenArg: { ...arg.token, isSpam: arg.status }
+          })
+
+          if (!addTokenSuccess) {
+            throw new Error('Unable to add token')
+          }
+
+          return {
+            data: success
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error setting NFT spam status',
+            error
+          )
+        }
+      },
+      invalidatesTags: (_res, err, arg) => {
+        const tokenId = getAssetIdKey(arg.token)
+        return err
+          ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
+          : [
+              { type: 'SimpleHashSpamNFTs', id: tokenId },
+              { type: 'UserBlockchainTokens', id: tokenId }
+            ]
+      }
     })
   }
 }
