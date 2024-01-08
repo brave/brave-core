@@ -24,6 +24,7 @@ interface Props {
   onHideNft: () => void
   onUnHideNft: () => void
   onUnSpam: () => void
+  onMarkAsSpam: () => void
   onRemoveNft: () => void
   onClose: () => void
 }
@@ -38,7 +39,8 @@ export const NftMorePopup = (props: Props) => {
     onUnHideNft,
     onUnSpam,
     onRemoveNft,
-    onClose
+    onClose,
+    onMarkAsSpam
   } = props
 
   const popupRef = React.useRef<HTMLDivElement>(null)
@@ -65,11 +67,19 @@ export const NftMorePopup = (props: Props) => {
         </>
       )}
 
-      {/* show mark as not junk if a token is junk/spam */}
-      {isTokenSpam && (
+      {isTokenSpam ? (
+        // show mark as not junk if a token is junk/spam
         <PopupButton onClick={onUnSpam}>
           <ButtonIcon name='disable-outline' />
           <PopupButtonText>{getLocale('braveWalletNftUnspam')}</PopupButtonText>
+        </PopupButton>
+      ) : (
+        // show mark as spam option if a token is not marked as junk
+        <PopupButton onClick={onMarkAsSpam}>
+          <ButtonIcon name='trash' />
+          <PopupButtonText>
+            {getLocale('braveWalletNftMoveToSpam')}
+          </PopupButtonText>
         </PopupButton>
       )}
 

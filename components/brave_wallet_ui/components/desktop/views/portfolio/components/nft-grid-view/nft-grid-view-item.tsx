@@ -140,6 +140,14 @@ export const NFTGridViewItem = (props: Props) => {
     )
   }
 
+  const onMarkAsSpam = async () => {
+    setShowMore(false)
+    await updateNftSpamStatus({ token, status: true })
+    dispatch(
+      WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
+    )
+  }
+
   const onConfirmDelete = async () => {
     setShowRemoveNftModal(false)
 
@@ -158,6 +166,7 @@ export const NFTGridViewItem = (props: Props) => {
           onHideNft={onHideNft}
           onUnHideNft={onUnHideNft}
           onUnSpam={onUnSpam}
+          onMarkAsSpam={onMarkAsSpam}
           onRemoveNft={() => {
             setShowMore(false)
             setShowRemoveNftModal(true)
