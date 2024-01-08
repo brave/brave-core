@@ -11,6 +11,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -68,15 +69,19 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  void NavigateURL(const GURL& url) {
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    ASSERT_TRUE(WaitForLoadStop(contents));
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void FetchPageContent(const std::string& expected_text,
+  void NavigateURL(const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    ASSERT_TRUE(WaitForLoadStop(GetActiveWebContents()));
+  }
+
+  void FetchPageContent(const base::Location& location,
+                        const std::string& expected_text,
                         bool expected_is_video) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
         browser()->tab_strip_model()->GetActiveWebContents(), "",
@@ -84,9 +89,9 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                                     &expected_is_video](
                                        std::string text, bool is_video,
                                        std::string invalidation_token) {
-          ASSERT_EQ(expected_text, base::TrimWhitespaceASCII(
+          EXPECT_EQ(expected_text, base::TrimWhitespaceASCII(
                                        text, base::TrimPositions::TRIM_ALL));
-          ASSERT_EQ(expected_is_video, is_video);
+          EXPECT_EQ(expected_is_video, is_video);
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -100,26 +105,49 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
   // Simple page with text
   NavigateURL(https_server_.GetURL("a.com", "/text.html"));
-  FetchPageContent("I have spoken", false);
+  FetchPageContent(FROM_HERE, "I have spoken", false);
   // Main element
   NavigateURL(https_server_.GetURL("a.com", "/text_with_main.html"));
-  FetchPageContent("Only this text", false);
+  FetchPageContent(FROM_HERE, "Only this text", false);
   // Main element with ignored
   NavigateURL(https_server_.GetURL("a.com", "/text_with_main.html"));
-  FetchPageContent("Only this text", false);
+  FetchPageContent(FROM_HERE, "Only this text", false);
   // Not a page extraction host and page with no text
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
-  FetchPageContent("", false);
+  FetchPageContent(FROM_HERE, "", false);
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   // Page recognition host with a canvas element
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent("this is the way", false);
+  FetchPageContent(FROM_HERE, "this is the way", false);
 #if BUILDFLAG(IS_WIN)
   // Unsupported locale should return no content for Windows only
   // Other platforms do not use locale for extraction
   const brave_l10n::test::ScopedDefaultLocale locale("xx_XX");
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent("", false);
+  FetchPageContent(FROM_HERE, "", false);
 #endif  // #if BUILDFLAG(IS_WIN)
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+}
+
+IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
+  auto* chat_tab_helper =
+      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+  ASSERT_TRUE(chat_tab_helper);
+  auto run_loop = std::make_unique<base::RunLoop>();
+  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
+      base::BindLambdaForTesting([this, &run_loop]() {
+        FetchPageContent(FROM_HERE, "Dummy PDF file", false);
+        run_loop->Quit();
+      }));
+  NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
+  run_loop->Run();
+
+  run_loop = std::make_unique<base::RunLoop>();
+  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
+      base::BindLambdaForTesting([this, &run_loop]() {
+        FetchPageContent(FROM_HERE, "", false);
+        run_loop->Quit();
+      }));
+  NavigateURL(https_server_.GetURL("a.com", "/empty_pdf.pdf"));
+  run_loop->Run();
 }

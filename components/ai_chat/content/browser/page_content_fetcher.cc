@@ -22,6 +22,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -34,6 +35,8 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "ui/accessibility/ax_node.h"
+#include "ui/accessibility/ax_tree_manager.h"
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 #include "brave/components/text_recognition/browser/text_recognition.h"
@@ -325,6 +328,32 @@ void FetchPageContent(content::WebContents* web_contents,
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
     std::move(callback).Run("", false, "");
+    return;
+  }
+
+  if (web_contents->GetContentsMimeType() == "application/pdf") {
+    ui::AXTreeID ax_tree_id;
+    // FindPdfChildFrame
+    primary_rfh->ForEachRenderFrameHost(
+        [&ax_tree_id](content::RenderFrameHost* rfh) {
+          if (!rfh->GetProcess()->IsPdf()) {
+            return;
+          }
+          ax_tree_id = rfh->GetAXTreeID();
+        });
+    if (ax_tree_id.type() != ax::mojom::AXTreeIDType::kUnknown) {
+      auto* ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
+      if (ax_tree_manager) {
+        auto* ax_node = ax_tree_manager->GetRoot();
+        auto pdf_content = ax_node->GetTextContentUTF8();
+        if (!pdf_content.empty()) {
+          std::move(callback).Run(pdf_content, false);
+          return;
+        }
+      }
+    }
+    // No need to proceed renderer content fetching because we won't get any.
+    std::move(callback).Run("", false);
     return;
   }
 

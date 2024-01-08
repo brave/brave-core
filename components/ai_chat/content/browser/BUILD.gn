@@ -33,6 +33,7 @@ static_library("browser") {
     "//components/favicon/content",
     "//components/favicon/core",
     "//components/prefs",
+    "//components/strings:components_strings_grit",
     "//components/user_prefs",
     "//content/public/browser",
     "//net/traffic_annotation",
