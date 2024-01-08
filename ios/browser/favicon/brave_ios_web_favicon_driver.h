@@ -86,7 +86,7 @@ class BraveIOSWebFaviconDriver
                         bool icon_url_changed);
 
   // Image Fetcher used to fetch favicon.
-  brave::ImageDownloader image_fetcher_;
+  std::unique_ptr<brave::ImageDownloader> image_fetcher_;
   std::size_t max_image_width_;
   std::size_t max_image_height_;
 

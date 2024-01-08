@@ -14,6 +14,7 @@
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/favicon/favicon_status.h"
 #include "ios/web/public/navigation/navigation_item.h"
+#include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/gfx/image/image.h"
@@ -52,7 +53,7 @@ GURL BraveIOSWebFaviconDriver::GetActiveURL() {
 int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
                                             int max_image_size,
                                             ImageDownloadCallback callback) {
-  return image_fetcher_.DownloadImage(
+  return image_fetcher_->DownloadImage(
       url, max_image_width_ > 0 ? max_image_width_ : max_image_size,
       max_image_height_ > 0 ? max_image_height_ : max_image_size,
       std::move(callback));
@@ -98,7 +99,8 @@ BraveIOSWebFaviconDriver::BraveIOSWebFaviconDriver(
     web::WebState* web_state,
     favicon::CoreFaviconService* favicon_service)
     : FaviconDriverImpl(favicon_service),
-      image_fetcher_(web_state->GetBrowserState()->GetSharedURLLoaderFactory()),
+      image_fetcher_(std::make_unique<brave::ImageDownloader>(
+          web_state->GetBrowserState()->GetSharedURLLoaderFactory())),
       max_image_width_(0),
       max_image_height_(0),
       web_state_(web_state) {
@@ -110,6 +112,14 @@ BraveIOSWebFaviconDriver::~BraveIOSWebFaviconDriver() {
   // the WebStateDestroyed will be called before the destructor and the member
   // field reset to null.
   DCHECK(!web_state_);
+
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::unique_ptr<brave::ImageDownloader>&& image_fetcher) {
+            image_fetcher.reset();
+          },
+          std::move(image_fetcher_)));
 }
 
 // Notifications

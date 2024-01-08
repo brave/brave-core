@@ -10,6 +10,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
+#include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/web_state/web_state_impl.h"
 
@@ -35,6 +36,15 @@
         std::make_unique<brave::NativeWebState>(browser, isOffTheRecord);
   }
   return self;
+}
+
+- (void)dealloc {
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](std::unique_ptr<brave::NativeWebState>&& web_state) {
+                       web_state.reset();
+                     },
+                     std::move(web_state_)));
 }
 
 - (void)setTitle:(NSString*)title {

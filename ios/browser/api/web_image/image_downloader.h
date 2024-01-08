@@ -6,7 +6,9 @@
 #ifndef BRAVE_IOS_BROWSER_API_WEB_IMAGE_IMAGE_DOWNLOADER_H_
 #define BRAVE_IOS_BROWSER_API_WEB_IMAGE_IMAGE_DOWNLOADER_H_
 
+#include <memory>
 #include <vector>
+
 #import "components/image_fetcher/ios/ios_image_data_fetcher_wrapper.h"
 
 namespace network {
@@ -36,7 +38,7 @@ class ImageDownloader {
                             ImageDownloadCallback callback);
 
  private:
-  image_fetcher::IOSImageDataFetcherWrapper image_fetcher_;
+  std::unique_ptr<image_fetcher::IOSImageDataFetcherWrapper> image_fetcher_;
 };
 }  // namespace brave
 

@@ -6,6 +6,8 @@
 #import "brave/ios/browser/api/web_image/image_downloader.h"
 #import "brave/ios/browser/svg/svg_image.h"
 
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -18,9 +20,18 @@
 namespace brave {
 ImageDownloader::ImageDownloader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : image_fetcher_(url_loader_factory) {}
+    : image_fetcher_(
+          std::make_unique<image_fetcher::IOSImageDataFetcherWrapper>(
+              url_loader_factory)) {}
 
-ImageDownloader::~ImageDownloader() {}
+ImageDownloader::~ImageDownloader() {
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::unique_ptr<image_fetcher::IOSImageDataFetcherWrapper>&&
+                 image_fetcher) { image_fetcher.reset(); },
+          std::move(image_fetcher_)));
+}
 
 int ImageDownloader::DownloadImage(const GURL& url,
                                    std::size_t max_svg_width,
@@ -69,7 +80,7 @@ int ImageDownloader::DownloadImage(const GURL& url,
             .Run(local_download_id, metadata.http_response_code, local_url,
                  frames, sizes);
       };
-  image_fetcher_.FetchImageDataWebpDecoded(url, ios_callback);
+  image_fetcher_->FetchImageDataWebpDecoded(url, ios_callback);
 
   return downloaded_image_count;
 }
