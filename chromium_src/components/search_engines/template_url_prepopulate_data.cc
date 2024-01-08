@@ -632,10 +632,11 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
 #if BUILDFLAG(IS_ANDROID)
 
 std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
-    const std::string& locale) {
-  int country_id = country_codes::CountryStringToCountryID(locale);
+    const std::string& country_code,
+    PrefService& prefs) {
+  int country_id = country_codes::CountryStringToCountryID(country_code);
   if (country_id == country_codes::kCountryIDUnknown) {
-    LOG(ERROR) << "Unknown country code specified: " << locale;
+    LOG(ERROR) << "Unknown country code specified: " << country_code;
     return std::vector<std::unique_ptr<TemplateURLData>>();
   }
 
