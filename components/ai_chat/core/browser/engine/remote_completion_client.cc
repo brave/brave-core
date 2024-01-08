@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/brave_services_key_v2.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -32,7 +33,7 @@
 namespace ai_chat {
 namespace {
 
-constexpr char kAIChatCompletionPath[] = "v1/complete";
+constexpr char kAIChatCompletionPath[] = "v2/complete";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -147,7 +148,25 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     std::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
+  // Payload
+  const bool is_sse_enabled =
+      ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
+  const base::Value::Dict& dict =
+      CreateApiParametersDict(prompt, model_name_, stop_sequences_,
+                              std::move(extra_stop_sequences), is_sse_enabled);
+  const std::string request_body = CreateJSONRequestBody(dict);
+
+  // Headers
   base::flat_map<std::string, std::string> headers;
+  auto result =
+      GetBraveServicesV2Headers(request_body, constants::Service::kAIChat);
+
+  if (result.has_value()) {
+    std::pair<std::string, std::string> auth_headers = result.value();
+    headers.emplace("Digest", auth_headers.first);
+    headers.emplace("Authorization", auth_headers.second);
+  }
+
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.
     std::string cookie_header_value =
@@ -157,12 +176,6 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  const bool is_sse_enabled =
-      ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-
-  const base::Value::Dict& dict =
-      CreateApiParametersDict(prompt, model_name_, stop_sequences_,
-                              std::move(extra_stop_sequences), is_sse_enabled);
   if (is_sse_enabled) {
     VLOG(2) << "Making streaming AI Chat API Request";
     auto on_received = base::BindRepeating(
@@ -173,7 +186,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
+    api_request_helper_.RequestSSE("POST", api_url, request_body,
                                    "application/json", std::move(on_received),
                                    std::move(on_complete), headers, {});
   } else {
@@ -183,7 +196,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+    api_request_helper_.Request("POST", api_url, request_body,
                                 "application/json", std::move(on_complete),
                                 headers, {});
   }

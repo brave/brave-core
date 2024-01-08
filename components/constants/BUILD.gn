@@ -10,10 +10,14 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 declare_args() {
   brave_services_key = ""
+  ai_chat_service_key = ""
+  key_id = ""
 }
 
 if (is_official_build) {
   assert(brave_services_key != "")
+  assert(ai_chat_service_key != "")
+  assert(key_id != "")
 }
 
 buildflag_header("brave_services_key") {
@@ -24,12 +28,22 @@ buildflag_header("brave_services_key") {
   flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
 }
 
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "AI_CHAT_SERVICE_KEY=\"$ai_chat_service_key\"",
+    "KEY_ID=\"$key_id\"",
+  ]
+}
+
 source_set("constants") {
   sources = [
     "brave_constants.cc",
     "brave_constants.h",
     "brave_paths.cc",
     "brave_paths.h",
+    "brave_services_key_v2.cc",
+    "brave_services_key_v2.h",
     "brave_switches.h",
     "network_constants.h",
     "pref_names.h",
@@ -39,9 +53,11 @@ source_set("constants") {
 
   public_deps = [ ":brave_services_key" ]
   deps = [
+    ":buildflags",
     "//base",
     "//brave/components/ipfs/buildflags",
     "//brave/components/widevine:static_buildflags",
+    "//crypto:crypto",
   ]
 }
 
@@ -55,5 +71,16 @@ source_set("brave_service_key_helper") {
     ":constants",
     "//brave/extensions:common",  # instead of //extensions/common, for iOS
     "//url",
+  ]
+}
+
+source_set("constants_unit_tests") {
+  testonly = true
+
+  sources = [ "brave_services_key_v2_unittest.cc" ]
+
+  deps = [
+    ":constants",
+    "//testing/gtest",
   ]
 }
