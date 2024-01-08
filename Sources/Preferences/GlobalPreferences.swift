@@ -140,6 +140,11 @@ extension Preferences {
     ///
     /// This is used to determine if a  promoted purchase from store can be triggered and shown user
     public static let isOnboardingActive = Option<Bool>(key: "appstate.onboarding-active", default: false)
+    
+    /// A cached value for indicating if dau ping is awaiting for p3a choice on onboarding
+    ///
+    /// This is used to determine if a user gave consent to p3a in onboarding and dau ping can fetch referral code from Apple API
+    public static let dailyUserPingAwaitingUserConsent = Option<Bool>(key: "appstate.dau-awaiting", default: false)
   }
   
   public final class Chromium {

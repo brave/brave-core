@@ -1237,7 +1237,6 @@ extension Strings {
   public static let requestCaptureDevicePermissionAllowButtonTitle = NSLocalizedString("requestCaptureDevicePermissionAllowButtonTitle", tableName: "BraveShared", bundle: .module, value: "Allow", comment: "A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone")
   public static let downloadsMenuItem = NSLocalizedString("DownloadsMenuItem", tableName: "BraveShared", bundle: .module, value: "Downloads", comment: "Title for downloads menu item")
   public static let downloadsPanelEmptyStateTitle = NSLocalizedString("DownloadsPanelEmptyStateTitle", tableName: "BraveShared", bundle: .module, value: "Downloaded files will show up here.", comment: "Title for when a user has nothing downloaded onto their device, and the list is empty.")
-  public static let playlistMenuItem = NSLocalizedString("PlaylistMenuItem", tableName: "BraveShared", bundle: .module, value: "Playlist", comment: "Playlist menu item")
 
   // MARK: - Themes
 

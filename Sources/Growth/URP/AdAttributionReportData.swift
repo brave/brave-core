@@ -4,36 +4,57 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os.log
+import Foundation
+
+public enum SerializationError: Error {
+  case missing(String)
+  case invalid(String, Any)
+}
+
+public enum SearchAdError: Error {
+  case invalidCampaignTokenData
+  case invalidGroupsReportData
+  case failedCampaignTokenFetch
+  case failedCampaignTokenLookup
+  case missingReportsKeywordParameter
+  case failedReportsKeywordLookup
+  case successfulCampaignFailedKeywordLookup(AdAttributionData)
+}
 
 public struct AdAttributionData {
   // A value of true returns if a user clicks an Apple Search Ads impression up to 30 days before your app download.
   // If the API can’t find a matching attribution record, the attribution value is false.
-  public let attribution: Bool
+  let attribution: Bool
   // The identifier of the organization that owns the campaign.
   // organizationId is the same as your account in the Apple Search Ads UI.
-  public let organizationId: Int?
+  let organizationId: Int?
   // The type of conversion is either Download or Redownload.
-  public let conversionType: String?
+  let conversionType: String?
   // The unique identifier for the campaign.
-  public let campaignId: Int
+  let campaignId: Int
   // The country or region for the campaign.
-  public let countryOrRegion: String?
-  
-  init(attribution: Bool, organizationId: Int? = nil, conversionType: String? = nil, campaignId: Int, countryOrRegion: String? = nil) {
+  let countryOrRegion: String?
+  // The ad group if for the campaign which will be used for feature link
+  let adGroupId: Int?
+  // The keyword id for the campaign which will be used for feature link
+  let keywordId: Int?
+
+  init(attribution: Bool,
+       organizationId: Int? = nil,
+       conversionType: String? = nil,
+       campaignId: Int,
+       countryOrRegion: String? = nil,
+       adGroupId: Int? = nil,
+       keywordId: Int? = nil ) {
     self.attribution = attribution
     self.organizationId = organizationId
     self.conversionType = conversionType
     self.campaignId = campaignId
     self.countryOrRegion = countryOrRegion
+    self.adGroupId = adGroupId
+    self.keywordId = keywordId
   }
-}
 
-enum SerializationError: Error {
-  case missing(String)
-  case invalid(String, Any)
-}
-
-extension AdAttributionData {
   init(json: [String: Any]?) throws {
     guard let json = json else {
       throw SerializationError.invalid("Invalid json Dictionary", "")
@@ -66,5 +87,39 @@ extension AdAttributionData {
     self.conversionType = json["conversionType"] as? String
     self.campaignId = campaignId
     self.countryOrRegion = json["countryOrRegion"] as? String
+    self.adGroupId = json["adGroupId"] as? Int
+    self.keywordId = json["keywordId"] as? Int
+  }
+}
+
+public struct AdGroupReportData {
+  public struct KeywordReportResponse: Codable {
+    let row: [KeywordRow]
+  }
+
+  public struct KeywordRow: Codable {
+    let metadata: KeywordMetadata
+  }
+
+  public struct KeywordMetadata: Codable {
+    let keyword: String
+    let keywordId: Int
+  }
+  
+  public let productKeyword: String
+  
+  init(data: Data, keywordId: Int) throws {
+    do {
+      let decoder = JSONDecoder()
+      let keywordResponse = try decoder.decode(KeywordReportResponse.self, from: data)
+
+      if let keywordRow = keywordResponse.row.first(where: { $0.metadata.keywordId == keywordId }) {
+        productKeyword = keywordRow.metadata.keyword
+      } else {
+        throw SerializationError.invalid("Keyword with ID \(keywordId) not found", "")
+      }
+    } catch {
+      throw SerializationError.invalid("Invalid json Dictionary", "")
+    }
   }
 }

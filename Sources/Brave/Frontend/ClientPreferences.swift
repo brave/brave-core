@@ -174,10 +174,6 @@ extension Preferences {
     /// List of currently installed themes on the device.
     static let installedCustomThemes =
       Option<[String]>(key: "newtabpage.installed-custom-themes", default: [])
-
-    /// Tells the app whether we should try to fetch super referrer assets again in case of network error.
-    public static let superReferrerThemeRetryDeadline =
-      Option<Date?>(key: "newtabpage.superreferrer-retry-deadline", default: nil)
     
     /// Tells the app whether we should show Privacy Hub in new tab page view controller
     public static let showNewTabPrivacyHub =

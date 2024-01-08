@@ -124,8 +124,15 @@ class WelcomeViewCallout: UIView {
   }
 
   private let primaryButton = RoundInterfaceButton(type: .custom).then {
-    $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .braveBlurpleTint
+    $0.configuration = .filled()
+    $0.configuration?.showsActivityIndicator = false
+    $0.configuration?.imagePadding = 5
+    $0.configuration?.activityIndicatorColorTransformer = UIConfigurationColorTransformer({ _ in
+      .white
+    })
+    $0.configuration?.baseForegroundColor = .white
+    $0.configuration?.baseBackgroundColor = .braveBlurpleTint
+
     $0.titleLabel?.numberOfLines = 0
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -167,6 +174,12 @@ class WelcomeViewCallout: UIView {
   var isBottomArrowHidden: Bool = false {
     didSet {
       arrowView.isHidden = isBottomArrowHidden
+    }
+  }
+  
+  var isLoading = false {
+    didSet {
+      primaryButton.setNeedsUpdateConfiguration()
     }
   }
 
@@ -488,7 +501,7 @@ class WelcomeViewCallout: UIView {
       }
       
       primaryButton.do {
-        $0.setTitle(info.primaryButtonTitle, for: .normal)
+        $0.configuration?.title = info.primaryButtonTitle
         $0.titleLabel?.font = .preferredFont(for: .body, weight: .regular)
         $0.addAction(
           UIAction(
@@ -498,6 +511,10 @@ class WelcomeViewCallout: UIView {
             }), for: .touchUpInside)
         $0.alpha = 1.0
         $0.isHidden = false
+        $0.configurationUpdateHandler = { button in
+          button.configuration?.title = self.isLoading ? "" : info.primaryButtonTitle
+          button.configuration?.showsActivityIndicator = self.isLoading
+        }
       }
 
       secondaryLabel.do {

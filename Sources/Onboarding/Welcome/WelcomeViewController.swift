@@ -13,6 +13,7 @@ import BraveCore
 import BraveUI
 import SafariServices
 import DesignSystem
+import Growth
 
 private enum WelcomeViewID: Int {
   case background = 1
@@ -27,15 +28,17 @@ private enum WelcomeViewID: Int {
 
 public class WelcomeViewController: UIViewController {
   private var state: WelcomeViewCalloutState?
-  private let p3aUtilities: BraveP3AUtils
+  private let p3aUtilities: BraveP3AUtils // Privacy Analytics
+  private let attributionManager: AttributionManager // Manager to handle daily active user and user referral
 
-  public convenience init(p3aUtilities: BraveP3AUtils) {
-    self.init(state: .loading, p3aUtilities: p3aUtilities)
+  public convenience init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
+    self.init(state: .loading, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
   }
 
-  public init(state: WelcomeViewCalloutState?, p3aUtilities: BraveP3AUtils) {
+  public init(state: WelcomeViewCalloutState?, p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
     self.state = state
     self.p3aUtilities = p3aUtilities
+    self.attributionManager = attributionManager
     super.init(nibName: nil, bundle: nil)
     
     self.transitioningDelegate = self
@@ -316,14 +319,14 @@ public class WelcomeViewController: UIViewController {
   }
 
   private func animateToWelcomeState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities).then {
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager).then {
         $0.setLayoutState(state: WelcomeViewCalloutState.welcome(title: Strings.Onboarding.welcomeScreenTitle))
       }
     present(nextController, animated: true)
   }
 
   private func animateToDefaultBrowserState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities)
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
     let state = WelcomeViewCalloutState.defaultBrowser(
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.defaultBrowserCalloutTitle,
@@ -344,7 +347,7 @@ public class WelcomeViewController: UIViewController {
   }
   
   private func animateToDefaultSettingsState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities).then {
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager).then {
         $0.setLayoutState(
           state: WelcomeViewCalloutState.settings(
             title: Strings.Onboarding.navigateSettingsOnboardingScreenTitle,
@@ -357,7 +360,7 @@ public class WelcomeViewController: UIViewController {
   }
   
   private func animateToP3aState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: self.p3aUtilities)
+    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
     let state = WelcomeViewCalloutState.p3a(
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.p3aCalloutTitle,
@@ -375,8 +378,12 @@ public class WelcomeViewController: UIViewController {
           nextController.present(p3aLearnMoreController, animated: true)
         },
         
-        primaryButtonAction: { [weak self] in
-          self?.close()
+        primaryButtonAction: { [weak nextController, weak self] in
+          guard let controller = nextController, let self = self else {
+            return
+          }
+
+          self.handleAdReportingFeatureLinkage(with: controller)
         }
       )
     )
@@ -387,6 +394,72 @@ public class WelcomeViewController: UIViewController {
       self.p3aUtilities.isNoticeAcknowledged = true
       Preferences.Onboarding.p3aOnboardingShown.value = true
     }
+  }
+
+  private func handleAdReportingFeatureLinkage(with controller: WelcomeViewController) {
+    // Check controller is not in loading state
+    guard !controller.calloutView.isLoading else {
+      return
+    }
+    // The loading state should start before calling API
+    controller.calloutView.isLoading = true
+    
+    let attributionManager = controller.attributionManager
+    
+    Task { @MainActor in
+      do {
+        if controller.p3aUtilities.isP3AEnabled {
+          switch attributionManager.activeFetureLinkageLogic {
+          case .campaingId:
+            let featureType = try await attributionManager.handleSearchAdsFeatureLinkage()
+            attributionManager.adFeatureLinkage = featureType
+          case .reporting:
+            // Handle API calls and send linkage type
+            let featureType = try await controller.attributionManager.handleAdsReportingFeatureLinkage()
+            attributionManager.adFeatureLinkage = featureType
+          }
+        } else {
+          // p3a consent is not given
+          attributionManager.setupReferralCodeAndPingServer()
+        }
+        
+        controller.calloutView.isLoading = false
+        close()
+      } catch FeatureLinkageError.executionTimeout(let attributionData) {
+        // Time out occurred while executing ad reports lookup
+        // Ad Campaign Lookup is successful so dau server should be pinged
+        // attribution data referral code
+        await pingServerWithGeneratedReferralCode(
+          using: attributionData, controller: controller)
+      } catch SearchAdError.successfulCampaignFailedKeywordLookup(let attributionData) {
+        // Error occurred while executing ad reports lookup
+        // Ad Campaign Lookup is successful so dau server should be pinged
+        // attribution data referral code
+        await pingServerWithGeneratedReferralCode(
+          using: attributionData, controller: controller)
+      } catch {
+        // Error occurred before getting successful
+        // attributuion data, generic code should be pinged
+        attributionManager.setupReferralCodeAndPingServer()
+        
+        controller.calloutView.isLoading = false
+        close()
+      }
+    }
+  }
+  
+  private func pingServerWithGeneratedReferralCode(using attributionData: AdAttributionData, controller: WelcomeViewController) async {
+    Task {
+      await withCheckedContinuation { continuation in
+        DispatchQueue.global().async {
+          controller.attributionManager.generateReferralCodeAndPingServer(with: attributionData)
+          continuation.resume()
+        }
+      }
+    }
+    
+    controller.calloutView.isLoading = false
+    close()
   }
 
   private func onSetDefaultBrowser() {

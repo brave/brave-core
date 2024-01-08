@@ -40,10 +40,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
 
+    let attributionManager = AttributionManager(dau: AppState.shared.dau, urp: UserReferralProgram.shared)
+
     let browserViewController = createBrowserWindow(
       scene: windowScene,
       braveCore: AppState.shared.braveCore,
       profile: AppState.shared.profile,
+      attributionManager: attributionManager,
       diskImageStore: AppState.shared.diskImageStore,
       migration: AppState.shared.migration,
       rewards: AppState.shared.rewards,
@@ -89,18 +92,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Handle URP Lookup at first launch
     if SceneDelegate.shouldHandleUrpLookup {
       SceneDelegate.shouldHandleUrpLookup = false
-
-      if let urp = UserReferralProgram.shared {
-        browserViewController.handleReferralLookup(urp)
-      }
-    }
-    
-    // Handle Install Attribution Fetch at first launch
-    if SceneDelegate.shouldHandleInstallAttributionFetch {
-      SceneDelegate.shouldHandleInstallAttributionFetch = false
       
-      if let urp = UserReferralProgram.shared {
-        browserViewController.handleSearchAdsInstallAttribution(urp)
+      attributionManager.handleReferralLookup { [weak browserViewController] url in
+        browserViewController?.openReferralLink(url: url)
       }
     }
 
@@ -118,6 +112,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       windowScene: windowScene,
       connectionOptions: connectionOptions
     )
+    
+    // Handle Install Attribution Fetch at first launch
+    if SceneDelegate.shouldHandleInstallAttributionFetch {
+      SceneDelegate.shouldHandleInstallAttributionFetch = false
+
+      // First time user should send dau ping after onboarding last stage _ p3a consent screen
+      // The reason p3a user consent is necesserray to call search ad install attribution API methods
+      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
+        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
+        // User has not opted in to share completely private and anonymous product insights
+        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
+          Task { @MainActor in
+            do {
+              try await attributionManager.handleSearchAdsInstallAttribution()
+            } catch {
+              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
+              // Sending default organic install code for dau
+              attributionManager.setupReferralCodeAndPingServer()
+            }
+          }
+        } else {
+          // Sending default organic install code for dau
+          attributionManager.setupReferralCodeAndPingServer()
+        }
+      }
+    }
+    
+    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+      // Similarly to referral lookup, this prefrence should be set if it is a new user
+      // Trigger install attribution fetch only first launch
+      Preferences.URP.installAttributionLookupOutstanding.value = Preferences.General.isFirstLaunch.value
+    }
         
     PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
     PrivacyReportsManager.consolidateData()
@@ -212,7 +238,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // We try to send DAU ping each time the app goes to foreground to work around network edge cases
     // (offline, bad connection etc.).
     // Also send the ping only after the URP lookup and install attribution has processed.
-    if Preferences.URP.referralLookupOutstanding.value == false, Preferences.URP.installAttributionLookupOutstanding.value == false {
+    if Preferences.URP.referralLookupOutstanding.value == true, Preferences.URP.installAttributionLookupOutstanding.value == true {
       AppState.shared.dau.sendPingToServer()
     }
     
@@ -422,6 +448,7 @@ extension SceneDelegate {
   private func createBrowserWindow(scene: UIWindowScene,
                                    braveCore: BraveCoreMain,
                                    profile: Profile,
+                                   attributionManager: AttributionManager,
                                    diskImageStore: DiskImageStore?,
                                    migration: Migration?,
                                    rewards: Brave.BraveRewards,
@@ -480,6 +507,7 @@ extension SceneDelegate {
     let browserViewController = BrowserViewController(
       windowId: windowId,
       profile: profile,
+      attributionManager: attributionManager,
       diskImageStore: diskImageStore,
       braveCore: braveCore,
       rewards: rewards,
@@ -571,58 +599,6 @@ extension SceneDelegate {
 extension SceneDelegate: UIViewControllerRestoration {
   public static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
     return nil
-  }
-}
-
-extension BrowserViewController {
-  func handleReferralLookup(_ urp: UserReferralProgram) {
-    if Preferences.URP.referralLookupOutstanding.value == true {
-      performProgramReferralLookup(urp, refCode: UserReferralProgram.getReferralCode())
-    } else {
-      urp.pingIfEnoughTimePassed()
-    }
-  }
-  
-  func handleSearchAdsInstallAttribution(_ urp: UserReferralProgram) {
-    urp.adCampaignLookup() { [weak self] response, error in
-      guard let self = self else { return }
-      
-      let refCode = self.generateReferralCode(attributionData: response, fetchError: error)
-      // Setting up referral code value
-      // This value should be set before first DAU ping
-      Preferences.URP.referralCode.value = refCode
-      Preferences.URP.installAttributionLookupOutstanding.value = false
-    }
-  }
-  
-  private func generateReferralCode(attributionData: AdAttributionData?, fetchError: Error?) -> String {
-    // Prefix code "001" with BRV for organic iOS installs
-    var referralCode = "BRV001"
-    
-    if fetchError == nil, attributionData?.attribution == true, let campaignId = attributionData?.campaignId {
-      // Adding ASA User refcode prefix to indicate
-      // Apple Ads Attribution is true
-      referralCode = "ASA\(String(campaignId))"
-    }
-    
-    return referralCode
-  }
-  
-  private func performProgramReferralLookup(_ urp: UserReferralProgram, refCode: String?) {
-    urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
-      // Attempting to send ping after first urp lookup.
-      // This way we can grab the referral code if it exists, see issue #2586.
-      if Preferences.URP.installAttributionLookupOutstanding.value == false {
-        AppState.shared.dau.sendPingToServer()
-      }
-      let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
-      let retryDeadline = Date() + retryTime
-
-        Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
-
-      guard let url = offerUrl?.asURL else { return }
-      self.openReferralLink(url: url)
-    }
   }
 }
 

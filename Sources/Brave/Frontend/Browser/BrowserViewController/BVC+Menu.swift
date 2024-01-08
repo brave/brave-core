@@ -187,6 +187,7 @@ extension BrowserViewController {
           rewards: self.rewards,
           windowProtection: self.windowProtection,
           braveCore: self.braveCore,
+          attributionManager: attributionManager,
           keyringStore: keyringStore,
           cryptoStore: cryptoStore
         )
@@ -207,7 +208,7 @@ extension BrowserViewController {
     }
   }
 
-  private func presentPlaylistController() {
+  public func presentPlaylistController() {
     if PlaylistCarplayManager.shared.isPlaylistControllerPresented {
       let alert = UIAlertController(title: Strings.PlayList.playlistAlreadyShowingTitle,
                                     message: Strings.PlayList.playlistAlreadyShowingBody,

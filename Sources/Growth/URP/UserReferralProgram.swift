@@ -23,6 +23,7 @@ public class UserReferralProgram {
   }
   
   let adServicesURLString = "https://api-adservices.apple.com/api/v1/"
+  let adReportsURLString = "https://api.searchads.apple.com/api/v4/reports/"
 
   // In case of network problems when looking for referrral code
   // we retry the call few times while the app is still alive.
@@ -37,20 +38,14 @@ public class UserReferralProgram {
 
   let service: UrpService
 
-  public init?() {
+  public init() {
     // This should _probably_ correspond to the baseUrl for NTPDownloader
     let host = AppConstants.buildChannel == .debug ? HostUrl.staging : HostUrl.prod
 
-    guard
-      let apiKey = Bundle.main.getPlistString(
-        for: UserReferralProgram.apiKeyPlistKey)?
-        .trimmingCharacters(in: .whitespacesAndNewlines)
-    else {
-      Logger.module.error("Urp init error, failed to get values from Brave.plist.")
-      return nil
-    }
+    let apiKey = Bundle.main.getPlistString(for: UserReferralProgram.apiKeyPlistKey)?
+      .trimmingCharacters(in: .whitespacesAndNewlines) ?? "apikey"
 
-    guard let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString) else { return nil }
+    let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString, adReportsURL: adReportsURLString)
 
     UrpLog.log("URP init, host: \(host)")
 
@@ -120,27 +115,44 @@ public class UserReferralProgram {
     service.referralCodeLookup(refCode: refCode, completion: referralBlock)
   }
   
-  public func adCampaignLookup(completion: @escaping ((AdAttributionData)?, Error?) -> Void) {
+  @MainActor public func adCampaignLookup(isRetryEnabled: Bool = true, timeout: TimeInterval = 60) async throws -> AdAttributionData {
     // Fetching ad attibution token
     do {
       let adAttributionToken = try AAAttribution.attributionToken()
       
-      Task { @MainActor in
-        do {
-          let result = try await service.adCampaignTokenLookupQueue(adAttributionToken: adAttributionToken)
-          completion(result, nil)
-        } catch {
-          Logger.module.info("Could not retrieve ad campaign attibution from ad services")
-          completion(nil, error)
-        }
+      do {
+        return try await service.adCampaignTokenLookupQueue(
+          adAttributionToken: adAttributionToken,
+          isRetryEnabled: isRetryEnabled,
+          timeout: timeout)
+      } catch {
+        Logger.module.info("Could not retrieve ad campaign attibution from ad services")
+        throw SearchAdError.invalidCampaignTokenData
       }
     } catch {
       Logger.module.info("Couldnt fetch attribute tokens with error: \(error)")
-      completion(nil, error)
-      return
+      throw SearchAdError.failedCampaignTokenFetch
     }
   }
 
+  @MainActor func adReportsKeywordLookup(attributionData: AdAttributionData) async throws -> String {
+    guard let adGroupId = attributionData.adGroupId, let keywordId = attributionData.keywordId else {
+      Logger.module.info("Could not retrieve ad campaign attibution from ad services")
+      throw SearchAdError.missingReportsKeywordParameter
+    }
+
+    do {
+      return try await service.adGroupReportsKeywordLookup(
+        adGroupId: adGroupId,
+        campaignId: attributionData.campaignId,
+        keywordId: keywordId)
+
+    } catch {
+      Logger.module.info("Could not retrieve ad groups reports using ad services")
+      throw SearchAdError.failedReportsKeywordLookup
+    }
+  }
+  
   private func initRetryPingConnection(numberOfTimes: Int32) {
     if AppConstants.buildChannel.isPublic {
       // Adding some time offset to be extra safe.
@@ -229,7 +241,8 @@ public class UserReferralProgram {
       UrpLog.log("Enough time has passed, removing referral code data")
       return nil
     } else if let referralCode = Preferences.URP.referralCode.value {
-      // Appending ref code to dau ping if user used installed the app via user referral program.
+      // Appending ref code to dau ping if user used installed the app via
+      // user referral program or apple search ad
       if Preferences.URP.referralCodeDeleteDate.value == nil {
         UrpLog.log("Setting new date for deleting referral code.")
         let timeToDelete = AppConstants.buildChannel.isPublic ? 90.days : 20.minutes

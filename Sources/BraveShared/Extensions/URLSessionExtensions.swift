@@ -86,7 +86,8 @@ extension URLSession {
     headers: [String: String] = [:],
     parameters: [String: Any] = [:],
     rawData: Data? = nil,
-    encoding: ParameterEncoding = .query
+    encoding: ParameterEncoding = .query,
+    timeout: TimeInterval = 60
   ) async throws -> (Any, URLResponse) {
     do {
       let request = try buildRequest(
@@ -95,7 +96,8 @@ extension URLSession {
         headers: headers,
         parameters: parameters,
         rawData: rawData,
-        encoding: encoding)
+        encoding: encoding,
+        timeoutInterval: timeout)
       
       return try await data(for: request)
     } catch {     
@@ -126,11 +128,13 @@ extension URLSession {
     headers: [String: String],
     parameters: [String: Any],
     rawData: Data?,
-    encoding: ParameterEncoding
+    encoding: ParameterEncoding,
+    timeoutInterval: TimeInterval = 60
   ) throws -> URLRequest {
 
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
+    request.timeoutInterval = timeoutInterval
     headers.forEach({ request.setValue($0.value, forHTTPHeaderField: $0.key) })
     switch encoding {
     case .textPlain:

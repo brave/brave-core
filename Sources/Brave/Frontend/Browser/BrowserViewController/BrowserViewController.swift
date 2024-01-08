@@ -137,6 +137,7 @@ public class BrowserViewController: UIViewController {
 
   private var privateModeCancellable: AnyCancellable?
   private var appReviewCancelable: AnyCancellable?
+  private var adFeatureLinkageCancelable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
   
   /// Voice Search
@@ -162,6 +163,7 @@ public class BrowserViewController: UIViewController {
 
   public let windowId: UUID
   let profile: Profile
+  let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
   let tabManager: TabManager
   let migration: Migration?
@@ -272,6 +274,7 @@ public class BrowserViewController: UIViewController {
   public init(
     windowId: UUID,
     profile: Profile,
+    attributionManager: AttributionManager,
     diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
     rewards: BraveRewards,
@@ -282,6 +285,7 @@ public class BrowserViewController: UIViewController {
   ) {
     self.windowId = windowId
     self.profile = profile
+    self.attributionManager = attributionManager
     self.braveCore = braveCore
     self.bookmarkManager = BookmarkManager(bookmarksAPI: braveCore.bookmarksAPI)
     self.rewards = rewards
@@ -945,6 +949,21 @@ public class BrowserViewController: UIViewController {
           // Handle App Rating
           // User made changes to the Brave News sources (tapped close)
           AppReviewManager.shared.handleAppReview(for: .revised, using: self)
+        }
+      })
+    
+    adFeatureLinkageCancelable = attributionManager
+      .$adFeatureLinkage
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] featureLinkageType in
+        guard let self = self else { return }
+        switch featureLinkageType {
+        case .playlist:
+          self.presentPlaylistController()
+        case .vpn:
+          self.navigationHelper.openVPNBuyScreen(iapObserver: self.iapObserver)
+        default:
+          return
         }
       })
     
