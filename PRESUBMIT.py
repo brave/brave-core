@@ -63,6 +63,7 @@ def CheckPatchFormatted(input_api, output_api):
         '--presubmit',
         '--python',
         '--no-rust-fmt',
+        '--no-swift-fmt',
     ]
 
     # Make sure the passed --upstream branch is applied to git cl format.
