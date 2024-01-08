@@ -69,7 +69,7 @@ class BraveNewsController
     : public KeyedService,
       public mojom::BraveNewsController,
       public PublishersController::Observer,
-      public net::NetworkChangeNotifier::ConnectionTypeObserver {
+      public net::NetworkChangeNotifier::NetworkChangeObserver {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -156,8 +156,8 @@ class BraveNewsController
   // PublishersController::Observer:
   void OnPublishersUpdated(brave_news::PublishersController*) override;
 
-  // net::NetworkChangeNotifier::ConnectionTypeObserver:
-  void OnConnectionTypeChanged(
+  // net::NetworkChangeNotifier::NetworkChangeObserver:
+  void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
 
  private:

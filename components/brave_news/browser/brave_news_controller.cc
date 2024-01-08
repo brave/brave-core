@@ -120,7 +120,7 @@ BraveNewsController::BraveNewsController(
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
-  net::NetworkChangeNotifier::AddConnectionTypeObserver(this);
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
@@ -145,7 +145,9 @@ BraveNewsController::BraveNewsController(
   ConditionallyStartOrStopTimer();
 }
 
-BraveNewsController::~BraveNewsController() = default;
+BraveNewsController::~BraveNewsController() {
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
 
 void BraveNewsController::Bind(
     mojo::PendingReceiver<mojom::BraveNewsController> receiver) {
@@ -843,9 +845,15 @@ void BraveNewsController::OnPublishersUpdated(
   }
 }
 
-void BraveNewsController::OnConnectionTypeChanged(
+void BraveNewsController::OnNetworkChanged(
     net::NetworkChangeNotifier::ConnectionType type) {
-  LOG(ERROR) << "Connection type is: " << type;
+  if (!GetIsEnabled(prefs_)) {
+    return;
+  }
+
+  // Ensure publishers are fetched (this won't do anything if they are). This
+  // handles the case where Brave News is started with no network.
+  publishers_controller_.GetOrFetchPublishers(base::DoNothing());
 }
 
 }  // namespace brave_news
