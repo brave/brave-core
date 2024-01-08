@@ -74,7 +74,8 @@ public class BraveSwipeRefreshHandlerTest {
                 new PlaceholderJankTracker(),
                 rootUiCoordinator.getToolbarManager()::getToolbar,
                 null,
-                null);
+                null,
+                rootUiCoordinator.getToolbarManager().getTabStripHeightSupplier());
     }
 
     @Test
