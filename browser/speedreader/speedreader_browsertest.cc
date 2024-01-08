@@ -67,6 +67,7 @@
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
@@ -434,6 +435,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  NavigateToPageSynchronously(kTestEsPageReadable);
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  ClickReaderButton();
+
+  constexpr const char kCheckText[] =
+      R"js( document.querySelector('#par-to-check').innerText.length )js";
+  EXPECT_EQ(92, content::EvalJs(ActiveWebContents(), kCheckText,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                    .ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
