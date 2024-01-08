@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO(@brave/ios): Move contents of this into `npm run build` command
+
 set -e
 
 cd $PROJECT_DIR
@@ -22,8 +24,8 @@ fi
 output_dir="$src_dir/out/ios_Build"
 mkdir -p $output_dir
 
-cp -fR "$(pwd)/../BraveCore/build/placeholders/BraveCore.xcframework" "$output_dir"
-cp -fR "$(pwd)/../BraveCore/build/placeholders/MaterialComponents.xcframework" "$output_dir"
+cp -fR "$(pwd)/../BraveCore/placeholders/BraveCore.xcframework" "$output_dir"
+cp -fR "$(pwd)/../BraveCore/placeholders/MaterialComponents.xcframework" "$output_dir"
 
 npm run build -- $CONFIGURATION --target_os=ios --target_arch=$target_arch $target_environment
 

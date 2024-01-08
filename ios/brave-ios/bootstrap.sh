@@ -6,6 +6,9 @@
 #
 # Use the --ci option to use `npm ci` over `npm install`
 
+
+# TODO(@brave/ios): Move contents of this into `npm run sync` command
+
 set -e
 
 missingCommand() {
@@ -26,9 +29,12 @@ COLOR_NONE='\033[0m'
 npm run ios_pack_js
 
 # Set up BraveCore placeholders to allow SPM to validate the package
-mkdir -p BraveCore/build
-cp -R BraveCore/placeholders BraveCore/build 
-touch BraveCore/build/args.xcconfig
+build_output_dir="../../../out/ios_Build"
+mkdir -p $build_output_dir
+if [[ ! -d "$build_output_dir/BraveCore.xcframework" ]]; then
+  cp -R "BraveCore/placeholders/." "$build_output_dir/"
+fi
+touch "$build_output_dir/args.xcconfig"
 
 # Sets up local configurations from the tracked .template files
 
