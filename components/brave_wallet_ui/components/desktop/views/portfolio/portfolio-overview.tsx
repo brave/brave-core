@@ -72,7 +72,7 @@ import {
   PortfolioOverviewChart //
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
-import { NftView } from '../nfts/nft-view'
+import { Nfts } from '../nfts/components/nfts'
 import {
   BuySendSwapDepositNav //
 } from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
@@ -659,8 +659,9 @@ export const PortfolioOverview = () => {
           path={WalletRoutes.PortfolioNFTs}
           exact
         >
-          <NftView
-            nftsList={userVisibleNfts}
+          <Nfts
+            networks={networks}
+            nftList={userVisibleNfts}
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
             tokenBalancesRegistry={tokenBalancesRegistry}
