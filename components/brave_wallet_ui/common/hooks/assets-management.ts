@@ -7,10 +7,6 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { eachLimit } from 'async'
 
-// Selectors
-import { useUnsafeWalletSelector } from './use-safe-selector'
-import { WalletSelectors } from '../selectors'
-
 // Constants
 import { BraveWallet } from '../../constants/types'
 
@@ -23,6 +19,9 @@ import {
   useHideOrDeleteTokenMutation,
   useRestoreHiddenTokenMutation
 } from '../slices/api.slice'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../slices/entities/blockchain-token.entity'
 
 const onlyInLeft = (
   left: BraveWallet.BlockchainToken[],
@@ -55,16 +54,17 @@ const findTokensWithMismatchedVisibility = (
   )
 
 export function useAssetManagement() {
-  // selectors
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-
   // redux
   const dispatch = useDispatch()
 
   // queries
-  const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
+  const { data: userTokensRegistry, userVisibleTokensInfo } =
+    useGetUserTokensRegistryQuery(undefined, {
+      selectFromResult: (res) => ({
+        data: res.data,
+        userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(res)
+      })
+    })
 
   // mutations
   const [hideOrDeleteToken] = useHideOrDeleteTokenMutation()

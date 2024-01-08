@@ -409,10 +409,18 @@ export const tokenEndpoints = ({
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { cache } = baseQuery(undefined)
+          const { cache, data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+
+          const tokensRegistry = await cache.getUserTokensRegistry()
+          const token = tokensRegistry.entities[arg.tokenId]
 
           // only show the token in the "hidden" list
           if (arg.mode === 'hide') {
+            if (token) {
+              await braveWalletService.setUserAssetVisible(token, false)
+            }
+
             const currentIds = getHiddenTokenIds()
             if (currentIds.includes(arg.tokenId)) {
               throw new Error('Token is already removed')
@@ -425,6 +433,9 @@ export const tokenEndpoints = ({
 
           // prevent showing the token in any list if it is auto-discovered
           if (arg.mode === 'delete') {
+            if (token) {
+              await braveWalletService.removeUserAsset(token)
+            }
             const currentIds = getDeletedTokenIds()
             if (currentIds.includes(arg.tokenId)) {
               throw new Error('Token is already deleted')
@@ -453,11 +464,20 @@ export const tokenEndpoints = ({
 
     restoreHiddenToken: mutation<
       boolean,
-      string // tokenId
+      /** tokenID */
+      string
     >({
       queryFn: async (tokenId, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { cache } = baseQuery(undefined)
+          const { cache, data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+
+          const tokensRegistry = await cache.getUserTokensRegistry()
+          const token = tokensRegistry.entities[tokenId]
+
+          if (token) {
+            await braveWalletService.setUserAssetVisible(token, true)
+          }
 
           localStorage.setItem(
             LOCAL_STORAGE_KEYS.USER_HIDDEN_TOKEN_IDS,
@@ -470,11 +490,7 @@ export const tokenEndpoints = ({
             data: true
           }
         } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Unable to locally remove or delete token',
-            error
-          )
+          return handleEndpointError(endpoint, 'Unable to restore token', error)
         }
       },
       invalidatesTags: ['UserBlockchainTokens']

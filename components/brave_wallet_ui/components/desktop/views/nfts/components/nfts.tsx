@@ -243,7 +243,9 @@ export const Nfts = (props: Props) => {
         nft: BraveWallet.BlockchainToken
       ) => {
         if (!nft.isSpam) {
-          result[0].push(nft)
+          if (nft.visible) {
+            result[0].push(nft)
+          }
         } else {
           result[1].push(nft)
         }
