@@ -17,6 +17,7 @@ import LoadingCard from "./feed/LoadingCard";
 import NoArticles from "./feed/NoArticles";
 import NoFeeds from "./feed/NoFeeds";
 import { getHistoryValue, setHistoryState } from "./shared/history";
+import NotConnected from "./feed/NotConnected";
 
 // Restoring scroll position is complicated - we have two available strategies:
 // 1. Scroll to the same position - as long as the window hasn't been resized,
@@ -76,9 +77,9 @@ const saveScrollPos = (itemId: React.Key) => () => {
 }
 
 const errors = {
-  [FeedV2Error.ConnectionError]: <div>Not connected!</div>,
+  [FeedV2Error.ConnectionError]: <NotConnected/>,
   [FeedV2Error.NoArticles]: <NoArticles />,
-  [FeedV2Error.NoSources]: <NoFeeds />
+  [FeedV2Error.NoFeeds]: <NoFeeds />
 }
 
 export default function Component({ feed }: Props) {

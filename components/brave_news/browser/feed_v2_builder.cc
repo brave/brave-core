@@ -1112,7 +1112,7 @@ void FeedV2Builder::GenerateFeed(
               if (builder->raw_feed_items_.size() == 0) {
                 feed->error = mojom::FeedV2Error::ConnectionError;
               } else if (builder->subscribed_count_ == 0) {
-                feed->error = mojom::FeedV2Error::NoSources;
+                feed->error = mojom::FeedV2Error::NoFeeds;
               } else {
                 feed->error = mojom::FeedV2Error::NoArticles;
               }
@@ -1204,8 +1204,9 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
     }
   }
 
-  // Nothing is subscribed.
-  if (eligible_content_groups.size() == 0) {
+  // If we aren't subscribed to anything, or we failed to fetch any articles
+  // from the internet, don't try and generate a feed.
+  if (eligible_content_groups.size() == 0 || raw_feed_items_.size() == 0) {
     return feed;
   }
 

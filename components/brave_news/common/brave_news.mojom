@@ -209,7 +209,7 @@ union FeedV2Type {
 };
 enum FeedV2Error {
   NoArticles,
-  NoSources,
+  NoFeeds,
   ConnectionError,
 };
 

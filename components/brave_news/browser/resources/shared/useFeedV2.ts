@@ -75,6 +75,11 @@ const maybeLoadFeed = (view?: FeedView) => {
     return undefined
   }
 
+  // Don't load errored feeds.
+  if (feed.error !== undefined) {
+    return undefined
+  }
+
   // If the feed doesn't match what we stored, don't return it.
   return !view || feedTypeToFeedView(feed.type) === view
     ? feed
