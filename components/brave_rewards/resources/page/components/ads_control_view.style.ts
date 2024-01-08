@@ -24,7 +24,7 @@ export const root = styled.div.attrs({
     width: auto;
     -webkit-appearance: none;
     background:
-      url(/${selectArrow}) calc(100% - 11px) center no-repeat,
+      url(${selectArrow}) calc(100% - 11px) center no-repeat,
       ${leo.color.container.highlight};
     background-size: 11px;
     border-radius: 8px;
@@ -36,7 +36,7 @@ export const root = styled.div.attrs({
 
     &[disabled] {
       background:
-        url(/${selectArrow}) calc(100% - 11px) center no-repeat,
+        url(${selectArrow}) calc(100% - 11px) center no-repeat,
         ${leo.color.container.disabled};
       background-size: 11px;
       color: ${leo.color.text.disabled}
