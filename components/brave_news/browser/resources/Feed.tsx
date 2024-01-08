@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { spacing } from "@brave/leo/tokens/css";
-import { FeedItemV2, FeedV2 } from "gen/brave/components/brave_news/common/brave_news.mojom.m";
+import { FeedItemV2, FeedV2, FeedV2Error } from "gen/brave/components/brave_news/common/brave_news.mojom.m";
 import * as React from 'react';
 import styled from "styled-components";
 import Advert from "./feed/Ad";
@@ -45,7 +45,6 @@ const FeedContainer = styled.div`
 
 interface Props {
   feed: FeedV2 | undefined;
-  hasSubscriptions: boolean;
 }
 
 const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
@@ -76,7 +75,13 @@ const saveScrollPos = (itemId: React.Key) => () => {
   })
 }
 
-export default function Component({ feed, hasSubscriptions }: Props) {
+const errors = {
+  [FeedV2Error.ConnectionError]: <div>Not connected!</div>,
+  [FeedV2Error.NoArticles]: <NoArticles />,
+  [FeedV2Error.NoSources]: <NoFeeds />
+}
+
+export default function Component({ feed }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
 
   // Store the number of cards we've loaded in history - otherwise when we
@@ -145,18 +150,12 @@ export default function Component({ feed, hasSubscriptions }: Props) {
     })
   }, [cardCount, feed?.items])
 
-  // An empty feed may still have ads in it, so we need to filter them out to
-  // determine if there are no articles.
-  const noArticles = React.useMemo(() => !feed?.items.filter(i => !i.advert).length, [feed])
-
   return <FeedContainer className={NEWS_FEED_CLASS}>
     {feed
-      ? noArticles
-        ? hasSubscriptions ? <NoArticles /> : <NoFeeds />
-        : <>
-          {cards}
-          <CaughtUp />
-        </>
+      ? errors[feed.error!] ?? <>
+        {cards}
+        <CaughtUp />
+      </>
       : <LoadingCard />}
   </FeedContainer>
 }

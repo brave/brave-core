@@ -1204,6 +1204,11 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
     }
   }
 
+  // Nothing is subscribed.
+  if (eligible_content_groups.size() == 0) {
+    return feed;
+  }
+
   // Step 1: Generate a block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   std::vector<mojom::FeedItemV2Ptr> initial_block =
