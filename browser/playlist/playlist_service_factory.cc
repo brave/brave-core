@@ -285,9 +285,9 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
       brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  content::URLDataSource::Add(
-      context, std::make_unique<PlaylistDataSource>(
-                   Profile::FromBrowserContext(context), service));
+  content::URLDataSource::Add(context,
+                              std::make_unique<PlaylistDataSource>(
+                                  Profile::FromBrowserContext(context)));
 #endif
 
   return service;

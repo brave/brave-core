@@ -131,10 +131,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   ~IpfsServiceBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
-    ipfs_service_ =
-        IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
-    ASSERT_TRUE(ipfs_service_);
-    ipfs_service_->SetAllowIpfsLaunchForTest(true);
+    ASSERT_TRUE(GetIpfsService());
+    GetIpfsService()->SetAllowIpfsLaunchForTest(true);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
@@ -152,7 +150,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
-    ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
+    GetIpfsService()->SetServerEndpointForTest(test_server_->base_url());
   }
 
   void ShutDownTestServer() {
@@ -532,7 +530,10 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     return swarm;
   }
 
-  IpfsService* ipfs_service() { return ipfs_service_; }
+  IpfsService* GetIpfsService() const {
+    return IpfsServiceFactory::GetInstance()->GetForContext(
+        browser()->profile());
+  }
 
   void OnGetConnectedPeersSuccess(bool success,
                                   const std::vector<std::string>& peers) {
@@ -573,7 +574,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     }
     EXPECT_FALSE(success);
     EXPECT_EQ(peers, std::vector<std::string>{});
-    EXPECT_EQ(ipfs_service()->GetLastPeersRetryForTest(), 0);
+    EXPECT_EQ(GetIpfsService()->GetLastPeersRetryForTest(), 0);
   }
 
   void OnGetAddressesConfigSuccess(bool success,
@@ -706,7 +707,6 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<FakeIpfsService> fake_service_;
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
-  raw_ptr<IpfsService> ipfs_service_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
 };
 
@@ -726,7 +726,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleGetConnectedPeers,
                           base::Unretained(this)));
-  ipfs_service()->GetConnectedPeers(
+  GetIpfsService()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersSuccess,
                      base::Unretained(this)),
       std::nullopt);
@@ -737,7 +737,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersServerError) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
-  ipfs_service()->GetConnectedPeers(
+  GetIpfsService()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersFail,
                      base::Unretained(this)),
       std::nullopt);
@@ -748,9 +748,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersRetry) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
-  ipfs_service()->SetZeroPeersDeltaForTest(true);
+  GetIpfsService()->SetZeroPeersDeltaForTest(true);
   ShutDownTestServer();
-  ipfs_service()->GetConnectedPeers(
+  GetIpfsService()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersAfterRetry,
                      base::Unretained(this)),
       4);
@@ -761,7 +761,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfig) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleGetAddressesConfig,
                           base::Unretained(this)));
-  ipfs_service()->GetAddressesConfig(
+  GetIpfsService()->GetAddressesConfig(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetAddressesConfigSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -772,7 +772,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfigServerError) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
 
-  ipfs_service()->GetAddressesConfig(
+  GetIpfsService()->GetAddressesConfig(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetAddressesConfigFail,
                      base::Unretained(this)));
   WaitForRequest();
@@ -781,7 +781,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfigServerError) {
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerSuccess) {
   ResetTestServer(base::BindRepeating(
       &IpfsServiceBrowserTest::HandleGetRepoStats, base::Unretained(this)));
-  ipfs_service()->GetRepoStats(base::BindOnce(
+  GetIpfsService()->GetRepoStats(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetRepoStatsSuccess, base::Unretained(this)));
   WaitForRequest();
 }
@@ -791,7 +791,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerError) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
 
-  ipfs_service()->GetRepoStats(base::BindOnce(
+  GetIpfsService()->GetRepoStats(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetRepoStatsFail, base::Unretained(this)));
   WaitForRequest();
 }
@@ -799,7 +799,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerError) {
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerSuccess) {
   ResetTestServer(base::BindRepeating(
       &IpfsServiceBrowserTest::HandleGetNodeInfo, base::Unretained(this)));
-  ipfs_service()->GetNodeInfo(base::BindOnce(
+  GetIpfsService()->GetNodeInfo(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetNodeInfoSuccess, base::Unretained(this)));
   WaitForRequest();
 }
@@ -809,7 +809,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerError) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
 
-  ipfs_service()->GetNodeInfo(base::BindOnce(
+  GetIpfsService()->GetNodeInfo(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetNodeInfoFail, base::Unretained(this)));
   WaitForRequest();
 }
@@ -818,7 +818,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, RunGarbageCollection) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleGarbageCollection,
                           base::Unretained(this)));
-  ipfs_service()->RunGarbageCollection(
+  GetIpfsService()->RunGarbageCollection(
       base::BindOnce(&IpfsServiceBrowserTest::OnGarbageCollectionSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -829,7 +829,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, RunGarbageCollectionError) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
 
-  ipfs_service()->RunGarbageCollection(
+  GetIpfsService()->RunGarbageCollection(
       base::BindOnce(&IpfsServiceBrowserTest::OnGarbageCollectionFail,
                      base::Unretained(this)));
   WaitForRequest();
@@ -1415,7 +1415,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfs) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
                           base::Unretained(this), expected_response));
 
-  ipfs_service()->ImportTextToIpfs(
+  GetIpfsService()->ImportTextToIpfs(
       text, domain,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
@@ -1438,7 +1438,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTwiceTextToIpfs) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleSecondImportRequests,
                           base::Unretained(this), expected_response));
 
-  ipfs_service()->ImportTextToIpfs(
+  GetIpfsService()->ImportTextToIpfs(
       text, domain,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
@@ -1454,7 +1454,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfs) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
                           base::Unretained(this), expected_response));
 
-  ipfs_service()->ImportLinkToIpfs(
+  GetIpfsService()->ImportLinkToIpfs(
       GetURL(test_host, kTestLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
@@ -1469,7 +1469,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfsFail) {
   std::string text = "text";
   std::string host = "host";
 
-  ipfs_service()->ImportTextToIpfs(
+  GetIpfsService()->ImportTextToIpfs(
       text, host,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
@@ -1482,7 +1482,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsFail) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
                           base::Unretained(this)));
 
-  ipfs_service()->ImportLinkToIpfs(
+  GetIpfsService()->ImportLinkToIpfs(
       GetURL("b.com", kTestLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
@@ -1495,7 +1495,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsBadLink) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
                           base::Unretained(this)));
 
-  ipfs_service()->ImportLinkToIpfs(
+  GetIpfsService()->ImportLinkToIpfs(
       GetURL("b.com", kUnavailableLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this),
@@ -1507,8 +1507,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, PreWarmLink) {
   ResetTestServer(base::BindRepeating(
       &IpfsServiceBrowserTest::HandlePreWarmRequest, base::Unretained(this)));
   base::RunLoop run_loop;
-  ipfs_service()->SetPreWarmCalbackForTesting(run_loop.QuitClosure());
-  ipfs_service()->PreWarmShareableLink(GetURL("b.com", kTestLinkImportPath));
+  GetIpfsService()->SetPreWarmCalbackForTesting(run_loop.QuitClosure());
+  GetIpfsService()->PreWarmShareableLink(GetURL("b.com", kTestLinkImportPath));
   run_loop.Run();
 }
 
@@ -1520,7 +1520,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileToIpfsSuccess) {
                           base::Unretained(this), expected_response));
   auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
-  ipfs_service()->ImportFileToIpfs(
+  GetIpfsService()->ImportFileToIpfs(
       file_to_upload, std::string(),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
@@ -1536,7 +1536,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportDirectoryToIpfsSuccess) {
   auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
   auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(folder));
-  ipfs_service()->ImportDirectoryToIpfs(
+  GetIpfsService()->ImportDirectoryToIpfs(
       test_path, std::string(),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
@@ -1552,7 +1552,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportAndPinDirectorySuccess) {
   auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
   auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(folder));
-  ipfs_service()->ImportDirectoryToIpfs(
+  GetIpfsService()->ImportDirectoryToIpfs(
       test_path, std::string("pin"),
       base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
                      base::Unretained(this)));
@@ -1567,7 +1567,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
                           base::Unretained(this), expected_response));
   auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
-  ipfs_service()->ImportFileToIpfs(
+  GetIpfsService()->ImportFileToIpfs(
       file_to_upload, std::string("test_key"),
       base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
                      base::Unretained(this)));
@@ -1627,20 +1627,20 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ValidateGatewayURL) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
   auto weblink = GetURL("a.com", "/");
-  ipfs_service()->ValidateGateway(
+  GetIpfsService()->ValidateGateway(
       weblink, base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewaySuccess,
                               base::Unretained(this)));
   WaitForRequest();
 
   GURL::Replacements replacements;
   replacements.SetSchemeStr("http");
-  ipfs_service()->ValidateGateway(
+  GetIpfsService()->ValidateGateway(
       weblink.ReplaceComponents(replacements),
       base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewayFail,
                      base::Unretained(this)));
   WaitForRequest();
 
-  ipfs_service()->ValidateGateway(
+  GetIpfsService()->ValidateGateway(
       GetURL("ipfs.io", "/"),
       base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewayFail,
                      base::Unretained(this)));
@@ -1764,7 +1764,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
 
   //  Show global infobar if resolve method is IPFS_LOCAL
   {
-    ipfs_service()->ImportTextToIpfs(
+    GetIpfsService()->ImportTextToIpfs(
         text, domain,
         base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                        base::Unretained(this)));

@@ -89,9 +89,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   // For custom background images.
   if (auto* ntp_custom_background_images_service =
           BraveNTPCustomBackgroundServiceFactory::GetForContext(profile)) {
-    content::URLDataSource::Add(profile,
-                                std::make_unique<NTPCustomImagesSource>(
-                                    ntp_custom_background_images_service));
+    content::URLDataSource::Add(
+        profile, std::make_unique<NTPCustomImagesSource>(*profile));
   }
 }
 

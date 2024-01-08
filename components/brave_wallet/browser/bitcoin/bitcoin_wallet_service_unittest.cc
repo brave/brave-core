@@ -103,8 +103,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
-  std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };

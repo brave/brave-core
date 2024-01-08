@@ -83,9 +83,6 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     ASSERT_TRUE(https_server()->Start());
-
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {
@@ -95,7 +92,7 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
 
@@ -104,10 +101,13 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
+  KeyringService* GetKeyringService() const {
+    return KeyringServiceFactory::GetServiceForContext(browser()->profile());
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {

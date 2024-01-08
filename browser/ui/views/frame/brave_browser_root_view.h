@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_ROOT_VIEW_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "ui/native_theme/native_theme.h"
@@ -30,7 +31,8 @@ class BraveBrowserRootView : public BrowserRootView,
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
  private:
-  raw_ptr<Browser> browser_ = nullptr;
+  base::WeakPtr<Browser> browser_;
+
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       theme_observation_{this};
 };

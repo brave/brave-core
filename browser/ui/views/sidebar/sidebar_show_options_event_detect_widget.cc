@@ -53,9 +53,9 @@ SidebarShowOptionsEventDetectWidget::SidebarShowOptionsEventDetectWidget(
 #endif
 }
 
-SidebarShowOptionsEventDetectWidget::~SidebarShowOptionsEventDetectWidget() =
-    default;
-
+SidebarShowOptionsEventDetectWidget::~SidebarShowOptionsEventDetectWidget() {
+  contents_view_ = nullptr;
+}
 void SidebarShowOptionsEventDetectWidget::Show() {
   DCHECK(widget_);
   AdjustWidgetBounds();

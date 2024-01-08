@@ -170,7 +170,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         browser(), GURL(kBraveUIWalletPanelURL),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    wallet_ = browser()->tab_strip_model()->GetActiveWebContents();
+    wallet_ =
+        browser()->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
   }
 
   void CreateSettingsTab() {
@@ -178,7 +179,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         browser(), GURL(std::string(kWalletSettingsURL) + "/networks"),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    settings_ = browser()->tab_strip_model()->GetActiveWebContents();
+    settings_ =
+        browser()->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
     // Overriding native confirmation dialog so it always confirms.
     EXPECT_TRUE(
         EvalJs(settings_, "window.confirm = () => true").value.is_none());
@@ -239,12 +241,12 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  content::WebContents* wallet() { return wallet_; }
-  content::WebContents* settings() { return settings_; }
+  content::WebContents* wallet() { return wallet_.get(); }
+  content::WebContents* settings() { return settings_.get(); }
 
  private:
-  raw_ptr<content::WebContents> wallet_ = nullptr;
-  raw_ptr<content::WebContents> settings_ = nullptr;
+  base::WeakPtr<content::WebContents> wallet_;
+  base::WeakPtr<content::WebContents> settings_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };

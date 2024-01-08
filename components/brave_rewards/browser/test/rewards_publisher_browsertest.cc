@@ -50,18 +50,13 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
 
     // Rewards service
     brave::RegisterPathProvider();
-    auto* profile = browser()->profile();
-    rewards_service_ = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetForProfile(profile));
 
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
-    rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(
-            &RewardsPublisherBrowserTest::GetTestResponse,
-            base::Unretained(this)));
-    rewards_service_->SetEngineEnvForTesting();
+    GetRewardsService()->ForTestingSetTestResponseCallback(base::BindRepeating(
+        &RewardsPublisherBrowserTest::GetTestResponse, base::Unretained(this)));
+    GetRewardsService()->SetEngineEnvForTesting();
 
     test_util::SetOnboardingBypassed(browser());
   }
@@ -74,6 +69,13 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+  }
+
+  void PostRunTestOnMainThread() override {
+    // Clean up context helper before the destruction of the browser itself to
+    // avoid dangling pointers to browser.
+    context_helper_ = nullptr;
+    InProcessBrowserTest::PostRunTestOnMainThread();
   }
 
   void GetTestResponse(
@@ -93,7 +95,11 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
+  RewardsServiceImpl* GetRewardsService() const {
+    return static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(browser()->profile()));
+  }
+
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
   std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
@@ -101,7 +107,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
                        PanelShowsCorrectPublisherData) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(GetRewardsService());
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
   test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
@@ -131,16 +137,16 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(true);
+  test_util::CreateRewardsWallet(GetRewardsService());
+  GetRewardsService()->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
       test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(true);
+  test_util::CreateRewardsWallet(GetRewardsService());
+  GetRewardsService()->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
       test_util::GetUrl(https_server_.get(), "brave.com"), false);
@@ -148,8 +154,8 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
 
 // Registered publishers without a wallet address are displayed as not verified
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(true);
+  test_util::CreateRewardsWallet(GetRewardsService());
+  GetRewardsService()->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
       test_util::GetUrl(https_server_.get(), "registeredsite.com"), false);

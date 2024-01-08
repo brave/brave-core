@@ -12,7 +12,8 @@
 
 BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
                                            views::Widget* widget)
-    : BrowserRootView(browser_view, widget), browser_(browser_view->browser()) {
+    : BrowserRootView(browser_view, widget),
+      browser_(browser_view->browser()->AsWeakPtr()) {
   if (!brave::IsRegularProfile(browser_->profile())) {
     theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
   }
@@ -31,7 +32,7 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
 
   // As vertical tabs are always in a scroll view, we should prefer scrolling
   // to tab cycling.
-  if (tabs::utils::ShouldShowVerticalTabs(browser_)) {
+  if (tabs::utils::ShouldShowVerticalTabs(browser_.get())) {
     return RootView::OnMouseWheel(event);
   }
 

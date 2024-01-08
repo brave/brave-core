@@ -213,11 +213,10 @@ void SidebarController::AddItemWithCurrentTab() {
 }
 
 void SidebarController::SetSidebar(Sidebar* sidebar) {
-  DCHECK(!sidebar_);
-  // |sidebar| can be null in unit test.
-  if (!sidebar)
-    return;
   sidebar_ = sidebar;
+  if (!sidebar_) {
+    return;
+  }
 
   sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
       browser_->profile(), ServiceAccessType::EXPLICIT_ACCESS));

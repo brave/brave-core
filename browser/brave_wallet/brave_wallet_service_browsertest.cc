@@ -81,15 +81,16 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    wallet_service_ = brave_wallet::BraveWalletServiceFactory::GetInstance()
-                          ->GetServiceForContext(browser()->profile());
   }
 
-  BraveWalletService* wallet_service() { return wallet_service_; }
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
+  BraveWalletService* GetWalletService() const {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+
  private:
-  raw_ptr<BraveWalletService> wallet_service_ = nullptr;
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -98,11 +99,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   GURL url = https_server()->GetURL("a.test", "/simple.html");
   auto expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
   TestBraveWalletServiceObserver observer;
-  wallet_service()->AddObserver(observer.GetReceiver());
+  GetWalletService()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   bool callback_called = false;
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  GetWalletService()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -113,7 +114,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  GetWalletService()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -125,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  GetWalletService()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -137,7 +138,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  GetWalletService()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);

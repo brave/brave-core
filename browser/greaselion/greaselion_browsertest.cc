@@ -172,16 +172,12 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     ASSERT_TRUE(https_server_.Start());
 
     // Rewards service
-    rewards_service_ = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetForProfile(profile()));
-    brave_rewards::test_util::StartProcess(rewards_service_);
+    brave_rewards::test_util::StartProcess(GetRewardsService());
 
     // Response mock
-    rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(
-            &GreaselionServiceTest::GetTestResponse,
-            base::Unretained(this)));
-    rewards_service_->SetEngineEnvForTesting();
+    GetRewardsService()->ForTestingSetTestResponseCallback(base::BindRepeating(
+        &GreaselionServiceTest::GetTestResponse, base::Unretained(this)));
+    GetRewardsService()->SetEngineEnvForTesting();
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
     // wait for the Greaselion service to install all the extensions it creates
@@ -221,9 +217,13 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
         response);
   }
 
+  RewardsServiceImpl* GetRewardsService() const {
+    return static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(browser()->profile()));
+  }
+
   std::unique_ptr<RewardsBrowserTestResponse> response_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
 #if !BUILDFLAG(IS_MAC)
@@ -333,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
 
   // Enable auto-contribute and wait for it
-  rewards_service_->SetAutoContributeEnabled(true);
+  GetRewardsService()->SetAutoContributeEnabled(true);
   WaitForAutoContributeEnabled();
 
   ASSERT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));

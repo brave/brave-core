@@ -99,8 +99,8 @@ class TtsPlayer {
 
     raw_ptr<TtsPlayer> owner_ = nullptr;
 
-    raw_ptr<content::WebContents> playing_web_contents_ = nullptr;
-    raw_ptr<content::WebContents> request_web_contents_ = nullptr;
+    base::WeakPtr<content::WebContents> playing_web_contents_;
+    base::WeakPtr<content::WebContents> request_web_contents_;
 
     int paragraph_index_ = -1;
     int reading_start_position_ = 0;

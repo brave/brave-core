@@ -191,11 +191,14 @@ int BraveRequestHandler::OnHeadersReceived(
   return net::ERR_IO_PENDING;
 }
 
-void BraveRequestHandler::OnURLRequestDestroyed(
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (base::Contains(callbacks_, ctx->request_identifier)) {
-    callbacks_.erase(ctx->request_identifier);
+void BraveRequestHandler::OnURLRequestDestroyed(brave::BraveRequestInfo& ctx) {
+  if (base::Contains(callbacks_, ctx.request_identifier)) {
+    callbacks_.erase(ctx.request_identifier);
   }
+  ctx.browser_context = nullptr;
+  ctx.allowed_unsafe_redirect_url = nullptr;
+  ctx.new_url = nullptr;
+  ctx.override_response_headers = nullptr;
 }
 
 void BraveRequestHandler::RunCallbackForRequestIdentifier(
@@ -267,7 +270,7 @@ void BraveRequestHandler::RunNextCallback(
       brave::ResponseCallback next_callback =
           base::BindRepeating(&BraveRequestHandler::RunNextCallback,
                               weak_factory_.GetWeakPtr(), ctx);
-      rv = callback.Run(ctx->original_response_headers,
+      rv = callback.Run(ctx->original_response_headers.get(),
                         ctx->override_response_headers,
                         ctx->allowed_unsafe_redirect_url, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {

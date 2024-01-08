@@ -42,7 +42,7 @@ class BraveRequestHandler {
       scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
       GURL* allowed_unsafe_redirect_url);
 
-  void OnURLRequestDestroyed(std::shared_ptr<brave::BraveRequestInfo> ctx);
+  void OnURLRequestDestroyed(brave::BraveRequestInfo& ctx);
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  private:

@@ -47,7 +47,7 @@ BraveProxyingWebSocket::BraveProxyingWebSocket(
 
 BraveProxyingWebSocket::~BraveProxyingWebSocket() {
   if (ctx_) {
-    request_handler_->OnURLRequestDestroyed(ctx_);
+    request_handler_->OnURLRequestDestroyed(*ctx_);
   }
   if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)

@@ -71,12 +71,6 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     ASSERT_TRUE(https_server()->Start());
-
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {
@@ -86,14 +80,14 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
 
   std::vector<mojom::BlockchainTokenPtr> GetUserAssets() const {
     base::RunLoop run_loop;
     std::vector<mojom::BlockchainTokenPtr> tokens_out;
-    brave_wallet_service_->GetUserAssets(
+    GetBraveWalletService()->GetUserAssets(
         GetCurrentChainId(browser()->profile()->GetPrefs(),
                           mojom::CoinType::ETH, std::nullopt),
         mojom::CoinType::ETH,
@@ -108,8 +102,15 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     return tokens_out;
   }
 
+  BraveWalletService* GetBraveWalletService() const {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+  KeyringService* GetKeyringService() const {
+    return KeyringServiceFactory::GetServiceForContext(browser()->profile());
+  }
+
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::vector<std::string> methods_{"request", "send1", "send2", "sendAsync"};
   std::vector<std::string> addresses_{
       "0x6B175474E89094C44Da98b954EedeAC495271d0F",
@@ -122,7 +123,6 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
-    brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
+    GetBraveWalletService()->NotifyAddSuggestTokenRequestsProcessed(
         true, {addresses_[i]});
   }
   EXPECT_EQ(asset_num + methods_.size(), GetUserAssets().size());
@@ -167,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
-    brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
+    GetBraveWalletService()->NotifyAddSuggestTokenRequestsProcessed(
         false, {addresses_[i]});
   }
   EXPECT_EQ(asset_num, GetUserAssets().size());

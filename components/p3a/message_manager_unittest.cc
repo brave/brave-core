@@ -93,6 +93,7 @@ class P3AMessageManagerTest : public testing::Test,
         GURL(std::string(kTestJsonHost) + "/p2a_json");
     p3a_config_.p3a_constellation_upload_host = kTestStarUploadHost;
 
+    message_manager_ = nullptr;
     local_state_ = std::make_unique<TestingPrefServiceSimple>();
     P3AService::RegisterPrefs(local_state_->registry(), true);
 
@@ -235,8 +236,8 @@ class P3AMessageManagerTest : public testing::Test,
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   P3AConfig p3a_config_;
-  std::unique_ptr<MessageManager> message_manager_;
   std::unique_ptr<TestingPrefServiceSimple> local_state_;
+  std::unique_ptr<MessageManager> message_manager_;
 
   base::flat_map<std::string, size_t> p3a_json_sent_metrics_;
   base::flat_map<std::string, size_t> p2a_json_sent_metrics_;

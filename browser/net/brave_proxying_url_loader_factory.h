@@ -119,8 +119,6 @@ class BraveProxyingURLLoaderFactory
 
     base::TimeTicks start_time_;
 
-    // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
-    std::shared_ptr<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
     const uint64_t request_id_;
@@ -173,6 +171,9 @@ class BraveProxyingURLLoaderFactory
       std::optional<GURL> new_url;
     };
     std::unique_ptr<FollowRedirectParams> pending_follow_redirect_params_;
+
+    // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
+    std::shared_ptr<brave::BraveRequestInfo> ctx_;
 
     // A task runner that should be used for the request when non-null. Non-null
     // when this was created for a navigation request.

@@ -125,7 +125,7 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
 
 BraveProxyingURLLoaderFactory::InProgressRequest::~InProgressRequest() {
   if (ctx_) {
-    factory_->request_handler_->OnURLRequestDestroyed(ctx_);
+    factory_->request_handler_->OnURLRequestDestroyed(*ctx_);
   }
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -14,8 +15,10 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -31,11 +34,8 @@ std::string ReadFileToString(const base::FilePath& path) {
 
 }  // namespace
 
-NTPCustomImagesSource::NTPCustomImagesSource(
-    BraveNTPCustomBackgroundService* service)
-    : service_(service), weak_factory_(this) {
-  DCHECK(service_);
-}
+NTPCustomImagesSource::NTPCustomImagesSource(Profile& profile)
+    : profile_(profile), weak_factory_(this) {}
 
 NTPCustomImagesSource::~NTPCustomImagesSource() = default;
 
@@ -48,7 +48,10 @@ void NTPCustomImagesSource::StartDataRequest(
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  GetImageFile(service_->GetImageFilePath(url), std::move(callback));
+  GetImageFile(BraveNTPCustomBackgroundServiceFactory::GetForContext(
+                   std::to_address(profile_))
+                   ->GetImageFilePath(url),
+               std::move(callback));
 }
 
 std::string NTPCustomImagesSource::GetMimeType(const GURL& url) {

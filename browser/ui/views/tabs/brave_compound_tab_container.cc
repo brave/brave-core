@@ -169,8 +169,7 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
         std::to_address(unpinned_tab_container_));
     AddChildView(std::to_address(unpinned_tab_container_));
 
-    RemoveChildViewT(scroll_view_.get());
-    scroll_view_ = nullptr;
+    RemoveChildViewT(scroll_view_.ExtractAsDangling());
   }
 }
 

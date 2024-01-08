@@ -21,14 +21,12 @@ class FilePath;
 
 namespace playlist {
 
-class PlaylistService;
-
 // A URL data source for
 // chrome-untrusted://playlist-data/<playlist-id>/{thumbnail,media,favicon}/
 // resources, for use in webui pages that want to get thumbnails or media data.
 class PlaylistDataSource : public FaviconSource {
  public:
-  PlaylistDataSource(Profile* profile, PlaylistService* service);
+  explicit PlaylistDataSource(Profile* profile);
   PlaylistDataSource(const PlaylistDataSource&) = delete;
   PlaylistDataSource& operator=(const PlaylistDataSource&) = delete;
   ~PlaylistDataSource() override;
@@ -47,8 +45,7 @@ class PlaylistDataSource : public FaviconSource {
   void OnGotDataFile(GotDataCallback got_data_callback,
                      scoped_refptr<base::RefCountedMemory> input);
 
-  raw_ptr<PlaylistService> service_;
-
+  raw_ptr<Profile> profile_;
   base::WeakPtrFactory<PlaylistDataSource> weak_factory_{this};
 };
 
