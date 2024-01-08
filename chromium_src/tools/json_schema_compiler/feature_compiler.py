@@ -46,8 +46,7 @@ class BraveFeatureDefinitionExtender:
         if has_counterpart is None:
             raise RuntimeError(
                 f"Unknown features file {source_file}. Please update "
-                "//brave/chromium_src/tools/json_schema_compiler/feature_compiler.py"
-            )
+                f"{brave_chromium_utils.get_chromium_src_override(__file__)}")
         return has_counterpart
 
     def _ValidateKnownFiles(self):
