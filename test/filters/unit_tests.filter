@@ -522,6 +522,12 @@
 # This test fails because we replace WebUI chrome:// scheme with brave://
 -ChromeURLsTest.ContainsConfigURLs
 
+# These tests fail because we changed idle detection content setting to BLOCK
+# by default, so the permission gets denied for OTR profile immediately instead
+# of being randomly delayed.
+-IdleDetectionPermissionContextTest.TestDenyInIncognitoAfterDelay
+-IdleDetectionPermissionContextTest.TestParallelDenyInIncognito
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
