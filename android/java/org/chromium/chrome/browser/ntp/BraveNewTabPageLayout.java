@@ -94,7 +94,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -1208,8 +1208,7 @@ public class BraveNewTabPageLayout
 
             if (tilesLayout instanceof MostVisitedTilesGridLayout) {
                 ((MostVisitedTilesGridLayout) tilesLayout)
-                        .setMaxRows(
-                                BraveQueryTileSection.getMaxRowsForMostVisitedTiles(getContext()));
+                        .setMaxRows(getMaxRowsForMostVisitedTiles());
             }
         }
 
@@ -1370,8 +1369,7 @@ public class BraveNewTabPageLayout
         mSuperReferralSitesLayout = new LinearLayout(mActivity);
         mSuperReferralSitesLayout.setWeightSum(1f);
         mSuperReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mSuperReferralSitesLayout.setBackgroundColor(
-                mActivity.getColor(R.color.topsite_bg_color));
+        mSuperReferralSitesLayout.setBackgroundColor(mActivity.getColor(R.color.topsite_bg_color));
 
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1506,5 +1504,21 @@ public class BraveNewTabPageLayout
     @Override
     void setSearchProviderBottomMargin(int bottomMargin) {
         if (mLogoCoordinator != null) mLogoCoordinator.setBottomMargin(bottomMargin);
+    }
+
+    private int getMaxRowsForMostVisitedTiles() {
+        try {
+            if (!ProfileManager.isInitialized()
+                    || !UserPrefs.get(BraveActivity.getBraveActivity().getCurrentProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "getMaxRowsForMostVisitedTiles ", e);
+        }
+
+        return 2;
     }
 }
