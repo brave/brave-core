@@ -115,7 +115,7 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
 
   EXPECT_FALSE(unblinded_encoded_tokens.has_value());
   EXPECT_EQ(unblinded_encoded_tokens.error(),
-            "Unblinded creds size does not match signed creds sent in!");
+            "Failed to verify and unblined batch DLEQ proof");
 }
 
 }  // namespace credential
