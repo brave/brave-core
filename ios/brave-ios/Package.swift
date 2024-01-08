@@ -61,7 +61,7 @@ var package = Package(
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.8.5"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
-    .package(name: "Static", path: "ThirdParty/Static"),
+    .package(name: "Static", path: "../../third_party/ios_deps/Static"),
   ],
   targets: [
     .target(
@@ -120,7 +120,7 @@ var package = Package(
     .target(name: "DesignSystem", plugins: ["LeoAssetsPlugin"]),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_Build/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "../../../out/ios_Build/MaterialComponents.xcframework"),
-    .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
+    .binaryTarget(name: "GRDWireGuardKit", path: "../../third_party/ios_deps/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
     .target(
       name: "Storage",
       dependencies: ["Shared"],
@@ -448,7 +448,7 @@ if isNativeTalkEnabled {
   braveTarget.resources?.append(
     PackageDescription.Resource.copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveTalkScript.js")
   )
-  package.dependencies.append(.package(name: "JitsiMeet", path: "ThirdParty/JitsiMeet"))
+  package.dependencies.append(.package(name: "JitsiMeet", path: "../../third_party/ios_deps/JitsiMeet"))
   package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
   package.targets.append(contentsOf: [
     .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"], plugins: ["LoggerPlugin"]),
