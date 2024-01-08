@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
-import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
+import { externalWalletProviderFromString, getExternalWalletProviderName } from '../../shared/lib/external_wallet'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { ModalRedirect } from '../../ui/components'
 import * as mojom from '../../shared/lib/mojom'
@@ -14,13 +14,15 @@ import * as mojom from '../../shared/lib/mojom'
 export function ProviderRedirectModal () {
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
-  const { externalWallet, modalRedirect } = useRewardsData((data) => ({
-    externalWallet: data.externalWallet,
+  const { modalRedirectProvider, modalRedirect } = useRewardsData((data) => ({
+    modalRedirectProvider: data.ui.modalRedirectProvider,
     modalRedirect: data.ui.modalRedirect
   }))
 
-  const walletType = externalWallet ? externalWallet.type : ''
-  const providerName = lookupExternalWalletProviderName(walletType)
+  const walletType =
+    externalWalletProviderFromString(modalRedirectProvider) || undefined
+  const providerName =
+    walletType ? getExternalWalletProviderName(walletType) : ''
 
   const onClickRetry = () => {
     actions.hideRedirectModal()

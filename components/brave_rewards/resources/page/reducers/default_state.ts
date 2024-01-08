@@ -20,6 +20,7 @@ export function defaultState (): Rewards.State {
     ui: {
       modalConnect: false,
       modalRedirect: 'hide',
+      modalRedirectProvider: '',
       modalReset: false,
       modalAdsHistory: false,
       adsSettings: false,
