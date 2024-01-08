@@ -19,6 +19,7 @@ DerivedData
 *.xcscmblueprint
 
 /fastlane/README.md
+/fastlane/report.xml
 # folders for storing builds and prov profiles
 /builds
 /provisioning-profiles
