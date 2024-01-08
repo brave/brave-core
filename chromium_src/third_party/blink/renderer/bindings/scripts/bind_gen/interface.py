@@ -3,24 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import os.path
 import re
-import sys
 
+import brave_chromium_utils
 import override_utils
 
-# We patch the upstream script to inline this file, so the path reported by
-# __file__ will be the path of the upstream script.
-SCRIPTS_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-sys.path.insert(1, SCRIPTS_DIR)
-
-from bind_gen.code_node import SymbolNode, TextNode
-from bind_gen.codegen_accumulator import CodeGenAccumulator
-from bind_gen.codegen_context import CodeGenContext
-from bind_gen.codegen_format import format_template as _format
+# pylint: disable=relative-beyond-top-level
+from .code_node import SymbolNode, TextNode
+from .codegen_accumulator import CodeGenAccumulator
+from .codegen_context import CodeGenContext
+from .codegen_format import format_template as _format
 
 # Get gn arg to enable WebAPI probes.
-_IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
+_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
     "enable_brave_page_graph_webapi_probes")
 
 # Workaround attribute to set when is_observable_array codegen is active. This

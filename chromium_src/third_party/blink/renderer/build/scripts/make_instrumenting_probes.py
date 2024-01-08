@@ -3,14 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import brave_chromium_utils
 import override_utils
 
 # pylint: disable=line-too-long
 
 # Get gn arg to enable PageGraph.
-_IS_PG_ENABLED = override_utils.get_gn_arg("enable_brave_page_graph")
+_IS_PG_ENABLED = brave_chromium_utils.get_gn_arg("enable_brave_page_graph")
 # Get gn arg to enable WebAPI probes.
-_IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
+_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
     "enable_brave_page_graph_webapi_probes")
 
 
