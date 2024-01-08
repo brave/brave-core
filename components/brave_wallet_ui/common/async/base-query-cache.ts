@@ -395,27 +395,15 @@ export class BaseQueryCache {
       const { provider, status, links } =
         (await rewardsProxyFetcher().getExternalWallet()) || {}
 
-      const rewardsToken = getRewardsBATToken(provider)
-
-      const isConnected = status === WalletStatus.kConnected
-
-      const rewardsAccount = isConnected
-        ? getNormalizedExternalRewardsWallet(provider)
-        : undefined
-
-      const rewardsNetwork = isConnected
-        ? getNormalizedExternalRewardsNetwork(provider)
-        : undefined
-
       this.rewardsInfo = {
         isRewardsEnabled: true,
         balance,
         provider,
-        rewardsToken,
         status: status || WalletStatus.kNotConnected,
-        rewardsAccount,
-        rewardsNetwork,
         accountLink: links?.account,
+        rewardsToken: getRewardsBATToken(provider),
+        rewardsAccount: getNormalizedExternalRewardsWallet(provider),
+        rewardsNetwork: getNormalizedExternalRewardsNetwork(provider),
         providerName: getRewardsProviderName(provider)
       }
     }
