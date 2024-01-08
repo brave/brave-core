@@ -20,13 +20,6 @@ def pre_configure():
 
 
 def merge_reproxy_cfg(reproxy_cfg):
-    reproxy_cfg = ReclientCfg.merge_cfg(
-        reproxy_cfg,
-        {
-            # Increase verbosity for rbe debugging.
-            'v': 2,
-        })
-
     # Set values from supported RBE_ environment variables.
     SUPPORTED_REPROXY_ENV_VARS = (
         'RBE_service',
