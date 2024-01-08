@@ -164,39 +164,9 @@ export function useAssetManagement() {
     [userVisibleTokensInfo, userTokensRegistry, hideOrDeleteToken]
   )
 
-  const makeTokenVisible = React.useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
-      const foundTokenIdx = userVisibleTokensInfo.findIndex(
-        (t) =>
-          t.contractAddress.toLowerCase() ===
-            token.contractAddress.toLowerCase() && t.chainId === token.chainId
-      )
-
-      const updatedTokensList = [...userVisibleTokensInfo]
-
-      // If token is not part of user-visible tokens, add it.
-      if (foundTokenIdx === -1) {
-        await onUpdateVisibleAssets([...updatedTokensList, token])
-        return
-      }
-
-      if (userVisibleTokensInfo[foundTokenIdx].visible) {
-        return
-      }
-
-      // If token is part of user-visible tokens, then:
-      //   - toggle visibility for custom tokens
-      //   - do nothing for non-custom tokens
-      updatedTokensList.splice(foundTokenIdx, 1, { ...token, visible: true })
-      await onUpdateVisibleAssets(updatedTokensList)
-    },
-    [userVisibleTokensInfo, onUpdateVisibleAssets]
-  )
-
   return {
     onUpdateVisibleAssets,
     onAddCustomAsset,
-    makeTokenVisible,
     addNftToDeletedNftsList
   }
 }

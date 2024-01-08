@@ -26,6 +26,10 @@ import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { LibContext } from '../context/lib.context'
 import { createMockStore } from '../../utils/test-utils'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../slices/entities/blockchain-token.entity'
+import { useGetUserTokensRegistryQuery } from '../slices/api.slice'
 
 const mockCustomToken = {
   contractAddress: 'customTokenContractAddress',
@@ -44,10 +48,13 @@ const mockCustomToken = {
 const makeStore = (customStore?: ReturnType<typeof createMockStore>) => {
   const store =
     customStore ||
-    createMockStore({
-      walletStateOverride: mockWalletState,
-      pageStateOverride: mockPageState
-    })
+    createMockStore(
+      {
+        walletStateOverride: mockWalletState,
+        pageStateOverride: mockPageState
+      },
+      { userAssets: mockWalletState.userVisibleTokensInfo }
+    )
 
   store.dispatch = jest.fn(store.dispatch)
   return store
@@ -71,9 +78,22 @@ describe('useAssetManagement hook', () => {
     const renderHookOptions = renderHookOptionsWithCustomStore(store)
     const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
 
-    const {
-      wallet: { userVisibleTokensInfo }
-    } = store.getState()
+    // useGetUserTokensRegistryQuery
+    const { result: tokensResult, rerender: rerenderTokens } = renderHook(
+      () =>
+        useGetUserTokensRegistryQuery(undefined, {
+          selectFromResult: (res) => ({
+            userVisibleTokensInfo:
+              selectAllVisibleUserAssetsFromQueryResult(res)
+          })
+        }),
+      renderHookOptions
+    )
+    await act(async () => rerenderTokens())
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    const { userVisibleTokensInfo } = tokensResult.current
+
+    // update
     await act(
       async () =>
         await result.current.onUpdateVisibleAssets([
@@ -96,9 +116,25 @@ describe('useAssetManagement hook', () => {
     const renderHookOptions = renderHookOptionsWithCustomStore(store)
     const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
 
-    const {
-      wallet: { userVisibleTokensInfo }
-    } = store.getState()
+    // useGetUserTokensRegistryQuery
+    const { result: tokensResult, rerender: rerenderTokens } = renderHook(
+      () =>
+        useGetUserTokensRegistryQuery(undefined, {
+          selectFromResult: (res) => ({
+            userVisibleTokensInfo:
+              selectAllVisibleUserAssetsFromQueryResult(res)
+          })
+        }),
+      renderHookOptions
+    )
+    await act(async () => rerenderTokens())
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    const { userVisibleTokensInfo } = tokensResult.current
+
+    // remove one item from the list
+    const newList = userVisibleTokensInfo.slice(1)
+    expect(newList.length).toEqual(userVisibleTokensInfo.length - 1)
+    expect(newList[0].visible).toBe(true)
     await act(async () =>
       result.current.onUpdateVisibleAssets(userVisibleTokensInfo.slice(1))
     )
@@ -117,9 +153,22 @@ describe('useAssetManagement hook', () => {
     const renderHookOptions = renderHookOptionsWithCustomStore(store)
     const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
 
-    const {
-      wallet: { userVisibleTokensInfo }
-    } = store.getState()
+    // useGetUserTokensRegistryQuery
+    const { result: tokensResult, rerender: rerenderTokens } = renderHook(
+      () =>
+        useGetUserTokensRegistryQuery(undefined, {
+          selectFromResult: (res) => ({
+            userVisibleTokensInfo:
+              selectAllVisibleUserAssetsFromQueryResult(res)
+          })
+        }),
+      renderHookOptions
+    )
+    await act(async () => rerenderTokens())
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    const { userVisibleTokensInfo } = tokensResult.current
+
+    // update assets
     await act(
       async () =>
         await result.current.onUpdateVisibleAssets([
@@ -142,34 +191,40 @@ describe('useAssetManagement hook', () => {
   })
 
   it('should set custom tokens visibility to false', async () => {
-    const customStore = createMockStore({
-      walletStateOverride: {
-        ...mockWalletState,
-        userVisibleTokensInfo: [
-          mockCustomToken,
-          ...mockWalletState.userVisibleTokensInfo
-        ]
-      },
-      pageStateOverride: mockPageState
-    })
-    const store = makeStore(customStore)
+    const store = makeStore()
     const renderHookOptions = renderHookOptionsWithCustomStore(store)
     const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
 
-    const {
-      wallet: { userVisibleTokensInfo }
-    } = store.getState()
-    await act(
-      async () =>
-        await result.current.onUpdateVisibleAssets([
-          { ...mockCustomToken, visible: false },
-          ...userVisibleTokensInfo.slice(1)
-        ])
+    // useGetUserTokensRegistryQuery
+    const { result: tokensResult, rerender: rerenderTokens } = renderHook(
+      () =>
+        useGetUserTokensRegistryQuery(undefined, {
+          selectFromResult: (res) => ({
+            userVisibleTokensInfo:
+              selectAllVisibleUserAssetsFromQueryResult(res)
+          })
+        }),
+      renderHookOptions
     )
+    await act(async () => rerenderTokens())
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    const { userVisibleTokensInfo } = tokensResult.current
+    expect(userVisibleTokensInfo).toHaveLength(5)
+
+    // clone assets in list so we can modify them
+    const newList = userVisibleTokensInfo.map((t) => ({ ...t }))
+    // change first asset's visibility
+    const changedAsset = newList[0]
+    expect(changedAsset.visible).toBe(true)
+    changedAsset.visible = !changedAsset.visible
+    expect(changedAsset.visible).toBe(false)
+
+    // update assets in store
+    await act(async () => await result.current.onUpdateVisibleAssets(newList))
 
     expect(store.dispatch).toHaveBeenCalledWith(
       WalletActions.setUserAssetVisible({
-        token: { ...mockCustomToken, visible: false },
+        token: changedAsset,
         isVisible: false
       })
     )
@@ -180,103 +235,40 @@ describe('useAssetManagement hook', () => {
   })
 
   it('should set custom tokens visibility to true', async () => {
-    const customStore = createMockStore({
-      walletStateOverride: {
-        ...mockWalletState,
-        userVisibleTokensInfo: [
-          { ...mockCustomToken, visible: false },
-          ...mockWalletState.userVisibleTokensInfo
-        ]
-      },
-      pageStateOverride: mockPageState
-    })
-    const store = makeStore(customStore)
-    const renderHookOptions = renderHookOptionsWithCustomStore(store)
-    const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
-
-    await act(
-      async () =>
-        await result.current.onUpdateVisibleAssets([
-          mockCustomToken,
-          ...mockWalletState.userVisibleTokensInfo
-        ])
-    )
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.setUserAssetVisible({
-        token: mockCustomToken,
-        isVisible: true
-      })
-    )
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.refreshBalancesAndPriceHistory()
-    )
-  })
-
-  it('should add token to visible assets list if not found', async () => {
     const store = makeStore()
     const renderHookOptions = renderHookOptionsWithCustomStore(store)
     const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
 
-    await act(
-      async () => await result.current.makeTokenVisible(mockCustomToken)
+    // useGetUserTokensRegistryQuery
+    const { result: tokensResult, rerender: rerenderTokens } = renderHook(
+      () =>
+        useGetUserTokensRegistryQuery(undefined, {
+          selectFromResult: (res) => ({
+            userVisibleTokensInfo:
+              selectAllVisibleUserAssetsFromQueryResult(res)
+          })
+        }),
+      renderHookOptions
     )
+    await act(async () => rerenderTokens())
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    const { userVisibleTokensInfo } = tokensResult.current
+    expect(userVisibleTokensInfo).toHaveLength(5)
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.addUserAsset({ ...mockCustomToken, logo: '' })
-    )
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.refreshBalancesAndPriceHistory()
-    )
-  })
+    // clone assets in list so we can modify them
+    const newList = userVisibleTokensInfo.map((t) => ({ ...t }))
+    // change first asset's visibility
+    const changedAsset = newList[0]
+    expect(changedAsset.visible).toBe(true)
+    changedAsset.visible = !changedAsset.visible
+    expect(changedAsset.visible).toBe(false)
 
-  it('should not add token to visible list if already there', async () => {
-    const store = makeStore()
-    const renderHookOptions = renderHookOptionsWithCustomStore(store)
-    const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
-
-    const {
-      wallet: { userVisibleTokensInfo }
-    } = store.getState()
-
-    // useGetUserTokensRegistryQuery call
-    expect(store.dispatch).toHaveBeenCalledTimes(1)
-
-    await act(
-      async () =>
-        await result.current.makeTokenVisible(userVisibleTokensInfo[0])
-    )
-
-    // No additional dispatches
-    expect(store.dispatch).toHaveBeenCalledTimes(1)
-  })
-
-  it('should update visibility of token if not visible already', async () => {
-    const store = makeStore(
-      createMockStore({
-        walletStateOverride: {
-          ...mockWalletState,
-          userVisibleTokensInfo: [
-            ...mockWalletState.userVisibleTokensInfo,
-            { ...mockCustomToken, visible: false }
-          ]
-        },
-        pageStateOverride: mockPageState
-      })
-    )
-    const renderHookOptions = renderHookOptionsWithCustomStore(store)
-    const { result } = renderHook(() => useAssetManagement(), renderHookOptions)
-
-    // useGetUserTokensRegistryQuery call
-    expect(store.dispatch).toHaveBeenCalledTimes(1)
-
-    await act(
-      async () => await result.current.makeTokenVisible(mockCustomToken)
-    )
-
+    // update
+    await act(async () => await result.current.onUpdateVisibleAssets(newList))
     expect(store.dispatch).toHaveBeenCalledWith(
       WalletActions.setUserAssetVisible({
-        token: mockCustomToken,
-        isVisible: true
+        token: changedAsset,
+        isVisible: changedAsset.visible
       })
     )
     expect(store.dispatch).toHaveBeenCalledWith(
