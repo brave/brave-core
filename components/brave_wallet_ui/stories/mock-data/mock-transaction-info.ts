@@ -4,18 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import {
-  mockAccount,
-  mockFilecoinAccount,
-  mockSolanaAccount,
-  mockSolanaAccountInfo
-} from '../../common/constants/mocks'
 import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
 import { FileCoinTransactionInfo } from '../../utils/tx-utils'
 
 // Mocks
+import {
+  mockAccount,
+  mockBtcAccount,
+  mockFilecoinAccount,
+  mockSolanaAccount,
+  mockSolanaAccountInfo,
+  mockZecAccount
+} from '../../common/constants/mocks'
 import { mockOriginInfo } from './mock-origin-info'
+import { mockEthAccount } from './mock-wallet-accounts'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
@@ -149,6 +152,129 @@ export const mockedErc20ApprovalTransaction = {
   txType: BraveWallet.TransactionType.ERC20Approve
 }
 
+export const mockEthSendTransaction = {
+  id: '8e41ec0c-9e62-45fc-904f-a25b42275a1a',
+  fromAddress: mockAccount.address,
+  fromAccountId: mockAccount.accountId,
+  txHash: '0xbabaaaaaaaaaaa',
+  txDataUnion: {
+    ethTxData1559: {
+      baseData: {
+        nonce: '0xb',
+        gasPrice: '0x0',
+        gasLimit: '0x5208',
+        to: mockEthAccount.accountId.address,
+        value: '0x5543df729c0000',
+        data: [],
+        signOnly: false,
+        signedTransaction: 'mockSignedTx'
+      },
+      chainId: '0x5',
+      maxPriorityFeePerGas: '0x2faf080',
+      maxFeePerGas: '0x2faf092',
+      gasEstimation: {
+        slowMaxPriorityFeePerGas: '0x2',
+        slowMaxFeePerGas: '0x14',
+        avgMaxPriorityFeePerGas: '0x2faf080',
+        avgMaxFeePerGas: '0x2faf092',
+        fastMaxPriorityFeePerGas: '0x59682f00',
+        fastMaxFeePerGas: '0x59682f12',
+        baseFeePerGas: '0x12'
+      }
+    }
+  },
+  txStatus: 4,
+  txType: 0,
+  txParams: [],
+  txArgs: [],
+  createdTime: {
+    microseconds: 1697722990427000
+  },
+  submittedTime: {
+    microseconds: 1697723019222000
+  },
+  confirmedTime: {
+    microseconds: 1697723040798000
+  },
+  originInfo: {
+    originSpec: 'chrome://wallet',
+    eTldPlusOne: ''
+  },
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  effectiveRecipient: mockEthAccount.accountId.address
+}
+
+export const mockBtcSendTransaction = {
+  id: 'btc-send-tx-1',
+  fromAddress: mockBtcAccount.address,
+  fromAccountId: mockBtcAccount.accountId,
+  txHash: 'btc-send-tx',
+  txDataUnion: {
+    btcTxData: {
+      amount: BigInt(10000000000000),
+      fee: BigInt(10000000),
+      inputs: [],
+      outputs: [],
+      sendingMaxAmount: false,
+      to: 'another-btc-address'
+    }
+  },
+  txStatus: 4,
+  txType: BraveWallet.TransactionType.Other,
+  txParams: [],
+  txArgs: [],
+  createdTime: {
+    microseconds: 1697722990427000
+  },
+  submittedTime: {
+    microseconds: 1697723019222000
+  },
+  confirmedTime: {
+    microseconds: 1697723040798000
+  },
+  originInfo: {
+    originSpec: 'chrome://wallet',
+    eTldPlusOne: ''
+  },
+  chainId: BraveWallet.BITCOIN_MAINNET,
+  effectiveRecipient: mockBtcAccount.accountId.address
+}
+
+export const mockZecSendTransaction = {
+  id: 'Zec-send-tx-1',
+  fromAddress: mockZecAccount.address,
+  fromAccountId: mockZecAccount.accountId,
+  txHash: 'Zec-send-tx',
+  txDataUnion: {
+    zecTxData: {
+      amount: BigInt(10000000000000),
+      fee: BigInt(10000000),
+      inputs: [],
+      outputs: [],
+      to: 'another-Zec-address'
+    }
+  },
+  txStatus: 4,
+  txType: BraveWallet.TransactionType.Other,
+  txParams: [],
+  txArgs: [],
+  createdTime: {
+    microseconds: 1697722990427000
+  },
+  submittedTime: {
+    microseconds: 1697723019222000
+  },
+  confirmedTime: {
+    microseconds: 1697723040798000
+  },
+  originInfo: {
+    originSpec: 'chrome://wallet',
+    eTldPlusOne: ''
+  },
+  chainId: BraveWallet.Z_CASH_MAINNET,
+  effectiveRecipient: mockZecAccount.accountId.address
+}
+
 export const createMockERC20TransferTxArgs = ({
   amount,
   recipient
@@ -234,6 +360,44 @@ export const createMockTransactionInfo = (arg: {
     buyAmount
   } = arg
 
+  const txBase =
+    coinType === BraveWallet.CoinType.FIL
+      ? mockFilSendTransaction
+      : deserializeTransaction(
+          coinType === BraveWallet.CoinType.ETH
+            ? mockTransactionInfo
+            : coinType === BraveWallet.CoinType.SOL
+            ? mockSolanaTransactionInfo
+            : mockTransactionInfo
+        )
+
+  const ethTxData = {
+    ...txBase.txDataUnion.ethTxData1559,
+    chainId,
+    maxPriorityFeePerGas: '0x2faf080',
+    maxFeePerGas: '0x2faf092',
+    gasEstimation: {
+      slowMaxPriorityFeePerGas: '0x2',
+      slowMaxFeePerGas: '0x14',
+      avgMaxPriorityFeePerGas: '0x2faf080',
+      avgMaxFeePerGas: '0x2faf092',
+      fastMaxPriorityFeePerGas: '0x59682f00',
+      fastMaxFeePerGas: '0x59682f12',
+      baseFeePerGas: '0x12'
+    },
+    baseData: {
+      ...txBase.txDataUnion.ethTxData1559?.baseData,
+      data: [],
+      gasLimit: '1',
+      gasPrice: '1',
+      nonce: '1',
+      signedTransaction: 'signed',
+      signOnly: false,
+      to: sendApproveOrSellAssetContractAddress,
+      value: '1'
+    }
+  }
+
   let txArgs: string[] = []
 
   switch (true) {
@@ -248,6 +412,7 @@ export const createMockTransactionInfo = (arg: {
         recipient: toAddress,
         amount: sendApproveOrSellAmount
       })
+      txBase.txDataUnion.ethTxData1559 = ethTxData
     }
     case isERC721Send: {
       txArgs = createMockERC721TxArgs({
@@ -255,6 +420,7 @@ export const createMockTransactionInfo = (arg: {
         to: toAddress,
         tokenId: tokenId || ''
       })
+      txBase.txDataUnion.ethTxData1559 = ethTxData
     }
     case isSwap: {
       txArgs = createMockEthSwapTxArgs({
@@ -266,16 +432,12 @@ export const createMockTransactionInfo = (arg: {
     }
   }
 
-  const txBase =
-    coinType === BraveWallet.CoinType.FIL
-      ? mockFilSendTransaction
-      : deserializeTransaction(
-          coinType === BraveWallet.CoinType.ETH
-            ? mockTransactionInfo
-            : coinType === BraveWallet.CoinType.SOL
-            ? mockSolanaTransactionInfo
-            : mockTransactionInfo
-        )
+  if (coinType === BraveWallet.CoinType.SOL) {
+    txBase.txDataUnion.solanaTxData = txBase.txDataUnion.solanaTxData!
+    txBase.txDataUnion.solanaTxData.splTokenMintAddress =
+      sendApproveOrSellAssetContractAddress
+  }
+
   return {
     ...txBase,
     id: `${txBase.id}--${JSON.stringify(arg)}`,

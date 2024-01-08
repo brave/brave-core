@@ -124,8 +124,6 @@ export const usePendingTransactions = () => {
     )
   }, [pendingTransactions, selectedPendingTransactionId])
 
-  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
-
   const txCoinType = transactionInfo
     ? getCoinFromTxDataUnion(transactionInfo.txDataUnion)
     : undefined
@@ -142,6 +140,8 @@ export const usePendingTransactions = () => {
   const networkAsset = React.useMemo(() => {
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
+
+  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
 
   const tokenPriceIds = React.useMemo(
     () =>

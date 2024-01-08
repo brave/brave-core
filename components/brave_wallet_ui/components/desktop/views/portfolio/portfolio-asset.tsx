@@ -326,21 +326,33 @@ export const PortfolioAsset = (props: Props) => {
   }, [selectedAssetFromParams])
 
   const selectedAssetTransactions = React.useMemo(() => {
+    const nativeAsset = makeNetworkAsset(selectedAssetsNetwork)
+
     if (selectedAssetFromParams) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
         const token = findTransactionToken(tx, [selectedAssetFromParams])
 
-        const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens({
-          nativeAsset: makeNetworkAsset(selectedAssetsNetwork),
-          tokensList: [selectedAssetFromParams],
-          tx
-        })
         const selectedAssetIdKey = getAssetIdKey(selectedAssetFromParams)
-        return (
-          (token && selectedAssetIdKey === getAssetIdKey(token)) ||
-          (sellToken && selectedAssetIdKey === getAssetIdKey(sellToken)) ||
-          (buyToken && selectedAssetIdKey === getAssetIdKey(buyToken))
-        )
+        const tokenId = token ? getAssetIdKey(token) : undefined
+
+        if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+          const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens(
+            {
+              nativeAsset,
+              tokensList: [selectedAssetFromParams],
+              tx
+            }
+          )
+          const buyTokenId = buyToken ? getAssetIdKey(buyToken) : undefined
+          const sellTokenId = sellToken ? getAssetIdKey(sellToken) : undefined
+          return (
+            selectedAssetIdKey === tokenId ||
+            selectedAssetIdKey === buyTokenId ||
+            selectedAssetIdKey === sellTokenId
+          )
+        }
+
+        return selectedAssetIdKey === tokenId
       })
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
