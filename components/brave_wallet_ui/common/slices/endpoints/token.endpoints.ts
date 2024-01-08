@@ -574,18 +574,22 @@ async function addUserToken({
   cache.clearUserTokensRegistry()
 
   if (tokenArg.isErc721) {
-    // Get NFTMetadata
-    const metadata = await cache.getErc721Metadata({
-      coin: tokenArg.coin,
-      chainId: tokenArg.chainId,
-      contractAddress: tokenArg.contractAddress,
-      isErc721: tokenArg.isErc721,
-      tokenId: tokenArg.tokenId,
-      isNft: tokenArg.isNft
-    })
+    try {
+      // Get NFTMetadata
+      const metadata = await cache.getErc721Metadata({
+        coin: tokenArg.coin,
+        chainId: tokenArg.chainId,
+        contractAddress: tokenArg.contractAddress,
+        isErc721: tokenArg.isErc721,
+        tokenId: tokenArg.tokenId,
+        isNft: tokenArg.isNft
+      })
 
-    if (metadata?.image) {
-      tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
+      if (metadata?.image) {
+        tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
