@@ -102,7 +102,7 @@ RegisterPolymerPrototypeModification({
         leoIcon.setAttribute('name', name ?? this.icon)
       } else {
         removeAllOfType('leo-icon')
-        _updateIcon.apply(this, ...args)
+        _updateIcon.apply(this, args)
       }
     }
   }
