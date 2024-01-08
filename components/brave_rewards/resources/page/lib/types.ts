@@ -61,6 +61,7 @@ export interface State {
       | 'error'
       | 'hide'
       | 'show'
+    modalRedirectProvider: string
     modalReset: boolean
     modalAdsHistory: boolean
     adsSettings: boolean
