@@ -33,6 +33,7 @@ if (!is_android) {
       "//brave/components/google_sign_in_permission",
       "//brave/components/localhost_permission",
       "//chrome/browser",
+      "//chrome/browser/permissions",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -54,6 +55,7 @@ source_set("unit_tests") {
   deps = [
     "//brave/components/brave_wallet/browser:permission_utils",
     "//chrome/browser",
+    "//chrome/browser/permissions",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
     "//components/permissions",
