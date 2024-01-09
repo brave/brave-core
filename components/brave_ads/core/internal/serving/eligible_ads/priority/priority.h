@@ -31,20 +31,6 @@ SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
 }
 
 template <typename T>
-T HighestPriorityCreativeAds(const T& creative_ads) {
-  const base::flat_map<int, T> buckets =
-      SortCreativeAdsIntoBucketsByPriority(creative_ads);
-
-  LogNumberOfCreativeAdsPerBucket(buckets);
-
-  if (buckets.empty()) {
-    return {};
-  }
-
-  return buckets.cbegin()->second;
-}
-
-template <typename T>
 void LogNumberOfCreativeAdsPerBucket(
     const base::flat_map</*priority*/ int, /*creative_ads*/ T>& buckets) {
   size_t bucket = 1;

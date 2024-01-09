@@ -243,7 +243,15 @@ CreativeNotificationAdList EligibleNotificationAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  return HighestPriorityCreativeAds(eligible_creative_ads);
+  const base::flat_map<int, CreativeNotificationAdList> buckets =
+      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+  if (buckets.empty()) {
+    return {};
+  }
+
+  LogNumberOfCreativeAdsPerBucket(buckets);
+
+  return buckets.cbegin()->second;
 }
 
 }  // namespace brave_ads
