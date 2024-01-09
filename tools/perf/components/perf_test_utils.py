@@ -108,8 +108,8 @@ def DownloadFile(url: str, output: str):
   logging.info('Downloading %s to %s', url, output)
   try:
     f = urlopen(url)
-  except:
-    raise RuntimeError(f'Can\'t download {url}')
+  except Exception as e:
+    raise RuntimeError(f'Can\'t download {url}') from e
   data = f.read()
   with open(output, 'wb') as output_file:
     output_file.write(data)
