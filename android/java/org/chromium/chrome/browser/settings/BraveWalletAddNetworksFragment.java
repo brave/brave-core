@@ -191,14 +191,12 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
      * logic applies:
      *
      * <ul>
-     *   <li>Chain ID, chain name, and RPC URL are mandatory fields and cannot be empty.
-     *   <li>Chain's currency name, currency symbol, currency decimal, icon URL and block explorer
-     *       URL can be empty. They'll default to empty except for chain's currency decimal that
-     *       will default to 18.
-     *   <li>Chain's currency decimal accepts only numbers greater than 0. If not set, it will
-     *       default to 0.
+     *   <li>Chain ID, chain name, currency name, currency symbol, currency decimals and RPC URL are
+     *       mandatory fields and cannot be empty.
+     *   <li>Icon URL and block explorer URL can be empty.
+     *   <li>Chain's currency decimals accept only numbers greater than 0.
      *   <li>RPC URL, icon URL and block explorer URL support only HTTP and HTTPS protocols.
-     *   <li>Chain ID, and RPC URL are cross validated: if the chain ID returned by RPC endpoint
+     *   <li>Chain ID and RPC URL are cross validated: if the chain ID returned by RPC endpoint
      *       doesn't match the chain ID provided an error message will be displayed.
      * </ul>
      */
@@ -232,14 +230,25 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             chain.chainName = strChainName;
         }
 
-        chain.symbolName = mChainCurrencyName.getText().toString().trim();
+        String strChainCurrencyName = mChainCurrencyName.getText().toString().trim();
+        if (strChainCurrencyName.isEmpty()) {
+            mChainCurrencyName.setError(
+                    getString(R.string.brave_wallet_add_network_chain_empty_error));
+            error = true;
+        } else {
+            chain.symbolName = strChainCurrencyName;
+        }
 
-        chain.symbol = mChainCurrencySymbol.getText().toString().trim();
+        String strChainCurrencySymbol = mChainCurrencySymbol.getText().toString().trim();
+        if (strChainCurrencySymbol.isEmpty()) {
+            mChainCurrencySymbol.setError(
+                    getString(R.string.brave_wallet_add_network_chain_empty_error));
+            error = true;
+        } else {
+            chain.symbol = strChainCurrencySymbol;
+        }
 
         String strChainCurrencyDecimals = mChainCurrencyDecimals.getText().toString().trim();
-        if (strChainCurrencyDecimals.isEmpty()) {
-            strChainCurrencyDecimals = "18";
-        }
         try {
             int iChainCurrencyDecimals = Integer.parseInt(strChainCurrencyDecimals);
             if (iChainCurrencyDecimals > 0) {
