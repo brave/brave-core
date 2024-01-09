@@ -69,7 +69,7 @@ export default function FeatureMenu() {
                mode={context.isPremiumUser ? 'loud' : 'default'}
                color='blue'
               >
-                {context.isPremiumUser ? 'Unlimited' : 'Basic'}
+                {context.isPremiumUser ? 'Unlimited' : 'Limited'}
               </Label>
             )}
           </div>
