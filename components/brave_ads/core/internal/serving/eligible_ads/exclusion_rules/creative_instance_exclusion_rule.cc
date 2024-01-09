@@ -30,7 +30,7 @@ base::expected<void, std::string> CreativeInstanceExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeCap(
           creative_ad, ad_events_, ConfirmationType::kServed,
-          /*time_constraint=*/base::Hours(1),
+          kShouldExcludeAdIfCreativeInstanceWithinTimeWindow.Get(),
           kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get())) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeInstanceId $1 has exceeded the creative instance frequency "

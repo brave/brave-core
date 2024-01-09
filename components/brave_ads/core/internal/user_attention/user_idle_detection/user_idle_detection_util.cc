@@ -16,11 +16,7 @@ bool MaybeScreenWasLocked(const bool screen_was_locked) {
 
 bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {
   const base::TimeDelta maximum_idle_time = kMaximumUserIdleDetectionTime.Get();
-  if (maximum_idle_time.is_zero()) {  // Infinite
-    return false;
-  }
-
-  return idle_time > maximum_idle_time;
+  return maximum_idle_time.is_positive() && idle_time > maximum_idle_time;
 }
 
 }  // namespace brave_ads
