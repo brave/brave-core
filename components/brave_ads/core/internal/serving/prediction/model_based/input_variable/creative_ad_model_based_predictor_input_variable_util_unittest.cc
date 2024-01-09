@@ -256,19 +256,4 @@ TEST_F(
   EXPECT_FALSE(last_seen_advertiser_input_variable.value);
 }
 
-TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
-       ComputeCreativeAdModelBasedPredictorPriorityInputVariable) {
-  // Arrange
-  const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
-
-  const CreativeAdModelBasedPredictorPriorityInputVariableInfo
-      priority_input_variable =
-          ComputeCreativeAdModelBasedPredictorPriorityInputVariable(
-              creative_ad, /*weight=*/0.0);
-
-  // Act & Assert
-  EXPECT_EQ(2, priority_input_variable.value);
-}
-
 }  // namespace brave_ads

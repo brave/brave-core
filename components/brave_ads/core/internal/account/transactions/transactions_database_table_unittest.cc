@@ -52,8 +52,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(transactions)));
+              Run(/*success=*/true, ::testing::ElementsAreArray(transactions)));
   const Transactions database_table;
   database_table.GetAll(callback.Get());
 }

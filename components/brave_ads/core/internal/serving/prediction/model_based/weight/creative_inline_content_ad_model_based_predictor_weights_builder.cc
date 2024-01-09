@@ -29,12 +29,13 @@ BuildCreativeInlineContentAdModelBasedPredictorWeights() {
   weights.interest_segment.parent =
       kInlineContentAdParentInterestSegmentPredictorWeight.Get();
 
+  weights.untargeted_segment =
+      kInlineContentAdUntargetedSegmentPredictorWeight.Get();
+
   weights.last_seen_ad = kInlineContentAdLastSeenPredictorWeight.Get();
 
   weights.last_seen_advertiser =
       kInlineContentAdLastSeenAdvertiserPredictorWeight.Get();
-
-  weights.priority = kInlineContentAdPriorityPredictorWeight.Get();
 
   return weights;
 }
