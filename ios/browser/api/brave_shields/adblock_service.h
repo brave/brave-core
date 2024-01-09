@@ -31,6 +31,11 @@ OBJC_EXPORT
 - (void)registerResourceComponent:
     (void (^)(NSString* _Nullable installPath))componentReady;
 
+/// Registers the first party filters component and calls `componentReady`
+/// each time the component is updated
+- (void)registerFirstPartyFiltersComponent:
+    (void (^)(NSString* _Nullable installPath))componentReady;
+
 /// Registers a filter list with the component updater and calls
 /// `componentReady` each time the component is updated
 - (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)entry

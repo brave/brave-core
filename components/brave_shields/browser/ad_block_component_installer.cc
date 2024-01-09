@@ -16,6 +16,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_shields/common/components.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -50,17 +51,6 @@ const char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
     "UwNavFnj8gQDGVvCf+dse8HRMJn00QH0MOypsZSWFZRmF08ybOu/jTiUo/TuIaHL"
     "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
     "2QIDAQAB";
-
-const char kAdBlockDefaultComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockDefaultComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockDefaultComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
-    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
-    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
-    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
-    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
-    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
-    "PQIDAQAB";
 
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -232,6 +222,23 @@ void RegisterAdBlockFilterListCatalogComponent(
           kAdBlockFilterListCatalogComponentName, callback));
   installer->Register(
       cus, base::BindOnce(&OnRegistered, kAdBlockFilterListCatalogComponentId));
+}
+
+void RegisterAdBlockFirstPartyFiltersComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
+  // In test, |cus| could be nullptr.
+  if (!cus) {
+    return;
+  }
+
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<AdBlockComponentInstallerPolicy>(
+          kAdBlockExceptionComponentBase64PublicKey,
+          kAdBlockExceptionComponentId, kAdBlockExceptionComponentName,
+          callback));
+  installer->Register(
+      cus, base::BindOnce(&OnRegistered, kAdBlockExceptionComponentId));
 }
 
 void RegisterAdBlockFiltersComponent(

@@ -29,6 +29,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/common/components.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -39,30 +40,6 @@
 using brave_component_updater::BraveOnDemandUpdater;
 
 namespace {
-
-const char kAdBlockDefaultComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockDefaultComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockDefaultComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
-    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
-    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
-    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
-    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
-    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
-    "PQIDAQAB";
-
-const char kAdBlockExceptionComponentName[] =
-    "Brave Ad Block First Party Filters";
-const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
-const char kAdBlockExceptionComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtvmLp4MOseThuH/vFSc7"
-    "kjr+CDCzR/ieGI8TJZyFQhzA1SKWRl4y0wB+HGkmoq0KPOzKNZq6hxK7jdm/r/nx"
-    "xOjqutPoUEL+ysxePErMTse2XeWu3psGSTEjPFdQTPEwH8MF2SwXXneOraD0V/GS"
-    "iCCvlx8yKIXNX7V9ujMo+QoD6hPGslKUZQJAg+OaZ7pAfq5cOuWXNN6jv12UL0eM"
-    "t6Dhl31yEu4kZWeTkiccHqdlB/KvPiqXTrV+qd3Tjvsk6kmUlexu3/zlOwVDz5H/"
-    "kPuOGvW7kYaW22NWQ9TH6fjffgVcSgHDbZETDiP8fHd76kyi1SZ5YJ09XHTE+i9i"
-    "kQIDAQAB";
-
 std::string g_ad_block_default_component_id_(kAdBlockDefaultComponentId);
 std::string g_ad_block_default_component_base64_public_key_(
     kAdBlockDefaultComponentBase64PublicKey);

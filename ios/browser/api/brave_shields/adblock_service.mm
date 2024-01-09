@@ -47,6 +47,15 @@
       }));
 }
 
+- (void)registerFirstPartyFiltersComponent:
+    (void (^)(NSString* _Nullable installPath))componentReady {
+  brave_shields::RegisterAdBlockFirstPartyFiltersComponent(
+      _cus, base::BindRepeating(^(const base::FilePath& install_path) {
+        const auto installPath = base::SysUTF8ToNSString(install_path.value());
+        componentReady(installPath);
+      }));
+}
+
 - (void)registerFilterListCatalogComponent:
     (void (^)(NSArray<AdblockFilterListCatalogEntry*>* filterLists))
         componentReady {

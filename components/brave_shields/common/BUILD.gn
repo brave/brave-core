@@ -10,12 +10,13 @@ static_library("common") {
     "brave_shield_constants.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
+    "components.h",
     "features.cc",
     "features.h",
     "pref_names.h",
   ]
 
-  if (!is_android) {
+  if (!is_android && !is_ios) {
     sources += [ "brave_shield_localized_strings.h" ]
   }
 

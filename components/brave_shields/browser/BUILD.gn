@@ -118,6 +118,7 @@ source_set("component_installer") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/adblock:rust_lib",
+    "//brave/components/brave_shields/common",
     "//components/component_updater:component_updater",
     "//crypto",
   ]

@@ -33,6 +33,10 @@ void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback);
 
+void RegisterAdBlockFirstPartyFiltersComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback);
+
 void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
