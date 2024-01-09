@@ -23,12 +23,13 @@ using Blake2bPersonalBytes = std::array<uint8_t, BLAKE2B_PERSONALBYTES>;
 const size_t kMinMessageSize = 48u;
 const size_t kMaxMessageSize = 4184368u;
 const size_t kLeftSize = 64u;
+static_assert(kLeftSize <= BLAKE2B_OUTBYTES);
 
-std::array<uint8_t, 16> GetHPersonalizer(uint8_t i) {
+Blake2bPersonalBytes GetHPersonalizer(uint8_t i) {
   return {85, 65, 95, 70, 52, 74, 117, 109, 98, 108, 101, 95, 72, i, 0, 0};
 }
 
-std::array<uint8_t, 16> GetGPersonalizer(uint8_t i, uint16_t j) {
+Blake2bPersonalBytes GetGPersonalizer(uint8_t i, uint16_t j) {
   return {85,
           65,
           95,
@@ -49,14 +50,14 @@ std::array<uint8_t, 16> GetGPersonalizer(uint8_t i, uint16_t j) {
 
 void FillBlake2bParamPersonal(const Blake2bPersonalBytes& personalizer,
                               blake2b_param& params) {
-  static_assert(BLAKE2B_PERSONALBYTES == sizeof(params.personal));
+  CHECK_EQ(personalizer.size(), sizeof(params.personal));
   memcpy(params.personal, personalizer.data(), sizeof(params.personal));
 }
 
 std::vector<uint8_t> blake2b(const std::vector<uint8_t>& payload,
                              const Blake2bPersonalBytes& personalizer,
                              size_t digest_len) {
-  CHECK(digest_len >= 1 && digest_len <= kLeftSize);
+  CHECK(digest_len >= 1 && digest_len <= BLAKE2B_OUTBYTES);
   blake2b_state blake_state = {};
   blake2b_param params = {};
 

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_F4_JUMBLE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_F4_JUMBLE_H_
 
-#include <array>
 #include <optional>
 #include <string>
 #include <vector>
