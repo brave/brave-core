@@ -171,10 +171,9 @@
 
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId
-          isPremium:(bool)isPremium
          completion:(void (^)(NSString* identifier))completion {
   driver_->RateMessage(
-      isLiked, turnId, isPremium,
+      isLiked, turnId,
       base::BindOnce(
           [](void (^completion)(NSString*),
              const absl::optional<std::string>& identifier) {

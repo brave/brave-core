@@ -55,7 +55,6 @@ OBJC_EXPORT
 
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId
-          isPremium:(bool)isPremium
          completion:
              (void (^_Nullable)(NSString* _Nullable identifier))completion;
 
