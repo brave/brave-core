@@ -47,9 +47,6 @@ constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
 constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
 // Deprecated 12/2023.
-constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
-    "brave.wallet.keyring_encryption_keys_migrated";
-// Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
     "brave.wallet.user.assets.add_is_spam_migrated";
 // Deprecated 12/2023.
@@ -142,9 +139,6 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   registry->RegisterBooleanPref(
       kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
   // Deprecated 12/2023
-  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
-                                false);
-  // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
@@ -162,8 +156,6 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletDeprecateEthereumTestNetworksMigrated);
-  // Deprecated 12/2023
-  prefs->ClearPref(kBraveWalletKeyringEncryptionKeysMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
   // Deprecated 12/2023
@@ -198,6 +190,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
+  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
+                                false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks,
                                    GetDefaultHiddenNetworks());
