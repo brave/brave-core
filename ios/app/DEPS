@@ -13,6 +13,7 @@ include_rules = [
   "+components/keyed_service/core",
   "+components/prefs",
   "+components/password_manager/core",
+  "+components/safe_browsing/core/common/safe_browsing_prefs.h",
   "+components/send_tab_to_self",
   "+components/sync/base",
   "+components/sync/service",

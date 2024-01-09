@@ -66,6 +66,7 @@ source_set("app") {
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/password_manager/core/browser",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/send_tab_to_self",
     "//components/sync/base",
     "//components/sync/service",
