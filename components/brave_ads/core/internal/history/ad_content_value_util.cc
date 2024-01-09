@@ -70,9 +70,9 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
   AdContentInfo ad_content;
 
   if (const auto* const type = dict.FindString(kType)) {
-    ad_content.type = ParseAdType(*type);
+    ad_content.type = ToAdType(*type);
   } else if (const auto* const legacy_ad_type = dict.FindString(kLegacyType)) {
-    ad_content.type = ParseAdType(*legacy_ad_type);
+    ad_content.type = ToAdType(*legacy_ad_type);
   } else {
     ad_content.type = AdType::kNotificationAd;
   }

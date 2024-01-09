@@ -85,9 +85,9 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
-  transaction.ad_type = ParseAdType(ColumnString(record, 5));
   transaction.confirmation_type =
       ParseConfirmationType(ColumnString(record, 6));
+  transaction.ad_type = ToAdType(ColumnString(record, 5));
   transaction.reconciled_at = base::Time::FromDeltaSinceWindowsEpoch(
       base::Microseconds(ColumnInt64(record, 7)));
 

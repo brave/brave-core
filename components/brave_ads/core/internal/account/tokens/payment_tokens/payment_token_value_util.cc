@@ -104,7 +104,7 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
 
     // Ad type
     if (const auto* const value = item_dict->FindString(kAdTypeKey)) {
-      payment_token.ad_type = ParseAdType(*value);
+      payment_token.ad_type = ToAdType(*value);
     }
 
     payment_tokens.push_back(payment_token);
