@@ -105,8 +105,11 @@ def GetProcessOutput(args: List[str],
 
 
 def DownloadFile(url: str, output: str):
-  logging.debug('Downloading %s', url)
-  f = urlopen(url)
+  logging.info('Downloading %s to %s', url, output)
+  try:
+    f = urlopen(url)
+  except:
+    raise RuntimeError(f'Can\'t download {url}')
   data = f.read()
   with open(output, 'wb') as output_file:
     output_file.write(data)
