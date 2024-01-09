@@ -898,6 +898,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_BTC_TESTNET_ACCOUNT_DESCRIPTION},
     {"braveWalletZECAccountDescription",
      IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION},
+    {"braveWalletZECTestnetAccountDescription",
+     IDS_BRAVE_WALLET_ZEC_TESTNET_ACCOUNT_DESCRIPTION},
     {"braveWalletShowNetworkLogoOnNftsTitle",
      IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE},
     {"braveWalletShowNetworkLogoOnNftsDescription",

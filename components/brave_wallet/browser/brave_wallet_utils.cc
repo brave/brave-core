@@ -597,14 +597,13 @@ const mojom::NetworkInfo* GetZCashMainnet() {
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "ZCash Mainnet",
-       {"https://zcashblockexplorer.com/transactions"},  // TODO(cypt4):
-                                                         // explorer url
+       "Zcash Mainnet",
+       {"https://zcashblockexplorer.com/transactions"},
        {},
        0,
        {ZCashMainnetRpcUrl()},
        "ZEC",
-       "ZCash",
+       "Zcash",
        8,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id),
@@ -618,13 +617,13 @@ const mojom::NetworkInfo* GetZCashTestnet() {
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "ZCash Testnet",
-       {""},  // TODO(cypt4): explorer url
+       "Zcash Testnet",
+       {"https://testnet.zcashblockexplorer.com/transactions"},
        {},
        0,
        {ZCashTestnetRpcUrl()},
        "ZEC",
-       "ZCash",
+       "Zcash",
        8,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id),

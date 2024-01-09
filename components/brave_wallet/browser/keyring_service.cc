@@ -684,9 +684,10 @@ void KeyringService::MigrateDerivedAccountIndex(PrefService* profile_prefs) {
   ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
 
   const std::vector<mojom::KeyringId> keyrings = {
-      mojom::KeyringId::kDefault,   mojom::KeyringId::kSolana,
-      mojom::KeyringId::kFilecoin,  mojom::KeyringId::kFilecoinTestnet,
-      mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet};
+      mojom::KeyringId::kDefault,      mojom::KeyringId::kSolana,
+      mojom::KeyringId::kFilecoin,     mojom::KeyringId::kFilecoinTestnet,
+      mojom::KeyringId::kBitcoin84,    mojom::KeyringId::kBitcoin84Testnet,
+      mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kZCashTestnet};
 
   for (auto keyring_id : keyrings) {
     base::Value::Dict* keyring_dict =

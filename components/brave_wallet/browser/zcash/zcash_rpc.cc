@@ -56,7 +56,7 @@ class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("zcash_rpc", R"(
       semantics {
-        sender: "ZCash RPC"
+        sender: "Zcash RPC"
         description:
           "This service is used to communicate with ZCash Lightwalletd nodes "
           "on behalf of the user interacting with the native Brave wallet."

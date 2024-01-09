@@ -33,6 +33,8 @@ class ZCashWalletService : public KeyedService,
                            KeyringServiceObserverBase {
  public:
   using UtxoMap = std::map<std::string, std::vector<zcash::ZCashUtxo>>;
+  using RunDiscoveryResult =
+      base::expected<std::vector<mojom::ZCashAddressPtr>, std::string>;
   using GetUtxosCallback =
       base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
   using CreateTransactionCallback =
@@ -41,6 +43,9 @@ class ZCashWalletService : public KeyedService,
       base::OnceCallback<void(base::expected<bool, std::string>)>;
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, ZCashTransaction, std::string)>;
+  using RunDiscoveryCallback = base::OnceCallback<void(RunDiscoveryResult)>;
+  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
+      base::expected<mojom::ZCashAddressPtr, std::string>)>;
 
   ZCashWalletService(
       KeyringService* keyring_service,
@@ -69,8 +74,11 @@ class ZCashWalletService : public KeyedService,
                           GetReceiverAddressCallback callback) override;
 
   void RunDiscovery(mojom::AccountIdPtr account_id,
-                    bool change,
-                    RunDiscoveryCallback callback) override;
+                    RunDiscoveryCallback callback);
+
+  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
+                                 bool change,
+                                 DiscoverNextUnusedAddressCallback callback);
 
   void GetUtxos(const std::string& chain_id,
                 mojom::AccountIdPtr account_id,
@@ -103,20 +111,24 @@ class ZCashWalletService : public KeyedService,
   bool SignTransactionInternal(ZCashTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
 
-  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
-      base::expected<mojom::ZCashAddressPtr, std::string>)>;
-  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
-                                 bool change,
-                                 DiscoverNextUnusedAddressCallback callback);
-  void OnRunDiscoveryDone(mojom::AccountIdPtr account_id,
-                          RunDiscoveryCallback callback,
-                          base::expected<mojom::ZCashAddressPtr, std::string>);
+  void AccumulateRunDiscovery(
+      base::OnceCallback<
+          void(base::expected<mojom::ZCashAddressPtr, std::string>)> result,
+      base::expected<mojom::ZCashAddressPtr, std::string> data);
+  void OnRunDiscoveryDone(
+      mojom::AccountIdPtr account_id,
+      RunDiscoveryCallback callback,
+      std::vector<base::expected<mojom::ZCashAddressPtr, std::string>> result);
   void OnGetUtxos(
       scoped_refptr<GetTransparentUtxosContext> context,
       const std::string& current_address,
       base::expected<std::vector<zcash::ZCashUtxo>, std::string> result);
   void WorkOnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context);
 
+  void OnDiscoveryDoneForBalance(mojom::AccountIdPtr account_id,
+                                 std::string chain_id,
+                                 GetBalanceCallback callback,
+                                 RunDiscoveryResult discovery_result);
   void OnUtxosResolvedForBalance(GetBalanceCallback initial_callback,
                                  base::expected<UtxoMap, std::string> result);
   void OnTransactionResolvedForStatus(
