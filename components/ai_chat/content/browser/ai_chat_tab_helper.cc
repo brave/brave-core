@@ -89,8 +89,8 @@ void AIChatTabHelper::DidFinishNavigation(
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
   if (is_same_document_navigation_) {
-    DVLOG(3)
-        << "Same document navigation detected new \"page\" - calling OnNewPage()";
+    DVLOG(3) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
     // Page title modification after same-document navigation seems as good a
     // time as any to assume meaningful changes occured to the content.
     OnNewPage(pending_navigation_id_);
