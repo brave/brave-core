@@ -53,7 +53,6 @@ void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
 }
 }  // namespace mojom
 
-// TODO(apaymyshev): cover failure scenarios for BitcoinWalletService with tests
 class BitcoinWalletServiceUnitTest : public testing::Test {
  public:
   BitcoinWalletServiceUnitTest()
