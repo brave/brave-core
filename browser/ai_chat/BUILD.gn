@@ -34,6 +34,7 @@ source_set("browser_tests") {
     deps = [
       "//brave/components/ai_chat/content/browser",
       "//brave/components/constants",
+      "//brave/components/l10n/common:test_support",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
       "//chrome/test:test_support",

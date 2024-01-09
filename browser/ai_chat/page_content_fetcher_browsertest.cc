@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -95,21 +96,23 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest,
-                       FetchPageContentWithText) {
+IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
+  // Simple page with text
   NavigateURL(https_server_.GetURL("a.com", "/text.html"));
   FetchPageContent("I have spoken", false);
-}
-
-IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentNoText) {
+  // Not a page extraction host and page with no text
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
   FetchPageContent("", false);
-}
-
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest,
-                       FetchPageContentViaTextExtraction) {
+  // Page recognition host with a canvas element
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
   FetchPageContent("this is the way", false);
+#if BUILDFLAG(IS_WIN)
+  // Unsupported locale should return no content for Windows only
+  // Other platforms do not use locale for extraction
+  const brave_l10n::test::ScopedDefaultLocale locale("xx_XX");
+  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
+  FetchPageContent("", false);
+#endif  // #if BUILDFLAG(IS_WIN)
+#endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 }
-#endif

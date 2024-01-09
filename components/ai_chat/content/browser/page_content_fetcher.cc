@@ -254,6 +254,11 @@ class PageContentFetcher {
 void OnGetTextFromImage(
     base::OnceCallback<void(std::string, bool is_video)> callback,
     const std::pair<bool, std::vector<std::string>>& supported_strs) {
+  if (!supported_strs.first) {
+    std::move(callback).Run("", false);
+    return;
+  }
+
   std::stringstream ss;
   auto& strs = supported_strs.second;
   for (size_t i = 0; i < strs.size(); ++i) {
