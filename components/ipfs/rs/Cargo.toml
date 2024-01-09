@@ -1,0 +1,12 @@
+[package]
+name = "ipfs-cxx"
+description = "IPFS trustless blocks verification"
+version = "0.0.1"
+edition = "2023"
+publish = false
+
+[dependencies]
+
+[lib]
+name = "ipfs_cxx"
+crate-type = ["rlib"]
