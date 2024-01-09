@@ -51,7 +51,7 @@ std::optional<T> MaybeSampleCreativeAd(
 
     sum += probability;
 
-    if (rand <= sum || base::IsApproximatelyEqual(
+    if (sum >= rand || base::IsApproximatelyEqual(
                            rand, sum, std::numeric_limits<double>::epsilon())) {
       return creative_ad_predictor.creative_ad;
     }
