@@ -5,4 +5,4 @@
     "**/*.tsx",
     "**/*.d.ts",
     "../definitions/*.d.ts"
-}
+, "../brave_news/browser/resources/SettingsButton.tsx"}

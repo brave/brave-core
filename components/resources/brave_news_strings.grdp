@@ -192,9 +192,6 @@
   <message name="IDS_BRAVE_NEWS_FOLLOWING_FEED" desc="The heading for Following feed">
     Following
   </message>
-  <message name="IDS_BRAVE_NEWS_ADD_CHANNELS_OR_PUBLISHERS" desc="Text for the buttons for adding channels or adding publishers">
-    Add
-  </message>
   <message name="IDS_BRAVE_NEWS_PUBLISHERS_HEADING" desc="Heading for the list of followed publishers">
     Publishers
   </message>

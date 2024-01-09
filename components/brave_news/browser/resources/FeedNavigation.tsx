@@ -12,6 +12,7 @@ import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 import { FeedView } from './shared/useFeedV2';
 import { getLocale } from '$web-common/locale';
+import SettingsButton from './SettingsButton';
 
 const DEFAULT_SHOW_COUNT = 4;
 
@@ -32,15 +33,15 @@ const Container = styled(Card)`
   scrollbar-color: var(--bn-glass-10) var(--bn-glass-10);
 `
 
-const Heading = styled.h3`
-  font: ${font.default.semibold};
-  color: var(--bn-glass-25);
+const Heading = styled.h4`
+  font: ${font.heading.h4};
+  color: var(--bn-glass-70);
   margin: 0;
 
-  padding-left: ${PAD_LEFT};
+  text-align: center;
 `
 
-const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?: boolean }>`
+const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, large?: boolean, bold?: boolean }>`
   padding: ${spacing.m};
   padding-left: ${PAD_LEFT};
 
@@ -52,8 +53,8 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?
   text-align: left;
   width: 100%;
 
-  color: ${p => p.faint ? `var(--bn-glass-25)` : `var(--bn-glass-70)`};
-  font: ${p => font.small[p.bold ? 'semibold' : 'regular']};
+  color: ${p => p.faint ? `var(--bn-glass-50)` : `var(--bn-glass-100)`};
+  font: ${p => font[p.large ? 'default' : 'small'][p.bold ? 'semibold' : 'regular']};
   cursor: pointer;
 
   &:hover {
@@ -79,7 +80,7 @@ const Section = styled.details`
     align-items: center;
     gap: ${spacing.m};
     list-style: none;
-    font: ${font.small.semibold};
+    font: ${font.default.semibold};
 
     cursor: pointer;
 
@@ -87,12 +88,7 @@ const Section = styled.details`
       box-shadow: ${effect.focusState};
     }
 
-    ${CustomButton} {
-      padding: 0;
-      flex: 0;
-      display: flex;
-      gap: ${spacing.m};
-      align-items: center;
+    ${SettingsButton} {
       margin-left: auto;
     }
   }
@@ -122,7 +118,7 @@ const Marker = <Icon name='arrow-small-right' className='marker' />
 export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView } = useBraveNews()
 
-  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={props.id === 'all'}>
+  return <CustomButton large={['all', 'following'].includes(props.id)} selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={props.id === 'all'}>
     {props.name}
   </CustomButton>
 }
@@ -154,10 +150,9 @@ export default function Sidebar() {
       <summary>
         {Marker}
         {getLocale('braveNewsChannelsHeader')}
-        <CustomButton faint onClick={() => setCustomizePage('news')}>
+        <SettingsButton size="tiny" onClick={() => setCustomizePage('news')}>
           <Icon name='plus-add' />
-          {getLocale('braveNewsAddChannelsOrPublishers')}
-        </CustomButton>
+        </SettingsButton>
       </summary>
       {slicedChannelIds.map(c => <Item key={c} id={`channels/${c}`} name={c} />)}
       {subscribedChannels.length > DEFAULT_SHOW_COUNT
@@ -171,10 +166,9 @@ export default function Sidebar() {
       <summary>
         {Marker}
         {getLocale('braveNewsPublishersHeading')}
-        <CustomButton faint onClick={() => setCustomizePage('popular')}>
+        <SettingsButton size="tiny" onClick={() => setCustomizePage('popular')}>
           <Icon name='plus-add' />
-          {getLocale('braveNewsAddChannelsOrPublishers')}
-        </CustomButton>
+        </SettingsButton>
       </summary>
       {slicedPublisherIds.map(p => <Item key={p} id={`publishers/${p}`} name={publishers[p]?.publisherName} />)}
       {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT
