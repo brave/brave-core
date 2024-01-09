@@ -57,6 +57,8 @@ BraveConfigurator::BraveConfigurator(
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
                          false),
       pref_service_(raw_ref<PrefService>::from_ptr(pref_service)),
+      persisted_data_(
+          update_client::CreatePersistedData(pref_service, nullptr)),
       url_loader_factory_(std::move(url_loader_factory)) {}
 
 BraveConfigurator::~BraveConfigurator() = default;
