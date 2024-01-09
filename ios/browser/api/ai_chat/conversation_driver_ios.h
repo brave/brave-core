@@ -41,10 +41,8 @@ class ConversationDriverIOS : public ConversationDriver,
  protected:
   std::u16string GetPageTitle() const override;
   GURL GetPageURL() const override;
-  void GetPageContent(base::OnceCallback<void(std::string, bool is_video)>
-                          callback) const override;
-  bool HasPrimaryMainFrame() const override;
-  bool IsDocumentOnLoadCompletedInPrimaryMainFrame() const override;
+  void GetPageContent(
+      ConversationDriver::GetPageContentCallback callback) const override;
 
   // Observer
   void OnHistoryUpdate() override;

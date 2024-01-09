@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/ai_chat/conversation_driver_ios.h"
 
 #import "ai_chat.mojom.objc+private.h"
+#include "brave/components/ai_chat/core/browser/conversation_driver.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -51,7 +52,7 @@ GURL ConversationDriverIOS::GetPageURL() const {
 }
 
 void ConversationDriverIOS::GetPageContent(
-    base::OnceCallback<void(std::string, bool is_video)> callback) const {
+    ConversationDriver::GetPageContentCallback) const {
   [bridge_
       getPageContentWithCompletion:[callback =
                                         std::make_shared<decltype(callback)>(
@@ -63,15 +64,6 @@ void ConversationDriverIOS::GetPageContent(
               isVideo);
         }
       }];
-}
-
-bool ConversationDriverIOS::HasPrimaryMainFrame() const {
-  return true;
-}
-
-bool ConversationDriverIOS::IsDocumentOnLoadCompletedInPrimaryMainFrame()
-    const {
-  return [bridge_ isDocumentOnLoadCompletedInPrimaryFrame];
 }
 
 // MARK: - ConversationDriver::Observer
