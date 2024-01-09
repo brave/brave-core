@@ -57,39 +57,38 @@ namespace swap_responses {
     SwapErrorResponseItem0x[]? validationErrors;
   };
 
-  dictionary JupiterMarketInfoFee {
+  dictionary JupiterPlatformFee {
     DOMString amount;
-    DOMString mint;
-    DOMString pct;
+    DOMString feeBps;
   };
 
-  dictionary JupiterMarketInfo {
+  dictionary JupiterSwapInfo {
+    DOMString ammKey;
     DOMString _label;
-    DOMString id;
     DOMString inputMint;
     DOMString outputMint;
-    boolean notEnoughLiquidity;
     DOMString inAmount;
     DOMString outAmount;
-    any priceImpactPct; // nullable
-    JupiterMarketInfoFee lpFee;
-    JupiterMarketInfoFee platformFee;
+    DOMString feeAmount;
+    DOMString feeMint;
   };
 
-  dictionary JupiterQuoteData {
-    DOMString inAmount;
-    DOMString outAmount;
-    DOMString amount;
-    DOMString slippageBps;
-    DOMString otherAmountThreshold;
-    DOMString swapMode;
-    any priceImpactPct; // nullable
-    JupiterMarketInfo[] marketInfos;
+  dictionary JupiterRouteStep {
+    JupiterSwapInfo swapInfo;
+    DOMString percent;
   };
 
   dictionary JupiterQuoteResponse {
-    JupiterQuoteData[] data;
-    DOMString timeTaken;
+    DOMString inputMint;
+    DOMString inAmount;
+    DOMString outputMint;
+    DOMString outAmount;
+    DOMString otherAmountThreshold;
+    DOMString swapMode;
+    DOMString slippageBps;
+    any platformFee; // nullable
+    DOMString priceImpactPct;
+    JupiterRouteStep[] routePlan;
   };
 
   dictionary JupiterSwapTransactions {
