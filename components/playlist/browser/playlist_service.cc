@@ -1310,11 +1310,10 @@ bool PlaylistService::GetMediaPath(const std::string& id,
   if (HasPlaylistItem(id)) {
     // Try to infer file extension from the source URL.
     auto item = GetPlaylistItem(id);
-    GURL url(item->media_source);
-    auto path = url.path();
+    auto file_name = item->media_source.ExtractFileName();
     std::string extension;
-    if (!path.empty()) {
-      auto parts = base::SplitString(path, ".", base::TRIM_WHITESPACE,
+    if (!file_name.empty()) {
+      auto parts = base::SplitString(file_name, ".", base::TRIM_WHITESPACE,
                                      base::SPLIT_WANT_NONEMPTY);
       if (parts.size() > 1) {
         extension = parts.back();

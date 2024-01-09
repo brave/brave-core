@@ -26,6 +26,12 @@ GetRemoteBlobStorageContextFor(BrowserContext* browser_context) {
   return content::ChromeBlobStorageContext::GetRemoteFor(browser_context);
 }
 
+CONTENT_EXPORT scoped_refptr<network::SharedURLLoaderFactory>
+URLLoaderFactoryForBlobUrl(StoragePartition* storage_partition, const GURL& url) {
+  return content::ChromeBlobStorageContext::URLLoaderFactoryForUrl(
+      storage_partition, url);
+}
+
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,

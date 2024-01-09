@@ -279,18 +279,15 @@ bool PlaylistDownloadRequestManager::CanCacheMedia(
   }
 
   if (media_url.SchemeIsBlob()) {
-    if (item->is_blob_from_media_source) {
-      // At this moment, we have a few sites that we can get media files with
-      // hacks.
-      return media_detector_component_manager_->ShouldHideMediaSrcAPI(
-                 media_url) ||
-             media_detector_component_manager_->ShouldUseFakeUA(media_url);
+    if (!item->is_blob_from_media_source) {
+      return true;
     }
 
-    // blob: which is not Media Source
-    // TODO(sko) Test and allow this case referring to
-    // https://github.com/brave/brave-core/pull/17246
-    return false;
+    // At this moment, we have a few sites that we can get media files with
+    // hacks.
+    return media_detector_component_manager_->ShouldHideMediaSrcAPI(
+               media_url) ||
+           media_detector_component_manager_->ShouldUseFakeUA(media_url);
   }
 
   return false;
@@ -303,7 +300,11 @@ bool PlaylistDownloadRequestManager::ShouldRefetchMediaSourceToCache(
     return false;
   }
 
-  if (media_url.SchemeIsBlob() && item->is_blob_from_media_source) {
+  if (media_url.SchemeIsBlob()) {
+    if (!item->is_blob_from_media_source) {
+      return false;
+    }
+
     CHECK(media_detector_component_manager_->ShouldHideMediaSrcAPI(media_url) ||
           media_detector_component_manager_->ShouldUseFakeUA(media_url));
     return true;

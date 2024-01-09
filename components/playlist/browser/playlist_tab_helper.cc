@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -356,6 +357,15 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   if (IsRefetching()) {
     found_items_.clear();
   } else {
+    // We always want to redetect blob:-backed items,
+    // as the lifetime of an object URL is tied to the document,
+    // hence on page refreshes we would otherwise end up with multiple
+    // now-invalidated blob: URLs that were once referring to the same media
+    // source.
+    base::EraseIf(found_items_, [](const auto& item) {
+      return item->media_source.SchemeIsBlob();
+    });
+
     for (auto& item : found_items_) {
       already_found_items.insert({item->media_source.spec(), &item});
     }

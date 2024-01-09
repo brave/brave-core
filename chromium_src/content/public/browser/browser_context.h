@@ -19,6 +19,7 @@
 #include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
 #include "content/common/content_export.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace content {
 
@@ -28,6 +29,9 @@ class StoragePartition;
 
 CONTENT_EXPORT mojo::PendingRemote<storage::mojom::BlobStorageContext>
 GetRemoteBlobStorageContextFor(BrowserContext* browser_context);
+
+CONTENT_EXPORT scoped_refptr<network::SharedURLLoaderFactory>
+URLLoaderFactoryForBlobUrl(StoragePartition* storage_partition, const GURL& url);
 
 CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
 CreateSessionStorageNamespace(
