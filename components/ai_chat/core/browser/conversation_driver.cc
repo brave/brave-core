@@ -98,7 +98,7 @@ ConversationDriver::ConversationDriver(
               *current_default != features::kAIModelsPremiumDefaultKey.Get()) {
             instance->pref_service_->SetDefaultPrefValue(
                 prefs::kDefaultModelKey,
-                    base::Value(features::kAIModelsPremiumDefaultKey.Get()));
+                base::Value(features::kAIModelsPremiumDefaultKey.Get()));
           }
         },
         // Unretained is ok as credential manager is owned by this class,

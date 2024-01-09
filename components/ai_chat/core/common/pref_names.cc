@@ -22,7 +22,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
-  registry->RegisterStringPref(kDefaultModelKey, features::kAIModelsDefaultKey.Get());
+  registry->RegisterStringPref(kDefaultModelKey,
+                               features::kAIModelsDefaultKey.Get());
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
   registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
