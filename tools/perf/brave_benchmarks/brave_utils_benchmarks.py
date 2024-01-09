@@ -28,11 +28,11 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
   """
 
   def CreateStorySet(self, _options):
-    return BravePerfUtilsStorySet()
+    return BravePerfUtilsStorySet(delay=30)
 
   @classmethod
   def Name(cls):
-    return 'brave_utils'
+    return 'brave_utils.offline'
 
 
 class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
@@ -40,6 +40,9 @@ class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
   options = {
       'use_live_sites': True,
   }
+
+  def CreateStorySet(self, _options):
+    return BravePerfUtilsStorySet(delay=3 * 60)
 
   @classmethod
   def Name(cls):
