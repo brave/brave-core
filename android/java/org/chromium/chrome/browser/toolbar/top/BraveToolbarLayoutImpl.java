@@ -762,7 +762,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
         }
     }
-    
+
     private void checkForTooltip(Tab tab) {
         try {
             if (!BraveShieldsUtils.isTooltipShown

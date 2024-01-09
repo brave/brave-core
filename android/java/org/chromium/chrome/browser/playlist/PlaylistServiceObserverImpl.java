@@ -54,6 +54,7 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemLocalDataDeleted(String playlistItemId) {
         if (mDelegate == null) return;
         mDelegate.onItemLocalDataDeleted(playlistItemId);
+        VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemRemovedFromList(String playlistId, String playlistItemId) {
         if (mDelegate == null) return;
         mDelegate.onItemRemovedFromList(playlistId, playlistItemId);
+        VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
     }
 
     @Override
