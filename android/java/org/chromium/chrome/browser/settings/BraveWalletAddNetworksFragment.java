@@ -381,6 +381,9 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     }
 
     /**
+     * Returns <code>true</code> if URL protocol is HTTP or HTTPS, <code>false</code> otherwise.
+     * @param url Url whose protocol will be verified.
+     * @return <code>true</code> if URL protocol is HTTP or HTTPS, <code>false</code> otherwise.
      * @noinspection BooleanMethodIsAlwaysInverted
      */
     private boolean isProtocolSupported(@NonNull final URL url) {
