@@ -503,6 +503,7 @@ static_library("internal") {
     "creatives/conversions/creative_set_conversion_util.h",
     "creatives/creative_ad_info.cc",
     "creatives/creative_ad_info.h",
+    "creatives/creative_ad_util.h",
     "creatives/creative_ads_database_table.cc",
     "creatives/creative_ads_database_table.h",
     "creatives/creative_ads_database_util.cc",
