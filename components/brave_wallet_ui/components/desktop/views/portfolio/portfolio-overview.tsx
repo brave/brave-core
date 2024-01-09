@@ -30,6 +30,7 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 import { WalletStatus } from '../../../../common/async/brave_rewards_api_proxy'
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -47,12 +48,7 @@ import {
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
-import {
-  getIsRewardsToken,
-  getNormalizedExternalRewardsNetwork,
-  getNormalizedExternalRewardsWallet,
-  getRewardsBATToken
-} from '../../../../utils/rewards_utils'
+import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
   getStoredPortfolioTimeframe //
 } from '../../../../utils/local-storage-utils'
@@ -100,9 +96,7 @@ import {
   useGetTokenSpotPricesQuery,
   useReportActiveWalletsToP3AMutation,
   useGetDefaultFiatCurrencyQuery,
-  useGetRewardsEnabledQuery,
-  useGetRewardsBalanceQuery,
-  useGetExternalRewardsWalletQuery
+  useGetRewardsInfoQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
@@ -145,9 +139,16 @@ export const PortfolioOverview = () => {
   const { accounts } = useAccountsQuery()
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
-  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
-  const { data: rewardsBalance } = useGetRewardsBalanceQuery()
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const {
+    data: {
+      balance: rewardsBalance,
+      provider: externalRewardsProvider,
+      rewardsToken,
+      status: rewardsStatus,
+      rewardsAccount: externalRewardsAccount,
+      rewardsNetwork: externalRewardsNetwork
+    } = emptyRewardsInfo
+  } = useGetRewardsInfoQuery()
 
   // State
   const [showPortfolioSettings, setShowPortfolioSettings] =
@@ -156,29 +157,16 @@ export const PortfolioOverview = () => {
     React.useState<BraveWallet.AssetPriceTimeframe>(getStoredPortfolioTimeframe)
 
   // Computed & Memos
-  const externalRewardsProvider = externalRewardsInfo?.provider ?? undefined
-
-  const displayRewardsInPortolfio =
-    isRewardsEnabled && externalRewardsInfo?.status === WalletStatus.kConnected
-
-  const rewardsToken = getRewardsBATToken(externalRewardsProvider)
+  const displayRewardsInPortfolio = rewardsStatus === WalletStatus.kConnected
 
   const userTokensWithRewards = React.useMemo(() => {
-    return displayRewardsInPortolfio && rewardsToken
+    return displayRewardsInPortfolio && rewardsToken
       ? [rewardsToken, ...userVisibleTokensInfo]
       : userVisibleTokensInfo
-  }, [displayRewardsInPortolfio, rewardsToken, userVisibleTokensInfo])
-
-  const externalRewardsAccount = displayRewardsInPortolfio
-    ? getNormalizedExternalRewardsWallet(externalRewardsProvider)
-    : undefined
-
-  const externalRewardsNetwork = displayRewardsInPortolfio
-    ? getNormalizedExternalRewardsNetwork(externalRewardsProvider)
-    : undefined
+  }, [displayRewardsInPortfolio, rewardsToken, userVisibleTokensInfo])
 
   const displayRewardAccount =
-    displayRewardsInPortolfio &&
+    displayRewardsInPortfolio &&
     externalRewardsNetwork &&
     externalRewardsAccount &&
     !filteredOutPortfolioNetworkKeys.includes(
@@ -221,10 +209,10 @@ export const PortfolioOverview = () => {
   }, [visibleTokensForFilteredChains])
 
   const networksList = React.useMemo(() => {
-    return displayRewardsInPortolfio && externalRewardsNetwork
+    return displayRewardsInPortfolio && externalRewardsNetwork
       ? [externalRewardsNetwork, ...networks]
       : networks
-  }, [displayRewardsInPortolfio, externalRewardsNetwork, networks])
+  }, [displayRewardsInPortfolio, externalRewardsNetwork, networks])
 
   const visiblePortfolioNetworks = React.useMemo(() => {
     return networksList.filter(
@@ -283,11 +271,10 @@ export const PortfolioOverview = () => {
   // each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
     return visibleTokensForFilteredChains.map((asset) => {
-      const isRewardsToken = getIsRewardsToken(asset)
       return {
         asset: asset,
         assetBalance:
-          isRewardsToken && rewardsBalance
+          getIsRewardsToken(asset) && rewardsBalance
             ? new Amount(rewardsBalance)
                 .multiplyByDecimals(asset.decimals)
                 .format()
@@ -321,7 +308,7 @@ export const PortfolioOverview = () => {
 
   const tokenBalancesRegistryWithRewards = React.useMemo(() => {
     if (
-      displayRewardsInPortolfio &&
+      displayRewardsInPortfolio &&
       rewardsToken &&
       externalRewardsProvider &&
       rewardsBalance
@@ -339,7 +326,7 @@ export const PortfolioOverview = () => {
     }
     return tokenBalancesRegistry
   }, [
-    displayRewardsInPortolfio,
+    displayRewardsInPortfolio,
     rewardsToken,
     tokenBalancesRegistry,
     rewardsBalance,

@@ -37,11 +37,9 @@ import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
 import {
   resetCache,
-  setApiProxyFetcher
+  setApiProxyFetcher,
+  setRewardsProxyFetcher
 } from '../common/async/base-query-cache'
-import {
-  setRewardsProxyFetcher //
-} from '../common/slices/endpoints/rewards.endpoints'
 import {
   BraveRewardsProxyOverrides,
   getMockedBraveRewardsProxy

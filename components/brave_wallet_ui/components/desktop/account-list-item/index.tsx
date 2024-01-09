@@ -11,6 +11,9 @@ import { useDispatch } from 'react-redux'
 // actions
 import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 
+// constants
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
+
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
@@ -20,7 +23,6 @@ import Amount from '../../../utils/amount'
 import {
   getIsRewardsAccount,
   getIsRewardsToken,
-  getRewardsBATToken,
   getRewardsTokenDescription
 } from '../../../utils/rewards_utils'
 import { getLocale } from '../../../../common/locale'
@@ -41,8 +43,7 @@ import {
 } from '../../../common/slices/entities/token-balance.entity'
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetExternalRewardsWalletQuery,
-  useGetRewardsBalanceQuery
+  useGetRewardsInfoQuery
 } from '../../../common/slices/api.slice'
 
 // types
@@ -126,8 +127,15 @@ export const AccountListItem = ({
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-  const { data: rewardsBalance } = useGetRewardsBalanceQuery()
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+
+  const {
+    data: {
+      balance: rewardsBalance,
+      provider,
+      status: rewardsStatus,
+      rewardsToken
+    } = emptyRewardsInfo
+  } = useGetRewardsInfoQuery()
 
   // state
   const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
@@ -184,13 +192,9 @@ export const AccountListItem = ({
   const isRewardsAccount = getIsRewardsAccount(account.accountId)
 
   const isDisconnectedRewardsAccount =
-    isRewardsAccount && externalRewardsInfo?.status === WalletStatus.kLoggedOut
+    isRewardsAccount && rewardsStatus === WalletStatus.kLoggedOut
 
-  const externalProvider = isRewardsAccount
-    ? externalRewardsInfo?.provider
-    : undefined
-
-  const rewardsToken = getRewardsBATToken(externalProvider)
+  const externalProvider = isRewardsAccount ? provider : undefined
 
   const accountsFungibleTokens = React.useMemo(() => {
     if (isRewardsAccount && rewardsToken) {
@@ -405,7 +409,7 @@ export const AccountListItem = ({
       {isDisconnectedRewardsAccount && (
         <>
           <VerticalSpacer space='12px' />
-          <RewardsLogin externalRewardsInfo={externalRewardsInfo} />
+          <RewardsLogin provider={provider} />
         </>
       )}
     </StyledWrapper>

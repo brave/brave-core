@@ -10,6 +10,9 @@ import { useHistory } from 'react-router'
 import {
   HIDE_SMALL_BALANCES_FIAT_THRESHOLD //
 } from '../../../../../../common/constants/magics'
+import {
+  emptyRewardsInfo //
+} from '../../../../../../common/async/base-query-cache'
 
 // Selectors
 import {
@@ -72,7 +75,7 @@ import {
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetExternalRewardsWalletQuery
+  useGetRewardsInfoQuery
 } from '../../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry //
@@ -145,10 +148,8 @@ export const TokenLists = ({
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
-
-  // computed
-  const externalRewardsProvider = externalRewardsInfo?.provider ?? undefined
+  const { data: { provider: externalRewardsProvider } = emptyRewardsInfo } =
+    useGetRewardsInfoQuery()
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')

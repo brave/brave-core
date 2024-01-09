@@ -19,7 +19,11 @@ import { externalWalletProviders } from '../common/async/brave_rewards_api_proxy
 import { BraveWallet } from '../constants/types'
 import { ExternalWalletProvider } from '../../brave_rewards/resources/shared/lib/external_wallet'
 
-export const getRewardsProviderName = (provider: string) => {
+export const getRewardsProviderName = (provider?: string) => {
+  if (!provider) {
+    return ''
+  }
+
   const capitalized = provider.charAt(0).toUpperCase() + provider.slice(1)
   const localeString = `braveWallet${capitalized}`
   const foundLocale = getLocale(localeString)
@@ -53,7 +57,7 @@ export const getRewardsTokenDescription = (
 
 export const getNormalizedExternalRewardsWallet = (
   externalRewardsProvider?: ExternalWalletProvider | null
-) => {
+): BraveWallet.AccountInfo | undefined => {
   if (!externalRewardsProvider) {
     return undefined
   }
@@ -74,7 +78,7 @@ export const getNormalizedExternalRewardsWallet = (
 
 export const getNormalizedExternalRewardsNetwork = (
   externalRewardsProvider?: ExternalWalletProvider | null
-) => {
+): BraveWallet.NetworkInfo | undefined => {
   if (!externalRewardsProvider) {
     return undefined
   }
@@ -157,7 +161,7 @@ export const getRewardsProviderBackground = (
 
 export const getRewardsBATToken = (
   provider: ExternalWalletProvider | undefined
-) => {
+): BraveWallet.BlockchainToken | undefined => {
   if (!provider) {
     return undefined
   }

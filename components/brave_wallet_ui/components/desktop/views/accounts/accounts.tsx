@@ -7,10 +7,12 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+// constants
 import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
 // Selectors
 import {
@@ -27,9 +29,6 @@ import {
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
-import {
-  getNormalizedExternalRewardsWallet //
-} from '../../../../utils/rewards_utils'
 
 // Styled Components
 import { SectionTitle } from './style'
@@ -51,8 +50,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
   useGetTokenSpotPricesQuery,
-  useGetRewardsEnabledQuery,
-  useGetExternalRewardsWalletQuery
+  useGetRewardsInfoQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -67,8 +65,9 @@ export const Accounts = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
-  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
-  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+  const {
+    data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo
+  } = useGetRewardsInfoQuery()
 
   // methods
   const onSelectAccount = React.useCallback(
@@ -83,12 +82,6 @@ export const Accounts = () => {
   )
 
   // memos && computed
-  const externalRewardsAccount = isRewardsEnabled
-    ? getNormalizedExternalRewardsWallet(
-        externalRewardsInfo?.provider ?? undefined
-      )
-    : undefined
-
   const derivedAccounts = React.useMemo(() => {
     return accounts.filter(
       (account) => account.accountId.kind === BraveWallet.AccountKind.kDerived
