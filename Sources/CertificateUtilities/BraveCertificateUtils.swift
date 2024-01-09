@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import BraveCore
 
 public struct BraveCertificateUtils {
   /// Formats a hex string
@@ -231,5 +232,9 @@ public extension BraveCertificateUtils {
         }
       }
     }
+  }
+  
+  static func verifyTrust(_ trust: SecTrust, host: String, port: Int) async -> Int {
+    return Int(BraveCertificateUtility.verifyTrust(trust, host: host, port: port))
   }
 }

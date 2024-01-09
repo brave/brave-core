@@ -18,6 +18,7 @@ import SafariServices
 import LocalAuthentication
 import BraveShared
 import UniformTypeIdentifiers
+import CertificateUtilities
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -143,6 +144,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
   @MainActor
   public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+    
     guard var requestURL = navigationAction.request.url else {
       return (.cancel, preferences)
     }
@@ -596,9 +598,7 @@ extension BrowserViewController: WKNavigationDelegate {
         let host = challenge.protectionSpace.host
         let port = challenge.protectionSpace.port
         
-        let result = BraveCertificateUtility.verifyTrust(serverTrust,
-                                                         host: host,
-                                                         port: port)
+        let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
         let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
         
         // Cert is valid and should be pinned
@@ -674,16 +674,6 @@ extension BrowserViewController: WKNavigationDelegate {
     guard let tab = tab(for: webView) else { return }
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
-    
-    DispatchQueue.main.async {
-      // Server Trust and URL is also updated in didCommit
-      // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
-      // So manually trigger it with the current trust.
-      self.observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
-                        of: webView,
-                        change: [.newKey: webView.serverTrust, .kindKey: 1],
-                        context: nil)
-    }
     
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
@@ -788,6 +778,10 @@ extension BrowserViewController: WKNavigationDelegate {
     // original web page in the tab instead of replacing it with an error page.
     var error = error as NSError
     if error.domain == "WebKitErrorDomain" && error.code == 102 {
+      if let tab = tabManager[webView], tab === tabManager.selectedTab {
+        updateToolbarCurrentURL(tab.url?.displayURL)
+        updateWebViewPageZoom(tab: tab)
+      }
       return
     }
 
