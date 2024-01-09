@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_command_line_switch_parser_util.h"
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
 namespace brave_ads {
@@ -29,7 +30,7 @@ std::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for Environment: "
-                        << static_cast<int>(*flags.environment);
+                        << base::to_underlying(*flags.environment);
 }
 
 }  // namespace brave_ads

@@ -24,8 +24,7 @@ base::Value::Dict BuildConversionActionTypeUserData(
 
   return base::Value::Dict().Set(
       kConversionActionTypeKey,
-      ConversionActionTypeToString(
-          conversion_queue_item.conversion.action_type));
+      ToString(conversion_queue_item.conversion.action_type));
 }
 
 std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(

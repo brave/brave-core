@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -111,20 +110,20 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
   FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
                               browsing_history);
 
-  const base::flat_map<int, CreativeNewTabPageAdList> buckets =
+  const PrioritizedCreativeAdBuckets<CreativeNewTabPageAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
 
   LogNumberOfCreativeAdsPerBucket(buckets);
 
-  // For each bucket of prioritized creative ads attempt to predict the most
-  // suitable ad for the user in priority order.
+  // For each bucket of prioritized ads attempt to predict the most suitable ad
+  // for the user in priority order.
   for (const auto& [priority, prioritized_eligible_creative_ads] : buckets) {
     const std::optional<CreativeNewTabPageAdInfo> predicted_creative_ad =
         MaybePredictCreativeAd(prioritized_eligible_creative_ads, user_model,
                                ad_events);
     if (!predicted_creative_ad) {
-      // Could not predict a creative ad for this bucket, so continue to the
-      // next bucket.
+      // Could not predict an ad for this bucket, so continue to the next
+      // bucket.
       continue;
     }
 
@@ -135,7 +134,7 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
     return std::move(callback).Run({*predicted_creative_ad});
   }
 
-  // Could not predict a creative ad for any of the buckets.
+  // Could not predict an ad for any of the buckets.
   BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
   std::move(callback).Run(/*eligible_ads=*/{});
 }

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"

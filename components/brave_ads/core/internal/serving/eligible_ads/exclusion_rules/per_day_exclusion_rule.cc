@@ -22,9 +22,9 @@ bool DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(1),
-                                   creative_ad.per_day);
+  return DoesRespectCreativeSetCap(
+      creative_ad, ad_events, ConfirmationType::kServed,
+      /*time_constraint=*/base::Days(1), creative_ad.per_day);
 }
 
 }  // namespace

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_ACTIONS_CONVERSION_ACTION_TYPES_UTIL_H_
 
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -15,10 +16,9 @@ namespace brave_ads {
 
 ConversionActionType ToConversionActionType(ConfirmationType confirmation_type);
 
-ConversionActionType StringToConversionActionType(
-    const std::string& action_type);
+ConversionActionType ToConversionActionType(std::string_view action_type);
 
-std::string ConversionActionTypeToString(ConversionActionType action_type);
+std::string ToString(ConversionActionType action_type);
 
 }  // namespace brave_ads
 

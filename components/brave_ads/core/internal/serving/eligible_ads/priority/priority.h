@@ -6,15 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 
+#include <cstddef>
+
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority_util.h"
 
 namespace brave_ads {
 
 template <typename T>
-base::flat_map</*priority*/ int, /*creative_ads*/ T>
-SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
-  base::flat_map<int, T> buckets;
+using PrioritizedCreativeAdBuckets =
+    base::flat_map</*priority*/ int, /*creative_ads*/ T>;
+
+template <typename T>
+PrioritizedCreativeAdBuckets<T> SortCreativeAdsIntoBucketsByPriority(
+    const T& creative_ads) {
+  PrioritizedCreativeAdBuckets<T> buckets;
 
   for (const auto& creative_ad : creative_ads) {
     if (creative_ad.priority == 0) {
@@ -22,37 +28,15 @@ SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
       continue;
     }
 
-    const auto iter = buckets.find(creative_ad.priority);
-    if (iter == buckets.cend()) {
-      // Create a new bucket with `creative_ad` for this priority.
-      buckets.insert({creative_ad.priority, {creative_ad}});
-      continue;
-    }
-
-    // Add `creative_ad` to the existing bucket for this priority.
-    iter->second.push_back(creative_ad);
+    buckets[creative_ad.priority].push_back(creative_ad);
   }
 
   return buckets;
 }
 
 template <typename T>
-T HighestPriorityCreativeAds(const T& creative_ads) {
-  const base::flat_map<int, T> buckets =
-      SortCreativeAdsIntoBucketsByPriority(creative_ads);
-
-  LogNumberOfCreativeAdsPerBucket(buckets);
-
-  if (buckets.empty()) {
-    return {};
-  }
-
-  return buckets.cbegin()->second;
-}
-
-template <typename T>
 void LogNumberOfCreativeAdsPerBucket(
-    const base::flat_map</*priority*/ int, /*creative_ads*/ T>& buckets) {
+    const PrioritizedCreativeAdBuckets<T>& buckets) {
   size_t bucket = 1;
 
   for (const auto& [priority, creative_ads] : buckets) {

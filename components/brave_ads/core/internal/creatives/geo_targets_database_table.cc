@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"

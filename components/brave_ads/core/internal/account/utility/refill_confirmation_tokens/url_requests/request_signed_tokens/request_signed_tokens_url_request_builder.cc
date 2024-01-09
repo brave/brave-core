@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <utility>

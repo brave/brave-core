@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.h"
 
+#include <cstddef>
 #include <string>
 #include <utility>
 

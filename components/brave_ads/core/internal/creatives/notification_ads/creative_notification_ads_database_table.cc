@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <map>
 #include <utility>
 

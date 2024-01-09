@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/date_range_history_filter.h"
 
-#include "base/containers/circular_deque.h"
-
 namespace brave_ads {
 
 DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,

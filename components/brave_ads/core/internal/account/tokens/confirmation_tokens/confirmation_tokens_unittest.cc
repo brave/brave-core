@@ -79,7 +79,7 @@ TEST_F(BraveAdsConfirmationTokensTest, AddTokens) {
   confirmation_tokens.AddTokens({tokens.at(1)});
 
   // Assert
-  EXPECT_EQ(2, confirmation_tokens.Count());
+  EXPECT_EQ(2U, confirmation_tokens.Count());
 }
 
 TEST_F(BraveAdsConfirmationTokensTest, AddEmptyTokens) {
@@ -105,7 +105,7 @@ TEST_F(BraveAdsConfirmationTokensTest, DoNotAddDuplicateTokens) {
   confirmation_tokens.AddTokens({confirmation_token});
 
   // Assert
-  EXPECT_EQ(1, confirmation_tokens.Count());
+  EXPECT_EQ(1U, confirmation_tokens.Count());
 }
 
 TEST_F(BraveAdsConfirmationTokensTest, RemoveToken) {
@@ -185,7 +185,7 @@ TEST_F(BraveAdsConfirmationTokensTest, Count) {
   confirmation_tokens.SetTokens(test::BuildConfirmationTokens(/*count=*/3));
 
   // Act & Assert
-  EXPECT_EQ(3, confirmation_tokens.Count());
+  EXPECT_EQ(3U, confirmation_tokens.Count());
 }
 
 TEST_F(BraveAdsConfirmationTokensTest, IsEmpty) {

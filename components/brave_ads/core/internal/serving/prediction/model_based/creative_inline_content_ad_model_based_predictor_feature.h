@@ -43,7 +43,7 @@ inline constexpr base::FeatureParam<double>
 inline constexpr base::FeatureParam<double>
     kInlineContentAdUntargetedSegmentPredictorWeight{
         &kCreativeInlineContentAdModelBasedPredictorFeature,
-        "untargeted_segment_predictor_weight", 1.0};
+        "untargeted_segment_predictor_weight", 0.0001};
 
 inline constexpr base::FeatureParam<double>
     kInlineContentAdLastSeenPredictorWeight{

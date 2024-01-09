@@ -27,29 +27,26 @@ TEST(BraveAdsConversionActionTypesUtilTest,
 TEST(BraveAdsConversionActionTypesUtilTest,
      StringToViewThroughConversionActionType) {
   // Act & Assert
-  EXPECT_EQ(ConversionActionType::kViewThrough,
-            StringToConversionActionType("view"));
+  EXPECT_EQ(ConversionActionType::kViewThrough, ToConversionActionType("view"));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      StringToClickThroughConversionActionType) {
   // Act & Assert
   EXPECT_EQ(ConversionActionType::kClickThrough,
-            StringToConversionActionType("click"));
+            ToConversionActionType("click"));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ViewThroughConversionActionTypeToString) {
   // Act & Assert
-  EXPECT_EQ("view",
-            ConversionActionTypeToString(ConversionActionType::kViewThrough));
+  EXPECT_EQ("view", ToString(ConversionActionType::kViewThrough));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ClickThroughConversionActionTypeToString) {
   // Act & Assert
-  EXPECT_EQ("click",
-            ConversionActionTypeToString(ConversionActionType::kClickThrough));
+  EXPECT_EQ("click", ToString(ConversionActionType::kClickThrough));
 }
 
 }  // namespace brave_ads

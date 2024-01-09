@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/ranges/algorithm.h"

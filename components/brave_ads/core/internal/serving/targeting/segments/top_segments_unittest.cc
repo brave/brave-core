@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 

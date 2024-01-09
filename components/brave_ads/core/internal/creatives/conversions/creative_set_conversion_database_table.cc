@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <utility>
 #include <vector>
 

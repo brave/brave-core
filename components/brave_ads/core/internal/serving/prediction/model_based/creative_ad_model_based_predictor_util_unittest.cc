@@ -123,10 +123,6 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   expected_creative_ad_predictor_3.score = 4.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
-  std::cout << creative_ad_predictors[0].score << std::endl;
-  std::cout << creative_ad_predictors[1].score << std::endl;
-  std::cout << creative_ad_predictors[2].score << std::endl;
-
   EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);
 }
 

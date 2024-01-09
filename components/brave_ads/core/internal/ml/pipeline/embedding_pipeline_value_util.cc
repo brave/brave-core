@@ -25,7 +25,7 @@ std::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     const base::Value::Dict& dict) {
   EmbeddingPipelineInfo embedding_pipeline;
 
-  if (std::optional<int> value = dict.FindInt(kVersionKey)) {
+  if (const std::optional<int> value = dict.FindInt(kVersionKey)) {
     embedding_pipeline.version = *value;
   } else {
     return std::nullopt;
