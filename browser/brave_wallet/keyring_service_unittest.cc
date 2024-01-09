@@ -4402,30 +4402,48 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
 
   auto addresses = service.GetBitcoinAddresses(btc_acc->account_id);
   ASSERT_TRUE(addresses);
-  ASSERT_EQ(addresses->size(), 0u);  // No addresses for fresh account.
-
-  service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 1,
-                                                   std::nullopt);
-  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
-  ASSERT_EQ(addresses->size(), 1u);  // 1 receive .
-  EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
-                                  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
-                                  mojom::BitcoinKeyId::New(0, 0)));
-
-  service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id,
-                                                   std::nullopt, 1);
-  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
-  ASSERT_EQ(addresses->size(), 2u);  // 1 receive + 1 change.
+  ASSERT_EQ(addresses->size(), 2u);  // 1 receive + 1 change for fresh account.
   EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
                                   "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
                                   mojom::BitcoinKeyId::New(0, 0)));
   EXPECT_EQ(addresses->at(1), mojom::BitcoinAddress::New(
                                   "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
                                   mojom::BitcoinKeyId::New(1, 0)));
+
+  service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 1,
+                                                   std::nullopt);
+  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_EQ(addresses->size(), 3u);  // +1 receive .
+  EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
+                                  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
+                                  mojom::BitcoinKeyId::New(0, 0)));
+  EXPECT_EQ(addresses->at(1), mojom::BitcoinAddress::New(
+                                  "bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g",
+                                  mojom::BitcoinKeyId::New(0, 1)));
+  EXPECT_EQ(addresses->at(2), mojom::BitcoinAddress::New(
+                                  "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
+                                  mojom::BitcoinKeyId::New(1, 0)));
+
+  service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id,
+                                                   std::nullopt, 1);
+  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_EQ(addresses->size(), 4u);  // + 1 change.
+  EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
+                                  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
+                                  mojom::BitcoinKeyId::New(0, 0)));
+  EXPECT_EQ(addresses->at(1), mojom::BitcoinAddress::New(
+                                  "bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g",
+                                  mojom::BitcoinKeyId::New(0, 1)));
+  EXPECT_EQ(addresses->at(2), mojom::BitcoinAddress::New(
+                                  "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
+                                  mojom::BitcoinKeyId::New(1, 0)));
+  EXPECT_EQ(addresses->at(3), mojom::BitcoinAddress::New(
+                                  "bc1qggnasd834t54yulsep6fta8lpjekv4zj6gv5rf",
+                                  mojom::BitcoinKeyId::New(1, 1)));
   service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 5, 5);
   addresses = service.GetBitcoinAddresses(btc_acc->account_id);
-  ASSERT_EQ(addresses->size(), 10u);  // 5 receive + 5 change.
-  EXPECT_EQ(addresses->at(5), mojom::BitcoinAddress::New(
+  ASSERT_EQ(addresses->size(), 12u);  // 6 receive + 6 change.
+  EXPECT_EQ(addresses->at(6), mojom::BitcoinAddress::New(
                                   "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
                                   mojom::BitcoinKeyId::New(1, 0)));
 }

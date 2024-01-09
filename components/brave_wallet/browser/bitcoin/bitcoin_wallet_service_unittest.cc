@@ -255,7 +255,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
   utxo_6.vout = "7";
   utxo_6.value = "50000";
   utxo_6.status.confirmed = true;
-  EXPECT_EQ(expected_utxos.size(), 10u);
+  EXPECT_EQ(expected_utxos.size(), 12u);
 
   GetUtxosResult actual_utxos;
   EXPECT_CALL(callback, Run(Truly([&](const GetUtxosResult& arg) {
