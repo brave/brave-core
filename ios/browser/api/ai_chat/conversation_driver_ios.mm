@@ -52,7 +52,8 @@ GURL ConversationDriverIOS::GetPageURL() const {
 }
 
 void ConversationDriverIOS::GetPageContent(
-    ConversationDriver::GetPageContentCallback) const {
+    ConversationDriver::GetPageContentCallback,
+    std::string_view invalidation_token) const {
   [bridge_
       getPageContentWithCompletion:[callback =
                                         std::make_shared<decltype(callback)>(
@@ -61,7 +62,7 @@ void ConversationDriverIOS::GetPageContent(
         if (callback) {
           std::move(*callback).Run(
               content ? base::SysNSStringToUTF8(content) : std::string(),
-              isVideo);
+              isVideo, std::string());
         }
       }];
 }
@@ -96,10 +97,6 @@ void ConversationDriverIOS::OnPageHasContent(
     ai_chat::mojom::SiteInfoPtr site_info) {
   [bridge_ onPageHasContent:[[AiChatSiteInfo alloc]
                                 initWithSiteInfoPtr:std::move(site_info)]];
-}
-
-void ConversationDriverIOS::OnConversationEntryPending() {
-  [bridge_ onConversationEntryPending];
 }
 
 }  // namespace ai_chat
