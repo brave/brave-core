@@ -2680,7 +2680,7 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountIdPtr& account_id) {
 
   std::vector<mojom::BitcoinAddressPtr> addresses;
   for (auto i = 0u;
-       i < bitcoin_account_info->next_receive_address->key_id->index; ++i) {
+       i <= bitcoin_account_info->next_receive_address->key_id->index; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, i);
     auto address =
         bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
@@ -2691,7 +2691,7 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountIdPtr& account_id) {
         mojom::BitcoinAddress::New(*address, std::move(key_id)));
   }
   for (auto i = 0u;
-       i < bitcoin_account_info->next_change_address->key_id->index; ++i) {
+       i <= bitcoin_account_info->next_change_address->key_id->index; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(kBitcoinChangeIndex, i);
     auto address =
         bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
