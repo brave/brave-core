@@ -15,7 +15,7 @@ struct CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo final {
 
   // Whether the creative ad is untargeted.
   bool value = false;
-  double weight = 1.0;
+  double weight = 0.0001;
 };
 
 }  // namespace brave_ads

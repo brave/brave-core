@@ -49,7 +49,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
   segment_input_variable.value = true;
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeSegmentScore(segment_input_variable));
+  EXPECT_DOUBLE_EQ(0.0001, ComputeSegmentScore(segment_input_variable));
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorSegmentScoringTest,
