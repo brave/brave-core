@@ -24,15 +24,7 @@ SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
       continue;
     }
 
-    const auto iter = buckets.find(creative_ad.priority);
-    if (iter == buckets.cend()) {
-      // Create a new bucket with `creative_ad` for this priority.
-      buckets.insert({creative_ad.priority, {creative_ad}});
-      continue;
-    }
-
-    // Add `creative_ad` to the existing bucket for this priority.
-    iter->second.push_back(creative_ad);
+    buckets[creative_ad.priority].push_back(creative_ad);
   }
 
   return buckets;
