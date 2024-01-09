@@ -17,6 +17,8 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 namespace {
@@ -71,7 +73,8 @@ void ZCashWalletService::GetReceiverAddress(
   auto id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index, 0, 0);
   auto addr = keyring_service_->GetZCashAddress(*account_id, *id);
   if (!addr) {
-    std::move(callback).Run(nullptr, "Failed to retreive new receiver address");
+    std::move(callback).Run(
+        nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   }
   auto str_addr = addr->address_string;
   std::move(callback).Run(mojom::ZCashAddress::New(str_addr, std::move(id)),
@@ -153,7 +156,8 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
 
   auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
   if (!account_info) {
-    return std::move(callback).Run(base::unexpected("Invalid account id"));
+    return std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   }
   auto start_address =
       change ? account_info->next_transparent_change_address.Clone()
@@ -170,13 +174,14 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
   if (!IsZCashNetwork(chain_id)) {
     // Desktop frontend sometimes does that.
     std::move(callback).Run(
-        base::unexpected("Invalid bitcoin chain id " + chain_id));
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
   const auto& addresses = keyring_service_->GetZCashAddresses(account_id);
   if (!addresses) {
-    std::move(callback).Run(base::unexpected("Couldn't get balance"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -268,8 +273,9 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
     SignAndPostTransactionCallback callback,
     base::expected<zcash::BlockID, std::string> result) {
   if (!result.has_value()) {
-    std::move(callback).Run("", std::move(zcash_transaction),
-                            "Couldn't obtain last block");
+    std::move(callback).Run(
+        "", std::move(zcash_transaction),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -277,8 +283,9 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
                                       kDefaultBlockHeightDelta);
 
   if (!SignTransactionInternal(zcash_transaction, account_id)) {
-    std::move(callback).Run("", std::move(zcash_transaction),
-                            "Couldn't sign transaciton");
+    std::move(callback).Run(
+        "", std::move(zcash_transaction),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -301,7 +308,8 @@ void ZCashWalletService::OnSendTransactionResult(
     CHECK(tx_id_hex.starts_with("0x"));
     std::move(callback).Run(tx_id_hex.substr(2), std::move(tx), "");
   } else {
-    std::move(callback).Run("", std::move(tx), "Failed to send transaction");
+    std::move(callback).Run(
+        "", std::move(tx), l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   }
 }
 
@@ -384,7 +392,8 @@ void ZCashWalletService::CreateTransaction(const std::string& chain_id,
     auto transparent =
         ExtractTransparentPart(address_to, chain_id == mojom::kZCashTestnet);
     if (!transparent) {
-      std::move(callback).Run(base::unexpected("Wrong unified address format"));
+      std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
+          IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR)));
       return;
     }
     final_address = transparent.value();

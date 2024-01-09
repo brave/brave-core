@@ -30,15 +30,16 @@ constexpr size_t kPrefixSize = 2;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
 enum AddrType {
-  P2PKH = 0x00,
-  P2PSH = 0x01,
-  Sapling = 0x02,
-  Orchard = 0x03,
-  Last = 0x04
+  kP2PKH = 0x00,
+  kP2PSH = 0x01,
+  kSapling = 0x02,
+  kOrchard = 0x03,
+  kMaxValue = kOrchard
 };
 
 using ParsedAddress = std::pair<AddrType, std::vector<uint8_t>>;
 
+// https://btcinformation.org/en/developer-reference#compactsize-unsigned-integers
 std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
   uint64_t value;
   if (data.size() == 0) {
@@ -69,19 +70,19 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
   return value;
 }
 
-base::expected<std::vector<ParsedAddress>, std::string> ParseUnifiedAddress(
+std::optional<std::vector<ParsedAddress>> ParseUnifiedAddress(
     const base::span<uint8_t>& dejumbled_data) {
   base::span<const uint8_t> data_span(dejumbled_data);
 
   std::vector<ParsedAddress> result;
   while (!data_span.empty()) {
     auto type = ReadCompactSize(data_span);
-    if (!type || *type >= AddrType::Last) {
-      return base::unexpected("Wrong type");
+    if (!type || *type > AddrType::kMaxValue) {
+      return std::nullopt;
     }
     auto size = ReadCompactSize(data_span);
     if (!size || size == 0 || size > data_span.size()) {
-      return base::unexpected("Wrong size");
+      return std::nullopt;
     }
     ParsedAddress addr;
     addr.first = static_cast<AddrType>(*type);
@@ -215,7 +216,7 @@ std::optional<std::string> ExtractTransparentPart(
   }
 
   for (const auto& part : parts.value()) {
-    if (part.first == AddrType::P2PKH) {
+    if (part.first == AddrType::kP2PKH) {
       return PubkeyToTransparentAddress(part.second, is_testnet);
     }
   }
