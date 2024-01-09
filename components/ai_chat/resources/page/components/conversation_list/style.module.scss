@@ -39,14 +39,6 @@
   padding: 16px 16px 16px 64px;
 }
 
-.suggestedQuestionLabel {
-  --leo-icon-size: 18px;
-
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-text-tertiary);
-  padding-bottom: 16px;
-}
-
 .buttonText {
   display: flex;
   align-items: flex-start;
@@ -84,6 +76,7 @@
   margin: 0;
   white-space: pre-wrap;
   padding-top: 5px;
+  width: 100%;
 }
 
 .feedbackFormPortal {
