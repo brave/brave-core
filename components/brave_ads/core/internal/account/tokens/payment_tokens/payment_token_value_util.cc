@@ -99,7 +99,7 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
 
     // Confirmation type
     if (const auto* const value = item_dict->FindString(kConfirmationTypeKey)) {
-      payment_token.confirmation_type = ParseConfirmationType(*value);
+      payment_token.confirmation_type = ToConfirmationType(*value);
     }
 
     // Ad type

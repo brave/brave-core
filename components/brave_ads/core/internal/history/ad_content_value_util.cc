@@ -152,11 +152,11 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
 
   if (const auto* const confirmation_type =
           dict.FindString(kConfirmationType)) {
-    ad_content.confirmation_type = ParseConfirmationType(*confirmation_type);
+    ad_content.confirmation_type = ToConfirmationType(*confirmation_type);
   } else if (const auto* const legacy_confirmation_type =
                  dict.FindString(kLegacyConfirmationType)) {
     ad_content.confirmation_type =
-        ParseConfirmationType(*legacy_confirmation_type);
+        ToConfirmationType(*legacy_confirmation_type);
   }
 
   if (const auto is_saved = dict.FindBool(kIsSaved)) {

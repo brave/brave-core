@@ -304,7 +304,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Type
     if (const auto* const value = item_dict->FindString("type")) {
-      confirmation.type = ParseConfirmationType(*value);
+      confirmation.type = ToConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
       continue;
