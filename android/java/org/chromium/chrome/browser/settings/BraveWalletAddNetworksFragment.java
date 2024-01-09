@@ -22,8 +22,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Log;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -223,11 +221,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             }
         } catch (NumberFormatException exc) {
             error = true;
-            PostTask.postTask(
-                    TaskTraits.UI_DEFAULT,
-                    () ->
-                            mChainIdEditText.setError(
-                                    getString(R.string.brave_wallet_add_network_chain_id_error)));
+            mChainIdEditText.setError(getString(R.string.brave_wallet_add_network_chain_id_error));
         }
 
         String strChainName = mChainName.getText().toString().trim();
@@ -257,13 +251,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             }
         } catch (NumberFormatException numberFormatException) {
             error = true;
-            PostTask.postTask(
-                    TaskTraits.UI_DEFAULT,
-                    () ->
-                            mChainCurrencyDecimals.setError(
-                                    getString(
-                                            R.string
-                                                    .brave_wallet_add_network_chain_currency_decimals_error)));
+            mChainCurrencyDecimals.setError(
+                    getString(R.string.brave_wallet_add_network_chain_currency_decimals_error));
         }
 
         String strRpcUrls = mRpcUrls.getText().toString().trim();
@@ -280,11 +269,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             }
         } catch (MalformedURLException exc) {
             error = true;
-            PostTask.postTask(
-                    TaskTraits.UI_DEFAULT,
-                    () ->
-                            mRpcUrls.setError(
-                                    getString(R.string.brave_wallet_add_network_urls_error)));
+            mRpcUrls.setError(getString(R.string.brave_wallet_add_network_urls_error));
         }
 
         String strIconUrls = mIconUrls.getText().toString().trim();
@@ -299,11 +284,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 }
             } catch (MalformedURLException exc) {
                 error = true;
-                PostTask.postTask(
-                        TaskTraits.UI_DEFAULT,
-                        () ->
-                                mIconUrls.setError(
-                                        getString(R.string.brave_wallet_add_network_urls_error)));
+                mIconUrls.setError(getString(R.string.brave_wallet_add_network_urls_error));
             }
         } else {
             chain.iconUrls = new String[0];
@@ -322,11 +303,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 }
             } catch (MalformedURLException exc) {
                 error = true;
-                PostTask.postTask(
-                        TaskTraits.UI_DEFAULT,
-                        () ->
-                                mBlockExplorerUrls.setError(
-                                        getString(R.string.brave_wallet_add_network_urls_error)));
+                mBlockExplorerUrls.setError(
+                        getString(R.string.brave_wallet_add_network_urls_error));
             }
         } else {
             chain.blockExplorerUrls = new String[0];
