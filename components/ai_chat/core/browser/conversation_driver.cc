@@ -817,7 +817,6 @@ void ConversationDriver::DismissPremiumPrompt() {
 void ConversationDriver::RateMessage(
     bool is_liked,
     uint32_t turn_id,
-    bool is_premium,
     mojom::PageHandler::RateMessageCallback callback) {
   auto on_complete = base::BindOnce(
       [](mojom::PageHandler::RateMessageCallback callback,
@@ -841,6 +840,8 @@ void ConversationDriver::RateMessage(
   if (current_turn_id <= history.size()) {
     base::span<const mojom::ConversationTurn> history_slice =
         base::make_span(history).first(current_turn_id);
+
+    bool is_premium = last_premium_status_ != mojom::PremiumStatus::Inactive;
 
     feedback_api_->SendRating(is_liked, is_premium, history_slice,
                               GetCurrentModel().name, std::move(on_complete));

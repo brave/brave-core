@@ -100,7 +100,6 @@ class ConversationDriver {
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
-                   bool is_premium,
                    mojom::PageHandler::RateMessageCallback callback);
 
   void SendFeedback(const std::string& category,
