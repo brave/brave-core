@@ -9,11 +9,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -73,21 +72,21 @@ mojom::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
 
 void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
                                     PostTransactionUpholdCallback callback) {
-  auto url_callback =
-      std::bind(&PostTransactionUphold::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(transaction.order_id);
   request->content = GeneratePayload(transaction);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostTransactionUphold::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,
-                                      PostTransactionUpholdCallback callback) {
+void PostTransactionUphold::OnRequest(PostTransactionUpholdCallback callback,
+                                      mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 

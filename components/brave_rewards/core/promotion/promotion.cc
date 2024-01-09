@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"

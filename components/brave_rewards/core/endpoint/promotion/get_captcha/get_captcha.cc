@@ -8,11 +8,10 @@
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -72,13 +71,13 @@ void GetCaptcha::Request(const std::string& captcha_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(captcha_id);
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->Get<URLLoader>().Load(std::move(request), URLLoader::LogLevel::kNone,
+                                 std::move(url_callback));
 }
 
 void GetCaptcha::OnRequest(GetCaptchaCallback callback,
                            mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response, true);
 
   std::string image;
   mojom::Result result = CheckStatusCode(response->status_code);

@@ -8,9 +8,10 @@
 #include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
@@ -24,6 +25,7 @@ RewardsEngineImpl::RewardsEngineImpl(
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
     : client_(std::move(client_remote)),
       helpers_(std::make_unique<InitializationManager>(*this),
+               std::make_unique<URLLoader>(*this),
                std::make_unique<LinkageChecker>(*this)),
       promotion_(*this),
       publisher_(*this),
@@ -745,10 +747,6 @@ wallet_provider::WalletProvider* RewardsEngineImpl::GetExternalWalletProvider(
 
 bool RewardsEngineImpl::IsReady() const {
   return Get<InitializationManager>().is_ready();
-}
-
-bool RewardsEngineImpl::IsShuttingDown() const {
-  return Get<InitializationManager>().is_shutting_down();
 }
 
 void RewardsEngineImpl::OnInitializationComplete(InitializeCallback callback,

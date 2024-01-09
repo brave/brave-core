@@ -9,12 +9,11 @@
 #include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -78,21 +77,21 @@ mojom::Result PostSuggestions::CheckStatusCode(const int status_code) {
 
 void PostSuggestions::Request(const credential::CredentialsRedeem& redeem,
                               PostSuggestionsCallback callback) {
-  auto url_callback =
-      std::bind(&PostSuggestions::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostSuggestions::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,
-                                PostSuggestionsCallback callback) {
+void PostSuggestions::OnRequest(PostSuggestionsCallback callback,
+                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 

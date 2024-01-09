@@ -9,11 +9,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -73,9 +72,6 @@ mojom::Result PostTransactionGemini::CheckStatusCode(const int status_code) {
 
 void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
                                     PostTransactionGeminiCallback callback) {
-  auto url_callback =
-      std::bind(&PostTransactionGemini::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(transaction.order_id);
   request->content = GeneratePayload(transaction);
@@ -84,13 +80,15 @@ void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
   BLOG(0, "External Transaction ID: " << transaction.external_transaction_id
                                       << " for " << transaction.amount);
 
-  engine_->LoadURL(std::move(request), url_callback);
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostTransactionGemini::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void PostTransactionGemini::OnRequest(mojom::UrlResponsePtr response,
-                                      PostTransactionGeminiCallback callback) {
+void PostTransactionGemini::OnRequest(PostTransactionGeminiCallback callback,
+                                      mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   BLOG_IF(0, CheckStatusCode(response->status_code) != mojom::Result::OK,
           "Error creating gemini transaction on the payment server");

@@ -10,6 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
@@ -78,15 +79,15 @@ void GetCards::Request(const std::string& token,
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
 
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&GetCards::OnRequest, base::Unretained(this),
-                                  std::move(callback)));
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&GetCards::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void GetCards::OnRequest(GetCardsCallback callback,
                          mojom::UrlResponsePtr response) const {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {
