@@ -56,7 +56,7 @@ TEST_F(BraveAdsPriorityTest,
   creative_ads.push_back(creative_ad_5);
 
   // Act & Assert
-  const base::flat_map</*priority*/ int, CreativeNotificationAdList>
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
       expected_buckets = {{1, {creative_ad_1, creative_ad_3}},
                           {2, {creative_ad_2}},
                           {3, {creative_ad_4}}};
@@ -76,7 +76,7 @@ TEST_F(BraveAdsPriorityTest,
   creative_ads.push_back(creative_ad_1);
 
   // Act & Assert
-  const base::flat_map</*priority*/ int, CreativeNotificationAdList>
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
       expected_buckets = {{3, {creative_ad_1}}};
   EXPECT_THAT(expected_buckets,
               SortCreativeAdsIntoBucketsByPriority(creative_ads));

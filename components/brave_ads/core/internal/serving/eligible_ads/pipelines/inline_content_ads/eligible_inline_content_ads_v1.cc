@@ -255,7 +255,7 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  const base::flat_map<int, CreativeInlineContentAdList> buckets =
+  const PrioritizedCreativeAdBuckets<CreativeInlineContentAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
   if (buckets.empty()) {
     return {};

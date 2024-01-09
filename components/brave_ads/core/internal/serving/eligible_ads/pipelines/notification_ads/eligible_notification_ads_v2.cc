@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -112,7 +111,7 @@ void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
   FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
                               browsing_history);
 
-  const base::flat_map<int, CreativeNotificationAdList> buckets =
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
 
   LogNumberOfCreativeAdsPerBucket(buckets);

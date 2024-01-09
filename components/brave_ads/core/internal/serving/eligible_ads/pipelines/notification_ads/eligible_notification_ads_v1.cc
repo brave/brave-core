@@ -243,7 +243,7 @@ CreativeNotificationAdList EligibleNotificationAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  const base::flat_map<int, CreativeNotificationAdList> buckets =
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
   if (buckets.empty()) {
     return {};

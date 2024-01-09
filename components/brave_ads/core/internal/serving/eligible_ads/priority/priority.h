@@ -14,9 +14,13 @@
 namespace brave_ads {
 
 template <typename T>
-base::flat_map</*priority*/ int, /*creative_ads*/ T>
-SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
-  base::flat_map<int, T> buckets;
+using PrioritizedCreativeAdBuckets =
+    base::flat_map</*priority*/ int, /*creative_ads*/ T>;
+
+template <typename T>
+PrioritizedCreativeAdBuckets<T> SortCreativeAdsIntoBucketsByPriority(
+    const T& creative_ads) {
+  PrioritizedCreativeAdBuckets<T> buckets;
 
   for (const auto& creative_ad : creative_ads) {
     if (creative_ad.priority == 0) {
@@ -32,7 +36,7 @@ SortCreativeAdsIntoBucketsByPriority(const T& creative_ads) {
 
 template <typename T>
 void LogNumberOfCreativeAdsPerBucket(
-    const base::flat_map</*priority*/ int, /*creative_ads*/ T>& buckets) {
+    const PrioritizedCreativeAdBuckets<T>& buckets) {
   size_t bucket = 1;
 
   for (const auto& [priority, creative_ads] : buckets) {
