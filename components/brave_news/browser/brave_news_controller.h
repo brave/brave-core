@@ -169,9 +169,6 @@ class BraveNewsController
   void Prefetch();
   void MaybeInitPrefs();
 
-  base::Time last_update_;
-  bool was_offline_{false};
-
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;

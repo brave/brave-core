@@ -207,6 +207,7 @@ union FeedV2Type {
   FeedV2PublisherType publisher;
   FeedV2ChannelType channel;
 };
+
 enum FeedV2Error {
   NoArticles,
   NoFeeds,
