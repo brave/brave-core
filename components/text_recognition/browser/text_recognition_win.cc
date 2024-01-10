@@ -42,10 +42,11 @@ using Microsoft::WRL::ComPtr;
 // Referred shape_detection::TextDetectionImplWin.
 namespace text_recognition {
 
-bool GetTextFromImage(const std::string& language_code,
-                      const SkBitmap& image,
-                      base::OnceCallback<void(const std::vector<std::string>&)>
-                          callback_run_on_ui_thread) {
+void GetTextFromImage(
+    const std::string& language_code,
+    const SkBitmap& image,
+    base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
+        callback_run_on_ui_thread) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
 
@@ -56,7 +57,8 @@ bool GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "IOcrEngineStatics factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    return false;
+    std::move(callback_run_on_ui_thread).Run({false, {}});
+    return;
   }
 
   ComPtr<ILanguageFactory> language_factory;
@@ -66,7 +68,8 @@ bool GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "ILanguage factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    return false;
+    std::move(callback_run_on_ui_thread).Run({false, {}});
+    return;
   }
 
   ComPtr<IOcrEngine> ocr_engine;
@@ -75,13 +78,15 @@ bool GetTextFromImage(const std::string& language_code,
     if (FAILED(hr)) {
       VLOG(2) << "Create engine failed from language: "
               << logging::SystemErrorCodeToString(hr);
-      return false;
+      std::move(callback_run_on_ui_thread).Run({false, {}});
+      return;
     }
   } else {
     ScopedHString language_hstring = ScopedHString::Create(language_code);
     if (!language_hstring.is_valid()) {
       VLOG(2) << "Got invalid language code";
-      return false;
+      std::move(callback_run_on_ui_thread).Run({false, {}});
+      return;
     }
 
     ComPtr<ILanguage> language;
@@ -89,20 +94,23 @@ bool GetTextFromImage(const std::string& language_code,
     if (FAILED(hr)) {
       VLOG(2) << "Create language failed: "
               << logging::SystemErrorCodeToString(hr);
-      return false;
+      std::move(callback_run_on_ui_thread).Run({false, {}});
+      return;
     }
 
     boolean is_supported = false;
     hr = engine_factory->IsLanguageSupported(language.Get(), &is_supported);
     if (FAILED(hr) || !is_supported) {
-      return false;
+      std::move(callback_run_on_ui_thread).Run({false, {}});
+      return;
     }
 
     hr = engine_factory->TryCreateFromLanguage(language.Get(), &ocr_engine);
     if (FAILED(hr)) {
       VLOG(2) << "Create engine failed from language: "
               << logging::SystemErrorCodeToString(hr);
-      return false;
+      std::move(callback_run_on_ui_thread).Run({false, {}});
+      return;
     }
   }
 
@@ -113,7 +121,8 @@ bool GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "ISoftwareBitmapStatics factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    return false;
+    std::move(callback_run_on_ui_thread).Run({false, {}});
+    return;
   }
 
   auto recognizer = std::make_unique<TextRecognizerWin>(
@@ -122,14 +131,13 @@ bool GetTextFromImage(const std::string& language_code,
   recognizer_ptr->Detect(
       image, base::BindOnce(
                  [](std::unique_ptr<TextRecognizerWin> recognizer,
-                    base::OnceCallback<void(const std::vector<std::string>&)>
+                    base::OnceCallback<void(
+                        const std::pair<bool, std::vector<std::string>>&)>
                         callback_run_on_ui_thread,
-                    const std::vector<std::string>& result) {
+                    const std::pair<bool, std::vector<std::string>>& result) {
                    std::move(callback_run_on_ui_thread).Run(result);
                  },
                  std::move(recognizer), std::move(callback_run_on_ui_thread)));
-
-  return true;
 }
 
 std::vector<std::string> GetAvailableRecognizerLanguages() {
