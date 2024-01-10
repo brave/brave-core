@@ -6,9 +6,6 @@ fastlane_version "2.86.0"
 
 default_platform :ios
 
-CONFIG_PATH = "../App/Configuration"
-LOCAL_PATH = "#{CONFIG_PATH}/Local"
-
 platform :ios do
   before_all do |lane, options|
     unless lane == :test || options[:skip_bootstrap]

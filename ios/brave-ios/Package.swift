@@ -428,7 +428,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SelectorsPollerScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/WindowRenderScript.js"),
-    .copy("WebFilters/ContentBlocker/build-disconnect.py"),
     .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),

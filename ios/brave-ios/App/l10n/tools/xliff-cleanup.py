@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #
 # xliff-cleanup.py <files>
 #
-#  1. Look at all remaining <file> sections and remove those strings that should not
-#     be localized. Currently that means: CFBundleName and CFBundleShortVersionString.
+#  1. Look at all remaining <file> sections and remove those strings that should
+#     not be localized. Currently that means: CFBundleName and
+#     CFBundleShortVersionString.
 #
-#  2. Remove all remaining <file> sections that are now have no <trans-unit> nodes
-#     in their <body> anymore.
+#  2. Remove all remaining <file> sections that are now have no <trans-unit>
+#     nodes in their <body> anymore.
 #
 # Modifies files in place. Makes no backup.
 #
@@ -41,8 +47,8 @@ if __name__ == "__main__":
                 if original and original.endswith('InfoPlist.strings'):
                     for trans_unit_node in file_node.xpath(
                             "./x:body/x:trans-unit", namespaces=NS):
-                        id = trans_unit_node.get('id')
-                        if id and id in STRINGS_TO_REMOVE:
+                        string_id = trans_unit_node.get('id')
+                        if string_id and string_id in STRINGS_TO_REMOVE:
                             trans_unit_node.getparent().remove(trans_unit_node)
 
             # 2. Remove empty file sections

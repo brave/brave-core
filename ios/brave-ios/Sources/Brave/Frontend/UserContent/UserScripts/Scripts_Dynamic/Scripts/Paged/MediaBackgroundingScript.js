@@ -1,7 +1,7 @@
-// Copyright 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // The below is needed because the script may not be web-packed into a bundle so it may be missing the run-once code
 
@@ -23,28 +23,28 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
       visibilityState_Set.call(this, value);
     })
   });
-  
+
   Object.defineProperty(HTMLVideoElement.prototype, 'userHitPause', {
     enumerable: false,
     configurable: false,
     writable: true,
     value: false
   });
-  
+
   Object.defineProperty(HTMLVideoElement.prototype, 'pauseListener', {
     enumerable: false,
     configurable: false,
     writable: true,
     value: false
   });
-  
+
   Object.defineProperty(HTMLVideoElement.prototype, 'presentationModeListener', {
     enumerable: false,
     configurable: false,
     writable: true,
     value: false
   });
-  
+
   var pauseControl = HTMLVideoElement.prototype.pause;
   HTMLVideoElement.prototype.pause = $(function() {
     this.userHitPause = true;
@@ -56,16 +56,16 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     this.userHitPause = false;
     return playControl.call(this);
   });
-  
+
   let addListeners = $(function(element) {
     if (!element.pauseListener) {
       element.pauseListener = true;
       element.visibilityState = visibilityState_Get.call(document);
-      
+
       document.addEventListener("visibilitychange", $(function(e) {
         element.visibilityState = visibilityState_Get.call(document);
       }), false);
-      
+
       element.addEventListener("pause", $(function(e) {
         if (!element.userHitPause && visibilityState_Get.call(document) == "visible") {
           var onVisibilityChanged = $((e) => {
@@ -88,16 +88,16 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
         }
       }), false);
     }
-    
+
     if (!element.presentationModeListener) {
         element.presentationModeListener = true;
-        
+
         element.addEventListener('webkitpresentationmodechanged', $(function(e) {
           e.stopPropagation();
         }), true);
     }
   });
-  
+
   const queue = [];
   let onMutation = $(function() {
     for (const mutations of queue) {
@@ -109,7 +109,7 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     }
     queue.length = 0;
   });
-  
+
   var observer = new MutationObserver($(function(mutations) {
     if (!queue.length) {
       // Debounce the mutation for performance
@@ -119,7 +119,7 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     }
     queue.push(...mutations);
   }));
-  
+
   observer.observe(document, {
     childList: true,
     attributes: false,

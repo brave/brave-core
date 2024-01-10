@@ -132,12 +132,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 
   if (config.targetOS === 'ios') {
-    var options = config.defaultOptions
-    options.cwd = path.join(config.braveCoreDir, "ios/brave-ios")
-    util.run("fastlane", [
-      "ios", "test", "ignore_git_status:true"
-    ], options)
-
     util.run(path.join(config.outputDir, "iossim"), [
       "-d", "\"iPhone 14 Pro\"",
       path.join(config.outputDir, `${suite}.app`),

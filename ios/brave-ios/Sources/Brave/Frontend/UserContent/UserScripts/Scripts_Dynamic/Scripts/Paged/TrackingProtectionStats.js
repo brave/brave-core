@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -111,7 +112,7 @@ window.__firefox__.execute(function($) {
       if (isAsync === undefined || isAsync) {
         return originalXHROpen.apply(this, arguments);
       }
-      
+
       this[localURLProp] = url;
       return originalXHROpen.apply(this, arguments);
     }, /*overrideToString=*/false);
@@ -121,7 +122,7 @@ window.__firefox__.execute(function($) {
       if (!url) {
         return originalXHRSend.apply(this, arguments);
       }
-      
+
       // Only attach the `error` event listener once for this
       // `XMLHttpRequest` instance.
       if (!this[localErrorHandlerProp]) {

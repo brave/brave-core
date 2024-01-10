@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -9,7 +9,7 @@ window.__firefox__.execute(function($) {
   (function() {
     const args = $<farbling_protection_args>;
     const braveNacl = window.nacl
-    
+
     // 1. Farble audio
     // Adds slight randization when reading data for audio files
     // Randomization is determined by the fudge factor
@@ -122,7 +122,7 @@ window.__firefox__.execute(function($) {
         newPlugin.item = function (index) {
           return newPlugin[index]
         }
-        
+
         return newPlugin
       }
 
@@ -131,18 +131,18 @@ window.__firefox__.execute(function($) {
         const plugins = window.navigator.plugins
         const originalPluginsLength = plugins.length
         const pluginsPrototype = Object.getPrototypeOf(window.navigator.plugins)
-        
+
         const fakePlugins = fakePluginData.map((pluginData) => {
           return makeFakePlugin(pluginData)
         })
-        
+
         // Adds a fake plugin for the given index on fakePluginData
         fakePlugins.forEach((newPlugin, index) => {
           const pluginPosition = originalPluginsLength + index
           pluginsPrototype[pluginPosition] = newPlugin
           pluginsPrototype[newPlugin.name] = newPlugin
         })
-        
+
         // Farble the `item` method on the plugins array
         const originalItem = window.navigator.plugins.item
         pluginsPrototype.item = function (index) {
@@ -153,7 +153,7 @@ window.__firefox__.execute(function($) {
             return fakePlugins[farbledIndex]
           }
         }
-        
+
         // Farble the `namedItem` method on the plugins array
         const originalNamedItem = window.navigator.plugins.namedItem
         pluginsPrototype.namedItem = function (name) {
@@ -161,7 +161,7 @@ window.__firefox__.execute(function($) {
           if (namedPlugin) { return namedPlugin }
           return fakePlugins.find((plugin) => plugin.name === name )
         }
-        
+
         // Adjust the length of the original plugin array
         Reflect.defineProperty(pluginsPrototype, 'length', {
           value: originalPluginsLength + fakePlugins.length

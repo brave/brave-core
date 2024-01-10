@@ -1,4 +1,7 @@
-#!/bin/zsh
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Creates an asset catalog in the provided output directory
 #
@@ -34,7 +37,7 @@ fi
 
 mkdir -p "$output_directory"
 if [ ! -f "$output_directory/Contents.json" ]; then
-cat > "$output_directory/Contents.json" << EOF 
+cat > "$output_directory/Contents.json" << EOF
 {
   "info" : {
     "author" : "xcode",
@@ -47,7 +50,7 @@ fi
 for icon in $icons
 do
   declare svg_name="$icon.svg"
-  if [ ! -f "$leo_sf_symbols_directory/symbols/$svg_name" ]; then 
+  if [ ! -f "$leo_sf_symbols_directory/symbols/$svg_name" ]; then
     echo "Could not find Leo SF symbol named $svg_name"
     exit 1
   fi

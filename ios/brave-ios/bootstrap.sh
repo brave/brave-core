@@ -1,24 +1,13 @@
 #!/bin/sh
 
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#
-# Use the --ci option to use `npm ci` over `npm install`
-
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # TODO(@brave/ios): Move contents of this into `npm run sync` command
 
 set -e
-
-missingCommand() {
-    echo >&2 "Brave requires the command: \033[1m$1\033[0m\nPlease install it via Homebrew or directly from $2"
-    exit 1
-}
-
-# First Check to see if they have the neccessary software installed
-command -v swiftlint >/dev/null 2>&1 || { missingCommand "swiftlint" "https://github.com/realm/SwiftLint/releases"; }
-command -v npm >/dev/null 2>&1 || { missingCommand "npm" "https://nodejs.org/en/download/"; }
 
 # Log Colors
 COLOR_ORANGE='\033[0;33m'
@@ -29,7 +18,9 @@ COLOR_NONE='\033[0m'
 npm run ios_pack_js
 
 # Set up BraveCore placeholders to allow SPM to validate the package
-build_output_dir="../../../out/ios_Build"
+# This folder will be replaced on first build to a symlink to the current
+# build config
+build_output_dir="../../../out/current_link"
 mkdir -p $build_output_dir
 if [[ ! -d "$build_output_dir/BraveCore.xcframework" ]]; then
   cp -R "BraveCore/placeholders/." "$build_output_dir/"
@@ -49,7 +40,8 @@ if [ ! -d "$CONFIG_PATH/Local/" ]; then
 fi
 
 if [ -d "$OLD_CONFIG_PATH/Local" ]; then
-  echo "${COLOR_ORANGE}Copying configurations from old configuration directory${COLOR_NONE}"
+  echo "${COLOR_ORANGE}Copying configurations from old configuration \
+    directory${COLOR_NONE}"
   for CONFIG_FILE in $OLD_CONFIG_PATH/Local/*.xcconfig
   do
     if cp -n $CONFIG_FILE $CONFIG_PATH/Local/ ; then

@@ -36,6 +36,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # android_deps/libs instead and it's special-cased further down.
         os.path.join('brave', 'third_party', 'android_deps'),
 
+        # No third-party code directly under ios_deps.
+        os.path.join('brave', 'third_party', 'ios_deps'),
+
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),

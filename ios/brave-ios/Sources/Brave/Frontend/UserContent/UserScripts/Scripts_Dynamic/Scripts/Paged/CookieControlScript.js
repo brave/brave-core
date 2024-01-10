@@ -1,12 +1,12 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 window.__firefox__.execute(function($) {
   //Cookie should neither be saved nor accessed (local or session) when user has blocked all cookies.
   const cookie = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') || Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie')
-  
+
   if (cookie && cookie.configurable) {
     Object.defineProperty(document, 'cookie', {
       get: $(function() {
@@ -19,7 +19,7 @@ window.__firefox__.execute(function($) {
       })
     });
   }
-  
+
   //Access to localStorage should be denied when user has blocked all Cookies.
   if (Object.getOwnPropertyDescriptor(window, 'localStorage')) {
     Object.defineProperty(window, 'localStorage', {
@@ -29,7 +29,7 @@ window.__firefox__.execute(function($) {
       }),
     });
   }
-  
+
   //Access to sessionStorage should be denied when user has blocked all Cookies.
   if (Object.getOwnPropertyDescriptor(window, 'sessionStorage')) {
     Object.defineProperty(window, 'sessionStorage', {
@@ -39,7 +39,7 @@ window.__firefox__.execute(function($) {
       })
     });
   }
-  
+
   (() => {
     // Access to caches should be denied when user has blocked all Cookies.
     const makeFailingPromiseFunction = $(function() {
@@ -49,7 +49,7 @@ window.__firefox__.execute(function($) {
         )
       });
     });
-    
+
     // We need to check that window.caches is defined as this API was only added in iOS 15
     // Later on we can probably remove this check.
     if (window.caches !== undefined) {
