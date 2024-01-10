@@ -84,9 +84,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
-  // Added 12/2019.
-  dark_mode::MigrateBraveDarkModePrefs(profile_prefs);
-
 #if !BUILDFLAG(IS_ANDROID)
   // Added 9/2020
   new_tab_page::MigrateNewTabPagePrefs(profile_prefs);
