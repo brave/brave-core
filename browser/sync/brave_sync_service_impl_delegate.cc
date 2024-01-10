@@ -45,7 +45,7 @@ void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
 
   bool found_local_device = false;
   const auto all_devices = device_info_tracker_->GetAllDeviceInfo();
-  for (const auto& device : all_devices) {
+  for (const auto* device : all_devices) {
     if (local_device_info->guid() == device->guid()) {
       found_local_device = true;
       break;
