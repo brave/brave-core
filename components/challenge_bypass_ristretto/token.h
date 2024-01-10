@@ -14,7 +14,7 @@
 #include "base/types/expected.h"
 #include "brave/components/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
-#include "brave/third_party/challenge_bypass_ristretto_cxx/src/lib.rs.h"
+#include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 

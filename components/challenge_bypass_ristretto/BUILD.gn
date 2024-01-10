@@ -37,7 +37,7 @@ component("challenge_bypass_ristretto") {
   ]
 
   public_deps =
-      [ "//brave/third_party/challenge_bypass_ristretto_cxx:rust_lib" ]
+      [ "//brave/third_party/rust/challenge_bypass_ristretto_cxx:rust_lib" ]
 }
 
 source_set("unit_tests") {

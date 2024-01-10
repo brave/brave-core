@@ -4,12 +4,6 @@ version = "0.1.0"
 authors = ["eV <ev@7pr.xyz>"]
 edition = "2018"
 
-[lib]
-crate-type = [
-    "rlib",
-]
-name = "challenge_bypass_ristretto"
-
 [dependencies]
 challenge-bypass-ristretto = { version = "1.0.1", features = ["base64"] }
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
