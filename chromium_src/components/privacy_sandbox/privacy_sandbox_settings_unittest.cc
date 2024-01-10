@@ -452,48 +452,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
       content::InterestGroupApiOperation::kJoin));
 }
 
-TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxEnabled) {
-  privacy_sandbox_test_util::SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
-      /*block_third_party_cookies=*/false,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
-
-  privacy_sandbox_test_util::SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
-      /*block_third_party_cookies=*/true,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
-
-  privacy_sandbox_test_util::SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
-      /*block_third_party_cookies=*/false,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-
-  // Trying to enable the privacy sandbox doesn't make a difference in Brave.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
-
-  // Check that even bypassing PrivacySandboxSettings::SetPrivacySandboxEnabled,
-  // and manually updating the preferences, we still don't get this enabled.
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
-}
-
 TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
