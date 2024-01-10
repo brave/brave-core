@@ -24,7 +24,6 @@ from core.path_util import SysPath, GetChromiumSrcDir
 from telemetry import story
 from telemetry import benchmark
 
-from telemetry.page import cache_temperature
 from telemetry.web_perf import timeline_based_measurement
 
 with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
@@ -50,8 +49,7 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
 
   def CreateStorySet(self, _options):
-    return BraveLoadingDesktopStorySet(
-        cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM])
+    return BraveLoadingDesktopStorySet(startup_delay=True)
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
     return CreateCoreTBMOptions(
@@ -75,8 +73,7 @@ class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
 
   def CreateStorySet(self, _options):
-    return BraveLoadingDesktopStorySet(
-        cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM])
+    return BraveLoadingDesktopStorySet(startup_delay=False)
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
     return CreateCoreTBMOptions(
