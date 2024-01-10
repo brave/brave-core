@@ -9,11 +9,15 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionListViewBinder.SuggestionListViewHolder;
+import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionView;
+import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBinder;
+import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerViewBinder;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.modelutil.MVCListAdapter;
@@ -32,29 +36,41 @@ public class BraveAutocompleteCoordinator {
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();
             private SuggestionListViewHolder mHolder;
+
             @Override
             public void inflate() {
-                provider.whenLoaded((holder) -> {
-                    OmniboxSuggestionsDropdown dropdown = holder.dropdown;
-                    if (dropdown != null && dropdown.getAdapter() != null
-                            && dropdown.getAdapter() instanceof OmniboxSuggestionsDropdownAdapter) {
-                        ((OmniboxSuggestionsDropdownAdapter) dropdown.getAdapter())
-                                .registerType(
-                                        BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER,
-                                        parent
-                                        -> LayoutInflater.from(parent.getContext())
-                                                   .inflate(R.layout.omnibox_brave_search_banner,
-                                                           null),
-                                        BraveSearchBannerViewBinder::bind);
-
-                        mHolder = holder;
-                        for (int i = 0; i < mCallbacks.size(); i++) {
-                            mCallbacks.get(i).onResult(holder);
-                        }
-                        mCallbacks = null;
-                    }
-                });
+                provider.whenLoaded(
+                        (holder) -> {
+                            OmniboxSuggestionsDropdown dropdown = holder.dropdown;
+                            if (dropdown != null
+                                    && dropdown.getAdapter() != null
+                                    && dropdown.getAdapter()
+                                            instanceof OmniboxSuggestionsDropdownAdapter) {
+                                addTypes((OmniboxSuggestionsDropdownAdapter) dropdown.getAdapter());
+                                mHolder = holder;
+                                for (int i = 0; i < mCallbacks.size(); i++) {
+                                    mCallbacks.get(i).onResult(holder);
+                                }
+                                mCallbacks = null;
+                            }
+                        });
                 provider.inflate();
+            }
+
+            private void addTypes(OmniboxSuggestionsDropdownAdapter adapter) {
+                adapter.registerType(
+                        BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER,
+                        parent ->
+                                LayoutInflater.from(parent.getContext())
+                                        .inflate(R.layout.omnibox_brave_search_banner, null),
+                        BraveSearchBannerViewBinder::bind);
+
+                adapter.registerType(
+                        BraveOmniboxSuggestionUiType.BRAVE_LEO_SUGGESTION,
+                        parent ->
+                                new BaseSuggestionView<View>(
+                                        parent.getContext(), R.layout.omnibox_basic_suggestion),
+                        new BaseSuggestionViewBinder<View>(BraveLeoSuggestionViewBinder::bind));
             }
 
             @Override
