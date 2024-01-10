@@ -6,100 +6,153 @@
 
 window.__firefox__.execute(function($) {
   const messageHandler = '$<message_handler>';
-
+  let sendInfo = [];
+  let sendInfoTimeout = null;
+  
   let sendMessage = $(function(urlString, resourceType) {
-    if (urlString) {
-      try {
-        let resourceURL = new URL(urlString, window.location.href)
-        $.postNativeMessage(messageHandler, {
-          "securityToken": SECURITY_TOKEN,
-          "data": {
-            resourceURL: resourceURL.href,
-            sourceURL: window.location.href,
-            resourceType: resourceType
-          }
-        });
-      } catch (error) {
-        console.error(error)
-      }
+    // String is empty, null, undefined, ...
+    if (!urlString) {
+      return;
     }
+    
+    let resourceURL = null;
+    try {
+      resourceURL = new URL(urlString, document.location.href);
+      
+      // First party urls or invalid URLs are not blocked
+      if (document.location.host === resourceURL.host) {
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+    
+    sendInfo.push({
+      resourceURL: resourceURL.href,
+      sourceURL: document.location.href,
+      resourceType: resourceType
+    });
+    
+    if (sendInfoTimeout) {
+      return;
+    }
+    
+    // Send the URLs in batches every 200ms to avoid perf issues
+    // from calling js-to-native too frequently.
+    sendInfoTimeout = setTimeout($(() => {
+      sendInfoTimeout = null;
+      if (sendInfo.length == 0) {
+        return;
+      }
+      
+      $.postNativeMessage(messageHandler, {
+        "securityToken": SECURITY_TOKEN,
+        "data": sendInfo
+      });
+      
+      sendInfo = [];
+    }), 200);
   });
 
   let onLoadNativeCallback = $(function() {
     // Send back the sources of every script and image in the DOM back to the host application.
-    [].slice.apply(document.scripts).forEach(function(el) { sendMessage(el.src, "script"); });
-    [].slice.apply(document.images).forEach(function(el) {
-      // If the image's natural width is zero, then it has not loaded so we
-      // can assume that it may have been blocked.
-      if (el.naturalWidth === 0) {
-        sendMessage(el.src, "image");
-      }
-    });
+    [].slice.apply(document.scripts).forEach((el) => { sendMessage(el.src, "script"); });
+    [].slice.apply(document.images).forEach((el) => { sendMessage(el.src, "image"); });
+    [].slice.apply(document.getElementsByTagName('subdocument')).forEach((el) => { sendMessage(el.src, "subdocument"); })
   });
 
-  let originalOpen = null;
-  let originalSend = null;
+  let originalXHROpen = null;
+  let originalXHRSend = null;
+  let originalFetch = null;
   let originalImageSrc = null;
   let mutationObserver = null;
 
   let injectStatsTracking = $(function(enabled) {
     // This enable/disable section is a change from the original Focus iOS version.
     if (enabled) {
-      if (originalOpen) {
+      if (originalXHROpen) {
         return;
       }
       window.addEventListener("load", onLoadNativeCallback, false);
     } else {
       window.removeEventListener("load", onLoadNativeCallback, false);
 
-      if (originalOpen) { // if one is set, then all the enable code has run
-        XMLHttpRequest.prototype.open = originalOpen;
-        XMLHttpRequest.prototype.send = originalSend;
-        Image.prototype.src = originalImageSrc;
+      if (originalXHROpen) { // if one is set, then all the enable code has run
+        XMLHttpRequest.prototype.open = originalXHROpen;
+        XMLHttpRequest.prototype.send = originalXHRSend;
+        window.fetch = originalFetch;
+        // Image.prototype.src = originalImageSrc;  // doesn't work to reset
         mutationObserver.disconnect();
 
-        originalOpen = originalSend = originalImageSrc = mutationObserver = null;
+        originalXHROpen = null;
+        originalXHRSend = null;
+        originalFetch = null;
+        originalImageSrc = null;
+        mutationObserver = null;
       }
       return;
     }
 
     // -------------------------------------------------
-    // Send ajax requests URLs to the host application
+    // Send XHR requests URLs to the host application
     // -------------------------------------------------
     const localURLProp = Symbol('url')
-    var xhrProto = XMLHttpRequest.prototype;
-    if (!originalOpen) {
-      originalOpen = xhrProto.open;
-      originalSend = xhrProto.send;
+    const localErrorHandlerProp = Symbol('tpErrorHandler')
+    
+    if (!originalXHROpen) {
+      originalXHROpen = XMLHttpRequest.prototype.open;
+      originalXHRSend = XMLHttpRequest.prototype.send;
     }
 
-    xhrProto.open = $(function(method, url) {
+    XMLHttpRequest.prototype.open = $(function(method, url, isAsync) {
       // Blocked async XMLHttpRequest are handled via RequestBlocking.js
       // We only handle sync requests
-      if (arguments[2] === undefined || arguments[2]) {
-        return originalOpen.apply(this, arguments);
+      if (isAsync === undefined || isAsync) {
+        return originalXHROpen.apply(this, arguments);
       }
       
       this[localURLProp] = url;
-      return originalOpen.apply(this, arguments);
+      return originalXHROpen.apply(this, arguments);
     }, /*overrideToString=*/false);
 
-    xhrProto.send = $(function(body) {
-      if (this[localURLProp] === undefined) {
-        return originalSend.apply(this, arguments);
+    XMLHttpRequest.prototype.send = $(function(body) {
+      let url = this[localURLProp];
+      if (!url) {
+        return originalXHRSend.apply(this, arguments);
       }
       
       // Only attach the `error` event listener once for this
       // `XMLHttpRequest` instance.
-      if (!this._tpErrorHandler) {
+      if (!this[localErrorHandlerProp]) {
         // If this `XMLHttpRequest` instance fails to load, we
         // can assume it has been blocked.
-        this._tpErrorHandler = $(function() {
-          sendMessage(this[localURLProp], "xmlhttprequest");
+        this[localErrorHandlerProp] = $(function() {
+          sendMessage(url, "xmlhttprequest");
         });
-        this.addEventListener("error", this._tpErrorHandler);
+        
+        this.addEventListener("error", this[localErrorHandlerProp]);
       }
-      return originalSend.apply(this, arguments);
+      return originalXHRSend.apply(this, arguments);
+    }, /*overrideToString=*/false);
+    
+    
+    
+    // -------------------------------------------------
+    // Send `fetch()` request URLs to the host application
+    // -------------------------------------------------
+    if (!originalFetch) {
+      originalFetch = window.fetch;
+    }
+    
+    window.fetch = $(function(input, init) {
+      if (typeof input === 'string') {
+        sendMessage(input, 'xmlhttprequest');
+      } else if (input instanceof Request) {
+        sendMessage(input.url, 'xmlhttprequest');
+      }
+
+      return originalFetch.apply(window, arguments);
     }, /*overrideToString=*/false);
 
     // -------------------------------------------------
@@ -108,24 +161,25 @@ window.__firefox__.execute(function($) {
     if (!originalImageSrc) {
       originalImageSrc = Object.getOwnPropertyDescriptor(Image.prototype, "src");
     }
+    
     delete Image.prototype.src;
+    
     Object.defineProperty(Image.prototype, "src", {
       get: $(function() {
         return originalImageSrc.get.call(this);
       }),
+      
       set: $(function(value) {
         // Only attach the `error` event listener once for this
         // Image instance.
-        if (!this._tpErrorHandler) {
+        if (!this[localErrorHandlerProp]) {
           // If this `Image` instance fails to load, we can assume
           // it has been blocked.
-          this._tpErrorHandler = $(function() {
-            // We don't need to send it if the src is set to ""
-            // (which will give us `window.location.href`)
-            if (this.src === window.location.href) { return }
+          this[localErrorHandlerProp] = $(function() {
             sendMessage(this.src, "image");
           });
-          this.addEventListener("error", this._tpErrorHandler);
+          
+          this.addEventListener("error", this[localErrorHandlerProp]);
         }
 
         originalImageSrc.set.call(this, value);
@@ -141,10 +195,25 @@ window.__firefox__.execute(function($) {
     mutationObserver = new MutationObserver($(function(mutations) {
       mutations.forEach($(function(mutation) {
         mutation.addedNodes.forEach($(function(node) {
-          // Only consider `<script src="*">` elements.
+          // `<script src="*">` elements.
           if (node.tagName === "SCRIPT" && node.src) {
-            // Send all scripts that are added, we won't add it to the stats unless script blocking is enabled anyways
             sendMessage(node.src, "script");
+            return;
+          }
+          
+          if (node.tagName === "IMG" && node.src) {
+            sendMessage(node.src, "image");
+            return;
+          }
+
+          // `<iframe src="*">` elements where [src] is not "about:blank".
+          if (node.tagName === "IFRAME" && node.src) {
+            if (node.src === "about:blank") {
+              return;
+            }
+
+            sendMessage(node.src, "subdocument");
+            return;
           }
         }));
       }));

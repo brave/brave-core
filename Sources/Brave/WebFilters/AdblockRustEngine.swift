@@ -8,7 +8,10 @@ import BraveCore
 
 extension AdblockEngine {
   public enum ResourceType: String, Decodable {
-    case xmlhttprequest, script, image
+    case xmlhttprequest
+    case script
+    case image
+    case subdocument
   }
   
   /// Check the rust engine if the request should be blocked given the `sourceURL` and `resourceType`.
