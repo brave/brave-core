@@ -24,20 +24,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
 
-namespace {
-
-bool ElevatedRegisterBraveVPNService() {
-  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
-  base::CommandLine cmd(executable_path);
-  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceInstallSwitchName);
-  base::LaunchOptions options = base::LaunchOptions();
-  options.wait = true;
-  options.elevated = true;
-  return base::LaunchProcess(cmd, options).IsValid();
-}
-
-}  // namespace
-
 BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   CHECK(service);
@@ -54,10 +40,6 @@ BraveVpnHandler::~BraveVpnHandler() = default;
 
 void BraveVpnHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-      "registerWireguardService",
-      base::BindRepeating(&BraveVpnHandler::HandleInstallWireguardService,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "isWireguardServiceInstalled",
       base::BindRepeating(&BraveVpnHandler::HandleIsWireguardServiceInstalled,
                           base::Unretained(this)));
@@ -71,17 +53,6 @@ void BraveVpnHandler::OnProtocolChanged() {
   auto enabled =
       brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state());
   brave_vpn::SetWireguardActive(enabled);
-}
-
-void BraveVpnHandler::HandleInstallWireguardService(
-    const base::Value::List& args) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(&ElevatedRegisterBraveVPNService),
-      base::BindOnce(&BraveVpnHandler::OnWireguardServiceInstalled,
-                     weak_factory_.GetWeakPtr(), args[0].GetString()));
 }
 
 void BraveVpnHandler::OnWireguardServiceInstalled(

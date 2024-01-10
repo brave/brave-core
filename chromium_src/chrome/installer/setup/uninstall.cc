@@ -10,11 +10,11 @@
 #include "brave/installer/util/brave_shell_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/elevation_service/install_utils.h"
 #include "brave/installer/win/util/brave_vpn_helper_constants.h"
 #include "brave/installer/win/util/brave_vpn_helper_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
@@ -25,17 +25,6 @@
 namespace installer {
 
 namespace {
-
-bool UninstallBraveVPNWireguardService(const base::FilePath& exe_path) {
-  if (!base::PathExists(exe_path)) {
-    return false;
-  }
-  base::CommandLine cmd(exe_path);
-  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUninstallSwitchName);
-  base::LaunchOptions options = base::LaunchOptions();
-  options.wait = true;
-  return base::LaunchProcess(cmd, options).IsValid();
-}
 
 void DeleteBraveFileKeys(HKEY root) {
   // Delete Software\Classes\BraveXXXFile.
@@ -91,6 +80,7 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (installer_state->system_install()) {
+    // TODO(bsclifton): move this to a method
     if (!InstallServiceWorkItem::DeleteService(
             brave_vpn::GetBraveVpnHelperServiceName(),
             brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
@@ -98,10 +88,8 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                    << brave_vpn::GetBraveVpnHelperServiceName();
     }
 
-    if (!UninstallBraveVPNWireguardService(
-            brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
-                installer_state->target_path(),
-                *modify_params.current_version))) {
+    if (!brave_vpn::UninstallBraveWireguardService() ||
+        !brave_vpn::UninstallStatusTrayIcon()) {
       LOG(WARNING) << "Failed to delete "
                    << brave_vpn::GetBraveVpnWireguardServiceName();
     }

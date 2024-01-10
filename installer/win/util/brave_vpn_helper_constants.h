@@ -12,7 +12,6 @@
 
 namespace brave_vpn {
 
-inline constexpr char kBraveVpnHelperInstall[] = "install";
 inline constexpr char kBraveVpnHelperCrashMe[] = "crash-me";
 inline constexpr wchar_t kBraveVPNHelperExecutable[] = L"brave_vpn_helper.exe";
 inline constexpr wchar_t kBraveVpnHelperFiltersInstalledValue[] = L"filters";

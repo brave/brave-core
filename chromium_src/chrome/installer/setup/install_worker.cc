@@ -35,24 +35,16 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/elevation_service/install_utils.h"
 #include "brave/installer/win/util/brave_vpn_helper_constants.h"
 #include "brave/installer/win/util/brave_vpn_helper_utils.h"
 
 namespace {
 
 // delete `BraveVpnWireguardService` from services and remove the tray icon.
-bool UninstallBraveVPNWireguardService(const base::FilePath& exe_path,
-                                       const CallbackWorkItem&) {
-  if (!base::PathExists(exe_path)) {
-    return false;
-  }
-  base::CommandLine cmd(exe_path);
-  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUninstallSwitchName);
-  base::LaunchOptions options = base::LaunchOptions();
-  options.wait = true;
-  return base::LaunchProcess(cmd, options).IsValid();
+bool UninstallBraveVPNWireguardService(const CallbackWorkItem&) {
+  return brave_vpn::UninstallBraveWireguardService() &&
+         brave_vpn::UninstallStatusTrayIcon();
 }
 
 // Brave 1.50.114+ would register `BraveVpnService` for system level installs.
@@ -81,13 +73,11 @@ void AddUninstallVpnServiceWorkItems() {
 // purchased Brave VPN and has credentials or when VPN is used.
 //
 // See https://github.com/brave/brave-browser/issues/33726 for more info
-void AddUninstallWireguardServiceWorkItems(
-    const base::FilePath& wireguard_service_path,
-    WorkItemList* list) {
+void AddUninstallWireguardServiceWorkItems(WorkItemList* list) {
   DCHECK(::IsUserAnAdmin());
-  list->AddCallbackWorkItem(base::BindOnce(&UninstallBraveVPNWireguardService,
-                                           wireguard_service_path),
-                            base::NullCallback());
+  list->AddCallbackWorkItem(
+      base::BindOnce(&UninstallBraveVPNWireguardService),
+      base::NullCallback());
 }
 
 }  // namespace
@@ -134,10 +124,7 @@ bool OneTimeVpnServiceCleanup(const base::FilePath& target_path,
   // If is_test=true, the removal won't happen. Default is false.
   // See chromium_src/chrome/installer/setup/install_worker_unittest.cc
   if (!is_test) {
-    AddUninstallWireguardServiceWorkItems(
-        brave_vpn::GetBraveVPNWireguardServiceInstallationPath(target_path,
-                                                               new_version),
-        install_list);
+    AddUninstallWireguardServiceWorkItems(install_list);
     AddUninstallVpnServiceWorkItems();
   }
 

@@ -69,12 +69,6 @@ int main(int argc, char* argv[]) {
 
   base::win::SetupCRT(*command_line);
 
-  // Register vpn helper service in the system.
-  if (command_line->HasSwitch(brave_vpn::kBraveVpnHelperInstall)) {
-    auto success = brave_vpn::InstallBraveVPNHelperService();
-    return success ? 0 : 1;
-  }
-
   // Run the service.
   brave_vpn::ServiceMain* service = brave_vpn::ServiceMain::GetInstance();
   if (!service->InitWithCommandLine(command_line)) {

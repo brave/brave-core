@@ -8,8 +8,6 @@ import("//build/toolchain/gcc_toolchain.gni")
 source_set("status_tray") {
   sources = [
     "brave_vpn_tray_command_ids.h",
-    "install_utils.cc",
-    "install_utils.h",
     "status_tray_runner.cc",
     "status_tray_runner.h",
   ]

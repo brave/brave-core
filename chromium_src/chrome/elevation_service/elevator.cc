@@ -7,7 +7,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "brave/elevation_service/install_utils.h"
 #include "brave/installer/win/util/brave_vpn_helper_utils.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #include "src/chrome/elevation_service/elevator.cc"
@@ -17,16 +19,16 @@ namespace elevation_service {
 HRESULT Elevator::InstallVPNServices() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (!brave_vpn::IsBraveVPNHelperServiceInstalled()) {
-    HRESULT hr = brave_vpn::InstallBraveVPNHelperServiceImpersonated();
-    if (FAILED(hr)) {
-      return hr;
+    auto success = brave_vpn::InstallBraveVPNHelperService();
+    if (!success) {
+      return E_FAIL;
     }
   }
 
   if (!brave_vpn::wireguard::IsWireguardServiceInstalled()) {
-    HRESULT hr = brave_vpn::InstallBraveWireGuardServiceImpersonated();
-    if (FAILED(hr)) {
-      return hr;
+    auto success = brave_vpn::InstallBraveWireguardService();
+    if (!success) {
+      return E_FAIL;
     }
   }
 #endif

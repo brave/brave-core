@@ -6,16 +6,11 @@
 import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export interface BraveVPNBrowserProxy {
-  registerWireguardService(): Promise<boolean>;
   isWireguardServiceInstalled(): Promise<boolean>;
   isBraveVpnConnected(): Promise<boolean>;
 }
 
 export class BraveVPNBrowserProxyImpl implements BraveVPNBrowserProxy {
-  registerWireguardService () {
-    return sendWithPromise('registerWireguardService');
-  }
-
   isWireguardServiceInstalled () {
     return sendWithPromise('isWireguardServiceInstalled');
   }
