@@ -16,11 +16,9 @@
 // for component_installer.cc, so that we can still compile and link.
 #define OnUpdateError                                                  \
   Register_ChromiumImpl(ComponentUpdateService* cus,                   \
-                        base::OnceClosure callback,                    \
-                        base::TaskPriority task_priority);             \
+                        base::OnceClosure callback);                   \
   void Register_ChromiumImpl(RegisterCallback register_callback,       \
                              base::OnceClosure callback,               \
-                             base::TaskPriority task_priority,         \
                              const base::Version& registered_version); \
   void OnUpdateError
 
