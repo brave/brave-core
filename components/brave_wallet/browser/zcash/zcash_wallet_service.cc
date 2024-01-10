@@ -118,21 +118,18 @@ void ZCashWalletService::OnRunDiscoveryDone(
     std::vector<base::expected<mojom::ZCashAddressPtr, std::string>>
         discovered_address) {
   std::vector<mojom::ZCashAddressPtr> result;
-  bool has_error = false;
   for (const auto& item : discovered_address) {
     if (item.has_value()) {
       UpdateNextUnusedAddressForAccount(account_id, *item);
       result.push_back(item->Clone());
     } else {
-      has_error = true;
+      std::move(callback).Run(base::unexpected(
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+      return;
     }
   }
 
-  if (has_error) {
-    std::move(callback).Run(base::unexpected("Failed to run discovery"));
-  } else {
-    std::move(callback).Run(std::move(result));
-  }
+  std::move(callback).Run(std::move(result));
 }
 
 void ZCashWalletService::UpdateNextUnusedAddressForAccount(
