@@ -202,7 +202,13 @@ void PublishersController::EnsurePublishersIsUpdating() {
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
             ParseCombinedPublisherList(api_request_result.value_body());
+
+        // Update failed, we'll just reuse whatever publishers we had before.
         if (!publisher_list) {
+          controller->on_current_update_complete_->Signal();
+          controller->is_update_in_progress_ = false;
+          controller->on_current_update_complete_ =
+              std::make_unique<base::OneShotEvent>();
           return;
         }
 

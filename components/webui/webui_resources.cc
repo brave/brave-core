@@ -258,6 +258,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"braveNewsNoArticlesTitle", IDS_BRAVE_NEWS_NO_ARTICLES_TITLE},
                {"braveNewsNoArticlesMessage",
                 IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE},
+               {"braveNewsOfflineTitle", IDS_BRAVE_NEWS_OFFLINE_TITLE},
+               {"braveNewsOfflineMessage", IDS_BRAVE_NEWS_OFFLINE_MESSAGE},
                {"braveNewsCustomizeFeed", IDS_BRAVE_NEWS_CUSTOMIZE_FEED},
                {"braveNewsRefreshFeed", IDS_BRAVE_NEWS_REFRESH_FEED},
                {"braveNewsOpenArticlesIn", IDS_BRAVE_NEWS_OPEN_ARTICLES_IN},
