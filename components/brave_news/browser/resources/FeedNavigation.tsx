@@ -33,14 +33,6 @@ const Container = styled(Card)`
   scrollbar-color: var(--bn-glass-10) var(--bn-glass-10);
 `
 
-const Heading = styled.h4`
-  font: ${font.heading.h4};
-  color: var(--bn-glass-70);
-  margin: 0;
-
-  text-align: center;
-`
-
 const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, large?: boolean, bold?: boolean }>`
   padding: ${spacing.m};
   padding-left: ${PAD_LEFT};
@@ -143,7 +135,6 @@ export default function Sidebar() {
     .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
-    <Heading>{getLocale('braveNewsMyFeedHeading')}</Heading>
     <Item id='all' name={getLocale('braveNewsForYouFeed')} />
     <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
     {!!subscribedChannels.length && <Section open>

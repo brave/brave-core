@@ -242,7 +242,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                 IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL},
                {"braveNewsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
                {"braveNewsNewsPeek", IDS_BRAVE_NEWS_NEWS_PEEK},
-               {"braveNewsMyFeedHeading", IDS_BRAVE_NEWS_MY_FEED_HEADING},
                {"braveNewsForYouFeed", IDS_BRAVE_NEWS_FOR_YOU_FEED},
                {"braveNewsFollowingFeed", IDS_BRAVE_NEWS_FOLLOWING_FEED},
                {"braveNewsPublishersHeading",
