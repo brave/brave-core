@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/challenge_bypass_ristretto/verification_signature.h"
-#include "brave/third_party/challenge_bypass_ristretto_cxx/src/lib.rs.h"
+#include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 
