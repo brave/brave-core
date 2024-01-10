@@ -175,6 +175,21 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/ronaldoussoren/macholib",
             "License": "MIT",
         },
+        os.path.join('brave', 'third_party', 'ios_deps', 'JitsiMeet'): {
+            "Name": "JitsiMeet",
+            "URL": "https://github.com/jitsi/jitsi-meet",
+            "License": "Apache-2.0",
+        },
+        os.path.join('brave', 'third_party', 'ios_deps', 'GRDWireGuardKit'): {
+            "Name": "GuardianWireGuard",
+            "URL": "https://github.com/GuardianFirewall/GuardianWireGuard",
+            "License": "MIT",
+        },
+        os.path.join('brave', 'third_party', 'ios_deps', 'Static'): {
+            "Name": "Static",
+            "URL": "https://github.com/venmo/Static",
+            "License": "MIT",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.
