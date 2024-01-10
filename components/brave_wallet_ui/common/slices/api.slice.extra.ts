@@ -7,10 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // constants
-import type {
-  BraveWallet,
-  SerializableTransactionInfo
-} from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 
 // hooks
 import {
@@ -19,7 +16,8 @@ import {
   useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGenerateReceiveAddressMutation
 } from './api.slice'
 
 // entities
@@ -254,4 +252,48 @@ export const usePendingTransactionsQuery = (
         : emptyPendingTxs
     })
   })
+}
+
+export const useReceiveAddressQuery = (
+  accountId: BraveWallet.AccountId | undefined
+) => {
+  // state
+  const [receiveAddress, setReceiveAddress] = React.useState<string>(
+    accountId?.address || ''
+  )
+
+  // mutations
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
+
+  // effects
+  React.useEffect(() => {
+    // skip fetching/polling if not needed
+    if (accountId?.address) {
+      return
+    }
+
+    let ignore = false
+
+    const fetchAddress = async () => {
+      if (accountId) {
+        const address = await generateReceiveAddress(accountId).unwrap()
+        if (!ignore) {
+          setReceiveAddress(address)
+        }
+      }
+    }
+
+    fetchAddress()
+
+    // poll for new address every BTC block (10 minutes)
+    const intervalId = setInterval(fetchAddress, 1000 * 60 * 10)
+
+    // cleanup
+    return () => {
+      ignore = true
+      clearInterval(intervalId)
+    }
+  }, [accountId, generateReceiveAddress])
+
+  return receiveAddress
 }

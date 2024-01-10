@@ -31,12 +31,20 @@ export const SearchWrapper = styled.div`
   position: relative;
 `
 
-export const QRCodeImage = styled.img`
+export const QRCodeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 260px;
   height: 260px;
   border-radius: 4px;
   border: 4px solid ${(p) => p.theme.color.text01};
   margin-bottom: 16px;
+`
+
+export const QRCodeImage = styled.img`
+  width: 260px;
+  height: 260px;
 `
 
 export const AddressText = styled.div`
