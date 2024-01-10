@@ -7,6 +7,8 @@ module ai_chat.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
+import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/unguessable_token.mojom";
 
 enum CharacterType {
   HUMAN,
@@ -82,8 +84,10 @@ struct SiteInfo {
 // The text attribute contains the actual content of the turn, which can be a
 // message, statement, or question, among others.
 struct ConversationTurn {
+  mojo_base.mojom.UnguessableToken id;
   CharacterType character_type;
   ConversationTurnVisibility visibility;
+  mojo_base.mojom.Time date;
   string text;
 };
 

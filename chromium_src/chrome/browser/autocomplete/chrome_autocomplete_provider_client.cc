@@ -66,8 +66,8 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
       browser->tab_strip_model()->GetActiveWebContents());
   DCHECK(chat_tab_helper);
   ai_chat::mojom::ConversationTurn turn = {
-      ai_chat::mojom::CharacterType::HUMAN,
-      ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
+      base::UnguessableToken::Create(), ai_chat::mojom::CharacterType::HUMAN,
+      ai_chat::mojom::ConversationTurnVisibility::VISIBLE, base::Time::Now(),
       base::UTF16ToUTF8(query)};
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
   ai_chat::AIChatMetrics* metrics =
