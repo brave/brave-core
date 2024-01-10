@@ -35,7 +35,11 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   EXPECT_FALSE(popup_view()->IsOpen());
-  EXPECT_TRUE(omnibox_view()->controller()->result().empty());
+  EXPECT_TRUE(omnibox_view()
+                  ->controller()
+                  ->autocomplete_controller()
+                  ->result()
+                  .empty());
 
   // Initially autocomplete is enabled.
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
@@ -45,10 +49,14 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup is opened and results are not empty.
-  EXPECT_FALSE(omnibox_view()->controller()->result().empty());
+  EXPECT_FALSE(omnibox_view()
+                   ->controller()
+                   ->autocomplete_controller()
+                   ->result()
+                   .empty());
   EXPECT_TRUE(popup_view()->IsOpen());
 
-  edit_model()->StopAutocomplete();
+  omnibox_view()->controller()->StopAutocomplete(/*clear_result=*/true);
 
   browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
                                                false);
@@ -56,6 +64,10 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup isn't opened and result is empty.
-  EXPECT_TRUE(omnibox_view()->controller()->result().empty());
+  EXPECT_TRUE(omnibox_view()
+                  ->controller()
+                  ->autocomplete_controller()
+                  ->result()
+                  .empty());
   EXPECT_FALSE(popup_view()->IsOpen());
 }
