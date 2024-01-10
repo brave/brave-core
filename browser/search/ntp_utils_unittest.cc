@@ -35,8 +35,13 @@ class NTPUtilsTest : public ::testing::Test {
 };
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
-  // Manually turn all off
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
   auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
+  // Manually turn all off
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
   // Migrate
@@ -46,8 +51,13 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
 }
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
-  // Manually turn some off
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
   auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
+  // Manually turn some off
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
   // Migrate
@@ -57,10 +67,12 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
 }
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalseDefault) {
-  // Don't manually change any settings
-  // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
-  // Expect not migrated
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
   auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
+  // Don't manually change any settings and expect not migrated
   EXPECT_FALSE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }
