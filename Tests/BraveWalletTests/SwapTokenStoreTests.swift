@@ -440,19 +440,22 @@ class SwapStoreTests: XCTestCase {
       network: .mockSolana,
       coin: .sol
     )
-    swapService._quote = { jupiterQuoteParams, completion in
+    swapService._quote = { swapQuoteParams, completion in
       // verify 0.005 is converted to 0.5
-      XCTAssertEqual(jupiterQuoteParams.slippagePercentage, "0.5")
-      let route: BraveWallet.JupiterRoute = .init(
-        inAmount: 10000000, // 0.01 SOL (9 decimals)
-        outAmount: 2500000, // 2.5 SPD (6 decimals)
-        amount: 2500000, // 2.5 SPD (6 decimals)
-        otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
+      XCTAssertEqual(swapQuoteParams.slippagePercentage, "0.5")
+      let jupiterQuote: BraveWallet.JupiterQuote = .init(
+        inputMint: BraveWallet.BlockchainToken.mockSolToken.contractAddress,
+        inAmount: "10000000", // 0.01 SOL (9 decimals)
+        outputMint: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
+        outAmount: "2500000", // 2.5 SPD (6 decimals)
+        otherAmountThreshold: "2500000", // 2.5 SPD (6 decimals)
         swapMode: "",
-        priceImpactPct: 0,
-        slippageBps: 50, // 0.5%
-        marketInfos: [])
-      completion(.init(jupiterQuote: .init(routes: [route])), nil, "")
+        slippageBps: "50", // 0.5%
+        platformFee: nil,
+        priceImpactPct: "0",
+        routePlan: []
+      )
+      completion(.init(jupiterQuote: jupiterQuote), nil, "")
     }
     swapService._braveFee = { params, completion in
       let feeResponse = BraveWallet.BraveSwapFeeResponse(
@@ -697,15 +700,18 @@ class SwapStoreTests: XCTestCase {
 
   /// Test creating a sol swap transaction
   @MainActor func testSwapSolSwapTransaction() async {
-    let route: BraveWallet.JupiterRoute = .init(
-      inAmount: 3000000000,
-      outAmount: 2500000, // 2.5 SPD (6 decimals)
-      amount: 2500000, // 2.5 SPD (6 decimals)
-      otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
+    let jupiterQuote: BraveWallet.JupiterQuote = .init(
+      inputMint: BraveWallet.BlockchainToken.mockSolToken.contractAddress,
+      inAmount: "3000000000",
+      outputMint: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
+      outAmount: "2500000", // 2.5 SPD (6 decimals)
+      otherAmountThreshold: "2500000", // 2.5 SPD (6 decimals)
       swapMode: "",
-      priceImpactPct: 0,
-      slippageBps: 50, // 0.5%
-      marketInfos: [])
+      slippageBps: "50", // 0.5%
+      platformFee: nil,
+      priceImpactPct: "0",
+      routePlan: []
+    )
     let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy, mockAssetManager) = setupServices(
       network: .mockSolana,
       coin: .sol
@@ -738,7 +744,7 @@ class SwapStoreTests: XCTestCase {
       selectedFromToken: .mockSolToken,
       selectedToToken: .mockSpdToken,
       sellAmount: "0.01",
-      jupiterQuote: .init(routes: [route])
+      jupiterQuote: jupiterQuote
     )
     store.state = .swap
     

@@ -687,20 +687,19 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     _ response: BraveWallet.JupiterQuote,
     swapQuoteParams: BraveWallet.SwapQuoteParams
   ) async {
-    guard let route = response.routes.first else { return }
     self.jupiterQuote = response
     
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     if let selectedToToken {
-      buyAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)) ?? ""
+      buyAmount = formatter.decimalString(for: response.outAmount, radix: .decimal, decimals: Int(selectedToToken.decimals)) ?? ""
     }
     
     // No exchange rate is returned by Jupiter API, so we estimate it from the quote.
     if let selectedFromToken,
-       let newFromAmount = formatter.decimalString(for: "\(route.inAmount)", radix: .decimal, decimals: Int(selectedFromToken.decimals)),
+       let newFromAmount = formatter.decimalString(for: response.inAmount, radix: .decimal, decimals: Int(selectedFromToken.decimals)),
        let newFromAmountWrapped = BDouble(newFromAmount),
        let selectedToToken,
-       let newToAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)),
+       let newToAmount = formatter.decimalString(for: response.outAmount, radix: .decimal, decimals: Int(selectedToToken.decimals)),
        let newToAmountWrapped = BDouble(newToAmount),
        newFromAmountWrapped != 0 {
       let rate = newToAmountWrapped / newFromAmountWrapped
@@ -742,25 +741,20 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   
   @MainActor private func createSolSwapTransaction() async -> Bool {
     guard let jupiterQuote,
-          let route = jupiterQuote.routes.first,
-          let accountInfo = self.accountInfo,
-          let selectedToToken,
-          let selectedFromToken else {
+          let accountInfo = self.accountInfo else {
       return false
     }
     self.isMakingTx = true
     defer { self.isMakingTx = false }
     let network = await rpcService.network(.sol, origin: nil)
     
-    let jupiterSwapParams: BraveWallet.JupiterTransactionParams = .init(
+    let jupiterTransactionParams: BraveWallet.JupiterTransactionParams = .init(
+      quote: jupiterQuote,
       chainId: network.chainId,
-      route: route,
-      userPublicKey: accountInfo.address,
-      inputMint: selectedFromToken.contractAddress(in: network),
-      outputMint: selectedToToken.contractAddress(in: network)
+      userPublicKey: accountInfo.address
     )
-    let (swapTransactionsUnion, errorResponseUnion, _) = await swapService.transaction(.init(jupiterTransactionParams: jupiterSwapParams))
-    guard let swapTransactions = swapTransactionsUnion?.jupiterTransaction else {
+    let (swapTransactionUnion, errorResponseUnion, _) = await swapService.transaction(.init(jupiterTransactionParams: jupiterTransactionParams))
+    guard let jupiterTransaction = swapTransactionUnion?.jupiterTransaction else {
       // check balance first because error can cause by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
          let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
@@ -777,7 +771,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return false
     }
     let (solTxData, status, _) = await solTxManagerProxy.makeTxData(
-      fromBase64EncodedTransaction: swapTransactions,
+      fromBase64EncodedTransaction: jupiterTransaction,
       txType: .solanaSwap,
       send: .init(
         maxRetries: .init(maxRetries: 2),
