@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
@@ -23,6 +24,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProc
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
@@ -138,7 +140,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         if (mLeoAutocompleteDelegate != null
                 && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
                 && tab != null
-                && !tab.isIncognito()) {
+                && !tab.isIncognito()
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, true)) {
             return true;
         }
 
