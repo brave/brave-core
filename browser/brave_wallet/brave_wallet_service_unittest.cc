@@ -1712,8 +1712,12 @@ TEST_F(BraveWalletServiceUnitTest, SolanaTokenUserAssetsAPI) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
   ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
-            0);
+            1);
+  GetPrefs()->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 0);
+
   BraveWalletService::MigrateHiddenNetworks(GetPrefs());
   {
     auto* list =
@@ -1736,8 +1740,12 @@ TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks_NoList) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
   ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
-            0);
+            1);
+  GetPrefs()->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 0);
+
   {
     ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletHiddenNetworks);
     update.Get().Remove("ethereum");
@@ -1753,6 +1761,15 @@ TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks_NoList) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  ASSERT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
   // CASE 1: Fantom is the selected network of some origin
   ASSERT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
