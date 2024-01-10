@@ -863,6 +863,31 @@ const util = {
     const excludeFileName = util.getGitInfoExcludeFileName(repoDir, true)
     fs.appendFileSync(excludeFileName, '\n' + exclusion)
   },
+
+  iosCreateXCFrameworks: (buildConfig = config.defaultBuildConfig, options = {}) => {
+    config.buildConfig = buildConfig
+    config.targetOS = 'ios'
+    config.update(options)
+
+    const frameworks = ['BraveCore', 'MaterialComponents']
+    frameworks.forEach((framework) => {
+      const outputDir = path.join(config.outputDir, `${framework}.xcframework`)
+      if (fs.existsSync(outputDir)) {
+        fs.removeSync(outputDir)
+      }
+      const args = [
+        '-create-xcframework',
+        '-output', outputDir,
+        '-framework', path.join(config.outputDir, `${framework}.framework`),
+      ]
+      // `-debug-symbols` must come after `-framework` or `-library`
+      const symbolsDir = path.join(config.outputDir, `${framework}.dSYM`)
+      if (fs.existsSync(symbolsDir)) {
+        args.push('-debug-symbols', symbolsDir)
+      }
+      util.run('xcodebuild', args, config)
+    })
+  },
 }
 
 module.exports = util

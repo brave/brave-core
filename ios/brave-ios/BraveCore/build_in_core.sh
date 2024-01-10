@@ -21,8 +21,10 @@ if [[ $HOST_ARCH == "x86_64" ]]; then
   target_arch_dir=""
 fi
 
-output_dir="$src_dir/out/ios_Build"
-mkdir -p $output_dir
+# Update symlink
+npm run update_symlink -- $CONFIGURATION --symlink_dir "$src_dir/out/current_link" --target_os=ios --target_arch=$target_arch $target_environment
+
+output_dir="$src_dir/out/current_link"
 
 cp -fR "$(pwd)/../BraveCore/placeholders/BraveCore.xcframework" "$output_dir"
 cp -fR "$(pwd)/../BraveCore/placeholders/MaterialComponents.xcframework" "$output_dir"
@@ -30,11 +32,7 @@ cp -fR "$(pwd)/../BraveCore/placeholders/MaterialComponents.xcframework" "$outpu
 npm run build -- $CONFIGURATION --target_os=ios --target_arch=$target_arch $target_environment
 
 # Create xcframeworks
-pushd "$src_dir/out/iOS_${CONFIGURATION}_${target_arch_dir}${target_environment_dir}"
-rm -rf "$output_dir/BraveCore.xcframework"
-xcodebuild -create-xcframework -framework "BraveCore.framework" -debug-symbols "$(pwd)/BraveCore.dSYM" -output "$output_dir/BraveCore.xcframework"
-rm -rf "$output_dir/MaterialComponents.xcframework"
-xcodebuild -create-xcframework -framework "MaterialComponents.framework" -debug-symbols "$(pwd)/MaterialComponents.dSYM" -output "$output_dir/MaterialComponents.xcframework"
+npm run ios_create_xcframeworks -- $CONFIGURATION --target_arch=$target_arch $target_environment
 
 # Delete Chromium Assets from BraveCore.framework since they aren't used.
 # TODO(@brave/ios): Get this removed in the brave-core builds if possible
@@ -59,10 +57,8 @@ if [ -f $args_file ]; then
   rm $args_file
 fi
 for key in "${copy_args[@]}"; do
-  matched_line=$(grep "^$key = " "args.gn") || true
+  matched_line=$(grep "^$key = " "$output_dir/args.gn") || true
   if [ -n "$matched_line" ]; then
       echo "$matched_line" | sed 's/"//g' >> "$args_file"
   fi
 done
-
-popd

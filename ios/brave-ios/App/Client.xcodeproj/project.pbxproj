@@ -179,8 +179,6 @@
 		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTopicsModel.swift; sourceTree = "<group>"; };
 		272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNewsWidget.swift; sourceTree = "<group>"; };
-		273ACA2128492ECB008A58BB /* JitsiMeetSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JitsiMeetSDK.xcframework; path = ../ThirdParty/JitsiMeet/JitsiMeetSDK.xcframework; sourceTree = "<group>"; };
-		273ACA2228492ECB008A58BB /* WebRTC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = WebRTC.xcframework; path = ../ThirdParty/JitsiMeet/WebRTC.xcframework; sourceTree = "<group>"; };
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27444B6A29831BBE002E1EBE /* topics_news.en_US.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = topics_news.en_US.json; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -194,8 +192,6 @@
 		27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenShortcutWidget.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
-		27AD20C226851C5400889AA7 /* BraveCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveCore.xcframework; path = "../node_modules/brave-core-ios/BraveCore.xcframework"; sourceTree = "<group>"; };
-		27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MaterialComponents.xcframework; path = "../node_modules/brave-core-ios/MaterialComponents.xcframework"; sourceTree = "<group>"; };
 		27BFC5AB284FDAEF003F428E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Shortcuts/es.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27C3AF2C284FDB4C0079BFBE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = Shortcuts/pl.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27C601AC284FDB91002BAF19 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = Shortcuts/zh.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -586,8 +582,6 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				27AD20C226851C5400889AA7 /* BraveCore.xcframework */,
-				27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */,
 				0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */,
 				0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */,
 				5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */,
