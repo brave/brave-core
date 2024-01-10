@@ -73,13 +73,18 @@ using ContentGroup = std::pair<std::string, bool>;
 constexpr char kAllContentGroup[] = "all";
 constexpr float kSampleContentGroupAllRatio = 0.2f;
 
-std::string GetFeedHash(const Channels& channels,
-                        const Publishers& publishers,
-                        const ETags& etags) {
+// Returns a tuple of the feed hash and the number of subscribed publishers.
+std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
+    const Channels& channels,
+    const Publishers& publishers,
+    const ETags& etags) {
   std::vector<std::string> hash_items;
+  size_t subscribed_count = 0;
+
   for (const auto& [channel_id, channel] : channels) {
     if (!channel->subscribed_locales.empty()) {
       hash_items.push_back(channel_id);
+      subscribed_count++;
     }
   }
 
@@ -87,6 +92,7 @@ std::string GetFeedHash(const Channels& channels,
     if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
         publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
       hash_items.push_back(id);
+      subscribed_count++;
     }
 
     // Disabling a publisher should also change the hash, as it will affect what
@@ -107,7 +113,7 @@ std::string GetFeedHash(const Channels& channels,
     hash = base::NumberToString(hasher(hash + hash_item));
   }
 
-  return hash;
+  return {hash, subscribed_count};
 }
 
 // Gets all relevant signals for an article.
@@ -904,7 +910,8 @@ void FeedV2Builder::RecheckFeedHash() {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels =
       channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
-  hash_ = GetFeedHash(channels, publishers, feed_etags_);
+  std::tie(hash_, subscribed_count_) =
+      GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
   for (const auto& listener : listeners_) {
     listener->OnUpdateAvailable(hash_);
   }
@@ -1057,7 +1064,8 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels =
       channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
-  hash_ = GetFeedHash(channels, publishers, feed_etags_);
+  std::tie(hash_, subscribed_count_) =
+      GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
 
   // Fire all the pending callbacks.
   for (auto& callback : current_update_->callbacks) {
@@ -1098,6 +1106,16 @@ void FeedV2Builder::GenerateFeed(
             feed->construct_time = base::Time::Now();
             feed->type = std::move(type);
             feed->source_hash = builder->hash_;
+
+            if (feed->items.empty()) {
+              if (builder->raw_feed_items_.size() == 0) {
+                feed->error = mojom::FeedV2Error::ConnectionError;
+              } else if (builder->subscribed_count_ == 0) {
+                feed->error = mojom::FeedV2Error::NoFeeds;
+              } else {
+                feed->error = mojom::FeedV2Error::NoArticles;
+              }
+            }
 
             std::move(callback).Run(feed->Clone());
           },
@@ -1183,6 +1201,12 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
       eligible_content_groups.push_back(std::make_pair(publisher_id, false));
       DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
     }
+  }
+
+  // If we aren't subscribed to anything, or we failed to fetch any articles
+  // from the internet, don't try and generate a feed.
+  if (eligible_content_groups.size() == 0 || raw_feed_items_.size() == 0) {
+    return feed;
   }
 
   // Step 1: Generate a block

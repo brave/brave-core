@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -155,6 +156,7 @@ class FeedV2Builder : public PublishersController::Observer {
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
+  size_t subscribed_count_ = 0;
 
   absl::optional<UpdateRequest> current_update_;
   absl::optional<UpdateRequest> next_update_;
