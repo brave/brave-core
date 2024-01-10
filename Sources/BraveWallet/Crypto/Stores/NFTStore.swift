@@ -143,9 +143,11 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
+  private let txService: BraveWalletTxService
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
-  private var walletServiveObserber: WalletServiceObserver?
+  private var walletServiveObserver: WalletServiceObserver?
+  private var txServiceObserver: TxServiceObserver?
   
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
@@ -159,7 +161,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   }
   
   var isObserving: Bool {
-    rpcServiceObserver != nil && keyringServiceObserver != nil && walletServiveObserber != nil
+    rpcServiceObserver != nil && keyringServiceObserver != nil && walletServiveObserver != nil && txServiceObserver != nil
   }
   
   var isShowingNFTEmptyState: Bool {
@@ -180,7 +182,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
-    userAssetManager: WalletUserAssetManagerType
+    userAssetManager: WalletUserAssetManagerType,
+    txService: BraveWalletTxService
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -189,6 +192,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
+    self.txService = txService
     
     self.setupObservers()
     
@@ -207,7 +211,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   func tearDown() {
     rpcServiceObserver = nil
     keyringServiceObserver = nil
-    walletServiveObserber = nil
+    walletServiveObserver = nil
+    txServiceObserver = nil
     
     userAssetsStore.tearDown()
   }
@@ -231,7 +236,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         self?.update()
       }
     )
-    self.walletServiveObserber = WalletServiceObserver(
+    self.walletServiveObserver = WalletServiceObserver(
       walletService: walletService,
       _onNetworkListChanged: { [weak self] in
         // A network was added or removed, `update()` will update `allNetworks`.
@@ -245,6 +250,13 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         // assets update will be called via `CryptoStore`
       }
     )
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService, _onTransactionStatusChanged: { [weak self] txInfo in
+        if txInfo.txStatus == .confirmed, txInfo.isSend, (txInfo.coin == .eth || txInfo.coin == .sol) {
+          self?.update(forceUpdateNFTBalances: true)
+        }
+      }
+    )
     
     userAssetsStore.setupObservers()
   }
@@ -252,7 +264,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   /// Cache of NFT balances for each account tokenBalances: [token.contractAddress]
   private var nftBalancesCache: [String: [String: Int]] = [:]
   
-  func update() {
+  func update(forceUpdateNFTBalances: Bool = false) {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
       self.allAccounts = await keyringService.allAccounts().accounts
@@ -295,7 +307,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
                   of: [String: Int].self,
                   body: { @MainActor group in
                     for account in allAccounts where account.coin == nft.coin {
-                      if let cachedBalance = nftBalancesCache[nft.id]?[account.address] { // cached balance
+                      if !forceUpdateNFTBalances, let cachedBalance = nftBalancesCache[nft.id]?[account.address] { // cached balance
                         return [account.address: cachedBalance]
                       } else { // no balance for this account
                         group.addTask { @MainActor in

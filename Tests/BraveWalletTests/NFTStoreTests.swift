@@ -45,7 +45,7 @@ class NFTStoreTests: XCTestCase {
   private func setupServices(
     mockEthUserAssets: [BraveWallet.BlockchainToken],
     mockSolUserAssets: [BraveWallet.BlockchainToken]
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestAssetRatioService, TestableWalletUserAssetManager) {
+  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestAssetRatioService, TestableWalletUserAssetManager, BraveWallet.TestTxService) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { completion in
@@ -155,7 +155,11 @@ class NFTStoreTests: XCTestCase {
       ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
     
-    return (keyringService, rpcService, walletService, assetRatioService, mockAssetManager)
+    let txService = BraveWallet.TestTxService()
+    txService._addObserver = { _ in
+    }
+    
+    return (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService)
   }
   
   override func setUp() {
@@ -188,7 +192,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     
     // setup store
     let store = NFTStore(
@@ -198,7 +202,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     // test that `update()` will assign new value to `userNFTs` publisher
     let userVisibleNFTsException = expectation(description: "update-userVisibleNFTs")
@@ -358,7 +363,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -378,7 +383,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     // MARK: Group By: None
@@ -429,7 +435,7 @@ class NFTStoreTests: XCTestCase {
     ]
 
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -450,7 +456,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
 
     // test that `update()` will assign new value to `userNFTs` publisher
@@ -496,7 +503,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -517,7 +524,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     // test that `update()` will assign new value to `userNFTs` publisher
@@ -567,7 +575,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -588,7 +596,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     // test that `update()` will assign new value to `userSpamNFTs` publisher
@@ -635,7 +644,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     
     // setup store
     let store = NFTStore(
@@ -645,7 +654,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     let defaultFilters = store.filters
@@ -705,7 +715,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -725,7 +735,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     let defaultFilters = store.filters
@@ -798,7 +809,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     
     // setup store
     let store = NFTStore(
@@ -808,7 +819,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     let defaultFilters = store.filters
@@ -865,7 +877,7 @@ class NFTStoreTests: XCTestCase {
     ]
     
     // setup test services
-    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       let metadata = """
       {
@@ -885,7 +897,8 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
-      userAssetManager: mockAssetManager
+      userAssetManager: mockAssetManager,
+      txService: txService
     )
     
     let defaultFilters = store.filters

@@ -147,6 +147,10 @@ struct NFTView: View {
     }
     .padding(.horizontal)
     .frame(maxWidth: .infinity, alignment: .leading)
+    .transaction { transaction in
+      transaction.animation = nil
+      transaction.disablesAnimations = true
+    }
   }
   
   private var addCustomAssetButton: some View {
@@ -296,24 +300,28 @@ struct NFTView: View {
       NavigationLink(
         isActive: Binding(
           get: { selectedNFTViewModel != nil },
-          set: { if !$0 { selectedNFTViewModel = nil } }
+          set: {
+            if !$0 {
+              if let viewModel = selectedNFTViewModel {
+                cryptoStore.closeNFTDetailStore(for: viewModel.token)
+              }
+              selectedNFTViewModel = nil
+            }
+          }
         ),
         destination: {
-          if let nftViewModel = selectedNFTViewModel {
+          if let selectedNFTViewModel {
             NFTDetailView(
               keyringStore: keyringStore,
-              nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, nftMetadata: nftViewModel.nftMetadata, owner: nftStore.owner(for: nftViewModel.token)),
+              nftDetailStore: cryptoStore.nftDetailStore(for: selectedNFTViewModel.token, nftMetadata: selectedNFTViewModel.nftMetadata, owner: nftStore.owner(for: selectedNFTViewModel.token)),
               buySendSwapDestination: buySendSwapDestination,
-              onNFTMetadataRefreshed: {  nftMetadata in
-                nftStore.updateNFTMetadataCache(for: nftViewModel.token, metadata: nftMetadata)
+              onNFTMetadataRefreshed: { nftMetadata in
+                nftStore.updateNFTMetadataCache(for: selectedNFTViewModel.token, metadata: nftMetadata)
               },
               onNFTStatusUpdated: {
                 nftStore.update()
               }
             )
-            .onDisappear {
-              cryptoStore.closeNFTDetailStore(for: nftViewModel.token)
-            }
           }
         },
         label: {

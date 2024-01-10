@@ -29,7 +29,7 @@ struct NFTDetailView: View {
   }
   
   @ViewBuilder private var nftLogo: some View {
-    if let image = nftDetailStore.networkInfo.nativeTokenLogoImage, !nftDetailStore.isLoading {
+    if let image = nftDetailStore.networkInfo?.nativeTokenLogoImage, !nftDetailStore.isLoading {
       Image(uiImage: image)
         .resizable()
         .frame(width: 32, height: 32)
@@ -103,10 +103,10 @@ struct NFTDetailView: View {
             Text(nftDetailStore.nft.name)
               .foregroundColor(Color(.secondaryBraveLabel))
           }
-          .transaction { transaction in
-            transaction.animation = nil
-            transaction.disablesAnimations = true
-          }
+        }
+        .transaction { transaction in
+          transaction.animation = nil
+          transaction.disablesAnimations = true
         }
         .listRowInsets(.zero)
         .listRowBackground(Color.clear)
@@ -135,7 +135,7 @@ struct NFTDetailView: View {
           }
           NFTDetailRow(title: nftDetailStore.nft.isErc721 ? Strings.Wallet.contractAddressAccessibilityLabel : Strings.Wallet.tokenMintAddress) {
             Button {
-              if let url = nftDetailStore.networkInfo.nftBlockExplorerURL(nftDetailStore.nft) {
+              if let url = nftDetailStore.networkInfo?.nftBlockExplorerURL(nftDetailStore.nft) {
                 openWalletURL(url)
               }
             } label: {
@@ -147,10 +147,12 @@ struct NFTDetailView: View {
               .foregroundColor(Color(.braveBlurpleTint))
             }
           }
-          NFTDetailRow(title: Strings.Wallet.nftDetailBlockchain) {
-            Text(nftDetailStore.networkInfo.chainName)
-              .font(.subheadline)
-              .foregroundColor(Color(.braveLabel))
+          if let networkInfo = nftDetailStore.networkInfo {
+            NFTDetailRow(title: Strings.Wallet.nftDetailBlockchain) {
+              Text(networkInfo.chainName)
+                .font(.subheadline)
+                .foregroundColor(Color(.braveLabel))
+            }
           }
           NFTDetailRow(title: Strings.Wallet.nftDetailTokenStandard) {
             Text(nftDetailStore.nft.isErc721 ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL)
@@ -208,9 +210,6 @@ struct NFTDetailView: View {
         isPresentingRemoveAlert = false
       }
     })
-    .onAppear {
-      nftDetailStore.update()
-    }
     .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(nftDetailStore.nft.nftDetailTitle)
     .toolbar {

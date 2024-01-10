@@ -180,7 +180,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       ipfsApi: ipfsApi,
-      userAssetManager: userAssetManager
+      userAssetManager: userAssetManager,
+      txService: txService
     )
     self.transactionsActivityStore = .init(
       keyringService: keyringService,
@@ -527,6 +528,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetManager: userAssetManager,
       keyringService: keyringService,
       rpcService: rpcService,
+      txService: txService,
       ipfsApi: ipfsApi,
       nft: nft,
       nftMetadata: nftMetadata,
