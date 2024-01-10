@@ -1208,7 +1208,7 @@ base::Value::Dict BraveWalletService::GetDefaultZCashAssets() {
 
   base::Value::Dict zec;
   zec.Set("address", "");
-  zec.Set("name", "ZCash");
+  zec.Set("name", "Zcash");
   zec.Set("decimals", 8);
   zec.Set("is_erc20", false);
   zec.Set("is_erc721", false);
@@ -1846,7 +1846,7 @@ void BraveWalletService::GenerateReceiveAddress(
       std::move(callback).Run("", WalletInternalErrorMessage());
       return;
     }
-    zcash_wallet_service_->RunDiscovery(
+    zcash_wallet_service_->DiscoverNextUnusedAddress(
         std::move(account_id), false,
         base::BindOnce(&BraveWalletService::OnGenerateZecReceiveAddress,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -1886,15 +1886,13 @@ void BraveWalletService::OnGenerateBtcReceiveAddress(
 
 void BraveWalletService::OnGenerateZecReceiveAddress(
     GenerateReceiveAddressCallback callback,
-    mojom::ZCashAddressPtr address,
-    const std::optional<std::string>& error_message) {
-  if (address) {
-    std::move(callback).Run(address->address_string, std::nullopt);
+    base::expected<mojom::ZCashAddressPtr, std::string> result) {
+  if (result.has_value()) {
+    std::move(callback).Run(result.value()->address_string, std::nullopt);
     return;
   }
 
-  std::move(callback).Run(std::nullopt,
-                          error_message.value_or(WalletInternalErrorMessage()));
+  std::move(callback).Run(std::nullopt, result.error());
 }
 
 void BraveWalletService::GetSimpleHashSpamNFTs(

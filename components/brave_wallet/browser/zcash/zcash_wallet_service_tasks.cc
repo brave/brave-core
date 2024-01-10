@@ -97,6 +97,14 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
     return;
   }
 
+  if (!block_end_) {
+    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+        GetNetworkForZCashKeyring(account_id_->keyring_id),
+        base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
+                       this));
+    return;
+  }
+
   if (start_address_) {
     current_address_ = std::move(start_address_);
   } else {
@@ -106,14 +114,6 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   if (!current_address_) {
     error_ = "Internal error";
     ScheduleWorkOnTask();
-    return;
-  }
-
-  if (!block_end_) {
-    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
-        GetNetworkForZCashKeyring(account_id_->keyring_id),
-        base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
-                       this));
     return;
   }
 

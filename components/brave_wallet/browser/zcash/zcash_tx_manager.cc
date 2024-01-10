@@ -170,20 +170,20 @@ void ZCashTxManager::SpeedupOrCancelTransaction(
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
-  NOTIMPLEMENTED() << "ZCash transaction speedup or cancel is not supported";
+  NOTIMPLEMENTED() << "Zcash transaction speedup or cancel is not supported";
 }
 
 void ZCashTxManager::RetryTransaction(const std::string& chain_id,
                                       const std::string& tx_meta_id,
                                       RetryTransactionCallback callback) {
-  NOTIMPLEMENTED() << "ZCash transaction retry is not supported";
+  NOTIMPLEMENTED() << "Zcash transaction retry is not supported";
 }
 
 void ZCashTxManager::GetTransactionMessageToSign(
     const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED() << "ZCash hardware signing is not supported";
+  NOTIMPLEMENTED() << "Zcash hardware signing is not supported";
 }
 
 ZCashTxStateManager* ZCashTxManager::GetZCashTxStateManager() {

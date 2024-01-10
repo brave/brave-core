@@ -39,9 +39,9 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
       case mojom::KeyringId::kBitcoin84Testnet:
         return "Bitcoin Testnet Account";
       case mojom::KeyringId::kZCashMainnet:
-        return "ZCash Mainnet Account";
+        return "Zcash Mainnet Account";
       case mojom::KeyringId::kZCashTestnet:
-        return "ZCash Testnet Account";
+        return "Zcash Testnet Account";
     }
     NOTREACHED();
     return "";
