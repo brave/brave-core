@@ -69,7 +69,6 @@ const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
 const char kAccountMetas[] = "account_metas";
-const char kHardwareAccounts[] = "hardware";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
@@ -77,21 +76,6 @@ const char kEncryptedPrivateKey[] = "encrypted_private_key";
 const char kMnemonic2[] =
     "misery jeans response tiny nominee civil zoo strong correct taxi chimney "
     "goat";
-
-base::Value::Dict GetHardwareKeyringValueForTesting() {
-  base::Value::Dict dict;
-  dict.SetByDottedPath("hardware.A1.account_metas.0x111.account_name", "test1");
-  dict.SetByDottedPath("hardware.A1.account_metas.0x111.derivation_path",
-                       "path1");
-  dict.SetByDottedPath("hardware.A1.account_metas.0x111.hardware_vendor",
-                       "vendor1");
-  dict.SetByDottedPath("hardware.B2.account_metas.0x222.account_name", "test2");
-  dict.SetByDottedPath("hardware.B2.account_metas.0x222.derivation_path",
-                       "path2");
-  dict.SetByDottedPath("hardware.B2.account_metas.0x222.hardware_vendor",
-                       "vendor2");
-  return dict;
-}
 
 struct ImportData {
   const char* network;
@@ -1000,7 +984,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
         GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId);
   }
   {
-    // KeyringService is now destructed, simlulating relaunch
+    // KeyringService is now destructed, simulating relaunch
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(Unlock(&service, "brave"));
     ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
@@ -1542,47 +1526,6 @@ TEST_F(KeyringServiceUnitTest, AddAccount) {
   EXPECT_EQ(account_infos[1]->name, "Account5566");
 }
 
-TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
-  GetPrefs()->SetDict(kBraveWalletKeyrings,
-                      GetHardwareKeyringValueForTesting());
-  EXPECT_EQ(*GetPrefs()
-                 ->GetDict(kBraveWalletKeyrings)
-                 .FindStringByDottedPath(
-                     "hardware.A1.account_metas.0x111.account_name"),
-            "test1");
-
-  KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-
-  const base::Value::Dict& hardware_accounts =
-      KeyringService::GetPrefForKeyring(*GetPrefs(), kHardwareAccounts,
-                                        mojom::kDefaultKeyringId)
-          ->GetDict();
-  EXPECT_EQ(hardware_accounts.size(), 2u);
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.account_name"),
-            "test1");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.derivation_path"),
-            "path1");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "A1.account_metas.0x111.hardware_vendor"),
-            "vendor1");
-
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.account_name"),
-            "test2");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.derivation_path"),
-            "path2");
-  EXPECT_EQ(*hardware_accounts.FindStringByDottedPath(
-                "B2.account_metas.0x222.hardware_vendor"),
-            "vendor2");
-  ASSERT_FALSE(GetPrefs()
-                   ->GetDict(kBraveWalletKeyrings)
-                   .FindStringByDottedPath(
-                       "hardware.A1.account_metas.0x111.account_name"));
-}
-
 TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
@@ -2058,7 +2001,7 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
       mnemonic24, "0xea3C17c81E3baC3472d163b2c8b12ddDAa027874", true, true);
   verify_restore_wallet.Run(
       mnemonic24, "0xe026eBd81C1A64807F9Cbf21d89a67211eF48717", false, true);
-  // brave legacy menmonic can only be 24 words
+  // brave legacy mnemonic can only be 24 words
   verify_restore_wallet.Run(mnemonic12, "", true, false);
   verify_restore_wallet.Run(
       mnemonic12, "0x084DCb94038af1715963F149079cE011C4B22961", false, true);
@@ -2077,7 +2020,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   // Wallet is unlocked when there is no accounts of any types.
   EXPECT_FALSE(service.IsLockedSync());
 
-  // TODO(apaymyshev): make this follow ui begavior when all accounts in batch
+  // TODO(apaymyshev): make this follow ui behavior when all accounts in batch
   // have same coin/keyring.
 
   // We don't need to create wallet to use hardwareaccounts
@@ -2742,7 +2685,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
-  // Remove selected hw account - switch to frist eth account.
+  // Remove selected hw account - switch to first eth account.
   EXPECT_CALL(observer,
               SelectedWalletAccountChanged(Eq(std::ref(first_account))));
   EXPECT_CALL(observer, SelectedDappAccountChanged(

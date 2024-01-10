@@ -831,18 +831,6 @@ void KeyringService::MaybeMigrateSelectedAccountPrefs() {
 }
 
 // static
-void KeyringService::MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
-  // Moving hardware part under default keyring.
-  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
-  auto* obsolete = update->FindDict(kHardwareAccounts);
-  if (obsolete) {
-    SetPrefForKeyring(profile_prefs, kHardwareAccounts,
-                      base::Value(obsolete->Clone()), mojom::kDefaultKeyringId);
-    update->Remove(kHardwareAccounts);
-  }
-}
-
-// static
 bool KeyringService::HasPrefForKeyring(const PrefService& profile_prefs,
                                        const std::string& key,
                                        mojom::KeyringId keyring_id) {
@@ -2131,6 +2119,8 @@ bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
   }
 
   // Added 08.08.2022
+  // Let's keep this migration for a while to reduce risk someone loses access
+  // to their wallet.
   MaybeMigratePBKDF2Iterations(password);
 
   encryptors_[keyring_id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
