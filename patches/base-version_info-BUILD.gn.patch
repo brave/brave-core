@@ -1,0 +1,12 @@
+diff --git a/base/version_info/BUILD.gn b/base/version_info/BUILD.gn
+index fea0d0e00d8a63a1eca8f51b5041caa887e852ac..29ccc0ada686eaa097cfcef4d4f6a94301dede50 100644
+--- a/base/version_info/BUILD.gn
++++ b/base/version_info/BUILD.gn
+@@ -24,6 +24,7 @@ static_library("version_info") {
+     ":generate_version_info",
+     "//base",
+   ]
++  configs += [ "//brave/build:version" ] deps += [ "//brave/components/version_info" ]
+ }
+ 
+ static_library("version_string") {

@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_CHANNEL_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_CHANNEL_H_
+#ifndef BRAVE_CHROMIUM_SRC_BASE_VERSION_INFO_CHANNEL_H_
+#define BRAVE_CHROMIUM_SRC_BASE_VERSION_INFO_CHANNEL_H_
 
 #include <string_view>
 
 #define GetChannelString GetChannelString_ChromiumImpl
 
-#include "src/components/version_info/channel.h"  // IWYU pragma: export
+#include "src/base/version_info/channel.h"  // IWYU pragma: export
 #undef GetChannelString
 
 namespace version_info {
@@ -26,4 +26,4 @@ constexpr std::string_view GetChannelString(Channel channel) {
 
 }  // namespace version_info
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_CHANNEL_H_
+#endif  // BRAVE_CHROMIUM_SRC_BASE_VERSION_INFO_CHANNEL_H_
