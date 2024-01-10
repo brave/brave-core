@@ -1842,6 +1842,42 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
                 base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
 }
 
+// `$removeparam` should still be activated in default blocking mode if it comes
+// from custom filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultRemoveparamFromCustom) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?evil=true&test=true");
+  content::NavigateIframeToURL(contents, "iframe", frame_url);
+
+  ASSERT_EQ(nullptr,
+            content::FrameMatchingPredicateOrNullptr(
+                contents->GetPrimaryPage(),
+                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
+
+  GURL redirected_frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?test=true");
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
+
+  ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
+}
+
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {

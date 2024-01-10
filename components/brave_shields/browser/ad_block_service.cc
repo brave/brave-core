@@ -172,6 +172,11 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
     fp_result = default_engine_->ShouldStartRequest(
         url, resource_type, tab_host, previously_matched_rule,
         previously_matched_exception, previously_matched_important);
+    // removeparam results from the default engine are ignored in default
+    // blocking mode
+    if (!aggressive_blocking) {
+      fp_result.rewritten_url.has_value = false;
+    }
     if (fp_result.important) {
       return fp_result;
     }
