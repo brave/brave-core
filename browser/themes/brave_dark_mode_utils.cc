@@ -28,11 +28,6 @@ namespace {
 bool g_is_test_ = false;
 bool g_system_dark_mode_enabled_in_test_ = false;
 
-void ClearBraveDarkModeProfilePrefs(PrefService* prefs) {
-  prefs->ClearPref(kBraveThemeType);
-  prefs->ClearPref(kUseOverriddenBraveThemeType);
-}
-
 dark_mode::BraveDarkModeType GetDarkModeTypeBasedOnChannel() {
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:
@@ -66,20 +61,6 @@ dark_mode::BraveDarkModeType GetDarkModeSwitchValue(
 }  // namespace
 
 namespace dark_mode {
-
-void MigrateBraveDarkModePrefs(PrefService* prefs) {
-  auto* local_state = g_browser_process->local_state();
-  // If migration is done, local state doesn't have default value because
-  // they were explicitly set by primary prefs' value. After that, we don't
-  // need to try migration again and prefs from profiles are already cleared.
-  if (local_state->FindPreference(kBraveDarkMode)->IsDefaultValue()) {
-    local_state->SetInteger(kBraveDarkMode,
-                            prefs->GetInteger(kBraveThemeType));
-  }
-
-  // Clear deprecated prefs.
-  ClearBraveDarkModeProfilePrefs(prefs);
-}
 
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
