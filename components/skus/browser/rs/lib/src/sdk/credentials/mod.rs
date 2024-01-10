@@ -7,7 +7,7 @@ mod fetch;
 mod present;
 
 use chrono::{NaiveDateTime, Utc};
-use tracing::{debug, instrument};
+use tracing::{debug, instrument, Level};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -201,7 +201,7 @@ where
             .and_then(|creds| creds.creds.into_iter().last()))
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn matching_credential_summary(
         &self,
         domain: &str,

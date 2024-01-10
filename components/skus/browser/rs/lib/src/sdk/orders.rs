@@ -238,7 +238,7 @@ where
         Ok(order)
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     // submit_receipt allows for order proof of payment
     pub async fn submit_receipt(&self, order_id: &str, receipt: &str) -> Result<(), InternalError> {
         event!(Level::DEBUG, order_id = order_id, "submit_receipt called");
@@ -272,7 +272,7 @@ where
         Ok(())
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn refresh_order(&self, order_id: &str) -> Result<Order, SkusError> {
         event!(Level::DEBUG, order_id = order_id, "refresh_order called",);
         let order = self.fetch_order(order_id).await?;

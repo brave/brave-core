@@ -322,7 +322,7 @@ where
         }
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn fetch_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         let order = match self.client.get_order(order_id).await {
             Ok(Some(order)) => order,

@@ -4,7 +4,7 @@ use http::uri;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sha2::Sha512;
-use tracing::instrument;
+use tracing::{instrument, Level};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -212,7 +212,7 @@ where
         Ok(None)
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn prepare_credentials_presentation(
         &self,
         domain: &str,
