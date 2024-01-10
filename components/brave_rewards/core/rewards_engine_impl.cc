@@ -9,7 +9,7 @@
 
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
@@ -398,15 +398,8 @@ void RewardsEngineImpl::GetRewardsInternalsInfo(
     info->boot_stamp = state()->GetCreationStamp();
 
     // Retrieve the key info seed and validate it.
-    if (!util::Security::IsSeedValid(wallet->recovery_seed)) {
-      info->is_key_info_seed_valid = false;
-    } else {
-      std::vector<uint8_t> secret_key =
-          util::Security::GetHKDF(wallet->recovery_seed);
-      std::vector<uint8_t> public_key;
-      std::vector<uint8_t> new_secret_key;
-      info->is_key_info_seed_valid = util::Security::GetPublicKeyFromSeed(
-          secret_key, &public_key, &new_secret_key);
+    if (Signer::FromRecoverySeed(wallet->recovery_seed)) {
+      info->is_key_info_seed_valid = true;
     }
 
     std::move(callback).Run(std::move(info));

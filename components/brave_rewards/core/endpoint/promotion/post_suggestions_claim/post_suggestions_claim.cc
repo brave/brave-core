@@ -10,8 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -85,16 +84,19 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
       base::BindOnce(&PostSuggestionsClaim::OnRequest, base::Unretained(this),
                      std::move(callback));
 
-  auto headers =
-      util::BuildSignHeaders("post /v2/suggestions/claim", payload,
-                             wallet->payment_id, wallet->recovery_seed);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = payload;
-  request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
+
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer || !signer->SignRequest(*request)) {
+    BLOG(0, "Unable to sign request");
+    std::move(callback).Run(mojom::Result::FAILED, "");
+    return;
+  }
+
   engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 

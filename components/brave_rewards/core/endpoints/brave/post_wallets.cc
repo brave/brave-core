@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -89,12 +89,17 @@ std::optional<std::vector<std::string>> PostWallets::Headers(
     return std::nullopt;
   }
 
-  DCHECK(!wallet->recovery_seed.empty());
+  auto request_signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!request_signer) {
+    BLOG(0, "Unable to sign request");
+    return std::nullopt;
+  }
 
-  return util::BuildSignHeaders(
-      std::string("post ") + Path(), content,
-      util::Security::GetPublicKeyHexFromSeed(wallet->recovery_seed),
-      wallet->recovery_seed);
+  request_signer->set_key_id(
+      base::HexEncode(request_signer->signer().public_key()));
+
+  return request_signer->GetSignedHeaders(std::string("post ") + Path(),
+                                          content);
 }
 
 std::optional<std::string> PostWallets::Content() const {

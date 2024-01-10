@@ -7,10 +7,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
@@ -24,6 +24,28 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace brave_rewards::internal {
+
+namespace {
+
+bool getJSONValue(const std::string& field_name,
+                  const std::string& json,
+                  std::string* value) {
+  auto result =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!result || !result->is_dict()) {
+    return false;
+  }
+
+  if (auto* field = result->GetDict().FindString(field_name)) {
+    *value = *field;
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace
 
 YouTube::YouTube(RewardsEngineImpl& engine) : engine_(engine) {}
 

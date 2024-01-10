@@ -11,8 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -118,9 +117,15 @@ std::optional<std::vector<std::string>> PatchWallets::Headers(
   DCHECK(!wallet->payment_id.empty());
   DCHECK(!wallet->recovery_seed.empty());
 
-  return util::BuildSignHeaders(
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    BLOG(0, "Unable to sign request");
+    return std::nullopt;
+  }
+
+  return signer->GetSignedHeaders(
       "patch " + base::StringPrintf(Path(), wallet->payment_id.c_str()),
-      content, wallet->payment_id, wallet->recovery_seed);
+      content);
 }
 
 std::optional<std::string> PatchWallets::Content() const {
