@@ -187,10 +187,6 @@ bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowedForContext(
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsPrivacySandboxEnabled() const {
-  return false;
-}
-
 void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
 void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
 
