@@ -56,11 +56,13 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "qfh23sp7fkf3kt27ve5948mzpfdvckzaect2jtte308mkwlycj2u0eac077wu70vqcetkx"
         "f",
         false);
-    EXPECT_EQ(PubkeyToTransparentAddress(
-                  {0x7b, 0xb8, 0x35, 0x70, 0xb8, 0xfa, 0xe1, 0x46, 0xe0, 0x3c,
-                   0x53, 0x31, 0xa0, 0x20, 0xb1, 0xe0, 0x89, 0x2f, 0x63, 0x1d},
-                  false),
-              transparent_part);
+    EXPECT_EQ(
+        PubkeyToTransparentAddress(
+            std::vector<uint8_t>({0x7b, 0xb8, 0x35, 0x70, 0xb8, 0xfa, 0xe1,
+                                  0x46, 0xe0, 0x3c, 0x53, 0x31, 0xa0, 0x20,
+                                  0xb1, 0xe0, 0x89, 0x2f, 0x63, 0x1d}),
+            false),
+        transparent_part);
   }
 
   // Multily transparent addresses
@@ -71,7 +73,8 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "raxwgy42xuhjh249uckn2elfwwhg36t7f9ms",
         false);
     EXPECT_EQ(PubkeyToTransparentAddress(
-                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                  std::vector<uint8_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
                   false),
               transparent_part);
   }
@@ -95,10 +98,11 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "na7kx9nfn0637np9k6tagzss48l6u9kcjf6gadlcnfusm42klsmmxnwj80q40cfwe8dnj7"
         "373w0",
         true);
-    EXPECT_EQ(
-        PubkeyToTransparentAddress(
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, true),
-        transparent_part);
+    EXPECT_EQ(PubkeyToTransparentAddress(
+                  std::vector<uint8_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                  true),
+              transparent_part);
   }
 
   // Wrong unified address

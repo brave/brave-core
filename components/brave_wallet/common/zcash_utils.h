@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
+
 namespace brave_wallet {
 
 struct DecodedZCashAddress {
@@ -26,7 +28,7 @@ struct DecodedZCashAddress {
 
 bool IsUnifiedAddress(const std::string& address);
 
-std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
+std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet);
 
 std::optional<DecodedZCashAddress> DecodeZCashAddress(

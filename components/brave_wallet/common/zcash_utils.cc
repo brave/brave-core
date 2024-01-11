@@ -71,24 +71,23 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
 }
 
 std::optional<std::vector<ParsedAddress>> ParseUnifiedAddress(
-    const base::span<uint8_t>& dejumbled_data) {
-  base::span<const uint8_t> data_span(dejumbled_data);
-
+    base::span<const uint8_t> dejumbled_data) {
   std::vector<ParsedAddress> result;
-  while (!data_span.empty()) {
-    auto type = ReadCompactSize(data_span);
+  while (!dejumbled_data.empty()) {
+    auto type = ReadCompactSize(dejumbled_data);
     if (!type || *type > AddrType::kMaxValue) {
       return std::nullopt;
     }
-    auto size = ReadCompactSize(data_span);
-    if (!size || size == 0 || size > data_span.size()) {
+    auto size = ReadCompactSize(dejumbled_data);
+    if (!size || size == 0 || size > dejumbled_data.size()) {
       return std::nullopt;
     }
     ParsedAddress addr;
     addr.first = static_cast<AddrType>(*type);
-    addr.second = std::vector(data_span.begin(), data_span.begin() + *size);
+    addr.second =
+        std::vector(dejumbled_data.begin(), dejumbled_data.begin() + *size);
     result.push_back(std::move(addr));
-    data_span = data_span.subspan(*size);
+    dejumbled_data = dejumbled_data.subspan(*size);
   }
   return result;
 }
@@ -109,7 +108,7 @@ bool IsUnifiedAddress(const std::string& address) {
   return address.starts_with("u1") || address.starts_with("utest1");
 }
 
-std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
+std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet) {
   std::vector<uint8_t> result = testnet ? std::vector<uint8_t>({0x1d, 0x25})
                                         : std::vector<uint8_t>({0x1c, 0xb8});

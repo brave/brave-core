@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/span.h"
 #include "base/notreached.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 
@@ -20,9 +19,9 @@ namespace {
 using Blake2bPersonalBytes = std::array<uint8_t, BLAKE2B_PERSONALBYTES>;
 
 // Sizes for Blake2b are defined here https://zips.z.cash/zip-0316#solution
-const size_t kMinMessageSize = 48u;
-const size_t kMaxMessageSize = 4184368u;
-const size_t kLeftSize = 64u;
+constexpr size_t kMinMessageSize = 48u;
+constexpr size_t kMaxMessageSize = 4184368u;
+constexpr size_t kLeftSize = 64u;
 static_assert(kLeftSize <= BLAKE2B_OUTBYTES);
 
 Blake2bPersonalBytes GetHPersonalizer(uint8_t i) {
@@ -54,7 +53,7 @@ void FillBlake2bParamPersonal(const Blake2bPersonalBytes& personalizer,
   memcpy(params.personal, personalizer.data(), sizeof(params.personal));
 }
 
-std::vector<uint8_t> blake2b(const std::vector<uint8_t>& payload,
+std::vector<uint8_t> Blake2b(base::span<const uint8_t> payload,
                              const Blake2bPersonalBytes& personalizer,
                              size_t digest_len) {
   CHECK(digest_len >= 1 && digest_len <= BLAKE2B_OUTBYTES);
@@ -81,22 +80,22 @@ std::vector<uint8_t> blake2b(const std::vector<uint8_t>& payload,
   return result;
 }
 
-size_t GetLeftSize(const std::vector<uint8_t>& message) {
+size_t GetLeftSize(base::span<const uint8_t> message) {
   return std::min(kLeftSize, message.size() / 2);
 }
 
-std::vector<uint8_t> GetLeft(const std::vector<uint8_t>& message) {
+std::vector<uint8_t> GetLeft(base::span<const uint8_t> message) {
   return std::vector(message.begin(), message.begin() + GetLeftSize(message));
 }
 
-std::vector<uint8_t> GetRight(const std::vector<uint8_t>& message) {
+std::vector<uint8_t> GetRight(base::span<const uint8_t> message) {
   return std::vector(message.begin() + GetLeftSize(message), message.end());
 }
 
-std::vector<uint8_t> h_round(uint8_t iter,
-                             const std::vector<uint8_t>& left,
-                             const std::vector<uint8_t>& right) {
-  auto hash = blake2b(right, GetHPersonalizer(iter), left.size());
+std::vector<uint8_t> HRound(uint8_t iter,
+                            base::span<const uint8_t> left,
+                            base::span<const uint8_t> right) {
+  auto hash = Blake2b(right, GetHPersonalizer(iter), left.size());
   CHECK_EQ(hash.size(), left.size());
   std::vector<uint8_t> result;
   result.reserve(left.size());
@@ -106,14 +105,14 @@ std::vector<uint8_t> h_round(uint8_t iter,
   return result;
 }
 
-std::vector<uint8_t> g_round(uint8_t i,
-                             const std::vector<uint8_t>& left,
-                             const std::vector<uint8_t>& right) {
+std::vector<uint8_t> GRound(uint8_t i,
+                            base::span<const uint8_t> left,
+                            base::span<const uint8_t> right) {
   size_t blocks_count = (right.size() + kLeftSize - 1) / kLeftSize;
   std::vector<uint8_t> result;
   result.reserve(right.size());
   for (size_t j = 0; j < blocks_count; j++) {
-    auto hash = blake2b(left, GetGPersonalizer(i, j), kLeftSize);
+    auto hash = Blake2b(left, GetGPersonalizer(i, j), kLeftSize);
     CHECK_EQ(hash.size(), kLeftSize);
     for (size_t k = 0; k < hash.size() && (j * kLeftSize + k < right.size());
          k++) {
@@ -126,7 +125,7 @@ std::vector<uint8_t> g_round(uint8_t i,
 }  // namespace
 
 std::optional<std::vector<uint8_t>> ApplyF4Jumble(
-    const std::vector<uint8_t>& message) {
+    base::span<const uint8_t> message) {
   if (message.size() < kMinMessageSize || message.size() > kMaxMessageSize) {
     return std::nullopt;
   }
@@ -134,17 +133,17 @@ std::optional<std::vector<uint8_t>> ApplyF4Jumble(
   auto left = GetLeft(message);
   auto right = GetRight(message);
 
-  right = g_round(0, left, right);
-  left = h_round(0, left, right);
-  right = g_round(1, left, right);
-  left = h_round(1, left, right);
+  right = GRound(0, left, right);
+  left = HRound(0, left, right);
+  right = GRound(1, left, right);
+  left = HRound(1, left, right);
 
   left.insert(left.end(), right.begin(), right.end());
   return left;
 }
 
 std::optional<std::vector<uint8_t>> RevertF4Jumble(
-    const std::vector<uint8_t>& jumbled_message) {
+    base::span<const uint8_t> jumbled_message) {
   if (jumbled_message.size() < kMinMessageSize ||
       jumbled_message.size() > kMaxMessageSize) {
     return std::nullopt;
@@ -153,10 +152,10 @@ std::optional<std::vector<uint8_t>> RevertF4Jumble(
   auto left = GetLeft(jumbled_message);
   auto right = GetRight(jumbled_message);
 
-  left = h_round(1, left, right);
-  right = g_round(1, left, right);
-  left = h_round(0, left, right);
-  right = g_round(0, left, right);
+  left = HRound(1, left, right);
+  right = GRound(1, left, right);
+  left = HRound(0, left, right);
+  right = GRound(0, left, right);
 
   left.insert(left.end(), right.begin(), right.end());
   return left;
