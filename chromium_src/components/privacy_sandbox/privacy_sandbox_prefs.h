@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_PRIVACY_SANDBOX_PREFS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_PRIVACY_SANDBOX_PREFS_H_
 
-#include "src/components/privacy_sandbox/privacy_sandbox_prefs.h"
+#include "src/components/privacy_sandbox/privacy_sandbox_prefs.h"  // IWYU pragma: export
 
 namespace prefs {
 
@@ -18,6 +18,6 @@ inline constexpr char kPrivacySandboxApisEnabledV2[] =
 inline constexpr char kPrivacySandboxManuallyControlledV2[] =
     "privacy_sandbox.manually_controlled_v2";
 
-}  // namespace privacy_sandbox
+}  // namespace prefs
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_PRIVACY_SANDBOX_PREFS_H_
