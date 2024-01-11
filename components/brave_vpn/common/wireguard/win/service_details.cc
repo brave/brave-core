@@ -14,7 +14,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "build/build_config.h"
-#include "chrome/install_static/install_util.h"
 #include "components/version_info/version_info.h"
 
 namespace brave_vpn {
@@ -93,9 +92,18 @@ const IID& GetBraveVpnWireguardServiceIid() {
 }
 
 std::wstring GetBraveVpnWireguardServiceDisplayName() {
-  static constexpr wchar_t kBraveWireguardServiceDisplayName[] =
-      L" Vpn Wireguard Service";
-  return install_static::GetBaseAppName() + kBraveWireguardServiceDisplayName;
+// TODO(simonhong): Use ChannelInfo instead of BUILDFLAG.
+#if BUILDFLAG(CHANNEL_NIGHTLY)
+  return L"Brave Nightly Vpn Wireguard Service";
+#elif BUILDFLAG(CHANNEL_BETA)
+  return L"Brave Beta Vpn Wireguard Service";
+#elif BUILDFLAG(CHANNEL_DEV)
+  return L"Brave Dev Vpn Wireguard Service";
+#elif BUILDFLAG(CHANNEL_DEVELOPMENT)
+  return L"Brave Development Vpn Wireguard Service";
+#else
+  return L"Brave Vpn Wireguard Service";
+#endif
 }
 
 std::wstring GetBraveVpnWireguardServiceName() {
@@ -108,7 +116,6 @@ std::wstring GetBraveVpnWireguardTunnelServiceName() {
   return kBraveWireguardTunnelServiceName;
 }
 
-// only used by `chromium_src/chrome/installer/setup/install_worker.cc`
 base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::FilePath& target_path,
     const base::Version& version) {

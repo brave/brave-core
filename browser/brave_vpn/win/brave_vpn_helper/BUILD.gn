@@ -73,11 +73,11 @@ executable("brave_vpn_helper") {
   ]
 
   deps = [
+    ":common",
     ":lib",
     ":version_resources",
     "//base",
     "//base:base_static",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
     "//brave/components/brave_vpn/common",
     "//build/win:default_exe_manifest",
     "//chrome/install_static:install_static_util",
@@ -99,11 +99,11 @@ source_set("unit_tests") {
   sources = [ "vpn_dns_handler_unittest.cc" ]
 
   deps = [
+    ":common",
     ":lib",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
     "//brave/components/brave_vpn/common",
     "//testing/gtest",
   ]

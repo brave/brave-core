@@ -78,7 +78,4 @@ source_set("unit_tests") {
       "//brave/components/brave_vpn/browser/connection/ikev2:sim",
     ]
   }
-  if (is_win) {
-    deps += [ "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:unit_tests" ]
-  }
 }

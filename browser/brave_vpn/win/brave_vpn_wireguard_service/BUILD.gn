@@ -81,10 +81,10 @@ source_set("install_utils") {
   public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
   deps = [
     "//base",
+    "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service",
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray",
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon:utils",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//chrome/installer/util:work_item",

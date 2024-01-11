@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
 
 #include <windows.h>
 
@@ -79,4 +79,4 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_HELPER_VPN_DNS_HANDLER_H_

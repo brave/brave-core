@@ -14,8 +14,8 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #endif
 

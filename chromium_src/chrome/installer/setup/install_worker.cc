@@ -36,9 +36,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 namespace {
 

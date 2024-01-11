@@ -12,7 +12,10 @@ group("brave") {
     ":copy_pdb",
   ]
   if (enable_brave_vpn) {
-    deps = [ "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_service" ]
+    deps = [
+      "//brave/browser/brave_vpn/win/brave_vpn_helper",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_service",
+    ]
   }
 }
 

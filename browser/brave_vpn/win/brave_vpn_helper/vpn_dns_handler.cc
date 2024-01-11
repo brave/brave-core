@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_dns_handler.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/vpn_dns_handler.h"
 
 #include <string>
 
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/vpn_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"

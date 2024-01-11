@@ -9,7 +9,7 @@
 
 #include "base/test/test_reg_util_win.h"
 #include "base/version.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
 #include "chrome/installer/util/set_reg_value_work_item.h"
