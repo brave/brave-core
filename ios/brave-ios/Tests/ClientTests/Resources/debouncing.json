@@ -148,7 +148,7 @@
       "<all_urls>"
     ],
     "exclude": [
-      "*://*.exclude.com/*",
+      "*://*.exclude.com/*"
     ],
     "action": "base64,redirect",
     "param": "_match_all"

@@ -58,7 +58,6 @@
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
-    "ios/browser/api/brave_rewards/legacy_database/core_data_models/",
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
@@ -77,13 +76,17 @@
     "CheckParseErrors": [
       ".*tsconfig\\.json",
       "components/brave_ads/core/test/data/invalid\\.json",
+      "third_party/ios_deps/",
     ],
     "CheckNoBannedFunctions": [
       // Use `ban_rule_excluded_paths` instead.
     ],
 
     // Checks to be fixed.
-    "CheckUnwantedDependencies": [".*\\.java"],
+    "CheckUnwantedDependencies": [
+      ".*\\.java",
+      "third_party/ios_deps/",
+    ],
     "CheckSpamLogging": [
       "browser/browsing_data/brave_clear_browsing_data\\.cc",
       "chromium_src/chrome/browser/ui/startup/startup_browser_creator\\.cc",
@@ -153,7 +156,10 @@
       "components/speedreader/resources/third_party/",
       "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
-    ]
+    ],
+    "CheckNoJsInIos": ["ios/brave-ios/"],
+    "CheckForLongPathnames": ["third_party/ios_deps/"],
+    "CheckFilePermissions": ["third_party/ios_deps/"],
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.
