@@ -10,10 +10,9 @@
 
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -25,7 +24,10 @@ GetMe::GetMe(RewardsEngineImpl& engine) : engine_(engine) {}
 GetMe::~GetMe() = default;
 
 std::string GetMe::GetUrl() {
-  return GetServerUrl("/v0/me");
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve("/v0/me")
+      .spec();
 }
 
 mojom::Result GetMe::CheckStatusCode(const int status_code) {
@@ -81,7 +83,7 @@ void GetMe::Request(const std::string& token, GetMeCallback callback) {
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(std::move(request), URLLoader::LogLevel::kNone,
                                  std::move(url_callback));

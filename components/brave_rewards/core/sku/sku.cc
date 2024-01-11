@@ -5,11 +5,11 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -74,7 +74,18 @@ void SKU::CreateTransaction(mojom::SKUOrderPtr order,
     return;
   }
 
-  const std::string destination = GetBraveDestination(wallet_type);
+  std::string destination = [&]() -> std::string {
+    if (wallet_type == constant::kWalletUphold) {
+      return engine_->Get<EnvironmentConfig>().uphold_sku_destination();
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      return engine_->Get<EnvironmentConfig>().gemini_sku_destination();
+    }
+
+    NOTREACHED();
+    return "";
+  }();
 
   common_.CreateTransaction(std::move(order), destination, wallet_type,
                             callback);

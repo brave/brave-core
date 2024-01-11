@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
@@ -15,7 +17,6 @@
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 namespace brave_rewards::internal {
 
@@ -37,7 +38,23 @@ const char* ConnectUpholdWallet::WalletType() const {
 }
 
 std::string ConnectUpholdWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto url = URLHelpers::Resolve(config.uphold_oauth_url(),
+                                 {"/authorize/", config.uphold_client_id()});
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"scope",
+             "cards:read "
+             "cards:write "
+             "user:read "
+             "transactions:read "
+             "transactions:transfer:application "
+             "transactions:transfer:others"},
+            {"intention", "login"},
+            {"state", oauth_info_.one_time_string}});
+
+  return url.spec();
 }
 
 void ConnectUpholdWallet::Authorize(ConnectExternalWalletCallback callback) {

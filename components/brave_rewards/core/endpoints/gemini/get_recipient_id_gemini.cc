@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
+#include "url/gurl.h"
 
 namespace brave_rewards::internal::endpoints {
 using Error = GetRecipientIDGemini::Error;
@@ -41,7 +43,7 @@ Result ParseBody(const std::string& body) {
       return base::unexpected(Error::kFailedToParseBody);
     }
 
-    if (*label == gemini::kGeminiRecipientIDLabel) {
+    if (*label == endpoint::gemini::PostRecipientId::kRecipientLabel) {
       return std::move(*recipient_id);
     }
   }
@@ -70,7 +72,9 @@ GetRecipientIDGemini::GetRecipientIDGemini(RewardsEngineImpl& engine,
 GetRecipientIDGemini::~GetRecipientIDGemini() = default;
 
 std::optional<std::string> GetRecipientIDGemini::Url() const {
-  return endpoint::gemini::GetApiServerUrl("/v1/payments/recipientIds");
+  return GURL(engine_->Get<EnvironmentConfig>().gemini_api_url())
+      .Resolve("/v1/payments/recipientIds")
+      .spec();
 }
 
 mojom::UrlMethod GetRecipientIDGemini::Method() const {
@@ -79,7 +83,7 @@ mojom::UrlMethod GetRecipientIDGemini::Method() const {
 
 std::optional<std::vector<std::string>> GetRecipientIDGemini::Headers(
     const std::string&) const {
-  return endpoint::gemini::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 }  // namespace brave_rewards::internal::endpoints

@@ -10,8 +10,9 @@
 #include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -40,7 +41,21 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 }
 
 std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string, oauth_info_.code_verifier);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto url = config.bitflyer_url().Resolve("/ex/OAuth/authorize");
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"client_id", config.bitflyer_client_id()},
+            {"scope", "assets create_deposit_id withdraw_to_deposit_id"},
+            {"redirect_uri", "rewards://bitflyer/authorization"},
+            {"state", oauth_info_.one_time_string},
+            {"response_type", "code"},
+            {"code_challenge_method", "S256"},
+            {"code_challenge",
+             util::GeneratePKCECodeChallenge(oauth_info_.code_verifier)}});
+
+  return url.spec();
 }
 
 void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {

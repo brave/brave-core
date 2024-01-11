@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -101,7 +101,11 @@ std::optional<std::string> GetWallet::Url() const {
     return std::nullopt;
   }
 
-  return endpoint::promotion::GetServerUrl(Path() + wallet->payment_id);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {Path(), wallet->payment_id});
+
+  return url.spec();
 }
 
 mojom::UrlMethod GetWallet::Method() const {

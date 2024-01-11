@@ -11,8 +11,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -78,7 +78,10 @@ const char* PostWallets::Path() const {
 }
 
 std::optional<std::string> PostWallets::Url() const {
-  return endpoint::promotion::GetServerUrl(Path());
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve(Path())
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostWallets::Headers(

@@ -424,9 +424,9 @@ enum UserType {
 };
 
 enum Environment {
-  STAGING = 0,
-  PRODUCTION = 1,
-  DEVELOPMENT = 2
+  kStaging = 0,
+  kProduction = 1,
+  kDevelopment = 2
 };
 
 struct SolanaAccountBalance {

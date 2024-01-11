@@ -30,17 +30,20 @@ class ConnectExternalWallet {
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
            ConnectExternalWalletCallback);
 
-  void SetOAuthStateForTesting(const std::string& one_time_string,
-                               const std::string& code_verifier);
-
- protected:
-  virtual const char* WalletType() const = 0;
-
   struct OAuthInfo {
     std::string one_time_string;
     std::string code_verifier;
     std::string code;
   };
+
+  void SetOAuthStateForTesting(const OAuthInfo& oauth_info) {
+    oauth_info_ = oauth_info;
+  }
+
+  const OAuthInfo& GetOAuthStateForTesting() const { return oauth_info_; }
+
+ protected:
+  virtual const char* WalletType() const = 0;
 
   virtual std::string GetOAuthLoginURL() const = 0;
 

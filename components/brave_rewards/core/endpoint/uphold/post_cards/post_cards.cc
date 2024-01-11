@@ -10,10 +10,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
@@ -23,7 +23,10 @@ PostCards::PostCards(RewardsEngineImpl& engine) : engine_(engine) {}
 PostCards::~PostCards() = default;
 
 std::string PostCards::GetUrl() const {
-  return GetServerUrl("/v0/me/cards");
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve("/v0/me/cards")
+      .spec();
 }
 
 std::string PostCards::GeneratePayload() const {
@@ -77,7 +80,7 @@ void PostCards::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
 

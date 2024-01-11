@@ -9,8 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
@@ -29,8 +28,9 @@ const char* Gemini::WalletType() const {
 }
 
 void Gemini::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
-  external_wallet.account_url = GetAccountUrl();
-  external_wallet.activity_url = GetActivityUrl();
+  auto url = engine_->Get<EnvironmentConfig>().gemini_oauth_url();
+  external_wallet.account_url = url.spec();
+  external_wallet.activity_url = url.Resolve("/balances").spec();
 }
 
 void Gemini::FetchBalance(
@@ -47,7 +47,7 @@ void Gemini::FetchBalance(
 }
 
 std::string Gemini::GetFeeAddress() const {
-  return gemini::GetFeeAddress();
+  return engine_->Get<EnvironmentConfig>().gemini_fee_address();
 }
 
 base::TimeDelta Gemini::GetDelay() const {

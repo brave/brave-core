@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -27,8 +27,13 @@ GetCapabilities::~GetCapabilities() = default;
 void GetCapabilities::Request(const std::string& token,
                               GetCapabilitiesCallback callback) const {
   auto request = mojom::UrlRequest::New();
-  request->url = GetServerUrl("/v0/me/capabilities");
-  request->headers = RequestAuthorization(token);
+
+  request->url = engine_->Get<EnvironmentConfig>()
+                     .uphold_api_url()
+                     .Resolve("/v0/me/capabilities")
+                     .spec();
+
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kDetailed,

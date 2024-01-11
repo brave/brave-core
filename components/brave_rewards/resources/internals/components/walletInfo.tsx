@@ -24,11 +24,11 @@ const getKeyInfoSeedValidString = (isValid: boolean) => {
 
 const getEnvironmentString = (environment: mojom.Environment | undefined) => {
   switch (environment) {
-    case mojom.Environment.STAGING:
+    case mojom.Environment.kStaging:
       return 'Staging'
-    case mojom.Environment.PRODUCTION:
+    case mojom.Environment.kProduction:
       return 'Production'
-    case mojom.Environment.DEVELOPMENT:
+    case mojom.Environment.kDevelopment:
       return 'Development'
     default:
       return getLocale('notSet')

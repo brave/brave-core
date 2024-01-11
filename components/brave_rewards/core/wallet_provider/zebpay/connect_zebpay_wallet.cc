@@ -8,12 +8,13 @@
 #include <string>
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_zebpay.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 
 using brave_rewards::internal::endpoints::PostConnectZebPay;
 using brave_rewards::internal::endpoints::PostOAuthZebPay;
@@ -33,7 +34,25 @@ const char* ConnectZebPayWallet::WalletType() const {
 }
 
 std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto return_url =
+      config.zebpay_oauth_url().Resolve("/connect/authorize/callback");
+
+  return_url = URLHelpers::SetQueryParameters(
+      return_url, {{"client_id", config.zebpay_client_id()},
+                   {"grant_type", "authorization_code"},
+                   {"redirect_uri", "rewards://zebpay/authorization"},
+                   {"response_type", "code"},
+                   {"scope", "openid profile"},
+                   {"state", oauth_info_.one_time_string}});
+
+  auto url = config.zebpay_oauth_url().Resolve("/account/login");
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"returnUrl", return_url.PathForRequest()}});
+
+  return url.spec();
 }
 
 void ConnectZebPayWallet::Authorize(ConnectExternalWalletCallback callback) {

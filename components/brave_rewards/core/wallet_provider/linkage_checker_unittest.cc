@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
@@ -45,8 +45,11 @@ class RewardsLinkageChecker : public RewardsEngineTest {
     response->body = body;
 
     AddNetworkResultForTesting(
-        endpoint::promotion::GetServerUrl(
-            "/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4"),
+        engine()
+            .Get<EnvironmentConfig>()
+            .rewards_grant_url()
+            .Resolve("/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4")
+            .spec(),
         mojom::UrlMethod::GET, std::move(response));
   }
 };

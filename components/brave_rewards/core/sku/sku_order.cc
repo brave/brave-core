@@ -10,7 +10,6 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

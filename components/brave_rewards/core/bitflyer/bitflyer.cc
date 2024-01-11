@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
@@ -29,8 +29,9 @@ const char* Bitflyer::WalletType() const {
 }
 
 void Bitflyer::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
-  external_wallet.account_url = GetAccountUrl();
-  external_wallet.activity_url = GetActivityUrl();
+  auto url = engine_->Get<EnvironmentConfig>().bitflyer_url();
+  external_wallet.account_url = url.Resolve("/ex/Home?login=1").spec();
+  external_wallet.activity_url = url.Resolve("/ja-jp/ex/tradehistory").spec();
 }
 
 void Bitflyer::FetchBalance(
@@ -47,7 +48,7 @@ void Bitflyer::FetchBalance(
 }
 
 std::string Bitflyer::GetFeeAddress() const {
-  return bitflyer::GetFeeAddress();
+  return engine_->Get<EnvironmentConfig>().bitflyer_fee_address();
 }
 
 }  // namespace brave_rewards::internal::bitflyer

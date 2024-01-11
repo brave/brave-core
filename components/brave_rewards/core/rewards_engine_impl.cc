@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
@@ -39,7 +40,8 @@ namespace brave_rewards::internal {
 RewardsEngineImpl::RewardsEngineImpl(
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
     : client_(std::move(client_remote)),
-      helpers_(std::make_unique<InitializationManager>(*this),
+      helpers_(std::make_unique<EnvironmentConfig>(*this),
+               std::make_unique<InitializationManager>(*this),
                std::make_unique<URLLoader>(*this),
                std::make_unique<LinkageChecker>(*this),
                std::make_unique<SolanaWalletProvider>(*this)),
@@ -74,7 +76,7 @@ void RewardsEngineImpl::Initialize(InitializeCallback callback) {
 }
 
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  std::move(callback).Run(_environment);
+  std::move(callback).Run(Get<EnvironmentConfig>().current_environment());
 }
 
 void RewardsEngineImpl::CreateRewardsWallet(

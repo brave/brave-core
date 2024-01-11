@@ -10,11 +10,11 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
@@ -23,19 +23,21 @@ PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
-  return GetOauthServerUrl("/auth/token");
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_oauth_url()
+      .Resolve("/auth/token")
+      .spec();
 }
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
-  const std::string client_id = internal::gemini::GetClientId();
-  const std::string client_secret = internal::gemini::GetClientSecret();
+  auto& config = engine_->Get<EnvironmentConfig>();
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
-  dict.Set("client_id", client_id);
-  dict.Set("client_secret", client_secret);
+  dict.Set("client_id", config.gemini_client_id());
+  dict.Set("client_secret", config.gemini_client_secret());
   dict.Set("code", code);
   dict.Set("redirect_uri", "rewards://gemini/authorization");
   dict.Set("grant_type", "authorization_code");
@@ -85,13 +87,16 @@ void PostOauth::OnRequest(PostOauthCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
 
-  mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::OK) {
-    return std::move(callback).Run(result, "");
+  switch (response->status_code) {
+    case net::HTTP_OK:
+      break;
+    default:
+      std::move(callback).Run(mojom::Result::FAILED, "");
+      return;
   }
 
   std::string token;
-  result = ParseBody(response->body, &token);
+  mojom::Result result = ParseBody(response->body, &token);
   std::move(callback).Run(result, std::move(token));
 }
 

@@ -10,9 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -23,7 +22,10 @@ PostAccount::PostAccount(RewardsEngineImpl& engine) : engine_(engine) {}
 PostAccount::~PostAccount() = default;
 
 std::string PostAccount::GetUrl() {
-  return GetApiServerUrl("/v1/account");
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_api_url()
+      .Resolve("/v1/account")
+      .spec();
 }
 
 mojom::Result PostAccount::ParseBody(const std::string& body,
@@ -83,7 +85,7 @@ void PostAccount::Request(const std::string& token,
                           PostAccountCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
   request->method = mojom::UrlMethod::POST;
 
   engine_->Get<URLLoader>().Load(
@@ -96,15 +98,23 @@ void PostAccount::OnRequest(PostAccountCallback callback,
                             mojom::UrlResponsePtr response) {
   DCHECK(response);
 
-  mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::OK) {
-    return std::move(callback).Run(result, "", "", "");
+  switch (response->status_code) {
+    case net::HTTP_OK:
+      break;
+    case net::HTTP_UNAUTHORIZED:
+    case net::HTTP_FORBIDDEN:
+      std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "", "", "");
+      return;
+    default:
+      std::move(callback).Run(mojom::Result::FAILED, "", "", "");
+      return;
   }
 
   std::string linking_info;
   std::string user_name;
   std::string country_id;
-  result = ParseBody(response->body, &linking_info, &user_name, &country_id);
+  mojom::Result result =
+      ParseBody(response->body, &linking_info, &user_name, &country_id);
   std::move(callback).Run(result, std::move(linking_info), std::move(user_name),
                           std::move(country_id));
 }

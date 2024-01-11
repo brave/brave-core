@@ -54,14 +54,6 @@ void ConnectExternalWallet::Run(
   Authorize(std::move(callback));
 }
 
-void ConnectExternalWallet::SetOAuthStateForTesting(
-    const std::string& one_time_string,
-    const std::string& code_verifier) {
-  oauth_info_ = OAuthInfo{.one_time_string = one_time_string,
-                          .code_verifier = code_verifier,
-                          .code = ""};
-}
-
 base::expected<std::string, ConnectExternalWalletResult>
 ConnectExternalWallet::GetCode(
     const base::flat_map<std::string, std::string>& query_parameters,

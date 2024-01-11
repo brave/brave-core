@@ -10,7 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -58,13 +58,15 @@ Result PostCommitTransactionBitFlyer::ProcessResponse(
 }
 
 std::optional<std::string> PostCommitTransactionBitFlyer::Url() const {
-  return endpoint::bitflyer::GetServerUrl(
-      "/api/link/v1/coin/withdraw-to-deposit-id/request");
+  return engine_->Get<EnvironmentConfig>()
+      .bitflyer_url()
+      .Resolve("/api/link/v1/coin/withdraw-to-deposit-id/request")
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostCommitTransactionBitFlyer::Headers(
     const std::string&) const {
-  return endpoint::bitflyer::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 std::optional<std::string> PostCommitTransactionBitFlyer::Content() const {

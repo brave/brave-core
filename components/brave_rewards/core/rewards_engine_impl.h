@@ -26,7 +26,7 @@
 
 namespace brave_rewards::internal {
 
-inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
+inline mojom::Environment _environment = mojom::Environment::kProduction;
 inline bool is_debug = false;
 inline bool is_testing = false;
 inline int state_migration_target_version_for_testing = -1;
@@ -41,6 +41,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
 
+class EnvironmentConfig;
 class InitializationManager;
 class URLLoader;
 class LinkageChecker;
@@ -431,7 +432,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
 
-  std::tuple<std::unique_ptr<InitializationManager>,
+  std::tuple<std::unique_ptr<EnvironmentConfig>,
+             std::unique_ptr<InitializationManager>,
              std::unique_ptr<URLLoader>,
              std::unique_ptr<LinkageChecker>,
              std::unique_ptr<SolanaWalletProvider>>

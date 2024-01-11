@@ -8,13 +8,14 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_gemini.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -41,7 +42,24 @@ const char* ConnectGeminiWallet::WalletType() const {
 }
 
 std::string ConnectGeminiWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto url = config.gemini_oauth_url().Resolve("/auth");
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"client_id", config.gemini_client_id()},
+            {"scope",
+             "balances:read,"
+             "history:read,"
+             "crypto:send,"
+             "account:read,"
+             "payments:create,"
+             "payments:send,"},
+            {"redirect_uri", "rewards://gemini/authorization"},
+            {"state", oauth_info_.one_time_string},
+            {"response_type", "code"}});
+
+  return url.spec();
 }
 
 void ConnectGeminiWallet::Authorize(ConnectExternalWalletCallback callback) {

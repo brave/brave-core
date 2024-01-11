@@ -8,11 +8,12 @@
 #include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -24,14 +25,17 @@ PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
-  return GetServerUrl("/api/link/v1/token");
+  return engine_->Get<EnvironmentConfig>()
+      .bitflyer_url()
+      .Resolve("/api/link/v1/token")
+      .spec();
 }
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code,
                                        const std::string& code_verifier) {
-  const std::string client_id = internal::bitflyer::GetClientId();
-  const std::string client_secret = internal::bitflyer::GetClientSecret();
+  auto& config = engine_->Get<EnvironmentConfig>();
+
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
@@ -39,8 +43,8 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   dict.Set("grant_type", "code");
   dict.Set("code", code);
   dict.Set("code_verifier", code_verifier);
-  dict.Set("client_id", client_id);
-  dict.Set("client_secret", client_secret);
+  dict.Set("client_id", config.bitflyer_client_id());
+  dict.Set("client_secret", config.bitflyer_client_secret());
   dict.Set("expires_in", 259002);
   dict.Set("external_account_id", external_account_id);
   dict.Set("request_id", request_id);
@@ -105,10 +109,19 @@ void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         const std::string& code_verifier,
                         PostOauthCallback callback) {
+  auto get_auth_user = [&]() {
+    auto& config = engine_->Get<EnvironmentConfig>();
+    std::string user;
+    base::Base64Encode(base::StrCat({config.bitflyer_client_id(), ":",
+                                     config.bitflyer_client_secret()}),
+                       &user);
+    return user;
+  };
+
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code, code_verifier);
-  request->headers = RequestAuthorization();
+  request->headers = {"Authorization: Basic " + get_auth_user()};
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 

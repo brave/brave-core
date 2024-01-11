@@ -109,27 +109,6 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(GeminiPostAccountTest, ServerError404) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_NOT_FOUND;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
-
-  base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, std::string(),
-                            std::string(), std::string()))
-      .Times(1);
-  post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                        callback.Get());
-
-  task_environment_.RunUntilIdle();
-}
-
 TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)

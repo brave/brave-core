@@ -7,9 +7,9 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -22,10 +22,10 @@ PutCaptcha::PutCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 PutCaptcha::~PutCaptcha() = default;
 
 std::string PutCaptcha::GetUrl(const std::string& captcha_id) {
-  const std::string path =
-      base::StringPrintf("/v1/captchas/%s", captcha_id.c_str());
-
-  return GetServerUrl(path);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {"/v1/captchas/", captcha_id});
+  return url.spec();
 }
 
 std::string PutCaptcha::GeneratePayload(const int x, const int y) {

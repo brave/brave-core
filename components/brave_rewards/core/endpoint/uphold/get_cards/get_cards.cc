@@ -9,11 +9,10 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
@@ -23,7 +22,10 @@ GetCards::GetCards(RewardsEngineImpl& engine) : engine_(engine) {}
 GetCards::~GetCards() = default;
 
 std::string GetCards::GetUrl() const {
-  return GetServerUrl("/v0/me/cards?q=currency:BAT");
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve("/v0/me/cards?q=currency:BAT")
+      .spec();
 }
 
 mojom::Result GetCards::CheckStatusCode(int status_code) const {
@@ -77,7 +79,7 @@ void GetCards::Request(const std::string& token,
                        GetCardsCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kDetailed,

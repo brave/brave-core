@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -62,13 +62,15 @@ Result GetTransactionStatusUphold::ProcessResponse(
 }
 
 std::optional<std::string> GetTransactionStatusUphold::Url() const {
-  return endpoint::uphold::GetServerUrl(
-      base::StringPrintf("/v0/me/transactions/%s", transaction_id_.c_str()));
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
+                          {"/v0/me/transactions/", transaction_id_});
+  return url.spec();
 }
 
 std::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 }  // namespace brave_rewards::internal::endpoints

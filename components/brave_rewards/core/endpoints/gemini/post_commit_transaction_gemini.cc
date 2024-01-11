@@ -11,9 +11,10 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
+#include "url/gurl.h"
 
 namespace brave_rewards::internal::endpoints {
 using Error = PostCommitTransactionGemini::Error;
@@ -63,7 +64,9 @@ Result PostCommitTransactionGemini::ProcessResponse(
 }
 
 std::optional<std::string> PostCommitTransactionGemini::Url() const {
-  return endpoint::gemini::GetApiServerUrl("/v1/payments/pay");
+  return GURL(engine_->Get<EnvironmentConfig>().gemini_api_url())
+      .Resolve("/v1/payments/pay")
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
@@ -82,9 +85,8 @@ std::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
   std::string base64;
   base::Base64Encode(json, &base64);
 
-  auto headers = endpoint::gemini::RequestAuthorization(token_);
-  headers.push_back("X-GEMINI-PAYLOAD: " + base64);
-  return headers;
+  return std::vector<std::string>{"Authorization: Bearer " + token_,
+                                  "X-GEMINI-PAYLOAD: " + base64};
 }
 
 std::string PostCommitTransactionGemini::ContentType() const {

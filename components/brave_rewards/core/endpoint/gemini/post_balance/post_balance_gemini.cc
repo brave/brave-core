@@ -11,10 +11,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
@@ -27,7 +27,10 @@ PostBalance::PostBalance(RewardsEngineImpl& engine) : engine_(engine) {}
 PostBalance::~PostBalance() = default;
 
 std::string PostBalance::GetUrl() {
-  return GetApiServerUrl("/v1/balances");
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_api_url()
+      .Resolve("/v1/balances")
+      .spec();
 }
 
 mojom::Result PostBalance::ParseBody(const std::string& body,
@@ -77,7 +80,7 @@ void PostBalance::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->method = mojom::UrlMethod::POST;
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(std::move(request),
                                  URLLoader::LogLevel::kDetailed,
@@ -88,15 +91,20 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
                             mojom::UrlResponsePtr response) {
   DCHECK(response);
 
-  mojom::Result result = CheckStatusCode(response->status_code);
-
-  if (result != mojom::Result::OK) {
-    std::move(callback).Run(result, 0.0);
-    return;
+  switch (response->status_code) {
+    case net::HTTP_OK:
+      break;
+    case net::HTTP_UNAUTHORIZED:
+    case net::HTTP_FORBIDDEN:
+      std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0);
+      return;
+    default:
+      std::move(callback).Run(mojom::Result::FAILED, 0);
+      return;
   }
 
   double available;
-  result = ParseBody(response->body, &available);
+  mojom::Result result = ParseBody(response->body, &available);
   std::move(callback).Run(result, available);
 }
 

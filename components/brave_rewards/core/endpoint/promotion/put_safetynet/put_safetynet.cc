@@ -7,9 +7,9 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -22,10 +22,10 @@ PutSafetynet::PutSafetynet(RewardsEngineImpl& engine) : engine_(engine) {}
 PutSafetynet::~PutSafetynet() = default;
 
 std::string PutSafetynet::GetUrl(const std::string& nonce) {
-  const std::string path =
-      base::StringPrintf("/v2/attestations/safetynet/%s", nonce.c_str());
-
-  return GetServerUrl(path);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {"/v2/attestations/safetynet/", nonce});
+  return url.spec();
 }
 
 std::string PutSafetynet::GeneratePayload(const std::string& token) {

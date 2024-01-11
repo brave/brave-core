@@ -10,8 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -25,7 +24,10 @@ GetBalance::GetBalance(RewardsEngineImpl& engine) : engine_(engine) {}
 GetBalance::~GetBalance() = default;
 
 std::string GetBalance::GetUrl() {
-  return GetServerUrl("/api/link/v1/account/inventory");
+  return engine_->Get<EnvironmentConfig>()
+      .bitflyer_url()
+      .Resolve("/api/link/v1/account/inventory")
+      .spec();
 }
 
 mojom::Result GetBalance::CheckStatusCode(const int status_code) {
@@ -93,7 +95,7 @@ void GetBalance::Request(const std::string& token,
       &GetBalance::OnRequest, base::Unretained(this), std::move(callback));
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(std::move(request),
                                  URLLoader::LogLevel::kDetailed,
