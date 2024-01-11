@@ -57,7 +57,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   if (buttons & ConfirmInfoBarDelegate::BUTTON_OK) {
     ok_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_OK,
                                &BraveConfirmInfoBar::OkButtonPressed);
-    ok_button_->SetProminent(true);
+    ok_button_->SetStyle(ui::ButtonStyle::kProminent);
     ok_button_->SetImageModel(
         views::Button::STATE_NORMAL,
         delegate_ptr->GetButtonImage(ConfirmInfoBarDelegate::BUTTON_OK));
@@ -72,7 +72,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
                                    &BraveConfirmInfoBar::CancelButtonPressed);
     if (buttons == ConfirmInfoBarDelegate::BUTTON_CANCEL ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_CANCEL)) {
-      cancel_button_->SetProminent(true);
+      cancel_button_->SetStyle(ui::ButtonStyle::kProminent);
     }
     cancel_button_->SetImageModel(
         views::Button::STATE_NORMAL,
@@ -88,7 +88,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
                                   &BraveConfirmInfoBar::ExtraButtonPressed);
     if (buttons == ConfirmInfoBarDelegate::BUTTON_EXTRA ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_EXTRA)) {
-      extra_button_->SetProminent(true);
+      extra_button_->SetStyle(ui::ButtonStyle::kProminent);
     }
     extra_button_->SetImageModel(
         views::Button::STATE_NORMAL,
