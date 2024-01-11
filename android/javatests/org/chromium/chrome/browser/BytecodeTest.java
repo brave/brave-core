@@ -506,12 +506,18 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreferences", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreference", false, null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreferences",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreference",
+                        false,
+                        null));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", false, null));
         Assert.assertTrue(
@@ -656,13 +662,22 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", true, String.class, int.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreferences", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreference", true, void.class, Preference.class, Integer.class,
-                boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreferences",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreference",
+                        true,
+                        void.class,
+                        Preference.class,
+                        Integer.class,
+                        boolean.class,
+                        boolean.class));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "getPermissionInfo", true, PermissionInfo.class, int.class));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
@@ -824,20 +839,42 @@ public class BytecodeTest {
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
-                ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
-                List.class, OneshotSupplier.class, ThemeColorProvider.class,
-                ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
-                ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                BooleanSupplier.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
-                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class,
-                FullscreenManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
+                        ToolbarControlContainer.class,
+                        ViewStub.class,
+                        ToolbarLayout.class,
+                        ToolbarDataProvider.class,
+                        ToolbarTabController.class,
+                        UserEducationHelper.class,
+                        List.class,
+                        OneshotSupplier.class,
+                        ThemeColorProvider.class,
+                        ThemeColorProvider.class,
+                        MenuButtonCoordinator.class,
+                        MenuButtonCoordinator.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        ButtonDataProvider.class,
+                        Supplier.class,
+                        Supplier.class,
+                        BooleanSupplier.class,
+                        boolean.class,
+                        boolean.class,
+                        HistoryDelegate.class,
+                        BooleanSupplier.class,
+                        OfflineDownloader.class,
+                        boolean.class,
+                        Callback.class,
+                        boolean.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        BrowserStateBrowserControlsVisibilityDelegate.class,
+                        boolean.class,
+                        FullscreenManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
