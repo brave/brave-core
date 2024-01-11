@@ -9,8 +9,8 @@
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
-               title = "Build BraveCore"
-               scriptText = "# $ACTION is unfortunately empty here&#10;if [[ $RUN_CLANG_STATIC_ANALYZER = &quot;NO&quot; ]]; then&#10;  sh &quot;${PROJECT_DIR}/../BraveCore/build_in_core.sh&quot;&#10;fi&#10;">
+               title = "BraveCore Pre-actions"
+               scriptText = "# $ACTION is empty for Xcode builds unfortunately&#10;# $RUN_CLANG_STATIC_ANALYZER is NO for builds, YES for cleans &#10;if [[ $RUN_CLANG_STATIC_ANALYZER = &quot;NO&quot; ]]; then&#10;  python3 &quot;${PROJECT_DIR}/../scripts/scheme_preaction.py&quot; \&#10;    --configuration $CONFIGURATION \&#10;    --platform_name $PLATFORM_NAME&#10;fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

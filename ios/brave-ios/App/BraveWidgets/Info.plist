@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(brave_version_major).$(brave_version_minor).$(brave_version_patch)</string>
+	<string>$(brave_ios_marketing_version)</string>
 	<key>CFBundleVersion</key>
 	<string>$(brave_version_build)</string>
 	<key>NSExtension</key>
