@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     AppConstants.buildChannel = .release
     #elseif MOZ_CHANNEL_BETA
     AppConstants.buildChannel = .beta
-    #elseif MOZ_CHANNEL_DEV
-    AppConstants.buildChannel = .dev
+    #elseif MOZ_CHANNEL_NIGHTLY
+    AppConstants.buildChannel = .nightly
     #elseif MOZ_CHANNEL_ENTERPRISE
     AppConstants.buildChannel = .enterprise
     #elseif MOZ_CHANNEL_DEBUG

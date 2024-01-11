@@ -154,17 +154,11 @@
 
 /* Begin PBXFileReference section */
 		0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
-		0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = bootstrap.sh; path = ../bootstrap.sh; sourceTree = "<group>"; };
+		0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = bootstrap.sh; path = ../scripts/bootstrap.sh; sourceTree = "<group>"; };
 		0A24F7EE233E9129004D2F3A /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Fastfile; path = ../fastlane/Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release-AppStore.xcconfig"; sourceTree = "<group>"; };
 		0A24F838233EB5B4004D2F3A /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		0A24F839233EB5B4004D2F3A /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
-		0A24F83A233EB5B4004D2F3A /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
-		0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
-		0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
-		0A24F842233EB5B5004D2F3A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
-		0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
 		0A24F846233EB5B5004D2F3A /* Nightly.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Nightly.xcconfig; sourceTree = "<group>"; };
 		0A24F847233EB5B5004D2F3A /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -257,7 +251,7 @@
 		2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardBeta.entitlements; sourceTree = "<group>"; };
 		2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardDebug.entitlements; sourceTree = "<group>"; };
 		2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardEnterprise.entitlements; sourceTree = "<group>"; };
-		2F93A97E29C8CF1300C7C158 /* BraveWireGuardDev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardDev.entitlements; sourceTree = "<group>"; };
+		2F93A97E29C8CF1300C7C158 /* BraveWireGuardNightly.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardNightly.entitlements; sourceTree = "<group>"; };
 		2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardRelease.entitlements; sourceTree = "<group>"; };
 		2FC7DF7A2B5AE98E0092553B /* ActionExtensionIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ActionExtensionIcons.xcassets; sourceTree = "<group>"; };
 		2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWireGuard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,7 +323,7 @@
 		CA0391BB271E1026000EB13C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA0391BD271E1026000EB13C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA0391BE271E1026000EB13C /* BraveWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BraveWidgets.entitlements; sourceTree = "<group>"; };
-		CA0391DB271E12F7000EB13C /* WidgetDev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDev.entitlements; sourceTree = "<group>"; };
+		CA0391DB271E12F7000EB13C /* WidgetNightly.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetNightly.entitlements; sourceTree = "<group>"; };
 		CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetRelease.entitlements; sourceTree = "<group>"; };
 		CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetBeta.entitlements; sourceTree = "<group>"; };
 		CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDebug.entitlements; sourceTree = "<group>"; };
@@ -344,7 +338,7 @@
 		CABDE77E2A55DD1C00A388A4 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E6231C001B90A44F005ABB0D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E6231C041B90A472005ABB0D /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
-		E62AC15F1E956AFC00843532 /* Dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dev.entitlements; sourceTree = "<group>"; };
+		E62AC15F1E956AFC00843532 /* Nightly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nightly.entitlements; sourceTree = "<group>"; };
 		E6F738741EB7A8D300B50143 /* Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Debug.entitlements; sourceTree = "<group>"; };
 		E6F738751EB7A97100B50143 /* Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Beta.entitlements; sourceTree = "<group>"; };
 		E6F738761EB7A97500B50143 /* Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
@@ -457,30 +451,8 @@
 				0A24F839233EB5B4004D2F3A /* Beta.xcconfig */,
 				27EEEDB52507CE1C00024038 /* Release.xcconfig */,
 				0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */,
-				0A24F83A233EB5B4004D2F3A /* Local.xcconfig */,
-				0A24F83B233EB5B4004D2F3A /* Local */,
-				0A24F840233EB5B4004D2F3A /* Local.templates */,
 			);
 			path = Configuration;
-			sourceTree = "<group>";
-		};
-		0A24F83B233EB5B4004D2F3A /* Local */ = {
-			isa = PBXGroup;
-			children = (
-				0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */,
-				0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */,
-			);
-			path = Local;
-			sourceTree = "<group>";
-		};
-		0A24F840233EB5B4004D2F3A /* Local.templates */ = {
-			isa = PBXGroup;
-			children = (
-				0A24F842233EB5B5004D2F3A /* README */,
-				0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */,
-				0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */,
-			);
-			path = Local.templates;
 			sourceTree = "<group>";
 		};
 		270ECFC9283824F00089B8B7 /* iOS */ = {
@@ -551,7 +523,7 @@
 			children = (
 				2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */,
 				2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */,
-				2F93A97E29C8CF1300C7C158 /* BraveWireGuardDev.entitlements */,
+				2F93A97E29C8CF1300C7C158 /* BraveWireGuardNightly.entitlements */,
 				2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */,
 				2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */,
 			);
@@ -631,7 +603,7 @@
 			children = (
 				CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */,
 				CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */,
-				CA0391DB271E12F7000EB13C /* WidgetDev.entitlements */,
+				CA0391DB271E12F7000EB13C /* WidgetNightly.entitlements */,
 				CA0391DF271E12F8000EB13C /* WidgetEnterprise.entitlements */,
 				CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */,
 			);
@@ -657,7 +629,7 @@
 				E6F738751EB7A97100B50143 /* Beta.entitlements */,
 				E6F738741EB7A8D300B50143 /* Debug.entitlements */,
 				27EDE18129A7D98000F34870 /* Debug (AppStore).entitlements */,
-				E62AC15F1E956AFC00843532 /* Dev.entitlements */,
+				E62AC15F1E956AFC00843532 /* Nightly.entitlements */,
 				27AC7CF724C759BE00441317 /* Enterprise.entitlements */,
 			);
 			path = Entitlements;
@@ -2167,7 +2139,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardDev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardNightly.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "";
@@ -2651,7 +2623,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetDev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetNightly.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2939,7 +2911,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Nightly;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Dev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Nightly.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"$(PROJECT_DIR)/../Sources/Brave/Frontend/Preview Content\"";
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";

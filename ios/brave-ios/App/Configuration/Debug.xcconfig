@@ -3,14 +3,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "Base.xcconfig"
-#include "Local.xcconfig"
 
 MOZ_BUNDLE_DISPLAY_NAME = Brave ($(USER))
 
 BRAVE_URL_SCHEME = brave-debug
 
-// Bundle Identifier
-// MOZ_BUNDLE_ID = set in Local.xconfig
+// Bundle Identifier (Same as nightly)
+MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
 
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = YES

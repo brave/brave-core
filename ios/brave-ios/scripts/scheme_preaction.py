@@ -32,23 +32,21 @@ def main():
                         nargs='?',
                         help='Specify which platform to build.')
 
-    options, extra_options = parser.parse_known_args()
-
-    if len(extra_options):
-        print >> sys.stderr, 'Unknown options: ', extra_options
-        return 1
+    (options, _) = parser.parse_known_args()
 
     output_dir = BuildOutputDirectory(options.configuration,
                                       options.platform_name)
     target_arch = 'arm64' if platform.processor(
     ) == 'arm' or options.platform_name == 'iphoneos' else 'x64'
-    target_environment = 'simulator' if options.platform_name == 'iphonesimulator' else None
+    target_environment = 'simulator' if (options.platform_name
+                                         == 'iphonesimulator') else None
 
     UpdateSymlink(options.configuration, target_arch, target_environment)
     BuildCore(options.configuration, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
     GenerateXCFrameworks(options.configuration, target_arch, target_environment)
     GenerateXcodeConfig(output_dir)
+    CallNpm(['npm', 'run', 'ios_pack_js'])
 
 
 def BuildOutputDirectory(config, platform_name):
@@ -91,7 +89,8 @@ def BuildCore(config, target_arch, target_environment):
 
 
 def CleanupChromiumAssets(output_dir):
-    """Delete Chromium Assets from BraveCore.framework since they aren't used."""
+    """Delete Chromium Assets from BraveCore.framework since they aren't
+    used."""
     # TODO(@brave/ios): Get this removed in the brave-core builds if possible
     framework_dir = os.path.join(output_dir, "BraveCore.framework")
     os.remove(os.path.join(framework_dir, "Assets.car"))

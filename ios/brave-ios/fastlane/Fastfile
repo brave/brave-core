@@ -9,7 +9,7 @@ default_platform :ios
 platform :ios do
   before_all do |lane, options|
     unless lane == :test || options[:skip_bootstrap]
-      sh("pushd .. && ./bootstrap.sh --ci && popd")
+      sh("pushd .. && ./scripts/bootstrap.sh --ci && popd")
     end
     # Verify clean repo by default
     unless options[:ignore_git_status]
@@ -72,7 +72,7 @@ platform :ios do
     )
   end
 
-  desc "Creates a Brave Beta Release build for TestFlight."
+  desc "Creates a Brave Beta build for TestFlight."
   lane :beta do |options|
     overrideParams = {
       scheme: "Beta",
@@ -84,11 +84,10 @@ platform :ios do
     testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
   end
 
-  desc "Creates a Brave Internal Beta Release build for TestFlight."
-  lane :internal do |options|
-
+  desc "Creates a Brave Nightly build for TestFlight."
+  lane :nightly do |options|
     overrideParams = {
-      scheme: "Dev",
+      scheme: "Nightly",
       export_method: "app-store",
       export_options: {
         manageAppVersionAndBuildNumber: false

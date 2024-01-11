@@ -19,7 +19,7 @@ INCLUDE_SETTINGS_BUNDLE = YES
 
 // Defines Swift Flags, (used as #if/#endif) inside *Swift* code
 // BASE 'inheritence' at end, due to dynamic nature of those flags
-OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_DEV $(OTHER_SWIFT_FLAGS_BASE)
+OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_NIGHTLY $(OTHER_SWIFT_FLAGS_BASE)
 
 GCC_PREPROCESSOR_DEFINITIONS= DEBUG=1
 

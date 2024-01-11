@@ -36,8 +36,8 @@ class DAUTests: XCTestCase {
     let externalBetaExpected = URLQueryItem(name: "channel", value: "beta")
     XCTAssertEqual(dau.channelParam(for: .beta), externalBetaExpected)
 
-    let devExpected = URLQueryItem(name: "channel", value: "developer")
-    XCTAssertEqual(dau.channelParam(for: .dev), devExpected)
+    let nightlyExpected = URLQueryItem(name: "channel", value: "nightly")
+    XCTAssertEqual(dau.channelParam(for: .nightly), nightlyExpected)
 
     let debugExpected = URLQueryItem(name: "channel", value: "developer")
     XCTAssertEqual(dau.channelParam(for: .debug), debugExpected)

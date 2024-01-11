@@ -236,7 +236,7 @@ public class DAU {
       return true
     }
 
-    let daysThatMustPassToSkipDtoi = AppConstants.buildChannel == .dev ? 2 : 30
+    let daysThatMustPassToSkipDtoi = AppConstants.buildChannel == .nightly ? 2 : 30
 
     return (currentDateOrdinal - referenceDateOrdinal) > daysThatMustPassToSkipDtoi
   }
