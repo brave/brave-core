@@ -886,6 +886,7 @@ pub fn clean(
     handle: Handle,
     title_tokens: &HashSet<&str>,
     url: &Url,
+    debug_view: bool,
 ) -> Option<String> {
     let useless = match handle.data() {
         Document(_) => None,
@@ -1002,25 +1003,26 @@ pub fn clean(
 
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        let reason = clean(&mut dom, child.clone(), title_tokens, url);
-        if reason.is_some() {
-            useless_nodes.push((child.clone(), reason.unwrap()));
+        let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, debug_view);
+        if delete_reason.is_some() {
+            useless_nodes.push((child.clone(), delete_reason.unwrap()));
         }
     }
-    for unode in useless_nodes.iter() {
-        let (node, reason) = unode;
-        if node.children().count() > 0 {
+    for useless_node in useless_nodes.iter() {
+        let (node, delete_reason) = useless_node;
+        if debug_view && (node.children().count() > 0) {
             let cut = dom::create_element_simple(dom, "details", "debug-view-useless-node", None);
             let summary = dom::create_element_simple(
                 dom,
                 "summary",
                 "debug-view-useless-node",
-                Some(format!("reason {}", reason).as_str()),
+                Some(format!("reason {}", delete_reason).as_str()),
             );
             dom.append(&cut, NodeOrText::AppendNode(summary));
             dom.reparent_children(&node, &cut);
             dom.append_before_sibling(&node, NodeOrText::AppendNode(cut));
         }
+
         dom.remove_from_parent(&node);
     }
     if dom::is_empty(&handle) {

@@ -73,7 +73,7 @@ where
     let mut dom: Sink =
         parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
-    extract_dom(&mut dom, &url, None, None, None, None, None)
+    extract_dom(&mut dom, &url, None, None, None, None, None, false)
 }
 
 #[derive(Default, Debug)]
@@ -234,6 +234,7 @@ pub fn extract_dom(
     font_family: Option<String>,
     font_size: Option<String>,
     column_width: Option<String>,
+    debug_view: bool,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
 
@@ -258,6 +259,7 @@ pub fn extract_dom(
         top_candidate.clone(),
         &meta.title.split_whitespace().collect::<HashSet<_>>(),
         url,
+        debug_view,
     );
 
     post_process(&mut dom, top_candidate.clone(), &meta);

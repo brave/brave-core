@@ -40,6 +40,8 @@ C_CRewriter* rewriter_new(const C_SpeedReader* speedreader,
                           void (*output_sink)(const char*, size_t, void*),
                           void* output_sink_user_data);
 
+void rewriter_set_debug_view(C_CRewriter* rewriter, bool debug_view);
+
 void rewriter_set_column_width(C_CRewriter* rewriter, const char* width);
 
 void rewriter_set_font_family(C_CRewriter* rewriter, const char* font);
