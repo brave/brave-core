@@ -62,15 +62,25 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         // In order to always show the autoplay permission, set it up with the default value if it
         // doesn't have a current value.
         if (currentValue == null) {
-            currentValue = WebsitePreferenceBridge.isCategoryEnabled(
-                                   browserContextHandle, ContentSettingsType.AUTOPLAY)
-                    ? ContentSettingValues.ALLOW
-                    : ContentSettingValues.BLOCK;
+            currentValue =
+                    WebsitePreferenceBridge.isCategoryEnabled(
+                                    browserContextHandle, ContentSettingsType.AUTOPLAY)
+                            ? ContentSettingValues.ALLOW
+                            : ContentSettingValues.BLOCK;
         }
         // Not possible to embargo AUTOPLAY.
-        BraveReflectionUtil.InvokeMethod(SingleWebsiteSettings.class, this,
-                "setupContentSettingsPreference", Preference.class, preference, Integer.class,
-                currentValue, boolean.class, false);
+        BraveReflectionUtil.InvokeMethod(
+                SingleWebsiteSettings.class,
+                this,
+                "setupContentSettingsPreference",
+                Preference.class,
+                preference,
+                Integer.class,
+                currentValue,
+                boolean.class,
+                false,
+                boolean.class,
+                false);
     }
 
     private void setUpGoogleSignInPreference(Preference preference) {
@@ -79,17 +89,28 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         @Nullable
         Website mSite =
                 (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
-        Integer currentValue = mSite.getContentSetting(
-                browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN);
+        Integer currentValue =
+                mSite.getContentSetting(
+                        browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN);
         if (currentValue == null) {
-            currentValue = WebsitePreferenceBridge.isCategoryEnabled(
-                                   browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN)
-                    ? ContentSettingValues.ASK
-                    : ContentSettingValues.BLOCK;
+            currentValue =
+                    WebsitePreferenceBridge.isCategoryEnabled(
+                                    browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN)
+                            ? ContentSettingValues.ASK
+                            : ContentSettingValues.BLOCK;
         }
-        BraveReflectionUtil.InvokeMethod(SingleWebsiteSettings.class, this,
-                "setupContentSettingsPreference", Preference.class, preference, Integer.class,
-                currentValue, boolean.class, false);
+        BraveReflectionUtil.InvokeMethod(
+                SingleWebsiteSettings.class,
+                this,
+                "setupContentSettingsPreference",
+                Preference.class,
+                preference,
+                Integer.class,
+                currentValue,
+                boolean.class,
+                false,
+                boolean.class,
+                false);
     }
 
     private void setUpLocalhostPreference(Preference preference) {
@@ -98,17 +119,29 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         @Nullable
         Website mSite =
                 (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
-        Integer currentValue = mSite.getContentSetting(
-                browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS);
+        Integer currentValue =
+                mSite.getContentSetting(
+                        browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS);
         if (currentValue == null) {
-            currentValue = WebsitePreferenceBridge.isCategoryEnabled(
-                                   browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS)
-                    ? ContentSettingValues.ASK
-                    : ContentSettingValues.BLOCK;
+            currentValue =
+                    WebsitePreferenceBridge.isCategoryEnabled(
+                                    browserContextHandle,
+                                    ContentSettingsType.BRAVE_LOCALHOST_ACCESS)
+                            ? ContentSettingValues.ASK
+                            : ContentSettingValues.BLOCK;
         }
-        BraveReflectionUtil.InvokeMethod(SingleWebsiteSettings.class, this,
-                "setupContentSettingsPreference", Preference.class, preference, Integer.class,
-                currentValue, boolean.class, false);
+        BraveReflectionUtil.InvokeMethod(
+                SingleWebsiteSettings.class,
+                this,
+                "setupContentSettingsPreference",
+                Preference.class,
+                preference,
+                Integer.class,
+                currentValue,
+                boolean.class,
+                false,
+                boolean.class,
+                false);
     }
 
     private Context getStyledContext() {

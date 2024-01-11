@@ -509,12 +509,18 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreferences", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreference", false, null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreferences",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreference",
+                        false,
+                        null));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", false, null));
         Assert.assertTrue(
@@ -659,13 +665,22 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", true, String.class, int.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreferences", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "setupContentSettingsPreference", true, void.class, Preference.class, Integer.class,
-                boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreferences",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreference",
+                        true,
+                        void.class,
+                        Preference.class,
+                        Integer.class,
+                        boolean.class,
+                        boolean.class));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "getPermissionInfo", true, PermissionInfo.class, int.class));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
