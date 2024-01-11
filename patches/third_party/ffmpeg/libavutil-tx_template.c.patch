@@ -1,5 +1,5 @@
 diff --git a/libavutil/tx_template.c b/libavutil/tx_template.c
-index 8dc3d2519c13abec090b374fa5ed0f11f7153849..2fbcd471000e5b6c7593c0e1d860d79f8a27046a 100644
+index 8dc3d2519c13abec090b374fa5ed0f11f7153849..a5d156d2789ec521c034edd929e04b2ad09a833b 100644
 --- a/libavutil/tx_template.c
 +++ b/libavutil/tx_template.c
 @@ -27,6 +27,29 @@
@@ -32,8 +32,14 @@ index 8dc3d2519c13abec090b374fa5ed0f11f7153849..2fbcd471000e5b6c7593c0e1d860d79f
  #define SR_POW2_TABLES \
      SR_TABLE(8)        \
      SR_TABLE(16)       \
-@@ -49,7 +72,7 @@
-     SR_TABLE(2097152)   \
+@@ -43,13 +66,9 @@
+     SR_TABLE(32768)    \
+     SR_TABLE(65536)    \
+     SR_TABLE(131072)   \
+-    SR_TABLE(262144)   \
+-    SR_TABLE(524288)   \
+-    SR_TABLE(1048576)   \
+-    SR_TABLE(2097152)   \
  
  #define SR_TABLE(len) \
 -    TABLE_DEF(len, len/4 + 1);
@@ -41,7 +47,7 @@ index 8dc3d2519c13abec090b374fa5ed0f11f7153849..2fbcd471000e5b6c7593c0e1d860d79f
  /* Power of two tables */
  SR_POW2_TABLES
  #undef SR_TABLE
-@@ -68,6 +91,7 @@ typedef struct FFTabInitData {
+@@ -68,6 +87,7 @@ typedef struct FFTabInitData {
  static av_cold void TX_TAB(ff_tx_init_tab_ ##len)(void)            \
  {                                                                  \
      double freq = 2*M_PI/len;                                      \
@@ -49,3 +55,25 @@ index 8dc3d2519c13abec090b374fa5ed0f11f7153849..2fbcd471000e5b6c7593c0e1d860d79f
      TXSample *tab = TX_TAB(ff_tx_tab_ ##len);                      \
                                                                     \
      for (int i = 0; i < len/4; i++)                                \
+@@ -721,10 +741,6 @@ DECL_SR_CODELET(16384,8192,4096)
+ DECL_SR_CODELET(32768,16384,8192)
+ DECL_SR_CODELET(65536,32768,16384)
+ DECL_SR_CODELET(131072,65536,32768)
+-DECL_SR_CODELET(262144,131072,65536)
+-DECL_SR_CODELET(524288,262144,131072)
+-DECL_SR_CODELET(1048576,524288,262144)
+-DECL_SR_CODELET(2097152,1048576,524288)
+ 
+ static av_cold int TX_NAME(ff_tx_fft_init)(AVTXContext *s,
+                                            const FFTXCodelet *cd,
+@@ -2157,10 +2173,6 @@ const FFTXCodelet * const TX_NAME(ff_tx_codelet_list)[] = {
+     &TX_NAME(ff_tx_fft32768_ns_def),
+     &TX_NAME(ff_tx_fft65536_ns_def),
+     &TX_NAME(ff_tx_fft131072_ns_def),
+-    &TX_NAME(ff_tx_fft262144_ns_def),
+-    &TX_NAME(ff_tx_fft524288_ns_def),
+-    &TX_NAME(ff_tx_fft1048576_ns_def),
+-    &TX_NAME(ff_tx_fft2097152_ns_def),
+ 
+     /* Prime factor codelets */
+     &TX_NAME(ff_tx_fft3_ns_def),
