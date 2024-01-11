@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
@@ -74,15 +75,15 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
-                                  std::move(callback)));
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kNone,
+      base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void PostOauth::OnRequest(PostOauthCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {

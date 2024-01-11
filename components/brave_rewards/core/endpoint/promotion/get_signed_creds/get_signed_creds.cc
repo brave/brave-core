@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -102,13 +103,15 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(promotion_id, claim_id);
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 

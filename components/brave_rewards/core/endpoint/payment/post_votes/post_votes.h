@@ -59,7 +59,7 @@ class PostVotes {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
+  void OnRequest(PostVotesCallback callback, mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

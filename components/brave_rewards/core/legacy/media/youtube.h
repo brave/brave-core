@@ -104,6 +104,9 @@ class YouTube {
 
   void FetchDataFromUrl(const std::string& url, LegacyLoadURLCallback callback);
 
+  void OnUrlFetched(LegacyLoadURLCallback callback,
+                    mojom::UrlResponsePtr repsonse);
+
   void WatchPath(uint64_t window_id, const mojom::VisitData& visit_data);
 
   void OnMediaPublisherActivity(mojom::Result result,

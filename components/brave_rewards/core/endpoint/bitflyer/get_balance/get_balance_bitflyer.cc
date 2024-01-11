@@ -12,10 +12,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -95,13 +94,15 @@ void GetBalance::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void GetBalance::OnRequest(GetBalanceCallback callback,
                            mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 

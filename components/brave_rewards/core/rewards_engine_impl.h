@@ -56,6 +56,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 #endif
 
 class InitializationManager;
+class URLLoader;
 class LinkageChecker;
 
 namespace wallet_provider {
@@ -254,32 +255,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   // mojom::RewardsEngineClient helpers begin (in the order of appearance in
   // Mojom)
-  template <typename Callback>
-  void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
-    DCHECK(request);
-    if (IsShuttingDown()) {
-      BLOG(1, request->url + " will not be executed as we are shutting down");
-      return;
-    }
-
-    if (!request->skip_log) {
-      BLOG(5,
-           UrlRequestToString(request->url, request->headers, request->content,
-                              request->content_type, request->method));
-    }
-
-    if constexpr (std::is_same_v<Callback, LoadURLCallback>) {
-      client_->LoadURL(std::move(request), std::move(callback));
-    } else {
-      client_->LoadURL(std::move(request),
-                       base::BindOnce(
-                           [](LegacyLoadURLCallback callback,
-                              mojom::UrlResponsePtr response) {
-                             callback(std::move(response));
-                           },
-                           std::move(callback)));
-    }
-  }
 
   template <typename T>
   T GetState(const std::string& name) {
@@ -406,8 +381,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
  private:
   bool IsReady() const;
 
-  bool IsShuttingDown() const;
-
   void OnInitializationComplete(InitializeCallback callback, bool success);
 
   void OnShutdownComplete(ShutdownCallback callback, bool success);
@@ -418,6 +391,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
 
   std::tuple<std::unique_ptr<InitializationManager>,
+             std::unique_ptr<URLLoader>,
              std::unique_ptr<LinkageChecker>>
       helpers_;
 

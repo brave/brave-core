@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
 namespace brave_rewards::internal {

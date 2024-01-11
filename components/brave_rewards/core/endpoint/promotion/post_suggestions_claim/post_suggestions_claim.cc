@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -97,13 +98,14 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
     return;
   }
 
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
                                      mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   auto result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {
     std::move(callback).Run(result, "");

@@ -8,6 +8,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -71,13 +72,15 @@ void PutSafetynet::Request(const std::string& token,
   request->content = GeneratePayload(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PutSafetynet::OnRequest(PutSafetynetCallback callback,
                              mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
