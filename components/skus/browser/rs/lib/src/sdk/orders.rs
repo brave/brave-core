@@ -191,7 +191,7 @@ where
 
                 let body = to_vec(&order).or(Err(InternalError::SerializationFailed))?;
 
-                let req = builder.body(body).unwrap();
+                let req = builder.body(body)?;
                 let resp = self.fetch(req).await?;
 
                 match resp.status() {
@@ -219,7 +219,7 @@ where
                     .method("GET")
                     .uri(format!("{}/v1/orders/{}", self.base_url, order_id));
 
-                let req = builder.body(vec![]).unwrap();
+                let req = builder.body(vec![])?;
                 let resp = self.fetch(req).await?;
 
                 match resp.status() {
@@ -250,7 +250,7 @@ where
 
                 let receipt_bytes = receipt.as_bytes().to_vec();
                 let req =
-                    builder.body(receipt_bytes).map_err(|_| InternalError::SerializationFailed)?;
+                    builder.body(receipt_bytes)?;
 
                 let resp = self.fetch(req).await?;
                 event!(

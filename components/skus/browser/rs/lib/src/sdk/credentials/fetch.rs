@@ -203,8 +203,7 @@ where
                                         "{}/v1/orders/{}/credentials/items/{}/batches/{}",
                                         self.base_url, order_id, item.id, request_id,
                                     ))
-                                    .body(body)
-                                    .unwrap();
+                                    .body(body)?;
 
                                 let resp = self.fetch(req).await?;
 
@@ -258,8 +257,7 @@ where
                                     "{}/v1/orders/{}/credentials/items/{}/batches/{}",
                                     self.base_url, order_id, item_id, request_id,
                                 ))
-                                .body(body)
-                                .unwrap();
+                                .body(body)?;
 
                             let resp = self.fetch(req).await?;
                             let app_err: APIError =
@@ -342,7 +340,7 @@ where
                         self.base_url, order_id, item_id, request_id
                     ));
 
-                    let req = builder.body(vec![]).unwrap();
+                    let req = builder.body(vec![])?;
 
                     let resp = self.fetch(req).await?;
 
