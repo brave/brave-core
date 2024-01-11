@@ -106,6 +106,7 @@ function usePersistedState<T>(name: string, defaultValue: T) {
 }
 
 const Marker = <Icon name='arrow-small-right' className='marker' />
+const PlaceholderMarker = <Icon />
 
 export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView } = useBraveNews()
@@ -139,9 +140,12 @@ export default function Sidebar() {
     <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
     <Section open>
       <summary>
-        {Marker}
+        {subscribedChannels.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsChannelsHeader')}
-        <SettingsButton size="tiny" onClick={() => setCustomizePage('news')}>
+        <SettingsButton size="tiny" onClick={e => {
+          setCustomizePage('news')
+          e.stopPropagation()
+        }}>
           <Icon name='plus-add' />
         </SettingsButton>
       </summary>
@@ -155,9 +159,12 @@ export default function Sidebar() {
     </Section>
     <Section open>
       <summary>
-        {Marker}
+        {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsPublishersHeading')}
-        <SettingsButton size="tiny" onClick={() => setCustomizePage('popular')}>
+        <SettingsButton size="tiny" onClick={e => {
+          setCustomizePage('popular')
+          e.stopPropagation()
+        }}>
           <Icon name='plus-add' />
         </SettingsButton>
       </summary>
