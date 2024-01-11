@@ -11,9 +11,9 @@
 
 [package]
 edition = "2018"
-rust-version = "1.49.0"
+rust-version = "1.56.0"
 name = "tracing"
-version = "0.1.37"
+version = "0.1.40"
 authors = [
     "Eliza Weisman <eliza@buoyant.io>",
     "Tokio Contributors <team@tokio.rs>",
@@ -40,13 +40,13 @@ repository = "https://github.com/tokio-rs/tracing"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = [
-    "--cfg",
-    "docsrs",
+rustc-args = [
     "--cfg",
     "tracing_unstable",
 ]
-rustc-args = [
+rustdoc-args = [
+    "--cfg",
+    "docsrs",
     "--cfg",
     "tracing_unstable",
 ]
@@ -87,9 +87,6 @@ harness = false
 name = "span_repeated"
 harness = false
 
-[dependencies.cfg-if]
-version = "1.0.0"
-
 [dependencies.log]
 version = "0.4.17"
 optional = true
@@ -98,16 +95,20 @@ optional = true
 version = "0.2.9"
 
 [dependencies.tracing-attributes]
-version = "0.1.23"
+version = "0.1.27"
 optional = true
 
 [dependencies.tracing-core]
-version = "0.1.30"
+version = "0.1.32"
 default-features = false
 
 [dev-dependencies.criterion]
 version = "0.3.6"
-default-features = false
+default_features = false
+
+[dev-dependencies.futures]
+version = "0.3.21"
+default_features = false
 
 [dev-dependencies.log]
 version = "0.4.17"
