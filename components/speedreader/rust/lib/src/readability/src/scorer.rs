@@ -1002,7 +1002,7 @@ pub fn clean(
         ProcessingInstruction(_) => unreachable!(),
     };
 
-    if (!is_root && useless.is_some()) {
+    if !is_root && useless.is_some() {
         return useless;
     }
 
