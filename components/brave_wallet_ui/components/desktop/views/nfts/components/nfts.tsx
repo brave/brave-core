@@ -43,6 +43,7 @@ import {
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
+import { makePortfolioAssetRoute } from '../../../../../utils/routes-utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -159,15 +160,7 @@ export const Nfts = (props: Props) => {
 
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      history.push(
-        `${
-          WalletRoutes.PortfolioNFTs //
-        }/${
-          asset.chainId //
-        }/${
-          asset.contractAddress //
-        }/${asset.tokenId}`
-      )
+      history.push(makePortfolioAssetRoute(true, getAssetIdKey(asset)))
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
