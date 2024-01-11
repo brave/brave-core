@@ -208,13 +208,20 @@ PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
-    if (GURL media_url(*src);
-        !media_url.SchemeIs(url::kHttpsScheme) && !media_url.SchemeIsBlob()) {
+    GURL media_url(*src);
+    if (!media_url.SchemeIs(url::kHttpsScheme) && !media_url.SchemeIsBlob()) {
       continue;
     }
 
-    item->media_source = GURL(*src);
-    item->media_path = GURL(*src);
+    if (media_url.SchemeIsBlob() &&
+        !GURL(media_url.path()).SchemeIs(url::kHttpsScheme)) {
+      // Double checking if the blob: is followed by https:// scheme.
+      // https://github.com/brave/playlist-component/pull/39#discussion_r1445408827
+      continue;
+    }
+
+    item->media_source = media_url;
+    item->media_path = media_url;
     item->is_blob_from_media_source = *is_blob_from_media_source;
     if (!CanCacheMedia(item)) {
       LOG(ERROR)
