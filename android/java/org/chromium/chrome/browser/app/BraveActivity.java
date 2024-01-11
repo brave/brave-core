@@ -402,7 +402,6 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_speedreader_id) {
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
-            BraveLeoUtils.verifySubscription(null);
             openBraveLeo();
         } else {
             return false;
@@ -1785,7 +1784,8 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private void openBraveLeo() {
+    public void openBraveLeo() {
+        BraveLeoUtils.verifySubscription(null);
         BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
     }
 

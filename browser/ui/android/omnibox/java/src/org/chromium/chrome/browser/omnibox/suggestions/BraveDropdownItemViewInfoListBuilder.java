@@ -82,7 +82,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             mImageSupplier = new OmniboxImageSupplier(context);
             mBraveLeoSuggestionProcessor =
                     new BraveLeoSuggestionProcessor(
-                            context, host, textProvider, mImageSupplier, mLeoAutocompleteDelegate);
+                            context,
+                            host,
+                            textProvider,
+                            mImageSupplier,
+                            mLeoAutocompleteDelegate,
+                            mActivityTabSupplier);
         }
     }
 
