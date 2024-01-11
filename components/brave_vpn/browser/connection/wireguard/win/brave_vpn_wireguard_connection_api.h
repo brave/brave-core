@@ -14,6 +14,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
 #include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
+#include "components/version_info/channel.h"
 
 class PrefService;
 
@@ -25,6 +26,7 @@ class BraveVPNWireguardConnectionAPI
   BraveVPNWireguardConnectionAPI(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
+      version_info::Channel channel,
       base::RepeatingCallback<bool()> service_installer);
 
   BraveVPNWireguardConnectionAPI(const BraveVPNWireguardConnectionAPI&) =
@@ -52,6 +54,7 @@ class BraveVPNWireguardConnectionAPI
   void ResetServiceWatcher();
 
   std::unique_ptr<brave::ServiceWatcher> service_watcher_;
+  version_info::Channel channel_ = version_info::Channel::UNKNOWN;
   base::WeakPtrFactory<BraveVPNWireguardConnectionAPI> weak_factory_{this};
 };
 

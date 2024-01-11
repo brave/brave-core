@@ -10,6 +10,7 @@
 #include "base/test/test_reg_util_win.h"
 #include "base/version.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
 #include "chrome/installer/util/set_reg_value_work_item.h"
@@ -110,9 +111,10 @@ TEST_F(BraveSetupInstallWorkerTest, CleanupAlreadyRan) {
   ScopedNTRegistryTestingOverride nt_override(nt::HKLM, temp);
 
   // Write out a value `1` (simulating already ran)
-  base::win::RegKey key(HKEY_LOCAL_MACHINE,
-                        brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath,
-                        KEY_ALL_ACCESS);
+  base::win::RegKey key(
+      HKEY_LOCAL_MACHINE,
+      brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath().c_str(),
+      KEY_ALL_ACCESS);
   DWORD cleanup_ran = 1;
   key.WriteValue(brave_vpn::kBraveVpnOneTimeServiceCleanupValue, cleanup_ran);
 
@@ -134,9 +136,10 @@ TEST_F(BraveSetupInstallWorkerTest, CleanupNotRanYetNoKey) {
       example_path_, example_version_, &work_item_list, true));
 
   // Ensure it set `ran` to `1`
-  base::win::RegKey key(HKEY_LOCAL_MACHINE,
-                        brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath,
-                        KEY_ALL_ACCESS);
+  base::win::RegKey key(
+      HKEY_LOCAL_MACHINE,
+      brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath().c_str(),
+      KEY_ALL_ACCESS);
   DWORD cleanup_ran = 0;
   LONG rv = key.ReadValueDW(brave_vpn::kBraveVpnOneTimeServiceCleanupValue,
                             &cleanup_ran);
@@ -153,9 +156,10 @@ TEST_F(BraveSetupInstallWorkerTest, CleanupNotRanKeyExists) {
   ScopedNTRegistryTestingOverride nt_override(nt::HKLM, temp);
 
   // Write out a value `0` (ex: not `1`)
-  base::win::RegKey key(HKEY_LOCAL_MACHINE,
-                        brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath,
-                        KEY_ALL_ACCESS);
+  base::win::RegKey key(
+      HKEY_LOCAL_MACHINE,
+      brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath().c_str(),
+      KEY_ALL_ACCESS);
   DWORD cleanup_ran = 0;
   key.WriteValue(brave_vpn::kBraveVpnOneTimeServiceCleanupValue, cleanup_ran);
 

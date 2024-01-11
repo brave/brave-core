@@ -27,6 +27,7 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/version_info/channel.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -149,6 +150,10 @@ class BraveVpnService :
                            const std::string& bundle_id);
   void GetSubscriberCredentialV12(ResponseCallback callback);
 
+#if BUILDFLAG(IS_WIN)
+  void set_channel(version_info::Channel channel) { channel_ = channel; }
+#endif
+
   // new_usage should be set to true if a new VPN connection was just
   // established.
   void RecordP3A(bool new_usage);
@@ -220,6 +225,10 @@ class BraveVpnService :
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);
+
+#if BUILDFLAG(IS_WIN)
+  version_info::Channel channel_ = version_info::Channel::UNKNOWN;
+#endif
 
   raw_ptr<PrefService> local_prefs_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;

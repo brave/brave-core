@@ -30,6 +30,7 @@ source_set("common") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win:win",
+    "//chrome/common:channel_info",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
     "//components/version_info",
@@ -54,6 +55,8 @@ source_set("lib") {
     "//base",
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/common:channel_info",
+    "//components/version_info:channel",
   ]
 
   libs = [

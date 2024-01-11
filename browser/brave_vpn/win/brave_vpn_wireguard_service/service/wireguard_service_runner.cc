@@ -28,6 +28,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/brave_wireguard_manager.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "chrome/common/channel_info.h"
 
 namespace brave_vpn {
 
@@ -70,7 +71,7 @@ HRESULT WireguardServiceRunner::RegisterClassObject() {
   static_assert(std::extent<decltype(cookies_)>() == std::size(class_factories),
                 "Arrays cookies_ and class_factories must be the same size.");
 
-  IID class_ids[] = {GetBraveVpnWireguardServiceClsid()};
+  IID class_ids[] = {GetBraveVpnWireguardServiceClsid(channel_)};
 
   DCHECK_EQ(std::size(cookies_), std::size(class_ids));
   static_assert(std::extent<decltype(cookies_)>() == std::size(class_ids),
@@ -96,7 +97,9 @@ void WireguardServiceRunner::UnregisterClassObject() {
 }
 
 WireguardServiceRunner::WireguardServiceRunner()
-    : service_status_handle_(nullptr), service_status_() {
+    : service_status_handle_(nullptr),
+      service_status_(),
+      channel_(chrome::GetChannel()) {
   service_status_.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
   service_status_.dwCurrentState = SERVICE_STOPPED;
   service_status_.dwControlsAccepted = SERVICE_ACCEPT_STOP;
@@ -106,7 +109,7 @@ WireguardServiceRunner::~WireguardServiceRunner() = default;
 
 int WireguardServiceRunner::RunAsService() {
   const std::wstring& service_name(
-      brave_vpn::GetBraveVpnWireguardServiceName());
+      brave_vpn::GetBraveVpnWireguardServiceName(channel_));
   const SERVICE_TABLE_ENTRY dispatch_table[] = {
       {const_cast<LPTSTR>(service_name.c_str()),
        &WireguardServiceRunner::WireguardServiceRunnerEntry},
@@ -123,7 +126,7 @@ int WireguardServiceRunner::RunAsService() {
 
 void WireguardServiceRunner::WireguardServiceRunnerImpl() {
   service_status_handle_ = ::RegisterServiceCtrlHandler(
-      brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
+      brave_vpn::GetBraveVpnWireguardServiceName(channel_).c_str(),
       &WireguardServiceRunner::ServiceControlHandler);
   if (service_status_handle_ == nullptr) {
     VLOG(1) << "RegisterServiceCtrlHandler failed";

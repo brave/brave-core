@@ -9,28 +9,32 @@
 #include <optional>
 
 #include "base/files/file_path.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
-std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
-std::optional<base::FilePath> GetLastUsedConfigPath();
-bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
-void RemoveStorageKey();
+std::wstring GetBraveVpnWireguardServiceRegistryStoragePath(
+    version_info::Channel channel);
+std::optional<base::FilePath> GetLastUsedConfigPath(
+    version_info::Channel channel);
+bool UpdateLastUsedConfigPath(const base::FilePath& config_path,
+                              version_info::Channel channel);
+void RemoveStorageKey(version_info::Channel channel);
 }  // namespace wireguard
 
-bool IsVPNTrayIconEnabled();
-void EnableVPNTrayIcon(bool value);
+bool IsVPNTrayIconEnabled(version_info::Channel channel);
+void EnableVPNTrayIcon(bool value, version_info::Channel channel);
 
-void SetWireguardActive(bool value);
-bool IsWireguardActive();
+void SetWireguardActive(bool value, version_info::Channel channel);
+bool IsWireguardActive(version_info::Channel channel);
 
-bool ShouldFallbackToIKEv2();
-void IncrementWireguardTunnelUsageFlag();
-void ResetWireguardTunnelUsageFlag();
+bool ShouldFallbackToIKEv2(version_info::Channel channel);
+void IncrementWireguardTunnelUsageFlag(version_info::Channel channel);
+void ResetWireguardTunnelUsageFlag(version_info::Channel channel);
 
-void WriteConnectionState(int state);
-std::optional<int32_t> GetConnectionState();
+void WriteConnectionState(int state, version_info::Channel channel);
+std::optional<int32_t> GetConnectionState(version_info::Channel channel);
 
 }  // namespace brave_vpn
 

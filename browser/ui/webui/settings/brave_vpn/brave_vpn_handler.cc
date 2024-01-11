@@ -21,8 +21,8 @@
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
-#include "components/version_info/version_info.h"
 
 BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
@@ -52,7 +52,7 @@ void BraveVpnHandler::RegisterMessages() {
 void BraveVpnHandler::OnProtocolChanged() {
   auto enabled =
       brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state());
-  brave_vpn::SetWireguardActive(enabled);
+  brave_vpn::SetWireguardActive(enabled, chrome::GetChannel());
 }
 
 void BraveVpnHandler::OnWireguardServiceInstalled(
@@ -67,8 +67,8 @@ void BraveVpnHandler::HandleIsWireguardServiceInstalled(
   AllowJavascript();
 
   ResolveJavascriptCallback(
-      args[0],
-      base::Value(brave_vpn::wireguard::IsWireguardServiceInstalled()));
+      args[0], base::Value(brave_vpn::wireguard::IsWireguardServiceInstalled(
+                   chrome::GetChannel())));
 }
 
 void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {

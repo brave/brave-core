@@ -39,6 +39,7 @@
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
@@ -79,7 +80,6 @@
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "chrome/common/channel_info.h"
 #endif
 
 using content::WebContents;
@@ -130,8 +130,10 @@ void ShowBraveVPNBubble(Browser* browser) {
 
 void ToggleBraveVPNTrayIcon() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
-  if (brave_vpn::IsVPNTrayIconEnabled()) {
+  const auto channel = chrome::GetChannel();
+  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled(channel),
+                               channel);
+  if (brave_vpn::IsVPNTrayIconEnabled(channel)) {
     brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
   }
 #endif

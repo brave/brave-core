@@ -18,6 +18,8 @@ bool IsNetworkFiltersInstalled();
 std::wstring GetBraveVPNConnectionName();
 std::wstring GetBraveVpnHelperServiceDisplayName();
 std::wstring GetBraveVpnHelperServiceName();
+std::wstring GetBraveVpnHelperRegistryStoragePath();
+std::wstring GetBraveVpnOneTimeServiceCleanupStoragePath();
 
 }  // namespace brave_vpn
 

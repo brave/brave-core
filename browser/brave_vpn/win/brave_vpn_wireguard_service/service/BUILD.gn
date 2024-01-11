@@ -22,7 +22,9 @@ source_set("service") {
     "//base",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/common:channel_info",
     "//chrome/installer/util:with_no_strings",
+    "//components/version_info:channel",
   ]
   libs = [ "runtimeobject.lib" ]
 }

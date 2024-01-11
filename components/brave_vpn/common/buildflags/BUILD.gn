@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/config.gni")
 import("//build/buildflag_header.gni")
 import("buildflags.gni")
 
@@ -13,43 +12,4 @@ buildflag_header("buildflags") {
     "ENABLE_BRAVE_VPN=$enable_brave_vpn",
     "ENABLE_BRAVE_VPN_WIREGUARD=$enable_brave_vpn_wireguard",
   ]
-
-  if (is_win) {
-    if (brave_channel == "development") {
-      flags += [
-        "CHANNEL_NIGHTLY=0",
-        "CHANNEL_BETA=0",
-        "CHANNEL_DEV=0",
-        "CHANNEL_DEVELOPMENT=1",
-      ]
-    } else if (brave_channel == "nightly") {
-      flags += [
-        "CHANNEL_NIGHTLY=1",
-        "CHANNEL_BETA=0",
-        "CHANNEL_DEV=0",
-        "CHANNEL_DEVELOPMENT=0",
-      ]
-    } else if (brave_channel == "dev") {
-      flags += [
-        "CHANNEL_NIGHTLY=0",
-        "CHANNEL_BETA=0",
-        "CHANNEL_DEV=1",
-        "CHANNEL_DEVELOPMENT=0",
-      ]
-    } else if (brave_channel == "beta") {
-      flags += [
-        "CHANNEL_NIGHTLY=0",
-        "CHANNEL_BETA=1",
-        "CHANNEL_DEV=0",
-        "CHANNEL_DEVELOPMENT=0",
-      ]
-    } else {  # stable
-      flags += [
-        "CHANNEL_NIGHTLY=0",
-        "CHANNEL_BETA=0",
-        "CHANNEL_DEV=0",
-        "CHANNEL_DEVELOPMENT=0",
-      ]
-    }
-  }
 }

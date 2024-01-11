@@ -12,14 +12,16 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
 
-bool IsBraveVPNWireguardTunnelServiceRunning();
-bool IsWireguardServiceInstalled();
-void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
+bool IsBraveVPNWireguardTunnelServiceRunning(version_info::Channel channel);
+bool IsWireguardServiceInstalled(version_info::Channel channel);
+void WireguardGenerateKeypair(version_info::Channel channel,
+                              WireguardGenerateKeypairCallback callback);
 std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
@@ -27,8 +29,10 @@ std::optional<std::string> CreateWireguardConfig(
     const std::string& mapped_ipv4_address,
     const std::string& dns_servers);
 void EnableBraveVpnWireguardService(const std::string& config,
+                                    version_info::Channel channel,
                                     BooleanCallback callback);
-void DisableBraveVpnWireguardService(BooleanCallback callback);
+void DisableBraveVpnWireguardService(version_info::Channel channel,
+                                     BooleanCallback callback);
 
 void SetWireguardServiceRegisteredForTesting(bool value);
 void ShowBraveVpnStatusTrayIcon();

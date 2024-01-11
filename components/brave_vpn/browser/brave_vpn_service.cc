@@ -137,7 +137,7 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
 #if BUILDFLAG(IS_WIN)
-  WriteConnectionState(static_cast<int>(state));
+  WriteConnectionState(static_cast<int>(state), channel_);
 #endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.

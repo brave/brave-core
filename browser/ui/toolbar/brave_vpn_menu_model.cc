@@ -14,6 +14,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -62,6 +63,6 @@ bool BraveVPNMenuModel::IsTrayIconEnabled() const {
     return tray_icon_enabled_for_testing_.value();
   }
 
-  return brave_vpn::IsVPNTrayIconEnabled();
+  return brave_vpn::IsVPNTrayIconEnabled(chrome::GetChannel());
 }
 #endif

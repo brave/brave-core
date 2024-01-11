@@ -20,6 +20,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/channel_info.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -65,6 +66,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
+  vpn_service->set_channel(chrome::GetChannel());
   if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     auto* observer_service =
         brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()

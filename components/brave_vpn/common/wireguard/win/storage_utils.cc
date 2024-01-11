@@ -25,11 +25,14 @@ constexpr wchar_t kBraveWireguardActiveKeyName[] = L"WireGuardActive";
 constexpr wchar_t kBraveWireguardConnectionStateName[] = L"ConnectionState";
 constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 3;
 
-std::optional<base::win::RegKey> GetStorageKey(HKEY root_key, REGSAM access) {
+std::optional<base::win::RegKey> GetStorageKey(HKEY root_key,
+                                               REGSAM access,
+                                               version_info::Channel channel) {
   base::win::RegKey storage;
   if (storage.Create(
           root_key,
-          brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath()
+          brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(
+              channel)
               .c_str(),
           access) != ERROR_SUCCESS) {
     return std::nullopt;
@@ -42,15 +45,17 @@ std::optional<base::win::RegKey> GetStorageKey(HKEY root_key, REGSAM access) {
 
 namespace wireguard {
 
-std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
+std::wstring GetBraveVpnWireguardServiceRegistryStoragePath(
+    version_info::Channel channel) {
   return kBraveVpnWireguardServiceRegistryStoragePath +
-         brave_vpn::GetBraveVpnWireguardServiceName();
+         brave_vpn::GetBraveVpnWireguardServiceName(channel);
 }
 
 // Returns last used config path.
 // We keep config file between launches to be able to reuse it outside of Brave.
-std::optional<base::FilePath> GetLastUsedConfigPath() {
-  auto storage = GetStorageKey(HKEY_LOCAL_MACHINE, KEY_QUERY_VALUE);
+std::optional<base::FilePath> GetLastUsedConfigPath(
+    version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_LOCAL_MACHINE, KEY_QUERY_VALUE, channel);
   if (!storage.has_value()) {
     return std::nullopt;
   }
@@ -64,11 +69,13 @@ std::optional<base::FilePath> GetLastUsedConfigPath() {
   return base::FilePath(value);
 }
 
-bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
+bool UpdateLastUsedConfigPath(const base::FilePath& config_path,
+                              version_info::Channel channel) {
   base::win::RegKey storage;
-  if (storage.Create(HKEY_LOCAL_MACHINE,
-                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-                     KEY_SET_VALUE) != ERROR_SUCCESS) {
+  if (storage.Create(
+          HKEY_LOCAL_MACHINE,
+          GetBraveVpnWireguardServiceRegistryStoragePath(channel).c_str(),
+          KEY_SET_VALUE) != ERROR_SUCCESS) {
     return false;
   }
   if (storage.WriteValue(kBraveWireguardConfigKeyName,
@@ -78,11 +85,12 @@ bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
   return true;
 }
 
-void RemoveStorageKey() {
+void RemoveStorageKey(version_info::Channel channel) {
   if (base::win::RegKey(HKEY_LOCAL_MACHINE,
                         kBraveVpnWireguardServiceRegistryStoragePath,
                         KEY_ALL_ACCESS)
-          .DeleteKey(brave_vpn::GetBraveVpnWireguardServiceName().c_str()) !=
+          .DeleteKey(
+              brave_vpn::GetBraveVpnWireguardServiceName(channel).c_str()) !=
       ERROR_SUCCESS) {
     VLOG(1) << "Failed to delete storage registry value";
   }
@@ -90,8 +98,8 @@ void RemoveStorageKey() {
 
 }  // namespace wireguard
 
-bool IsVPNTrayIconEnabled() {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE);
+bool IsVPNTrayIconEnabled(version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE, channel);
   if (!storage.has_value()) {
     return true;
   }
@@ -104,8 +112,8 @@ bool IsVPNTrayIconEnabled() {
   return value == 1;
 }
 
-void EnableVPNTrayIcon(bool value) {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE);
+void EnableVPNTrayIcon(bool value, version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE, channel);
   if (!storage.has_value()) {
     return;
   }
@@ -116,8 +124,8 @@ void EnableVPNTrayIcon(bool value) {
   }
 }
 
-void SetWireguardActive(bool value) {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE);
+void SetWireguardActive(bool value, version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE, channel);
   if (!storage.has_value()) {
     return;
   }
@@ -128,8 +136,8 @@ void SetWireguardActive(bool value) {
   }
 }
 
-bool IsWireguardActive() {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE);
+bool IsWireguardActive(version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE, channel);
   if (!storage.has_value()) {
     return true;
   }
@@ -144,8 +152,8 @@ bool IsWireguardActive() {
 
 // If the tunnel service failed to launch or crashed more than the limit we
 // should ask user for the fallback to IKEv2 implementation.
-bool ShouldFallbackToIKEv2() {
-  auto storage = GetStorageKey(HKEY_LOCAL_MACHINE, KEY_READ);
+bool ShouldFallbackToIKEv2(version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_LOCAL_MACHINE, KEY_READ, channel);
   if (!storage.has_value()) {
     return true;
   }
@@ -153,14 +161,15 @@ bool ShouldFallbackToIKEv2() {
   DWORD launch = 0;
   storage->ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
   return launch >= kBraveVpnWireguardMaxFailedAttempts ||
-         !wireguard::IsWireguardServiceInstalled();
+         !wireguard::IsWireguardServiceInstalled(channel);
 }
 
 // Increments number of usages for the wireguard tunnel service.
-void IncrementWireguardTunnelUsageFlag() {
+void IncrementWireguardTunnelUsageFlag(version_info::Channel channel) {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
-      wireguard::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+      wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(channel)
+          .c_str(),
       KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open wireguard service storage";
@@ -173,10 +182,11 @@ void IncrementWireguardTunnelUsageFlag() {
 }
 
 // Resets number of launches for the wireguard tunnel service.
-void ResetWireguardTunnelUsageFlag() {
+void ResetWireguardTunnelUsageFlag(version_info::Channel channel) {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
-      wireguard::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+      wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(channel)
+          .c_str(),
       KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open vpn service storage";
@@ -185,8 +195,8 @@ void ResetWireguardTunnelUsageFlag() {
   key.DeleteValue(kBraveVpnWireguardCounterOfTunnelUsage);
 }
 
-void WriteConnectionState(int value) {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE);
+void WriteConnectionState(int value, version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE, channel);
   if (!storage.has_value()) {
     return;
   }
@@ -196,8 +206,8 @@ void WriteConnectionState(int value) {
   }
 }
 
-std::optional<int32_t> GetConnectionState() {
-  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE);
+std::optional<int32_t> GetConnectionState(version_info::Channel channel) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE, channel);
   if (!storage.has_value()) {
     return std::nullopt;
   }

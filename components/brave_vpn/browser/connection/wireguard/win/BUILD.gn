@@ -27,6 +27,7 @@ source_set("win") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//components/version_info:channel",
     "//net",
     "//services/network/public/cpp",
   ]

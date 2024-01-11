@@ -15,6 +15,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
@@ -25,6 +26,8 @@
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
@@ -61,7 +64,7 @@ bool IsBraveVPNHelperServiceInstalled() {
 bool IsNetworkFiltersInstalled() {
   DCHECK(IsBraveVPNHelperServiceInstalled());
   base::win::RegKey service_storage_key(
-      HKEY_LOCAL_MACHINE, brave_vpn::kBraveVpnHelperRegistryStoragePath,
+      HKEY_LOCAL_MACHINE, GetBraveVpnHelperRegistryStoragePath().c_str(),
       KEY_READ);
   if (!service_storage_key.Valid()) {
     return false;
@@ -89,6 +92,42 @@ std::wstring GetBraveVpnHelperServiceName() {
   std::wstring name = GetBraveVpnHelperServiceDisplayName();
   name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
   return name;
+}
+
+std::wstring GetBraveVpnHelperRegistryStoragePath() {
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::CANARY:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceNightly";
+    case version_info::Channel::DEV:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDev";
+    case version_info::Channel::BETA:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceBeta";
+    case version_info::Channel::STABLE:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperService";
+    default:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDevelopment";
+  }
+
+  NOTREACHED_NORETURN();
+}
+
+std::wstring GetBraveVpnOneTimeServiceCleanupStoragePath() {
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::CANARY:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupNightl"
+             L"y";
+    case version_info::Channel::DEV:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupDev";
+    case version_info::Channel::BETA:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupBeta";
+    case version_info::Channel::STABLE:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanup";
+    default:
+      return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupDevelo"
+             L"pment";
+  }
+
+  NOTREACHED_NORETURN();
 }
 
 }  // namespace brave_vpn

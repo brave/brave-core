@@ -29,14 +29,16 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer) {
   return std::make_unique<BraveVPNWireguardConnectionAPI>(
-      url_loader_factory, local_prefs, service_installer);
+      url_loader_factory, local_prefs, channel, service_installer);
 }
 
 BraveVPNWireguardConnectionAPI::BraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
+    version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer)
-    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {
+    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs),
+      channel_(channel) {
   if (service_installer) {
     install_system_service_callback_ = std::move(service_installer);
   }
@@ -53,13 +55,13 @@ void BraveVPNWireguardConnectionAPI::Disconnect() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 
   brave_vpn::wireguard::DisableBraveVpnWireguardService(
-      base::BindOnce(&BraveVPNWireguardConnectionAPI::OnDisconnected,
-                     weak_factory_.GetWeakPtr()));
+      channel_, base::BindOnce(&BraveVPNWireguardConnectionAPI::OnDisconnected,
+                               weak_factory_.GetWeakPtr()));
 }
 
 void BraveVPNWireguardConnectionAPI::CheckConnection() {
   auto state = IsWindowsServiceRunning(
-                   brave_vpn::GetBraveVpnWireguardTunnelServiceName())
+                   brave_vpn::GetBraveVpnWireguardTunnelServiceName(channel_))
                    ? ConnectionState::CONNECTED
                    : ConnectionState::DISCONNECTED;
   UpdateAndNotifyConnectionStateChange(state);
@@ -77,7 +79,7 @@ void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
     return;
   }
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
-      config.value(),
+      config.value(), channel_,
       base::BindOnce(
           &BraveVPNWireguardConnectionAPI::OnWireguardServiceLaunched,
           weak_factory_.GetWeakPtr()));
@@ -100,7 +102,7 @@ void BraveVPNWireguardConnectionAPI::RunServiceWatcher() {
   }
   service_watcher_.reset(new brave::ServiceWatcher());
   if (!service_watcher_->Subscribe(
-          brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
+          brave_vpn::GetBraveVpnWireguardTunnelServiceName(channel_),
           SERVICE_NOTIFY_STOPPED,
           base::BindRepeating(&BraveVPNWireguardConnectionAPI::OnServiceStopped,
                               weak_factory_.GetWeakPtr()))) {

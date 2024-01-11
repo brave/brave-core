@@ -12,6 +12,7 @@
 
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "chrome/common/channel_info.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
@@ -32,7 +33,8 @@ HRESULT Elevator::InstallVPNServices() {
     }
   }
 
-  if (!brave_vpn::wireguard::IsWireguardServiceInstalled()) {
+  if (!brave_vpn::wireguard::IsWireguardServiceInstalled(
+          chrome::GetChannel())) {
     auto success = brave_vpn::InstallBraveWireguardService();
     if (!success) {
       return E_FAIL;

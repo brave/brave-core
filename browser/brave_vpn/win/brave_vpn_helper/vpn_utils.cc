@@ -16,13 +16,71 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
 namespace {
+
+std::wstring GetBraveVpnServiceFilterName() {
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::CANARY:
+      return L"Brave VPN Nightly Service DNS Filter";
+    case version_info::Channel::DEV:
+      return L"Brave VPN Dev Service DNS Filter";
+    case version_info::Channel::BETA:
+      return L"Brave VPN Beta Service DNS Filter";
+    case version_info::Channel::STABLE:
+      return L"Brave VPN Service DNS Filter";
+    default:
+      return L"Brave VPN Development Service DNS Filter";
+  }
+
+  NOTREACHED_NORETURN();
+}
+
+GUID GetVpnDnsSublayerGUID() {
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::CANARY:
+      // 23e10e29-eb83-4d2c-9d77-f6e9b547f39c
+      return {0x23e10e29,
+              0xeb83,
+              0x4d2c,
+              {0x9d, 0x77, 0xf6, 0xe9, 0xb5, 0x47, 0xf3, 0x9c}};
+    case version_info::Channel::DEV:
+      // c448b198-729d-4a89-879b-1cf0cd2460c0
+      return {0xc448b198,
+              0x729d,
+              0x4a89,
+              {0x87, 0x9b, 0x1c, 0xf0, 0xcd, 0x24, 0x60, 0xc0}};
+    case version_info::Channel::BETA:
+      // fc5fb7bc-e313-4f5e-8052-fe8b150f7de0
+      return {0xfc5fb7bc,
+              0xe313,
+              0x4f5e,
+              {0x80, 0x52, 0xfe, 0x8b, 0x15, 0x0f, 0x7d, 0xe0}};
+    case version_info::Channel::STABLE:
+      // 754b7cbd-cad3-474e-8d2c-054413fd4509
+      return {0x754b7cbd,
+              0xcad3,
+              0x474e,
+              {0x8d, 0x2c, 0x05, 0x44, 0x13, 0xfd, 0x45, 0x09}};
+    default:
+      // 9c14e1f7-692f-495b-95e8-008113d3c0d6
+      return {0x9c14e1f7,
+              0x692f,
+              0x495b,
+              {0x95, 0xe8, 0x00, 0x81, 0x13, 0xd3, 0xc0, 0xd6}};
+  }
+
+  NOTREACHED_NORETURN();
+}
 
 DWORD AddSublayer(GUID uuid) {
   FWPM_SESSION0 session = {};
@@ -30,7 +88,7 @@ DWORD AddSublayer(GUID uuid) {
   auto result =
       FwpmEngineOpen0(nullptr, RPC_C_AUTHN_WINNT, nullptr, &session, &engine);
   if (result == ERROR_SUCCESS) {
-    std::wstring name(kBraveVPNServiceFilter);
+    std::wstring name(GetBraveVpnServiceFilterName());
     FWPM_SUBLAYER0 sublayer = {};
     sublayer.subLayerKey = uuid;
     sublayer.displayData.name = name.data();
@@ -104,8 +162,8 @@ DWORD BlockIPv4Queries(HANDLE engine_handle) {
        {FWP_UINT16, {.uint16 = 53}}}};
 
   FWPM_FILTER0 filter = {};
-  filter.subLayerKey = kVpnDnsSublayerGUID;
-  std::wstring name(kBraveVPNServiceFilter);
+  filter.subLayerKey = GetVpnDnsSublayerGUID();
+  std::wstring name = GetBraveVpnServiceFilterName();
   filter.displayData.name = name.data();
   filter.weight.type = FWP_UINT8;
   filter.weight.uint8 = 0xF;
@@ -124,8 +182,8 @@ DWORD BlockIPv4Queries(HANDLE engine_handle) {
 // Block all IPv6 DNS queries
 DWORD BlockIPv6Queries(HANDLE engine_handle) {
   FWPM_FILTER0 Filter = {};
-  Filter.subLayerKey = kVpnDnsSublayerGUID;
-  std::wstring name(kBraveVPNServiceFilter);
+  Filter.subLayerKey = GetVpnDnsSublayerGUID();
+  std::wstring name = GetBraveVpnServiceFilterName();
   Filter.displayData.name = name.data();
   Filter.weight.type = FWP_EMPTY;
   Filter.layerKey = FWPM_LAYER_ALE_AUTH_CONNECT_V6;
@@ -161,8 +219,8 @@ DWORD PermitQueriesFromTAP(HANDLE engine_handle,
        {FWP_UINT64, {.uint64 = &tapluid.Value}}}};
 
   FWPM_FILTER0 Filter = {};
-  Filter.subLayerKey = kVpnDnsSublayerGUID;
-  std::wstring name(kBraveVPNServiceFilter);
+  Filter.subLayerKey = GetVpnDnsSublayerGUID();
+  std::wstring name = GetBraveVpnServiceFilterName();
   Filter.displayData.name = name.data();
   Filter.weight.type = FWP_UINT8;
   Filter.weight.uint8 = 0xE;
@@ -197,7 +255,7 @@ bool AddWpmFilters(HANDLE engine_handle, const std::string& connection_name) {
     VLOG(1) << "Engine handle cannot be null";
     return false;
   }
-  auto result = RegisterSublayer(engine_handle, kVpnDnsSublayerGUID);
+  auto result = RegisterSublayer(engine_handle, GetVpnDnsSublayerGUID());
   if (result != ERROR_SUCCESS) {
     VLOG(1) << "Open FWP session failed, error code:" << std::hex << result;
     return false;
@@ -269,7 +327,8 @@ bool SubscribeRasConnectionNotification(HANDLE event_handle) {
 }
 
 void SetFiltersInstalledFlag() {
-  base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
+  base::win::RegKey key(HKEY_LOCAL_MACHINE,
+                        GetBraveVpnHelperRegistryStoragePath().c_str(),
                         KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open vpn service storage";
@@ -280,7 +339,8 @@ void SetFiltersInstalledFlag() {
 }
 
 void ResetFiltersInstalledFlag() {
-  base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
+  base::win::RegKey key(HKEY_LOCAL_MACHINE,
+                        GetBraveVpnHelperRegistryStoragePath().c_str(),
                         KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open vpn service storage";

@@ -11,13 +11,16 @@
 
 #include "base/files/file_path.h"
 #include "base/version.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
-const CLSID& GetBraveVpnWireguardServiceClsid();
+const CLSID& GetBraveVpnWireguardServiceClsid(version_info::Channel channel);
 const IID& GetBraveVpnWireguardServiceIid();
-std::wstring GetBraveVpnWireguardTunnelServiceName();
-std::wstring GetBraveVpnWireguardServiceName();
-std::wstring GetBraveVpnWireguardServiceDisplayName();
+std::wstring GetBraveVpnWireguardTunnelServiceName(
+    version_info::Channel channel);
+std::wstring GetBraveVpnWireguardServiceName(version_info::Channel channel);
+std::wstring GetBraveVpnWireguardServiceDisplayName(
+    version_info::Channel channel);
 base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::FilePath& target_path,
     const base::Version& version);

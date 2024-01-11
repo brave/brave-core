@@ -30,6 +30,7 @@
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "chrome/common/channel_info.h"
 
 namespace brave_vpn {
 
@@ -144,7 +145,7 @@ bool IsServiceRunning(SC_HANDLE service) {
 std::optional<base::FilePath> GetConfigFilePath(
     const std::wstring& encoded_config) {
   if (encoded_config.empty()) {
-    return wireguard::GetLastUsedConfigPath();
+    return wireguard::GetLastUsedConfigPath(chrome::GetChannel());
   }
 
   std::string decoded_config;
@@ -189,7 +190,7 @@ namespace wireguard {
 // Creates and launches a new Wireguard Windows service using passed config.
 // Before to start a new service it checks and removes existing if exists.
 bool LaunchWireguardService(const std::wstring& config) {
-  IncrementWireguardTunnelUsageFlag();
+  IncrementWireguardTunnelUsageFlag(chrome::GetChannel());
   if (!RemoveExistingWireguardService()) {
     VLOG(1) << "Failed to remove existing brave wireguard service";
     return false;
@@ -201,13 +202,14 @@ bool RemoveExistingWireguardService() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
-            << GetBraveVpnWireguardTunnelServiceName()
+            << GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel())
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
   }
-  ScopedScHandle service(
-      ::OpenService(scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
-                    SERVICE_ALL_ACCESS));
+  ScopedScHandle service(::OpenService(
+      scm.Get(),
+      GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel()).c_str(),
+      SERVICE_ALL_ACCESS));
 
   if (service.IsValid()) {
     if (IsServiceRunning(service.Get())) {
@@ -243,7 +245,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
-            << GetBraveVpnWireguardTunnelServiceName()
+            << GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel())
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
   }
@@ -258,15 +260,16 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       brave_vpn::kBraveVpnWireguardServiceConnectSwitchName,
       config_file_path.value());
   ScopedScHandle service(::CreateService(
-      scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
-      GetBraveVpnWireguardTunnelServiceName().c_str(), SERVICE_ALL_ACCESS,
-      SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
-      service_cmd.GetCommandLineString().c_str(), NULL, NULL, L"Nsi\0TcpIp\0",
-      NULL, NULL));
+      scm.Get(),
+      GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel()).c_str(),
+      GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel()).c_str(),
+      SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START,
+      SERVICE_ERROR_NORMAL, service_cmd.GetCommandLineString().c_str(), NULL,
+      NULL, L"Nsi\0TcpIp\0", NULL, NULL));
   if (!service.IsValid()) {
     VLOG(1) << "::CreateService failed. service_name: "
-            << GetBraveVpnWireguardTunnelServiceName() << ", error: 0x"
-            << ::GetLastError();
+            << GetBraveVpnWireguardTunnelServiceName(chrome::GetChannel())
+            << ", error: 0x" << ::GetLastError();
     return false;
   }
 
@@ -291,7 +294,8 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
     return false;
   }
   if (!encoded_config.empty() &&
-      !UpdateLastUsedConfigPath(config_file_path.value())) {
+      !UpdateLastUsedConfigPath(config_file_path.value(),
+                                chrome::GetChannel())) {
     VLOG(1) << "Failed to save last used config path";
   }
   return true;
@@ -352,7 +356,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
     auto result = tunnel_proc(config_path.value().c_str());
     if (result) {
-      ResetWireguardTunnelUsageFlag();
+      ResetWireguardTunnelUsageFlag(chrome::GetChannel());
       return S_OK;
     }
     VLOG(1) << "Failed to activate tunnel service ("
@@ -380,13 +384,13 @@ bool WireguardGenerateKeypair(std::string* public_key,
   if (!generate_proc) {
     VLOG(1) << __func__ << ": WireGuardGenerateKeypair not found error: "
             << tunnel_lib.GetError()->ToString();
-    IncrementWireguardTunnelUsageFlag();
+    IncrementWireguardTunnelUsageFlag(chrome::GetChannel());
     return false;
   }
   if (generate_proc(public_key_bytes.data(), private_key_bytes.data())) {
     VLOG(1) << __func__ << "Unable to generate keys, error:"
             << tunnel_lib.GetError()->ToString();
-    IncrementWireguardTunnelUsageFlag();
+    IncrementWireguardTunnelUsageFlag(chrome::GetChannel());
     return false;
   }
 

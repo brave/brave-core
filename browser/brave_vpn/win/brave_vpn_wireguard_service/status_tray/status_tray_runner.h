@@ -19,6 +19,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/wireguard/wireguard_service_observer.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/win/ras/ras_connection_observer.h"
+#include "components/version_info/channel.h"
 
 namespace ui {
 class SimpleMenuModel;
@@ -92,6 +93,7 @@ class StatusTrayRunner : public TrayMenuModel::Delegate,
   void ExecuteCommand(int command_id, int event_flags) override;
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
+  version_info::Channel channel_ = version_info::Channel::UNKNOWN;
   std::optional<brave_vpn::mojom::ConnectionState> current_state_;
   SetIconStateCallback callback_for_testing_;
   std::optional<bool> vpn_connected_for_testing_;

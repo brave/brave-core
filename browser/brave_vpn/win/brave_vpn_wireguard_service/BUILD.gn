@@ -56,6 +56,7 @@ executable("brave_vpn_wireguard_service") {
     "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/components/resources:strings_grit",
     "//build/win:default_exe_manifest",
+    "//chrome/common:channel_info",
     "//chrome/install_static:install_static_util",
     "//components/crash/core/app",
     "//components/crash/core/app:crash_export_thunks",
@@ -87,6 +88,7 @@ source_set("install_utils") {
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon:utils",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/common:channel_info",
     "//chrome/installer/util:work_item",
   ]
 }

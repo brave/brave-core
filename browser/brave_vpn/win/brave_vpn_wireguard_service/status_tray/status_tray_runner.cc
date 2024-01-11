@@ -29,6 +29,7 @@
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -99,7 +100,7 @@ StatusTrayRunner* StatusTrayRunner::GetInstance() {
   return instance.get();
 }
 
-StatusTrayRunner::StatusTrayRunner() = default;
+StatusTrayRunner::StatusTrayRunner() : channel_(chrome::GetChannel()) {}
 
 StatusTrayRunner::~StatusTrayRunner() = default;
 
@@ -108,25 +109,27 @@ bool StatusTrayRunner::IsVPNConnected() const {
     return vpn_connected_for_testing_.value();
   }
 
-  return IsWireguardActive()
-             ? wireguard::IsBraveVPNWireguardTunnelServiceRunning()
+  return IsWireguardActive(channel_)
+             ? wireguard::IsBraveVPNWireguardTunnelServiceRunning(channel_)
              : ras::IsRasConnected();
 }
 
 void StatusTrayRunner::ConnectVPN() {
-  if (IsWireguardActive()) {
+  if (IsWireguardActive(channel_)) {
     wireguard::EnableBraveVpnWireguardService(
-        "", base::BindOnce(&StatusTrayRunner::OnConnected,
-                           weak_factory_.GetWeakPtr()));
+        "", channel_,
+        base::BindOnce(&StatusTrayRunner::OnConnected,
+                       weak_factory_.GetWeakPtr()));
   } else {
     OnConnected(ras::ConnectRasEntry());
   }
 }
 
 void StatusTrayRunner::DisconnectVPN() {
-  if (IsWireguardActive()) {
-    wireguard::DisableBraveVpnWireguardService(base::BindOnce(
-        &StatusTrayRunner::OnDisconnected, weak_factory_.GetWeakPtr()));
+  if (IsWireguardActive(channel_)) {
+    wireguard::DisableBraveVpnWireguardService(
+        channel_, base::BindOnce(&StatusTrayRunner::OnDisconnected,
+                                 weak_factory_.GetWeakPtr()));
   } else {
     OnDisconnected(ras::DisconnectRasEntry());
   }
@@ -154,7 +157,7 @@ void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
       SignalExit();
       break;
     case IDC_BRAVE_VPN_TRAY_HIDE_ICON:
-      EnableVPNTrayIcon(false);
+      EnableVPNTrayIcon(false, channel_);
       SignalExit();
       break;
     case IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM:
@@ -209,7 +212,7 @@ brave_vpn::mojom::ConnectionState StatusTrayRunner::GetConnectionState() {
     return brave_vpn::mojom::ConnectionState::CONNECTED;
   }
 
-  auto state_from_storage = brave_vpn::GetConnectionState();
+  auto state_from_storage = brave_vpn::GetConnectionState(channel_);
   if (state_from_storage.has_value()) {
     return static_cast<brave_vpn::mojom::ConnectionState>(
         state_from_storage.value());
@@ -230,7 +233,7 @@ void StatusTrayRunner::UpdateConnectionState() {
                              : brave_vpn::mojom::ConnectionState::DISCONNECTED;
     // if Tunnel service launched it means we have connected state and should
     // reset storage states because it could be expired from closed browser.
-    WriteConnectionState(static_cast<int>(state));
+    WriteConnectionState(static_cast<int>(state), channel_);
   }
 
   if (current_state_ == state) {
@@ -272,8 +275,9 @@ void StatusTrayRunner::OnRasConnectionStateChanged() {
 
 void StatusTrayRunner::OnWireguardServiceStateChanged(int mask) {
   UpdateConnectionState();
-  auto service_name = IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
-                                       : GetBraveVpnWireguardServiceName();
+  auto service_name = IsVPNConnected()
+                          ? GetBraveVpnWireguardTunnelServiceName(channel_)
+                          : GetBraveVpnWireguardServiceName(channel_);
   if (!brave_vpn::IsWindowsServiceRunning(service_name)) {
     StopWireguardObserver();
     return;
@@ -290,7 +294,7 @@ void StatusTrayRunner::OnDisconnected(bool success) {
 void StatusTrayRunner::OnStorageUpdated() {
   // Checking if tray icon enabled from Brave-> App menu -> Brave VPN -> Show
   // VPN tray icon.
-  if (!IsVPNTrayIconEnabled()) {
+  if (!IsVPNTrayIconEnabled(channel_)) {
     SignalExit();
   }
 
@@ -305,7 +309,8 @@ void StatusTrayRunner::OnStorageUpdated() {
 void StatusTrayRunner::SubscribeForStorageUpdates() {
   if (storage_.Create(
           HKEY_CURRENT_USER,
-          wireguard::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(channel_)
+              .c_str(),
           KEY_QUERY_VALUE | KEY_NOTIFY) != ERROR_SUCCESS) {
     return;
   }
@@ -314,7 +319,7 @@ void StatusTrayRunner::SubscribeForStorageUpdates() {
 }
 
 void StatusTrayRunner::SetupConnectionObserver() {
-  if (IsWireguardActive()) {
+  if (IsWireguardActive(channel_)) {
     if (IsWireguardObserverActive()) {
       return;
     }
@@ -322,8 +327,8 @@ void StatusTrayRunner::SetupConnectionObserver() {
       StopRasConnectionChangeMonitoring();
     }
     SubscribeForWireguardNotifications(
-        IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
-                         : GetBraveVpnWireguardServiceName());
+        IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName(channel_)
+                         : GetBraveVpnWireguardServiceName(channel_));
     return;
   }
 
@@ -338,7 +343,7 @@ void StatusTrayRunner::SetupConnectionObserver() {
 }
 
 HRESULT StatusTrayRunner::Run() {
-  if (!IsVPNTrayIconEnabled()) {
+  if (!IsVPNTrayIconEnabled(channel_)) {
     VLOG(1) << "Tray icon was hidden by user.";
     return S_OK;
   }
@@ -348,7 +353,8 @@ HRESULT StatusTrayRunner::Run() {
     return S_OK;
   }
 
-  if (IsWireguardActive() && !wireguard::GetLastUsedConfigPath().has_value()) {
+  if (IsWireguardActive(channel_) &&
+      !wireguard::GetLastUsedConfigPath(channel_).has_value()) {
     VLOG(1) << "Last used config not found.";
     return S_OK;
   }

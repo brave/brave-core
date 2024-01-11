@@ -45,6 +45,7 @@ source_set("unittests") {
     ":win",
     "//base",
     "//base/test:test_support",
+    "//components/version_info:channel",
     "//testing/gmock",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
