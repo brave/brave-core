@@ -44,7 +44,8 @@ impl Presenter {
             deny_warning_kinds: config
                 .deny
                 .iter()
-                .filter_map(|k| k.get_warning_kind())
+                .flat_map(|k| k.get_warning_kind())
+                .copied()
                 .collect(),
             config: config.clone(),
         }

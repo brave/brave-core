@@ -1,7 +1,28 @@
 //! Cargo.lock-related utilities
 
 use rustsec::{Error, ErrorKind};
-use std::process::Command;
+use std::{
+    path::{Path, PathBuf},
+    process::Command,
+};
+
+/// Name of `Cargo.lock`
+const CARGO_LOCK_FILE: &str = "Cargo.lock";
+
+/// Tries to locate the lockfile at the specified file path. If it's missing, tries to generate it from `Cargo.toml`.
+/// Defaults to `Cargo.lock` in the current directory if passed `None` as the path.
+pub fn locate_or_generate(maybe_lockfile_path: Option<&Path>) -> rustsec::Result<PathBuf> {
+    match maybe_lockfile_path {
+        Some(p) => Ok(p.into()),
+        None => {
+            let path = Path::new(CARGO_LOCK_FILE);
+            if !path.exists() && Path::new("Cargo.toml").exists() {
+                generate()?;
+            }
+            Ok(path.into())
+        }
+    }
+}
 
 /// Run `cargo generate-lockfile`
 pub fn generate() -> rustsec::Result<()> {
