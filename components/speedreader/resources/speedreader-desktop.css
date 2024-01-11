@@ -565,6 +565,10 @@ iframe {
   }
 }
 
+.debug-view-useless-node {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
 html,
 html[data-theme='light'] {
   position: relative !important;

@@ -2,7 +2,6 @@ use html5ever::driver::{ParseOpts, Parser};
 use html5ever::tendril::{StrTendril, TendrilSink};
 use kuchiki::Sink;
 use lol_html::OutputSink;
-use std::collections::HashMap;
 use url::Url;
 
 use super::speedreader::*;
@@ -75,7 +74,6 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                         self.font_family.clone(),
                         self.font_size.clone(),
                         self.column_width.clone(),
-                        &HashMap::new(),
                     )?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
