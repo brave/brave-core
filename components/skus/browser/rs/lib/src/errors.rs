@@ -139,7 +139,6 @@ impl From<http::Error> for InternalError {
     }
 }
 
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SkusError(pub(crate) InternalError);
 
