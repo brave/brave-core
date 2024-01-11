@@ -259,6 +259,7 @@ pub fn extract_dom(
         top_candidate.clone(),
         &meta.title.split_whitespace().collect::<HashSet<_>>(),
         url,
+        true,
         debug_view,
     );
 

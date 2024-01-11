@@ -886,6 +886,7 @@ pub fn clean(
     handle: Handle,
     title_tokens: &HashSet<&str>,
     url: &Url,
+    is_root: bool,
     debug_view: bool,
 ) -> Option<String> {
     let useless = match handle.data() {
@@ -1001,9 +1002,13 @@ pub fn clean(
         ProcessingInstruction(_) => unreachable!(),
     };
 
+    if (!is_root && useless.is_some()) {
+        return useless;
+    }
+
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, debug_view);
+        let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, false, debug_view);
         if delete_reason.is_some() {
             useless_nodes.push((child.clone(), delete_reason.unwrap()));
         }
