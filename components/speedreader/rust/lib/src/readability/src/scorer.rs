@@ -896,7 +896,7 @@ pub fn clean(
         Text(_) => None,
         Comment(_) => Some(format!("{}", line!())),
         Element(ref data) => {
-            let delete = match data.name.local {
+            let delete = (|| match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -916,46 +916,41 @@ pub fn clean(
                 local_name!("source") => {
                     if let Some(parent) = handle.parent().as_ref() {
                         if dom::get_tag_name(&parent) == Some(&local_name!("picture")) {
-                            Some(format!("{}", line!()))
-                        } else {
-                            None
+                            return Some(format!("{}", line!()))
                         }
-                    } else {
-                        None
                     }
+                    None
                 }
                 local_name!("h1") | local_name!("h2") => {
                     // Delete remaining headings that may be duplicates of the title.
                     let mut heading = String::new();
                     dom::extract_text(&handle, &mut heading, true);
                     if heading.is_empty() {
-                        Some(format!("{}", line!()))
+                        return Some(format!("{}", line!()))
                     } else if !title_tokens.is_empty() {
                         let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
                         let distance = title_tokens.difference(&heading_tokens).count() as f32;
                         let similarity = 1.0 - distance / title_tokens.len() as f32;
                         if similarity >= 0.75 {
-                            Some(format!("{}, {}", line!(), similarity))
-                        } else {
-                            None
+                            return Some(format!("{}, {}", line!(), similarity))
                         }
-                    } else if data.name.local == local_name!("h1") {
+                    }
+                    if data.name.local == local_name!("h1") {
                         // Rewrite any h1 elements as h2s. The only h1 in the
                         // DOM should be the title.
                         let name = QualName::new(None, ns!(), LocalName::from("h2"));
                         let h2 = dom.create_element(name, vec![], ElementFlags::default());
                         dom.reparent_children(&handle, &h2);
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
-                        Some(format!("{}", line!()))
+                        return Some(format!("{}", line!()))
                     } else {
                         // If <h2> has class attribute with a negative pattern (ad, hidden, etc.) remove it.
                         let weigth = get_class_weight(&handle);
                         if weigth < -20.0 {
-                            Some(format!("{}, {}", line!(), weigth))
-                        } else {
-                            None
+                            return Some(format!("{}, {}", line!(), weigth))
                         }
                     }
+                    None
                 }
                 local_name!("form")
                 | local_name!("table")
@@ -965,13 +960,10 @@ pub fn clean(
                 local_name!("br") => {
                     if let Some(sibling) = handle.next_sibling() {
                         if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
-                            Some(format!("{}", line!()))
-                        } else {
-                            None
+                            return Some(format!("{}", line!()))
                         }
-                    } else {
-                        None
                     }
+                    None
                 }
                 local_name!("img") => {
                     let mask = img_loaded_mask(data);
@@ -988,7 +980,8 @@ pub fn clean(
                     }
                 }
                 _ => None,
-            };
+            })();
+
             if delete.is_none() {
                 // Delete style, align, and other elements that will conflict with the Speedreader
                 // stylesheet.
