@@ -64,6 +64,9 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
             "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
 
+    public static final String BRAVE_LEO_AUTOCOMPLETE =
+            "org.chromium.chrome.browser.Brave_Leo_AutoComplete";
+
     // These are dynamic keys
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
@@ -108,7 +111,8 @@ public final class BravePreferenceKeys {
                 BRAVE_DEFERRED_DEEPLINK_VPN,
                 BRAVE_CLOSE_TABS_ON_EXIT,
                 BRAVE_CLEAR_ON_EXIT,
-                BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES);
+                BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                BRAVE_LEO_AUTOCOMPLETE);
     }
 
     /*
