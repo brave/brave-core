@@ -4,7 +4,7 @@ Description: Procedural macro attributes for automatically instrumenting functio
 
 Version: 0.1.27
 Security Critical: no
-Shipped: no
+Shipped: yes
 License: MIT
 License File: 
 Revision: 2502f19d934b092fc01bb7493eacbb16b4038bf3

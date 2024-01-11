@@ -4,7 +4,7 @@ Description: Application-level tracing for Rust.
 
 Version: 0.1.40
 Security Critical: no
-Shipped: no
+Shipped: yes
 License: MIT
 License File: 
 Revision: 15600a3a67c418f53cb80ff21da57d89a5de0486
