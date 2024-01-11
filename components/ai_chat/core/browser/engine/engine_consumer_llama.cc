@@ -41,6 +41,7 @@ constexpr char kLlama2BIns[] = "[INST]";
 constexpr char kLlama2EIns[] = "[/INST]";
 constexpr char kLlama2BSys[] = "<<SYS>>\n";
 constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
+constexpr char kSelectedTextPromptPlaceholder[] = "\nSelected text: ";
 
 static constexpr auto kStopSequences =
     base::MakeFixedFlatSet<std::string_view>({kLlama2Eos});
@@ -161,6 +162,7 @@ std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
 std::string BuildLlama2Prompt(
     const std::vector<ConversationTurn>& conversation_history,
     std::string page_content,
+    const std::optional<std::string>& selected_text,
     const bool& is_video,
     const bool& needs_general_seed,
     const std::string user_message) {
@@ -176,9 +178,22 @@ std::string BuildLlama2Prompt(
   // the first sequence.
   std::string raw_first_user_message;
   if (conversation_history.size() > 0) {
-    raw_first_user_message = conversation_history[0].text;
+    raw_first_user_message =
+        conversation_history[0].selected_text
+            ? base::StrCat({conversation_history[0].text,
+                            kSelectedTextPromptPlaceholder,
+                            *conversation_history[0].selected_text})
+            : conversation_history[0].text;
   } else {
-    raw_first_user_message = user_message;
+    raw_first_user_message =
+        selected_text
+            ? base::StrCat(
+                  {base::ReplaceStringPlaceholders(
+                       l10n_util::GetStringUTF8(
+                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                       {*selected_text}, nullptr),
+                   "\n\n", user_message})
+            : user_message;
   }
 
   // Build first_user_message, the first complete message sent to the AI model,
@@ -221,15 +236,29 @@ std::string BuildLlama2Prompt(
   // Loop through the rest of the history two at a time building subsequent
   // sequences.
   for (size_t i = 2; i + 1 < conversation_history.size(); i += 2) {
-    const std::string& prev_user_message = conversation_history[i].text;
+    std::string prev_user_message =
+        conversation_history[i].selected_text
+            ? base::StrCat({conversation_history[i].text,
+                            kSelectedTextPromptPlaceholder,
+                            *conversation_history[i].selected_text})
+            : conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
     prompt += BuildLlama2SubsequentSequence(prev_user_message,
                                             assistant_message, std::nullopt);
   }
 
   // Build the final subsequent exchange using the current turn.
+  std::string cur_user_message =
+      selected_text
+          ? base::StrCat(
+                {base::ReplaceStringPlaceholders(
+                     l10n_util::GetStringUTF8(
+                         IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                     {*selected_text}, nullptr),
+                 "\n\n", user_message})
+          : user_message;
   prompt += BuildLlama2SubsequentSequence(
-      user_message, std::nullopt,
+      cur_user_message, std::nullopt,
       (needs_general_seed) ? std::optional(l10n_util::GetStringUTF8(
                                  IDS_AI_CHAT_LLAMA2_GENERAL_SEED))
                            : std::nullopt);
@@ -333,15 +362,20 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
+    std::optional<std::string> selected_text,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
-  std::string prompt =
-      BuildLlama2Prompt(conversation_history, truncated_page_content, is_video,
-                        needs_general_seed_, human_input);
+  if (selected_text) {
+    selected_text = selected_text->substr(0, max_page_content_length_);
+  }
+  const std::string& truncated_page_content = page_content.substr(
+      0, selected_text ? max_page_content_length_ - selected_text->size()
+                       : max_page_content_length_);
+  std::string prompt = BuildLlama2Prompt(
+      conversation_history, truncated_page_content, selected_text, is_video,
+      needs_general_seed_, human_input);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));
@@ -362,6 +396,10 @@ void EngineConsumerLlamaRemote::SanitizeInput(std::string& input) {
   base::ReplaceSubstringsAfterOffset(&input, 0, "</history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<question>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</question>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "<excerpt>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "</excerpt>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, kSelectedTextPromptPlaceholder,
+                                     "");
 }
 
 }  // namespace ai_chat

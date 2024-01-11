@@ -36,6 +36,9 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
   </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_SELECTED_TEXT" desc="Text for summarizing selected text">
+    Summarize this excerpt
+  </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>

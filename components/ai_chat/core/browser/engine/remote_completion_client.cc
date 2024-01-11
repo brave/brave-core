@@ -131,9 +131,9 @@ RemoteCompletionClient::~RemoteCompletionClient() = default;
 
 void RemoteCompletionClient::QueryPrompt(
     const std::string& prompt,
-    const std::vector<std::string> extra_stop_sequences,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    EngineConsumer::GenerationDataCallback
+    const std::vector<std::string>& extra_stop_sequences,
+    GenerationCompletedCallback data_completed_callback,
+    GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
   auto callback = base::BindOnce(
       &RemoteCompletionClient::OnFetchPremiumCredential,
@@ -144,9 +144,9 @@ void RemoteCompletionClient::QueryPrompt(
 
 void RemoteCompletionClient::OnFetchPremiumCredential(
     const std::string& prompt,
-    const std::vector<std::string> extra_stop_sequences,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    EngineConsumer::GenerationDataCallback data_received_callback,
+    const std::vector<std::string>& extra_stop_sequences,
+    GenerationCompletedCallback data_completed_callback,
+    GenerationDataCallback data_received_callback,
     std::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
@@ -209,7 +209,7 @@ void RemoteCompletionClient::ClearAllQueries() {
 }
 
 void RemoteCompletionClient::OnQueryDataReceived(
-    EngineConsumer::GenerationDataCallback callback,
+    GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     return;
@@ -223,7 +223,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 
 void RemoteCompletionClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
-    EngineConsumer::GenerationCompletedCallback callback,
+    GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request

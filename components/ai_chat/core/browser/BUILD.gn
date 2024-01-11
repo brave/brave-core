@@ -19,6 +19,7 @@ static_library("browser") {
     "constants.h",
     "conversation_driver.cc",
     "conversation_driver.h",
+    "engine/engine_consumer.cc",
     "engine/engine_consumer.h",
     "engine/engine_consumer_claude.cc",
     "engine/engine_consumer_claude.h",
@@ -37,8 +38,9 @@ static_library("browser") {
     ]
   }
 
+  public_deps = [ "//base" ]
+
   deps = [
-    "//base",
     "//brave/brave_domains",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/buildflags",
@@ -70,21 +72,42 @@ if (!is_ios) {
     sources = [
       "ai_chat_credential_manager_unittest.cc",
       "ai_chat_metrics_unittest.cc",
+      "conversation_driver_unittest.cc",
+      "engine/engine_consumer_claude_unittest.cc",
+      "engine/engine_consumer_llama_unittest.cc",
     ]
 
     deps = [
+      ":test_support",
       "//base/test:test_support",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/mojom",
+      "//brave/components/resources:strings_grit",
       "//brave/components/skus/browser",
       "//brave/components/skus/common",
       "//brave/components/skus/common:mojom",
       "//components/prefs:test_support",
+      "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//services/data_decoder/public/cpp:test_support",
       "//services/network:test_support",
       "//services/network/public/cpp:cpp",
       "//testing/gtest:gtest",
     ]
   }
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "engine/mock_remote_completion_client.cc",
+    "engine/mock_remote_completion_client.h",
+  ]
+
+  deps = [
+    "//brave/components/ai_chat/core/browser",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+  ]
 }

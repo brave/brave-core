@@ -24,13 +24,12 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   // Send the query to the AIChat's backend.
-  auto* chat_tab_helper =
-      ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+  auto* chat_tab_helper = AIChatTabHelper::FromWebContents(web_contents);
   DCHECK(chat_tab_helper);
-  ai_chat::mojom::ConversationTurn turn = {
-      ai_chat::mojom::CharacterType::HUMAN,
-      ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
-      base::android::ConvertJavaStringToUTF8(query)};
+  mojom::ConversationTurn turn = {
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      base::android::ConvertJavaStringToUTF8(query), std::nullopt};
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }

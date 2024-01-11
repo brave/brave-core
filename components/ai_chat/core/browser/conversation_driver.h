@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_DRIVER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -105,6 +106,9 @@ class ConversationDriver {
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
 
+  // Used to summarize the selected text in the page.
+  void SummarizeSelectedText(const std::string& selected_text);
+
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
                    mojom::PageHandler::RateMessageCallback callback);
@@ -113,6 +117,15 @@ class ConversationDriver {
                     const std::string& feedback,
                     const std::string& rating_id,
                     mojom::PageHandler::SendFeedbackCallback callback);
+
+  // Used to determine whether the page content should be unlinked when
+  // triggering from outside of the side panel, such as context menu or
+  // location bar, and unlink it if so. If the panel is not open and there is
+  // no existing chat history, the page content should not be linked.
+  void MaybeUnlinkPageContent();
+
+  bool IsArticleTextEmptyForTesting() const { return article_text_.empty(); }
+  bool IsSuggestionsEmptyForTesting() const { return suggestions_.empty(); }
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -141,6 +154,7 @@ class ConversationDriver {
   void MaybeSeedOrClearSuggestions();
 
   void PerformAssistantGeneration(std::string input,
+                                  std::optional<std::string> selected_text,
                                   std::vector<mojom::ConversationTurn> history,
                                   int64_t current_navigation_id,
                                   std::string page_content = "",
