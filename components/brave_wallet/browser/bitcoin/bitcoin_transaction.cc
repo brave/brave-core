@@ -298,7 +298,6 @@ bool BitcoinTransaction::TxOutput::operator!=(
 base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
   base::Value::Dict dict;
 
-  // TODO(apaymyshev): consts strings
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
                                                  : kChangeOuputType);
   dict.Set("address", address);
