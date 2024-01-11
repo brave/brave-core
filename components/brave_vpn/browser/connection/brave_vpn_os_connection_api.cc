@@ -294,6 +294,7 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
     return;
   }
 
+#if BUILDFLAG(IS_WIN)
   install_in_progress_ = true;
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
       ->PostTaskAndReplyWithResult(
@@ -301,6 +302,7 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
           base::BindOnce(
               &BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted,
               weak_factory_.GetWeakPtr()));
+#endif
 }
 
 void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {

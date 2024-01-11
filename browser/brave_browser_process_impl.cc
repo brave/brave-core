@@ -515,7 +515,7 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
 #if BUILDFLAG(IS_WIN)
       base::BindRepeating(&brave_vpn::InstallVpnSystemServices);
 #else
-      nullptr;
+      base::NullCallback();
 #endif
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
