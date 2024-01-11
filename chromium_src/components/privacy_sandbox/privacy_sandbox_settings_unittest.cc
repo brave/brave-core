@@ -123,7 +123,6 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   // the sandbox preference should never override the default cookie content.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
       /*user_cookie_exceptions=*/{},
@@ -149,7 +148,6 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   // An allow exception should not override the preference value.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -185,7 +183,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // targeted cookie block exceptions should never apply.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -219,7 +216,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // the privacy sandbox preferences directly.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -251,7 +247,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // Managed content setting exceptions.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -296,7 +291,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // A less specific block exception.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -324,7 +318,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // Exceptions which specify a top frame origin.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
       /*user_cookie_exceptions=*/
@@ -355,7 +348,6 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // Exceptions which specify a wildcard top frame origin.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -388,7 +380,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   // FLEDGE should be disabled if 3P cookies are blocked.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/true,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/{},
@@ -403,7 +394,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   // FLEDGE should be disabled if all cookies are blocked.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
       /*user_cookie_exceptions=*/{},
@@ -419,7 +409,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   // of other cookie settings.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/
@@ -439,7 +428,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   // sandbox setting.
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/{},
@@ -455,7 +443,6 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
 TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/true,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
       /*user_cookie_exceptions=*/{},
@@ -474,7 +461,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
       /*user_cookie_exceptions=*/{},
@@ -488,7 +474,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/true,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/{},
@@ -502,7 +487,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
-      /*privacy_sandbox_enabled=*/false,
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
       /*user_cookie_exceptions=*/{},
