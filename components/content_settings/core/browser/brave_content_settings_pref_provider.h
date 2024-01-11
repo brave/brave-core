@@ -88,7 +88,7 @@ class BravePrefProvider : public PrefProvider,
   void MigrateFingerprintingSetingsToOriginScoped();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
-  void NotifyChanges(const std::vector<std::unique_ptr<OwnedRule>>& rules,
+  void NotifyChanges(const std::vector<std::unique_ptr<Rule>>& rules,
                      bool incognito);
   bool SetWebsiteSettingInternal(
       const ContentSettingsPattern& primary_pattern,
@@ -105,9 +105,9 @@ class BravePrefProvider : public PrefProvider,
   void OnCookiePrefsChanged(const std::string& pref);
 
   std::map<bool /* is_incognito */, OriginIdentifierValueMap> cookie_rules_;
-  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<OwnedRule>>>
+  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_cookie_rules_;
-  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<OwnedRule>>>
+  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
 
   bool initialized_;
