@@ -90,6 +90,8 @@ function Main() {
   }
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    // Monitor scroll positions only when Assistant is generating
+    if (!context.isGenerating) return
     const el = e.currentTarget
     scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
   }
