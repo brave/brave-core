@@ -15,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/debounce/core/common/pref_names.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
