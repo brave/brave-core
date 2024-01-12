@@ -9,6 +9,7 @@ from builtins import str
 import json
 import base64
 import re
+import urllib.parse
 import urllib.request
 try:
     from .util import execute, scoped_cwd
@@ -36,7 +37,8 @@ class GitHub():
             kw['headers'] = dict()
         headers = kw['headers']
         headers['Authorization'] = self._authorization
-        headers['Accept'] = 'application/vnd.github.manifold-preview'
+        headers['Accept'] = 'application/vnd.github+json'
+        headers['X-GitHub-Api-Version'] = '2022-11-28'
 
         # Switch to a different domain for the releases uploading API.
         if self._releases_upload_api_pattern.match(path):
@@ -45,11 +47,16 @@ class GitHub():
             url = '%s%s' % (GITHUB_URL, path)
             # Data are sent in JSON format.
             if 'data' in kw:
-                kw['data'] = json.dumps(kw['data'])
+                kw['data'] = json.dumps(kw['data']).encode('utf-8')
 
         try:
-            kw['method'] = method
-            r = json.loads(urllib.request.urlopen(url, **kw).read())
+            kw['method'] = method.upper()
+            params = kw.pop('params', None)
+            if params:
+                url += '?' + urllib.parse.urlencode(params)
+            request = urllib.request.Request(url, **kw)
+            with urllib.request.urlopen(request) as response:
+                r = json.loads(response.read())
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
