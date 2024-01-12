@@ -3,24 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/installer/win/util/brave_vpn_helper_utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "base/win/scoped_handle.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_service_work_item.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_vpn {
 

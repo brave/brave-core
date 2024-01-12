@@ -17,9 +17,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
-#include "brave/installer/win/util/brave_vpn_helper_utils.h"
 
 namespace brave_vpn {
 

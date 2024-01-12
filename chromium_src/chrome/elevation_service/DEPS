@@ -2,5 +2,4 @@ include_rules = [
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/components/brave_vpn/common/wireguard/win",
   "+brave/elevation_service",
-  "+brave/installer",
 ]

@@ -14,8 +14,8 @@
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
-#include "brave/installer/win/util/brave_vpn_helper_utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 namespace brave_vpn {
 namespace {

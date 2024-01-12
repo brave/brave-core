@@ -17,7 +17,6 @@ source_set("win") {
     "//brave/browser/*",
     "//brave/components/brave_vpn/*",
     "//brave/elevation_service/*",
-    "//brave/installer/win/util/*",
     "//chrome/browser/*",
   ]
   deps = [ "//base" ]

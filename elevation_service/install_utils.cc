@@ -19,14 +19,14 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
-#include "brave/installer/win/util/brave_vpn_helper_utils.h"
 #include "chrome/installer/util/install_service_work_item.h"
 
 namespace brave_vpn {

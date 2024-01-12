@@ -17,6 +17,25 @@ config("no-missing-braces") {
   cflags = [ "-Wno-missing-braces" ]
 }
 
+source_set("common") {
+  sources = [
+    "brave_vpn_helper_constants.h",
+    "brave_vpn_helper_utils.cc",
+    "brave_vpn_helper_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard/win:win",
+    "//chrome/install_static:install_static_util",
+    "//chrome/installer/util:with_no_strings",
+    "//components/version_info",
+  ]
+}
+
 source_set("lib") {
   visibility = [
     ":brave_vpn_helper",
@@ -31,12 +50,12 @@ source_set("lib") {
   ]
 
   deps = [
+    ":common",
     "//base",
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
-    "//brave/installer/win/util:vpn_utils",
     "//third_party/abseil-cpp:absl",
   ]
 
@@ -62,7 +81,6 @@ executable("brave_vpn_helper") {
     "//base",
     "//base:base_static",
     "//brave/components/brave_vpn/common",
-    "//brave/installer/win/util:vpn_utils",
     "//build/win:default_exe_manifest",
     "//chrome/install_static:install_static_util",
     "//components/crash/core/app",
@@ -91,7 +109,6 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave/components/brave_vpn/common",
-    "//brave/installer/win/util:vpn_utils",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]

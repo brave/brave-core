@@ -10,8 +10,8 @@ brave_elevation_service_lib_deps =
 
 if (is_win && enable_brave_vpn) {
   brave_elevation_service_lib_deps += [
+    "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/elevation_service",
-    "//brave/installer/win/util:vpn_utils",
   ]
 }
