@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+enum Enum1 {
+  a = 0;
+  b = 1;
+  c = 2;
+}
+
+message Msg1 {
+  optional Enum1 x = 9 [default = a]; // a field exists
+  optional Enum1 y = 9 [default = does_not_exist]; // a field doesn't exist
+}

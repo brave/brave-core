@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package test_lite_runtime;
+
+option optimize_for = LITE_RUNTIME;
+
+enum EnumTestLiteRuntime {
+    ONE = 1;
+    TWO = 2;
+}
+
+message TestLiteRuntime {
+    optional int32 v = 1;
+}

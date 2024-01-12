@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message HasLifetimeParameterIfAddDeprecatedFields {
+    optional string dep = 1 [deprecated=true];
+}
+
+message SameHere {
+    oneof ContainsDeprecated {
+        string dep = 1 [deprecated=true];
+    }
+}
+
+message AndThisToo {
+    optional MessageWithLifetime dep = 1 [deprecated=true];
+}
+
+message MessageWithLifetime {
+    optional string s = 1;
+}

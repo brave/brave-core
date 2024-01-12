@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package test_enum_alias;
+
+enum EnumWithAlias {
+    option allow_alias = true;
+    UNKNOWN = 0;
+    A = 10;
+    B = 20;
+    A_AGAIN = 10;
+}
+
+message TestEnumWithAlias {
+    EnumWithAlias en = 1;
+}

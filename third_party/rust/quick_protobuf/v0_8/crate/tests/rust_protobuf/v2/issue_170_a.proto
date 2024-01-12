@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+import "issue_170_common.proto";
+import "issue_170_b.proto";
+
+
+message A {
+    Common common = 1;
+    B b = 2;
+}

@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+import "test_import_nested_imported_pb.proto";
+
+message ContainsImportedNested {
+    optional ContainerForNested.NestedMessage m = 1;
+    optional ContainerForNested.NestedEnum e = 2;
+}

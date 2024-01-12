@@ -1,0 +1,88 @@
+syntax = "proto2";
+
+// more stress testing for comments; BOOMs inspired by nerdrew :)
+// BOOM
+/* BOOM */
+
+////////////////////
+///////////////////
+
+//BOOM//BOOM/\/BOOM/BOOM/*BOOM//BOOM*/
+
+/*//BOOM*/
+///
+//!
+//!!//!/!!
+/**
+* some documentation
+*
+*
+*/
+
+/*
+///
+*/
+
+/*****************
+
+message X {
+
+}
+
+******************/
+
+/*
+
+message Y {
+    this would be a syntax error if uncommented
+}
+
+*/
+
+
+/*4 5 6
+7
+8
+9
+*/
+
+
+// BOOM
+/* BOOM */
+message A { /*BOOM
+BOOM
+BOOM*/
+    // BOOM
+    enum E1 {
+        // BOOM
+        // BOOM
+        V1 = 1;
+        // BOOM
+        v2 = 2;
+    }
+    // BOOM
+    enum E2 {
+        // BOOM
+    }
+    enum E3 { /* BOOM */ }
+    // BOOM
+    message B {
+        // BOOM
+        // BOOM
+        optional string b = 1;
+    }
+    message C {
+        // BOOM
+    }
+    message D { /* BOOM */ }
+    required string a = 1;
+
+    oneof Thing {
+        int32 a = 1;
+        // empty oneofs not allowed currently
+        //
+        //
+    }
+}
+
+// no newline at end of file

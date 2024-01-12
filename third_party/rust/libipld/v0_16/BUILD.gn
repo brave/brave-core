@@ -1,0 +1,59 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "libipld"
+  epoch = "0.16"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/libipld/v0_16/crate/benches/codec.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/block.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/codec_impl.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/lib.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/path.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/prelude.rs",
+    "//brave/third_party/rust/libipld/v0_16/crate/src/store.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/libipld/v0_16/crate/README.md" ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.16.0"
+  cargo_pkg_authors = "David Craven <david@craven.ch>"
+  cargo_pkg_name = "libipld"
+  cargo_pkg_description = "library for dealing with ipld"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/fnv/v1:lib",
+    "//brave/third_party/rust/libipld_cbor/v0_16:lib",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16:lib",
+    "//brave/third_party/rust/libipld_core/v0_16:lib",
+    "//brave/third_party/rust/libipld_json/v0_16:lib",
+    "//brave/third_party/rust/libipld_macro/v0_16:lib",
+    "//brave/third_party/rust/libipld_pb/v0_16:lib",
+    "//third_party/rust/log/v0_4:lib",
+    "//brave/third_party/rust/multihash/v0_18:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+  ]
+  features = [
+    "dag-cbor",
+    "dag-json",
+    "dag-pb",
+    "derive",
+    "libipld-cbor",
+    "libipld-cbor-derive",
+    "libipld-json",
+    "libipld-pb",
+  ]
+}

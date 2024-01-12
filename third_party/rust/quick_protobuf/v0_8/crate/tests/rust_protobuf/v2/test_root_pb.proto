@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+// no namespace declaration
+
+message Root {
+    message Nested {
+    }
+
+    // accessing nested message in root namespace
+    repeated .Root.Nested nested = 1;
+}

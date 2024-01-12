@@ -1,0 +1,87 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "multihash"
+  epoch = "0.18"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/multihash/v0_18/crate/benches/multihash.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/examples/custom_table.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/examples/manual_mh.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/arb.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/error.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/hasher.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/hasher_impl.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/lib.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/multihash.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/src/multihash_impl.rs",
+    "//brave/third_party/rust/multihash/v0_18/crate/tests/lib.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/multihash/v0_18/crate/CHANGELOG.md",
+    "//brave/third_party/rust/multihash/v0_18/crate/README.md",
+    "//brave/third_party/rust/multihash/v0_18/crate/RELEASE.md",
+  ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.18.1"
+  cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>, David Craven <david@craven.ch>, Volker Mische <volker.mische@gmail.com>"
+  cargo_pkg_name = "multihash"
+  cargo_pkg_description = "Implementation of the multihash format"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/blake2s_simd/v1:lib",
+#    "//brave/third_party/rust/blake3/v1:lib",   Disabled because of assembler files
+    "//brave/third_party/rust/core2/v0_4:lib",
+    "//brave/third_party/rust/digest/v0_10:lib",
+    "//brave/third_party/rust/multihash_derive/v0_8:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/sha3/v0_10:lib",
+    "//brave/third_party/rust/unsigned_varint/v0_7:lib",
+  ]
+  aliased_deps = {
+    ripemd_rs = "//brave/third_party/rust/ripemd/v0_1:lib__rlib"
+    sha_2 = "//brave/third_party/rust/sha2/v0_10:lib__rlib"
+    sha_3 = "//brave/third_party/rust/sha3/v0_10:lib__rlib"
+  }  
+  features = [
+    "alloc",
+    "blake2b",
+    "blake2b_simd",
+    "blake2s",
+    "blake2s_simd",
+#    "blake3",  Disabled because of assembler files
+    "derive",
+    "digest",
+    "multihash-derive",
+    "multihash-impl",
+    "secure-hashes",
+    "sha-2",
+    "sha-3",
+    "sha2",
+    "sha3",
+    "std",
+  ]
+  cargo_manifest_dir =
+      rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
+  rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
+}

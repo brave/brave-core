@@ -1,0 +1,88 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain: [1.68.0, stable, beta, nightly]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ matrix.toolchain }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+      - run: rustup toolchain install ${{ matrix.toolchain }} --profile=minimal --no-self-update
+      - run: rustup default ${{ matrix.toolchain }}
+      - run: rustup override set ${{ matrix.toolchain }}
+      - run: rustc --verbose --version
+      - run: cargo --verbose --version
+      - run: cargo build --verbose
+      - run: cargo build --verbose --release
+      - run: cargo test --verbose
+      - run: cargo test --verbose --release
+      - name: Cross-compile x86_64-unknown-linux-gnu
+        env:
+          TARGET: x86_64-unknown-linux-gnu
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile i686-unknown-linux-gnu
+        env:
+          TARGET: i686-unknown-linux-gnu
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile aarch64-unknown-linux-gnu
+        env:
+          TARGET: aarch64-unknown-linux-gnu
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile armv7-unknown-linux-gnueabihf
+        env:
+          TARGET: armv7-unknown-linux-gnueabihf
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile riscv64gc-unknown-linux-gnu
+        env:
+          TARGET: riscv64gc-unknown-linux-gnu
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile riscv32imac-unknown-none-elf
+        env:
+          TARGET: riscv32imac-unknown-none-elf
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile wasm32-unknown-unknown
+        env:
+          TARGET: wasm32-unknown-unknown
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - name: Cross-compile wasm32-wasi
+        env:
+          TARGET: wasm32-wasi
+        run: |
+          rustup target add $TARGET
+          cargo build --verbose --target $TARGET
+          cargo build --verbose --release --target $TARGET
+      - run: cargo test --verbose --release --features count_instructions_test
+      - run: cargo bench --verbose

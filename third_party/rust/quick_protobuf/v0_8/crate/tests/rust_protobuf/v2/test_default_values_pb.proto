@@ -1,0 +1,40 @@
+syntax = "proto2";
+
+package test_default_values;
+
+enum EnumForDefaultValue {
+    ONE = 1;
+    TWO = 2;
+    THREE = 3;
+}
+
+message TestDefaultValues {
+    optional double double_field = 1             [default =  1];
+    optional float float_field = 2               [default =  2];
+
+    optional int32 int32_field = 3               [default =  3];
+    optional int64 int64_field = 4               [default =  4];
+    optional uint32 uint32_field = 5             [default =  5];
+    optional uint64 uint64_field = 6             [default =  6];
+    optional sint32 sint32_field = 7             [default =  7];
+    optional sint64 sint64_field = 8             [default =  8];
+    optional fixed32 fixed32_field = 9           [default =  9];
+    optional fixed64 fixed64_field = 10          [default = 10];
+    optional sfixed32 sfixed32_field = 11        [default = 11];
+    optional sfixed64 sfixed64_field = 12        [default = 12];
+    optional bool bool_field = 13                [default = true];
+    optional string string_field = 14            [default = "abc\n22"];
+    optional bytes bytes_field = 15              [default = "cde\n33"];
+    optional EnumForDefaultValue enum_field = 16 [default = TWO];
+    optional EnumForDefaultValue enum_field_without_default = 17;
+}
+
+message TestExtremeDefaultValues {
+    // Text for nonfinite floating-point values.
+    optional double inf_double = 14 [default = inf];
+    optional double neg_inf_double = 15 [default = -inf];
+    optional double nan_double = 16 [default = nan];
+    optional float inf_float = 17 [default = inf];
+    optional float neg_inf_float = 18 [default = -inf];
+    optional float nan_float = 19 [default = nan];
+}

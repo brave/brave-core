@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package foo.baz;
+
+message ContainerForNested {
+    message NestedMessage {
+    }
+
+    enum NestedEnum {
+        RED = 1;
+    }
+}

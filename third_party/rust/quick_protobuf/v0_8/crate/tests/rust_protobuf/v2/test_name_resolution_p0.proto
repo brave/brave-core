@@ -1,0 +1,29 @@
+syntax = "proto2";
+
+package shared0.shared1.shared2.first0.first1.first2;
+
+import "test_name_resolution_p1.proto";
+
+message TestPackagePrefixedFieldNames {
+    optional second0.second1.second2.B b = 1;
+}
+
+message TestNonUniquePackagePrefixedFieldNames {
+    optional shared2.second0.second1.second2.B b = 1;
+}
+
+message TestAbsoluteFieldNames {
+    optional .shared0.shared1.shared2.second0.second1.second2.B b = 1;
+}
+
+message ShouldUseInternalB {
+    optional B b = 1;
+
+    message B {}
+}
+
+message ShouldUseSamePackageB {
+    optional B b = 1;
+}
+
+message B {}

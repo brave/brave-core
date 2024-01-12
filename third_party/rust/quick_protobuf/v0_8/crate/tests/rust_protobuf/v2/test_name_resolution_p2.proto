@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+message ShouldUseInternalB {
+    optional B b = 1;
+
+    message B {}
+}
+
+message ShouldUseSamePackageB {
+    optional B b = 1;
+}
+
+message B {}

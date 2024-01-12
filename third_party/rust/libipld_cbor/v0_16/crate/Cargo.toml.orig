@@ -1,0 +1,20 @@
+[package]
+name = "libipld-cbor"
+version = "0.16.0"
+authors = ["David Craven <david@craven.ch>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "ipld cbor codec"
+repository = "https://github.com/ipfs-rust/rust-ipld"
+
+[dependencies]
+byteorder = "1.4.3"
+libipld-core = { version = "0.16.0", path = "../core" }
+thiserror = "1.0.25"
+
+[dev-dependencies]
+hex = "0.4.3"
+libipld-macro = { path = "../macro" }
+multihash = "0.17.0"
+quickcheck = "1.0.3"
+serde_cbor = { version = "0.11.1", features = ["tags"] }

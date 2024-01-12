@@ -1,0 +1,92 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "quick_protobuf"
+  epoch = "0.8"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/benches/benches.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/benches/perftest.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/benches/perftest_data/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs/a/b.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs/a/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs/data_types.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs/data_types_unit.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_example.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_example_nostd.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_example_v3.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_example_v3_owned.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_nostd/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_nostd/protos/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_nostd/protos/no_std.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_v3/a/b.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_v3/a/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_v3/data_types.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_v3/data_types_unit.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/examples/pb_rs_v3/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/errors.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/lib.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/message.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/reader.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/sizeofs.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/src/writer.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_proto.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/common/test_enum_alias.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/common/test_oneof.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/hex.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/test_utils.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/issue_170.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_basic.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_default_values_test.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_deprecated_lifetime.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_deprecated_lifetime_must_compile_error.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_lite_runtime_test.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_name_resolution.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_oneof.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_owned.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_owned_must_compile_error.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_required_test.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_sync.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v2/test_text_format.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/mod.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_basic.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_deprecated_lifetime.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_deprecated_lifetime_must_compile_error.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_map.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_oneof.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_owned.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_owned_must_compile_error.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/rust_protobuf/v3/test_zeros_are_not_written.rs",
+    "//brave/third_party/rust/quick_protobuf/v0_8/crate/tests/write_read.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/quick_protobuf/v0_8/crate/README.md" ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.8.1"
+  cargo_pkg_authors = "Johann Tuffe <tafia973@gmail.com>"
+  cargo_pkg_name = "quick-protobuf"
+  cargo_pkg_description = "A pure Rust protobuf (de)serializer. Quick."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/byteorder/v1:lib" ]
+  features = [ "std" ]
+}

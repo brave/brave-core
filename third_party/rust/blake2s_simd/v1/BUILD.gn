@@ -1,0 +1,47 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "blake2s_simd"
+  epoch = "1"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/avx2.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/blake2sp.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/guts.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/many.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/portable.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/sse41.rs",
+    "//brave/third_party/rust/blake2s_simd/v1/crate/src/test.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/blake2s_simd/v1/crate/README.md" ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "1.0.2"
+  cargo_pkg_authors = "Jack O'Connor"
+  cargo_pkg_name = "blake2s_simd"
+  cargo_pkg_description = "a pure Rust BLAKE2s implementation with dynamic SIMD"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/arrayref/v0_3:lib",
+    "//brave/third_party/rust/arrayvec/v0_7:lib",
+    "//brave/third_party/rust/constant_time_eq/v0_3:lib",
+  ]
+}

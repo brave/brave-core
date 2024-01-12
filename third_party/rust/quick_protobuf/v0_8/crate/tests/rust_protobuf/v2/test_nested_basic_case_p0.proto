@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package test_nested_package_dir.basic.case.nested;
+
+enum Enum {
+  Variant_1  = 0;
+}
+
+message Outer {
+  message Inner {
+    optional Enum enum_1  = 0;
+  }
+}

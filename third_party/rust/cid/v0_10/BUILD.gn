@@ -1,0 +1,59 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "cid"
+  epoch = "0.10"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/cid/v0_10/crate/examples/readme.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/arb.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/cid.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/error.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/lib.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/serde.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/src/version.rs",
+    "//brave/third_party/rust/cid/v0_10/crate/tests/lib.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/cid/v0_10/crate/CHANGELOG.md",
+    "//brave/third_party/rust/cid/v0_10/crate/README.md",
+    "//brave/third_party/rust/cid/v0_10/crate/RELEASE.md",
+  ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.10.1"
+  cargo_pkg_authors = "Friedel Ziegelmayer <dignifiedquire@gmail.com>"
+  cargo_pkg_name = "cid"
+  cargo_pkg_description = "CID in rust"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/core2/v0_4:lib",
+    "//brave/third_party/rust/multibase/v0_9:lib",
+    "//brave/third_party/rust/multihash/v0_18:lib",
+    "//third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/unsigned_varint/v0_7:lib",
+  ]
+  features = [
+    "alloc",
+    "multibase",
+    "serde",
+    "std",
+  ]
+}

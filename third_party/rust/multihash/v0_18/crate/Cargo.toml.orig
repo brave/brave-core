@@ -1,0 +1,70 @@
+[workspace]
+members = ["derive", "."]
+
+[package]
+name = "multihash"
+description = "Implementation of the multihash format"
+repository = "https://github.com/multiformats/rust-multihash"
+keywords = ["multihash", "ipfs"]
+version = "0.18.1"
+authors = ["dignifiedquire <dignifiedquire@gmail.com>", "David Craven <david@craven.ch>", "Volker Mische <volker.mische@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+documentation = "https://docs.rs/multihash/"
+edition = "2021"
+rust-version = "1.59"
+
+[features]
+default = ["std", "derive", "multihash-impl", "secure-hashes"]
+std = ["unsigned-varint/std", "multihash-derive/std", "alloc"]
+alloc = ["core2/alloc"]
+multihash-impl = ["derive"]
+derive = ["multihash-derive"]
+arb = ["quickcheck", "rand", "arbitrary"]
+secure-hashes = ["blake2b", "blake2s", "blake3", "sha2", "sha3"]
+scale-codec = ["parity-scale-codec"]
+serde-codec = ["serde", "serde-big-array"]
+
+blake2b = ["blake2b_simd"]
+blake2s = ["blake2s_simd"]
+identity = []
+sha1 = ["digest", "sha-1"]
+sha2 = ["digest", "sha-2"]
+sha3 = ["digest", "sha-3"]
+strobe = ["strobe-rs"]
+ripemd = ["ripemd-rs"]
+
+[dependencies]
+parity-scale-codec = { version = "3.0.0", default-features = false, features = ["derive"], optional = true }
+quickcheck = { version = "1.0.3", optional = true }
+rand = { version = "0.8.5", optional = true, features = ["small_rng"] }
+serde = { version = "1.0.116", optional = true, default-features = false, features = ["derive"] }
+serde-big-array = { version = "0.3.2", optional = true, features = ["const-generics"] }
+multihash-derive = { version = "0.8.0", path = "derive", default-features = false, optional = true }
+unsigned-varint = { version = "0.7.1", default-features = false }
+arbitrary = {version = "1.1.0", optional = true }
+
+blake2b_simd = { version = "1.0.0", default-features = false, optional = true }
+blake2s_simd = { version = "1.0.0", default-features = false, optional = true }
+blake3 = { version = "1.2.0", default-features = false, optional = true }
+digest = { version = "0.10.1", default-features = false, optional = true }
+sha-1 = { version = "0.10.0", default-features = false, optional = true }
+sha-2 = { version = "0.10.0", default-features = false, optional = true, package = "sha2" }
+sha-3 = { version = "0.10.0", default-features = false, optional = true, package = "sha3" }
+strobe-rs = { version = "0.7.0", default-features = false, optional = true }
+ripemd-rs = { package = "ripemd", version = "0.1.1", optional = true}
+
+core2 = { version = "0.4.0", default-features = false }
+
+[dev-dependencies]
+criterion = "0.3.3"
+hex = "0.4.2"
+serde_json = "1.0.58"
+quickcheck = "1.0.3"
+rand = "0.8.5"
+arbitrary = "1.1.0"
+multihash = { path = ".", features = ["sha1", "strobe"] }
+
+[[bench]]
+name = "multihash"
+harness = false

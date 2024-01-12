@@ -1,0 +1,11 @@
+import "rustproto.proto";
+
+
+option (rustproto.expose_oneof) = false;
+
+message TestExposeOneof {
+    oneof foobar {
+        string s = 1;
+        int32 i = 2;
+    }
+}

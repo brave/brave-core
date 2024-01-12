@@ -1,0 +1,5 @@
+message unit_message { }
+
+enum test {
+    a = 10;
+}

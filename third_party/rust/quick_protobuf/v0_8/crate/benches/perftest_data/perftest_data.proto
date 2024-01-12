@@ -1,0 +1,54 @@
+message Test1 {
+    optional int32 value = 1;
+}
+
+message TestRepeatedBool {
+    repeated bool values = 1;
+}
+
+message TestRepeatedPackedInt32 {
+    repeated int32 values = 1 [ packed = true ];
+}
+
+message TestRepeatedPackedFloat {
+    repeated float values = 1 [ packed = true ];
+}
+
+message TestRepeatedMessages {
+    repeated TestRepeatedMessages messages1 = 1;
+    repeated TestRepeatedMessages messages2 = 2;
+    repeated TestRepeatedMessages messages3 = 3;
+}
+
+message TestOptionalMessages {
+    optional TestOptionalMessages message1 = 1;
+    optional TestOptionalMessages message2 = 2;
+    optional TestOptionalMessages message3 = 3;
+}
+
+message TestStrings {
+    optional string s1 = 1;
+    optional string s2 = 2;
+    optional string s3 = 3;
+}
+
+message TestBytes {
+    optional bytes b1 = 1;
+}
+
+message TestMap {
+    map<string, uint32> value = 1;
+}
+
+message PerftestData {
+    repeated Test1 test1 = 1;
+    repeated TestRepeatedBool test_repeated_bool = 2;
+    repeated TestRepeatedMessages test_repeated_messages = 3;
+    repeated TestOptionalMessages test_optional_messages = 4;
+    repeated TestStrings test_strings = 5;
+    repeated TestRepeatedPackedInt32 test_repeated_packed_int32 = 6;
+    repeated TestRepeatedPackedFloat test_repeated_packed_float = 7;
+    repeated TestBytes test_small_bytearrays = 8;
+    repeated TestBytes test_large_bytearrays = 9;
+    repeated TestMap test_map = 10;
+}

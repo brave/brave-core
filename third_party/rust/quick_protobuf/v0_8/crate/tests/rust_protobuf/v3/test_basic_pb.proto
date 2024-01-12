@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+package basic;
+
+message Test1 {
+    int32 a = 1;
+}
+
+message Test2 {
+    string b = 2;
+}
+
+message Test3 {
+    Test1 c = 3;
+}
+
+message Test4 {
+    repeated int32 d = 4 [packed=true];
+}
+
+
+message TestPackedUnpacked {
+    repeated int32 unpacked = 4 [packed=false];
+    repeated int32 packed = 5;
+}
+
+message TestEmpty {
+    int32 foo = 10;
+}
+
+message Test{
+    bool b = 5;
+}
+
+message TestUnknownFields {
+    int32 a = 1;
+}
+
+// just check it compiles
+message TestSelfReference {
+    TestSelfReference r1 = 1;
+    TestSelfReference r2 = 2;
+}
+
+message TestDefaultInstanceField {
+    string s = 1;
+}
+
+message TestDefaultInstance {
+    TestDefaultInstanceField field = 1;
+}
+
+message TestDescriptor {
+    int32 stuff = 10;
+}
+
+enum TestEnumDescriptor {
+    UNKNOWN = 0;
+    RED = 1;
+    BLUE = 2;
+    GREEN = 3;
+}
+
+message TestTypesSingular {
+    double double_field = 1;
+    float float_field = 2;
+    int32 int32_field = 3;
+    int64 int64_field = 4;
+    uint32 uint32_field = 5;
+    uint64 uint64_field = 6;
+    sint32 sint32_field = 7;
+    sint64 sint64_field = 8;
+    fixed32 fixed32_field = 9;
+    fixed64 fixed64_field = 10;
+    sfixed32 sfixed32_field = 11;
+    sfixed64 sfixed64_field = 12;
+    bool bool_field = 13;
+    string string_field = 14;
+    bytes bytes_field = 15;
+    TestEnumDescriptor enum_field = 16;
+}
+
+message TestTypesRepeated {
+    repeated double double_field = 1 [packed=false];
+    repeated float float_field = 2 [packed=false];
+    repeated int32 int32_field = 3 [packed=false];
+    repeated int64 int64_field = 4 [packed=false];
+    repeated uint32 uint32_field = 5 [packed=false];
+    repeated uint64 uint64_field = 6 [packed=false];
+    repeated sint32 sint32_field = 7 [packed=false];
+    repeated sint64 sint64_field = 8 [packed=false];
+    repeated fixed32 fixed32_field = 9 [packed=false];
+    repeated fixed64 fixed64_field = 10 [packed=false];
+    repeated sfixed32 sfixed32_field = 11 [packed=false];
+    repeated sfixed64 sfixed64_field = 12 [packed=false];
+    repeated bool bool_field = 13 [packed=false];
+    repeated string string_field = 14;
+    repeated bytes bytes_field = 15;
+    repeated TestEnumDescriptor enum_field = 16 [packed=false];
+}
+
+message TestTypesRepeatedPacked {
+    repeated double double_field = 1 [packed=true];
+    repeated float float_field = 2 [packed=true];
+    repeated int32 int32_field = 3 [packed=true];
+    repeated int64 int64_field = 4 [packed=true];
+    repeated uint32 uint32_field = 5 [packed=true];
+    repeated uint64 uint64_field = 6 [packed=true];
+    repeated sint32 sint32_field = 7 [packed=true];
+    repeated sint64 sint64_field = 8 [packed=true];
+    repeated fixed32 fixed32_field = 9 [packed=true];
+    repeated fixed64 fixed64_field = 10 [packed=true];
+    repeated sfixed32 sfixed32_field = 11 [packed=true];
+    repeated sfixed64 sfixed64_field = 12 [packed=true];
+    repeated bool bool_field = 13 [packed=true];
+    repeated string string_field = 14;
+    repeated bytes bytes_field = 15;
+    repeated TestEnumDescriptor enum_field = 16 [packed=true];
+}
+
+message TestInvalidTag {
+}
+
+message TestTruncated {
+    repeated fixed32 ints = 2 [packed=true];
+}
+
+message TestBugSint {
+    sint32 s32 = 1;
+    sint64 s64 = 2;
+}

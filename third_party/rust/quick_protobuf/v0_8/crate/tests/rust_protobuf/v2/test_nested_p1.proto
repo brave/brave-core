@@ -1,0 +1,57 @@
+syntax = "proto2";
+
+package test_nested_package_dir_alt.different.package.level.same.names;
+
+import "test_nested_p0.proto";
+
+message Level1 {
+    message Level2 {
+        message Level3 {
+            message Level4 {
+                message Level5 {
+
+                    optional int32 level5 = 1;
+
+                    enum Level5NativeEnum {
+                        LEVEL5 = 0;
+                    }
+                }
+
+                optional int32 level4 = 1;
+
+                enum Level4NativeEnum {
+                    LEVEL4 = 0;
+                }
+            }
+
+            optional int32 level3 = 1;
+
+            enum Level3NativeEnum {
+                LEVEL3 = 0;
+            }
+        }
+
+        optional int32 level2 = 1;
+        optional OutermostEnum OM = 2;
+        optional Level1NativeEnum L1 = 3;
+        optional test_nested_package_dir.this.is.a.nested.package.Level1.Level2.Level2NativeEnum L2 = 4;
+        optional Level3.Level3NativeEnum L3 = 5;
+        optional Level3.Level4.Level4NativeEnum L4 = 6;
+        optional Level3.Level4.Level5.Level5NativeEnum L5 = 7;
+
+
+        enum Level2NativeEnum {
+            LEVEL2 = 0;
+        }
+    }
+
+    optional int32 level1 = 1;
+
+    enum Level1NativeEnum {
+        LEVEL1 = 0;
+    }
+}
+
+enum OutermostEnum {
+    P1_OUTERMOST = 0;
+}

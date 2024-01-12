@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+message ImportedMessage {
+}
+
+enum ImportedEnum {
+    SOMETHING = 1;
+}

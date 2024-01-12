@@ -1,0 +1,37 @@
+/* -*- Mode: protobuf; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ * vim: set ts=8 sts=4 et sw=4 tw=99: */
+
+syntax = "proto2";
+
+message First {
+  required Fourth first_field = 1;
+}
+
+message Second {
+  optional First second_field = 1;
+}
+
+message Third {
+  required First third_field = 1;
+}
+
+message Fourth {
+  optional Third fourth_field = 1;
+  required Fifth fourth_field_2 = 2;
+}
+
+message Fifth {
+  required Second fifth_field = 1;
+}
+
+message Sixth {
+  optional Sixth sixth_field = 1;
+}
+
+message Seventh {
+  required Eighth seventh_field = 1;
+}
+
+message Eighth {
+  optional Seventh eighth_field = 1;
+}

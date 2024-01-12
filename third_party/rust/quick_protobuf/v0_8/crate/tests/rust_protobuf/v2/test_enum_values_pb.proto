@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+enum TestEnumValuesEnum {
+    WINTER = 11;
+    SPRING = 22;
+    SUMMER = 33;
+    AUTUMN = 44;
+}

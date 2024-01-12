@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package protos.no_std;
+
+enum MyEnum {
+  Val0 = 0;
+  Val1 = 1;
+}
+
+message EmbeddedMessage {
+  int32 val = 1;
+  MyEnum e = 2;
+}
+
+message NoStdMessage {
+  fixed32 num = 1;
+  repeated fixed32 nums = 2;
+  EmbeddedMessage message = 3;
+  repeated EmbeddedMessage messages = 4;
+}

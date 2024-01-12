@@ -1,0 +1,5 @@
+syntax = "proto2";
+
+package shared0.shared1.shared2.second0.second1.second2;
+
+message B {}

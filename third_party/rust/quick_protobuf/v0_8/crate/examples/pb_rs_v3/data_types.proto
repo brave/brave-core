@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+import "data_types_import.proto";
+
+enum FooEnum {
+    FIRST_VALUE = 1;
+    SECOND_VALUE = 2;
+}
+    
+message BarMessage {
+    int32 b_int32 = 1;
+}
+
+message FooMessage {
+    int32 f_int32 = 1;
+    int64 f_int64 = 2;
+    uint32 f_uint32 = 3;
+    uint64 f_uint64 = 4;
+    sint32 f_sint32 = 5;
+    sint64 f_sint64 = 6 [default=4];
+    bool f_bool = 7 [default=true];
+    FooEnum f_FooEnum = 8;
+    fixed64 f_fixed64 = 9;
+    sfixed64 f_sfixed64 = 10;
+    fixed32 f_fixed32 = 11 [default=0];
+    sfixed32 f_sfixed32 = 12;
+    double f_double = 13;
+    float f_float = 14;
+    bytes f_bytes = 15;
+    string f_string = 16;
+    FooMessage f_self_message = 17;
+    BarMessage f_bar_message = 18;
+    repeated int32 f_repeated_int32 = 19;
+    repeated int32 f_repeated_packed_int32 = 20 [ packed = true ];
+    repeated float f_repeated_packed_float = 21 [ packed = true ];
+    a.b.ImportedMessage f_imported = 22;
+    BazMessage f_baz = 23;
+    BazMessage.Nested f_nested = 24;
+    BazMessage.Nested.NestedEnum f_nested_enum = 25;
+    map<string, int32> f_map = 26;
+    oneof test_oneof {
+        int32 f1 = 27;
+        bool f2 = 28;
+        string f3 = 29;
+    }
+    repeated string f_repeated_string = 30;
+    repeated BazMessage f_repeated_baz_message = 31;
+}
+
+message BazMessage {
+    message Nested {
+        message NestedMessage {
+            int32 f_nested = 1;
+        }
+        enum NestedEnum {
+            Foo = 0;
+            Bar = 1;
+            Baz = 2;
+        }
+        NestedMessage f_nested = 1;
+    }
+    Nested nested = 1;
+    int64 b_int64 = 2;
+    string b_string = 3;
+}
+
+message RepeatedMessage {
+  repeated BarMessage bar_message = 1;
+}

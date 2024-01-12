@@ -1,0 +1,58 @@
+[package]
+name = "libipld"
+version = "0.16.0"
+authors = ["David Craven <david@craven.ch>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "library for dealing with ipld"
+repository = "https://github.com/ipld/libipld"
+
+[package.metadata.release]
+consolidate-commits = true
+shared-version = true
+
+[dependencies]
+fnv = "1.0.7"
+libipld-cbor = { version = "0.16.0", path = "dag-cbor", optional = true }
+libipld-cbor-derive = { version = "0.16.0", path = "dag-cbor-derive", optional = true }
+libipld-core = { version = "0.16.0", path = "core" }
+libipld-json = { version = "0.16.0", path = "dag-json", optional = true }
+libipld-macro = { version = "0.16.0", path = "macro" }
+libipld-pb = { version = "0.16.0", path = "dag-pb", optional = true }
+log = "0.4.14"
+multihash = { version = "0.18.0", default-features = false, features = ["multihash-impl"] }
+thiserror = "1.0.25"
+
+[dev-dependencies]
+async-std = { version = "1.9.0", features = ["attributes"] }
+criterion = "0.3.4"
+proptest = "1.0.0"
+model = "0.1.2"
+multihash = "0.18.0"
+
+[features]
+default = ["dag-cbor", "dag-json", "dag-pb", "derive"]
+dag-cbor = ["libipld-cbor"]
+dag-json = ["libipld-json"]
+dag-pb = ["libipld-pb"]
+derive = ["libipld-cbor-derive"]
+serde-codec = ["libipld-core/serde-codec"]
+arb = ["libipld-core/arb"]
+
+[workspace]
+members = [
+  "core",
+  "dag-cbor",
+  "dag-cbor-derive",
+  "dag-json",
+  "dag-pb",
+  "macro",
+  "dag-cbor-derive/examples/renamed-package",
+]
+
+[profile.release]
+debug = true
+
+[[bench]]
+name = "codec"
+harness = false

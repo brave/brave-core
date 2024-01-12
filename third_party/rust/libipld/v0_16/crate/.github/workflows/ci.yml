@@ -1,0 +1,168 @@
+on: [push, pull_request]
+
+name: Rust IPLD
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        - rust: stable
+        #- rust: nightly
+        platform:
+        - target: x86_64-unknown-linux-gnu
+          host: ubuntu-latest
+          cross: false
+
+        - target: x86_64-apple-darwin
+          host: macos-latest
+          cross: false
+
+        - target: x86_64-pc-windows-msvc
+          host: windows-latest
+          cross: false
+
+        - target: armv7-linux-androideabi
+          host: ubuntu-latest
+          cross: true
+        - target: aarch64-linux-android
+          host: ubuntu-latest
+          cross: true
+
+        - target: aarch64-apple-ios
+          host: macos-latest
+          cross: true
+
+        - target: wasm32-unknown-unknown
+          host: ubuntu-latest
+          cross: true
+    env:
+      RUST_BACKTRACE: 1
+      CARGO_INCREMENTAL: 0
+      LLVM_CONFIG_PATH: /usr/local/opt/llvm/bin/llvm-config
+      NDK_HOME: /usr/local/lib/android/sdk/ndk-bundle
+
+    runs-on: ${{ matrix.platform.host }}
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    - name: Cache cargo folder
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo
+        key: ${{ matrix.platform.target }}-cargo-${{ matrix.toolchain.rust }}
+
+    - name: Install dependencies ubuntu
+      if: matrix.platform.host == 'ubuntu-latest'
+      run: sudo apt-get install llvm-dev
+
+    - name: Install dependencies macos
+      if: matrix.platform.host == 'macos-latest'
+      run: brew install llvm
+
+    - name: Install dependencies windows
+      if: matrix.platform.host == 'windows-latest'
+      run: choco install llvm
+
+    - name: Install rust toolchain
+      uses: hecrj/setup-rust-action@v1
+      with:
+        rust-version: ${{ matrix.toolchain.rust }}
+        targets: ${{ matrix.platform.target }}
+
+    - name: Install cargo-apk
+      if: contains(matrix.platform.target, 'android')
+      uses: baptiste0928/cargo-install@bf6758885262d0e6f61089a9d8c8790d3ac3368f # v1.3.0
+      with:
+        crate: cargo-apk
+
+    - name: Build
+      if: contains(matrix.platform.target, 'android') == false && contains(matrix.platform.target, 'wasm') == false
+      run: cargo build --workspace --all-features --target ${{ matrix.platform.target }}
+
+    - name: Build android
+      if: contains(matrix.platform.target, 'android')
+      run: |
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-core
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-cbor
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-macro
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-cbor-derive
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-json
+        cargo apk -- build --all-features --target ${{ matrix.platform.target }} -p libipld-pb
+
+    - name: Build WASM
+      if: contains(matrix.platform.target, 'wasm')
+      run: cargo build --workspace --features std,default,dag-cbor,dag-json,dag-pb,derive,serde-codec --target ${{ matrix.platform.target }}
+
+    - name: Rust tests
+      if: matrix.platform.cross == false
+      run: cargo test --workspace --all-features
+
+  lint-rust:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    - name: Cache cargo folder
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo
+        key: lint-cargo
+
+    - name: Install rust toolchain
+      uses: hecrj/setup-rust-action@v1
+      with:
+        rust-version: stable
+        components: clippy, rustfmt
+
+    - name: cargo fmt
+      run: cargo fmt --all -- --check
+
+    - name: cargo clippy
+      run: cargo clippy --workspace --all-features --examples --tests -- -D warnings
+
+  build-no-std:
+    name: Build no_std (libipld-core)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: thumbv6m-none-eabi
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --no-default-features --target thumbv6m-none-eabi --manifest-path core/Cargo.toml
+
+  build-no-std-serde:
+    name: Build no_std (libipld-core), but with the `serde-codec` feature enabled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          # `thumbv6m-none-eabi` can't be used as Serde doesn't compile there.
+          args: --no-default-features --features serde-codec --manifest-path core/Cargo.toml

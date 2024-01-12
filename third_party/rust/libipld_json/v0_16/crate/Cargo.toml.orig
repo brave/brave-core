@@ -1,0 +1,14 @@
+[package]
+name = "libipld-json"
+version = "0.16.0"
+authors = ["Irakli Gozalishvili <contact@gozala.io>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "ipld json codec"
+repository = "https://github.com/ipfs-rust/rust-ipld"
+
+[dependencies]
+libipld-core = { version = "0.16.0", path = "../core" }
+multihash = "0.18.0"
+serde_json = { version = "1.0.64", features = ["float_roundtrip"] }
+serde = { version = "1.0.126", features = ["derive"] }

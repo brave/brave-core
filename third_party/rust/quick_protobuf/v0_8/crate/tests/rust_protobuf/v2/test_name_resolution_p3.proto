@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import "test_name_resolution_p2.proto";
+
+message ShouldUseInternalB {
+    optional B b = 1;
+
+    message B {}
+}
+
+message ShouldUseDifferentPackageB {
+    optional B b = 1;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message ThisShouldNotHaveALifetimeParameter {
+    optional string dep = 1 [deprecated=true];
+}
+
+message ThisShouldntEither {
+    oneof ContainsDeprecated {
+        string dep = 1 [deprecated=true];
+    }
+}
+
+message NorShouldThis {
+    optional MessageWithLifetime dep = 1 [deprecated=true];
+}
+
+message MessageWithLifetime {
+    optional string s = 1;
+}

@@ -18,6 +18,7 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
       "//brave/components/ipfs/keys/ipns_keys_manager_unittest.cc",
       "//brave/components/ipfs/pin/ipfs_base_pin_service_unittest.cc",
+      "//brave/components/ipfs/ipld/ipld_utils_unittest.cc",
     ]
 
     if (enable_ipfs_local_node) {

@@ -1,0 +1,52 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "libipld_cbor_derive"
+  epoch = "0.16"
+  crate_type = "proc-macro"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/examples/basic.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/examples/name_attr.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/examples/repr_attr.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/src/ast.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/src/attr.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/src/gen.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/src/lib.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/src/parse.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/tests/enum.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/tests/struct.rs",
+    "//brave/third_party/rust/libipld_cbor_derive/v0_16/crate/tests/union.rs",
+  ]
+  inputs = []
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.16.0"
+  cargo_pkg_authors = "David Craven <david@craven.ch>"
+  cargo_pkg_name = "libipld-cbor-derive"
+  cargo_pkg_description = "ipld cbor codec proc macro"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/proc_macro_crate/v1:lib",
+    "//third_party/rust/quote/v1:lib",
+    "//third_party/rust/syn/v1:lib",
+    "//brave/third_party/rust/synstructure/v0_12:lib",
+  ]
+}

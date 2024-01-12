@@ -37,6 +37,8 @@ static_library("ipfs") {
     "pref_names.h",
     "repo_stats.cc",
     "repo_stats.h",
+    "ipld/ipld_utils.h",
+    "ipld/ipld_utils.cc",
   ]
 
   deps = [
@@ -62,7 +64,7 @@ static_library("ipfs") {
     "//third_party/re2",
     "//ui/base",
     "//url",
-    "rs:rust_ipfs_lib"
+    "//brave/components/ipfs/rs:rust_ipfs_lib"
   ]
   if (enable_ipfs_local_node) {
     sources += [

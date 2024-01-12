@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+message MessageA {
+    enum EnumA { FOO = 0; }
+}
+message MessageB {
+    enum EnumB { FOO = 0; }
+}

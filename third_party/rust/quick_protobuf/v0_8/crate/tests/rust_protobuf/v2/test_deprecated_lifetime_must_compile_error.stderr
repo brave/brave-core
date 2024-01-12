@@ -1,0 +1,41 @@
+error[E0107]: this struct takes 0 lifetime arguments but 1 lifetime argument was supplied
+  --> tests/rust_protobuf/v2/test_deprecated_lifetime_must_compile_error.rs:13:26
+   |
+13 |     throw_error_field_1: ThisShouldNotHaveALifetimeParameter<'a>,
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---- help: remove these generics
+   |                          |
+   |                          expected 0 lifetime arguments
+   |
+note: struct defined here, with 0 lifetime parameters
+  --> tests/rust_protobuf/v2/./test_deprecated_lifetime_pb.rs
+   |
+   | pub struct ThisShouldNotHaveALifetimeParameter {
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0107]: this struct takes 0 lifetime arguments but 1 lifetime argument was supplied
+  --> tests/rust_protobuf/v2/test_deprecated_lifetime_must_compile_error.rs:14:26
+   |
+14 |     throw_error_field_2: ThisShouldntEither<'a>,
+   |                          ^^^^^^^^^^^^^^^^^^---- help: remove these generics
+   |                          |
+   |                          expected 0 lifetime arguments
+   |
+note: struct defined here, with 0 lifetime parameters
+  --> tests/rust_protobuf/v2/./test_deprecated_lifetime_pb.rs
+   |
+   | pub struct ThisShouldntEither {
+   |            ^^^^^^^^^^^^^^^^^^
+
+error[E0107]: this struct takes 0 lifetime arguments but 1 lifetime argument was supplied
+  --> tests/rust_protobuf/v2/test_deprecated_lifetime_must_compile_error.rs:15:26
+   |
+15 |     throw_error_field_3: NorShouldThis<'a>,
+   |                          ^^^^^^^^^^^^^---- help: remove these generics
+   |                          |
+   |                          expected 0 lifetime arguments
+   |
+note: struct defined here, with 0 lifetime parameters
+  --> tests/rust_protobuf/v2/./test_deprecated_lifetime_pb.rs
+   |
+   | pub struct NorShouldThis {
+   |            ^^^^^^^^^^^^^

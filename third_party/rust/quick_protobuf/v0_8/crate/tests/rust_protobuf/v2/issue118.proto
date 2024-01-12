@@ -1,0 +1,23 @@
+/* -*- Mode: protobuf; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ * vim: set ts=8 sts=4 et sw=4 tw=99: */
+
+syntax = "proto2";
+
+message ViaOneOf {
+    oneof Alternatives {
+        Data present = 1;
+        bool absent  = 2;
+    }
+
+    message Data {
+        required ViaOneOf self_reference = 1;
+    }
+}
+
+message ViaOptional {
+    optional Data data = 1;
+
+    message Data {
+        required ViaOptional self_reference = 1;
+    }
+}

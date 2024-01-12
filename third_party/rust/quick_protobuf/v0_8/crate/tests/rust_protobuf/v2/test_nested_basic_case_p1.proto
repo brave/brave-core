@@ -1,0 +1,5 @@
+syntax = "proto2";
+
+package test_nested_package_dir.basic.case.remote;
+
+import "test_nested_basic_case_p0.proto";

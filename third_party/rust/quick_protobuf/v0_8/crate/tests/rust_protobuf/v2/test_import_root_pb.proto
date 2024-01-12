@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+import "test_import_root_imported_pb.proto";
+
+message ContainsImported {
+    optional ImportedMessage imported_message = 1;
+    optional ImportedEnum imported_enum = 2;
+}
