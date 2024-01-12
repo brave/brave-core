@@ -87,31 +87,41 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   task_environment_.FastForwardBy(base::Seconds(30));
 
   histogram_tester_.ExpectUniqueSample(kPagesLoadedHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kPagesReloadedHistogramName, 0, 1);
 
   for (size_t i = 0; i < 6; i++) {
-    page_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount(false);
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kPagesReloadedHistogramName, 0, 2);
 
   for (size_t i = 0; i < 30; i++) {
-    page_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount(false);
+  }
+  for (size_t i = 0; i < 9; i++) {
+    page_metrics_service_->IncrementPagesLoadedCount(true);
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 2, 1);
+  histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 1);
 
   for (size_t i = 0; i < 30; i++) {
-    page_metrics_service_->IncrementPagesLoadedCount();
+    page_metrics_service_->IncrementPagesLoadedCount(false);
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 3, 1);
+  histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 2);
 
   histogram_tester_.ExpectTotalCount(kPagesLoadedHistogramName, 4);
+  histogram_tester_.ExpectTotalCount(kPagesReloadedHistogramName, 4);
   task_environment_.FastForwardBy(base::Days(7));
   EXPECT_GT(histogram_tester_.GetBucketCount(kPagesLoadedHistogramName, 0), 1);
+  EXPECT_GT(histogram_tester_.GetBucketCount(kPagesReloadedHistogramName, 0),
+            1);
 }
 
 }  // namespace misc_metrics

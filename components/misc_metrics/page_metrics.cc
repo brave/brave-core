@@ -55,15 +55,14 @@ PageMetrics::~PageMetrics() = default;
 
 void PageMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsPagesLoadedCount);
+  registry->RegisterListPref(kMiscMetricsPagesReloadedCount);
 }
 
-void PageMetrics::IncrementPagesLoadedCount() {
-  VLOG(2) << "PageMetrics: increment page load count";
-  if (pages_loaded_storage_ == nullptr) {
-    pages_loaded_storage_ = std::make_unique<WeeklyStorage>(
-        local_state_, kMiscMetricsPagesLoadedCount);
-  }
-  pages_loaded_storage_->AddDelta(1);
+void PageMetrics::IncrementPagesLoadedCount(bool is_reload) {
+  VLOG(2) << "PageMetricsService: increment page load count, is_reload "
+          << is_reload;
+  WeeklyStorage* storage = GetWeeklyStorage(is_reload);
+  storage->AddDelta(1);
 }
 
 void PageMetrics::ReportDomainsLoaded() {
@@ -80,14 +79,30 @@ void PageMetrics::ReportDomainsLoaded() {
 void PageMetrics::ReportPagesLoaded() {
   // Stores a global count in local state to
   // capture page loads across all profiles.
-  if (pages_loaded_storage_ == nullptr) {
-    pages_loaded_storage_ = std::make_unique<WeeklyStorage>(
-        local_state_, kMiscMetricsPagesLoadedCount);
-  }
-  uint64_t count = pages_loaded_storage_->GetPeriodSum();
+  uint64_t pages_loaded_count = GetWeeklyStorage(false)->GetPeriodSum();
+  uint64_t pages_reloaded_count = GetWeeklyStorage(true)->GetPeriodSum();
   p3a_utils::RecordToHistogramBucket(kPagesLoadedHistogramName,
-                                     kPagesLoadedBuckets, count);
-  VLOG(2) << "PageMetrics: pages loaded report, count = " << count;
+                                     kPagesLoadedBuckets, pages_loaded_count);
+  p3a_utils::RecordToHistogramBucket(kPagesReloadedHistogramName,
+                                     kPagesLoadedBuckets, pages_reloaded_count);
+  VLOG(2) << "PageMetricsService: pages loaded report, loaded count = "
+          << pages_loaded_count << " reloaded count = " << pages_reloaded_count;
+}
+
+WeeklyStorage* PageMetrics::GetWeeklyStorage(bool is_reload) {
+  if (is_reload) {
+    if (pages_reloaded_storage_ == nullptr) {
+      pages_reloaded_storage_ = std::make_unique<WeeklyStorage>(
+          local_state_, kMiscMetricsPagesReloadedCount);
+    }
+    return pages_reloaded_storage_.get();
+  } else {
+    if (pages_loaded_storage_ == nullptr) {
+      pages_loaded_storage_ = std::make_unique<WeeklyStorage>(
+          local_state_, kMiscMetricsPagesLoadedCount);
+    }
+    return pages_loaded_storage_.get();
+  }
 }
 
 void PageMetrics::OnDomainDiversityResult(
