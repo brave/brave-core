@@ -34,17 +34,19 @@ def main():
 
     (options, _) = parser.parse_known_args()
 
-    output_dir = BuildOutputDirectory(options.configuration,
-                                      options.platform_name)
+    # Passed in configuration is going to be based on Xcode configurations which
+    # is based on channels, so use Release for all non-Debug configs.
+    config = 'Debug' if options.configuration == 'Debug' else 'Release'
+    output_dir = BuildOutputDirectory(config, options.platform_name)
     target_arch = 'arm64' if platform.processor(
     ) == 'arm' or options.platform_name == 'iphoneos' else 'x64'
     target_environment = 'simulator' if (options.platform_name
                                          == 'iphonesimulator') else None
 
-    UpdateSymlink(options.configuration, target_arch, target_environment)
-    BuildCore(options.configuration, target_arch, target_environment)
+    UpdateSymlink(config, target_arch, target_environment)
+    BuildCore(config, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
-    GenerateXCFrameworks(options.configuration, target_arch, target_environment)
+    GenerateXCFrameworks(config, target_arch, target_environment)
     GenerateXcodeConfig(output_dir)
     CallNpm(['npm', 'run', 'ios_pack_js'])
 
