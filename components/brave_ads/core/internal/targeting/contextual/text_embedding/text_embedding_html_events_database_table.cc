@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
@@ -104,6 +105,8 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
 
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
+
+  DropTable(transaction, "text_embedding_html_events");
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;

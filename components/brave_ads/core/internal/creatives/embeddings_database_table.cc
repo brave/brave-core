@@ -43,6 +43,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 void MigrateToV27(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  DropTable(transaction, "embeddings");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =

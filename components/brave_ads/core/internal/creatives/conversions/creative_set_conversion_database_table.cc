@@ -116,6 +116,8 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_conversions");
 
+  DropTable(transaction, "creative_ad_conversions");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
