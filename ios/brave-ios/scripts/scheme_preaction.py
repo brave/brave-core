@@ -114,7 +114,7 @@ def GenerateXcodeConfig(output_dir):
     copy_args = [
         'brave_version_major',
         'brave_version_minor',
-        'brave_version_patch',
+        'brave_ios_marketing_version_patch',
         'brave_version_build',
         'brave_services_key',
         'brave_stats_api_key',
@@ -128,14 +128,14 @@ def GenerateXcodeConfig(output_dir):
             if len(arg) < 2:
                 continue
             (key, value) = (arg[0].strip(), arg[1].strip('" '))
-            if key == 'brave_version_patch':
+            if key == 'brave_ios_marketing_version_patch':
                 patch_number = value
             if key in copy_args:
                 xcconfig.append('%s = %s' % (key, value))
     # Some special logic to avoid .0 patch versions in marketing versions
     marketing_version = "$(brave_version_major).$(brave_version_minor)"
     if patch_number != "0":
-        marketing_version += ".$(brave_version_patch)"
+        marketing_version += ".$(brave_ios_marketing_version_patch)"
     with open(os.path.join(output_dir, 'args.xcconfig'), 'w') as f:
         f.write('\n'.join(xcconfig))
         f.write('\nbrave_ios_marketing_version = %s' % marketing_version)

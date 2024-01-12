@@ -7,9 +7,7 @@
 // So need to use unique name and utilize in subclasses
 // (e.g. can't use $(inherited) to 'pull' these changes, into sub-configurations)
 
-brave_version_major = 0
-brave_version_minor = 0
-brave_version_patch = 0
+brave_ios_marketing_version = 0.0
 brave_version_build = 0
 
 #include "../../../../out/current_link/args.xcconfig"
