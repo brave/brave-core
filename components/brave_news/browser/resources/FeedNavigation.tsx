@@ -150,7 +150,7 @@ export default function Sidebar() {
     <Heading>{getLocale('braveNewsMyFeedHeading')}</Heading>
     <Item id='all' name={getLocale('braveNewsForYouFeed')} />
     <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
-    <Section open>
+    {!!subscribedChannels.length && <Section open>
       <summary>
         {Marker}
         {getLocale('braveNewsChannelsHeader')}
@@ -166,8 +166,8 @@ export default function Sidebar() {
             ? getLocale('braveNewsShowLess')
             : getLocale('braveNewsShowAll')}
         </CustomButton>}
-    </Section>
-    <Section open>
+    </Section>}
+    {!!subscribedPublisherIds.length && <Section open>
       <summary>
         {Marker}
         {getLocale('braveNewsPublishersHeading')}
@@ -183,6 +183,6 @@ export default function Sidebar() {
             ? getLocale('braveNewsShowLess')
             : getLocale('braveNewsShowAll')}
         </CustomButton>}
-    </Section>
+    </Section>}
   </Container>
 }
