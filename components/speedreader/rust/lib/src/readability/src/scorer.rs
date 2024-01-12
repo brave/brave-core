@@ -1002,8 +1002,8 @@ pub fn clean(
     let mut useless_nodes = vec![];
     for child in handle.children() {
         let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, false, debug_view);
-        if delete_reason.is_some() {
-            useless_nodes.push((child.clone(), delete_reason.unwrap()));
+        if let Some(reason) = delete_reason {
+            useless_nodes.push((child.clone(), reason));
         }
     }
     for useless_node in useless_nodes.iter() {
