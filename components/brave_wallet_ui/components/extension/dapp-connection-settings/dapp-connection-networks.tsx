@@ -15,7 +15,12 @@ import {
 } from '../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
+import {
+  BraveWallet,
+  DAppSupportedCoinTypes,
+  DAppSupportedPrimaryChains,
+  SupportedTestNetworks
+} from '../../../constants/types'
 import { DAppConnectionOptionsType } from './dapp-connection-settings'
 
 // Components
@@ -29,16 +34,6 @@ import {
   BackIcon
 } from './dapp-connection-settings.style'
 import { Row, VerticalSpace, ScrollableColumn } from '../../shared/style'
-
-const DAppSupportedCoinTypes = [
-  BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH
-]
-
-const DAppSupportedPrimaryChains = [
-  BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.SOLANA_MAINNET
-]
 
 interface Props {
   onSelectOption: (option: DAppConnectionOptionsType) => void
