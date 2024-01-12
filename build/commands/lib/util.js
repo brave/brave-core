@@ -27,21 +27,25 @@ async function applyPatches() {
   const v8PatchesPath = path.join(patchesPath, 'v8')
   const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
   const devtoolsFrontendPatchesPath = path.join(patchesPath, 'third_party', 'devtools-frontend', 'src')
+  const bitcoinCoreRepoPatchesPath = path.join(patchesPath, 'brave', 'third_party', 'bitcoin-core', 'src')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
   const devtoolsFrontendRepoPath = path.join(chromiumRepoPath, 'third_party', 'devtools-frontend', 'src')
+  const bitcoinCoreRepoPath = path.join(chromiumRepoPath, 'brave', 'third_party', 'bitcoin-core', 'src')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
   const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
   const devtoolsFrontendPatcher = new GitPatcher(devtoolsFrontendPatchesPath, devtoolsFrontendRepoPath)
+  const bitcoinCorePatcher = new GitPatcher(bitcoinCoreRepoPatchesPath, bitcoinCoreRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
   const catapultPatchStatus = await catapultPatcher.applyPatches()
   const devtoolsFrontendPatchStatus = await devtoolsFrontendPatcher.applyPatches()
+  const bitcoinCorePatchStatus = await bitcoinCorePatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -50,7 +54,9 @@ async function applyPatches() {
     s => s.path = path.join('third_party', 'catapult', s.path))
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
-  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus]
+  bitcoinCorePatchStatus.forEach(
+    s=> s.path = path.join('brave', 'third-party', 'bitcoin-core', 'src', s.path))
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...bitcoinCorePatchStatus]
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)

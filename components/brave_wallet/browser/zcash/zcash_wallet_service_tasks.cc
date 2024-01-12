@@ -10,6 +10,8 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -83,7 +85,8 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   }
 
   if (!zcash_wallet_service_) {
-    std::move(callback_).Run(base::unexpected("Internal error"));
+    std::move(callback_).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -112,7 +115,7 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   }
 
   if (!current_address_) {
-    error_ = "Internal error";
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
   }
@@ -215,13 +218,14 @@ void CreateTransparentTransactionTask::WorkOnTask() {
   transaction_.set_locktime(chain_height_.value());
 
   if (!PickInputs()) {
-    SetError("Couldn't pick transaction inputs");
+    // TODO(cypt4) : switch to IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE when ready
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     ScheduleWorkOnTask();
     return;
   }
 
   if (!PrepareOutputs()) {
-    SetError("Couldn't prepare outputs");
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     ScheduleWorkOnTask();
     return;
   }
@@ -325,7 +329,6 @@ bool CreateTransparentTransactionTask::PrepareOutputs() {
     return true;
   }
 
-  // TODO(cypt4): should always pick new change address.
   const auto& change_address = change_address_;
   if (!change_address) {
     return false;
