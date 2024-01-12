@@ -103,7 +103,7 @@ const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
 
 const emptyPriceList: TokenPriceHistory[] = []
 
-export const PortfolioAsset = () => {
+export const PortfolioFungibleAsset = () => {
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] =
     React.useState<boolean>(false)
@@ -145,12 +145,7 @@ export const PortfolioAsset = () => {
       return rewardsToken
     }
     return assetId ? userTokensRegistry?.entities[assetId] : undefined
-  }, [
-    isRewardsToken,
-    rewardsToken,
-    assetId,
-    userTokensRegistry
-  ])
+  }, [isRewardsToken, rewardsToken, assetId, userTokensRegistry])
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -554,4 +549,4 @@ export const PortfolioAsset = () => {
   )
 }
 
-export default PortfolioAsset
+export default PortfolioFungibleAsset
