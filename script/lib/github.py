@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# pylint: disable=fixme,too-few-public-methods,too-many-arguments
+
 from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str

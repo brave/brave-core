@@ -22,7 +22,6 @@ import os
 import zipfile
 
 from .config import is_verbose_mode
-from .env_util import get_vs_env
 
 
 def tempdir(prefix=''):
