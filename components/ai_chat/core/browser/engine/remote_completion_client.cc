@@ -22,8 +22,8 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_service_keys/service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "brave/components/constants/brave_services_key_v2.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -148,7 +148,6 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     std::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
-  // Payload
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const base::Value::Dict& dict =
@@ -156,15 +155,16 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                               std::move(extra_stop_sequences), is_sse_enabled);
   const std::string request_body = CreateJSONRequestBody(dict);
 
-  // Headers
   base::flat_map<std::string, std::string> headers;
-  auto result =
-      GetBraveServicesV2Headers(request_body, constants::Service::kAIChat);
-
-  if (result.has_value()) {
-    std::pair<std::string, std::string> auth_headers = result.value();
-    headers.emplace("Digest", auth_headers.first);
-    headers.emplace("Authorization", auth_headers.second);
+  const auto& digest_header = brave_service_keys::GetDigestHeader(request_body);
+  std::vector<std::pair<std::string, std::string>> headers_to_sign = {
+      digest_header};
+  auto result = brave_service_keys::GetAuthorizationHeader(
+      BUILDFLAG(SERVICE_KEY_AI_CHAT), headers_to_sign);
+  if (result) {
+    std::pair<std::string, std::string> authorization_header = result.value();
+    headers.emplace(digest_header.first, digest_header.second);
+    headers.emplace(authorization_header.first, authorization_header.second);
   }
 
   if (premium_enabled) {
