@@ -6,6 +6,9 @@
 
 set -e
 
+this_dir=$(dirname $0)
+src_dir="$this_dir/../../../../.."
+
 # Initial packing of JS so SPM doesnt show warnings that the files are missing
 # Subsequent builds will run this to ensure those files are kept up to date
 npm run ios_pack_js
@@ -13,9 +16,9 @@ npm run ios_pack_js
 # Set up BraveCore placeholders to allow SPM to validate the package
 # This folder will be replaced on first build to a symlink to the current
 # build config
-build_output_dir="../../../../out/current_link"
+build_output_dir="$src_dir/out/current_link"
 mkdir -p $build_output_dir
 if [[ ! -d "$build_output_dir/BraveCore.xcframework" ]]; then
-  cp -R "../BraveCore/placeholders/." "$build_output_dir/"
+  cp -R "$this_dir/../BraveCore/placeholders/." "$build_output_dir/"
 fi
 touch "$build_output_dir/args.xcconfig"
