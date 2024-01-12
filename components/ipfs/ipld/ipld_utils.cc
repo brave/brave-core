@@ -13,4 +13,8 @@ CarV1HeaderResult decode_carv1_header(const std::vector<uint8_t>& data) {
     return ipfs::decode_carv1_header(data);
 }
 
+CarV2HeaderResult decode_carv2_header(const std::vector<uint8_t>& data) {
+    return ipfs::decode_carv2_header(data);
+}
+
 }

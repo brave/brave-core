@@ -16,6 +16,7 @@ rust_static_library("rust_ipfs_lib") {
   allow_unsafe = true
   sources = [
     "src/lib.rs",
+    "src/car_header.rs",
   ]
   cxx_bindings = [ "src/lib.rs" ]
 

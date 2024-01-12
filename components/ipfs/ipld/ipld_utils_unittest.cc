@@ -26,6 +26,11 @@ namespace {
     0x90, 0x26, 0x6A, 0xB3, 0xE7, 0x9D, 0xF6, 0x3A, 0x36, 0x5B, 0x67, 0x76, 0x65, 0x72, 0x73, 0x69, 
     0x6F, 0x6E, 0x01, 0x5B
     };
+
+    //Pragma for the CAR_V2
+    const std::vector<uint8_t> kCarv2HeaderPragmaData = {
+    0x0A, 0xA1, 0x67, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6F, 0x6E, 0x02
+    };
 }
 
 class IpldUtilsUnitTest : public testing::Test {
@@ -38,8 +43,8 @@ class IpldUtilsUnitTest : public testing::Test {
 TEST_F(IpldUtilsUnitTest, DecodeCarv1Header) {
     // Valid CAR_V1 header
     auto result = ipfs::ipld::decode_carv1_header(kCarv1HeaderData);
-    ASSERT_EQ(result.error.length(), 0UL);
-    ASSERT_EQ(result.error_code, 0);
+    ASSERT_EQ(result.error.error.length(), 0UL);
+    ASSERT_EQ(result.error.error_code, 0);
     ASSERT_EQ(result.data.version, 1UL);
     ASSERT_EQ(result.data.roots.size(), 2UL);
     ASSERT_TRUE(base::Contains(result.data.roots, "bafyreihyrpefhacm6kkp4ql6j6udakdit7g3dmkzfriqfykhjw6cad5lrm"));
@@ -48,19 +53,34 @@ TEST_F(IpldUtilsUnitTest, DecodeCarv1Header) {
     // Valid CAR_V1 header, wrong version. Changed version to 2 (offset 98)
     std::vector<uint8_t> carv1_header_data(kCarv1HeaderData); carv1_header_data[98] = 0x02;
     result = ipfs::ipld::decode_carv1_header(carv1_header_data);
-    ASSERT_GT(result.error.length(), 0UL);
-    ASSERT_EQ(result.error_code, 30);
+    ASSERT_GT(result.error.error.length(), 0UL);
+    ASSERT_EQ(result.error.error_code, 30);
     ASSERT_EQ(result.data.version, 2UL);
     ASSERT_EQ(result.data.roots.size(), 0UL);
 
+    // Valid CAR_V2 pragma (11 bytes)
+    result = ipfs::ipld::decode_carv1_header(kCarv2HeaderPragmaData);
+    ASSERT_GT(result.error.error.length(), 0UL);
+    ASSERT_EQ(result.error.error_code, 10);
 
-    if(result.error.length() > 0) {
-        LOG(INFO) << "Error: " << std::string(result.error.data(), result.error.length());
+    // Valid CAR_V2 pragma data (10 bytes, without length)
+    std::vector<uint8_t> carv2_header_pragme_data(kCarv2HeaderPragmaData); carv2_header_pragme_data.erase(carv2_header_pragme_data.cbegin());
+    result = ipfs::ipld::decode_carv1_header(carv2_header_pragme_data);
+    ASSERT_GT(result.error.error.length(), 0UL);
+    ASSERT_EQ(result.error.error_code, 30);
+    ASSERT_EQ(result.data.version, 2UL);
+    ASSERT_EQ(result.data.roots.size(), 0UL);
+}
+
+TEST_F(IpldUtilsUnitTest, DecodeCarv2Header) {
+    // Valid CAR_V1 header
+    auto result = ipfs::ipld::decode_carv1_header(kCarv1HeaderData);
+   if(result.error.error.length() > 0) {
+        LOG(INFO) << "Error: " << std::string(result.error.error.data(), result.error.error.length());
     } else {
         LOG(INFO) << "Header version:" << result.data.version << " Roots: ";
         for(const auto& item : result.data.roots) {
             LOG(INFO) << std::string(item.data(), item.length());
         }
     }
-
 }
