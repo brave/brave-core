@@ -58,7 +58,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.IPFS.LocalNodeRetention",
 
     "Brave.Importer.ImporterSource.2",
-    "Brave.NTP.CustomizeUsageStatus",
+    "Brave.NTP.CustomizeUsageStatus.2",
     "Brave.NTP.NewTabsCreated.2",
     "Brave.NTP.SponsoredImagesEnabled",
     "Brave.NTP.SponsoredNewTabsCreated",
