@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index b385ce034636b8baaf76efe8b0202036fdca0c27..9e972693b5bf0991f6693aa512245a8584f44d4b 100644
+index a9efd5b68125c279dfe449084d5d5a89a8961896..eb5f7d7d74d0b83a11d9c438f4da6daac381227c 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 @@ -657,6 +657,7 @@ void ExtensionInfoGenerator::CreateExtensionInfoHelper(

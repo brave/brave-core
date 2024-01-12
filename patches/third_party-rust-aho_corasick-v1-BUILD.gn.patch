@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
-index b1cb50e2408e894376db4f5a89fc177d293f7609..cf3a69305fbd1829113cabf7a73e2b6ec91db604 100644
+index bce081ec935a916d352167cfb858498aaa8841d6..4845e31476263207ea243653179dc685f54c0c25 100644
 --- a/third_party/rust/aho_corasick/v1/BUILD.gn
 +++ b/third_party/rust/aho_corasick/v1/BUILD.gn
-@@ -68,5 +68,4 @@ cargo_crate("lib") {
+@@ -70,5 +70,4 @@ cargo_crate("lib") {
    # Only for usage from third-party crates. Add the crate to
    # third_party.toml to use it from first-party code.
    visibility = [ "//third_party/rust/*" ]

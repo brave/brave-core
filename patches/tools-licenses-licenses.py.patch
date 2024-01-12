@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 8287504ff1e927e8f16509506127cfe55d1c5e9d..aa80c908e9f9c0b92fe85c587ef7ce6a2e9a4103 100755
+index cc7b17e13c4c8b9e483df9a097b23935ab2e56bc..f3c61f7328e8ef88ece239ddeaa75e186b5d5c1a 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -41,6 +41,7 @@ _REPOSITORY_ROOT = os.path.abspath(
@@ -10,7 +10,7 @@ index 8287504ff1e927e8f16509506127cfe55d1c5e9d..aa80c908e9f9c0b92fe85c587ef7ce6a
  
  METADATA_FILE_NAMES = frozenset({
      "README.chromium", "README.crashpad", "README.v8", "README.pdfium",
-@@ -405,6 +406,7 @@ SPECIAL_CASES = {
+@@ -337,6 +338,7 @@ SPECIAL_CASES = {
          "License File": ["//third_party/dawn/third_party/khronos/LICENSE"],
      },
  }
@@ -18,7 +18,7 @@ index 8287504ff1e927e8f16509506127cfe55d1c5e9d..aa80c908e9f9c0b92fe85c587ef7ce6a
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -847,7 +849,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -779,7 +781,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 8287504ff1e927e8f16509506127cfe55d1c5e9d..aa80c908e9f9c0b92fe85c587ef7ce6a
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -1109,7 +1112,8 @@ def GenerateCredits(file_template_file,
+@@ -1041,7 +1044,8 @@ def GenerateCredits(file_template_file,
                                         enable_warnings=enable_warnings)
        if not directory_metadata:
          continue

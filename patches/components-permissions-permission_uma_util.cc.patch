@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index d7ec2d6ced9789b93667d6b63f8996662fe997b5..868becc7d3615a3d4b89ad387699a3c5e0e62c76 100644
+index fcf50789293645d7ad8a4f85a1675132a4dd4a0e..397693b98c42d19365386f9cb40a8ce62d617e9b 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -132,6 +132,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+@@ -142,6 +142,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
      case RequestType::kCapturedSurfaceControl:
        return RequestTypeForUma::CAPTURED_SURFACE_CONTROL;
  #endif

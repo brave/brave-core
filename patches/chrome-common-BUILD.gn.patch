@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 0a7a4ad4c28702ee0703ef3838926574eb68a4ab..afeaa135d3b38861452648115fc17c1bcaa18f39 100644
+index 4a3ffea8bfb003be5b1eb6d016b6433ee3d31163..9a557e7d17da5721124b221b5392043d34b36689 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -97,6 +97,7 @@ source_set("channel_info") {
+@@ -101,6 +101,7 @@ source_set("channel_info") {
    } else if (is_fuchsia) {
      sources += [ "channel_info_fuchsia.cc" ]
    }
@@ -10,7 +10,7 @@ index 0a7a4ad4c28702ee0703ef3838926574eb68a4ab..afeaa135d3b38861452648115fc17c1b
  }
  
  source_set("ini_parser") {
-@@ -276,6 +277,7 @@ static_library("common_lib") {
+@@ -280,6 +281,7 @@ static_library("common_lib") {
    if (enable_ppapi) {
      public_deps += [ "//ppapi/shared_impl" ]
    }
@@ -18,7 +18,7 @@ index 0a7a4ad4c28702ee0703ef3838926574eb68a4ab..afeaa135d3b38861452648115fc17c1b
  
    if (enable_extensions) {
      sources += [
-@@ -547,6 +549,7 @@ static_library("non_code_constants") {
+@@ -551,6 +553,7 @@ static_library("non_code_constants") {
    if (is_win) {
      sources += [ "chrome_icon_resources_win.h" ]
    }

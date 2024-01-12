@@ -1,8 +1,8 @@
 diff --git a/net/dns/host_cache.cc b/net/dns/host_cache.cc
-index 661e65563fea581817d65053f54906de8f052355..29fb07fc0200fb7d321b85aedfab3d3ec0e4847f 100644
+index 1632c2010b65ecb05161ac1fc683d4b37fe2d87f..a6989d2beb3b77e3cd74b61918e871d9a2c04de5 100644
 --- a/net/dns/host_cache.cc
 +++ b/net/dns/host_cache.cc
-@@ -495,6 +495,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {
+@@ -496,6 +496,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {
        hostname = HostPortPair(hostname.host(), port);
      }
    }

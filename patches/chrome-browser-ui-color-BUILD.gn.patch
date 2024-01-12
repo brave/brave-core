@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/BUILD.gn b/chrome/browser/ui/color/BUILD.gn
-index 6cdc9f0afa0d8de85bcbc4c67bbb720c10af2c56..a42d238fb9daf56264d1a106003a26bad147f746 100644
+index 20cb2ca6f9d8c640bd5d474be2a7e63a91f024da..6a80a6ba53b02ae381fb0b649ff0810ec581f49f 100644
 --- a/chrome/browser/ui/color/BUILD.gn
 +++ b/chrome/browser/ui/color/BUILD.gn
 @@ -59,6 +59,7 @@ source_set("mixers") {

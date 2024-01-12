@@ -1,5 +1,5 @@
 diff --git a/services/network/cookie_manager.cc b/services/network/cookie_manager.cc
-index 708a4ae904d88378b405b149049a07d070d13ed0..f36d9e183d76f0be7951beeb3dfa1c05b3bcea28 100644
+index ceae5b016260106a06a6ecef9967e000dcca692e..cea89315303d33e38c9c5378aa3ccd8a9dd1fdf3 100644
 --- a/services/network/cookie_manager.cc
 +++ b/services/network/cookie_manager.cc
 @@ -382,6 +382,7 @@ CookieDeletionInfo DeletionFilterToInfo(mojom::CookieDeletionFilterPtr filter) {

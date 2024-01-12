@@ -1,5 +1,5 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index 12434e81ba4d0a0f05a6e9ba168fe9f71e283b67..289c4d38e6cf172f53b84ca1cdcafbee125cb082 100644
+index 0c26bfaf60c4acae8288308bf2a6284b68b1dc70..f340c4c0ef9e41c4f48881214de01d827734e447 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
 @@ -514,6 +514,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 94f17d4c532c41a8b33abdb57c2f7865eda29799..9d586f7adc8969e886a130f4bb42d5a7deabccad 100644
+index 28b166f4f499ce03bcfc23391bfc2035dc16de9c..ab024c312a2221fce54c768393e53eaf625f0c0e 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -108,6 +108,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+@@ -107,6 +107,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
    // DevTools::BrowserContext, MediaRouter::Presentation, and
    // CaptivePortal::Signin are exceptions to this ban.
    if (*this == PrimaryID() ||
@@ -10,7 +10,7 @@ index 94f17d4c532c41a8b33abdb57c2f7865eda29799..9d586f7adc8969e886a130f4bb42d5a7
        base::StartsWith(profile_id_, kDevToolsOTRProfileIDPrefix,
                         base::CompareCase::SENSITIVE) ||
        base::StartsWith(profile_id_, kMediaRouterOTRProfileIDPrefix,
-@@ -314,7 +315,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
+@@ -308,7 +309,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,
