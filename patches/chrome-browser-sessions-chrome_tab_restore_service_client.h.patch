@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sessions/chrome_tab_restore_service_client.h b/chrome/browser/sessions/chrome_tab_restore_service_client.h
+index 9a3410f898170d613c6bce91cd6340ff2b2b27e4..1e3e0e8c07b9d528fdc7cba14d01676675db79ad 100644
+--- a/chrome/browser/sessions/chrome_tab_restore_service_client.h
++++ b/chrome/browser/sessions/chrome_tab_restore_service_client.h
+@@ -46,6 +46,7 @@ class ChromeTabRestoreServiceClient : public sessions::TabRestoreServiceClient {
+   bool HasLastSession() override;
+   void GetLastSession(sessions::GetLastSessionCallback callback) override;
+   void OnTabRestored(const GURL& url) override;
++  bool IsOffTheRecord() const override;
+ 
+   raw_ptr<Profile> profile_;
+ };
