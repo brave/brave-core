@@ -10,7 +10,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveBackToTabLabelButton : public BackToTabLabelButton {
-  METADATA_HEADER(BraveBackToTabLabelButton);
+  METADATA_HEADER(BraveBackToTabLabelButton, BackToTabLabelButton)
 
  public:
   explicit BraveBackToTabLabelButton(PressedCallback callback);

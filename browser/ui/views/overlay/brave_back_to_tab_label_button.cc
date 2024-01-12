@@ -41,5 +41,5 @@ void BraveBackToTabLabelButton::OnThemeChanged() {
   SetBackground(nullptr);
 }
 
-BEGIN_METADATA(BraveBackToTabLabelButton, BackToTabLabelButton)
+BEGIN_METADATA(BraveBackToTabLabelButton)
 END_METADATA
