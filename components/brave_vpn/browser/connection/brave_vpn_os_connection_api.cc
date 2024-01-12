@@ -296,6 +296,7 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
 
 #if BUILDFLAG(IS_WIN)
   install_in_progress_ = true;
+  system_service_installed_event_.reset(new base::OneShotEvent());
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
       ->PostTaskAndReplyWithResult(
           FROM_HERE, install_system_service_callback_,
@@ -306,11 +307,25 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
 }
 
 void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
+  CHECK(system_service_installed_event_);
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
   if (success) {
     install_performed_ = true;
+    system_service_installed_event_->Signal();
   }
   install_in_progress_ = false;
+}
+
+bool BraveVPNOSConnectionAPI::ScheduleConnectRequestIfNeeded() {
+  if (!install_in_progress_) {
+    return false;
+  }
+
+  CHECK(system_service_installed_event_);
+  system_service_installed_event_->Post(
+      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPI::Connect,
+                                weak_factory_.GetWeakPtr()));
+  return true;
 }
 
 }  // namespace brave_vpn

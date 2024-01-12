@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/one_shot_event.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -99,6 +100,12 @@ class BraveVPNOSConnectionAPI
       net::NetworkChangeNotifier::ConnectionType type) override;
   void OnInstallSystemServicesCompleted(bool success);
 
+  // For now, this is called when Connect() is called.
+  // If system service installation is in-progress, connect request
+  // is queued and return true.
+  // Then, start connect after installation is done.
+  bool ScheduleConnectRequestIfNeeded();
+
   // Installs system services (if neeeded) or is nullptr.
   // Bound in brave_vpn::CreateBraveVPNConnectionAPI.
   base::RepeatingCallback<bool()> install_system_service_callback_;
@@ -148,6 +155,7 @@ class BraveVPNOSConnectionAPI
   // Guard against calling install_system_service_callback_ while a call
   // is already in progress.
   bool install_in_progress_ = false;
+  std::unique_ptr<base::OneShotEvent> system_service_installed_event_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
 
