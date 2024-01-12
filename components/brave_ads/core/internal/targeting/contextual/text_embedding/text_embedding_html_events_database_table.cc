@@ -108,10 +108,10 @@ void MigrateToV25(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS text_embedding_html_events (id "
-      "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, created_at "
-      "TIMESTAMP NOT NULL, locale TEXT NOT NULL, hashed_text_base64 "
-      "TEXT NOT NULL UNIQUE, embedding TEXT NOT NULL);";
+      "CREATE TABLE text_embedding_html_events (id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT NOT NULL, created_at TIMESTAMP NOT NULL, locale TEXT NOT "
+      "NULL, hashed_text_base64 TEXT NOT NULL UNIQUE, embedding TEXT NOT "
+      "NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

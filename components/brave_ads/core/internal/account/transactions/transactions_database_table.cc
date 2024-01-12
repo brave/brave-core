@@ -120,10 +120,10 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS transactions (id TEXT NOT NULL PRIMARY KEY "
-      "UNIQUE ON CONFLICT REPLACE, created_at TIMESTAMP NOT NULL, "
-      "creative_instance_id TEXT, value DOUBLE NOT NULL, ad_type TEXT NOT "
-      "NULL, confirmation_type TEXT NOT NULL, reconciled_at TIMESTAMP);";
+      "CREATE TABLE transactions (id TEXT NOT NULL PRIMARY KEY UNIQUE ON "
+      "CONFLICT REPLACE, created_at TIMESTAMP NOT NULL, creative_instance_id "
+      "TEXT, value DOUBLE NOT NULL, ad_type TEXT NOT NULL, confirmation_type "
+      "TEXT NOT NULL, reconciled_at TIMESTAMP);";
   transaction->commands.push_back(std::move(command));
 
   CreateTableIndex(transaction, "transactions", "id");
