@@ -127,6 +127,10 @@ export const MarketAsset = () => {
 
   // Params
   const selectedCoinMarket = React.useMemo(() => {
+    if (!coingeckoIdLower) {
+      return undefined
+    }
+
     return coinMarketData.find(
       (token) => token.id.toLowerCase() === coingeckoIdLower
     )
@@ -144,7 +148,12 @@ export const MarketAsset = () => {
     )
 
     if (foundTokens.length) {
-      return { selectedAssetFromParams: foundTokens[0], foundTokens }
+      return {
+        selectedAssetFromParams:
+          foundTokens.find((t) => t.coingeckoId === selectedCoinMarket.id) ||
+          foundTokens[0],
+        foundTokens
+      }
     }
 
     const token = new BraveWallet.BlockchainToken()
@@ -164,13 +173,17 @@ export const MarketAsset = () => {
     selectedAssetFromParams ?? skipToken
   )
 
+  const assetPriceId = selectedAssetFromParams
+    ? getPriceIdForToken(selectedAssetFromParams)
+    : undefined
+
   const {
     data: selectedAssetPriceHistory,
     isFetching: isFetchingPortfolioPriceHistory
   } = useGetPriceHistoryQuery(
-    selectedAssetFromParams && defaultFiat
+    assetPriceId && defaultFiat
       ? {
-          tokenParam: getPriceIdForToken(selectedAssetFromParams),
+          tokenParam: assetPriceId,
           timeFrame: selectedTimeline,
           vsAsset: defaultFiat
         }
@@ -178,9 +191,9 @@ export const MarketAsset = () => {
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    selectedAssetFromParams && defaultFiat
+    assetPriceId && defaultFiat
       ? {
-          ids: [getPriceIdForToken(selectedAssetFromParams)],
+          ids: [assetPriceId],
           toCurrency: defaultFiat
         }
       : skipToken,
@@ -339,16 +352,16 @@ export const MarketAsset = () => {
 
     if (selectedAssetFromParams) {
       history.push(
-        makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams), {
+        makeFundWalletRoute('', {
           searchText: selectedAssetFromParams.symbol
         })
       )
     }
   }, [foundTokens, selectedAssetFromParams])
 
-  // token list needs to load before we can find an asset to select from the url
-  // params
-  if (combinedTokensList.length === 0) {
+  // token list & market data needs to load before we can find an asset to
+  // select from the url params
+  if (combinedTokensList.length === 0 || coinMarketData.length === 0) {
     return <Skeleton />
   }
 
@@ -424,7 +437,6 @@ export const MarketAsset = () => {
             )}
           </ButtonRow>
         </Row>
-
         {showTokenDetailsModal &&
           selectedAssetFromParams &&
           selectedAssetsNetwork && (
@@ -439,7 +451,6 @@ export const MarketAsset = () => {
               onShowHideTokenModal={() => setShowHideTokenModal(true)}
             />
           )}
-
         {showHideTokenModel &&
           selectedAssetFromParams &&
           selectedAssetsNetwork && (
@@ -450,7 +461,6 @@ export const MarketAsset = () => {
               onHideAsset={onHideAsset}
             />
           )}
-
         {selectedCoinMarket && (
           <Column
             padding='0px 20px 20px 20px'
