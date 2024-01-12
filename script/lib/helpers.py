@@ -1,13 +1,16 @@
-#!/usr/bin/env python
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# pylint: disable=not-callable
 
 from __future__ import print_function
 from builtins import range
 import os
-import requests
-from .config import get_raw_version, get_env_var
+import sys
+import urllib.request
+from .config import get_raw_version
 
 BRAVE_REPO = "brave/brave-browser"
 BRAVE_CORE_REPO = "brave/brave-core"
@@ -24,19 +27,19 @@ def get_channel_display_name():
     return d[release_channel()]
 
 
+# pylint: disable=inconsistent-return-statements
 def call_github_api(url, headers):
     try:
-        r = requests.get(url, headers=headers)
-    except requests.exceptions.ConnectionError:
+        r = urllib.request(url, headers=headers)
+    except urllib.error.URLError:
         print("Error: Received requests.exceptions.ConnectionError, Exiting...")
-        exit(1)
-    except Exception as e:
-        raise Exception(e)
+        sys.exit(1)
 
     if r.status_code == 200:
         return r
 
 
+# pylint: disable=unused-argument
 def get_releases_by_tag(repo, tag_name, include_drafts=False):
 
     GITHUB_URL = 'https://api.github.com'
