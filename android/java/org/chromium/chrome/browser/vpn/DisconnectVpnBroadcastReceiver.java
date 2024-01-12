@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 
 public class DisconnectVpnBroadcastReceiver extends BroadcastReceiver {
@@ -21,7 +20,6 @@ public class DisconnectVpnBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action != null && action.equals(DISCONNECT_VPN_ACTION)) {
-            Log.e("BraveVPN", action);
             context.stopService(new Intent(context, WireguardService.class));
         }
     }

@@ -11,27 +11,25 @@ import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveVpnNativeWorker {
     private long mNativeBraveVpnNativeWorker;
-    private static final Object mLock = new Object();
-    private static BraveVpnNativeWorker mInstance;
+    private static final Object sLock = new Object();
+    private static BraveVpnNativeWorker sInstance;
 
     private List<BraveVpnObserver> mObservers;
 
     public static BraveVpnNativeWorker getInstance() {
-        synchronized (mLock) {
-            if (mInstance == null) {
-                mInstance = new BraveVpnNativeWorker();
-                mInstance.init();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new BraveVpnNativeWorker();
+                sInstance.init();
             }
         }
-        return mInstance;
+        return sInstance;
     }
 
     private BraveVpnNativeWorker() {
@@ -57,13 +55,13 @@ public class BraveVpnNativeWorker {
     }
 
     public void addObserver(BraveVpnObserver observer) {
-        synchronized (mLock) {
+        synchronized (sLock) {
             mObservers.add(observer);
         }
     }
 
     public void removeObserver(BraveVpnObserver observer) {
-        synchronized (mLock) {
+        synchronized (sLock) {
             mObservers.remove(observer);
         }
     }
@@ -112,12 +110,6 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onInvalidateCredentials(String jsonInvalidateCredentials, boolean isSuccess) {
-        Log.e(
-                "VPN",
-                "isSuccess : "
-                        + isSuccess
-                        + " jsonInvalidateCredentials : "
-                        + jsonInvalidateCredentials);
         for (BraveVpnObserver observer : mObservers) {
             observer.onInvalidateCredentials(jsonInvalidateCredentials, isSuccess);
         }

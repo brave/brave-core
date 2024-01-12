@@ -20,10 +20,13 @@ import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.Log;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -79,7 +82,6 @@ public abstract class BraveVpnParentActivity
     }
 
     protected void verifySubscription() {
-        Log.e("BraveVpn", "verifySubscription");
         mBraveVpnPrefModel = new BraveVpnPrefModel();
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
@@ -112,7 +114,6 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
-        Log.e("BraveVpn", "onVerifyPurchaseToken");
         if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
@@ -151,7 +152,6 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
-        Log.e("BraveVpn", "onGetSubscriberCredential");
         mBraveVpnPrefModel.setSubscriberCredential(subscriberCredential);
         BraveVpnApiResponseUtils.handleOnGetSubscriberCredential(
                 BraveVpnParentActivity.this, isSuccess);
@@ -159,14 +159,12 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
-        Log.e("BraveVpn", "onGetTimezonesForRegions");
         BraveVpnApiResponseUtils.handleOnGetTimezonesForRegions(
                 BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonTimezones, isSuccess);
     }
 
     @Override
     public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        Log.e("BraveVpn", "onGetHostnamesForRegion");
         KeyPair keyPair = new KeyPair();
         mBraveVpnPrefModel.setClientPrivateKey(keyPair.getPrivateKey().toBase64());
         mBraveVpnPrefModel.setClientPublicKey(keyPair.getPublicKey().toBase64());
@@ -179,7 +177,6 @@ public abstract class BraveVpnParentActivity
     @Override
     public void onGetWireguardProfileCredentials(
             String jsonWireguardProfileCredentials, boolean isSuccess) {
-        Log.e("BraveVpn", "onGetWireguardProfileCredentials");
         if (isSuccess && mBraveVpnPrefModel != null) {
             BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials =
                     BraveVpnUtils.getWireguardProfileCredentials(jsonWireguardProfileCredentials);
@@ -214,7 +211,6 @@ public abstract class BraveVpnParentActivity
 
     private void checkForVpn(
             BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials) {
-        Log.e("BraveVpn", "checkForVpn");
         new Thread() {
             @Override
             public void run() {
@@ -226,7 +222,6 @@ public abstract class BraveVpnParentActivity
                     if (WireguardConfigUtils.isConfigExist(getApplicationContext())) {
                         WireguardConfigUtils.deleteConfig(getApplicationContext());
                     }
-                    Log.e("BraveVpn", "WireguardConfigUtils.isConfigExist");
                     WireguardConfigUtils.createConfig(
                             getApplicationContext(),
                             braveVpnWireguardProfileCredentials.getMappedIpv4Address(),
@@ -238,7 +233,6 @@ public abstract class BraveVpnParentActivity
                             braveVpnWireguardProfileCredentials.getClientId());
                     mBraveVpnPrefModel.setApiAuthToken(
                             braveVpnWireguardProfileCredentials.getApiAuthToken());
-                    Log.e("BraveVpn", "BraveVpnPrefUtils.setPrefModel");
                     BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
 
                     BraveVpnUtils.dismissProgressDialog();
@@ -255,5 +249,10 @@ public abstract class BraveVpnParentActivity
                 }
             }
         }.start();
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

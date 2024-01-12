@@ -121,9 +121,8 @@ public class BraveVpnUtils {
                         BraveVpnServerRegion braveVpnServerRegion =
                                 new BraveVpnServerRegion(
                                         region.getString("continent"),
-                                        region.getString("country-iso-code"),
-                                        region.getString("name"),
-                                        region.getString("name-pretty"));
+                                                region.getString("country-iso-code"),
+                                        region.getString("name"), region.getString("name-pretty"));
                         return braveVpnServerRegion;
                     }
                 }
@@ -219,10 +218,8 @@ public class BraveVpnUtils {
                 JSONObject server = servers.getJSONObject(i);
                 BraveVpnServerRegion vpnServerRegion =
                         new BraveVpnServerRegion(
-                                server.getString("continent"),
-                                server.getString("country-iso-code"),
-                                server.getString("name"),
-                                server.getString("name-pretty"));
+                                server.getString("continent"), server.getString("country-iso-code"),
+                                server.getString("name"), server.getString("name-pretty"));
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {

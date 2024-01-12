@@ -106,21 +106,6 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity {
                     }
                 });
         mServerRegionList.setLayoutManager(linearLayoutManager);
-        // List<BraveVpnServerRegion> braveVpnServerRegions =
-        //         BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
-        // Collections.sort(braveVpnServerRegions, new Comparator<BraveVpnServerRegion>() {
-        //     @Override
-        //     public int compare(BraveVpnServerRegion braveVpnServerRegion1,
-        //             BraveVpnServerRegion braveVpnServerRegion2) {
-        //         return braveVpnServerRegion1.getNamePretty().compareToIgnoreCase(
-        //                 braveVpnServerRegion2.getNamePretty());
-        //     }
-        // });
-        // mBraveVpnServerSelectionAdapter = new BraveVpnServerSelectionAdapter();
-        // mBraveVpnServerSelectionAdapter.setVpnServerRegions(braveVpnServerRegions);
-        // mBraveVpnServerSelectionAdapter.setOnServerRegionSelection(onServerRegionSelection);
-        // serverRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
-        // serverRegionList.setLayoutManager(linearLayoutManager);
     }
 
     @Override
