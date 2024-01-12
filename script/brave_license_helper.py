@@ -56,11 +56,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",
             "License": "MIT",
         },
-        os.path.join('brave', 'vendor', 'boto'): {
-            "Name": "boto",
-            "URL": "https://github.com/boto/boto",
-            "License": "MIT",
-        },
         os.path.join('brave', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
             "URL": "https://github.com/brave/brave-extension",
@@ -134,11 +129,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/brave/python-patch",
             "License": "MIT",
             "License File": ["/brave/vendor/python-patch/doc/LICENSE"],
-        },
-        os.path.join('brave', 'vendor', 'requests'): {
-            "Name": "Requests",
-            "URL": "https://github.com/psf/requests",
-            "License": "Apache-2.0",
         },
         os.path.join('brave', 'vendor', 'sparkle'): {
             "Name": "Sparkle",
