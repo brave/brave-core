@@ -1109,10 +1109,12 @@ void FeedV2Builder::GenerateFeed(
             feed->source_hash = builder->hash_;
 
             if (feed->items.empty()) {
-              if (builder->raw_feed_items_.size() == 0) {
-                feed->error = mojom::FeedV2Error::ConnectionError;
-              } else if (builder->subscribed_count_ == 0) {
+              if (builder->subscribed_count_ == 0 &&
+                  !builder->publishers_controller_->GetLastPublishers()
+                       .empty()) {
                 feed->error = mojom::FeedV2Error::NoFeeds;
+              } else if (builder->raw_feed_items_.size() == 0) {
+                feed->error = mojom::FeedV2Error::ConnectionError;
               } else {
                 feed->error = mojom::FeedV2Error::NoArticles;
               }
