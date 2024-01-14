@@ -14,6 +14,8 @@ use ed25519_dalek_bip32::ed25519_dalek::{
 };
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
 use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
+use bech32::{ FromBase32 };
+use ffi::{ Bech32DecodeVariant, Bech32DecodeResult };
 
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
@@ -61,6 +63,19 @@ macro_rules! impl_error {
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace =  brave_wallet)]
 mod ffi {
+
+    enum Bech32DecodeVariant {
+        Bech32,
+        Bech32m,
+        Error
+    }
+
+    struct Bech32DecodeResult {
+        hrp: String,
+        data: Vec<u8>,
+        variant: Bech32DecodeVariant,
+    }
+
     extern "Rust" {
         type Ed25519DalekExtendedSecretKey;
         type Ed25519DalekSignature;
@@ -112,6 +127,8 @@ mod ffi {
 
         fn is_ok(self: &Ed25519DalekVerificationResult) -> bool;
         fn error_message(self: &Ed25519DalekVerificationResult) -> String;
+
+        fn decode_bech32(input: &str) -> Bech32DecodeResult;
     }
 }
 
@@ -196,6 +213,32 @@ fn generate_ed25519_extended_secrect_key_from_bytes(
 }
 fn bytes_are_curve25519_point(bytes: &[u8]) -> bool {
     curve25519_dalek::edwards::CompressedEdwardsY::from_slice(bytes).decompress().is_some()
+}
+
+fn decode_bech32(input: &str) -> Bech32DecodeResult {
+  if let Ok((hrp, data, variant)) = bech32::decode(&input) {
+    if let Ok(as_u8) = Vec::<u8>::from_base32(&data) {
+      match variant {
+        bech32::Variant::Bech32m => {
+          return Bech32DecodeResult {
+            hrp: hrp,
+            data: as_u8,
+            variant : Bech32DecodeVariant::Bech32m };
+        },
+        bech32::Variant::Bech32 => {
+          return Bech32DecodeResult {
+            hrp: hrp,
+            data: as_u8,
+            variant : Bech32DecodeVariant::Bech32 };
+        }
+      }
+    }
+  };
+
+  return Bech32DecodeResult {
+    hrp: "".to_string(),
+    data: Vec::<u8>::new(),
+    variant: Bech32DecodeVariant::Error };
 }
 
 impl Ed25519DalekExtendedSecretKey {

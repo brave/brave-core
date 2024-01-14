@@ -8,12 +8,14 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/grit/brave_components_strings.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -42,7 +44,8 @@ class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
 
   void OnComplete(bool success) override {
     if (!success) {
-      std::move(callback_).Run(base::unexpected("stream error"));
+      std::move(callback_).Run(base::unexpected(
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
       return;
     }
     std::move(callback_).Run(tx_found_);
@@ -249,7 +252,8 @@ void ZCashRpc::GetUtxoList(const std::string& chain_id,
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
 
   if (!request_url.is_valid()) {
-    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -272,7 +276,8 @@ void ZCashRpc::GetLatestBlock(const std::string& chain_id,
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
 
   if (!request_url.is_valid()) {
-    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -296,7 +301,8 @@ void ZCashRpc::GetTransaction(const std::string& chain_id,
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
 
   if (!request_url.is_valid()) {
-    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -320,24 +326,28 @@ void ZCashRpc::OnGetUtxosResponse(
   auto current_loader = std::move(*it);
   url_loaders_list_.erase(it);
   if (current_loader->NetError()) {
-    std::move(callback).Run(base::unexpected("Network error"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
   if (!response_body) {
-    std::move(callback).Run(base::unexpected("Response body is empty"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   auto message = ResolveSerializedMessage(*response_body);
   if (!message) {
-    std::move(callback).Run(base::unexpected("Wrong response format"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   zcash::GetAddressUtxosResponse response;
   if (!response.ParseFromString(message.value())) {
-    std::move(callback).Run(base::unexpected("Can't parse response"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
@@ -357,23 +367,27 @@ void ZCashRpc::OnGetLatestBlockResponse(
   url_loaders_list_.erase(it);
   zcash::BlockID response;
   if (current_loader->NetError()) {
-    std::move(callback).Run(base::unexpected("Network error"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
   if (!response_body) {
-    std::move(callback).Run(base::unexpected("Response body is empty"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   auto message = ResolveSerializedMessage(*response_body);
   if (!message) {
-    std::move(callback).Run(base::unexpected("Wrong response format"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   if (!response.ParseFromString(message.value())) {
-    std::move(callback).Run(base::unexpected("Can't parse response"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
@@ -388,23 +402,27 @@ void ZCashRpc::OnGetTransactionResponse(
   url_loaders_list_.erase(it);
   zcash::RawTransaction response;
   if (current_loader->NetError()) {
-    std::move(callback).Run(base::unexpected("Network error"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
   if (!response_body) {
-    std::move(callback).Run(base::unexpected("Response body is empty"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   auto message = ResolveSerializedMessage(*response_body);
   if (!message) {
-    std::move(callback).Run(base::unexpected("Wrong response format"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   if (!response.ParseFromString(message.value())) {
-    std::move(callback).Run(base::unexpected("Can't parse response"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
@@ -418,7 +436,8 @@ void ZCashRpc::SendTransaction(const std::string& chain_id,
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
 
   if (!request_url.is_valid()) {
-    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -444,7 +463,8 @@ void ZCashRpc::IsKnownAddress(const std::string& chain_id,
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
 
   if (!request_url.is_valid()) {
-    std::move(callback).Run(base::unexpected("Request URL is invalid."));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -473,23 +493,27 @@ void ZCashRpc::OnSendTransactionResponse(
   url_loaders_list_.erase(it);
   zcash::SendResponse response;
   if (current_loader->NetError()) {
-    std::move(callback).Run(base::unexpected("Network error"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
   if (!response_body) {
-    std::move(callback).Run(base::unexpected("Response body is empty"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   auto message = ResolveSerializedMessage(*response_body);
   if (!message) {
-    std::move(callback).Run(base::unexpected("Wrong response format"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
   if (!response.ParseFromString(message.value())) {
-    std::move(callback).Run(base::unexpected("Can't parse response"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
     return;
   }
 
@@ -508,7 +532,8 @@ void ZCashRpc::OnGetAddressTxResponse(
   stream_handlers_list_.erase(handler_it);
 
   if (!result.has_value()) {
-    std::move(callback).Run(base::unexpected("Network error"));
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 

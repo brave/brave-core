@@ -2507,7 +2507,7 @@ KeyringService::GetZCashAddresses(const mojom::AccountIdPtr& account_id) {
                                          kBitcoinChangeIndex, i);
     auto address = zcash_keyring->GetAddress(*key_id);
     if (!address) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     addresses.emplace_back(std::move(address));
   }
