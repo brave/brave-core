@@ -3,12 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// types
 import {
   SupportedTestNetworks,
   SupportedCoinTypes,
   BraveWallet,
   PanelTypes
 } from '../constants/types'
+import {
+  TokenBalancesRegistry //
+} from '../common/slices/entities/token-balance.entity'
+
+// utils
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -113,4 +119,26 @@ export function setStoredPortfolioTimeframe(
     LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
     timeframe.toString()
   )
+}
+
+export const getPersistedTokenBalances = (): TokenBalancesRegistry => {
+  try {
+    return JSON.parse(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) || '{}'
+    )
+  } catch (error) {
+    console.error(error)
+    return {}
+  }
+}
+
+export const setPersistedTokenBalances = (registry: TokenBalancesRegistry) => {
+  try {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
+      JSON.stringify(registry)
+    )
+  } catch (error) {
+    console.error(error)
+  }
 }
