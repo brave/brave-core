@@ -803,6 +803,16 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
   BraveWallet.Z_CASH_TESTNET
 ]
 
+export const DAppSupportedCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH
+]
+
+export const DAppSupportedPrimaryChains = [
+  BraveWallet.MAINNET_CHAIN_ID,
+  BraveWallet.SOLANA_MAINNET
+]
+
 /**
  * Should match BraveWallet.CoinType defined with "as const" to allow for use
  * as a type-guard.
