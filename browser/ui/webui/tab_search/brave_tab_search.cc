@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/tab_search/brave_tab_search.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"

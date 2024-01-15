@@ -12,7 +12,7 @@ brave_tab_search_web_component_files = []
 brave_tab_search_non_web_component_files = [
   "brave_overrides/index.ts",
   "brave_overrides/tab_search_page.ts",
-  "brave_overrides/tab_data.ts"
+  "brave_overrides/tab_data.ts",
 ]
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

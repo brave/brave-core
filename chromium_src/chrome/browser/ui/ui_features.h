@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-#include "src/chrome/browser/ui/ui_features.h"
+#include "src/chrome/browser/ui/ui_features.h"  // IWYU pragma: export
 
 namespace features {
 

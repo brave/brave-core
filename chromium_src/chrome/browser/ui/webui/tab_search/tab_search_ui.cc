@@ -15,7 +15,7 @@
 
 #include "src/chrome/browser/ui/webui/tab_search/tab_search_ui.cc"
 
-#undef kTabSearchSearchIgnoreLocation
+#undef IsTabOrganization
 
 void TabSearchUI::BindInterface(
     mojo::PendingReceiver<tab_search::mojom::BraveTabSearch> receiver) {

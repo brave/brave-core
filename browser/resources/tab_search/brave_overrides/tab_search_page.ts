@@ -72,14 +72,14 @@ if (loadTimeData.getBoolean('tabSearchHistory')) {
 const historyTitleItem = new TitleItem("History", true, true)
 RegisterPolymerPrototypeModification({
   'tab-search-page': prototype => {
-    const internalUpdateFilteredTabs_ = prototype.updateFilteredTabs_
+    const internalUpdateFilteredTabs = prototype.updateFilteredTabs_
 
     prototype.updateFilteredTabs_ = function () {
       let selectedIndex = this.getSelectedIndex();
 
       const historyItems = fuzzySearch(this.searchText_, historyData, this.fuzzySearchOptions_)
 
-      internalUpdateFilteredTabs_.apply(this)
+      internalUpdateFilteredTabs.apply(this)
 
       if (historyItems.length) {
         const result = [...this.filteredItems_, historyTitleItem]
@@ -123,10 +123,10 @@ RegisterPolymerPrototypeModification({
       })
     }
 
-    const internalOnTitleExpandChanged_ = prototype.onTitleExpandChanged_
+    const internalOnTitleExpandChanged = prototype.onTitleExpandChanged_
     prototype.onTitleExpandChanged_ = function(e: any) {
       if (e.detail.value === e.model.item.expanded) return
-      internalOnTitleExpandChanged_.call(this, e)
+      internalOnTitleExpandChanged.call(this, e)
     }
   }
 })
