@@ -88,7 +88,14 @@ platform :ios do
       scheme: "Nightly",
       export_method: "app-store",
       export_options: {
-        manageAppVersionAndBuildNumber: false
+        manageAppVersionAndBuildNumber: false,
+        provisioningProfiles: {
+          "com.brave.ios.BrowserBeta" => "Brave iOS Nightly",
+          "com.brave.ios.BrowserBeta.ShareExtension" => "Brave iOS Nightly Share Extension",
+          "com.brave.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
+          "com.brave.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
+          "com.brave.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
+        },
       }
     }
     testflight_build({gymOverrides: gymOverrides, pilotOverrides: {}, skip_upload: options[:skip_upload]})
@@ -116,6 +123,10 @@ platform :ios do
 
   desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
   private_lane :testflight_build do |options|
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "App/Client.xcodeproj"
+    )
     defaultParams = gym_params()
     gym(defaultParams.merge!(options[:gymOverrides]))
     unless options[:skip_upload]
