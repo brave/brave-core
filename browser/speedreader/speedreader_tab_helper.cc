@@ -287,7 +287,8 @@ void SpeedreaderTabHelper::ProcessNavigation(
   auto* nav_entry = navigation_handle->GetNavigationEntry();
 
   const bool url_looks_readable =
-      nav_entry && !nav_entry->IsViewSourceMode() && rewriter_service &&
+      rewriter_service && nav_entry &&
+      nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
       rewriter_service->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
