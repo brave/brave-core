@@ -55,8 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     AppConstants.buildChannel = .beta
     #elseif MOZ_CHANNEL_NIGHTLY
     AppConstants.buildChannel = .nightly
-    #elseif MOZ_CHANNEL_ENTERPRISE
-    AppConstants.buildChannel = .enterprise
     #elseif MOZ_CHANNEL_DEBUG
     AppConstants.buildChannel = .debug
     #endif

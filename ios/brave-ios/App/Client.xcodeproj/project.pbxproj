@@ -244,13 +244,11 @@
 		2F6931B8260CFB3700ECEB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F6931CD260CFB5300ECEB38 /* BrowserIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntents.entitlements; sourceTree = "<group>"; };
 		2F69320A260D021D00ECEB38 /* BrowserIntentsDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsDebug.entitlements; sourceTree = "<group>"; };
-		2F69320B260D032700ECEB38 /* BrowserIntentsEnterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsEnterprise.entitlements; sourceTree = "<group>"; };
 		2F69320C260D03B000ECEB38 /* BrowserIntentsRelease (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "BrowserIntentsRelease (AppStore).entitlements"; sourceTree = "<group>"; };
 		2F69320D260D048400ECEB38 /* BrowserIntentsRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsRelease.entitlements; sourceTree = "<group>"; };
 		2F69320E260D056100ECEB38 /* BrowserIntentsBeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsBeta.entitlements; sourceTree = "<group>"; };
 		2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardBeta.entitlements; sourceTree = "<group>"; };
 		2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardDebug.entitlements; sourceTree = "<group>"; };
-		2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardEnterprise.entitlements; sourceTree = "<group>"; };
 		2F93A97E29C8CF1300C7C158 /* BraveWireGuardNightly.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardNightly.entitlements; sourceTree = "<group>"; };
 		2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardRelease.entitlements; sourceTree = "<group>"; };
 		2FC7DF7A2B5AE98E0092553B /* ActionExtensionIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ActionExtensionIcons.xcassets; sourceTree = "<group>"; };
@@ -327,7 +325,6 @@
 		CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetRelease.entitlements; sourceTree = "<group>"; };
 		CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetBeta.entitlements; sourceTree = "<group>"; };
 		CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDebug.entitlements; sourceTree = "<group>"; };
-		CA0391DF271E12F8000EB13C /* WidgetEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetEnterprise.entitlements; sourceTree = "<group>"; };
 		CA0391E4271E1382000EB13C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/BraveWidgets.intentdefinition; sourceTree = "<group>"; };
 		CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsWidget.swift; sourceTree = "<group>"; };
 		CA0391F4271E143F000EB13C /* FavoritesWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesWidget.swift; sourceTree = "<group>"; };
@@ -501,7 +498,6 @@
 				2F69320E260D056100ECEB38 /* BrowserIntentsBeta.entitlements */,
 				2F69320D260D048400ECEB38 /* BrowserIntentsRelease.entitlements */,
 				2F69320C260D03B000ECEB38 /* BrowserIntentsRelease (AppStore).entitlements */,
-				2F69320B260D032700ECEB38 /* BrowserIntentsEnterprise.entitlements */,
 				2F69320A260D021D00ECEB38 /* BrowserIntentsDebug.entitlements */,
 				2F6931CD260CFB5300ECEB38 /* BrowserIntents.entitlements */,
 			);
@@ -524,7 +520,6 @@
 				2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */,
 				2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */,
 				2F93A97E29C8CF1300C7C158 /* BraveWireGuardNightly.entitlements */,
-				2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */,
 				2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */,
 			);
 			path = Entitlements;
@@ -604,7 +599,6 @@
 				CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */,
 				CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */,
 				CA0391DB271E12F7000EB13C /* WidgetNightly.entitlements */,
-				CA0391DF271E12F8000EB13C /* WidgetEnterprise.entitlements */,
 				CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */,
 			);
 			path = Entitlements;

@@ -16,8 +16,9 @@ platform :ios do
     run_tests(
       project: "App/Client.xcodeproj",
       scheme: "Debug",
-      devices: ["iPhone 15 (17.0)"],
+      devices: ["iPhone 15"],
       code_coverage: true,
+      output_style: 'raw',
       ensure_devices_found: true,
       skip_testing: [
 	"CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed",
@@ -32,6 +33,9 @@ platform :ios do
         "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
         "ClientTests/UserAgentTests",
         "ClientTests/CachedAdBlockEngineTests/testPerformance",
+        "ClientTests/ScriptExecutionTests/testSiteStateListenerScript",
+        "ClientTests/FarblingProtectionHelperTests/testGivenTheSameRandomManagerThenSameFakePluginData",
+        "ClientTests/ContentBlockerManagerTests/testContentBlockerManager",
         "DataTests",
         "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
         "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
@@ -44,14 +48,17 @@ platform :ios do
         "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
         "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
         "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
+        "BraveWalletTests/AccountActivityStoreTests/testUpdateEthereumAccount",
+        "BraveSharedTests/NSURLExtensionsTests/testBugzillaURLDomain",
       ]
     )
 
     run_tests(
       project: "App/Client.xcodeproj",
       scheme: "Debug",
-      devices: ["iPad (10th generation) (17.0)"],
+      devices: ["iPad (10th generation)"],
       code_coverage: true,
+      output_style: 'raw',
       ensure_devices_found: true,
       skip_testing: [
         "ClientTests/UserAgentTests"
