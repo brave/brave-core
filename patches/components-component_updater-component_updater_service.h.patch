@@ -1,8 +1,8 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index 1b718ecf09f706f5d56f912c0b4aa34555b6a3ac..07c66a6d005d9ed99bfc7d46f364630d31391c0b 100644
+index ef30796e6679deb39e2efd76c41f584f814c42e5..6f734a84729acee289aec33f045d9f6bed60f9fc 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
-@@ -191,6 +191,7 @@ class ComponentUpdateService {
+@@ -197,6 +197,7 @@ class ComponentUpdateService {
    friend class screen_ai::ScreenAIDownloaderNonChromeOS;
    friend class speech::SodaInstallerImpl;
    friend class ::ComponentsHandler;
@@ -10,7 +10,7 @@ index 1b718ecf09f706f5d56f912c0b4aa34555b6a3ac..07c66a6d005d9ed99bfc7d46f364630d
    FRIEND_TEST_ALL_PREFIXES(ComponentInstallerTest, RegisterComponent);
  };
  
-@@ -204,6 +205,7 @@ class OnDemandUpdater {
+@@ -210,6 +211,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
  
    virtual ~OnDemandUpdater() = default;

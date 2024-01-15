@@ -258,6 +258,8 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.cc",
         "webui/settings/brave_tor_handler.h",
       ]
+
+      deps += [ "//chrome/browser/image_fetcher" ]
     }
     if (enable_extensions) {
       sources += [

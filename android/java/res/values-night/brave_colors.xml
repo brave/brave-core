@@ -8,10 +8,12 @@
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
+    <color name="baseline_primary_30">#F0F2FF</color>
+    <color name="baseline_primary_80">#FA7250</color>
     <color name="baseline_primary_90">#5B2A23</color>
-    <color name="baseline_primary_80">#F35333</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
+    <color name="modern_blue_600">@color/baseline_primary_30</color>
 
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
@@ -22,7 +24,7 @@
     <color name="onboarding_bg_color">#1E2029</color>
     <color name="onboarding_timer_color">#478AFF</color>
 
-    <color name="onboarding_progress_start_color">#FA7250</color>
+    <color name="onboarding_progress_start_color">@color/baseline_primary_80</color>
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#A78AFF</color>
 

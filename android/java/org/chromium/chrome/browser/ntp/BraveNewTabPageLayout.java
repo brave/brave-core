@@ -102,7 +102,6 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -1292,11 +1291,11 @@ public class BraveNewTabPageLayout
     }
 
     private void initilizeSponsoredTab() {
-        if (TabAttributes.from(getTab()).get(String.valueOf(getTabImpl().getId())) == null) {
+        if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
             SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
-            TabAttributes.from(getTab()).set(String.valueOf(getTabImpl().getId()), sponsoredTab);
+            TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
-        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
+        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTab()).getId()));
         if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -1469,10 +1468,6 @@ public class BraveNewTabPageLayout
     private Tab getTab() {
         assert mTab != null;
         return mTab;
-    }
-
-    private TabImpl getTabImpl() {
-        return (TabImpl) getTab();
     }
 
     @Override

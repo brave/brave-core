@@ -7,9 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_OVERLAY_BRAVE_BACK_TO_TAB_LABEL_BUTTON_H_
 
 #include "chrome/browser/ui/views/overlay/back_to_tab_label_button.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveBackToTabLabelButton : public BackToTabLabelButton {
-  METADATA_HEADER(BraveBackToTabLabelButton);
+  METADATA_HEADER(BraveBackToTabLabelButton, BackToTabLabelButton)
 
  public:
   explicit BraveBackToTabLabelButton(PressedCallback callback);

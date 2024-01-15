@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/bookmarks/bookmark_bar_instructions_view.h"
 
@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
@@ -133,3 +134,6 @@ void BookmarkBarInstructionsView::UpdateColors() {
     import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
   }
 }
+
+BEGIN_METADATA(BookmarkBarInstructionsView)
+END_METADATA

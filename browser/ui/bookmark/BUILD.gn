@@ -18,6 +18,8 @@ source_set("bookmark") {
     "brave_bookmark_tab_helper.h",
   ]
 
+  public_deps = [ "//base" ]
+
   deps = [
     "//base",
     "//brave/common",

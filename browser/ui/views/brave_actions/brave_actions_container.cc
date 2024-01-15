@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
 
@@ -139,3 +140,6 @@ void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
     rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
   }
 }
+
+BEGIN_METADATA(BraveActionsContainer)
+END_METADATA

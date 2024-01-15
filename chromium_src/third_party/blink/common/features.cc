@@ -25,7 +25,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsFormFactor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -51,9 +50,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kWebEnvironmentIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 // Allow certain client hints in request header.

@@ -35,6 +35,8 @@ namespace views {
 //  - Differenet hover bg color for prominent background
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
+  METADATA_HEADER(MdTextButton, views::MdTextButtonBase)
+
  public:
   struct ButtonColors {
     SkColor background_color;
@@ -46,7 +48,8 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
-                        int button_context = style::CONTEXT_BUTTON_MD);
+                        int button_context = style::CONTEXT_BUTTON_MD,
+                        bool use_text_color_for_icon = true);
   MdTextButton(const MdTextButton&) = delete;
   MdTextButton& operator=(const MdTextButton&) = delete;
   ~MdTextButton() override;

@@ -22,18 +22,21 @@ namespace brave_news {
 namespace {
 
 constexpr auto kSupportedFeedTypes =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        "application/atom+xml",
-        "application/json",
-        "application/rss+atom",
-        "application/rss+xml",
-        "application/xml",
-    });
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "application/atom+xml",
+                                                 "application/json",
+                                                 "application/rss+atom",
+                                                 "application/rss+xml",
+                                                 "application/xml",
+                                             });
 
-constexpr auto kSupportedRels = base::MakeFixedFlatSetSorted<std::string_view>({
-    "alternate",
-    "service.feed",
-});
+constexpr auto kSupportedRels =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "alternate",
+                                                 "service.feed",
+                                             });
 
 }  // namespace
 

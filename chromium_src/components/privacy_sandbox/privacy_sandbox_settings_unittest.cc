@@ -556,6 +556,7 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 }
+
 class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff
     : public PrivacySandboxSettingsTest {
  public:
@@ -567,7 +568,8 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff
 
 TEST_F(PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff,
        UseLastTopicsDataAccessibleSince) {
-  EXPECT_EQ(base::Time::FromTimeT(12345),
+  // The preference value is ignored
+  EXPECT_EQ(base::Time::Max(),
             privacy_sandbox_settings()->TopicsDataAccessibleSince());
 }
 
@@ -585,7 +587,11 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn
 
 TEST_F(PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn,
        UpdateTopicsDataAccessibleSince) {
-  EXPECT_EQ(base::Time::Now(),
+  // Clear cookies on exit doesn't affect TopicsDataAccessibleSince() return
+  // value. The preference value is not updated and ignored.
+  EXPECT_EQ(base::Time::FromTimeT(12345),
+            prefs()->GetTime(prefs::kPrivacySandboxTopicsDataAccessibleSince));
+  EXPECT_EQ(base::Time::Max(),
             privacy_sandbox_settings()->TopicsDataAccessibleSince());
 }
 

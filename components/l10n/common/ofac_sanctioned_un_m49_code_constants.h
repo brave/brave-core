@@ -15,18 +15,20 @@ namespace brave_l10n {
 // See https://orpa.princeton.edu/export-controls/sanctioned-countries.
 
 inline constexpr auto kOFACSactionedUnM49Codes =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        // See https://en.wikipedia.org/wiki/UN_M49.
+    base::MakeFixedFlatSet<std::string_view>(
+        base::sorted_unique,
+        {
+            // See https://en.wikipedia.org/wiki/UN_M49.
 
-        "001",  // World which includes sanctioned Cuba, Iran, North Korea,
-                // Russia and Syria.
-        "029",  // Caribbean which includes sanctioned Cuba.
-        "030",  // Eastern Asia which includes sanctioned North Korea.
-        "034",  // Southern Asia which includes sanctioned Iran.
-        "145",  // Western Asia which includes Syria.
-        "151",  // Eastern Europe (including Northern Asia) which includes
-                // sanctioned Russia.
-    });
+            "001",  // World which includes sanctioned Cuba, Iran, North Korea,
+                    // Russia and Syria.
+            "029",  // Caribbean which includes sanctioned Cuba.
+            "030",  // Eastern Asia which includes sanctioned North Korea.
+            "034",  // Southern Asia which includes sanctioned Iran.
+            "145",  // Western Asia which includes Syria.
+            "151",  // Eastern Europe (including Northern Asia) which includes
+                    // sanctioned Russia.
+        });
 
 }  // namespace brave_l10n
 

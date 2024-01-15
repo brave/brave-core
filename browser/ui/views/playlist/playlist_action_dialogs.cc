@@ -121,6 +121,8 @@ END_METADATA
 
 // A textfield that limits the maximum length of the input text.
 class BoundedTextfield : public views::Textfield {
+  METADATA_HEADER(BoundedTextfield, views::Textfield)
+
  public:
   explicit BoundedTextfield(size_t max_length) : max_length_(max_length) {
     length_label_ = AddChildView(std::make_unique<views::Label>());
@@ -176,6 +178,10 @@ class BoundedTextfield : public views::Textfield {
 
   base::WeakPtrFactory<BoundedTextfield> weak_ptr_factory_{this};
 };
+
+BEGIN_METADATA(BoundedTextfield)
+END_METADATA
+
 }  // namespace
 
 namespace playlist {

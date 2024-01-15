@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/widget/widget.h"
@@ -25,6 +26,7 @@ class BraveShieldsActionView
     : public views::LabelButton,
       public brave_shields::BraveShieldsDataController::Observer,
       public TabStripModelObserver {
+  METADATA_HEADER(BraveShieldsActionView, views::LabelButton)
  public:
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsActionIcon);
   explicit BraveShieldsActionView(Profile& profile,

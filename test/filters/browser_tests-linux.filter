@@ -21,6 +21,14 @@
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 
+# This test fails because of the following CHECK in identity_test_utils.cc:
+# !primary_account_info.IsEmpty()
+-ManagedUserNoticeUIDialogPixelTest.InvokeUi_default/*
+-ManagedUserNoticeUIWindowPixelTest.InvokeUi_default/*
+
+# These tests fail because kPrerender2 feature is disabled.
+-MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
