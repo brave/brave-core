@@ -30,7 +30,7 @@ BraveURLLoaderThrottleProviderImpl::~BraveURLLoaderThrottleProviderImpl() =
 blink::WebVector<std::unique_ptr<blink::URLLoaderThrottle>>
 BraveURLLoaderThrottleProviderImpl::CreateThrottles(
     base::optional_ref<const blink::LocalFrameToken> local_frame_token,
-    const blink::WebURLRequest& request) {
+    const network::ResourceRequest& request) {
   auto throttles = URLLoaderThrottleProviderImpl::CreateThrottles(
       local_frame_token, request);
 #if BUILDFLAG(ENABLE_TOR)
