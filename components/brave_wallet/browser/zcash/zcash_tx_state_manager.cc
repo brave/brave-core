@@ -8,9 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
@@ -27,26 +25,15 @@ ZCashTxStateManager::ZCashTxStateManager(
 ZCashTxStateManager::~ZCashTxStateManager() = default;
 
 std::unique_ptr<ZCashTxMeta> ZCashTxStateManager::GetZCashTx(
-    const std::string& chain_id,
     const std::string& id) {
   return std::unique_ptr<ZCashTxMeta>{
-      static_cast<ZCashTxMeta*>(TxStateManager::GetTx(chain_id, id).release())};
+      static_cast<ZCashTxMeta*>(TxStateManager::GetTx(id).release())};
 }
 
 std::unique_ptr<ZCashTxMeta> ZCashTxStateManager::ValueToZCashTxMeta(
     const base::Value::Dict& value) {
   return std::unique_ptr<ZCashTxMeta>{
       static_cast<ZCashTxMeta*>(ValueToTxMeta(value).release())};
-}
-
-std::string ZCashTxStateManager::GetTxPrefPathPrefix(
-    const std::optional<std::string>& chain_id) {
-  if (chain_id.has_value()) {
-    return base::StrCat(
-        {kZCashPrefKey, ".",
-         GetNetworkId(prefs_, mojom::CoinType::ZEC, *chain_id)});
-  }
-  return kZCashPrefKey;
 }
 
 mojom::CoinType ZCashTxStateManager::GetCoinType() const {

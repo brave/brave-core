@@ -102,7 +102,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                     var allAccountsArray = allAccounts.accounts;
                     // Fetch transactions
                     PendingTxHelper pendingTxHelper =
-                            new PendingTxHelper(mTxService, allAccountsArray, true, null);
+                            new PendingTxHelper(mTxService, allAccountsArray, true);
                     pendingTxHelper.fetchTransactions(() -> {
                         HashMap<String, TransactionInfo[]> pendingTxInfos =
                                 pendingTxHelper.getTransactions();

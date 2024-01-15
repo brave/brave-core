@@ -260,8 +260,10 @@ scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
 std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
     PrefService* prefs,
     scoped_refptr<value_store::ValueStoreFactory> store_factory) {
-  return std::make_unique<TxStorageDelegateImpl>(
+  auto delegate = std::make_unique<TxStorageDelegateImpl>(
       prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  return delegate;
 }
 
 AccountResolverDelegateForTest::AccountResolverDelegateForTest() = default;

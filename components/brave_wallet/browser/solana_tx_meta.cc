@@ -50,4 +50,8 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       std::nullopt);
 }
 
+mojom::CoinType SolanaTxMeta::GetCoinType() const {
+  return mojom::CoinType::SOL;
+}
+
 }  // namespace brave_wallet

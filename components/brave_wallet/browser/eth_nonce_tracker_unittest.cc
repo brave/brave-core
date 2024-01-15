@@ -116,7 +116,6 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
       GetTxStorageDelegateForTest(GetPrefs(), factory);
   auto account_resolver_delegate =
       std::make_unique<AccountResolverDelegateForTest>();
-  WaitForTxStorageDelegateInitialized(delegate.get());
   EthTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
                                      account_resolver_delegate.get());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);

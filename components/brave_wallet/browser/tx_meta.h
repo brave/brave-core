@@ -28,6 +28,7 @@ class TxMeta {
 
   virtual base::Value::Dict ToValue() const;
   virtual mojom::TransactionInfoPtr ToTransactionInfo() const = 0;
+  virtual mojom::CoinType GetCoinType() const = 0;
 
   const std::string& id() const { return id_; }
   mojom::TransactionStatus status() const { return status_; }

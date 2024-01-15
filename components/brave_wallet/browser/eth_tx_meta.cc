@@ -122,12 +122,12 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   }
 
   auto tx_info = GetTransactionInfoFromData(data);
-  std::optional<std::string> final_recepient;
+  std::optional<std::string> final_recipient;
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
     std::tie(tx_type, tx_params, tx_args) = *tx_info;
-    final_recepient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
+    final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
                                         tx_type, tx_args);
   }
   std::optional<std::string> signed_transaction;
@@ -151,7 +151,11 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      final_recepient);
+      final_recipient);
+}
+
+mojom::CoinType EthTxMeta::GetCoinType() const {
+  return mojom::CoinType::ETH;
 }
 
 }  // namespace brave_wallet

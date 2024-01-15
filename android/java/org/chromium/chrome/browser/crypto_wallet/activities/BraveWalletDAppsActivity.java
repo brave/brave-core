@@ -200,7 +200,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                     mPendingTxHelper.destroy();
                 }
                 mPendingTxHelper = new PendingTxHelper(
-                        getTxService(), allAccounts.accounts, false, true, null);
+                        getTxService(), allAccounts.accounts, false, true);
                 mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(this, hasNoPendingTx -> {
                     if (hasNoPendingTx) {
                         finish();

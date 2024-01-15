@@ -47,21 +47,17 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& chain_id,
-                          const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
 
   void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& chain_id,
-                        const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
@@ -90,17 +86,14 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const mojom::TransactionType tx_type,
       mojom::SolanaSendTransactionOptionsPtr send_options,
       MakeTxDataFromBase64EncodedTransactionCallback callback);
-  void GetEstimatedTxFee(const std::string& chain_id,
-                         const std::string& tx_meta_id,
+  void GetEstimatedTxFee(const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback);
   void ProcessSolanaHardwareSignature(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& signature_bytes,
       ProcessSolanaHardwareSignatureCallback callback);
 
-  std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& chain_id,
-                                                const std::string& tx_meta_id);
+  std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
@@ -134,8 +127,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       uint64_t last_valid_block_height,
       mojom::SolanaProviderError error,
       const std::string& error_message);
-  void OnSendSolanaTransaction(const std::string& chain_id,
-                               const std::string& tx_meta_id,
+  void OnSendSolanaTransaction(const std::string& tx_meta_id,
                                ApproveTransactionCallback callback,
                                const std::string& tx_hash,
                                mojom::SolanaProviderError error,

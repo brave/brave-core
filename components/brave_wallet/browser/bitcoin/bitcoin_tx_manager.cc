@@ -100,11 +100,10 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
   std::move(callback).Run(true, meta.id(), "");
 }
 
-void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
-                                          const std::string& tx_meta_id,
+void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                           ApproveTransactionCallback callback) {
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(chain_id, tx_meta_id);
+      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -118,19 +117,18 @@ void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
   bitcoin_wallet_service_->SignAndPostTransaction(
       meta->from(), std::move(*meta->tx()),
       base::BindOnce(&BitcoinTxManager::ContinueApproveTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, tx_meta_id,
+                     weak_factory_.GetWeakPtr(), tx_meta_id,
                      std::move(callback)));
 }
 
 void BitcoinTxManager::ContinueApproveTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     ApproveTransactionCallback callback,
     std::string tx_cid,
     BitcoinTransaction transaction,
     std::string error) {
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(chain_id, tx_meta_id);
+      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -160,7 +158,7 @@ void BitcoinTxManager::ContinueApproveTransaction(
   }
 
   if (success) {
-    UpdatePendingTransactions(chain_id);
+    UpdatePendingTransactions(meta->chain_id());
   }
   std::move(callback).Run(
       success,
@@ -171,21 +169,18 @@ void BitcoinTxManager::ContinueApproveTransaction(
 }
 
 void BitcoinTxManager::SpeedupOrCancelTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
   NOTIMPLEMENTED() << "Bitcoin transaction speedup or cancel is not supported";
 }
 
-void BitcoinTxManager::RetryTransaction(const std::string& chain_id,
-                                        const std::string& tx_meta_id,
+void BitcoinTxManager::RetryTransaction(const std::string& tx_meta_id,
                                         RetryTransactionCallback callback) {
   NOTIMPLEMENTED() << "Bitcoin transaction retry is not supported";
 }
 
 void BitcoinTxManager::GetTransactionMessageToSign(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   NOTIMPLEMENTED() << "Bitcoin hardware signing is not supported";
@@ -213,22 +208,20 @@ void BitcoinTxManager::UpdatePendingTransactions(
     bitcoin_wallet_service_->GetTransactionStatus(
         pending_transaction->chain_id(), pending_transaction->tx_hash(),
         base::BindOnce(&BitcoinTxManager::OnGetTransactionStatus,
-                       weak_factory_.GetWeakPtr(), pending_chain_id,
-                       pending_transaction->id()));
+                       weak_factory_.GetWeakPtr(), pending_transaction->id()));
     pending_chain_ids.emplace(pending_chain_id);
   }
   CheckIfBlockTrackerShouldRun(pending_chain_ids);
 }
 
 void BitcoinTxManager::OnGetTransactionStatus(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     base::expected<bool, std::string> confirm_status) {
   if (!confirm_status.has_value()) {
     return;
   }
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(chain_id, tx_meta_id);
+      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
   if (!meta) {
     return;
   }

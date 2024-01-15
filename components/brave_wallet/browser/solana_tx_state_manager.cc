@@ -8,9 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 
@@ -67,21 +65,10 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   return meta;
 }
 
-std::string SolanaTxStateManager::GetTxPrefPathPrefix(
-    const std::optional<std::string>& chain_id) {
-  if (chain_id.has_value()) {
-    return base::StrCat(
-        {kSolanaPrefKey, ".",
-         GetNetworkId(prefs_, mojom::CoinType::SOL, *chain_id)});
-  }
-  return kSolanaPrefKey;
-}
-
 std::unique_ptr<SolanaTxMeta> SolanaTxStateManager::GetSolanaTx(
-    const std::string& chain_id,
     const std::string& id) {
-  return std::unique_ptr<SolanaTxMeta>{static_cast<SolanaTxMeta*>(
-      TxStateManager::GetTx(chain_id, id).release())};
+  return std::unique_ptr<SolanaTxMeta>{
+      static_cast<SolanaTxMeta*>(TxStateManager::GetTx(id).release())};
 }
 
 }  // namespace brave_wallet
