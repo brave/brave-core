@@ -37,6 +37,7 @@ class PlaylistStreaming {
   PlaylistStreaming& operator=(const PlaylistStreaming&) = delete;
 
   void RequestStreamingQuery(
+      const std::string& query_id,
       const std::string& url,
       const std::string& method,
       api_request_helper::APIRequestHelper::ResponseStartedCallback
@@ -46,10 +47,14 @@ class PlaylistStreaming {
       api_request_helper::APIRequestHelper::ResultCallback
           data_completed_callback);
   void ClearAllQueries();
+  void CancelQuery(const std::string& query_id);
 
  private:
+  using URLLoaderMap =
+      base::flat_map<std::string, api_request_helper::APIRequestHelper::Ticket>;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  URLLoaderMap url_loader_map_;
 };
 
 }  // namespace playlist

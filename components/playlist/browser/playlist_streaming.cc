@@ -50,6 +50,7 @@ PlaylistStreaming::PlaylistStreaming(content::BrowserContext* context)
 PlaylistStreaming::~PlaylistStreaming() = default;
 
 void PlaylistStreaming::RequestStreamingQuery(
+    const std::string& query_id,
     const std::string& url,
     const std::string& method,
     api_request_helper::APIRequestHelper::ResponseStartedCallback
@@ -59,16 +60,29 @@ void PlaylistStreaming::RequestStreamingQuery(
     api_request_helper::APIRequestHelper::ResultCallback
         data_completed_callback) {
   base::flat_map<std::string, std::string> headers;
-  api_request_helper_->RequestSSE(method, GURL(url), "", "application/json",
-                                  std::move(data_received_callback),
-                                  std::move(data_completed_callback), headers,
-                                  {}, std::move(response_started_callback));
+  api_request_helper::APIRequestHelper::Ticket ticket =
+      api_request_helper_->RequestSSE(
+          method, GURL(url), "", "application/json",
+          std::move(data_received_callback), std::move(data_completed_callback),
+          headers, {}, std::move(response_started_callback));
+  url_loader_map_[query_id] = ticket;
 }
 
 void PlaylistStreaming::ClearAllQueries() {
   // TODO(deeppandya): Keep track of in-progress requests and cancel them
   // individually. This would be useful to keep some in-progress requests alive.
   api_request_helper_->CancelAll();
+  url_loader_map_.clear();
+}
+
+void PlaylistStreaming::CancelQuery(const std::string& query_id) {
+  if (!url_loader_map_.count(query_id)) {
+    return;
+  }
+  api_request_helper::APIRequestHelper::Ticket ticket =
+      url_loader_map_[query_id];
+  api_request_helper_->Cancel(ticket);
+  url_loader_map_.erase(query_id);
 }
 
 }  // namespace playlist

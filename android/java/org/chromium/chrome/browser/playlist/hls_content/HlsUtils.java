@@ -49,7 +49,8 @@ public class HlsUtils {
         String mediaPath = getHlsMediaFilePath(playlistItem);
         String hlsManifestFilePath = getHlsManifestFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
-        playlistService.requestStreamingQuery(manifestUrl, GET_METHOD);
+        playlistService.requestStreamingQuery(playlistItem.id, manifestUrl, GET_METHOD);
+
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -110,7 +111,7 @@ public class HlsUtils {
         String mediaPath = getHlsMediaFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
         playlistService.requestStreamingQuery(
-                UriUtil.resolve(manifestUrl, segment.url), GET_METHOD);
+                playlistItem.id, UriUtil.resolve(manifestUrl, segment.url), GET_METHOD);
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {

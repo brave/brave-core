@@ -135,8 +135,9 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
-  RequestStreamingQuery(string url,string method);
+  RequestStreamingQuery(string query_id, string url,string method);
   ClearAllQueries();
+  CancelQuery(string query_id);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
   AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);

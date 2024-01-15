@@ -15,7 +15,6 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.enums.HlsContentStatus;
 import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.model.HlsContentProgressModel;
 import com.brave.playlist.model.HlsContentQueueModel;
@@ -41,6 +40,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     private final IBinder mBinder = new LocalBinder();
     private Context mContext = ContextUtils.getApplicationContext();
     private PlaylistService mPlaylistService;
+    public static String currentDownloadingPlaylistItemId = "";
 
     class LocalBinder extends Binder {
         HlsServiceImpl getService() {
@@ -83,6 +83,10 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                     mPlaylistService.getPlaylistItem(
                             playlistItemId,
                             playlistItem -> {
+                                if (playlistItem == null) {
+                                    removeContentAndStartNextDownload(playlistItemId);
+                                }
+                                currentDownloadingPlaylistItemId = playlistItemId;
                                 HlsUtils.getManifestFile(
                                         mContext,
                                         mPlaylistService,
@@ -141,25 +145,12 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                                                                     .id,
                                                                                             mediaPath,
                                                                                             updatedFileSize);
-                                                                            playlistRepository
-                                                                                    .updateHlsContentQueueModel(
-                                                                                            new HlsContentQueueModel(
-                                                                                                    playlistItem
-                                                                                                            .id,
-                                                                                                    HlsContentStatus
-                                                                                                            .READY
-                                                                                                            .name()));
                                                                             addNewPlaylistItemModel(
                                                                                     playlistItem
                                                                                             .id);
-                                                                            if (playlistRepository
-                                                                                            .getFirstHlsContentQueueModel()
-                                                                                    != null) {
-                                                                                startHlsContentFromQueue();
-                                                                            } else {
-                                                                                getService()
-                                                                                        .stopSelf();
-                                                                            }
+                                                                            removeContentAndStartNextDownload(
+                                                                                    playlistItem
+                                                                                            .id);
                                                                         });
                                                             }
                                                         });
@@ -167,6 +158,17 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                         });
                             });
                 });
+    }
+
+    private void removeContentAndStartNextDownload(String playlistItemId) {
+        PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
+        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
+        currentDownloadingPlaylistItemId = "";
+        if (playlistRepository.getFirstHlsContentQueueModel() != null) {
+            startHlsContentFromQueue();
+        } else {
+            getService().stopSelf();
+        }
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {

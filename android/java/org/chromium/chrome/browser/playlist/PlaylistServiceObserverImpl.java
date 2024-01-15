@@ -9,7 +9,9 @@ import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.playback_service.VideoPlaybackService;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.MediaUtils;
+import com.brave.playlist.util.PlaylistUtils;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -54,7 +56,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemLocalDataDeleted(String playlistItemId) {
         if (mDelegate == null) return;
         mDelegate.onItemLocalDataDeleted(playlistItemId);
-        VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // if (isVideoPlaybackServiceRunning()) {
+        //     VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // }
     }
 
     @Override
@@ -67,7 +71,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemRemovedFromList(String playlistId, String playlistItemId) {
         if (mDelegate == null) return;
         mDelegate.onItemRemovedFromList(playlistId, playlistItemId);
-        VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // if (isVideoPlaybackServiceRunning()) {
+        //     VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // }
     }
 
     @Override
@@ -75,7 +81,7 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
         if (mDelegate == null) return;
         mDelegate.onItemCached(playlistItem);
 
-        if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)) {
+        if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url) && isVideoPlaybackServiceRunning()) {
             PlaylistItemModel playlistItemModel =
                     new PlaylistItemModel(
                             playlistItem.id,
@@ -142,5 +148,10 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     public void destroy() {
         mDelegate = null;
+    }
+
+    private boolean isVideoPlaybackServiceRunning() {
+        return PlaylistUtils.isServiceRunning(
+                ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }

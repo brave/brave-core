@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
+import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
 import org.chromium.base.task.PostTask;
@@ -63,17 +64,30 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                 (ChromeSwitchPreference) findPreference(PREF_CONTINUOUS_LISTENING);
 
         mResetPlaylist = (BravePlaylistResetPreference) findPreference(PREF_RESET_PLAYLIST);
-        mResetPlaylist.setOnPreferenceClickListener(preference -> {
-            if (mPlaylistService != null) {
-                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
-                    mPlaylistService.resetAll();
-                    PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
-                    getActivity().runOnUiThread(
-                            (Runnable) () -> BraveRelaunchUtils.askForRelaunch(getActivity()));
+        mResetPlaylist.setOnPreferenceClickListener(
+                preference -> {
+                    if (mPlaylistService != null) {
+                        PostTask.postTask(
+                                TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                () -> {
+                                    mPlaylistService.clearAllQueries();
+                                    mPlaylistService.resetAll();
+                                    PlaylistRepository playlistRepository =
+                                            new PlaylistRepository(getActivity());
+                                    playlistRepository.deleteAllLastPlayedPosition();
+                                    playlistRepository.deleteAllHlsContentQueueModel();
+                                    PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
+                                    getActivity()
+                                            .runOnUiThread(
+                                                    (Runnable)
+                                                            () ->
+                                                                    BraveRelaunchUtils
+                                                                            .askForRelaunch(
+                                                                                    getActivity()));
+                                });
+                    }
+                    return true;
                 });
-            }
-            return true;
-        });
 
         updatePlaylistSettingsState(
                 ChromeSharedPreferences.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
