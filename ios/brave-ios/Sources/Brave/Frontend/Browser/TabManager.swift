@@ -97,8 +97,7 @@ class TabManager: NSObject {
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
   public let privateBrowsingManager: PrivateBrowsingManager
-
-  public let deAmpPrefs: DeAmpPrefs
+  public let deAmpPrefs: DeAmpPrefs?
 
   let windowId: UUID
 
@@ -120,7 +119,7 @@ class TabManager: NSObject {
     rewards: BraveRewards?,
     tabGeneratorAPI: BraveTabGeneratorAPI?,
     privateBrowsingManager: PrivateBrowsingManager,
-    deAmpPrefs: DeAmpPrefs
+    deAmpPrefs: DeAmpPrefs?
   ) {
     assert(Thread.isMainThread)
 
@@ -351,7 +350,7 @@ class TabManager: NSObject {
     }
 
     if let t = selectedTab, t.webView == nil {
-      selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs.isDeAmpEnabled)
+      selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
       restoreTab(t)
     }
 
@@ -367,7 +366,7 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).bzzt()
-    selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs.isDeAmpEnabled)
+    selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
     selectedTab?.lastExecutedTime = Date.now()
 
     if let selectedTab = selectedTab,
@@ -511,7 +510,7 @@ class TabManager: NSObject {
       let request =
         InternalURL.isValid(url: url)
         ? PrivilegedRequest(url: url) as URLRequest : URLRequest(url: url)
-      $0.createWebview(includeDeAmpScript: deAmpPrefs.isDeAmpEnabled)
+      $0.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
       $0.loadRequest(request)
     }
 
@@ -637,7 +636,7 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManager(self, didAddTab: tab) }
 
     if !zombie {
-      tab.createWebview(includeDeAmpScript: deAmpPrefs.isDeAmpEnabled)
+      tab.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
     }
     tab.navigationDelegate = self.navDelegate
 
@@ -932,7 +931,7 @@ class TabManager: NSObject {
     self.isRestoring = false
     delegates.forEach { $0.get()?.tabManagerDidRestoreTabs(self) }
     self.tempTabs?.removeAll()
-    allTabs.first?.createWebview(includeDeAmpScript: deAmpPrefs.isDeAmpEnabled)
+    allTabs.first?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
   }
 
   func eraseUndoCache() {

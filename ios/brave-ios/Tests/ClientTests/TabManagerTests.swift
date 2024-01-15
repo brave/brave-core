@@ -129,7 +129,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       prefs: profile.prefs,
       rewards: nil,
       tabGeneratorAPI: nil,
-      privateBrowsingManager: privateBrowsingManager
+      privateBrowsingManager: privateBrowsingManager,
+      deAmpPrefs: nil
     )
     privateBrowsingManager.isPrivateBrowsing = false
   }

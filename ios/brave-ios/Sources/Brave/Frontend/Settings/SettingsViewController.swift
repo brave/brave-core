@@ -265,6 +265,7 @@ class SettingsViewController: TableViewController {
                   historyAPI: self.historyAPI,
                   p3aUtilities: self.p3aUtilities,
                   deAmpPrefs: deAmpPrefs,
+                  debounceService: DebounceServiceFactory.get(privateMode: false),
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()

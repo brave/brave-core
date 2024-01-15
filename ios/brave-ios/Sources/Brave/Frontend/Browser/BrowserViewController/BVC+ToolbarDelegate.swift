@@ -462,6 +462,7 @@ extension BrowserViewController: TopToolbarDelegate {
               historyAPI: self.braveCore.historyAPI,
               p3aUtilities: self.braveCore.p3aUtils,
               deAmpPrefs: self.braveCore.deAmpPrefs,
+              debounceService: DebounceServiceFactory.get(privateMode: false),
               clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                 guard let view = self?.navigationController?.view, view.window != nil else {
                   assertionFailure()

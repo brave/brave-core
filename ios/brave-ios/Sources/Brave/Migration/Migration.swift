@@ -36,6 +36,7 @@ public class Migration {
     }
 
     deAmpMigration()
+    debounceMigration()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -50,6 +51,14 @@ public class Migration {
     if let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value {
       braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
       Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
+    }
+  }
+
+  private func debounceMigration() {
+    if let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value {
+      let debounceService = DebounceServiceFactory.get(privateMode: false)
+      debounceService?.isEnabled = isDebounceEnabled
+      Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
     }
   }
 

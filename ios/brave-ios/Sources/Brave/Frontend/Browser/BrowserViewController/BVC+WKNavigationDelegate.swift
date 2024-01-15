@@ -327,7 +327,7 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: tabManager.deAmpPrefs.isDeAmpEnabled,
+          .deAmp: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false,
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -356,7 +356,7 @@ extension BrowserViewController: WKNavigationDelegate {
         let scriptTypes =
           await tab?.currentPageData?.makeUserScriptTypes(
             domain: domainForMainFrame,
-            isDeAmpEnabled: tabManager.deAmpPrefs.isDeAmpEnabled
+            isDeAmpEnabled: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false
           ) ?? []
         tab?.setCustomUserScript(scripts: scriptTypes)
       }
@@ -611,7 +611,7 @@ extension BrowserViewController: WKNavigationDelegate {
       let scriptTypes =
         await tab?.currentPageData?.makeUserScriptTypes(
           domain: domain,
-          isDeAmpEnabled: tabManager.deAmpPrefs.isDeAmpEnabled
+          isDeAmpEnabled: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false
         ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -1675,13 +1675,12 @@ extension BrowserViewController: WKUIDelegate {
     // Lets get the redirect chain.
     // Then we simply get all elements up until the user allows us to redirect
     // (i.e. appropriate settings are enabled for that redirect rule)
-    if Preferences.Shields.autoRedirectTrackingURLs.value,
+    if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
+      debounceService.isEnabled,
       let currentURL = tab.webView?.url,
       currentURL.baseDomain != requestURL.baseDomain
     {
-      if let redirectURL = DebounceServiceFactory.get(privateMode: tab.isPrivate)?.debounce(
-        requestURL
-      ) {
+      if let redirectURL = debounceService.debounce(requestURL) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
         var modifiedRequest = URLRequest(url: redirectURL)
 

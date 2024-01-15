@@ -114,7 +114,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         prefs: profile.prefs,
         rewards: nil,
         tabGeneratorAPI: nil,
-        privateBrowsingManager: privateBrowsingManager
+        privateBrowsingManager: privateBrowsingManager,
+        deAmpPrefs: nil
       )
     }()
   }

@@ -3514,7 +3514,9 @@ extension BrowserViewController: PreferencesObserver {
         HTTPCookie.loadFromDisk { _ in
           self.tabManager.reloadSelectedTab()
           for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
-            tab.createWebview(includeDeAmpScript: self.tabManager.deAmpPrefs.isDeAmpEnabled)
+            tab.createWebview(
+              includeDeAmpScript: self.tabManager.deAmpPrefs?.isDeAmpEnabled ?? false
+            )
             if let url = tab.webView?.url {
               tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
             }

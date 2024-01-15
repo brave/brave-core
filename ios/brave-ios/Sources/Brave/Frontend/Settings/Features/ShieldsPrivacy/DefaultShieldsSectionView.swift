@@ -48,10 +48,10 @@ struct DefaultShieldsViewView: View {
         subtitle: Strings.autoRedirectAMPPagesDescription,
         toggle: $settings.isDeAmpEnabled
       )
-      OptionToggleView(
+      ShieldToggleView(
         title: Strings.autoRedirectTrackingURLs,
         subtitle: Strings.autoRedirectTrackingURLsDescription,
-        option: Preferences.Shields.autoRedirectTrackingURLs
+        toggle: $settings.isDebounceEnabled
       )
       OptionToggleView(
         title: Strings.blockScripts,
