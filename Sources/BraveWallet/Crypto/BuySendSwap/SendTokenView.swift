@@ -300,7 +300,7 @@ struct SendTokenView: View {
         didAutoShowSelectAccountToken = true
       }
       sendTokenStore.update()
-      await sendTokenStore.selectTokenStore.update()
+      sendTokenStore.selectTokenStore.setup()
     }
     .navigationViewStyle(.stack)
   }

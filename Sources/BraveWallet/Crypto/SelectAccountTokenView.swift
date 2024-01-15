@@ -30,11 +30,11 @@ struct SelectAccountTokenView: View {
   
   var body: some View {
     List {
-      if store.accountSections.isEmpty {
+      if !store.isSetup {
         // Fetching accounts & assets. Typically won't see this.
         ProgressView()
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      } else if store.filteredAccountSections.flatMap(\.tokenBalances).isEmpty && !store.isLoadingBalances {
+      } else if store.accountSections.isEmpty && !store.isLoadingBalances {
         Text(Strings.Wallet.selectTokenToSendNoTokens)
           .font(.headline.weight(.semibold))
           .foregroundColor(Color(.braveLabel))
@@ -80,7 +80,7 @@ struct SelectAccountTokenView: View {
     if !store.isHidingZeroBalances {
       return true
     }
-    return store.filteredAccountSections.flatMap(\.tokenBalances).isEmpty
+    return store.accountSections.isEmpty
   }
   
   private var networkFilterButton: some View {
@@ -110,7 +110,7 @@ struct SelectAccountTokenView: View {
   }
   
   private var accountSections: some View {
-    ForEach(store.filteredAccountSections) { accountSection in
+    ForEach(store.accountSections) { accountSection in
       Section(
         content: {
           if accountSection.tokenBalances.isEmpty {

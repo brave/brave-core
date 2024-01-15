@@ -294,6 +294,37 @@ extension BraveWalletJsonRpcService {
     return balancesForAsset.reduce(0, +)
   }
   
+  /// Returns the total balance for a given account for all of the given network assets
+  func fetchBalancesForTokens(
+    account: BraveWallet.AccountInfo,
+    networkAssets: [NetworkAssets]
+  ) async -> [String: Double] {
+    await withTaskGroup(
+      of: [String: Double].self,
+      body: { group in
+        for networkAsset in networkAssets where networkAsset.network.coin == account.coin {
+          for token in networkAsset.tokens {
+            group.addTask {
+              let balance = await self.balance(
+                for: token,
+                in: account,
+                network: networkAsset.network
+              )
+              if let balance {
+                return [token.id: balance]
+              } else {
+                return [:]
+              }
+            }
+          }
+        }
+        return await group.reduce(into: [String: Double](), { partialResult, new in
+          partialResult.merge(with: new)
+        })
+      }
+    )
+  }
+  
   /// Returns an array of all networks for the supported coin types. Result will exclude test networks if test networks is set to
   /// not shown in Wallet Settings
   @MainActor func allNetworksForSupportedCoins(respectTestnetPreference: Bool = true) async -> [BraveWallet.NetworkInfo] {

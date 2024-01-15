@@ -36,69 +36,45 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     let tokenBalances: [TokenBalance]
   }
   
-  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
-  private var allNetworks: [BraveWallet.NetworkInfo] = []
-  
+  /// The networks to filter the tokens/accounts by.
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
+    didSet {
+      guard !oldValue.isEmpty else { return } // ignore initial assignment, all networks selected
+      updateAccountSections()
+    }
+  }
+  /// Indicates accounts, networks and assets are fetched
+  @Published var isSetup = false
   @Published var isLoadingBalances = false
   @Published var isLoadingPrices = false
-  @Published var isHidingZeroBalances = true
+  /// Indicates tokens without a balance are hidden
+  @Published var isHidingZeroBalances = true {
+    didSet {
+      guard oldValue != isHidingZeroBalances else { return }
+      updateAccountSections()
+    }
+  }
+  /// Each account and it's tokens
   @Published var accountSections: [AccountSection] = []
-  @Published var query: String
-  
-  var filteredAccountSections: [AccountSection] {
-    let networks = networkFilters.filter(\.isSelected).map(\.model)
-    var filteredAccountSections: [AccountSection] = []
-    for accountSection in accountSections {
-      guard networks.contains(where: { $0.coin == accountSection.account.coin }) else {
-        // don't show account section(s) for incompatible network filter selection
-        continue
-      }
-      let updatedAccountSection = AccountSection(
-        account: accountSection.account,
-        tokenBalances: accountSection.tokenBalances
-          .filter { tokenBalance in
-            guard networks.contains(where: { $0.chainId == tokenBalance.network.chainId }) else {
-              return false
-            }
-            if !query.isEmpty, // only if we have a search query
-               case let normalizedQuery = query.lowercased(),
-               !(tokenBalance.token.symbol.lowercased().contains(normalizedQuery) || tokenBalance.token.name.lowercased().contains(normalizedQuery)) {
-              return false
-            }
-            if isHidingZeroBalances {
-              return (tokenBalance.balance ?? 0) > 0
-            }
-            return true
-          }
-      )
-      if shouldShowSection(updatedAccountSection) {
-        filteredAccountSections.append(updatedAccountSection)
-      }
+  /// Filter displayed tokens by this query
+  @Published var query: String {
+    didSet {
+      updateAccountSections()
     }
-    return filteredAccountSections
   }
-  
-  private func shouldShowSection(_ accountSection: SelectAccountTokenStore.AccountSection) -> Bool {
-    guard accountSection.tokenBalances.isEmpty else {
-      return true // non-empty
-    }
-    // only if loading, or hiding zero balances.
-    return isHidingZeroBalances && isLoadingBalances
-  }
-  
   /// The current default base currency code
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
       guard oldValue != currencyCode else { return }
-      Task {
-        await update()
-      }
+      updateAccountSections()
     }
   }
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
   
-  /// Cache of balances of each asset for each account. The root key(s) are the account `address`/`id`, and the inner dictionary key(s) are the `BraveWallet.BlockchainToken.assetBalanceId`.
+  private var allNetworks: [BraveWallet.NetworkInfo] = []
+  private var balancesFetched: Bool = false
+  /// Cache of balances of each asset for each account. [account.address: [token.id: balance]]
   private var balancesForAccountsCache: [String: [String: Double]] = [:]
   /// Cache of prices of assets. The key(s) are the `BraveWallet.BlockchainToken.assetRatioId` lowercased.
   private var pricesForTokensCache: [String: String] = [:]
@@ -170,183 +146,220 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       .init(isSelected: true, model: $0)
     }
     query = ""
+    updateAccountSections()
   }
   
-  @MainActor func update() async {
-    let allAccounts = await keyringService.allAccounts()
-    let allNetworks = await rpcService.allNetworksForSupportedCoins()
-    self.allNetworks = allNetworks
-    // setup network filters if not currently setup
-    if self.networkFilters.isEmpty {
+  // All user accounts.
+  private var allAccounts: [BraveWallet.AccountInfo] = []
+  // All user visible assets, key is `Identifiable.id` of `BlockchainToken`.
+  private var userVisibleAssets: [String: BraveWallet.BlockchainToken] = [:]
+  // All user accounts.
+  private var userVisibleNetworkAssets: [NetworkAssets] = []
+  
+  func setup() {
+    Task { @MainActor in
+      let allAccounts = await keyringService.allAccounts().accounts
+      self.allAccounts = allAccounts
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
+      self.allNetworks = allNetworks
       self.networkFilters = allNetworks.map {
         .init(isSelected: true, model: $0)
       }
-    }
-    let allVisibleUserAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: allNetworks, visible: true).flatMap { $0.tokens }
-    guard !Task.isCancelled else { return }
-    let tokensGroupedByCoinType = Dictionary(grouping: allVisibleUserAssets, by: \.coin)
-    self.accountSections = allAccounts.accounts.map { account in
-      let tokensForAccountCoin = tokensGroupedByCoinType[account.coin] ?? []
-      let tokenBalances = tokensForAccountCoin.compactMap { token in
-        let tokenNetwork = allNetworks.first(where: { $0.chainId == token.chainId }) ?? .init()
-        if tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber) {
-          return AccountSection.TokenBalance(
-            token: token,
-            network: allNetworks.first(where: { $0.chainId == token.chainId }) ?? .init(),
-            balance: cachedBalance(for: token, in: account),
-            price: cachedPrice(for: token, in: account),
-            nftMetadata: cachedMetadata(for: token)
-          )
-        }
-        return nil
-      }
-      return AccountSection(
-        account: account,
-        tokenBalances: tokenBalances
+      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        networks: allNetworks,
+        visible: true
       )
+      let allVisibleUserAssets = allNetworkAssets.flatMap(\.tokens)
+      self.userVisibleAssets = allVisibleUserAssets.reduce(
+        into: [String: BraveWallet.BlockchainToken](), {
+          $0[$1.id] = $1
+        })
+      // show accounts with all supported tokens until balances are fetched
+      self.accountSections = await buildAccountSections(
+        selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
+        allAccounts: allAccounts,
+        userVisibleAssets: Array(userVisibleAssets.values),
+        balancesCache: balancesForAccountsCache,
+        balancesFetched: balancesFetched,
+        pricesCache: pricesForTokensCache,
+        metadataCache: metadataCache,
+        hideZeroBalances: isHidingZeroBalances,
+        query: query,
+        currencyFormatter: currencyFormatter
+      )
+      self.isSetup = true
+      
+      // fetch balances for visible assets, fetch prices for tokens with balance
+      self.fetchAccountBalances(networkAssets: allNetworkAssets)
+      
+      // fetch metadata for visible NFT assets (user may select to show 0 balance)
+      let allVisibleNFTs = allVisibleUserAssets.filter { $0.isNft || $0.isErc721 }
+      self.fetchNFTMetadata(for: allVisibleNFTs)
     }
-    
-    updateAccountBalances()
-    updateTokenPrices()
-    updateNFTMetadata()
   }
   
-  func updateTokenPrices() {
-    guard !accountSections.isEmpty else { return }
+  func updateAccountSections() {
+    Task { @MainActor in
+      self.accountSections = await buildAccountSections(
+        selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
+        allAccounts: allAccounts,
+        userVisibleAssets: Array(userVisibleAssets.values),
+        balancesCache: balancesForAccountsCache,
+        balancesFetched: balancesFetched,
+        pricesCache: pricesForTokensCache,
+        metadataCache: metadataCache,
+        hideZeroBalances: isHidingZeroBalances,
+        query: query,
+        currencyFormatter: currencyFormatter
+      )
+    }
+  }
+  
+  /// Fetch the balances for each account for the given `allNetworkAssets`, store in cache and update `accountSections`, and then fetch prices for tokens with non-zero balance.
+  func fetchAccountBalances(networkAssets: [NetworkAssets]) {
+    guard !self.allAccounts.isEmpty else { return }
+    Task { @MainActor in
+      self.isLoadingBalances = true
+      defer { isLoadingBalances = false }
+      let balancesForAccounts = await withTaskGroup(
+        of: [String: [String: Double]].self,
+        body: { group in
+          for account in allAccounts {
+            group.addTask { // get balance for all tokens this account supports
+              let balancesForTokens: [String: Double] = await self.rpcService.fetchBalancesForTokens(
+                account: account, 
+                networkAssets: networkAssets
+              )
+              return [account.address: balancesForTokens]
+            }
+          }
+          return await group.reduce(into: [String: [String: Double]](), { partialResult, new in
+            partialResult.merge(with: new)
+          })
+        }
+      )
+      for account in allAccounts {
+        if let updatedBalancesForAccount = balancesForAccounts[account.address] {
+          // if balance fetch failed that we already have cached, don't overwrite existing
+          if var existing = self.balancesForAccountsCache[account.address] {
+            existing.merge(with: updatedBalancesForAccount)
+            self.balancesForAccountsCache[account.address] = existing
+          } else {
+            self.balancesForAccountsCache[account.address] = updatedBalancesForAccount
+          }
+        }
+      }
+      self.balancesFetched = true
+      self.updateAccountSections()
+      // fetch prices for tokens with balance
+      var tokensIdsWithBalance: Set<String> = .init()
+      for accountBalance in balancesForAccountsCache.values {
+        let tokenIdsWithAccountBalance = accountBalance.filter { $1 > 0 }.map(\.key)
+        tokenIdsWithAccountBalance.forEach { tokensIdsWithBalance.insert($0) }
+      }
+      let assetRatioIdsForTokensWithBalance = tokensIdsWithBalance
+        .compactMap { tokenId in
+          userVisibleAssets[tokenId]?.assetRatioId
+        }
+      self.fetchTokenPrices(for: assetRatioIdsForTokensWithBalance)
+    }
+  }
+  
+  /// Fetch the prices for the given `assetRatioIds`, store in cache and update `accountSections`.
+  func fetchTokenPrices(for assetRatioIds: [String]) {
+    guard !assetRatioIds.isEmpty else { return }
     Task { @MainActor in
       self.isLoadingPrices = true
       defer { self.isLoadingPrices = false }
-      let allAssetRatioIds = accountSections
-        .flatMap(\.tokenBalances)
-        .map(\.token)
-        .map(\.assetRatioId)
       let prices: [String: String] = await assetRatioService.fetchPrices(
-        for: allAssetRatioIds,
+        for: assetRatioIds,
         toAssets: [currencyFormatter.currencyCode],
         timeframe: .oneDay
       )
       self.pricesForTokensCache.merge(with: prices)
-      updateModels()
+      self.updateAccountSections()
     }
   }
   
-  private var updateAccountBalancesTask: Task<Void, Never>?
-  func updateAccountBalances() {
-    guard !accountSections.isEmpty else { return }
-    updateAccountBalancesTask?.cancel()
-    updateAccountBalancesTask = Task { @MainActor in
-      self.isLoadingBalances = true
-      defer { isLoadingBalances = false }
-      for accountSection in accountSections {
-        let balancesForTokens: [String: Double] = await withTaskGroup(
-          of: [String: Double].self,
-          body: { @MainActor group in
-            for tokenBalance in accountSection.tokenBalances {
-              group.addTask { @MainActor in
-                let totalBalance = await self.rpcService.balance(
-                  for: tokenBalance.token,
-                  in: accountSection.account,
-                  network: tokenBalance.network
-                )
-                return [tokenBalance.token.assetBalanceId: totalBalance ?? 0]
-              }
-            }
-            return await group.reduce(into: [String: Double](), { partialResult, new in
-              for key in new.keys {
-                partialResult[key] = new[key]
-              }
-            })
-          }
-        )
-        guard !Task.isCancelled else { return }
-        var updatedBalancesForTokens = (self.balancesForAccountsCache[accountSection.account.id] ?? [:])
-        updatedBalancesForTokens.merge(with: balancesForTokens)
-        self.balancesForAccountsCache[accountSection.account.id] = updatedBalancesForTokens
-      }
-      updateModels()
-    }
-  }
-  
-  func updateNFTMetadata() {
-    guard !accountSections.isEmpty else { return }
+  func fetchNFTMetadata(for userVisibleNFTs: [BraveWallet.BlockchainToken]) {
+    guard !userVisibleNFTs.isEmpty else { return }
     Task { @MainActor in
-      let allNFTs = accountSections.flatMap(\.tokenBalances).map(\.token).filter { $0.isNft || $0.isErc721 }
-      guard !allNFTs.isEmpty else { return }
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: userVisibleNFTs, ipfsApi: ipfsApi)
       self.metadataCache.merge(with: allMetadata)
-      self.updateModels()
+      self.updateAccountSections()
     }
   }
   
-  /// Updates `accountSections` with the available data from `balancesForAccountsCache` &  `pricesForTokensCache`.
-  @MainActor private func updateModels() {
-    self.accountSections = accountSections.map { accountSection in
-      let tokenBalances: [AccountSection.TokenBalance] = accountSection.tokenBalances
-        .map { tokenBalance in
-          return AccountSection.TokenBalance(
-            token: tokenBalance.token,
-            network: tokenBalance.network,
-            balance: cachedBalance(for: tokenBalance.token, in: accountSection.account),
-            price: cachedPrice(for: tokenBalance.token, in: accountSection.account),
-            nftMetadata: cachedMetadata(for: tokenBalance.token)
-          )
-        }
-        .sorted { lhs, rhs in
-          if lhs.network.isKnownTestnet && rhs.network.isKnownTestnet {
-            return (lhs.balance ?? 0) > (rhs.balance ?? 0)
-          } else if lhs.network.isKnownTestnet {
-            return false // sort test networks to end of list
-          } else if rhs.network.isKnownTestnet {
-            return true // sort test networks to end of list
+  /// Builds the array of `AccountSection`s for display, taking into account selected networks and filter query.
+  private func buildAccountSections(
+    selectedNetworks: [BraveWallet.NetworkInfo],
+    allAccounts: [BraveWallet.AccountInfo],
+    userVisibleAssets: [BraveWallet.BlockchainToken],
+    balancesCache: [String: [String: Double]],
+    balancesFetched: Bool,
+    pricesCache: [String: String],
+    metadataCache: [String: NFTMetadata],
+    hideZeroBalances: Bool,
+    query: String,
+    currencyFormatter: NumberFormatter
+  ) async -> [AccountSection] {
+    let accountSections: [AccountSection] = allAccounts.compactMap { account in
+      let tokensForAccountCoin: [BraveWallet.BlockchainToken] = userVisibleAssets
+        .filter({ $0.coin == account.coin })
+      let accountTokenBalances: [AccountSection.TokenBalance] = tokensForAccountCoin
+        .compactMap { token in
+          if !query.isEmpty, // only if we have a filter query
+             !(token.symbol.localizedCaseInsensitiveContains(query) ||
+               token.name.localizedCaseInsensitiveContains(query)) {
+            // token does not match query
+            return nil
           }
-          return (lhs.balance ?? 0) > (rhs.balance ?? 0)
+          // network for must be selected
+          if let tokenNetwork = selectedNetworks.first(where: { $0.chainId == token.chainId }),
+             // network must support account keyring
+             tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber) {
+            let balance = balancesCache[account.address]?[token.id] ?? 0
+            if hideZeroBalances, balance <= 0 {
+              // token has no balance, user is hiding zero balance tokens.
+              return nil
+            }
+            var price: String?
+            if let tokenPrice = pricesForTokensCache[token.assetRatioId.lowercased()],
+               balance > 0 {
+              price = currencyFormatter.string(from: NSNumber(value: (Double(tokenPrice) ?? 0) * balance))
+            }
+            return AccountSection.TokenBalance(
+              token: token,
+              network: tokenNetwork,
+              balance: balance,
+              price: price,
+              nftMetadata: metadataCache[token.id]
+            )
+          }
+          return nil
         }
+      
+      if accountTokenBalances.isEmpty && balancesFetched {
+        // don't show this account section without token balances
+        return nil
+      }
+      
       return AccountSection(
-        account: accountSection.account,
-        tokenBalances: tokenBalances
+        account: account,
+        tokenBalances: accountTokenBalances
+          .sorted { lhs, rhs in
+            if lhs.network.isKnownTestnet && rhs.network.isKnownTestnet {
+              return (lhs.balance ?? 0) > (rhs.balance ?? 0)
+            } else if lhs.network.isKnownTestnet {
+              return false // sort test networks to end of list
+            } else if rhs.network.isKnownTestnet {
+              return true // sort test networks to end of list
+            }
+            return (lhs.balance ?? 0) > (rhs.balance ?? 0)
+          }
       )
     }
-  }
-  
-  /// Helper function to get cached balance for a given account & token.
-  private func cachedBalance(
-    for token: BraveWallet.BlockchainToken,
-    in account: BraveWallet.AccountInfo
-  ) -> Double? {
-    balancesForAccountsCache[account.id]?[token.assetBalanceId]
-  }
-  
-  /// Helper function to get the formatted cached price for a given account & token.
-  private func cachedPrice(
-    for token: BraveWallet.BlockchainToken,
-    in account: BraveWallet.AccountInfo
-  ) -> String? {
-    if let tokenPrice = pricesForTokensCache[token.assetRatioId.lowercased()],
-       let tokenBalance = cachedBalance(for: token, in: account) {
-      return currencyFormatter.string(from: NSNumber(value: (Double(tokenPrice) ?? 0) * tokenBalance))
-    }
-    return nil
-  }
-  
-  /// Helper function to get cached metadata for a given token.
-  private func cachedMetadata(
-    for token: BraveWallet.BlockchainToken
-  ) -> NFTMetadata? {
-    metadataCache[token.id]
-  }
-}
-
-#if DEBUG
-extension SelectAccountTokenStore {
-  func setupForTesting() {
-    allNetworks = [.mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet, .mockFilecoinMainnet, .mockFilecoinTestnet]
-  }
-}
-#endif
-
-extension Array where Element == SelectAccountTokenStore.AccountSection.TokenBalance {
-  func filterNonZeroBalances(shouldFilter: Bool = true) -> Self {
-    guard shouldFilter else { return self }
-    return filter { ($0.balance ?? 0) > 0 }
+    
+    return accountSections
   }
 }
