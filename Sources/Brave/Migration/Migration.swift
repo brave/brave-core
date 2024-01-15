@@ -85,7 +85,7 @@ public class Migration {
       // Restore private tabs if persistency is enabled
       if Preferences.Privacy.persistentPrivateBrowsing.value {
         zombieTabs.filter({ $0.isPrivate }).forEach {
-          if !activeURLs.contains($0.url) {
+          if let url = $0.url, !activeURLs.contains(url) {
             SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
           }
         }
@@ -93,7 +93,7 @@ public class Migration {
       
       // Restore regular tabs
       zombieTabs.filter({ !$0.isPrivate }).forEach {
-        if !activeURLs.contains($0.url) {
+        if let url = $0.url, !activeURLs.contains(url) {
           SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
         }
       }

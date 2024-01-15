@@ -377,10 +377,10 @@ class AddEditBookmarkTableViewController: UITableViewController {
         if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
           bookmarkManager.add(url: url, title: tab.title, parentFolder: parentFolder)
         }
-      } else if let fetchedTab = SessionTab.from(tabId: tab.id) {
-        if fetchedTab.url.isWebPage(), !(InternalURL(fetchedTab.url)?.isAboutHomeURL ?? false) {
+      } else if let fetchedTab = SessionTab.from(tabId: tab.id), let tabURL = fetchedTab.url {
+        if tabURL.isWebPage(), !(InternalURL(tabURL)?.isAboutHomeURL ?? false) {
           bookmarkManager.add(
-            url: fetchedTab.url,
+            url: tabURL,
             title: fetchedTab.title,
             parentFolder: parentFolder)
         }

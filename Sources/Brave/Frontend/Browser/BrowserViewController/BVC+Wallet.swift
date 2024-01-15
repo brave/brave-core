@@ -180,7 +180,7 @@ extension Tab: BraveWalletProviderDelegate {
       // assigned for a specific origin, the provider(s) will check origin
       // of all open Tab's to see if that provider needs(s) updated too.
       // We can get the url from the SessionTab, and return it's origin.
-      if let sessionTabOrigin = SessionTab.from(tabId: id)?.url.origin {
+      if let sessionTabOrigin = SessionTab.from(tabId: id)?.url?.origin {
         return sessionTabOrigin
       }
       assert(false, "We should have a valid origin to get to this point")

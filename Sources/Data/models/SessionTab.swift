@@ -16,7 +16,7 @@ public final class SessionTab: NSManagedObject, CRUD {
   @NSManaged public var lastUpdated: Date
   @NSManaged public var screenshotData: Data
   @NSManaged public var title: String
-  @NSManaged public var url: URL
+  @NSManaged public var url: URL?
   @NSManaged private(set) public var tabId: UUID
   
   @NSManaged private(set) public var sessionTabGroup: SessionTabGroup?
@@ -47,7 +47,7 @@ public final class SessionTab: NSManagedObject, CRUD {
               lastUpdated: Date,
               screenshotData: Data,
               title: String,
-              url: URL,
+              url: URL?,
               tabId: UUID = UUID()) {
     guard let entity = Self.entity(context) else {
       fatalError("No such Entity: SessionTab")

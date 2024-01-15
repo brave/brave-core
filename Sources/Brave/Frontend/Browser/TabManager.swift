@@ -52,6 +52,9 @@ class TabManager: NSObject {
   
   /// Internal url to access the new tab page.
   static let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
+  
+  /// When a URL is invalid and can't be restored or loaded, we display about:blank#blocked (same as on Desktop)
+  static let aboutBlankBlockedURL = URL(string: "about:blank")!
 
   func addDelegate(_ delegate: TabManagerDelegate) {
     assert(Thread.isMainThread)
@@ -513,8 +516,14 @@ class TabManager: NSObject {
   @MainActor func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false) {
     assert(Thread.isMainThread)
 
+    var request = request
     let isPrivate = tab.type == .private
     let isPersistentTab = !isPrivate || (isPrivate && !Preferences.Privacy.privateBrowsingOnly.value && Preferences.Privacy.persistentPrivateBrowsing.value)
+    
+    // WebKit can sometimes return a URL that isn't valid at all!
+    if let requestURL = request?.url, NSURL(idnString: requestURL.absoluteString) == nil {
+      request?.url = TabManager.aboutBlankBlockedURL
+    }
     
     if isPersistentTab {
       SessionTab.createIfNeeded(windowId: windowId,
@@ -901,30 +910,46 @@ class TabManager: NSObject {
 
     var tabToSelect: Tab?
     for savedTab in savedTabs {
-      let tabURL = savedTab.url
-      // Provide an empty request to prevent a new tab from loading the home screen
-      let request = InternalURL.isValid(url: tabURL) ?
-                      PrivilegedRequest(url: tabURL) as URLRequest :
-                      URLRequest(url: tabURL)
+      if let tabURL = savedTab.url {
+        // Provide an empty request to prevent a new tab from loading the home screen
+        let request = InternalURL.isValid(url: tabURL) ?
+          PrivilegedRequest(url: tabURL) as URLRequest :
+          URLRequest(url: tabURL)
         
-      let tab = addTab(request,
-                       flushToDisk: false,
-                       zombie: true,
-                       id: savedTab.tabId,
-                       isPrivate: savedTab.isPrivate)
-      
-      tab.lastTitle = savedTab.title
-      tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
-      tab.setScreenshot(savedTab.screenshot)
-      
-      Task { @MainActor in
-        tab.favicon = try await FaviconFetcher.loadIcon(url: tabURL, kind: .smallIcon, persistent: !tab.isPrivate)
+        let tab = addTab(request,
+                         flushToDisk: false,
+                         zombie: true,
+                         id: savedTab.tabId,
+                         isPrivate: savedTab.isPrivate)
+        
+        tab.lastTitle = savedTab.title
+        tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
         tab.setScreenshot(savedTab.screenshot)
-      }
-
-      // Do not select the private tab since we always restore to regular mode!
-      if savedTab.isSelected && !savedTab.isPrivate {
-        tabToSelect = tab
+        
+        Task { @MainActor in
+          tab.favicon = try await FaviconFetcher.loadIcon(url: tabURL, kind: .smallIcon, persistent: !tab.isPrivate)
+          tab.setScreenshot(savedTab.screenshot)
+        }
+        
+        // Do not select the private tab since we always restore to regular mode!
+        if savedTab.isSelected && !savedTab.isPrivate {
+          tabToSelect = tab
+        }
+      } else {
+        let tab = addTab(nil,
+                         flushToDisk: false,
+                         zombie: true,
+                         id: savedTab.tabId,
+                         isPrivate: savedTab.isPrivate)
+        
+        tab.lastTitle = savedTab.title
+        tab.favicon = Favicon.default
+        tab.setScreenshot(savedTab.screenshot)
+        
+        // Do not select the private tab since we always restore to regular mode!
+        if savedTab.isSelected && !savedTab.isPrivate {
+          tabToSelect = tab
+        }
       }
     }
 
@@ -969,12 +994,17 @@ class TabManager: NSObject {
     if sessionTab.interactionState.isEmpty {
       tab.navigationDelegate = navDelegate
 
-      let request = InternalURL.isValid(url: sessionTab.url) ?
-                      PrivilegedRequest(url: sessionTab.url) as URLRequest :
-                      URLRequest(url: sessionTab.url)
-      
-      tab.restore(webView,
-                  requestRestorationData: (sessionTab.url.absoluteDisplayString, request))
+      if let tabURL = sessionTab.url {
+        let request = InternalURL.isValid(url: tabURL) ?
+        PrivilegedRequest(url: tabURL) as URLRequest :
+        URLRequest(url: tabURL)
+        
+        tab.restore(webView,
+                    requestRestorationData: (tabURL.absoluteDisplayString, request))
+      } else {
+        tab.restore(webView,
+                    requestRestorationData: (TabManager.aboutBlankBlockedURL.absoluteDisplayString, URLRequest(url: TabManager.aboutBlankBlockedURL)))
+      }
       return
     }
 

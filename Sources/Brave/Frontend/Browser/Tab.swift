@@ -613,7 +613,7 @@ class Tab: NSObject {
     } else {
       if let tabUrl = url, tabUrl.isWebPage() {
         return tabUrl
-      } else if let fetchedTab = SessionTab.from(tabId: id), fetchedTab.url.isWebPage() {
+      } else if let fetchedTab = SessionTab.from(tabId: id), fetchedTab.url?.isWebPage() == true {
         return url
       }
     }
