@@ -6,8 +6,6 @@ index e10315f57a5bb04daabce937baaceea56744b046..b253380f64c2f7b4f8d98286970c2328
    // Content settings for access to printers for the Web Printing API.
    WEB_PRINTING,
  
-+  // Note: This enum is annotated with GENERATED_JAVA_ENUM_PACKAGE, and cannot
-+  // be extended with an override.
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
 +  BRAVE_COSMETIC_FILTERING,
