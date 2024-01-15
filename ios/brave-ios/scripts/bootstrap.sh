@@ -7,7 +7,7 @@
 set -e
 
 this_dir=$(dirname $0)
-src_dir="$this_dir/../../../../.."
+src_dir="$this_dir/../../../.."
 
 # Initial packing of JS so SPM doesnt show warnings that the files are missing
 # Subsequent builds will run this to ensure those files are kept up to date
