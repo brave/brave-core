@@ -1817,9 +1817,33 @@ public class BrowserViewController: UIViewController {
         if let url = tab.webView?.url, url.isReaderModeURL {
           break
         }
+        
         tab.secureContentState = .mixedContent
       }
-
+      
+      if let url = tab.webView?.url,
+         InternalURL.isValid(url: url),
+         let internalUrl = InternalURL(url) {
+        
+        if internalUrl.isErrorPage {
+          if ErrorPageHelper.certificateError(for: url) != 0 {
+            // Cert validation takes precedence over all other errors
+            tab.secureContentState = .invalidCert
+          } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
+            // Network error takes precedence over missing cert
+            // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
+            // Our network interstitial page shows
+            tab.secureContentState = .localhost
+          } else {
+            // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
+            // then we display .missingSSL
+            tab.secureContentState = .missingSSL
+          }
+        } else if url.isReaderModeURL || InternalURL.isValid(url: url) {
+          tab.secureContentState = .localhost
+        }
+      }
+      
       if tabManager.selectedTab === tab {
         updateToolbarSecureContentState(tab.secureContentState)
       }
@@ -1848,10 +1872,19 @@ public class BrowserViewController: UIViewController {
             internalUrl.isErrorPage {
 
             if ErrorPageHelper.certificateError(for: url) != 0 {
+              // Cert validation takes precedence over all other errors
               tab.secureContentState = .invalidCert
+            } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
+              // Network error takes precedence over missing cert
+              // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
+              // Our network interstitial page shows
+              tab.secureContentState = .localhost
             } else {
+              // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
+              // then we display .missingSSL
               tab.secureContentState = .missingSSL
             }
+            
             if tabManager.selectedTab === tab {
               updateToolbarSecureContentState(tab.secureContentState)
             }

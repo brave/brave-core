@@ -8,6 +8,14 @@ import Shared
 import BraveShared
 
 class NetworkErrorPageHandler: InterstitialPageHandler {
+  static func isNetworkError(errorCode: Int) -> Bool {
+    if let code = CFNetworkErrors(rawValue: Int32(errorCode)) {
+      return code == .cfurlErrorNotConnectedToInternet
+    }
+
+    return errorCode == NSURLErrorNotConnectedToInternet
+  }
+  
   func canHandle(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,

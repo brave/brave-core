@@ -135,18 +135,32 @@ class ErrorPageHelper {
 }
 
 extension ErrorPageHelper {
-  static func certificateError(for url: URL) -> Int {
+  static func errorCode(for url: URL) -> Int {
+    // ErrorCode is zero if there's no error.
+    // Non-Zero (negative or positive) when there is an error
+    
     if InternalURL.isValid(url: url),
       let internalUrl = InternalURL(url),
-      internalUrl.isErrorPage {
-
+       internalUrl.isErrorPage {
+      
       let query = url.getQuery()
       guard let code = query["code"],
-        let errCode = Int(code)
+            let errCode = Int(code)
       else {
         return 0
       }
-
+      
+      return errCode
+    }
+    return 0
+  }
+  
+  static func certificateError(for url: URL) -> Int {
+    let errCode = errorCode(for: url)
+    
+    // ErrorCode is zero if there's no error.
+    // Non-Zero (negative or positive) when there is an error
+    if errCode != 0 {
       if let code = CFNetworkErrors(rawValue: Int32(errCode)),
         CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code) {
         return errCode

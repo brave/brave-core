@@ -67,11 +67,14 @@ extension BrowserViewController: WKNavigationDelegate {
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
        selectedTab.url?.origin != webView.url?.origin {
-      // reset secure content state to unknown until page can be evaluated
-      if let url = webView.url, !InternalURL.isValid(url: url) {
-        selectedTab.secureContentState = .unknown
-        updateToolbarSecureContentState(.unknown)
+      if let url = webView.url {
+        if !InternalURL.isValid(url: url) {
+          // reset secure content state to unknown until page can be evaluated
+          selectedTab.secureContentState = .unknown
+          updateToolbarSecureContentState(.unknown)
+        }
       }
+      
       // new site has a different origin, hide wallet icon.
       tabManager.selectedTab?.isWalletIconVisible = false
       // new site, reset connected addresses
@@ -672,8 +675,18 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
     guard let tab = tab(for: webView) else { return }
+
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
+    
+    // Server Trust and URL is also updated in didCommit
+    // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
+    // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
+    // So manually trigger it with the current trust.
+    observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
+                 of: webView,
+                 change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
+                 context: nil)
     
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
