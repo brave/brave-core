@@ -22,10 +22,12 @@ module.exports = function RunCommand (options) {
   const v8Dir = path.join(config.srcDir, 'v8')
   const catapultDir = path.join(config.srcDir, 'third_party', 'catapult')
   const devtoolsFrontendDir = path.join(config.srcDir, 'third_party', 'devtools-frontend', 'src')
+  const ffmpegDir = path.join(config.srcDir, 'third_party', 'ffmpeg')
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
   const devtoolsFrontendPatchDir = path.join(patchDir, 'third_party', 'devtools-frontend', 'src')
+  const ffmpegPatchDir = path.join(patchDir, 'third_party', 'ffmpeg')
 
   Promise.all([
     // chromium
@@ -36,6 +38,8 @@ module.exports = function RunCommand (options) {
     updatePatches(catapultDir, catapultPatchDir),
     // third_party/devtools-frontend/src
     updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir),
+    // third_party/ffmpeg
+    updatePatches(ffmpegDir, ffmpegPatchDir),
   ])
   .then(() => {
     console.log('Done.')
