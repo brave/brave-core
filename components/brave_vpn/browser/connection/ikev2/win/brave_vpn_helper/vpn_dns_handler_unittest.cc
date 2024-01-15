@@ -13,9 +13,9 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
-#include "brave/installer/win/util/brave_vpn_helper_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn {
