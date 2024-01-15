@@ -133,6 +133,9 @@ platform :ios do
       sdk: "iphoneos",
       clean: true,
       output_directory: "build",
+      # xcpretty doesnt output script executions
+      # https://github.com/xcpretty/xcpretty/issues/163
+      xcodebuild_formatter: '',
       xcargs: "-allowProvisioningUpdates"
     }
   end
