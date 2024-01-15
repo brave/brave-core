@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_ads/padded_image_button.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -30,7 +31,7 @@ constexpr float kVisibleOpacity = 0.12f;
 }  // namespace
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)
-    : views::ImageButton(callback) {
+    : views::ImageButton(std::move(callback)) {
   auto* ink_drop = views::InkDrop::Get(this);
   views::InkDrop::UseInkDropForSquareRipple(ink_drop,
                                             /*highlight_on_hover=*/false,

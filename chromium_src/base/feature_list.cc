@@ -5,6 +5,7 @@
 
 #include "base/feature_list.h"
 
+#include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_override.h"

@@ -7,10 +7,13 @@
 #define BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_H_
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BrowserView;
 
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
+  METADATA_HEADER(BraveAvatarToolbarButton, AvatarToolbarButton)
+
  public:
   explicit BraveAvatarToolbarButton(BrowserView* browser_view);
   BraveAvatarToolbarButton(const BraveAvatarToolbarButton&) = delete;

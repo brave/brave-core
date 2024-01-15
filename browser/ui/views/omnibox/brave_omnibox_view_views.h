@@ -6,12 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 
+#include <optional>
+
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class GURL;
 
 class BraveOmniboxViewViews : public OmniboxViewViews {
+  METADATA_HEADER(BraveOmniboxViewViews, OmniboxViewViews)
+
  public:
   using OmniboxViewViews::OmniboxViewViews;
 
@@ -23,7 +27,7 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   void CleanAndCopySelectedURL();
 
  protected:
-  absl::optional<GURL> GetURLToCopy();
+  std::optional<GURL> GetURLToCopy();
   void CopySanitizedURL(const GURL& url);
 #if BUILDFLAG(IS_WIN)
   // View overrides:

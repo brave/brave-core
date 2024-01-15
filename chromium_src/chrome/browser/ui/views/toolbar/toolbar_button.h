@@ -24,9 +24,9 @@
 
 class ToolbarButton : public ToolbarButton_ChromiumImpl,
                       public views::InkDropObserver {
- public:
-  METADATA_HEADER(ToolbarButton);
+  METADATA_HEADER(ToolbarButton, ToolbarButton_ChromiumImpl)
 
+ public:
   using ToolbarButton_ChromiumImpl::ToolbarButton_ChromiumImpl;
   ~ToolbarButton() override;
 

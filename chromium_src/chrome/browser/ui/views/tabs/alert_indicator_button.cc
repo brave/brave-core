@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 #define AlertIndicatorButton AlertIndicatorButtonBase
 
@@ -35,3 +36,6 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   }
   AlertIndicatorButtonBase::UpdateEnabledForMuteToggle();
 }
+
+BEGIN_METADATA(AlertIndicatorButton)
+END_METADATA

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string_view>
 
@@ -9,10 +9,11 @@
 #include "base/strings/string_split.h"
 #include "third_party/re2/src/re2/re2.h"
 
-#include "src/chrome/browser/ui/webui/about_ui.cc"
+#include "src/chrome/browser/ui/webui/about/about_ui.cc"
 
-std::string AboutUIHTMLSource::ChromeURLs() const {
-  std::string chrome_urls = ::ChromeURLs();
+std::string AboutUIHTMLSource::ChromeURLs(
+    content::BrowserContext* browser_context) const {
+  std::string chrome_urls = ::ChromeURLs(browser_context);
 
   // Replace Chrome -> Brave.
   const std::string chrome_header = "Chrome URLs";

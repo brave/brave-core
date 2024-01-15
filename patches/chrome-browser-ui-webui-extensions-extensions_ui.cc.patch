@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index ac0c7fa2f8bfd92c7eb097b882c314aaaf7c5556..25de4ece79baa52eed76363d2b4703b06a469a21 100644
+index b9e3848da6ebcb5b991c83c2a866730228f48ca0..ec1d340c531032a085c12888caafd2051baed0d6 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -441,6 +441,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -443,6 +443,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
    source->AddBoolean("safetyHubShowReviewPanel",
                       base::FeatureList::IsEnabled(features::kSafetyHub));
  

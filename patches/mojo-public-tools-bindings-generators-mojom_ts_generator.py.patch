@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/generators/mojom_ts_generator.py b/mojo/public/tools/bindings/generators/mojom_ts_generator.py
-index d8e0cf30486690b5aa33906985642dc8f7f762f5..1c43796152811d020370aa0a42bc4fddf8b05c06 100644
+index 98516f03276e4591dc8c04aa06c3428c3b7bac76..e67211290598012b2bd8bec65b4948fe381d0999 100644
 --- a/mojo/public/tools/bindings/generators/mojom_ts_generator.py
 +++ b/mojo/public/tools/bindings/generators/mojom_ts_generator.py
 @@ -175,8 +175,10 @@ def _GetWebUiModulePath(module):

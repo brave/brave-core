@@ -17,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 
 public class BraveRewardsUserWalletActivity
         extends AsyncInitializationActivity implements View.OnClickListener {
@@ -138,5 +141,10 @@ public class BraveRewardsUserWalletActivity
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

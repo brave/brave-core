@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -156,3 +157,6 @@ void IPFSLocationView::Update(content::WebContents* web_contents,
   reinterpret_cast<IPFSLocationButtonView*>(button_.get())
       ->SetIPFSLocation(ipfs_resolved_url);
 }
+
+BEGIN_METADATA(IPFSLocationView)
+END_METADATA

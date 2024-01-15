@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/widget/widget_observer.h"
 
@@ -38,6 +39,7 @@ class BraveRewardsActionView
       public brave_rewards::RewardsPanelCoordinator::Observer,
       public brave_rewards::RewardsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver {
+  METADATA_HEADER(BraveRewardsActionView, ToolbarButton)
  public:
   explicit BraveRewardsActionView(Browser* browser);
 
