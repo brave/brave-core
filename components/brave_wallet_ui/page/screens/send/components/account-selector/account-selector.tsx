@@ -69,7 +69,10 @@ export const AccountSelector = (props: Props) => {
   const handleOnSelectAccount = React.useCallback(
     async (account: BraveWallet.AccountInfo) => {
       setShowAccountSelector(false)
-      if (account.accountId.coin === BraveWallet.CoinType.ZEC) {
+      if (
+        account.accountId.coin === BraveWallet.CoinType.BTC ||
+        account.accountId.coin === BraveWallet.CoinType.ZEC
+      ) {
         const generatedAddress = await generateReceiveAddress(
           account.accountId
         ).unwrap()

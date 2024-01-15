@@ -31,14 +31,14 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
-  useGenerateReceiveAddressMutation,
   useGetNetworkQuery,
   useGetQrCodeImageQuery,
   useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
-  useGetCombinedTokensListQuery
+  useGetCombinedTokensListQuery,
+  useReceiveAddressQuery
 } from '../../../common/slices/api.slice.extra'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
@@ -61,6 +61,7 @@ import {
 import {
   AddressText,
   AddressTextLabel,
+  QRCodeContainer,
   QRCodeImage,
   ScrollContainer,
   SearchWrapper,
@@ -95,6 +96,7 @@ import {
 import {
   PageTitleHeader //
 } from '../../../components/desktop/card-headers/page-title-header'
+import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 
 const itemSize = 82
 
@@ -499,9 +501,6 @@ function DepositAccount() {
       : []
   }, [selectedAssetNetwork, accounts])
 
-  // mutations
-  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
-
   // search
   const [showAccountSearch, setShowAccountSearch] =
     React.useState<boolean>(false)
@@ -511,8 +510,8 @@ function DepositAccount() {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
-  const [receiveAddress, setReceiveAddress] = React.useState<string>('')
-  const { data: qrCode, isLoading: isLoadingQrCode } = useGetQrCodeImageQuery(
+  const receiveAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
   )
 
@@ -608,26 +607,6 @@ function DepositAccount() {
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
   }, [accountsForSelectedAssetCoinType[0]])
 
-  React.useEffect(() => {
-    let ignore = false
-    ;(async () => {
-      if (!selectedAccount) {
-        return
-      }
-      const address = await generateReceiveAddress(
-        selectedAccount.accountId
-      ).unwrap()
-      if (!ignore) {
-        setReceiveAddress(address)
-      }
-    })()
-
-    // cleanup
-    return () => {
-      ignore = true
-    }
-  }, [selectedAccount])
-
   // render
   if (!selectedDepositAssetId) {
     return <Redirect to={WalletRoutes.DepositFundsPageStart} />
@@ -700,22 +679,37 @@ function DepositAccount() {
       </Row>
 
       <Row>
-        {isLoadingQrCode ? <LoadingRing /> : <QRCodeImage src={qrCode} />}
+        <QRCodeContainer>
+          {isLoadingQrCode || !receiveAddress ? (
+            <LoadingRing />
+          ) : (
+            <QRCodeImage src={qrCode} />
+          )}
+        </QRCodeContainer>
       </Row>
 
       <Column gap={'4px'}>
         <AddressTextLabel>Address:</AddressTextLabel>
 
-        <Row gap={'12px'}>
-          <AddressText>{receiveAddress}</AddressText>
-          <CopyButton
-            iconColor={'interactive05'}
-            onKeyPress={onCopyKeyPress}
-            onClick={copyAddressToClipboard}
-          />
-        </Row>
+        {receiveAddress ? (
+          <>
+            <Row gap={'12px'}>
+              <AddressText>{receiveAddress}</AddressText>
+              <CopyButton
+                iconColor={'interactive05'}
+                onKeyPress={onCopyKeyPress}
+                onClick={copyAddressToClipboard}
+              />
+            </Row>
 
-        {isCopied && <CopiedToClipboardConfirmation />}
+            {isCopied && <CopiedToClipboardConfirmation />}
+          </>
+        ) : (
+          <Skeleton
+            height={'20px'}
+            width={'300px'}
+          />
+        )}
       </Column>
     </Column>
   )
