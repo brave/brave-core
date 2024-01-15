@@ -37,7 +37,9 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
 void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
   VideoOverlayWindowViews::OnUpdateControlsBounds();
 
-  const auto& window_size = GetBounds().size();
+  // Copies size in order to avoid ASAN failure
+  // https://github.com/brave/internal/issues/1108
+  const auto window_size = GetBounds().size();
 
   // Lay out controls on top of window
   constexpr int kTopControlSpacing = 16;
