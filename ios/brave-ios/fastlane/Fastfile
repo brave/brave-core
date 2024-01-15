@@ -11,16 +11,6 @@ platform :ios do
     unless lane == :test || options[:skip_bootstrap]
       sh("pushd .. && ./scripts/bootstrap.sh --ci && popd")
     end
-    # Verify clean repo by default
-    unless options[:ignore_git_status]
-      UI.message "Running git status check"
-      ensure_git_status_clean(show_uncommitted_changes: true, show_diff: true)
-    end
-  end
-
-  after_all do |lane, options|
-    # If no uncommitted changes existed before running `lane`, reset any potential fastlane changes
-    reset_git_repo(skip_clean: true) unless options[:ignore_git_status]
   end
 
   desc "Run Unit Tests"
