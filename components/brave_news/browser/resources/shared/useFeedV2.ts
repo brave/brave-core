@@ -76,7 +76,7 @@ const maybeLoadFeed = (view?: FeedView) => {
   }
 
   // Don't load errored feeds.
-  if (typeof feed.error !== 'number') {
+  if (typeof feed.error === 'number') {
     return undefined
   }
 
