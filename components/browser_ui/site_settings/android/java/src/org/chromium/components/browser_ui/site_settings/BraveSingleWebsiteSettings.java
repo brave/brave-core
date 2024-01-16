@@ -21,13 +21,18 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
-    public static @Nullable String getPreferenceKey(@ContentSettingsType int type) {
+    public static @Nullable String getPreferenceKey(@ContentSettingsType.EnumType int type) {
         switch (type) {
             case ContentSettingsType.AUTOPLAY:
                 return "autoplay_permission_list";
             default:
-                return (String) BraveReflectionUtil.InvokeMethod(
-                        SingleWebsiteSettings.class, null, "getPreferenceKey", int.class, type);
+                return (String)
+                        BraveReflectionUtil.InvokeMethod(
+                                SingleWebsiteSettings.class,
+                                null,
+                                "getPreferenceKey",
+                                int.class,
+                                type);
         }
     }
 
