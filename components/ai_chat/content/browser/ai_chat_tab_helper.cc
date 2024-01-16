@@ -29,6 +29,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "pdf/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -40,6 +41,7 @@ AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
 
 void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
     const content::AXEventNotificationDetails& details) {
+#if BUILDFLAG(ENABLE_PDF)
   for (const auto& update : details.updates) {
     for (const auto& node : update.nodes) {
       if (node.GetStringAttribute(ax::mojom::StringAttribute::kName) ==
@@ -49,6 +51,7 @@ void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
       }
     }
   }
+#endif
 }
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::~PDFA11yInfoLoadObserver() = default;

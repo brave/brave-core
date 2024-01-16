@@ -37,6 +37,7 @@ static_library("browser") {
     "//components/user_prefs",
     "//content/public/browser",
     "//net/traffic_annotation",
+    "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
