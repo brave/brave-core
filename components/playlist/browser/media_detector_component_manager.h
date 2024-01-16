@@ -58,10 +58,6 @@ class MediaDetectorComponentManager {
   bool ShouldUseFakeUA(const GURL& url) const;
   void SetUseLocalListToUseFakeUA();
 
-  const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
-    return sites_to_hide_media_src_api_;
-  }
-
  private:
   FRIEND_TEST_ALL_PREFIXES(MediaDetectorComponentManagerTest,
                            SitesThatNeedsURLRuleForMediaPage);

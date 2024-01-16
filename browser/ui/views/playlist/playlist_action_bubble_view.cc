@@ -57,6 +57,8 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
 // LoadingSpinner represents the loading animation for the 'Add bubble'
 class LoadingSpinner : public views::View, gfx::AnimationDelegate {
  public:
+  METADATA_HEADER(LoadingSpinner);
+
   LoadingSpinner() {
     animation_.SetSlideDuration(base::Milliseconds(2500));
     animation_.SetTweenType(gfx::Tween::LINEAR);
@@ -99,6 +101,9 @@ class LoadingSpinner : public views::View, gfx::AnimationDelegate {
  private:
   gfx::SlideAnimation animation_{this};
 };
+
+BEGIN_METADATA(LoadingSpinner, views::View)
+END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
 // ConfirmBubble
