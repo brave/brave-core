@@ -51,7 +51,7 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
                         output_sink_user_data)) {}
 
 Rewriter::~Rewriter() {
-  if (!ended_) {
+  if (!ended_ && raw_) {
     rewriter_free(raw_.ExtractAsDangling());
   }
 }
