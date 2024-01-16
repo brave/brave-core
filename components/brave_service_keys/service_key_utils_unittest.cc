@@ -21,20 +21,36 @@ TEST(BraveServicesUtilsUnittest, GetDigestHeader) {
             "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
 }
 
-TEST(BraveServicesUtilsUnittest, CreateSignatureStringTest) {
+TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
   base::flat_map<std::string, std::string> headers = {
-      {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="}};
+      {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
+      {"content-type", "application/json"},
+      {"host", "example.com"}};
+  // Test for no headers
+  auto result = CreateSignatureString(headers, {});
+  EXPECT_EQ(result.first, "");
+  EXPECT_EQ(result.second, "");
 
-  auto result = CreateSignatureString(headers, {"digest"});
+  // Test for single header
+  result = CreateSignatureString(headers, {"digest"});
   EXPECT_EQ(result.first, "digest");
   EXPECT_EQ(result.second,
             "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
 
-  // CreateSignatureString should only create headers included in
-  // headers_to_sign
-  result = CreateSignatureString(headers, {});
-  EXPECT_EQ(result.first, "");
-  EXPECT_EQ(result.second, "");
+  // Test for multiple headers in specified order
+  result = CreateSignatureString(headers, {"content-type", "digest"});
+  EXPECT_EQ(result.first, "content-type digest");
+  EXPECT_EQ(result.second,
+            "content-type: application/json\ndigest: "
+            "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
+
+  // Test for multiple headers in reverse order
+  result = CreateSignatureString(headers, {"digest", "content-type"});
+  EXPECT_EQ(result.first, "digest content-type");
+  EXPECT_EQ(result.second,
+            "digest: "
+            "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\ncontent-"
+            "type: application/json");
 }
 
 TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {

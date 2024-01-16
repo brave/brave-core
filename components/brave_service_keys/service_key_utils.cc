@@ -35,16 +35,15 @@ std::pair<std::string, std::string> CreateSignatureString(
   std::string header_names;
   std::string signature_string;
 
-  for (const auto& [key, value] : headers) {
-    // Check if the header is in headers_to_sign
-    if (std::find(headers_to_sign.begin(), headers_to_sign.end(), key) !=
-        headers_to_sign.end()) {
+  for (const auto& key : headers_to_sign) {
+    auto header = headers.find(key);
+    if (header != headers.end()) {
       if (!header_names.empty()) {
         header_names += " ";
         signature_string += "\n";
       }
       header_names += key;
-      signature_string += key + ": " + value;
+      signature_string += key + ": " + header->second;
     }
   }
   return {header_names, signature_string};
