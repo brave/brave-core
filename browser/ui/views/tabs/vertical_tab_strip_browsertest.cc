@@ -8,11 +8,14 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -486,6 +489,46 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
   }
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* pref = prefs->FindPreference(brave_tabs::kVerticalTabsShowScrollbar);
+
+  // Check if the default value is false
+  EXPECT_TRUE(pref && pref->IsDefaultValue());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+
+  auto get_tab_container = [&]() {
+    return views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+        ->GetTabContainerForTesting();
+  };
+
+  auto* brave_tab_container =
+      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
+  EXPECT_TRUE(brave_tab_container);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Turn on the prefs and checks if scrollbar becomes visible
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Turning off and on vertical tabs and see if the visibility persists.
+  ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
+  brave_tab_container =
+      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Checks if scrollbar is hidden when the pref is turned off.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+}
+
 class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
  public:
   using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
@@ -906,4 +949,25 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
   // Even when we toggle on the tab strip, this state should persist.
   ToggleVerticalTabStrip();
   EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
+
+class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripScrollBarFlagTest()
+      : feature_list_(tabs::features::kBraveVerticalTabScrollBar) {}
+
+  ~VerticalTabStripScrollBarFlagTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripScrollBarFlagTest, MigrationTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* pref = prefs->FindPreference(brave_tabs::kVerticalTabsShowScrollbar);
+  ASSERT_TRUE(pref);
+
+  // Check if pref is set to true when user turned on the feature flag.
+  EXPECT_FALSE(pref->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
 }

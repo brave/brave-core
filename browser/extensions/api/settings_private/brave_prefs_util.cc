@@ -84,8 +84,9 @@ namespace settings_api = api::settings_private;
 const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Static cache, similar to parent class
   static PrefsUtil::TypedPrefMap* s_brave_allowlist = nullptr;
-  if (s_brave_allowlist)
+  if (s_brave_allowlist) {
     return *s_brave_allowlist;
+  }
   s_brave_allowlist = new PrefsUtil::TypedPrefMap();
   // Start with parent class allowlist
   const auto chromium_prefs = PrefsUtil::GetAllowlistedKeys();
@@ -321,6 +322,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsOnRight] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowScrollbar] =
       settings_api::PrefType::kBoolean;
 #endif
 

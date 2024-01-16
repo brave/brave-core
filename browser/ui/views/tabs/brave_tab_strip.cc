@@ -401,6 +401,10 @@ bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
 
+TabContainer* BraveTabStrip::GetTabContainerForTesting() {
+  return &tab_container_.get();  // IN-TEST
+}
+
 void BraveTabStrip::Layout() {
   if (ShouldShowVerticalTabs()) {
     // Chromium implementation limits the height of tab strip, which we don't

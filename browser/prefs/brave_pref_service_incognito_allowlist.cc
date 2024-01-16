@@ -27,21 +27,24 @@ namespace brave {
 
 const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
-    kBraveAutofillPrivateWindows,
+      kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
-        prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
-        brave_tabs::kVerticalTabsExpandedWidth,
-        brave_tabs::kVerticalTabsEnabled, brave_tabs::kVerticalTabsCollapsed,
-        brave_tabs::kVerticalTabsFloatingEnabled,
-        brave_tabs::kVerticalTabsShowTitleOnWindow,
-        brave_tabs::kVerticalTabsOnRight,
+      prefs::kSidePanelHorizontalAlignment,
+      kTabMuteIndicatorNotClickable,
+      brave_tabs::kVerticalTabsExpandedWidth,
+      brave_tabs::kVerticalTabsEnabled,
+      brave_tabs::kVerticalTabsCollapsed,
+      brave_tabs::kVerticalTabsFloatingEnabled,
+      brave_tabs::kVerticalTabsShowTitleOnWindow,
+      brave_tabs::kVerticalTabsOnRight,
+      brave_tabs::kVerticalTabsShowScrollbar,
 #endif
 #if defined(TOOLKIT_VIEWS)
-        sidebar::kSidePanelWidth,
+      sidebar::kSidePanelWidth,
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-        ai_chat::prefs::kLastAcceptedDisclaimer,
-        ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,
+      ai_chat::prefs::kLastAcceptedDisclaimer,
+      ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   });
 
