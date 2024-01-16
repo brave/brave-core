@@ -7,7 +7,7 @@
 
 namespace content {
 
-absl::optional<media_session::MediaPosition>
+std::optional<media_session::MediaPosition>
 MediaSessionImpl::GetMediaPositionFromNormalPlayerIfPossible() {
   if (normal_players_.size() == 1 && one_shot_players_.empty() &&
       pepper_players_.empty()) {
@@ -15,7 +15,7 @@ MediaSessionImpl::GetMediaPositionFromNormalPlayerIfPossible() {
     return first.observer->GetPosition(first.player_id);
   }
 
-  return {};
+  return std::nullopt;
 }
 
 }  // namespace content
