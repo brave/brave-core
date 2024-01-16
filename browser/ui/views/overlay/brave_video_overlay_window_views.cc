@@ -5,13 +5,12 @@
 
 #include "brave/browser/ui/views/overlay/brave_video_overlay_window_views.h"
 
-#include <iomanip>
 #include <memory>
-#include <sstream>
 #include <utility>
 #include <vector>
 
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
@@ -36,14 +35,10 @@ std::u16string ToString(const base::TimeDelta& time) {
   const int hours = time_in_seconds / 3600;
   const int minutes = (time_in_seconds % 3600) / 60;
   const int seconds = (time_in_seconds % 60);
-  std::ostringstream oss;
-  if (hours) {
-    oss << std::setw(2) << std::setfill('0') << hours << ":";
-  }
 
-  oss << std::setw(2) << std::setfill('0') << minutes << ":" << std::setw(2)
-      << std::setfill('0') << seconds;
-  return base::ASCIIToUTF16(oss.str());
+  return base::ASCIIToUTF16(
+      hours ? base::StringPrintf("%02d:%02d:%02d", hours, minutes, seconds)
+            : base::StringPrintf("%02d:%02d", minutes, seconds));
 }
 
 std::u16string ToString(const media_session::MediaPosition& position) {
