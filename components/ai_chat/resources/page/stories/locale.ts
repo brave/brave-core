@@ -21,6 +21,8 @@ provideStrings({
   'introMessage-0': `I'm here to help. What can I assist you with today?`,
   'introMessage-1': 'I have a vast base of knowledge and a large memory able to help with more complex challenges.',
   modelNameSyntax: '$1 by $2',
+  modelFreemiumLabelNonPremium: 'Limited',
+  modelFreemiumLabelPremium: 'Unlimited',
   'modelCategory-chat': 'Chat',
   menuNewChat: 'New chat',
   menuSettings: 'Settings',

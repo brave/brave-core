@@ -66,10 +66,11 @@ export default function FeatureMenu() {
             )}
             {model.access === mojom.ModelAccess.BASIC_AND_PREMIUM && (
               <Label
+               className={styles.modelFreemiumLabel}
                mode={context.isPremiumUser ? 'loud' : 'default'}
                color='blue'
               >
-                {context.isPremiumUser ? 'Unlimited' : 'Limited'}
+                {context.isPremiumUser ? getLocale('modelFreemiumLabelPremium') : getLocale('modelFreemiumLabelNonPremium')}
               </Label>
             )}
           </div>

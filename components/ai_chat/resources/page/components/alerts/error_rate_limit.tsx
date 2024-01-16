@@ -55,7 +55,7 @@ function ErrorRateLimit() {
         <Button
           slot='actions'
           kind='filled'
-          onClick={getPageHandlerInstance().pageHandler.retryAPIRequest}
+          onClick={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
         >
             {getLocale('retryButtonLabel')}
         </Button>

@@ -60,6 +60,12 @@
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
   </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that a model is limited in functionality due to user's non-premium status">
+    Limited
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM" desc="Label indentifying that a model is not limited in functionality as the user is a premium subscriber">
+    Unlimited
+  </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
   </message>
