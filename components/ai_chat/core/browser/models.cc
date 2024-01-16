@@ -45,7 +45,7 @@ const std::vector<ai_chat::mojom::Model>& GetAllModels() {
        kFreemiumAccess, 9000, 9700},
       {"chat-claude-instant", "claude-instant-v1", "Claude Instant",
        "Anthropic", mojom::ModelEngineType::CLAUDE_REMOTE,
-       mojom::ModelCategory::CHAT, kFreemiumAccess, 200000, 320000},
+       mojom::ModelCategory::CHAT, kFreemiumAccess, 180000, 320000},
       {"chat-basic", "llama-2-13b-chat", "llama2 13b", "Meta",
        mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
        mojom::ModelAccess::BASIC, 9000, 9700},
