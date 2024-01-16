@@ -51,7 +51,7 @@ export default function FeatureMenu() {
         >
           <div className={styles.menuItemWithIcon}>
             <div className={styles.menuText}>
-              <div>{model.name}</div>
+              <div>{model.displayName}</div>
               <p className={styles.modelSubtitle}>
                 {getLocale(`braveLeoModelSubtitle-${model.key}`)}
               </p>
