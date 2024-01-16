@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_service_keys/buildflags.h"
@@ -58,8 +58,7 @@ std::pair<std::string, std::string> CreateSignatureString(
       header_names += key;
       signature_string += key + ": " + header->second;
     } else {
-      VLOG(1) << __func__ << "Can't sign over non existant header " << key;
-      DCHECK(false);
+      NOTREACHED_NORETURN() << "Can't sign over non existant header " << key;
     }
   }
 
