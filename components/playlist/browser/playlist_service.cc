@@ -188,24 +188,20 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   DCHECK(!item_id->empty());
 
   {
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 1";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 1";
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
     auto target_playlist_id =
         playlist_id->empty() ? kDefaultPlaylistID : *playlist_id;
     base::Value::Dict* playlist_value =
         playlists_update->FindDict(target_playlist_id);
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 2";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 2";
     if (!playlist_value) {
       VLOG(2) << __func__ << " Playlist " << playlist_id << " not found";
-      LOG(ERROR) << "BravePlaylistDebug"
-                 << " : RemoveItemFromPlaylist : 3";
+      LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 3";
       return false;
     }
 
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 4";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 4";
     auto target_playlist = ConvertValueToPlaylist(
         *playlist_value, prefs_->GetDict(kPlaylistItemsPref));
     auto it = base::ranges::find_if(
@@ -213,35 +209,29 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
         [&item_id](const auto& item) { return item->id == *item_id; });
     // Consider this as success since the item is already removed.
     if (it == target_playlist->items.end()) {
-      LOG(ERROR) << "BravePlaylistDebug"
-                 << " : RemoveItemFromPlaylist : 5";
+      LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 5";
       return true;
     }
 
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 6";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 6";
     target_playlist->items.erase(it, it + 1);
     playlists_update->Set(target_playlist_id,
                           ConvertPlaylistToValue(target_playlist));
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 7";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 7";
   }
 
   // Try to remove |playlist_id| from item->parents or delete the this item
   // if there's no other parent playlist.
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : RemoveItemFromPlaylist : 8";
+  LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 8";
   auto item = GetPlaylistItem(*item_id);
   if (delete_item && item->parents.size() == 1) {
-    LOG(ERROR) << "BravePlaylistDebug"
-               << " : RemoveItemFromPlaylist : 9";
+    LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 9";
     DCHECK_EQ(item->parents.front(), *playlist_id);
     DeletePlaylistItemData(item->id);
     return true;
   }
 
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : RemoveItemFromPlaylist : 10";
+  LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 10";
 
   // There're other playlists referencing this. Don't delete item
   // and update the item's parent playlists data.
@@ -251,13 +241,11 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
 
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : RemoveItemFromPlaylist : 11";
+  LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 11";
   for (auto& observer : observers_) {
     observer->OnItemRemovedFromList(*playlist_id, item->id);
   }
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : RemoveItemFromPlaylist : 12";
+  LOG(ERROR) << "BravePlaylistDebug" << " : RemoveItemFromPlaylist : 12";
   return true;
 }
 
@@ -714,8 +702,7 @@ void PlaylistService::UpdatePlaylistItemValue(const std::string& id,
 }
 
 void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : RemovePlaylistItemValue : 1";
+  LOG(ERROR) << "BravePlaylistDebug" << " : RemovePlaylistItemValue : 1";
   ScopedDictPrefUpdate playlist_items(prefs_, kPlaylistItemsPref);
   playlist_items->Remove(id);
 }
@@ -1009,32 +996,26 @@ void PlaylistService::RemoveLocalDataForItemsInPlaylist(
 }
 
 void PlaylistService::DeletePlaylistItemData(const std::string& id) {
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 1";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 1";
   media_file_download_manager_->CancelDownloadRequest(id);
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 2";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 2";
   thumbnail_downloader_->CancelDownloadRequest(id);
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 3";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 3";
 
   RemovePlaylistItemValue(id);
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 4";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 4";
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
   for (auto& observer : observers_) {
     observer->OnItemLocalDataDeleted(id);
   }
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 5";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 5";
 
   // TODO(simonhong): Delete after getting cancel complete message from all
   // downloader.
   // Delete assets from filesystem after updating db.
   GetTaskRunner()->PostTask(FROM_HERE, base::GetDeletePathRecursivelyCallback(
                                            GetPlaylistItemDirPath(id)));
-  LOG(ERROR) << "BravePlaylistDebug"
-             << " : DeletePlaylistItemData : 6";
+  LOG(ERROR) << "BravePlaylistDebug" << " : DeletePlaylistItemData : 6";
 }
 
 void PlaylistService::RemoveLocalDataForItem(const std::string& id) {

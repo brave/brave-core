@@ -52,12 +52,12 @@ public class BravePlaylistSaveMediaFragment
         initPlaylistService();
 
         RadioButtonGroupPlaylistAutoSavePreference radioButtonGroupPlaylistAutoSavePreference =
-                (RadioButtonGroupPlaylistAutoSavePreference) findPreference(
-                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
+                (RadioButtonGroupPlaylistAutoSavePreference)
+                        findPreference(BravePreferenceKeys.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
 
         radioButtonGroupPlaylistAutoSavePreference.initialize(
                 ChromeSharedPreferences.getInstance()
-                        .readInt(BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
+                        .readInt(BravePreferenceKeys.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
 
         radioButtonGroupPlaylistAutoSavePreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
@@ -65,7 +65,7 @@ public class BravePlaylistSaveMediaFragment
                     if (mPlaylistService != null) {
                         ChromeSharedPreferences.getInstance()
                                 .writeInt(
-                                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
+                                        BravePreferenceKeys.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
                                         method);
                     }
                     return true;

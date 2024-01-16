@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -30,7 +31,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -174,7 +174,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (bravePlaylist != null) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                     && ChromeSharedPreferences.getInstance()
-                            .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
                 bravePlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     bravePlaylist.setIcon(
@@ -189,9 +189,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (addToPlaylist != null) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                     && ChromeSharedPreferences.getInstance()
-                            .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)
+                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
                     && !ChromeSharedPreferences.getInstance()
-                            .readBoolean(BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)
+                            .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)
                     && BraveToolbarLayoutImpl.mShouldShowPlaylistMenu) {
                 addToPlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {

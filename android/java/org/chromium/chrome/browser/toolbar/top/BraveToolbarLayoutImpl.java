@@ -84,7 +84,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
@@ -583,7 +582,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private static boolean isPlaylistEnabledByPrefsAndFlags() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true);
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true);
     }
 
     private void hidePlaylistButton() {
@@ -1631,7 +1630,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         mShouldShowPlaylistMenu = true;
         if (ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+                .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
             showPlaylistButton(items);
         }
     }

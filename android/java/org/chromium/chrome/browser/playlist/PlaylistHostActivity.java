@@ -28,6 +28,8 @@ import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -36,7 +38,6 @@ import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl;
-import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -62,7 +63,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     public void onConnectionError(MojoException e) {
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();
         }
@@ -508,5 +509,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

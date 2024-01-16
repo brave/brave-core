@@ -23,11 +23,11 @@ import com.brave.playlist.playback_service.VideoPlaybackService;
 import com.brave.playlist.util.MediaUtils;
 import com.brave.playlist.util.PlaylistUtils;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -198,7 +198,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     @Override
     public void onConnectionError(MojoException e) {
         if (ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
             initPlaylistService();
         }
