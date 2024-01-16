@@ -24,7 +24,7 @@ std::pair<std::string, std::string> CreateSignatureString(
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    const base::flat_map<std::string, std::string>& headers,
+    base::flat_map<std::string, std::string> headers,
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign);

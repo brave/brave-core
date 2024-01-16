@@ -51,6 +51,24 @@ TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
             "digest: "
             "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\ncontent-"
             "type: application/json");
+
+  // Test vector from
+  // https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-08#section-3.1.2
+  headers = {{"(request-target)", "post /foo"},
+             {"host", "example.org"},
+             {"date", "Tue, 07 Jun 2014 20:51:35 GMT"},
+             {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
+             {"content-length", "18"}};
+  result =
+      CreateSignatureString(headers, {"(request-target)", "(created)", "host",
+                                      "date", "digest", "content-length"});
+  EXPECT_EQ(result.first, "(request-target) host date digest content-length");
+  EXPECT_EQ(result.second,
+            "(request-target): post /foo\n"
+            "host: example.org\n"
+            "date: Tue, 07 Jun 2014 20:51:35 GMT\n"
+            "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\n"
+            "content-length: 18");
 }
 
 TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
@@ -59,8 +77,8 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
   headers[digest_header.first] = digest_header.second;
   const std::string service_key =
       "bacfb4d7e93c6df045f66fa4bf438402b43ba2c9e3ce9b4eef470d24e32378e8";
-  auto result = GetAuthorizationHeader(service_key, headers,
-                                       GURL("example.com"), "POST", {"digest"});
+  auto result = GetAuthorizationHeader(
+      service_key, headers, GURL("https://example.com"), "POST", {"digest"});
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, "authorization");
   EXPECT_EQ(
@@ -68,6 +86,18 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
       base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
                     "\",algorithm=\"hs2019\",headers=\"digest\",signature=\""
                     "jumtKp4LQDzIBpuGKIEI/mxrr9AEcSzvRGD6PfYyAq8=\""}));
+
+  // Try again with (request-target)
+  result = GetAuthorizationHeader(service_key, headers,
+                                  GURL("https://example.com/test/v1?a=b"),
+                                  "POST", {"(request-target)", "digest"});
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->first, "authorization");
+  EXPECT_EQ(result->second,
+            base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
+                          "\",algorithm=\"hs2019\",headers=\"(request-target) "
+                          "digest\",signature=\""
+                          "kBICAlSiWuMoMr4Rws1KzyXOE6qK91jcAs8v9C7t4QQ=\""}));
 }
 
 }  // namespace brave_service_keys

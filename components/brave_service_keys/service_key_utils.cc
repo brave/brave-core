@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_service_keys/buildflags.h"
 #include "crypto/hmac.h"
 #include "crypto/sha2.h"
@@ -17,8 +18,9 @@ namespace brave_service_keys {
 
 namespace {
 
-constexpr char kDigest[] = "digest";
 constexpr char kAuthorization[] = "authorization";
+constexpr char kDigest[] = "digest";
+constexpr char kRequestTarget[] = "(request-target)";
 
 }  // namespace
 
@@ -46,15 +48,24 @@ std::pair<std::string, std::string> CreateSignatureString(
       signature_string += key + ": " + header->second;
     }
   }
+
   return {header_names, signature_string};
 }
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    const base::flat_map<std::string, std::string>& headers,
+    base::flat_map<std::string, std::string> headers,
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign) {
+  // Create and add the (request-target) header if included
+  if (std::find(headers_to_sign.begin(), headers_to_sign.end(),
+                kRequestTarget) != headers_to_sign.end()) {
+    headers.insert(std::make_pair(
+        kRequestTarget,
+        base::StrCat({base::ToLowerASCII(method), " ", url.PathForRequest()})));
+  }
+
   auto [header_names, signature_string] =
       CreateSignatureString(headers, headers_to_sign);
 
