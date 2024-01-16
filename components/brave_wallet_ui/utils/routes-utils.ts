@@ -149,7 +149,6 @@ export const makeFundWalletPurchaseOptionsRoute = (
     if (options.buyAmount) {
       params.append('buyAmount', options.buyAmount)
     }
-    console.log(params.toString())
 
     return `${WalletRoutes.FundWalletPurchaseOptionsPage.replace(
       ':assetId',

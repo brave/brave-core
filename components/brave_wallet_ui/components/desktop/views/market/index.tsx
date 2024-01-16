@@ -91,7 +91,7 @@ export const MarketView = () => {
         case MarketUiCommand.SelectBuy: {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
-          const foundTokens = combinedTokensList.filter(
+          const foundTokens = buyAssets.filter(
             (t) => t.symbol.toLowerCase() === symbolLower
           )
 
@@ -147,7 +147,7 @@ export const MarketView = () => {
         }
       }
     },
-    [combinedTokensList, isMountedRef]
+    [buyAssets, combinedTokensList, isMountedRef]
   )
 
   const onMarketDataFrameLoad = React.useCallback(() => {
