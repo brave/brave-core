@@ -24,7 +24,7 @@ BASE_FEATURE(kAIChat,
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
-    &kAIChat, "default_premium_model", "chat-claude-instant"};
+    &kAIChat, "default_premium_model", "chat-leo-expanded"};
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 

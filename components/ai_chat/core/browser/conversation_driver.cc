@@ -69,15 +69,18 @@ ConversationDriver::ConversationDriver(
       base::BindRepeating(&ConversationDriver::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
 
-  // Engines and model names are selectable per conversation, not static.
-  // Start with default from pref value but only if user set. We can't rely on
-  // actual default pref value since we should vary if user is premium or not.
+  // Model choice names is selectable per conversation, not global.
+  // Start with default from pref value if. If user is premium and premium model
+  // is different to non-premium default, and user hasn't customized the model
+  // pref, then switch the user to the premium default.
   // TODO(petemill): When we have an event for premium status changed, and a
   // profile service for AIChat, then we can call
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
-  // not vary on premium status.
-  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
+  // not have to fetch premium status.
+  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey) &&
+      features::kAIModelsPremiumDefaultKey.Get() !=
+          features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
         [](ConversationDriver* instance, mojom::PremiumStatus status,
            mojom::PremiumInfoPtr) {
