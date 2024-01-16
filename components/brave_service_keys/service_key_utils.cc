@@ -32,8 +32,18 @@ std::pair<std::string, std::string> GetDigestHeader(
 }
 
 std::pair<std::string, std::string> CreateSignatureString(
-    const base::flat_map<std::string, std::string>& headers,
+    base::flat_map<std::string, std::string> headers,
+    const GURL& url,
+    const std::string& method,
     const std::vector<std::string>& headers_to_sign) {
+  // Create and add the (request-target) header if included
+  if (std::find(headers_to_sign.begin(), headers_to_sign.end(),
+                kRequestTarget) != headers_to_sign.end()) {
+    headers.insert(std::make_pair(
+        kRequestTarget,
+        base::StrCat({base::ToLowerASCII(method), " ", url.PathForRequest()})));
+  }
+
   std::string header_names;
   std::string signature_string;
 
@@ -54,20 +64,12 @@ std::pair<std::string, std::string> CreateSignatureString(
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    base::flat_map<std::string, std::string> headers,
+    const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign) {
-  // Create and add the (request-target) header if included
-  if (std::find(headers_to_sign.begin(), headers_to_sign.end(),
-                kRequestTarget) != headers_to_sign.end()) {
-    headers.insert(std::make_pair(
-        kRequestTarget,
-        base::StrCat({base::ToLowerASCII(method), " ", url.PathForRequest()})));
-  }
-
   auto [header_names, signature_string] =
-      CreateSignatureString(headers, headers_to_sign);
+      CreateSignatureString(headers, url, method, headers_to_sign);
 
   // Create the signature using the service_key.
   crypto::HMAC hmac(crypto::HMAC::SHA256);

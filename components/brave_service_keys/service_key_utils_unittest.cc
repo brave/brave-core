@@ -22,30 +22,33 @@ TEST(BraveServicesUtilsUnittest, GetDigestHeader) {
 }
 
 TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
+  const GURL url = GURL("http://example.com/foo");
   base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
       {"content-type", "application/json"},
       {"host", "example.com"}};
   // Test for no headers
-  auto result = CreateSignatureString(headers, {});
+  auto result = CreateSignatureString(headers, url, "GET", {});
   EXPECT_EQ(result.first, "");
   EXPECT_EQ(result.second, "");
 
   // Test for single header
-  result = CreateSignatureString(headers, {"digest"});
+  result = CreateSignatureString(headers, url, "GET", {"digest"});
   EXPECT_EQ(result.first, "digest");
   EXPECT_EQ(result.second,
             "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
 
   // Test for multiple headers in specified order
-  result = CreateSignatureString(headers, {"content-type", "digest"});
+  result =
+      CreateSignatureString(headers, url, "GET", {"content-type", "digest"});
   EXPECT_EQ(result.first, "content-type digest");
   EXPECT_EQ(result.second,
             "content-type: application/json\ndigest: "
             "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
 
   // Test for multiple headers in reverse order
-  result = CreateSignatureString(headers, {"digest", "content-type"});
+  result =
+      CreateSignatureString(headers, url, "GET", {"digest", "content-type"});
   EXPECT_EQ(result.first, "digest content-type");
   EXPECT_EQ(result.second,
             "digest: "
@@ -59,9 +62,25 @@ TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
              {"date", "Tue, 07 Jun 2014 20:51:35 GMT"},
              {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
              {"content-length", "18"}};
-  result =
-      CreateSignatureString(headers, {"(request-target)", "(created)", "host",
-                                      "date", "digest", "content-length"});
+  result = CreateSignatureString(headers, url, "GET",
+                                 {"(request-target)", "(created)", "host",
+                                  "date", "digest", "content-length"});
+  EXPECT_EQ(result.first, "(request-target) host date digest content-length");
+  EXPECT_EQ(result.second,
+            "(request-target): post /foo\n"
+            "host: example.org\n"
+            "date: Tue, 07 Jun 2014 20:51:35 GMT\n"
+            "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\n"
+            "content-length: 18");
+
+  // Try without explicitly setting (request-target)
+  headers = {{"host", "example.org"},
+             {"date", "Tue, 07 Jun 2014 20:51:35 GMT"},
+             {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
+             {"content-length", "18"}};
+  result = CreateSignatureString(headers, url, "POST",
+                                 {"(request-target)", "(created)", "host",
+                                  "date", "digest", "content-length"});
   EXPECT_EQ(result.first, "(request-target) host date digest content-length");
   EXPECT_EQ(result.second,
             "(request-target): post /foo\n"
