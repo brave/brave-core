@@ -39,8 +39,8 @@ const PrepopulatedEngine* const kBraveAddedEngines[] = {
     &startpage,
 };
 
-const std::unordered_set<std::wstring> kOverriddenEnginesNames = {L"DuckDuckGo",
-                                                                  L"Qwant"};
+const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
+    u"DuckDuckGo", u"Qwant"};
 
 std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
   std::vector<const PrepopulatedEngine*> engines =
@@ -86,7 +86,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   using PrepopulatedEngine = TemplateURLPrepopulateData::PrepopulatedEngine;
   const std::vector<const PrepopulatedEngine*> all_engines =
       ::GetAllPrepopulatedEngines();
-  std::set<std::wstring> unique_keywords;
+  std::set<std::u16string_view> unique_keywords;
   for (const PrepopulatedEngine* engine : all_engines) {
     ASSERT_TRUE(unique_keywords.find(engine->keyword) == unique_keywords.end());
     unique_keywords.insert(engine->keyword);
