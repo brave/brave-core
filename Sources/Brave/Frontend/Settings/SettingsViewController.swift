@@ -862,6 +862,11 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "Brave Talk Logs",
+          selection: { [unowned self] in
+            self.navigationController?.pushViewController(BraveTalkLogsViewController(), animated: true)
+          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+        Row(
           text: "Retention Preferences Debug Menu",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(

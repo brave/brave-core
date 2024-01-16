@@ -448,7 +448,7 @@ if isNativeTalkEnabled {
   package.dependencies.append(.package(name: "JitsiMeet", path: "ThirdParty/JitsiMeet"))
   package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
   package.targets.append(contentsOf: [
-    .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"]),
+    .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"], plugins: ["LoggerPlugin"]),
     .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
   ])
 }

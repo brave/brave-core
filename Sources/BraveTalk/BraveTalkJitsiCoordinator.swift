@@ -17,7 +17,11 @@ import JitsiMeetSDK
     return true
   }
   
-  public init() {}
+  public init() {
+    if !AppConstants.buildChannel.isPublic {
+      JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
+    }
+  }
   
   public enum AppLifetimeEvent {
     case didFinishLaunching(options: [UIApplication.LaunchOptionsKey: Any] = [:])
