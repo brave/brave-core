@@ -72,9 +72,7 @@ function Main() {
 
     if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
-        <ErrorRateLimit
-          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
-        />
+        <ErrorRateLimit />
       )
     }
 
@@ -133,9 +131,9 @@ function Main() {
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.switchToDefaultModel()}
+                    onClick={() => context.switchToBasicModel()}
                   >
-                    {getLocale('switchToDefaultModelButtonLabel')}
+                    {getLocale('switchToBasicModelButtonLabel')}
                   </Button>
                 }
               />

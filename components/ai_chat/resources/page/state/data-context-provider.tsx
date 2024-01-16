@@ -125,7 +125,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCanShowPremiumPrompt(false)
   }
 
-  const switchToDefaultModel = () => {
+  const switchToBasicModel = () => {
     // Select the first non-premium model
     const nonPremium = allModels.find(m => [mojom.ModelAccess.BASIC, mojom.ModelAccess.BASIC_AND_PREMIUM].includes(m.access))
     if (!nonPremium) {
@@ -293,7 +293,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     setCurrentModel,
-    switchToDefaultModel,
+    switchToBasicModel,
     goPremium,
     managePremium,
     generateSuggestedQuestions,
