@@ -7,8 +7,9 @@ import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Label from '@brave/leo/react/label'
 import { getLocale } from '$web-common/locale'
-import getPageHandlerInstance from '../../api/page_handler'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
 import classnames from '$web-common/classnames'
@@ -50,18 +51,27 @@ export default function FeatureMenu() {
         >
           <div className={styles.menuItemWithIcon}>
             <div className={styles.menuText}>
-              <div>{model.name}</div>
+              <div>{model.displayName}</div>
               <p className={styles.modelSubtitle}>
                 {getLocale(`braveLeoModelSubtitle-${model.key}`)}
               </p>
             </div>
-            {model.isPremium && (
+            {model.access === mojom.ModelAccess.PREMIUM && (
               <Icon
                 className={classnames({
                   [styles.lockOpen]: context.isPremiumUser
                 })}
                 name={context.isPremiumUser ? 'lock-open' : 'lock-plain'}
               />
+            )}
+            {model.access === mojom.ModelAccess.BASIC_AND_PREMIUM && (
+              <Label
+               className={styles.modelFreemiumLabel}
+               mode={context.isPremiumUser ? 'loud' : 'default'}
+               color='blue'
+              >
+                {context.isPremiumUser ? getLocale('modelFreemiumLabelPremium') : getLocale('modelFreemiumLabelNonPremium')}
+              </Label>
             )}
           </div>
         </leo-menu-item>

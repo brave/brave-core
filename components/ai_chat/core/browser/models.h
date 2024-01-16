@@ -6,20 +6,22 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODELS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODELS_H_
 
+#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
 
-inline constexpr char kModelsDefaultKey[] = "chat-default";
-inline constexpr char kModelsPremiumDefaultKey[] = "chat-claude-instant";
+// All models that the user can choose for chat conversations, in UI display
+// order.
+extern const std::vector<ai_chat::mojom::Model>& GetAllModels();
 
-// All models that the user can choose for chat conversations.
-extern const base::flat_map<std::string_view, mojom::Model> kAllModels;
-// UI display order for models
-extern const std::vector<std::string_view> kAllModelKeysDisplayOrder;
+// Get model by key. If there is no matching model for the key, NULL is
+// returned.
+extern const ai_chat::mojom::Model* GetModel(std::string_view key);
 
 }  // namespace ai_chat
 
