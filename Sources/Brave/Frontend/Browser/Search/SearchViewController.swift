@@ -566,6 +566,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
             }
             self.layoutSuggestionsOptInPrompt()
             self.reloadSearchEngines()
+            self.tableView.reloadData()
           }
         }
       }
