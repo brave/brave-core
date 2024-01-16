@@ -59,7 +59,7 @@ class ConversationDriver {
   ConversationDriver& operator=(const ConversationDriver&) = delete;
 
   void ChangeModel(const std::string& model_key);
-  const mojom::Model* GetCurrentModel();
+  const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();

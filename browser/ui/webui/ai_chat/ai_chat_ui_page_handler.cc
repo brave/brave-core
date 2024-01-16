@@ -109,7 +109,7 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
   }
 
   std::move(callback).Run(active_chat_tab_helper_->GetModels(),
-                          active_chat_tab_helper_->GetCurrentModel()->key);
+                          active_chat_tab_helper_->GetCurrentModel().key);
 }
 
 void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {

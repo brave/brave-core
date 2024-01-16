@@ -144,13 +144,15 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
   InitEngine();
 }
 
-const mojom::Model* ConversationDriver::GetCurrentModel() {
+const mojom::Model& ConversationDriver::GetCurrentModel() {
   auto* model = GetModel(model_key_);
   DCHECK(model);
-  return model;
+  return *model;
 }
 
 std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
+  // TODO(petemill): This is not needed. Frontends should call |GetAllModels|
+  // directly.
   auto all_models = GetAllModels();
   std::vector<mojom::ModelPtr> models(all_models.size());
   // Ensure we return only in intended display order
@@ -721,7 +723,7 @@ bool ConversationDriver::IsPageContentsTruncated() {
     return false;
   }
   return (static_cast<uint32_t>(article_text_.length()) >
-          GetCurrentModel()->max_page_content_length);
+          GetCurrentModel().max_page_content_length);
 }
 
 void ConversationDriver::SubmitSummarizationRequest() {
@@ -843,7 +845,7 @@ void ConversationDriver::RateMessage(
     base::span<const mojom::ConversationTurn> history_slice =
         base::make_span(history).first(current_turn_id);
 
-    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel()->name,
+    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel().name,
                               std::move(on_complete));
 
     return;
