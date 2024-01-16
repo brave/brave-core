@@ -598,11 +598,21 @@ void ConversationDriver::SubmitHumanConversationEntry(
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - conversation to be active
-  if (!is_conversation_active_ || !HasUserOptedIn()) {
+  // - is request in progress (should only be possible if regular entry is
+  // in-progress and another entry is submitted outside of regular UI, e.g. from
+  // location bar.
+  if (!is_conversation_active_ || !HasUserOptedIn() ||
+      is_request_in_progress_) {
     VLOG(1) << "Adding as a pending conversation entry";
-    DCHECK(!pending_conversation_entry_)
+    // This is possible (on desktop) if user submits multiple location bar
+    // messages before an entry is complete. But that should be obvious from the
+    // UI that the 1 in-progress + 1 pending message is the limit.
+    if(pending_conversation_entry_) {
+      VLOG(1)
         << "Should not be able to add a pending conversation entry "
         << "when there is already a pending conversation entry.";
+      return;
+    }
     pending_conversation_entry_ =
         std::make_unique<mojom::ConversationTurn>(std::move(turn));
     // Pending entry is added to conversation history when asked for
@@ -614,9 +624,6 @@ void ConversationDriver::SubmitHumanConversationEntry(
   }
 
   DCHECK(turn.character_type == CharacterType::HUMAN);
-  DCHECK(!is_request_in_progress_)
-      << "Should not be able to submit more"
-      << "than a single human conversation turn at a time.";
 
   is_request_in_progress_ = true;
   for (auto& obs : observers_) {
