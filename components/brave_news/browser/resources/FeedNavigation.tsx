@@ -96,6 +96,10 @@ const Section = styled.details`
   }
 `
 
+const AddButton = styled(SettingsButton)`
+  --leo-button-padding: ${spacing.xs};
+`
+
 function usePersistedState<T>(name: string, defaultValue: T) {
   const [value, setValue] = React.useState<T>(JSON.parse(localStorage[name] ?? null) ?? defaultValue)
   React.useEffect(() => {
@@ -142,12 +146,12 @@ export default function Sidebar() {
       <summary>
         {subscribedChannels.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsChannelsHeader')}
-        <SettingsButton size="tiny" onClick={e => {
+        <AddButton size="tiny" onClick={e => {
           setCustomizePage('news')
           e.stopPropagation()
         }}>
           <Icon name='plus-add' />
-        </SettingsButton>
+        </AddButton>
       </summary>
       {slicedChannelIds.map(c => <Item key={c} id={`channels/${c}`} name={c} />)}
       {subscribedChannels.length > DEFAULT_SHOW_COUNT
@@ -161,12 +165,12 @@ export default function Sidebar() {
       <summary>
         {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsPublishersHeading')}
-        <SettingsButton size="tiny" onClick={e => {
+        <AddButton size="tiny" onClick={e => {
           setCustomizePage('popular')
           e.stopPropagation()
         }}>
           <Icon name='plus-add' />
-        </SettingsButton>
+        </AddButton>
       </summary>
       {slicedPublisherIds.map(p => <Item key={p} id={`publishers/${p}`} name={publishers[p]?.publisherName} />)}
       {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT

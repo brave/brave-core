@@ -1108,10 +1108,18 @@ void FeedV2Builder::GenerateFeed(
             feed->source_hash = builder->hash_;
 
             if (feed->items.empty()) {
-              if (builder->raw_feed_items_.size() == 0) {
-                feed->error = mojom::FeedV2Error::ConnectionError;
-              } else if (builder->subscribed_count_ == 0) {
+              // If we have no subscribed items and we've loaded the list of
+              // publishers (which we might not have, if we're offline) then
+              // we're not subscribed to any feeds.
+              if (builder->subscribed_count_ == 0 &&
+                  !builder->publishers_controller_->GetLastPublishers()
+                       .empty()) {
                 feed->error = mojom::FeedV2Error::NoFeeds;
+                // If we don't have any raw feed items (and we're subscribed to
+                // some feeds) then fetching must have failed.
+              } else if (builder->raw_feed_items_.size() == 0) {
+                feed->error = mojom::FeedV2Error::ConnectionError;
+                // Otherwise, this feed must have no articles.
               } else {
                 feed->error = mojom::FeedV2Error::NoArticles;
               }
