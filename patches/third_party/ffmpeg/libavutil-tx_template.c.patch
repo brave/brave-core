@@ -1,38 +1,8 @@
 diff --git a/libavutil/tx_template.c b/libavutil/tx_template.c
-index a2c27465cbcabe242325f4126b74b4aa53f1aae8..1685bbdc425c6c9588d5ab68c515b52635bfe801 100644
+index a2c27465cbcabe242325f4126b74b4aa53f1aae8..c6cf1c2ddb3ca9a84ed344748ba560a5647edac8 100644
 --- a/libavutil/tx_template.c
 +++ b/libavutil/tx_template.c
-@@ -27,6 +27,29 @@
- #define TABLE_DEF(name, size) \
-     DECLARE_ALIGNED(32, TXSample, TX_TAB(ff_tx_tab_ ##name))[size]
- 
-+#ifdef _WIN32
-+
-+#include <malloc.h>
-+
-+// Declares aligned ff_tx_tab_* pointer.
-+#define TABLE_DEF_PTR(name, size) \
-+  DECLARE_ALIGNED(32, TXSample*, TX_TAB(ff_tx_tab_##name))
-+
-+// Allocates aligned memory for ff_tx_tab_* variable.
-+#define ALLOCATE_FF_TX_TABLE(len)                              \
-+  if (!TX_TAB(ff_tx_tab_##len)) {                              \
-+    TX_TAB(ff_tx_tab_##len) =                                  \
-+        _aligned_malloc((len / 4 + 1) * sizeof(TXSample), 32); \
-+  }
-+
-+#else
-+
-+// Use static arrays on non-Windows targets as usual.
-+#define TABLE_DEF_PTR(name, size) TABLE_DEF(name, size)
-+#define ALLOCATE_FF_TX_TABLE(len)
-+
-+#endif
-+
- #define SR_POW2_TABLES \
-     SR_TABLE(8)        \
-     SR_TABLE(16)       \
-@@ -43,13 +66,9 @@
+@@ -43,10 +43,6 @@
      SR_TABLE(32768)    \
      SR_TABLE(65536)    \
      SR_TABLE(131072)   \
@@ -42,20 +12,8 @@ index a2c27465cbcabe242325f4126b74b4aa53f1aae8..1685bbdc425c6c9588d5ab68c515b526
 -    SR_TABLE(2097152)   \
  
  #define SR_TABLE(len) \
--    TABLE_DEF(len, len/4 + 1);
-+    TABLE_DEF_PTR(len, len/4 + 1);
- /* Power of two tables */
- SR_POW2_TABLES
- #undef SR_TABLE
-@@ -68,6 +87,7 @@ typedef struct FFTabInitData {
- static av_cold void TX_TAB(ff_tx_init_tab_ ##len)(void)            \
- {                                                                  \
-     double freq = 2*M_PI/len;                                      \
-+    ALLOCATE_FF_TX_TABLE(len);                                     \
-     TXSample *tab = TX_TAB(ff_tx_tab_ ##len);                      \
-                                                                    \
-     for (int i = 0; i < len/4; i++)                                \
-@@ -722,10 +742,6 @@ DECL_SR_CODELET(16384,8192,4096)
+     TABLE_DEF(len, len/4 + 1);
+@@ -722,10 +718,6 @@ DECL_SR_CODELET(16384,8192,4096)
  DECL_SR_CODELET(32768,16384,8192)
  DECL_SR_CODELET(65536,32768,16384)
  DECL_SR_CODELET(131072,65536,32768)
@@ -66,7 +24,7 @@ index a2c27465cbcabe242325f4126b74b4aa53f1aae8..1685bbdc425c6c9588d5ab68c515b526
  
  static av_cold int TX_NAME(ff_tx_fft_init)(AVTXContext *s,
                                             const FFTXCodelet *cd,
-@@ -2158,10 +2174,6 @@ const FFTXCodelet * const TX_NAME(ff_tx_codelet_list)[] = {
+@@ -2158,10 +2150,6 @@ const FFTXCodelet * const TX_NAME(ff_tx_codelet_list)[] = {
      &TX_NAME(ff_tx_fft32768_ns_def),
      &TX_NAME(ff_tx_fft65536_ns_def),
      &TX_NAME(ff_tx_fft131072_ns_def),
