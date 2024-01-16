@@ -15,7 +15,7 @@ use std::collections::HashSet;
 use std::str::FromStr;
 use url::Url;
 
-pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
+pub static PUNCTUATIONS_REGEX: &str = r"([、。，．！？]|\.[^A-Za-z0-9]|,[^0-9]|!|\?)";
 pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
@@ -331,6 +331,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
+            local_name!("article") => 10.0,
             local_name!("div") | local_name!("section") => 5.0,
             local_name!("h1")
             | local_name!("h2")
@@ -955,7 +956,6 @@ pub fn clean(
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
-                | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
                 local_name!("br") => {
                     if let Some(sibling) = handle.next_sibling() {
@@ -1040,10 +1040,15 @@ pub fn is_useless(handle: &Handle) -> Option<String> {
         return Some(format!("{}: {} {}", line!(), weight, score));
     }
 
-    let content_length = dom::text_len(&handle);
     let para_count =
         dom::count_nodes(&handle, &local_name!("p")) + dom::text_children_count(&handle) as u32;
 
+    let input_count = dom::count_nodes(&handle, &local_name!("input"));
+    if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
+        return Some(format!("{}, {} {}", line!(), input_count, para_count));
+    }
+
+    let content_length = dom::text_len(&handle);
     let mut is_list = tag_name == Some(&local_name!("ul")) || tag_name == Some(&local_name!("ol"));
     if !is_list {
         let list_nodes = dom::find_nodes_with_tag(handle, &["ul", "ol"]);
@@ -1056,33 +1061,25 @@ pub fn is_useless(handle: &Handle) -> Option<String> {
         }
         is_list = list_length / content_length as f32 > 0.9;
     }
-
-    let input_count = dom::count_nodes(&handle, &local_name!("input"));
-    if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
-        return Some(format!("{}: {} {}", line!(), input_count, para_count));
+    if is_list {
+        let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
+        if li_count > para_count as i32 {
+            return Some(format!("{}, {} {}", line!(), li_count, para_count));
+        }
     }
 
     let link_density = get_link_density(handle);
     if weight >= 25.0 && link_density > 0.5 {
         return Some(format!("{}, {} {}", line!(), weight, link_density));
+    } else if weight < 25.0 && link_density > 0.2 {
+        return Some(format!("{}, {} {}", line!(), weight, link_density));
     }
 
     let img_count = dom::count_nodes(&handle, &local_name!("img"));
 
-    if !is_list {
-        let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
-        if li_count > para_count as i32 {
-            return Some(format!("{}, {} {}", line!(), li_count, para_count));
-        }
-
-        if weight < 25.0 && link_density > 0.2 {
-            return Some(format!("{}, {} {}", line!(), weight, link_density));
-        }
-
-        let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
-        if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
-            return Some(format!("{}, {} {} {}", line!(), heading_density, content_length, img_count));
-        }
+    let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
+    if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
+        return Some(format!("{}, {} {} {}", line!(), heading_density, content_length, img_count));
     }
 
     let svg_count = dom::count_nodes(&handle, &local_name!("svg"));

@@ -312,7 +312,22 @@ We will populate the matrix with rows separately, here we only add the header ro
 </div>
 </div>
 <p>Things to note:</p>
-
+<div class="ulist">
+<ul>
+<li>
+<p>We set aside the special cell, <code>H</code>, to serve as a header cell of a header row.</p>
+</li>
+<li>
+<p><code>n_</code> is a nice naming convention to use to mean “number of things”.</p>
+</li>
+<li>
+<p><code>res</code> is a nice conventional name for the result variable.</p>
+</li>
+<li>
+<p>We use <code>assert</code>s to verify that parallel indices in two lists match.</p>
+</li>
+</ul>
+</div>
 <p>Now let’s add a function to populate the matrix with rows:</p>
 <div class="listingblock">
 <div class="content">
