@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_service_keys/service_key_utils.h"
 
-// #include "base/containers/flat_map.h"
+#include "base/containers/flat_map.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_service_keys/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
