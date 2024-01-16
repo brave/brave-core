@@ -135,28 +135,27 @@ ConversationDriver::~ConversationDriver() = default;
 void ConversationDriver::ChangeModel(const std::string& model_key) {
   DCHECK(!model_key.empty());
   // Check that the key exists
-  if (kAllModels.find(model_key) == kAllModels.end()) {
+  auto* new_model = GetModel(model_key);
+  if (!new_model) {
     NOTREACHED() << "No matching model found for key: " << model_key;
     return;
   }
-  model_key_ = model_key;
+  model_key_ = new_model->key;
   InitEngine();
 }
 
-const mojom::Model& ConversationDriver::GetCurrentModel() {
-  return kAllModels.find(model_key_)->second;
+const mojom::Model* ConversationDriver::GetCurrentModel() {
+  auto* model = GetModel(model_key_);
+  DCHECK(model);
+  return model;
 }
 
 std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
-  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  auto all_models = GetAllModels();
+  std::vector<mojom::ModelPtr> models(all_models.size());
   // Ensure we return only in intended display order
-  std::transform(kAllModelKeysDisplayOrder.cbegin(),
-                 kAllModelKeysDisplayOrder.cend(), models.begin(),
-                 [](auto& model_key) {
-                   auto model_match = kAllModels.find(model_key);
-                   DCHECK(model_match != kAllModels.end());
-                   return model_match->second.Clone();
-                 });
+  std::transform(all_models.cbegin(), all_models.cend(), models.begin(),
+                 [](auto& model) { return model.Clone(); });
   return models;
 }
 
@@ -187,33 +186,32 @@ void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active
 
 void ConversationDriver::InitEngine() {
   DCHECK(!model_key_.empty());
-  auto model_match = kAllModels.find(model_key_);
+  auto* model = GetModel(model_key_);
   // Make sure we get a valid model, defaulting to static default or first.
-  if (model_match == kAllModels.end()) {
+  if (!model) {
     NOTREACHED() << "Model was not part of static model list";
     // Use default
-    model_match = kAllModels.find(features::kAIModelsDefaultKey.Get());
-    const auto is_found = model_match != kAllModels.end();
-    DCHECK(is_found);
-    if (!is_found) {
-      model_match = kAllModels.begin();
+    model = GetModel(features::kAIModelsDefaultKey.Get());
+    DCHECK(model);
+    if (!model) {
+      // Use first if given bad default value
+      model = &GetAllModels().at(0);
     }
   }
 
-  auto model = model_match->second;
   // Model's key might not be the same as what we asked for (e.g. if the model
   // no longer exists).
-  model_key_ = model.key;
+  model_key_ = model->key;
 
   // Engine enum on model to decide which one
-  if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
+  if (model->engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        model, url_loader_factory_, credential_manager_.get());
+        *model, url_loader_factory_, credential_manager_.get());
   } else {
     VLOG(1) << "Started AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        model, url_loader_factory_, credential_manager_.get());
+        *model, url_loader_factory_, credential_manager_.get());
   }
 
   // Pending requests have been deleted along with the model engine
@@ -723,7 +721,7 @@ bool ConversationDriver::IsPageContentsTruncated() {
     return false;
   }
   return (static_cast<uint32_t>(article_text_.length()) >
-          GetCurrentModel().max_page_content_length);
+          GetCurrentModel()->max_page_content_length);
 }
 
 void ConversationDriver::SubmitSummarizationRequest() {
@@ -845,7 +843,7 @@ void ConversationDriver::RateMessage(
     base::span<const mojom::ConversationTurn> history_slice =
         base::make_span(history).first(current_turn_id);
 
-    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel().name,
+    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel()->name,
                               std::move(on_complete));
 
     return;
