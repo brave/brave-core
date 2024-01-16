@@ -71,6 +71,7 @@ std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign) {
+  CHECK(url.is_valid());
   auto [header_names, signature_string] =
       CreateSignatureString(headers, url, method, headers_to_sign);
 
