@@ -354,11 +354,8 @@ void BraveRewardsActionView::OnNotificationDeleted(
 void BraveRewardsActionView::OnButtonPressed() {
   brave_rewards::RewardsService* rewards_service = GetRewardsService();
   if (rewards_service != nullptr) {
-    auto* prefs = browser_->profile()->GetPrefs();
-    if (!prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
-      rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
-          ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
-    }
+    rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+        ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
   }
   // If we are opening the Rewards panel, use `RewardsPanelCoordinator` to open
   // it so that the panel arguments will be correctly set.

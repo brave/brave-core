@@ -30,8 +30,15 @@ inline constexpr char kAdTypesEnabledHistogramName[] =
     "Brave.Rewards.AdTypesEnabled";
 inline constexpr char kMobileConversionHistogramName[] =
     "Brave.Rewards.MobileConversion";
-inline constexpr char kMobilePanelCountHistogramName[] =
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kPanelCountHistogramName[] =
     "Brave.Rewards.MobilePanelCount";
+#else
+inline constexpr char kPanelCountHistogramName[] =
+    "Brave.Rewards.DesktopPanelCount";
+#endif
+inline constexpr char kPageViewCountHistogramName[] =
+    "Brave.Rewards.PageViewCount";
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -52,6 +59,8 @@ void RecordTipsSent(size_t tip_count);
 void RecordAutoContributionsState(bool ac_enabled);
 
 void RecordNoWalletCreatedForAllMetrics();
+
+void RecordRewardsPageViews(PrefService* prefs, bool new_view);
 
 enum class AdTypesEnabled {
   kNone,
@@ -80,19 +89,19 @@ class ConversionMonitor {
   void RecordRewardsEnable();
 
  private:
-#if BUILDFLAG(IS_ANDROID)
   void ReportPeriodicMetrics();
+  void ReportPanelTriggerCount();
+#if BUILDFLAG(IS_ANDROID)
   void OnMobileTriggerTimer();
-  void ReportMobilePanelTriggerCount();
 
-  raw_ptr<PrefService> prefs_;
-  WeeklyStorage mobile_panel_trigger_count_;
   base::OneShotTimer mobile_trigger_timer_;
-  base::WallClockTimer daily_timer_;
 #else
   std::optional<PanelTrigger> last_trigger_;
   base::Time last_trigger_time_;
 #endif
+  raw_ptr<PrefService> prefs_;
+  base::WallClockTimer daily_timer_;
+  WeeklyStorage panel_trigger_count_;
 };
 
 }  // namespace p3a

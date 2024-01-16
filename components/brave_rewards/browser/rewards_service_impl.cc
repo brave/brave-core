@@ -2151,6 +2151,10 @@ p3a::ConversionMonitor* RewardsServiceImpl::GetP3AConversionMonitor() {
   return &conversion_monitor_;
 }
 
+void RewardsServiceImpl::OnRewardsPageShown() {
+  p3a::RecordRewardsPageViews(profile_->GetPrefs(), true);
+}
+
 void RewardsServiceImpl::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {
   for (auto& observer : observers_) {
@@ -2306,6 +2310,8 @@ void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
   if (!Connected()) {
     return;
   }
+
+  p3a::RecordRewardsPageViews(profile_->GetPrefs(), false);
 
   GetExternalWallet(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,

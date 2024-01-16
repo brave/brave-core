@@ -119,6 +119,11 @@ inline constexpr char kWalletZebPay[] = "brave.rewards.wallets.zebpay";
 inline constexpr char kWalletCreationEnvironment[] =
     "brave.rewards.wallet_creation_environment";
 
+inline constexpr char kRewardsPageViewCount[] =
+    "brave.rewards.p3a_page_view_count";
+inline constexpr char kRewardsDesktopPanelViewCount[] =
+    "brave.rewards.p3a_desktop_panel_view_count";
+
 // deprecated p3a prefs
 inline constexpr char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
 inline constexpr char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";

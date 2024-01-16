@@ -186,7 +186,10 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
-  p3a::ConversionMonitor conversion_monitor(g_browser_process->local_state());
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(prefs::kEnabled, false);
+
+  p3a::ConversionMonitor conversion_monitor(prefs);
 
   histogram_tester_->ExpectTotalCount(p3a::kEnabledSourceHistogramName, 0);
 
@@ -195,10 +198,12 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
   histogram_tester_->ExpectBucketCount(p3a::kToolbarButtonTriggerHistogramName,
                                        1, 1);
 
+  prefs->SetBoolean(prefs::kEnabled, true);
   conversion_monitor.RecordRewardsEnable();
 
   histogram_tester_->ExpectBucketCount(p3a::kEnabledSourceHistogramName, 1, 1);
 
+  prefs->SetBoolean(prefs::kEnabled, false);
   conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kNTP);
 
   histogram_tester_->ExpectBucketCount(p3a::kToolbarButtonTriggerHistogramName,
