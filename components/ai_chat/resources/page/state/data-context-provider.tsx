@@ -70,7 +70,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
 
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.access === mojom.ModelAccess.PREMIUM))
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -128,9 +128,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCanShowPremiumPrompt(false)
   }
 
-  const switchToDefaultModel = () => {
+  const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => !m.isPremium)
+    const nonPremium = allModels.find(m => [mojom.ModelAccess.BASIC, mojom.ModelAccess.BASIC_AND_PREMIUM].includes(m.access))
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
@@ -297,7 +297,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     setCurrentModel,
-    switchToDefaultModel,
+    switchToBasicModel,
     goPremium,
     managePremium,
     generateSuggestedQuestions,

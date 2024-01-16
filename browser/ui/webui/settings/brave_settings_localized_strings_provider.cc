@@ -76,8 +76,8 @@ const char16_t kEnableNftDiscoveryLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"NFT-Discovery";
 
-void BraveAddCommonStrings(content::WebUIDataSource* html_source,
-                           Profile* profile) {
+void BraveAddCommonStrings(content::WebUIDataSource *html_source,
+                           Profile *profile) {
   webui::LocalizedString localized_strings[] = {
     {"importExtensions", IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX},
     {"importPayments", IDS_SETTINGS_IMPORT_PAYMENTS_CHECKBOX},
@@ -194,7 +194,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC},
     {"appearanceSettingsSidebarDisabledDesc",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
-#endif  // defined(TOOLKIT_VIEWS)
+#endif // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
     {"showBraveVPNButtonSubLabel", IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL},
@@ -394,7 +394,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveLeoAssistantModelSelectionLabel",
      IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
     {"braveLeoModelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
-    {"braveLeoModelSubtitle-chat-default", IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE},
+    {"braveLeoModelSubtitle-chat-basic", IDS_CHAT_UI_CHAT_BASIC_SUBTITLE},
     {"braveLeoModelSubtitle-chat-leo-expanded",
      IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
     {"braveLeoModelSubtitle-chat-claude-instant",
@@ -743,15 +743,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
                              kBraveUIRewardsURL));
-}  // NOLINT(readability/fn_size)
+} // NOLINT(readability/fn_size)
 
-void BraveAddResources(content::WebUIDataSource* html_source,
-                       Profile* profile) {
+void BraveAddResources(content::WebUIDataSource *html_source,
+                       Profile *profile) {
   BraveSettingsUI::AddResources(html_source, profile);
 }
 
-void BraveAddAboutStrings(content::WebUIDataSource* html_source,
-                          Profile* profile) {
+void BraveAddAboutStrings(content::WebUIDataSource *html_source,
+                          Profile *profile) {
   std::u16string license = l10n_util::GetStringFUTF16(
       IDS_BRAVE_VERSION_UI_LICENSE, kBraveLicenseUrl,
       base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
@@ -762,17 +762,17 @@ void BraveAddAboutStrings(content::WebUIDataSource* html_source,
   html_source->AddString("aboutProductLicense", license);
 }
 
-void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
+void BraveAddSyncStrings(content::WebUIDataSource *html_source) {
   std::u16string passphraseDecryptionErrorMessage = l10n_util::GetStringFUTF16(
       IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE, kBraveSyncGuideUrl);
   html_source->AddString("braveSyncPassphraseDecryptionErrorMessage",
                          passphraseDecryptionErrorMessage);
 }
 
-}  // namespace
+} // namespace
 
-void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
-                              Profile* profile) {
+void BraveAddLocalizedStrings(content::WebUIDataSource *html_source,
+                              Profile *profile) {
   BraveAddCommonStrings(html_source, profile);
   BraveAddResources(html_source, profile);
   BraveAddAboutStrings(html_source, profile);
@@ -942,4 +942,4 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 #endif
 }
 
-}  // namespace settings
+} // namespace settings
