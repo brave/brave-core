@@ -29,6 +29,7 @@
 -All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
 -All/HighEfficiencyBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/ManagedUserProfileNoticeHandleProceedTest.HandleProceed/*
+-All/MemorySaverBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentViewPre3pcdTest.*
@@ -41,6 +42,7 @@
 -ApcScrimManagerImplTest.RestoresTheOriginalHiddenStateOnWebcontentsVisibibleTransition
 -ApcScrimManagerImplTest.ShutDownDisablesAndHidesScrim
 -ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
+-AudioStreamCoordinatorTest.ConnectToAudioCaptuerAndReceiveBuses
 -BatterySaverButtonNoExperimentsAvailableTest.*
 -BatterySaverButtonTest.*
 -BookmarkBubbleViewShoppingCollectionTest.*
@@ -52,7 +54,7 @@
 -BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -CameraCoordinatorTest.ConnectToDifferentDevice
--CameraCoordinatorTest.RelevantVideoCaptureDeviceInfoExtraction
+-CameraCoordinatorTest.RelevantVideoCaptureDeviceInfoExtraction*
 -CameraCoordinatorTest.TryConnectToSameDevice
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
 -ChromeComposeClientTest.*
@@ -111,7 +113,14 @@
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
+-MediaViewControllerBaseTest.OnDeviceListChanged_*
 -MediaViewControllerBaseTest.UpdateComboboxEnabledStateTest
+-MemorySaverBubbleViewMemorySavingsImprovementsTest.*
+-MemorySaverBubbleViewTest.*
+-MemorySaverChipViewMemorySavingsImprovementsTest.*
+-MemorySaverChipViewTest.Should*
+-MemorySaverChipViewWithPerformanceSidePanelTest.OpensSidePanel
+-MicCoordinatorTest.*
 -NewTabPageFeaturePromoHelperTest.*
 -OverscrollPrefManagerTest.PrefChange
 -PageCaptureApiUnitTest.PageNavigationDuringSaveAsMHTML
@@ -136,6 +145,7 @@
 -ProfileTokenNavigationThrottleTest.*
 -ProfileTokenWebSigninInterceptorTest.*
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
+-SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Metrics_*
 -SaveCvcBubbleLoggingTest.Metrics_*
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
 -SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
@@ -155,7 +165,8 @@
 
 # These tests crash due to unregistered pref
 # brave.default_search_provider_by_extension
--SearchEngineChoiceServiceTest.NotifyChoiceMade
+-KeywordEditorControllerManagedDSPTest.*
+-SearchEngineChoiceDialogServiceTest.NotifyChoiceMade
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/Default
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/WithSearchEngineChoiceEnabled
 -SearchEnginesHandlerParametrizedTest.SettingTheDefaultSearchEngineRecordsHistogram/Default
@@ -333,6 +344,7 @@
 -StorageAccessGrantPermissionContextAPIDisabledTest.PermissionBlocked*
 -StorageAccessGrantPermissionContextAPIDisabledTest.PermissionStatusBlocked*
 -StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS*
+-StorageAccessGrantPermissionContextWithPromptsTest.*
 
 # These tests fail a CalledOnValidSequence check when calling
 # TorProfileServiceFactory::IsTorDisabled
