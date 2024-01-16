@@ -89,7 +89,6 @@ import {
 // Styled Components
 import { BuySellBridgeButton, StyledWrapper, ButtonRow } from './style'
 import { Row, Column } from '../../../shared/style'
-import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
   TokenDetailsModal //
 } from './components/token-details-modal/token-details-modal'
@@ -126,6 +125,7 @@ export const PortfolioFungibleAsset = () => {
   const { assetId } = useParams<{
     assetId?: string
   }>()
+  const isRewardsToken = assetId ? isRewardsAssetId(assetId) : false
 
   // redux
   const dispatch = useDispatch()
@@ -140,10 +140,9 @@ export const PortfolioFungibleAsset = () => {
   const {
     data: { rewardsToken } = emptyRewardsInfo,
     isLoading: isLoadingRewards
-  } = useGetRewardsInfoQuery()
+  } = useGetRewardsInfoQuery(isRewardsToken ? undefined : skipToken)
 
   // params
-  const isRewardsToken = assetId ? isRewardsAssetId(assetId) : false
   const selectedAssetFromParams = React.useMemo(() => {
     if (isRewardsToken) {
       return rewardsToken
@@ -159,7 +158,7 @@ export const PortfolioFungibleAsset = () => {
   )
 
   const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
-    selectedAssetFromParams
+    selectedAssetFromParams && !isRewardsToken
       ? {
           accountId: null,
           chainId: selectedAssetFromParams.chainId,
@@ -188,13 +187,21 @@ export const PortfolioFungibleAsset = () => {
       : skipToken
   )
 
+  const tokenPriceIds = React.useMemo(
+    () =>
+      selectedAssetFromParams
+        ? [getPriceIdForToken(selectedAssetFromParams)]
+        : [],
+    [selectedAssetFromParams]
+  )
+
   const {
     data: selectedAssetPriceHistory,
     isFetching: isFetchingPortfolioPriceHistory
   } = useGetPriceHistoryQuery(
     selectedAssetFromParams && defaultFiat
       ? {
-          tokenParam: getPriceIdForToken(selectedAssetFromParams),
+          tokenParam: tokenPriceIds[0],
           timeFrame: selectedTimeline,
           vsAsset: defaultFiat
         }
@@ -233,14 +240,6 @@ export const PortfolioFungibleAsset = () => {
   // memos / computed
   const isLoadingGraphData =
     !selectedAssetFromParams || isFetchingPortfolioPriceHistory
-
-  const tokenPriceIds = React.useMemo(
-    () =>
-      selectedAssetFromParams
-        ? [getPriceIdForToken(selectedAssetFromParams)]
-        : [],
-    [selectedAssetFromParams]
-  )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && defaultFiat
@@ -412,14 +411,8 @@ export const PortfolioFungibleAsset = () => {
     )
   }, [])
 
-  // token list needs to load before we can find an asset to select from the url
-  // params
-  if (isLoadingTokens || isLoadingRewards) {
-    return <Skeleton />
-  }
-
   // asset not found
-  if (!selectedAssetFromParams) {
+  if (!selectedAssetFromParams && !isLoadingRewards && !isLoadingTokens) {
     return <Redirect to={WalletRoutes.PortfolioAssets} />
   }
 
