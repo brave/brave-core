@@ -29,10 +29,8 @@ std::pair<std::string, std::string> GetDigestHeader(
   return std::make_pair(kDigest, value);
 }
 
-std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
-    const std::string& service_key,
+std::pair<std::string, std::string> CreateSignatureString(
     const std::vector<std::pair<std::string, std::string>>& headers) {
-  // Create the signature string from the headers.
   std::string header_names;
   std::string signature_string;
   for (auto& [key, value] : headers) {
@@ -43,6 +41,13 @@ std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     header_names += key;
     signature_string += key + ": " + value;
   }
+  return {header_names, signature_string};
+}
+
+std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
+    const std::string& service_key,
+    const std::vector<std::pair<std::string, std::string>>& headers) {
+  auto [header_names, signature_string] = CreateSignatureString(headers);
 
   // Create the signature using the service_key.
   crypto::HMAC hmac(crypto::HMAC::SHA256);
@@ -61,13 +66,11 @@ std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
       std::string(signature_digest.begin(), signature_digest.end()),
       &signature_digest_base64);
 
-  const std::string value =
-      base::StrCat({"Signature "
-                    "keyId=",
-                    BUILDFLAG(KEY_ID),
-                    ",algorithm=\"hs2019\",headers="
-                    "\"digest\",signature=",
-                    signature_digest_base64});
+  const std::string value = base::StrCat(
+      {"Signature "
+       "keyId=\"",
+       BUILDFLAG(KEY_ID), "\",algorithm=\"hs2019\",headers=\"", header_names,
+       "\",signature=\"", signature_digest_base64, "\""});
 
   return std::make_pair(kAuthorization, value);
 }

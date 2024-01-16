@@ -38,6 +38,8 @@ source_set("unit_tests") {
 
   deps = [
     ":brave_service_keys",
+    ":buildflags",
+    "//base",
     "//testing/gtest",
   ]
 }
