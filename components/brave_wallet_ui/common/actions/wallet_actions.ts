@@ -31,7 +31,6 @@ export const {
   setSelectedAssetFilterItem,
   setSelectedGroupAssetsByItem,
   setSelectedNetworkFilter,
-  setUserAssetVisible,
   setVisibleTokensInfo,
   unlocked,
   updateUserAsset,

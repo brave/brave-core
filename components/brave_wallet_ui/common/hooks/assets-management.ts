@@ -17,7 +17,8 @@ import { getAssetIdKey, isTokenIdRemoved } from '../../utils/asset-utils'
 import {
   useGetUserTokensRegistryQuery,
   useHideOrDeleteTokenMutation,
-  useRestoreHiddenTokenMutation
+  useRestoreHiddenTokenMutation,
+  useUpdateUserAssetVisibleMutation
 } from '../slices/api.slice'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
@@ -69,6 +70,7 @@ export function useAssetManagement() {
   // mutations
   const [hideOrDeleteToken] = useHideOrDeleteTokenMutation()
   const [restoreHiddenToken] = useRestoreHiddenTokenMutation()
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   const addNftToDeletedNftsList = React.useCallback(
     async (token: BraveWallet.BlockchainToken) => {
@@ -150,18 +152,21 @@ export function useAssetManagement() {
         ),
         10,
         async (token) =>
-          await dispatch(
-            WalletActions.setUserAssetVisible({
-              token,
-              isVisible: token.visible
-            })
-          )
+          await updateUserAssetVisible({
+            token,
+            isVisible: token.visible
+          }).unwrap()
       )
 
       // Refresh Balances, Prices and Price History when done.
       dispatch(WalletActions.refreshBalancesAndPriceHistory())
     },
-    [userVisibleTokensInfo, userTokensRegistry, hideOrDeleteToken]
+    [
+      userVisibleTokensInfo,
+      userTokensRegistry,
+      hideOrDeleteToken,
+      updateUserAssetVisible
+    ]
   )
 
   return {

@@ -209,7 +209,7 @@ describe('useAssetManagement hook', () => {
     await act(async () => rerenderTokens())
     expect(store.dispatch).toHaveBeenCalledTimes(2)
     const { userVisibleTokensInfo } = tokensResult.current
-    expect(userVisibleTokensInfo).toHaveLength(5)
+    expect(userVisibleTokensInfo).toHaveLength(3)
 
     // clone assets in list so we can modify them
     const newList = userVisibleTokensInfo.map((t) => ({ ...t }))
@@ -221,13 +221,11 @@ describe('useAssetManagement hook', () => {
 
     // update assets in store
     await act(async () => await result.current.onUpdateVisibleAssets(newList))
+    await act(async () => await act(async () => rerenderTokens()))
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.setUserAssetVisible({
-        token: changedAsset,
-        isVisible: false
-      })
-    )
+    const updatedTokenResults = tokensResult.current.userVisibleTokensInfo
+
+    expect(updatedTokenResults).toHaveLength(2)
 
     expect(store.dispatch).toHaveBeenCalledWith(
       WalletActions.refreshBalancesAndPriceHistory()
@@ -253,7 +251,7 @@ describe('useAssetManagement hook', () => {
     await act(async () => rerenderTokens())
     expect(store.dispatch).toHaveBeenCalledTimes(2)
     const { userVisibleTokensInfo } = tokensResult.current
-    expect(userVisibleTokensInfo).toHaveLength(5)
+    expect(userVisibleTokensInfo).toHaveLength(3)
 
     // clone assets in list so we can modify them
     const newList = userVisibleTokensInfo.map((t) => ({ ...t }))
@@ -265,12 +263,10 @@ describe('useAssetManagement hook', () => {
 
     // update
     await act(async () => await result.current.onUpdateVisibleAssets(newList))
-    expect(store.dispatch).toHaveBeenCalledWith(
-      WalletActions.setUserAssetVisible({
-        token: changedAsset,
-        isVisible: changedAsset.visible
-      })
-    )
+    await act(async () => await act(async () => rerenderTokens()))
+    const updatedTokenResults = tokensResult.current.userVisibleTokensInfo
+
+    expect(updatedTokenResults).toHaveLength(2)
     expect(store.dispatch).toHaveBeenCalledWith(
       WalletActions.refreshBalancesAndPriceHistory()
     )

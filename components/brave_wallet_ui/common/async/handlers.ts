@@ -5,10 +5,7 @@
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import {
-  SetUserAssetVisiblePayloadType,
-  UpdateUsetAssetType
-} from '../constants/action_types'
+import { UpdateUsetAssetType } from '../constants/action_types'
 import { BraveWallet, WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
@@ -221,24 +218,6 @@ handler.on(
   async (store: Store, payload: BraveWallet.BlockchainToken) => {
     const { braveWalletService } = getAPIProxy()
     await braveWalletService.removeUserAsset(payload)
-  }
-)
-
-handler.on(
-  WalletActions.setUserAssetVisible.type,
-  async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
-    const { braveWalletService } = getAPIProxy()
-
-    const { success } = await braveWalletService.setUserAssetVisible(
-      payload.token,
-      payload.isVisible
-    )
-
-    if (!success) {
-      // token is probably not in the core-side assets list
-      // try adding it to the user tokens list
-      store.dispatch(WalletActions.addUserAsset(payload.token))
-    }
   }
 )
 
