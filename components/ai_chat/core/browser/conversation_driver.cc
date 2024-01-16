@@ -842,8 +842,10 @@ void ConversationDriver::RateMessage(
     base::span<const mojom::ConversationTurn> history_slice =
         base::make_span(history).first(current_turn_id);
 
-    feedback_api_->SendRating(is_liked, history_slice, GetCurrentModel().name,
-                              std::move(on_complete));
+    bool is_premium = last_premium_status_ != mojom::PremiumStatus::Inactive;
+
+    feedback_api_->SendRating(is_liked, is_premium, history_slice,
+                              GetCurrentModel().name, std::move(on_complete));
 
     return;
   }
