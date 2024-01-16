@@ -277,6 +277,15 @@ void RewardsEngineImpl::RestorePublishers(RestorePublishersCallback callback) {
 }
 
 void RewardsEngineImpl::FetchPromotions(FetchPromotionsCallback callback) {
+  // The promotion endpoint is no longer supported. The endpoint implementation,
+  // the interface method, and all calling code will be removed when the
+  // "grandfathered" vBAT state is removed from the codebase. Browser tests that
+  // assume vBAT contributions will also need to be modified.
+  if (!is_testing) {
+    std::move(callback).Run(mojom::Result::OK, {});
+    return;
+  }
+
   WhenReady([this, callback = std::move(callback)]() mutable {
     promotion()->Fetch(std::move(callback));
   });
