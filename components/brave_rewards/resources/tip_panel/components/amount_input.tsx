@@ -14,7 +14,7 @@ import * as style from './amount_input.style'
 
 const minimumAmount = 0
 const maximumAmount = 100
-const amountStep = 0.25
+const amountStep = 0.002
 
 function quantizeAmount (amount: number) {
   const value = amountStep > 0
