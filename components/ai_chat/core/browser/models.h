@@ -18,6 +18,9 @@ namespace ai_chat {
 // All models that the user can choose for chat conversations, in UI display
 // order.
 extern const std::vector<ai_chat::mojom::Model>& GetAllModels();
+
+// Get model by key. If there is no matching model for the key, NULL is
+// returned.
 extern const ai_chat::mojom::Model* GetModel(std::string_view key);
 
 }  // namespace ai_chat
