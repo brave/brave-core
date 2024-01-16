@@ -6,16 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_OVERLAY_WINDOW_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_OVERLAY_WINDOW_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 namespace media_session {
 struct MediaPosition;
 }  // namespace media_session
 
-#define SetPlaybackState                                                     \
-  SetMediaPosition(                                                          \
-      const absl::optional<media_session::MediaPosition>& media_position) {} \
-  virtual void SetSeekerEnabled(bool enabled) {}                             \
+#define SetPlaybackState                                                    \
+  SetMediaPosition(                                                         \
+      const std::optional<media_session::MediaPosition>& media_position) {} \
+  virtual void SetSeekerEnabled(bool enabled) {}                            \
   virtual void SetPlaybackState
 
 #include "src/content/public/browser/overlay_window.h"  // IWYU pragma: export

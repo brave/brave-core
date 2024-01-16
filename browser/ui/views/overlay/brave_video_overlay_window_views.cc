@@ -53,6 +53,8 @@ std::u16string ToString(const media_session::MediaPosition& position) {
 
 class Seeker : public views::Slider, public views::SliderListener {
  public:
+  METADATA_HEADER(Seeker);
+
   static constexpr int kThumbRadius = 6;
   static constexpr int kPreferredHeight = kThumbRadius * 2;
   static constexpr int kLineHeight = 4;
@@ -101,13 +103,11 @@ class Seeker : public views::Slider, public views::SliderListener {
 
   void OnMouseEntered(const ui::MouseEvent& event) override {
     Slider::OnMouseEntered(event);
-    mouse_hovered_ = true;
     thumb_animation_.Show();
   }
 
   void OnMouseExited(const ui::MouseEvent& event) override {
     Slider::OnMouseExited(event);
-    mouse_hovered_ = false;
     if (!ShouldShowThumb()) {
       thumb_animation_.Hide();
     }
@@ -151,15 +151,17 @@ class Seeker : public views::Slider, public views::SliderListener {
   }
 
  private:
-  bool ShouldShowThumb() const { return dragging_ || mouse_hovered_; }
+  bool ShouldShowThumb() const { return dragging_ || IsMouseHovered(); }
 
-  raw_ptr<views::SliderListener> listener_;
+  raw_ptr<views::SliderListener> listener_ = nullptr;
 
   bool dragging_ = false;
-  bool mouse_hovered_ = false;
 
   gfx::SlideAnimation thumb_animation_{this};
 };
+
+BEGIN_METADATA(Seeker, views::Slider)
+END_METADATA
 
 }  // namespace
 
@@ -189,8 +191,7 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
   seeker_ = seeker.get();
 
   // views in |view_holder_| will be added as child of contents view in
-  // VideoOverlayWindowViews::OnRootViewReady(). As a result, the view will
-  // be visible even when
+  // VideoOverlayWindowViews::OnRootViewReady().
   view_holder_.push_back(std::move(seeker));
 }
 
@@ -299,7 +300,7 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
 }
 
 void BraveVideoOverlayWindowViews::SetMediaPosition(
-    const absl::optional<media_session::MediaPosition>& media_position) {
+    const std::optional<media_session::MediaPosition>& media_position) {
   CHECK(timestamp_);
 
   media_position_ = media_position;
@@ -399,8 +400,8 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
   if (media_position_) {
     auto new_time = ToString(*media_position_);
     if (new_time != timestamp_->GetText()) {
-      timestamp_->SetText(ToString(*media_position_));
-      timestamp_->SetSize(timestamp_->GetPreferredSize());
+      timestamp_->SetText(new_time);
+      timestamp_->SizeToPreferredSize();
     }
 
     if (!is_seeking_) {

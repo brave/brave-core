@@ -9,7 +9,7 @@
 // Add a new method for video_picture_in_picture_window_controller_impl
 #define NotifyMediaSessionMetadataChange        \
   NotifyMediaSessionMetadataChange_Unused();    \
-  absl::optional<media_session::MediaPosition>  \
+  std::optional<media_session::MediaPosition>   \
   GetMediaPositionFromNormalPlayerIfPossible(); \
   void NotifyMediaSessionMetadataChange
 

@@ -27,7 +27,7 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   void SetUpViews() override;
   void OnUpdateControlsBounds() override;
   void SetPlaybackState(PlaybackState playback_state) override;
-  void SetMediaPosition(const absl::optional<media_session::MediaPosition>&
+  void SetMediaPosition(const std::optional<media_session::MediaPosition>&
                             media_position) override;
   bool ControlsHitTestContainsPoint(const gfx::Point& point) override;
   void SetSeekerEnabled(bool enabled) override;
@@ -52,13 +52,13 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   // ourselves.
   void UpdateTimestampPeriodically();
 
-  absl::optional<media_session::MediaPosition> media_position_;
+  std::optional<media_session::MediaPosition> media_position_;
   base::RepeatingTimer timestamp_update_timer_;
 
   PlaybackState playback_state_ = PlaybackState::kEndOfVideo;
 
-  raw_ptr<views::Label> timestamp_;
-  raw_ptr<views::Slider> seeker_;
+  raw_ptr<views::Label> timestamp_ = nullptr;
+  raw_ptr<views::Slider> seeker_ = nullptr;
   bool is_seeking_ = false;
   bool was_playing_before_seeking_ = false;
 };
