@@ -56,15 +56,15 @@ TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
             "type: application/json");
 
   // Test vector from
-  // https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-08#section-3.1.2
+  // https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-08#section-3.1.3
   headers = {{"(request-target)", "post /foo"},
              {"host", "example.org"},
              {"date", "Tue, 07 Jun 2014 20:51:35 GMT"},
              {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
              {"content-length", "18"}};
-  result = CreateSignatureString(headers, url, "GET",
-                                 {"(request-target)", "(created)", "host",
-                                  "date", "digest", "content-length"});
+  result = CreateSignatureString(
+      headers, url, "GET",
+      {"(request-target)", "host", "date", "digest", "content-length"});
   EXPECT_EQ(result.first, "(request-target) host date digest content-length");
   EXPECT_EQ(result.second,
             "(request-target): post /foo\n"
@@ -78,9 +78,9 @@ TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
              {"date", "Tue, 07 Jun 2014 20:51:35 GMT"},
              {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
              {"content-length", "18"}};
-  result = CreateSignatureString(headers, url, "POST",
-                                 {"(request-target)", "(created)", "host",
-                                  "date", "digest", "content-length"});
+  result = CreateSignatureString(
+      headers, url, "POST",
+      {"(request-target)", "host", "date", "digest", "content-length"});
   EXPECT_EQ(result.first, "(request-target) host date digest content-length");
   EXPECT_EQ(result.second,
             "(request-target): post /foo\n"
