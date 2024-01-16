@@ -2,7 +2,6 @@ use html5ever::driver::{ParseOpts, Parser};
 use html5ever::tendril::{StrTendril, TendrilSink};
 use kuchiki::Sink;
 use lol_html::OutputSink;
-use std::collections::HashMap;
 use url::Url;
 
 use super::speedreader::*;
@@ -20,6 +19,7 @@ where
     font_family: Option<String>,
     font_size: Option<String>,
     column_width: Option<String>,
+    debug_view: bool,
     parser: Option<Parser<Sink>>,
     url: Url,
     output_sink: O,
@@ -44,6 +44,10 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
 
     fn set_column_width(&mut self, width: &str) {
         self.column_width = Some(String::from(width));
+    }
+
+    fn set_debug_view(&mut self, debug_view: bool) {
+        self.debug_view = debug_view;
     }
 
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
@@ -75,7 +79,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                         self.font_family.clone(),
                         self.font_size.clone(),
                         self.column_width.clone(),
-                        &HashMap::new(),
+                        self.debug_view,
                     )?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
@@ -105,6 +109,7 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
                 font_family: None,
                 font_size: None,
                 column_width: None,
+                debug_view: false,
                 parser: Some(parser),
                 url,
                 output_sink,

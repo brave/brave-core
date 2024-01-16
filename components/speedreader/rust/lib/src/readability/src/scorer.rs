@@ -11,7 +11,7 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use std::str::FromStr;
 use url::Url;
 
@@ -881,21 +881,22 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
 }
 
 /// decides whether the handle node is useless (should be dropped) or not.
-pub fn clean<S: ::std::hash::BuildHasher>(
+pub fn clean(
     mut dom: &mut Sink,
     handle: Handle,
     title_tokens: &HashSet<&str>,
     url: &Url,
-    features: &HashMap<String, u32, S>,
-) -> bool {
+    is_root: bool,
+    debug_view: bool,
+) -> Option<String> {
     let useless = match handle.data() {
-        Document(_) => false,
-        DocumentFragment => false,
-        Doctype(_) => false,
-        Text(_) => false,
-        Comment(_) => true,
+        Document(_) => None,
+        DocumentFragment => None,
+        Doctype(_) => None,
+        Text(_) => None,
+        Comment(_) => Some(format!("{}", line!())),
         Element(ref data) => {
-            let delete = match data.name.local {
+            let delete = (|| match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -911,28 +912,27 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("select")
                 | local_name!("button")
                 | local_name!("svg")
-                | local_name!("aside") => true,
+                | local_name!("aside") => Some(format!("{}", line!())),
                 local_name!("source") => {
                     if let Some(parent) = handle.parent().as_ref() {
                         if dom::get_tag_name(&parent) == Some(&local_name!("picture")) {
-                            return true;
+                            return Some(format!("{}", line!()))
                         }
                     }
-                    false
-                }                
+                    None
+                }
                 local_name!("h1") | local_name!("h2") => {
                     // Delete remaining headings that may be duplicates of the title.
                     let mut heading = String::new();
                     dom::extract_text(&handle, &mut heading, true);
                     if heading.is_empty() {
-                        return true;
-                    }
-                    if !title_tokens.is_empty() {
+                        return Some(format!("{}", line!()))
+                    } else if !title_tokens.is_empty() {
                         let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
                         let distance = title_tokens.difference(&heading_tokens).count() as f32;
                         let similarity = 1.0 - distance / title_tokens.len() as f32;
                         if similarity >= 0.75 {
-                            return true;
+                            return Some(format!("{}, {}", line!(), similarity))
                         }
                     }
                     if data.name.local == local_name!("h1") {
@@ -942,11 +942,15 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         let h2 = dom.create_element(name, vec![], ElementFlags::default());
                         dom.reparent_children(&handle, &h2);
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
-                        true
+                        return Some(format!("{}", line!()))
                     } else {
                         // If <h2> has class attribute with a negative pattern (ad, hidden, etc.) remove it.
-                        get_class_weight(&handle) < -20.0
+                        let weigth = get_class_weight(&handle);
+                        if weigth < -20.0 {
+                            return Some(format!("{}, {}", line!(), weigth))
+                        }
                     }
+                    None
                 }
                 local_name!("form")
                 | local_name!("table")
@@ -956,10 +960,10 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 local_name!("br") => {
                     if let Some(sibling) = handle.next_sibling() {
                         if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
-                            return true;
+                            return Some(format!("{}", line!()))
                         }
                     }
-                    false
+                    None
                 }
                 local_name!("img") => {
                     let mask = img_loaded_mask(data);
@@ -967,17 +971,18 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     // but they are not in the mask. Means they are invalid.
                     let (mask, lazy_srcs) = try_lazy_img(data, mask);
                     if mask == ImageLoadedMask::NONE {
-                        true
+                        Some(format!("{}", line!()))
                     } else {
                         for src in lazy_srcs {
                             dom::set_attr(src.local.as_ref(), src.value, handle.clone(), true);
                         }
-                        false
+                        None
                     }
                 }
-                _ => false,
-            };
-            if !delete {
+                _ => None,
+            })();
+
+            if delete.is_none() {
                 // Delete style, align, and other elements that will conflict with the Speedreader
                 // stylesheet.
                 let mut attrs = data.attributes.borrow_mut();
@@ -990,32 +995,49 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         ProcessingInstruction(_) => unreachable!(),
     };
 
-    if useless {
-        return true;
+    if !is_root && useless.is_some() {
+        return useless;
     }
+
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        if clean(&mut dom, child.clone(), title_tokens, url, features) {
-            useless_nodes.push(child.clone());
+        let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, false, debug_view);
+        if let Some(reason) = delete_reason {
+            useless_nodes.push((child.clone(), reason));
         }
     }
-    for node in useless_nodes.iter() {
-        dom.remove_from_parent(node);
+    for useless_node in useless_nodes.iter() {
+        let (node, delete_reason) = useless_node;
+        if debug_view && (node.children().count() > 0) {
+            let cut = dom::create_element_simple(dom, "details", "debug-view-useless-node", None);
+            let summary = dom::create_element_simple(
+                dom,
+                "summary",
+                "debug-view-useless-node",
+                Some(format!("reason {}", delete_reason).as_str()),
+            );
+            dom.append(&cut, NodeOrText::AppendNode(summary));
+            dom.reparent_children(&node, &cut);
+            dom.append_before_sibling(&node, NodeOrText::AppendNode(cut));
+        }
+
+        dom.remove_from_parent(&node);
     }
     if dom::is_empty(&handle) {
-        return true;
+        return Some(format!("empty node {}", line!()));
     }
-    false
+
+    return useless;
 }
 
 /// Using content score and other heuristics, determine if the handle should be marked for
 /// deletion.
-pub fn is_useless(handle: &Handle) -> bool {
+pub fn is_useless(handle: &Handle) -> Option<String> {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
     let score = handle.as_element().map(|e| e.score.get()).unwrap_or(0.0);
     if weight + score < 0.0 {
-        return true;
+        return Some(format!("{}: {} {}", line!(), weight, score));
     }
 
     let content_length = dom::text_len(&handle);
@@ -1037,12 +1059,12 @@ pub fn is_useless(handle: &Handle) -> bool {
 
     let input_count = dom::count_nodes(&handle, &local_name!("input"));
     if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
-        return true;
+        return Some(format!("{}: {} {}", line!(), input_count, para_count));
     }
 
     let link_density = get_link_density(handle);
     if weight >= 25.0 && link_density > 0.5 {
-        return true;
+        return Some(format!("{}, {} {}", line!(), weight, link_density));
     }
 
     let img_count = dom::count_nodes(&handle, &local_name!("img"));
@@ -1050,29 +1072,29 @@ pub fn is_useless(handle: &Handle) -> bool {
     if !is_list {
         let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
         if li_count > para_count as i32 {
-            return true;
+            return Some(format!("{}, {} {}", line!(), li_count, para_count));
         }
 
         if weight < 25.0 && link_density > 0.2 {
-            return true;
+            return Some(format!("{}, {} {}", line!(), weight, link_density));
         }
 
         let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
         if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
-            return true;
+            return Some(format!("{}, {} {} {}", line!(), heading_density, content_length, img_count));
         }
     }
 
     let svg_count = dom::count_nodes(&handle, &local_name!("svg"));
     if svg_count > 1 && content_length < 75 {
-        return true;
+        return Some(format!("{}, {} {} {}", line!(), is_list, svg_count, content_length));
     }
 
     let embed_count = dom::count_nodes(&handle, &local_name!("embed"));
     if (embed_count == 1 && content_length < 75) || embed_count > 1 {
-        return true;
+        return Some(format!("{}, {} {} {}", line!(), is_list, embed_count, content_length));
     }
-    false
+    return None;
 }
 
 #[cfg(test)]

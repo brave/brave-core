@@ -84,6 +84,10 @@ void Rewriter::SetColumnWidth(const std::string& column_width) {
   }
 }
 
+void Rewriter::SetDebugView(bool debug_view) {
+  rewriter_set_debug_view(raw_, debug_view);
+}
+
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
     int ret = rewriter_write(raw_, chunk, chunk_len);

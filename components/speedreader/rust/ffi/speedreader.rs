@@ -128,6 +128,12 @@ pub extern "C" fn rewriter_set_column_width(rewriter: *mut CRewriter, width: *co
     rewriter.set_column_width(the_width);
 }
 
+#[no_mangle]
+pub extern "C" fn rewriter_set_debug_view(rewriter: *mut CRewriter, debug_view: bool) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    rewriter.set_debug_view(debug_view);
+}
+
 /// Write a new chunk of data (byte array) to the rewriter instance.
 #[no_mangle]
 pub extern "C" fn rewriter_write(

@@ -565,6 +565,10 @@ iframe {
   }
 }
 
+.debug-view-useless-node {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
 html,
 html[data-theme='light'] {
   position: relative !important;
@@ -828,19 +832,19 @@ html[data-column-width='wide'] {
   cursor: pointer;
   width: 2rem;
   height: 1rem;
-  left: 11px;
-  top: 11px;
+  left: 0.6875rem;
+  top: 0.6875rem;
 }
 
 .tts-circle {
   border: var(--tts-button-border-color) 1px solid;
   border-radius: 1000px;
   position: absolute;
-  width: 36px;
+  width: 2.25rem;
   left: 0;
   top: 0;
   display: inline-block;
-  height: 36px;
+  height: 2.25rem;
   cursor: pointer;
 }
 

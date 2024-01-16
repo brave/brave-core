@@ -180,6 +180,7 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
   rewriter->SetFontFamily(font_family);
   rewriter->SetFontSize(font_size);
   rewriter->SetColumnWidth(column_width);
+  rewriter->SetDebugView(speedreader::kSpeedreaderDebugView.Get());
   return rewriter;
 }
 

@@ -55,6 +55,7 @@ pub trait SpeedReaderProcessor {
     fn set_font_family(&mut self, font: &str);
     fn set_font_size(&mut self, size: &str);
     fn set_column_width(&mut self, width: &str);
+    fn set_debug_view(&mut self, debug_view: bool);
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError>;
     fn end(&mut self) -> Result<(), SpeedReaderError>;
 }

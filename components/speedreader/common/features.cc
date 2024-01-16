@@ -21,4 +21,7 @@ const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
 const base::FeatureParam<bool> kSpeedreaderTTS{&kSpeedreaderFeature, "tts",
                                                false};
 
+const base::FeatureParam<bool> kSpeedreaderDebugView{&kSpeedreaderFeature,
+                                                     "debug_view", false};
+
 }  // namespace speedreader
