@@ -18,3 +18,11 @@ index c00c41bc2c7fd716589c325722d69316d939ecfe..466011bd9d588f4ba7160418b847bbfb
    }
  
    android_library("base_cached_flags_java") {
+@@ -4519,6 +4521,7 @@ if (is_android) {
+       "android/java/src/org/chromium/base/cached_flags/ValuesOverridden.java",
+       "android/java/src/org/chromium/base/cached_flags/ValuesReturned.java",
+     ]
++    sources += brave_base_cached_flags_java_sources
+   }
+ 
+   android_aidl("process_launcher_aidl") {
