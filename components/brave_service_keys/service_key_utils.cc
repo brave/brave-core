@@ -30,24 +30,34 @@ std::pair<std::string, std::string> GetDigestHeader(
 }
 
 std::pair<std::string, std::string> CreateSignatureString(
-    const std::vector<std::pair<std::string, std::string>>& headers) {
+    const base::flat_map<std::string, std::string>& headers,
+    const std::vector<std::string>& headers_to_sign) {
   std::string header_names;
   std::string signature_string;
-  for (auto& [key, value] : headers) {
-    if (!header_names.empty()) {
-      header_names += " ";
-      signature_string += "\n";
+
+  for (const auto& [key, value] : headers) {
+    // Check if the header is in headers_to_sign
+    if (std::find(headers_to_sign.begin(), headers_to_sign.end(), key) !=
+        headers_to_sign.end()) {
+      if (!header_names.empty()) {
+        header_names += " ";
+        signature_string += "\n";
+      }
+      header_names += key;
+      signature_string += key + ": " + value;
     }
-    header_names += key;
-    signature_string += key + ": " + value;
   }
   return {header_names, signature_string};
 }
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    const std::vector<std::pair<std::string, std::string>>& headers) {
-  auto [header_names, signature_string] = CreateSignatureString(headers);
+    const base::flat_map<std::string, std::string>& headers,
+    const GURL& url,
+    const std::string& method,
+    const std::vector<std::string>& headers_to_sign) {
+  auto [header_names, signature_string] =
+      CreateSignatureString(headers, headers_to_sign);
 
   // Create the signature using the service_key.
   crypto::HMAC hmac(crypto::HMAC::SHA256);

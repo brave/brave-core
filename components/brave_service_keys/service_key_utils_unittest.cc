@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_service_keys/service_key_utils.h"
 
+// #include "base/containers/flat_map.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_service_keys/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,22 +22,29 @@ TEST(BraveServicesUtilsUnittest, GetDigestHeader) {
 }
 
 TEST(BraveServicesUtilsUnittest, CreateSignatureStringTest) {
-  std::vector<std::pair<std::string, std::string>> headers = {
+  base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="}};
 
-  auto result = CreateSignatureString(headers);
+  auto result = CreateSignatureString(headers, {"digest"});
   EXPECT_EQ(result.first, "digest");
   EXPECT_EQ(result.second,
             "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=");
+
+  // CreateSignatureString should only create headers included in
+  // headers_to_sign
+  result = CreateSignatureString(headers, {});
+  EXPECT_EQ(result.first, "");
+  EXPECT_EQ(result.second, "");
 }
 
 TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
   const auto& digest_header = GetDigestHeader("{\"hello\": \"world\"}");
-  std::vector<std::pair<std::string, std::string>> headers;
-  headers.push_back(digest_header);
+  base::flat_map<std::string, std::string> headers;
+  headers[digest_header.first] = digest_header.second;
   const std::string service_key =
       "bacfb4d7e93c6df045f66fa4bf438402b43ba2c9e3ce9b4eef470d24e32378e8";
-  auto result = GetAuthorizationHeader(service_key, headers);
+  auto result = GetAuthorizationHeader(service_key, headers,
+                                       GURL("example.com"), "POST", {"digest"});
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, "authorization");
   EXPECT_EQ(

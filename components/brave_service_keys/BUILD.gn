@@ -30,6 +30,7 @@ static_library("brave_service_keys") {
     ":buildflags",
     "//base",
     "//crypto:crypto",
+    "//url:url",
   ]
 }
 source_set("unit_tests") {

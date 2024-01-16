@@ -157,13 +157,13 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
 
   base::flat_map<std::string, std::string> headers;
   const auto& digest_header = brave_service_keys::GetDigestHeader(request_body);
-  std::vector<std::pair<std::string, std::string>> headers_to_sign = {
-      digest_header};
+  headers.emplace(digest_header.first, digest_header.second);
+  const std::string http_method = "POST";
   auto result = brave_service_keys::GetAuthorizationHeader(
-      BUILDFLAG(SERVICE_KEY_AI_CHAT), headers_to_sign);
+      BUILDFLAG(SERVICE_KEY_AI_CHAT), headers, api_url, http_method,
+      {"digest"});
   if (result) {
     std::pair<std::string, std::string> authorization_header = result.value();
-    headers.emplace(digest_header.first, digest_header.second);
     headers.emplace(authorization_header.first, authorization_header.second);
   }
 
@@ -186,7 +186,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.RequestSSE("POST", api_url, request_body,
+    api_request_helper_.RequestSSE(http_method, api_url, request_body,
                                    "application/json", std::move(on_received),
                                    std::move(on_complete), headers, {});
   } else {
@@ -196,7 +196,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.Request("POST", api_url, request_body,
+    api_request_helper_.Request(http_method, api_url, request_body,
                                 "application/json", std::move(on_complete),
                                 headers, {});
   }

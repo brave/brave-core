@@ -11,16 +11,23 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "url/gurl.h"
+
 namespace brave_service_keys {
 
 std::pair<std::string, std::string> GetDigestHeader(const std::string& payload);
 
 std::pair<std::string, std::string> CreateSignatureString(
-    const std::vector<std::pair<std::string, std::string>>& headers);
+    const base::flat_map<std::string, std::string>& headers,
+    const std::vector<std::string>& headers_to_sign);
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    const std::vector<std::pair<std::string, std::string>>& headers);
+    const base::flat_map<std::string, std::string>& headers,
+    const GURL& url,
+    const std::string& method,
+    const std::vector<std::string>& headers_to_sign);
 
 }  // namespace brave_service_keys
 
