@@ -5,6 +5,9 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 
+#include <string>
+
+#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -38,7 +41,16 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 
 void MigrateProfilePrefs(PrefService* profile_prefs) {
   profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
-  // TODO(petemill): migrate model key from "chat-default" to "chat-basic"
+  // migrate model key from "chat-default" to "chat-basic"
+  static const std::string kDefaultModelBasicFrom = "chat-default";
+  static const std::string kDefaultModelBasicTo = "chat-basic";
+  if (auto* default_model_value =
+          profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
+    if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
+                                         kDefaultModelBasicFrom)) {
+      profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+    }
+  }
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
