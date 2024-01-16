@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_service_keys/buildflags.h"
 #include "crypto/hmac.h"
 #include "crypto/sha2.h"
@@ -30,7 +31,7 @@ std::pair<std::string, std::string> GetDigestHeader(
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    base::span<const std::pair<std::string, std::string>> headers) {
+    const std::vector<std::pair<std::string, std::string>>& headers) {
   // Create the signature string from the headers.
   std::string header_names;
   std::string signature_string;

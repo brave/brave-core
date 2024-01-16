@@ -32,7 +32,6 @@ static_library("brave_service_keys") {
     "//crypto:crypto",
   ]
 }
-
 source_set("unit_tests") {
   testonly = true
   sources = [ "service_key_utils_unittest.cc" ]

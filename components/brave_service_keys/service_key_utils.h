@@ -10,16 +10,13 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/span.h"
-#include "base/strings/strcat.h"
-
 namespace brave_service_keys {
 
 std::pair<std::string, std::string> GetDigestHeader(const std::string& payload);
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
     const std::string& service_key,
-    base::span<const std::pair<std::string, std::string>> headers);
+    const std::vector<std::pair<std::string, std::string>>& headers);
 
 }  // namespace brave_service_keys
 
