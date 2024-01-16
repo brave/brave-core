@@ -29,7 +29,7 @@ static_library("brave_service_keys") {
   deps = [
     ":buildflags",
     "//base",
-    "//crypto:crypto",
+    "//crypto",
     "//url:url",
   ]
 }
