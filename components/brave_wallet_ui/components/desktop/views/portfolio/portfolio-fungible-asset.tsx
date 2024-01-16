@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -55,8 +55,12 @@ import { WalletSelectors } from '../../../../common/selectors'
 import {
   LineChartControls //
 } from '../../line-chart/line-chart-controls/line-chart-controls'
-import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
-import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
+import {
+  AccountsAndTransactionsList //
+} from './components/accounts-and-transctions-list'
+import {
+  BridgeToAuroraModal //
+} from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
 import {
