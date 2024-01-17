@@ -31,7 +31,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       ai_chat::mojom::CharacterType::HUMAN,
       ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
       base::android::ConvertJavaStringToUTF8(query)};
-  chat_tab_helper->MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
+  chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }
 }  // namespace ai_chat

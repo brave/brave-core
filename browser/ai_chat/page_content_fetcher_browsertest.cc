@@ -79,10 +79,11 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                         bool expected_is_video) {
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(),
+        browser()->tab_strip_model()->GetActiveWebContents(), "",
         base::BindLambdaForTesting([&run_loop, &expected_text,
-                                    &expected_is_video](std::string text,
-                                                        bool is_video) {
+                                    &expected_is_video](
+                                       std::string text, bool is_video,
+                                       std::string invalidation_token) {
           ASSERT_EQ(expected_text, base::TrimWhitespaceASCII(
                                        text, base::TrimPositions::TRIM_ALL));
           ASSERT_EQ(expected_is_video, is_video);

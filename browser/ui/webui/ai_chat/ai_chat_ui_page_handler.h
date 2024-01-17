@@ -96,7 +96,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
-  void OnConversationEntryPending() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
 
