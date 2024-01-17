@@ -137,7 +137,7 @@ android_aar_prebuilt("com_brave_playlist_java") {
 
 android_aar_prebuilt("androidx_media3_media3_exoplayer_hls_java") {
   aar_path =
-      "libs/androidx_media3_media3_exoplayer_hls/media3-exoplayer-hls-1.0.2.aar"
+      "libs/androidx_media3_media3_exoplayer_hls/media3-exoplayer-hls-1.2.0.aar"
   info_path = "libs/androidx_media3_media3_exoplayer_hls/androidx_media3_media3_exoplayer_hls.info"
 }
 
