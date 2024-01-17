@@ -50,6 +50,7 @@ describe('token endpoints', () => {
       mockWalletState.userVisibleTokensInfo.length
     )
   })
+
   it('it should delete tokens', async () => {
     const store = createMockStore(
       {},
@@ -95,6 +96,7 @@ describe('token endpoints', () => {
 
     expect(newTokens).toHaveLength(visibleTokens.length - 1)
   })
+
   it('it should add tokens', async () => {
     const store = createMockStore(
       {},
@@ -140,6 +142,7 @@ describe('token endpoints', () => {
 
     expect(newTokens).toHaveLength(visibleTokens.length + 1)
   })
+
   it('it should fetch tokens', async () => {
     const store = createMockStore(
       {},
