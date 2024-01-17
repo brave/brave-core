@@ -99,11 +99,10 @@ std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
       std::string(signature_digest.begin(), signature_digest.end()),
       &signature_digest_base64);
 
-  const std::string value = base::StrCat(
-      {"Signature "
-       "keyId=\"",
-       BUILDFLAG(BRAVE_SERVICES_KEY_ID), "\",algorithm=\"hs2019\",headers=\"",
-       header_names, "\",signature=\"", signature_digest_base64, "\""});
+  const std::string value =
+      base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
+                    "\",algorithm=\"hs2019\",headers=\"", header_names,
+                    "\",signature=\"", signature_digest_base64, "\""});
 
   return std::make_pair(net::HttpRequestHeaders::kAuthorization, value);
 }
