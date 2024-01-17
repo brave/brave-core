@@ -466,8 +466,7 @@ public class CardBuilderFeedCard {
                     rowTop.addView(topText);
 
                     // adds the More Offers bottom layout
-                    lineSeparator.setBackgroundColor(
-                            mActivity.getColor(R.color.news_time_color));
+                    lineSeparator.setBackgroundColor(mActivity.getColor(R.color.news_time_color));
                     lineSeparator.setLayoutParams(lineSeparatorParams);
                     moreOffersLayout.setOrientation(LinearLayout.HORIZONTAL);
                     moreOffersLayoutParams.setMargins(50, 0, 50, 0);
@@ -479,8 +478,7 @@ public class CardBuilderFeedCard {
                             R.string.brave_news_more_offers_title));
                     moreOffersText.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
                     moreOffersText.setTypeface(null, Typeface.BOLD);
-                    moreOffersText.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    moreOffersText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     moreOffersText.setLayoutParams(moreOffersTextParams);
 
                     moreOffersArrow.setImageResource(R.drawable.ic_chevron_right);
@@ -510,8 +508,7 @@ public class CardBuilderFeedCard {
                     rowTop.setLayoutParams(tableParamsTopNews);
                     setTextFromFeed(topText, DEALS, 0);
                     topText.setTextSize(17);
-                    topText.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
                     layout1.setOrientation(LinearLayout.VERTICAL);
@@ -550,8 +547,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(topText, PUBLISHER, 0);
                     topText.setTextSize(20);
-                    topText.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
                     addElementsToSingleLayout(row1, 0, type);
@@ -616,8 +612,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(topText, CATEGORY, 0);
                     topText.setTextSize(26);
-                    topText.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
                     rowTableParams.bottomMargin = 2 * MARGIN_VERTICAL;
@@ -878,8 +873,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
 
-                    publisher.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     publisherParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
@@ -978,8 +972,7 @@ public class CardBuilderFeedCard {
                     promoted.setText(
                             mActivity.getResources().getString(R.string.brave_news_promoted_title));
 
-                    promoted.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    promoted.setTextColor(mActivity.getColor(R.color.news_text_color));
                     promoted.setTextSize(12);
                     promoted.setLayoutParams(promotedParams);
                     promotedLayoutParams.bottomMargin = 4 * MARGIN_VERTICAL;
@@ -989,8 +982,7 @@ public class CardBuilderFeedCard {
                     promotedLogoLayout.setLayoutParams(promotedLayoutParams);
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
-                    publisher.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(12);
                     publisherParams.width = 0;
                     publisherParams.weight = 2;
@@ -1048,8 +1040,7 @@ public class CardBuilderFeedCard {
                     layout.addView(desc);
 
                     setTextFromFeed(publisher, PUBLISHER, index);
-                    publisher.setTextColor(
-                            mActivity.getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
 
                     publisherParams.gravity = Gravity.BOTTOM;
@@ -1482,21 +1473,18 @@ public class CardBuilderFeedCard {
 
         if (type == BUTTON_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, innerRadii));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
             backgroundShape.getPaint().setAntiAlias(true);
             backgroundShape.setPadding(10, 10, 10, 10);
 
         } else if (type == CARD_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, innerRadii));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
         } else if (type == ROUNDED_TOP_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
         }
 
