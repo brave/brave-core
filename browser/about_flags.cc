@@ -704,6 +704,14 @@
                                  kAllowUnsupportedWalletProvidersFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-rewards-allow-self-custody-providers",                        \
+          "Enable Brave Rewards self-custody connection options",              \
+          "Enables self-custody options to be selected in Brave Rewards.",     \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_rewards::features::kAllowSelfCustodyProvidersFeature),     \
+      },                                                                       \
+      {                                                                        \
           "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
           "Launch Brave Ads as an in-process service",                         \
           "Launch Brave Ads as an in-process service removing the utility "    \

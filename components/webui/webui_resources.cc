@@ -956,6 +956,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                   {"processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER},
                   {"processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI},
                   {"processorZebPay", IDS_BRAVE_UI_PROCESSOR_ZEBPAY},
+                  {"processorSolana", IDS_BRAVE_UI_PROCESSOR_SOLANA},
                   {"promotionAds", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS},
                   {"promotionAmount",
                    IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT},

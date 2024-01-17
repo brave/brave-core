@@ -123,8 +123,7 @@ void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
   DCHECK(!uphold_wallet->address.empty());
 
   const auto is_semi_verified = [](auto& result) {
-    auto& [wallet_provider, linked] = result;
-    return wallet_provider != constant::kWalletUphold || !linked;
+    return result.wallet_provider != constant::kWalletUphold || !result.linked;
   };
 
   // deemed semi-VERIFIED || semi-VERIFIED

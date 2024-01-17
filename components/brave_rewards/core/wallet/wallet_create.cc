@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
 namespace brave_rewards::internal {
 
@@ -137,6 +138,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
       engine_->state()->SetPromotionCorruptedMigrated(true);
     }
     engine_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+    engine_->Get<LinkageChecker>().Start();
   }
 
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);

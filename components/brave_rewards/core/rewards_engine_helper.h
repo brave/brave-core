@@ -31,6 +31,11 @@ class RewardsEngineHelper {
   RewardsLogStream Log(base::Location location);
   RewardsLogStream LogError(base::Location location);
 
+  template <typename T>
+  T& Get() const {
+    return engine_->Get<T>();
+  }
+
  private:
   const raw_ref<RewardsEngineImpl> engine_;
 };

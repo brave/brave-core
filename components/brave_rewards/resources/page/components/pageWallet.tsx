@@ -175,14 +175,7 @@ class PageWallet extends React.Component<Props, State> {
     if (!externalWallet) {
       return null
     }
-
-    switch (externalWallet.type) {
-      case 'bitflyer': return 'bitflyer'
-      case 'gemini': return 'gemini'
-      case 'uphold': return 'uphold'
-      case 'zebpay': return 'zebpay'
-      default: return null
-    }
+    return externalWalletProviderFromString(externalWallet.type)
   }
 
   goToExternalWallet = () => {

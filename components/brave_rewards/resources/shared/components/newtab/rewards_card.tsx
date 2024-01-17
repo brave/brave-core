@@ -312,7 +312,6 @@ export function RewardsCard (props: Props) {
   }
 
   function renderVBATNotice () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
     const onClose = () => { setHideVBATNotice(true) }
     return (
       <style.root>
@@ -331,6 +330,10 @@ export function RewardsCard (props: Props) {
   }
 
   function renderSelfCustodyInvite () {
+    const onConnectSelfCustody = () => {
+      props.onSelfCustodyInviteDismissed()
+      onConnect()
+    }
     return (
       <style.root>
         <RewardsCardHeader />
@@ -347,7 +350,7 @@ export function RewardsCard (props: Props) {
             {getString('rewardsSelfCustodyInviteText')}
           </style.selfCustodyInviteText>
           <style.connectAction>
-            <button onClick={onConnect}>
+            <button onClick={onConnectSelfCustody}>
               {getString('rewardsConnectAccount')}<ArrowNextIcon />
             </button>
           </style.connectAction>
