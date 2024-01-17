@@ -981,6 +981,7 @@
 -CommerceInternalsBrowserTest.InternalsPageOpen
 
 # Flaky upstream.
+-All/PDFExtensionScrollTest.WithPageDownUp/0
 -All/PDFExtensionScrollTest.WithSpace/0
 -ExtensionWindowCreateTest.AcceptState
 -FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
